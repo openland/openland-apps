@@ -2,7 +2,7 @@
   "name": "gostate",
   "version": "0.1.0",
   "private": true,
-  "engines":{
+  "engines": {
     "node": "8.2.1"
   },
   "dependencies": {
@@ -10,6 +10,7 @@
     "@types/node": "^8.0.17",
     "@types/react": "^15.6.0",
     "@types/react-dom": "^15.5.1",
+    "antd": "^2.12.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-scripts-ts": "2.5.0"
