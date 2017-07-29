@@ -1,11 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
+import Routing from './App/Routing';
 import registerServiceWorker from './registerServiceWorker';
+
+import 'antd/dist/antd.css'
 import './index.css';
+import './App/Styles.css';
+import './Indicators/Styles.css';
 
 ReactDOM.render(
-  <App />,
+  <Routing />,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();

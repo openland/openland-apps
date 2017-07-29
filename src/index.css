@@ -4,3 +4,22 @@ body {
   font-family: sans-serif;
   background-color: #ff0000
 }
+
+.ver {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.hor {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+.center {
+  align-items: center;
+  justify-content: center;
+}

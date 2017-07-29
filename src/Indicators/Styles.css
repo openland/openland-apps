@@ -1,0 +1,15 @@
+.counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.counter-title {
+    color: #000000;
+    font-size: 18px;
+}
+
+.counter-value {
+    color: #000000;
+    font-size: 32px;
+}
