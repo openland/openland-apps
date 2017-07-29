@@ -17,10 +17,7 @@ export default function (props:RouteComponentProps<any>) {
                 <Sidebar {...props}/>
             </Layout.Sider>
             <Layout>
-                <Layout.Header>
-                    
-                </Layout.Header>
-
+                
                 {/* Housing */}
                 <Route exact path="/stats/housing" component={HousingHome} />
                 <Route exact path="/stats/housing/zoning" component={TBD} />

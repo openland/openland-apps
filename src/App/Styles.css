@@ -13,3 +13,38 @@
     font-size: 18px;
 }
 
+.housing-bg {
+    height: 500px;
+    background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.2)),url('/housing_bg.jpg');
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.housing-bg > .title {
+    color: #fff;
+    font-size: 32px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.housing-bg > .title > .subtitle {
+    font-size: 16px;
+}
+
+.housing-bg > .navigation {
+    width: 1000px;
+    padding-bottom: 48px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

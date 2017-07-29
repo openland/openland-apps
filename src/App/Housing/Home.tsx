@@ -1,44 +1,41 @@
 import * as React from 'react'
-import Counter from '../../Indicators/Counter'
-import { Row, Col } from 'antd'
-import { Doughnut } from 'react-chartjs-2';
+import { Row, Col, Button } from 'antd'
+import {Doughnut,Item} from '../../Indicators/Doughnut';
+
+function section(title:string) {
+    return (
+        <div className="nav">
+            <Button type="primary">{title}</Button>
+        </div>
+    );
+}
+
 export default function () {
     return (
         <div className="ver">
-            <Row type="flex">
-                <Col span={4}><Counter name="Avaliable Units" value="123" /></Col>
-                <Col span={4}><Counter name="Avaliable Units" value="123" /></Col>
-                <Col span={4}><Counter name="Avaliable Units" value="123" /></Col>
-                <Col span={4}><Counter name="Avaliable Units" value="123" /></Col>
-                <Col span={4}><Counter name="Avaliable Units" value="123" /></Col>
-                <Col span={4}><Counter name="Avaliable Units" value="123" /></Col>
-            </Row>
+            <div className="housing-bg">
+                <div className="title">
+                    <span>San Francisco Housing Performance Portal</span>
+                    <span className="subtitle">Track, analyze and make decisions about San Francisco housing performance</span>
+                </div>
+                <div className="navigation">
+                    <Row type="flex">
+                        <Col span={4}>{section("Zoning")}</Col>
+                        <Col span={4}>{section("Pipeline")}</Col>
+                        <Col span={4}>{section("Permits")}</Col>
+                        <Col span={4}>{section("Finance")}</Col>
+                        <Col span={4}>{section("Policy")}</Col>
+                        <Col span={4}>{section("Homeless")}</Col>
+                    </Row>
+                </div>
+            </div>
             <div className="card-row">
                 <div className="card-4">
-                    <Doughnut height={200} width={300} data={
-                        {
-                            labels: [
-                                'Red',
-                                'Green',
-                                'Yellow'
-                            ],
-                            datasets: [{
-                                data: [300, 50, 100],
-                                backgroundColor: [
-                                    '#FF6384',
-                                    '#36A2EB',
-                                    '#FFCE56'
-                                ],
-                                hoverBackgroundColor: [
-                                    '#FF6384',
-                                    '#36A2EB',
-                                    '#FFCE56'
-                                ]
-                            }]
-                        }
-                    } options = {{
-                        legend: {position: 'right'}
-                    }} />
+                    <Doughnut>
+                        <Item title="Hispanic" value={120}/>
+                        <Item title="Russian" value={120}/>
+                        <Item title="Black" value={120}/>
+                    </Doughnut>
                 </div>
             </div>
         </div>
