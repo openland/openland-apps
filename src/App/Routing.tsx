@@ -5,7 +5,7 @@ export default function () {
     return (
         <BrowserRouter>
             <Switch>
-                <Redirect exact from="/" to="/stats/homelessness" />
+                <Redirect exact from="/" to="/stats/housing" />
                 <Route path="/stats" component={Stats}/>
             </Switch>
         </BrowserRouter>
