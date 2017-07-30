@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Row, Col, Button } from 'antd'
 import {Doughnut,Item} from '../../Indicators/Doughnut';
+import Counter from '../../Indicators/Counter';
 
 function section(title:string) {
     return (
@@ -29,6 +30,7 @@ export default function () {
                     </Row>
                 </div>
             </div>
+            <h1>Zoning <a href="#">read more...</a></h1>
             <div className="card-row">
                 <div className="card-4">
                     <Doughnut>
@@ -36,6 +38,34 @@ export default function () {
                         <Item title="Russian" value={120}/>
                         <Item title="Black" value={120}/>
                     </Doughnut>
+                </div>
+                <div className="card-2">
+                    <Counter name="Counter1" value="123"/>
+                </div>
+                <div className="card-2">
+                    <Counter name="Counter1" value="123"/>
+                </div>
+                <div className="card-2">
+                    <Counter name="Counter1" value="123"/>
+                </div>
+            </div>
+            <h1>Pipeline <a href="#">read more...</a></h1>
+            <div className="card-row">
+                <div className="card-4">
+                    <Doughnut>
+                        <Item title="Hispanic" value={120}/>
+                        <Item title="Russian" value={120}/>
+                        <Item title="Black" value={120}/>
+                    </Doughnut>
+                </div>
+                <div className="card-2">
+                    <Counter name="Counter1" value="123"/>
+                </div>
+                <div className="card-2">
+                    <Counter name="Counter1" value="123"/>
+                </div>
+                <div className="card-2">
+                    <Counter name="Counter1" value="123"/>
                 </div>
             </div>
         </div>
