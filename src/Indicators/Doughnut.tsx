@@ -27,7 +27,8 @@ export class Doughnut extends React.Component<{}, {}> {
             }
         })
         return (
-            <DoughnutJs data={{ labels: lb, datasets: [{ data: dt, backgroundColor: c, hoverBackgroundColor: c }] }}
+            <DoughnutJs 
+                data={{ labels: lb, datasets: [{ data: dt, backgroundColor: c, hoverBackgroundColor: c }] }}
                 options={{ legend: { position: 'right' } }} />
         );
     }
