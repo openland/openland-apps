@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { Icon } from 'antd'
+import * as React from 'react';
+import { Icon } from 'antd';
 export default function (props: { name: string, value: string }) {
     return (
         <div className="card-1">
@@ -8,5 +8,5 @@ export default function (props: { name: string, value: string }) {
                 <span className="counter-value">{props.value}</span>
             </div>
         </div>
-    )
+    );
 }

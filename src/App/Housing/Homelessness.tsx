@@ -1,5 +1,5 @@
-import * as React from 'react'
-import Counter from '../../Indicators/Counter'
+import * as React from 'react';
+import Counter from '../../Indicators/Counter';
 export default function () {
     return (
         <div className="ver">
@@ -11,5 +11,5 @@ export default function () {
                 <Counter name="5" value="123"/>
             </div>
         </div>
-    )
+    );
 }

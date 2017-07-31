@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import Routing from './App/Routing';
 import registerServiceWorker from './registerServiceWorker';
 
-import 'antd/dist/antd.css'
+import 'antd/dist/antd.css';
 import './index.css';
 import './App/Styles.css';
 import './Indicators/Styles.css';

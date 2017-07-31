@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { Row, Col, Button } from 'antd'
+import * as React from 'react';
+import { Row, Col, Button } from 'antd';
 import { Doughnut, Item } from '../../Indicators/Doughnut';
 import Counter from '../../Indicators/Counter';
 
@@ -23,12 +23,12 @@ export default function () {
                 </div>
                 <div className="navigation">
                     <Row type="flex">
-                        <Col span={4}>{section("Zoning")}</Col>
-                        <Col span={4}>{section("Pipeline")}</Col>
-                        <Col span={4}>{section("Permits")}</Col>
-                        <Col span={4}>{section("Finance")}</Col>
-                        <Col span={4}>{section("Policy")}</Col>
-                        <Col span={4}>{section("Homeless")}</Col>
+                        <Col span={4}>{section('Zoning')}</Col>
+                        <Col span={4}>{section('Pipeline')}</Col>
+                        <Col span={4}>{section('Permits')}</Col>
+                        <Col span={4}>{section('Finance')}</Col>
+                        <Col span={4}>{section('Policy')}</Col>
+                        <Col span={4}>{section('Homeless')}</Col>
                     </Row>
                 </div>
             </div>
@@ -71,5 +71,5 @@ export default function () {
                 </div>
             </div>
         </div>
-    )
+    );
 }

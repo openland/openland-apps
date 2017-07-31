@@ -20,7 +20,8 @@
     "react-chartjs-2": "^2.5.5",
     "react-dom": "^15.6.1",
     "react-router-dom": "^4.1.2",
-    "react-scripts-ts": "2.5.0"
+    "react-scripts-ts": "2.5.0",
+    "semantic-ui-react": "^0.71.3"
   },
   "devDependencies": {},
   "scripts": {
