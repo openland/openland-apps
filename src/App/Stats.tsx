@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Layout } from 'antd';
+import { Layout, Button } from 'antd';
 import Sidebar from './Sidebar';
 // import Homelessness from './Homelessness/Dash'
 import HousingHome from './Housing/Home';
@@ -7,12 +7,22 @@ import HousingHomeless from './Housing/Homelessness';
 
 import TBD from './UnderDevelopment';
 import { Route, RouteComponentProps } from 'react-router-dom';
+import * as Auth from '../auth';
+
+function doLogin(): void {
+    var a = new Auth.default();
+    a.login();
+}
+
 export default function (props: RouteComponentProps<{}>) {
     return (
         <Layout className="root">
             <Layout.Sider>
                 <div className="logo">
                     Statecraft
+                </div>
+                <div>
+                    <Button onClick={doLogin}>Login</Button>
                 </div>
                 <Sidebar {...props} />
             </Layout.Sider>
