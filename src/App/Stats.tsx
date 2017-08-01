@@ -10,11 +10,15 @@ import { Route, RouteComponentProps } from 'react-router-dom';
 import * as Auth from '../auth';
 
 function doLogin(): void {
-    var a = new Auth.default();
-    a.login();
+    Auth.login();
+}
+
+function doLogout(): void {
+    Auth.logout();
 }
 
 export default function (props: RouteComponentProps<{}>) {
+
     return (
         <Layout className="root">
             <Layout.Sider>
@@ -22,7 +26,16 @@ export default function (props: RouteComponentProps<{}>) {
                     Statecraft
                 </div>
                 <div>
-                    <Button onClick={doLogin}>Login</Button>
+                    {
+                        !Auth.isAuthenticated() && (
+                            <Button onClick={doLogin}>Login</Button>
+                        )
+                    }
+                    {
+                        Auth.isAuthenticated() && (
+                            <Button onClick={doLogout}>Logout</Button>
+                        )
+                    }
                 </div>
                 <Sidebar {...props} />
             </Layout.Sider>
