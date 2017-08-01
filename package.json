@@ -19,8 +19,10 @@
     "auth0-lock": "^10.19.0",
     "chart.js": "^2.6.0",
     "react": "^15.6.1",
+    "react-apollo": "^1.4.10",
     "react-chartjs-2": "^2.5.5",
     "react-dom": "^15.6.1",
+    "react-relay": "^1.1.0",
     "react-router-dom": "^4.1.2",
     "react-scripts-ts": "2.5.0",
     "semantic-ui-react": "^0.71.3"

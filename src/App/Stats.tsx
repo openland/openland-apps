@@ -8,6 +8,7 @@ import HousingHomeless from './Housing/Homelessness';
 import TBD from './UnderDevelopment';
 import { Route, RouteComponentProps } from 'react-router-dom';
 import * as Auth from '../auth';
+import * as api from '../api';
 
 function doLogin(): void {
     Auth.login();
@@ -37,6 +38,7 @@ export default function (props: RouteComponentProps<{}>) {
                         )
                     }
                 </div>
+                <api.TestComponent/>
                 <Sidebar {...props} />
             </Layout.Sider>
             <Layout>
