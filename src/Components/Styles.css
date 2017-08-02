@@ -18,6 +18,7 @@
     transition: all .15s ease;
     white-space: nowrap;
     cursor: pointer;
+    text-transform: uppercase;
 }
 
 .like-active:hover {
@@ -52,6 +53,7 @@
     transition: all .15s ease;
     white-space: nowrap;
     cursor: pointer;
+    text-transform: uppercase;
 }
 
 .like:hover {
