@@ -14,8 +14,8 @@ import * as Auth from './auth';
 
 const channelsListQuery = gql`
    query Vote {
-     vote(id: 123) {
-       key
+     vote(id: "MTIz") {
+       id
        count
        own_set
      }
@@ -23,9 +23,9 @@ const channelsListQuery = gql`
  `;
 
 const addChannelMutation = gql`
-  mutation vote($id: Int!) {
+  mutation vote($id: ID!) {
     vote(id: $id) {
-      key
+      id
       count
       own_set
     }
@@ -34,7 +34,7 @@ const addChannelMutation = gql`
 
 interface QueryVoteProps extends QueryProps {
     vote: {
-        key: string;
+        id: string;
         count: number;
     };
 }
@@ -46,7 +46,7 @@ function AddChannel(props: { mutate: MutationFunc<{}> } ) {
     function like() {
         props.mutate({
             variables: {
-                id: 123
+                id: 'MTIz'
             }
         });
     }
