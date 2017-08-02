@@ -10,6 +10,24 @@ var auth = new auth0.WebAuth({
     scope: 'openid'
 });
 
+export function headers(): { authorization?: string } {
+    if (isAuthenticated()) {
+        var res = localStorage.getItem('id_token');
+        return { authorization: 'Bearer ' + res };
+    } else {
+        return {};
+    }
+}
+
+export function token(): string {
+    var res = localStorage.getItem('id_token');
+    if (res == null) {
+        return '';
+    } else {
+        return res;
+    }
+}
+
 function setSession(authResult: { expiresIn: number, accessToken: string, idToken: string }) {
     // Set the time that the access token will expire at
     let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());

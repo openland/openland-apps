@@ -8,6 +8,8 @@ import {
     createNetworkInterface
 } from 'react-apollo';
 
+import * as Auth from './auth';
+
 const channelsListQuery = gql`
    query Vote {
      vote(id: 123) {
@@ -40,10 +42,14 @@ function ChannelsList(props: {}) {
     //     < /ul>);
 }
 
-let client = new ApolloClient({
-    networkInterface: createNetworkInterface({
-        uri: 'http://localhost:9000/graphql'
-    })
+var client = new ApolloClient({
+    networkInterface: createNetworkInterface(
+        'http://localhost:9000/graphql',
+        {
+            opts: {
+                headers: Auth.headers()
+            }
+        })
 });
 
 const ChannelsListWithData = graphql(channelsListQuery)(ChannelsList);
@@ -51,7 +57,7 @@ const ChannelsListWithData = graphql(channelsListQuery)(ChannelsList);
 export function TestComponent() {
     return (
         <ApolloProvider client={client}>
-            <ChannelsListWithData/>
+            <ChannelsListWithData />
         </ApolloProvider>
     );
 }
