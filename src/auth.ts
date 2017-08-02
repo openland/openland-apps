@@ -4,7 +4,7 @@ import history from './history';
 var auth = new auth0.WebAuth({
     domain: 'statecraft.auth0.com',
     clientID: 'na0Pvis7KTzZWtzcIFT8MzIxtdpiLZc3',
-    redirectUri: 'http://localhost:3000/auth_complete',
+    redirectUri: window.location.origin + '/auth_complete',
     audience: 'https://statecraft.auth0.com/userinfo',
     responseType: 'token id_token',
     scope: 'openid'

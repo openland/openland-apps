@@ -36,6 +36,6 @@
     "eject": "react-scripts-ts eject",
 
     "heroku-postbuild": "yarn build",
-    "start": "serve -s build"
+    "start": "node configure.js && serve -s build"
   }
 }
