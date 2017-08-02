@@ -7,6 +7,7 @@ import 'antd/dist/antd.css';
 import './index.css';
 import './App/Styles.css';
 import './Indicators/Styles.css';
+import './Components/Styles.css';
 
 ReactDOM.render(
   <Routing />,

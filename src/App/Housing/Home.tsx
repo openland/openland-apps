@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Row, Col, Button } from 'antd';
 import { Doughnut, Item } from '../../Indicators/Doughnut';
 import Counter from '../../Indicators/Counter';
+import Like from '../../Components/Like';
 
 function section(title: string) {
     return (
@@ -20,6 +21,7 @@ export default function () {
                     <span className="subtitle">
                         Track, analyze and make decisions about
                         San Francisco housing performance</span>
+                    <Like id="MTIz" />
                 </div>
                 <div className="navigation">
                     <Row type="flex">
