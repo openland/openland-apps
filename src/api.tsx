@@ -5,7 +5,9 @@ import {
     gql,
     graphql,
     ApolloProvider,
-    createNetworkInterface
+    createNetworkInterface,
+    QueryProps,
+    MutationFunc
 } from 'react-apollo';
 
 import * as Auth from './auth';
@@ -15,14 +17,68 @@ const channelsListQuery = gql`
      vote(id: 123) {
        key
        count
+       own_set
      }
    }
  `;
 
-function ChannelsList(props: {}) {
+const addChannelMutation = gql`
+  mutation vote($id: Int!) {
+    vote(id: $id) {
+      key
+      count
+      own_set
+    }
+  }
+`;
+
+interface QueryVoteProps extends QueryProps {
+    vote: {
+        key: string;
+        count: number;
+    };
+}
+
+function AddChannel(props: { mutate: MutationFunc<{}> } ) {
+
     console.warn(props);
+
+    function like() {
+        props.mutate({
+            variables: {
+                id: 123
+            }
+        });
+    }
+
+    return <button onClick={like}>Like</button>;
+}
+
+const AddChannelWithMutation = graphql(
+    addChannelMutation
+)(AddChannel);
+
+function ChannelsList(props: { data: QueryVoteProps }) {
+    if (props.data.loading) {
+        return (
+            <div>
+                Loading...
+            </div>
+        );
+    }
+
+    // function like() {
+
+    // }
+
+    console.warn(props.data.vote);
+    // var data = (props.data as {vote:any}).vote;
+    // console.warn((props.data as {vote:any}).vote);
     return (
-        <div />
+        <div>
+            Likes: {props.data.vote.count}
+            <AddChannelWithMutation />
+        </div>
     );
     // if (props.data.loading) {
     //     return (
@@ -57,6 +113,7 @@ const ChannelsListWithData = graphql(channelsListQuery)(ChannelsList);
 export function TestComponent() {
     return (
         <ApolloProvider client={client}>
+
             <ChannelsListWithData />
         </ApolloProvider>
     );
