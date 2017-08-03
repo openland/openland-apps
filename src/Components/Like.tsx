@@ -62,7 +62,7 @@ function VoteComponent(props: {
           id: props.id
         },
         optimisticResponse: {
-          vote : {
+          unvote : {
             __typename: 'Vote',
             id: props.id,
             count: props.vote.vote.count - 1,
