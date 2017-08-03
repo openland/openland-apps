@@ -49,6 +49,7 @@ function VoteComponent(props: {
         },
         optimisticResponse: {
           vote : {
+            __typename: 'Vote',
             id: props.id,
             count: props.vote.vote.count + 1,
             own_set: true
@@ -62,6 +63,7 @@ function VoteComponent(props: {
         },
         optimisticResponse: {
           vote : {
+            __typename: 'Vote',
             id: props.id,
             count: props.vote.vote.count - 1,
             own_set: false
