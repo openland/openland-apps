@@ -18,15 +18,19 @@
     "auth0-js": "^8.8.0",
     "auth0-lock": "^10.19.0",
     "chart.js": "^2.6.0",
+    "local-storage": "^1.4.2",
     "react": "^15.6.1",
-    "react-apollo": "^1.4.10",
+    "react-apollo": "1.4.10",
     "react-chartjs-2": "^2.5.5",
     "react-dom": "^15.6.1",
     "react-relay": "^1.1.0",
     "react-router-dom": "^4.1.2",
     "react-scripts-ts": "2.5.0",
+    "react-semantic-ui": "^0.2.0",
+    "semantic-ui-css": "^2.2.11",
     "semantic-ui-react": "^0.71.3",
-    "serve": "^6.0.5"
+    "serve": "^6.0.5",
+    "typescript": "^2.4.2"
   },
   "devDependencies": {},
   "scripts": {
@@ -34,7 +38,6 @@
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
-
     "heroku-postbuild": "yarn build",
     "start": "node configure.js && serve -s build"
   }

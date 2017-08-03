@@ -1,6 +1,28 @@
-import { gql } from 'react-apollo';
+import * as React from 'react';
+import { gql, graphql, compose, QueryProps, MutationFunc } from 'react-apollo';
 
-export const QueryVote = gql`
+// Data structures
+
+export interface Vote {
+  id: string;
+  count: number;
+  own_set: boolean;
+}
+
+export interface VoteProps {
+  id: string;
+}
+
+export interface VoteState {
+  id: string;
+  vote: QueryProps & { vote: Vote };
+  doVote: MutationFunc<{}>;
+  doUnvote: MutationFunc<{}>;
+}
+
+// Vote Queries
+
+const QueryVote = gql`
    query Vote($id: ID!) {
      vote(id: $id) {
        id
@@ -10,7 +32,7 @@ export const QueryVote = gql`
    }
  `;
 
-export const MutationVote = gql`
+const MutationVote = gql`
   mutation vote($id: ID!) {
     vote(id: $id) {
       id
@@ -20,7 +42,7 @@ export const MutationVote = gql`
   }
 `;
 
-export const MutationUnvote = gql`
+const MutationUnvote = gql`
   mutation unvote($id: ID!) {
     unvote(id: $id) {
       id
@@ -30,16 +52,29 @@ export const MutationUnvote = gql`
   }
 `;
 
-export interface Vote {
-  id: string;
-  count: number;
-  own_set: boolean;
-}
+const withVoteQuery = graphql(QueryVote, {
+  name: 'vote',
+  options: (args: VoteProps) => ({
+    variables: { id: args.id }
+  })
+});
 
-export interface PropsVote {
-  id: string;
-}
+const withVoteAction = graphql(MutationVote, {
+  name: 'doVote',
+  options: (args: VoteProps) => ({
+    variables: { id: args.id }
+  })
+});
 
-export interface ResponseVote {
-    vote: Vote;
-}
+const withUnvoteAction = graphql(MutationUnvote, {
+  name: 'doUnvote',
+  options: (args: VoteProps) => ({
+    variables: { id: args.id }
+  })
+});
+
+export const withVote = compose<React.ComponentClass<VoteProps>>(
+  withVoteQuery,
+  withVoteAction,
+  withUnvoteAction
+);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Counter from '../../Indicators/Counter';
+import Counter from '../Components/Counter';
 export default function () {
     return (
         <div className="ver">

@@ -1,13 +1,17 @@
 import auth0 from 'auth0-js';
-import history from './history';
+import createHistory from 'history/createBrowserHistory';
 
-var auth = new auth0.WebAuth({
+const auth = new auth0.WebAuth({
     domain: 'statecraft.auth0.com',
     clientID: 'na0Pvis7KTzZWtzcIFT8MzIxtdpiLZc3',
     redirectUri: window.location.origin + '/auth_complete',
     audience: 'https://statecraft.auth0.com/userinfo',
     responseType: 'token id_token',
     scope: 'openid'
+});
+
+const history = createHistory({
+  forceRefresh: true
 });
 
 export function headers(): { authorization?: string } {
