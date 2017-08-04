@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Doughnut as DoughnutJs } from 'react-chartjs-2';
 
-const DefaultColors = ['#FF6384', '#36A2EB', '#FFCE56'];
+const DefaultColors = ['#f4bd8e', '#f4a460', '#c1824c', '#746151', '#85a5c0', '#4682b4'];
 
 export interface DataRecordProps {
     title: string;
@@ -23,13 +23,13 @@ export class Doughnut extends React.Component<{}, {}> {
             if (p.color != null) {
                 c.push(p.color);
             } else {
-                c.push(DefaultColors[colorIndex++]);
+                c.push(DefaultColors[(colorIndex++) % DefaultColors.length]);
             }
         });
         return (
             <DoughnutJs
                 data={{ labels: lb, datasets: [{ data: dt, backgroundColor: c, hoverBackgroundColor: c }] }}
-                options={{ legend: { position: 'right' } }} 
+                options={{ legend: { position: 'right' } }}
             />
         );
     }
