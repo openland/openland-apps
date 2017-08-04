@@ -8,27 +8,29 @@ import { Doughnut, Item } from '../Components/Doughnut';
 export default function () {
     return (
         <div className="ver">
-            <div className="housing-bg" style={{ position: 'relative' }}>
+            <div className="housing-bg">
                 <Container text={true} textAlign="center">
                     <Header
                         inverted={true}
                         as="h1"
                         content="San Francisco Housing Performance Portal"
+                        style={{marginTop: 32}}
                     />
                     <Header
                         inverted={true}
                         as="h3"
                         content="Track, analyze and make decisions about San Francisco housing performance."
                     />
+
+                    <Menu compact={true} style={{ marginTop: 80 }}>
+                        <Menu.Item to="/app/zoning" as={NavLink}>Zoning</Menu.Item>
+                        <Menu.Item to="/app/pipeline" as={NavLink}>Pipeline</Menu.Item>
+                        <Menu.Item disabled={true}>Permits</Menu.Item>
+                        <Menu.Item disabled={true}>Finance</Menu.Item>
+                        <Menu.Item disabled={true}>Policy</Menu.Item>
+                        <Menu.Item disabled={true}>Homeless</Menu.Item>
+                    </Menu>
                 </Container>
-                <Menu compact={true} style={{ position: 'absolute', bottom: 0, marginBottom: 64 }}>
-                    <Menu.Item to="/app/zoning" as={NavLink}>Zoning</Menu.Item>
-                    <Menu.Item to="/app/pipeline" as={NavLink}>Pipeline</Menu.Item>
-                    <Menu.Item disabled={true}>Permits</Menu.Item>
-                    <Menu.Item disabled={true}>Finance</Menu.Item>
-                    <Menu.Item disabled={true}>Policy</Menu.Item>
-                    <Menu.Item disabled={true}>Homeless</Menu.Item>
-                </Menu>
             </div>
             <Container>
                 <Header
@@ -89,8 +91,8 @@ export default function () {
                 </Segment.Group> */}
             </Container>
 
-            <div style={{height: 260}}/>
-                
+            <div style={{ height: 260 }} />
+
             {/* <div className="card-row">
                 <div className="card-4">
                     <Doughnut>
