@@ -8,8 +8,13 @@ export interface DataRecordProps {
     value: number;
     color?: string;
 }
+export interface DoughnutProps {
+    [key: string]: any;
+
+    kind?: 'percent' | 'raw' | string;
+}
 export class Item extends React.Component<DataRecordProps, {}> { }
-export class Doughnut extends React.Component<{}, {}> {
+export class Doughnut extends React.Component<DoughnutProps, {}> {
 
     render(): JSX.Element | null | false {
         var lb: string[] = [];
@@ -29,7 +34,8 @@ export class Doughnut extends React.Component<{}, {}> {
         return (
             <DoughnutJs
                 data={{ labels: lb, datasets: [{ data: dt, backgroundColor: c, hoverBackgroundColor: c }] }}
-                options={{ legend: { position: 'right' } }}
+                options={{ legend: { position: 'bottom' } }}
+                {...this.props}
             />
         );
     }
