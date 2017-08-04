@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Loader } from 'semantic-ui-react';
+
 import * as A from './auth';
 import App from './App/App';
 
@@ -10,7 +12,9 @@ const handleAuthentication = (nextState: { location: { hash: string } }) => {
 };
 
 function Auth() {
-    return <div />;
+    return (
+        <Loader size="big" active={true}/>
+    );
 }
 
 export default function () {
