@@ -51,4 +51,4 @@ function VoteComponent(props: VoteState) {
   return <button className={style} onClick={like}>Like {props.vote.vote.count}</button>;
 }
 
-export default withVote(VoteComponent);
+export const Vote = withVote(VoteComponent);

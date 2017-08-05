@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Icon } from 'antd';
-export default function (props: { name: string, value: string }) {
+export function Counter(props: { name: string, value: string }) {
     return (
         <div className="card-1">
             <div className="counter">

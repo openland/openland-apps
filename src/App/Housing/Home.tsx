@@ -3,7 +3,7 @@ import { Container, Header, Grid, Segment, Label, Card as Card2, Image, Progress
 // import { NavLink } from 'react-router-dom';
 
 import { Doughnut, Item } from '../Components/Doughnut';
-import { Card } from '../Components/Card';
+import { Card, Vote } from '../Components';
 
 const SourceHousingElement = { title: 'Housing Element 2014', link: '#' };
 const VoteStyle: React.CSSProperties = {
@@ -41,12 +41,14 @@ export default function () {
                         <Menu.Item disabled={true}>Homeless</Menu.Item>
                     </Menu> */}
 
-                    <Progress 
-                        inverted={true} 
-                        percent={56} 
-                        indicating={true} 
-                        progress={true} 
-                        style={{ marginTop: 80 }} 
+                    <Vote id="sf-housing" />
+
+                    <Progress
+                        inverted={true}
+                        percent={56}
+                        indicating={true}
+                        progress={true}
+                        style={{ marginTop: 80 }}
                     />
                     <Header
                         inverted={true}
