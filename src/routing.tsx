@@ -5,7 +5,9 @@ import { ApolloProvider } from 'react-apollo';
 import * as api from './api';
 
 import * as Auth from './auth';
+
 import City from './App/City';
+import { Ask } from './App/Ask';
 
 interface AuthPageProps {
     location: { hash: string };
@@ -68,6 +70,7 @@ export default function () {
                 <Switch>
                     <Redirect exact={true} from="/" to="/city/sf/housing" />
                     <Route path="/city/:city" component={City} />
+                    <Route exact={true} path="/ask" component={Ask} />
                     <Route
                         path="/auth_complete"
                         component={AuthPage}

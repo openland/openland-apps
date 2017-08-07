@@ -1,8 +1,13 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import { withCityQuery, CityState } from '../queries';
+import { Route, RouteComponentProps } from 'react-router-dom';
+
 import { Loader } from 'semantic-ui-react';
+
+import { withCityQuery, CityState } from '../queries';
+
 import CityHeader from './CityHeader';
+import { CityHome } from './CityHome';
+import { CitySegment } from './CitySegment';
 
 const CityRender = withCityQuery(function (props: CityState) {
     if (props.data.loading) {
@@ -23,6 +28,8 @@ const CityRender = withCityQuery(function (props: CityState) {
         return (
             <div>
                 <CityHeader title={props.data.city.name} me={props.data.me} />
+                <Route exact={true} path="/city/:city/" component={CityHome} />
+                <Route exact={true} path="/city/:city/:sector" component={CitySegment} />
             </div>
         );
     }

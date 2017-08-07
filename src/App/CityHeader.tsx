@@ -2,6 +2,20 @@ import * as React from 'react';
 import { Menu, Dropdown, Button, Image } from 'semantic-ui-react';
 import * as Auth from '../auth';
 import { User } from '../queries';
+import { withRouter, RouteComponentProps, Route } from 'react-router-dom';
+
+const AskButton = withRouter(function (props: RouteComponentProps<any>) {
+    return (
+        <Button
+            positive={true}
+            onClick={() => {
+                props.history.push('/ask');
+            }}
+        >
+            Ask
+        </Button>
+    );
+});
 
 export default function (props: { title: string, me?: User }) {
     return (
@@ -9,7 +23,7 @@ export default function (props: { title: string, me?: User }) {
             <Menu.Item header={true}>Statecraft</Menu.Item>
             <Menu.Item>{props.title} Performance Portal</Menu.Item>
             <Menu.Menu position="right">
-                <Menu.Item><Button positive={true}>Ask</Button></Menu.Item>
+                <Menu.Item><Route component={AskButton} /></Menu.Item>
                 {!Auth.isAuthenticated() && (
                     <Menu.Item>
                         <Button.Group>
