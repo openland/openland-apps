@@ -20,7 +20,26 @@ export interface VoteState {
   doUnvote: MutationFunc<{}>;
 }
 
-// Vote Queries
+export interface CityProps {
+  id: string;
+}
+
+export interface City {
+  id: string;
+  name: string;
+}
+
+export interface User {
+  id: string;
+  name: string;
+}
+
+export interface CityState {
+  id: string;
+  data: QueryProps & { city: City, me: User };
+}
+
+// Queries
 
 const QueryVote = gql`
    query Vote($id: ID!) {
@@ -52,6 +71,21 @@ const MutationUnvote = gql`
   }
 `;
 
+const QueryCity = gql`
+   query city($id: ID!) {
+     city(id: $id) {
+       id
+       name
+     }
+     me {
+       id
+       name
+     }
+   }
+ `;
+
+// Wrappers
+
 const withVoteQuery = graphql(QueryVote, {
   name: 'vote',
   options: (args: VoteProps) => ({
@@ -78,3 +112,9 @@ export const withVote = compose<React.ComponentClass<VoteProps>>(
   withVoteAction,
   withUnvoteAction
 );
+
+export const withCityQuery = graphql(QueryCity, {
+  options: (args: CityProps) => ({
+    variables: { id: args.id }
+  })
+});
