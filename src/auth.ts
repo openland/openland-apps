@@ -1,17 +1,23 @@
 import auth0 from 'auth0-js';
 import createHistory from 'history/createBrowserHistory';
 
+export interface AuthResult {
+    expiresIn: number;
+    accessToken: string;
+    idToken: string;
+}
+
 const auth = new auth0.WebAuth({
     domain: 'statecraft.auth0.com',
     clientID: 'na0Pvis7KTzZWtzcIFT8MzIxtdpiLZc3',
     redirectUri: window.location.origin + '/auth_complete',
     audience: 'https://statecraft.auth0.com/userinfo',
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid profile email'
 });
 
 const history = createHistory({
-  forceRefresh: true
+    forceRefresh: true
 });
 
 export function headers(): { authorization?: string } {
@@ -32,7 +38,7 @@ export function token(): string {
     }
 }
 
-function setSession(authResult: { expiresIn: number, accessToken: string, idToken: string }) {
+export function completeAuthentication(authResult: AuthResult) {
     // Set the time that the access token will expire at
     let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
@@ -42,14 +48,19 @@ function setSession(authResult: { expiresIn: number, accessToken: string, idToke
     history.replace('/');
 }
 
-export function handleAuthentication() {
-    auth.parseHash((err, authResult: { expiresIn: number, accessToken: string, idToken: string }) => {
-        if (authResult && authResult.accessToken && authResult.idToken) {
-            setSession(authResult);
-            history.replace('/');
-        } else if (err) {
-            history.replace('/');
-        }
+export async function parseAuth() {
+    return new Promise<AuthResult>((resolver, errorres) => {
+        auth.parseHash((err, authResult: { expiresIn: number, accessToken: string, idToken: string }) => {
+            if (err != null) {
+                errorres(err);
+            } else {
+                resolver({
+                    expiresIn: authResult.expiresIn,
+                    accessToken: authResult.accessToken,
+                    idToken: authResult.idToken
+                });
+            }
+        });
     });
 }
 

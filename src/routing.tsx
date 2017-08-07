@@ -4,19 +4,61 @@ import { Loader } from 'semantic-ui-react';
 import { ApolloProvider } from 'react-apollo';
 import * as api from './api';
 
-import * as A from './auth';
+import * as Auth from './auth';
 import City from './App/City';
 
-const handleAuthentication = (nextState: { location: { hash: string } }) => {
-    if (/access_token|id_token|error/.test(nextState.location.hash)) {
-        A.handleAuthentication();
-    }
-};
+interface AuthPageProps {
+    location: { hash: string };
+}
 
-function Auth() {
-    return (
-        <Loader size="big" active={true} />
-    );
+class AuthPage extends React.Component<AuthPageProps, {
+    isLoading: boolean,
+    isError: Boolean
+}> {
+
+    constructor(props: AuthPageProps) {
+        super(props);
+        this.state = {
+            isLoading: true,
+            isError: false
+        };
+    }
+
+    async handleAuth() {
+        if (/access_token|id_token|error/.test(this.props.location.hash)) {
+            var res = await Auth.parseAuth();
+            var uploaded = await fetch(api.server + '/auth', {
+                method: 'POST',
+                headers: {
+                    authorization: 'Bearer ' + res.idToken,
+                    'access-token': res.accessToken
+                }
+            });
+            if (uploaded.ok) {
+                Auth.completeAuthentication(res);
+            }
+        } else {
+            throw Error('Unable to complete authentication');
+        }
+    }
+
+    componentWillMount() {
+        this.handleAuth();
+    }
+
+    render() {
+        if (this.state.isLoading || !this.state.isError) {
+            return (
+                <Loader size="big" active={true} />
+            );
+        } else {
+            return (
+                <div>
+                    Error
+                </div>
+            );
+        }
+    }
 }
 
 export default function () {
@@ -28,12 +70,7 @@ export default function () {
                     <Route path="/city/:city" component={City} />
                     <Route
                         path="/auth_complete"
-                        render={(props) => {
-                            handleAuthentication(props);
-                            return (
-                                <Auth />
-                            );
-                        }}
+                        component={AuthPage}
                     />
                 </Switch>
             </BrowserRouter>
