@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Menu, Dropdown, Button } from 'semantic-ui-react';
+import { Menu, Dropdown, Button, Image } from 'semantic-ui-react';
 import * as Auth from '../auth';
 import { User } from '../queries';
 
@@ -20,7 +20,11 @@ export default function (props: { title: string, me?: User }) {
                     </Menu.Item>
                 )}
                 {props.me != null && (
-                    <Menu.Item><Button onClick={() => Auth.logout()}>Log Out, {props.me.name}</Button></Menu.Item>
+                    <Menu.Item><Image src={props.me.picture} avatar={true} />
+                        <span style={{ paddingLeft: 8 }}>Hi, {props.me.firstName}!</span></Menu.Item>
+                )}
+                {props.me != null && (
+                    <Menu.Item><Button onClick={() => Auth.logout()}>Log Out</Button></Menu.Item>
                 )}
                 <Dropdown item={true} simple={true} icon="ellipsis vertical">
                     <Dropdown.Menu>

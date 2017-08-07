@@ -32,6 +32,9 @@ export interface City {
 export interface User {
   id: string;
   name: string;
+  firstName: string;
+  lastName: string;
+  picture: string;
 }
 
 export interface CityState {
@@ -80,6 +83,9 @@ const QueryCity = gql`
      me {
        id
        name
+       firstName
+       lastName
+       picture
      }
    }
  `;
