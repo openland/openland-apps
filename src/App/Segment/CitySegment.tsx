@@ -41,7 +41,17 @@ const SegmentRender = withSegmentQuery(function (props: SegmentState &
     }
     function navigationMenu(title: string, page: string) {
         var isActive = props.location.pathname === (currentRoot + page);
-        return <S.Menu.Item name={title} active={isActive} as="a" onClick={() => navigateTo(page)} />;
+        return (
+            <S.Menu.Item
+                name={title}
+                active={isActive}
+                as="a"
+                href={currentRoot + page}
+                onClick={(e: {}) => {
+                    (e as Event).preventDefault();
+                    navigateTo(page);
+                }}
+            />);
     }
     return (
         <div style={{ paddingTop: 16 }}>
@@ -72,14 +82,14 @@ const SegmentRender = withSegmentQuery(function (props: SegmentState &
                 <S.Menu attached="bottom">
                     {navigationMenu('Overview', '')}
                     {navigationMenu('Benchmarks', '/benchmarks')}
-                    {navigationMenu('Data Sources', '/datasets')}
+                    {navigationMenu('Data Sources', '/sources')}
                     {/* <S.Menu.Item name="Reports" /> */}
                     {/* <S.Menu.Item name="Discussions" /> */}
                 </S.Menu>
 
                 <Route exact={true} path="/city/:city/:segment/" component={SegmentHome} />
                 <Route exact={true} path="/city/:city/:segment/benchmarks" component={SegmentBench} />
-                <Route exact={true} path="/city/:city/:segment/datasets" component={SegmentDatasets} />
+                <Route exact={true} path="/city/:city/:segment/sources" component={SegmentDatasets} />
             </S.Container>
         </div>
     );
