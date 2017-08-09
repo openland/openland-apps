@@ -31,7 +31,10 @@ const SegmentRender = withSegmentQuery(function (props: SegmentState &
         );
     }
 
-    const subtitle = 'Track, analyze and make decisions about San Francisco housing performance.';
+    const subtitle = 'Track, analyze and make decisions about San Francisco ' +
+        props.data.city.segment.name + ' performance.';
+    const pageTitle = 'San Francisco ' + props.data.city.segment.name + ' Performance Portal';
+
     const currentRoot = '/city/' + props.match.params.city + '/' + props.match.params.segment;
     function navigateTo(page: string) {
         props.history.push(currentRoot + page);
@@ -52,7 +55,7 @@ const SegmentRender = withSegmentQuery(function (props: SegmentState &
                             <S.Grid.Column width={14}>
                                 <S.Header
                                     as="h1"
-                                    content="San Francisco Performance Dashboard"
+                                    content={pageTitle}
                                     textAlign="left"
                                     style={{ marginTop: 16 }}
                                 />
