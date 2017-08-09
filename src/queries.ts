@@ -35,6 +35,7 @@ export interface CityProps {
 export interface City {
   id: string;
   name: string;
+  segment?: Segment;
 }
 
 export interface CityState {
@@ -50,12 +51,26 @@ export interface SegmentProps {
 export interface Segment {
   id: string;
   name: string;
+  datasets: [DataSet];
+}
+
+export interface DataSet {
+  id: string;
+  name: string;
+  description: string;
+  link: string;
 }
 
 export interface SegmentState {
   id: string;
   city: string;
-  data: QueryProps & { city: { segment?: Segment } };
+  data: QueryProps & { city: City };
+}
+
+export interface DataSetsState {
+  id: string;
+  city: string;
+  data: QueryProps & { city: City };
 }
 
 // Queries
@@ -118,6 +133,24 @@ const QuerySegment = gql`
    }
  `;
 
+const DataSetsSegment = gql`
+ query datasets($city: ID!, $id: ID!) {
+     city(id: $city) {
+       id
+       segment(id: $id) {
+         id
+         name
+         datasets {
+           id
+           name
+           description
+           link
+         }
+       }
+     }
+   }
+ `;
+
 // Wrappers
 
 const withVoteQuery = graphql(QueryVote, {
@@ -154,6 +187,12 @@ export const withCityQuery = graphql(QueryCity, {
 });
 
 export const withSegmentQuery = graphql(QuerySegment, {
+  options: (args: SegmentProps) => ({
+    variables: { id: args.id, city: args.city }
+  })
+});
+
+export const withDatasetsQuery = graphql(DataSetsSegment, {
   options: (args: SegmentProps) => ({
     variables: { id: args.id, city: args.city }
   })
