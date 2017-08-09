@@ -110,6 +110,10 @@ const QueryCity = gql`
      city(id: $id) {
        id
        name
+       segments {
+         id
+         name
+       }
      }
      me {
        id
