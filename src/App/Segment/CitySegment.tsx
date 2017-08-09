@@ -5,8 +5,32 @@ import SegmentHome from './CitySegmentHome';
 import SegmentBench from './CitySegmentBenchmarks';
 import SegmentDatasets from './CitySegmentDatasets';
 import { Route, RouteComponentProps } from 'react-router-dom';
+import { withSegmentQuery, SegmentState } from '../../queries';
 
-export function CitySegment(props: RouteComponentProps<{ city: string, segment: string }>) {
+const SegmentRender = withSegmentQuery(function (props: SegmentState &
+    RouteComponentProps<{ city: string, segment: string }>) {
+    if (props.data.loading) {
+        return <S.Loader size="big" active={true} />;
+    } else if (props.data.error != null) {
+        return (
+            <div>
+                {props.data.error.message}
+            </div>
+        );
+    } else if (props.data.city == null) {
+        return (
+            <div>
+                City not found
+            </div>
+        );
+    } else if (props.data.city.segment == null) {
+        return (
+            <div>
+                Segment not found
+            </div>
+        );
+    }
+
     const subtitle = 'Track, analyze and make decisions about San Francisco housing performance.';
     const currentRoot = '/city/' + props.match.params.city + '/' + props.match.params.segment;
     function navigateTo(page: string) {
@@ -55,5 +79,12 @@ export function CitySegment(props: RouteComponentProps<{ city: string, segment: 
                 <Route exact={true} path="/city/:city/:segment/datasets" component={SegmentDatasets} />
             </S.Container>
         </div>
+    );
+
+});
+
+export function CitySegment(props: RouteComponentProps<{ city: string, segment: string }>) {
+    return (
+        <SegmentRender id={props.match.params.segment} city={props.match.params.city} {...props} />
     );
 }

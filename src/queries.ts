@@ -3,6 +3,14 @@ import { gql, graphql, compose, QueryProps, MutationFunc } from 'react-apollo';
 
 // Data structures
 
+export interface User {
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string;
+  picture: string;
+}
+
 export interface Vote {
   id: string;
   count: number;
@@ -29,17 +37,25 @@ export interface City {
   name: string;
 }
 
-export interface User {
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string;
-  picture: string;
-}
-
 export interface CityState {
   id: string;
   data: QueryProps & { city: City, me: User };
+}
+
+export interface SegmentProps {
+  city: string;
+  id: string;
+}
+
+export interface Segment {
+  id: string;
+  name: string;
+}
+
+export interface SegmentState {
+  id: string;
+  city: string;
+  data: QueryProps & { city: { segment?: Segment } };
 }
 
 // Queries
@@ -79,10 +95,6 @@ const QueryCity = gql`
      city(id: $id) {
        id
        name
-       segments {
-         id
-         name
-       }
      }
      me {
        id
@@ -90,6 +102,18 @@ const QueryCity = gql`
        firstName
        lastName
        picture
+     }
+   }
+ `;
+
+const QuerySegment = gql`
+   query segment($city: ID!, $id: ID!) {
+     city(id: $city) {
+       id
+       segment(id: $id) {
+         id
+         name
+       }
      }
    }
  `;
@@ -126,5 +150,11 @@ export const withVote = compose<React.ComponentClass<VoteProps>>(
 export const withCityQuery = graphql(QueryCity, {
   options: (args: CityProps) => ({
     variables: { id: args.id }
+  })
+});
+
+export const withSegmentQuery = graphql(QuerySegment, {
+  options: (args: SegmentProps) => ({
+    variables: { id: args.id, city: args.city }
   })
 });

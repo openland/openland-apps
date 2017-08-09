@@ -8,7 +8,7 @@ import { withCityQuery, CityState } from '../queries';
 import CityHeader from './CityHeader';
 import CityFooter from './Footer';
 import { CityHome } from './CityHome';
-import { CitySegment } from './CitySegment';
+import { CitySegment } from './Segment/CitySegment';
 
 const CityRender = withCityQuery(function (props: CityState) {
     if (props.data.loading) {

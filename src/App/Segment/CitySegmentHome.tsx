@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as S from 'semantic-ui-react';
-import * as X from './Components';
+import * as X from '../Components';
 import Markdown from 'react-markdown';
 
 const intro = `
