@@ -6,6 +6,7 @@ import { Loader } from 'semantic-ui-react';
 import { withCityQuery, CityState } from '../queries';
 
 import CityHeader from './CityHeader';
+import CityFooter from './Footer';
 import { CityHome } from './CityHome';
 import { CitySegment } from './CitySegment';
 
@@ -29,7 +30,8 @@ const CityRender = withCityQuery(function (props: CityState) {
             <div>
                 <CityHeader title={props.data.city.name} me={props.data.me} />
                 <Route exact={true} path="/city/:city/" component={CityHome} />
-                <Route exact={true} path="/city/:city/:sector" component={CitySegment} />
+                <Route path="/city/:city/:segment" component={CitySegment} />
+                <CityFooter />
             </div>
         );
     }
