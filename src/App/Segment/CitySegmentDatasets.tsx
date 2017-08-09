@@ -30,7 +30,7 @@ const DatasetsRender = withDatasetsQuery(function (props: DataSetsState &
 
     var datasets = props.data.city.segment.datasets.map((d) => {
         return (
-            <S.Item onClick={() => { window.location.href = d.link; }}>
+            <S.Item onClick={() => { window.open(d.link, '_blank'); }}>
                 <S.Item.Image src="/img/sf.jpg" size="tiny" />
                 <S.Item.Content verticalAlign="middle">
                     <S.Item.Header>{d.name}</S.Item.Header>
