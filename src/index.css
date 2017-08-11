@@ -1,10 +1,23 @@
+html {
+  background-color: #ececec
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
   background-color: #ececec
 }
-
+body:after {
+    content: '';
+    position: fixed;
+    top: -50%;
+    right: -50%;
+    bottom: -50%;
+    left: -50%;
+    z-index: -1000;
+    background: #ececec;
+}
 .ver {
   display: flex;
   flex-direction: column;
