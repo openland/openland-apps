@@ -69,7 +69,7 @@ export default function () {
             <BrowserRouter>
                 <Switch>
                     <Redirect exact={true} from="/" to="/city/sf/housing" />
-                    <Route path="/city/:city" component={City} />
+                    <Route path="/city/:city/:segment" component={City} />
                     <Route exact={true} path="/ask" component={Ask} />
                     <Route
                         path="/auth_complete"

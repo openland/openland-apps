@@ -35,37 +35,37 @@ const SegmentRender = withSegmentQuery(function (props: SegmentState &
         props.data.city.segment.name + ' performance.';
     const pageTitle = 'San Francisco ' + props.data.city.segment.name + ' Performance Portal';
 
-    const currentRoot = '/city/' + props.match.params.city + '/' + props.match.params.segment;
-    function navigateTo(page: string) {
-        props.history.push(currentRoot + page);
-    }
-    function navigationMenu(title: string, page: string, highlight: boolean = false) {
-        var isActive = props.location.pathname === (currentRoot + page);
-        return (
-            <S.Menu.Item
-                active={isActive}
-                as="a"
-                href={currentRoot + page}
-                onClick={(e: {}) => {
-                    (e as Event).preventDefault();
-                    navigateTo(page);
-                }}
-            >
-                {title}
-                {highlight && (
-                    <div
-                        style={{
-                            width: 6,
-                            height: 6, borderRadius: 3, backgroundColor: 'red',
-                            position: 'absolute',
-                            top: 8,
-                            right: 8
-                        }}
-                    />
-                )}
-            </S.Menu.Item>
-        );
-    }
+    // const currentRoot = '/city/' + props.match.params.city + '/' + props.match.params.segment;
+    // function navigateTo(page: string) {
+    //     props.history.push(currentRoot + page);
+    // }
+    // function navigationMenu(title: string, page: string, highlight: boolean = false) {
+    //     var isActive = props.location.pathname === (currentRoot + page);
+    //     return (
+    //         <S.Menu.Item
+    //             active={isActive}
+    //             as="a"
+    //             href={currentRoot + page}
+    //             onClick={(e: {}) => {
+    //                 (e as Event).preventDefault();
+    //                 navigateTo(page);
+    //             }}
+    //         >
+    //             {title}
+    //             {highlight && (
+    //                 <div
+    //                     style={{
+    //                         width: 6,
+    //                         height: 6, borderRadius: 3, backgroundColor: 'red',
+    //                         position: 'absolute',
+    //                         top: 8,
+    //                         right: 8
+    //                     }}
+    //                 />
+    //             )}
+    //         </S.Menu.Item>
+    //     );
+    // }
     return (
         <div style={{ paddingTop: 16 }}>
             <S.Container>
@@ -92,13 +92,7 @@ const SegmentRender = withSegmentQuery(function (props: SegmentState &
                         </S.Grid.Row>
                     </S.Grid>
                 </S.Segment>
-                <S.Menu attached="bottom">
-                    {navigationMenu('Overview', '')}
-                    {navigationMenu('Benchmarks', '/benchmarks')}
-                    {navigationMenu('Data Sources', '/sources', true)}
-                    {/* <S.Menu.Item name="Reports" /> */}
-                    {/* <S.Menu.Item name="Discussions" /> */}
-                </S.Menu>
+
 
                 <Route exact={true} path="/city/:city/:segment/" component={SegmentHome} />
                 <Route exact={true} path="/city/:city/:segment/benchmarks" component={SegmentBench} />

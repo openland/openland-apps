@@ -19,7 +19,7 @@ const AskButton = withRouter(function (props: RouteComponentProps<any>) {
 
 export default function (props: { title: string, me?: User }) {
     return (
-        <Menu attached="top" size="large" borderless={true}>
+        <Menu attached={true} size="large" borderless={true}>
             <Menu.Item header={true}>Statecraft</Menu.Item>
             <Menu.Item>{props.title} Performance Portal</Menu.Item>
             <Menu.Menu position="right">
