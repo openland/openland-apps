@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { Route, RouteComponentProps } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import * as S from 'semantic-ui-react';
 
-import { withCityQuery, CityState } from './queries';
+import { withCityQuery } from '../api/';
 
 // import CityHeader from './CityHeader';
 import CityFooter from './Footer';
 import { CityHome } from './CityHome';
 import { CitySegment } from './Segment/CitySegment';
 
-const CityRender = withCityQuery(function (props: CityState & RouteComponentProps<{ city: string, segment: string }>) {
+const CityRender = withCityQuery((props) => {
 
     const currentRoot = '/city/' + props.match.params.city + '/' + props.match.params.segment;
     function navigateTo(page: string) {
@@ -110,10 +110,4 @@ const CityRender = withCityQuery(function (props: CityState & RouteComponentProp
     }
 });
 
-function City(props: RouteComponentProps<{ city: string }>) {
-    return (
-        <CityRender id={props.match.params.city} {...props} />
-    );
-}
-
-export default City;
+export default CityRender;

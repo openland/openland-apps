@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { VoteState, withVote } from '../queries';
+import { VoteState, withVote } from '../../api/';
 import * as auth from '../../auth';
 
 function VoteComponent(props: VoteState) {

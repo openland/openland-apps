@@ -4,11 +4,10 @@ import * as S from 'semantic-ui-react';
 import SegmentHome from './CitySegmentHome';
 import SegmentBench from './CitySegmentBenchmarks';
 import SegmentDatasets from './CitySegmentDatasets';
-import { Route, RouteComponentProps } from 'react-router-dom';
-import { withProjectQuery, SegmentState } from '../queries';
+import { Route } from 'react-router-dom';
+import { withProjectQuery } from '../../api/';
 
-const SegmentRender = withProjectQuery(function (props: SegmentState &
-    RouteComponentProps<{ city: string, segment: string }>) {
+export const CitySegment = withProjectQuery((props) => {
     if (props.data.loading) {
         return <S.Loader size="big" active={true} />;
     } else if (props.data.error != null) {
@@ -101,9 +100,3 @@ const SegmentRender = withProjectQuery(function (props: SegmentState &
     );
 
 });
-
-export function CitySegment(props: RouteComponentProps<{ city: string, segment: string }>) {
-    return (
-        <SegmentRender id={props.match.params.segment} city={props.match.params.city} {...props} />
-    );
-}

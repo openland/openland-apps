@@ -1,10 +1,8 @@
 import * as React from 'react';
 import * as S from 'semantic-ui-react';
-import { RouteComponentProps } from 'react-router-dom';
-import { withDatasetsQuery, DataSetsState } from '../queries';
+import { withDatasetsQuery } from '../../api/';
 
-const DatasetsRender = withDatasetsQuery(function (props: DataSetsState &
-    RouteComponentProps<{ city: string, segment: string }>) {
+const DatasetsRender = withDatasetsQuery((props) => {
 
     if (props.data.loading) {
         return <S.Loader size="big" active={true} />;
@@ -68,8 +66,4 @@ const DatasetsRender = withDatasetsQuery(function (props: DataSetsState &
     );
 });
 
-export default function (props: RouteComponentProps<{ city: string, segment: string }>) {
-    return (
-        <DatasetsRender id={props.match.params.segment} city={props.match.params.city} {...props} />
-    );
-}
+export default DatasetsRender;
