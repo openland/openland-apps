@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as S from 'semantic-ui-react';
-import { withDatasetsQuery } from '../../api/';
+import { withDatasetsQuery } from '../../../api/';
 
 const DatasetsRender = withDatasetsQuery((props) => {
 

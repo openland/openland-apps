@@ -5,7 +5,7 @@ import SegmentHome from './CitySegmentHome';
 import SegmentBench from './CitySegmentBenchmarks';
 import SegmentDatasets from './CitySegmentDatasets';
 import { Route } from 'react-router-dom';
-import { withProjectQuery } from '../../api/';
+import { withProjectQuery } from '../../../api/';
 
 export const CitySegment = withProjectQuery((props) => {
     if (props.data.loading) {
@@ -92,9 +92,9 @@ export const CitySegment = withProjectQuery((props) => {
                     </S.Grid>
                 </S.Segment>
 
-                <Route exact={true} path="/city/:city/:segment/" component={SegmentHome} />
-                <Route exact={true} path="/city/:city/:segment/benchmarks" component={SegmentBench} />
-                <Route exact={true} path="/city/:city/:segment/sources" component={SegmentDatasets} />
+                <Route exact={true} path="/city/:cityId/:projectId/" component={SegmentHome} />
+                <Route exact={true} path="/city/:cityId/:projectId/benchmarks" component={SegmentBench} />
+                <Route exact={true} path="/city/:cityId/:projectId/sources" component={SegmentDatasets} />
             </S.Container>
         </div>
     );

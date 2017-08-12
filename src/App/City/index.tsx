@@ -3,16 +3,16 @@ import { Route } from 'react-router-dom';
 
 import * as S from 'semantic-ui-react';
 
-import { withCityQuery } from '../api/';
+import { withCityQuery } from '../../api/';
 
 // import CityHeader from './CityHeader';
-import CityFooter from './Footer';
-import { CityHome } from './CityHome';
-import { CitySegment } from './Segment/CitySegment';
+import CityFooter from '../Components/Footer';
+import { CityHome } from './Home';
+import { CitySegment } from './Project/CitySegment';
 
 const CityRender = withCityQuery((props) => {
 
-    const currentRoot = '/city/' + props.match.params.city + '/' + props.match.params.segment;
+    const currentRoot = '/city/' + props.match.params.cityId + '/' + props.match.params.projectId;
     function navigateTo(page: string) {
         props.history.push(currentRoot + page);
     }
@@ -100,8 +100,8 @@ const CityRender = withCityQuery((props) => {
                         </S.Menu>
                     </div>
                     <div>
-                        <Route exact={true} path="/city/:city/" component={CityHome} />
-                        <Route path="/city/:city/:segment" component={CitySegment} />
+                        <Route exact={true} path="/city/:cityId/" component={CityHome} />
+                        <Route path="/city/:cityId/:projectId" component={CitySegment} />
                         <CityFooter />
                     </div>
                 </div>

@@ -6,9 +6,9 @@ import * as api from './api';
 
 import * as Auth from './auth';
 
-import City from './App/City';
-import { Ask } from './App/Ask';
-import Admin from './App/Admin/Admin';
+import City from './App/City/';
+import { Ask } from './App/Ask/';
+import Admin from './App/Admin/';
 
 interface AuthPageProps {
     location: { hash: string };
@@ -70,13 +70,10 @@ export default function () {
             <BrowserRouter>
                 <Switch>
                     <Redirect exact={true} from="/" to="/city/sf/housing" />
-                    <Route path="/city/:city/:segment" component={City} />
-                    <Route exact={true} path="/ask" component={Ask} />
-                    <Route
-                        path="/auth_complete"
-                        component={AuthPage}
-                    />
+                    <Route path="/city/:cityId/:projectId" component={City} />
+                    <Route path="/ask" component={Ask} />
                     <Route path="/admin" component={Admin} />
+                    <Route path="/auth_complete" component={AuthPage} />
                 </Switch>
             </BrowserRouter>
         </ApolloProvider>
