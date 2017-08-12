@@ -8,7 +8,7 @@ import { withCityQuery } from '../../api/';
 // import CityHeader from './CityHeader';
 import CityFooter from '../Components/Footer';
 import { CityHome } from './Home';
-import { CitySegment } from './Project/CitySegment';
+import { CitySegment } from './Project/';
 
 const CityRender = withCityQuery((props) => {
 

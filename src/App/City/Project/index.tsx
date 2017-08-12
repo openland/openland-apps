@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as S from 'semantic-ui-react';
 
-import SegmentHome from './CitySegmentHome';
-import SegmentBench from './CitySegmentBenchmarks';
-import SegmentDatasets from './CitySegmentDatasets';
+import SegmentHome from './Home';
+import SegmentBench from './Benchmarks';
+import SegmentDatasets from './Datasets';
 import { Route } from 'react-router-dom';
 import { withProjectQuery } from '../../../api/';
 
