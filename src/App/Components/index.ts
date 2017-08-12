@@ -4,3 +4,5 @@ export { Vote } from './Vote';
 export { Doughnut } from './Doughnut';
 export { Item } from './Doughnut';
 export { LineChart } from './LineChart';
+
+import './Styles.css';

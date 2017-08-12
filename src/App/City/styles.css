@@ -1,0 +1,44 @@
+.city-container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+.city-menu {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: 100vh;
+    width: 220px;
+}
+
+.city-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sidebar-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #cccccc;
+    height: 64px;
+    width: 100%;
+}
+
+.sidebar-bottom-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    opacity: 0.5;
+    font-size: 18px; 
+}
+
+.spring {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+}

@@ -9,6 +9,7 @@ import { withCityQuery } from '../../api/';
 import CityFooter from '../Components/Footer';
 import { CityHome } from './Home';
 import { CitySegment } from './Project/';
+import './styles.css';
 
 const CityRender = withCityQuery((props) => {
 
@@ -61,49 +62,60 @@ const CityRender = withCityQuery((props) => {
     } else {
 
         return (
-            <div>
-                {/* <CityHeader title={props.data.city.name} me={props.data.me} /> */}
-                <div style={{ display: 'flex' }}>
-                    <div style={{ display: 'flex', width: 220, flexDirection: 'column', flexShrink: 0 }}>
+            <div className="city-container">
+                <div className="city-menu">
+                    <div
+                        style={{
+                            display: 'flex', flexDirection: 'row',
+                            alignItems: 'center',
+                            padding: 12,
+                            paddingTop: 36,
+                            paddingBottom: 36
+                        }}
+                    >
+                        <S.Image src="/img/sf.jpg" size="mini" shape="circular" />
                         <div
                             style={{
-                                display: 'flex', flexDirection: 'row',
-                                alignItems: 'center',
-                                padding: 12,
-                                paddingTop: 36,
-                                paddingBottom: 36
+                                paddingLeft: 8,
+                                fontWeight: 600
                             }}
                         >
-                            <S.Image src="/img/sf.jpg" size="mini" shape="circular" />
-                            <div
-                                style={{
-                                    paddingLeft: 8,
-                                    fontWeight: 600
-                                }}
-                            >
-                                San Francisco Housing
-                            </div>
+                            San Francisco Housing
                         </div>
-                        <S.Menu
-                            vertical={true}
-                            attached={true}
-                            secondary={true}
-                            pointing={true}
-                            borderless={true}
-                            style={{
-                                borderWidth: 0
-                            }}
-                        >
-                            {navigationMenu('Overview', '')}
-                            {navigationMenu('Benchmarks', '/benchmarks')}
-                            {navigationMenu('Data Sources', '/sources')}
-                        </S.Menu>
                     </div>
-                    <div>
-                        <Route exact={true} path="/city/:cityId/" component={CityHome} />
-                        <Route path="/city/:cityId/:projectId" component={CitySegment} />
-                        <CityFooter />
+                    <S.Menu
+                        vertical={true}
+                        attached={true}
+                        secondary={true}
+                        pointing={true}
+                        borderless={true}
+                        style={{
+                            borderWidth: 0
+                        }}
+                    >
+                        {navigationMenu('Overview', '')}
+                        {navigationMenu('Benchmarks', '/benchmarks')}
+                        {navigationMenu('Data Sources', '/sources')}
+                    </S.Menu>
+                    <div className="spring" />
+                    <S.Modal trigger={(<S.Button>Edit</S.Button>)}>
+                        <S.ModalHeader>
+                            Edit City
+                                </S.ModalHeader>
+                        <S.ModalContent>
+                            <S.ModalDescription>Des</S.ModalDescription>
+                        </S.ModalContent>
+                    </S.Modal>
+                    <div className="sidebar-bottom">
+                        <div className="sidebar-bottom-logo">
+                            Powered by Statecraft
+                        </div>
                     </div>
+                </div>
+                <div className="city-content">
+                    <Route exact={true} path="/city/:cityId/" component={CityHome} />
+                    <Route path="/city/:cityId/:projectId" component={CitySegment} />
+                    <CityFooter />
                 </div>
             </div>
         );
