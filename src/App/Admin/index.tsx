@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as S from 'semantic-ui-react';
 import { Route } from 'react-router';
 import { withAdminCities } from '../../api/';
+import { AdminCity } from './City';
 
 const AdminCities = withAdminCities((props) => {
     if (!props.data!!.loading && !props.data!!.error) {
@@ -28,10 +29,8 @@ const AdminCities = withAdminCities((props) => {
 export default function () {
     return (
         <S.Container>
-            <Route path="/admin/">
-                <AdminCities />
-            </Route>
-            <Route path="/admin/:cityId/" />
+            <Route exact={true} path="/admin/" component={AdminCities}/>
+            <Route path="/admin/:cityId/" component={AdminCity} />
         </S.Container>
     );
 }

@@ -1,5 +1,5 @@
 import { gql, graphql } from 'react-apollo';
-// import graphqlRouted from './graphqlRouted';
+import graphqlRouted from './graphqlRouted';
 
 export interface AdminCity {
     id: string;
@@ -9,6 +9,10 @@ export interface AdminCity {
 
 export interface AdminCitesResponse {
     adminCities: [AdminCity];
+}
+
+export interface AdminCityResponse {
+    adminCity: AdminCity;
 }
 
 const QueryCities = gql`
@@ -21,4 +25,15 @@ const QueryCities = gql`
     }
  `;
 
+const QueryCity = gql`
+    query city($cityId: ID!){
+        adminCity(id: cityId) {
+            id
+            name
+            activated
+        }
+    }
+ `;
+
 export const withAdminCities = graphql<AdminCitesResponse>(QueryCities);
+export const withAdminCity = graphqlRouted<AdminCityResponse>(QueryCity);
