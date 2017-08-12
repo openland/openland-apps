@@ -108,6 +108,10 @@ const dataUnits = [
 ];
 
 export default function () {
+
+    const subtitle = 'Track, analyze and make decisions about San Francisco performance.';
+    const pageTitle = 'San Francisco Performance Portal';
+
     var records = data.map((iter) => {
         return <X.Item title={'' + iter.year} value={iter.value} />;
     });
@@ -116,6 +120,29 @@ export default function () {
     });
     return (
         <div>
+            <S.Segment attached={true}>
+                <S.Grid>
+                    <S.Grid.Row>
+                        <S.Grid.Column width={2}>
+                            <S.Image src="/img/sf.jpg" size="small" />
+                        </S.Grid.Column>
+                        <S.Grid.Column width={14}>
+                            <S.Header
+                                as="h1"
+                                content={pageTitle}
+                                textAlign="left"
+                                style={{ marginTop: 16 }}
+                            />
+                            <S.Header
+                                as="h3"
+                                content={subtitle}
+                                textAlign="left"
+                                style={{ marginTop: 16, opacity: 0.6 }}
+                            />
+                        </S.Grid.Column>
+                    </S.Grid.Row>
+                </S.Grid>
+            </S.Segment>
             <S.Segment>
                 <S.Grid divided="vertically" padded={true}>
                     <S.GridRow>

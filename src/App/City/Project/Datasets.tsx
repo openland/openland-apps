@@ -28,7 +28,7 @@ const DatasetsRender = withDatasetsQuery((props) => {
 
     var datasets = props.data.city.project.datasets.map((d) => {
         return (
-            <S.Item onClick={() => { window.open(d.link, '_blank'); }}>
+            <S.Item onClick={() => { window.open(d.link, '_blank'); }} key={d.id}>
                 <S.Item.Image src="/img/sf.jpg" size="tiny" />
                 <S.Item.Content verticalAlign="middle">
                     <S.Item.Header>{d.name}</S.Item.Header>
@@ -42,7 +42,7 @@ const DatasetsRender = withDatasetsQuery((props) => {
         <div>
             <S.Header
                 as="h3"
-                content="Data Sources for out benchmarks"
+                content="Data Sources used in this project"
                 attached={'top'}
                 block={true}
             />

@@ -1,4 +1,4 @@
-import { gql, QueryProps } from 'react-apollo';
+import { gql } from 'react-apollo';
 import graphqlRouted from './graphqlRouted';
 import { User } from './User';
 // Data structures
@@ -30,12 +30,6 @@ export interface DataSet {
 
 export interface SegmentState {
   city: City;
-}
-
-export interface DataSetsState {
-  id: string;
-  city: string;
-  data: QueryProps & { city: City };
 }
 
 // Queries

@@ -29,74 +29,13 @@ export const CitySegment = withProjectQuery((props) => {
             </div>
         );
     }
-
-    const subtitle = 'Track, analyze and make decisions about San Francisco ' +
-        props.data.city.project.name + ' performance.';
-    const pageTitle = 'San Francisco ' + props.data.city.project.name + ' Performance Portal';
-
-    // const currentRoot = '/city/' + props.match.params.city + '/' + props.match.params.segment;
-    // function navigateTo(page: string) {
-    //     props.history.push(currentRoot + page);
-    // }
-    // function navigationMenu(title: string, page: string, highlight: boolean = false) {
-    //     var isActive = props.location.pathname === (currentRoot + page);
-    //     return (
-    //         <S.Menu.Item
-    //             active={isActive}
-    //             as="a"
-    //             href={currentRoot + page}
-    //             onClick={(e: {}) => {
-    //                 (e as Event).preventDefault();
-    //                 navigateTo(page);
-    //             }}
-    //         >
-    //             {title}
-    //             {highlight && (
-    //                 <div
-    //                     style={{
-    //                         width: 6,
-    //                         height: 6, borderRadius: 3, backgroundColor: 'red',
-    //                         position: 'absolute',
-    //                         top: 8,
-    //                         right: 8
-    //                     }}
-    //                 />
-    //             )}
-    //         </S.Menu.Item>
-    //     );
-    // }
     return (
         <div style={{ paddingTop: 16 }}>
             <S.Container>
-                <S.Segment attached={true}>
-                    <S.Grid>
-                        <S.Grid.Row>
-                            <S.Grid.Column width={2}>
-                                <S.Image src="/img/sf.jpg" size="small" />
-                            </S.Grid.Column>
-                            <S.Grid.Column width={14}>
-                                <S.Header
-                                    as="h1"
-                                    content={pageTitle}
-                                    textAlign="left"
-                                    style={{ marginTop: 16 }}
-                                />
-                                <S.Header
-                                    as="h3"
-                                    content={subtitle}
-                                    textAlign="left"
-                                    style={{ marginTop: 16, opacity: 0.6 }}
-                                />
-                            </S.Grid.Column>
-                        </S.Grid.Row>
-                    </S.Grid>
-                </S.Segment>
-
                 <Route exact={true} path="/city/:cityId/:projectId/" component={SegmentHome} />
                 <Route exact={true} path="/city/:cityId/:projectId/benchmarks" component={SegmentBench} />
                 <Route exact={true} path="/city/:cityId/:projectId/sources" component={SegmentDatasets} />
             </S.Container>
         </div>
     );
-
 });

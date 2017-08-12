@@ -5,8 +5,6 @@ import * as S from 'semantic-ui-react';
 
 import { withCityQuery } from '../../api/';
 
-// import CityHeader from './CityHeader';
-import CityFooter from '../Components/Footer';
 import { CityHome } from './Home';
 import { CitySegment } from './Project/';
 import './styles.css';
@@ -101,7 +99,7 @@ const CityRender = withCityQuery((props) => {
                     <S.Modal trigger={(<S.Button>Edit</S.Button>)}>
                         <S.ModalHeader>
                             Edit City
-                                </S.ModalHeader>
+                        </S.ModalHeader>
                         <S.ModalContent>
                             <S.ModalDescription>Des</S.ModalDescription>
                         </S.ModalContent>
@@ -115,7 +113,6 @@ const CityRender = withCityQuery((props) => {
                 <div className="city-content">
                     <Route exact={true} path="/city/:cityId/" component={CityHome} />
                     <Route path="/city/:cityId/:projectId" component={CitySegment} />
-                    <CityFooter />
                 </div>
             </div>
         );
