@@ -5,9 +5,9 @@ import SegmentHome from './CitySegmentHome';
 import SegmentBench from './CitySegmentBenchmarks';
 import SegmentDatasets from './CitySegmentDatasets';
 import { Route, RouteComponentProps } from 'react-router-dom';
-import { withSegmentQuery, SegmentState } from '../../queries';
+import { withProjectQuery, SegmentState } from '../queries';
 
-const SegmentRender = withSegmentQuery(function (props: SegmentState &
+const SegmentRender = withProjectQuery(function (props: SegmentState &
     RouteComponentProps<{ city: string, segment: string }>) {
     if (props.data.loading) {
         return <S.Loader size="big" active={true} />;
@@ -23,7 +23,7 @@ const SegmentRender = withSegmentQuery(function (props: SegmentState &
                 City not found
             </div>
         );
-    } else if (props.data.city.segment == null) {
+    } else if (props.data.city.project == null) {
         return (
             <div>
                 Segment not found
@@ -32,8 +32,8 @@ const SegmentRender = withSegmentQuery(function (props: SegmentState &
     }
 
     const subtitle = 'Track, analyze and make decisions about San Francisco ' +
-        props.data.city.segment.name + ' performance.';
-    const pageTitle = 'San Francisco ' + props.data.city.segment.name + ' Performance Portal';
+        props.data.city.project.name + ' performance.';
+    const pageTitle = 'San Francisco ' + props.data.city.project.name + ' Performance Portal';
 
     // const currentRoot = '/city/' + props.match.params.city + '/' + props.match.params.segment;
     // function navigateTo(page: string) {
@@ -92,7 +92,6 @@ const SegmentRender = withSegmentQuery(function (props: SegmentState &
                         </S.Grid.Row>
                     </S.Grid>
                 </S.Segment>
-
 
                 <Route exact={true} path="/city/:city/:segment/" component={SegmentHome} />
                 <Route exact={true} path="/city/:city/:segment/benchmarks" component={SegmentBench} />

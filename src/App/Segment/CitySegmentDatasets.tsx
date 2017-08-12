@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as S from 'semantic-ui-react';
 import { RouteComponentProps } from 'react-router-dom';
-import { withDatasetsQuery, DataSetsState } from '../../queries';
+import { withDatasetsQuery, DataSetsState } from '../queries';
 
 const DatasetsRender = withDatasetsQuery(function (props: DataSetsState &
     RouteComponentProps<{ city: string, segment: string }>) {
@@ -20,7 +20,7 @@ const DatasetsRender = withDatasetsQuery(function (props: DataSetsState &
                 City not found
             </div>
         );
-    } else if (props.data.city.segment == null) {
+    } else if (props.data.city.project == null) {
         return (
             <div>
                 Segment not found
@@ -28,7 +28,7 @@ const DatasetsRender = withDatasetsQuery(function (props: DataSetsState &
         );
     }
 
-    var datasets = props.data.city.segment.datasets.map((d) => {
+    var datasets = props.data.city.project.datasets.map((d) => {
         return (
             <S.Item onClick={() => { window.open(d.link, '_blank'); }}>
                 <S.Item.Image src="/img/sf.jpg" size="tiny" />

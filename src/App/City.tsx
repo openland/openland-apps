@@ -3,7 +3,7 @@ import { Route, RouteComponentProps } from 'react-router-dom';
 
 import * as S from 'semantic-ui-react';
 
-import { withCityQuery, CityState } from '../queries';
+import { withCityQuery, CityState } from './queries';
 
 // import CityHeader from './CityHeader';
 import CityFooter from './Footer';
@@ -59,9 +59,6 @@ const CityRender = withCityQuery(function (props: CityState & RouteComponentProp
             </div>
         );
     } else {
-
-
-
 
         return (
             <div>

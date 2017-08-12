@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Menu, Dropdown, Button, Image } from 'semantic-ui-react';
 import * as Auth from '../auth';
-import { User } from '../queries';
+import { User } from './queries';
 import { withRouter, RouteComponentProps, Route } from 'react-router-dom';
 
 const AskButton = withRouter(function (props: RouteComponentProps<any>) {

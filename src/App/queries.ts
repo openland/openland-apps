@@ -35,7 +35,7 @@ export interface CityProps {
 export interface City {
   id: string;
   name: string;
-  segment?: Segment;
+  project?: Segment;
 }
 
 export interface CityState {
@@ -110,7 +110,7 @@ const QueryCity = gql`
      city(id: $id) {
        id
        name
-       segments {
+       projects {
          id
          name
        }
@@ -125,11 +125,11 @@ const QueryCity = gql`
    }
  `;
 
-const QuerySegment = gql`
-   query segment($city: ID!, $id: ID!) {
+const QueryProject = gql`
+   query project($city: ID!, $id: ID!) {
      city(id: $city) {
        id
-       segment(id: $id) {
+       project(id: $id) {
          id
          name
        }
@@ -141,7 +141,7 @@ const DataSetsSegment = gql`
  query datasets($city: ID!, $id: ID!) {
      city(id: $city) {
        id
-       segment(id: $id) {
+       project(id: $id) {
          id
          name
          datasets {
@@ -156,6 +156,12 @@ const DataSetsSegment = gql`
  `;
 
 // Wrappers
+
+// function graphqlRouter<TResult = {}, TProps = {}, TChildProps = ChildProps<TProps, TResult>>(
+//   query: DocumentNode, operationOptions?: OperationOption<TProps, TResult>) {
+//     withRouter()
+//   return graphql<TResult, TProps, TChildProps>(query, operationOptions);
+// }
 
 const withVoteQuery = graphql(QueryVote, {
   name: 'vote',
@@ -190,7 +196,7 @@ export const withCityQuery = graphql(QueryCity, {
   })
 });
 
-export const withSegmentQuery = graphql(QuerySegment, {
+export const withProjectQuery = graphql(QueryProject, {
   options: (args: SegmentProps) => ({
     variables: { id: args.id, city: args.city }
   })

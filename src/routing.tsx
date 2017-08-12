@@ -8,6 +8,7 @@ import * as Auth from './auth';
 
 import City from './App/City';
 import { Ask } from './App/Ask';
+import Admin from './App/Admin/Admin';
 
 interface AuthPageProps {
     location: { hash: string };
@@ -75,6 +76,7 @@ export default function () {
                         path="/auth_complete"
                         component={AuthPage}
                     />
+                    <Route path="/admin" component={Admin} />
                 </Switch>
             </BrowserRouter>
         </ApolloProvider>
