@@ -15,11 +15,13 @@ const DatasetsRender = withDatasetsQuery((props) => {
     }
 
     var datasets = props.data.datasets.map((d) => {
+
+        
         return (
-            <S.Item onClick={() => { window.open(d.link, '_blank'); }} key={d.id}>
+            <S.Item onClick={() => { window.open(d.url, '_blank'); }} key={d.id}>
                 <S.Item.Image src="/img/sf.jpg" size="tiny" />
                 <S.Item.Content verticalAlign="middle">
-                    <S.Item.Header>{d.name}</S.Item.Header>
+                    <S.Item.Header>{d.kind.toUpperCase()} {d.name}</S.Item.Header>
                     <S.Item.Description>{d.description}</S.Item.Description>
                 </S.Item.Content>
             </S.Item>

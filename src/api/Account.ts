@@ -25,7 +25,8 @@ export interface DataSet {
   id: string;
   name: string;
   description: string;
-  link: string;
+  url: string;
+  kind: string;
 }
 
 export interface DataSetsResponse {
@@ -79,7 +80,8 @@ const DataSetsSegment = gql`
       id
       name
       description
-      link
+      kind
+      url
     }
  }
  `;
