@@ -16,7 +16,6 @@ const DatasetsRender = withDatasetsQuery((props) => {
 
     var datasets = props.data.datasets.map((d) => {
 
-        
         return (
             <S.Item onClick={() => { window.open(d.url, '_blank'); }} key={d.id}>
                 <S.Item.Image src="/img/sf.jpg" size="tiny" />
