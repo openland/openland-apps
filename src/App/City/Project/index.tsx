@@ -16,13 +16,13 @@ export const CitySegment = withProjectQuery((props) => {
                 {props.data.error.message}
             </div>
         );
-    } else if (props.data.city == null) {
+    } else if (props.data.account == null) {
         return (
             <div>
                 City not found
             </div>
         );
-    } else if (props.data.city.project == null) {
+    } else if (props.data.account.project == null) {
         return (
             <div>
                 Segment not found

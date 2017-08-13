@@ -51,7 +51,7 @@ const CityRender = withCityQuery((props) => {
                 {props.data.error.message}
             </div>
         );
-    } else if (props.data.city == null) {
+    } else if (props.data.account == null) {
         return (
             <div>
                 City not found
@@ -111,8 +111,8 @@ const CityRender = withCityQuery((props) => {
                     </div>
                 </div>
                 <div className="city-content">
-                    <Route exact={true} path="/city/:cityId/" component={CityHome} />
-                    <Route path="/city/:cityId/:projectId" component={CitySegment} />
+                    <Route exact={true} path="/" component={CityHome} />
+                    <Route path="/projects/:projectId" component={CitySegment} />
                 </div>
             </div>
         );

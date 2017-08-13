@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Loader } from 'semantic-ui-react';
 import { ApolloProvider } from 'react-apollo';
 import * as api from './api';
 
 import * as Auth from './auth';
 
-import City from './App/City/';
-import { Ask } from './App/Ask/';
-import Admin from './App/Admin/';
+import App from './App/';
 
 interface AuthPageProps {
     location: { hash: string };
@@ -69,10 +67,7 @@ export default function () {
         <ApolloProvider client={api.default}>
             <BrowserRouter>
                 <Switch>
-                    <Redirect exact={true} from="/" to="/city/sf/housing" />
-                    <Route path="/city/:cityId/:projectId" component={City} />
-                    <Route path="/ask" component={Ask} />
-                    <Route path="/admin" component={Admin} />
+                    <Route path="/" component={App} />
                     <Route path="/auth_complete" component={AuthPage} />
                 </Switch>
             </BrowserRouter>

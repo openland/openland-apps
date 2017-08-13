@@ -12,13 +12,13 @@ const DatasetsRender = withDatasetsQuery((props) => {
                 {props.data.error.message}
             </div>
         );
-    } else if (props.data.city == null) {
+    } else if (props.data.account == null) {
         return (
             <div>
                 City not found
             </div>
         );
-    } else if (props.data.city.project == null) {
+    } else if (props.data.account.project == null) {
         return (
             <div>
                 Segment not found
@@ -26,7 +26,7 @@ const DatasetsRender = withDatasetsQuery((props) => {
         );
     }
 
-    var datasets = props.data.city.project.datasets.map((d) => {
+    var datasets = props.data.account.project.datasets.map((d) => {
         return (
             <S.Item onClick={() => { window.open(d.link, '_blank'); }} key={d.id}>
                 <S.Item.Image src="/img/sf.jpg" size="tiny" />

@@ -1,17 +1,17 @@
 import { gql } from 'react-apollo';
 import graphqlRouted from './graphqlRouted';
 import { User } from './User';
+
 // Data structures
 
-export interface City {
+export interface Account {
   id: string;
   name: string;
   project?: Segment;
 }
 
-export interface CityState {
-  id: string;
-  city: City;
+export interface AccountResponse {
+  account: Account;
   me: User;
 }
 
@@ -28,15 +28,11 @@ export interface DataSet {
   link: string;
 }
 
-export interface SegmentState {
-  city: City;
-}
-
 // Queries
 
 const QueryCity = gql`
-   query city($cityId: ID!) {
-     city(id: $cityId) {
+   query account($domain: String!) {
+     account(domain: $domain) {
        id
        name
        projects {
@@ -55,13 +51,20 @@ const QueryCity = gql`
  `;
 
 const QueryProject = gql`
-   query project($cityId: ID!, $projectId: ID!) {
-     city(id: $cityId) {
+   query project($domain: String!, $projectId: ID!) {
+     city(domain: $domain) {
        id
        project(id: $projectId) {
          id
          name
        }
+     }
+    me {
+       id
+       name
+       firstName
+       lastName
+       picture
      }
    }
  `;
@@ -81,11 +84,18 @@ const DataSetsSegment = gql`
          }
        }
      }
+    me {
+       id
+       name
+       firstName
+       lastName
+       picture
+     }
    }
  `;
 
 // Wrappers
 
-export const withCityQuery = graphqlRouted<CityState>(QueryCity);
-export const withProjectQuery = graphqlRouted<SegmentState>(QueryProject);
-export const withDatasetsQuery = graphqlRouted<SegmentState>(DataSetsSegment);
+export const withCityQuery = graphqlRouted<AccountResponse>(QueryCity);
+export const withProjectQuery = graphqlRouted<AccountResponse>(QueryProject);
+export const withDatasetsQuery = graphqlRouted<AccountResponse>(DataSetsSegment);
