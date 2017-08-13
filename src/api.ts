@@ -1,5 +1,6 @@
 import { ApolloClient, createNetworkInterface, toIdValue } from 'react-apollo';
 import * as Auth from './auth';
+import { Config } from './config';
 
 declare global {
     interface Window { server: { server: string }; }
@@ -17,12 +18,20 @@ function buildId(typename: string, id: any) {
     return toIdValue(dataIdFromObject(typename, id));
 }
 
+var headers = {
+    'x-statecraft-domain': Config.domain
+};
+
+if (Auth.authorizationHeader() != null) {
+    (<any> headers).authorization = Auth.authorizationHeader();
+}
+
 client = new ApolloClient({
     networkInterface: createNetworkInterface(
         endpoint,
         {
             opts: {
-                headers: Auth.headers()
+                headers: headers
             }
         }),
     customResolvers: {

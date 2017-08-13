@@ -3,6 +3,8 @@ import { Route } from 'react-router-dom';
 import { withCityQuery } from '../api/';
 import * as S from 'semantic-ui-react';
 import Findings from './Findings';
+import Projects from './Projects';
+import Sources from './Sources';
 
 import './Styles.css';
 
@@ -108,8 +110,8 @@ const City = withCityQuery((props) => {
             </div>
             <div className="city-content">
                 <Route exact={true} path="/" component={Findings} />
-                {/* <Route exact={true} path="/" component={CityHome} />
-                <Route path="/projects/:projectId" component={CitySegment} /> */}
+                <Route exact={true} path="/projects" component={Projects} />
+                <Route exact={true} path="/sources" component={Sources} />
             </div>
         </div>
     );

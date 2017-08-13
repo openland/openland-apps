@@ -20,6 +20,15 @@ const history = createHistory({
     forceRefresh: true
 });
 
+export function authorizationHeader() {
+    if (isAuthenticated()) {
+        var res = localStorage.getItem('id_token');
+        return 'Bearer ' + res;
+    } else {
+        return null;
+    }
+}
+
 export function headers(): { authorization?: string } {
     if (isAuthenticated()) {
         var res = localStorage.getItem('id_token');

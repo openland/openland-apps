@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as S from 'semantic-ui-react';
-import { withDatasetsQuery } from '../../../api/';
+import { withDatasetsQuery } from '../../api/';
 
 const DatasetsRender = withDatasetsQuery((props) => {
 
@@ -12,21 +12,9 @@ const DatasetsRender = withDatasetsQuery((props) => {
                 {props.data.error.message}
             </div>
         );
-    } else if (props.data.account == null) {
-        return (
-            <div>
-                City not found
-            </div>
-        );
-    } else if (props.data.account.project == null) {
-        return (
-            <div>
-                Segment not found
-            </div>
-        );
     }
 
-    var datasets = props.data.account.project.datasets.map((d) => {
+    var datasets = props.data.datasets.map((d) => {
         return (
             <S.Item onClick={() => { window.open(d.link, '_blank'); }} key={d.id}>
                 <S.Item.Image src="/img/sf.jpg" size="tiny" />

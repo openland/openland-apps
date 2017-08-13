@@ -12,7 +12,7 @@ export interface Account {
 
 export interface AccountResponse {
   account: Account;
-  me: User;
+  me?: User;
 }
 
 export interface Segment {
@@ -28,11 +28,15 @@ export interface DataSet {
   link: string;
 }
 
+export interface DataSetsResponse {
+  datasets: [DataSet];
+}
+
 // Queries
 
 const QueryCity = gql`
-   query account($domain: String!) {
-     account(domain: $domain) {
+   query {
+     account {
        id
        name
        projects {
@@ -52,7 +56,7 @@ const QueryCity = gql`
 
 const QueryProject = gql`
    query project($domain: String!, $projectId: ID!) {
-     city(domain: $domain) {
+     account(domain: $domain) {
        id
        project(id: $projectId) {
          id
@@ -70,32 +74,18 @@ const QueryProject = gql`
  `;
 
 const DataSetsSegment = gql`
- query datasets($cityId: ID!, $projectId: ID!) {
-     city(id: $cityId) {
-       id
-       project(id: $projectId) {
-         id
-         name
-         datasets {
-           id
-           name
-           description
-           link
-         }
-       }
-     }
-    me {
-       id
-       name
-       firstName
-       lastName
-       picture
-     }
-   }
+ query {
+    datasets {
+      id
+      name
+      description
+      link
+    }
+ }
  `;
 
 // Wrappers
 
 export const withCityQuery = graphqlRouted<AccountResponse>(QueryCity);
 export const withProjectQuery = graphqlRouted<AccountResponse>(QueryProject);
-export const withDatasetsQuery = graphqlRouted<AccountResponse>(DataSetsSegment);
+export const withDatasetsQuery = graphqlRouted<DataSetsResponse>(DataSetsSegment);
