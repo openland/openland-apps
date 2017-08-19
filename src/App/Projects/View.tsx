@@ -5,7 +5,7 @@ import * as S from 'semantic-ui-react';
 
 const ViewRender = withProjectQuery(withLoader((props) => {
     return (
-        <S.Container style={{paddingTop: 32}}>
+        <S.Container style={{ paddingTop: 32 }}>
             <S.Segment attached={true}>
                 <S.Grid>
                     <S.Grid.Row>
@@ -29,7 +29,31 @@ const ViewRender = withProjectQuery(withLoader((props) => {
                     </S.Grid.Row>
                 </S.Grid>
             </S.Segment>
-            Project
+            <S.Menu attached={'bottom'}>
+                <S.MenuItem content="Summary" as="a" />
+                <S.MenuItem content="Documents" as="a" />
+                <S.MenuItem content="Metrics" as="a" />
+                <S.MenuItem content="Datasets" as="a" />
+            </S.Menu>
+            <S.Segment>
+                <S.Header as="h4" content="Message" />
+                <S.Input />
+            </S.Segment>
+            <S.Segment>
+                <S.Feed>
+                    <S.Feed.Event>
+                        <S.Feed.Label>
+                            <S.Icon name="pencil" />
+                        </S.Feed.Label>
+                        <S.Feed.Content>
+                            <S.Feed.Date>Today</S.Feed.Date>
+                            <S.Feed.Summary>
+                                You posted on your friend <a>Stevie Feliciano's</a> wall.
+                            </S.Feed.Summary>
+                        </S.Feed.Content>
+                    </S.Feed.Event>
+                </S.Feed>
+            </S.Segment>
         </S.Container>
     );
 }));
