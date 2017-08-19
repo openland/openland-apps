@@ -119,7 +119,7 @@ export default function () {
         return <X.Item title={'' + iter.year} value={iter.value} />;
     });
     return (
-        <div>
+        <S.Container style={{paddingTop: 32}}>
             <S.Segment attached={true}>
                 <S.Grid>
                     <S.Grid.Row>
@@ -206,6 +206,6 @@ export default function () {
                     </S.GridColumn>
                 </S.Grid.Row>
             </S.Grid>
-        </div>
+        </S.Container>
     );
 }

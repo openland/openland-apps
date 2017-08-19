@@ -110,8 +110,8 @@ const City = withCityQuery((props) => {
             </div>
             <div className="city-content">
                 <Route exact={true} path="/" component={Findings} />
-                <Route exact={true} path="/projects" component={Projects} />
-                <Route exact={true} path="/sources" component={Sources} />
+                <Route path="/projects" component={Projects} />
+                <Route path="/sources" component={Sources} />
             </div>
         </div>
     );
