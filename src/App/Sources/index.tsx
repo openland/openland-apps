@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as S from 'semantic-ui-react';
 import { withDatasetsQuery } from '../../api/';
-import { withLoader } from '../Components/withLoader';
-const DatasetsRender = withDatasetsQuery(withLoader((props) => {
+import * as C from '../Components';
+
+const DatasetsRender = withDatasetsQuery(C.withLoader((props) => {
     var datasets = props.data.datasets.map((d) => {
         return (
             <S.Item onClick={() => { window.open(d.url, '_blank'); }} key={d.id}>
@@ -18,12 +19,8 @@ const DatasetsRender = withDatasetsQuery(withLoader((props) => {
 
     return (
         <S.Container style={{ paddingTop: 32 }}>
-            <S.Header
-                as="h3"
-                content="Data Sources used in this project"
-                attached={'top'}
-                block={true}
-            />
+            <C.Header title="Data Sources"/>
+
             <S.Segment attached={'bottom'}>
                 <S.Grid>
                     <S.GridColumn width={4}>

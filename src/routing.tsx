@@ -67,8 +67,8 @@ export default function () {
         <ApolloProvider client={api.default}>
             <BrowserRouter>
                 <Switch>
-                    <Route path="/" component={App} />
                     <Route path="/auth_complete" component={AuthPage} />
+                    <Route path="/" component={App} />
                 </Switch>
             </BrowserRouter>
         </ApolloProvider>

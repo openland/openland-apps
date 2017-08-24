@@ -2,10 +2,12 @@ import * as React from 'react';
 import { withLoader } from '../Components/withLoader';
 import { withProjectQuery } from '../../api/';
 import * as S from 'semantic-ui-react';
+import * as C from '../Components';
 
 const ViewRender = withProjectQuery(withLoader((props) => {
     return (
         <S.Container style={{ paddingTop: 32 }}>
+            <C.Header title="Project" subtitle={props.data.project.name} />
             <S.Segment attached={true}>
                 <S.Grid>
                     <S.Grid.Row>

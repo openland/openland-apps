@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as S from 'semantic-ui-react';
 import * as X from '../Components';
 import Markdown from 'react-markdown';
+import * as C from '../Components';
 
 const intro = `
 San Francisco is a unique city with it's own main problems. One of the main problems here is a affordable housing.
@@ -119,7 +120,8 @@ export default function () {
         return <X.Item title={'' + iter.year} value={iter.value} />;
     });
     return (
-        <S.Container style={{paddingTop: 32}}>
+        <S.Container style={{ paddingTop: 32 }}>
+            <C.Header title="Findings" />
             <S.Segment attached={true}>
                 <S.Grid>
                     <S.Grid.Row>

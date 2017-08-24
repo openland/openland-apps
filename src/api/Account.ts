@@ -1,17 +1,19 @@
 import { gql } from 'react-apollo';
 import graphqlRouted from './graphqlRouted';
 import { User } from './User';
-
+import { Project } from './Project';
 // Data structures
 
 export interface Account {
   id: string;
   name: string;
+  city?: string;
 }
 
 export interface AccountResponse {
   account: Account;
   me?: User;
+  projects: [Project];
 }
 
 export interface DataSet {
@@ -33,6 +35,7 @@ const QueryCity = gql`
      account {
        id
        name
+       city
      }
      me {
        id
@@ -40,6 +43,11 @@ const QueryCity = gql`
        firstName
        lastName
        picture
+     }
+     projects {
+      id
+      name
+      slug
      }
    }
  `;
