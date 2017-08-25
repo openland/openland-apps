@@ -7,17 +7,17 @@ export function withLoader<P>(WrappedComponent: React.ComponentType<P>):
     return function (props: { data: QueryProps } & P) {
         if (props.data.loading) {
             return (
-                <S.Loader size="big" active={true} />
+                <S.Loader size="big" active={true} key="_loader" />
             );
         } else if (props.data.error != null) {
             return (
-                <div>
+                <div key="_message">
                     {props.data.error.message}
                 </div>
             );
         }
         return (
-            <WrappedComponent {...props} />
+            <WrappedComponent {...props} key="_component" />
         );
     };
 }
