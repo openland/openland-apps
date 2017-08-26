@@ -441,40 +441,14 @@ body *:after {
   float: right;
   color: #2f3444;
   text-decoration: none;
-  margin: 5px 0 0;
-  padding: 0 19px 0 0;
+  margin: 5px 20px 0 0;
   font-size: 14px;
   line-height: 24px;
   font-weight: 600;
   display: block;
-  position: relative;
-  top: auto;
-  right: auto;
-  bottom: auto;
-  left: auto;
 }
 .st-header--user:hover {
   color: #4766ff;
-}
-.st-header--user:after {
-  color: #838d9b;
-  content: '\e900';
-  font-family: 'icomoon' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 5px;
-  line-height: 24px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: auto;
-  left: auto;
 }
 .st-header--user img {
   overflow: hidden;
@@ -644,8 +618,6 @@ body *:after {
   right: auto;
   bottom: auto;
   left: auto;
-  font-size: 0;
-  line-height: 0;
 }
 @media (max-width: 1239px) {
   .st-page--grid {
@@ -655,12 +627,8 @@ body *:after {
 }
 .st-page--col {
   padding: 0 15px;
-  display: inline-block;
-  vertical-align: top;
   width: 50%;
   height: auto;
-  font-size: 14px;
-  line-height: 20px;
 }
 @media (max-width: 1239px) {
   .st-page--col {
@@ -670,8 +638,14 @@ body *:after {
 .st-page--nav {
   padding: 40px 0 0;
   text-align: center;
+  z-index: 2;
   font-size: 0;
   line-height: 0;
+  position: relative;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
 }
 .st-page--nav-i {
   margin: 0 15px;
@@ -1170,19 +1144,6 @@ body *:after {
   width: 665px;
   height: auto;
 }
-.st-subscribe--input {
-  border: none;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid #cfd6dc;
-  color: #626677;
-  padding: 7px 0;
-  display: block;
-  width: 100%;
-  height: 50px;
-  font-size: 24px;
-  line-height: 34px;
-  font-weight: 300;
-}
 .st-subscribe--submit {
   position: absolute;
   top: 0;
@@ -1191,6 +1152,19 @@ body *:after {
   left: auto;
   width: 144px;
   height: auto;
+}
+.st-input {
+  border: none;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid #cfd6dc;
+  color: #2f3444;
+  padding: 7px 0;
+  display: block;
+  width: 100%;
+  height: 50px;
+  font-size: 24px;
+  line-height: 34px;
+  font-weight: 300;
 }
 .st-chart {
   padding: 8px 0 25px;
@@ -1677,6 +1651,5 @@ body {
 }
 .st-page--box {
   overflow: auto;
-  max-width: initial;
-  max-height: 100vh;
+  height: 100vh;
 }

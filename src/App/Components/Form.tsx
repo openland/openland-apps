@@ -149,7 +149,7 @@ export class FormText extends React.Component<{ name: string, placeholder?: stri
     render() {
         return (
             <input
-                className="st-subscribe--input"
+                className="st-input"
                 type="text"
                 placeholder={this.props.placeholder}
                 value={this.state.value}
@@ -183,7 +183,7 @@ export class FormTextArea extends React.Component<{ name: string, placeholder?: 
     render() {
         return (
             <textarea
-                className="st-subscribe--input"
+                className="st-input"
                 value={this.state.value}
                 onChange={this.handleChange}
                 style={{ height: 240 }}
