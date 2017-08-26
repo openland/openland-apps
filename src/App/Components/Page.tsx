@@ -1,12 +1,13 @@
 import * as React from 'react';
-import * as Router from 'react-router';
 import { Header } from './Header';
+import { withComponent } from './withComponent';
+import { Icons } from './Icons';
 
-export const Background = Router.withRouter((props) => {
+export const Background = withComponent((props) => {
     return <div className="st-page--bg" style={{ backgroundImage: 'url(/img/sf-bg.jpg)' }} />;
 });
 
-export const Content = Router.withRouter((props) => {
+export const Content = withComponent((props) => {
     return (
         <div className="st-page--wrap">
             <div className="st-box">
@@ -16,14 +17,44 @@ export const Content = Router.withRouter((props) => {
     );
 });
 
-export const Page = Router.withRouter<{ title: string }>((props) => {
+export const Grid = withComponent((props) => {
+    return (
+        <div className="st-page--grid">
+            {props.children}
+        </div>
+    );
+});
+
+export const Column = withComponent((props) => {
+    return (
+        <div className="st-page--col">
+            {props.children}
+        </div>
+    );
+});
+
+export const Row = withComponent((props) => {
+    return (
+        <div className="st-box in-grid">
+            <div className="st-data">
+                {props.children}
+            </div>
+        </div>
+    );
+});
+
+export const RowTitle = withComponent<{ title: string, icon: Icons }>((props) => {
+    return (
+        <div className="st-data--title"><i className={'icon-' + props.icon + '-c'}>{}</i>{props.title}</div>
+    );
+});
+
+export const Page = withComponent<{ title: string }>((props) => {
     return (
         <div className="st-page--box">
             <Header title={props.title} />
             <Background />
-            <Content>
-                {props.children}
-            </Content>
+            {props.children}
         </div>
     );
 });

@@ -1,0 +1,1 @@
+export type Icons = 'datasets' | 'findings' | 'projects' | 'data-sources';

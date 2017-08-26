@@ -334,9 +334,9 @@ body *:after {
   background: #4766ff;
   color: #ffffff;
   padding: 8px 25px;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
+  -webkit-transition: 150ms all ease;
+  -o-transition: 150ms all ease;
+  transition: 150ms all ease;
   white-space: nowrap;
   display: inline-block;
   vertical-align: top;
@@ -426,9 +426,6 @@ body *:after {
 }
 .st-header--title a {
   text-decoration: none;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
   font-weight: 400;
   color: #626677;
   display: inline-block;
@@ -444,9 +441,6 @@ body *:after {
   float: right;
   color: #2f3444;
   text-decoration: none;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
   margin: 5px 0 0;
   padding: 0 19px 0 0;
   font-size: 14px;
@@ -541,9 +535,6 @@ body *:after {
   padding: 20px 10px 15px;
   text-decoration: none;
   color: #626677;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
   border-bottom: 3px solid transparent;
   display: block;
   font-size: 14px;
@@ -577,9 +568,9 @@ body *:after {
 .st-page--box {
   z-index: 1;
   padding: 0 0 54px;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
+  -webkit-transition: 150ms all ease;
+  -o-transition: 150ms all ease;
+  transition: 150ms all ease;
   position: relative;
   top: auto;
   right: auto;
@@ -692,9 +683,9 @@ body *:after {
   color: #2f3444;
   -webkit-box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.06);
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.06);
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
+  -webkit-transition: 150ms all ease;
+  -o-transition: 150ms all ease;
+  transition: 150ms all ease;
   display: inline-block;
   vertical-align: top;
   font-size: 14px;
@@ -763,9 +754,6 @@ body *:after {
 .st-page--intro a {
   text-decoration: none;
   color: #4766ff;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
 }
 .st-page--intro a:hover {
   opacity: 0.7;
@@ -794,9 +782,6 @@ body *:after {
   margin: 0 31px 10px 0;
   color: #2f3444;
   text-decoration: none;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
   font-size: 14px;
   line-height: 24px;
   font-weight: 600;
@@ -832,9 +817,6 @@ body *:after {
   margin: 0 0 0 32px;
   color: #2f3444;
   text-decoration: none;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
   font-size: 14px;
   line-height: 24px;
   font-weight: 600;
@@ -875,9 +857,9 @@ body *:after {
   border: 2px solid #4766ff;
   padding: 12px 0;
   margin: 0 -2px 0 0;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
+  -webkit-transition: 150ms all ease;
+  -o-transition: 150ms all ease;
+  transition: 150ms all ease;
   display: inline-block;
   vertical-align: top;
   width: 176px;
@@ -1021,9 +1003,6 @@ body *:after {
 .st-page--text a {
   text-decoration: none;
   color: #4766ff;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
 }
 .st-page--text a:hover {
   opacity: 0.7;
@@ -1091,9 +1070,6 @@ body *:after {
   text-decoration: none;
   margin: 0 35px 7px 0;
   color: #4766ff;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
   white-space: nowrap;
   display: inline-block;
   vertical-align: top;
@@ -1340,9 +1316,6 @@ body *:after {
   padding: 0 0 0 25px;
   text-decoration: none;
   color: #2f3444;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
   margin: 0 0 27px;
   display: block;
   position: relative;
@@ -1506,9 +1479,6 @@ body *:after {
   text-decoration: none;
   color: #ffffff;
   z-index: 1;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
   white-space: nowrap;
   display: block;
   font-size: 14px;
@@ -1563,9 +1533,6 @@ body *:after {
   text-decoration: none;
   color: #abbee5;
   padding: 0 30px 0 60px;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
   display: block;
   font-size: 12px;
   line-height: 16px;
@@ -1592,9 +1559,9 @@ body *:after {
   color: #ffffff;
   padding: 15px 0 16px;
   background: #1e2f51;
-  -webkit-transition: 200ms all ease;
-  -o-transition: 200ms all ease;
-  transition: 200ms all ease;
+  -webkit-transition: 150ms all ease;
+  -o-transition: 150ms all ease;
+  transition: 150ms all ease;
   white-space: nowrap;
   position: absolute;
   top: auto;
@@ -1626,9 +1593,9 @@ body *:after {
 }
 @media (max-width: 1239px) {
   .st-side {
-    -webkit-transition: 200ms all ease;
-    -o-transition: 200ms all ease;
-    transition: 200ms all ease;
+    -webkit-transition: 150ms all ease;
+    -o-transition: 150ms all ease;
+    transition: 150ms all ease;
     padding: 0;
     width: 86px;
     height: auto;
@@ -1703,4 +1670,13 @@ body *:after {
   .hidden-lg {
     display: none !important;
   }
+}
+html,
+body {
+  overflow: hidden;
+}
+.st-page--box {
+  overflow: auto;
+  max-width: initial;
+  max-height: 100vh;
 }

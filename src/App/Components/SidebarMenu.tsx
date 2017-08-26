@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as Router from 'react-router';
-
+import { Icons } from './Icons';
 export interface SidebarMenuProps {
     title: string;
-    icon: string;
+    icon: Icons;
     path: string;
     defaultPath?: string;
 }

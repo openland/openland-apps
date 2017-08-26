@@ -6,15 +6,17 @@ export default withFindingsQuery(C.withLoader((props) => {
     console.warn(props.data.findings);
     return (
         <C.Page title="Findings">
-            {props.data.findings && (
-                <div>
-                    <h1>{props.data.findings.title}</h1>
-                    <h5>{props.data.findings.intro}</h5>
-                </div>
-            )}
-            {!props.data.findings && (
-                <div>No findings yet</div>
-            )}
+            <C.Content>
+                {props.data.findings && (
+                    <div>
+                        <h1>{props.data.findings.title}</h1>
+                        <h5>{props.data.findings.intro}</h5>
+                    </div>
+                )}
+                {!props.data.findings && (
+                    <div>No findings yet</div>
+                )}
+            </C.Content>
         </C.Page>
     );
 }));
