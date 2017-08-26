@@ -2,6 +2,7 @@ import * as React from 'react';
 // import { Header } from './Header';
 import { withComponent } from './withComponent';
 import { Icons } from './Icons';
+import { Formatted } from './Formatted';
 
 export const Background = withComponent((props) => {
     return <div className="st-page--bg" style={{ backgroundImage: 'url(/img/sf-bg.jpg)' }} />;
@@ -37,9 +38,7 @@ export const PageTitle = withComponent<{ title: string }>((props) => (
 ));
 
 export const PageIntro = withComponent<{ intro: string }>((props) => (
-    <div className="st-page--intro">
-        <p>{props.intro}</p>
-    </div>
+    <Formatted className="st-page--intro" text={props.intro} />
 ));
 
 export const Grid = withComponent((props) => {

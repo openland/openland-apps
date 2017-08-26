@@ -1,14 +1,20 @@
 import { gql } from 'react-apollo';
 import graphqlRouted from './graphqlRouted';
 
-export interface Project {
+export interface ProjectShort {
   id: string;
   name: string;
   slug: string;
 }
 
+export interface Project extends ProjectShort {
+  intro?: string;
+  description?: string;
+  findings?: string;
+}
+
 export interface ProjectsResponse {
-  projects: [Project];
+  projects: [ProjectShort];
 }
 
 export interface ProjectResponse {
@@ -31,6 +37,9 @@ query project($projectId: String!){
     id
     name
     slug
+    intro
+    description,
+    findings
   }
 }
 `;

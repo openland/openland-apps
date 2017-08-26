@@ -21,5 +21,6 @@ export { Icons } from './Icons';
 export { Navigation } from './Navigation';
 export { Link } from './Link';
 export { Form, FormContext, FormProvider, withForm } from './Form';
+export { Formatted } from './Formatted';
 
 import './Styles.css';

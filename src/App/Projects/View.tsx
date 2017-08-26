@@ -3,7 +3,6 @@ import { withLoader } from '../Components/withLoader';
 import { withProjectQuery } from '../../api/';
 import * as C from '../Components';
 
-const intro = 'An automatic script and a sequence of manual checks to derive housing completions from SF quarterly development pipelines.';
 const ViewRender = withProjectQuery(withLoader((props) => {
     return (
         <C.Page>
@@ -14,7 +13,9 @@ const ViewRender = withProjectQuery(withLoader((props) => {
                     <C.PageTitle title={props.data.project.name} >
                         <a className="st-btn is-outline" href="#">Follow project</a>
                     </C.PageTitle>
-                    <C.PageIntro intro={intro} />
+                    {props.data.project.intro && (
+                        <C.PageIntro intro={props.data.project.intro} />
+                    )}
                     <div className="st-page--tools">
                         <div className="st-page--authors">
                             <a className="st-page--author" href="#">
@@ -43,10 +44,12 @@ const ViewRender = withProjectQuery(withLoader((props) => {
                                 <div className="st-link-icon--w"><a className="st-link-icon" href="#"><i className="icon-csv">{}</i>Housing completions by quarter</a><a className="st-link-icon" href="#"><i className="icon-csv">{}</i>In-construction projects by quarter</a></div>
                             </div>
                         </div>
-                        <div className="st-page--field">
-                            <div className="st-page--field-l">Findings:</div>
-                            <div className="st-page--field-r">This project is focused on data transformation and cleanup. The analysis of housing completions is performed in the follow-up project Housing production analysis</div>
-                        </div>
+                        {props.data.project.findings && (
+                            <div className="st-page--field">
+                                <div className="st-page--field-l">Findings:</div>
+                                <C.Formatted className="st-page--field-r" text={props.data.project.findings} />
+                            </div>
+                        )}
                     </div>
                 </C.Section>
                 <C.Section>
