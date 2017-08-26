@@ -11,4 +11,5 @@ export { withComponent } from './withComponent';
 export { Header } from './Header';
 export { Page, Content, Background, Grid, Column, Row, RowTitle } from './Page';
 export { Icons } from './Icons';
+export { Navigation } from './Navigation';
 import './Styles.css';

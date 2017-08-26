@@ -6,7 +6,9 @@ import * as C from '../Components';
 
 const ViewRender = withProjectQuery(withLoader((props) => {
     return (
-        <C.Page title="Projects">
+        <C.Page>
+            <C.Header title="Projects" />
+            <C.Background />
             <C.Content>
                 <S.Segment attached={true}>
                     <S.Grid>

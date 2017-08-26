@@ -5,7 +5,9 @@ import { withFindingsQuery } from '../../api/';
 export default withFindingsQuery(C.withLoader((props) => {
     console.warn(props.data.findings);
     return (
-        <C.Page title="Findings">
+        <C.Page>
+            <C.Header title="Findings" />
+            <C.Background />
             <C.Content>
                 {props.data.findings && (
                     <div>

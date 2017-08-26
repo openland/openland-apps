@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Header } from './Header';
+// import { Header } from './Header';
 import { withComponent } from './withComponent';
 import { Icons } from './Icons';
 
@@ -49,11 +49,9 @@ export const RowTitle = withComponent<{ title: string, icon: Icons }>((props) =>
     );
 });
 
-export const Page = withComponent<{ title: string }>((props) => {
+export const Page = withComponent<{}>((props) => {
     return (
         <div className="st-page--box">
-            <Header title={props.title} />
-            <Background />
             {props.children}
         </div>
     );
