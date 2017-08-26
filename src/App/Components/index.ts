@@ -19,4 +19,6 @@ export {
 } from './Page';
 export { Icons } from './Icons';
 export { Navigation } from './Navigation';
+export { Link } from './Link';
+
 import './Styles.css';

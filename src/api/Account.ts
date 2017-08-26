@@ -1,4 +1,4 @@
-import { gql } from 'react-apollo';
+import { gql, MutationFunc, graphql } from 'react-apollo';
 import graphqlRouted from './graphqlRouted';
 import { User } from './User';
 import { Project } from './Project';
@@ -26,6 +26,10 @@ export interface DataSet {
 
 export interface DataSetsResponse {
   datasets: [DataSet];
+}
+
+export interface DataSetCreate {
+  createDataset: MutationFunc<{}>;
 }
 
 // Queries
@@ -64,7 +68,20 @@ const DataSetsSegment = gql`
  }
  `;
 
+const DataSetsCreate = gql`
+  mutation createDataset($name: String!, $url: String!, $kind: String!) {
+    createDataset(name: $name, url: $url, kind: $kind, description: "No description") {
+      id
+      name
+      description
+      kind
+      url
+    }
+  }
+`;
+
 // Wrappers
 
 export const withCityQuery = graphqlRouted<AccountResponse>(QueryCity);
 export const withDatasetsQuery = graphqlRouted<DataSetsResponse>(DataSetsSegment);
+export const withDatasetsCreate = graphql<DataSetCreate>(DataSetsCreate);

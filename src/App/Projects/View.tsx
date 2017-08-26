@@ -7,11 +7,11 @@ const intro = 'An automatic script and a sequence of manual checks to derive hou
 const ViewRender = withProjectQuery(withLoader((props) => {
     return (
         <C.Page>
-            <C.Header title="Projects" />
+            <C.Header title="Projects" subtitle={props.data.project.name} />
             <C.Background />
             <C.Content>
                 <C.Section>
-                    <C.PageTitle title={props.data.project.name}>
+                    <C.PageTitle title={props.data.project.name} >
                         <a className="st-btn is-outline" href="#">Follow project</a>
                     </C.PageTitle>
                     <C.PageIntro intro={intro} />
@@ -72,10 +72,6 @@ const ViewRender = withProjectQuery(withLoader((props) => {
                     </div>
                 </C.Section>
             </C.Content>
-            <div className="st-page--nav">
-                <a className="st-page--nav-i" href="#"><i className="icon-left-arrow">{}</i><span>Previous project</span></a>
-                <a className="st-page--nav-i" href="#"><span>Next porject</span><i className="icon-right-arrow">{}</i></a>
-            </div>
         </C.Page >
     );
 }));

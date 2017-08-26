@@ -99,7 +99,7 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
                             </a>
                         </li>
                     </ul>
-                    <div className="st-navigation--btn"><a className="st-btn is-sm is-block" href="#">Add a source</a></div>
+                    <div className="st-navigation--btn"><C.Link className="st-btn is-sm is-block" path="/sources/new">Add a source</C.Link></div>
                 </div>
                 <C.Background />
                 <C.Grid>
