@@ -5,8 +5,7 @@ import { withFindingsQuery } from '../../api/';
 export default withFindingsQuery(C.withLoader((props) => {
     console.warn(props.data.findings);
     return (
-        <div>
-            <C.Header title="Findings" />
+        <C.Page title="Findings">
             {props.data.findings && (
                 <div>
                     <h1>{props.data.findings.title}</h1>
@@ -16,6 +15,6 @@ export default withFindingsQuery(C.withLoader((props) => {
             {!props.data.findings && (
                 <div>No findings yet</div>
             )}
-        </div>
+        </C.Page>
     );
 }));

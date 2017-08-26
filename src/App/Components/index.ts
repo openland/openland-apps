@@ -8,5 +8,6 @@ export { Sidebar } from './Sidebar';
 export { SidebarMenu, SidebarSubmenu } from './SidebarMenu';
 export { withLoader } from './withLoader';
 export { Header } from './Header';
+export { Page, Content, Background } from './Page';
 
 import './Styles.css';

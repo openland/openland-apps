@@ -3,18 +3,15 @@ import * as Router from 'react-router';
 
 export const Sidebar = Router.withRouter<{ title: string, subtitle?: string, image: string }>((props) => {
     return (
-        <div>
-            <img src={props.image} style={{ width: 48, height: 48 }} />
-            <div>
-                Project: {props.title}
-
-            </div>
-            <div>
-                City: {props.subtitle}
-            </div>
-            <div>
+        <div className="st-side">
+            <div className="st-side--logo">
+                <img src={props.image}/></div>
+            <div className="st-side--title">{props.title}</div>
+            <div className="st-side--text">{props.subtitle}</div>
+            <ul className="st-side--nav">
                 {props.children}
-            </div>
+            </ul>
+            <a className="st-side--powered" href="https://statecraft.one"><span>Powered by</span> Statecraft</a>
         </div>
     );
 });

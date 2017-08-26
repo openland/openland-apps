@@ -1,0 +1,86 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?mstrrf');
+  src:  url('fonts/icomoon.eot?mstrrf#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?mstrrf') format('truetype'),
+    url('fonts/icomoon.woff?mstrrf') format('woff'),
+    url('fonts/icomoon.svg?mstrrf#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-user-drop:before {
+  content: "\e900";
+}
+.icon-projects:before {
+  content: "\e901";
+}
+.icon-powered-by:before {
+  content: "\e902";
+}
+.icon-github:before {
+  content: "\e903";
+}
+.icon-right-arrow:before {
+  content: "\e904";
+}
+.icon-left-arrow:before {
+  content: "\e905";
+}
+.icon-last-arrow:before {
+  content: "\e906";
+}
+.icon-first-arrow:before {
+  content: "\e907";
+}
+.icon-links:before {
+  content: "\e908";
+}
+.icon-documents:before {
+  content: "\e909";
+}
+.icon-datasets:before {
+  content: "\e90a";
+}
+.icon-data-needs:before {
+  content: "\e90b";
+}
+.icon-links-c:before {
+  content: "\e90c";
+}
+.icon-documents-c:before {
+  content: "\e90d";
+}
+.icon-datasets-c:before {
+  content: "\e90e";
+}
+.icon-data-needs-c:before {
+  content: "\e90f";
+}
+.icon-findings:before {
+  content: "\e910";
+}
+.icon-data-sources:before {
+  content: "\e911";
+}
+.icon-csv:before {
+  content: "\e912";
+}
+.icon-email:before {
+  content: "\e913";
+}

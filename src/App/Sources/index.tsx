@@ -18,9 +18,7 @@ const DatasetsRender = withDatasetsQuery(C.withLoader((props) => {
     });
 
     return (
-        <S.Container style={{ paddingTop: 32 }}>
-            <C.Header title="Data Sources"/>
-
+        <C.Page title="Data Sources">
             <S.Segment attached={'bottom'}>
                 <S.Grid>
                     <S.GridColumn width={4}>
@@ -37,7 +35,7 @@ const DatasetsRender = withDatasetsQuery(C.withLoader((props) => {
                     </S.GridColumn>
                 </S.Grid>
             </S.Segment>
-        </S.Container>
+        </C.Page>
     );
 }));
 

@@ -6,8 +6,7 @@ import * as C from '../Components';
 
 const ViewRender = withProjectQuery(withLoader((props) => {
     return (
-        <S.Container style={{ paddingTop: 32 }}>
-            <C.Header title="Project" subtitle={props.data.project.name} />
+        <C.Page title="Projects">
             <S.Segment attached={true}>
                 <S.Grid>
                     <S.Grid.Row>
@@ -56,7 +55,7 @@ const ViewRender = withProjectQuery(withLoader((props) => {
                     </S.Feed.Event>
                 </S.Feed>
             </S.Segment>
-        </S.Container>
+        </C.Page>
     );
 }));
 

@@ -3,9 +3,8 @@ import * as ReactDOM from 'react-dom';
 import Routing from './routing';
 import { unregister } from './registerServiceWorker';
 
-import 'antd/dist/antd.css';
-import 'semantic-ui-css/semantic.min.css';
-import './index.css';
+// import 'antd/dist/antd.css';
+// import 'semantic-ui-css/semantic.min.css';
 
 ReactDOM.render(
   <Routing />,

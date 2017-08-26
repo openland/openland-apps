@@ -3,10 +3,17 @@ import * as Router from 'react-router';
 import { User } from '../../api/';
 
 export const Header = Router.withRouter<{ title: string, subtitle?: string, me?: User }>((props) => {
-    return (
-        <div>
-            {props.title}
-            {props.subtitle && <span>/{props.subtitle}</span>}
-        </div>
-    );
+    if (props.subtitle != null) {
+        return (
+            <header className="st-header">
+                <div className="st-header--title"><a href="#">{props.title}</a> / {props.subtitle}</div>
+            </header>
+        );
+    } else {
+        return (
+            <header className="st-header">
+                <div className="st-header--title">{props.title}</div>
+            </header>
+        );
+    }
 });
