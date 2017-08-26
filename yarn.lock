@@ -54,6 +54,13 @@
   dependencies:
     "@types/jquery" "*"
 
+"@types/draft-js@^0.10.10":
+  version "0.10.10"
+  resolved "https://registry.yarnpkg.com/@types/draft-js/-/draft-js-0.10.10.tgz#154a0db59a02a4bd4ced33720a36cef2853cb12b"
+  dependencies:
+    "@types/react" "*"
+    immutable "^3.8.1"
+
 "@types/graphql@^0.9.0":
   version "0.9.4"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.9.4.tgz#cdeb6bcbef9b6c584374b81aa7f48ecf3da404fa"
@@ -1765,7 +1772,7 @@ dotenv@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-4.0.0.tgz#864ef1379aced55ce6f95debecdce179f7a0cd1d"
 
-draft-js@^0.10.0, draft-js@~0.10.0:
+draft-js@^0.10.0, draft-js@^0.10.1, draft-js@~0.10.0:
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.10.1.tgz#6f1219d8095729691429ca6fd7a58d2a8be5cb67"
   dependencies:
@@ -1859,6 +1866,10 @@ error-ex@^1.2.0:
 es6-promise@^4.0.5:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.1.1.tgz#8811e90915d9a0dba36274f0b242dbda78f9c92a"
+
+es6-shim@^0.35.3:
+  version "0.35.3"
+  resolved "https://registry.yarnpkg.com/es6-shim/-/es6-shim-0.35.3.tgz#9bfb7363feffff87a6cdb6cd93e405ec3c4b6f26"
 
 escape-html@~1.0.3:
   version "1.0.3"
