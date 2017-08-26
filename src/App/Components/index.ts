@@ -20,7 +20,10 @@ export {
 export { Icons } from './Icons';
 export { Navigation } from './Navigation';
 export { Link } from './Link';
-export { Form, FormContext, FormProvider, withForm } from './Form';
+export {
+    Form, FormContext, FormProvider, withForm,
+    FormText, FormSubmit, FormState, FormTextArea
+} from './Form';
 export { Formatted } from './Formatted';
 
 import './Styles.css';

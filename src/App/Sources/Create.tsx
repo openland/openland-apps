@@ -1,61 +1,32 @@
 import * as React from 'react';
 import * as C from '../Components';
+import * as Router from 'react-router';
 import { withDatasetsCreate } from '../../api/';
 
-export const InputField = C.withForm<{ name: string }>((props) => {
-    return <input value={props.form.getValue(props.name)} onChange={(event) => props.form.setValue(props.name, event.target.value.trim())} />;
-});
-
-export const SubmitButton = C.withForm((props) => {
-    return <button onClick={props.form.complete}>Create</button>;
-});
-
-export const FormState = C.withForm((props) => {
-    return (
-        <div>
-            {props.form.inProgress.toString()}: {props.form.error}
-        </div>
-    );
-});
-
-export default withDatasetsCreate((props) => {
+export default withDatasetsCreate(Router.withRouter((props) => {
     return (
         <C.Page>
             <C.Header title="Data Source" />
             <C.Background />
             <C.Content>
-                <C.Form mutation={props.mutate!!}>
+                <C.Form mutation={props.mutate!!} onComplete={() => props.history.push('/sources')}>
                     <C.Section>
                         <C.PageTitle title="Adding new Data Source" />
-                        <FormState />
-                    </C.Section>
-                    <C.Section>
-                        <div className="st-page--fields">
-                            <div className="st-page--field">
-                                <div className="st-page--field-l">Link:</div>
-                                <div className="st-page--field-r">
-                                    <InputField name="url" />
-                                </div>
-                            </div>
-                            <div className="st-page--field">
-                                <div className="st-page--field-l">Title:</div>
-                                <div className="st-page--field-r">
-                                    <InputField name="name" />
-                                </div>
-                            </div>
-                            <div className="st-page--field">
-                                <div className="st-page--field-l">Kind:</div>
-                                <div className="st-page--field-r">
-                                    <InputField name="kind" />
-                                </div>
-                            </div>
+                        <C.FormState />
+                        <div className="st-page--text">
+                            <h2>Link</h2>
+                            <C.FormText name="url" placeholder="Url to the Data Source" />
+                            <h2>Title</h2>
+                            <C.FormText name="name" placeholder="Name of the Data Source" />
+                            <h2>Kind</h2>
+                            <C.FormText name="kind" placeholder="document or dataset" />
                         </div>
                     </C.Section>
                     <C.Section>
-                        <SubmitButton />
+                        <C.FormSubmit name="Add" />
                     </C.Section>
                 </C.Form>
             </C.Content>
         </C.Page>
     );
-});
+}));

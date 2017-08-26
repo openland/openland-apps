@@ -52,28 +52,11 @@ const ViewRender = withProjectQuery(withLoader((props) => {
                         )}
                     </div>
                 </C.Section>
-                <C.Section>
-                    <div className="st-page--text is-project">
-                        <h2>Methodology</h2>
-                        <p>We use SF DBI’s quarterly pipeline datasets (released by DataSF) as the primary source. To identify completed projects in a given quarter, we find all developments that are listed “IN CONSTRUCTION” in the given quarter’s pipeline, and aren’t present in the next quarter’s pipeline.</p>
-                        <h2>Cleanup techniques and edge cases</h2>
-                        <ul>
-                            <li>We use SF DBI’s building permit id as unique identifier to check whether the project continues to be in construction in the next quarter.</li>
-                            <li>We manually inspect a few development projects that don’t have a building permit id on their record.</li>
-                            <li>We manually merge duplicate records (multiple records with the same unit counts and permit ids).</li>
-                            <li>When a given development project states different total units in different quarters, we use the largest number as the number of completed units and attribute all of them for the last quarter the project was in construction.</li>
-                            <li>When net units exceed total units (that happened!) we update net units to be equal to total units.</li>
-                            <li>When a particular project appears/disappears from the pipeline multiple times, we mark its completion only once for the last appearance.</li>
-                            <li>Our affordable units completions are calculated only for 9 quarters as corresponding counts were included only in the last 10 pipeline datasets. </li>
-                            <li>To perform a manual review, our script shows top 10 largest completed projects for each quarter.</li>
-                            <li>Projects that are most difficult to accurately account for have multiple data quality issues: varying number of units, missing building permit id or ‘multiple’ value instead of actual building permit, multiple or changing street addresses, duplicate records, and multi-phase completion schedule. These projects require manual review to achieve most accurate representation.</li>
-                            <li>In our analysis, the hardest-to-account projects are HP Shipyard Phase I (possibly duplicating 101 and 201 Donahue  Street), multiple projects at 55 Laguna Street and 218 Buchanan Street, and townhouse development at 800 Brotherhood Way.</li>
-                            <li>Since some development pipeline datasets are published with delays, our analysis provides only approximate timing attribution for completions. In other words, some units might be completed a quarter later than we account them for.</li>
-                        </ul>
-                        <h2>Future improvements and expansions</h2>
-                        <p>Use housing inventory datasets (exist only until 2015) to resolve remaining data quality issues.</p>
-                    </div>
-                </C.Section>
+                {props.data.project.description && (
+                    <C.Section>
+                        <C.Formatted className="st-page--text is-project" text={props.data.project.description} />
+                    </C.Section>
+                )}
             </C.Content>
         </C.Page >
     );

@@ -1,5 +1,5 @@
 export { withCityQuery, withDatasetsQuery, withDatasetsCreate, DataSet, DataSetsResponse } from './Account';
-export { withProjectsQuery, Project, withProjectQuery } from './Project';
+export { withProjectsQuery, Project, withProjectQuery, withProjectEdit } from './Project';
 export { User } from './User';
 export { Vote, VoteProps, VoteState, withVote } from './Vote';
 export { withAdminCities, AdminCitesResponse, AdminCity, withAdminCity, AdminCityResponse } from './Admin';
