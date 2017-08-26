@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { Route } from 'react-router';
-import All from './All';
+import { Route, Switch, Redirect } from 'react-router';
 import View from './View';
 export default function () {
     return (
-        <div>
-            <Route exact={true} path="/projects" component={All} />
+        <Switch>
             <Route path="/projects/:projectId" component={View} />
-        </div>
+            <Redirect to="/" />
+        </Switch>
     );
 }

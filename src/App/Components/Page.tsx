@@ -17,6 +17,31 @@ export const Content = withComponent((props) => {
     );
 });
 
+export const Section = withComponent((props) => {
+    return (
+        <div className="st-box--section">
+            {props.children}
+        </div>
+    );
+});
+
+export const PageTitle = withComponent<{ title: string }>((props) => (
+    <div className="st-page--title-w">
+        <div className="st-page--title">{props.title}</div>
+        {React.Children.count(props.children) > 0 && (
+            <div className="st-page--title-b">
+                {props.children}
+            </div>
+        )}
+    </div>
+));
+
+export const PageIntro = withComponent<{ intro: string }>((props) => (
+    <div className="st-page--intro">
+        <p>{props.intro}</p>
+    </div>
+));
+
 export const Grid = withComponent((props) => {
     return (
         <div className="st-page--grid">

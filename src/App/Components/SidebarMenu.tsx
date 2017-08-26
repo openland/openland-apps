@@ -61,7 +61,7 @@ export const SidebarSubmenu = Router.withRouter<{ title: string, path: string }>
                     props.history.push(props.path!);
                 }}
             >
-                {props.title}: {(props.location.pathname === props.path).toString()}
+                {props.title}
             </a>
         </li>
     );
