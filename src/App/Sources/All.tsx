@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { withDatasetsQuery, DataSet } from '../../api/';
 import * as C from '../Components';
+import Mansory from 'react-masonry-component';
 
 class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: string }> {
 
@@ -22,12 +23,16 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
             });
             if (datasets.length > 0) {
                 records.push((
-                    <C.Row>
-                        <C.RowTitle title="Datasets" icon="datasets" />
-                        <div className="st-data--section">
-                            {datasets}
+                    <div className="st-page--col" key="datasets">
+                        <div className="st-box in-grid">
+                            <div className="st-data">
+                                <C.RowTitle title="Datasets" icon="datasets" />
+                                <div className="st-data--section">
+                                    {datasets}
+                                </div>
+                            </div>
                         </div>
-                    </C.Row>
+                    </div>
                 ));
             }
         }
@@ -42,12 +47,16 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
             });
             if (documents.length > 0) {
                 records.push((
-                    <C.Row>
-                        <C.RowTitle title="Documents" icon="documents" />
-                        <div className="st-data--section">
-                            {documents}
+                    <div className="st-page--col" key="documents">
+                        <div className="st-box in-grid">
+                            <div className="st-data">
+                                <C.RowTitle title="Documents" icon="documents" />
+                                <div className="st-data--section">
+                                    {documents}
+                                </div>
+                            </div>
                         </div>
-                    </C.Row>
+                    </div>
                 ));
             }
         }
@@ -103,9 +112,9 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
                 </div>
                 <C.Background />
                 <C.Grid>
-                    <C.Column>
+                    <Mansory>
                         {records}
-                    </C.Column>
+                    </Mansory>
                 </C.Grid>
             </C.Page>
         );
