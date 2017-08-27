@@ -1,24 +1,13 @@
 import * as React from 'react';
-import * as C from '../Components';
-import { withFindingsQuery } from '../../api/';
+import * as Router from 'react-router';
+import * as Edit from './Edit';
+import * as View from './View';
 
-export default withFindingsQuery(C.withLoader((props) => {
-    console.warn(props.data.findings);
+export default function () {
     return (
-        <C.Page>
-            <C.Header title="Findings" />
-            <C.Background />
-            <C.Content>
-                {props.data.findings && (
-                    <div>
-                        <h1>{props.data.findings.title}</h1>
-                        <h5>{props.data.findings.intro}</h5>
-                    </div>
-                )}
-                {!props.data.findings && (
-                    <div>No findings yet</div>
-                )}
-            </C.Content>
-        </C.Page>
+        <Router.Switch>
+            <Router.Route path="/findings/edit" component={Edit.default} />
+            <Router.Route exact={true} path="/findings/" component={View.default} />
+        </Router.Switch>
     );
-}));
+}

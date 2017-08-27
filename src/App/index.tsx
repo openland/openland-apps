@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { withCityQuery } from '../api/';
 import Findings from './Findings';
 import Projects from './Projects';
@@ -13,7 +13,7 @@ export default withCityQuery(C.withLoader((props) => {
         <C.UserProvider user={props.data.me}>
             <div className="st-page">
                 <C.Sidebar title={props.data.account.name} subtitle={props.data.account.city} image={'/img/sf.jpg'} >
-                    <C.SidebarMenu title="Findings" icon="findings" path="/" />
+                    <C.SidebarMenu title="Findings" icon="findings" path="/findings" />
                     <C.SidebarMenu title="Projects" icon="projects" path="/projects" defaultPath={'/projects/' + props.data.projects[0].slug}>
                         {props.data.projects.map((p) => {
                             return <C.SidebarSubmenu title={p.name} path={'/projects/' + p.slug} key={p.slug} />;
@@ -22,9 +22,10 @@ export default withCityQuery(C.withLoader((props) => {
                     <C.SidebarMenu title="Data Sources" path="/sources" icon="data-sources" />
                 </C.Sidebar>
                 <Switch>
+                    <Route path="/findings" component={Findings} />
                     <Route path="/projects" component={Projects} />
                     <Route path="/sources" component={Sources} />
-                    <Route path="/" component={Findings} />
+                    <Redirect to="/findings" />
                 </Switch>
             </div>
         </C.UserProvider>
