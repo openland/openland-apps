@@ -12,15 +12,21 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
 
     render() {
         var records = [];
-
+        var datasets = this.props.datasets.filter((d) => d.kind === 'dataset').map((d) => {
+            return (
+                <div className="st-data--links">
+                    <a className="st-data--link" href={d.url} target="_blank"><i className="icon-datasets">{}</i>{d.name}</a>
+                </div>
+            );
+        });
+        var documents = this.props.datasets.filter((d) => d.kind === 'document').map((d) => {
+            return (
+                <div className="st-data--links">
+                    <a className="st-data--link" href={d.url} target="_blank"><i className="icon-documents">{}</i>{d.name}</a>
+                </div>
+            );
+        });
         if (this.state.tab === 'all' || this.state.tab === 'datasets') {
-            var datasets = this.props.datasets.filter((d) => d.kind === 'dataset').map((d) => {
-                return (
-                    <div className="st-data--links">
-                        <a className="st-data--link" href={d.url} target="_blank"><i className="icon-datasets">{}</i>{d.name}</a>
-                    </div>
-                );
-            });
             if (datasets.length > 0) {
                 records.push((
                     <div className="st-page--col" key="datasets">
@@ -38,13 +44,6 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
         }
 
         if (this.state.tab === 'all' || this.state.tab === 'docs') {
-            var documents = this.props.datasets.filter((d) => d.kind === 'document').map((d) => {
-                return (
-                    <div className="st-data--links">
-                        <a className="st-data--link" href={d.url} target="_blank"><i className="icon-documents">{}</i>{d.name}</a>
-                    </div>
-                );
-            });
             if (documents.length > 0) {
                 records.push((
                     <div className="st-page--col" key="documents">
@@ -85,28 +84,32 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
                                 All
                             </a>
                         </li>
-                        <li className={liClass('docs')}>
-                            <a
-                                href="#"
-                                onClick={(e: React.MouseEvent<{}>) => {
-                                    e.preventDefault();
-                                    this.setState({ tab: 'docs' });
-                                }}
-                            >
-                                Documents
-                            </a>
-                        </li>
-                        <li className={liClass('datasets')}>
-                            <a
-                                href="#"
-                                onClick={(e: React.MouseEvent<{}>) => {
-                                    e.preventDefault();
-                                    this.setState({ tab: 'datasets' });
-                                }}
-                            >
-                                Datasets
-                            </a>
-                        </li>
+                        {datasets.length > 0 && (
+                            <li className={liClass('datasets')}>
+                                <a
+                                    href="#"
+                                    onClick={(e: React.MouseEvent<{}>) => {
+                                        e.preventDefault();
+                                        this.setState({ tab: 'datasets' });
+                                    }}
+                                >
+                                    Datasets
+                                </a>
+                            </li>
+                        )}
+                        {documents.length > 0 && (
+                            <li className={liClass('docs')}>
+                                <a
+                                    href="#"
+                                    onClick={(e: React.MouseEvent<{}>) => {
+                                        e.preventDefault();
+                                        this.setState({ tab: 'docs' });
+                                    }}
+                                >
+                                    Documents
+                                </a>
+                            </li>
+                        )}
                     </ul>
                     <div className="st-navigation--btn"><C.Link className="st-btn is-sm is-block" path="/sources/new">Add a source</C.Link></div>
                 </div>
