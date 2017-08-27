@@ -24,12 +24,14 @@ export default withCityQuery(C.withLoader((props) => {
                     </C.SidebarMenu>
                     <C.SidebarMenu title="Data Sources" path="/sources" icon="data-sources" />
                 </C.Sidebar>
-                <Switch>
-                    <Route path="/findings" component={Findings} />
-                    <Route path="/projects" component={Projects} />
-                    <Route path="/sources" component={Sources} />
-                    <Redirect to="/findings" />
-                </Switch>
+                <div className="st-page--box">
+                    <Switch>
+                        <Route path="/findings" component={Findings} />
+                        <Route path="/projects" component={Projects} />
+                        <Route path="/sources" component={Sources} />
+                        <Redirect to="/findings" />
+                    </Switch>
+                </div>
             </div>
         </C.UserProvider>
     );

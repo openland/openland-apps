@@ -7,9 +7,7 @@ export function withLoader<P>(WrappedComponent: React.ComponentType<P>):
     return function (props: { data: QueryProps } & P) {
         if (props.data.loading) {
             return (
-                <div style={{ boxAlign: 'center', height: '100%' }} key="_loader">
-                    <Loader />
-                </div>
+                <Loader />
             );
         } else if (props.data.error != null) {
             return (

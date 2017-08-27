@@ -75,7 +75,7 @@ export const RowTitle = withComponent<{ title: string, icon: Icons }>((props) =>
 
 export const Page = withComponent<{}>((props) => {
     return (
-        <div className="st-page--box">
+        <div>
             {props.children}
         </div>
     );
