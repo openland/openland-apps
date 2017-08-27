@@ -35,8 +35,8 @@ export default withFindingsQuery(C.withLoader((props) => {
                                 <C.Button className="st-page--tab" activeClassName="is-active" path="/findings/charts">Charts</C.Button>
                                 <C.Button className="st-page--tab" activeClassName="is-active" path="/findings/recomendations">Recommendations</C.Button>
                             </div>
-                            <Router.Route exact={true} path="/findings" component={() => (<C.Formatted text={props.data.findings!!.description!!} />)} />
-                            <Router.Route exact={true} path="/findings/recomendations" component={() => (<C.Formatted text={props.data.findings!!.recomendations!!} />)} />
+                            <Router.Route exact={true} path="/findings" component={() => (<C.Formatted className="st-page--text" text={props.data.findings!!.description!!} />)} />
+                            <Router.Route exact={true} path="/findings/recomendations" component={() => (<C.Formatted className="st-page--text" text={props.data.findings!!.recomendations!!} />)} />
                         </C.Section>
                     )}
                     <C.Section>
