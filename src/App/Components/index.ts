@@ -29,4 +29,9 @@ export { Loader } from './Loader';
 export { UserProvider, withUser } from './UserProvider';
 export { Button } from './Button';
 export { RootContainer } from './RootContainer';
+export {
+    BarChart,
+    BarChartData,
+    BarChartDataset
+} from './BarChart';
 import './Styles.css';

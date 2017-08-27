@@ -5,6 +5,21 @@ import * as C from '../Components';
 import { withFindingsQuery } from '../../api/';
 
 export default withFindingsQuery(C.withLoader((props) => {
+
+    var chart1: C.BarChartData = {
+        labels: ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'],
+        datasets: [
+            { label: 'Total completed', data: [90, 70, 105, 60, 75, 90, 105, 60], color: '#34b5ff' },
+            { label: 'Affordable completed', data: [70, 63, 77, 35, 85, 70, 77, 35], color: '#535de8' },
+            { label: 'Total in-construction', data: [90, 70, 105, 60, 75, 90, 105, 60], color: '#ff5c54' },
+            { label: 'Affordable in-construction', data: [70, 63, 77, 35, 85, 70, 77, 35], color: '#ffc334' }
+        ]
+    };
+
+    function charts() {
+        return <C.BarChart data={chart1} />;
+    }
+
     return (
         <C.Page>
             <C.Header title="Findings" />
@@ -36,6 +51,7 @@ export default withFindingsQuery(C.withLoader((props) => {
                                 <C.Button className="st-page--tab" activeClassName="is-active" path="/findings/recomendations">Recommendations</C.Button>
                             </div>
                             <Router.Route exact={true} path="/findings" component={() => (<C.Formatted className="st-page--text" text={props.data.findings!!.description!!} />)} />
+                            <Router.Route exact={true} path="/findings/charts" component={charts} />
                             <Router.Route exact={true} path="/findings/recomendations" component={() => (<C.Formatted className="st-page--text" text={props.data.findings!!.recomendations!!} />)} />
                         </C.Section>
                     )}
