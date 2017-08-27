@@ -12,14 +12,15 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
 
     render() {
         var records = [];
-        var datasets = this.props.datasets.filter((d) => d.kind === 'dataset').map((d) => {
+        var sorted = this.props.datasets.slice(0).sort((a, b) => ((a.name < b.name) ? -1 : ((a.name > b.name) ? 1 : 0)));
+        var datasets = sorted.filter((d) => d.kind === 'dataset').map((d) => {
             return (
                 <div className="st-data--links">
                     <a className="st-data--link" href={d.url} target="_blank"><i className="icon-datasets">{}</i>{d.name}</a>
                 </div>
             );
         });
-        var documents = this.props.datasets.filter((d) => d.kind === 'document').map((d) => {
+        var documents = sorted.filter((d) => d.kind === 'document').map((d) => {
             return (
                 <div className="st-data--links">
                     <a className="st-data--link" href={d.url} target="_blank"><i className="icon-documents">{}</i>{d.name}</a>
