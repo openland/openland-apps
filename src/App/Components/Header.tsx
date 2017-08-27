@@ -3,7 +3,6 @@ import * as Router from 'react-router';
 import { withUser } from './UserProvider';
 import * as A from '../../auth';
 export const Header = Router.withRouter<{ title: string, subtitle?: string }>(withUser((props) => {
-    console.warn(props.user);
     return (
         <header className="st-header">
             {props.subtitle && (

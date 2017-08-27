@@ -27,4 +27,5 @@ export {
 export { Formatted } from './Formatted';
 export { Loader } from './Loader';
 export { UserProvider, withUser } from './UserProvider';
+export { Button } from './Button';
 import './Styles.css';

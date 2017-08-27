@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as Router from 'react-router';
 import * as All from './All';
 import * as Create from './Create';
-export default function () {
 
+export default function () {
     return (
         <Router.Switch>
             <Router.Route path="/sources/new" component={Create.default} />

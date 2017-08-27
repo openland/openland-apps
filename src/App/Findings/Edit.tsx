@@ -16,6 +16,10 @@ export default withFindingsEdit(C.withLoader((props) => {
                             <C.FormText name="title" placeholder="Title" />
                             <h2>Intro</h2>
                             <C.FormText name="intro" placeholder="Intro of findings" />
+                            <h2>Description</h2>
+                            <C.FormTextArea name="description" />
+                            <h2>Recomendations</h2>
+                            <C.FormTextArea name="recomendations" />
                         </div>
                     </C.Section>
                     <C.Section>

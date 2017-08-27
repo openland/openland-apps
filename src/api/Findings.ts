@@ -6,6 +6,8 @@ export interface Findings {
     id: string;
     title: string;
     intro: string;
+    description?: string;
+    recomendations?: string;
 }
 
 export interface FindingsResponse {
@@ -18,6 +20,8 @@ const FindingsQuery = gql`
             id
             title
             intro
+            description
+            recomendations
         }
     }
 `;
@@ -28,16 +32,20 @@ const FindingsCreate = gql`
             id
             title
             intro
+            description
+            recomendations
         }
     }
 `;
 
 const FindingsAlter = gql`
-mutation alterFindings($title: String!, $intro: String!) {
-    alterFindings(title: $title, intro: $intro) {
+mutation alterFindings($title: String!, $intro: String!, $description: String, $recomendations: String) {
+    alterFindings(title: $title, intro: $intro, description: $description, recomendations: $recomendations) {
         id
         title
         intro
+        description
+        recomendations
     }
 }
 `;

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as Router from 'react-router';
+
 import * as C from '../Components';
 import { withFindingsQuery } from '../../api/';
 
@@ -26,14 +28,17 @@ export default withFindingsQuery(C.withLoader((props) => {
                             </div>
                         </div>
                     </C.Section>
-                    <C.Section>
-                        <div className="st-page--tabs">
-                            <a className="st-page--tab is-active" href="#">Key findings</a>
-                            <a className="st-page--tab" href="#">Charts</a>
-                            <a className="st-page--tab" href="#">Recommendations</a>
-                        </div>
-                        <C.Formatted text="asdasdasd" />
-                    </C.Section>
+                    {props.data.findings.description && (
+                        <C.Section>
+                            <div className="st-page--tabs">
+                                <C.Button className="st-page--tab" activeClassName="is-active" path="/findings">Key findings</C.Button>
+                                <C.Button className="st-page--tab" activeClassName="is-active" path="/findings/charts">Charts</C.Button>
+                                <C.Button className="st-page--tab" activeClassName="is-active" path="/findings/recomendations">Recommendations</C.Button>
+                            </div>
+                            <Router.Route exact={true} path="/findings" component={() => (<C.Formatted text={props.data.findings!!.description!!} />)} />
+                            <Router.Route exact={true} path="/findings/recomendations" component={() => (<C.Formatted text={props.data.findings!!.recomendations!!} />)} />
+                        </C.Section>
+                    )}
                     <C.Section>
                         <div className="st-subscribe">
                             <div className="st-subscribe--title">Housing insights from Statecraft</div>
