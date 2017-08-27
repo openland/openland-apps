@@ -31,40 +31,41 @@ const ViewRender = withProjectQuery(withLoader((props) => {
                     </div>
                 </C.Section>
                 {(props.data.project.findings != null || props.data.project.sources.length > 0 || props.data.project.outputs.length > 0) && (
-                    <C.Section>
-                        <div className="st-page--fields">
-                            {props.data.project.sources.length > 0 && (
-                                <div className="st-page--field">
-                                    <div className="st-page--field-l">Code:</div>
-                                    <div className="st-page--field-r">
-                                        <div className="st-link-icon--w">
-                                            {props.data.project.sources.map((s) => (
-                                                <a className="st-link-icon" href={s.url}><i className="icon-github">{}</i>{s.title}</a>
-                                            ))}
-                                        </div>
+                    <div className="st-box--section is-fields">
+                        {/* <div className="st-page--fields"> */}
+                        {props.data.project.sources.length > 0 && (
+                            <div className="st-page--field">
+                                <div className="st-page--field-l">Code:</div>
+                                <div className="st-page--field-r">
+                                    <div className="st-link-icon--w">
+                                        {props.data.project.sources.map((s) => (
+                                            <a className="st-link-icon" href={s.url}><i className="icon-github">{}</i>{s.title}</a>
+                                        ))}
                                     </div>
                                 </div>
-                            )}
-                            {props.data.project.outputs.length > 0 && (
-                                <div className="st-page--field">
-                                    <div className="st-page--field-l">Code:</div>
-                                    <div className="st-page--field-r">
-                                        <div className="st-link-icon--w">
-                                            {props.data.project.outputs.map((s) => (
-                                                <a className="st-link-icon" href={s.url}><i className="icon-csv">{}</i>{s.title}</a>
-                                            ))}
-                                        </div>
+                            </div>
+                        )}
+                        {props.data.project.outputs.length > 0 && (
+                            <div className="st-page--field">
+                                <div className="st-page--field-l">Code:</div>
+                                <div className="st-page--field-r">
+                                    <div className="st-link-icon--w">
+                                        {props.data.project.outputs.map((s) => (
+                                            <a className="st-link-icon" href={s.url}><i className="icon-csv">{}</i>{s.title}</a>
+                                        ))}
                                     </div>
                                 </div>
-                            )}
-                            {props.data.project.findings && (
-                                <div className="st-page--field">
-                                    <div className="st-page--field-l">Findings:</div>
-                                    <C.Formatted className="st-page--field-r" text={props.data.project.findings} />
-                                </div>
-                            )}
-                        </div>
-                    </C.Section>
+                            </div>
+                        )}
+                        {props.data.project.findings && (
+                            <div className="st-page--field">
+                                <div className="st-page--field-l">Findings:</div>
+                                <div className="st-page--field-r">{props.data.project.findings}</div>
+                                {/* <C.Formatted className="st-page--field-r" text={props.data.project.findings} /> */}
+                            </div>
+                        )}
+                        {/* </div> */}
+                    </div>
                 )}
                 {props.data.project.description && (
                     <C.Section>

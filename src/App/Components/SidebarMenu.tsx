@@ -6,6 +6,7 @@ export interface SidebarMenuProps {
     icon: Icons;
     path: string;
     defaultPath?: string;
+    expanded?: boolean;
 }
 
 export const SidebarMenu = Router.withRouter<SidebarMenuProps>((props) => {
@@ -21,6 +22,10 @@ export const SidebarMenu = Router.withRouter<SidebarMenuProps>((props) => {
     var style = 'st-side--item';
     if (isActive) {
         style += ' is-active';
+    }
+
+    if (props.expanded) {
+        style += ' is-expanded';
     }
 
     return (
