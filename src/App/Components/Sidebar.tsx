@@ -5,7 +5,7 @@ export class Sidebar extends React.Component<{ title: string, subtitle?: string,
         return (
             <div className={'st-side' + (this.props.isShown ? ' is-shown' : '')}>
                 <a
-                    className={'st-side--toggler' + (this.props.isShown ? ' is-shown' : '')}
+                    className={'st-side--toggler' + (this.props.isShown ? ' is-active' : '')}
                     href="#"
                     onClick={(e) => {
                         e.preventDefault();
@@ -16,8 +16,9 @@ export class Sidebar extends React.Component<{ title: string, subtitle?: string,
                 >
                     <i>{}</i>
                 </a>
-                <div className="st-side--logo">
-                    <img src={this.props.image} /></div>
+                <a className="st-side--logo" href="/">
+                    <img src={this.props.image} />
+                </a>
                 <div className="st-side--title">{this.props.title}</div>
                 <div className="st-side--text">{this.props.subtitle}</div>
                 <ul className="st-side--nav">
