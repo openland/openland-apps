@@ -11,7 +11,7 @@ const ViewRender = withProjectQuery(withLoader((props) => {
             <C.Content>
                 <C.Section>
                     <C.PageTitle title={props.data.project.name} >
-                        <a className="st-btn is-outline" href="#">Follow project</a>
+                        <a className="st-btn is-outline" href={'mailto:yury@statcraft.one?subject="Send me updates for ' + props.data.project.name + '"'}>Follow project</a>
                     </C.PageTitle>
                     {props.data.project.intro && (
                         <C.PageIntro intro={props.data.project.intro} />
