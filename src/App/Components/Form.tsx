@@ -43,13 +43,9 @@ export class Form extends React.Component<FormProps> implements React.ChildConte
 
     constructor(props: FormProps) {
         super(props);
-        console.warn('constructor');
         if (this.props.default != null) {
-            console.warn('Default');
             for (let key in this.props.default) {
                 if (this.provider.getValue(key) === undefined) {
-                    console.warn(key);
-                    console.warn(this.props.default[key]);
                     this.provider.setValue(key, this.props.default[key]);
                 }
             }
@@ -60,7 +56,6 @@ export class Form extends React.Component<FormProps> implements React.ChildConte
                 this.provider.inProgress = true;
                 this.provider.error = null;
                 this.forceUpdate();
-                console.warn(values);
                 this.props.mutation({
                     variables: values
                 }).then((r) => {
@@ -90,7 +85,6 @@ export class Form extends React.Component<FormProps> implements React.ChildConte
     }
 
     render() {
-        console.warn('render');
         return (
             <div>
                 {this.props.children}
@@ -99,7 +93,6 @@ export class Form extends React.Component<FormProps> implements React.ChildConte
     }
 
     getChildContext(): FormContext {
-        console.warn('getChildContext');
         return {
             form: this.provider
         };

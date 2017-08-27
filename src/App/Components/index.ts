@@ -26,4 +26,5 @@ export {
 } from './Form';
 export { Formatted } from './Formatted';
 export { Loader } from './Loader';
+export { UserProvider, withUser } from './UserProvider';
 import './Styles.css';
