@@ -25,5 +25,5 @@ export {
     FormText, FormSubmit, FormState, FormTextArea
 } from './Form';
 export { Formatted } from './Formatted';
-
+export { Loader } from './Loader';
 import './Styles.css';

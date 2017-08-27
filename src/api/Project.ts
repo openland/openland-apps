@@ -12,6 +12,13 @@ export interface Project extends ProjectShort {
   intro?: string;
   description?: string;
   findings?: string;
+  outputs: Link[];
+  sources: Link[];
+}
+
+export interface Link {
+  title: string;
+  url: string;
 }
 
 export interface ProjectsResponse {
@@ -41,6 +48,14 @@ query project($projectId: String!){
     intro
     description,
     findings
+    sources {
+       title
+       url
+    }
+    outputs {
+      title
+      url
+    }
   }
 }
 `;

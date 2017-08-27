@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { QueryProps } from 'react-apollo';
-import * as S from 'semantic-ui-react';
+import { Loader } from './Loader';
 
 export function withLoader<P>(WrappedComponent: React.ComponentType<P>):
     React.ComponentType<{ data: QueryProps } & P> {
     return function (props: { data: QueryProps } & P) {
         if (props.data.loading) {
             return (
-                <S.Loader size="big" active={true} key="_loader" />
+                <div style={{ boxAlign: 'center', height: '100%' }} key="_loader">
+                    <Loader />
+                </div>
             );
         } else if (props.data.error != null) {
             return (
@@ -16,6 +18,7 @@ export function withLoader<P>(WrappedComponent: React.ComponentType<P>):
                 </div>
             );
         }
+
         return (
             <WrappedComponent {...props} key="_component" />
         );
