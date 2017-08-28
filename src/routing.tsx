@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { Loader } from 'semantic-ui-react';
+import { Loader } from './App/Components/';
 import { ApolloProvider } from 'react-apollo';
 import * as api from './api';
 
@@ -50,7 +50,7 @@ class AuthPage extends React.Component<AuthPageProps, {
     render() {
         if (this.state.isLoading || !this.state.isError) {
             return (
-                <Loader size="big" active={true} />
+                <Loader />
             );
         } else {
             return (
