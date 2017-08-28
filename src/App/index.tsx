@@ -6,7 +6,7 @@ import Projects from './Projects';
 import Sources from './Sources';
 import * as C from './Components';
 
-export default withCityQuery(C.withLoader((props) => {
+export default withCityQuery(C.withRootLoader((props) => {
     return (
         <C.UserProvider user={props.data.me}>
             <C.RootContainer>

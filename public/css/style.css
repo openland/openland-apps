@@ -1338,7 +1338,6 @@ a.st-header--label:hover {
 }
 .st-data--link {
   margin: 0 0 27px;
-  padding: 0 25px 0 0;
   position: relative;
   top: auto;
   right: auto;
@@ -1376,15 +1375,34 @@ a.st-header--label:hover {
 .st-data--link-e {
   color: #acb7c7;
   text-decoration: none;
+  background: #ffffff;
+  text-align: right;
   display: none;
   position: absolute;
   top: 0;
   right: 0;
-  bottom: auto;
+  bottom: 0;
   left: auto;
+  width: 25px;
+  height: auto;
 }
 .st-data--link-e:hover {
   color: #2f3444;
+}
+.st-data--link-e:before {
+  content: "";
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), to(#ffffff));
+  background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  background-image: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  display: block;
+  width: 20px;
+  height: auto;
+  position: absolute;
+  top: 0;
+  right: 100%;
+  bottom: 0;
+  left: auto;
 }
 .st-data--link-e i {
   display: block;
@@ -1715,7 +1733,7 @@ a.st-header--label:hover {
   }
 }
 .st-loader {
-  background: #ffffff;
+  background: #f2f5f8;
   z-index: 9999;
   overflow: hidden;
   position: absolute;
@@ -1757,6 +1775,10 @@ a.st-header--label:hover {
   -webkit-animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
   animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
   stroke-linecap: round;
+}
+.st-box .st-loader,
+.st-header .st-loader {
+  background: #ffffff;
 }
 @-webkit-keyframes rotate {
   100% {
