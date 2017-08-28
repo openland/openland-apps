@@ -23,7 +23,7 @@ export const Header = Router.withRouter<{ title: string, subtitle?: string }>(wi
             )}
             {!props.user && (
                 <div className="st-header--auth">
-                    <button className="st-btn is-sm" onClick={() => A.login()}>Sign in</button>
+                    <button className="st-btn is-sm is-outline" onClick={() => A.login()}>Sign in</button>
                 </div>
             )}
         </header>
