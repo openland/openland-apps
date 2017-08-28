@@ -1,20 +1,31 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Statecraft</title>
-    <meta name="viewport" content="width=900">
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="theme-color" content="#000000">
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="%PUBLIC_URL%/css/style.css"/>
-  </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root"></div>
-    <script type="text/javascript" src="%PUBLIC_URL%/server.js"></script>
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <title>Statecraft</title>
+  <meta name="viewport" content="width=900">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="%PUBLIC_URL%/css/style.css" />
+</head>
+
+<body>
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+  <div id="root">
+    <div style="width: 100vw; height: 100vh;">
+      <div class="st-loader">
+        <svg class="st-loader--svg" view-box="25 25 50 50">
+          <circle class="st-loader--circle" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="%PUBLIC_URL%/server.js"></script>
+</body>
+
 </html>

@@ -424,14 +424,18 @@ body *:after {
   line-height: 30px;
   font-weight: 700;
 }
-.st-header--title a {
-  text-decoration: none;
-  font-weight: 400;
+.st-header--label {
   color: #626677;
   display: inline-block;
   vertical-align: top;
+  font-size: 14px;
+  line-height: 30px;
+  font-weight: 400;
 }
-.st-header--title a:hover {
+a.st-header--label {
+  text-decoration: none;
+}
+a.st-header--label:hover {
   color: #2f3444;
 }
 .st-header--auth {
@@ -1333,10 +1337,18 @@ body *:after {
   line-height: 0;
 }
 .st-data--link {
+  margin: 0 0 27px;
+  padding: 0 25px 0 0;
+  position: relative;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+}
+.st-data--link-i {
   padding: 0 0 0 25px;
   text-decoration: none;
   color: #2f3444;
-  margin: 0 0 27px;
   display: block;
   position: relative;
   top: auto;
@@ -1347,10 +1359,10 @@ body *:after {
   line-height: 24px;
   font-weight: 600;
 }
-.st-data--link:hover {
+.st-data--link-i:hover {
   color: #4766ff;
 }
-.st-data--link i {
+.st-data--link-i i {
   color: #acb7c7;
   display: block;
   position: absolute;
@@ -1360,6 +1372,27 @@ body *:after {
   left: 0;
   font-size: 14px;
   line-height: 24px;
+}
+.st-data--link-e {
+  color: #acb7c7;
+  text-decoration: none;
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: auto;
+}
+.st-data--link-e:hover {
+  color: #2f3444;
+}
+.st-data--link-e i {
+  display: block;
+  font-size: 16px;
+  line-height: 24px;
+}
+.st-data--link:hover .st-data--link-e {
+  display: block;
 }
 .st-data--grid .st-data--link {
   margin-right: 7px;
@@ -1686,6 +1719,13 @@ body *:after {
   z-index: 9999;
   overflow: hidden;
   position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.st-loader.is-fixed {
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;

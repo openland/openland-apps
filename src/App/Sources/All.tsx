@@ -16,14 +16,18 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
         var datasets = sorted.filter((d) => d.kind === 'dataset').map((d) => {
             return (
                 <div className="st-data--links">
-                    <a className="st-data--link" href={d.url} target="_blank"><i className="icon-datasets">{}</i>{d.name}</a>
+                    <div className="st-data--link">
+                        <a className="st-data--link-i" href={d.url} target="_blank"><i className="icon-datasets">{}</i>{d.name}</a>
+                    </div>
                 </div>
             );
         });
         var documents = sorted.filter((d) => d.kind === 'document').map((d) => {
             return (
                 <div className="st-data--links">
-                    <a className="st-data--link" href={d.url} target="_blank"><i className="icon-documents">{}</i>{d.name}</a>
+                    <div className="st-data--link">
+                        <a className="st-data--link-i" href={d.url} target="_blank"><i className="icon-documents">{}</i>{d.name}</a>
+                    </div>
                 </div>
             );
         });

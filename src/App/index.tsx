@@ -6,8 +6,6 @@ import Projects from './Projects';
 import Sources from './Sources';
 import * as C from './Components';
 
-import './Styles.css';
-
 export default withCityQuery(C.withLoader((props) => {
     return (
         <C.UserProvider user={props.data.me}>
