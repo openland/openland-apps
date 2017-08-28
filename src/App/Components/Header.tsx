@@ -6,7 +6,7 @@ export const Header = Router.withRouter<{ title: string, subtitle?: string }>(wi
     return (
         <header className="st-header">
             {props.subtitle && (
-                <div className="st-header--title"><a href="#">{props.title}</a> / {props.subtitle}</div>
+                <div className="st-header--title"><span className="st-header--label">{props.title}</span> / {props.subtitle}</div>
             )}
             {!props.subtitle && (
                 <div className="st-header--title">{props.title}</div>
@@ -17,9 +17,9 @@ export const Header = Router.withRouter<{ title: string, subtitle?: string }>(wi
                 </div>
             )}
             {props.user && (
-                <a className="st-header--user" href="#">
+                <div className="st-header--user">
                     <img src={props.user.picture} alt="" />{props.user.firstName + ' ' + props.user.lastName} 
-                </a>
+                </div>
             )}
             {!props.user && (
                 <div className="st-header--auth">
