@@ -31,6 +31,24 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
                 </div>
             );
         });
+        var links = sorted.filter((d) => d.kind === 'link').map((d) => {
+            return (
+                <div className="st-data--links">
+                    <div className="st-data--link">
+                        <a className="st-data--link-i" href={d.url} target="_blank"><i className="icon-links">{}</i>{d.name}</a>
+                    </div>
+                </div>
+            );
+        });
+        var needs = sorted.filter((d) => d.kind === 'data-need').map((d) => {
+            return (
+                <div className="st-data--links">
+                    <div className="st-data--link">
+                        <span className="st-data--link-i"><i className="icon-data-needs">{}</i>{d.name}</span>
+                    </div>
+                </div>
+            );
+        });
         if (this.state.tab === 'all' || this.state.tab === 'datasets') {
             if (datasets.length > 0) {
                 records.push((
@@ -57,6 +75,40 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
                                 <C.RowTitle title="Documents" icon="documents" />
                                 <div className="st-data--section">
                                     {documents}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ));
+            }
+        }
+
+        if (this.state.tab === 'all' || this.state.tab === 'links') {
+            if (links.length > 0) {
+                records.push((
+                    <div className="st-page--col" key="links">
+                        <div className="st-box in-grid">
+                            <div className="st-data">
+                                <C.RowTitle title="Links" icon="links" />
+                                <div className="st-data--section">
+                                    {links}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ));
+            }
+        }
+
+        if (this.state.tab === 'all' || this.state.tab === 'needs') {
+            if (needs.length > 0) {
+                records.push((
+                    <div className="st-page--col" key="needs">
+                        <div className="st-box in-grid">
+                            <div className="st-data">
+                                <C.RowTitle title="Data Needs" icon="data-needs" />
+                                <div className="st-data--section">
+                                    {needs}
                                 </div>
                             </div>
                         </div>
@@ -112,6 +164,32 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
                                     }}
                                 >
                                     Documents
+                                </a>
+                            </li>
+                        )}
+                        {links.length > 0 && (
+                            <li className={liClass('links')}>
+                                <a
+                                    href="#"
+                                    onClick={(e: React.MouseEvent<{}>) => {
+                                        e.preventDefault();
+                                        this.setState({ tab: 'links' });
+                                    }}
+                                >
+                                    Links
+                                </a>
+                            </li>
+                        )}
+                        {needs.length > 0 && (
+                            <li className={liClass('needs')}>
+                                <a
+                                    href="#"
+                                    onClick={(e: React.MouseEvent<{}>) => {
+                                        e.preventDefault();
+                                        this.setState({ tab: 'needs' });
+                                    }}
+                                >
+                                    Data Needs
                                 </a>
                             </li>
                         )}

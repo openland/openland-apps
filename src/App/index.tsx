@@ -11,7 +11,7 @@ export default withCityQuery(C.withRootLoader((props) => {
         <C.UserProvider user={props.data.me}>
             <C.RootContainer>
                 <C.Sidebar title={props.data.account.name} subtitle={props.data.account.city} image={'/img/sf.jpg'} >
-                    <C.SidebarMenu title="Findings" icon="findings" path="/findings">
+                    <C.SidebarMenu title="Findings" icon="findings" path="/findings" expanded={true}>
                         <C.SidebarSubmenu title="Charts" path={'/findings/charts'} key={'charts'} />
                         <C.SidebarSubmenu title="Recomendations" path={'/findings/recomendations'} key={'recomendations'} />
                     </C.SidebarMenu>
