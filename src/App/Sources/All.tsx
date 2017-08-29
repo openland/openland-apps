@@ -3,6 +3,67 @@ import { withDatasetsQuery, DataSet } from '../../api/';
 import * as C from '../Components';
 import Mansory from 'react-masonry-component';
 
+function DataLink(props: { dataset: DataSet }) {
+
+    var icon = 'icon-datasets';
+    if (props.dataset.kind === 'document') {
+        icon = 'icon-documents';
+    } else if (props.dataset.kind === 'link') {
+        icon = 'icon-links';
+    } else if (props.dataset.kind === 'data-need') {
+        icon = 'icon-data-needs';
+    }
+
+    return (
+        <div className="st-data--links">
+            <div className="st-data--link">
+                <a className="st-data--link-i" href={props.dataset.url} target="_blank"><i className={icon}>{}</i>{props.dataset.name}</a>
+            </div>
+        </div>
+    );
+}
+
+function DataLinkBlock(props: { dataset: DataSet[], title: string, icon: C.Icons }) {
+    var dest = props.dataset;
+    var ungrouped = dest.filter((d) => !d.group).map((d) => <DataLink dataset={d} />);
+    var grouped = dest.filter((d) => d.group)
+        .reduce(
+        (map, n) => {
+            let key = n.group!;
+            if (!map.has(key)) {
+                map.set(key, [n]);
+            } else {
+                map.get(key)!!.push(n);
+            }
+            return map;
+        },
+        new Map<string, DataSet[]>());
+    var keys = Array.from(grouped.keys()).sort();
+    var elements: any[] = [];
+    keys.forEach((k) => {
+        elements.push(<div className="st-data--label">{k}</div>);
+        elements.push(...grouped.get(k)!!.map((d) => <DataLink dataset={d} />));
+    });
+
+    return (
+        <div className="st-page--col">
+            <div className="st-box in-grid">
+                <div className="st-data">
+                    <C.RowTitle title={props.title} icon={props.icon} />
+                    <div className="st-data--section">
+                        {ungrouped}
+                        {elements}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function datasetCompare(a: DataSet, b: DataSet) {
+    return ((a.name < b.name) ? -1 : ((a.name > b.name) ? 1 : 0));
+}
+
 class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: string }> {
 
     constructor() {
@@ -12,108 +73,33 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
 
     render() {
         var records = [];
-        var sorted = this.props.datasets.slice(0).sort((a, b) => ((a.name < b.name) ? -1 : ((a.name > b.name) ? 1 : 0)));
-        var datasets = sorted.filter((d) => d.kind === 'dataset').map((d) => {
-            return (
-                <div className="st-data--links">
-                    <div className="st-data--link">
-                        <a className="st-data--link-i" href={d.url} target="_blank"><i className="icon-datasets">{}</i>{d.name}</a>
-                    </div>
-                </div>
-            );
-        });
-        var documents = sorted.filter((d) => d.kind === 'document').map((d) => {
-            return (
-                <div className="st-data--links">
-                    <div className="st-data--link">
-                        <a className="st-data--link-i" href={d.url} target="_blank"><i className="icon-documents">{}</i>{d.name}</a>
-                    </div>
-                </div>
-            );
-        });
-        var links = sorted.filter((d) => d.kind === 'link').map((d) => {
-            return (
-                <div className="st-data--links">
-                    <div className="st-data--link">
-                        <a className="st-data--link-i" href={d.url} target="_blank"><i className="icon-links">{}</i>{d.name}</a>
-                    </div>
-                </div>
-            );
-        });
-        var needs = sorted.filter((d) => d.kind === 'data-need').map((d) => {
-            return (
-                <div className="st-data--links">
-                    <div className="st-data--link">
-                        <span className="st-data--link-i"><i className="icon-data-needs">{}</i>{d.name}</span>
-                    </div>
-                </div>
-            );
-        });
+        var sorted = this.props.datasets.slice(0).sort(datasetCompare);
+        var datasets = sorted.filter((d) => d.kind === 'dataset');
+        var documents = sorted.filter((d) => d.kind === 'document');
+        var links = sorted.filter((d) => d.kind === 'link');
+        var needs = sorted.filter((d) => d.kind === 'data-need');
+
         if (this.state.tab === 'all' || this.state.tab === 'datasets') {
             if (datasets.length > 0) {
-                records.push((
-                    <div className="st-page--col" key="datasets">
-                        <div className="st-box in-grid">
-                            <div className="st-data">
-                                <C.RowTitle title="Datasets" icon="datasets" />
-                                <div className="st-data--section">
-                                    {datasets}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ));
+                records.push(<DataLinkBlock dataset={datasets} title="Datasets" icon="datasets" key="_datasets" />);
             }
         }
 
         if (this.state.tab === 'all' || this.state.tab === 'docs') {
             if (documents.length > 0) {
-                records.push((
-                    <div className="st-page--col" key="documents">
-                        <div className="st-box in-grid">
-                            <div className="st-data">
-                                <C.RowTitle title="Documents" icon="documents" />
-                                <div className="st-data--section">
-                                    {documents}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ));
+                records.push(<DataLinkBlock dataset={documents} title="Documents" icon="documents" key="_docs" />);
             }
         }
 
         if (this.state.tab === 'all' || this.state.tab === 'links') {
             if (links.length > 0) {
-                records.push((
-                    <div className="st-page--col" key="links">
-                        <div className="st-box in-grid">
-                            <div className="st-data">
-                                <C.RowTitle title="Links" icon="links" />
-                                <div className="st-data--section">
-                                    {links}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ));
+                records.push(<DataLinkBlock dataset={links} title="Links" icon="links" key="_links" />);
             }
         }
 
         if (this.state.tab === 'all' || this.state.tab === 'needs') {
             if (needs.length > 0) {
-                records.push((
-                    <div className="st-page--col" key="needs">
-                        <div className="st-box in-grid">
-                            <div className="st-data">
-                                <C.RowTitle title="Data Needs" icon="data-needs" />
-                                <div className="st-data--section">
-                                    {needs}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ));
+                records.push(<DataLinkBlock dataset={needs} title="Data Needs" icon="data-needs" key="_needs" />);
             }
         }
 

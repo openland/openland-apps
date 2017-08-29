@@ -1,9 +1,13 @@
 export { User } from './User';
 
 export {
-    withCityQuery, withDatasetsQuery, withDatasetsCreate,
-    DataSet, DataSetsResponse
+    withCityQuery
 } from './Account';
+
+export {
+    withDatasetsQuery, withDatasetsCreate,
+    DataSet, DataSetsResponse
+} from './Dataset';
 
 export {
     withProjectsQuery, withProjectQuery, withProjectEdit,
