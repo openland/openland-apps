@@ -15,17 +15,15 @@ function DataLink(props: { dataset: DataSet }) {
     }
 
     return (
-        <div className="st-data--links">
-            <div className="st-data--link">
-                <a className="st-data--link-i" href={props.dataset.url} target="_blank"><i className={icon}>{}</i>{props.dataset.name}</a>
-            </div>
+        <div className="st-data--link">
+            <a className="st-data--link-i" href={props.dataset.url} target="_blank"><i className={icon}>{}</i>{props.dataset.name}</a>
         </div>
     );
 }
 
 function DataLinkBlock(props: { dataset: DataSet[], title: string, icon: C.Icons }) {
     var dest = props.dataset;
-    var ungrouped = dest.filter((d) => !d.group).map((d) => <DataLink dataset={d} />);
+    var ungrouped = dest.filter((d) => !d.group).map((d) => <div className="st-data--links"><DataLink dataset={d} /></div>);
     var grouped = dest.filter((d) => d.group)
         .reduce(
         (map, n) => {
@@ -40,9 +38,34 @@ function DataLinkBlock(props: { dataset: DataSet[], title: string, icon: C.Icons
         new Map<string, DataSet[]>());
     var keys = Array.from(grouped.keys()).sort();
     var elements: any[] = [];
+    var tabsRegexp = /\d\d\d\d\s\Q\d$/;
     keys.forEach((k) => {
         elements.push(<div className="st-data--label">{k}</div>);
-        elements.push(...grouped.get(k)!!.map((d) => <DataLink dataset={d} />));
+        var items = grouped.get(k)!;
+        if (items.filter((s) => !(tabsRegexp.exec(s.name!))).length === 0) {
+            var index = 0;
+            var row: any[] = [];
+            var rows: any[] = [];
+            items.forEach((d) => {
+                row.push(<DataLink dataset={d} />);
+                index++;
+                if (index === 4) {
+                    rows.push((
+                        <div className="st-data--grid">{row}</div>
+                    ));
+                    row = [];
+                    index = 0;
+                }
+            });
+            if (row.length > 0) {
+                rows.push((
+                    <div className="st-data--grid">{row}</div>
+                ));
+            }
+            elements.push(...rows);
+        } else {
+            elements.push(...items.map((d) => <div className="st-data--links"><DataLink dataset={d} /></div>));
+        }
     });
 
     return (
