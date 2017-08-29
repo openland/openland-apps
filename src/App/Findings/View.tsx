@@ -58,7 +58,7 @@ export default withFindingsQuery(C.withLoader((props) => {
                     <C.Section>
                         <div className="st-subscribe">
                             <div className="st-subscribe--title">Housing insights from Statecraft</div>
-                            <div className="st-subscribe--text">Subscribe and stay up to date with the latest insights from Statecraft</div>
+                            <div className="st-subscribe--text">Subscribe to housing trends and statistics in San Francisco</div>
                             <form className="st-subscribe--form" method="POST" action="https://one.us15.list-manage.com/subscribe/post?u=b588cb73ec7bd801c3b609670&amp;id=982401175d" target="_blank">
                                 <input className="st-input" type="email" placeholder="Your email address" name="EMAIL" />
                                 <div className="st-subscribe--submit">
