@@ -20,6 +20,7 @@
     "chart.js": "^2.6.0",
     "draft-js": "^0.10.1",
     "es6-shim": "^0.35.3",
+    "express-http-to-https": "^1.1.2",
     "graphiql": "^0.11.2",
     "local-storage": "^1.4.2",
     "markdown": "^0.5.0",
@@ -41,6 +42,6 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "heroku-postbuild": "yarn build",
-    "start": "node configure.js && serve -s build"
+    "start": "node configure.js && node start.js"
   }
 }
