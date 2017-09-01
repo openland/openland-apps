@@ -29,6 +29,7 @@ export interface ProjectsResponse {
 
 export interface ProjectResponse {
   project: Project;
+  all: ProjectShort[];
 }
 
 const ProjectsQuery = gql`
@@ -60,6 +61,13 @@ query project($projectId: String!){
       title
       url
     }
+    isPrivate
+    sortKey
+  }
+  all: projects {
+    id
+    name
+    slug
     isPrivate
     sortKey
   }

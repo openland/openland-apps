@@ -4,6 +4,16 @@ import { withProjectQuery } from '../../api/';
 import * as C from '../Components';
 
 const ViewRender = withProjectQuery(withLoader((props) => {
+    var all = props.data.all;
+    var index = all.findIndex((v) => v.id === props.data.project.id);
+    var prev = null;
+    var next = null;
+    if (index - 1 >= 0) {
+        prev = all[index - 1];
+    }
+    if (index + 1 < all.length) {
+        next = all[index + 1];
+    }
     return (
         <C.Page>
             <C.Header title="Projects" subtitle={props.data.project.name} />
@@ -86,6 +96,14 @@ const ViewRender = withProjectQuery(withLoader((props) => {
                     </C.Section>
                 )}
             </C.Content>
+            <div className="st-page--nav">
+                {prev != null && (
+                    <C.Link className="st-page--nav-i" path={'/projects/' + prev.slug}><i className="icon-left-arrow">{}</i><span>Previous project</span></C.Link>
+                )}
+                {next != null && (
+                    <C.Link className="st-page--nav-i" path={'/projects/' + next.slug}><span>Next project</span><i className="icon-right-arrow">{}</i></C.Link>
+                )}
+            </div>
         </C.Page >
     );
 }));
