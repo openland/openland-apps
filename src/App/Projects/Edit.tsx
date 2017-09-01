@@ -21,6 +21,8 @@ const ViewRender = withProjectEdit(withLoader((props) => {
                             <C.FormTextArea name="findings" />
                             <h2>Project Description</h2>
                             <C.FormTextArea name="description" />
+                            <h2>Sorting</h2>
+                            <C.FormText name="sortKey" />
                         </div>
                     </C.Section>
                     <C.Section>

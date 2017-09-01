@@ -7,6 +7,7 @@ export interface ProjectShort {
   name: string;
   slug: string;
   isPrivate: boolean;
+  sortKey?: string;
 }
 
 export interface Project extends ProjectShort {
@@ -37,6 +38,7 @@ query {
     name
     slug
     isPrivate
+    sortKey
   }
 }
 `;
@@ -59,13 +61,14 @@ query project($projectId: String!){
       url
     }
     isPrivate
+    sortKey
   }
 }
 `;
 
 const ProjectEdit = gql`
-  mutation editProject($id: ID!, $name: String, $slug: String, $intro: String, $description: String, $findings: String) {
-    alterProject(id: $id, name: $name, slug: $slug, intro: $intro, description: $description, findings: $findings) {
+  mutation editProject($id: ID!, $name: String, $slug: String, $intro: String, $description: String, $findings: String, $sortKey: String) {
+    alterProject(id: $id, name: $name, slug: $slug, intro: $intro, description: $description, findings: $findings, sortKey: $sortKey) {
       id
       name
       slug
