@@ -6,6 +6,7 @@ export interface ProjectShort {
   id: string;
   name: string;
   slug: string;
+  isPrivate: boolean;
 }
 
 export interface Project extends ProjectShort {
@@ -35,6 +36,7 @@ query {
     id
     name
     slug
+    isPrivate
   }
 }
 `;
@@ -56,6 +58,7 @@ query project($projectId: String!){
       title
       url
     }
+    isPrivate
   }
 }
 `;

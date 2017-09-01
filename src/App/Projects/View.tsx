@@ -11,7 +11,9 @@ const ViewRender = withProjectQuery(withLoader((props) => {
             <C.Content>
                 <C.Section>
                     <C.PageTitle title={props.data.project.name} >
-                        <a className="st-btn is-outline" href={'mailto:yury@statcraft.one?subject="Send me updates for ' + props.data.project.name + '"'}>Follow project</a>
+                        {!props.data.project.isPrivate && (
+                            <a className="st-btn is-outline" href={'mailto:yury@statcraft.one?subject="Send me updates for ' + props.data.project.name + '"'}>Follow project</a>
+                        )}
                     </C.PageTitle>
                     {props.data.project.intro && (
                         <C.PageIntro intro={props.data.project.intro} />
@@ -30,6 +32,17 @@ const ViewRender = withProjectQuery(withLoader((props) => {
                         </div>
                     </div>
                 </C.Section>
+                {props.data.project.isPrivate && (
+                    <div className="st-box--section">
+                        <div className="st-status is-private">
+                            <div className="st-status--icon">{}</div>
+                            <div className="st-status--title">This project is in private mode</div>
+                            <div className="st-status--btn">
+                                <a className="st-btn" href={'mailto:yury@statcraft.one?subject="Invite request for ' + props.data.project.name + '"'}>Request Invite</a>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 {(props.data.project.findings != null || props.data.project.sources.length > 0 || props.data.project.outputs.length > 0) && (
                     <div className="st-box--section is-fields">
                         {/* <div className="st-page--fields"> */}
