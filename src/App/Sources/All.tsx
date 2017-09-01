@@ -62,9 +62,9 @@ function DataLinkBlock(props: { dataset: DataSet[], title: string, icon: C.Icons
                     <div className="st-data--grid">{row}</div>
                 ));
             }
-            elements.push(...rows);
+            elements.push(<div className="st-data--section">{rows}</div>);
         } else {
-            elements.push(...items.map((d) => <div className="st-data--links"><DataLink dataset={d} /></div>));
+            elements.push(<div className="st-data--section"> {items.map((d) => <div className="st-data--links"><DataLink dataset={d} /></div>)}</div>);
         }
     });
 
@@ -74,7 +74,11 @@ function DataLinkBlock(props: { dataset: DataSet[], title: string, icon: C.Icons
                 <div className="st-data">
                     <C.RowTitle title={props.title} icon={props.icon} />
                     <div className="st-data--section">
-                        {ungrouped}
+                        {ungrouped.length > 0 && (
+                            <div className="st-data--section">
+                                {ungrouped}
+                            </div>
+                        )}
                         {elements}
                     </div>
                 </div>
