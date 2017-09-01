@@ -76,6 +76,40 @@ export default withFindingsQuery(C.withLoader((props) => {
                     </C.Section>
                 </C.Content>
             )}
+
+            <Router.Route
+                exact={true}
+                path="/findings"
+                component={() => (
+                    <div className="st-page--nav">
+                        <C.Link className="st-page--nav-i" path="/findings/charts"><span>Charts</span><i className="icon-right-arrow">{}</i></C.Link>
+                        <C.Link className="st-page--nav-i" path="/findings/recomendations"><span>Charts</span><i className="icon-last-arrow">{}</i></C.Link>
+                    </div>
+                )}
+            />
+
+            <Router.Route
+                exact={true}
+                path="/findings/charts"
+                component={() => (
+                    <div className="st-page--nav">
+                        <C.Link className="st-page--nav-i" path="/findings"><i className="icon-left-arrow">{}</i><span>Key findings</span></C.Link>
+                        <C.Link className="st-page--nav-i" path="/findings/recomendations"><span>Recomendations</span><i className="icon-right-arrow">{}</i></C.Link>
+                    </div>
+                )}
+            />
+
+            <Router.Route
+                exact={true}
+                path="/findings/recomendations"
+                component={() => (
+                    <div className="st-page--nav">
+                        <C.Link className="st-page--nav-i" path="/findings"><i className="icon-first-arrow">{}</i><span>Key findings</span></C.Link>
+                        <C.Link className="st-page--nav-i" path="/findings/charts"><i className="icon-left-arrow">{}</i><span>Charts</span></C.Link>
+                    </div>
+                )}
+            />
+
         </C.Page>
     );
 }));
