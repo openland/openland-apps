@@ -47,7 +47,7 @@ const ViewRender = withProjectQuery(withLoader((props) => {
                         )}
                         {props.data.project.outputs.length > 0 && (
                             <div className="st-page--field">
-                                <div className="st-page--field-l">Code:</div>
+                                <div className="st-page--field-l">Outputs:</div>
                                 <div className="st-page--field-r">
                                     <div className="st-link-icon--w">
                                         {props.data.project.outputs.map((s) => (
