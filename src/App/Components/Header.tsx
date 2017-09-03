@@ -11,6 +11,7 @@ export const Header = Router.withRouter<{ title: string, subtitle?: string }>(wi
             {!props.subtitle && (
                 <div className="st-header--title">{props.title}</div>
             )}
+            {props.children}
             {props.user && (
                 <div className="st-header--auth">
                     <button className="st-btn is-sm is-outline" onClick={() => A.logout()}>Sign Out</button>

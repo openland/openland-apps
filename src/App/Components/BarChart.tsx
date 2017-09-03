@@ -46,6 +46,11 @@ export class BarChart extends React.Component<{ data: BarChartData }> {
                     gridLines: { display: false }
                 }]
             },
+            layout : {
+                padding: {
+                    top: 64
+                }
+            },
             responsive: true,
             legend: { display: false },
             tooltips: { enabled: false },
