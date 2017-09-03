@@ -14,11 +14,19 @@ function DataLink(props: { dataset: DataSet }) {
         icon = 'icon-data-needs';
     }
 
-    return (
-        <div className="st-data--link">
-            <a className="st-data--link-i" href={props.dataset.url} target="_blank"><i className={icon}>{}</i>{props.dataset.name}</a>
-        </div>
-    );
+    if (props.dataset.kind === 'data-need') {
+        return (
+            <div className="st-data--link">
+                <div className="st-data--link-i not-link"><i className={icon}>{}</i>{props.dataset.name}</div>
+            </div>
+        );
+    } else {
+        return (
+            <div className="st-data--link">
+                <a className="st-data--link-i" href={props.dataset.url} target="_blank"><i className={icon}>{}</i>{props.dataset.name}</a>
+            </div>
+        );
+    }
 }
 
 function DataLinkBlock(props: { dataset: DataSet[], title: string, icon: C.Icons }) {
