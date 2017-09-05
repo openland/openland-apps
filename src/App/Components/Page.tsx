@@ -77,9 +77,9 @@ export const RowTitle = withComponent<{ title: string, icon: Icons }>((props) =>
 class PageRender extends React.Component<{ title: string, account: Account }> {
     componentDidMount() {
         if (this.props.account.city != null) {
-            document.title = this.props.title + ' | ' + this.props.account.name + ' | ' + this.props.account.city + ' - Statecraft';
+            document.title = this.props.account.city + ' ' + this.props.account.name + ' • ' + this.props.title;
         } else {
-            document.title = this.props.title + ' | ' + this.props.account.name + ' - Statecraft';
+            document.title = this.props.account.name + ' • ' + this.props.title;
         }
     }
     render() {
