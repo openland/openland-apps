@@ -16,32 +16,41 @@ export default withFindingsQuery(C.withLoader((props) => {
         labels: years,
         datasets: [
             { label: 'Total completed', data: [4198, 2323, 5815, 1062], color: '#34b5ff' },
-            { label: 'Affordable completed', data: [0, 211, 358, 71], color: '#535de8' },
-            { label: 'Total in-construction', data: [5255, 9124, 11915, 6105], color: '#ff5c54' },
-            { label: 'Affordable in-construction', data: [509, 1025, 3363, 1170], color: '#ffc334' }
+            { label: 'Affordable completed', data: [0, 211, 358, 71], color: '#ffc334' },
+            // { label: 'Total in-construction', data: [5255, 9124, 11915, 6105], color: '#ff5c54' },
+            // { label: 'Affordable in-construction', data: [509, 1025, 3363, 1170], color: '#ffc334' }
         ]
     };
     var unitsByQuarterChart: C.BarChartData = {
         labels: quarters,
         datasets: [
             { label: 'Total сompleted', data: [1672, 328, 732, 1466, 485, 337, 845, 656, 1674, 1272, 1151, 1718, 1062], color: '#34b5ff' },
-            { label: 'Affordable completed', data: [0, 0, 0, 0, 0, 10, 34, 167, 64, 96, 175, 23, 71], color: '#535de8' },
-            { label: 'Total in-construction', data: [5106, 6187, 7246, 7793, 7723, 8651, 9186, 9142, 8716, 8385, 7598, 6754, 6105], color: '#ff5c54' },
-            { label: 'Affordable in-construction', data: [0, 0, 0, 404, 454, 1147, 1135, 999, 915, 871, 781, 796, 1170], color: '#ffc334' }
+            { label: 'Affordable completed', data: [0, 0, 0, 0, 0, 10, 34, 167, 64, 96, 175, 23, 71], color: '#ffc334' },
+            // { label: 'Total in-construction', data: [5106, 6187, 7246, 7793, 7723, 8651, 9186, 9142, 8716, 8385, 7598, 6754, 6105], color: '#ff5c54' },
+            // { label: 'Affordable in-construction', data: [0, 0, 0, 404, 454, 1147, 1135, 999, 915, 871, 781, 796, 1170], color: '#ffc334' }
         ]
     };
-    var projectsByYearChart: C.BarChartData = {
-        labels: years,
-        datasets: [
-            { label: 'Completed', data: [104, 74, 173, 50], color: '#34b5ff' },
-            { label: 'In construction', data: [188, 222, 201, 185], color: '#535de8' },
-        ]
-    };
+    // var projectsByYearChart: C.BarChartData = {
+    //     labels: years,
+    //     datasets: [
+    //         { label: 'In construction', data: [188, 222, 201, 185], color: '#34b5ff' },
+    //         { label: 'Completed', data: [104, 74, 173, 50], color: '#535de8' },
+    //     ]
+    // };
     var projectsByQuarterChart: C.BarChartData = {
         labels: quarters,
         datasets: [
-            { label: 'Completed', data: [18, 15, 28, 43, 18, 16, 16, 24, 71, 27, 34, 41, 50], color: '#34b5ff' },
-            { label: 'In construction', data: [164, 188, 188, 183, 197, 206, 222, 205, 175, 194, 197, 201, 185], color: '#535de8' },
+            { label: 'In construction', data: [164, 188, 188, 183, 197, 206, 222, 205, 175, 194, 197, 201, 185], color: '#34b5ff' },
+            { label: 'Completed', data: [18, 15, 28, 43, 18, 16, 16, 24, 71, 27, 34, 41, 50], color: '#535de8' },
+        ]
+    };
+    var unitsInConstructionByQuarterChart: C.BarChartData = {
+        labels: quarters,
+        datasets: [
+            // { label: 'Total сompleted', data: [1672, 328, 732, 1466, 485, 337, 845, 656, 1674, 1272, 1151, 1718, 1062], color: '#34b5ff' },
+            // { label: 'Affordable completed', data: [0, 0, 0, 0, 0, 10, 34, 167, 64, 96, 175, 23, 71], color: '#ffc334' },
+            { label: 'Total', data: [5106, 6187, 7246, 7793, 7723, 8651, 9186, 9142, 8716, 8385, 7598, 6754, 6105], color: '#34b5ff' },
+            { label: 'Affordable', data: [0, 0, 0, 404, 454, 1147, 1135, 999, 915, 871, 781, 796, 1170], color: '#ff5c54' }
         ]
     };
 
@@ -52,10 +61,12 @@ export default withFindingsQuery(C.withLoader((props) => {
                 <C.BarChart data={unitsByQuarterChart} />
                 <h2>Net new units by year</h2>
                 <C.BarChart data={unitsByYearChart} />
+                <h2>New units in construction by quarter</h2>
+                <C.BarChart data={unitsInConstructionByQuarterChart} />
                 <h2>Projects by quarter</h2>
                 <C.BarChart data={projectsByQuarterChart} />
-                <h2>Projects by year</h2>
-                <C.BarChart data={projectsByYearChart} />
+                {/* <h2>Projects by year</h2>
+                <C.BarChart data={projectsByYearChart} /> */}
             </div>
         );
     }
