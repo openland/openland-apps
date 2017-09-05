@@ -5,7 +5,7 @@ import * as C from '../Components';
 import { withFindingsQuery } from '../../api/';
 
 export default withFindingsQuery(C.withLoader((props) => {
-    var years = ['2014', '2015', '2016', '2017'];
+    var years = ['2014', '2015', '2016', '2017 Q1'];
     var quarters = [
         '14\'Q1', '14\'Q2', '14\'Q3', '14\'Q4',
         '15\'Q1', '15\'Q2', '15\'Q3', '15\'Q4',
@@ -15,7 +15,7 @@ export default withFindingsQuery(C.withLoader((props) => {
     var unitsByYearChart: C.BarChartData = {
         labels: years,
         datasets: [
-            { label: 'Total completed', data: [4198, 2323, 5815, 1062], color: '#34b5ff' },
+            { label: 'Total completed', data: [4198, 2323, 5815, 1062], color: '#535de8' },
             { label: 'Affordable completed', data: [0, 211, 358, 71], color: '#ffc334' },
             // { label: 'Total in-construction', data: [5255, 9124, 11915, 6105], color: '#ff5c54' },
             // { label: 'Affordable in-construction', data: [509, 1025, 3363, 1170], color: '#ffc334' }
@@ -24,7 +24,7 @@ export default withFindingsQuery(C.withLoader((props) => {
     var unitsByQuarterChart: C.BarChartData = {
         labels: quarters,
         datasets: [
-            { label: 'Total сompleted', data: [1672, 328, 732, 1466, 485, 337, 845, 656, 1674, 1272, 1151, 1718, 1062], color: '#34b5ff' },
+            { label: 'Total сompleted', data: [1672, 328, 732, 1466, 485, 337, 845, 656, 1674, 1272, 1151, 1718, 1062], color: '#535de8' },
             { label: 'Affordable completed', data: [0, 0, 0, 0, 0, 10, 34, 167, 64, 96, 175, 23, 71], color: '#ffc334' },
             // { label: 'Total in-construction', data: [5106, 6187, 7246, 7793, 7723, 8651, 9186, 9142, 8716, 8385, 7598, 6754, 6105], color: '#ff5c54' },
             // { label: 'Affordable in-construction', data: [0, 0, 0, 404, 454, 1147, 1135, 999, 915, 871, 781, 796, 1170], color: '#ffc334' }
