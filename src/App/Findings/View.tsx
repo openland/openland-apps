@@ -123,7 +123,7 @@ export default withFindingsQuery(C.withLoader((props) => {
                 component={() => (
                     <div className="st-page--nav">
                         <C.Link className="st-page--nav-i" path="/findings/charts"><span>Charts</span><i className="icon-right-arrow">{}</i></C.Link>
-                        <C.Link className="st-page--nav-i" path="/findings/recomendations"><span>Charts</span><i className="icon-last-arrow">{}</i></C.Link>
+                        <C.Link className="st-page--nav-i" path="/findings/recomendations"><span>Recomendations</span><i className="icon-last-arrow">{}</i></C.Link>
                     </div>
                 )}
             />
