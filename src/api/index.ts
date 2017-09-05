@@ -1,7 +1,8 @@
 export { User } from './User';
 
 export {
-    withCityQuery
+    withCityQuery,
+    Account, AccountResponse
 } from './Account';
 
 export {

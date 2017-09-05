@@ -4,7 +4,7 @@ import * as C from '../Components';
 
 export default withFindingsEdit(C.withLoader((props) => {
     return (
-        <C.Page>
+        <C.Page title={'Edit Findings'}>
             <C.Background />
             <C.Content>
                 <C.Form mutation={props.mutate!!} onComplete={() => props.history.push('/findings')} default={props.data.findings}>

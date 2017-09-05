@@ -8,7 +8,7 @@ import * as C from './Components';
 
 export default withCityQuery(C.withRootLoader((props) => {
     return (
-        <C.UserProvider user={props.data.me}>
+        <C.UserProvider user={props.data.me} account={props.data.account}>
             <C.RootContainer>
                 <C.Sidebar title={props.data.account.name} subtitle={props.data.account.city} image={'/img/sf.jpg'} >
                     <C.SidebarMenu title="Reports" icon="findings" path="/findings" expanded={true}>

@@ -147,7 +147,7 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
         };
 
         return (
-            <C.Page>
+            <C.Page title="Data Sources">
                 <C.Header title="Data Source" />
                 <div className="st-navigation">
                     <ul className="st-navigation--list">

@@ -5,7 +5,7 @@ import * as C from '../Components';
 
 const ViewRender = withProjectEdit(withLoader((props) => {
     return (
-        <C.Page>
+        <C.Page title={'Edit ' + props.data.project.name}>
             <C.Header title="Projects" subtitle={props.data.project.name} />
             <C.Background />
             <C.Content>

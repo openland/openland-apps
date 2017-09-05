@@ -5,7 +5,7 @@ import { withDatasetsCreate } from '../../api/';
 
 export default withDatasetsCreate(Router.withRouter((props) => {
     return (
-        <C.Page>
+        <C.Page title="New Data Source">
             <C.Header title="Data Source" />
             <C.Background />
             <C.Content>

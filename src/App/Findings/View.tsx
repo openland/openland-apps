@@ -61,8 +61,8 @@ export default withFindingsQuery(C.withLoader((props) => {
     }
 
     return (
-        <C.Page>
-            <C.Header title="Findings" />
+        <C.Page title="Reports">
+            <C.Header title="Reports" />
             <C.Background />
             {props.data.findings && (
                 <C.Content>

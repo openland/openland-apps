@@ -15,7 +15,7 @@ const ViewRender = withProjectQuery(withLoader((props) => {
         next = all[index + 1];
     }
     return (
-        <C.Page>
+        <C.Page title={props.data.project.name + ' Project'}>
             <C.Header title="Projects" subtitle={props.data.project.name} />
             <C.Background />
             <C.Content>

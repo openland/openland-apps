@@ -3,7 +3,8 @@ import * as React from 'react';
 import { withComponent } from './withComponent';
 import { Icons } from './Icons';
 import { Formatted } from './Formatted';
-
+import { withUser } from './UserProvider';
+import { Account } from '../../api/';
 export const Background = withComponent((props) => {
     return <div className="st-page--bg" style={{ backgroundImage: 'url(/img/sf-bg.jpg)' }} />;
 });
@@ -73,10 +74,24 @@ export const RowTitle = withComponent<{ title: string, icon: Icons }>((props) =>
     );
 });
 
-export const Page = withComponent<{}>((props) => {
-    return (
-        <div>
-            {props.children}
-        </div>
-    );
+class PageRender extends React.Component<{ title: string, account: Account }> {
+    componentDidMount() {
+        if (this.props.account.city != null) {
+            document.title = this.props.title + ' / ' + this.props.account.name + ' / ' + this.props.account.city + ' - Statecraft';
+        } else {
+            document.title = this.props.title + ' / ' + this.props.account.name + ' - Statecraft';
+        }
+    }
+    render() {
+        return (
+            <div>
+                {this.props.children}
+            </div>
+        );
+    }
+}
+
+export const Page = withUser<{ title: string }>((props) => {
+    console.warn(props);
+    return <PageRender {...props} />;
 });
