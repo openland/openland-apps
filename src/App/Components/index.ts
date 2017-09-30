@@ -33,4 +33,7 @@ export {
     BarChartData,
     BarChartDataset
 } from './BarChart';
+export {
+    TableEdit
+} from './TableEdit';
 import './Styles.css';

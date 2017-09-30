@@ -27,7 +27,8 @@ export default withCityQuery(C.withRootLoader((props) => {
                     <Route path="/findings" component={Findings} />
                     <Route path="/projects" component={Projects} />
                     <Route path="/sources" component={Sources} />
-                    <Redirect to="/findings" />
+                    <Redirect path="/" exact={true} to="/findings" />
+                    <Redirect to="/404" />
                 </Switch>
             </C.RootContainer>
         </C.UserProvider>

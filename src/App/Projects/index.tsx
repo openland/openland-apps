@@ -7,7 +7,7 @@ export default function () {
         <Switch>
             <Route path="/projects/:projectId/edit" component={Edit} />
             <Route path="/projects/:projectId" component={View} />
-            <Redirect to="/" />
+            <Redirect to="/404" />
         </Switch>
     );
 }

@@ -10,7 +10,7 @@ export default function () {
             <Router.Route path="/findings/charts" component={View.default} />
             <Router.Route path="/findings/recomendations" component={View.default} />
             <Router.Route exact={true} path="/findings/" component={View.default} />
-            <Router.Redirect to="/findings" />
+            <Router.Redirect to="/404" />
         </Router.Switch>
     );
 }

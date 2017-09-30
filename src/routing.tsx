@@ -7,6 +7,7 @@ import * as api from './api';
 import * as Auth from './auth';
 
 import App from './App/';
+import NotFound from './App/Failures/NotFound';
 
 interface AuthPageProps {
     location: { hash: string };
@@ -68,6 +69,7 @@ export default function () {
             <BrowserRouter>
                 <Switch>
                     <Route path="/auth_complete" component={AuthPage} />
+                    <Route path="/404" component={NotFound} />
                     <Route path="/" component={App} />
                 </Switch>
             </BrowserRouter>

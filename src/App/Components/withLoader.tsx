@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { QueryProps } from 'react-apollo';
 import { Loader } from './Loader';
+import * as Router from 'react-router';
 
 export function withLoader<P>(WrappedComponent: React.ComponentType<P>):
     React.ComponentType<{ data: QueryProps } & P> {
@@ -23,9 +24,8 @@ export function withLoader<P>(WrappedComponent: React.ComponentType<P>):
     };
 }
 
-export function withRootLoader<P>(WrappedComponent: React.ComponentType<P>):
-    React.ComponentType<{ data: QueryProps } & P> {
-    return function (props: { data: QueryProps } & P) {
+export function withRootLoader<P>(WrappedComponent: React.ComponentType<P>): React.ComponentType<{ data: QueryProps } & P> {
+    return Router.withRouter<{ data: QueryProps } & P>(props => {
         if (props.data.loading) {
             return (
                 <div className="st-page">
@@ -33,6 +33,10 @@ export function withRootLoader<P>(WrappedComponent: React.ComponentType<P>):
                 </div>
             );
         } else if (props.data.error != null) {
+            if (props.data.error.graphQLErrors[0].message.startsWith('404:')) {
+                props.history.push('/404');
+                return null;
+            }
             return (
                 <div key="_message">
                     {props.data.error.message}
@@ -43,5 +47,5 @@ export function withRootLoader<P>(WrappedComponent: React.ComponentType<P>):
         return (
             <WrappedComponent {...props} key="_component" />
         );
-    };
+    });
 }
