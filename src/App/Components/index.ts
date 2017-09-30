@@ -21,7 +21,7 @@ export { Navigation } from './Navigation';
 export { Link } from './Link';
 export {
     Form, FormContext, FormProvider, withForm,
-    FormText, FormSubmit, FormState, FormTextArea
+    FormText, FormSubmit, FormState, FormTextArea, FormLinks
 } from './Form';
 export { Formatted } from './Formatted';
 export { Loader } from './Loader';

@@ -4,6 +4,7 @@ import { withCityQuery } from '../api/';
 import Findings from './Findings';
 import Projects from './Projects';
 import Sources from './Sources';
+import Manage from './Manage';
 import * as C from './Components';
 
 export default withCityQuery(C.withRootLoader((props) => {
@@ -22,11 +23,17 @@ export default withCityQuery(C.withRootLoader((props) => {
                         })}
                     </C.SidebarMenu>
                     <C.SidebarMenu title="Data Sources" path="/sources" icon="data-sources" />
+                    {props.data.me != null && (
+                        <C.SidebarMenu title="Manage" path="/manage" icon="data-sources" />
+                    )}
                 </C.Sidebar>
                 <Switch>
                     <Route path="/findings" component={Findings} />
                     <Route path="/projects" component={Projects} />
                     <Route path="/sources" component={Sources} />
+                    {props.data.me != null && (
+                        <Route path="/manage" component={Manage} />
+                    )}
                     <Redirect path="/" exact={true} to="/findings" />
                     <Redirect to="/404" />
                 </Switch>

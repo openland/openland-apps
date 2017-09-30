@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { MutationFunc } from 'react-apollo';
-
+import { LinksEdit } from './LinksEdit';
+import { Link } from '../../api/';
 export interface FormContext {
     form: FormProvider;
 }
@@ -46,6 +47,8 @@ export class Form extends React.Component<FormProps> implements React.ChildConte
         if (this.props.default != null) {
             for (let key in this.props.default) {
                 if (this.provider.getValue(key) === undefined) {
+                    console.warn(key);
+                    console.warn(this.props.default[key]);
                     this.provider.setValue(key, this.props.default[key]);
                 }
             }
@@ -183,6 +186,23 @@ export class FormTextArea extends React.Component<{ name: string, placeholder?: 
             />);
     }
 }
+
+export const FormLinks = withForm<{ name: string }>((props) => {
+
+    //     var form = (this.context as FormContext).form;
+    //     var value = form.getValue(props.name);
+    //     if (value === null) {
+    //         value = '';
+    //     }
+    //     this.state = { value: value };
+    // }
+    var value = props.form.getValue(props.name);
+    return (
+        <div>
+            <LinksEdit links={value as Link[]} />
+        </div>
+    );
+});
 
 export const FormSubmit = withForm<{ name: string }>((props) => {
     return <button className="st-btn is-lg is-block" onClick={props.form.complete}>{props.name}</button>;

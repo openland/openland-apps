@@ -4,6 +4,7 @@ import { withProjectEdit } from '../../api/';
 import * as C from '../Components';
 
 const ViewRender = withProjectEdit(withLoader((props) => {
+    console.warn(props.data.project);
     return (
         <C.Page title={'Edit ' + props.data.project.name}>
             <C.Header title="Projects" subtitle={props.data.project.name} />
@@ -21,6 +22,8 @@ const ViewRender = withProjectEdit(withLoader((props) => {
                             <C.FormTextArea name="findings" />
                             <h2>Project Description</h2>
                             <C.FormTextArea name="description" />
+                            <h2>Outputs</h2>
+                            <C.FormLinks name="outputs" />
                             <h2>Sorting</h2>
                             <C.FormText name="sortKey" />
                         </div>

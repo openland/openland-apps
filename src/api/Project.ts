@@ -83,6 +83,14 @@ const ProjectEdit = gql`
       intro
       description
       findings
+      sources {
+        title
+        url
+      }
+      outputs {
+       title
+       url
+      }
     }
   }
 `;

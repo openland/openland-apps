@@ -12,7 +12,7 @@ export {
 
 export {
     withProjectsQuery, withProjectQuery, withProjectEdit,
-    Project, ProjectShort, ProjectsResponse
+    Project, ProjectShort, ProjectsResponse, Link
 } from './Project';
 
 export {
