@@ -10,7 +10,7 @@ export default withFindingsQuery(C.withLoader((props) => {
         '14\'Q1', '14\'Q2', '14\'Q3', '14\'Q4',
         '15\'Q1', '15\'Q2', '15\'Q3', '15\'Q4',
         '16\'Q1', '16\'Q2', '16\'Q3', '16\'Q4',
-        '17\'Q4'
+        '17\'Q1'
     ];
     var unitsByYearChart: C.BarChartData = {
         labels: years,
@@ -61,7 +61,7 @@ export default withFindingsQuery(C.withLoader((props) => {
                 <C.BarChart data={unitsByQuarterChart} />
                 <h2>Net new units by year</h2>
                 <C.BarChart data={unitsByYearChart} />
-                <h2>New units in construction by quarter</h2>
+                <h2>Units in construction by quarter</h2>
                 <C.BarChart data={unitsInConstructionByQuarterChart} />
                 <h2>Projects by quarter</h2>
                 <C.BarChart data={projectsByQuarterChart} />
