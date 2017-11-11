@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { MutationFunc } from 'react-apollo';
+import Select from 'react-select';
 import { LinksEdit } from './LinksEdit';
 import { Link } from '../../api/';
 export interface FormContext {
@@ -154,7 +155,7 @@ export class FormText extends React.Component<{ name: string, placeholder?: stri
     }
 }
 
-export class FormSelect extends React.Component<{ name: string, options: Array<{value: string, title: string}> }, { value: any }> {
+export class FormSelect extends React.Component<{ name: string, options: Array<{value: string, label: string}> }, { value: any }> {
     static contextTypes = {
         form: React.PropTypes.object
     };
@@ -169,27 +170,29 @@ export class FormSelect extends React.Component<{ name: string, options: Array<{
         this.state = { value: value };
     }
 
-    handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    handleChange = (val: {value: string, label: string}) => {
+        var selectedOption = val;
+
+        if (selectedOption === null) {
+            selectedOption = {value: '', label: ''};
+        }
+
         var form = (this.context as FormContext).form;
-        form.setValue(this.props.name, event.target.value.trim());
+        form.setValue(this.props.name, selectedOption.value);
         this.setState({
-            value: event.target.value
+            value: selectedOption.value
         });
     }
 
     render() {
         return (
-            <select
-                className="st-select"
+            <Select
+                // className="st-select"
                 value={this.state.value}
+                options={this.props.options}
+                searchable={false}
                 onChange={this.handleChange}
-            >
-                {
-                    this.props.options.map((item, index) => (
-                        <option value={item.value}>{item.title}</option>
-                    ))
-                }
-            </select>);
+            />);
     }
 }
 

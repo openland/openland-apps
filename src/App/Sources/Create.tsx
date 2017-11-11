@@ -19,7 +19,7 @@ export default withDatasetsCreate(Router.withRouter((props) => {
                             <h2>Title</h2>
                             <C.FormText name="name" placeholder="Name of the Data Source" />
                             <h2>Kind</h2>
-                            <C.FormSelect name="kind" options={[{value: 'document', title: 'document'}, {value: 'dataset', title: 'dataset'}]} />
+                            <C.FormSelect name="kind" options={[{value: 'document', label: 'document'}, {value: 'dataset', label: 'dataset'}]} />
                         </div>
                     </C.Section>
                     <C.Section>
