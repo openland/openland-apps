@@ -15,6 +15,7 @@
     "@types/react-dom": "^15.5.1",
     "@types/react-router": "^4.0.14",
     "@types/react-router-dom": "^4.0.7",
+    "@types/react-select": "^1.0.59",
     "auth0-js": "^8.8.0",
     "auth0-lock": "^10.19.0",
     "chart.js": "^2.6.0",
@@ -32,6 +33,7 @@
     "react-masonry-component": "^5.0.7",
     "react-router-dom": "^4.1.2",
     "react-scripts-ts": "2.5.0",
+    "react-select": "^1.0.0-rc.10",
     "serve": "^6.0.5",
     "typescript": "^2.4.2"
   },
