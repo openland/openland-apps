@@ -154,15 +154,39 @@ export class FormText extends React.Component<{ name: string, placeholder?: stri
     }
 }
 
-export class FormSelect extends React.Component<{ name: string, options: Array<string> }, { value: any }> {
+export class FormSelect extends React.Component<{ name: string, options: Array<{value: string, caption: string}> }, { value: any }> {
+    static contextTypes = {
+        form: React.PropTypes.object
+    };
+
+    constructor(props: any, context: any) {
+        super(props, context);
+        var form = (this.context as FormContext).form;
+        var value = form.getValue(props.name);
+        if (value === null) {
+            value = '';
+        }
+        this.state = { value: value };
+    }
+
+    handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        var form = (this.context as FormContext).form;
+        form.setValue(this.props.name, event.target.value.trim());
+        this.setState({
+            value: event.target.value
+        });
+    }
+
     render() {
         return (
             <select
                 className="st-select"
+                value={this.state.value}
+                onChange={this.handleChange}
             >
                 {
                     this.props.options.map((item, index) => (
-                        <option value={index}>{item}</option>
+                        <option value={item.value}>{item.caption}</option>
                     ))
                 }
             </select>);
