@@ -23,7 +23,7 @@ export default withCityQuery(C.withRootLoader((props) => {
                         })}
                     </C.SidebarMenu>
                     <C.SidebarMenu title="Data Sources" path="/sources" icon="data-sources" />
-                    {props.data.me != null && (
+                    {props.data.account.writeAccess && (
                         <C.SidebarMenu title="Manage" path="/manage" icon="data-sources" />
                     )}
                 </C.Sidebar>
@@ -31,7 +31,7 @@ export default withCityQuery(C.withRootLoader((props) => {
                     <Route path="/findings" component={Findings} />
                     <Route path="/projects" component={Projects} />
                     <Route path="/sources" component={Sources} />
-                    {props.data.me != null && (
+                    {props.data.account.writeAccess && (
                         <Route path="/manage" component={Manage} />
                     )}
                     <Redirect path="/" exact={true} to="/findings" />
