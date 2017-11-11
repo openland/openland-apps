@@ -154,6 +154,21 @@ export class FormText extends React.Component<{ name: string, placeholder?: stri
     }
 }
 
+export class FormSelect extends React.Component<{ name: string, options: Array<string> }, { value: any }> {
+    render() {
+        return (
+            <select
+                className="st-select"
+            >
+                {
+                    this.props.options.map((item, index) => (
+                        <option value={index}>{item}</option>
+                    ))
+                }
+            </select>);
+    }
+}
+
 export class FormTextArea extends React.Component<{ name: string, placeholder?: string }, { value: any }> {
     static contextTypes = {
         form: React.PropTypes.object
