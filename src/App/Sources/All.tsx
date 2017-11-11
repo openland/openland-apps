@@ -2,6 +2,9 @@ import * as React from 'react';
 import { withDatasetsQuery, DataSet } from '../../api/';
 import * as C from '../Components';
 import Mansory from 'react-masonry-component';
+import { User } from '../../api/User';
+import { Account } from '../../api/Account';
+import { withUser } from '../Components/UserProvider';
 
 function DataLink(props: { dataset: DataSet }) {
 
@@ -99,7 +102,7 @@ function datasetCompare(a: DataSet, b: DataSet) {
     return ((a.name < b.name) ? -1 : ((a.name > b.name) ? 1 : 0));
 }
 
-class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: string }> {
+class DatasetsPage extends React.Component<{ datasets: [DataSet], user?: User, account: Account }, { tab: string }> {
 
     constructor() {
         super();
@@ -215,7 +218,9 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
                             </li>
                         )}
                     </ul>
-                    <div className="st-navigation--btn"><C.Link className="st-btn is-sm is-block" path="/sources/new">Add a source</C.Link></div>
+                    {this.props.account.writeAccess && (
+                        <div className="st-navigation--btn"><C.Link className="st-btn is-sm is-block" path="/sources/new">Add a source</C.Link></div>
+                    )}
                 </div>
                 <C.Background />
                 <C.Grid>
@@ -228,8 +233,8 @@ class DatasetsPage extends React.Component<{ datasets: [DataSet] }, { tab: strin
     }
 }
 
-const DatasetsRender = withDatasetsQuery(C.withLoader((props) => {
-    return <DatasetsPage datasets={props.data.datasets} />;
-}));
+const DatasetsRender = withDatasetsQuery(withUser(C.withLoader((props) => {
+    return <DatasetsPage datasets={props.data.datasets} user={props.user} account={props.account} />;
+})));
 
 export default DatasetsRender;

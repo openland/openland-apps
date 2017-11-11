@@ -8,6 +8,8 @@ export interface Account {
   id: string;
   name: string;
   city?: string;
+  readAccess: Boolean;
+  writeAccess: Boolean;
 }
 
 export interface AccountResponse {
@@ -24,6 +26,8 @@ const QueryCity = gql`
        id
        name
        city
+       readAccess
+       writeAccess
      }
      me {
        id
