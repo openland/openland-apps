@@ -7,7 +7,9 @@ import * as api from './api';
 import * as Auth from './auth';
 
 import App from './App/';
+import Sandbox from './Sandbox/';
 import NotFound from './App/Failures/NotFound';
+import { Config } from './config';
 
 interface AuthPageProps {
     location: { hash: string };
@@ -31,10 +33,10 @@ class AuthPage extends React.Component<AuthPageProps, {
             var res = await Auth.parseAuth();
             var uploaded = await fetch(api.server + '/auth', {
                 method: 'POST',
-                headers: {
-                    authorization: 'Bearer ' + res.idToken,
-                    'access-token': res.accessToken
-                }
+                headers: [
+                    ['authorization', 'Bearer ' + res.idToken],
+                    ['access-token', res.accessToken]
+                ]
             });
             if (uploaded.ok) {
                 Auth.completeAuthentication(res);
@@ -64,12 +66,28 @@ class AuthPage extends React.Component<AuthPageProps, {
 }
 
 export default function () {
+
+    if (Config.domain === 'sandbox') {
+        return (
+            <ApolloProvider client={api.apolloClient}>
+                <BrowserRouter>
+                    <Switch>
+                        <Route path="/auth_complete" component={AuthPage} />
+                        <Route path="/404" component={NotFound} />
+                        <Route path="/" component={Sandbox} />
+                    </Switch>
+                </BrowserRouter>
+            </ApolloProvider>
+        );
+    }
+
     return (
-        <ApolloProvider client={api.default}>
+        <ApolloProvider client={api.apolloClient}>
             <BrowserRouter>
                 <Switch>
                     <Route path="/auth_complete" component={AuthPage} />
                     <Route path="/404" component={NotFound} />
+                    <Route path="/sandbox" component={Sandbox} />
                     <Route path="/" component={App} />
                 </Switch>
             </BrowserRouter>

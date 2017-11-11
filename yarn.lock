@@ -1097,7 +1097,7 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-codemirror-graphql@^0.6.8:
+codemirror-graphql@^0.6.11:
   version "0.6.11"
   resolved "https://registry.yarnpkg.com/codemirror-graphql/-/codemirror-graphql-0.6.11.tgz#795efa3933523815a5245eefe8d6831d3c4ad026"
   dependencies:
@@ -2366,12 +2366,12 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
-graphiql@^0.11.2:
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/graphiql/-/graphiql-0.11.2.tgz#7f7864552c340ab4fe6f578ce3f7197905d429db"
+graphiql@^0.11.10:
+  version "0.11.10"
+  resolved "https://registry.yarnpkg.com/graphiql/-/graphiql-0.11.10.tgz#6d24261b5ccd04bafcea4b8168ee2ff89bb22248"
   dependencies:
     codemirror "^5.26.0"
-    codemirror-graphql "^0.6.8"
+    codemirror-graphql "^0.6.11"
     marked "0.3.6"
 
 graphql-anywhere@^3.0.0, graphql-anywhere@^3.0.1:

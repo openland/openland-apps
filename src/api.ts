@@ -18,12 +18,14 @@ function buildId(typename: string, id: any) {
     return toIdValue(dataIdFromObject(typename, id));
 }
 
-var headers = {
-    'x-statecraft-domain': Config.domain
-};
+var headers: string[][] = [];
+
+if (Config.domain !== 'sandbox') {
+    headers = [['x-statecraft-domain', Config.domain]];
+}
 
 if (Auth.authorizationHeader() != null) {
-    (<any> headers).authorization = Auth.authorizationHeader();
+    (<any>headers).authorization = Auth.authorizationHeader();
 }
 
 client = new ApolloClient({
@@ -41,4 +43,12 @@ client = new ApolloClient({
     }
 });
 
-export default client;
+export const apolloClient = client;
+
+export function sandboxResolver(args: any) {
+    return fetch(endpoint, {
+        method: 'post',
+        headers: [['Content-Type', 'application/json'], ...headers],
+        body: JSON.stringify(args),
+    }).then(response => response.json());
+}
