@@ -12,16 +12,14 @@ const defaultRender = mkd.renderer.rules.link_open || function (tokens: any, idx
 };
 
 mkd.renderer.rules.link_open = function (tokens: any, idx: any, options: any, env: any, self: any) {
-    // If you are sure other plugins can't add `target` - drop check below
-    var aIndex = tokens[idx].attrIndex('target');
-
-    if (aIndex < 0) {
-        tokens[idx].attrPush(['target', '_blank']); // add new attribute
-    } else {
-        tokens[idx].attrs[aIndex][1] = '_blank';    // replace value of existing attr
+    var hrefIndex = tokens[idx].attrIndex('href');
+    if (hrefIndex >= 0) {
+        var href = tokens[idx].attrs[hrefIndex][1] as string;
+        var url = new URL(href);
+        if (url.host !== window.location.host) {
+            tokens[idx].attrPush(['target', '_blank']);
+        }
     }
-
-    // pass token to default renderer.
     return defaultRender(tokens, idx, options, env, self);
 };
 
