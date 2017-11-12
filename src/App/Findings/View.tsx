@@ -86,7 +86,7 @@ export default withFindingsQuery(C.withLoader((props) => {
                                     <img src="/img/profile_yury.jpg" alt="" />Yury Lifshits
                             </a>
                                 <a className="st-page--author" href="mailto:steve@statecraft.one">
-                                    <img src="/img/profile_steve.jpg" alt="" />Stepan Korshakov
+                                    <img src="/img/profile_steve.jpg" alt="" />Steve Korshakov
                             </a>
                             </div>
                             <div className="st-page--contacts">
