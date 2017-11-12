@@ -16,5 +16,5 @@ app.get("*", function (req, res) {
 
 http.createServer(app).listen(PORT, function () {
     console.log("Express server listening on port " + PORT);
-    console.log("http://localhost:" + PORT);
+    console.log("http://sf.dev.statecraft.one:" + PORT);
 });
