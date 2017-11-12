@@ -1,0 +1,136 @@
+/*
+  HTML5 Reset :: reset.css
+  -------------------------------------------------------------------
+  Подготовлен командой LiveHTML | by LiveHTML :: http://livehtml.io
+  -------------------------------------------------------------------
+  Выражаем особую благодарность людям, чьи труды способствовали появлению данного ресета:
+  We have learned much from/been inspired by/taken code where offered from:
+
+  Eric Meyer          :: http://ericmeyer.com
+  HTML5 Doctor        :: http://html5doctor.com
+  and the HTML5 Boilerplate :: http://html5boilerplate.com
+
+-------------------------------------------------------------------------------*/
+
+/* Сбрасываем значения по умолчанию для элементов | Let's default this puppy out
+-------------------------------------------------------------------------------*/
+
+html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, hgroup, menu, nav, section, time, mark, audio, video {
+  margin:0;
+  padding:0;
+  border:0;
+  outline:0;
+  font-size:100%;
+  vertical-align:baseline;
+  background:transparent;
+}
+
+article, aside, figure, footer, header, hgroup, nav, section { display:block; }
+
+header, section, footer { clear:both; }
+
+/* Всегда показывать полосу прокрутки (чтобы сайт не прыгал, когда на других страницах нет данной полосы)
+   force a vertical scrollbar to prevent a jumpy page */
+html { overflow-y:scroll; }
+
+/* Добавляем буллеты к UL и цифры к OL, т.к. в контенте могут использоваться стандартные списки
+  we can use default ULs & OLs with bullets */
+ul {
+  list-style:outside disc;
+  margin:15px 0 15px 30px;
+}
+ol {
+  list-style:outside decimal;
+  margin:15px 0 15px 30px;
+}
+
+table { border-collapse:collapse; border-spacing:0; }
+td, td img { vertical-align:top; }
+
+/* Сбрасываем отступы у элементов форм
+  Webkit browsers add a 2px margin outside the chrome of form elements */
+button, input, select, textarea { margin:0; outline:none; }
+input::-moz-focus-inner, button::-moz-focus-inner { padding:0; border:0; }
+
+input, select { vertical-align:middle; }
+input[type=radio], input[type=checkbox] { margin:1px 4px 4px 0; }
+
+input[type=text], input[type=password] {
+  border-radius:0;
+  -webkit-appearance:none;
+}
+textarea {
+  overflow:auto;
+  resize:vertical;
+  border-radius:0;
+  -webkit-appearance:none;
+}
+
+/* Решение проблемы с обрезанием стилизованных кнопок в IE | make buttons play nice in IE */
+button, input[type=submit] { width:auto; overflow:visible; }
+.ie7 input[type=submit], .ie7 input[type=reset], .ie7 input[type=button] { filter:chroma(color=#000000); }
+
+/* Курсор-указатель на кликабельных элементах | hand cursor on clickable elements */
+input[type=button],
+input[type=submit],
+button {
+  cursor:pointer;
+  border-radius:0;
+  -webkit-appearance:none;
+}
+
+blockquote, q { quotes:none; }
+blockquote:before,
+blockquote:after,
+q:before,
+q:after { content:''; content:none; }
+
+del { text-decoration:line-through; }
+
+abbr[title], dfn[title] { border-bottom:1px dotted #000; cursor:help; }
+
+small { font-size:85%; }
+
+strong { font-weight:bold; }
+
+sub, sup { font-size:75%; line-height:0; position:relative; }
+sup { top:-0.5em; }
+sub { bottom:-0.25em; }
+
+hr {
+  display:block;
+  height:1px;
+  border:0;
+  border-top:1px solid #ccc;
+  margin:1em 0;
+  padding:0;
+  font-size:0;
+  line-height:0;
+}
+
+/* Стандартизируем моноширные элементы | standardize any monospaced elements */
+pre, code, kbd, samp { font-family:monospace, sans-serif; }
+pre {
+  white-space:pre; /* CSS2 */
+  white-space:pre-wrap; /* CSS 2.1 */
+  white-space:pre-line; /* CSS 3 (and 2.1 as well, actually) */
+  word-wrap:break-word; /* IE */
+}
+
+/* Устанавливаем произвольный цвет для выделения (не забываем убрать тень для текста)
+  Custom text-selection colors (remove any text shadows: twitter.com/miketaylr/status/12228805301) */
+/* ::-moz-selection{ background:#fcd700; color:#fff; text-shadow:none; } */
+/* ::selection { background:#fcd700; color:#fff; text-shadow:none; } */
+
+/* Устанавливаем произвольный цвет подсветки ссылок на Apple устройствах: j.mp/webkit-tap-highlight-color */
+/* a:link {-webkit-tap-highlight-color:#fcd700;} */
+
+/* Правильный ресайз картинок в IE7
+  scale images in IE7 more attractively */
+.ie7 img { -ms-interpolation-mode:bicubic; }
+
+/* Сброс float блоков | let's clear some floats */
+.clear { clear:both; height:0; font-size:0; line-height:0; }
+.center { text-align:center; margin-left:auto; margin-right:auto; }
+
+/* Coded in LiveHTML :: http://livehtml.io */

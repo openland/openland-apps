@@ -1,6 +1,6 @@
 {
-  "name": "gostate",
-  "version": "0.1.0",
+  "name": "statecraft",
+  "version": "1.0.0",
   "private": true,
   "engines": {
     "node": ">=v8.0.0"
@@ -25,6 +25,7 @@
     "es6-shim": "^0.35.3",
     "express-http-to-https": "^1.1.2",
     "graphiql": "^0.11.10",
+    "less": "^2.7.3",
     "local-storage": "^1.4.2",
     "markdown": "^0.5.0",
     "markdown-it": "^8.4.0",
@@ -41,10 +42,16 @@
     "serve": "^6.0.5",
     "typescript": "^2.4.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "less-watch-compiler": "^1.8.0",
+    "npm-run-all": "^4.1.2"
+  },
   "scripts": {
-    "dev": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
+    "watch-css": "yarn less-watch-compiler less/ public/css/ style.less",
+    "build-css": "node_modules/less/bin/lessc less/style.less public/css/style.css",
+    "dev-js": "react-scripts-ts start",
+    "dev": "npm-run-all -p watch-css dev-js",
+    "build": "yarn build-css && react-scripts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "heroku-postbuild": "yarn build",
