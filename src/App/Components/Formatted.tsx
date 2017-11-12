@@ -15,9 +15,13 @@ mkd.renderer.rules.link_open = function (tokens: any, idx: any, options: any, en
     var hrefIndex = tokens[idx].attrIndex('href');
     if (hrefIndex >= 0) {
         var href = tokens[idx].attrs[hrefIndex][1] as string;
-        var url = new URL(href);
-        if (url.host !== window.location.host) {
-            tokens[idx].attrPush(['target', '_blank']);
+        try {
+            var url = new URL(href);
+            if (url.host !== window.location.host) {
+                tokens[idx].attrPush(['target', '_blank']);
+            }
+        } catch (e) {
+            // tokens[idx].attrPush(['target', '_blank']);
         }
     }
     return defaultRender(tokens, idx, options, env, self);
