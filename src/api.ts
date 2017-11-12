@@ -7,7 +7,7 @@ declare global {
 }
 
 export const server = window.server.server;
-export const endpoint = server + '/graphql';
+export const endpoint = server + '/api';
 var client: ApolloClient = new ApolloClient();
 
 function dataIdFromObject(typename: string, id: any): any {
@@ -20,10 +20,8 @@ function buildId(typename: string, id: any) {
 
 var headers: any = {};
 var headersArray: string[][] = [];
-if (Config.domain !== 'sandbox') {
-    headers['x-statecraft-domain'] = Config.domain;
-    headersArray = [['x-statecraft-domain', Config.domain]];
-}
+headers['x-statecraft-domain'] = Config.domain;
+headersArray = [['x-statecraft-domain', Config.domain]];
 
 if (Auth.authorizationHeader() != null) {
     var h = Auth.authorizationHeader()!!;

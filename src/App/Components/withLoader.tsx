@@ -33,9 +33,11 @@ export function withRootLoader<P>(WrappedComponent: React.ComponentType<P>): Rea
                 </div>
             );
         } else if (props.data.error != null) {
-            if (props.data.error.graphQLErrors[0].message.startsWith('404:')) {
-                props.history.push('/404');
-                return null;
+            if (props.data.error.networkError != null) {
+                if ((props.data.error.networkError as any).response.status === 404) {
+                    props.history.push('/404');
+                    return null;
+                }
             }
             return (
                 <div key="_message">
