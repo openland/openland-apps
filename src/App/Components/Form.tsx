@@ -2,10 +2,8 @@
 
 import * as React from 'react';
 import { MutationFunc } from 'react-apollo';
-import Select from 'react-select';
 import { LinksEdit } from './LinksEdit';
 import { Link } from '../../api/';
-import SimpleDME from 'react-simplemde-editor';
 
 export interface FormContext {
     form: FormProvider;
@@ -156,111 +154,6 @@ export class FormText extends React.Component<{ name: string, placeholder?: stri
                 value={this.state.value}
                 onChange={this.handleChange}
             />);
-    }
-}
-
-export class FormSelect extends React.Component<{ name: string, options: Array<{ value: string, label: string }> }, { value: any }> {
-    static contextTypes = {
-        form: React.PropTypes.object
-    };
-
-    constructor(props: any, context: any) {
-        super(props, context);
-        var form = (this.context as FormContext).form;
-        var value = form.getValue(props.name);
-        if (value === null) {
-            value = '';
-        }
-        this.state = { value: value };
-    }
-
-    handleChange = (val: { value: string, label: string }) => {
-        var selectedOption = val;
-
-        if (selectedOption === null) {
-            selectedOption = { value: '', label: '' };
-        }
-
-        var form = (this.context as FormContext).form;
-        form.setValue(this.props.name, selectedOption.value);
-        this.setState({
-            value: selectedOption.value
-        });
-    }
-
-    render() {
-        return (
-            <Select
-                // className="st-select"
-                value={this.state.value}
-                options={this.props.options}
-                searchable={false}
-                onChange={this.handleChange}
-            />);
-    }
-}
-
-export class FormTextArea extends React.Component<{ name: string, placeholder?: string }, { value: any }> {
-    static contextTypes = {
-        form: React.PropTypes.object
-    };
-
-    constructor(props: any, context: any) {
-        super(props, context);
-        var form = (this.context as FormContext).form;
-        var value = form.getValue(props.name);
-        if (value === null) {
-            value = '';
-        }
-        this.state = { value: value };
-    }
-
-    handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        var form = (this.context as FormContext).form;
-        form.setValue(this.props.name, event.target.value.trim());
-        this.setState({
-            value: event.target.value
-        });
-    }
-    render() {
-        return (
-            <textarea
-                className="st-input"
-                value={this.state.value}
-                onChange={this.handleChange}
-                style={{ height: 240 }}
-            />);
-    }
-}
-
-export class FormMarkdown extends React.Component<{ name: string, placeholder?: string }, { value: string }> {
-    static contextTypes = {
-        form: React.PropTypes.object
-    };
-
-    constructor(props: any, context: any) {
-        super(props, context);
-        var form = (this.context as FormContext).form;
-        var value = form.getValue(props.name);
-        if (value === null) {
-            value = '';
-        }
-        this.state = { value: value };
-    }
-
-    handleChange = (editorState: string) => {
-        var form = (this.context as FormContext).form;
-        form.setValue(this.props.name, editorState);
-        this.setState({ value: editorState });
-    }
-
-    render() {
-        return (
-            <SimpleDME
-                value={this.state.value}
-                onChange={this.handleChange}
-            />
-        );
     }
 }
 

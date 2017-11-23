@@ -19,11 +19,16 @@ export {
 export { Icons } from './Icons';
 export { Navigation } from './Navigation';
 export { Link } from './Link';
+
 export {
     Form, FormContext, FormProvider, withForm,
-    FormText, FormSelect, FormSubmit, FormState, 
-    FormTextArea, FormLinks, FormMarkdown
+    FormText, FormSubmit, FormState,
+    FormLinks
 } from './Form';
+export { FormMarkdown } from './FormMarkdown';
+export { FormSelect } from './FormSelect';
+export { FormTable } from './FormTable';
+
 export { Formatted } from './Formatted';
 export { Loader } from './Loader';
 export { UserProvider, withUser } from './UserProvider';
@@ -38,3 +43,7 @@ export {
     TableEdit
 } from './TableEdit';
 import './Styles.css';
+
+export {
+    Spreadsheet
+} from './Spreadsheet';

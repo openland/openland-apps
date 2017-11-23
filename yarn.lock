@@ -2664,6 +2664,14 @@ handlebars@4.0.10, handlebars@^4.0.3:
   optionalDependencies:
     uglify-js "^2.6"
 
+handsontable@^0.33.0:
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-0.33.0.tgz#3df41804fd00a878b3904a478bf7ef54f2bc6d95"
+  dependencies:
+    moment "2.18.1"
+    numbro "1.11.0"
+    pikaday "1.5.1"
+
 har-schema@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/har-schema/-/har-schema-1.0.5.tgz#d263135f43307c02c602afc8fe95970c0151369e"
@@ -3527,6 +3535,10 @@ jest@20.0.3:
   dependencies:
     jest-cli "^20.0.3"
 
+jquery@^2.1:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
+
 js-base64@^2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
@@ -4199,9 +4211,17 @@ mocha@^3.1.2:
     mkdirp "0.5.1"
     supports-color "3.1.2"
 
-moment@^2.10.6:
+moment@2.18.1, moment@^2.10.6:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
+
+moment@2.x, moment@^2.17.1:
+  version "2.19.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.2.tgz#8a7f774c95a64550b4c7ebd496683908f9419dbe"
+
+mousetrap@^1.5.3:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/mousetrap/-/mousetrap-1.6.1.tgz#2a085f5c751294c75e7e81f6ec2545b29cbf42d9"
 
 mri@1.1.0:
   version "1.1.0"
@@ -4400,6 +4420,14 @@ num2fraction@^1.2.2:
 number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
+
+numbro@1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/numbro/-/numbro-1.11.0.tgz#39aa17b358b4682aec8ca0d5755f35c5d9ce8f9e"
+
+numbro@^1.9.3:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/numbro/-/numbro-1.11.1.tgz#e0d9ba0ddfc3ad5ac01d9558a49383db214f04be"
 
 "nwmatcher@>= 1.3.9 < 2.0.0":
   version "1.4.1"
@@ -4719,6 +4747,18 @@ pify@^2.0.0, pify@^2.3.0:
 pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
+
+pikaday@1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/pikaday/-/pikaday-1.5.1.tgz#0a48549bc1a14ea1d08c44074d761bc2f2bfcfd3"
+  optionalDependencies:
+    moment "2.x"
+
+pikaday@^1.5.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/pikaday/-/pikaday-1.6.1.tgz#b91bcb9b8539cedd8d6d08e4e7465e12095671b0"
+  optionalDependencies:
+    moment "2.x"
 
 pinkie-promise@^2.0.0:
   version "2.0.1"
@@ -5298,6 +5338,16 @@ react-error-overlay@^1.0.6:
     settle-promise "1.0.0"
     source-map "0.5.6"
 
+react-handsontable@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/react-handsontable/-/react-handsontable-0.3.1.tgz#503220ec5bd3b98a99b9a6a5b2e188b90d47ce6e"
+  dependencies:
+    handsontable "^0.33.0"
+    moment "^2.17.1"
+    numbro "^1.9.3"
+    pikaday "^1.5.1"
+    zeroclipboard "^2.3.0"
+
 react-input-autosize@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-2.0.1.tgz#e92190497b4026c2780ad0f2fd703c835ba03e33"
@@ -5401,6 +5451,13 @@ react-simplemde-editor@^3.6.11:
   dependencies:
     react "^0.14.2"
     simplemde "^1.11.2"
+
+react-spreadsheet-component@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-spreadsheet-component/-/react-spreadsheet-component-1.0.2.tgz#08b0a8421efa69a70faeb40ce00745a9dcf35056"
+  dependencies:
+    jquery "^2.1"
+    mousetrap "^1.5.3"
 
 react-transition-group@^1.2.0:
   version "1.2.0"
@@ -7121,3 +7178,7 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
+
+zeroclipboard@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/zeroclipboard/-/zeroclipboard-2.3.0.tgz#592ebd833a4308688b0739697d3dbf989002c9af"

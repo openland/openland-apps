@@ -17,11 +17,11 @@ const ViewRender = withProjectEdit(withLoader((props) => {
                             <h2>Name Of Project</h2>
                             <C.FormText name="name" />
                             <h2>Intro to project</h2>
-                            <C.FormTextArea name="intro" />
+                            <C.FormMarkdown name="intro" />
                             <h2>Project Findings</h2>
-                            <C.FormTextArea name="findings" />
+                            <C.FormMarkdown name="findings" />
                             <h2>Project Description</h2>
-                            <C.FormTextArea name="description" />
+                            <C.FormMarkdown name="description" />
                             <h2>Outputs</h2>
                             <C.FormLinks name="outputs" />
                             <h2>Sorting</h2>
