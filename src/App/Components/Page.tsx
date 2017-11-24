@@ -92,6 +92,5 @@ class PageRender extends React.Component<{ title: string, account: Account }> {
 }
 
 export const Page = withUser<{ title: string }>((props) => {
-    console.warn(props);
     return <PageRender {...props} />;
 });

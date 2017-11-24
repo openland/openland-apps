@@ -29,3 +29,8 @@ export {
     withFindingsQuery, withFindingsCreate, withFindingsEdit,
     Findings, FindingsResponse
 } from './Findings';
+
+export {
+    withPermitsQuery,
+    PermitsResponse, Permit, PermitEdge, PermitsConnection
+} from './Permits';
