@@ -1,23 +1,39 @@
 import * as React from 'react';
-// import { Spreadsheet } from '../Components/Spreadsheet';
 import { Page, Background, Content, Section, PageTitle } from '../Components/Page';
 import { Header } from '../Components/Header';
 import { withPermitsQuery } from '../../api/Permits';
-import { withLoader } from '../Components/withLoader';
 
-let PermitsList = withPermitsQuery(withLoader((props) => {
-    console.warn(props.data!!.permits);
+let PermitsList = withPermitsQuery((props) => {
+    if (!props.data!!.items) {
+        return (<div />);
+    }
     return (
         <div>
-            {props.data!!.permits.edges.map((p) => {
+            {props.data!!.items.edges.map((p) => {
                 return (<div key={p.node.id}>
-                    {p.node.id}
+                    {p.node.id} - {p.node.issuedAt}
                 </div>);
             })}
-            <a onClick={(e) => { e.preventDefault(); props.data!!.loadMoreEntries(); }}>Load More...</a>
+            {props.data!!.items.pageInfo.hasNextPage &&
+                (<a onClick={(e) => { e.preventDefault(); props.data!!.loadMoreEntries(); }}>Load More...</a>)}
         </div>
     );
-}));
+});
+
+class PermitsListComponent extends React.Component<{}, { filter: string }> {
+    constructor() {
+        super();
+        this.state = { filter: '' };
+    }
+    render() {
+        return (
+            <div>
+                <input value={this.state.filter} onChange={(v) => this.setState({ filter: v.target.value })} />
+                <PermitsList filter={this.state.filter + '%'} />
+            </div>
+        );
+    }
+}
 
 export default function () {
     return (
@@ -27,7 +43,7 @@ export default function () {
             <Content>
                 <Section>
                     <PageTitle title="Manage" />
-                    <PermitsList />
+                    <PermitsListComponent />
                 </Section>
             </Content>
         </Page>

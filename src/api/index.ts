@@ -32,5 +32,5 @@ export {
 
 export {
     withPermitsQuery,
-    PermitsResponse, Permit, PermitEdge, PermitsConnection
+    Permit
 } from './Permits';
