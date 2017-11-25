@@ -9,11 +9,18 @@ let PermitsList = withPermitsQuery((props) => {
     }
     return (
         <div>
-            {props.data!!.items.edges.map((p) => {
-                return (<div key={p.node.id}>
-                    {p.node.id} - {p.node.issuedAt}
-                </div>);
-            })}
+            <table>
+                <tr>
+                    <th>Permit Id</th>
+                    <th>Issued</th>
+                </tr>
+                {props.data!!.items.edges.map((p) => {
+                    return (<tr key={p.node.id}>
+                        <td>{p.node.id}</td>
+                        <td>{p.node.issuedAt}</td>
+                    </tr>);
+                })}
+            </table>
             {props.data!!.items.pageInfo.hasNextPage &&
                 (<a onClick={(e) => { e.preventDefault(); props.data!!.loadMoreEntries(); }}>Load More...</a>)}
         </div>
