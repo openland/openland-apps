@@ -632,6 +632,7 @@ html {
 }
 body {
   font: normal normal 14px/20px 'Nunito Sans', arial, sans-serif;
+  background: #f2f5f8;
   color: #2f3444;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
