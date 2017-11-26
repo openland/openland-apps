@@ -32,5 +32,6 @@ export {
 
 export {
     withPermitsQuery,
+    withPermitQuery,
     Permit
 } from './Permits';

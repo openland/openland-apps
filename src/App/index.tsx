@@ -5,6 +5,7 @@ import Findings from './Findings';
 import Projects from './Projects';
 import Sources from './Sources';
 import Manage from './Manage';
+import Database from './Database';
 import * as C from './Components';
 
 export default withCityQuery(C.withRootLoader((props) => {
@@ -26,6 +27,9 @@ export default withCityQuery(C.withRootLoader((props) => {
                     {props.data.account.writeAccess && (
                         <C.SidebarMenu title="Manage" path="/manage" icon="data-sources" />
                     )}
+                    {props.data.account.writeAccess && (
+                        <C.SidebarMenu title="Database" path="/db" icon="data-sources" />
+                    )}
                 </C.Sidebar>
                 <Switch>
                     <Route path="/findings" component={Findings} />
@@ -33,6 +37,9 @@ export default withCityQuery(C.withRootLoader((props) => {
                     <Route path="/sources" component={Sources} />
                     {props.data.account.writeAccess && (
                         <Route path="/manage" component={Manage} />
+                    )}
+                    {props.data.account.writeAccess && (
+                        <Route path="/db" component={Database} />
                     )}
                     <Redirect path="/" exact={true} to="/findings" />
                     <Redirect to="/404" />
