@@ -61,6 +61,36 @@ query Permits($cursor: String, $filter: String) {
 }
 `;
 
+const PermitsPipelineQuery = gql`
+query Permits($cursor: String) {
+    items: permitsPipeline(first: 50, after: $cursor) {
+        edges {
+            node {
+                id
+                issuedAt
+                createdAt
+                status
+                statusUpdatedAt
+                type
+                typeWood
+                streetNumbers {
+                    streetId
+                    streetName
+                    streetNameSuffix
+                    streetNumber
+                    streetNumberSuffix
+                }
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+        }
+    }
+}
+`;
+
 const PermitQuery = gql`
     query Permit($permitId: ID!) {
         permit(id: $permitId) {
@@ -92,5 +122,7 @@ const PermitQuery = gql`
 `;
 
 export const withPermitsQuery = graphqlList<Permit, { filter?: string }>(PermitsQuery);
+
+export const withPermitsPipelineQuery = graphqlList<Permit, { filter?: string }>(PermitsPipelineQuery);
 
 export const withPermitQuery = graphqlRouted<{ permit: Permit }>(PermitQuery);
