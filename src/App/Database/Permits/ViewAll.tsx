@@ -12,12 +12,16 @@ let PermitsList = withPermitsQuery((props) => {
             <table>
                 <tr>
                     <th>Permit Id</th>
-                    <th>Issued</th>
+                    <th>Created</th>
+                    <th>Status</th>
+                    <th>Type</th>
                 </tr>
                 {props.data!!.items.edges.map((p) => {
                     return (<tr key={p.node.id}>
-                        <td> <Link path={'/db/permits/' + p.node.id}> {p.node.id}</Link></td>
-                        <td>{p.node.issuedAt}</td>
+                        <td style={{padding: 8}}> <Link path={'/db/permits/' + p.node.id}> {p.node.id}</Link></td>
+                        <td style={{padding: 8}}>{p.node.createdAt}</td>
+                        <td style={{padding: 8}}>{p.node.status}</td>
+                        <td style={{padding: 8}}>{p.node.type}</td>
                     </tr>);
                 })}
             </table>

@@ -7,7 +7,20 @@ export interface Permit {
     issuedAt?: string;
     createdAt?: string;
     status?: string;
+    statusUpdatedAt?: string;
     streetNumbers?: [StreetNumber];
+
+    type?: string;
+    typeWood?: boolean;
+
+    existingStories?: number;
+    proposedStories?: number;
+    existingUnits?: number;
+    proposedUnits?: number;
+    existingAffordableUnits?: number;
+    proposedAffordableUnits?: number;
+    proposedUse?: string;
+    description?: string;
 }
 
 export interface StreetNumber {
@@ -27,6 +40,9 @@ query Permits($cursor: String, $filter: String) {
                 issuedAt
                 createdAt
                 status
+                statusUpdatedAt
+                type
+                typeWood
                 streetNumbers {
                     streetId
                     streetName
@@ -52,6 +68,18 @@ const PermitQuery = gql`
             issuedAt
             createdAt
             status
+            statusUpdatedAt
+            type
+            typeWood
+            existingStories
+            proposedStories
+            existingUnits
+            proposedUnits
+            existingAffordableUnits
+            proposedAffordableUnits
+            proposedUse
+            description
+            
             streetNumbers {
                 streetId
                 streetName
