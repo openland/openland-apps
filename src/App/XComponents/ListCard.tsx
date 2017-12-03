@@ -1,10 +1,18 @@
 import * as React from 'react';
 
 export class ListCard extends React.Component<{ title: string, subtitle: string }, { expanded: boolean }> {
+    constructor () {
+        super();
+
+        this.state = {
+            expanded: false
+        };
+    }
+
     render() {
         return (
             <div className="x-in--item">
-                <div className="x-card without-photo is-checked">
+                <div className={'x-card without-photo is-checked' + (this.state.expanded ? ' is-expanded' : '')}>
                     <div className="x-card--info">
                         <div className="x-card--in">
                             <div className="x-card--box">
@@ -14,7 +22,7 @@ export class ListCard extends React.Component<{ title: string, subtitle: string 
                         </div>
                         <div className="x-card--counter"><span>117</span>Net new units</div>
                         <div className="x-card--counter"><span>2017</span>Expected completion</div>
-                        <a className="x-card--toggler" href="#">{}</a>
+                        <a className="x-card--toggler" href="#" onClick={(e) => { e.preventDefault(); this.setState({expanded: !this.state.expanded}); }}>{}</a>
                         <div className="x-card--btns">
                             <a className="x-card--btn" href="#"><i className="icon-share">{}</i></a>
                             <a className="x-card--btn" href="#"><i className="icon-edit">{}</i></a>
