@@ -10,7 +10,6 @@ import { Pipeline } from './Pipeline';
 export default withCityQuery(withRootLoader((props) => {
     return (
         <UserProvider user={props.data.me} account={props.data.account}>
-            
                 <Switch>
                     <Route exact={true} path="/" component={Dashboard} />
                     <Route path="/db/pipeline" component={Pipeline} />

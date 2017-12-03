@@ -1,6 +1,9 @@
 import * as React from 'react';
 
-export class ListCard extends React.Component<{ title: string, subtitle: string }, { expanded: boolean }> {
+export class ListCard extends React.Component<{
+    title: string, newUnits: number,
+    subtitle: string, endYear: number
+}, { expanded: boolean }> {
     render() {
         return (
             <div className="sf-in--item">
@@ -12,8 +15,8 @@ export class ListCard extends React.Component<{ title: string, subtitle: string 
                                 <div className="sf-card--text">{this.props.subtitle}</div>
                             </div>
                         </div>
-                        <div className="sf-card--counter"><span>117</span>Net new units</div>
-                        <div className="sf-card--counter"><span>2017</span>Expected completion</div><a className="sf-card--toggler" href="#" data-label="Hide details">Show details</a>
+                        <div className="sf-card--counter"><span>{this.props.newUnits}</span>Net new units</div>
+                        <div className="sf-card--counter"><span>{this.props.endYear}</span>Expected completion</div><a className="sf-card--toggler" href="#" data-label="Hide details">Show details</a>
                         <div className="sf-card--btns"><a className="sf-card--btn" href="#"><i className="icon-share">{}</i></a><a className="sf-card--btn" href="#"><i className="icon-edit">{}</i></a></div>
                     </div>
                     <div className="sf-card--details">

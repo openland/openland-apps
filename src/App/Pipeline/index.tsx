@@ -32,8 +32,18 @@ export const Pipeline = withBuildingProjectsQuery(withLoader(props => {
                 </PagedListFilters>
                 <PagedListItems title="Pipeline">
                     {props.data!!.items.edges.map(p => {
-                        return <ListCard key={p.node.id} title={p.node.name} subtitle="150 VAN NESS AVE" />;
+                        return (
+                            <ListCard
+                                key={p.node.id}
+                                title={p.node.name}
+                                newUnits={p.node.proposedUnits!! - p.node.existingUnits!!}
+                                endYear={new Date(p.node.expectedCompletedAt!!).getFullYear()}
+                                subtitle="150 VAN NESS AVE"
+                            />
+                        );
                     })}
+                    {props.data!!.items.pageInfo.hasNextPage &&
+                        (<a onClick={(e) => { e.preventDefault(); props.data!!.loadMoreEntries(); }}>Load More...</a>)}
                 </PagedListItems>
             </PagedList>
         </Page>
