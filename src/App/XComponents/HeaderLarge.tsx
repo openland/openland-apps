@@ -3,23 +3,23 @@ import { withUser } from '../Components/UserProvider';
 import * as A from '../../auth';
 export const HeaderLarge = withUser((props) => {
     return (
-        <div className="sf-intro">
-            <div className="container">
-                <div className="sf-header">
-                    <a className="sf-header--logo" href="/"><img src="/img/logotype.svg" alt="" /></a>
-                    <ul className="sf-header--nav">
+        <div className="x-intro">
+            <div className="x-container">
+                <div className="x-header">
+                    <a className="x-header--logo" href="/"><img src="/img/logotype.svg" alt="" /></a>
+                    <ul className="x-header--nav">
                         {props.user &&
-                            <li className="sf-header--item"><a href="#"><img src={props.user.picture} alt="" />{props.user.firstName} {props.user.lastName}</a></li>
+                            <li className="x-header--item"><span><img src={props.user.picture} alt="" />{props.user.firstName} {props.user.lastName}</span></li>
                         }
                         {!props.user &&
-                            <li className="sf-header--item"><a href="#" onClick={e => { e.preventDefault(); A.login(); }}>Sign In</a></li>
+                            <li className="x-header--item"><button onClick={e => { e.preventDefault(); A.login(); }}>Sign In</button></li>
                         }
                         {!props.user &&
-                            (<li className="sf-header--item is-join"><a href="#" onClick={e => { e.preventDefault(); A.login(); }}>Join</a></li>)
+                            (<li className="x-header--item is-join"><button onClick={e => { e.preventDefault(); A.login(); }}>Join</button></li>)
                         }
                     </ul>
                 </div>
-                <div className="sf-intro--in">
+                <div className="x-intro--in">
                     {props.children}
                 </div>
             </div>
