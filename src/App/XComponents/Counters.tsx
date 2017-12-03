@@ -2,14 +2,14 @@ import * as React from 'react';
 
 export function CounterItem(props: { counter: number, name: string, verified?: number, label?: string }) {
     return (
-        <div className="col-lg-3">
-            <div className="sf-counter">
-                <div className="sf-counter--in">
-                    <div className="sf-counter--count">{props.counter}</div>
-                    <div className="sf-counter--name">{props.name}</div>
+        <div className="col-xs-12 col-lg-3">
+            <div className="x-counter">
+                <div className="x-counter--in">
+                    <div className="x-counter--count">{props.counter}</div>
+                    <div className="x-counter--name">{props.name}</div>
                 </div>
-                {props.verified && <div className="sf-counter--label">{props.verified} verified</div>}
-                {!props.verified && <div className="sf-counter--label">{props.label}</div>}
+                {props.verified && <div className="x-counter--label">{props.verified} verified</div>}
+                {!props.verified && <div className="x-counter--label">{props.label}</div>}
             </div>
         </div>
     );
@@ -17,8 +17,8 @@ export function CounterItem(props: { counter: number, name: string, verified?: n
 
 export function Counters(props: { children: any }) {
     return (
-        <div className="sf-counters">
-            <div className="container">
+        <div className="x-counters">
+            <div className="x-container">
                 <div className="row">
                     {props.children}
                 </div>

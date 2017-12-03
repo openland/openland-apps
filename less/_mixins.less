@@ -151,16 +151,14 @@
 }
 
 .cols (@t, @n, @i: 0) when (@i =< @n) {
-	.col-@{t}-@{i} {
-		float: left;
-		padding: 0 10px;
- 
-		.font (14px, 1.5);
+	.col-@{t}-@{i} { padding: 0 16px;
+		.font (14px, 20px);
+		.display (inline-block);
 		.size ((@i * 100% / @n));
 	}
- 
+
 	.col-@{t}-offset-@{i} { margin-right: (@i * 100% / @n); }
 	.col-@{t}-offset-l-@{i} { margin-left: (@i * 100% / @n); }
- 
+
 	.cols (@t, @n, (@i + 1));
 }
