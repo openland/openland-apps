@@ -19,14 +19,14 @@ export const Pipeline = withBuildingProjectsQuery(withLoader(props => {
                 <PagedListFilters title="Pipeline Filters">
                     <PagedListSearch />
                     <PagedListFilterRadio title="Expected completion">
-                        <PagedListFilterRadioItem title="All" checked={true} />
-                        <PagedListFilterRadioItem title="2017" checked={false} />
-                        <PagedListFilterRadioItem title="2018" checked={false} />
-                        <PagedListFilterRadioItem title="2019+" checked={false} />
+                        <PagedListFilterRadioItem title="All" name="completion" value="all" checked={true} />
+                        <PagedListFilterRadioItem title="2017" name="completion" value="2017" checked={false} />
+                        <PagedListFilterRadioItem title="2018" name="completion" value="2018" checked={false} />
+                        <PagedListFilterRadioItem title="2019+" name="completion" value="2019" checked={false} />
                     </PagedListFilterRadio>
                     <PagedListFilterRadio title="Project size">
-                        <PagedListFilterRadioItem title="All" checked={true} />
-                        <PagedListFilterRadioItem title="10+ units" checked={false} />
+                        <PagedListFilterRadioItem title="All" name="size" value="all" checked={true} />
+                        <PagedListFilterRadioItem title="10+ units" name="size" value="10" checked={false} />
                     </PagedListFilterRadio>
                     <ContributersInviteList />
                 </PagedListFilters>
