@@ -64,7 +64,9 @@ export class ListCard extends React.Component<{
                             <div className="x-card--map-in">{}</div>
                         </div>
                         <div className="x-card--fields">
-                            {this.props.children}
+                            <table>
+                                {this.props.children}
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -74,5 +76,5 @@ export class ListCard extends React.Component<{
 }
 
 export function ListCardItem(props: { title: string, value: string }) {
-    return (<div className="x-card--field"><span>{props.title}</span>{props.value}</div>);
+    return (<tr><td>{props.title}</td><td>{props.value}</td></tr>);
 }

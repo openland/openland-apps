@@ -3779,36 +3779,28 @@ button.x-top--item > *:hover {
 .x-card--fields {
   border-top: 1px solid rgba(38, 38, 38, 0.08);
   padding: 22px 24px 8px;
-  font-size: 0;
-  line-height: 0;
 }
-.x-card--field {
-  margin: 0 0 15px;
-  display: inline-block;
-  vertical-align: top;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 500;
-  width: 346px;
+.x-card--fields table {
+  width: 100%;
   height: auto;
 }
-.x-card--field span {
+.x-card--fields table td {
+  padding: 0 0 15px;
+}
+.x-card--fields table td:nth-child(1) {
   text-transform: uppercase;
   color: rgba(38, 38, 38, 0.6);
   letter-spacing: 0.6px;
-  display: inline-block;
-  vertical-align: top;
-  width: 106px;
-  height: auto;
+  white-space: nowrap;
+  padding-right: 20px;
   font-size: 11px;
   line-height: 20px;
 }
-.x-card--field:nth-child(2n+2) {
-  width: calc(100% - 346px);
-  height: auto;
-}
-.x-card--field:nth-child(2n+2) span {
-  width: 187px;
+.x-card--fields table td:nth-child(2) {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  width: 100%;
   height: auto;
 }
 .x-card.without-photo {

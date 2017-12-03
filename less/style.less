@@ -1816,26 +1816,25 @@ body {
 		border-top: 1px solid fade(@text-sf, 8);
 		padding: 22px 24px 8px;
 
-		.font (0);
-	}
+		table {
+			.size (100%);
 
-	&--field { margin: 0 0 15px;
-		.display (inline-block);
-		.font (16px, 20px, 500);
-		.size (346px);
+			td { padding: 0 0 15px;
+				&:nth-child(1) {
+					text-transform: uppercase;
+					color: fade(@text-sf, 60);
+					letter-spacing: 0.6px;
+					white-space: nowrap;
+					padding-right: 20px;
 
-		span {
-			text-transform: uppercase;
-			color: fade(@text-sf, 60);
-			letter-spacing: 0.6px;
+					.font (11px, 20px);
+				}
 
-			.display (inline-block);
-			.size (106px);
-			.font (11px, 20px);
-		}
-
-		&:nth-child(2n+2) { .size (~'calc(100% - 346px)');
-			span { .size (187px); }
+				&:nth-child(2) {
+					.font (16px, 20px, 500);
+					.size (100%);
+				}
+			}
 		}
 	}
 
