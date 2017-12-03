@@ -7,10 +7,11 @@ import { Insights, InsightItem } from '../XComponents/Insights';
 import { Pipeline } from '../XComponents/Pipeline';
 import { Footer } from '../XComponents/Footer';
 import { ContributersInvite } from '../XComponents/ContributersInvite';
+import { Page } from '../XComponents/Page';
 
 export function Dashboard() {
     return (
-        <div>
+        <Page>
             <HeaderLarge key="header">
                 <HeaderLargeTitle title="San Francisco Housing Forecast 2017-18" />
                 <HeaderLargeSocial />
@@ -52,6 +53,6 @@ export function Dashboard() {
                 />
             </Insights>
             <Footer />
-        </div>
+        </Page>
     );
 }
