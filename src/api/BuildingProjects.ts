@@ -15,6 +15,16 @@ export interface PipelineProjectShort {
     proposedUnits?: number;
     existingAffordableUnits?: number;
     proposedAffordableUnits?: number;
+
+    preview?: string;
+    extrasDeveloper?: string;
+    extrasGeneralConstructor?: string;
+    extrasYearEnd?: string;
+    extrasAddress?: string;
+    extrasAddressSecondary?: string;
+    extrasPermit?: string;
+    extrasComment?: string;
+    extrasUrl?: string;
 }
 
 const BuildingProjectsQuery = gql`
@@ -34,6 +44,16 @@ const BuildingProjectsQuery = gql`
                 proposedUnits
                 existingAffordableUnits
                 proposedAffordableUnits
+                
+                preview: picture(width: 224, height: 164)
+                extrasDeveloper
+                extrasGeneralConstructor
+                extrasYearEnd
+                extrasAddress
+                extrasAddressSecondary
+                extrasPermit
+                extrasComment
+                extrasUrl
               }
               cursor
           }

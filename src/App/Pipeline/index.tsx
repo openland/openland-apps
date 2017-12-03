@@ -32,13 +32,23 @@ export const Pipeline = withBuildingProjectsQuery(withLoader(props => {
                 </PagedListFilters>
                 <PagedListItems title="Pipeline">
                     {props.data!!.items.edges.map(p => {
+                        var units: number | undefined = undefined;
+                        var subtitle: string | undefined = undefined;
+                        if (p.node.proposedUnits !== undefined && p.node.existingUnits !== undefined) {
+                            units = p.node.proposedUnits!! - p.node.existingUnits!!;
+                        }
+                        if (p.node.extrasAddress && (p.node.extrasAddress !== p.node.name)) {
+                            subtitle = p.node.extrasAddress;
+                        }
                         return (
                             <ListCard
                                 key={p.node.id}
                                 title={p.node.name}
-                                newUnits={p.node.proposedUnits!! - p.node.existingUnits!!}
-                                endYear={new Date(p.node.expectedCompletedAt!!).getFullYear()}
-                                subtitle="150 VAN NESS AVE"
+                                newUnits={units}
+                                endYear={p.node.extrasYearEnd}
+                                subtitle={subtitle}
+                                picture={p.node.preview}
+                                verified={p.node.verified}
                             />
                         );
                     })}
