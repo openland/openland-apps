@@ -64,16 +64,15 @@ export class ListCard extends React.Component<{
                             <div className="x-card--map-in">{}</div>
                         </div>
                         <div className="x-card--fields">
-                            <div className="x-card--field"><span>Permit ID</span>N201603172392</div>
-                            <div className="x-card--field"><span>Net new affordable units</span>15</div>
-                            <div className="x-card--field"><span>Permit issued</span>2015</div>
-                            <div className="x-card--field"><span>Total affordable units</span>15</div>
-                            <div className="x-card--field"><span>Developer</span>Shorenstein Properties</div>
-                            <div className="x-card--field"><span>Total units</span>650</div>
+                            {this.props.children}
                         </div>
                     </div>
                 </div>
             </div >
         );
     }
+}
+
+export function ListCardItem(props: { title: string, value: string }) {
+    return (<div className="x-card--field"><span>{props.title}</span>{props.value}</div>);
 }

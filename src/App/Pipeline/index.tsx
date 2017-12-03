@@ -7,7 +7,7 @@ import {
 } from '../XComponents/PagedListFilters';
 import { ContributersInviteList } from '../XComponents/ContributersInviteList';
 import { Page } from '../XComponents/Page';
-import { ListCard } from '../XComponents/ListCard';
+import { ListCard, ListCardItem } from '../XComponents/ListCard';
 import { withLoader } from '../Components/withLoader';
 import { withBuildingProjectsQuery } from '../../api/BuildingProjects';
 
@@ -49,7 +49,12 @@ export const Pipeline = withBuildingProjectsQuery(withLoader(props => {
                                 subtitle={subtitle}
                                 picture={p.node.preview}
                                 verified={p.node.verified}
-                            />
+                            >
+                                {p.node.extrasPermit && <ListCardItem title="Permit ID" value={p.node.extrasPermit} />}
+                                {p.node.extrasDeveloper && <ListCardItem title="Developer" value={p.node.extrasDeveloper} />}
+                                {p.node.extrasAddress && <ListCardItem title="Address" value={p.node.extrasAddress} />}
+                                {p.node.extrasAddressSecondary && <ListCardItem title="Address" value={p.node.extrasAddressSecondary} />}
+                            </ListCard>
                         );
                     })}
                     {props.data!!.items.pageInfo.hasNextPage &&
