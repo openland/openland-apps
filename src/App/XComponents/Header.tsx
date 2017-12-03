@@ -3,7 +3,7 @@ import * as React from 'react';
 export function Header() {
     return (
         <div className="x-top">
-            <div className="x-container clearfix">
+            <div className="x-container is-wide clearfix">
                 <a className="x-top--label" href="#">San Francisco Housing Forecast</a>
                 <div className="x-top--tabs">
                     <a className="x-top--tab is-active" href="#">Dashboard</a>
