@@ -8,6 +8,7 @@ import {
 import { ContributersInviteList } from '../XComponents/ContributersInviteList';
 import { Page } from '../XComponents/Page';
 import { ListCard, ListCardItem } from '../XComponents/ListCard';
+import { InfiniteScroller } from '../XComponents/InfiniteScroller';
 import { withLoader } from '../Components/withLoader';
 import { withBuildingProjectsQuery } from '../../api/BuildingProjects';
 
@@ -57,8 +58,7 @@ export const Pipeline = withBuildingProjectsQuery(withLoader(props => {
                             </ListCard>
                         );
                     })}
-                    {props.data!!.items.pageInfo.hasNextPage &&
-                        (<a onClick={(e) => { e.preventDefault(); props.data!!.loadMoreEntries(); }}>Load More...</a>)}
+                    {props.data!!.items.pageInfo.hasNextPage && <InfiniteScroller onLoadMore={() => { props.data!!.loadMoreEntries(); }} />}
                 </PagedListItems>
             </PagedList>
         </Page>

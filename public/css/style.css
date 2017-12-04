@@ -3375,7 +3375,7 @@ button.x-top--item > *:hover {
   line-height: 20px;
 }
 .x-in {
-  padding: 49px 0 0;
+  padding: 49px 0 75px;
 }
 .x-in--title {
   margin: 0 0 11px;
