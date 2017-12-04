@@ -1915,6 +1915,55 @@ body {
 	}
 }
 
+.x-lineloader {
+	.position (absolute, 0, 0, auto, 0);
+	.size (auto, 6px);
+
+	&--bar {
+		content: "";
+		text-align: center;
+
+		.display (inline);
+		.position (absolute, auto, 50%);
+		.size (0, 100%);
+
+		&:nth-child(1) {
+			background: #da4733;
+			animation: loadingline 3s linear infinite;
+		}
+
+		&:nth-child(2) {
+			background: #3b78e7;
+			animation: loadingline 3s linear 1s infinite;
+		}
+
+		&:nth-child(3) {
+			background: #fdba2c;
+			animation: loadingline 3s linear 2s infinite;
+		}
+	}
+}
+
+
+@keyframes loadingline {
+	from {
+		left: 50%;
+		width: 0;
+		z-index: 100;
+	}
+
+	33.3333% {
+		left: 0;
+		width: 100%;
+		z-index: 10;
+	}
+
+	to {
+		left: 0;
+		width: 100%;
+	}
+}
+
 .st-box,
 .st-header {
 	.st-loader { background: @white; }

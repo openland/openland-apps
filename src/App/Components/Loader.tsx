@@ -9,3 +9,13 @@ export function Loader() {
         </div>
     );
 }
+
+export function LoaderLine() {
+    return (
+        <div className="x-lineloader">
+            <div className="x-lineloader--bar">{}</div>
+            <div className="x-lineloader--bar">{}</div>
+            <div className="x-lineloader--bar">{}</div>
+        </div>
+    );
+}

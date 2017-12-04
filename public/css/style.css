@@ -3934,6 +3934,55 @@ button.x-top--item > *:hover {
   width: 130px;
   height: 130px;
 }
+.x-lineloader {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: 0;
+  width: auto;
+  height: 6px;
+}
+.x-lineloader--bar {
+  content: "";
+  text-align: center;
+  display: inline;
+  position: absolute;
+  top: auto;
+  right: 50%;
+  bottom: auto;
+  left: auto;
+  width: 0;
+  height: 100%;
+}
+.x-lineloader--bar:nth-child(1) {
+  background: #da4733;
+  animation: loadingline 3s linear infinite;
+}
+.x-lineloader--bar:nth-child(2) {
+  background: #3b78e7;
+  animation: loadingline 3s linear 1s infinite;
+}
+.x-lineloader--bar:nth-child(3) {
+  background: #fdba2c;
+  animation: loadingline 3s linear 2s infinite;
+}
+@keyframes loadingline {
+  from {
+    left: 50%;
+    width: 0;
+    z-index: 100;
+  }
+  33.3333% {
+    left: 0;
+    width: 100%;
+    z-index: 10;
+  }
+  to {
+    left: 0;
+    width: 100%;
+  }
+}
 .st-box .st-loader,
 .st-header .st-loader {
   background: #ffffff;

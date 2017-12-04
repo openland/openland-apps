@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { GraphQLListComponentProps } from '../../api/graphqlList';
-import { Loader } from '../Components/Loader';
+import { Loader, LoaderLine } from '../Components/Loader';
 
 function InfiniteListContainer(props: { children: any }) {
     return (
@@ -55,7 +55,7 @@ export function withInfiniteList<TResult>(render: (item: TResult) => React.React
         if (props.data.items && props.data.loading) {
             return (
                 <InfiniteListContainer>
-                    <span key="____loader">Loading...</span>
+                    <LoaderLine key="____loader" />
                     {props.data.items.edges.map(p => render(p.node))}
                 </InfiniteListContainer>
             );
