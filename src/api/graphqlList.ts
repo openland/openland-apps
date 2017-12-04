@@ -32,15 +32,14 @@ export default function <TResult, TProps = {}>(document: DocumentNode) {
             };
         },
         props: (props) => {
-            console.warn(props);
             return {
                 data: {
                     loadMoreEntries: () => {
                         let s = qs.parse(location.search);
+
                         if (props.data!!.isLoading) {
                             return;
                         }
-
                         props.data!!.isLoading = true;
 
                         props.data!!.fetchMore({
