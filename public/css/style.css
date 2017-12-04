@@ -3761,6 +3761,8 @@ button.x-top--item > *:hover {
   display: none;
 }
 .x-card--map {
+  background: center center no-repeat;
+  background-size: cover;
   position: absolute;
   top: 0;
   right: auto;
@@ -3769,10 +3771,19 @@ button.x-top--item > *:hover {
   width: 244px;
   height: auto;
 }
-.x-card--map-in {
-  background: lightgrey;
-  width: auto;
-  height: 100%;
+.x-card--map:before {
+  content: "";
+  background: url(../img/map-marker.svg) no-repeat;
+  background-size: 100% 100%;
+  margin: -28px 0 0 -28px;
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  width: 56px;
+  height: 56px;
 }
 .x-card--fields {
   border-top: 1px solid rgba(38, 38, 38, 0.08);

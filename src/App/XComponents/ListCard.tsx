@@ -64,9 +64,7 @@ export class ListCard extends React.Component<{
                     )}
 
                     <div className="x-card--details">
-                        <div className="x-card--map">
-                            <div className="x-card--map-in" style={{backgroundImage: 'url(https://maps.googleapis.com/maps/api/staticmap?center=54.939320,37.450654&zoom=15&size=500x500)'}}>{}</div>
-                        </div>
+                        <div className="x-card--map" style={{backgroundImage: 'url(https://maps.googleapis.com/maps/api/staticmap?center=54.939320,37.450654&zoom=15&size=500x500)'}}>{}</div>
                         <div className="x-card--fields">
                             <table>
                                 <tbody>

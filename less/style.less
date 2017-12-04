@@ -1797,11 +1797,21 @@ body {
 	}
 
 	&--map {
+		background: center center no-repeat;
+		background-size: cover;
+
 		.position (absolute, 0, auto, -1px, 0);
 		.size (244px);
 
-		&-in { background: lightgrey;
-			.size (auto, 100%);
+		&:before {
+			content: "";
+			background: url(../img/map-marker.svg) no-repeat;
+			background-size: 100% 100%;
+			margin: -28px 0 0 -28px;
+
+			.display (block);
+			.position-tl (absolute, 50%, 50%);
+			.size (56px, 56px);
 		}
 	}
 
