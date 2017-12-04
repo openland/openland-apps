@@ -3,8 +3,10 @@ import * as React from 'react';
 export class ListCard extends React.Component<{
     title: string, newUnits?: number,
     subtitle?: string, endYear?: string,
-    picture?: string, verified?: boolean
+    picture?: string, verified?: boolean,
+    url?: string
 }, { expanded: boolean }> {
+
     constructor() {
         super();
 
@@ -30,10 +32,12 @@ export class ListCard extends React.Component<{
                             <div className="x-card--counter"><span>{this.props.newUnits || '?'}</span>Net new units</div>
                             <div className="x-card--counter"><span>{this.props.endYear || '?'}</span>Expected completion</div>
                             <a className="x-card--toggler" href="#" onClick={(e) => { e.preventDefault(); this.setState({ expanded: !this.state.expanded }); }}>{}</a>
-                            <div className="x-card--btns">
-                                <a className="x-card--btn" href="#"><i className="icon-share">{}</i></a>
-                                <a className="x-card--btn" href="#"><i className="icon-edit">{}</i></a>
-                            </div>
+                            {this.props.url && (
+                                <div className="x-card--btns">
+                                    {this.props.url && (<a className="x-card--btn" href={this.props.url} target="_blank"><i className="icon-share">{}</i></a>)}
+                                    {/* <a className="x-card--btn" href="#"><i className="icon-edit">{}</i></a> */}
+                                </div>
+                            )}
                         </div>
                     )}
                     {this.props.picture && (
@@ -52,10 +56,10 @@ export class ListCard extends React.Component<{
                             <a className="x-card--toggler" href="#" onClick={(e) => { e.preventDefault(); this.setState({ expanded: !this.state.expanded }); }}>{}</a>
                         </div>
                     )}
-                    {this.props.picture && (
+                    {this.props.picture && this.props.url && (
                         <div className="x-card--btns">
-                            <a className="x-card--btn" href="#"><i className="icon-share">{}</i></a>
-                            <a className="x-card--btn" href="#"><i className="icon-edit">{}</i></a>
+                            {this.props.url && (<a className="x-card--btn" href={this.props.url} target="_blank"><i className="icon-share">{}</i></a>)}
+                            {/* <a className="x-card--btn" href="#"><i className="icon-edit">{}</i></a> */}
                         </div>
                     )}
 

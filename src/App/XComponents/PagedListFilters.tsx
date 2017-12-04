@@ -12,16 +12,40 @@ export function PagedListFilters(props: { title: string, children?: any }) {
     );
 }
 
-export function PagedListSearch() {
+export const PagedListSearch = withRouter<{ searchKey: string }>(props => {
+    let s = qs.parse(location.search);
+    var value: string = '';
+    if (s[props.searchKey]) {
+        value = s[props.searchKey];
+    }
     return (
         <div className="x-search">
             <form className="x-search--box" method="POST" action="">
-                <input className="x-search--input" type="text" placeholder="Search" />
+                <input
+                    className="x-search--input"
+                    type="text"
+                    placeholder="Search"
+                    value={value}
+                    onChange={e => {
+                        var s2 = qs.parse(location.search);
+                        if (e.target.value === '') {
+                            delete s2[props.searchKey];
+                        } else {
+                            s2[props.searchKey] = e.target.value;
+                        }
+                        let q = qs.stringify(s2);
+                        if (q !== '') {
+                            props.history.push(props.match.path + '?' + q);
+                        } else {
+                            props.history.push(props.match.path);
+                        }
+                    }}
+                />
                 <button className="x-search--button" type="submit"><i className="icon-search">{}</i></button>
             </form>
         </div>
     );
-}
+});
 
 export function PagedListFilterRadio(props: { title: string, radioKey: string, children?: any }) {
     var childrenWithProps = React.Children.map(props.children, child => {

@@ -23,12 +23,12 @@ export interface ListQueryEdge<T> {
 
 function fetchSearchQuery(): any {
     let s = qs.parse(location.search);
-    if (s.year === undefined) {
-        s.year = null;
-    }
-    if (s.minUnits === undefined) {
-        s.minUnits = null;
-    }
+    // if (s.year === undefined) {
+    //     s.year = null;
+    // }
+    // if (s.minUnits === undefined) {
+    //     s.minUnits = null;
+    // }
     return s;
 }
 

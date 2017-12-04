@@ -34,6 +34,7 @@ export const PipelineItems = withRouter(withBuildingProjectsQuery(withLoader(pro
                         subtitle={subtitle}
                         picture={p.node.preview}
                         verified={p.node.verified}
+                        url={p.node.extrasUrl}
                     >
                         {p.node.extrasPermit && <ListCardItem title="Permit ID" value={p.node.extrasPermit} />}
                         {p.node.extrasDeveloper && <ListCardItem title="Developer" value={p.node.extrasDeveloper} />}
@@ -53,8 +54,8 @@ export const Pipeline = withBuildingProjectsQuery(withLoader(props => {
         <Page>
             <Header />
             <PagedList>
-                <PagedListFilters title="Pipeline Filters">
-                    <PagedListSearch />
+                <PagedListFilters title="Filters">
+                    <PagedListSearch searchKey="filter" />
                     <PagedListFilterRadio radioKey="year" title="Expected completion">
                         <PagedListFilterRadioItem title="All" />
                         <PagedListFilterRadioItem title="2017" itemKey="2017" />
