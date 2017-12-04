@@ -20,13 +20,23 @@ export interface ListQueryEdge<T> {
     cursor: string;
 }
 
+function fetchSearchQuery(): any {
+    let s = qs.parse(location.search);
+    if (s.year === undefined) {
+        s.year = null;
+    }
+    if (s.minUnits === undefined) {
+        s.minUnits = null;
+    }
+    return s;
+}
+
 export default function <TResult, TProps = {}>(document: DocumentNode) {
     return graphql<ListQueryResponse<TResult>, TProps>(document, {
         options: (args: any) => {
-            let s = qs.parse(location.search);
             return {
                 variables: {
-                    ...s,
+                    ...fetchSearchQuery(),
                     ...args
                 }
             };
@@ -35,23 +45,14 @@ export default function <TResult, TProps = {}>(document: DocumentNode) {
             return {
                 data: {
                     loadMoreEntries: () => {
-                        let s = qs.parse(location.search);
-
-                        if (props.data!!.isLoading) {
-                            return;
-                        }
-                        props.data!!.isLoading = true;
-
                         props.data!!.fetchMore({
                             query: document,
                             variables: {
-                                ...s,
+                                ...fetchSearchQuery(),
                                 ...(props.ownProps as any),
                                 cursor: props.data!!.items.edges.slice(-1)[0].cursor,
                             },
                             updateQuery: (previousResult, { fetchMoreResult }) => {
-                                props.data!!.isLoading = false;
-
                                 let newEdges = (fetchMoreResult as any).items.edges;
                                 let pageInfo = (fetchMoreResult as any).items.pageInfo;
                                 return newEdges.length ? {
@@ -63,7 +64,6 @@ export default function <TResult, TProps = {}>(document: DocumentNode) {
                                 } : previousResult;
                             }
                         });
-                        //
                     },
                     ...props.data
                 }

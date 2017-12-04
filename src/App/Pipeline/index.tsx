@@ -12,7 +12,42 @@ import { InfiniteScroller } from '../XComponents/InfiniteScroller';
 import { withLoader } from '../Components/withLoader';
 import { withBuildingProjectsQuery } from '../../api/BuildingProjects';
 
+export const PipelineItems = withBuildingProjectsQuery(withLoader(props => {
+    return (
+        <div>
+            {props.data!!.items.edges.map(p => {
+                var units: number | undefined = undefined;
+                var subtitle: string | undefined = undefined;
+                if (p.node.proposedUnits !== undefined && p.node.existingUnits !== undefined) {
+                    units = p.node.proposedUnits!! - p.node.existingUnits!!;
+                }
+                if (p.node.extrasAddress && (p.node.extrasAddress !== p.node.name)) {
+                    subtitle = p.node.extrasAddress;
+                }
+                return (
+                    <ListCard
+                        key={p.node.id}
+                        title={p.node.name}
+                        newUnits={units}
+                        endYear={p.node.extrasYearEnd}
+                        subtitle={subtitle}
+                        picture={p.node.preview}
+                        verified={p.node.verified}
+                    >
+                        {p.node.extrasPermit && <ListCardItem title="Permit ID" value={p.node.extrasPermit} />}
+                        {p.node.extrasDeveloper && <ListCardItem title="Developer" value={p.node.extrasDeveloper} />}
+                        {p.node.extrasAddress && <ListCardItem title="Address" value={p.node.extrasAddress} />}
+                        {p.node.extrasAddressSecondary && <ListCardItem title="Address" value={p.node.extrasAddressSecondary} />}
+                    </ListCard>
+                );
+            })}
+            {props.data!!.items.pageInfo.hasNextPage && <InfiniteScroller onLoadMore={() => { props.data!!.loadMoreEntries(); }} />}
+        </div>
+    );
+}));
+
 export const Pipeline = withBuildingProjectsQuery(withLoader(props => {
+    console.warn(location.search);
     return (
         <Page>
             <Header />
@@ -32,33 +67,7 @@ export const Pipeline = withBuildingProjectsQuery(withLoader(props => {
                     <ContributersInviteList />
                 </PagedListFilters>
                 <PagedListItems title="Pipeline">
-                    {props.data!!.items.edges.map(p => {
-                        var units: number | undefined = undefined;
-                        var subtitle: string | undefined = undefined;
-                        if (p.node.proposedUnits !== undefined && p.node.existingUnits !== undefined) {
-                            units = p.node.proposedUnits!! - p.node.existingUnits!!;
-                        }
-                        if (p.node.extrasAddress && (p.node.extrasAddress !== p.node.name)) {
-                            subtitle = p.node.extrasAddress;
-                        }
-                        return (
-                            <ListCard
-                                key={p.node.id}
-                                title={p.node.name}
-                                newUnits={units}
-                                endYear={p.node.extrasYearEnd}
-                                subtitle={subtitle}
-                                picture={p.node.preview}
-                                verified={p.node.verified}
-                            >
-                                {p.node.extrasPermit && <ListCardItem title="Permit ID" value={p.node.extrasPermit} />}
-                                {p.node.extrasDeveloper && <ListCardItem title="Developer" value={p.node.extrasDeveloper} />}
-                                {p.node.extrasAddress && <ListCardItem title="Address" value={p.node.extrasAddress} />}
-                                {p.node.extrasAddressSecondary && <ListCardItem title="Address" value={p.node.extrasAddressSecondary} />}
-                            </ListCard>
-                        );
-                    })}
-                    {props.data!!.items.pageInfo.hasNextPage && <InfiniteScroller onLoadMore={() => { props.data!!.loadMoreEntries(); }} />}
+                    <PipelineItems />
                 </PagedListItems>
             </PagedList>
         </Page>
