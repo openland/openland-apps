@@ -1,29 +1,21 @@
-import {
-  graphql, QueryProps, ChildProps
-} from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
-import { withRouter, RouteComponentProps } from 'react-router';
-import * as qs from 'query-string';
+import { RouteQueryStringProps, withRouterQueryString } from './withRouterQueryString';
+import { GraphQLRoutedComponentProps } from './utils';
 
 export default function <TResult>(document: DocumentNode) {
-  return function (component: React.ComponentType<RouteComponentProps<any> &
-    ChildProps<{}, TResult> & { data: QueryProps & TResult }>) {
-    var res = graphql<TResult,
-      { data: QueryProps & TResult },
-      ChildProps<{}, TResult> & { data: QueryProps & TResult }>(document, {
-        options: (args: any) => {
-          let s = qs.parse(location.search);
-          return {
-            variables: {
-              ...args.match.params,
-              ...s
-            }
-          };
-        }
-      });
+  return function (component: React.ComponentType<GraphQLRoutedComponentProps<TResult>>) {
+    let qlWrapper = graphql<TResult, RouteQueryStringProps, GraphQLRoutedComponentProps<TResult>>(document, {
+      options: (props: RouteQueryStringProps) => {
+        return {
+          variables: {
+            ...props.match.params,
+            ...props.queryString
+          }
+        };
+      }
+    });
 
-    var routed = withRouter(component);
-
-    return res(routed);
+    return withRouterQueryString(qlWrapper(component));
   };
 }

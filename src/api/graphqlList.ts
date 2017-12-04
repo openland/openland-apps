@@ -1,7 +1,7 @@
 import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
-import * as qs from 'query-string';
-import { RouteComponentProps } from 'react-router-dom';
+import { GraphQLRoutedComponentProps } from './utils';
+import { RouteQueryStringProps, withRouterQueryString } from './withRouterQueryString';
 
 export interface ListQueryResponse<T> {
     items: ListQueryConnection<T>;
@@ -21,57 +21,49 @@ export interface ListQueryEdge<T> {
     cursor: string;
 }
 
-function fetchSearchQuery(): any {
-    let s = qs.parse(location.search);
-    if (s.year === undefined) {
-        s.year = null;
-    }
-    if (s.minUnits === undefined) {
-        s.minUnits = null;
-    }
-    if (s.filter === undefined) {
-        s.filter = null;
-    }
-    return s;
-}
+type GraphQLListComponentProps<TResult> = GraphQLRoutedComponentProps<ListQueryResponse<TResult>>;
 
-export default function <TResult, TProps = {}>(document: DocumentNode) {
-    return graphql<ListQueryResponse<TResult>, TProps & RouteComponentProps<any>>(document, {
-        options: (args: any) => {
-            return {
-                variables: {
-                    ...fetchSearchQuery(),
-                    ...args.match.params
-                }
-            };
-        },
-        props: (props) => {
-            return {
-                data: {
-                    loadMoreEntries: () => {
-                        props.data!!.fetchMore({
-                            query: document,
-                            variables: {
-                                ...fetchSearchQuery(),
-                                ...(props.ownProps as any),
-                                cursor: props.data!!.items.edges.slice(-1)[0].cursor,
-                            },
-                            updateQuery: (previousResult, { fetchMoreResult }) => {
-                                let newEdges = (fetchMoreResult as any).items.edges;
-                                let pageInfo = (fetchMoreResult as any).items.pageInfo;
-                                return newEdges.length ? {
-                                    items: {
-                                        __typename: (previousResult as any).items.__typename,
-                                        edges: [...(previousResult as any).items.edges, ...newEdges],
-                                        pageInfo: pageInfo
-                                    }
-                                } : previousResult;
-                            }
-                        });
-                    },
-                    ...props.data
-                }
-            };
-        }
-    });
+export default function <TResult>(document: DocumentNode) {
+    return function (component: React.ComponentType<GraphQLListComponentProps<TResult>>): React.ComponentType<{}> {
+        let qlWrapper = graphql<ListQueryResponse<TResult>, RouteQueryStringProps, GraphQLListComponentProps<TResult>>(document, {
+            options: (props: RouteQueryStringProps) => {
+                return {
+                    variables: {
+                        ...props.match.params,
+                        ...props.queryString
+                    }
+                };
+            },
+            props: (props) => {
+                return {
+                    data: {
+                        loadMoreEntries: () => {
+                            props.data!!.fetchMore({
+                                query: document,
+                                variables: {
+                                    ...props.ownProps.queryString,
+                                    ...props.ownProps.match.params,
+                                    cursor: props.data!!.items.edges.slice(-1)[0].cursor,
+                                },
+                                updateQuery: (previousResult, { fetchMoreResult }) => {
+                                    let newEdges = (fetchMoreResult as any).items.edges;
+                                    let pageInfo = (fetchMoreResult as any).items.pageInfo;
+                                    return newEdges.length ? {
+                                        items: {
+                                            __typename: (previousResult as any).items.__typename,
+                                            edges: [...(previousResult as any).items.edges, ...newEdges],
+                                            pageInfo: pageInfo
+                                        }
+                                    } : previousResult;
+                                }
+                            });
+                        },
+                        ...props.data
+                    }
+                };
+            }
+        });
+
+        return withRouterQueryString(qlWrapper(component));
+    };
 }

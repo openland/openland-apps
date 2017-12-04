@@ -11,9 +11,8 @@ import { ListCard, ListCardItem } from '../XComponents/ListCard';
 import { InfiniteScroller } from '../XComponents/InfiniteScroller';
 import { withLoader } from '../Components/withLoader';
 import { withBuildingProjectsQuery } from '../../api/BuildingProjects';
-import { withRouter } from 'react-router';
 
-export const PipelineItems = withRouter(withBuildingProjectsQuery(withLoader(props => {
+export const PipelineItems = withBuildingProjectsQuery(withLoader(props => {
     return (
         <div>
             {props.data!!.items!!.edges.map(p => {
@@ -46,10 +45,9 @@ export const PipelineItems = withRouter(withBuildingProjectsQuery(withLoader(pro
             {props.data!!.items!!.pageInfo.hasNextPage && <InfiniteScroller onLoadMore={() => { props.data!!.loadMoreEntries(); }} />}
         </div>
     );
-})));
+}));
 
-export const Pipeline = withBuildingProjectsQuery(withLoader(props => {
-    console.warn(location.search);
+export const Pipeline = () => {
     return (
         <Page>
             <Header />
@@ -74,4 +72,4 @@ export const Pipeline = withBuildingProjectsQuery(withLoader(props => {
             </PagedList>
         </Page>
     );
-}));
+};

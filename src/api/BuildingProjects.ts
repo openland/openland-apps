@@ -65,4 +65,4 @@ const BuildingProjectsQuery = gql`
   }
   `;
 
-export const withBuildingProjectsQuery = graphqlList<PipelineProjectShort, { filter?: string }>(BuildingProjectsQuery);
+export const withBuildingProjectsQuery = graphqlList<PipelineProjectShort>(BuildingProjectsQuery);

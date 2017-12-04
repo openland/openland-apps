@@ -121,8 +121,8 @@ const PermitQuery = gql`
     }
 `;
 
-export const withPermitsQuery = graphqlList<Permit, { filter?: string }>(PermitsQuery);
+export const withPermitsQuery = graphqlList<Permit>(PermitsQuery);
 
-export const withPermitsPipelineQuery = graphqlList<Permit, { filter?: string }>(PermitsPipelineQuery);
+export const withPermitsPipelineQuery = graphqlList<Permit>(PermitsPipelineQuery);
 
 export const withPermitQuery = graphqlRouted<{ permit: Permit }>(PermitQuery);
