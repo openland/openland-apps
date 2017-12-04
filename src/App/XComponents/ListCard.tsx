@@ -65,7 +65,9 @@ export class ListCard extends React.Component<{
                         </div>
                         <div className="x-card--fields">
                             <table>
-                                {this.props.children}
+                                <tbody>
+                                    {this.props.children}
+                                </tbody>
                             </table>
                         </div>
                     </div>
