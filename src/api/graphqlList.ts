@@ -4,6 +4,7 @@ import * as qs from 'query-string';
 
 export interface ListQueryResponse<T> {
     items: ListQueryConnection<T>;
+    isLoading: boolean;
     loadMoreEntries(): void;
 }
 
@@ -36,6 +37,12 @@ export default function <TResult, TProps = {}>(document: DocumentNode) {
                 data: {
                     loadMoreEntries: () => {
                         let s = qs.parse(location.search);
+                        if (props.data!!.isLoading) {
+                            return;
+                        }
+
+                        props.data!!.isLoading = true;
+
                         props.data!!.fetchMore({
                             query: document,
                             variables: {
@@ -44,6 +51,8 @@ export default function <TResult, TProps = {}>(document: DocumentNode) {
                                 cursor: props.data!!.items.edges.slice(-1)[0].cursor,
                             },
                             updateQuery: (previousResult, { fetchMoreResult }) => {
+                                props.data!!.isLoading = false;
+
                                 let newEdges = (fetchMoreResult as any).items.edges;
                                 let pageInfo = (fetchMoreResult as any).items.pageInfo;
                                 return newEdges.length ? {
