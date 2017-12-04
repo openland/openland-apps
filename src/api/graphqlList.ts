@@ -1,5 +1,6 @@
 import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
+import * as qs from 'query-string';
 
 export interface ListQueryResponse<T> {
     items: ListQueryConnection<T>;
@@ -21,8 +22,10 @@ export interface ListQueryEdge<T> {
 export default function <TResult, TProps = {}>(document: DocumentNode) {
     return graphql<ListQueryResponse<TResult>, TProps>(document, {
         options: (args: any) => {
+            let s = qs.parse(location.search);
             return {
                 variables: {
+                    ...s,
                     ...args
                 }
             };
@@ -32,9 +35,11 @@ export default function <TResult, TProps = {}>(document: DocumentNode) {
             return {
                 data: {
                     loadMoreEntries: () => {
+                        let s = qs.parse(location.search);
                         props.data!!.fetchMore({
                             query: document,
                             variables: {
+                                ...s,
                                 ...(props.ownProps as any),
                                 cursor: props.data!!.items.edges.slice(-1)[0].cursor,
                             },

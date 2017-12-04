@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { withRouter } from 'react-router-dom';
+import { Link } from '../Components/Link';
+import * as qs from 'query-string';
 
 export function PagedListFilters(props: { title: string, children?: any }) {
     return (
@@ -20,17 +23,42 @@ export function PagedListSearch() {
     );
 }
 
-export function PagedListFilterRadio(props: { title: string, children?: any }) {
+export function PagedListFilterRadio(props: { title: string, radioKey: string, children?: any }) {
+    var childrenWithProps = React.Children.map(props.children, child => {
+        if (React.isValidElement(child)) {
+            return React.cloneElement(child as React.ReactElement<{ radioKey: string }>, { radioKey: props.radioKey });
+        } else {
+            return child;
+        }
+    });
     return (
         <div className="x-filter">
             <div className="x-filter--title">{props.title}</div>
-            {props.children}
+            {childrenWithProps}
         </div>
     );
 }
 
-export function PagedListFilterRadioItem(props: { title: string, checked: boolean }) {
+export const PagedListFilterRadioItem = withRouter<{ title: string, itemKey?: string, radioKey?: string }>(props => {
+    var path = props.match.path;
+    var checked = false;
+    if (props.radioKey) {
+        let s = qs.parse(location.search);
+        if (props.itemKey) {
+            checked = s[props.radioKey] === props.itemKey;
+            s[props.radioKey] = props.itemKey;
+        } else {
+            checked = s[props.radioKey] === undefined;
+            delete s[props.radioKey];
+        }
+        let q = qs.stringify(s);
+        if (q !== '') {
+            path = props.match.path + '?' + q;
+        } else {
+            path = props.match.path;
+        }
+    }
     return (
-        <a href="#" className={'x-filter--radio' + (props.checked ? ' is-checked' : '')}>{props.title}</a>
+        <Link path={path} className={'x-filter--radio' + (checked ? ' is-checked' : '')}>{props.title}</Link>
     );
-}
+});
