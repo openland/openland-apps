@@ -15,6 +15,7 @@ export const Header = withUser((props) => {
                 </div>
                 <ul className="x-top--nav">
                     {props.user && (<li className="x-top--item"><span><img src={props.user.picture} alt="" />{props.user.firstName} {' '} {props.user.lastName}</span></li>)}
+                    {props.user && (<li className="x-top--item is-join"><button onClick={e => { e.preventDefault(); A.logout(); }}>Log Out</button></li>)}
 
                     {!props.user && (<li className="x-top--item"><button onClick={e => { e.preventDefault(); A.login(); }}>Sign In</button></li>)}
                     {!props.user && (<li className="x-top--item is-join"><button onClick={e => { e.preventDefault(); A.login(); }}>Join</button></li>)}
