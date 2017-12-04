@@ -63,7 +63,7 @@ export function withInfiniteList<TResult>(render: (item: TResult) => React.React
         if (props.data.loading) {
             return (
                 <InfiniteListContainer>
-                    <Loader key="____loader_big" />
+                    <Loader isRelative={true} noBackground={true} key="____loader_big" />
                 </InfiniteListContainer>
             );
         } else if (props.data.error != null) {
