@@ -3921,6 +3921,19 @@ button.x-top--item > *:hover {
   animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
   stroke-linecap: round;
 }
+.st-loader.no-bg {
+  background: none;
+}
+.st-loader.is-relative {
+  margin: 0 auto;
+  position: relative;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  width: 130px;
+  height: 130px;
+}
 .st-box .st-loader,
 .st-header .st-loader {
   background: #ffffff;
