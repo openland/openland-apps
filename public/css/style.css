@@ -3378,7 +3378,7 @@ button.x-top--item > *:hover {
   padding: 49px 0 75px;
 }
 .x-in--title {
-  margin: 0 0 11px;
+  margin: 0 0 20px;
   font-size: 18px;
   line-height: 20px;
   font-weight: 500;
@@ -3390,7 +3390,7 @@ button.x-top--item > *:hover {
   margin: 0;
 }
 .x-search {
-  padding: 19px 0 24px;
+  padding: 0 0 24px;
   margin: 0 0 21px;
   border-bottom: 1px solid rgba(38, 38, 38, 0.08);
 }
