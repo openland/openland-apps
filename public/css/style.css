@@ -3946,13 +3946,15 @@ button.x-top--item > *:hover {
   height: 130px;
 }
 .x-lineloader {
+  border-radius: 5px;
+  overflow: hidden;
   position: absolute;
-  top: 0;
+  top: -10px;
   right: 0;
   bottom: auto;
   left: 0;
   width: auto;
-  height: 6px;
+  height: 5px;
 }
 .x-lineloader--bar {
   content: "";
@@ -3968,15 +3970,15 @@ button.x-top--item > *:hover {
 }
 .x-lineloader--bar:nth-child(1) {
   background: #da4733;
-  animation: loadingline 3s linear infinite;
+  animation: loadingline 3s linear 0.5s infinite;
 }
 .x-lineloader--bar:nth-child(2) {
   background: #3b78e7;
-  animation: loadingline 3s linear 1s infinite;
+  animation: loadingline 3s linear 1.5s infinite;
 }
 .x-lineloader--bar:nth-child(3) {
   background: #fdba2c;
-  animation: loadingline 3s linear 2s infinite;
+  animation: loadingline 3s linear 2.5s infinite;
 }
 @keyframes loadingline {
   from {

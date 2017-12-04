@@ -1926,8 +1926,11 @@ body {
 }
 
 .x-lineloader {
-	.position (absolute, 0, 0, auto, 0);
-	.size (auto, 6px);
+	border-radius: 5px;
+	overflow: hidden;
+
+	.position (absolute, -10px, 0, auto, 0);
+	.size (auto, 5px);
 
 	&--bar {
 		content: "";
@@ -1939,17 +1942,17 @@ body {
 
 		&:nth-child(1) {
 			background: #da4733;
-			animation: loadingline 3s linear infinite;
+			animation: loadingline 3s linear 0.5s infinite;
 		}
 
 		&:nth-child(2) {
 			background: #3b78e7;
-			animation: loadingline 3s linear 1s infinite;
+			animation: loadingline 3s linear 1.5s infinite;
 		}
 
 		&:nth-child(3) {
 			background: #fdba2c;
-			animation: loadingline 3s linear 2s infinite;
+			animation: loadingline 3s linear 2.5s infinite;
 		}
 	}
 }
