@@ -33,7 +33,7 @@
     "markdown-it": "^8.4.0",
     "query-string": "^5.0.1",
     "react": "^15.6.1",
-    "react-apollo": "1.4.10",
+    "react-apollo": "1.4.15",
     "react-chartjs-2": "^2.5.5",
     "react-dom": "^15.6.1",
     "react-handsontable": "^0.3.1",

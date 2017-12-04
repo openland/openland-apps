@@ -3,7 +3,6 @@ import {
 } from 'react-apollo';
 import { DocumentNode } from 'graphql';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Config } from '../config';
 import * as qs from 'query-string';
 
 export default function <TResult>(document: DocumentNode) {
@@ -17,8 +16,7 @@ export default function <TResult>(document: DocumentNode) {
           return {
             variables: {
               ...args.match.params,
-              ...s,
-              domain: Config.domain
+              ...s
             }
           };
         }

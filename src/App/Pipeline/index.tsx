@@ -11,11 +11,12 @@ import { ListCard, ListCardItem } from '../XComponents/ListCard';
 import { InfiniteScroller } from '../XComponents/InfiniteScroller';
 import { withLoader } from '../Components/withLoader';
 import { withBuildingProjectsQuery } from '../../api/BuildingProjects';
+import { withRouter } from 'react-router';
 
-export const PipelineItems = withBuildingProjectsQuery(withLoader(props => {
+export const PipelineItems = withRouter(withBuildingProjectsQuery(withLoader(props => {
     return (
         <div>
-            {props.data!!.items.edges.map(p => {
+            {props.data!!.items!!.edges.map(p => {
                 var units: number | undefined = undefined;
                 var subtitle: string | undefined = undefined;
                 if (p.node.proposedUnits !== undefined && p.node.existingUnits !== undefined) {
@@ -41,10 +42,10 @@ export const PipelineItems = withBuildingProjectsQuery(withLoader(props => {
                     </ListCard>
                 );
             })}
-            {props.data!!.items.pageInfo.hasNextPage && <InfiniteScroller onLoadMore={() => { props.data!!.loadMoreEntries(); }} />}
+            {props.data!!.items!!.pageInfo.hasNextPage && <InfiniteScroller onLoadMore={() => { props.data!!.loadMoreEntries(); }} />}
         </div>
     );
-}));
+})));
 
 export const Pipeline = withBuildingProjectsQuery(withLoader(props => {
     console.warn(location.search);

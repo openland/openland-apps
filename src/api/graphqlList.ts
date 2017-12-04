@@ -1,6 +1,7 @@
 import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
 import * as qs from 'query-string';
+import { RouteComponentProps } from 'react-router-dom';
 
 export interface ListQueryResponse<T> {
     items: ListQueryConnection<T>;
@@ -32,12 +33,12 @@ function fetchSearchQuery(): any {
 }
 
 export default function <TResult, TProps = {}>(document: DocumentNode) {
-    return graphql<ListQueryResponse<TResult>, TProps>(document, {
+    return graphql<ListQueryResponse<TResult>, TProps & RouteComponentProps<any>>(document, {
         options: (args: any) => {
             return {
                 variables: {
                     ...fetchSearchQuery(),
-                    ...args
+                    ...args.match.params
                 }
             };
         },
