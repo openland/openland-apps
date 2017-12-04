@@ -16,9 +16,7 @@ export function PagedListItems(props: { title: string, children?: any }) {
     return (
         <div className="col-xs-12 col-lg-9">
             <div className="x-in--title">{props.title}</div>
-            <div className="x-in--list">
-                {props.children}
-            </div>
+            {props.children}
         </div>
     );
 }

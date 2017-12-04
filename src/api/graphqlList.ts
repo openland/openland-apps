@@ -21,7 +21,7 @@ export interface ListQueryEdge<T> {
     cursor: string;
 }
 
-type GraphQLListComponentProps<TResult> = GraphQLRoutedComponentProps<ListQueryResponse<TResult>>;
+export type GraphQLListComponentProps<TResult> = GraphQLRoutedComponentProps<ListQueryResponse<TResult>>;
 
 export default function <TResult>(document: DocumentNode) {
     return function (component: React.ComponentType<GraphQLListComponentProps<TResult>>): React.ComponentType<{}> {
@@ -31,7 +31,8 @@ export default function <TResult>(document: DocumentNode) {
                     variables: {
                         ...props.match.params,
                         ...props.queryString
-                    }
+                    },
+                    notifyOnNetworkStatusChange: true
                 };
             },
             props: (props) => {
