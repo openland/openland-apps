@@ -29,10 +29,8 @@ export function PagedListFilterRadio(props: { title: string, children?: any }) {
     );
 }
 
-export function PagedListFilterRadioItem(props: { title: string, name: string, value: string, checked: boolean }) {
+export function PagedListFilterRadioItem(props: { title: string, checked: boolean }) {
     return (
-        <label className="x-filter--radio">
-            <input type="radio" name={props.name} value={props.value} checked={props.checked} /><span>{props.title}</span>
-        </label>
+        <a href="#" className={'x-filter--radio' + (props.checked ? ' is-checked' : '')}>{props.title}</a>
     );
 }
