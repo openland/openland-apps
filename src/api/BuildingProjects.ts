@@ -28,8 +28,8 @@ export interface PipelineProjectShort {
 }
 
 const BuildingProjectsQuery = gql`
-  query buildingProjects($cursor: String, $minUnits: Int, $year: String) {
-      items: buildingProjects(first: 50, minUnits: $minUnits, year: $year, after: $cursor) {
+  query buildingProjects($cursor: String, $minUnits: Int, $year: String, $filter: String) {
+      items: buildingProjects(first: 50, minUnits: $minUnits, year: $year, filter: $filter, after: $cursor) {
           edges {
               node {
                 id
