@@ -3804,6 +3804,7 @@ button.x-top--item > *:hover {
   padding-right: 20px;
   font-size: 11px;
   line-height: 20px;
+  font-weight: 500;
 }
 .x-card--fields table td:nth-child(2) {
   font-size: 16px;
