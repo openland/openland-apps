@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export class Loader extends React.Component<{isRelative?: boolean, noBackground?: boolean, }> {
+export class Loader extends React.Component<{ isRelative?: boolean, noBackground?: boolean, }> {
     render() {
         return (
             <div className={'st-loader' + (this.props.isRelative!! ? ' is-relative' : '') + (this.props.noBackground!! ? ' no-bg' : '')}>
@@ -12,12 +12,14 @@ export class Loader extends React.Component<{isRelative?: boolean, noBackground?
     }
 }
 
-export function LoaderLine() {
-    return (
-        <div className="x-lineloader">
-            <div className="x-lineloader--bar">{}</div>
-            <div className="x-lineloader--bar">{}</div>
-            <div className="x-lineloader--bar">{}</div>
-        </div>
-    );
+export class LoaderLine extends React.Component {
+    render() {
+        return (
+            <div className="x-lineloader" >
+                <div className="x-lineloader--bar">{}</div>
+                <div className="x-lineloader--bar">{}</div>
+                <div className="x-lineloader--bar">{}</div>
+            </div>
+        );
+    }
 }

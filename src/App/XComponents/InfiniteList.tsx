@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { GraphQLListComponentProps } from '../../api/graphqlList';
 import { Loader, LoaderLine } from '../Components/Loader';
+// import FlipMove from 'react-flip-move';
 
 function InfiniteListContainer(props: { children: any }) {
     return (
@@ -50,13 +51,13 @@ class PageEndDetector extends React.Component<{ onLoadMore: () => void }> {
     }
 }
 
-export function withInfiniteList<TResult>(render: (item: TResult) => React.ReactNode): React.ComponentType<GraphQLListComponentProps<TResult>> {
+export function withInfiniteList<TResult extends { id: string }>(render: (item: TResult) => React.ReactNode): React.ComponentType<GraphQLListComponentProps<TResult>> {
     return function (props: GraphQLListComponentProps<TResult>) {
         if (props.data.items && props.data.loading) {
             return (
                 <InfiniteListContainer>
                     <LoaderLine key="____loader" />
-                    {props.data.items.edges.map(p => render(p.node))}
+                    {props.data.items.edges.map(p => <div className="x-in--item" key={p.node.id}>{render(p.node)}</div>)}
                 </InfiniteListContainer>
             );
         }
@@ -78,16 +79,10 @@ export function withInfiniteList<TResult>(render: (item: TResult) => React.React
 
         return (
             <InfiniteListContainer>
-                {props.data.items.edges.map(p => render(p.node))}
+                {props.data.items.edges.map(p => <div className="x-in--item" key={p.node.id}>{render(p.node)}</div>)}
 
                 {props.data.items!!.pageInfo.hasNextPage && (
-                    <PageEndDetector
-                        onLoadMore={() => {
-                            if (props.data.networkStatus === 7 /* when ready */) {
-                                props.data.loadMoreEntries();
-                            }
-                        }}
-                    />
+                    <PageEndDetector key="__page_end_detector" onLoadMore={props.data.loadMoreEntries} />
                 )}
             </InfiniteListContainer>
         );

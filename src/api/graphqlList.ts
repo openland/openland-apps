@@ -39,6 +39,9 @@ export default function <TResult>(document: DocumentNode) {
                 return {
                     data: {
                         loadMoreEntries: () => {
+                            if (props.data!!.networkStatus !== 7 || !props.data!!.items.pageInfo.hasNextPage) {
+                                return;
+                            }
                             props.data!!.fetchMore({
                                 query: document,
                                 variables: {
