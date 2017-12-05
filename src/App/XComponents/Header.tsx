@@ -9,7 +9,7 @@ export const Header = withUser((props) => {
                 <a className="x-top--label" href="#">San Francisco Housing Forecast</a>
                 <div className="x-top--tabs">
                     <Link className="x-top--tab" path="/">Home</Link>
-                    <Link className="x-top--tab is-active" path="/">Pipeline Explorer</Link>
+                    <Link className="x-top--tab is-active" path="/pipeline">Pipeline Explorer</Link>
                     {/* <a className="x-top--tab is-active" href="#">Dashboard</a>
                     <a className="x-top--tab" href="#">Pipeline Explorer</a> */}
                 </div>
