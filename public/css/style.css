@@ -3289,7 +3289,7 @@ button.x-header--item > *:hover {
 }
 .x-top--tab {
   text-decoration: none;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.5);
   padding: 8px 12px 10px;
   display: inline-block;
   vertical-align: top;
@@ -3298,7 +3298,7 @@ button.x-header--item > *:hover {
   font-weight: 500;
 }
 .x-top--tab.is-active {
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   cursor: default;
 }
 .x-top--nav {

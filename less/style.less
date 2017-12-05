@@ -1447,14 +1447,14 @@ body {
 
 	&--tab {
 		text-decoration: none;
-		color: @white;
+		color: fade(@white, 50);
 		padding: 8px 12px 10px;
 
 		.display (inline-block);
 		.font (15px, 20px, 500);
 
 		&.is-active {
-			color: fade(@white, 50);
+			color: @white;
 			cursor: default;
 		}
 	}
