@@ -25,5 +25,5 @@ export function Insights(props: { title: string, dark?: boolean, children: any }
                 </div>
             </div>
         </div>
-    )
+    );
 }

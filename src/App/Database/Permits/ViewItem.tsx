@@ -8,8 +8,8 @@ export default withPermitQuery(withLoader((p) => {
             <div>PermitId: {p.data.permit.id}</div>
             <div>Status: {p.data.permit.status} {p.data.permit.statusUpdatedAt}</div>
             <div>Type: {p.data.permit.type} {p.data.permit.typeWood}</div>
-            {p.data.permit.streetNumbers!!.map((p) =>
-                (<div key={p.streetId}>Address: {p.streetNumber} {p.steetNumberSuffix} {p.streetName} {p.streetNameSuffix}</div>))
+            {p.data.permit.streetNumbers!!.map((s) =>
+                (<div key={s.streetId}>Address: {s.streetNumber} {s.steetNumberSuffix} {s.streetName} {s.streetNameSuffix}</div>))
             }
             {p.data.permit.existingStories && p.data.permit.proposedStories &&
                 (<div>Stories: {p.data.permit.existingStories} / {p.data.permit.proposedStories}</div>)
