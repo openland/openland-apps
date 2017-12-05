@@ -60,7 +60,7 @@ export const Pipeline = withBuildingProjectsQuery((props) => {
                     </PagedListFilterRadio>
                     <ContributersInviteList />
                 </PagedListFilters>
-                <PagedListItems title={props.data.loading ? 'Pipeline' : 'Pipeline : ' + props.data.items.stats.newUnits + ' / ' + props.data.items.stats.newUnitsVerified}>
+                <PagedListItems title={props.data.items ? 'Pipeline : ' + props.data.items.stats.newUnits + ' / ' + props.data.items.stats.newUnitsVerified : 'Pipeline'}>
                     <PipelineItems data={props.data} />
                 </PagedListItems>
             </PagedList>
