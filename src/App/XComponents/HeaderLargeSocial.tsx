@@ -13,7 +13,7 @@ export function HeaderLargeSocial() {
             </form>
             <div className="x-intro--socials">
                 <div className="x-intro--label">Share</div>
-                <a className="x-intro--social" target="_blank" href={'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareText)}><i className="icon-fb">{}</i></a>
+                <a className="x-intro--social" target="_blank" href={'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href)}><i className="icon-fb">{}</i></a>
                 <a className="x-intro--social" target="_blank" href={'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText)}><i className="icon-tw">{}</i></a>
             </div>
         </div>
