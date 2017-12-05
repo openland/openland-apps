@@ -1183,15 +1183,16 @@ body {
 		.clearfix ();
 	}
 
-	&--item { float: left;
+	&--item {
+		float: left;
+		margin: 0 0 0 25px;
+
 		> * {
 			text-decoration: none;
 			color: @white;
-			border: 1px solid transparent;
-			padding: 8px 17px;
-			border-radius: 4px;
-			margin: 0 0 0 7px;
+			padding: 9px 0;
 			background: none;
+			border: none;
 
 			.display (block);
 			.font (13px, 20px, 500);
@@ -1209,8 +1210,10 @@ body {
 		}
 
 		&.is-join > * {
-			border-color: fade(@white, 30);
+			padding: 8px 17px;
+			border: 1px solid fade(@white, 30);
 			background: #192743;
+			border-radius: 4px;
 		}
 	}
 }
@@ -1340,6 +1343,13 @@ body {
 
 	&--text { color: fade(@side, 70);
 		.font (17px, 25px);
+
+		a {
+			text-decoration: none;
+			color: @blue-1;
+
+			&:hover { opacity: 0.7; }
+		}
 	}
 }
 
@@ -1431,7 +1441,9 @@ body {
 		float: left;
 		text-decoration: none;
 		color: @white;
-		padding: 8px 0 10px;
+		padding: 8px 0 10px 73px;
+		background: url(../img/x-top--label.svg) left 5px no-repeat;
+		background-size: auto 26px;
 
 		.display (block);
 		.font (15px, 20px, 500);
@@ -1890,6 +1902,16 @@ body {
 	}
 }
 
+.x-empty {
+	text-align: center;
+	padding: 334px 0 50px;
+	color: fade(#262626, 80);
+	background: url(../img/x-empty.png) center 36px no-repeat;
+	background-size: 265px 265px;
+
+	.font (18px, 20px);
+}
+
 // --------
 
 .st-loader {
@@ -1929,7 +1951,7 @@ body {
 	border-radius: 5px;
 	overflow: hidden;
 
-	.position (absolute, -10px, 0, auto, 0);
+	.position (absolute, -10px, 1px, auto, 1px);
 	.size (auto, 5px);
 
 	&--bar {
