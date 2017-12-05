@@ -8,8 +8,8 @@ export function CounterItem(props: { counter: number, name: string, verified?: n
                     <div className="x-counter--count">{props.counter}</div>
                     <div className="x-counter--name">{props.name}</div>
                 </div>
-                {props.verified && <div className="x-counter--label">{props.verified} verified</div>}
-                {!props.verified && <div className="x-counter--label">{props.label}</div>}
+                {props.verified !== undefined && <div className="x-counter--label">{props.verified} verified</div>}
+                {props.verified === undefined && <div className="x-counter--label">{props.label}</div>}
             </div>
         </div>
     );
