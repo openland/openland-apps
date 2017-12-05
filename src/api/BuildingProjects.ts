@@ -48,6 +48,7 @@ export interface PipelineProjectShort {
     extrasPermit?: string;
     extrasComment?: string;
     extrasUrl?: string;
+    extrasLocation?: { latitude: number, longitude: number };
 }
 
 const BuildingProjectsQuery = gql`
@@ -77,6 +78,10 @@ const BuildingProjectsQuery = gql`
                 extrasPermit
                 extrasComment
                 extrasUrl
+                extrasLocation {
+                    latitude
+                    longitude
+                }
               }
               cursor
           }

@@ -30,6 +30,7 @@ export const PipelineItems = withBuildingProjectsQuery(withInfiniteList(item => 
             picture={item.preview}
             verified={item.verified}
             url={item.extrasUrl}
+            location={item.extrasLocation}
         >
             {item.extrasAddressSecondary && <ListCardItem title="Secondary address" value={item.extrasAddressSecondary} />}
             {item.extrasPermit && <ListCardItem title="Permit ID" value={item.extrasPermit} />}

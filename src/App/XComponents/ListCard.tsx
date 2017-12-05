@@ -1,10 +1,14 @@
 import * as React from 'react';
 
+function makeLocationUrl(location: { latitude: number, longitude: number }) {
+    return `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=16&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY`;
+}
+
 export class ListCard extends React.Component<{
     title: string, newUnits?: number,
     subtitle?: string, endYear?: string,
     picture?: string, verified?: boolean,
-    url?: string
+    url?: string, location?: { latitude: number, longitude: number }
 }, { expanded: boolean }> {
 
     constructor() {
@@ -63,7 +67,9 @@ export class ListCard extends React.Component<{
                 )}
 
                 <div className="x-card--details">
-                    <div className="x-card--map" style={{ backgroundImage: 'url(https://maps.googleapis.com/maps/api/staticmap?center=54.939320,37.450654&zoom=16&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY)' }}>{}</div>
+                    {this.props.location && (
+                        <div className="x-card--map" style={{ backgroundImage: 'url(' + makeLocationUrl(this.props.location) + ')' }}>{}</div>
+                    )}
                     <div className="x-card--fields">
                         <table>
                             <tbody>
