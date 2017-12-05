@@ -3270,7 +3270,9 @@ button.x-header--item > *:hover {
   float: left;
   text-decoration: none;
   color: #ffffff;
-  padding: 8px 0 10px;
+  padding: 8px 0 10px 73px;
+  background: url(../img/x-top--label.svg) left 5px no-repeat;
+  background-size: auto 26px;
   display: block;
   font-size: 15px;
   line-height: 20px;
@@ -3895,6 +3897,15 @@ button.x-top--item > *:hover {
 .x-card.is-expanded .x-card--details {
   display: block;
 }
+.x-empty {
+  text-align: center;
+  padding: 334px 0 50px;
+  color: rgba(38, 38, 38, 0.8);
+  background: url(../img/x-empty.png) center 36px no-repeat;
+  background-size: 265px 265px;
+  font-size: 18px;
+  line-height: 20px;
+}
 .st-loader {
   background: #f2f5f8;
   z-index: 9999;
@@ -3951,9 +3962,9 @@ button.x-top--item > *:hover {
   overflow: hidden;
   position: absolute;
   top: -10px;
-  right: 0;
+  right: 1px;
   bottom: auto;
-  left: 0;
+  left: 1px;
   width: auto;
   height: 5px;
 }

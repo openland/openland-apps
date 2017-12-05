@@ -77,6 +77,16 @@ export function withInfiniteList<TResult extends { id: string }>(render: (item: 
             );
         }
 
+        if (props.data.items) {
+            if (props.data.items.edges.length === 0) {
+                return (
+                    <InfiniteListContainer>
+                        <div className="x-empty">No buildings match your criteria</div>
+                    </InfiniteListContainer>
+                );
+            }
+        }
+
         return (
             <InfiniteListContainer>
                 {props.data.items.edges.map(p => <div className="x-in--item" key={p.node.id}>{render(p.node)}</div>)}
