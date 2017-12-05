@@ -14,7 +14,7 @@ export default withCityQuery(withRootLoader((props) => {
             {props.data.account.generation === 2 && (
                 <Switch>
                     <Route exact={true} path="/" component={Dashboard} />
-                    <Route path="/db/pipeline" component={Pipeline} />
+                    <Route path="/pipeline" component={Pipeline} />
                     <Redirect to="/404" />
                 </Switch>
             )}

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from '../Components/Link';
 
 export function Pipeline() {
     return (
@@ -8,7 +9,7 @@ export function Pipeline() {
                     <div className="col-xs-12 col-lg-4">
                         <div className="x-pipeline--title">Pipeline</div>
                         <div className="x-pipeline--text">List of development projects likely to be completed in 2017-2018.</div>
-                        <div className="x-pipeline--btn"><a className="x-btn is-block" href="#">Explore the pipeline</a></div>
+                        <div className="x-pipeline--btn"><Link path="/pipeline" className="x-btn is-block">Explore the pipeline</Link></div>
                     </div>
                     <div className="col-xs-12 col-lg-8">
                         <div className="x-pipeline--list"><img src="img/x-pipeline--list.png" alt="" /></div>
