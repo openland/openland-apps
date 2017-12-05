@@ -1554,13 +1554,26 @@ body {
 	&--input {
 		background: #F0EDFF;
 		border-radius: 4px!important;
-		color: #6B50FF;
-		padding: 14px 62px 16px 24px;
+		color: #8771FD;
+		padding: 14px 62px 16px 16px;
 		border: none;
+		transition: 200ms all ease;
 
 		.display (block);
 		.size (100%, 56px);
 		.font (15px, 26px, 500);
+
+		&::-webkit-input-placeholder { color: #8771FD; }
+		&::-moz-placeholder { color: #8771FD; }
+		&:-ms-input-placeholder { color: #8771FD; }
+		&:-moz-placeholder { color: #8771FD; }
+
+		&:focus {
+			&::-webkit-input-placeholder { color: fade(#8771FD, 70); }
+			&::-moz-placeholder { color: fade(#8771FD, 70); }
+			&:-ms-input-placeholder { color: fade(#8771FD, 70); }
+			&:-moz-placeholder { color: fade(#8771FD, 70); }
+		}
 	}
 
 	&--button {

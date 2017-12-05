@@ -3421,15 +3421,40 @@ button.x-top--item > *:hover {
 .x-search--input {
   background: #F0EDFF;
   border-radius: 4px!important;
-  color: #6B50FF;
-  padding: 14px 62px 16px 24px;
+  color: #8771FD;
+  padding: 14px 62px 16px 16px;
   border: none;
+  transition: 200ms all ease;
   display: block;
   width: 100%;
   height: 56px;
   font-size: 15px;
   line-height: 26px;
   font-weight: 500;
+}
+.x-search--input::-webkit-input-placeholder {
+  color: #8771FD;
+}
+.x-search--input::-moz-placeholder {
+  color: #8771FD;
+}
+.x-search--input:-ms-input-placeholder {
+  color: #8771FD;
+}
+.x-search--input:-moz-placeholder {
+  color: #8771FD;
+}
+.x-search--input:focus::-webkit-input-placeholder {
+  color: rgba(135, 113, 253, 0.7);
+}
+.x-search--input:focus::-moz-placeholder {
+  color: rgba(135, 113, 253, 0.7);
+}
+.x-search--input:focus:-ms-input-placeholder {
+  color: rgba(135, 113, 253, 0.7);
+}
+.x-search--input:focus:-moz-placeholder {
+  color: rgba(135, 113, 253, 0.7);
 }
 .x-search--button {
   text-align: center;
