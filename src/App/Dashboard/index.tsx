@@ -8,8 +8,10 @@ import { Pipeline } from '../XComponents/Pipeline';
 import { Footer } from '../XComponents/Footer';
 import { ContributersInvite } from '../XComponents/ContributersInvite';
 import { Page } from '../XComponents/Page';
+import { withBuildingProjectsStats } from '../../api/BuildingProjects';
+import { withLoader } from '../Components/withLoader';
 
-export function Dashboard() {
+export const Dashboard = withBuildingProjectsStats(withLoader(props => {
     return (
         <Page>
             <HeaderLarge key="header">
@@ -17,9 +19,9 @@ export function Dashboard() {
                 <HeaderLargeSocial />
             </HeaderLarge>
             <Counters>
-                <CounterItem counter={415} name="Projects tracked" verified={72} />
-                <CounterItem counter={2753} name="2017 net new units" verified={1115} />
-                <CounterItem counter={3153} name="2018 net new units" verified={342} />
+                <CounterItem counter={props.data.stats.projectsTracked} name="Projects tracked" verified={props.data.stats.projectsVerified} />
+                <CounterItem counter={props.data.stats.year2017NewUnits} name="2017 net new units" verified={props.data.stats.year2017NewUnitsVerified} />
+                <CounterItem counter={props.data.stats.year2018NewUnits} name="2018 net new units" verified={props.data.stats.year2018NewUnitsVerified} />
                 <CounterItem counter={5000} name="Mayor's goal" label="Annual target" />
             </Counters>
             <Insights title="Insights">
@@ -55,4 +57,4 @@ export function Dashboard() {
             <Footer />
         </Page>
     );
-}
+}));

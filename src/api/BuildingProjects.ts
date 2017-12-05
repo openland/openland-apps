@@ -1,5 +1,28 @@
 import { gql } from 'react-apollo';
 import graphqlList from './graphqlList';
+import graphqlRouted from './graphqlRouted';
+
+const BuildingProjectsStatsQuery = gql`
+query buildingProjectStats {
+    stats: buildingProjectsStats {
+        projectsTracked
+        projectsVerified
+        year2017NewUnits
+        year2017NewUnitsVerified
+        year2018NewUnits
+        year2018NewUnitsVerified
+    }
+}
+`;
+
+export interface BuildingProjectsStats {
+    projectsTracked: number;
+    projectsVerified: number;
+    year2017NewUnits: number;
+    year2017NewUnitsVerified: number;
+    year2018NewUnits: number;
+    year2018NewUnitsVerified: number;
+}
 
 export interface PipelineProjectShort {
     id: string;
@@ -66,3 +89,4 @@ const BuildingProjectsQuery = gql`
   `;
 
 export const withBuildingProjectsQuery = graphqlList<PipelineProjectShort>(BuildingProjectsQuery);
+export const withBuildingProjectsStats = graphqlRouted<{ stats: BuildingProjectsStats }>(BuildingProjectsStatsQuery);
