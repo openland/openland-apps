@@ -54,7 +54,9 @@ export const Dashboard = withBuildingProjectsStats(withLoader(props => {
                     text="The initial list of construction projects is created using open data published by DataSF (development pipeline and building permits). Further details are sources from our community of contributors."
                 />
             </Insights>
-            <Footer />
+            <Footer>
+                <HeaderLargeSocial />
+            </Footer>
         </Page>
     );
 }));
