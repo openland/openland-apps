@@ -46,7 +46,7 @@ export const Pipeline = withBuildingProjectsQuery((props) => {
         <Page>
             <Header />
             <PagedList>
-                <PagedListFilters title="Filters">
+                <PagedListFilters title="Pipeline Filters">
                     <PagedListSearch searchKey="filter" />
                     <PagedListFilterRadio radioKey="year" title="Expected completion">
                         <PagedListFilterRadioItem title="All" />
