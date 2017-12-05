@@ -6,7 +6,7 @@ export const HeaderLarge = withUser((props) => {
         <div className="x-intro">
             <div className="x-container">
                 <div className="x-header">
-                    <a className="x-header--logo" href="/"><img src="/img/logotype.svg" alt="" /></a>
+                    <a className="x-header--logo" href="https://statecraft.one/"><img src="/img/logotype.svg" alt="" /></a>
                     <ul className="x-header--nav">
                         {props.user &&
                             <li className="x-header--item"><span><img src={props.user.picture} alt="" />{props.user.firstName} {props.user.lastName}</span></li>
