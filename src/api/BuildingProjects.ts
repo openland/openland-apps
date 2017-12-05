@@ -24,7 +24,7 @@ export interface BuildingProjectsStats {
     year2018NewUnitsVerified: number;
 }
 
-export interface PipelineProjectShort {
+export interface BuildingProject {
     id: string;
     name: string;
     description?: string;
@@ -49,6 +49,10 @@ export interface PipelineProjectShort {
     extrasComment?: string;
     extrasUrl?: string;
     extrasLocation?: { latitude: number, longitude: number };
+}
+
+export interface BuildingProjectsQueryStats {
+    stats: { newUnits: number, newUnitsVerified: number };
 }
 
 const BuildingProjectsQuery = gql`
@@ -89,9 +93,13 @@ const BuildingProjectsQuery = gql`
               hasNextPage
               hasPreviousPage
           }
+          stats {
+              newUnits
+              newUnitsVerified
+          }
       }
   }
   `;
 
-export const withBuildingProjectsQuery = graphqlList<PipelineProjectShort>(BuildingProjectsQuery);
+export const withBuildingProjectsQuery = graphqlList<BuildingProject, BuildingProjectsQueryStats>(BuildingProjectsQuery);
 export const withBuildingProjectsStats = graphqlRouted<{ stats: BuildingProjectsStats }>(BuildingProjectsStatsQuery);
