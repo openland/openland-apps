@@ -6,7 +6,6 @@ import * as Router from 'react-router';
 export function withLoader<P>(WrappedComponent: React.ComponentType<P>):
     React.ComponentType<{ data: QueryProps } & P> {
     return function (props: { data: QueryProps } & P) {
-        console.warn(props);
         if (props.data.loading) {
             return (
                 <Loader />

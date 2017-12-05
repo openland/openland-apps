@@ -33,7 +33,8 @@ export default function <TResult, TExtras = {}>(document: DocumentNode) {
                         ...props.match.params,
                         ...props.queryString
                     },
-                    notifyOnNetworkStatusChange: true
+                    notifyOnNetworkStatusChange: true,
+                    fetchPolicy: 'cache-and-network'
                 };
             },
             props: (props) => {
