@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { withUser } from '../Components/UserProvider';
+import { Link } from '../Components/Link';
 import * as A from '../../auth';
 export const HeaderLarge = withUser((props) => {
     return (
@@ -8,6 +9,8 @@ export const HeaderLarge = withUser((props) => {
                 <div className="x-header">
                     <a className="x-header--logo" href="https://statecraft.one/"><img src="/img/logotype.svg" alt="" /></a>
                     <ul className="x-header--nav">
+                        <li className="x-header--item"><Link path="/pipeline">Explore Pipeline</Link></li>
+
                         {props.user &&
                             <li className="x-header--item"><span><img src={props.user.picture} alt="" />{props.user.firstName} {props.user.lastName}</span></li>
                         }

@@ -2962,15 +2962,14 @@ a.st-header--label:hover {
 }
 .x-header--item {
   float: left;
+  margin: 0 0 0 25px;
 }
 .x-header--item > * {
   text-decoration: none;
   color: #ffffff;
-  border: 1px solid transparent;
-  padding: 8px 17px;
-  border-radius: 4px;
-  margin: 0 0 0 7px;
+  padding: 9px 0;
   background: none;
+  border: none;
   display: block;
   font-size: 13px;
   line-height: 20px;
@@ -2990,8 +2989,10 @@ button.x-header--item > *:hover {
   height: 28px;
 }
 .x-header--item.is-join > * {
-  border-color: rgba(255, 255, 255, 0.3);
+  padding: 8px 17px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   background: #192743;
+  border-radius: 4px;
 }
 .x-intro {
   background: #182642 url(../img/x-intro.png) center top no-repeat;

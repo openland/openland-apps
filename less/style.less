@@ -1183,15 +1183,16 @@ body {
 		.clearfix ();
 	}
 
-	&--item { float: left;
+	&--item {
+		float: left;
+		margin: 0 0 0 25px;
+
 		> * {
 			text-decoration: none;
 			color: @white;
-			border: 1px solid transparent;
-			padding: 8px 17px;
-			border-radius: 4px;
-			margin: 0 0 0 7px;
+			padding: 9px 0;
 			background: none;
+			border: none;
 
 			.display (block);
 			.font (13px, 20px, 500);
@@ -1209,8 +1210,10 @@ body {
 		}
 
 		&.is-join > * {
-			border-color: fade(@white, 30);
+			padding: 8px 17px;
+			border: 1px solid fade(@white, 30);
 			background: #192743;
+			border-radius: 4px;
 		}
 	}
 }
