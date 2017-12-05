@@ -1,13 +1,14 @@
 import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
-import { GraphQLRoutedComponentProps } from './utils';
+import { GraphQLRoutedComponentProps, NotNullableDataProps } from './utils';
 import { RouteQueryStringProps, withRouterQueryString } from './withRouterQueryString';
 
-export interface ListQueryResponse<T> {
-    items: ListQueryConnection<T>;
-    isLoading: boolean;
+export interface ListQueryResponse<T, E> {
+    items: ListQueryConnection<T> & E;
     loadMoreEntries(): void;
 }
+
+export type ListQueryData<T> = NotNullableDataProps<ListQueryResponse<T, {}>>;
 
 export interface ListQueryConnection<T> {
     edges: [ListQueryEdge<T>];
@@ -21,11 +22,11 @@ export interface ListQueryEdge<T> {
     cursor: string;
 }
 
-export type GraphQLListComponentProps<TResult> = GraphQLRoutedComponentProps<ListQueryResponse<TResult>>;
+export type GraphQLListComponentProps<TResult, TExtras> = GraphQLRoutedComponentProps<ListQueryResponse<TResult, TExtras>>;
 
-export default function <TResult>(document: DocumentNode) {
-    return function (component: React.ComponentType<GraphQLListComponentProps<TResult>>): React.ComponentType<{}> {
-        let qlWrapper = graphql<ListQueryResponse<TResult>, RouteQueryStringProps, GraphQLListComponentProps<TResult>>(document, {
+export default function <TResult, TExtras = {}>(document: DocumentNode) {
+    return function (component: React.ComponentType<GraphQLListComponentProps<TResult, TExtras>>): React.ComponentType<{}> {
+        let qlWrapper = graphql<ListQueryResponse<TResult, TExtras>, RouteQueryStringProps, GraphQLListComponentProps<TResult, TExtras>>(document, {
             options: (props: RouteQueryStringProps) => {
                 return {
                     variables: {

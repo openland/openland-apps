@@ -8,10 +8,10 @@ import {
 import { ContributersInviteList } from '../XComponents/ContributersInviteList';
 import { Page } from '../XComponents/Page';
 import { ListCard, ListCardItem } from '../XComponents/ListCard';
-import { withBuildingProjectsQuery } from '../../api/BuildingProjects';
+import { BuildingProject, withBuildingProjectsQuery } from '../../api/BuildingProjects';
 import { withInfiniteList } from '../XComponents/InfiniteList';
 
-export const PipelineItems = withBuildingProjectsQuery(withInfiniteList(item => {
+export const PipelineItems = withInfiniteList<BuildingProject>(item => {
     var units: number | undefined = undefined;
     var subtitle: string | undefined = undefined;
     if (item.proposedUnits !== undefined && item.existingUnits !== undefined) {
@@ -39,9 +39,9 @@ export const PipelineItems = withBuildingProjectsQuery(withInfiniteList(item => 
             {item.extrasComment && <ListCardItem title="Comment" value={item.extrasComment} />}
         </ListCard>
     );
-}));
+});
 
-export const Pipeline = () => {
+export const Pipeline = withBuildingProjectsQuery((props) => {
     return (
         <Page>
             <Header />
@@ -60,10 +60,10 @@ export const Pipeline = () => {
                     </PagedListFilterRadio>
                     <ContributersInviteList />
                 </PagedListFilters>
-                <PagedListItems title="Pipeline">
-                    <PipelineItems />
+                <PagedListItems title={props.data.loading ? 'Pipeline' : 'Pipeline : ' + props.data.items.stats.newUnits + ' / ' + props.data.items.stats.newUnitsVerified}>
+                    <PipelineItems data={props.data} />
                 </PagedListItems>
             </PagedList>
         </Page>
     );
-};
+});

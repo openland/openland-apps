@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GraphQLListComponentProps } from '../../api/graphqlList';
+import { ListQueryData } from '../../api/graphqlList';
 import { Loader, LoaderLine } from '../Components/Loader';
 // import FlipMove from 'react-flip-move';
 
@@ -51,8 +51,8 @@ class PageEndDetector extends React.Component<{ onLoadMore: () => void }> {
     }
 }
 
-export function withInfiniteList<TResult extends { id: string }>(render: (item: TResult) => React.ReactNode): React.ComponentType<GraphQLListComponentProps<TResult>> {
-    return function (props: GraphQLListComponentProps<TResult>) {
+export function withInfiniteList<TResult extends { id: string }>(render: (item: TResult) => React.ReactNode): React.ComponentType<ListQueryData<TResult>> {
+    return function (props: ListQueryData<TResult>) {
         if (props.data.items && props.data.loading) {
             return (
                 <InfiniteListContainer>
