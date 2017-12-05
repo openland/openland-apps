@@ -6,7 +6,7 @@ export const Header = withUser((props) => {
     return (
         <div className="x-top">
             <div className="x-container is-wide clearfix">
-                <a className="x-top--label" href="#">San Francisco Housing Forecast</a>
+                <Link className="x-top--label" path="/">San Francisco Housing Forecast</Link>
                 <div className="x-top--tabs">
                     <Link className="x-top--tab" path="/">Home</Link>
                     <Link className="x-top--tab is-active" path="/pipeline">Pipeline Explorer</Link>
