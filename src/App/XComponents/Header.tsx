@@ -18,7 +18,7 @@ export const Header = withUser((props) => {
                     {props.user && (<li className="x-top--item is-join"><button onClick={e => { e.preventDefault(); A.logout(); }}>Sign Out</button></li>)}
 
                     {!props.user && (<li className="x-top--item"><button onClick={e => { e.preventDefault(); A.login(); }}>Sign In</button></li>)}
-                    {!props.user && (<li className="x-top--item is-join"><button onClick={e => { e.preventDefault(); A.login(); }}>Join</button></li>)}
+                    {!props.user && (<li className="x-top--item is-join"><a target="_blank" href="https://goo.gl/forms/YX8LSpH6jWLzbEj02">Join</a></li>)}
                 </ul>
             </div>
         </div>

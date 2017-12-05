@@ -18,7 +18,7 @@ export const HeaderLarge = withUser((props) => {
                             <li className="x-header--item"><button onClick={e => { e.preventDefault(); A.login(); }}>Sign In</button></li>
                         }
                         {!props.user &&
-                            (<li className="x-header--item is-join"><button onClick={e => { e.preventDefault(); A.login(); }}>Join</button></li>)
+                            (<li className="x-header--item is-join"><a target="_blank" href="https://goo.gl/forms/YX8LSpH6jWLzbEj02">Join</a></li>)
                         }
                     </ul>
                 </div>
