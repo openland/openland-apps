@@ -3388,10 +3388,57 @@ button.x-top--item > *:hover {
   padding: 49px 0 75px;
 }
 .x-in--title {
-  margin: 0 0 20px;
+  margin: 0 0 30px;
   font-size: 18px;
   line-height: 20px;
   font-weight: 500;
+}
+.x-in--title span {
+  text-transform: uppercase;
+  color: rgba(38, 38, 38, 0.6);
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  margin: 2px 12px -2px 8px;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 11px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.x-in--title span.is-verified {
+  margin-left: 62px;
+  position: relative;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+}
+.x-in--title span.is-verified:before {
+  background: rgba(121, 121, 122, 0.6);
+  color: #ffffff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 0 0 0 2px;
+  display: block;
+  position: absolute;
+  top: 6px;
+  right: auto;
+  bottom: auto;
+  left: -14px;
+  width: 8px;
+  height: 8px;
+  content: '\e915';
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 4px;
+  line-height: 8px;
 }
 .x-in--item {
   margin: 0 0 17px;

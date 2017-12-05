@@ -1532,8 +1532,37 @@ body {
 }
 
 .x-in { padding: 49px 0 75px;
-	&--title { margin: 0 0 20px;
+	&--title { margin: 0 0 30px;
 		.font (18px, 20px, 500);
+
+		span {
+			text-transform: uppercase;
+			color: fade(@text-sf, 60);
+			letter-spacing: 0.6px;
+			white-space: nowrap;
+			margin: 2px 12px -2px 8px;
+
+			.display (inline-block);
+			.font (11px, 20px, 500);
+
+			&.is-verified { margin-left: 62px;
+				.position (relative);
+
+				&:before {
+					background: fade(#79797A, 60);
+					color: @white;
+					text-align: center;
+					border-radius: 2px;
+					padding: 0 0 0 2px;
+
+					.display (block);
+					.position-tl (absolute, 6px, -14px);
+					.size (8px, 8px);
+					.icon ('\e915');
+					.font (4px, 8px);
+				}
+			}
+		}
 	}
 
 	&--item { margin: 0 0 17px;
@@ -1844,9 +1873,7 @@ body {
 		border-top: 1px solid fade(@text-sf, 8);
 		padding: 22px 24px 8px;
 
-		table {
-			.size (100%);
-
+		table { .size (100%);
 			td { padding: 0 0 15px;
 				&:nth-child(1) {
 					text-transform: uppercase;
@@ -1991,7 +2018,6 @@ body {
 		}
 	}
 }
-
 
 @keyframes loadingline {
 	from {
