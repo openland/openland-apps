@@ -77,14 +77,12 @@ export function withInfiniteList<TResult extends { id: string }>(render: (item: 
             );
         }
 
-        if (props.data.items) {
-            if (props.data.items.edges.length === 0) {
-                return (
-                    <InfiniteListContainer>
-                        <div className="x-empty">No buildings match your criteria</div>
-                    </InfiniteListContainer>
-                );
-            }
+        if (props.data.items && props.data.items.edges.length === 0) {
+            return (
+                <InfiniteListContainer>
+                    <div className="x-empty">No buildings match your criteria</div>
+                </InfiniteListContainer>
+            );
         }
 
         return (
