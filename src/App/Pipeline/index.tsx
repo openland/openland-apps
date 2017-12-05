@@ -31,9 +31,9 @@ export const PipelineItems = withBuildingProjectsQuery(withInfiniteList(item => 
             verified={item.verified}
             url={item.extrasUrl}
         >
+            {item.extrasAddressSecondary && <ListCardItem title="Secondary address" value={item.extrasAddressSecondary} />}
             {item.extrasPermit && <ListCardItem title="Permit ID" value={item.extrasPermit} />}
             {item.extrasDeveloper && <ListCardItem title="Developer" value={item.extrasDeveloper} />}
-            {item.extrasAddressSecondary && <ListCardItem title="Secondary address" value={item.extrasAddressSecondary} />}
             {item.extrasGeneralConstructor && <ListCardItem title="General contractor" value={item.extrasGeneralConstructor} />}
             {item.extrasComment && <ListCardItem title="Comment" value={item.extrasComment} />}
         </ListCard>
