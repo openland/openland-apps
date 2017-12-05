@@ -7,7 +7,16 @@ export class UserProvider extends React.Component<{ user?: User, account: Accoun
     };
 
     render() {
-        return React.Children.only(this.props.children);
+        var children: any = false;
+        React.Children.forEach(this.props.children, (ch) => {
+            if (ch) {
+                if (children) {
+                    throw 'Only one child possible!';
+                }
+                children = ch;
+            }
+        });
+        return children;
     }
 
     getChildContext() {

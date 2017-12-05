@@ -4,7 +4,7 @@ import { RouteQueryStringProps, withRouterQueryString } from './withRouterQueryS
 import { GraphQLRoutedComponentProps } from './utils';
 
 export default function <TResult>(document: DocumentNode) {
-  return function (component: React.ComponentType<GraphQLRoutedComponentProps<TResult>>) {
+  return function (component: React.ComponentType<GraphQLRoutedComponentProps<TResult>>): React.ComponentType<{}> {
     let qlWrapper = graphql<TResult, RouteQueryStringProps, GraphQLRoutedComponentProps<TResult>>(document, {
       options: (props: RouteQueryStringProps) => {
         return {
