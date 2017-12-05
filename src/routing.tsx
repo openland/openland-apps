@@ -10,7 +10,7 @@ import App from './App/';
 import Sandbox from './Sandbox/';
 import NotFound from './App/Failures/NotFound';
 import { Config } from './config';
-
+import RouterScrollToTop from './App/XComponents/RouterScrollToTop';
 interface AuthPageProps {
     location: { hash: string };
 }
@@ -71,11 +71,13 @@ export default function () {
         return (
             <ApolloProvider client={api.apolloClient}>
                 <BrowserRouter>
-                    <Switch>
-                        <Route path="/auth_complete" component={AuthPage} />
-                        <Route path="/404" component={NotFound} />
-                        <Route path="/" component={Sandbox} />
-                    </Switch>
+                    <RouterScrollToTop>
+                        <Switch>
+                            <Route path="/auth_complete" component={AuthPage} />
+                            <Route path="/404" component={NotFound} />
+                            <Route path="/" component={Sandbox} />
+                        </Switch>
+                    </RouterScrollToTop>
                 </BrowserRouter>
             </ApolloProvider>
         );
@@ -84,12 +86,14 @@ export default function () {
     return (
         <ApolloProvider client={api.apolloClient}>
             <BrowserRouter>
-                <Switch>
-                    <Route path="/auth_complete" component={AuthPage} />
-                    <Route path="/404" component={NotFound} />
-                    <Route path="/sandbox" component={Sandbox} />
-                    <Route path="/" component={App} />
-                </Switch>
+                <RouterScrollToTop>
+                    <Switch>
+                        <Route path="/auth_complete" component={AuthPage} />
+                        <Route path="/404" component={NotFound} />
+                        <Route path="/sandbox" component={Sandbox} />
+                        <Route path="/" component={App} />
+                    </Switch>
+                </RouterScrollToTop>
             </BrowserRouter>
         </ApolloProvider>
     );
