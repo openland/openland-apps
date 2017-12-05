@@ -12,7 +12,7 @@ export const HeaderLarge = withUser((props) => {
                             <li className="x-header--item"><span><img src={props.user.picture} alt="" />{props.user.firstName} {props.user.lastName}</span></li>
                         }
                         {props.user &&
-                            <li className="x-header--item is-join"><button onClick={e => { e.preventDefault(); A.logout(); }}>Log Out</button></li>
+                            <li className="x-header--item is-join"><button onClick={e => { e.preventDefault(); A.logout(); }}>Sign Out</button></li>
                         }
                         {!props.user &&
                             <li className="x-header--item"><button onClick={e => { e.preventDefault(); A.login(); }}>Sign In</button></li>
