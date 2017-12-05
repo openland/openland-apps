@@ -3170,6 +3170,13 @@ button.x-header--item > *:hover {
   font-size: 17px;
   line-height: 25px;
 }
+.x-insights--text a {
+  text-decoration: none;
+  color: #4766ff;
+}
+.x-insights--text a:hover {
+  opacity: 0.7;
+}
 .x-pipeline {
   background: #ffffff;
   padding: 70px 0 0;

@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { Formatted } from '../Components/Formatted';
 
 export function InsightItem(props: { title: string, text: string }) {
     return (
         <div className="x-insights--item">
             <div className="x-insights--label">{props.title}</div>
-            <div className="x-insights--text">{props.text}</div>
+
+            <Formatted className="x-insights--text" text={props.text} />
         </div>
     );
 }
