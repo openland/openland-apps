@@ -22,6 +22,8 @@ export interface BuildingProjectsStats {
     year2017NewUnitsVerified: number;
     year2018NewUnits: number;
     year2018NewUnitsVerified: number;
+    totalProjects: number;
+    totalProjectsVerified: number;
 }
 
 export interface BuildingProject {
@@ -96,6 +98,8 @@ const BuildingProjectsQuery = gql`
           stats {
               newUnits
               newUnitsVerified
+              totalProjects
+              totalProjectsVerified
           }
       }
   }
