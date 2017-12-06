@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 export class RootContainer extends React.Component<{}, { isShown: boolean }> {
-    constructor() {
-        super();
+    constructor(props: {}) {
+        super(props);
         this.state = { isShown: false };
     }
 

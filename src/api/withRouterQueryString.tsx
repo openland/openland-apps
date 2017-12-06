@@ -13,8 +13,8 @@ export function withRouterQueryString<P = {}>(Component: React.ComponentType<Rou
         matched: string = location.search;
         parsedKeys: { [queryString: string]: string | null } = {};
 
-        constructor() {
-            super();
+        constructor(props: RouteComponentProps<any> & P) {
+            super(props);
 
             let qsparsed = qs.parse(location.search);
             for (let k of Object.getOwnPropertyNames(qsparsed)) {

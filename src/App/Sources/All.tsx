@@ -104,8 +104,8 @@ function datasetCompare(a: DataSet, b: DataSet) {
 
 class DatasetsPage extends React.Component<{ datasets: [DataSet], user?: User, account: Account }, { tab: string }> {
 
-    constructor() {
-        super();
+    constructor(props: { datasets: [DataSet], user?: User, account: Account }) {
+        super(props);
         this.state = { tab: 'all' };
     }
 

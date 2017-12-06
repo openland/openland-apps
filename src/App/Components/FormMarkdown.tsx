@@ -3,10 +3,11 @@
 import * as React from 'react';
 import { FormContext } from './Form';
 import SimpleDME from 'react-simplemde-editor';
+import * as PropTypes from 'prop-types';
 
 export class FormMarkdown extends React.Component<{ name: string, placeholder?: string }, { value: string }> {
     static contextTypes = {
-        form: React.PropTypes.object
+        form: PropTypes.object
     };
 
     constructor(props: any, context: any) {

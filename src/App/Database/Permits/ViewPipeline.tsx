@@ -33,8 +33,8 @@ import { Section, PageTitle } from '../../Components/Page';
 // }));
 
 class PermitsListComponent extends React.Component<{}, { filter: string }> {
-    constructor() {
-        super();
+    constructor(props: {}) {
+        super(props);
         this.state = { filter: '' };
     }
     render() {

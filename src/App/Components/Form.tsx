@@ -4,6 +4,7 @@ import * as React from 'react';
 import { MutationFunc } from 'react-apollo';
 import { LinksEdit } from './LinksEdit';
 import { Link } from '../../api/';
+import * as PropTypes from 'prop-types';
 
 export interface FormContext {
     form: FormProvider;
@@ -40,7 +41,7 @@ export interface FormProps {
 
 export class Form extends React.Component<FormProps> implements React.ChildContextProvider<{}> {
     static childContextTypes = {
-        form: React.PropTypes.object
+        form: PropTypes.object
     };
 
     provider = new FormProvider();
@@ -107,7 +108,7 @@ export class Form extends React.Component<FormProps> implements React.ChildConte
 
 class FormReceiver extends React.Component<{ render: React.ComponentType<{ form: FormProvider }> }> {
     static contextTypes = {
-        form: React.PropTypes.object
+        form: PropTypes.object
     };
 
     render() {
@@ -125,7 +126,7 @@ export function withForm<P>(WrappedComponent: React.ComponentType<P & { form: Fo
 
 export class FormText extends React.Component<{ name: string, placeholder?: string }, { value: any }> {
     static contextTypes = {
-        form: React.PropTypes.object
+        form: PropTypes.object
     };
 
     constructor(props: any, context: any) {

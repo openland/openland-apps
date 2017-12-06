@@ -4,15 +4,21 @@ function makeLocationUrl(location: { latitude: number, longitude: number }) {
     return `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=16&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY`;
 }
 
-export class ListCard extends React.Component<{
-    title: string, newUnits?: number,
-    subtitle?: string, endYear?: string,
-    picture?: string, verified?: boolean,
-    url?: string, location?: { latitude: number, longitude: number }
-}, { expanded: boolean }> {
+export interface ListCardProps {
+    title: string;
+    newUnits?: number;
+    subtitle?: string;
+    endYear?: string;
+    picture?: string;
+    verified?: boolean;
+    url?: string;
+    location?: { latitude: number, longitude: number };
+}
 
-    constructor() {
-        super();
+export class ListCard extends React.Component<ListCardProps, { expanded: boolean }> {
+
+    constructor(props: ListCardProps) {
+        super(props);
 
         this.state = {
             expanded: false

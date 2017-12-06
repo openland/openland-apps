@@ -14,8 +14,8 @@ function InfiniteListContainer(props: { children: any }) {
 class PageEndDetector extends React.Component<{ onLoadMore: () => void }> {
     private sentinel: HTMLDivElement | null;
 
-    constructor() {
-        super();
+    constructor(props: { onLoadMore: () => void }) {
+        super(props);
 
         this.clickHandler = this.clickHandler.bind(this);
     }

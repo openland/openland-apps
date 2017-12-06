@@ -1,9 +1,10 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { User, Account } from '../../api/';
 export class UserProvider extends React.Component<{ user?: User, account: Account }> implements React.ChildContextProvider<{}> {
     static childContextTypes = {
-        user: React.PropTypes.object,
-        account: React.PropTypes.object
+        user: PropTypes.object,
+        account: PropTypes.object
     };
 
     render() {
@@ -29,8 +30,8 @@ export class UserProvider extends React.Component<{ user?: User, account: Accoun
 
 class UserReceiver extends React.Component<{ render: React.ComponentType<{ user?: User, account: Account }> }> {
     static contextTypes = {
-        user: React.PropTypes.object,
-        account: React.PropTypes.object
+        user: PropTypes.object,
+        account: PropTypes.object
     };
 
     render() {

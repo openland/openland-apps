@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { FormContext } from './Form';
 import Select from 'react-select';
+import * as PropTypes from 'prop-types';
 
 export class FormSelect extends React.Component<{ name: string, options: Array<{ value: string, label: string }> }, { value: any }> {
     static contextTypes = {
-        form: React.PropTypes.object
+        form: PropTypes.object
     };
 
     constructor(props: any, context: any) {
