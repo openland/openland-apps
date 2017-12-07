@@ -1344,7 +1344,10 @@ body {
 		.size (~'calc(100% - 198px)', 56px);
 		.font (15px, 26px, 500);
 
-		@media @media-xs-only { border-radius: 4px!important;
+		@media @media-xs-only {
+			border-radius: 4px!important;
+			margin: 0 0 10px;
+
 			.size (100%, 56px);
 		}
 	}
@@ -1791,18 +1794,11 @@ body {
 			&.is-verified { margin-left: 62px;
 				.position (relative);
 
-				&:before {
-					background: fade(#79797A, 60);
-					color: @white;
-					text-align: center;
-					border-radius: 2px;
-					padding: 0 0 0 2px;
-
+				&:before { color: fade(#79797A, 60);
 					.display (block);
 					.position-tl (absolute, 6px, -14px);
-					.size (8px, 8px);
-					.icon ('\e915');
-					.font (4px, 8px);
+					.icon ('\e91d');
+					.font (9px);
 				}
 			}
 		}

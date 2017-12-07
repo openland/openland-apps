@@ -21,7 +21,12 @@ export class PagedListFilters extends React.Component<{ title: string, children?
                         <a className="x-filters--close" href="#" onClick={(e) => { e.preventDefault(); this.setState({ isShown: false }); }}><i className="icon-close" /></a>
 
                         <div className="x-in--title">{this.props.title}</div>
+
                         {this.props.children}
+
+                        <div className="x-join visible-xs visible-sm">
+                            <div className="x-join--btn"><a className="x-btn is-block" href="#" onClick={(e) => { e.preventDefault(); this.setState({ isShown: false }); }}>Apply filters</a></div>
+                        </div>
                     </div>
                 </div>
             </div>
