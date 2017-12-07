@@ -4286,6 +4286,9 @@ button.x-top--item > *:hover {
   width: 244px;
   height: 164px;
 }
+.x-card--photo.no-photo {
+  background: #e8e7ec url(../img/no-photo.png) center center no-repeat;
+}
 @media (max-width: 767px) {
   .x-card--photo {
     margin: -1px -1px 0;
@@ -4544,6 +4547,12 @@ button.x-top--item > *:hover {
   width: 56px;
   height: 56px;
 }
+.x-card--map.no-photo {
+  background: #e8e7ec url(../img/no-map.png) center center no-repeat;
+}
+.x-card--map.no-photo:before {
+  display: none;
+}
 .x-card--fields {
   border-top: 1px solid rgba(38, 38, 38, 0.08);
   padding: 22px 24px 8px;
@@ -4552,6 +4561,12 @@ button.x-top--item > *:hover {
   .x-card--fields {
     border: none;
     padding: 17px 15px 5px;
+  }
+}
+@media (min-width: 768px) {
+  .x-card--fields {
+    min-width: initial;
+    min-height: 130px;
   }
 }
 .x-card--fields table {

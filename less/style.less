@@ -86,9 +86,7 @@ body {
 	.font (0);
 
 	@media @media-sm-only {
-		&.sm-gutter-16 {
-			margin: 0 -8px;
-
+		&.sm-gutter-16 { margin: 0 -8px;
 			& > * {
 				padding-left: 8px;
 				padding-right: 8px;
@@ -97,9 +95,7 @@ body {
 	}
 
 	@media @media-md-only {
-		&.md-gutter-20 {
-			margin: 0 -10px;
-
+		&.md-gutter-20 { margin: 0 -10px;
 			& > * {
 				padding-left: 10px;
 				padding-right: 10px;
@@ -753,9 +749,7 @@ body {
 		.font (0);
 	}
 
-	&--item {
-		margin: 0 20px 10px;
-
+	&--item { margin: 0 20px 10px;
 		.display (inline-block);
 		.font (14px, 20px, 600);
 
@@ -1412,9 +1406,7 @@ body {
 }
 
 .x-counters { padding: 72px 0;
-	@media @media-xs-only {
-		padding: 40px 0;
-	}
+	@media @media-xs-only { padding: 40px 0; }
 }
 
 .x-counter {
@@ -1755,9 +1747,7 @@ body {
 			border-color: fade(@white, 30);
 			background: #192743;
 
-			@media @media-xs-only {
-				padding: 7px 15px 9px;
-			}
+			@media @media-xs-only { padding: 7px 15px 9px; }
 		}
 	}
 }
@@ -1782,9 +1772,7 @@ body {
 }
 
 .x-in { padding: 49px 0 75px;
-	@media @media-xs-only {
-		padding-top: 16px;
-	}
+	@media @media-xs-only { padding-top: 16px; }
 
 	&--title { margin: 0 0 30px;
 		.font (18px, 20px, 500);
@@ -1992,13 +1980,8 @@ body {
 	.position (relative);
 	.min-size (initial, 164px);
 
-	@media @media-xs-only {
-		padding: 0;
-	}
-
-	@media @media-sm-md {
-		padding: 0 0 0 199px;
-	}
+	@media @media-xs-only { padding: 0; }
+	@media @media-sm-md { padding: 0 0 0 199px; }
 
 	&--photo {
 		background: center center no-repeat;
@@ -2006,6 +1989,8 @@ body {
 
 		.position-tl (absolute, -1px, -1px);
 		.size (244px, 164px);
+
+		&.no-photo { background: #e8e7ec url(../img/no-photo.png) center center no-repeat; }
 
 		@media @media-xs-only { margin: -1px -1px 0;
 			.position (relative);
@@ -2021,9 +2006,7 @@ body {
 		.position (relative);
 		.size (auto, 82px);
 
-		@media @media-xs-only {
-			padding: 21px 110px 20px 15px;
-
+		@media @media-xs-only { padding: 21px 110px 20px 15px;
 			.size (auto);
 			.min-size (initial, 82px);
 		}
@@ -2032,9 +2015,7 @@ body {
 	&--box { transform: translate(0, -50%);
 		.position (absolute, 50%, 160px, auto, 24px);
 
-		@media @media-xs-only {
-			transform: none;
-
+		@media @media-xs-only { transform: none;
 			.position (relative);
 		}
 	}
@@ -2063,9 +2044,7 @@ body {
 		.size (55px, 82px);
 		.display (block);
 
-		@media @media-xs-only {
-			.size (40px, 82px);
-		}
+		@media @media-xs-only { .size (40px, 82px); }
 
 		&:hover { opacity: 0.7; }
 		i {
@@ -2077,9 +2056,7 @@ body {
 	&--tools { padding: 0 0 0 24px;
 		.clearfix ();
 
-		@media @media-xs-only {
-			padding: 0 2px;
-		}
+		@media @media-xs-only { padding: 0 2px; }
 	}
 
 	&--counter {
@@ -2091,13 +2068,8 @@ body {
 
 		.font (11px, 16px, 500);
 
-		@media @media-xs-only {
-			padding: 21px 13px 22px;
-		}
-
-		@media @media-sm-md {
-			padding-right: 30px;
-		}
+		@media @media-xs-only { padding: 21px 13px 22px; }
+		@media @media-sm-md { padding-right: 30px; }
 
 		span {
 			margin: 0 0 2px;
@@ -2133,9 +2105,7 @@ body {
 			.size (~'calc(100% + 16px)');
 		}
 
-		@media @media-sm-md {
-			.size (140px);
-		}
+		@media @media-sm-md { .size (140px); }
 
 		&:hover { background: fade(@text-sf, 1); }
 		&:before { content: "Show details"; }
@@ -2172,9 +2142,7 @@ body {
 			.size (auto, 155px);
 		}
 
-		@media @media-sm-md {
-			.size (199px);
-		}
+		@media @media-sm-md { .size (199px); }
 
 		&:before {
 			content: "";
@@ -2185,6 +2153,10 @@ body {
 			.display (block);
 			.position-tl (absolute, 50%, 50%);
 			.size (56px, 56px);
+		}
+
+		&.no-photo { background: #e8e7ec url(../img/no-map.png) center center no-repeat;
+			&:before { .display (none); }
 		}
 	}
 
@@ -2197,6 +2169,8 @@ body {
 			padding: 17px 15px 5px;
 		}
 
+		@media @media-sm { .min-size (initial, 130px); }
+
 		table { .size (100%);
 			td { padding: 0 0 15px;
 				&:nth-child(1) {
@@ -2208,9 +2182,7 @@ body {
 
 					.font (11px, 20px, 500);
 
-					@media @media-xs-only {
-						padding-right: 15px;
-					}
+					@media @media-xs-only { padding-right: 15px; }
 				}
 
 				&:nth-child(2) {

@@ -29,7 +29,7 @@ export class ListCard extends React.Component<ListCardProps, { expanded: boolean
         return (
             <div className={'x-card' + (this.props.picture ? '' : ' without-photo') + (this.props.verified ? ' is-checked' : '') + (this.state.expanded ? ' is-expanded' : '')}>
                 {this.props.picture && (<div className="x-card--photo" style={{ backgroundImage: `url(${this.props.picture})` }}>{}</div>)}
-                {!this.props.picture && (<div className="x-card--photo">{}</div>)}
+                {!this.props.picture && (<div className="x-card--photo no-photo">{}</div>)}
 
                 <div className="x-card--info">
                     <div className="x-card--box">
