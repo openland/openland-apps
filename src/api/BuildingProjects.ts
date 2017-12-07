@@ -54,7 +54,12 @@ export interface BuildingProject {
 }
 
 export interface BuildingProjectsQueryStats {
-    stats: { newUnits: number, newUnitsVerified: number };
+    stats: {
+        newUnits: number,
+        newUnitsVerified: number,
+        totalProjects: number,
+        totalProjectsVerified: number
+    };
 }
 
 const BuildingProjectsQuery = gql`

@@ -3973,6 +3973,10 @@ button.x-top--item > *:hover {
   line-height: 20px;
   font-weight: 500;
 }
+.x-in--title div {
+  display: inline-block;
+  vertical-align: top;
+}
 .x-in--title span {
   text-transform: uppercase;
   color: rgba(38, 38, 38, 0.6);

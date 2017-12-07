@@ -12,13 +12,16 @@ export function PagedList(props: { children?: any }) {
     );
 }
 
-export function PagedListItems(props: { title: string, newUnits: number, newUnitsVerified: number, children?: any }) {
+export function PagedListItems(props: { title: string, totalProjects: number, totalProjectsVerified: number, newUnits: number, newUnitsVerified: number, children?: any }) {
     return (
         <div className="col-xs-12 col-md-9">
-            {(props.newUnits !== 0) && (props.newUnitsVerified === 0) && <div className="x-in--title hidden-xs">{props.newUnits}<span>Net new units</span></div>}
-            {(props.newUnits !== 0) && (props.newUnitsVerified !== 0) && <div className="x-in--title hidden-xs">{props.newUnits}<span>Net new units</span><span className="is-verified">Verified</span>{props.newUnitsVerified}<span>Net new units</span></div>}
-            {(props.newUnits === 0) && <div className="x-in--title hidden-xs">{props.title}</div>}
-    
+            <div className="x-in--title hidden-xs">
+                {(props.totalProjects !== 0) && <div>{props.totalProjects}<span>Buildings</span></div>}
+                {(props.newUnits !== 0) && <div>{props.newUnits}<span>Net new units</span></div>}
+                {((props.totalProjectsVerified !== 0) || (props.newUnitsVerified !== 0)) && <span className="is-verified">Verified</span>}
+                {(props.totalProjectsVerified !== 0) && <div>{props.totalProjectsVerified}<span>Buildings</span></div>}
+                {(props.newUnitsVerified !== 0) && <div>{props.newUnitsVerified}<span>Net new units</span></div>}
+            </div>
             {props.children}
         </div>
     );
