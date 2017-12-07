@@ -3,13 +3,30 @@ import { withRouter } from 'react-router-dom';
 import { Link } from '../Components/Link';
 import * as qs from 'query-string';
 
-export function PagedListFilters(props: { title: string, children?: any }) {
-    return (
-        <div className="col-xs-12 col-lg-3">
-            <div className="x-in--title">{props.title}</div>
-            {props.children}
-        </div>
-    );
+export class PagedListFilters extends React.Component<{ title: string, children?: any }, {isShown: boolean}> {
+    constructor (props: { title: string, children?: any }) {
+        super(props);
+
+        this.state = {
+            isShown: false
+        };
+    }
+
+    render() {
+        return (
+            <div className="col-xs-12 col-md-3">
+                <div className={'x-filters' + (this.state.isShown ? ' is-shown' : '')}>
+                    <a className="x-filters--head" href="#" onClick={(e) => { e.preventDefault(); this.setState({ isShown: true }); }}>Filters</a>
+                    <div className="x-filters--body">
+                        <a className="x-filters--close" href="#" onClick={(e) => { e.preventDefault(); this.setState({ isShown: false }); }}><i className="icon-close" /></a>
+
+                        <div className="x-in--title">{this.props.title}</div>
+                        {this.props.children}
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
 
 export const PagedListSearch = withRouter<{ searchKey: string }>(props => {

@@ -14,10 +14,10 @@ export function PagedList(props: { children?: any }) {
 
 export function PagedListItems(props: { title: string, newUnits: number, newUnitsVerified: number, children?: any }) {
     return (
-        <div className="col-xs-12 col-lg-9">
-            {(props.newUnits !== 0) && (props.newUnitsVerified === 0) && <div className="x-in--title">{props.newUnits}<span>Net new units</span></div>}
-            {(props.newUnits !== 0) && (props.newUnitsVerified !== 0) && <div className="x-in--title">{props.newUnits}<span>Net new units</span><span className="is-verified">Verified</span>{props.newUnitsVerified}<span>Net new units</span></div>}
-            {(props.newUnits === 0) && <div className="x-in--title">{props.title}</div>}
+        <div className="col-xs-12 col-md-9">
+            {(props.newUnits !== 0) && (props.newUnitsVerified === 0) && <div className="x-in--title hidden-xs">{props.newUnits}<span>Net new units</span></div>}
+            {(props.newUnits !== 0) && (props.newUnitsVerified !== 0) && <div className="x-in--title hidden-xs">{props.newUnits}<span>Net new units</span><span className="is-verified">Verified</span>{props.newUnitsVerified}<span>Net new units</span></div>}
+            {(props.newUnits === 0) && <div className="x-in--title hidden-xs">{props.title}</div>}
     
             {props.children}
         </div>

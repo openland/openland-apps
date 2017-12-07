@@ -15,7 +15,7 @@ export const Dashboard = withBuildingProjectsStats(withLoader(props => {
     return (
         <Page>
             <HeaderLarge key="header">
-                <HeaderLargeTitle title="San Francisco Housing Forecast 2017-18" />
+                <HeaderLargeTitle title="San Francisco<br /> Housing Forecast<br /> 2017-18" />
                 <HeaderLargeSocial />
             </HeaderLarge>
             <Counters>
@@ -27,11 +27,11 @@ export const Dashboard = withBuildingProjectsStats(withLoader(props => {
             <Insights title="Summary">
                 <InsightItem
                     title="Measuring housing is critical for informed urban planning decisions"
-                    text="To make evidence-based decisions on major policies such as density bonus programs, by-right and streamlined approvals, and district-level master plans, the city needs to know how the current housing production does compare to Mayor’s annual goal and long-term state targets (RHNA goals).                    "
+                    text="This site makes it easy to compare current and future levels of housing production with the Mayor’s annual goal and the long-term [RHNA goals](https://abag.ca.gov/planning/housingneeds/) set by the state."
                 />
                 <InsightItem
                     title="Accuracy is a work in progress"
-                    text="Unit counts and expected completion times change frequently. This site makes it easy for all stakeholders to add, correct, and expand individual records. As a result, we hope to develop the most accurate and transparent assessment of housing production in the city."
+                    text="Unit counts and expected completion times change frequently. Our pipeline editing tools allow all stakeholders to add, correct, and expand individual records."
                 />
                 <InsightItem
                     title="Housing production is facing a severe downturn"
@@ -51,11 +51,11 @@ export const Dashboard = withBuildingProjectsStats(withLoader(props => {
                 />
                 <InsightItem
                     title="Information verification is done by a community of contributors"
-                    text="The project list was expanded and corrected by a community of volunteers using information from developer sites, press coverage, DAHLIA listings, Google Street View and Satellite Maps. When a conflicting information is discovered, it is recorded in the comment field and the building stays marked unverified pending direct information from developer."
+                    text="Our database is expanded and corrected using sources like developer websites, local press, DAHLIA listings, and Google Maps. Records that are double checked without surfacing conflicting information are marked as verified."
                 />
                 <InsightItem
                     title="This is just a start"
-                    text="Housing production counts is only a small slice of data needed for making informed urban planning decisions. In the near future, we hope to expand Statecraft platform to cover affordable housing, zoning capacity, approval timelines, and property taxes."
+                    text="In the near future, we hope to expand Statecraft platform to cover affordable housing, zoning capacity, approval timelines, parking requirements, and property taxes."
                 />
                 <InsightItem
                     title="Let’s explore how we can collaborate"

@@ -16,10 +16,10 @@ export function Insights(props: { title: string, dark?: boolean, children: any }
         <div className={'x-insights' + (props.dark === true ? ' with-bg' : '')}>
             <div className="x-container">
                 <div className="row">
-                    <div className="col-xs-12 col-lg-3">
+                    <div className="col-xs-12 col-sm-3">
                         <div className="x-insights--title">{props.title}</div>
                     </div>
-                    <div className="col-xs-12 col-lg-9">
+                    <div className="col-xs-12 col-sm-9">
                         {props.children}
                     </div>
                 </div>

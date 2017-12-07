@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export function CounterItem(props: { counter: number, name: string, verified?: number, label?: string }) {
     return (
-        <div className="col-xs-12 col-lg-3">
+        <div className="col-xs-12 col-sm-3">
             <div className="x-counter">
                 <div className="x-counter--in">
                     <div className="x-counter--count">{props.counter}</div>
@@ -19,7 +19,7 @@ export function Counters(props: { children: any }) {
     return (
         <div className="x-counters">
             <div className="x-container">
-                <div className="row">
+                <div className="row sm-gutter-16">
                     {props.children}
                 </div>
             </div>
