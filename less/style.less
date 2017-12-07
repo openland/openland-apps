@@ -1247,15 +1247,16 @@ body {
 		&--menu { .display (block); }
 	}
 
-	&--nav {
-		float: right;
-		list-style: none;
-		margin: 0;
-		padding: 0;
-
-		.clearfix ();
-
+	&--nav { float: right;
 		@media @media-xs-only { float: none; }
+
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+
+			.clearfix ();
+		}
 	}
 
 	&--item {
@@ -1706,16 +1707,15 @@ body {
 		}
 	}
 
-	&--nav {
-		float: right;
-		list-style: none;
-		margin: 0;
-		padding: 0;
+	&--nav { float: right;
+		@media @media-xs-only { float: none; }
 
-		.clearfix ();
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
 
-		@media @media-xs-only {
-			float: none;
+			.clearfix ();
 		}
 	}
 

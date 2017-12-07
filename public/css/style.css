@@ -3231,23 +3231,25 @@ a.st-header--label:hover {
 }
 .x-header--nav {
   float: right;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  *zoom: 1;
-}
-.x-header--nav:after {
-  clear: both;
-}
-.x-header--nav:before,
-.x-header--nav:after {
-  content: " ";
-  display: table;
 }
 @media (max-width: 767px) {
   .x-header--nav {
     float: none;
   }
+}
+.x-header--nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  *zoom: 1;
+}
+.x-header--nav ul:after {
+  clear: both;
+}
+.x-header--nav ul:before,
+.x-header--nav ul:after {
+  content: " ";
+  display: table;
 }
 .x-header--item {
   float: left;
@@ -3867,23 +3869,25 @@ button.x-header--item > *:hover {
 }
 .x-top--nav {
   float: right;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  *zoom: 1;
-}
-.x-top--nav:after {
-  clear: both;
-}
-.x-top--nav:before,
-.x-top--nav:after {
-  content: " ";
-  display: table;
 }
 @media (max-width: 767px) {
   .x-top--nav {
     float: none;
   }
+}
+.x-top--nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  *zoom: 1;
+}
+.x-top--nav ul:after {
+  clear: both;
+}
+.x-top--nav ul:before,
+.x-top--nav ul:after {
+  content: " ";
+  display: table;
 }
 .x-top--item {
   float: left;
