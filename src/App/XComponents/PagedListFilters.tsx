@@ -42,7 +42,7 @@ export const PagedListSearch = withRouter<{ searchKey: string }>(props => {
     }
     return (
         <div className="x-search">
-            <form className="x-search--box" method="POST" action="">
+            <div className="x-search--box">
                 <input
                     className="x-search--input"
                     type="text"
@@ -64,7 +64,7 @@ export const PagedListSearch = withRouter<{ searchKey: string }>(props => {
                     }}
                 />
                 <button className="x-search--button" type="submit"><i className="icon-search">{}</i></button>
-            </form>
+            </div>
         </div>
     );
 });
