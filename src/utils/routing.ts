@@ -21,8 +21,6 @@ export function isPageChanged() {
     if (previousUrl == null || currentUrl == null) {
         return true;
     }
-    console.warn(extracthPath(previousUrl));
-    console.warn(extracthPath(currentUrl));
     return extracthPath(previousUrl) !== extracthPath(currentUrl);
 }
 
@@ -47,10 +45,7 @@ function hideProgress() {
 }
 
 Router.onRouteChangeStart = (url) => {
-    // tslint:disable
-    console.log(`Naviating to: ${url}`);
-    // tslint:enable
-    
+
     // Hotfix Current Url
     if (currentUrl == null) {
         currentUrl = Router.asPath ? Router.asPath : null;
@@ -58,7 +53,10 @@ Router.onRouteChangeStart = (url) => {
 
     previousUrl = currentUrl;
     currentUrl = url;
-    console.warn(previousUrl + ' -> ' + currentUrl);
+
+    // tslint:disable
+    console.log(`Naviating to: ${previousUrl} -> ${currentUrl}`);
+    // tslint:enable
 
     showProgress();
 };
@@ -72,5 +70,9 @@ Router.onRouteChangeComplete = () => {
 };
 
 Router.onRouteChangeError = () => {
+    // tslint:disable
+    console.log(`Naviating Errored`);
+    // tslint:enable
+
     hideProgress();
 };
