@@ -31,3 +31,7 @@ declare module 'react-handsontable' {
     class HotTable extends React.Component<HotTableProps, {}>{ }
     export = HotTable
 }
+
+declare module 'lodash.flowright' {
+    
+}

@@ -1,22 +1,19 @@
-import { gql } from 'react-apollo';
-import graphqlRouted from './graphqlRouted';
+import gql from 'graphql-tag';
+import { graphqlRouted } from '../utils/graphqlRouted';
 import { User } from './User';
-import { Project } from './Project';
-// Data structures
 
 export interface Account {
-  id: string;
-  name: string;
-  city?: string;
-  readAccess: Boolean;
-  writeAccess: Boolean;
-  generation: number;
+    id: string;
+    name: string;
+    city?: string;
+    readAccess: Boolean;
+    writeAccess: Boolean;
+    generation: number;
 }
 
 export interface AccountResponse {
-  account: Account;
-  me?: User;
-  projects: [Project];
+    account: Account;
+    me?: User;
 }
 
 // Queries
@@ -38,12 +35,7 @@ const QueryCity = gql`
        lastName
        picture
      }
-     projects {
-      id
-      name
-      slug
-     }
    }
  `;
 
-export const withCityQuery = graphqlRouted<AccountResponse>(QueryCity);
+export const withAccountQuery = graphqlRouted<AccountResponse>(QueryCity, []);

@@ -1,6 +1,6 @@
-import { gql } from 'react-apollo';
-import graphqlList from './graphqlList';
-import graphqlRouted from './graphqlRouted';
+import gql from 'graphql-tag';
+import { graphqlList } from '../utils/graphqlList';
+import { graphqlRouted } from '../utils/graphqlRouted';
 
 const BuildingProjectsStatsQuery = gql`
 query buildingProjectStats {
@@ -22,8 +22,6 @@ export interface BuildingProjectsStats {
     year2017NewUnitsVerified: number;
     year2018NewUnits: number;
     year2018NewUnitsVerified: number;
-    totalProjects: number;
-    totalProjectsVerified: number;
 }
 
 export interface BuildingProject {
@@ -41,10 +39,7 @@ export interface BuildingProject {
     existingAffordableUnits?: number;
     proposedAffordableUnits?: number;
 
-    preview?: {
-        url: string;
-        retina: string;
-    };
+    preview?: { url: string; retina: string; };
     extrasDeveloper?: string;
     extrasGeneralConstructor?: string;
     extrasYearEnd?: string;
@@ -109,12 +104,12 @@ const BuildingProjectsQuery = gql`
           stats {
               newUnits
               newUnitsVerified
-              totalProjects
-              totalProjectsVerified
           }
       }
   }
   `;
 
-export const withBuildingProjectsQuery = graphqlList<BuildingProject, BuildingProjectsQueryStats>(BuildingProjectsQuery);
-export const withBuildingProjectsStats = graphqlRouted<{ stats: BuildingProjectsStats }>(BuildingProjectsStatsQuery);
+export const withBuildingProjectsQuery = graphqlList<BuildingProject, BuildingProjectsQueryStats>(
+    BuildingProjectsQuery,
+    ['cursor', 'minUnits', 'year', 'filter']);
+export const withBuildingProjectsStats = graphqlRouted<{ stats: BuildingProjectsStats }>(BuildingProjectsStatsQuery, []);
