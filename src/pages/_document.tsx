@@ -22,6 +22,7 @@ export default class StateDocument extends Document {
                     <link rel="stylesheet" type="text/css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" />
                     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
                     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+                    <script type="text/javascript" src="/config.js">{}</script>
                 </Head>
                 <body className="custom_class">
                     <Main />

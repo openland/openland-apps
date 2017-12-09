@@ -4,6 +4,7 @@ import Error from 'next/error';
 import * as auth0 from 'auth0-js';
 import createHistory from 'history/createBrowserHistory';
 import { withPage } from '../../components/withPage';
+import { API_ENDPOINT } from '../../utils/endpoint';
 
 interface AuthResult {
     expiresIn: number;
@@ -28,7 +29,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
 
     async completeAuth() {
         let auth = await this.retreiveAuthentication();
-        var uploaded = await fetch(process.env.API_ENDPOINT + '/auth', {
+        var uploaded = await fetch(API_ENDPOINT + '/auth', {
             method: 'POST',
             headers: [
                 ['authorization', 'Bearer ' + auth.idToken],

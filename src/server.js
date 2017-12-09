@@ -2,11 +2,13 @@ const compression = require('compression');
 const express = require('express')
 const next = require('next')
 var redirectToHTTPS = require('express-http-to-https').redirectToHTTPS
+const proxy = require('http-proxy-middleware');
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev: dev, dir: __dirname })
 const handle = app.getRequestHandler()
+const endpoint = process.env.API_ENDPOINT || 'http://localhost:9000'
 
 app.prepare()
     .then(() => {
@@ -15,6 +17,10 @@ app.prepare()
         if (process.env.NODE_ENV === 'production') {
             server.use(redirectToHTTPS());
         }
+
+        server.get('/config.js', (req, res) => {
+            res.send("window.server = { \"endpoint\": \"" + endpoint + "\" }");
+        });
 
         server.get('*', (req, res) => {
             return handle(req, res)
