@@ -15,6 +15,9 @@ const extracthPath = (src: string) => {
 };
 
 export function isPageChanged() {
+    if (previousUrl == null) {
+        previousUrl = Router.asPath ? Router.asPath : null;
+    }
     if (previousUrl == null || currentUrl == null) {
         return true;
     }
@@ -47,6 +50,15 @@ Router.onRouteChangeStart = (url) => {
     // tslint:disable
     console.log(`Naviating to: ${url}`);
     // tslint:enable
+    
+    // Hotfix Current Url
+    if (currentUrl == null) {
+        currentUrl = Router.asPath ? Router.asPath : null;
+    }
+
+    previousUrl = currentUrl;
+    currentUrl = url;
+    console.warn(previousUrl + ' -> ' + currentUrl);
 
     showProgress();
 };
@@ -55,12 +67,8 @@ Router.onRouteChangeComplete = () => {
     // tslint:disable
     console.log(`Naviating Complete`);
     // tslint:enable
-    hideProgress();
-};
 
-Router.onBeforeHistoryChange = (src) => {
-    previousUrl = currentUrl;
-    currentUrl = src;
+    hideProgress();
 };
 
 Router.onRouteChangeError = () => {
