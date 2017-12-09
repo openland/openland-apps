@@ -15,7 +15,7 @@ export default class StateDocument extends Document {
                     <meta property="og:title" content="San Francisco Housing Forecast 2017-18" />
                     <meta property="og:url" content="https://sf.statecraft.one" />
                     <meta property="og:description" content="An initiative to create the most accurate, transparent, and collaborative assessment of housing production in the city." />
-                    <meta property="og:image" content="https://sf.statecraft.one/img/x-pipeline--list.png" />
+                    <meta property="og:image" content="https://sf.statecraft.one/static/img/x-pipeline--list.png" />
 
                     <meta name="theme-color" content="#000000"/>
                     <link rel="shortcut icon" href="/static/favicon.ico" />
