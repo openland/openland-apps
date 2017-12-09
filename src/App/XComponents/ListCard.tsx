@@ -9,7 +9,7 @@ export interface ListCardProps {
     newUnits?: number;
     subtitle?: string;
     endYear?: string;
-    picture?: string;
+    picture?: { url: string; retina: string; };
     verified?: boolean;
     url?: string;
     location?: { latitude: number, longitude: number };
@@ -28,7 +28,7 @@ export class ListCard extends React.Component<ListCardProps, { expanded: boolean
     render() {
         return (
             <div className={'x-card' + (this.props.picture ? '' : ' without-photo') + (this.props.verified ? ' is-checked' : '') + (this.state.expanded ? ' is-expanded' : '')}>
-                {this.props.picture && (<div className="x-card--photo" style={{ backgroundImage: `url(${this.props.picture})` }}>{}</div>)}
+                {this.props.picture && (<div className="x-card--photo" style={{ backgroundImage: `url(${this.props.picture.retina})` }}>{}</div>)}
                 {!this.props.picture && (<div className="x-card--photo no-photo">{}</div>)}
 
                 <div className="x-card--info">
