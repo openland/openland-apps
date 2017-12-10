@@ -1,7 +1,7 @@
 import Router from 'next/router';
 import * as NProgress from 'nprogress';
 
-NProgress.configure({ showSpinner: false });
+NProgress.configure({ showSpinner: false, parent: '#progress_container' });
 
 var previousUrl: string | null = null;
 var currentUrl: string | null = null;
@@ -40,6 +40,7 @@ function showProgress() {
 function hideProgress() {
     if (timeoutId != null) {
         window.clearTimeout(timeoutId);
+        timeoutId = null;
     }
     NProgress.done();
 }

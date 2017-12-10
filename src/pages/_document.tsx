@@ -17,9 +17,9 @@ export default class StateDocument extends Document {
                     <meta property="og:description" content="An initiative to create the most accurate, transparent, and collaborative assessment of housing production in the city." />
                     <meta property="og:image" content="https://sf.statecraft.one/static/img/x-pipeline--list.png" />
 
-                    <meta name="theme-color" content="#000000"/>
+                    <meta name="theme-color" content="#000000" />
                     <link rel="shortcut icon" href="/static/favicon.ico" />
-                    <link rel="stylesheet" type="text/css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" />
+                    <link rel="stylesheet" type="text/css" href="/static/loader.css" />
                     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
                     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
                     <script type="text/javascript" src="/config.js">{}</script>
@@ -27,6 +27,7 @@ export default class StateDocument extends Document {
                 <body className="custom_class">
                     <Main />
                     <NextScript />
+                    <div style={{ position: 'fixed', height: 16, top: 0, width: '100vw', pointerEvents: 'none', zIndex: 100 }} id="progress_container" />
                 </body>
             </html>
         );
