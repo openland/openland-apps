@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
-import { withPermitQuery } from '../../../api/Permits';
+import { withPermitQuery, StatusChanged } from '../../../api/Permits';
 import { XContainer } from '../../../components/X/XContainer';
 
 export default withPage(withPermitQuery((props) => {
@@ -21,6 +21,10 @@ export default withPage(withPermitQuery((props) => {
                 }
                 <div> Description: {props.data.permit.description}</div>
                 <div> Proposed Use: {props.data.permit.proposedUse}</div>
+                {props.data.permit.events.map((p, i) => {
+                    let s = (p as StatusChanged);
+                    return <div key={'ind_' + i}>{s.oldStatus} -> {s.newStatus} at {s.date}</div>;
+                })}
             </XContainer>
         </div>
     );

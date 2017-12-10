@@ -21,6 +21,18 @@ export interface Permit {
     proposedAffordableUnits?: number;
     proposedUse?: string;
     description?: string;
+
+    events: [PermitEvent];
+}
+
+export interface StatusChanged extends PermitEvent {
+    oldStatus: string;
+    newStatus: string;
+    date: string;
+}
+
+export interface PermitEvent {
+    __typename: string;
 }
 
 export interface StreetNumber {
