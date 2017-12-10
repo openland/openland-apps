@@ -1,5 +1,13 @@
 //import * as React from 'react';
 
+declare module 'next-routes' {
+    class Routes {
+        add: (name: string, pattern: string, page: string) => Routes
+    }
+    const builder: () => Routes
+    export default builder
+}
+
 declare module 'markdown' {
     var markdown: {
         toHTML(markdown: string): string;
@@ -33,5 +41,5 @@ declare module 'react-handsontable' {
 }
 
 declare module 'lodash.flowright' {
-    
+
 }

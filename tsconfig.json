@@ -41,5 +41,8 @@
     "jest",
     "src/setupTests.ts",
     "env-config.js"
+  ],
+  "files": [
+    "./src/typings.d.ts"
   ]
 }
