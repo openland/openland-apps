@@ -3,10 +3,14 @@ import LinkNext from 'next/link';
 import { withUserInfo } from './UserInfo';
 import { withRouter } from '../utils/withRouter';
 
+function trimSlash(src: string): string {
+    return src.endsWith('/') ? src.substring(0, src.length - 1) : src;
+}
+
 const LinkRender = withRouter<{ path: string, className?: string, children?: any, writeAccess?: boolean }>((props) => {
     var className = props.className;
     if (className) {
-        if (props.router.pathname === props.path) {
+        if (trimSlash(props.router.pathname) === trimSlash(props.path)) {
             className += ' is-active';
         }
     }
