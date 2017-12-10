@@ -8,10 +8,12 @@ var currentUrl: string | null = null;
 
 const extracthPath = (src: string) => {
     if (src.indexOf('?') > 0) {
-        return src.split('?', 2)[0];
-    } else {
-        return src;
+        src = src.split('?', 2)[0];
     }
+    if (src.endsWith('/')) {
+        return src.substring(0, src.length - 1);
+    }
+    return src;
 };
 
 export function isPageChanged() {

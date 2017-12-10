@@ -5,6 +5,7 @@ import { redirectToHTTPS } from 'express-http-to-https';
 // import * as proxy from 'http-proxy-middleware';
 import { RequestHandler } from 'express';
 import * as Routes from './routes';
+import { graphiqlExpress } from 'apollo-server-express';
 
 const port = process.env.PORT ? parseInt(process.env.PORT as string, 10) : 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -23,6 +24,11 @@ async function start() {
     server.get('/config.js', (req, res) => {
         res.send('window.server = { "endpoint": "' + endpoint + '" }');
     });
+
+    server.use('/sandbox', graphiqlExpress({
+        endpointURL: endpoint + '/api',
+        passHeader: '\'x-statecraft-domain\': \'sf\''
+    }));
 
     server.get('*', handle);
 

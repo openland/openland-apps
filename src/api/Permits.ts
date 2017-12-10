@@ -50,6 +50,13 @@ query Permits($cursor: String, $filter: String) {
                     streetNumber
                     streetNumberSuffix
                 }
+                events {
+                     ... on PermitEventStatus {
+                        oldStatus
+                        newStatus
+                        date
+                    }
+                }
             }
             cursor
         }
@@ -86,6 +93,14 @@ const PermitQuery = gql`
                 streetNameSuffix
                 streetNumber
                 streetNumberSuffix
+            }
+
+            events {
+                ... on PermitEventStatus {
+                    oldStatus
+                    newStatus
+                    date
+                }
             }
         }
     }
