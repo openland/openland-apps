@@ -2,10 +2,17 @@
 
 declare module 'next-routes' {
     class Routes {
-        add: (name: string, pattern: string, page: string) => Routes
+        // tslint:disable-next-line:unified-signatures
+        add(name: string, pattern?: string, page?: string): Routes;
+        // tslint:disable-next-line:unified-signatures
+        add(pattern: string, page?: string): Routes;
+        // tslint:disable-next-line:unified-signatures
+        add(obj: { name?: string, page?: string, pattern?: string }): Routes;
+
+        getRequestHandler(app: any): any
     }
     const builder: () => Routes
-    export default builder
+    export = builder
 }
 
 declare module 'markdown' {

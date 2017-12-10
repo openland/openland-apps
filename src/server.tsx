@@ -2,13 +2,14 @@ import * as compression from 'compression';
 import * as express from 'express';
 import * as next from 'next';
 import { redirectToHTTPS } from 'express-http-to-https';
-import * as proxy from 'http-proxy-middleware';
+// import * as proxy from 'http-proxy-middleware';
 import { RequestHandler } from 'express';
+import * as Routes from './routes';
 
-const port = parseInt(process.env.PORT, 10) || 3000;
+const port = process.env.PORT ? parseInt(process.env.PORT as string, 10) : 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev: dev, dir: __dirname });
-const handle = app.getRequestHandler();
+const handle = Routes.getRequestHandler(app);
 const endpoint = process.env.API_ENDPOINT || 'http://localhost:9000';
 
 async function start() {
@@ -23,11 +24,9 @@ async function start() {
         res.send('window.server = { "endpoint": "' + endpoint + '" }');
     });
 
-    server.get('*', (req, res) => {
-        return handle(req, res);
-    });
+    server.get('*', handle);
 
-    server.listen(port, (err) => {
+    server.listen(port, (err: any) => {
         if (err) { throw err; }
         // tslint:disable
         console.log(`> Ready on http://localhost:${port}`);

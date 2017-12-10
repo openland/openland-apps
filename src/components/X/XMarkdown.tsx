@@ -1,5 +1,5 @@
 import * as React from 'react';
-import marked from 'marked';
+import * as marked from 'marked';
 
 export function XMarkdown(props: { text: string, className?: string }) {
     var r = new marked.Renderer();
