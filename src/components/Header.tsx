@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Link } from './Link';
 import { withRouter } from '../utils/withRouter';
 import { XContainer } from './X/XContainer';
-import { ProfileInfo, SignOutButton, SignInButton, SignUpButton } from './Login';
+import { AuthenticationControlls } from './Login';
+import { Navigation } from './Navigation';
 
 export class Header extends React.Component<{}, { isShown: boolean }> {
     constructor(props: {}) {
@@ -21,8 +22,7 @@ export class Header extends React.Component<{}, { isShown: boolean }> {
                     <Link className="x-top--label visible-xs visible-sm" path="/">SF Housing Forecast</Link>
                     <a className="x-top--open visible-xs" href="#" onClick={(e) => { e.preventDefault(); this.setState({ isShown: !this.state.isShown }); }}>{}</a>
                     <div className="x-top--tabs hidden-xs">
-                        <Link className="x-top--tab" path="/">Home</Link>
-                        <Link className="x-top--tab is-active" path="/pipeline">Pipeline Explorer</Link>
+                        <Navigation />
                     </div>
 
                     <div className="x-top--nav hidden-xs">
@@ -33,8 +33,7 @@ export class Header extends React.Component<{}, { isShown: boolean }> {
                 <div className="x-top--menu">
                     <XContainer>
                         <div className="x-top--tabs">
-                            <Link className="x-top--tab" path="/">Home</Link>
-                            <Link className="x-top--tab is-active" path="/pipeline">Pipeline Explorer</Link>
+                            <Navigation />
                         </div>
 
                         <div className="x-top--nav">
@@ -50,10 +49,7 @@ export class Header extends React.Component<{}, { isShown: boolean }> {
 const HeaderNavItems = () => {
     return (
         <ul>
-            <ProfileInfo className="x-top--item" />
-            <SignOutButton className="x-top--item" />
-            <SignInButton className="x-top--item" />
-            <SignUpButton className="x-top--item" />
+            <AuthenticationControlls className="x-top--item" />
         </ul>
     );
 };
@@ -63,10 +59,7 @@ const HeaderLargeNavItems = () => {
         <ul>
             <li className="x-header--item is-block"><Link path="/pipeline">Explore Pipeline</Link></li>
 
-            <ProfileInfo className="x-header--item" />
-            <SignOutButton className="x-header--item" />
-            <SignInButton className="x-header--item" />
-            <SignUpButton className="x-header--item" />
+            <AuthenticationControlls className="x-header--item" />
         </ul>
     );
 };

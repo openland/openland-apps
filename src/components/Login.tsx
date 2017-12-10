@@ -1,6 +1,17 @@
 import * as React from 'react';
 import { withUserInfo } from './UserInfo';
 
+export const AuthenticationControlls = (props: { className: string }) => {
+    return (
+        <React.Fragment>
+            <ProfileInfo className={props.className} />
+            <SignOutButton className={props.className} />
+            <SignInButton className={props.className} />
+            <SignUpButton className={props.className} />
+        </React.Fragment>
+    );
+}
+
 export const ProfileInfo = withUserInfo<{ className: string }>((props) => {
     if (props.user) {
         return <li className={props.className}><span><img src={props.user.picture} alt="" />{props.user.firstName} {' '} {props.user.lastName}</span></li>;
