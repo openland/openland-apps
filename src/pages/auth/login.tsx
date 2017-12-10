@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as auth0 from 'auth0-js';
-import { withPage } from '../../components/withPage';
+import { withLandingPage } from '../../components/withPage';
 
 class LoginStarter extends React.Component<{}, { error: boolean }> {
 
@@ -26,4 +26,4 @@ class LoginStarter extends React.Component<{}, { error: boolean }> {
     }
 }
 
-export default withPage(LoginStarter);
+export default withLandingPage(LoginStarter);

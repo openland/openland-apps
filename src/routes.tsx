@@ -14,3 +14,5 @@ routes.add('auth/complete');
 export function getRequestHandler(src: any): any {
     return routes.getRequestHandler(src);
 }
+
+export const Link = routes.Link;

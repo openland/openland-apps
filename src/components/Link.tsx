@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LinkNext from 'next/link';
+import { Link as LinkNext } from '../routes';
 import { withUserInfo } from './UserInfo';
 import { withRouter } from '../utils/withRouter';
 
@@ -15,7 +15,7 @@ const LinkRender = withRouter<{ path: string, className?: string, children?: any
         }
     }
     return (
-        <LinkNext passHref={true} href={props.path} as={props.path}>
+        <LinkNext route={props.path}>
             <a className={className}>{props.children}</a>
         </LinkNext>
     );

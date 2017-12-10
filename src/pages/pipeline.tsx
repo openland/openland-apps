@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withBuildingProjectsQuery, BuildingProject } from '../api/BuildingProjects';
 import { withPage } from '../components/withPage';
-import { Header } from '../components/Header';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch, DataListContentStats
@@ -40,10 +39,9 @@ export const PipelineItems = withInfiniteList<BuildingProject>(item => {
     );
 });
 
-const Index = withBuildingProjectsQuery((props) => {
+export default withPage(withBuildingProjectsQuery((props) => {
     return (
         <React.Fragment>
-            <Header />
             <DataList>
                 <DataListFilters title="Pipeline Filters">
                     <DataListSearch searchKey="filter" />
@@ -60,12 +58,15 @@ const Index = withBuildingProjectsQuery((props) => {
                     <DataListInvite />
                 </DataListFilters>
                 <DataListContent title="Pipeline">
-                    <DataListContentStats totalProjects={props.data.items ? props.data.items.stats.totalProjects : 0} totalProjectsVerified={props.data.items ? props.data.items.stats.totalProjectsVerified : 0} newUnits={props.data.items ? props.data.items.stats.newUnits : 0} newUnitsVerified={props.data.items ? props.data.items.stats.newUnitsVerified : 0} />
+                    <DataListContentStats
+                        totalProjects={props.data.items ? props.data.items.stats.totalProjects : 0}
+                        totalProjectsVerified={props.data.items ? props.data.items.stats.totalProjectsVerified : 0}
+                        newUnits={props.data.items ? props.data.items.stats.newUnits : 0}
+                        newUnitsVerified={props.data.items ? props.data.items.stats.newUnitsVerified : 0}
+                    />
                     <PipelineItems data={props.data} />
                 </DataListContent>
             </DataList>
         </React.Fragment>
     );
-});
-
-export default withPage(Index);
+}));

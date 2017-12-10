@@ -10,6 +10,8 @@ declare module 'next-routes' {
         add(obj: { name?: string, page?: string, pattern?: string }): Routes;
 
         getRequestHandler(app: any): any
+
+        Link: React.ComponentClass<{ route: string }>
     }
     const builder: () => Routes
     export = builder

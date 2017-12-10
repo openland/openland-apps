@@ -1,7 +1,7 @@
 import * as React from 'react';
 import createHistory from 'history/createBrowserHistory';
 import * as Cookie from 'js-cookie';
-import { withPage } from '../../components/withPage';
+import { withLandingPage } from '../../components/withPage';
 
 class LogoutHandler extends React.Component<{}, {}> {
 
@@ -21,4 +21,4 @@ class LogoutHandler extends React.Component<{}, {}> {
     }
 }
 
-export default withPage(LogoutHandler);
+export default withLandingPage(LogoutHandler);

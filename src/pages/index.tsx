@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withPage } from '../components/withPage';
+import { withLandingPage } from '../components/withPage';
 import { HeaderLarge, HeaderLargeTitle, HeaderLargeSocial } from '../components/Header';
 import { withBuildingProjectsStats } from '../api/BuildingProjects';
 import { withLoader } from '../components/withLoader';
@@ -9,7 +9,7 @@ import { Footer } from '../components/Footer';
 import { PipelineIntro } from '../components/Landing/PipelineIntro';
 import { ContributersInvite } from '../components/Landing/ContributersInvite';
 
-const Index = withBuildingProjectsStats(withLoader((props) => {
+export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
     return (
         <React.Fragment>
             <HeaderLarge>
@@ -67,6 +67,4 @@ const Index = withBuildingProjectsStats(withLoader((props) => {
             </Footer>
         </React.Fragment>
     );
-}));
-
-export default withPage(Index);
+})));

@@ -4,9 +4,10 @@ import { withData } from '../utils/withData';
 import { UserInfoProvider } from '../components/UserInfo';
 import { QueryProps } from 'react-apollo';
 import Error from 'next/error';
-import { Page } from './Page';
+import { PageContainer } from './PageContainer';
 import { Loader } from './Loaders';
 import '../utils/routing';
+import { Header } from './Header';
 
 //
 // Root Loader. We shouldn't render anything untill page is loaded since we have global progress indicator.
@@ -33,7 +34,22 @@ function withRootLoader<P>(WrappedComponent: React.ComponentType<P>): React.Comp
 //
 
 export function withPage(WrappedComponent: React.ComponentType<{}>) {
-    return withData(withAccountQuery(withRootLoader((props) =>
-        <UserInfoProvider user={props.data.me} account={props.data.account} router={props.router}><Page><WrappedComponent /></Page></UserInfoProvider>
-    )));
+    return withData(withAccountQuery(withRootLoader((props) => (
+        <UserInfoProvider user={props.data.me} account={props.data.account} router={props.router}>
+            <PageContainer>
+                <Header />
+                <WrappedComponent />
+            </PageContainer>
+        </UserInfoProvider>
+    ))));
+}
+
+export function withLandingPage(WrappedComponent: React.ComponentType<{}>) {
+    return withData(withAccountQuery(withRootLoader((props) => (
+        <UserInfoProvider user={props.data.me} account={props.data.account} router={props.router}>
+            <PageContainer>
+                <WrappedComponent />
+            </PageContainer>
+        </UserInfoProvider>
+    ))));
 }

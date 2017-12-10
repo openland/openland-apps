@@ -3,7 +3,7 @@ import * as Cookie from 'js-cookie';
 import Error from 'next/error';
 import * as auth0 from 'auth0-js';
 import createHistory from 'history/createBrowserHistory';
-import { withPage } from '../../components/withPage';
+import { withLandingPage } from '../../components/withPage';
 import { API_ENDPOINT } from '../../utils/endpoint';
 
 interface AuthResult {
@@ -75,4 +75,4 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
     }
 }
 
-export default withPage(AuthenticationHandler);
+export default withLandingPage(AuthenticationHandler);
