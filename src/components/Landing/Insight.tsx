@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Formatted } from '../Formatted';
+import { XMarkdown } from '../X/XMarkdown';
 
 export function InsightItem(props: { title: string, text: string }) {
     return (
         <div className="x-insights--item">
             <div className="x-insights--label">{props.title}</div>
 
-            <Formatted className="x-insights--text" text={props.text} />
+            <XMarkdown className="x-insights--text" text={props.text} />
         </div>
     );
 }

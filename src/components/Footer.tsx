@@ -1,15 +1,16 @@
 import * as React from 'react';
+import { XContainer } from './X/XContainer';
 
 export class Footer extends React.Component {
-    render () {
+    render() {
         return (
             <div className="x-footer">
-                <div className="x-container">
+                <XContainer>
                     <div className="x-footer--title">San Francisco Housing Forecast 2017-18</div>
                     <div className="x-footer--powered">Powered by Statecraft</div>
 
                     {this.props.children}
-                </div>
+                </XContainer>
             </div>
         );
     }

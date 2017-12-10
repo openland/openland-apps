@@ -2,15 +2,17 @@ import * as React from 'react';
 import { withRouter } from 'next/router';
 import { Link } from './Link';
 import * as qs from 'query-string';
+import { XContainer } from './X/XContainer';
+import { XRow } from './X/XRow';
 
 export function DataList(props: { children?: any }) {
     return (
         <div className="x-in">
-            <div className="x-container is-wide">
-                <div className="row">
+            <XContainer wide={true}>
+                <XRow>
                     {props.children}
-                </div>
-            </div>
+                </XRow>
+            </XContainer>
         </div>
     );
 }

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { withUserInfo } from './UserInfo';
 import { Link } from './Link';
 import { withRouter } from '../utils/withRouter';
+import { XContainer } from './X/XContainer';
+import { ProfileInfo, SignOutButton, SignInButton, SignUpButton } from './Login';
 
 export class Header extends React.Component<{}, { isShown: boolean }> {
     constructor(props: {}) {
@@ -15,7 +16,7 @@ export class Header extends React.Component<{}, { isShown: boolean }> {
     render() {
         return (
             <div className={'x-top' + (this.state.isShown ? ' is-shown' : '')}>
-                <div className="x-container is-wide clearfix">
+                <XContainer wide={true} clearfix={true}>
                     <Link className="x-top--label hidden-xs hidden-sm" path="/">San Francisco Housing Forecast</Link>
                     <Link className="x-top--label visible-xs visible-sm" path="/">SF Housing Forecast</Link>
                     <a className="x-top--open visible-xs" href="#" onClick={(e) => { e.preventDefault(); this.setState({ isShown: !this.state.isShown }); }}>{}</a>
@@ -27,10 +28,10 @@ export class Header extends React.Component<{}, { isShown: boolean }> {
                     <div className="x-top--nav hidden-xs">
                         <HeaderNavItems />
                     </div>
-                </div>
+                </XContainer>
 
                 <div className="x-top--menu">
-                    <div className="x-container">
+                    <XContainer>
                         <div className="x-top--tabs">
                             <Link className="x-top--tab" path="/">Home</Link>
                             <Link className="x-top--tab is-active" path="/pipeline">Pipeline Explorer</Link>
@@ -39,37 +40,36 @@ export class Header extends React.Component<{}, { isShown: boolean }> {
                         <div className="x-top--nav">
                             <HeaderNavItems />
                         </div>
-                    </div>
+                    </XContainer>
                 </div>
             </div>
         );
     }
 }
 
-const HeaderNavItems = withUserInfo((props) => {
+const HeaderNavItems = () => {
     return (
         <ul>
-            {props.user && (<li className="x-top--item"><span><img src={props.user.picture} alt="" />{props.user.firstName} {' '} {props.user.lastName}</span></li>)}
-            {props.user && (<li className="x-top--item is-join"><button onClick={e => {  props.doLogout(); }}>Sign Out</button></li>)}
-
-            {!props.user && (<li className="x-top--item"><button onClick={e => { props.doLogin(); }}>Sign In</button></li>)}
-            {!props.user && (<li className="x-top--item is-join"><a target="_blank" href="https://goo.gl/forms/YX8LSpH6jWLzbEj02">Join</a></li>)}
+            <ProfileInfo className="x-top--item" />
+            <SignOutButton className="x-top--item" />
+            <SignInButton className="x-top--item" />
+            <SignUpButton className="x-top--item" />
         </ul>
     );
-});
+};
 
-export const HeaderLargeNavItems = withUserInfo((props) => {
+const HeaderLargeNavItems = () => {
     return (
         <ul>
             <li className="x-header--item is-block"><Link path="/pipeline">Explore Pipeline</Link></li>
 
-            {props.user && (<li className="x-header--item"><span><img src={props.user.picture} alt="" />{props.user.firstName} {props.user.lastName}</span></li>)}
-            {props.user && (<li className="x-header--item is-join"><button onClick={e => { props.doLogout(); }}>Sign Out</button></li>)}
-            {!props.user && (<li className="x-header--item"><button onClick={e => { props.doLogin(); }}>Sign In</button></li>)}
-            {!props.user && (<li className="x-header--item is-join"><a target="_blank" href="https://goo.gl/forms/YX8LSpH6jWLzbEj02">Join</a></li>)}
+            <ProfileInfo className="x-header--item" />
+            <SignOutButton className="x-header--item" />
+            <SignInButton className="x-header--item" />
+            <SignUpButton className="x-header--item" />
         </ul>
     );
-});
+};
 
 export class HeaderLarge extends React.Component<{ children: any }, { isShown: boolean }> {
     constructor(props: { children: any }) {
@@ -83,7 +83,7 @@ export class HeaderLarge extends React.Component<{ children: any }, { isShown: b
     render() {
         return (
             <div className="x-intro">
-                <div className="x-container">
+                <XContainer>
                     <div className={'x-header' + (this.state.isShown ? ' is-shown' : '')}>
                         <a className="x-header--logo" href="https://statecraft.one/"><img src="/static/img/logotype.svg" alt="" /></a>
                         <a className="x-header--open visible-xs" href="#" onClick={(e) => { e.preventDefault(); this.setState({ isShown: !this.state.isShown }); }}>{}</a>
@@ -101,7 +101,7 @@ export class HeaderLarge extends React.Component<{ children: any }, { isShown: b
                     <div className="x-intro--in">
                         {this.props.children}
                     </div>
-                </div>
+                </XContainer>
             </div>
         );
     }
