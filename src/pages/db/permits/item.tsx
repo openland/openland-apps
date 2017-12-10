@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { withData } from '../../../utils/withData';
+import { withPage } from '../../../components/withPage';
 
 const Index = () => {
     return <div />;
 };
 
-export default withData(Index);
+export default withPage(Index);

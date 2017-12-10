@@ -75,7 +75,7 @@
     "predev": "yarn bundle",
     "dev": "concurrently \"yarn sources:watch\" \"yarn assets:watch\" \"yarn less:watch\" \"yarn server\"",
     "dev:staging": "API_ENDPOINT=\"https://statecraft-api-staging.herokuapp.com\" yarn dev",
-    "dev:production": "API_ENDPOINT=\"https://statecraft-api.herokuapp.com\" yarn dev",
+    "dev:production": "API_ENDPOINT=\"https://api.statecraft.one\" yarn dev",
     "analyze": "yarn build && cross-env ANALYZE=1 next build ./build/dist",
     "start": "NODE_ENV=production yarn server",
     "heroku-postbuild": "yarn build"

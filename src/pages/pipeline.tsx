@@ -4,7 +4,7 @@ import { withPage } from '../components/withPage';
 import { Header } from '../components/Header';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
-    DataListRadioItem, DataListSearch
+    DataListRadioItem, DataListSearch, DataListContentStats
 } from '../components/DataList';
 import { withInfiniteList } from '../components/withInfiniteList';
 import { DataListCard, DataListCardItem } from '../components/DataListCard';
@@ -59,7 +59,8 @@ const Index = withBuildingProjectsQuery((props) => {
                     </DataListRadio>
                     <DataListInvite />
                 </DataListFilters>
-                <DataListContent title="Pipeline" totalProjects={props.data.items ? props.data.items.stats.totalProjects : 0} totalProjectsVerified={props.data.items ? props.data.items.stats.totalProjectsVerified : 0} newUnits={props.data.items ? props.data.items.stats.newUnits : 0} newUnitsVerified={props.data.items ? props.data.items.stats.newUnitsVerified : 0}>
+                <DataListContent title="Pipeline">
+                    <DataListContentStats totalProjects={props.data.items ? props.data.items.stats.totalProjects : 0} totalProjectsVerified={props.data.items ? props.data.items.stats.totalProjectsVerified : 0} newUnits={props.data.items ? props.data.items.stats.newUnits : 0} newUnitsVerified={props.data.items ? props.data.items.stats.newUnitsVerified : 0} />
                     <PipelineItems data={props.data} />
                 </DataListContent>
             </DataList>
