@@ -58,6 +58,8 @@
     "react-ga": "^2.3.5",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "semantic-ui-less": "^2.2.12",
+    "semantic-ui-react": "^0.77.1",
     "tslint": "^5.8.0",
     "tslint-react": "^3.2.0",
     "typescript": "^2.6.2",
