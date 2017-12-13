@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
-import { withPermitQuery, StatusChanged } from '../../../api/Permits';
+import { withPermitQuery, StatusChanged, FieldChanged } from '../../../api/Permits';
 import { XContainer } from '../../../components/X/XContainer';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Header, Table, Form, Button } from 'semantic-ui-react';
 export default withPage(withPermitQuery((props) => {
     return (
         <div className="x-in">
             <XContainer wide={true}>
-                <Segment>
-
-                    <div>PermitId: {props.data.permit.id}</div>
+                <Header attached="top">
+                    Pipeline Database
+                </Header>
+                <Segment attached="bottom">
+                    PermitId: {props.data.permit.id}
                     <div>Status: {props.data.permit.status} {props.data.permit.statusUpdatedAt}</div>
                     <div>Type: {props.data.permit.type} {props.data.permit.typeWood}</div>
                     {props.data.permit.streetNumbers!!.map((s) =>
@@ -23,10 +25,61 @@ export default withPage(withPermitQuery((props) => {
                     }
                     <div> Description: {props.data.permit.description}</div>
                     <div> Proposed Use: {props.data.permit.proposedUse}</div>
-                    {props.data.permit.events.map((p, i) => {
-                        let s = (p as StatusChanged);
-                        return <div key={'ind_' + i}>{s.oldStatus} -> {s.newStatus} at {s.date}</div>;
-                    })}
+                </Segment>
+                <Header attached="top">
+                    Updates
+                </Header>
+                <Segment attached="bottom">
+                    <Table celled={true} striped={true}>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>Field</Table.HeaderCell>
+                                <Table.HeaderCell>Change</Table.HeaderCell>
+                                <Table.HeaderCell>Date</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            {props.data.permit.events.map((p, i) => {
+                                if (p.__typename === 'PermitEventStatus') {
+                                    let s = (p as StatusChanged);
+                                    return (
+                                        <Table.Row key={'ind_' + i}>
+                                            <Table.Cell collapsing={true}>
+                                                Status Changed
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {s.oldStatus} -> {s.newStatus}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {s.date}
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    );
+                                } else if (p.__typename === 'PermitEventFieldChanged') {
+                                    let s = (p as FieldChanged);
+                                    return (
+                                        <Table.Row key={'ind_' + i}>
+                                            <Table.Cell collapsing={true}>
+                                                {s.fieldName}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {s.oldValue} -> {s.newValue}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {}
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    );
+                                } else {
+                                    return null;
+                                }
+                            })}
+                        </Table.Body>
+                    </Table>
+                    <Form>
+                        <Form.TextArea />
+                        <Button content="Add Reply" icon="edit" primary={true} />
+                    </Form>
                 </Segment>
             </XContainer>
         </div>

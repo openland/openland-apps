@@ -31,6 +31,12 @@ export interface StatusChanged extends PermitEvent {
     date: string;
 }
 
+export interface FieldChanged extends PermitEvent {
+    fieldName: string;
+    oldValue: string;
+    newValue: string;
+}
+
 export interface PermitEvent {
     __typename: string;
 }
@@ -67,6 +73,11 @@ query Permits($cursor: String, $filter: String) {
                         oldStatus
                         newStatus
                         date
+                    }
+                    ... on PermitEventFieldChanged {
+                        fieldName
+                        oldValue
+                        newValue
                     }
                 }
             }
@@ -112,6 +123,11 @@ const PermitQuery = gql`
                     oldStatus
                     newStatus
                     date
+                }
+                ... on PermitEventFieldChanged {
+                    fieldName
+                    oldValue
+                    newValue
                 }
             }
         }

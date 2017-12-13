@@ -4,12 +4,11 @@ import { withPermitsQuery, Permit } from '../../../api/Permits';
 import { withInfiniteList } from '../../../components/withInfiniteList';
 import { XBreadcrumbs, XBreadcrumbItem } from '../../../components/X/XBreadcrumbs';
 import { withPage } from '../../../components/withPage';
-import { DataListRow } from '../../../components/DataListRow';
 import { Link } from '../../../components/Link';
 import { XContainer } from '../../../components/X/XContainer';
-
+import { Segment } from 'semantic-ui-react';
 const PermitsItems = withInfiniteList<Permit>((item) => {
-    return <DataListRow><Link path={'/db/permits/' + item.id}>{item.id}</Link></DataListRow>;
+    return <Segment><Link path={'/db/permits/' + item.id}>{item.id}</Link></Segment>;
 });
 
 export default withPage(withPermitsQuery((props) => {
