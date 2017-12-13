@@ -3,6 +3,8 @@ import { withPage } from '../../../components/withPage';
 import { withPermitQuery, StatusChanged, FieldChanged } from '../../../api/Permits';
 import { XContainer } from '../../../components/X/XContainer';
 import { Segment, Header, Table, Form, Button } from 'semantic-ui-react';
+import { XCounter } from '../../../components/X/XCounter';
+import { XDiff } from '../../../components/X/XDiff';
 export default withPage(withPermitQuery((props) => {
     return (
         <div className="x-in">
@@ -17,11 +19,11 @@ export default withPage(withPermitQuery((props) => {
                     {props.data.permit.streetNumbers!!.map((s) =>
                         (<div key={s.streetId}>Address: {s.streetNumber} {s.steetNumberSuffix} {s.streetName} {s.streetNameSuffix}</div>))
                     }
-                    {props.data.permit.existingStories && props.data.permit.proposedStories &&
-                        (<div>Stories: {props.data.permit.existingStories} / {props.data.permit.proposedStories}</div>)
-                    }
-                    {props.data.permit.existingUnits && props.data.permit.proposedUnits &&
-                        (<div>Units: {props.data.permit.existingUnits} / {props.data.permit.proposedUnits}</div>)
+                    {props.data.permit.proposedStories && (
+                        <div>Stories: <XCounter value={props.data.permit.proposedStories} oldValue={props.data.permit.existingStories} /></div>
+                    )}
+                    {props.data.permit.proposedUnits &&
+                        (<div>Units: <XCounter value={props.data.permit.proposedUnits} oldValue={props.data.permit.existingUnits} /></div>)
                     }
                     <div> Description: {props.data.permit.description}</div>
                     <div> Proposed Use: {props.data.permit.proposedUse}</div>
@@ -63,7 +65,12 @@ export default withPage(withPermitQuery((props) => {
                                                 {s.fieldName}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {s.oldValue} -> {s.newValue}
+                                                {s.fieldName === 'description' && (
+                                                    <XDiff oldValue={s.oldValue} newValue={s.newValue} />
+                                                )}
+                                                {s.fieldName !== 'description' && (
+                                                    <span>{s.oldValue} -> {s.newValue}</span>
+                                                )}
                                             </Table.Cell>
                                             <Table.Cell>
                                                 {}
