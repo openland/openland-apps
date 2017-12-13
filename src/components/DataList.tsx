@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withRouter } from 'next/router';
-import { Link } from './Link';
+import { XLink } from './X/XLink';
 import * as qs from 'query-string';
 import { XContainer } from './X/XContainer';
 import { XRow } from './X/XRow';
@@ -103,7 +103,7 @@ export const DataListRadioItem = withRouter<{ title: string, itemKey?: string, r
         }
     }
     return (
-        <Link path={path} className={'x-filter--radio' + (checked ? ' is-checked' : '')}>{props.title}</Link>
+        <XLink path={path} className={'x-filter--radio' + (checked ? ' is-checked' : '')}>{props.title}</XLink>
     );
 });
 

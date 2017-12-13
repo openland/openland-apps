@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from './Link';
+import { XLink } from './X/XLink';
 import { withRouter } from '../utils/withRouter';
 import { XContainer } from './X/XContainer';
 import { AuthenticationControlls } from './Login';
@@ -18,8 +18,8 @@ export class Header extends React.Component<{}, { isShown: boolean }> {
         return (
             <div className={'x-top' + (this.state.isShown ? ' is-shown' : '')}>
                 <XContainer wide={true} clearfix={true}>
-                    <Link className="x-top--label hidden-xs hidden-sm" path="/">San Francisco Housing Forecast</Link>
-                    <Link className="x-top--label visible-xs visible-sm" path="/">SF Housing Forecast</Link>
+                    <XLink className="x-top--label hidden-xs hidden-sm" path="/">San Francisco Housing Forecast</XLink>
+                    <XLink className="x-top--label visible-xs visible-sm" path="/">SF Housing Forecast</XLink>
                     <a className="x-top--open visible-xs" href="#" onClick={(e) => { e.preventDefault(); this.setState({ isShown: !this.state.isShown }); }}>{}</a>
                     <div className="x-top--tabs hidden-xs">
                         <Navigation />
@@ -57,7 +57,7 @@ const HeaderNavItems = () => {
 const HeaderLargeNavItems = () => {
     return (
         <ul>
-            <li className="x-header--item is-block"><Link path="/pipeline">Explore Pipeline</Link></li>
+            <li className="x-header--item is-block"><XLink path="/pipeline">Explore Pipeline</XLink></li>
 
             <AuthenticationControlls className="x-header--item" />
         </ul>

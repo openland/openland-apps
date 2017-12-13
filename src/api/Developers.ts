@@ -18,13 +18,19 @@ query Developers {
 }
 `;
 
-const DeveloperAddMutation = gql`
+export const DeveloperAddMutation = gql`
 mutation addDeveloper($slug: String!, $title: String!) {
   addDeveloper(slug: $slug, title: $title) {
     id
     slug
     title
   }
+}
+`;
+
+export const DeveloperRemoveMutation = gql`
+mutation removeDeveloper($slug: String!) {
+    removeDeveloper(slug: $slug)
 }
 `;
 
@@ -36,4 +42,15 @@ export const withDeveloperAddMutation = graphql(DeveloperAddMutation, {
             query: DevelopersQuery
         }]
     }
+});
+
+export const withDeveloperRemoveMutation = graphql<{}, { slug: string }>(DeveloperRemoveMutation, {
+    options: (props: { slug: string }) => ({
+        variables: {
+            slug: props.slug
+        },
+        refetchQueries: [{
+            query: DevelopersQuery
+        }]
+    })
 });

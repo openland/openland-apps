@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { Link } from './Link';
+import { XLink } from './X/XLink';
 
 export function Navigation() {
     return (
         <React.Fragment>
-            <Link className="x-top--tab" path="/">Home</Link>
-            <Link className="x-top--tab" path="/pipeline">Pipeline Explorer</Link>
-            <Link className="x-top--tab" path="/db/permits/" writeAccess={true}>Permits</Link>
+            <XLink className="x-top--tab" path="/">Home</XLink>
+            <XLink className="x-top--tab" path="/pipeline">Pipeline Explorer</XLink>
+            <XLink className="x-top--tab" path="/developers" writeAccess={true}>Developers</XLink>
+            <XLink className="x-top--tab" path="/db/permits/" writeAccess={true}>Permits</XLink>
         </React.Fragment>
     );
 }

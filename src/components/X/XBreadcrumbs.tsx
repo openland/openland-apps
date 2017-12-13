@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from '../Link';
+import { XLink } from './XLink';
 import { XSeparated } from './XSeparated';
 
 function XBreadcrumbSeparator() {
@@ -20,8 +20,8 @@ export class XBreadcrumbs extends React.Component {
 
 export function XBreadcrumbItem(props: { path: string, title: string }) {
     return (
-        <Link path={props.path}>
+        <XLink path={props.path}>
             {props.title}
-        </Link>
+        </XLink>
     );
 }

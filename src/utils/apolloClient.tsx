@@ -23,7 +23,8 @@ const buildClient = (domain: string, initialState?: any, token?: string) => {
             headers: headers
         }),
         cache: cache,
-        ssrMode: canUseDOM
+        ssrMode: canUseDOM,
+        connectToDevTools: false
     });
 };
 

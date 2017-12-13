@@ -3,11 +3,11 @@ import { DataList, DataListFilters, DataListSearch, DataListContent } from '../.
 import { withPermitsQuery, Permit } from '../../../api/Permits';
 import { withInfiniteList } from '../../../components/withInfiniteList';
 import { withPage } from '../../../components/withPage';
-import { Link } from '../../../components/Link';
+import { XLink } from '../../../components/X/XLink';
 import { Segment } from 'semantic-ui-react';
 
 const PermitsItems = withInfiniteList<Permit>((item) => {
-    return <Segment><Link path={'/db/permits/' + item.id}>{item.id}</Link></Segment>;
+    return <Segment><XLink path={'/db/permits/' + item.id}>{item.id}</XLink></Segment>;
 });
 
 export default withPage(withPermitsQuery((props) => {
