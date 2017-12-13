@@ -4,7 +4,7 @@ import { Segment, Table } from 'semantic-ui-react';
 import { withDevelopersQuery, withDeveloperAddMutation } from '../../../api/Developers';
 import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
-import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/XForm';
+import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 
 const AddForm = withDeveloperAddMutation((props) => {
     return (
