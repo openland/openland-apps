@@ -11,7 +11,7 @@ function trimSlash(src: string): string {
 const LinkRender = withRouter<{ path: string, className?: string, children?: any, writeAccess?: boolean }>((props) => {
     var className = props.className;
     if (className) {
-        if (trimSlash(props.router.pathname) === trimSlash(props.path)) {
+        if (trimSlash(props.router.asPath!!) === trimSlash(props.path)) {
             className += ' is-active';
         }
     }
