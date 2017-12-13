@@ -2,9 +2,24 @@ import * as React from 'react';
 import { withPage } from '../../../components/withPage';
 import { withPermitQuery, StatusChanged, FieldChanged } from '../../../api/Permits';
 import { XContainer } from '../../../components/X/XContainer';
-import { Segment, Header, Table, Form, Button } from 'semantic-ui-react';
+import { Segment, Header, Table, Form, Button, Icon } from 'semantic-ui-react';
 import { XCounter } from '../../../components/X/XCounter';
 import { XDiff } from '../../../components/X/XDiff';
+
+function ChangeRender(props: { change: FieldChanged }) {
+    if (props.change.oldValue === null) {
+        return <span><Icon name="plus" color="green" /> {props.change.newValue}</span>;
+    } else if (props.change.newValue === null) {
+        return <span><Icon name="minus" color="red" /> {props.change.newValue}</span>;
+    } else {
+        if (props.change.fieldName === 'description') {
+            return <XDiff oldValue={props.change.oldValue} newValue={props.change.newValue} />;
+        } else {
+            return <span>{props.change.oldValue} -> {props.change.newValue}</span>;
+        }
+    }
+}
+
 export default withPage(withPermitQuery((props) => {
     return (
         <div className="x-in">
@@ -65,12 +80,7 @@ export default withPage(withPermitQuery((props) => {
                                                 {s.fieldName}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {s.fieldName === 'description' && (
-                                                    <XDiff oldValue={s.oldValue} newValue={s.newValue} />
-                                                )}
-                                                {s.fieldName !== 'description' && (
-                                                    <span>{s.oldValue} -> {s.newValue}</span>
-                                                )}
+                                                <ChangeRender change={s} />
                                             </Table.Cell>
                                             <Table.Cell>
                                                 {}
