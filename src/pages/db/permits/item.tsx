@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withPage } from '../../../components/withPage';
 import { withPermitQuery, StatusChanged, FieldChanged } from '../../../api/Permits';
 import { XContainer } from '../../../components/X/XContainer';
-import { Segment, Header, Table, Form, Button, Icon } from 'semantic-ui-react';
+import { Segment, Header, Table, Form, Button, Icon, Step } from 'semantic-ui-react';
 import { XCounter } from '../../../components/X/XCounter';
 import { XDiff } from '../../../components/X/XDiff';
 
@@ -29,6 +29,31 @@ export default withPage(withPermitQuery((props) => {
                 </Header>
                 <Segment attached="bottom">
                     PermitId: {props.data.permit.id}
+                    <div>
+                        <Step.Group>
+                            <Step>
+                                <Icon name="puzzle" />
+                                <Step.Content>
+                                    <Step.Title>Approval</Step.Title>
+                                    <Step.Description>Waiting to approval</Step.Description>
+                                </Step.Content>
+                            </Step>
+                            <Step disabled={props.data.permit.status !== 'COMPLETED' && props.data.permit.status !== 'ISSUED'}>
+                                <Icon name="configure" />
+                                <Step.Content>
+                                    <Step.Title>Construction</Step.Title>
+                                    <Step.Description>Construction is in progress</Step.Description>
+                                </Step.Content>
+                            </Step>
+                            <Step disabled={props.data.permit.status !== 'COMPLETED'}>
+                                <Icon name="gift" />
+                                <Step.Content>
+                                    <Step.Title>Completed</Step.Title>
+                                    <Step.Description>Construction completed</Step.Description>
+                                </Step.Content>
+                            </Step>
+                        </Step.Group>
+                    </div>
                     <div>Status: {props.data.permit.status} {props.data.permit.statusUpdatedAt}</div>
                     <div>Type: {props.data.permit.type} {props.data.permit.typeWood}</div>
                     {props.data.permit.streetNumbers!!.map((s) =>
@@ -50,9 +75,9 @@ export default withPage(withPermitQuery((props) => {
                     <Table celled={true} striped={true}>
                         <Table.Header>
                             <Table.Row>
+                                <Table.HeaderCell>Date</Table.HeaderCell>
                                 <Table.HeaderCell>Field</Table.HeaderCell>
                                 <Table.HeaderCell>Change</Table.HeaderCell>
-                                <Table.HeaderCell>Date</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
@@ -62,13 +87,13 @@ export default withPage(withPermitQuery((props) => {
                                     return (
                                         <Table.Row key={'ind_' + i}>
                                             <Table.Cell collapsing={true}>
+                                                {s.date}
+                                            </Table.Cell>
+                                            <Table.Cell collapsing={true}>
                                                 Status Changed
                                             </Table.Cell>
                                             <Table.Cell>
                                                 {s.oldStatus} -> {s.newStatus}
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                {s.date}
                                             </Table.Cell>
                                         </Table.Row>
                                     );
@@ -77,13 +102,13 @@ export default withPage(withPermitQuery((props) => {
                                     return (
                                         <Table.Row key={'ind_' + i}>
                                             <Table.Cell collapsing={true}>
+                                                None
+                                            </Table.Cell>
+                                            <Table.Cell collapsing={true}>
                                                 {s.fieldName}
                                             </Table.Cell>
                                             <Table.Cell>
                                                 <ChangeRender change={s} />
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                {}
                                             </Table.Cell>
                                         </Table.Row>
                                     );
@@ -95,7 +120,7 @@ export default withPage(withPermitQuery((props) => {
                     </Table>
                     <Form>
                         <Form.TextArea />
-                        <Button content="Add Reply" icon="edit" primary={true} />
+                        <Button content="Add Comment" icon="edit" primary={true} />
                     </Form>
                 </Segment>
             </XContainer>
