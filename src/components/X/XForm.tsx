@@ -40,10 +40,11 @@ export class XForm extends React.Component<{
         if (!this.state.progress) {
             this.setState({ progress: true });
             this.props.mutate({ variables: values }).then((v) => {
-                formApi.resetAll();
-                this.setState({ progress: false, error: null });
                 if (this.props.afterPath) {
                     Router.pushRoute(this.props.afterPath);
+                } else {
+                    this.setState({ progress: false, error: null });
+                    formApi.resetAll();
                 }
             }).catch((v) => {
                 console.warn(v);

@@ -7,6 +7,7 @@ export interface Developer {
     id: string;
     slug: string;
     title: string;
+    comments?: string;
 }
 
 const DevelopersQuery = gql`
@@ -15,16 +16,18 @@ query Developers {
         id
         slug
         title
+        comments
     }
 }
 `;
 
 const DeveloperQuery = gql`
-query Developers($developerId: String!) {
+query Developer($developerId: String!) {
     developer(slug: $developerId) {
         id
         slug
         title
+        comments
     }
 }
 `;
@@ -35,6 +38,7 @@ mutation addDeveloper($slug: String!, $title: String!) {
     id
     slug
     title
+    comments
   }
 }
 `;
@@ -46,11 +50,12 @@ mutation removeDeveloper($slug: String!) {
 `;
 
 export const DeveloperAlterMutation = gql`
-mutation alterDeveloper($developerId: String!, $title: String!) {
-  alterDeveloper(slug: $developerId, title: $title) {
+mutation alterDeveloper($developerId: String!, $title: String!, $comments: String!) {
+  alterDeveloper(slug: $developerId, title: $title, comments: $comments) {
     id
     slug
     title
+    comments
   }
 }
 `;

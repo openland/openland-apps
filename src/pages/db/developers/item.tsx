@@ -18,6 +18,7 @@ export default withPage(withDeveloperQuery(withLoader((props) => {
                         </XWriteAcces>
                         <div>Slug: {props.data.developer.slug}</div>
                         <div>Title: {props.data.developer.title}</div>
+                        {props.data.developer.comments && (<div>Comments: {props.data.developer.comments}</div>)}
                     </Segment>
                 </XContainer>
             </div>
