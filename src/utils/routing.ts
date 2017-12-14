@@ -1,5 +1,7 @@
 import Router from 'next/router';
 import * as NProgress from 'nprogress';
+import { RouterState } from './withRouter';
+import * as qs from 'query-string';
 
 NProgress.configure({ showSpinner: false, parent: '#progress_container' });
 
@@ -79,3 +81,36 @@ Router.onRouteChangeError = () => {
 
     hideProgress();
 };
+
+export function resolveActionPath(props: {
+    path?: string,
+    query?: { field: string, value?: string },
+    router: RouterState
+}) {
+    var destPath: string;
+    if (props.path) {
+        destPath = props.path;
+    } else if (props.query) {
+        let s = JSON.parse(JSON.stringify(props.router.query!!));
+        if (props.query.value) {
+            s[props.query.field] = props.query.value;
+        } else {
+            delete s[props.query.field];
+        }
+        let q = qs.stringify(s);
+
+        var path = props.router.asPath!!;
+        if (path.indexOf('?') >= 0) {
+            path = path.split('?', 2)[0];
+        }
+
+        if (q !== '') {
+            destPath = path + '?' + q;
+        } else {
+            destPath = path;
+        }
+    } else {
+        destPath = '/';
+    }
+    return destPath;
+}

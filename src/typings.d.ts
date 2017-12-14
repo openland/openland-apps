@@ -12,6 +12,9 @@ declare module 'next-routes' {
         getRequestHandler(app: any): any
 
         Link: React.ComponentClass<{ route: string }>
+        Router: {
+            pushRoute(route: string): void;
+        }
     }
     const builder: () => Routes
     export = builder

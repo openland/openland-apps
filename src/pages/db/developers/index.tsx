@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
-import { Segment, Table, Button } from 'semantic-ui-react';
-import { withDevelopersQuery, withDeveloperAddMutation, withDeveloperRemoveMutation } from '../../../api/Developers';
+import { Segment, Table } from 'semantic-ui-react';
+import { withDevelopersQuery, withDeveloperAddMutation } from '../../../api/Developers';
 import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
-import { withLiveMutation } from '../../../components/withLifeMutation';
+import { XLink } from '../../../components/X/XLink';
 
 const AddForm = withDeveloperAddMutation((props) => {
     return (
@@ -19,30 +19,6 @@ const AddForm = withDeveloperAddMutation((props) => {
     );
 });
 
-const DeleteButton = withDeveloperRemoveMutation(withLiveMutation((props) => {
-    if (!props.loading && props.error) {
-        return (
-            <Button
-                icon="warning"
-                content={'Again?'}
-                size="mini"
-                color="yellow"
-                onClick={props.action}
-                loading={props.loading}
-            />
-        );
-    }
-    return (
-        <Button
-            icon="edit"
-            content={'Delete'}
-            size="mini"
-            onClick={props.action}
-            loading={props.loading}
-        />
-    );
-}));
-
 export default withPage(withDevelopersQuery(withLoader((props) => {
     return (
         <React.Fragment>
@@ -54,11 +30,8 @@ export default withPage(withDevelopersQuery(withLoader((props) => {
                             {props.data.developers.map(p => {
                                 return (
                                     <Table.Row key={p.id}>
-                                        <Table.Cell collapsing={true}>{p.slug}</Table.Cell>
+                                        <Table.Cell collapsing={true}><XLink path={'/developers/' + p.slug}>{p.slug}</XLink></Table.Cell>
                                         <Table.Cell>{p.title}</Table.Cell>
-                                        <Table.Cell collapsing={true}>
-                                            <DeleteButton slug={p.slug} />
-                                        </Table.Cell>
                                     </Table.Row>
                                 );
                             })}

@@ -10,6 +10,8 @@ routes.add('/db/permits/:permitId', '/db/permits/item');
 
 routes.add('/developers', '/db/developers');
 routes.add('/developers/', '/db/developers');
+routes.add('/developers/:developerId', '/db/developers/item');
+routes.add('/developers/:developerId/edit', '/db/developers/edit');
 
 routes.add('pipeline');
 routes.add('auth/login');
@@ -21,3 +23,4 @@ export function getRequestHandler(src: any): any {
 }
 
 export const Link = routes.Link;
+export const Router = routes.Router;

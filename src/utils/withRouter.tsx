@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { getComponentDisplayName } from '../utils/utils';
 import { SingletonRouter } from 'next/router';
+import { Router } from '../routes';
 
 export interface RouterState {
     readonly pathname: string;
@@ -43,7 +44,7 @@ export function withRouter<P = {}>(ComposedComponent: React.ComponentType<P & { 
                 protocol: protocol,
                 href: href,
                 push: (path) => {
-                    nRouter.push(path);
+                    Router.pushRoute(path);
                 }
             };
             return (

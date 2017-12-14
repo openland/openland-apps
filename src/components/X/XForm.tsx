@@ -3,8 +3,13 @@ import * as RForm from 'react-form';
 import { Form, Button, Message } from 'semantic-ui-react';
 import { MutationFunc } from 'react-apollo';
 import { FormApi } from 'react-form';
+import { Router } from '../../routes';
 
-export class XForm extends React.Component<{ mutate: MutationFunc<{}> }, { progress: boolean, error: string | null }> {
+export class XForm extends React.Component<{
+    mutate: MutationFunc<{}>,
+    defaultValues?: any,
+    afterPath?: string
+}, { progress: boolean, error: string | null }> {
     constructor(props: { mutate: MutationFunc<{}> }) {
         super(props);
 
@@ -16,7 +21,7 @@ export class XForm extends React.Component<{ mutate: MutationFunc<{}> }, { progr
         let children = this.props.children;
         let error = this.state.error;
         return (
-            <RForm.Form onSubmit={this.handleSubmit}>
+            <RForm.Form onSubmit={this.handleSubmit} defaultValues={this.props.defaultValues}>
                 {formApi => {
                     return (
                         <Form onSubmit={formApi.submitForm} loading={progress}>
@@ -37,6 +42,9 @@ export class XForm extends React.Component<{ mutate: MutationFunc<{}> }, { progr
             this.props.mutate({ variables: values }).then((v) => {
                 formApi.resetAll();
                 this.setState({ progress: false, error: null });
+                if (this.props.afterPath) {
+                    Router.pushRoute(this.props.afterPath);
+                }
             }).catch((v) => {
                 console.warn(v);
                 this.setState({ progress: false, error: v.toString() });
