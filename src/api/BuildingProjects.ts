@@ -26,6 +26,7 @@ export interface BuildingProjectsStats {
 
 export interface BuildingProject {
     id: string;
+    slug: string;
     name: string;
     description?: string;
     status?: string;
@@ -60,12 +61,50 @@ export interface BuildingProjectsQueryStats {
     };
 }
 
+const BuildingProjectQuery = gql`
+query buildingProject($projectId: String!) {
+    project: buildingProject(slug: $projectId) {
+        id
+        slug
+        name
+        description
+        status
+        startedAt
+        completedAt
+        expectedCompletedAt
+        verified
+        existingUnits
+        proposedUnits
+        existingAffordableUnits
+        proposedAffordableUnits
+                
+        preview: picture(width: 224, height: 164) {
+            url
+            retina
+        }
+        extrasDeveloper
+        extrasGeneralConstructor
+        extrasYearEnd
+        extrasAddress
+        extrasAddressSecondary
+        extrasPermit
+        extrasComment
+        extrasUrl
+        extrasLocation {
+            latitude
+            longitude
+        }        
+    }
+}
+`;
+
 const BuildingProjectsQuery = gql`
   query buildingProjects($cursor: String, $minUnits: Int, $year: String, $filter: String) {
       items: buildingProjects(first: 50, minUnits: $minUnits, year: $year, filter: $filter, after: $cursor) {
           edges {
               node {
                 id
+                slug
                 name
                 description
                 status
@@ -113,3 +152,5 @@ export const withBuildingProjectsQuery = graphqlList<BuildingProject, BuildingPr
     BuildingProjectsQuery,
     ['cursor', 'minUnits', 'year', 'filter']);
 export const withBuildingProjectsStats = graphqlRouted<{ stats: BuildingProjectsStats }>(BuildingProjectsStatsQuery, []);
+
+export const withBuildingProjectQuery = graphqlRouted<{ project: BuildingProject }>(BuildingProjectQuery, ['projectId']);

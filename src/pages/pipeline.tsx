@@ -8,6 +8,8 @@ import {
 import { withInfiniteList } from '../components/withInfiniteList';
 import { DataListCard, DataListCardItem } from '../components/DataListCard';
 import { DataListInvite } from '../components/DataListInvite';
+import { XWriteAcces } from '../components/X/XWriteAccess';
+import { XLink } from '../components/X/XLink';
 
 export const PipelineItems = withInfiniteList<BuildingProject>(item => {
     var units: number | undefined = undefined;
@@ -30,11 +32,14 @@ export const PipelineItems = withInfiniteList<BuildingProject>(item => {
             url={item.extrasUrl}
             location={item.extrasLocation}
         >
-            {item.extrasAddressSecondary && <DataListCardItem title="Secondary address" value={item.extrasAddressSecondary} />}
-            {item.extrasPermit && <DataListCardItem title="Permit ID" value={item.extrasPermit} />}
-            {item.extrasDeveloper && <DataListCardItem title="Developer" value={item.extrasDeveloper} />}
-            {item.extrasGeneralConstructor && <DataListCardItem title="General contractor" value={item.extrasGeneralConstructor} />}
-            {item.extrasComment && <DataListCardItem title="Comment" value={item.extrasComment} />}
+            {item.extrasAddressSecondary && <DataListCardItem title="Secondary address">{item.extrasAddressSecondary}</DataListCardItem>}
+            {item.extrasPermit && <DataListCardItem title="Permit ID">{item.extrasPermit}</DataListCardItem>}
+            {item.extrasDeveloper && <DataListCardItem title="Developer">{item.extrasDeveloper}</DataListCardItem>}
+            {item.extrasGeneralConstructor && <DataListCardItem title="General contractor">{item.extrasGeneralConstructor}</DataListCardItem>}
+            {item.extrasComment && <DataListCardItem title="Comment">{item.extrasComment}</DataListCardItem>}
+            <XWriteAcces>
+                <DataListCardItem title="View"><XLink path={'/projects/' + item.slug}>{'View Project'}</XLink></DataListCardItem>
+            </XWriteAcces>
         </DataListCard>
     );
 });

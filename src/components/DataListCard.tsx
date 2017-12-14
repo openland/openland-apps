@@ -69,6 +69,6 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
     }
 }
 
-export function DataListCardItem(props: { title: string, value: string }) {
-    return (<tr><td>{props.title}</td><td>{props.value}</td></tr>);
+export function DataListCardItem(props: { title: string, children: any }) {
+    return (<tr><td>{props.title}</td><td>{props.children}</td></tr>);
 }
