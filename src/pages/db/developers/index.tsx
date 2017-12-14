@@ -6,6 +6,7 @@ import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XLink } from '../../../components/X/XLink';
+import { XWriteAcces } from '../../../components/X/XWriteAccess';
 
 const AddForm = withDeveloperAddMutation((props) => {
     return (
@@ -25,7 +26,9 @@ export default withPage(withDevelopersQuery(withLoader((props) => {
             <div style={{ paddingTop: 32, paddingBottom: 32 }}>
                 <XContainer wide={true}>
                     <Segment>
-                        <AddForm />
+                        <XWriteAcces>
+                            <AddForm />
+                        </XWriteAcces>
                         <Table celled={true} striped={true} >
                             {props.data.developers.map(p => {
                                 return (

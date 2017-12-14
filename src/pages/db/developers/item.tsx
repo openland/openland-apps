@@ -5,6 +5,7 @@ import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
 import { Segment } from 'semantic-ui-react';
 import { XButton } from '../../../components/X/XButton';
+import { XWriteAcces } from '../../../components/X/XWriteAccess';
 
 export default withPage(withDeveloperQuery(withLoader((props) => {
     return (
@@ -12,7 +13,9 @@ export default withPage(withDeveloperQuery(withLoader((props) => {
             <div style={{ paddingTop: 32, paddingBottom: 32 }}>
                 <XContainer wide={true}>
                     <Segment>
-                        <XButton content="Edit" icon="edit" path={'/developers/' + props.data.developer.slug + '/edit'} />
+                        <XWriteAcces>
+                            <XButton content="Edit" icon="edit" path={'/developers/' + props.data.developer.slug + '/edit'} />
+                        </XWriteAcces>
                         <div>Slug: {props.data.developer.slug}</div>
                         <div>Title: {props.data.developer.title}</div>
                     </Segment>
