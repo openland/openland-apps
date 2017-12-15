@@ -10,6 +10,7 @@ import { DataListCard, DataListCardItem } from '../components/DataListCard';
 import { DataListInvite } from '../components/DataListInvite';
 import { XWriteAcces } from '../components/X/XWriteAccess';
 import { XLink } from '../components/X/XLink';
+import { XEnumeration } from '../components/X/XEnumerations';
 
 export const PipelineItems = withInfiniteList<BuildingProject>(item => {
     var units: number | undefined = undefined;
@@ -40,9 +41,11 @@ export const PipelineItems = withInfiniteList<BuildingProject>(item => {
             <XWriteAcces>
                 <DataListCardItem title="View"><XLink path={'/projects/' + item.slug}>{'View Project'}</XLink></DataListCardItem>
                 <DataListCardItem title="Developers">
-                    {item.developers!!.map((d) => (
-                        <XLink path={'/developers/' + d.slug}>{d.title}</XLink>
-                    ))}
+                    <XEnumeration>
+                        {item.developers!!.map((d) => (
+                            <XLink path={'/developers/' + d.slug}>{d.title}</XLink>
+                        ))}
+                    </XEnumeration>
                 </DataListCardItem>
             </XWriteAcces>
         </DataListCard>
