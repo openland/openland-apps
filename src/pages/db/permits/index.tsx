@@ -50,7 +50,7 @@ export default withPage(withPermitsPagedQuery((props) => {
             <div style={{ paddingBottom: 32, paddingTop: 32 }}>
                 <XContainer wide={true}>
                     <Segment>
-                        <PermitsItems data={props.data} />
+                        <PermitsItems data={props.data} filter={true} />
                     </Segment>
                 </XContainer>
             </div>

@@ -14,6 +14,7 @@ export interface RouterState {
     readonly href: string;
 
     push: (path: string) => void;
+    replace: (path: string) => void;
 }
 
 export function withRouter<P = {}>(ComposedComponent: React.ComponentType<P & { router: RouterState }>) {
@@ -36,7 +37,7 @@ export function withRouter<P = {}>(ComposedComponent: React.ComponentType<P & { 
                 href += nRouter.asPath;
             }
             var router: RouterState = {
-                pathname: nRouter.pathname,
+                pathname: nRouter.asPath!!.split('?')[0],
                 route: nRouter.route,
                 asPath: nRouter.asPath,
                 query: nRouter.query,
@@ -45,6 +46,9 @@ export function withRouter<P = {}>(ComposedComponent: React.ComponentType<P & { 
                 href: href,
                 push: (path) => {
                     Router.pushRoute(path);
+                },
+                replace: (path) => {
+                    Router.replaceRoute(path);
                 }
             };
             return (

@@ -4,6 +4,7 @@ import { XLink } from './X/XLink';
 import * as qs from 'query-string';
 import { XContainer } from './X/XContainer';
 import { XRow } from './X/XRow';
+import { XFilterInput } from './X/XFilterInput';
 
 export function DataList(props: { children?: any }) {
     return (
@@ -108,34 +109,10 @@ export const DataListRadioItem = withRouter<{ title: string, itemKey?: string, r
 });
 
 export const DataListSearch = withRouter<{ searchKey: string }>(props => {
-    let s = JSON.parse(JSON.stringify(props.router.query!!));
-    var value: string = '';
-    if (s[props.searchKey]) {
-        value = s[props.searchKey];
-    }
     return (
         <div className="x-search">
             <div className="x-search--box">
-                <input
-                    className="x-search--input"
-                    type="text"
-                    placeholder="Search"
-                    value={value}
-                    onChange={e => {
-                        let s2 = JSON.parse(JSON.stringify(props.router.query!!));
-                        if (e.target.value === '') {
-                            delete s2[props.searchKey];
-                        } else {
-                            s2[props.searchKey] = e.target.value;
-                        }
-                        let q = qs.stringify(s2);
-                        if (q !== '') {
-                            props.router.replace(props.router.pathname + '?' + q);
-                        } else {
-                            props.router.replace(props.router.pathname);
-                        }
-                    }}
-                />
+                <XFilterInput className="x-search--input" searchKey={props.searchKey} placeholder="Search" />
                 <button className="x-search--button" type="submit"><i className="icon-search">{}</i></button>
             </div>
         </div>

@@ -14,6 +14,7 @@ declare module 'next-routes' {
         Link: React.ComponentClass<{ route: string }>
         Router: {
             pushRoute(route: string): void;
+            replaceRoute(route: string): void;
         }
     }
     const builder: () => Routes

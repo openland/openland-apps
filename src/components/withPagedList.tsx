@@ -2,6 +2,7 @@ import { ListQueryPagedData } from '../utils/graphqlList';
 import * as React from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { XPaging } from './X/XPaging';
+import { XFilterInput } from './X/XFilterInput';
 
 export function withPagedList<TResult extends { id: string }>(WrappedComponent: React.ComponentType<{
     items: TResult[],
@@ -9,11 +10,19 @@ export function withPagedList<TResult extends { id: string }>(WrappedComponent: 
     pagesCount: number,
     currentPage: number,
     loading: boolean
-}>): React.ComponentType<ListQueryPagedData<TResult>> {
-    return function (props: ListQueryPagedData<TResult>) {
+}>): React.ComponentType<ListQueryPagedData<TResult> & { filter?: boolean }> {
+    return function (props: ListQueryPagedData<TResult> & { filter?: boolean }) {
         if (props.data.items) {
             return (
                 <div>
+                    <div style={{ minHeight: 48, paddingBottom: 8 }}>
+
+                        {props.filter === true && (
+                            <XFilterInput searchKey="filter" />
+                        )}
+
+                        <XPaging totalPages={props.data.items.pageInfo.pagesCount} currentPage={props.data.items.pageInfo.currentPage} />
+                    </div>
                     <div style={{ position: 'relative' }}>
                         <Dimmer active={props.data.loading} inverted={true}>
                             <Loader inverted={true} content="Loading" />
@@ -35,6 +44,12 @@ export function withPagedList<TResult extends { id: string }>(WrappedComponent: 
         } else {
             return (
                 <div>
+                    <div style={{ minHeight: 48, paddingBottom: 8 }}>
+                        {props.filter === true && (
+                            <XFilterInput searchKey="filter" />
+                        )}
+                        <XPaging totalPages={0} currentPage={0} />
+                    </div>
                     <div style={{ position: 'relative' }}>
                         <Dimmer active={props.data.loading} inverted={true}>
                             <Loader inverted={true} content="Loading" />
