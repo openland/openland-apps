@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { graphqlList } from '../utils/graphqlList';
 import { graphqlRouted } from '../utils/graphqlRouted';
+import { Developer } from './Developers';
 
 const BuildingProjectsStatsQuery = gql`
 query buildingProjectStats {
@@ -50,6 +51,8 @@ export interface BuildingProject {
     extrasComment?: string;
     extrasUrl?: string;
     extrasLocation?: { latitude: number, longitude: number };
+
+    developers?: Developer[];
 }
 
 export interface BuildingProjectsQueryStats {
@@ -93,7 +96,12 @@ query buildingProject($projectId: String!) {
         extrasLocation {
             latitude
             longitude
-        }        
+        }
+        developers {
+            id
+            slug
+            title
+        }
     }
 }
 `;
@@ -132,6 +140,11 @@ const BuildingProjectsQuery = gql`
                 extrasLocation {
                     latitude
                     longitude
+                }
+                developers {
+                    id
+                    slug
+                    title
                 }
               }
               cursor

@@ -39,6 +39,11 @@ export const PipelineItems = withInfiniteList<BuildingProject>(item => {
             {item.extrasComment && <DataListCardItem title="Comment">{item.extrasComment}</DataListCardItem>}
             <XWriteAcces>
                 <DataListCardItem title="View"><XLink path={'/projects/' + item.slug}>{'View Project'}</XLink></DataListCardItem>
+                <DataListCardItem title="Developers">
+                    {item.developers!!.map((d) => (
+                        <XLink path={'/developers/' + d.slug}>{d.title}</XLink>
+                    ))}
+                </DataListCardItem>
             </XWriteAcces>
         </DataListCard>
     );
