@@ -77,7 +77,7 @@ export function XPaging(props: { totalPages: number, currentPage: number }) {
     }
 
     return (
-        <Menu floated="right" pagination={true}>
+        <Menu floated="right">
             {elements}
         </Menu>
     );

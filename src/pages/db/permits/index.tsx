@@ -6,6 +6,7 @@ import { Table, Dimmer, Loader, Segment } from 'semantic-ui-react';
 import { withPagedList } from '../../../components/withPagedList';
 import { XContainer } from '../../../components/X/XContainer';
 import { XPaging } from '../../../components/X/XPaging';
+import { PermitStatus } from '../../../components/PermitStatus';
 
 const PermitsItems = withPagedList<Permit>((props) => {
     return (
@@ -13,10 +14,13 @@ const PermitsItems = withPagedList<Permit>((props) => {
             <Dimmer active={props.loading} inverted={true}>
                 <Loader inverted={true} content="Loading" />
             </Dimmer>
-            <Table celled={true} striped={true}>
+            <Table striped={true}>
                 <Table.Header>
-                    <Table.HeaderCell collapsing={true}>Permit Id</Table.HeaderCell>
-                    <Table.HeaderCell>Permit Type</Table.HeaderCell>
+                    <Table.Row>
+                        <Table.HeaderCell collapsing={true}>Permit Id</Table.HeaderCell>
+                        <Table.HeaderCell>Permit Type</Table.HeaderCell>
+                        <Table.HeaderCell>Status</Table.HeaderCell>
+                    </Table.Row>
                 </Table.Header>
                 <Table.Body>
                     {props.items.map((item) => (
@@ -27,14 +31,19 @@ const PermitsItems = withPagedList<Permit>((props) => {
                             <Table.Cell>
                                 {item.type}
                             </Table.Cell>
+                            <Table.Cell>
+                                {item.status && <PermitStatus status={item.status} />}
+                            </Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>
                 <Table.Footer>
-                    <Table.HeaderCell colSpan="2">
-                        Total: {props.itemsCount}
-                        <XPaging totalPages={props.pagesCount} currentPage={props.currentPage} />
-                    </Table.HeaderCell>
+                    <Table.Row>
+                        <Table.HeaderCell colSpan="3">
+                            Total: {props.itemsCount}
+                            <XPaging totalPages={props.pagesCount} currentPage={props.currentPage} />
+                        </Table.HeaderCell>
+                    </Table.Row>
                 </Table.Footer>
             </Table>
         </div>
