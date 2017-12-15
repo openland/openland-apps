@@ -61,6 +61,7 @@ query Permits($cursor: String, $filter: String, $page: Int) {
                 statusUpdatedAt
                 type
                 typeWood
+                description
             }
             cursor
         }
