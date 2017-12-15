@@ -152,6 +152,9 @@ const BuildingProjectsQuery = gql`
           pageInfo {
               hasNextPage
               hasPreviousPage
+              itemsCount
+              currentPage
+              pagesCount
           }
           stats {
               newUnits

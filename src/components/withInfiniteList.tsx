@@ -58,13 +58,21 @@ class PageEndDetector extends React.Component<{ onLoadMore: () => void }> {
     }
 }
 
-export function withInfiniteList<TResult extends { id: string }>(render: (item: TResult) => React.ReactNode): React.ComponentType<ListQueryData<TResult>> {
+export function XInfiniteListItem(props: { children: any }) {
+    return (
+        <div className="x-in--item">
+            {props.children}
+        </div>
+    );
+}
+
+export function withInfiniteList<TResult extends { id: string }>(render: (item: TResult[]) => React.ReactNode): React.ComponentType<ListQueryData<TResult>> {
     return function (props: ListQueryData<TResult>) {
         if (props.data.items && props.data.loading) {
             return (
                 <InfiniteListContainer>
                     <LoaderLine key="____loader" />
-                    {props.data.items.edges.map(p => <div className="x-in--item" key={p.node.id}>{render(p.node)}</div>)}
+                    {render(props.data.items.edges.map((p) => p.node))}
                 </InfiniteListContainer>
             );
         }
@@ -94,7 +102,7 @@ export function withInfiniteList<TResult extends { id: string }>(render: (item: 
 
         return (
             <InfiniteListContainer>
-                {props.data.items.edges.map(p => <div className="x-in--item" key={p.node.id}>{render(p.node)}</div>)}
+                {render(props.data.items.edges.map((p) => p.node))}
 
                 {props.data.items!!.pageInfo.hasNextPage && (
                     <PageEndDetector key="__page_end_detector" onLoadMore={props.data.loadMoreEntries} />

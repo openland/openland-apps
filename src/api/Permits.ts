@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { graphqlList } from '../utils/graphqlList';
+import { graphqlList, graphqlListPaged } from '../utils/graphqlList';
 import { graphqlRouted } from '../utils/graphqlRouted';
 
 export interface Permit {
@@ -50,8 +50,8 @@ export interface StreetNumber {
 }
 
 const PermitsQuery = gql`
-query Permits($cursor: String, $filter: String) {
-    items: permits(filter: $filter, first: 50, after: $cursor) {
+query Permits($cursor: String, $filter: String, $page: Int) {
+    items: permits(filter: $filter, first: 50, after: $cursor, page: $page) {
         edges {
             node {
                 id
@@ -61,31 +61,15 @@ query Permits($cursor: String, $filter: String) {
                 statusUpdatedAt
                 type
                 typeWood
-                streetNumbers {
-                    streetId
-                    streetName
-                    streetNameSuffix
-                    streetNumber
-                    streetNumberSuffix
-                }
-                events {
-                     ... on PermitEventStatus {
-                        oldStatus
-                        newStatus
-                        date
-                    }
-                    ... on PermitEventFieldChanged {
-                        fieldName
-                        oldValue
-                        newValue
-                    }
-                }
             }
             cursor
         }
         pageInfo {
             hasNextPage
             hasPreviousPage
+            itemsCount
+            currentPage
+            pagesCount
         }
     }
 }
@@ -134,6 +118,8 @@ const PermitQuery = gql`
     }
 `;
 
-export const withPermitsQuery = graphqlList<Permit>(PermitsQuery, ['filter', 'cursor']);
+export const withPermitsQuery = graphqlList<Permit>(PermitsQuery, ['filter', 'cursor', 'page']);
+
+export const withPermitsPagedQuery = graphqlListPaged<Permit>(PermitsQuery, ['filter', 'cursor', 'page']);
 
 export const withPermitQuery = graphqlRouted<{ permit: Permit }>(PermitQuery, ['permitId']);

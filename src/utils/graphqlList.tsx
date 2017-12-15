@@ -9,12 +9,20 @@ export interface ListQueryResponse<T, E> {
     loadMoreEntries(): void;
 }
 
+export interface ListPagedQueryResponse<T, E> {
+    items: ListQueryConnection<T> & E;
+}
+
 export type ListQueryData<T> = NotNullableDataProps<ListQueryResponse<T, {}>>;
+export type ListQueryPagedData<T> = NotNullableDataProps<ListPagedQueryResponse<T, {}>>;
 
 export interface ListQueryConnection<T> {
     edges: [ListQueryEdge<T>];
     pageInfo: {
-        hasNextPage: boolean
+        hasNextPage: boolean;
+        itemsCount: number;
+        pagesCount: number;
+        currentPage: number;
     };
 }
 
@@ -24,6 +32,8 @@ export interface ListQueryEdge<T> {
 }
 
 export type GraphQLListComponentProps<TResult, TExtras> = GraphQLRoutedComponentProps<ListQueryResponse<TResult, TExtras>>;
+
+export type GraphQLListComponentPagedProps<TResult, TExtras> = GraphQLRoutedComponentProps<ListPagedQueryResponse<TResult, TExtras>>;
 
 export function graphqlList<TResult, TExtras = {}>(document: DocumentNode, params: string[] = []) {
     return function (component: React.ComponentType<GraphQLListComponentProps<TResult, TExtras>>): React.ComponentType<{}> {
@@ -66,6 +76,22 @@ export function graphqlList<TResult, TExtras = {}>(document: DocumentNode, param
                     }
                 };
             }
+        });
+
+        return withRouter(qlWrapper(component));
+    };
+}
+
+export function graphqlListPaged<TResult, TExtras = {}>(document: DocumentNode, params: string[] = []) {
+    return function (component: React.ComponentType<GraphQLListComponentPagedProps<TResult, TExtras>>): React.ComponentType<{}> {
+        let qlWrapper = graphql<ListPagedQueryResponse<TResult, TExtras>, { router: RouterState }, GraphQLListComponentPagedProps<TResult, TExtras>>(document, {
+            options: (props: { router: RouterState }) => {
+                return {
+                    variables: {
+                        ...prepareParams(params, props.router.query)
+                    },
+                };
+            },
         });
 
         return withRouter(qlWrapper(component));

@@ -5,51 +5,54 @@ import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch, DataListContentStats
 } from '../components/DataList';
-import { withInfiniteList } from '../components/withInfiniteList';
+import { withInfiniteList, XInfiniteListItem } from '../components/withInfiniteList';
 import { DataListCard, DataListCardItem } from '../components/DataListCard';
 import { DataListInvite } from '../components/DataListInvite';
 import { XWriteAcces } from '../components/X/XWriteAccess';
 import { XLink } from '../components/X/XLink';
 import { XEnumeration } from '../components/X/XEnumerations';
 
-export const PipelineItems = withInfiniteList<BuildingProject>(item => {
-    var units: number | undefined = undefined;
-    var subtitle: string | undefined = undefined;
-    if (item.proposedUnits !== undefined && item.existingUnits !== undefined) {
-        units = item.proposedUnits!! - item.existingUnits!!;
-    }
-    if (item.extrasAddress && (item.extrasAddress !== item.name)) {
-        subtitle = item.extrasAddress;
-    }
-    return (
-        <DataListCard
-            key={item.id}
-            title={item.name}
-            newUnits={units}
-            endYear={item.extrasYearEnd}
-            subtitle={subtitle}
-            picture={item.preview}
-            verified={item.verified}
-            url={item.extrasUrl}
-            location={item.extrasLocation}
-        >
-            {item.extrasAddressSecondary && <DataListCardItem title="Secondary address">{item.extrasAddressSecondary}</DataListCardItem>}
-            {item.extrasPermit && <DataListCardItem title="Permit ID">{item.extrasPermit}</DataListCardItem>}
-            {item.extrasDeveloper && <DataListCardItem title="Developer">{item.extrasDeveloper}</DataListCardItem>}
-            {item.extrasGeneralConstructor && <DataListCardItem title="General contractor">{item.extrasGeneralConstructor}</DataListCardItem>}
-            {item.extrasComment && <DataListCardItem title="Comment">{item.extrasComment}</DataListCardItem>}
-            <XWriteAcces>
-                <DataListCardItem title="View"><XLink path={'/projects/' + item.slug}>{'View Project'}</XLink></DataListCardItem>
-                <DataListCardItem title="Developers">
-                    <XEnumeration>
-                        {item.developers!!.map((d) => (
-                            <XLink path={'/developers/' + d.slug}>{d.title}</XLink>
-                        ))}
-                    </XEnumeration>
-                </DataListCardItem>
-            </XWriteAcces>
-        </DataListCard>
-    );
+export const PipelineItems = withInfiniteList<BuildingProject>(items => {
+    return items.map((item) => {
+        var units: number | undefined = undefined;
+        var subtitle: string | undefined = undefined;
+        if (item.proposedUnits !== undefined && item.existingUnits !== undefined) {
+            units = item.proposedUnits!! - item.existingUnits!!;
+        }
+        if (item.extrasAddress && (item.extrasAddress !== item.name)) {
+            subtitle = item.extrasAddress;
+        }
+        return (
+            <XInfiniteListItem key={item.id}>
+                <DataListCard
+                    title={item.name}
+                    newUnits={units}
+                    endYear={item.extrasYearEnd}
+                    subtitle={subtitle}
+                    picture={item.preview}
+                    verified={item.verified}
+                    url={item.extrasUrl}
+                    location={item.extrasLocation}
+                >
+                    {item.extrasAddressSecondary && <DataListCardItem title="Secondary address">{item.extrasAddressSecondary}</DataListCardItem>}
+                    {item.extrasPermit && <DataListCardItem title="Permit ID">{item.extrasPermit}</DataListCardItem>}
+                    {item.extrasDeveloper && <DataListCardItem title="Developer">{item.extrasDeveloper}</DataListCardItem>}
+                    {item.extrasGeneralConstructor && <DataListCardItem title="General contractor">{item.extrasGeneralConstructor}</DataListCardItem>}
+                    {item.extrasComment && <DataListCardItem title="Comment">{item.extrasComment}</DataListCardItem>}
+                    <XWriteAcces>
+                        <DataListCardItem title="View"><XLink path={'/projects/' + item.slug}>{'View Project'}</XLink></DataListCardItem>
+                        <DataListCardItem title="Developers">
+                            <XEnumeration>
+                                {item.developers!!.map((d) => (
+                                    <XLink path={'/developers/' + d.slug}>{d.title}</XLink>
+                                ))}
+                            </XEnumeration>
+                        </DataListCardItem>
+                    </XWriteAcces>
+                </DataListCard>
+            </XInfiniteListItem>
+        );
+    });
 });
 
 export default withPage(withBuildingProjectsQuery((props) => {
