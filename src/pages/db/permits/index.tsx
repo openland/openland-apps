@@ -13,32 +13,27 @@ const PermitsItems = withPagedList<Permit>((props) => {
             <Dimmer active={props.loading} inverted={true}>
                 <Loader inverted={true} content="Loading" />
             </Dimmer>
-            <Table>
+            <Table celled={true} striped={true}>
+                <Table.Header>
+                    <Table.HeaderCell collapsing={true}>Permit Id</Table.HeaderCell>
+                    <Table.HeaderCell>Permit Type</Table.HeaderCell>
+                </Table.Header>
                 <Table.Body>
                     {props.items.map((item) => (
                         <Table.Row key={item.id}>
-                            <Table.Cell>
+                            <Table.Cell collapsing={true}>
                                 <XLink path={'/permits/' + item.id}>{item.id}</XLink>
+                            </Table.Cell>
+                            <Table.Cell>
+                                {item.type}
                             </Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>
                 <Table.Footer>
-                    <Table.HeaderCell>
-                        Total: {props.itemsCount} / {props.pagesCount} / {props.currentPage}
+                    <Table.HeaderCell colSpan="2">
+                        Total: {props.itemsCount}
                         <XPaging totalPages={props.pagesCount} currentPage={props.currentPage} />
-                        {/* <Menu floated="right" pagination={true}>
-                            <Menu.Item as="a" icon={true}>
-                                <Icon name="chevron left" />
-                            </Menu.Item>
-                            <Menu.Item as={XLink} query={{ field: 'page', value: '1' }}>1</Menu.Item>
-                            <Menu.Item as="a">2</Menu.Item>
-                            <Menu.Item as="a">3</Menu.Item>
-                            <Menu.Item as="a">4</Menu.Item>
-                            <Menu.Item as="a" icon={true}>
-                                <Icon name="chevron right" />
-                            </Menu.Item>
-                        </Menu> */}
                     </Table.HeaderCell>
                 </Table.Footer>
             </Table>
