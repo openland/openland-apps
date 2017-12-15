@@ -2,12 +2,14 @@ import gql from 'graphql-tag';
 import { graphqlRouted } from '../utils/graphqlRouted';
 import { graphql } from 'react-apollo';
 import { graphqlCompose } from '../utils/graphqlCompose';
+import { BuildingProject } from './BuildingProjects';
 
 export interface Developer {
     id: string;
     slug: string;
     title: string;
     comments?: string;
+    buildingProjects: BuildingProject[];
 }
 
 const DevelopersQuery = gql`
@@ -17,6 +19,12 @@ query Developers {
         slug
         title
         comments
+        buildingProjects {
+            id
+            slug
+            name
+            description
+        }
     }
 }
 `;
@@ -28,6 +36,12 @@ query Developer($developerId: String!) {
         slug
         title
         comments
+        buildingProjects {
+            id
+            slug
+            name
+            description
+        }
     }
 }
 `;
