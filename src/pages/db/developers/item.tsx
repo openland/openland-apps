@@ -21,8 +21,11 @@ export default withPage(withDeveloperQuery(withLoader((props) => {
                         <div>Slug: {props.data.developer.slug}</div>
                         <div>Title: {props.data.developer.title}</div>
                         {props.data.developer.comments && (<div>Comments: {props.data.developer.comments}</div>)}
-                        <div>Projects: <XEnumeration>{props.data.developer.buildingProjects.map((p) => (
+                        <div>Projects: <XEnumeration>{props.data.developer.buildingProjects!!.map((p) => (
                             <XLink path={'/projects/' + p.slug}>{p.name}</XLink>
+                        ))}</XEnumeration></div>
+                        <div>Partners: <XEnumeration>{props.data.developer.partners!!.map((p) => (
+                            <XLink path={'/developers/' + p.slug}>{p.title}</XLink>
                         ))}</XEnumeration></div>
                     </Segment>
                 </XContainer>

@@ -9,7 +9,8 @@ export interface Developer {
     slug: string;
     title: string;
     comments?: string;
-    buildingProjects: BuildingProject[];
+    buildingProjects?: BuildingProject[];
+    partners: Developer[];
 }
 
 const DevelopersQuery = gql`
@@ -24,6 +25,11 @@ query Developers {
             slug
             name
             description
+        }
+        partners {
+            id
+            slug
+            title
         }
     }
 }
@@ -41,6 +47,11 @@ query Developer($developerId: String!) {
             slug
             name
             description
+        }
+        partners {
+            id
+            slug
+            title
         }
     }
 }
