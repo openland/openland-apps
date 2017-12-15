@@ -20,17 +20,6 @@ query Developers {
         slug
         title
         comments
-        buildingProjects {
-            id
-            slug
-            name
-            description
-        }
-        partners {
-            id
-            slug
-            title
-        }
     }
 }
 `;
