@@ -7,7 +7,7 @@ import { XLink } from '../../../components/X/XLink';
 import { Segment } from 'semantic-ui-react';
 
 const PermitsItems = withInfiniteList<Permit>((item) => {
-    return <Segment><XLink path={'/db/permits/' + item.id}>{item.id}</XLink></Segment>;
+    return <Segment><XLink path={'/permits/' + item.id}>{item.id}</XLink></Segment>;
 });
 
 export default withPage(withPermitsQuery((props) => {

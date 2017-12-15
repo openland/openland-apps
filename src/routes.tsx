@@ -5,9 +5,9 @@ let routes = Routes();
 routes.add('index', '/');
 routes.add('pipeline');
 
-routes.add('/db/permits', '/db/permits');
-routes.add('/db/permits/', '/db/permits');
-routes.add('/db/permits/:permitId', '/db/permits/item');
+routes.add('/permits', '/db/permits');
+routes.add('/permits/', '/db/permits');
+routes.add('/permits/:permitId', '/db/permits/item');
 
 routes.add('/developers', '/db/developers');
 routes.add('/developers/', '/db/developers');
