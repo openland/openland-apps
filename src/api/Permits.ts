@@ -6,6 +6,11 @@ export interface Permit {
     id: string;
     issuedAt?: string;
     createdAt?: string;
+    startedAt?: string;
+    expiresAt?: string;
+    expiredAt?: string;
+    filedAt?: string;
+
     status?: string;
     statusUpdatedAt?: string;
     streetNumbers?: [StreetNumber];
@@ -82,6 +87,10 @@ const PermitQuery = gql`
             id
             issuedAt
             createdAt
+            startedAt
+            expiresAt
+            expiredAt
+            filedAt
             status
             statusUpdatedAt
             type

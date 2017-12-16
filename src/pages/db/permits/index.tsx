@@ -6,6 +6,7 @@ import { Table, Segment } from 'semantic-ui-react';
 import { withPagedList } from '../../../components/withPagedList';
 import { XContainer } from '../../../components/X/XContainer';
 import { PermitStatus } from '../../../components/PermitStatus';
+import { XDate } from '../../../components/X/XDate';
 
 const PermitsItems = withPagedList<Permit>((props) => {
     return (
@@ -26,7 +27,7 @@ const PermitsItems = withPagedList<Permit>((props) => {
                             <XLink path={'/permits/' + item.id}>{item.id}</XLink>
                         </Table.Cell>
                         <Table.Cell collapsing={true}>
-                            {item.createdAt}
+                            {item.createdAt && (<XDate date={item.createdAt} />)}
                         </Table.Cell>
                         <Table.Cell collapsing={true}>
                             {item.status && <PermitStatus status={item.status} />}

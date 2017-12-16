@@ -5,6 +5,7 @@ import { XContainer } from '../../../components/X/XContainer';
 import { Segment, Header, Table, Form, Button, Icon, Step } from 'semantic-ui-react';
 import { XCounter } from '../../../components/X/XCounter';
 import { XDiff } from '../../../components/X/XDiff';
+import { XDate } from '../../../components/X/XDate';
 
 function ChangeRender(props: { change: FieldChanged }) {
     if (props.change.oldValue === null) {
@@ -55,6 +56,12 @@ export default withPage(withPermitQuery((props) => {
                         </Step.Group>
                     </div>
                     <div>Status: {props.data.permit.status} {props.data.permit.statusUpdatedAt}</div>
+                    {props.data.permit.filedAt && (<div>Filed <XDate date={props.data.permit.filedAt} large={true} /></div>)}
+                    {props.data.permit.createdAt && (<div>Created <XDate date={props.data.permit.createdAt} large={true} /></div>)}
+                    {props.data.permit.startedAt && (<div>Started <XDate date={props.data.permit.startedAt} large={true} /></div>)}
+                    {props.data.permit.expiresAt && (<div>Expires <XDate date={props.data.permit.expiresAt} large={true} /></div>)}
+                    {props.data.permit.expiredAt && (<div>Expired <XDate date={props.data.permit.expiredAt} large={true} /></div>)}
+                    
                     <div>Type: {props.data.permit.type} {props.data.permit.typeWood}</div>
                     {props.data.permit.streetNumbers!!.map((s) =>
                         (<div key={s.streetId}>Address: {s.streetNumber} {s.steetNumberSuffix} {s.streetName} {s.streetNameSuffix}</div>))

@@ -21,6 +21,14 @@ declare module 'next-routes' {
     export = builder
 }
 
+declare namespace Humanize {
+    function relativeTime(timestamp: number): string;
+}
+
+declare module 'humanize' {
+    export = Humanize
+}
+
 declare module 'markdown' {
     var markdown: {
         toHTML(markdown: string): string;
