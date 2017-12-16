@@ -2,6 +2,8 @@ import gql from 'graphql-tag';
 import { graphqlList } from '../utils/graphqlList';
 import { graphqlRouted } from '../utils/graphqlRouted';
 import { Developer } from './Developers';
+import { Picture } from './Picture';
+import { Geo } from './Geo';
 
 const BuildingProjectsStatsQuery = gql`
 query buildingProjectStats {
@@ -41,7 +43,7 @@ export interface BuildingProject {
     existingAffordableUnits?: number;
     proposedAffordableUnits?: number;
 
-    preview?: { url: string; retina: string; };
+    preview?: Picture;
     extrasDeveloper?: string;
     extrasGeneralConstructor?: string;
     extrasYearEnd?: string;
@@ -50,7 +52,7 @@ export interface BuildingProject {
     extrasPermit?: string;
     extrasComment?: string;
     extrasUrl?: string;
-    extrasLocation?: { latitude: number, longitude: number };
+    extrasLocation?: Geo;
 
     developers?: Developer[];
 }

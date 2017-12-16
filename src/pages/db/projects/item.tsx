@@ -3,7 +3,10 @@ import { withPage } from '../../../components/withPage';
 import { withBuildingProjectQuery } from '../../../api/BuildingProjects';
 import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Header } from 'semantic-ui-react';
+import { ListDevelopers } from '../../../components/ListDevelopers';
+import { XPicture } from '../../../components/X/XPicture';
+import { XGeo } from '../../../components/X/XGeo';
 
 export default withPage(withBuildingProjectQuery(withLoader((props) => {
     return (
@@ -22,8 +25,7 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
                         <div>Proposed Units: {props.data.project.proposedUnits}</div>
                         <div>Existing Affordable Units: {props.data.project.existingAffordableUnits}</div>
                         <div>Proposed Affordable Units: {props.data.project.proposedAffordableUnits}</div>
-                        
-                        <div>[Extras] Developer: {props.data.project.extrasDeveloper}</div>
+
                         <div>[Extras] General Constructor: {props.data.project.extrasGeneralConstructor}</div>
                         <div>[Extras] Year End: {props.data.project.extrasYearEnd}</div>
                         <div>[Extras] Address: {props.data.project.extrasAddress}</div>
@@ -31,7 +33,16 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
                         <div>[Extras] Permit: {props.data.project.extrasPermit} </div>
                         <div>[Extras] Comment: {props.data.project.extrasComment} </div>
                         <div>[Extras] Url: {props.data.project.extrasUrl} </div>
+                        {props.data.project.preview && <XPicture picture={props.data.project.preview} />}
+                        {props.data.project.extrasLocation && <div><XGeo geo={props.data.project.extrasLocation} /></div>}
                     </Segment>
+
+                    {props.data.project.developers && props.data.project.developers.length > 0 && (
+                        <Segment>
+                            <Header content="Developers" />
+                            <ListDevelopers developers={props.data.project.developers} />
+                        </Segment>
+                    )}
                 </XContainer>
             </div>
         </React.Fragment>
