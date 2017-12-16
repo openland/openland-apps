@@ -31,6 +31,8 @@ export interface Permit {
     events: [PermitEvent];
 
     relatedPermits: [Permit];
+
+    governmentalUrl: string;
 }
 
 export interface StatusChanged extends PermitEvent {
@@ -107,6 +109,7 @@ const PermitQuery = gql`
             proposedAffordableUnits
             proposedUse
             description
+            governmentalUrl
             
             streetNumbers {
                 streetId

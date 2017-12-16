@@ -30,7 +30,7 @@ export default withPage(withPermitQuery((props) => {
                     Pipeline Database
                 </Header>
                 <Segment attached="bottom">
-                    PermitId: {props.data.permit.id}
+                    PermitId: <a href={props.data.permit.governmentalUrl}>{props.data.permit.id}</a>
                     <div>
                         <Step.Group>
                             <Step>
