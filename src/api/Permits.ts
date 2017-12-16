@@ -29,6 +29,8 @@ export interface Permit {
     description?: string;
 
     events: [PermitEvent];
+
+    relatedPermits: [Permit];
 }
 
 export interface StatusChanged extends PermitEvent {
@@ -125,6 +127,15 @@ const PermitQuery = gql`
                     oldValue
                     newValue
                 }
+            }
+
+            relatedPermits {
+                id
+                createdAt
+                status
+                type
+                typeWood
+                description
             }
         }
     }

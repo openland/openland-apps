@@ -6,6 +6,7 @@ import { Segment, Header, Table, Form, Button, Icon, Step } from 'semantic-ui-re
 import { XCounter } from '../../../components/X/XCounter';
 import { XDiff } from '../../../components/X/XDiff';
 import { XDate } from '../../../components/X/XDate';
+import { ListPermits } from '../../../components/ListPermits';
 
 function ChangeRender(props: { change: FieldChanged }) {
     if (props.change.oldValue === null) {
@@ -62,7 +63,7 @@ export default withPage(withPermitQuery((props) => {
                     {props.data.permit.expiresAt && (<div>Expires <XDate date={props.data.permit.expiresAt} large={true} /></div>)}
                     {props.data.permit.expiredAt && (<div>Expired <XDate date={props.data.permit.expiredAt} large={true} /></div>)}
                     {props.data.permit.completedAt && (<div>Completed <XDate date={props.data.permit.completedAt} large={true} /></div>)}
-                    
+
                     <div>Type: {props.data.permit.type} {props.data.permit.typeWood}</div>
                     {props.data.permit.streetNumbers!!.map((s) =>
                         (<div key={s.streetId}>Address: {s.streetNumber} {s.steetNumberSuffix} {s.streetName} {s.streetNameSuffix}</div>))
@@ -76,6 +77,11 @@ export default withPage(withPermitQuery((props) => {
                     <div> Description: {props.data.permit.description}</div>
                     <div> Proposed Use: {props.data.permit.proposedUse}</div>
                 </Segment>
+
+                <Segment>
+                    <ListPermits permits={props.data.permit.relatedPermits} />
+                </Segment>
+
                 <Header attached="top">
                     Updates
                 </Header>
