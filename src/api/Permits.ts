@@ -10,6 +10,7 @@ export interface Permit {
     expiresAt?: string;
     expiredAt?: string;
     filedAt?: string;
+    completedAt?: string;
 
     status?: string;
     statusUpdatedAt?: string;
@@ -90,6 +91,7 @@ const PermitQuery = gql`
             startedAt
             expiresAt
             expiredAt
+            completedAt
             filedAt
             status
             statusUpdatedAt

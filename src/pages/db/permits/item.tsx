@@ -61,6 +61,7 @@ export default withPage(withPermitQuery((props) => {
                     {props.data.permit.startedAt && (<div>Started <XDate date={props.data.permit.startedAt} large={true} /></div>)}
                     {props.data.permit.expiresAt && (<div>Expires <XDate date={props.data.permit.expiresAt} large={true} /></div>)}
                     {props.data.permit.expiredAt && (<div>Expired <XDate date={props.data.permit.expiredAt} large={true} /></div>)}
+                    {props.data.permit.completedAt && (<div>Completed <XDate date={props.data.permit.completedAt} large={true} /></div>)}
                     
                     <div>Type: {props.data.permit.type} {props.data.permit.typeWood}</div>
                     {props.data.permit.streetNumbers!!.map((s) =>
