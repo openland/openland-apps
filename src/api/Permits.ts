@@ -47,6 +47,7 @@ export interface FieldChanged extends PermitEvent {
     fieldName: string;
     oldValue: string;
     newValue: string;
+    date: string;
 }
 
 export interface PermitEvent {
@@ -132,6 +133,7 @@ const PermitQuery = gql`
                     fieldName
                     oldValue
                     newValue
+                    date
                 }
             }
 

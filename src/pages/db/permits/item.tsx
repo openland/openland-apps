@@ -119,7 +119,7 @@ export default withPage(withPermitQuery((props) => {
                                     return (
                                         <Table.Row key={'ind_' + i}>
                                             <Table.Cell collapsing={true}>
-                                                None
+                                                {s.date}
                                             </Table.Cell>
                                             <Table.Cell collapsing={true}>
                                                 {s.fieldName}
