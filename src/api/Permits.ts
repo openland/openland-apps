@@ -33,6 +33,8 @@ export interface Permit {
     relatedPermits: [Permit];
 
     governmentalUrl: string;
+
+    fasterThan?: number;
 }
 
 export interface StatusChanged extends PermitEvent {
@@ -110,6 +112,7 @@ const PermitQuery = gql`
             proposedUse
             description
             governmentalUrl
+            fasterThan
             
             streetNumbers {
                 streetId

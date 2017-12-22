@@ -59,10 +59,12 @@ export default withPage(withPermitQuery((props) => {
                     <div>Status: {props.data.permit.status} {props.data.permit.statusUpdatedAt}</div>
                     {props.data.permit.filedAt && (<div>Filed <XDate date={props.data.permit.filedAt} large={true} /></div>)}
                     {props.data.permit.createdAt && (<div>Created <XDate date={props.data.permit.createdAt} large={true} /></div>)}
+                    {props.data.permit.issuedAt && (<div>Issued <XDate date={props.data.permit.issuedAt} large={true} /></div>)}
                     {props.data.permit.startedAt && (<div>Started <XDate date={props.data.permit.startedAt} large={true} /></div>)}
                     {props.data.permit.expiresAt && (<div>Expires <XDate date={props.data.permit.expiresAt} large={true} /></div>)}
                     {props.data.permit.expiredAt && (<div>Expired <XDate date={props.data.permit.expiredAt} large={true} /></div>)}
                     {props.data.permit.completedAt && (<div>Completed <XDate date={props.data.permit.completedAt} large={true} /></div>)}
+                    {props.data.permit.fasterThan !== undefined && (<div>Faster Than {props.data.permit.fasterThan}% of projects of the same type</div>)}
 
                     <div>Type: {props.data.permit.type} {props.data.permit.typeWood}</div>
                     {props.data.permit.streetNumbers!!.map((s) =>
