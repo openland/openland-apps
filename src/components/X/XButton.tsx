@@ -4,15 +4,19 @@ import { withRouter } from '../../utils/withRouter';
 import { resolveActionPath } from '../../utils/routing';
 
 export interface XButtonProps extends ButtonProps {
-    path?: string; 
+    path?: string;
     query?: { field: string, value?: string };
 }
 
 export const XButton = withRouter<XButtonProps>((props) => {
-    let path = resolveActionPath(props);
-    console.warn(path);
-    let handleClick = () => {
-        props.router.push(path);
+    let handleClick = (event: React.MouseEvent<HTMLButtonElement>, data: ButtonProps) => {
+        event.preventDefault();
+        if (props.onClick) {
+            props.onClick(event, data);
+        } else {
+            let path = resolveActionPath(props);
+            props.router.push(path);
+        }
     };
     return <Button {...props} onClick={handleClick} />;
 });

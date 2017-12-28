@@ -64,3 +64,44 @@ declare module 'react-handsontable' {
 declare module 'lodash.flowright' {
 
 }
+
+declare namespace UploadCare {
+    interface Dialog {
+        done: (callback: (result: File) => void) => Dialog
+        fail: (callback: (result: File | null) => void) => Dialog
+        always: (callback: (result: File | null) => void) => Dialog
+    }
+
+    interface File {
+        done: (callback: (result: FileInfo) => void) => File
+        fail: (callback: (result: any) => void) => File
+        progress: (callback: (progress: UploadInfo) => void) => File
+    }
+
+    interface FileInfo {
+        uuid: string;
+        name: string;
+        size: string;
+        isStored: boolean;
+        isImage: boolean;
+        cdnUrl: string;
+        originalUrl: string;
+    }
+
+    interface UploadInfo {
+        state: 'uploading' | 'uploaded' | 'ready'
+        uploadProgress: number;
+        progress: number;
+    }
+
+    interface Settings {
+        publicKey: string;
+        imagesOnly?: boolean;
+    }
+
+    export function openDialog(file: any | null, settings: Settings): Dialog
+}
+
+declare module 'uploadcare-widget' {
+    export = UploadCare;
+}

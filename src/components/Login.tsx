@@ -3,14 +3,14 @@ import { withUserInfo } from './UserInfo';
 
 export const AuthenticationControlls = (props: { className: string }) => {
     return (
-        <React.Fragment>
+        <>
             <ProfileInfo className={props.className} />
             <SignOutButton className={props.className} />
             <SignInButton className={props.className} />
             <SignUpButton className={props.className} />
-        </React.Fragment>
+        </>
     );
-}
+};
 
 export const ProfileInfo = withUserInfo<{ className: string }>((props) => {
     if (props.user) {

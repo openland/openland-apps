@@ -22,26 +22,24 @@ const AddForm = withDeveloperAddMutation((props) => {
 
 export default withPage(withDevelopersQuery(withLoader((props) => {
     return (
-        <React.Fragment>
-            <div style={{ paddingTop: 32, paddingBottom: 32 }}>
-                <XContainer wide={true}>
-                    <Segment>
-                        <XWriteAcces>
-                            <AddForm />
-                        </XWriteAcces>
-                        <Table celled={true} striped={true} >
-                            {props.data.developers.map(p => {
-                                return (
-                                    <Table.Row key={p.id}>
-                                        <Table.Cell collapsing={true}><XLink path={'/developers/' + p.slug}>{p.slug}</XLink></Table.Cell>
-                                        <Table.Cell>{p.title}</Table.Cell>
-                                    </Table.Row>
-                                );
-                            })}
-                        </Table>
-                    </Segment>
-                </XContainer>
-            </div>
-        </React.Fragment>
+        <div style={{ paddingTop: 32, paddingBottom: 32 }}>
+            <XContainer wide={true}>
+                <Segment>
+                    <XWriteAcces>
+                        <AddForm />
+                    </XWriteAcces>
+                    <Table celled={true} striped={true} >
+                        {props.data.developers.map(p => {
+                            return (
+                                <Table.Row key={p.id}>
+                                    <Table.Cell collapsing={true}><XLink path={'/developers/' + p.slug}>{p.slug}</XLink></Table.Cell>
+                                    <Table.Cell>{p.title}</Table.Cell>
+                                </Table.Row>
+                            );
+                        })}
+                    </Table>
+                </Segment>
+            </XContainer>
+        </div>
     );
 })));

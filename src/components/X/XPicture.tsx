@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { Picture } from '../../api/Picture';
 
-export function XPicture(props: { picture: Picture }) {
-    return <img src={props.picture.url} srcSet={props.picture.retina} />;
+export function XPicture(props: { picture: Picture | string }) {
+    if (typeof (props.picture) === 'string') {
+        return <img src={props.picture} />;
+    } else {
+        return <img src={props.picture.url} srcSet={props.picture.retina} />;
+    }
 }

@@ -10,14 +10,12 @@ const PermitsItems = withPagedList<Permit>((props) => <ListPermits permits={prop
 
 export default withPage(withPermitsPagedQuery((props) => {
     return (
-        <React.Fragment>
-            <div style={{ paddingBottom: 32, paddingTop: 32 }}>
-                <XContainer wide={true}>
-                    <Segment>
-                        <PermitsItems data={props.data} filter={true} />
-                    </Segment>
-                </XContainer>
-            </div>
-        </React.Fragment>
+        <div style={{ paddingBottom: 32, paddingTop: 32 }}>
+            <XContainer wide={true}>
+                <Segment>
+                    <PermitsItems data={props.data} filter={true} />
+                </Segment>
+            </XContainer>
+        </div>
     );
 }));
