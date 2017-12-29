@@ -28,12 +28,23 @@ export class ImageUpload extends React.Component<{}, { isLoading: boolean, uuid:
         });
     }
 
+    doClear = () => {
+        this.setState({ isLoading: false, uuid: null });
+    }
+
     render() {
         return (
             <>
             <div style={{ paddingBottom: 8 }}>
-                {this.state.uuid && <XPicture picture={'https://ucarecdn.com/' + this.state.uuid + '/-/preview/200x200/'} />}
-                <XButton onClick={this.doUpload} loading={this.state.isLoading}>Upload Logo</XButton>
+                <div>
+                    <XButton onClick={this.doUpload} loading={this.state.isLoading} positive={true}>Upload Logo</XButton>
+                    {this.state.uuid && <XButton onClick={this.doClear} negative={true}>Remove Logo</XButton>}
+                </div>
+                {this.state.uuid && (
+                    <div style={{ marginTop: 8, width: 200, height: 200 }}>
+                        <XPicture picture={'https://ucarecdn.com/' + this.state.uuid + '/-/preview/200x200/-/setfill/ece3d2/-/crop/200x200/center/'} />
+                    </div>
+                )}
             </div>
             </>
         );
