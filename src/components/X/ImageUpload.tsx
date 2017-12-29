@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XButton } from './XButton';
-import { XPicture } from './XPicture';
+import { XCloudImage } from './XCloudImage';
 import * as UploadCare from 'uploadcare-widget';
 
 export class ImageUpload extends React.Component<{}, { isLoading: boolean, uuid: string | null }> {
@@ -42,7 +42,7 @@ export class ImageUpload extends React.Component<{}, { isLoading: boolean, uuid:
                 </div>
                 {this.state.uuid && (
                     <div style={{ marginTop: 8, width: 200, height: 200 }}>
-                        <XPicture picture={'https://ucarecdn.com/' + this.state.uuid + '/-/preview/200x200/-/setfill/ece3d2/-/crop/200x200/center/'} />
+                        <XCloudImage src={this.state.uuid} maxHeight={200} maxWidth={200} resize="fill" />
                     </div>
                 )}
             </div>
