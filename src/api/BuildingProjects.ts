@@ -161,6 +161,8 @@ const BuildingProjectsQuery = gql`
             stats {
                 newUnits
                 newUnitsVerified
+                totalProjects
+                totalProjectsVerified
             }
         }
     }
