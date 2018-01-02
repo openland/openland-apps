@@ -10,7 +10,7 @@ import { XWriteAcces } from '../../../components/X/XWriteAccess';
 
 const AddForm = withDeveloperAddMutation((props) => {
     return (
-        <XForm mutate={props.mutate!!}>
+        <XForm mutate={props.add}>
             <XFormGroup>
                 <XFormField name="slug" hint="Short Name" />
                 <XFormField name="title" hint="Name of developer" />

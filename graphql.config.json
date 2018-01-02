@@ -1,7 +1,7 @@
 {
   "schema": {
     "request": {
-      "url": "https://api.statecraft.one/api",
+      "url": "https://statecraft-api-staging.herokuapp.com/api",
       "method": "POST",
       "postIntrospectionQuery": true,
       "options": {
@@ -14,7 +14,7 @@
   "endpoints": [
     {
       "name": "Default (https://api.statecraft.one/api)",
-      "url": "https://api.statecraft.one/api",
+      "url": "https://statecraft-api-staging.herokuapp.com/api",
       "options": {
         "headers": {
           "x-statecraft-domain": "sf"

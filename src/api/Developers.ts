@@ -1,8 +1,9 @@
 import gql from 'graphql-tag';
 import { graphqlRouted } from '../utils/graphqlRouted';
-import { graphql } from 'react-apollo';
-import { graphqlCompose } from '../utils/graphqlCompose';
+import { MutationFunc } from 'react-apollo';
+import { graphqlCompose3 } from '../utils/graphqlCompose';
 import { BuildingProject } from './BuildingProjects';
+import { graphqlMutation } from '../utils/graphqlMutation';
 
 export interface Developer {
     id: string;
@@ -50,8 +51,8 @@ const DeveloperQuery = gql`
 `;
 
 export const DeveloperAddMutation = gql`
-    mutation organizationAdd($orgId: String!, $title: String!) {
-        organizationAdd(slug: $orgId, title: $title) {
+    mutation organizationAdd($slug: String!, $title: String!) {
+        organizationAdd(slug: $slug, title: $title) {
             id
             slug
             title
@@ -82,24 +83,21 @@ export const DeveloperAlterMutation = gql`
 export const withDevelopersQuery = graphqlRouted<{ organizations: Developer[] }>(DevelopersQuery);
 export const withDeveloperQuery = graphqlRouted<{ organization: Developer }>(DeveloperQuery, ['orgId']);
 
-export const withDeveloperAddMutation = graphql(DeveloperAddMutation, {
-    options: {
-        refetchQueries: [{
-            query: DevelopersQuery
-        }]
-    }
+export const withDeveloperAddMutation = graphqlMutation<{ add: MutationFunc<{}> }>(DeveloperAddMutation, {
+    name: 'add',
+    refetchQueries: [DevelopersQuery]
+});
+export const withDeveloperRemoveMutation = graphqlMutation<{ remove: MutationFunc<{}> }>(DeveloperRemoveMutation, {
+    name: 'remove',
+    refetchQueries: [DevelopersQuery],
+    params: ['orgId']
+});
+export const withDeveloperAlterMutation = graphqlMutation<{ alter: MutationFunc<{}> }>(DeveloperAlterMutation, {
+    name: 'alter',
+    params: ['orgId']
 });
 
-export const withDeveloperRemoveMutation = graphql<{}, { slug: string }>(DeveloperRemoveMutation, {
-    options: (props: { slug: string }) => ({
-        variables: {
-            slug: props.slug
-        },
-        refetchQueries: [{
-            query: DevelopersQuery
-        }]
-    })
-});
-
-export const withDeveloperAlterMutation = graphqlRouted(DeveloperAlterMutation, ['orgId']);
-export const withDeveloperAlter = graphqlCompose<{ organization: Developer }>(withDeveloperAlterMutation, withDeveloperQuery);
+export const withDeveloperAlter = graphqlCompose3(
+    withDeveloperQuery,
+    withDeveloperAlterMutation,
+    withDeveloperRemoveMutation);
