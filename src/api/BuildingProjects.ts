@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import { graphqlList } from '../utils/graphqlList';
 import { graphqlRouted } from '../utils/graphqlRouted';
-import { Developer } from './Developers';
+import { Organization } from './Organizations';
 import { Picture } from './Picture';
 import { Geo } from './Geo';
 
@@ -54,7 +54,7 @@ export interface BuildingProject {
     extrasUrl?: string;
     extrasLocation?: Geo;
 
-    developers?: Developer[];
+    developers?: Organization[];
 }
 
 export interface BuildingProjectsQueryStats {

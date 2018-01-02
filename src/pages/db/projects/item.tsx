@@ -4,7 +4,7 @@ import { withBuildingProjectQuery } from '../../../api/BuildingProjects';
 import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
 import { Segment, Header } from 'semantic-ui-react';
-import { ListDevelopers } from '../../../components/ListDevelopers';
+import { ListOrganizations } from '../../../components/ListOrganizations';
 import { XPicture } from '../../../components/X/XPicture';
 import { XGeo } from '../../../components/X/XGeo';
 
@@ -39,7 +39,7 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
                 {props.data.project.developers && props.data.project.developers.length > 0 && (
                     <Segment>
                         <Header content="Developers" />
-                        <ListDevelopers developers={props.data.project.developers} />
+                        <ListOrganizations developers={props.data.project.developers} />
                     </Segment>
                 )}
             </XContainer>

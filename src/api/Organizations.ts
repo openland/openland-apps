@@ -5,7 +5,7 @@ import { graphqlCompose3 } from '../utils/graphqlCompose';
 import { BuildingProject } from './BuildingProjects';
 import { graphqlMutation } from '../utils/graphqlMutation';
 
-export interface Developer {
+export interface Organization {
     id: string;
     slug: string;
     title: string;
@@ -18,11 +18,11 @@ export interface Developer {
     linkedin?: string;
     facebook?: string;
     buildingProjects?: BuildingProject[];
-    partners: Developer[];
+    partners: Organization[];
 }
 
-const DevelopersQuery = gql`
-    query Developers {
+const OrganizationsQuery = gql`
+    query Organizations {
         organizations {
             id
             slug
@@ -34,8 +34,8 @@ const DevelopersQuery = gql`
     }
 `;
 
-const DeveloperQuery = gql`
-    query Developer($orgId: String!) {
+const OrganizationQuery = gql`
+    query Organization($orgId: String!) {
         organization(slug: $orgId) {
             id
             slug
@@ -63,7 +63,7 @@ const DeveloperQuery = gql`
     }
 `;
 
-export const DeveloperAddMutation = gql`
+export const OrganizationMutationAdd = gql`
     mutation organizationAdd($slug: String!, $title: String!) {
         organizationAdd(slug: $slug, title: $title) {
             id
@@ -75,13 +75,13 @@ export const DeveloperAddMutation = gql`
     }
 `;
 
-export const DeveloperRemoveMutation = gql`
+export const OrganizationMutationRemove = gql`
     mutation developerRemove($orgId: String!) {
         organizationRemove(slug: $orgId)
     }
 `;
 
-export const DeveloperAlterMutation = gql`
+export const OrganizationMutationAlter = gql`
     mutation organizationAlter(
     $orgId: String!, $title: String,
     $comments: String, $logo: String, $url: String, $city: String, $address: String,
@@ -104,24 +104,24 @@ export const DeveloperAlterMutation = gql`
     }
 `;
 
-export const withDevelopersQuery = graphqlRouted<{ organizations: Developer[] }>(DevelopersQuery);
-export const withDeveloperQuery = graphqlRouted<{ organization: Developer }>(DeveloperQuery, ['orgId']);
+export const withOrganizationsQuery = graphqlRouted<{ organizations: Organization[] }>(OrganizationsQuery);
+export const withOrganizationQuery = graphqlRouted<{ organization: Organization }>(OrganizationQuery, ['orgId']);
 
-export const withDeveloperAddMutation = graphqlMutation<{ add: MutationFunc<{}> }>(DeveloperAddMutation, {
+export const withOrganizationAddMutation = graphqlMutation<{ add: MutationFunc<{}> }>(OrganizationMutationAdd, {
     name: 'add',
-    refetchQueries: [DevelopersQuery]
+    refetchQueries: [OrganizationsQuery]
 });
-export const withDeveloperRemoveMutation = graphqlMutation<{ remove: MutationFunc<{}> }>(DeveloperRemoveMutation, {
+export const withOrganizationRemoveMutation = graphqlMutation<{ remove: MutationFunc<{}> }>(OrganizationMutationRemove, {
     name: 'remove',
-    refetchQueries: [DevelopersQuery],
+    refetchQueries: [OrganizationsQuery],
     params: ['orgId']
 });
-export const withDeveloperAlterMutation = graphqlMutation<{ alter: MutationFunc<{}> }>(DeveloperAlterMutation, {
+export const withOrganizationAlterMutation = graphqlMutation<{ alter: MutationFunc<{}> }>(OrganizationMutationAlter, {
     name: 'alter',
     params: ['orgId']
 });
 
-export const withDeveloperAlter = graphqlCompose3(
-    withDeveloperQuery,
-    withDeveloperAlterMutation,
-    withDeveloperRemoveMutation);
+export const withOrganizationAlter = graphqlCompose3(
+    withOrganizationQuery,
+    withOrganizationAlterMutation,
+    withOrganizationRemoveMutation);

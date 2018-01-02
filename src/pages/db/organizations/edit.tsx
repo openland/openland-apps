@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
-import { withDeveloperAlter } from '../../../api/Developers';
+import { withOrganizationAlter } from '../../../api/Organizations';
 import { withLoader } from '../../../components/withLoader';
 import { Segment } from 'semantic-ui-react';
 import { XForm, XFormField, XFormImage, XFormSubmit } from '../../../components/X/XForm';
 import { XContainer } from '../../../components/X/XContainer';
 import { XButton } from '../../../components/X/XButton';
 
-export default withPage(withDeveloperAlter(withLoader((props) => {
+export default withPage(withOrganizationAlter(withLoader((props) => {
 
     return (
         <div style={{paddingTop: 32, paddingBottom: 32}}>

@@ -8,10 +8,10 @@ routes.add('/permits', '/db/permits/list');
 routes.add('/permits/', '/db/permits/list');
 routes.add('/permits/:permitId', '/db/permits/item');
 
-routes.add('/organizations', '/db/developers/list');
-routes.add('/organizations/', '/db/developers/list');
-routes.add('/organizations/:orgId', '/db/developers/item');
-routes.add('/organizations/:orgId/edit', '/db/developers/edit');
+routes.add('/organizations', '/db/organizations/list');
+routes.add('/organizations/', '/db/organizations/list');
+routes.add('/organizations/:orgId', '/db/organizations/item');
+routes.add('/organizations/:orgId/edit', '/db/organizations/edit');
 
 routes.add('/projects', '/db/projects/list');
 routes.add('/projects/', '/db/projects/list');

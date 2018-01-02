@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Developer } from '../api/Developers';
+import { Organization } from '../api/Organizations';
 import { Table } from 'semantic-ui-react';
 import { XLink } from './X/XLink';
 
-export function ListDevelopers(props: { developers: Developer[] }) {
+export function ListOrganizations(props: { developers: Organization[] }) {
     return (
         <Table celled={true} striped={true}>
             {props.developers.map(p => {

@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
-import { withDeveloperQuery } from '../../../api/Developers';
+import { withOrganizationQuery } from '../../../api/Organizations';
 import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
 import { Segment, Header } from 'semantic-ui-react';
 import { XButton } from '../../../components/X/XButton';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
-import { ListDevelopers } from '../../../components/ListDevelopers';
+import { ListOrganizations } from '../../../components/ListOrganizations';
 import { ListProjects } from '../../../components/ListProjects';
 import { XLogo } from '../../../components/X/XLogo';
 
-export default withPage(withDeveloperQuery(withLoader((props) => {
+export default withPage(withOrganizationQuery(withLoader((props) => {
     return (
         <div style={{paddingTop: 32, paddingBottom: 32}}>
             <XContainer wide={true}>
@@ -33,7 +33,7 @@ export default withPage(withDeveloperQuery(withLoader((props) => {
                 {props.data.organization.partners!!.length > 0 && (
                     <Segment>
                         <Header content="Partners"/>
-                        <ListDevelopers developers={props.data.organization.partners!!}/>
+                        <ListOrganizations developers={props.data.organization.partners!!}/>
                     </Segment>
                 )}
                 {props.data.organization.buildingProjects!!.length > 0 && (

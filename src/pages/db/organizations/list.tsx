@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
 import { Segment, Table } from 'semantic-ui-react';
-import { withDevelopersQuery, withDeveloperAddMutation } from '../../../api/Developers';
+import { withOrganizationsQuery, withOrganizationAddMutation } from '../../../api/Organizations';
 import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
@@ -9,7 +9,7 @@ import { XLink } from '../../../components/X/XLink';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
 import { XCloudImage } from '../../../components/X/XCloudImage';
 
-const AddForm = withDeveloperAddMutation((props) => {
+const AddForm = withOrganizationAddMutation((props) => {
     return (
         <XForm mutate={props.add}>
             <XFormGroup>
@@ -21,7 +21,7 @@ const AddForm = withDeveloperAddMutation((props) => {
     );
 });
 
-export default withPage(withDevelopersQuery(withLoader((props) => {
+export default withPage(withOrganizationsQuery(withLoader((props) => {
     return (
         <div style={{paddingTop: 32, paddingBottom: 32}}>
             <XContainer wide={true}>
