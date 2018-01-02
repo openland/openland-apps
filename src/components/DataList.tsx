@@ -31,15 +31,30 @@ export class DataListFilters extends React.Component<{ title: string, children?:
         return (
             <div className="col-xs-12 col-md-3">
                 <div className={'x-filters' + (this.state.isShown ? ' is-shown' : '')}>
-                    <a className="x-filters--head" href="#" onClick={(e) => { e.preventDefault(); this.setState({ isShown: true }); }}>Filters</a>
+                    <a
+                        className="x-filters--head"
+                        href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            this.setState({isShown: true});
+                        }}
+                    >
+                        Filters
+                    </a>
                     <div className="x-filters--body">
-                        <a className="x-filters--close" href="#" onClick={(e) => { e.preventDefault(); this.setState({ isShown: false }); }}><i className="icon-close" /></a>
+                        <a className="x-filters--close" href="#" onClick={(e) => {
+                            e.preventDefault();
+                            this.setState({isShown: false});
+                        }}><i className="icon-close"/></a>
 
                         <div className="x-in--title">{this.props.title}</div>
                         {this.props.children}
 
                         <div className="x-join visible-xs visible-sm">
-                            <div className="x-join--btn"><a className="x-btn is-block" href="#" onClick={(e) => { e.preventDefault(); this.setState({ isShown: false }); }}>Apply filters</a></div>
+                            <div className="x-join--btn"><a className="x-btn is-block" href="#" onClick={(e) => {
+                                e.preventDefault();
+                                this.setState({isShown: false});
+                            }}>Apply filters</a></div>
                         </div>
                     </div>
                 </div>
@@ -61,7 +76,8 @@ export function DataListContentStats(props: { totalProjects: number, totalProjec
         <div className="x-in--title hidden-xs">
             {(props.totalProjects !== 0) && <div>{props.totalProjects}<span>Buildings</span></div>}
             {(props.newUnits !== 0) && <div>{props.newUnits}<span>Net new units</span></div>}
-            {((props.totalProjectsVerified !== 0) || (props.newUnitsVerified !== 0)) && <span className="is-verified">Verified</span>}
+            {((props.totalProjectsVerified !== 0) || (props.newUnitsVerified !== 0)) &&
+            <span className="is-verified">Verified</span>}
             {(props.totalProjectsVerified !== 0) && <div>{props.totalProjectsVerified}<span>Buildings</span></div>}
             {(props.newUnitsVerified !== 0) && <div>{props.newUnitsVerified}<span>Net new units</span></div>}
         </div>
@@ -71,7 +87,7 @@ export function DataListContentStats(props: { totalProjects: number, totalProjec
 export function DataListRadio(props: { title: string, radioKey: string, children?: any }) {
     var childrenWithProps = React.Children.map(props.children, child => {
         if (React.isValidElement(child)) {
-            return React.cloneElement(child as React.ReactElement<{ radioKey: string }>, { radioKey: props.radioKey });
+            return React.cloneElement(child as React.ReactElement<{ radioKey: string }>, {radioKey: props.radioKey});
         } else {
             return child;
         }
@@ -112,7 +128,7 @@ export const DataListSearch = withRouter<{ searchKey: string }>(props => {
     return (
         <div className="x-search">
             <div className="x-search--box">
-                <XFilterInput className="x-search--input" searchKey={props.searchKey} placeholder="Search" />
+                <XFilterInput className="x-search--input" searchKey={props.searchKey} placeholder="Search"/>
                 <button className="x-search--button" type="submit"><i className="icon-search">{}</i></button>
             </div>
         </div>

@@ -6,19 +6,19 @@ export function withLiveMutation<P>(WrappedComponent: React.ComponentType<P & { 
 
         constructor(props: { mutate?: MutationFunc<{}> } & P) {
             super(props);
-            this.state = { loading: false, error: false };
+            this.state = {loading: false, error: false};
         }
 
         action = async () => {
             if (!this.state.loading) {
-                this.setState({ loading: true });
+                this.setState({loading: true});
                 this.props.mutate!!({}).then((v) => {
-                    this.setState({ loading: false, error: false });
+                    this.setState({loading: false, error: false});
                 }).catch((v) => {
-                    this.setState({ loading: false, error: true });
+                    this.setState({loading: false, error: true});
                 });
             }
-        }
+        };
 
         render() {
             return (

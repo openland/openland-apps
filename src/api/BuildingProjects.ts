@@ -6,16 +6,16 @@ import { Picture } from './Picture';
 import { Geo } from './Geo';
 
 const BuildingProjectsStatsQuery = gql`
-query buildingProjectStats {
-    stats: buildingProjectsStats {
-        projectsTracked
-        projectsVerified
-        year2017NewUnits
-        year2017NewUnitsVerified
-        year2018NewUnits
-        year2018NewUnitsVerified
+    query buildingProjectStats {
+        stats: buildingProjectsStats {
+            projectsTracked
+            projectsVerified
+            year2017NewUnits
+            year2017NewUnitsVerified
+            year2018NewUnits
+            year2018NewUnitsVerified
+        }
     }
-}
 `;
 
 export interface BuildingProjectsStats {
@@ -67,104 +67,104 @@ export interface BuildingProjectsQueryStats {
 }
 
 const BuildingProjectQuery = gql`
-query buildingProject($projectId: String!) {
-    project: buildingProject(slug: $projectId) {
-        id
-        slug
-        name
-        description
-        status
-        startedAt
-        completedAt
-        expectedCompletedAt
-        verified
-        existingUnits
-        proposedUnits
-        existingAffordableUnits
-        proposedAffordableUnits
-                
-        preview: picture(width: 224, height: 164) {
-            url
-            retina
-        }
-        extrasDeveloper
-        extrasGeneralConstructor
-        extrasYearEnd
-        extrasAddress
-        extrasAddressSecondary
-        extrasPermit
-        extrasComment
-        extrasUrl
-        extrasLocation {
-            latitude
-            longitude
-        }
-        developers {
+    query buildingProject($projectId: String!) {
+        project: buildingProject(slug: $projectId) {
             id
             slug
-            title
+            name
+            description
+            status
+            startedAt
+            completedAt
+            expectedCompletedAt
+            verified
+            existingUnits
+            proposedUnits
+            existingAffordableUnits
+            proposedAffordableUnits
+
+            preview: picture(width: 224, height: 164) {
+                url
+                retina
+            }
+            extrasDeveloper
+            extrasGeneralConstructor
+            extrasYearEnd
+            extrasAddress
+            extrasAddressSecondary
+            extrasPermit
+            extrasComment
+            extrasUrl
+            extrasLocation {
+                latitude
+                longitude
+            }
+            developers {
+                id
+                slug
+                title
+            }
         }
     }
-}
 `;
 
 const BuildingProjectsQuery = gql`
-  query buildingProjects($cursor: String, $minUnits: Int, $year: String, $filter: String) {
-      items: buildingProjects(first: 50, minUnits: $minUnits, year: $year, filter: $filter, after: $cursor) {
-          edges {
-              node {
-                id
-                slug
-                name
-                description
-                status
-                startedAt
-                completedAt
-                expectedCompletedAt
-                verified
-                existingUnits
-                proposedUnits
-                existingAffordableUnits
-                proposedAffordableUnits
-                
-                preview: picture(width: 224, height: 164) {
-                    url
-                    retina
-                }
-                extrasDeveloper
-                extrasGeneralConstructor
-                extrasYearEnd
-                extrasAddress
-                extrasAddressSecondary
-                extrasPermit
-                extrasComment
-                extrasUrl
-                extrasLocation {
-                    latitude
-                    longitude
-                }
-                developers {
+    query buildingProjects($cursor: String, $minUnits: Int, $year: String, $filter: String) {
+        items: buildingProjects(first: 50, minUnits: $minUnits, year: $year, filter: $filter, after: $cursor) {
+            edges {
+                node {
                     id
                     slug
-                    title
+                    name
+                    description
+                    status
+                    startedAt
+                    completedAt
+                    expectedCompletedAt
+                    verified
+                    existingUnits
+                    proposedUnits
+                    existingAffordableUnits
+                    proposedAffordableUnits
+
+                    preview: picture(width: 224, height: 164) {
+                        url
+                        retina
+                    }
+                    extrasDeveloper
+                    extrasGeneralConstructor
+                    extrasYearEnd
+                    extrasAddress
+                    extrasAddressSecondary
+                    extrasPermit
+                    extrasComment
+                    extrasUrl
+                    extrasLocation {
+                        latitude
+                        longitude
+                    }
+                    developers {
+                        id
+                        slug
+                        title
+                    }
                 }
-              }
-              cursor
-          }
-          pageInfo {
-              hasNextPage
-              hasPreviousPage
-              itemsCount
-              currentPage
-              pagesCount
-          }
-          stats {
-              newUnits
-              newUnitsVerified
-          }
-      }
-  }
-  `;
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+            }
+            stats {
+                newUnits
+                newUnitsVerified
+            }
+        }
+    }
+`;
 
 export const withBuildingProjectsQuery = graphqlList<BuildingProject, BuildingProjectsQueryStats>(
     BuildingProjectsQuery,

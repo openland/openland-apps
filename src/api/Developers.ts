@@ -14,64 +14,64 @@ export interface Developer {
 }
 
 const DevelopersQuery = gql`
-query Developers {
-    developers {
-        id
-        slug
-        title
-        comments
-    }
-}
-`;
-
-const DeveloperQuery = gql`
-query Developer($developerId: String!) {
-    developer(slug: $developerId) {
-        id
-        slug
-        title
-        comments
-        buildingProjects {
-            id
-            slug
-            name
-            description
-        }
-        partners {
+    query Developers {
+        developers {
             id
             slug
             title
+            comments
         }
     }
-}
+`;
+
+const DeveloperQuery = gql`
+    query Developer($developerId: String!) {
+        developer(slug: $developerId) {
+            id
+            slug
+            title
+            comments
+            buildingProjects {
+                id
+                slug
+                name
+                description
+            }
+            partners {
+                id
+                slug
+                title
+            }
+        }
+    }
 `;
 
 export const DeveloperAddMutation = gql`
-mutation addDeveloper($slug: String!, $title: String!) {
-  addDeveloper(slug: $slug, title: $title) {
-    id
-    slug
-    title
-    comments
-  }
-}
+    mutation addDeveloper($slug: String!, $title: String!) {
+        addDeveloper(slug: $slug, title: $title) {
+            id
+            slug
+            title
+            comments
+        }
+    }
 `;
 
 export const DeveloperRemoveMutation = gql`
-mutation removeDeveloper($slug: String!) {
-  removeDeveloper(slug: $slug)
-}
+    mutation removeDeveloper($slug: String!) {
+        removeDeveloper(slug: $slug)
+    }
 `;
 
 export const DeveloperAlterMutation = gql`
-mutation alterDeveloper($developerId: String!, $title: String!, $comments: String!) {
-  alterDeveloper(slug: $developerId, title: $title, comments: $comments) {
-    id
-    slug
-    title
-    comments
-  }
-}
+    mutation alterDeveloper($developerId: String!, $title: String!, $comments: String!) {
+        alterDeveloper(slug: $developerId, title: $title, comments: $comments) {
+            id
+            slug
+            title
+            comments
+        }
+    }
 `;
 
 export const withDevelopersQuery = graphqlRouted<{ developers: Developer[] }>(DevelopersQuery);

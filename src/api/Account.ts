@@ -19,23 +19,23 @@ export interface AccountResponse {
 // Queries
 
 const QueryCity = gql`
-   query {
-     account {
-       id
-       name
-       city
-       readAccess
-       writeAccess
-       generation
-     }
-     me {
-       id
-       name
-       firstName
-       lastName
-       picture
-     }
-   }
- `;
+    query {
+        account {
+            id
+            name
+            city
+            readAccess
+            writeAccess
+            generation
+        }
+        me {
+            id
+            name
+            firstName
+            lastName
+            picture
+        }
+    }
+`;
 
 export const withAccountQuery = graphqlRouted<AccountResponse>(QueryCity, []);

@@ -1,0 +1,25 @@
+{
+  "schema": {
+    "request": {
+      "url": "https://api.statecraft.one/api",
+      "method": "POST",
+      "postIntrospectionQuery": true,
+      "options": {
+        "headers": {
+          "x-statecraft-domain": "sf"
+        }
+      }
+    }
+  },
+  "endpoints": [
+    {
+      "name": "Default (https://api.statecraft.one/api)",
+      "url": "https://api.statecraft.one/api",
+      "options": {
+        "headers": {
+          "x-statecraft-domain": "sf"
+        }
+      }
+    }
+  ]
+}

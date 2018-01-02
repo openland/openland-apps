@@ -170,5 +170,5 @@ export function PermitStatus(props: { status: string }) {
         }
     }
 
-    return <span><Icon name={icon} />{text}</span>;
+    return <span><Icon name={icon}/>{text}</span>;
 }

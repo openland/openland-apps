@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
 import { withRouter, RouterState } from './withRouter';

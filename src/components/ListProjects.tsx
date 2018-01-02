@@ -5,7 +5,7 @@ import { BuildingProject } from '../api/BuildingProjects';
 
 export function ListProjects(props: { projects: BuildingProject[] }) {
     return (
-        <Table celled={true} striped={true} >
+        <Table celled={true} striped={true}>
             {props.projects.map(p => {
                 return (
                     <Table.Row key={p.id}>

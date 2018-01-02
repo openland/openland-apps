@@ -21,8 +21,10 @@ export function XCloudImage(props: { src: string, className?: string, maxWidth?:
             ops = '-/scale_crop/' + scale + '/center/';
             opsRetina = '-/scale_crop/' + scaleRetina + '/center/';
         } else {
-            ops = '/-/preview/' + scale + '/-/setfill/ffffff/-/crop/' + scale + '/center/';
-            opsRetina = '/-/preview/' + scaleRetina + '/-/setfill/ffffff/-/crop/' + scaleRetina + '/center/';
+            // ops = '/-/preview/' + scale + '/-/setfill/ffffff/-/crop/' + scale + '/center/';
+            // opsRetina = '/-/preview/' + scaleRetina + '/-/setfill/ffffff/-/crop/' + scaleRetina + '/center/';
+            ops = '/-/preview/' + scale + '/';
+            opsRetina = '/-/preview/' + scaleRetina + '/';
         }
         var url = 'https://ucarecdn.com/' + props.src + '/' + ops;
         var urlRetina = 'https://ucarecdn.com/' + props.src + '/' + opsRetina;

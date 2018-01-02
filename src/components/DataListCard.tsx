@@ -27,8 +27,10 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
 
     render() {
         return (
-            <div className={'x-card' + (this.props.picture ? '' : ' without-photo') + (this.props.verified ? ' is-checked' : '') + (this.state.expanded ? ' is-expanded' : '')}>
-                {this.props.picture && (<div className="x-card--photo" style={{ backgroundImage: `url(${this.props.picture.retina})` }}>{}</div>)}
+            <div
+                className={'x-card' + (this.props.picture ? '' : ' without-photo') + (this.props.verified ? ' is-checked' : '') + (this.state.expanded ? ' is-expanded' : '')}>
+                {this.props.picture && (<div className="x-card--photo"
+                                             style={{backgroundImage: `url(${this.props.picture.retina})`}}>{}</div>)}
                 {!this.props.picture && (<div className="x-card--photo no-photo">{}</div>)}
 
                 <div className="x-card--info">
@@ -39,7 +41,8 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
 
                     {this.props.url && (
                         <div className="x-card--btns">
-                            {this.props.url && (<a className="x-card--btn" href={this.props.url} target="_blank"><i className="icon-share">{}</i></a>)}
+                            {this.props.url && (<a className="x-card--btn" href={this.props.url} target="_blank"><i
+                                className="icon-share">{}</i></a>)}
                             {/* <a className="x-card--btn" href="#"><i className="icon-edit">{}</i></a> */}
                         </div>
                     )}
@@ -49,17 +52,21 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
                     <div className="x-card--counter"><span>{this.props.newUnits || '?'}</span>Net new units</div>
                     <div className="x-card--counter"><span>{this.props.endYear || '?'}</span>Expected completion</div>
 
-                    <a className="x-card--toggler" href="#" onClick={(e) => { e.preventDefault(); this.setState({ expanded: !this.state.expanded }); }}>{}</a>
+                    <a className="x-card--toggler" href="#" onClick={(e) => {
+                        e.preventDefault();
+                        this.setState({expanded: !this.state.expanded});
+                    }}>{}</a>
                 </div>
 
                 <div className="x-card--details">
-                    {this.props.location && (<div className="x-card--map" style={{ backgroundImage: 'url(' + makeLocationUrl(this.props.location) + ')' }}>{}</div>)}
+                    {this.props.location && (<div className="x-card--map"
+                                                  style={{backgroundImage: 'url(' + makeLocationUrl(this.props.location) + ')'}}>{}</div>)}
                     {!this.props.location && (<div className="x-card--map no-photo">{}</div>)}
 
                     <div className="x-card--fields">
                         <table>
                             <tbody>
-                                {this.props.children}
+                            {this.props.children}
                             </tbody>
                         </table>
                     </div>
@@ -70,5 +77,8 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
 }
 
 export function DataListCardItem(props: { title: string, children: any }) {
-    return (<tr><td>{props.title}</td><td>{props.children}</td></tr>);
+    return (<tr>
+        <td>{props.title}</td>
+        <td>{props.children}</td>
+    </tr>);
 }

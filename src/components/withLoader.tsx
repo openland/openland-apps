@@ -6,7 +6,7 @@ export function withLoader<P>(WrappedComponent: React.ComponentType<P>): React.C
     return function (props: { data: QueryProps } & P) {
         if (props.data.loading) {
             return (
-                <Loader />
+                <Loader/>
             );
         } else if (props.data.error != null) {
             return (
@@ -17,7 +17,7 @@ export function withLoader<P>(WrappedComponent: React.ComponentType<P>): React.C
         }
 
         return (
-            <WrappedComponent {...props} key="_component" />
+            <WrappedComponent {...props} key="_component"/>
         );
     };
 }

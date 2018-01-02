@@ -1,4 +1,4 @@
 export interface Picture {
-    url: string; 
+    url: string;
     retina: string;
 }

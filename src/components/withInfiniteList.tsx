@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ListQueryData } from '../utils/graphqlList';
 import { Loader, LoaderLine } from './Loaders';
 import { canUseDOM } from '../utils/environment';
+
 // import FlipMove from 'react-flip-move';
 
 function InfiniteListContainer(props: { children: any }) {
@@ -41,7 +42,7 @@ class PageEndDetector extends React.Component<{ onLoadMore: () => void }> {
                 this.props.onLoadMore();
             }
         }
-    }
+    };
 
     clickHandler(e: any) {
         e.preventDefault();
@@ -71,7 +72,7 @@ export function withInfiniteList<TResult extends { id: string }>(render: (item: 
         if (props.data.items && props.data.loading) {
             return (
                 <InfiniteListContainer>
-                    <LoaderLine key="____loader" />
+                    <LoaderLine key="____loader"/>
                     {render(props.data.items.edges.map((p) => p.node))}
                 </InfiniteListContainer>
             );
@@ -79,7 +80,7 @@ export function withInfiniteList<TResult extends { id: string }>(render: (item: 
         if (props.data.loading) {
             return (
                 <InfiniteListContainer>
-                    <Loader isRelative={true} noBackground={true} key="____loader_big" />
+                    <Loader isRelative={true} noBackground={true} key="____loader_big"/>
                 </InfiniteListContainer>
             );
         } else if (props.data.error != null) {
@@ -105,7 +106,7 @@ export function withInfiniteList<TResult extends { id: string }>(render: (item: 
                 {render(props.data.items.edges.map((p) => p.node))}
 
                 {props.data.items!!.pageInfo.hasNextPage && (
-                    <PageEndDetector key="__page_end_detector" onLoadMore={props.data.loadMoreEntries} />
+                    <PageEndDetector key="__page_end_detector" onLoadMore={props.data.loadMoreEntries}/>
                 )}
             </InfiniteListContainer>
         );

@@ -24,10 +24,10 @@ export function ListPermits(props: { permits: Permit[] }) {
                             <XLink path={'/permits/' + item.id}>{item.id}</XLink>
                         </Table.Cell>
                         <Table.Cell collapsing={true}>
-                            {item.createdAt && (<XDate date={item.createdAt} />)}
+                            {item.createdAt && (<XDate date={item.createdAt}/>)}
                         </Table.Cell>
                         <Table.Cell collapsing={true}>
-                            {item.status && <PermitStatus status={item.status} />}
+                            {item.status && <PermitStatus status={item.status}/>}
                         </Table.Cell>
                         <Table.Cell collapsing={true}>
                             {item.type}

@@ -15,17 +15,18 @@ export function withPagedList<TResult extends { id: string }>(WrappedComponent: 
         if (props.data.items) {
             return (
                 <div>
-                    <div style={{ minHeight: 48, paddingBottom: 8 }}>
+                    <div style={{minHeight: 48, paddingBottom: 8}}>
 
                         {props.filter === true && (
-                            <XFilterInput searchKey="filter" />
+                            <XFilterInput searchKey="filter"/>
                         )}
 
-                        <XPaging totalPages={props.data.items.pageInfo.pagesCount} currentPage={props.data.items.pageInfo.currentPage} />
+                        <XPaging totalPages={props.data.items.pageInfo.pagesCount}
+                                 currentPage={props.data.items.pageInfo.currentPage}/>
                     </div>
-                    <div style={{ position: 'relative' }}>
+                    <div style={{position: 'relative'}}>
                         <Dimmer active={props.data.loading} inverted={true}>
-                            <Loader inverted={true} content="Loading" />
+                            <Loader inverted={true} content="Loading"/>
                         </Dimmer>
                         <WrappedComponent
                             items={props.data.items!!.edges.map((p) => p.node)}
@@ -36,28 +37,29 @@ export function withPagedList<TResult extends { id: string }>(WrappedComponent: 
                         />
 
                     </div>
-                    <div style={{ minHeight: 56, paddingTop: 12 }}>
-                        <XPaging totalPages={props.data.items.pageInfo.pagesCount} currentPage={props.data.items.pageInfo.currentPage} />
+                    <div style={{minHeight: 56, paddingTop: 12}}>
+                        <XPaging totalPages={props.data.items.pageInfo.pagesCount}
+                                 currentPage={props.data.items.pageInfo.currentPage}/>
                     </div>
                 </div>
             );
         } else {
             return (
                 <div>
-                    <div style={{ minHeight: 48, paddingBottom: 8 }}>
+                    <div style={{minHeight: 48, paddingBottom: 8}}>
                         {props.filter === true && (
-                            <XFilterInput searchKey="filter" />
+                            <XFilterInput searchKey="filter"/>
                         )}
-                        <XPaging totalPages={0} currentPage={0} />
+                        <XPaging totalPages={0} currentPage={0}/>
                     </div>
-                    <div style={{ position: 'relative' }}>
+                    <div style={{position: 'relative'}}>
                         <Dimmer active={props.data.loading} inverted={true}>
-                            <Loader inverted={true} content="Loading" />
+                            <Loader inverted={true} content="Loading"/>
                         </Dimmer>
-                        <WrappedComponent items={[]} loading={true} itemsCount={0} currentPage={0} pagesCount={0} />
+                        <WrappedComponent items={[]} loading={true} itemsCount={0} currentPage={0} pagesCount={0}/>
                     </div>
-                    <div style={{ minHeight: 56, paddingTop: 12 }}>
-                        <XPaging totalPages={0} currentPage={0} />
+                    <div style={{minHeight: 56, paddingTop: 12}}>
+                        <XPaging totalPages={0} currentPage={0}/>
                     </div>
                 </div>
             );

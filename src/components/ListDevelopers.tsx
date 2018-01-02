@@ -5,7 +5,7 @@ import { XLink } from './X/XLink';
 
 export function ListDevelopers(props: { developers: Developer[] }) {
     return (
-        <Table celled={true} striped={true} >
+        <Table celled={true} striped={true}>
             {props.developers.map(p => {
                 return (
                     <Table.Row key={p.id}>

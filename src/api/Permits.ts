@@ -63,30 +63,30 @@ export interface StreetNumber {
 }
 
 const PermitsQuery = gql`
-query Permits($cursor: String, $filter: String, $page: Int) {
-    items: permits(filter: $filter, first: 50, after: $cursor, page: $page) {
-        edges {
-            node {
-                id
-                issuedAt
-                createdAt
-                status
-                statusUpdatedAt
-                type
-                typeWood
-                description
+    query Permits($cursor: String, $filter: String, $page: Int) {
+        items: permits(filter: $filter, first: 50, after: $cursor, page: $page) {
+            edges {
+                node {
+                    id
+                    issuedAt
+                    createdAt
+                    status
+                    statusUpdatedAt
+                    type
+                    typeWood
+                    description
+                }
+                cursor
             }
-            cursor
-        }
-        pageInfo {
-            hasNextPage
-            hasPreviousPage
-            itemsCount
-            currentPage
-            pagesCount
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+            }
         }
     }
-}
 `;
 
 const PermitQuery = gql`
@@ -114,7 +114,7 @@ const PermitQuery = gql`
             description
             governmentalUrl
             fasterThan
-            
+
             streetNumbers {
                 streetId
                 streetName
