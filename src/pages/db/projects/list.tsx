@@ -44,7 +44,7 @@ export const PipelineItems = withInfiniteList<BuildingProject>(items => {
                         <DataListCardItem title="Developers">
                             <XEnumeration>
                                 {item.developers!!.map((d) => (
-                                    <XLink path={'/developers/' + d.slug}>{d.title}</XLink>
+                                    <XLink path={'/organizations/' + d.slug}>{d.title}</XLink>
                                 ))}
                             </XEnumeration>
                         </DataListCardItem>
