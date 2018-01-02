@@ -9,7 +9,7 @@ export function ListDevelopers(props: { developers: Developer[] }) {
             {props.developers.map(p => {
                 return (
                     <Table.Row key={p.id}>
-                        <Table.Cell><XLink path={'/developers/' + p.slug}>{p.title}</XLink></Table.Cell>
+                        <Table.Cell><XLink path={'/organization/' + p.slug}>{p.title}</XLink></Table.Cell>
                     </Table.Row>
                 );
             })}
