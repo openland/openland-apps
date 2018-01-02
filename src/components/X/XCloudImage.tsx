@@ -18,13 +18,11 @@ export function XCloudImage(props: { src: string, className?: string, maxWidth?:
         let ops: string;
         let opsRetina: string;
         if (props.resize === 'fill') {
-            ops = '-/scale_crop/' + scale + '/center/';
-            opsRetina = '-/scale_crop/' + scaleRetina + '/center/';
+            ops = '-/format/jpeg/-/scale_crop/' + scale + '/center/-/progressive/yes/';
+            opsRetina = '-/format/jpeg/-/scale_crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
         } else {
-            ops = '/-/preview/' + scale + '/-/setfill/ffffff/-/crop/' + scale + '/center/';
-            opsRetina = '/-/preview/' + scaleRetina + '/-/setfill/ffffff/-/crop/' + scaleRetina + '/center/';
-            // ops = '/-/preview/' + scale + '/';
-            // opsRetina = '/-/preview/' + scaleRetina + '/';
+            ops = '-/format/jpeg/-/preview/' + scale + '/-/setfill/ffffff/-/crop/' + scale + '/center/-/progressive/yes/';
+            opsRetina = '-/format/jpeg/-/preview/' + scaleRetina + '/-/setfill/ffffff/-/crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
         }
         let url = 'https://ucarecdn.com/' + props.src + '/' + ops;
         let urlRetina = 'https://ucarecdn.com/' + props.src + '/' + opsRetina;
