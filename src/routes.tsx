@@ -3,21 +3,24 @@ import * as Routes from 'next-routes';
 let routes = Routes();
 
 routes.add('index', '/');
-routes.add('pipeline');
 
-routes.add('/permits', '/db/permits');
-routes.add('/permits/', '/db/permits');
+routes.add('/permits', '/db/permits/list');
+routes.add('/permits/', '/db/permits/list');
 routes.add('/permits/:permitId', '/db/permits/item');
 
-routes.add('/developers', '/db/developers');
-routes.add('/developers/', '/db/developers');
-routes.add('/developers/:developerId', '/db/developers/item');
-routes.add('/developers/:developerId/edit', '/db/developers/edit');
+routes.add('/organizations', '/db/developers/list');
+routes.add('/organizations/', '/db/developers/list');
+routes.add('/organizations/:orgId', '/db/developers/item');
+routes.add('/organizations/:orgId/edit', '/db/developers/edit');
 
-routes.add('/projects', '/db/projects');
-routes.add('/projects/', '/db/projects');
+routes.add('/projects', '/db/projects/list');
+routes.add('/projects/', '/db/projects/list');
 routes.add('/projects/:projectId', '/db/projects/item');
 
+// Compatibility
+routes.add('/pipeline', '/compat/pipeline');
+
+// Technical pages
 routes.add('auth/login');
 routes.add('auth/logout');
 routes.add('auth/complete');

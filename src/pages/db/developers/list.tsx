@@ -32,7 +32,7 @@ export default withPage(withDevelopersQuery(withLoader((props) => {
                         {props.data.organizations.map(p => {
                             return (
                                 <Table.Row key={p.id}>
-                                    <Table.Cell collapsing={true}><XLink path={'/developers/' + p.slug}>{p.slug}</XLink></Table.Cell>
+                                    <Table.Cell collapsing={true}><XLink path={'/organizations/' + p.slug}>{p.slug}</XLink></Table.Cell>
                                     <Table.Cell>{p.title}</Table.Cell>
                                 </Table.Row>
                             );

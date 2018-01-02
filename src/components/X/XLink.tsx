@@ -25,7 +25,7 @@ const LinkRender = withRouter<{ path: string, className?: string, children?: any
     );
 });
 
-export const XLink = withRouter<{ path: string, query?: { field: string, value?: string }, className?: string, children?: any, writeAccess?: boolean }>(withUserInfo((props) => {
+export const XLink = withRouter<{ path?: string, query?: { field: string, value?: string }, className?: string, children?: any, writeAccess?: boolean }>(withUserInfo((props) => {
     if (props.writeAccess !== true || props.account.writeAccess) {
         return <LinkRender path={resolveActionPath(props)} className={props.className} children={props.children} />;
     } else {

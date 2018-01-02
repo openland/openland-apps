@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { withBuildingProjectsQuery, BuildingProject } from '../api/BuildingProjects';
-import { withPage } from '../components/withPage';
+import { withBuildingProjectsQuery, BuildingProject } from '../../../api/BuildingProjects';
+import { withPage } from '../../../components/withPage';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch, DataListContentStats
-} from '../components/DataList';
-import { withInfiniteList, XInfiniteListItem } from '../components/withInfiniteList';
-import { DataListCard, DataListCardItem } from '../components/DataListCard';
-import { DataListInvite } from '../components/DataListInvite';
-import { XWriteAcces } from '../components/X/XWriteAccess';
-import { XLink } from '../components/X/XLink';
-import { XEnumeration } from '../components/X/XEnumerations';
+} from '../../../components/DataList';
+import { withInfiniteList, XInfiniteListItem } from '../../../components/withInfiniteList';
+import { DataListCard, DataListCardItem } from '../../../components/DataListCard';
+import { DataListInvite } from '../../../components/DataListInvite';
+import { XWriteAcces } from '../../../components/X/XWriteAccess';
+import { XLink } from '../../../components/X/XLink';
+import { XEnumeration } from '../../../components/X/XEnumerations';
 
 export const PipelineItems = withInfiniteList<BuildingProject>(items => {
     return items.map((item) => {

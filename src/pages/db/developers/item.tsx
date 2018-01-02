@@ -17,7 +17,7 @@ export default withPage(withDeveloperQuery(withLoader((props) => {
                 <Segment>
                     <XWriteAcces>
                         <XButton content="Edit" icon="edit"
-                                 path={'/developers/' + props.data.organization.slug + '/edit'}/>
+                                 path={'/organizations/' + props.data.organization.slug + '/edit'}/>
                     </XWriteAcces>
                     <div>Slug: {props.data.organization.slug}</div>
                     <div>Title: {props.data.organization.title}</div>

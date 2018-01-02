@@ -60,7 +60,7 @@ const HeaderNavItems = () => {
 const HeaderLargeNavItems = () => {
     return (
         <ul>
-            <li className="x-header--item is-block"><XLink path="/pipeline">Explore Pipeline</XLink></li>
+            <li className="x-header--item is-block"><XLink path="/projects">Explore Pipeline</XLink></li>
 
             <AuthenticationControlls className="x-header--item"/>
         </ul>
@@ -81,8 +81,9 @@ export class HeaderLarge extends React.Component<{ children: any }, { isShown: b
             <div className="x-intro">
                 <XContainer>
                     <div className={'x-header' + (this.state.isShown ? ' is-shown' : '')}>
-                        <a className="x-header--logo" href="https://statecraft.one/"><img src="/static/img/logotype.svg"
-                                                                                          alt=""/></a>
+                        <a className="x-header--logo" href="https://statecraft.one/">
+                            <img src="/static/img/logotype.svg" alt=""/>
+                        </a>
                         <a className="x-header--open visible-xs" href="#" onClick={(e) => {
                             e.preventDefault();
                             this.setState({isShown: !this.state.isShown});

@@ -18,7 +18,7 @@ export default withPage(withDeveloperAlter(withLoader((props) => {
                             logo: props.data.organization.logo
                         }}
                         mutate={props.mutate!!}
-                        afterPath={'/developers/' + props.data.organization.slug}
+                        afterPath={'/organizations/' + props.data.organization.slug}
                     >
                         <XFormField hint="Developer Title" name="title"/>
                         <XFormImage name="logo"/>

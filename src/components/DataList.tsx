@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { withRouter } from 'next/router';
 import { XLink } from './X/XLink';
 import * as qs from 'query-string';
 import { XContainer } from './X/XContainer';
 import { XRow } from './X/XRow';
 import { XFilterInput } from './X/XFilterInput';
+import { withRouter } from '../utils/withRouter';
 
 export function DataList(props: { children?: any }) {
     return (
@@ -101,8 +101,8 @@ export function DataListRadio(props: { title: string, radioKey: string, children
 }
 
 export const DataListRadioItem = withRouter<{ title: string, itemKey?: string, radioKey?: string }>(props => {
-    var path = props.router.pathname;
-    var checked = false;
+    let path = props.router.pathname;
+    let checked = false;
     if (props.radioKey) {
         let s = JSON.parse(JSON.stringify(props.router.query!!));
         if (props.itemKey) {
