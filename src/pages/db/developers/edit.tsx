@@ -18,9 +18,15 @@ export default withPage(withDeveloperAlter(withLoader((props) => {
                         mutate={props.alter}
                         afterPath={'/organizations/' + props.data.organization.slug}
                     >
-                        <XFormField hint="Developer Title" name="title"/>
-                        <XFormImage name="logo"/>
-                        <XFormField hint="Comments" name="comments"/>
+                        <XFormField name="title" title="Developer Name" hint="ACME Inc."/>
+                        <XFormImage name="logo" title="Logo"/>
+                        <XFormField name="city" title="City" hint="City"/>
+                        <XFormField name="address" title="Address" hint="Address"/>
+                        <XFormField name="url" title="Web Site" hint="Url"/>
+                        <XFormField name="twitter" title="Twitter" hint="Twitter"/>
+                        <XFormField name="linkedin" title="LinkedIn" hint="LinkedIn"/>
+                        <XFormField name="facebook" title="Facebook" hint="Facebook"/>
+                        <XFormField name="comments" title="Comments" hint="Comments"/>
                         <XFormSubmit title="Save"/>
                         <XButton mutation={props.remove} afterPath="/organizations/" negative={true}>Remove</XButton>
                     </XForm>

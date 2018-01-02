@@ -55,8 +55,13 @@ export class XForm extends React.Component<{
     };
 }
 
-export function XFormField(props: { name: string, hint: string }) {
-    return <Form.Field><RForm.Text field={props.name} placeholder={props.hint}/></Form.Field>;
+export function XFormField(props: { name: string, title?: string, hint: string }) {
+    return (
+        <Form.Field>
+            {props.title && <label>{props.title}</label>}
+            <RForm.Text field={props.name} placeholder={props.hint}/>
+        </Form.Field>
+    );
 }
 
 export class FormImageUploadComponent extends React.Component<{ fieldApi: FieldApi }> {
@@ -74,8 +79,13 @@ export class FormImageUploadComponent extends React.Component<{ fieldApi: FieldA
 
 export const FormImageUploadFieldComponent = RForm.FormField(FormImageUploadComponent) as React.ComponentClass<{ field: string }>;
 
-export function XFormImage(props: { name: string }) {
-    return <Form.Field><FormImageUploadFieldComponent field={props.name}/></Form.Field>;
+export function XFormImage(props: { name: string, title?: string }) {
+    return (
+        <Form.Field>
+            {props.title && <label>{props.title}</label>}
+            <FormImageUploadFieldComponent field={props.name}/>
+        </Form.Field>
+    );
 }
 
 export function XFormSubmit(props: { title: string }) {

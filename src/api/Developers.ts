@@ -11,6 +11,12 @@ export interface Developer {
     title: string;
     comments?: string;
     logo?: string;
+    url?: string;
+    city?: string;
+    address?: string;
+    twitter?: string;
+    linkedin?: string;
+    facebook?: string;
     buildingProjects?: BuildingProject[];
     partners: Developer[];
 }
@@ -23,6 +29,7 @@ const DevelopersQuery = gql`
             title
             comments
             logo
+            url
         }
     }
 `;
@@ -35,6 +42,12 @@ const DeveloperQuery = gql`
             title
             comments
             logo
+            url
+            address
+            city
+            twitter
+            linkedin
+            facebook
             buildingProjects {
                 id
                 slug
@@ -69,13 +82,24 @@ export const DeveloperRemoveMutation = gql`
 `;
 
 export const DeveloperAlterMutation = gql`
-    mutation organizationAlter($orgId: String!, $title: String, $comments: String, $logo: String) {
-        organizationAlter(slug: $orgId, title: $title, comments: $comments, logo: $logo) {
+    mutation organizationAlter(
+    $orgId: String!, $title: String,
+    $comments: String, $logo: String, $url: String, $city: String, $address: String,
+    $twitter: String, $linkedin: String, $facebook: String
+    ) {
+        organizationAlter(slug: $orgId, title: $title, comments: $comments, logo: $logo, url: $url, city: $city,
+            address:$address, twitter: $twitter, linkedin: $linkedin, facebook: $facebook) {
             id
             slug
             title
             logo
+            url
+            city
+            address
             comments
+            twitter
+            linkedin
+            facebook
         }
     }
 `;

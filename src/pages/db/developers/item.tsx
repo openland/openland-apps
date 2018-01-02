@@ -21,8 +21,14 @@ export default withPage(withDeveloperQuery(withLoader((props) => {
                     </XWriteAcces>
                     <div>Slug: {props.data.organization.slug}</div>
                     <div>Title: {props.data.organization.title}</div>
-                    {props.data.organization.comments && (<div>Comments: {props.data.organization.comments}</div>)}
                     {props.data.organization.logo && (<div><XLogo src={props.data.organization.logo}/></div>)}
+                    {props.data.organization.url && (<div>Url: {props.data.organization.url}</div>)}
+                    {props.data.organization.city && (<div>City: {props.data.organization.city}</div>)}
+                    {props.data.organization.address && (<div>Address: {props.data.organization.address}</div>)}
+                    {props.data.organization.twitter && (<div>Twitter: {props.data.organization.twitter}</div>)}
+                    {props.data.organization.linkedin && (<div>LinkedIn: {props.data.organization.linkedin}</div>)}
+                    {props.data.organization.facebook && (<div>Facebook: {props.data.organization.facebook}</div>)}
+                    {props.data.organization.comments && (<div>Comments: {props.data.organization.comments}</div>)}
                 </Segment>
                 {props.data.organization.partners!!.length > 0 && (
                     <Segment>
