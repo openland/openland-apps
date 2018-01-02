@@ -17,23 +17,23 @@ export default withPage(withDeveloperQuery(withLoader((props) => {
                 <Segment>
                     <XWriteAcces>
                         <XButton content="Edit" icon="edit"
-                                 path={'/developers/' + props.data.developer.slug + '/edit'}/>
+                                 path={'/developers/' + props.data.organization.slug + '/edit'}/>
                     </XWriteAcces>
-                    <div>Slug: {props.data.developer.slug}</div>
-                    <div>Title: {props.data.developer.title}</div>
-                    {props.data.developer.comments && (<div>Comments: {props.data.developer.comments}</div>)}
-                    {props.data.developer.logo && (<div><XLogo src={props.data.developer.logo}/></div>)}
+                    <div>Slug: {props.data.organization.slug}</div>
+                    <div>Title: {props.data.organization.title}</div>
+                    {props.data.organization.comments && (<div>Comments: {props.data.organization.comments}</div>)}
+                    {props.data.organization.logo && (<div><XLogo src={props.data.organization.logo}/></div>)}
                 </Segment>
-                {props.data.developer.partners!!.length > 0 && (
+                {props.data.organization.partners!!.length > 0 && (
                     <Segment>
                         <Header content="Partners"/>
-                        <ListDevelopers developers={props.data.developer.partners!!}/>
+                        <ListDevelopers developers={props.data.organization.partners!!}/>
                     </Segment>
                 )}
-                {props.data.developer.buildingProjects!!.length > 0 && (
+                {props.data.organization.buildingProjects!!.length > 0 && (
                     <Segment>
                         <Header content="Projects"/>
-                        <ListProjects projects={props.data.developer.buildingProjects!!}/>
+                        <ListProjects projects={props.data.organization.buildingProjects!!}/>
                     </Segment>
                 )}
             </XContainer>

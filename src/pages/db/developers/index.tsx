@@ -29,7 +29,7 @@ export default withPage(withDevelopersQuery(withLoader((props) => {
                         <AddForm />
                     </XWriteAcces>
                     <Table celled={true} striped={true} >
-                        {props.data.developers.map(p => {
+                        {props.data.organizations.map(p => {
                             return (
                                 <Table.Row key={p.id}>
                                     <Table.Cell collapsing={true}><XLink path={'/developers/' + p.slug}>{p.slug}</XLink></Table.Cell>

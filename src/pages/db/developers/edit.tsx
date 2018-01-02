@@ -13,12 +13,12 @@ export default withPage(withDeveloperAlter(withLoader((props) => {
                 <Segment>
                     <XForm
                         defaultValues={{
-                            title: props.data.developer.title,
-                            comments: props.data.developer.comments,
-                            logo: props.data.developer.logo
+                            title: props.data.organization.title,
+                            comments: props.data.organization.comments,
+                            logo: props.data.organization.logo
                         }}
                         mutate={props.mutate!!}
-                        afterPath={'/developers/' + props.data.developer.slug}
+                        afterPath={'/developers/' + props.data.organization.slug}
                     >
                         <XFormField hint="Developer Title" name="title"/>
                         <XFormImage name="logo"/>

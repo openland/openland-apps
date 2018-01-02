@@ -16,7 +16,7 @@ export interface Developer {
 
 const DevelopersQuery = gql`
     query Developers {
-        developers {
+        organizations {
             id
             slug
             title
@@ -28,7 +28,7 @@ const DevelopersQuery = gql`
 
 const DeveloperQuery = gql`
     query Developer($developerId: String!) {
-        developer(slug: $developerId) {
+        organization(slug: $developerId) {
             id
             slug
             title
@@ -50,8 +50,8 @@ const DeveloperQuery = gql`
 `;
 
 export const DeveloperAddMutation = gql`
-    mutation addDeveloper($slug: String!, $title: String!) {
-        addDeveloper(slug: $slug, title: $title) {
+    mutation organizationAdd($slug: String!, $title: String!) {
+        organizationAdd(slug: $slug, title: $title) {
             id
             slug
             title
@@ -62,14 +62,14 @@ export const DeveloperAddMutation = gql`
 `;
 
 export const DeveloperRemoveMutation = gql`
-    mutation removeDeveloper($slug: String!) {
-        removeDeveloper(slug: $slug)
+    mutation developerRemove($slug: String!) {
+        organizationRemove(slug: $slug)
     }
 `;
 
 export const DeveloperAlterMutation = gql`
-    mutation alterDeveloper($developerId: String!, $title: String!, $comments: String!, $logo: String!) {
-        alterDeveloper(slug: $developerId, title: $title, comments: $comments, logo: $logo) {
+    mutation organizationAlter($developerId: String!, $title: String, $comments: String, $logo: String) {
+        organizationAlter(slug: $developerId, title: $title, comments: $comments, logo: $logo) {
             id
             slug
             title
@@ -79,8 +79,8 @@ export const DeveloperAlterMutation = gql`
     }
 `;
 
-export const withDevelopersQuery = graphqlRouted<{ developers: Developer[] }>(DevelopersQuery);
-export const withDeveloperQuery = graphqlRouted<{ developer: Developer }>(DeveloperQuery, ['developerId']);
+export const withDevelopersQuery = graphqlRouted<{ organizations: Developer[] }>(DevelopersQuery);
+export const withDeveloperQuery = graphqlRouted<{ organization: Developer }>(DeveloperQuery, ['developerId']);
 
 export const withDeveloperAddMutation = graphql(DeveloperAddMutation, {
     options: {
@@ -102,4 +102,4 @@ export const withDeveloperRemoveMutation = graphql<{}, { slug: string }>(Develop
 });
 
 export const withDeveloperAlterMutation = graphqlRouted(DeveloperAlterMutation, ['developerId']);
-export const withDeveloperAlter = graphqlCompose<{ developer: Developer }>(graphqlRouted(DeveloperAlterMutation, ['developerId']), withDeveloperQuery);
+export const withDeveloperAlter = graphqlCompose<{ organization: Developer }>(withDeveloperAlterMutation, withDeveloperQuery);
