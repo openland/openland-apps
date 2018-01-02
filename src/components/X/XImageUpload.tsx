@@ -15,11 +15,14 @@ export class XImageUpload extends React.Component<XImageUploadProps, { isLoading
     constructor(props: XImageUploadProps) {
         super(props);
         this.isControlled = props.uuid !== undefined;
+        console.warn(props);
         this.state = {isLoading: false, uuid: null};
     }
 
     componentWillUpdate(nextProps: Readonly<XImageUploadProps>, nextState: Readonly<{ isLoading: boolean; uuid: string | null }>, nextContext: any): void {
         if ((nextProps.uuid !== undefined) !== (this.props.uuid !== undefined)) {
+            console.warn(nextProps);
+            console.warn(this.props);
             throw 'You can\'t make controlled component to be not controlled';
         }
     }
@@ -68,7 +71,7 @@ export class XImageUpload extends React.Component<XImageUploadProps, { isLoading
                 </div>
                 {uuid && (
                     <div style={{marginTop: 8, width: 200, height: 200}}>
-                        <XCloudImage src={uuid} maxHeight={200} maxWidth={200} resize="fill"/>
+                        <XCloudImage src={uuid} maxHeight={200} maxWidth={200} resize="fit"/>
                     </div>
                 )}
             </div>

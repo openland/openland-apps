@@ -67,6 +67,7 @@ export class FormImageUploadComponent extends React.Component<{ fieldApi: FieldA
 
     render(): React.ReactNode {
         let uuid = this.props.fieldApi.getValue() as string | undefined;
+        console.warn(uuid);
         return (<XImageUpload uuid={uuid} onChanged={this.handleChange}/>);
     }
 }

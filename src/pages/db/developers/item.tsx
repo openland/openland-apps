@@ -8,29 +8,32 @@ import { XButton } from '../../../components/X/XButton';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
 import { ListDevelopers } from '../../../components/ListDevelopers';
 import { ListProjects } from '../../../components/ListProjects';
+import { XLogo } from '../../../components/X/XLogo';
 
 export default withPage(withDeveloperQuery(withLoader((props) => {
     return (
-        <div style={{ paddingTop: 32, paddingBottom: 32 }}>
+        <div style={{paddingTop: 32, paddingBottom: 32}}>
             <XContainer wide={true}>
                 <Segment>
                     <XWriteAcces>
-                        <XButton content="Edit" icon="edit" path={'/developers/' + props.data.developer.slug + '/edit'} />
+                        <XButton content="Edit" icon="edit"
+                                 path={'/developers/' + props.data.developer.slug + '/edit'}/>
                     </XWriteAcces>
                     <div>Slug: {props.data.developer.slug}</div>
                     <div>Title: {props.data.developer.title}</div>
                     {props.data.developer.comments && (<div>Comments: {props.data.developer.comments}</div>)}
+                    {props.data.developer.logo && (<div><XLogo src={props.data.developer.logo}/></div>)}
                 </Segment>
                 {props.data.developer.partners!!.length > 0 && (
                     <Segment>
-                        <Header content="Partners" />
-                        <ListDevelopers developers={props.data.developer.partners!!} />
+                        <Header content="Partners"/>
+                        <ListDevelopers developers={props.data.developer.partners!!}/>
                     </Segment>
                 )}
                 {props.data.developer.buildingProjects!!.length > 0 && (
                     <Segment>
-                        <Header content="Projects" />
-                        <ListProjects projects={props.data.developer.buildingProjects!!} />
+                        <Header content="Projects"/>
+                        <ListProjects projects={props.data.developer.buildingProjects!!}/>
                     </Segment>
                 )}
             </XContainer>
