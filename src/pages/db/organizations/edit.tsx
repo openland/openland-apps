@@ -20,8 +20,8 @@ export default withPage(withOrganizationAlter(withLoader((props) => {
                     >
                         <XFormField name="title" title="Developer Name" hint="ACME Inc."/>
                         <XFormImage name="logo" title="Logo"/>
-                        <XFormFieldCheck name="isDeveloper" hint="Developer?"/>
-                        <XFormFieldCheck name="isConstructor" hint="Constructor?"/>
+                        <XFormFieldCheck name="isDeveloper" hint="Developer"/>
+                        <XFormFieldCheck name="isConstructor" hint="Constructor"/>
                         <XFormField name="city" title="City" hint="City"/>
                         <XFormField name="address" title="Address" hint="Address"/>
                         <XFormField name="url" title="Web Site" hint="Url"/>
