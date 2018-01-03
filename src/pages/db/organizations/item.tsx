@@ -21,6 +21,8 @@ export default withPage(withOrganizationQuery(withLoader((props) => {
                     </XWriteAcces>
                     <div>Slug: {props.data.organization.slug}</div>
                     <div>Title: {props.data.organization.title}</div>
+                    <div>Is Developer: {props.data.organization.isDeveloper!!.toString()}</div>
+                    <div>Is Constructor: {props.data.organization.isConstructor!!.toString()}</div>
                     {props.data.organization.logo && (<div><XLogo src={props.data.organization.logo}/></div>)}
                     {props.data.organization.url && (<div>Url: {props.data.organization.url}</div>)}
                     {props.data.organization.city && (<div>City: {props.data.organization.city}</div>)}

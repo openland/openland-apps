@@ -64,6 +64,15 @@ export function XFormField(props: { name: string, title?: string, hint: string }
     );
 }
 
+export function XFormFieldCheck(props: { name: string, title?: string, hint: string }) {
+    return (
+        <Form.Field>
+            {props.title && <label>{props.title}</label>}
+            <div><RForm.Checkbox field={props.name}/><label>{props.hint}</label></div>
+        </Form.Field>
+    );
+}
+
 export class FormImageUploadComponent extends React.Component<{ fieldApi: FieldApi }> {
 
     handleChange = (uuid: string | null) => {

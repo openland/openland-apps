@@ -3,7 +3,7 @@ import { withPage } from '../../../components/withPage';
 import { withOrganizationAlter } from '../../../api/Organizations';
 import { withLoader } from '../../../components/withLoader';
 import { Segment } from 'semantic-ui-react';
-import { XForm, XFormField, XFormImage, XFormSubmit } from '../../../components/X/XForm';
+import { XForm, XFormField, XFormFieldCheck, XFormImage, XFormSubmit } from '../../../components/X/XForm';
 import { XContainer } from '../../../components/X/XContainer';
 import { XButton } from '../../../components/X/XButton';
 
@@ -20,6 +20,8 @@ export default withPage(withOrganizationAlter(withLoader((props) => {
                     >
                         <XFormField name="title" title="Developer Name" hint="ACME Inc."/>
                         <XFormImage name="logo" title="Logo"/>
+                        <XFormFieldCheck name="isDeveloper" hint="Developer?"/>
+                        <XFormFieldCheck name="isConstructor" hint="Constructor?"/>
                         <XFormField name="city" title="City" hint="City"/>
                         <XFormField name="address" title="Address" hint="Address"/>
                         <XFormField name="url" title="Web Site" hint="Url"/>
