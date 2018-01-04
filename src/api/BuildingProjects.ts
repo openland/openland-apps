@@ -4,6 +4,7 @@ import { graphqlRouted } from '../utils/graphqlRouted';
 import { Organization } from './Organizations';
 import { Picture } from './Picture';
 import { Geo } from './Geo';
+import { Permit } from './Permits';
 
 const BuildingProjectsStatsQuery = gql`
     query buildingProjectStats {
@@ -55,6 +56,7 @@ export interface BuildingProject {
     extrasLocation?: Geo;
 
     developers?: Organization[];
+    permits?: Permit[];
 }
 
 export interface BuildingProjectsQueryStats {
@@ -103,6 +105,14 @@ const BuildingProjectQuery = gql`
                 id
                 slug
                 title
+            }
+            permits {
+                id
+                createdAt
+                status
+                type
+                typeWood
+                description
             }
         }
     }
