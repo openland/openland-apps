@@ -4,6 +4,7 @@ import { Table } from 'semantic-ui-react';
 import { XLink } from './X/XLink';
 import { XDate } from './X/XDate';
 import { PermitStatus } from './PermitStatus';
+import { formatDuration } from '../utils/date';
 
 export function ListPermits(props: { permits: Permit[] }) {
     return (
@@ -12,6 +13,7 @@ export function ListPermits(props: { permits: Permit[] }) {
                 <Table.Row>
                     <Table.HeaderCell collapsing={true}>Permit Id</Table.HeaderCell>
                     <Table.HeaderCell collapsing={true}>Created</Table.HeaderCell>
+                    <Table.HeaderCell collapsing={true}>Approved</Table.HeaderCell>
                     <Table.HeaderCell collapsing={true}>Status</Table.HeaderCell>
                     <Table.HeaderCell collapsing={true}>Type</Table.HeaderCell>
                     <Table.HeaderCell>Description</Table.HeaderCell>
@@ -25,6 +27,9 @@ export function ListPermits(props: { permits: Permit[] }) {
                         </Table.Cell>
                         <Table.Cell collapsing={true}>
                             {item.createdAt && (<XDate date={item.createdAt}/>)}
+                        </Table.Cell>
+                        <Table.Cell collapsing={true}>
+                            {item.approvalTime && formatDuration(item.approvalTime)}
                         </Table.Cell>
                         <Table.Cell collapsing={true}>
                             {item.status && <PermitStatus status={item.status}/>}

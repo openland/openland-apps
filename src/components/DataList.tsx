@@ -100,7 +100,7 @@ export function DataListRadio(props: { title: string, radioKey: string, children
     );
 }
 
-export const DataListRadioItem = withRouter<{ title: string, itemKey?: string, radioKey?: string }>(props => {
+export const DataListRadioItem = withRouter<{ title: string, itemKey?: string, radioKey?: string, reset?: string[] }>(props => {
     let path = props.router.pathname;
     let checked = false;
     if (props.radioKey) {
@@ -112,6 +112,13 @@ export const DataListRadioItem = withRouter<{ title: string, itemKey?: string, r
             checked = s[props.radioKey] === undefined;
             delete s[props.radioKey];
         }
+
+        if (props.reset) {
+            for (let k of props.reset) {
+                delete s[k];
+            }
+        }
+
         let q = qs.stringify(s);
         if (q !== '') {
             path = props.router.pathname + '?' + q;
