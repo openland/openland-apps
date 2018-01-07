@@ -8,10 +8,19 @@ import {
 } from '../../../components/DataList';
 import { DataListInvite } from '../../../components/DataListInvite';
 import { withPagedList } from '../../../components/withPagedList';
+import { Tab } from 'semantic-ui-react';
+import { resolveActionPath } from '../../../utils/routing';
+import { XBarChart } from '../../../components/X/XBarChart';
 
 const PermitsItems = withPagedList<Permit>((props) => <ListPermits permits={props.items}/>);
-
+const tabs = [null, 'stats'];
 export default withPage(withPermitsPagedQuery((props) => {
+
+    let index = 0;
+    if (props.router.query && props.router.query!!.tab === 'stats') {
+        index = 1;
+    }
+
     return (
         <DataList>
             <DataListFilters title="Pipeline Filters">
@@ -34,11 +43,35 @@ export default withPage(withPermitsPagedQuery((props) => {
                 <DataListRadio radioKey="minUnits" title="Project size">
                     <DataListRadioItem title="All" reset={['page']}/>
                     <DataListRadioItem title="10+ units" itemKey="10" reset={['page']}/>
+                    <DataListRadioItem title="50+ units" itemKey="50" reset={['page']}/>
+                    <DataListRadioItem title="100+ units" itemKey="100" reset={['page']}/>
                 </DataListRadio>
                 <DataListInvite/>
             </DataListFilters>
             <DataListContent>
-                <PermitsItems data={props.data}/>
+                <Tab activeIndex={index}
+                     onTabChange={(e, a) => props.router.push(resolveActionPath({
+                         router: props.router,
+                         query: {field: 'tab', value: tabs[a.activeIndex!!]}
+                     }))}
+                     panes={[
+                         {
+                             menuItem: 'Records', render: () => (
+                                 <Tab.Pane>
+                                     <PermitsItems data={props.data}/>
+                                 </Tab.Pane>
+                             )
+                         },
+                         {
+                             menuItem: 'Stats',
+                             render: () => (
+                                 <Tab.Pane>
+                                     <h3>Approval time percentile (project/days)</h3>
+                                     <XBarChart data={props.data.items.stats.approvalTimes}/>
+                                 </Tab.Pane>
+                             )
+                         }
+                     ]}/>
             </DataListContent>
         </DataList>
     );
