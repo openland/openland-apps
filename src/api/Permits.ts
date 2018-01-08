@@ -68,6 +68,7 @@ export interface StreetNumber {
 export interface PermitsStats {
     stats: {
         approvalTimes: Chart;
+        approvalDistribution: Chart;
     }
 }
 
@@ -97,6 +98,13 @@ const PermitsQuery = gql`
             }
             stats {
                 approvalTimes {
+                    labels
+                    datasets {
+                        label
+                        values
+                    }
+                }
+                approvalDistribution {
                     labels
                     datasets {
                         label

@@ -72,6 +72,8 @@ export default withPage(withPermitsPagedQuery((props) => {
                                  <Tab.Pane>
                                      <h3>Approval time percentile (project/days)</h3>
                                      <XBarChart data={props.data.items.stats.approvalTimes}/>
+                                     <h3>Approval time distribution (units/days)</h3>
+                                     <XBarChart data={props.data.items.stats.approvalDistribution}/>
                                  </Tab.Pane>
                              )
                          }
