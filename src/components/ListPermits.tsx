@@ -12,9 +12,10 @@ export function ListPermits(props: { permits: Permit[] }) {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell collapsing={true}>Permit Id</Table.HeaderCell>
+                    <Table.HeaderCell collapsing={true}>Status</Table.HeaderCell>
+                    <Table.HeaderCell collapsing={true}>Status Updated</Table.HeaderCell>
                     <Table.HeaderCell collapsing={true}>Created</Table.HeaderCell>
                     <Table.HeaderCell collapsing={true}>Approved</Table.HeaderCell>
-                    <Table.HeaderCell collapsing={true}>Status</Table.HeaderCell>
                     <Table.HeaderCell collapsing={true}>Type</Table.HeaderCell>
                     <Table.HeaderCell>Description</Table.HeaderCell>
                 </Table.Row>
@@ -26,13 +27,16 @@ export function ListPermits(props: { permits: Permit[] }) {
                             <XLink path={'/permits/' + item.id}>{item.id}</XLink>
                         </Table.Cell>
                         <Table.Cell collapsing={true}>
+                            {item.status && <PermitStatus status={item.status}/>}
+                        </Table.Cell>
+                        <Table.Cell collapsing={true}>
+                            {item.statusUpdatedAt && (<XDate date={item.statusUpdatedAt}/>)}
+                        </Table.Cell>
+                        <Table.Cell collapsing={true}>
                             {item.createdAt && (<XDate date={item.createdAt}/>)}
                         </Table.Cell>
                         <Table.Cell collapsing={true}>
-                            {item.approvalTime && formatDuration(item.approvalTime)}
-                        </Table.Cell>
-                        <Table.Cell collapsing={true}>
-                            {item.status && <PermitStatus status={item.status}/>}
+                            {item.approvalTime != null && 'in ' + formatDuration(item.approvalTime)}
                         </Table.Cell>
                         <Table.Cell collapsing={true}>
                             {item.type}
