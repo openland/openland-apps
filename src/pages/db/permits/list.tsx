@@ -46,6 +46,10 @@ export default withPage(withPermitsPagedQuery((props) => {
                     <DataListRadioItem title="50+ units" itemKey="50" reset={['page']}/>
                     <DataListRadioItem title="100+ units" itemKey="100" reset={['page']}/>
                 </DataListRadio>
+                <DataListRadio radioKey="fromPipeline" title="From Pipeline">
+                    <DataListRadioItem title="All" reset={['page']}/>
+                    <DataListRadioItem title="Only from Pipeline" itemKey="true" reset={['page']}/>
+                </DataListRadio>
                 <DataListInvite/>
             </DataListFilters>
             <DataListContent>

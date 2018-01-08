@@ -72,8 +72,8 @@ export interface PermitsStats {
 }
 
 const PermitsQuery = gql`
-    query Permits($cursor: String, $filter: String, $page: Int, $type: PermitType, $sort: PermitSorting, $minUnits: Int, $issuedYear: String) {
-        items: permits(filter: $filter, first: 50, after: $cursor, page: $page, type: $type, sort: $sort, minUnits: $minUnits, issuedYear: $issuedYear) {
+    query Permits($cursor: String, $filter: String, $page: Int, $type: PermitType, $sort: PermitSorting, $minUnits: Int, $issuedYear: String, $fromPipeline: Boolean) {
+        items: permits(filter: $filter, first: 50, after: $cursor, page: $page, type: $type, sort: $sort, minUnits: $minUnits, issuedYear: $issuedYear, fromPipeline: $fromPipeline) {
             edges {
                 node {
                     id
@@ -170,8 +170,8 @@ const PermitQuery = gql`
     }
 `;
 
-export const withPermitsQuery = graphqlList<Permit, PermitsStats>(PermitsQuery, ['filter', 'cursor', 'page', 'type', 'sort', 'minUnits', 'issuedYear']);
+export const withPermitsQuery = graphqlList<Permit, PermitsStats>(PermitsQuery, ['filter', 'cursor', 'page', 'type', 'sort', 'minUnits', 'issuedYear', 'fromPipeline']);
 
-export const withPermitsPagedQuery = graphqlListPaged<Permit, PermitsStats>(PermitsQuery, ['filter', 'cursor', 'page', 'type', 'sort', 'minUnits', 'issuedYear']);
+export const withPermitsPagedQuery = graphqlListPaged<Permit, PermitsStats>(PermitsQuery, ['filter', 'cursor', 'page', 'type', 'sort', 'minUnits', 'issuedYear', 'fromPipeline']);
 
 export const withPermitQuery = graphqlRouted<{ permit: Permit }>(PermitQuery, ['permitId']);
