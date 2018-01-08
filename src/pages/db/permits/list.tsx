@@ -26,7 +26,9 @@ export default withPage(withPermitsPagedQuery((props) => {
             <DataListFilters title="Pipeline Filters">
                 <DataListSearch searchKey="filter"/>
                 <DataListRadio radioKey="sort" title="Sort">
-                    <DataListRadioItem title="By Time" reset={['page']}/>
+                    <DataListRadioItem title="Created Time" reset={['page']}/>
+                    <DataListRadioItem title="Completed Time" reset={['page']} itemKey="COMPLETED_TIME"/>
+                    <DataListRadioItem title="Issued Time" reset={['page']} itemKey="ISSUED_TIME"/>
                     <DataListRadioItem title="Approval Time Descending" reset={['page']} itemKey="APPROVAL_TIME_DESC"/>
                     <DataListRadioItem title="Approval Time Ascending" reset={['page']} itemKey="APPROVAL_TIME_ASC"/>
                 </DataListRadio>

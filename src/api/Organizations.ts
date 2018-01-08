@@ -19,7 +19,8 @@ export interface Organization {
     facebook?: string;
     isDeveloper?: boolean;
     isConstructor?: boolean;
-    buildingProjects?: BuildingProject[];
+    developerIn?: BuildingProject[];
+    constructorIn?: BuildingProject[];
     partners: Organization[];
 }
 
@@ -52,7 +53,13 @@ const OrganizationQuery = gql`
             facebook
             isDeveloper
             isConstructor
-            buildingProjects {
+            developerIn {
+                id
+                slug
+                name
+                description
+            }
+            constructorIn {
                 id
                 slug
                 name

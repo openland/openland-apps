@@ -38,10 +38,16 @@ export default withPage(withOrganizationQuery(withLoader((props) => {
                         <ListOrganizations developers={props.data.organization.partners!!}/>
                     </Segment>
                 )}
-                {props.data.organization.buildingProjects!!.length > 0 && (
+                {props.data.organization.developerIn!!.length > 0 && (
                     <Segment>
-                        <Header content="Projects"/>
-                        <ListProjects projects={props.data.organization.buildingProjects!!}/>
+                        <Header content="Developer In Projects"/>
+                        <ListProjects projects={props.data.organization.developerIn!!}/>
+                    </Segment>
+                )}
+                {props.data.organization.constructorIn!!.length > 0 && (
+                    <Segment>
+                        <Header content="Constructor In Projects"/>
+                        <ListProjects projects={props.data.organization.constructorIn!!}/>
                     </Segment>
                 )}
             </XContainer>
