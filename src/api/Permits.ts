@@ -96,22 +96,22 @@ const PermitsQuery = gql`
                 currentPage
                 pagesCount
             }
-            stats {
-                approvalTimes {
-                    labels
-                    datasets {
-                        label
-                        values
-                    }
-                }
-                approvalDistribution {
-                    labels
-                    datasets {
-                        label
-                        values
-                    }
-                }
-            }
+#            stats {
+#                approvalTimes {
+#                    labels
+#                    datasets {
+#                        label
+#                        values
+#                    }
+#                }
+#                approvalDistribution {
+#                    labels
+#                    datasets {
+#                        label
+#                        values
+#                    }
+#                }
+#            }
         }
     }
 `;
