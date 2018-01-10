@@ -59,12 +59,14 @@ class PageEndDetector extends React.Component<{ onLoadMore: () => void }> {
     }
 }
 
-export function XInfiniteListItem(props: { children: any }) {
-    return (
-        <div className="x-in--item">
-            {props.children}
-        </div>
-    );
+export class XInfiniteListItem extends React.Component {
+    render() {
+        return (
+            <div className="x-in--item">
+                {this.props.children}
+            </div>
+        );
+    }
 }
 
 export function withInfiniteList<TResult extends { id: string }>(render: (item: TResult[]) => React.ReactNode): React.ComponentType<ListQueryData<TResult>> {

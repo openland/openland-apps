@@ -32,7 +32,7 @@ export const withData = (ComposedComponent: React.ComponentType) => {
 
         static async getInitialProps(ctx: any) {
             let token = getToken(ctx.req);
-            let serverState = { apollo: {} };
+            let serverState = {apollo: {}};
             let host: string;
             let protocol: string;
             if (ctx.req) {
@@ -60,22 +60,28 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                 const apollo = apolloClient(domain, serverState, token);
                 // Provide the `url` prop data in case a GraphQL query uses it
                 // const url = { query: ctx.query, pathname: ctx.pathname }
+
+                let start = new Date().getTime();
                 try {
                     // Run all GraphQL queries
                     await getDataFromTree(
                         <ApolloProvider client={apollo}>
                             <HostNameProvider hostName={host} protocol={protocol}>
-                                <ComposedComponent />
+                                <ComposedComponent/>
                             </HostNameProvider>
                         </ApolloProvider>
                         ,
-                        { router: { query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath } });
+                        {router: {query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath}});
                 } catch (error) {
                     console.warn(error);
                     // Prevent Apollo Client GraphQL errors from crashing SSR.
                     // Handle them in components via the data.error prop:
                     // http://dev.apollodata.com/react/api-queries.html#graphql-query-data-error
                 }
+
+                // tslint:disable
+                console.log(`data fetched in ${new Date().getTime() - start} ms`);
+                // tslint:enable
 
                 // getDataFromTree does not call componentWillUnmount
                 // head side effect therefore need to be cleared manually
@@ -99,11 +105,11 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                     await getDataFromTree(
                         <ApolloProvider client={apollo}>
                             <HostNameProvider hostName={host} protocol={protocol}>
-                                <ComposedComponent />
+                                <ComposedComponent/>
                             </HostNameProvider>
                         </ApolloProvider>
                         ,
-                        { router: { query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath } });
+                        {router: {query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath}});
                 } catch (error) {
                     console.warn(error);
                     // Prevent Apollo Client GraphQL errors from crashing SSR.
