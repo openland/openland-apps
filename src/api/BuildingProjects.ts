@@ -8,6 +8,12 @@ import { Permit } from './Permits';
 
 const BuildingProjectsStatsQuery = gql`
     query buildingProjectStats {
+        globalStats: globalStats {
+            totalProjects
+            totalDevelopers
+            totalConstructors
+            totalPermits
+        }
         stats: buildingProjectsStats {
             projectsTracked
             projectsVerified
@@ -15,6 +21,96 @@ const BuildingProjectsStatsQuery = gql`
             year2017NewUnitsVerified
             year2018NewUnits
             year2018NewUnitsVerified
+            fastestApprovalProject {
+                id
+                slug
+                name
+                description
+                status
+                startedAt
+                completedAt
+                expectedCompletedAt
+                verified
+                existingUnits
+                proposedUnits
+                existingAffordableUnits
+                proposedAffordableUnits
+
+                preview: picture(width: 224, height: 164) {
+                    url
+                    retina
+                }
+                extrasDeveloper
+                extrasGeneralConstructor
+                extrasYearEnd
+                extrasAddress
+                extrasAddressSecondary
+                extrasPermit
+                extrasComment
+                extrasUrl
+                extrasLocation {
+                    latitude
+                    longitude
+                }
+                developers {
+                    id
+                    slug
+                    title
+                }
+                permits {
+                    id
+                    createdAt
+                    status
+                    type
+                    typeWood
+                    description
+                }
+            }
+            slowestApprovalProject {
+                id
+                slug
+                name
+                description
+                status
+                startedAt
+                completedAt
+                expectedCompletedAt
+                verified
+                existingUnits
+                proposedUnits
+                existingAffordableUnits
+                proposedAffordableUnits
+
+                preview: picture(width: 224, height: 164) {
+                    url
+                    retina
+                }
+                extrasDeveloper
+                extrasGeneralConstructor
+                extrasYearEnd
+                extrasAddress
+                extrasAddressSecondary
+                extrasPermit
+                extrasComment
+                extrasUrl
+                extrasLocation {
+                    latitude
+                    longitude
+                }
+                developers {
+                    id
+                    slug
+                    title
+                }
+                permits {
+                    id
+                    createdAt
+                    status
+                    type
+                    typeWood
+                    description
+                }
+            }
         }
     }
 `;
@@ -26,6 +122,15 @@ export interface BuildingProjectsStats {
     year2017NewUnitsVerified: number;
     year2018NewUnits: number;
     year2018NewUnitsVerified: number;
+    fastestApprovalProject: BuildingProject;
+    slowestApprovalProject: BuildingProject;
+}
+
+export interface GlobalStats {
+    totalProjects: number;
+    totalDevelopers: number;
+    totalConstructors: number;
+    totalPermits: number;
 }
 
 export interface BuildingProject {
@@ -181,6 +286,6 @@ const BuildingProjectsQuery = gql`
 export const withBuildingProjectsQuery = graphqlList<BuildingProject, BuildingProjectsQueryStats>(
     BuildingProjectsQuery,
     ['cursor', 'minUnits', 'year', 'filter']);
-export const withBuildingProjectsStats = graphqlRouted<{ stats: BuildingProjectsStats }>(BuildingProjectsStatsQuery, []);
+export const withBuildingProjectsStats = graphqlRouted<{ stats: BuildingProjectsStats, globalStats: GlobalStats }>(BuildingProjectsStatsQuery, []);
 
 export const withBuildingProjectQuery = graphqlRouted<{ project: BuildingProject }>(BuildingProjectQuery, ['projectId']);
