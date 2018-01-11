@@ -2547,7 +2547,6 @@ body {
 		@media @media-sm-md { .size (140px); }
 
 		&:hover { background: fade(@text-sf, 1); }
-
 		&:before { content: "Show details"; }
 		&.is-link {
 			&:before { content: ""!important; }
@@ -2696,6 +2695,277 @@ body {
 	background-size: 265px 265px;
 
 	.font (18px, 20px, 500);
+}
+
+.x-wrap {
+	margin: 0 0 30px;
+
+	&--title {
+		margin: 0 0 19px;
+
+		.font (16px, 20px, 500);
+	}
+
+	&--body {
+		background: @white;
+		border: 1px solid fade(@text-sf, 8);
+		border-radius: 4px;
+		padding: 23px 24px 29px;
+	}
+}
+
+.x-dev {
+	background: @white;
+	border: 1px solid fade(@text-sf, 8);
+	color: @text-sf;
+	overflow: hidden;
+	border-radius: 4px;
+	margin: 0 0 36px;
+
+	.position (relative);
+
+	&--photo {
+		margin: -1px -1px 0;
+		border-radius: 4px;
+		overflow: hidden;
+
+		@media @media-xs-only { .display (none); }
+
+		img {
+			.display (block);
+			.size (100%);
+		}
+	}
+
+	&--info {
+		padding: 31px 28px 25px;
+
+		.display (flex);
+
+		@media @media-xs-only {
+			padding: 20px 15px 15px;
+
+			.display (block);
+		}
+	}
+
+	&--logo {
+		padding: 0 28px 0 0;
+
+		.size (128px, 100px);
+
+		@media @media-xs-only {
+			margin: 0 auto 20px;
+			padding: 0;
+
+			.size (100px, 100px);
+		}
+
+		img {
+			.display (block);
+			.size (100px, 100px);
+		}
+	}
+
+	&--box {
+		flex: 1;
+		padding: 1px 15px 0 0;
+
+		@media @media-xs-only {
+			padding: 0;
+		}
+	}
+
+	&--title {
+		margin: 0 0 1px;
+
+		.font (20px, 22px, 500);
+	}
+
+	&--subtitle {
+		margin: 0 0 19px;
+		color: fade(@text-sf, 60);
+
+		.font (14px, 20px);
+	}
+
+	&--city {
+		.font (14px, 20px, 700);
+	}
+
+	&--address {
+		.font (14px, 20px);
+	}
+
+	&--links {
+		white-space: nowrap;
+
+		@media @media-xs-only {
+			padding: 20px 0 0;
+		}
+	}
+
+	&--link {
+		text-align: right;
+		color: @purple-1!important;
+
+		.display (block);
+		.font (16px, 28px);
+
+		@media @media-xs-only {
+			text-align: center;
+			margin: 0 0 10px;
+		}
+
+		&:hover {
+			opacity: 0.7;
+		}
+
+		&:before { margin: 0 10px 0 0;
+			.icon ('\e919');
+			.font (20px, 26px);
+			.display (inline-block);
+		}
+	}
+
+	&--socials {
+		margin: 42px -9px -11px 0;
+
+		.font (0);
+
+		@media @media-xs-only {
+			text-align: center;
+			margin: 20px 0 -10px;
+		}
+	}
+
+	&--social {
+		color: @purple-1!important;
+		text-align: center;
+
+		.display (inline-block);
+		.size (44px, 44px);
+
+		&:hover {
+			opacity: 0.7;
+		}
+
+		i {
+			.display (block);
+			.font (20px, 20px);
+		}
+	}
+
+	&--in {
+		.display (flex);
+
+		@media @media-xs-only {
+			.display (block);
+		}
+	}
+
+	&--text {
+		flex: 1;
+		padding: 26px 32px 28px;
+		border-top: 1px solid fade(@text-sf, 8);
+
+		.font (14px, 20px);
+
+		@media @media-xs-only {
+			padding: 15px;
+		}
+	}
+
+	&--side {
+		border-top: 1px solid fade(@text-sf, 8);
+		border-left: 1px solid fade(@text-sf, 8);
+
+		.size (196px);
+
+		@media @media-xs-only {
+			border-left: 0;
+
+			.size (auto);
+		}
+
+		&:first-child {
+			border-left: none;
+			flex: 1;
+		}
+	}
+
+	&--edit {
+		text-decoration: none;
+		text-align: center;
+		color: @purple-1!important;
+		text-transform: uppercase;
+		letter-spacing: 0.6px;
+
+		.display (block);
+		.size (auto, 100%);
+		.min-size (initial, 80px);
+		.font (11px, 20px, 500);
+		.position (relative);
+
+		@media @media-xs-only {
+			.size (auto, 60px);
+			.min-size (initial, initial);
+		}
+
+		&:hover { background: fade(@text-sf, 1); }
+		span {
+			transform: translate(0, -50%);
+
+			.display (block);
+			.position (absolute, 50%, 10px, auto, 10px);
+		}
+
+		i { margin: 0 10px 0 0;
+			.display (inline-block);
+			.font (21px, 20px);
+		}
+	}
+
+	&--short {
+		color: @side;
+		overflow: hidden;
+		margin: 0 0 32px;
+
+		.display (block);
+		.position (relative);
+		.size (auto, 80px);
+
+		&:last-child { margin: 0; }
+		&:hover { color: @purple-1; }
+		&-l {
+			border: 1px solid fade(@text-sf, 8);
+			overflow: hidden;
+			border-radius: 4px;
+
+			.size (80px, 80px);
+
+			img {
+				.display (block);
+				.size (100%);
+			}
+		}
+
+		&-n {
+			transform: translate(0, -50%);
+			padding: 2px 0 0;
+
+			.font (18px, 22px, 500);
+			.position (absolute, 50%, 0, auto, 96px);
+
+			span {
+				color: fade(@text-sf, 60);
+				margin: 1px 0 0;
+
+				.font (14px, 20px);
+				.display (block);
+			}
+		}
+	}
 }
 
 // --------

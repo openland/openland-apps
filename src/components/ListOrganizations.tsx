@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { Organization } from '../api/Organizations';
-import { Table } from 'semantic-ui-react';
+import { XWrapBody } from './X/XWrap';
 import { XLink } from './X/XLink';
 
 export function ListOrganizations(props: { developers: Organization[] }) {
     return (
-        <Table celled={true} striped={true}>
+        <XWrapBody>
             {props.developers.map(p => {
                 return (
-                    <Table.Row key={p.id}>
-                        <Table.Cell><XLink path={'/organizations/' + p.slug}>{p.title}</XLink></Table.Cell>
-                    </Table.Row>
+                    <XLink key={p.id} path={'/organizations/' + p.slug} className="x-dev--short">
+                        <div className="x-dev--short-l"><img src="//placehold.it/80x80" alt="" /></div>
+                        <div className="x-dev--short-n">{p.title}<span>Developer</span></div>
+                    </XLink>
                 );
             })}
-        </Table>
+        </XWrapBody>
     );
 }

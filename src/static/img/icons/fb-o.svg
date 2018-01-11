@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Organization-profile-8jan" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1425.000000, -542.000000)">
+        <g id="Group-14" transform="translate(380.000000, 472.000000)" fill="#6B50FF" fill-rule="nonzero">
+            <g id="Group-8" transform="translate(1045.000000, 70.000000)">
+                <g id="facebook">
+                    <path d="M18.8966667,0 L1.10333333,0 C0.494166667,0 0,0.494166667 0,1.10333333 L0,18.8966667 C0,19.5066667 0.494166667,20 1.10333333,20 L10.6816667,20 L10.6816667,12.255 L8.07416667,12.255 L8.07416667,9.2375 L10.6816667,9.2375 L10.6816667,7.00833333 C10.6816667,4.42583333 12.26,3.02083333 14.5641667,3.02083333 C15.6683333,3.02083333 16.6175,3.10166667 16.8941667,3.13833333 L16.8941667,5.83833333 L15.2933333,5.83833333 C14.0433333,5.83833333 13.8,6.43916667 13.8,7.31416667 L13.8,9.24 L16.7866667,9.24 L16.3991667,12.265 L13.8,12.265 L13.8,20 L18.8958333,20 C19.5066667,20 20,19.5066667 20,18.8966667 L20,1.10333333 C20,0.494166667 19.5066667,0 18.8966667,0" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
