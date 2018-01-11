@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
-import { Segment, Table } from 'semantic-ui-react';
 import { withOrganizationsQuery, withOrganizationAddMutation } from '../../../api/Organizations';
 import { withLoader } from '../../../components/withLoader';
-import { XContainer } from '../../../components/X/XContainer';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
-import { XLink } from '../../../components/X/XLink';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
-import { XCloudImage } from '../../../components/X/XCloudImage';
+import { OrganizationDataListCard } from '../../../components/DataListCard';
+import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
+import {
+    DataList, DataListFilters, DataListContent, DataListRadio,
+    DataListRadioItem, DataListSearch
+} from '../../../components/DataList';
 
 const AddForm = withOrganizationAddMutation((props) => {
     return (
@@ -23,31 +25,52 @@ const AddForm = withOrganizationAddMutation((props) => {
 
 export default withPage(withOrganizationsQuery(withLoader((props) => {
     return (
-        <div style={{paddingTop: 32, paddingBottom: 32}}>
-            <XContainer wide={true}>
-                <Segment>
-                    <XWriteAcces>
-                        <AddForm/>
-                    </XWriteAcces>
-                    <Table celled={true} striped={true}>
-                        <Table.Body>
-                            {props.data.organizations.map(p => {
-                                return (
-                                    <Table.Row key={p.id}>
-                                        <Table.Cell collapsing={true}>
-                                            {p.logo &&
-                                            <XCloudImage src={p.logo} maxWidth={32} maxHeight={32}/>}
-                                        </Table.Cell>
-                                        <Table.Cell collapsing={true}><XLink
-                                            path={'/organizations/' + p.slug}>{p.slug}</XLink></Table.Cell>
-                                        <Table.Cell>{p.title}</Table.Cell>
-                                    </Table.Row>
-                                );
-                            })}
-                        </Table.Body>
-                    </Table>
-                </Segment>
-            </XContainer>
-        </div>
+        <DataList>
+            <DataListFilters title="Developers">
+                <DataListSearch searchKey="filter" />
+                <DataListRadio radioKey="sort" title="Sort by">
+                    <DataListRadioItem title="A → Z" />
+                    <DataListRadioItem title="Net new units" itemKey="new" />
+                </DataListRadio>
+
+                <div className="x-join hidden-xs hidden-sm">
+                    <div className="x-join--btn">
+                        <a className="x-btn is-block is-outline" target="_blank" href="#">Add an organization</a>
+                    </div>
+                </div>
+            </DataListFilters>
+            <DataListContent title="organizations">
+                <XWriteAcces>
+                    <AddForm/>
+                    <br />
+                </XWriteAcces>
+
+                <div className="x-in--title hidden-xs">
+                    <div>{props.data.organizations.length}<span>organizations</span></div>
+                </div>
+
+                <InfiniteListContainer>
+                    {props.data.organizations.map(p => {
+                        return (
+                            <XInfiniteListItem key={p.id}>
+                                <OrganizationDataListCard
+                                    title={p.title}
+                                    profile={'/organizations/' + p.slug}
+                                    logo={p.logo}
+                                    url="#"
+                                    subtitle="Developer"
+                                    projects={100}
+                                    featuredProject={{
+                                        title: 'Avalon Dogpatch',
+                                        url: '/projects/',
+                                        picture: { url: '//placehold.it/85x58', retina: '//placehold.it/170x116' }
+                                    }}
+                                />
+                            </XInfiniteListItem>
+                        );
+                    })}
+                </InfiniteListContainer>
+            </DataListContent>
+        </DataList>
     );
 })));

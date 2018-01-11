@@ -1,65 +1,55 @@
 import * as React from 'react';
 import { withUserInfo } from './UserInfo';
+import { Dropdown } from 'semantic-ui-react';
 
-export const AuthenticationControlls = (props: { className: string }) => {
+export const AuthenticationControlls = () => {
     return (
         <>
-            <ProfileInfo className={props.className}/>
-            <SignOutButton className={props.className}/>
-            <SignInButton className={props.className}/>
-            <SignUpButton className={props.className}/>
+            <ProfileInfo/>
+            <SignInButton/>
         </>
     );
 };
 
-export const ProfileInfo = withUserInfo<{ className: string }>((props) => {
+export const ProfileInfo = withUserInfo<{}>((props) => {
     if (props.user) {
+        let userInfo = <span className="x-header--drop-h"><img src={props.user.picture} alt=""/>{props.user.firstName} {' '} {props.user.lastName}</span>;
+
         return (
-            <li className={props.className}>
-                <span><img src={props.user.picture} alt=""/>{props.user.firstName} {' '} {props.user.lastName}</span>
-            </li>
+            <Dropdown trigger={userInfo} className="x-header--drop">
+                <Dropdown.Menu>
+                    <Dropdown.Item onClick={e => {
+                        e.preventDefault();
+                        props.doLogout();
+                    }}>Sign Out</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
         );
     } else {
         return null;
     }
 });
 
-export const SignOutButton = withUserInfo<{ className: string }>((props) => {
-    if (props.user) {
-        return (
-            <li className={props.className + ' is-join'}>
-                <button onClick={e => {
-                    props.doLogout();
-                }}>Sign Out
-                </button>
-            </li>
-        );
-    } else {
-        return null;
-    }
-});
-
-export const SignInButton = withUserInfo<{ className: string }>((props) => {
+export const SignInButton = withUserInfo<{}>((props) => {
     if (!props.user) {
         return (
-            <li className={props.className}>
+            <div className="x-header--signin">
                 <button onClick={e => {
                     props.doLogin();
-                }}>Sign In
-                </button>
-            </li>
+                }}>Sign In</button>
+            </div>
         );
     } else {
         return null;
     }
 });
 
-export const SignUpButton = withUserInfo<{ className: string }>((props) => {
+export const SignUpButton = withUserInfo<{}>((props) => {
     if (!props.user) {
         return (
-            <li className={props.className + ' is-join'}>
+            <div className="x-header--signin">
                 <a target="_blank" href="https://goo.gl/forms/YX8LSpH6jWLzbEj02">Join</a>
-            </li>
+            </div>
         );
     } else {
         return null;

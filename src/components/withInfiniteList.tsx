@@ -5,7 +5,7 @@ import { canUseDOM } from '../utils/environment';
 
 // import FlipMove from 'react-flip-move';
 
-function InfiniteListContainer(props: { children: any }) {
+export function InfiniteListContainer(props: { children: any }) {
     return (
         <div className="x-in--list">
             {props.children}
