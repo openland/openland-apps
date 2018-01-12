@@ -2,14 +2,11 @@ import * as React from 'react';
 import { withPage } from '../../../components/withPage';
 import { withPermitQuery, StatusChanged, FieldChanged } from '../../../api/Permits';
 import { XContainer } from '../../../components/X/XContainer';
-import { Segment, Header, Table, Form, Button, Icon, Step } from 'semantic-ui-react';
-import { XCounter } from '../../../components/X/XCounter';
+import { Segment, Header, Table, Form, Button, Icon } from 'semantic-ui-react';
 import { XDiff } from '../../../components/X/XDiff';
-import { XDate } from '../../../components/X/XDate';
 import { XWrap } from '../../../components/X/XWrap';
 import { XRow } from '../../../components/X/XRow';
 import { ListPermits } from '../../../components/ListPermits';
-import { formatDuration } from '../../../utils/date';
 
 function ChangeRender(props: { change: FieldChanged }) {
     if (props.change.oldValue === null) {
