@@ -8,7 +8,7 @@ import { InfiniteListContainer, XInfiniteListItem } from './withInfiniteList';
 import { XCounter } from './X/XCounter';
 import { PermitType } from './PermitType';
 
-export function ListPermits(props: { permits: Permit[] }) {
+export function ListPermits(props: { permits: Permit[]; hideCounter?: boolean }) {
     return (
         <InfiniteListContainer>
             {props.permits.map((item) => (
@@ -21,30 +21,35 @@ export function ListPermits(props: { permits: Permit[] }) {
                                     item.streetNumbers!![0].streetNumber + (item.streetNumbers!![0].streetNumberSuffix ? item.streetNumbers!![0].streetNumberSuffix!! : '') +
                                     ' ' + item.streetNumbers!![0].streetName + (item.streetNumbers!![0].streetNameSuffix ? ' ' + item.streetNumbers!![0].streetNameSuffix : '')
                                 )}
-                                <div className="x-permit--counter visible-sm visible-md visible-lg">
+
+                                {!props.hideCounter && (<div className="x-permit--counter visible-sm visible-md visible-lg">
                                     {item.proposedUnits && (<span><XCounter value={item.proposedUnits!!}
                                                                             oldValue={item.existingUnits}/></span>)}
                                     {item.proposedUnits && 'units'}
-                                </div>
+                                </div>)}
                             </div>
-                            <div className="x-permit--counter hidden-sm hidden-md hidden-lg">
+
+                            {!props.hideCounter && (<div className="x-permit--counter hidden-sm hidden-md hidden-lg">
                                 {item.proposedUnits && (
                                     <span><XCounter value={item.proposedUnits!!}
                                                     oldValue={item.existingUnits}/></span>
                                 )}
                                 {item.proposedUnits && 'units'}
-                            </div>
+                            </div>)}
+
                             <div className="x-permit--info">
-                                {item.status &&
-                                <div className="x-permit--status"><PermitStatus status={item.status}/></div>}
-                                {/*item.statusUpdatedAt && (<div className="x-permit--date"><XDate date={item.statusUpdatedAt}/></div>)*/}
-                                {item.statusUpdatedAt && (
-                                    <div className="x-permit--date">
-                                        <XDate date={item.statusUpdatedAt} format={'date'}/>
-                                    </div>
-                                )}
-                                {item.approvalTime != null && (<div className="x-permit--time">Approval
-                                    time <span>{formatDuration(item.approvalTime)}</span></div>)}
+                                <div className="x-permit--wrap">
+                                    {item.status &&
+                                    <div className="x-permit--status"><PermitStatus status={item.status}/></div>}
+                                    {/*item.statusUpdatedAt && (<div className="x-permit--date"><XDate date={item.statusUpdatedAt}/></div>)*/}
+                                    {item.statusUpdatedAt && (
+                                        <div className="x-permit--date">
+                                            <XDate date={item.statusUpdatedAt} format={'date'}/>
+                                        </div>
+                                    )}
+                                    {item.approvalTime != null && (<div className="x-permit--time">Approval
+                                        time <span>{formatDuration(item.approvalTime)}</span></div>)}
+                                </div>
                             </div>
                         </div>
 

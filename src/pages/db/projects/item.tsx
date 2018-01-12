@@ -90,7 +90,7 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
 
                             {props.data.project.permits && props.data.project.permits.length > 0 && (
                                 <XWrap title="Building permits">
-                                    <ListPermits permits={props.data.project.permits}/>
+                                    <ListPermits permits={props.data.project.permits} hideCounter={true}/>
                                 </XWrap>
                             )}
                         </div>
