@@ -9,9 +9,9 @@ export function XWrap(props: { title?: string; children: any }) {
     );
 }
 
-export function XWrapBody(props: { children: any }) {
+export function XWrapBody(props: { className?: string; children: any }) {
     return (
-        <div className="x-wrap--body">
+        <div className={'x-wrap--body ' + props.className!!}>
             {props.children}
         </div>
     );

@@ -4,7 +4,7 @@ import { withPermitQuery, StatusChanged, FieldChanged } from '../../../api/Permi
 import { XContainer } from '../../../components/X/XContainer';
 import { Segment, Header, Table, Form, Button, Icon } from 'semantic-ui-react';
 import { XDiff } from '../../../components/X/XDiff';
-import { XWrap } from '../../../components/X/XWrap';
+import { XWrap, XWrapBody } from '../../../components/X/XWrap';
 import { XRow } from '../../../components/X/XRow';
 import { ListPermits } from '../../../components/ListPermits';
 
@@ -162,6 +162,37 @@ export default withPage(withPermitQuery((props) => {
 
                 <XRow>
                     <div className="col-xs-12 col-md-9">
+                        <XWrap title="Permit details">
+                            <XWrapBody className="x-permcard--counters">
+                                <XRow>
+                                    <div className="col-xs-12 col-sm-3">
+                                        <div className="x-permcard--counter">
+                                            <span>Mar 28, 2020</span>
+                                            Expiration date
+                                        </div>
+                                    </div>
+                                    <div className="col-xs-12 col-sm-3">
+                                        <div className="x-permcard--counter">
+                                            <span>7,000,000</span>
+                                            Estimated cost
+                                        </div>
+                                    </div>
+                                    <div className="col-xs-12 col-sm-3">
+                                        <div className="x-permcard--counter">
+                                            <span>11,200,000</span>
+                                            Revised cost
+                                        </div>
+                                    </div>
+                                    <div className="col-xs-12 col-sm-3">
+                                        <div className="x-permcard--counter">
+                                            <span>5</span>
+                                            Proposed stories
+                                        </div>
+                                    </div>
+                                </XRow>
+                            </XWrapBody>
+                        </XWrap>
+
                         <XWrap title="More permits for the address">
                             <ListPermits permits={props.data.permit.relatedPermits}/>
                         </XWrap>
