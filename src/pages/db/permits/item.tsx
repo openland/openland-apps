@@ -12,6 +12,7 @@ import { XDate } from '../../../components/X/XDate';
 import { Icon } from 'semantic-ui-react';
 import { XDiff } from '../../../components/X/XDiff';
 import { PermitStatus } from '../../../components/PermitStatus';
+import { Footer } from '../../../components/Footer';
 
 function ChangeRender(props: { change: FieldChanged }) {
     if (props.change.oldValue === null) {
@@ -84,181 +85,186 @@ export default withPage(withPermitQuery((props) => {
     }
 
     return (
-        <div className="x-in">
-            <XContainer wide={true}>
-                <XWrap>
-                    <XRow>
-                        <div className="col-xs-12 col-md-9">
-                            <div className="x-permcard">
-                                <div className="x-permcard--in">
-                                    <XRow>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div className="x-permcard--id">{props.data.permit.id}</div>
-                                        </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div
-                                                className="x-permcard--key">{props.data.permit.streetNumbers!!.length > 0 && (
-                                                <span>
+        <>
+            <div className="x-in">
+                <XContainer wide={true}>
+                    <XWrap>
+                        <XRow>
+                            <div className="col-xs-12 col-md-9">
+                                <div className="x-permcard">
+                                    <div className="x-permcard--in">
+                                        <XRow>
+                                            <div className="col-xs-12 col-sm-3">
+                                                <div className="x-permcard--id">{props.data.permit.id}</div>
+                                            </div>
+                                            <div className="col-xs-12 col-sm-3">
+                                                <div
+                                                    className="x-permcard--key">{props.data.permit.streetNumbers!!.length > 0 && (
+                                                    <span>
                                                     {props.data.permit.streetNumbers!![0].streetNumber + (props.data.permit.streetNumbers!![0].streetNumberSuffix ? props.data.permit.streetNumbers!![0].streetNumberSuffix!! : '') +
                                                     ' ' + props.data.permit.streetNumbers!![0].streetName + (props.data.permit.streetNumbers!![0].streetNameSuffix ? ' ' + props.data.permit.streetNumbers!![0].streetNameSuffix : '')}
                                                 </span>
-                                            )}
-                                            </div>
-                                        </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            {props.data.permit.proposedUnits && (
-                                                <><span><XCounter value={props.data.permit.proposedUnits!!}
-                                                                  oldValue={props.data.permit.existingUnits}/></span> units</>
-                                            )}
-                                        </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            {props.data.permit.approvalTime != null && (
-                                                <div className="x-permcard--key">Approval
-                                                    time <span>{formatDuration(props.data.permit.approvalTime)}</span>
+                                                )}
                                                 </div>
-                                            )}
-                                        </div>
-                                    </XRow>
-                                </div>
+                                            </div>
+                                            <div className="col-xs-12 col-sm-3">
+                                                {props.data.permit.proposedUnits && (
+                                                    <><span><XCounter value={props.data.permit.proposedUnits!!}
+                                                                      oldValue={props.data.permit.existingUnits}/></span> units</>
+                                                )}
+                                            </div>
+                                            <div className="col-xs-12 col-sm-3">
+                                                {props.data.permit.approvalTime != null && (
+                                                    <div className="x-permcard--key">Approval
+                                                        time <span>{formatDuration(props.data.permit.approvalTime)}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </XRow>
+                                    </div>
 
-                                <div className="x-permcard--box">
-                                    <div className="x-permcard--col">
-                                        <div className="x-permcard--type"><PermitType type={props.data.permit.type!!}/>
-                                        </div>
-                                    </div>
-                                    <div className="x-permcard--col">
-                                        <div className="x-permcard--text">{props.data.permit.description}</div>
-                                    </div>
-                                    <div className="x-permcard--col">
-                                        <a href={props.data.permit.governmentalUrl} target="_blank"
-                                           className="x-permcard--btn"><span><i
-                                            className="icon-share"/>SF DBI Record</span></a>
-                                    </div>
-                                </div>
-
-                                <div className="x-permcard--dates">
-                                    <XRow>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div className="x-permcard--label">Key dates</div>
-                                        </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div className="x-permcard--status"><span>{filedDate}</span>Filed</div>
-                                        </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div
-                                                className={'x-permcard--status' + (progress < 2 ? ' is-disabled' : '')}>
-                                                <span>{issuedDate}</span>Issued
+                                    <div className="x-permcard--box">
+                                        <div className="x-permcard--col">
+                                            <div className="x-permcard--type"><PermitType
+                                                type={props.data.permit.type!!}/>
                                             </div>
                                         </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div
-                                                className={'x-permcard--status' + (progress < 3 ? ' is-disabled' : '')}>
-                                                <span>{completedDate}</span>{completedTitle}
-                                            </div>
+                                        <div className="x-permcard--col">
+                                            <div className="x-permcard--text">{props.data.permit.description}</div>
                                         </div>
-                                    </XRow>
+                                        <div className="x-permcard--col">
+                                            <a href={props.data.permit.governmentalUrl} target="_blank"
+                                               className="x-permcard--btn"><span><i
+                                                className="icon-share"/>SF DBI Record</span></a>
+                                        </div>
+                                    </div>
+
+                                    <div className="x-permcard--dates">
+                                        <XRow>
+                                            <div className="col-xs-12 col-sm-3">
+                                                <div className="x-permcard--label">Key dates</div>
+                                            </div>
+                                            <div className="col-xs-12 col-sm-3">
+                                                <div className="x-permcard--status"><span>{filedDate}</span>Filed</div>
+                                            </div>
+                                            <div className="col-xs-12 col-sm-3">
+                                                <div
+                                                    className={'x-permcard--status' + (progress < 2 ? ' is-disabled' : '')}>
+                                                    <span>{issuedDate}</span>Issued
+                                                </div>
+                                            </div>
+                                            <div className="col-xs-12 col-sm-3">
+                                                <div
+                                                    className={'x-permcard--status' + (progress < 3 ? ' is-disabled' : '')}>
+                                                    <span>{completedDate}</span>{completedTitle}
+                                                </div>
+                                            </div>
+                                        </XRow>
+                                    </div>
+
+                                    <div className={'x-permcard--progress' + (' is-s' + progress)}/>
+
+                                    {/*<div className=" x-permcard--progress is-s1" />*/}
+                                    {/*<div className=" x-permcard--progress is-s3" />*/}
                                 </div>
-
-                                <div className={'x-permcard--progress' + (' is-s' + progress)}/>
-
-                                {/*<div className=" x-permcard--progress is-s1" />*/}
-                                {/*<div className=" x-permcard--progress is-s3" />*/}
                             </div>
-                        </div>
 
-                        <div className=" col-xs-12 col-md-3 hidden-xs hidden-sm">
-                            <div className=" x-permcard--map"
-                                 style={{backgroundImage: 'url(' + map + ')'}}/>
-                            {/*<div className=" x-permcard--map no-photo" />*/}
-                        </div>
-                    </XRow>
-                </XWrap>
+                            <div className=" col-xs-12 col-md-3 hidden-xs hidden-sm">
+                                <div className=" x-permcard--map"
+                                     style={{backgroundImage: 'url(' + map + ')'}}/>
+                                {/*<div className=" x-permcard--map no-photo" />*/}
+                            </div>
+                        </XRow>
+                    </XWrap>
 
-                <XRow>
-                    <div className=" col-xs-12 col-md-9">
-                        {/*<XWrap title=" Permit details">*/}
-                        {/*<XWrapBody className=" x-permcard--counters">*/}
-                        {/*<XRow>*/}
-                        {/*<div className=" col-xs-12 col-sm-3">*/}
-                        {/*<div className=" x-permcard--counter">*/}
-                        {/*<span>Mar 28, 2020</span>*/}
-                        {/*Expiration date*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*<div className=" col-xs-12 col-sm-3">*/}
-                        {/*<div className=" x-permcard--counter">*/}
-                        {/*<span>7,000,000</span>*/}
-                        {/*Estimated cost*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*<div className=" col-xs-12 col-sm-3">*/}
-                        {/*<div className=" x-permcard--counter">*/}
-                        {/*<span>11,200,000</span>*/}
-                        {/*Revised cost*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*<div className=" col-xs-12 col-sm-3">*/}
-                        {/*<div className=" x-permcard--counter">*/}
-                        {/*<span>5</span>*/}
-                        {/*Proposed stories*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*</XRow>*/}
-                        {/*</XWrapBody>*/}
-                        {/*</XWrap>*/}
+                    <XRow>
+                        <div className=" col-xs-12 col-md-9">
+                            {/*<XWrap title=" Permit details">*/}
+                            {/*<XWrapBody className=" x-permcard--counters">*/}
+                            {/*<XRow>*/}
+                            {/*<div className=" col-xs-12 col-sm-3">*/}
+                            {/*<div className=" x-permcard--counter">*/}
+                            {/*<span>Mar 28, 2020</span>*/}
+                            {/*Expiration date*/}
+                            {/*</div>*/}
+                            {/*</div>*/}
+                            {/*<div className=" col-xs-12 col-sm-3">*/}
+                            {/*<div className=" x-permcard--counter">*/}
+                            {/*<span>7,000,000</span>*/}
+                            {/*Estimated cost*/}
+                            {/*</div>*/}
+                            {/*</div>*/}
+                            {/*<div className=" col-xs-12 col-sm-3">*/}
+                            {/*<div className=" x-permcard--counter">*/}
+                            {/*<span>11,200,000</span>*/}
+                            {/*Revised cost*/}
+                            {/*</div>*/}
+                            {/*</div>*/}
+                            {/*<div className=" col-xs-12 col-sm-3">*/}
+                            {/*<div className=" x-permcard--counter">*/}
+                            {/*<span>5</span>*/}
+                            {/*Proposed stories*/}
+                            {/*</div>*/}
+                            {/*</div>*/}
+                            {/*</XRow>*/}
+                            {/*</XWrapBody>*/}
+                            {/*</XWrap>*/}
 
-                        <XWrap title=" More permits for the address">
-                            <ListPermits permits={props.data.permit.relatedPermits}/>
-                        </XWrap>
-                    </div>
-
-                    {props.data.permit.events.length > 0 && (
-                        <div className=" col-xs-12 col-md-3">
-                            <XWrap title=" Permit updates">
-                                <div className=" x-updates">
-                                    {props.data.permit.events.map((p, i) => {
-                                        if (p.__typename === 'PermitEventStatus') {
-                                            let s = (p as StatusChanged);
-                                            // return (
-                                            //     <Table.Row key={'ind_' + i}>
-                                            //         <Table.Cell collapsing={true}>
-                                            //             {s.date}
-                                            //         </Table.Cell>
-                                            //         <Table.Cell collapsing={true}>
-                                            //             Status Changed
-                                            //         </Table.Cell>
-                                            //         <Table.Cell>
-                                            //             {s.oldStatus} -> {s.newStatus}
-                                            //         </Table.Cell>
-                                            //     </Table.Row>
-                                            // );
-                                            return (
-                                                <div className=" x-update" key={'update-' + i}>
-                                                    <div className=" x-update--date">{s.date}, Status</div>
-                                                    <div className=" x-update--text"><PermitStatus
-                                                        status={s.oldStatus}/> -> <PermitStatus status={s.newStatus}/>
-                                                    </div>
-                                                </div>
-                                            );
-                                        } else if (p.__typename === 'PermitEventFieldChanged') {
-                                            let s = (p as FieldChanged);
-                                            return (
-                                                <div className=" x-update" key={'update-' + i}>
-                                                    <div className=" x-update--date">{s.date}, {s.fieldName}</div>
-                                                    <div className=" x-update--text"><ChangeRender change={s}/>
-                                                    </div>
-                                                </div>
-                                            );
-                                        } else {
-                                            return null;
-                                        }
-                                    })}
-                                </div>
+                            <XWrap title=" More permits for the address">
+                                <ListPermits permits={props.data.permit.relatedPermits}/>
                             </XWrap>
                         </div>
-                    )}
-                </XRow>
-            </XContainer>
-        </div>
+
+                        {props.data.permit.events.length > 0 && (
+                            <div className=" col-xs-12 col-md-3">
+                                <XWrap title=" Permit updates">
+                                    <div className=" x-updates">
+                                        {props.data.permit.events.map((p, i) => {
+                                            if (p.__typename === 'PermitEventStatus') {
+                                                let s = (p as StatusChanged);
+                                                // return (
+                                                //     <Table.Row key={'ind_' + i}>
+                                                //         <Table.Cell collapsing={true}>
+                                                //             {s.date}
+                                                //         </Table.Cell>
+                                                //         <Table.Cell collapsing={true}>
+                                                //             Status Changed
+                                                //         </Table.Cell>
+                                                //         <Table.Cell>
+                                                //             {s.oldStatus} -> {s.newStatus}
+                                                //         </Table.Cell>
+                                                //     </Table.Row>
+                                                // );
+                                                return (
+                                                    <div className=" x-update" key={'update-' + i}>
+                                                        <div className=" x-update--date">{s.date}, Status</div>
+                                                        <div className=" x-update--text"><PermitStatus
+                                                            status={s.oldStatus}/> -> <PermitStatus
+                                                            status={s.newStatus}/>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            } else if (p.__typename === 'PermitEventFieldChanged') {
+                                                let s = (p as FieldChanged);
+                                                return (
+                                                    <div className=" x-update" key={'update-' + i}>
+                                                        <div className=" x-update--date">{s.date}, {s.fieldName}</div>
+                                                        <div className=" x-update--text"><ChangeRender change={s}/>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            } else {
+                                                return null;
+                                            }
+                                        })}
+                                    </div>
+                                </XWrap>
+                            </div>
+                        )}
+                    </XRow>
+                </XContainer>
+            </div>
+            <Footer/>
+        </>
     );
 }));

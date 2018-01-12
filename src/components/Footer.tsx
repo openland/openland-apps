@@ -15,10 +15,17 @@ export class Footer extends React.Component {
                         <div className="x-footer--city">San Francisco</div>
                     </div>
 
-                    <NavigationFooter />
+                    <NavigationFooter/>
 
                     <div className="x-footer--box">
-                        {this.props.children}
+                        <form className="x-intro--form"
+                              action="https://one.us15.list-manage.com/subscribe/post?u=b588cb73ec7bd801c3b609670&amp;id=c943356ada"
+                              method="post">
+                            <input type="hidden" name="b_b588cb73ec7bd801c3b609670_c943356ada" value=""/>
+
+                            <input className="x-intro--input" type="email" name="EMAIL" placeholder="Email"/>
+                            <button className="x-intro--button" type="submit">Subscribe to updates</button>
+                        </form>
                     </div>
                 </XContainer>
             </div>
