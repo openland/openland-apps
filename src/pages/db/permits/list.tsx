@@ -6,27 +6,16 @@ import {
     DataList, DataListContent, DataListFilters, DataListRadio, DataListRadioItem,
     DataListSearch
 } from '../../../components/DataList';
-import { DataListInvite } from '../../../components/DataListInvite';
 import { withPagedList } from '../../../components/withPagedList';
-// import { Tab } from 'semantic-ui-react';
-// import { resolveActionPath } from '../../../utils/routing';
-// import { XBarChart } from '../../../components/X/XBarChart';
 
 const PermitsItems = withPagedList<Permit>((props) => <ListPermits permits={props.items}/>);
-// const tabs = [null, 'stats'];
 export default withPage(withPermitsPagedQuery((props) => {
-
-    // let index = 0;
-    // if (props.router.query && props.router.query!!.tab === 'stats') {
-    //     index = 1;
-    // }
-
     return (
         <DataList>
-            <DataListFilters title="Pipeline Filters">
+            <DataListFilters title="Building Permits">
                 <DataListSearch searchKey="filter"/>
                 <DataListRadio radioKey="sort" title="Sort By">
-                    <DataListRadioItem title="Creation date" reset={['page']}/>
+                    <DataListRadioItem title="Filing date" reset={['page']}/>
                     <DataListRadioItem title="Last action date" reset={['page']} itemKey="STATUS_CHANGE_TIME"/>
                     <DataListRadioItem title="Completion date" reset={['page']} itemKey="COMPLETE_TIME"/>
                     <DataListRadioItem title="Issuing date" reset={['page']} itemKey="ISSUED_TIME"/>
@@ -49,36 +38,12 @@ export default withPage(withPermitsPagedQuery((props) => {
                     <DataListRadioItem title="50+ units" itemKey="50" reset={['page']}/>
                     <DataListRadioItem title="100+ units" itemKey="100" reset={['page']}/>
                 </DataListRadio>
-                <DataListRadio radioKey="fromPipeline" title="From Pipeline">
+                <DataListRadio radioKey="fromPipeline" title="Segments">
                     <DataListRadioItem title="All" reset={['page']}/>
-                    <DataListRadioItem title="Only from Pipeline" itemKey="true" reset={['page']}/>
+                    <DataListRadioItem title="Housing Pipeline" itemKey="true" reset={['page']}/>
                 </DataListRadio>
-                <DataListInvite/>
             </DataListFilters>
             <DataListContent>
-                {/*<Tab activeIndex={index}*/}
-                {/*onTabChange={(e, a) => props.router.push(resolveActionPath({*/}
-                {/*router: props.router,*/}
-                {/*query: {field: 'tab', value: tabs[a.activeIndex!!]}*/}
-                {/*}))}*/}
-                {/*panes={[*/}
-                {/*{*/}
-                {/*menuItem: 'Records', render: () => (*/}
-                {/*<PermitsItems data={props.data}/>*/}
-                {/*)*/}
-                {/*},*/}
-                {/*{*/}
-                {/*menuItem: 'Stats',*/}
-                {/*render: () => (*/}
-                {/*<Tab.Pane>*/}
-                {/*<h3>Approval time percentile (project/days)</h3>*/}
-                {/*<XBarChart data={props.data.items.stats.approvalTimes}/>*/}
-                {/*<h3>Approval time distribution (units/days)</h3>*/}
-                {/*<XBarChart data={props.data.items.stats.approvalDistribution}/>*/}
-                {/*</Tab.Pane>*/}
-                {/*)*/}
-                {/*}*/}
-                {/*]}/>*/}
                 <div className="x-in--title hidden-xs">
                     <div>{props.data.items.pageInfo.itemsCount}<span>Permits</span></div>
                 </div>

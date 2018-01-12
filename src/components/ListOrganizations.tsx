@@ -15,8 +15,8 @@ export function ListOrganizations(props: { developers: Organization[] }) {
                                                                      height={78}/></div>
                         <div className="x-dev--short-n">{p.title}<span>
                             {((p.isDeveloper) && !(p.isConstructor)) ? 'Developer' : ''}
-                            {(!(p.isDeveloper) && (p.isConstructor)) ? 'Constructor' : ''}
-                            {((p.isDeveloper) && (p.isConstructor)) ? 'Developer, Constructor' : ''}
+                            {(!(p.isDeveloper) && (p.isConstructor)) ? 'Contractor' : ''}
+                            {((p.isDeveloper) && (p.isConstructor)) ? 'Developer, Contractor' : ''}
                         </span></div>
                     </XLink>
                 );

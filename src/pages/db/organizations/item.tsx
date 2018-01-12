@@ -29,8 +29,8 @@ export default withPage(withOrganizationQuery(withLoader((props) => {
                             <div className="x-dev--title">{props.data.organization.title}</div>
                             <div className="x-dev--subtitle">
                                 {((props.data.organization.isDeveloper) && !(props.data.organization.isConstructor)) ? 'Developer' : ''}
-                                {(!(props.data.organization.isDeveloper) && (props.data.organization.isConstructor)) ? 'Constructor' : ''}
-                                {((props.data.organization.isDeveloper) && (props.data.organization.isConstructor)) ? 'Developer, Constructor' : ''}
+                                {(!(props.data.organization.isDeveloper) && (props.data.organization.isConstructor)) ? 'Contractor' : ''}
+                                {((props.data.organization.isDeveloper) && (props.data.organization.isConstructor)) ? 'Developer, Contractor' : ''}
                             </div>
 
                             {props.data.organization.city && (

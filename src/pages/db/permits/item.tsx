@@ -8,6 +8,7 @@ import { ListPermits } from '../../../components/ListPermits';
 import { PermitType } from '../../../components/PermitType';
 import { XCounter } from '../../../components/X/XCounter';
 import { formatDuration } from '../../../utils/date';
+import { XDate } from '../../../components/X/XDate';
 
 // function ChangeRender(props: { change: FieldChanged }) {
 //     if (props.change.oldValue === null) {
@@ -26,23 +27,23 @@ import { formatDuration } from '../../../utils/date';
 export default withPage(withPermitQuery((props) => {
 
     let progress = 1;
-    let filedDate = 'TBD';
+    let filedDate = <span>TBD</span>;
     if (props.data.permit.filedAt) {
-        filedDate = new Date(props.data.permit.filedAt).toDateString();
+        filedDate = <XDate date={props.data.permit.filedAt}/>;
     }
 
-    let issuedDate = 'TBD';
+    let issuedDate = <span>TBD</span>;
     if (props.data.permit.issuedAt) {
         progress = 2;
-        issuedDate = new Date(props.data.permit.issuedAt).toDateString();
+        issuedDate = <XDate date={props.data.permit.issuedAt}/>;
     }
 
-    let completedDate = 'TBD';
+    let completedDate = <span>TBD</span>;
     let completedTitle = 'Completed';
     if (['COMPLETED', 'EXPIRED', 'CANCELLED', 'DISAPPROVED', 'REVOKED', 'WITHDRAWN', 'SUSPENDED', 'UPHELD'].indexOf(props.data.permit.status!!) >= 0) {
         progress = 3;
         if (props.data.permit.statusUpdatedAt) {
-            completedDate = new Date(props.data.permit.statusUpdatedAt).toDateString();
+            completedDate = <XDate date={props.data.permit.statusUpdatedAt}/>;
         }
 
         switch (props.data.permit.status!!) {
@@ -69,6 +70,14 @@ export default withPage(withPermitQuery((props) => {
                 completedTitle = 'Completed';
                 break;
         }
+    }
+
+    let map = 'https://maps.googleapis.com/maps/api/staticmap?center=37.7718238831,-122.4038848877&zoom=16&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
+    if (props.data.permit.streetNumbers!!.length > 0) {
+        let streetNumber = props.data.permit.streetNumbers!![0];
+        let address = streetNumber.streetNumber + '' + (streetNumber.streetNumberSuffix ? streetNumber.streetNumberSuffix!! : '') +
+            ' ' + streetNumber.streetName + (streetNumber.streetNameSuffix ? ' ' + streetNumber.streetNameSuffix!! : '') + ', San Francisco, CA, USA';
+        map = 'https://maps.googleapis.com/maps/api/staticmap?center=' + encodeURIComponent(address) + '&zoom=18&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
     }
 
     return (
@@ -156,7 +165,7 @@ export default withPage(withPermitQuery((props) => {
 
                         <div className=" col-xs-12 col-md-3 hidden-xs hidden-sm">
                             <div className=" x-permcard--map"
-                                 style={{backgroundImage: 'url(https://maps.googleapis.com/maps/api/staticmap?center=37.7718238831,-122.4038848877&zoom=16&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY)'}}/>
+                                 style={{backgroundImage: 'url(' + map + ')'}}/>
                             {/*<div className=" x-permcard--map no-photo" />*/}
                         </div>
                     </XRow>
@@ -201,24 +210,24 @@ export default withPage(withPermitQuery((props) => {
                     </div>
 
                     <div className=" col-xs-12 col-md-3">
-                        <XWrap title=" Permit updates">
-                            <div className=" x-updates">
-                                <div className=" x-update">
-                                    <div className=" x-update--date">2 days ago, description</div>
-                                    <div className=" x-update--text">This is a description of the text<span
-                                        style={{backgroundColor: '#FDB9C0'}}>,</span> it got fixed. <span
-                                        style={{backgroundColor: '#ACF2BD'}}>Also, we added a brand new line.</span><span
-                                        style={{backgroundColor: '#FDB9C0'}}> And removed the old one.</span></div>
-                                </div>
-                                <div className=" x-update">
-                                    <div className=" x-update--date">2 days ago, description</div>
-                                    <div className=" x-update--text">This is a description of the text<span
-                                        style={{backgroundColor: '#FDB9C0'}}>,</span> it got fixed. <span
-                                        style={{backgroundColor: '#ACF2BD'}}>Also, we added a brand new line.</span><span
-                                        style={{backgroundColor: '#FDB9C0'}}> And removed the old one.</span></div>
-                                </div>
-                            </div>
-                        </XWrap>
+                        {/*<XWrap title=" Permit updates">*/}
+                            {/*<div className=" x-updates">*/}
+                                {/*<div className=" x-update">*/}
+                                    {/*<div className=" x-update--date">2 days ago, description</div>*/}
+                                    {/*<div className=" x-update--text">This is a description of the text<span*/}
+                                        {/*style={{backgroundColor: '#FDB9C0'}}>,</span> it got fixed. <span*/}
+                                        {/*style={{backgroundColor: '#ACF2BD'}}>Also, we added a brand new line.</span><span*/}
+                                        {/*style={{backgroundColor: '#FDB9C0'}}> And removed the old one.</span></div>*/}
+                                {/*</div>*/}
+                                {/*<div className=" x-update">*/}
+                                    {/*<div className=" x-update--date">2 days ago, description</div>*/}
+                                    {/*<div className=" x-update--text">This is a description of the text<span*/}
+                                        {/*style={{backgroundColor: '#FDB9C0'}}>,</span> it got fixed. <span*/}
+                                        {/*style={{backgroundColor: '#ACF2BD'}}>Also, we added a brand new line.</span><span*/}
+                                        {/*style={{backgroundColor: '#FDB9C0'}}> And removed the old one.</span></div>*/}
+                                {/*</div>*/}
+                            {/*</div>*/}
+                        {/*</XWrap>*/}
                     </div>
                 </XRow>
             </XContainer>

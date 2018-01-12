@@ -9,15 +9,16 @@ declare module 'next-routes' {
         // tslint:disable-next-line:unified-signatures
         add(obj: { name?: string, page?: string, pattern?: string }): Routes;
 
-        getRequestHandler(app: any): any
+        getRequestHandler(app: any): any;
 
-        Link: React.ComponentClass<{ route: string }>
+        Link: React.ComponentClass<{ route: string }>;
         Router: {
             pushRoute(route: string): void;
             replaceRoute(route: string): void;
-        }
+        };
     }
-    const builder: () => Routes
+
+    const builder: () => Routes;
     export = builder
 }
 
@@ -36,19 +37,23 @@ declare module 'markdown' {
 }
 
 declare module 'graphiql' {
-    class GraphiQL extends React.Component<{ fetcher: any }, {}>{ }
+    class GraphiQL extends React.Component<{ fetcher: any }, {}> {
+    }
+
     export = GraphiQL
 }
 
 declare module 'react-simplemde-editor' {
-    class SimpleMDE extends React.Component<{ value: string, onChange: (value: string) => void }, {}>{ }
+    class SimpleMDE extends React.Component<{ value: string, onChange: (value: string) => void }, {}> {
+    }
+
     export = SimpleMDE
 }
 
 declare module 'react-handsontable' {
     interface HotTableProps {
-        stretchH?: "all"
-        stretchV?: "all"
+        stretchH?: 'all'
+        stretchV?: 'all'
         width?: string | number
         height?: string | number
         data?: any[][]
@@ -57,7 +62,10 @@ declare module 'react-handsontable' {
         rowHeaders?: boolean
         colHeaders?: boolean
     }
-    class HotTable extends React.Component<HotTableProps, {}>{ }
+
+    class HotTable extends React.Component<HotTableProps, {}> {
+    }
+
     export = HotTable
 }
 

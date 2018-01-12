@@ -62,7 +62,7 @@ export interface StreetNumber {
     streetName: string;
     streetNameSuffix?: string;
     streetNumber: number;
-    steetNumberSuffix?: string;
+    streetNumberSuffix?: string;
 }
 
 export interface PermitsStats {

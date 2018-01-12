@@ -88,6 +88,7 @@ export function DataListCardItem(props: { title: string, children: any }) {
 }
 
 export interface OrganizationListCardProps {
+    slug: string,
     title: string;
     subtitle?: string;
     projects?: number;
@@ -106,14 +107,17 @@ export class OrganizationDataListCard extends React.Component<OrganizationListCa
         return (
             <div
                 className={'x-card is-organization' + (this.props.logo ? '' : ' without-photo')}>
-                {this.props.logo && (<div className="x-card--photo">
-                    <XCloudImage src={this.props.logo} maxWidth={140} maxHeight={140}/>
-                </div>)}
-                {!this.props.logo && (<div className="x-card--photo no-photo">{}</div>)}
+                <XLink path={'/organizations/' + this.props.slug}>
+                    {this.props.logo && (<div className="x-card--photo">
+                        <XCloudImage src={this.props.logo} maxWidth={140} maxHeight={140}/>
+                    </div>)}
+                    {!this.props.logo && (<div className="x-card--photo no-photo">{}</div>)}
+                </XLink>
 
                 <div className="x-card--info">
                     <div className="x-card--box">
-                        <div className="x-card--title">{this.props.title}</div>
+                        <div className="x-card--title" style={{textColor: '#000000'}}><XLink
+                            path={'/organizations/' + this.props.slug}>{this.props.title}</XLink></div>
                         {this.props.subtitle && (<div className="x-card--text">{this.props.subtitle}</div>)}
                     </div>
 

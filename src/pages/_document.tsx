@@ -12,7 +12,7 @@ export default class StateDocument extends Document {
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
                     <meta name="format-detection" content="telephone=no" />
 
-                    <meta property="og:title" content="San Francisco Housing Forecast 2017-18" />
+                    <meta property="og:title" content="San Francisco Housing Analytics 2017-18" />
                     <meta property="og:url" content="https://sf.statecraft.one" />
                     <meta property="og:description" content="An initiative to create the most accurate, transparent, and collaborative assessment of housing production in the city." />
                     <meta property="og:image" content="https://sf.statecraft.one/static/img/x-pipeline--list.png" />

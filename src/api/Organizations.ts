@@ -38,9 +38,39 @@ const OrganizationsQuery = gql`
             isConstructor
             developerIn {
                 id
+                slug
+                name
+                description
+                verified
+                existingUnits
+                proposedUnits
+                existingAffordableUnits
+                proposedAffordableUnits
+                extrasYearEnd
+                extrasUrl
+
+                preview: picture(width: 170, height: 116) {
+                    url
+                    retina
+                }
             }
             constructorIn {
                 id
+                slug
+                name
+                description
+                verified
+                existingUnits
+                proposedUnits
+                existingAffordableUnits
+                proposedAffordableUnits
+                extrasYearEnd
+                extrasUrl
+
+                preview: picture(width: 170, height: 116) {
+                    url
+                    retina
+                }
             }
         }
     }
