@@ -184,6 +184,8 @@ const PermitQuery = gql`
                 approvalTime
                 existingUnits
                 proposedUnits
+                statusUpdatedAt
+                filedAt
                 streetNumbers {
                     streetId
                     streetName
