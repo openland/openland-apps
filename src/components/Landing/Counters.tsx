@@ -2,7 +2,13 @@ import * as React from 'react';
 import { XLink } from '../X/XLink';
 
 export function CounterItem(props: {
-    counter: number | string, label?: string, name: string, photo?: { url: string, retina: string }, address?: string, path: string
+    counter: number | string,
+    label?: string,
+    name: string,
+    photo?: { url: string, retina: string },
+    address?: string,
+    path?: string
+    url?: string
 }) {
     return (
         <div className="col-xs-12 col-sm-4">
@@ -21,7 +27,8 @@ export function CounterItem(props: {
                     <img src={props.photo.url} srcSet={props.photo.retina}/></div>}
                 {props.address !== undefined && <div className="x-counter--address">{props.address}</div>}
 
-                <XLink path={props.path} className="x-counter--link">Details</XLink>
+                {props.path && <XLink path={props.path} className="x-counter--link">Details</XLink>}
+                {props.url && <a href={props.url} className="x-counter--link" target="_blank">Details</a>}
             </div>
         </div>
     );
