@@ -73,8 +73,8 @@ export default withPage(withOrganizationQuery(withLoader((props) => {
                         </div>
 
                         <div className="x-dev--in">
-                            {props.data.organization.comments && (
-                                <div className="x-dev--text">{props.data.organization.comments}</div>)}
+                            {props.data.organization.description && (
+                                <div className="x-dev--text">{props.data.organization.description}</div>)}
 
                             <XWriteAcces>
                                 <div className="x-dev--side">

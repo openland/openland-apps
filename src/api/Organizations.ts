@@ -20,6 +20,7 @@ export interface Organization {
     facebook?: string;
     isDeveloper?: boolean;
     isConstructor?: boolean;
+    description?: string;
     developerIn?: BuildingProject[];
     constructorIn?: BuildingProject[];
     partners: Organization[];
@@ -93,6 +94,7 @@ const OrganizationQuery = gql`
             facebook
             isDeveloper
             isConstructor
+            description
             developerIn {
                 id
                 slug
@@ -163,10 +165,12 @@ export const OrganizationMutationAlter = gql`
     mutation organizationAlter(
     $orgId: String!, $title: String,
     $comments: String, $logo: String, $cover: String, $url: String, $city: String, $address: String,
-    $twitter: String, $linkedin: String, $facebook: String, $isDeveloper: Boolean, $isConstructor: Boolean
+    $twitter: String, $linkedin: String, $facebook: String, $isDeveloper: Boolean, $isConstructor: Boolean,
+    $description: String
     ) {
         organizationAlter(slug: $orgId, title: $title, comments: $comments, logo: $logo, cover: $cover, url: $url, city: $city,
-            address:$address, twitter: $twitter, linkedin: $linkedin, facebook: $facebook, isDeveloper: $isDeveloper, isConstructor: $isConstructor) {
+            address:$address, twitter: $twitter, linkedin: $linkedin, facebook: $facebook, isDeveloper: $isDeveloper, isConstructor: $isConstructor,
+            description: $description) {
             id
             slug
             title
@@ -181,6 +185,7 @@ export const OrganizationMutationAlter = gql`
             facebook
             isDeveloper
             isConstructor
+            description
         }
     }
 `;

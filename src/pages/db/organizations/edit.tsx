@@ -31,6 +31,7 @@ export default withPage(withOrganizationAlter(withLoader((props) => {
                             <XFormField name="twitter" title="Twitter" hint="Twitter"/>
                             <XFormField name="linkedin" title="LinkedIn" hint="LinkedIn"/>
                             <XFormField name="facebook" title="Facebook" hint="Facebook"/>
+                            <XFormField name="description" title="Description" hint="Description"/>
                             <XFormField name="comments" title="Comments" hint="Comments"/>
                             <XFormSubmit title="Save"/>
                             <XButton mutation={props.remove} afterPath="/organizations/"
