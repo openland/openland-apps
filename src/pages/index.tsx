@@ -33,9 +33,9 @@ export default withLandingPage(withBuildingProjectsStats((props) => {
             </HeaderLarge>
             <Counters title="Housing Forecast 2017-2018">
                 <CounterList>
-                    <CounterItem counter={props.data.stats.year2017NewUnits} name="2017 net new units" path="/"/>
-                    <CounterItem counter={props.data.stats.year2018NewUnits} name="2018 net new units" path="/"/>
-                    <CounterItem counter={5000} name="Mayor’s annual target" path="/"/>
+                    <CounterItem counter={props.data.stats.year2017NewUnits} name="2017 net new units" path="/projects?year=2017"/>
+                    <CounterItem counter={props.data.stats.year2018NewUnits} name="2018 net new units" path="/projects?year=2018"/>
+                    <CounterItem counter={5000} name="Mayor’s annual target" url="https://medium.com/@mayoredlee/making-a-more-affordable-san-francisco-f1ff3bae0d86"/>
                 </CounterList>
             </Counters>
             <Counters title="Building Permit Approval Times" times={true}>
@@ -43,21 +43,21 @@ export default withLandingPage(withBuildingProjectsStats((props) => {
                     <CounterItem counter={377} label="days" name="Median approval time" path="/"/>
                     <CounterItem counter={slowestDuration.value} label={slowestDuration.subtitle}
                                  name="The longest approval" photo={slowest.preview}
-                                 address={slowest.name} path="/"/>
+                                 address={slowest.name} path={'/projects/' + slowest.slug}/>
                     <CounterItem counter={fastestDuration.value} label={fastestDuration.subtitle}
                                  name="The shortest approval" photo={fastest.preview}
-                                 address={fastest.name} path="/"/>
+                                 address={fastest.name} path={'/projects/' + fastest.slug}/>
                 </CounterList>
             </Counters>
             <ExploreData title="Explore Our Data">
                 <ExploreDataItem counter={props.data.globalStats.totalProjects} name="Construction projects"
-                                 photo="/static/img/explore-01.png" path="/"/>
+                                 photo="/static/img/explore-01.png" path="/projects"/>
                 <ExploreDataItem counter={props.data.globalStats.totalDevelopers} name="Developers"
-                                 photo="/static/img/explore-02.png" path="/"/>
+                                 photo="/static/img/explore-02.png" path="/organizations?type=developer"/>
                 <ExploreDataItem counter={props.data.globalStats.totalConstructors} name="Contractors"
-                                 photo="/static/img/explore-03.png" path="/"/>
+                                 photo="/static/img/explore-03.png" path="/organizations?type=constructor"/>
                 <ExploreDataItem counter={props.data.globalStats.totalPermits} name="Permits"
-                                 photo="/static/img/explore-04.png" path="/"/>
+                                 photo="/static/img/explore-04.png" path="/permits"/>
             </ExploreData>
             <About title="About San Francisco Housing Analytics" mail="hello@statecraft.one">
                 <AboutItem
