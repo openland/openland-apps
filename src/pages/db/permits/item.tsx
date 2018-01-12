@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
-import { withPermitQuery } from '../../../api/Permits';
+import { FieldChanged, StatusChanged, withPermitQuery } from '../../../api/Permits';
 import { XContainer } from '../../../components/X/XContainer';
 import { XWrap } from '../../../components/X/XWrap';
 import { XRow } from '../../../components/X/XRow';
@@ -9,20 +9,23 @@ import { PermitType } from '../../../components/PermitType';
 import { XCounter } from '../../../components/X/XCounter';
 import { formatDuration } from '../../../utils/date';
 import { XDate } from '../../../components/X/XDate';
+import { Icon } from 'semantic-ui-react';
+import { XDiff } from '../../../components/X/XDiff';
+import { PermitStatus } from '../../../components/PermitStatus';
 
-// function ChangeRender(props: { change: FieldChanged }) {
-//     if (props.change.oldValue === null) {
-//         return <span><Icon name="plus" color="green"/> {props.change.newValue}</span>;
-//     } else if (props.change.newValue === null) {
-//         return <span><Icon name="minus" color="red"/> {props.change.newValue}</span>;
-//     } else {
-//         if (props.change.fieldName === 'description') {
-//             return <XDiff oldValue={props.change.oldValue} newValue={props.change.newValue}/>;
-//         } else {
-//             return <span>{props.change.oldValue} -> {props.change.newValue}</span>;
-//         }
-//     }
-// }
+function ChangeRender(props: { change: FieldChanged }) {
+    if (props.change.oldValue === null) {
+        return <span><Icon name="plus" color="green"/> {props.change.newValue}</span>;
+    } else if (props.change.newValue === null) {
+        return <span><Icon name="minus" color="red"/> {props.change.newValue}</span>;
+    } else {
+        if (props.change.fieldName === 'description') {
+            return <XDiff oldValue={props.change.oldValue} newValue={props.change.newValue}/>;
+        } else {
+            return <span>{props.change.oldValue} -> {props.change.newValue}</span>;
+        }
+    }
+}
 
 export default withPage(withPermitQuery((props) => {
 
@@ -96,7 +99,7 @@ export default withPage(withPermitQuery((props) => {
                                             <div
                                                 className="x-permcard--key">{props.data.permit.streetNumbers!!.length > 0 && (
                                                 <span>
-                                                    {props.data.permit.streetNumbers!![0].streetNumber + (props.data.permit.streetNumbers!![0].steetNumberSuffix ? props.data.permit.streetNumbers!![0].steetNumberSuffix!! : '') +
+                                                    {props.data.permit.streetNumbers!![0].streetNumber + (props.data.permit.streetNumbers!![0].streetNumberSuffix ? props.data.permit.streetNumbers!![0].streetNumberSuffix!! : '') +
                                                     ' ' + props.data.permit.streetNumbers!![0].streetName + (props.data.permit.streetNumbers!![0].streetNameSuffix ? ' ' + props.data.permit.streetNumbers!![0].streetNameSuffix : '')}
                                                 </span>
                                             )}
@@ -209,26 +212,51 @@ export default withPage(withPermitQuery((props) => {
                         </XWrap>
                     </div>
 
-                    <div className=" col-xs-12 col-md-3">
-                        {/*<XWrap title=" Permit updates">*/}
-                            {/*<div className=" x-updates">*/}
-                                {/*<div className=" x-update">*/}
-                                    {/*<div className=" x-update--date">2 days ago, description</div>*/}
-                                    {/*<div className=" x-update--text">This is a description of the text<span*/}
-                                        {/*style={{backgroundColor: '#FDB9C0'}}>,</span> it got fixed. <span*/}
-                                        {/*style={{backgroundColor: '#ACF2BD'}}>Also, we added a brand new line.</span><span*/}
-                                        {/*style={{backgroundColor: '#FDB9C0'}}> And removed the old one.</span></div>*/}
-                                {/*</div>*/}
-                                {/*<div className=" x-update">*/}
-                                    {/*<div className=" x-update--date">2 days ago, description</div>*/}
-                                    {/*<div className=" x-update--text">This is a description of the text<span*/}
-                                        {/*style={{backgroundColor: '#FDB9C0'}}>,</span> it got fixed. <span*/}
-                                        {/*style={{backgroundColor: '#ACF2BD'}}>Also, we added a brand new line.</span><span*/}
-                                        {/*style={{backgroundColor: '#FDB9C0'}}> And removed the old one.</span></div>*/}
-                                {/*</div>*/}
-                            {/*</div>*/}
-                        {/*</XWrap>*/}
-                    </div>
+                    {props.data.permit.events.length > 0 && (
+                        <div className=" col-xs-12 col-md-3">
+                            <XWrap title=" Permit updates">
+                                <div className=" x-updates">
+                                    {props.data.permit.events.map((p, i) => {
+                                        if (p.__typename === 'PermitEventStatus') {
+                                            let s = (p as StatusChanged);
+                                            // return (
+                                            //     <Table.Row key={'ind_' + i}>
+                                            //         <Table.Cell collapsing={true}>
+                                            //             {s.date}
+                                            //         </Table.Cell>
+                                            //         <Table.Cell collapsing={true}>
+                                            //             Status Changed
+                                            //         </Table.Cell>
+                                            //         <Table.Cell>
+                                            //             {s.oldStatus} -> {s.newStatus}
+                                            //         </Table.Cell>
+                                            //     </Table.Row>
+                                            // );
+                                            return (
+                                                <div className=" x-update" key={'update-' + i}>
+                                                    <div className=" x-update--date">{s.date}, Status</div>
+                                                    <div className=" x-update--text"><PermitStatus
+                                                        status={s.oldStatus}/> -> <PermitStatus status={s.newStatus}/>
+                                                    </div>
+                                                </div>
+                                            );
+                                        } else if (p.__typename === 'PermitEventFieldChanged') {
+                                            let s = (p as FieldChanged);
+                                            return (
+                                                <div className=" x-update" key={'update-' + i}>
+                                                    <div className=" x-update--date">{s.date}, {s.fieldName}</div>
+                                                    <div className=" x-update--text"><ChangeRender change={s}/>
+                                                    </div>
+                                                </div>
+                                            );
+                                        } else {
+                                            return null;
+                                        }
+                                    })}
+                                </div>
+                            </XWrap>
+                        </div>
+                    )}
                 </XRow>
             </XContainer>
         </div>
