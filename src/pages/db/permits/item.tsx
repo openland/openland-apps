@@ -69,6 +69,9 @@ export default withPage(withPermitQuery((props) => {
             case 'UPHELD':
                 completedTitle = 'Upheld';
                 break;
+            case 'CANCELLED':
+                completedTitle = 'Cancelled';
+                break;
             case 'COMPLETED':
             default:
                 completedTitle = 'Completed';
