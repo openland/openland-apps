@@ -1679,12 +1679,14 @@ body {
 
 	&--link {
 		background: @orange-1;
-		color: @white;
+		color: @white!important;
 		text-align: center;
 		padding: 10px 0;
 
 		.display (block);
 		.font (15px, 20px, 500);
+
+		&:hover { background: darken(@orange-1, 4); }
 	}
 }
 
@@ -1751,13 +1753,15 @@ body {
 
 	&--link {
 		background: @purple-1;
-		color: @white;
+		color: @white!important;
 		text-align: center;
 		padding: 10px 0;
 		margin: 23px 0 0;
 
 		.display (block);
 		.font (15px, 20px, 500);
+
+		&:hover { background: darken(@purple-1, 4); }
 	}
 }
 
