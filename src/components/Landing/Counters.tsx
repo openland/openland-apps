@@ -37,7 +37,7 @@ export function CounterList(props: { children: any }) {
     );
 }
 
-export class Counters extends React.Component<{ title: string, times?: boolean, insights: any, methodology: any, children: any }, { isShown: boolean }> {
+export class Counters extends React.Component<{ title: string, times?: boolean, insights?: any, methodology?: any, children: any }, { isShown: boolean }> {
     constructor(props: { title: string, times?: boolean, insights: any, methodology: any, children: any }) {
         super(props);
 
@@ -50,28 +50,33 @@ export class Counters extends React.Component<{ title: string, times?: boolean, 
         return (
             <div className={'x-counters' + (this.props.times === true ? ' is-times' : '')}>
                 <div className="x-container">
+
                     <div className="x-counters--head">
                         <div className="x-counters--title">{this.props.title}</div>
-                        <div className="x-counters--btn">
-                            <a href="#" className="x-btn is-outline is-block" onClick={(e) => {
-                                e.preventDefault();
-                                this.setState({isShown: !this.state.isShown});
-                            }}>Insights and Methodolodgy</a>
-                        </div>
+                        {this.props.methodology !== undefined && this.props.insights !== undefined && (
+                            <div className="x-counters--btn">
+                                <a href="#" className="x-btn is-outline is-block" onClick={(e) => {
+                                    e.preventDefault();
+                                    this.setState({isShown: !this.state.isShown});
+                                }}>Insights and Methodolodgy</a>
+                            </div>
+                        )}
                     </div>
 
-                    <div className={'x-counters--more' + (this.state.isShown ? ' is-shown' : '')}>
-                        <div className="row">
-                            <div className="col-xs-12 col-sm-6">
-                                <div className="x-counters--stitle">Insights</div>
-                                <div className="x-counters--text">{this.props.insights}</div>
-                            </div>
-                            <div className="col-xs-12 col-sm-6">
-                                <div className="x-counters--stitle">Methodology</div>
-                                <div className="x-counters--text">{this.props.methodology}</div>
+                    {this.props.methodology !== undefined && this.props.insights !== undefined && (
+                        <div className={'x-counters--more' + (this.state.isShown ? ' is-shown' : '')}>
+                            <div className="row">
+                                <div className="col-xs-12 col-sm-6">
+                                    <div className="x-counters--stitle">Insights</div>
+                                    <div className="x-counters--text">{this.props.insights}</div>
+                                </div>
+                                <div className="col-xs-12 col-sm-6">
+                                    <div className="x-counters--stitle">Methodology</div>
+                                    <div className="x-counters--text">{this.props.methodology}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
 
                     {this.props.children}
                 </div>

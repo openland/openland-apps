@@ -31,16 +31,14 @@ export default withLandingPage(withBuildingProjectsStats((props) => {
                     <HeaderLargeForm/>
                 </HeaderLargeBox>
             </HeaderLarge>
-            <Counters title="Housing Forecast 2017-2018" insights={<HousingInsights/>}
-                      methodology={<HousingMethodology/>}>
+            <Counters title="Housing Forecast 2017-2018">
                 <CounterList>
                     <CounterItem counter={props.data.stats.year2017NewUnits} name="2017 net new units" path="/"/>
                     <CounterItem counter={props.data.stats.year2018NewUnits} name="2018 net new units" path="/"/>
                     <CounterItem counter={5000} name="Mayor’s annual target" path="/"/>
                 </CounterList>
             </Counters>
-            <Counters title="Building Permit Approval Times" times={true} insights={<ApprovalInsights/>}
-                      methodology={<ApprovalMethodology/>}>
+            <Counters title="Building Permit Approval Times" times={true}>
                 <CounterList>
                     <CounterItem counter={377} label="days" name="Median approval time" path="/"/>
                     <CounterItem counter={slowestDuration.value} label={slowestDuration.subtitle}
