@@ -18,7 +18,7 @@ export function ListPermits(props: { permits: Permit[] }) {
                             <div className="x-permit--id">{item.id}</div>
                             <div className="x-permit--address">
                                 {item.streetNumbers!!.length > 0 && (
-                                    item.streetNumbers!![0].streetNumber + (item.streetNumbers!![0].steetNumberSuffix ? item.streetNumbers!![0].steetNumberSuffix!! : '') +
+                                    item.streetNumbers!![0].streetNumber + (item.streetNumbers!![0].streetNumberSuffix ? item.streetNumbers!![0].streetNumberSuffix!! : '') +
                                     ' ' + item.streetNumbers!![0].streetName + (item.streetNumbers!![0].streetNameSuffix ? ' ' + item.streetNumbers!![0].streetNameSuffix : '')
                                 )}
                                 <div className="x-permit--counter visible-sm visible-md visible-lg">
