@@ -227,11 +227,13 @@ const BuildingProjectQuery = gql`
                 id
                 slug
                 title
+                logo
             }
             constructors {
                 id
                 slug
                 title
+                logo
             }
             permits {
                 id
@@ -291,11 +293,13 @@ const BuildingProjectsQuery = gql`
                         id
                         slug
                         title
+                        logo
                     }
                     constructors {
                         id
                         slug
                         title
+                        logo
                     }
                 }
                 cursor

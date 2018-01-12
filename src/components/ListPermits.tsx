@@ -38,9 +38,9 @@ export function ListPermits(props: { permits: Permit[] }) {
                                 {item.status &&
                                 <div className="x-permit--status"><PermitStatus status={item.status}/></div>}
                                 {/*item.statusUpdatedAt && (<div className="x-permit--date"><XDate date={item.statusUpdatedAt}/></div>)*/}
-                                {item.createdAt && (
+                                {item.statusUpdatedAt && (
                                     <div className="x-permit--date">
-                                        <XDate date={item.createdAt} format={'date'}/>
+                                        <XDate date={item.statusUpdatedAt} format={'date'}/>
                                     </div>
                                 )}
                                 {item.approvalTime != null && (<div className="x-permit--time">Approval
