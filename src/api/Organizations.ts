@@ -33,6 +33,14 @@ const OrganizationsQuery = gql`
             comments
             logo
             url
+            isDeveloper
+            isConstructor
+            developerIn {
+                id
+            }
+            constructorIn {
+                id
+            }
         }
     }
 `;

@@ -23,48 +23,62 @@ const AddForm = withOrganizationAddMutation((props) => {
     );
 });
 
-export default withPage(withOrganizationsQuery(withLoader((props) => {
+export default withPage(withOrganizationsQuery((props) => {
+
+    let data = props.data.organizations;
+    if (props.router.query!!.type === 'developer') {
+        data = data.filter((v) => v.isDeveloper);
+    } else if (props.router.query!!.type === 'constructor') {
+        data = data.filter((v) => v.isConstructor);
+    }
+    if (props.router.query!!.filter) {
+        let q = (props.router.query!!.filter as string).trim().toLowerCase();
+        if (q.length > 0) {
+            data = data.filter((v) => v.title.toLowerCase().indexOf(q) >= 0);
+        }
+    }
     return (
         <DataList>
-            <DataListFilters title="Developers">
-                <DataListSearch searchKey="filter" />
-                <DataListRadio radioKey="sort" title="Sort by">
-                    <DataListRadioItem title="A → Z" />
-                    <DataListRadioItem title="Net new units" itemKey="new" />
+            <DataListFilters title="Organization">
+                <DataListSearch searchKey="filter"/>
+                <DataListRadio radioKey="type" title="Organization Type">
+                    <DataListRadioItem title="All"/>
+                    <DataListRadioItem title="Developer" itemKey="developer"/>
+                    <DataListRadioItem title="Constructor" itemKey="constructor"/>
                 </DataListRadio>
 
-                <div className="x-join hidden-xs hidden-sm">
-                    <div className="x-join--btn">
-                        <a className="x-btn is-block is-outline" target="_blank" href="#">Add an organization</a>
-                    </div>
-                </div>
+                {/*<div className="x-join hidden-xs hidden-sm">*/}
+                {/*<div className="x-join--btn">*/}
+                {/*<a className="x-btn is-block is-outline" target="_blank" href="#">Add an organization</a>*/}
+                {/*</div>*/}
+                {/*</div>*/}
             </DataListFilters>
             <DataListContent title="organizations">
                 <XWriteAcces>
                     <AddForm/>
-                    <br />
+                    <br/>
                 </XWriteAcces>
 
                 <div className="x-in--title hidden-xs">
-                    <div>{props.data.organizations.length}<span>organizations</span></div>
+                    <div>{data.length}<span>organizations</span></div>
                 </div>
 
                 <InfiniteListContainer>
-                    {props.data.organizations.map(p => {
+                    {data.map(p => {
                         return (
                             <XInfiniteListItem key={p.id}>
                                 <OrganizationDataListCard
                                     title={p.title}
                                     profile={'/organizations/' + p.slug}
                                     logo={p.logo}
-                                    url="#"
+                                    url={p.url}
                                     subtitle="Developer"
-                                    projects={100}
-                                    featuredProject={{
-                                        title: 'Avalon Dogpatch',
-                                        url: '/projects/',
-                                        picture: { url: '//placehold.it/85x58', retina: '//placehold.it/170x116' }
-                                    }}
+                                    projects={p.constructorIn!!.length + p.developerIn!!.length}
+                                    // featuredProject={{
+                                    //     title: 'Avalon Dogpatch',
+                                    //     url: '/projects/',
+                                    //     picture: { url: '//placehold.it/85x58', retina: '//placehold.it/170x116' }
+                                    // }}
                                 />
                             </XInfiniteListItem>
                         );
@@ -73,4 +87,4 @@ export default withPage(withOrganizationsQuery(withLoader((props) => {
             </DataListContent>
         </DataList>
     );
-})));
+}));

@@ -79,15 +79,13 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
 }
 
 export function DataListCardItem(props: { title: string, children: any }) {
-    return (<tr>
-        <td>{props.title}</td>
-        <td>{props.children}</td>
-    </tr>);
+    return (
+        <tr>
+            <td>{props.title}</td>
+            <td>{props.children}</td>
+        </tr>
+    );
 }
-
-
-
-
 
 export interface OrganizationListCardProps {
     title: string;
@@ -109,8 +107,8 @@ export class OrganizationDataListCard extends React.Component<OrganizationListCa
             <div
                 className={'x-card is-organization' + (this.props.logo ? '' : ' without-photo')}>
                 {this.props.logo && (<div className="x-card--photo">
-                                        <XCloudImage src={this.props.logo} maxWidth={140} maxHeight={140}/>
-                                    </div>)}
+                    <XCloudImage src={this.props.logo} maxWidth={140} maxHeight={140}/>
+                </div>)}
                 {!this.props.logo && (<div className="x-card--photo no-photo">{}</div>)}
 
                 <div className="x-card--info">
@@ -132,8 +130,10 @@ export class OrganizationDataListCard extends React.Component<OrganizationListCa
                     <div className="x-card--counter"><span>{this.props.projects || '?'}</span>recent projects</div>
 
                     {this.props.featuredProject && (
-                        <XLink path={this.props.featuredProject.url} className={'x-card--counter is-project' + (this.props.featuredProject.picture ? ' with-photo' : '')}>
-                            {this.props.featuredProject.picture && (<img src={this.props.featuredProject.picture.retina} alt="" />)}
+                        <XLink path={this.props.featuredProject.url}
+                               className={'x-card--counter is-project' + (this.props.featuredProject.picture ? ' with-photo' : '')}>
+                            {this.props.featuredProject.picture && (
+                                <img src={this.props.featuredProject.picture.retina} alt=""/>)}
 
                             <span>{this.props.featuredProject.title}</span>
                             featured project
