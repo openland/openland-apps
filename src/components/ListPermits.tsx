@@ -6,6 +6,7 @@ import { PermitStatus } from './PermitStatus';
 import { formatDuration } from '../utils/date';
 import { InfiniteListContainer, XInfiniteListItem } from './withInfiniteList';
 import { XCounter } from './X/XCounter';
+import { PermitType } from './PermitType';
 
 export function ListPermits(props: { permits: Permit[] }) {
     return (
@@ -45,7 +46,7 @@ export function ListPermits(props: { permits: Permit[] }) {
                         </div>
 
                         <div className="x-permit--box">
-                            <div className="x-permit--type">{item.type}</div>
+                            <div className="x-permit--type"><PermitType type={item.type!!}/></div>
                             <div className="x-permit--text">{item.description}</div>
 
                             <XLink path={'/permits/' + item.id}
