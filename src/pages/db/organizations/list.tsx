@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
 import { withOrganizationsQuery, withOrganizationAddMutation } from '../../../api/Organizations';
-import { withLoader } from '../../../components/withLoader';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
 import { OrganizationDataListCard } from '../../../components/DataListCard';
@@ -65,6 +64,16 @@ export default withPage(withOrganizationsQuery((props) => {
 
                 <InfiniteListContainer>
                     {data.map(p => {
+                        let subtitle = undefined;
+                        if (p.isDeveloper) {
+                            if (p.isConstructor) {
+                                subtitle = 'Developer and Constructor';
+                            } else {
+                                subtitle = 'Developer';
+                            }
+                        } else {
+                            subtitle = 'Constructor';
+                        }
                         return (
                             <XInfiniteListItem key={p.id}>
                                 <OrganizationDataListCard
@@ -72,7 +81,7 @@ export default withPage(withOrganizationsQuery((props) => {
                                     profile={'/organizations/' + p.slug}
                                     logo={p.logo}
                                     url={p.url}
-                                    subtitle="Developer"
+                                    subtitle={subtitle}
                                     projects={p.constructorIn!!.length + p.developerIn!!.length}
                                     // featuredProject={{
                                     //     title: 'Avalon Dogpatch',

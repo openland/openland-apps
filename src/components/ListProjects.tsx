@@ -11,7 +11,11 @@ export function ListProjects(props: { projects: BuildingProject[] }) {
                     <XInfiniteListItem key={p.id}>
                         <DataListCard
                             title={p.name}
-                            url={'/projects/' + p.slug}
+                            url={p.extrasUrl}
+                            picture={p.preview}
+                            newUnits={p.proposedUnits}
+                            endYear={p.extrasYearEnd}
+                            verified={p.verified}
                         />
                     </XInfiniteListItem>
                 );

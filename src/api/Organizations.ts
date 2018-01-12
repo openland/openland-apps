@@ -66,17 +66,44 @@ const OrganizationQuery = gql`
                 slug
                 name
                 description
+                verified
+                existingUnits
+                proposedUnits
+                existingAffordableUnits
+                proposedAffordableUnits
+                extrasYearEnd
+                extrasUrl
+
+                preview: picture(width: 224, height: 164) {
+                    url
+                    retina
+                }
             }
             constructorIn {
                 id
                 slug
                 name
                 description
+                verified
+                existingUnits
+                proposedUnits
+                existingAffordableUnits
+                proposedAffordableUnits
+                extrasYearEnd
+                extrasUrl
+
+                preview: picture(width: 224, height: 164) {
+                    url
+                    retina
+                }
             }
             partners {
                 id
                 slug
                 title
+                logo
+                isDeveloper
+                isConstructor
             }
         }
     }
