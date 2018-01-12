@@ -29,7 +29,71 @@ export default withPage(withPermitQuery((props) => {
     return (
         <div className="x-in">
             <XContainer wide={true}>
-                <Header attached="top">
+                <XWrap>
+                    <XRow>
+                        <div className="col-xs-12 col-md-9">
+                            <div className="x-permcard">
+                                <div className="x-permcard--in">
+                                    <XRow>
+                                        <div className="col-xs-12 col-sm-3">
+                                            <div className="x-permcard--id">{props.data.permit.id}</div>
+                                        </div>
+                                        <div className="col-xs-12 col-sm-3">
+                                            <div className="x-permcard--key"><span>2660 3rd St</span></div>
+                                        </div>
+                                        <div className="col-xs-12 col-sm-3">
+                                            <div className="x-permcard--key"><span>100</span> units</div>
+                                        </div>
+                                        <div className="col-xs-12 col-sm-3">
+                                            <div className="x-permcard--key">Approval time <span>2 years</span></div>
+                                        </div>
+                                    </XRow>
+                                </div>
+
+                                <div className="x-permcard--box">
+                                    <div className="x-permcard--col">
+                                        <div className="x-permcard--type">New construction wood frame</div>
+                                    </div>
+                                    <div className="x-permcard--col">
+                                        <div className="x-permcard--text">To erect 5 stories, 2 basement, 27 residential condominiums.</div>
+                                    </div>
+                                    <div className="x-permcard--col">
+                                        <a href="#" className="x-permcard--btn"><span><i className="icon-share" />SF DBI Record</span></a>
+                                    </div>
+                                </div>
+
+                                <div className="x-permcard--dates">
+                                    <XRow>
+                                        <div className="col-xs-12 col-sm-3">
+                                            <div className="x-permcard--label">Key dates</div>
+                                        </div>
+                                        <div className="col-xs-12 col-sm-3">
+                                            <div className="x-permcard--status"><span>Jan 11, 2015</span>Filed</div>
+                                        </div>
+                                        <div className="col-xs-12 col-sm-3">
+                                            <div className="x-permcard--status"><span>Apr 23, 2015</span>Issued</div>
+                                        </div>
+                                        <div className="col-xs-12 col-sm-3">
+                                            <div className="x-permcard--status is-disabled"><span>TBD</span>Completed</div>
+                                        </div>
+                                    </XRow>
+                                </div>
+
+                                <div className="x-permcard--progress is-s2" />
+
+                                {/*<div className="x-permcard--progress is-s1" />*/}
+                                {/*<div className="x-permcard--progress is-s3" />*/}
+                            </div>
+                        </div>
+
+                        <div className="col-xs-12 col-md-3 hidden-xs hidden-sm">
+                            <div className="x-permcard--map" style={{backgroundImage: 'url(https://maps.googleapis.com/maps/api/staticmap?center=37.7718238831,-122.4038848877&zoom=16&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY)'}} />
+                            {/*<div className="x-permcard--map no-photo" />*/}
+                        </div>
+                    </XRow>
+                </XWrap>
+
+                {/*<Header attached="top">
                     Pipeline Database
                 </Header>
                 <Segment attached="bottom">
@@ -97,7 +161,7 @@ export default withPage(withPermitQuery((props) => {
                     }
                     <div> Description: {props.data.permit.description}</div>
                     <div> Proposed Use: {props.data.permit.proposedUse}</div>
-                </Segment>
+                </Segment>*/}
 
                 <XRow>
                     <div className="col-xs-12 col-md-9">
