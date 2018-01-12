@@ -1310,7 +1310,9 @@ body {
 				.font (13px, 20px);
 			}
 
-			&:hover { color: @white; }
+			&:hover,
+			&.is-active { color: @white; }
+			&.is-active { cursor: default; }
 		}
 	}
 
