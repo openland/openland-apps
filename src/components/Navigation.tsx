@@ -4,10 +4,10 @@ import { XLink } from './X/XLink';
 export function Navigation() {
     return (
         <ul>
-            <li className="x-header--item"><XLink path="/">Home</XLink></li>
-            <li className="x-header--item"><XLink path="/projects">Projects</XLink></li>
-            <li className="x-header--item"><XLink path="/organizations" writeAccess={true}>Organizations</XLink></li>
-            <li className="x-header--item"><XLink path="/permits" writeAccess={true}>Permits</XLink></li>
+            <li className="x-header--item"><XLink path="/">Overview</XLink></li>
+            <li className="x-header--item"><XLink path="/projects">Construction projects</XLink></li>
+            <li className="x-header--item"><XLink path="/organizations">Organizations</XLink></li>
+            <li className="x-header--item"><XLink path="/permits">Permits</XLink></li>
             <li className="x-header--item"><XLink path="/stats" writeAccess={true}>Stats</XLink></li>
         </ul>
     );
@@ -16,9 +16,9 @@ export function Navigation() {
 export function NavigationHome() {
     return (
         <ul>
+            <li className="x-header--item"><XLink path="/">Overview</XLink></li>
             <li className="x-header--item"><XLink path="/projects">Construction projects</XLink></li>
-            <li className="x-header--item"><XLink path="/organizations">Developers</XLink></li>
-            <li className="x-header--item"><XLink path="/organizations">Contractors</XLink></li>
+            <li className="x-header--item"><XLink path="/organizations">Organizations</XLink></li>
             <li className="x-header--item"><XLink path="/permits">Permits</XLink></li>
             <li className="x-header--item"><a href="#">About</a></li>
         </ul>

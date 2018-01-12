@@ -86,6 +86,15 @@ const PermitsQuery = gql`
                     typeWood
                     description
                     approvalTime
+                    existingUnits
+                    proposedUnits
+                    streetNumbers {
+                        streetId
+                        streetName
+                        streetNameSuffix
+                        streetNumber
+                        streetNumberSuffix
+                    }
                 }
                 cursor
             }
@@ -173,6 +182,15 @@ const PermitQuery = gql`
                 typeWood
                 description
                 approvalTime
+                existingUnits
+                proposedUnits
+                streetNumbers {
+                    streetId
+                    streetName
+                    streetNameSuffix
+                    streetNumber
+                    streetNumberSuffix
+                }
             }
         }
     }
