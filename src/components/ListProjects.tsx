@@ -16,6 +16,7 @@ export function ListProjects(props: { projects: BuildingProject[] }) {
                             newUnits={p.proposedUnits}
                             endYear={p.extrasYearEnd}
                             verified={p.verified}
+                            slug={p.slug}
                         />
                     </XInfiniteListItem>
                 );
