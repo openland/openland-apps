@@ -207,7 +207,7 @@ const BuildingProjectQuery = gql`
             existingAffordableUnits
             proposedAffordableUnits
 
-            preview: picture(width: 224, height: 164) {
+            preview: picture(width: 800, height: 384) {
                 url
                 retina
             }
@@ -239,9 +239,11 @@ const BuildingProjectQuery = gql`
                 id
                 createdAt
                 status
+                statusUpdatedAt
                 type
                 typeWood
                 description
+                approvalTime
                 streetNumbers {
                     streetId
                     streetName

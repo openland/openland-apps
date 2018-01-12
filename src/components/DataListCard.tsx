@@ -55,7 +55,7 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
                     <div className="x-card--counter"><span>{this.props.newUnits || '?'}</span>Net new units</div>
                     <div className="x-card--counter"><span>{this.props.endYear || '?'}</span>Expected completion</div>
 
-                    {this.props.slug && (<XLink path={'/projects/' + this.props.slug} className="x-card--toggler" />)}
+                    {this.props.slug && (<XLink path={'/projects/' + this.props.slug} className="x-card--toggler"/>)}
                     {!this.props.slug && (<a className="x-card--toggler" href="#" onClick={(e) => {
                         e.preventDefault();
                         this.setState({expanded: !this.state.expanded});
@@ -133,7 +133,8 @@ export class OrganizationDataListCard extends React.Component<OrganizationListCa
                 </div>
 
                 <div className="x-card--tools">
-                    <div className="x-card--counter"><span>{this.props.projects || '?'}</span>recent projects</div>
+                    {this.props.projects !== undefined &&
+                    <div className="x-card--counter"><span>{this.props.projects || '?'}</span>recent projects</div>}
 
                     {this.props.featuredProject && (
                         <XLink path={this.props.featuredProject.url}

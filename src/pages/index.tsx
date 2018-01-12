@@ -78,70 +78,70 @@ export default withLandingPage(withBuildingProjectsStats((props) => {
     );
 }));
 
-const HousingInsights = () => {
-    return (
-        <>
-            <p>
-                <strong>Measuring housing is critical for informed urban planning decisions</strong>
-                <br/>
-                This site makes it easy to compare current and future levels of housing production with the Mayor’s
-                annual goal and the long-term RHNA goals set by the state.
-            </p>
-
-            <p>
-                <strong>Accuracy is a work in progress</strong>
-                <br/>
-                Unit counts and expected completion times change frequently. Our pipeline editing tools allow all
-                stakeholders to add, correct, and expand individual records.
-            </p>
-        </>
-    );
-};
-
-const HousingMethodology = () => {
-    return (
-        <>
-            <p>
-                <strong>Housing production is facing a severe downturn</strong>
-                <br/>
-                Based on the current data, housing production in 2017-2018 will represent a significant drop from
-                record-high 2016 level of 5000+ units. The extent of this downturn will be more clear as verification
-                process progresses forward.
-            </p>
-        </>
-    );
-};
-
-const ApprovalInsights = () => {
-    return (
-        <>
-            <p>
-                <strong>Measuring housing is critical for informed urban planning decisions</strong>
-                <br/>
-                This site makes it easy to compare current and future levels of housing production with the Mayor’s
-                annual goal and the long-term RHNA goals set by the state.
-            </p>
-
-            <p>
-                <strong>Accuracy is a work in progress</strong>
-                <br/>
-                Unit counts and expected completion times change frequently. Our pipeline editing tools allow all
-                stakeholders to add, correct, and expand individual records.
-            </p>
-        </>
-    );
-};
-
-const ApprovalMethodology = () => {
-    return (
-        <>
-            <p>
-                <strong>Housing production is facing a severe downturn</strong>
-                <br/>
-                Based on the current data, housing production in 2017-2018 will represent a significant drop from
-                record-high 2016 level of 5000+ units. The extent of this downturn will be more clear as verification
-                process progresses forward.
-            </p>
-        </>
-    );
-};
+// const HousingInsights = () => {
+//     return (
+//         <>
+//             <p>
+//                 <strong>Measuring housing is critical for informed urban planning decisions</strong>
+//                 <br/>
+//                 This site makes it easy to compare current and future levels of housing production with the Mayor’s
+//                 annual goal and the long-term RHNA goals set by the state.
+//             </p>
+//
+//             <p>
+//                 <strong>Accuracy is a work in progress</strong>
+//                 <br/>
+//                 Unit counts and expected completion times change frequently. Our pipeline editing tools allow all
+//                 stakeholders to add, correct, and expand individual records.
+//             </p>
+//         </>
+//     );
+// };
+//
+// const HousingMethodology = () => {
+//     return (
+//         <>
+//             <p>
+//                 <strong>Housing production is facing a severe downturn</strong>
+//                 <br/>
+//                 Based on the current data, housing production in 2017-2018 will represent a significant drop from
+//                 record-high 2016 level of 5000+ units. The extent of this downturn will be more clear as verification
+//                 process progresses forward.
+//             </p>
+//         </>
+//     );
+// };
+//
+// const ApprovalInsights = () => {
+//     return (
+//         <>
+//             <p>
+//                 <strong>Measuring housing is critical for informed urban planning decisions</strong>
+//                 <br/>
+//                 This site makes it easy to compare current and future levels of housing production with the Mayor’s
+//                 annual goal and the long-term RHNA goals set by the state.
+//             </p>
+//
+//             <p>
+//                 <strong>Accuracy is a work in progress</strong>
+//                 <br/>
+//                 Unit counts and expected completion times change frequently. Our pipeline editing tools allow all
+//                 stakeholders to add, correct, and expand individual records.
+//             </p>
+//         </>
+//     );
+// };
+//
+// const ApprovalMethodology = () => {
+//     return (
+//         <>
+//             <p>
+//                 <strong>Housing production is facing a severe downturn</strong>
+//                 <br/>
+//                 Based on the current data, housing production in 2017-2018 will represent a significant drop from
+//                 record-high 2016 level of 5000+ units. The extent of this downturn will be more clear as verification
+//                 process progresses forward.
+//             </p>
+//         </>
+//     );
+// };

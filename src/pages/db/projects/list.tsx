@@ -18,7 +18,7 @@ export const PipelineItems = withInfiniteList<BuildingProject>(items => {
         if (item.proposedUnits !== undefined && item.existingUnits !== undefined) {
             units = item.proposedUnits!! - item.existingUnits!!;
         }
-        if (item.extrasAddress && (item.extrasAddress !== item.name)) {
+        if (item.extrasAddress && (item.extrasAddress.toLowerCase() !== item.name.toLowerCase())) {
             subtitle = item.extrasAddress;
         }
         return (
