@@ -1,43 +1,74 @@
 import * as React from 'react';
 
-export function XCloudImage(props: { src: string, className?: string, maxWidth?: number, maxHeight?: number, resize?: 'fill' | 'fit' }) {
-    let scale: string | null = null;
-    let scaleRetina: string | null = null;
-    if (props.maxWidth && props.maxHeight) {
-        scale = `${props.maxWidth}x${props.maxHeight}`;
-        scaleRetina = `${props.maxWidth * 2}x${props.maxHeight * 2}`;
-    } else if (props.maxWidth) {
-        scale = `${props.maxWidth}x`;
-        scaleRetina = `${props.maxWidth * 2}x`;
-    } else if (props.maxHeight) {
-        scale = `x${props.maxHeight}`;
-        scaleRetina = `x${props.maxHeight * 2}`;
-    }
+export function XCloudImage(props: {
+    src?: string | null, placeholder?: string | null, className?: string,
+    maxWidth?: number, maxHeight?: number,
+    width?: number, height?: number,
+    resize?: 'fill' | 'fit'
+}) {
 
-    if (scale != null && scaleRetina != null) {
-        let ops: string;
-        let opsRetina: string;
-        if (props.resize === 'fill') {
-            ops = '-/format/jpeg/-/scale_crop/' + scale + '/center/-/progressive/yes/';
-            opsRetina = '-/format/jpeg/-/scale_crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
-        } else {
-            ops = '-/format/jpeg/-/preview/' + scale + '/-/setfill/ffffff/-/crop/' + scale + '/center/-/progressive/yes/';
-            opsRetina = '-/format/jpeg/-/preview/' + scaleRetina + '/-/setfill/ffffff/-/crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
+    if (props.src) {
+        let scale: string | null = null;
+        let scaleRetina: string | null = null;
+        let scaleWidth = props.width!! ? props.width!! : (props.maxWidth ? props.maxWidth!! : null);
+        let scaleHeight = props.height!! ? props.height!! : (props.maxHeight ? props.maxHeight!! : null);
+
+        if (scaleWidth && scaleHeight) {
+            scale = `${scaleWidth}x${scaleHeight}`;
+            scaleRetina = `${scaleWidth * 2}x${scaleHeight * 2}`;
+        } else if (scaleWidth) {
+            scale = `${scaleWidth}x`;
+            scaleRetina = `${scaleWidth * 2}x`;
+        } else if (scaleHeight) {
+            scale = `x${scaleHeight}`;
+            scaleRetina = `x${scaleHeight * 2}`;
         }
-        let url = 'https://ucarecdn.com/' + props.src + '/' + ops;
-        let urlRetina = 'https://ucarecdn.com/' + props.src + '/' + opsRetina;
-        return (
-            <img src={url}
-                 srcSet={urlRetina}
-                 className={props.className}
-                 style={{maxWidth: props.maxWidth, maxHeight: props.maxHeight}}/>
-        );
+
+        if (scale != null && scaleRetina != null) {
+            let ops: string;
+            let opsRetina: string;
+            if (props.resize === 'fill') {
+                ops = '-/format/jpeg/-/scale_crop/' + scale + '/center/-/progressive/yes/';
+                opsRetina = '-/format/jpeg/-/scale_crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
+            } else {
+                ops = '-/format/jpeg/-/preview/' + scale + '/-/setfill/ffffff/-/crop/' + scale + '/center/-/progressive/yes/';
+                opsRetina = '-/format/jpeg/-/preview/' + scaleRetina + '/-/setfill/ffffff/-/crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
+            }
+            let url = 'https://ucarecdn.com/' + props.src + '/' + ops;
+            let urlRetina = 'https://ucarecdn.com/' + props.src + '/' + opsRetina;
+            return (
+                <img src={url}
+                     srcSet={urlRetina}
+                     className={props.className}
+                     style={{
+                         maxWidth: props.maxWidth,
+                         maxHeight: props.maxHeight,
+                         width: props.width,
+                         height: props.height
+                     }}/>
+            );
+        } else {
+            let url2 = 'https://ucarecdn.com/' + props.src + '/';
+            return (
+                <img src={url2}
+                     className={props.className}
+                     style={{
+                         maxWidth: props.maxWidth,
+                         maxHeight: props.maxHeight,
+                         width: props.width,
+                         height: props.height
+                     }}/>
+            );
+        }
     } else {
-        let url2 = 'https://ucarecdn.com/' + props.src + '/';
         return (
-            <img src={url2}
-                 className={props.className}
-                 style={{maxWidth: props.maxWidth, maxHeight: props.maxHeight}}/>
+            <img src={props.placeholder!!} className={props.className}
+                 style={{
+                     maxWidth: props.maxWidth,
+                     maxHeight: props.maxHeight,
+                     width: props.width,
+                     height: props.height
+                 }}/>
         );
     }
 }
