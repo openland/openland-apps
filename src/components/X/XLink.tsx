@@ -13,9 +13,12 @@ function normalizePath(src: string): string {
 
 const LinkRender = withRouter<{ path: string, className?: string, children?: any, writeAccess?: boolean }>((props) => {
     var className = props.className;
-    if (className) {
-        if (normalizePath(props.router.asPath!!) === normalizePath(props.path)) {
+    
+    if (normalizePath(props.router.asPath!!) === normalizePath(props.path)) {
+        if (className) {
             className += ' is-active';
+        } else {
+            className = 'is-active';
         }
     }
     return (
