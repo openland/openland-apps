@@ -15,6 +15,7 @@ export interface ListCardProps {
     verified?: boolean;
     url?: string;
     location?: { latitude: number, longitude: number };
+    slug?: string;
 }
 
 export class DataListCard extends React.Component<ListCardProps, { expanded: boolean }> {
@@ -54,10 +55,11 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
                     <div className="x-card--counter"><span>{this.props.newUnits || '?'}</span>Net new units</div>
                     <div className="x-card--counter"><span>{this.props.endYear || '?'}</span>Expected completion</div>
 
-                    <a className="x-card--toggler" href="#" onClick={(e) => {
+                    {this.props.slug && (<XLink path={'/projects/' + this.props.slug} className="x-card--toggler" />)}
+                    {!this.props.slug && (<a className="x-card--toggler" href="#" onClick={(e) => {
                         e.preventDefault();
                         this.setState({expanded: !this.state.expanded});
-                    }}>{}</a>
+                    }}>{}</a>)}
                 </div>
 
                 <div className="x-card--details">
