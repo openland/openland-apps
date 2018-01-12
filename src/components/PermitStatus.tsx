@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Icon, SemanticICONS } from 'semantic-ui-react';
 // FILING
 // FILED
 // ISSUED
@@ -20,14 +19,27 @@ import { Icon, SemanticICONS } from 'semantic-ui-react';
 // GRANTED
 // APPEAL
 
+
+
+
+// ICON LIST:
+// appealed
+// canceled
+// completed
+// expired
+// filed
+// issued
+// suspended
+// withdrawn
+
 export function PermitStatus(props: { status: string }) {
 
-    var icon: SemanticICONS = 'question';
+    var icon: string = 'question';
 
     switch (props.status) {
         case 'FILED':
         case 'FILING': {
-            icon = 'file text';
+            icon = 'filed';
             break;
         }
 
@@ -35,12 +47,12 @@ export function PermitStatus(props: { status: string }) {
         case 'SUSPENDED':
         case 'REVOKED':
         case 'DISAPPROVED': {
-            icon = 'ban';
+            icon = 'suspended';
             break;
         }
 
         case 'APPEAL': {
-            icon = 'refresh';
+            icon = 'appealed';
             break;
         }
 
@@ -51,12 +63,12 @@ export function PermitStatus(props: { status: string }) {
         case 'EXPIRED':
         case 'CANCELLED':
         case 'WITHDRAWN': {
-            icon = 'x';
+            icon = 'withdrawn';
             break;
         }
 
         case 'COMPLETED': {
-            icon = 'check';
+            icon = 'completed';
             break;
         }
 
@@ -71,7 +83,7 @@ export function PermitStatus(props: { status: string }) {
         case 'ISSUED':
         case 'ISSUING':
         case 'APPROVED': {
-            icon = 'law';
+            icon = 'issued';
             break;
         }
 
@@ -170,5 +182,5 @@ export function PermitStatus(props: { status: string }) {
         }
     }
 
-    return <span><Icon name={icon}/>{text}</span>;
+    return <span><i className={'icon-' + icon}/>{text}</span>;
 }

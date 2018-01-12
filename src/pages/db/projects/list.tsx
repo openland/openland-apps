@@ -32,6 +32,7 @@ export const PipelineItems = withInfiniteList<BuildingProject>(items => {
                     verified={item.verified}
                     url={item.extrasUrl}
                     location={item.extrasLocation}
+                    slug={item.slug}
                 >
                     {item.extrasAddressSecondary && (
                         <DataListCardItem title="Secondary address">{item.extrasAddressSecondary}</DataListCardItem>
