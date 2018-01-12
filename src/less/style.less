@@ -1124,7 +1124,16 @@ body {
 	background: #F5F6F8;
 	color: @side;
 
+	flex-direction: column;
+
+	.display (flex);
+	.min-size (initial, 100vh);
+
 	input, textarea, button { font-family: 'Aktiv Grotesk Corp', arial, sans-serif; }
+}
+
+.x-in {
+	flex: 1;
 }
 
 .x-container {
@@ -1992,10 +2001,6 @@ body {
 
 		li {
 			margin: 0 0 11px;
-
-			@media @media-sm {
-				&:last-child { margin: 0; }
-			}
 		}
 
 		a {
@@ -2431,7 +2436,12 @@ body {
 		}
 	}
 
-	&--title { .font (18px, 20px, 500); }
+	&--title { .font (18px, 20px, 500);
+		a { color: inherit;
+			&:hover { color: @purple-1; }
+		}
+	}
+
 	&--text {
 		text-transform: uppercase;
 		letter-spacing: 0.6px;
