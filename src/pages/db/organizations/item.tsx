@@ -16,14 +16,14 @@ export default withPage(withOrganizationQuery(withLoader((props) => {
         <div className="x-in">
             <XContainer wide={true}>
                 <div className="x-dev">
-                    <div className="x-dev--photo">
-                        <img src="//placehold.it/1216x350" alt="" />
-                    </div>
+                    {props.data.organization.cover && (<div className="x-dev--photo">
+                        <XCloudImage src={props.data.organization.cover} maxWidth={1216} maxHeight={350} resize={'fill'}/>
+                    </div>)}
 
                     <div className="x-dev--info">
                         {props.data.organization.logo && (<div className="x-dev--logo">
-                                <XCloudImage src={props.data.organization.logo} maxWidth={100} maxHeight={100}/>
-                            </div>)}
+                            <XCloudImage src={props.data.organization.logo} maxWidth={100} maxHeight={100}/>
+                        </div>)}
 
                         <div className="x-dev--box">
                             <div className="x-dev--title">{props.data.organization.title}</div>
@@ -33,27 +33,39 @@ export default withPage(withOrganizationQuery(withLoader((props) => {
                                 {((props.data.organization.isDeveloper) && (props.data.organization.isConstructor)) ? 'Developer, Constructor' : ''}
                             </div>
 
-                            {props.data.organization.city && (<div className="x-dev--city">{props.data.organization.city}</div>)}
-                            {props.data.organization.address && (<div className="x-dev--address">{props.data.organization.address}</div>)}
+                            {props.data.organization.city && (
+                                <div className="x-dev--city">{props.data.organization.city}</div>)}
+                            {props.data.organization.address && (
+                                <div className="x-dev--address">{props.data.organization.address}</div>)}
                         </div>
 
                         <div className="x-dev--links">
-                            {props.data.organization.url && (<a href={props.data.organization.url} className="x-dev--link">Website</a>)}
+                            {props.data.organization.url && (
+                                <a href={props.data.organization.url} className="x-dev--link">Website</a>)}
 
                             <div className="x-dev--socials">
-                                {props.data.organization.facebook && (<a href={props.data.organization.facebook} className="x-dev--social"><i className="icon-fb-o" /></a>)}
-                                {props.data.organization.linkedin && (<a href={props.data.organization.linkedin} className="x-dev--social"><i className="icon-lin" /></a>)}
-                                {props.data.organization.twitter && (<a href={props.data.organization.twitter} className="x-dev--social"><i className="icon-tw" /></a>)}
+                                {props.data.organization.facebook && (
+                                    <a href={props.data.organization.facebook} className="x-dev--social"><i
+                                        className="icon-fb-o"/></a>)}
+                                {props.data.organization.linkedin && (
+                                    <a href={props.data.organization.linkedin} className="x-dev--social"><i
+                                        className="icon-lin"/></a>)}
+                                {props.data.organization.twitter && (
+                                    <a href={props.data.organization.twitter} className="x-dev--social"><i
+                                        className="icon-tw"/></a>)}
                             </div>
                         </div>
                     </div>
 
                     <div className="x-dev--in">
-                        {props.data.organization.comments && (<div className="x-dev--text">{props.data.organization.comments}</div>)}
+                        {props.data.organization.comments && (
+                            <div className="x-dev--text">{props.data.organization.comments}</div>)}
 
                         <XWriteAcces>
                             <div className="x-dev--side">
-                                <XLink path={'/organizations/' + props.data.organization.slug + '/edit'} className="x-dev--edit"><span><i className="icon-edit" />Edit profile</span></XLink>
+                                <XLink path={'/organizations/' + props.data.organization.slug + '/edit'}
+                                       className="x-dev--edit"><span><i
+                                    className="icon-edit"/>Edit profile</span></XLink>
                             </div>
                         </XWriteAcces>
                     </div>

@@ -11,6 +11,7 @@ export interface Organization {
     title: string;
     comments?: string;
     logo?: string;
+    cover?: string,
     url?: string;
     city?: string;
     address?: string;
@@ -53,6 +54,7 @@ const OrganizationQuery = gql`
             title
             comments
             logo
+            cover
             url
             address
             city
@@ -130,15 +132,16 @@ export const OrganizationMutationRemove = gql`
 export const OrganizationMutationAlter = gql`
     mutation organizationAlter(
     $orgId: String!, $title: String,
-    $comments: String, $logo: String, $url: String, $city: String, $address: String,
+    $comments: String, $logo: String, $cover: String, $url: String, $city: String, $address: String,
     $twitter: String, $linkedin: String, $facebook: String, $isDeveloper: Boolean, $isConstructor: Boolean
     ) {
-        organizationAlter(slug: $orgId, title: $title, comments: $comments, logo: $logo, url: $url, city: $city,
+        organizationAlter(slug: $orgId, title: $title, comments: $comments, logo: $logo, cover: $cover, url: $url, city: $city,
             address:$address, twitter: $twitter, linkedin: $linkedin, facebook: $facebook, isDeveloper: $isDeveloper, isConstructor: $isConstructor) {
             id
             slug
             title
             logo
+            cover
             url
             city
             address
