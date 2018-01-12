@@ -36,7 +36,7 @@ const BuildingProjectsStatsQuery = gql`
                 existingAffordableUnits
                 proposedAffordableUnits
 
-                preview: picture(width: 224, height: 164) {
+                preview: picture(width: 310, height: 181) {
                     url
                     retina
                 }
@@ -64,6 +64,14 @@ const BuildingProjectsStatsQuery = gql`
                     type
                     typeWood
                     description
+                    approvalTime
+                    streetNumbers {
+                        streetId
+                        streetName
+                        streetNameSuffix
+                        streetNumber
+                        streetNumberSuffix
+                    }
                 }
             }
             slowestApprovalProject {
@@ -81,7 +89,7 @@ const BuildingProjectsStatsQuery = gql`
                 existingAffordableUnits
                 proposedAffordableUnits
 
-                preview: picture(width: 224, height: 164) {
+                preview: picture(width: 310, height: 181) {
                     url
                     retina
                 }
@@ -109,6 +117,14 @@ const BuildingProjectsStatsQuery = gql`
                     type
                     typeWood
                     description
+                    approvalTime
+                    streetNumbers {
+                        streetId
+                        streetName
+                        streetNameSuffix
+                        streetNumber
+                        streetNumberSuffix
+                    }
                 }
             }
         }
@@ -161,6 +177,7 @@ export interface BuildingProject {
     extrasLocation?: Geo;
 
     developers?: Organization[];
+    constructors?: Organization[];
     permits?: Permit[];
 }
 
@@ -211,6 +228,11 @@ const BuildingProjectQuery = gql`
                 slug
                 title
             }
+            constructors {
+                id
+                slug
+                title
+            }
             permits {
                 id
                 createdAt
@@ -218,6 +240,13 @@ const BuildingProjectQuery = gql`
                 type
                 typeWood
                 description
+                streetNumbers {
+                    streetId
+                    streetName
+                    streetNameSuffix
+                    streetNumber
+                    streetNumberSuffix
+                }
             }
         }
     }
@@ -259,6 +288,11 @@ const BuildingProjectsQuery = gql`
                         longitude
                     }
                     developers {
+                        id
+                        slug
+                        title
+                    }
+                    constructors {
                         id
                         slug
                         title

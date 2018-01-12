@@ -44,8 +44,8 @@ export default withPage(withOrganizationsQuery((props) => {
                     <DataListSearch searchKey="filter"/>
                     <DataListRadio radioKey="type" title="Organization Type">
                         <DataListRadioItem title="All"/>
-                        <DataListRadioItem title="Developer" itemKey="developer"/>
-                        <DataListRadioItem title="Contractor" itemKey="constructor"/>
+                        <DataListRadioItem title="Developers" itemKey="developer"/>
+                        <DataListRadioItem title="Contractors" itemKey="constructor"/>
                     </DataListRadio>
 
                     {/*<div className="x-join hidden-xs hidden-sm">*/}

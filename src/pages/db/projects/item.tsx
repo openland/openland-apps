@@ -44,6 +44,13 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
                     </Segment>
                 )}
 
+                {props.data.project.constructors && props.data.project.constructors.length > 0 && (
+                    <Segment>
+                        <Header content="Contractors"/>
+                        <ListOrganizations developers={props.data.project.constructors}/>
+                    </Segment>
+                )}
+
                 {props.data.project.permits && props.data.project.permits.length > 0 && (
                     <Segment>
                         <Header content="Permits"/>

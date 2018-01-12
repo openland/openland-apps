@@ -2,13 +2,22 @@ import * as React from 'react';
 import { withLandingPage } from '../components/withPage';
 import { HeaderLarge, HeaderLargeTitle, HeaderLargeText, HeaderLargeBox, HeaderLargeForm } from '../components/Header';
 import { withBuildingProjectsStats } from '../api/BuildingProjects';
-import { withLoader } from '../components/withLoader';
 import { Counters, CounterList, CounterItem } from '../components/Landing/Counters';
 import { About, AboutItem } from '../components/Landing/About';
 import { Footer } from '../components/Footer';
 import { ExploreData, ExploreDataItem } from '../components/Landing/ExploreData';
+import { buildDuration } from '../utils/date';
 
-export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
+export default withLandingPage(withBuildingProjectsStats((props) => {
+
+    let fastest = props.data.stats.fastestApprovalProject!!;
+    let slowest = props.data.stats.slowestApprovalProject!!;
+    let fastestPermits = fastest.permits!!.filter((v) => v.approvalTime != null).map((v) => v.approvalTime!!);
+    let fastestDuration = buildDuration(Math.max(...fastestPermits));
+
+    let slowestPermits = slowest.permits!!.filter((v) => v.approvalTime != null).map((v) => v.approvalTime!!);
+    let slowestDuration = buildDuration(Math.max(...slowestPermits));
+
     return (
         <>
             <HeaderLarge>
@@ -34,10 +43,12 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                       methodology={<ApprovalMethodology/>}>
                 <CounterList>
                     <CounterItem counter={377} label="days" name="Median approval time" path="/"/>
-                    <CounterItem counter={9} label="years" name="The longest approval" photo="//placehold.it/310x181"
-                                 address="1601 Larkin St" path="/"/>
-                    <CounterItem counter={2} label="months" name="The shortest approval" photo="//placehold.it/310x181"
-                                 address="1450 Franklin St" path="/"/>
+                    <CounterItem counter={slowestDuration.value} label={slowestDuration.subtitle}
+                                 name="The longest approval" photo={slowest.preview}
+                                 address={slowest.name} path="/"/>
+                    <CounterItem counter={fastestDuration.value} label={fastestDuration.subtitle}
+                                 name="The shortest approval" photo={fastest.preview}
+                                 address={fastest.name} path="/"/>
                 </CounterList>
             </Counters>
             <ExploreData title="Explore Our Data">
@@ -67,7 +78,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
             <Footer/>
         </>
     );
-})));
+}));
 
 const HousingInsights = () => {
     return (

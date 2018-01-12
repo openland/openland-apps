@@ -1,20 +1,24 @@
 import * as React from 'react';
 import { XLink } from '../X/XLink';
 
-export function CounterItem(props: { counter: number, label?: string, name: string, photo?: string, address?: string, path: string }) {
+export function CounterItem(props: {
+    counter: number | string, label?: string, name: string, photo?: { url: string, retina: string }, address?: string, path: string
+}) {
     return (
         <div className="col-xs-12 col-sm-4">
             <div className="x-counter">
                 <div className="x-counter--in">
                     <div className="x-counter--count">
                         {props.counter}
-                        
+
                         {props.label !== undefined && <span>{props.label}</span>}
                     </div>
                     <div className="x-counter--name">{props.name}</div>
                 </div>
 
-                {props.photo !== undefined && <div className="x-counter--photo"><img src={props.photo} alt="" /></div>}
+                {props.photo !== undefined &&
+                <div className="x-counter--photo">
+                    <img src={props.photo.url} srcSet={props.photo.retina}/></div>}
                 {props.address !== undefined && <div className="x-counter--address">{props.address}</div>}
 
                 <XLink path={props.path} className="x-counter--link">Details</XLink>
@@ -33,9 +37,8 @@ export function CounterList(props: { children: any }) {
     );
 }
 
-
 export class Counters extends React.Component<{ title: string, times?: boolean, insights: any, methodology: any, children: any }, { isShown: boolean }> {
-    constructor(props: {title: string, times?: boolean, insights: any, methodology: any, children: any}) {
+    constructor(props: { title: string, times?: boolean, insights: any, methodology: any, children: any }) {
         super(props);
 
         this.state = {

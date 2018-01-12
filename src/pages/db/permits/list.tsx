@@ -28,7 +28,7 @@ export default withPage(withPermitsPagedQuery((props) => {
                     </DataListRadio>
                     <DataListRadio radioKey="type" title="Type">
                         <DataListRadioItem title="All" reset={['page']}/>
-                        <DataListRadioItem title="New construction" itemKey="NEW_CONSTRUCTION" reset={['page']}/>
+                        <DataListRadioItem title="New constructions" itemKey="NEW_CONSTRUCTION" reset={['page']}/>
                         <DataListRadioItem title="Demolitions" itemKey="DEMOLITIONS" reset={['page']}/>
                     </DataListRadio>
                     <DataListRadio radioKey="issuedYear" title="Issued">

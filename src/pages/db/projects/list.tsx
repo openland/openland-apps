@@ -8,7 +8,6 @@ import {
 import { withInfiniteList, XInfiniteListItem } from '../../../components/withInfiniteList';
 import { DataListCard, DataListCardItem } from '../../../components/DataListCard';
 import { DataListInvite } from '../../../components/DataListInvite';
-import { XWriteAcces } from '../../../components/X/XWriteAccess';
 import { XLink } from '../../../components/X/XLink';
 import { XEnumeration } from '../../../components/X/XEnumerations';
 
@@ -34,13 +33,10 @@ export const PipelineItems = withInfiniteList<BuildingProject>(items => {
                     url={item.extrasUrl}
                     location={item.extrasLocation}
                 >
-                    {item.extrasAddressSecondary && <DataListCardItem title="Secondary address">{item.extrasAddressSecondary}</DataListCardItem>}
-                    {item.extrasPermit && <DataListCardItem title="Permit ID">{item.extrasPermit}</DataListCardItem>}
-                    {item.extrasDeveloper && <DataListCardItem title="Developer">{item.extrasDeveloper}</DataListCardItem>}
-                    {item.extrasGeneralConstructor && <DataListCardItem title="General contractor">{item.extrasGeneralConstructor}</DataListCardItem>}
-                    {item.extrasComment && <DataListCardItem title="Comment">{item.extrasComment}</DataListCardItem>}
-                    <XWriteAcces>
-                        <DataListCardItem title="View"><XLink path={'/projects/' + item.slug}>{'View Project'}</XLink></DataListCardItem>
+                    {item.extrasAddressSecondary && (
+                        <DataListCardItem title="Secondary address">{item.extrasAddressSecondary}</DataListCardItem>
+                    )}
+                    {item.developers!!.length > 0 && (
                         <DataListCardItem title="Developers">
                             <XEnumeration>
                                 {item.developers!!.map((d) => (
@@ -48,7 +44,25 @@ export const PipelineItems = withInfiniteList<BuildingProject>(items => {
                                 ))}
                             </XEnumeration>
                         </DataListCardItem>
-                    </XWriteAcces>
+                    )}
+                    {item.constructors!!.length > 0 && (
+                        <DataListCardItem title="Contractors">
+                            <XEnumeration>
+                                {item.constructors!!.map((d) => (
+                                    <XLink path={'/organizations/' + d.slug}>{d.title}</XLink>
+                                ))}
+                            </XEnumeration>
+                        </DataListCardItem>
+                    )}
+
+                    {item.extrasComment && (
+                        <DataListCardItem title="Comment">{item.extrasComment}</DataListCardItem>
+                    )}
+
+                    {/*<XWriteAcces>*/}
+                    {/*<DataListCardItem title="View"><XLink*/}
+                    {/*path={'/projects/' + item.slug}>{'View Project'}</XLink></DataListCardItem>*/}
+                    {/*</XWriteAcces>*/}
                 </DataListCard>
             </XInfiniteListItem>
         );
@@ -59,19 +73,19 @@ export default withPage(withBuildingProjectsQuery((props) => {
     return (
         <React.Fragment>
             <DataList>
-                <DataListFilters title="Pipeline Filters">
-                    <DataListSearch searchKey="filter" />
+                <DataListFilters title="Construction projects">
+                    <DataListSearch searchKey="filter"/>
                     <DataListRadio radioKey="year" title="Expected completion">
-                        <DataListRadioItem title="All" />
-                        <DataListRadioItem title="2017" itemKey="2017" />
-                        <DataListRadioItem title="2018" itemKey="2018" />
-                        <DataListRadioItem title="2019+" itemKey="2019+" />
+                        <DataListRadioItem title="All"/>
+                        <DataListRadioItem title="2017" itemKey="2017"/>
+                        <DataListRadioItem title="2018" itemKey="2018"/>
+                        <DataListRadioItem title="2019+" itemKey="2019+"/>
                     </DataListRadio>
                     <DataListRadio radioKey="minUnits" title="Project size">
-                        <DataListRadioItem title="All" />
-                        <DataListRadioItem title="10+ units" itemKey="10" />
+                        <DataListRadioItem title="All"/>
+                        <DataListRadioItem title="10+ units" itemKey="10"/>
                     </DataListRadio>
-                    <DataListInvite />
+                    <DataListInvite/>
                 </DataListFilters>
                 <DataListContent title="Pipeline">
                     <DataListContentStats
@@ -80,7 +94,7 @@ export default withPage(withBuildingProjectsQuery((props) => {
                         newUnits={props.data.items ? props.data.items.stats.newUnits : 0}
                         newUnitsVerified={props.data.items ? props.data.items.stats.newUnitsVerified : 0}
                     />
-                    <PipelineItems data={props.data} />
+                    <PipelineItems data={props.data}/>
                 </DataListContent>
             </DataList>
         </React.Fragment>
