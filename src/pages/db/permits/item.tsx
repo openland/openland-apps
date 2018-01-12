@@ -6,6 +6,8 @@ import { Segment, Header, Table, Form, Button, Icon, Step } from 'semantic-ui-re
 import { XCounter } from '../../../components/X/XCounter';
 import { XDiff } from '../../../components/X/XDiff';
 import { XDate } from '../../../components/X/XDate';
+import { XWrap } from '../../../components/X/XWrap';
+import { XRow } from '../../../components/X/XRow';
 import { ListPermits } from '../../../components/ListPermits';
 import { formatDuration } from '../../../utils/date';
 
@@ -97,9 +99,28 @@ export default withPage(withPermitQuery((props) => {
                     <div> Proposed Use: {props.data.permit.proposedUse}</div>
                 </Segment>
 
-                <Segment>
-                    <ListPermits permits={props.data.permit.relatedPermits}/>
-                </Segment>
+                <XRow>
+                    <div className="col-xs-12 col-md-9">
+                        <XWrap title="More permits for the address">
+                            <ListPermits permits={props.data.permit.relatedPermits}/>
+                        </XWrap>
+                    </div>
+
+                    <div className="col-xs-12 col-md-3">
+                        <XWrap title="Permit updates">
+                            <div className="x-updates">
+                                <div className="x-update">
+                                    <div className="x-update--date">2 days ago, description</div>
+                                    <div className="x-update--text">This is a description of the text<span style={{backgroundColor: '#FDB9C0'}}>,</span> it got fixed. <span style={{backgroundColor: '#ACF2BD'}}>Also, we added a brand new line.</span><span style={{backgroundColor: '#FDB9C0'}}> And removed the old one.</span></div>
+                                </div>
+                                <div className="x-update">
+                                    <div className="x-update--date">2 days ago, description</div>
+                                    <div className="x-update--text">This is a description of the text<span style={{backgroundColor: '#FDB9C0'}}>,</span> it got fixed. <span style={{backgroundColor: '#ACF2BD'}}>Also, we added a brand new line.</span><span style={{backgroundColor: '#FDB9C0'}}> And removed the old one.</span></div>
+                                </div>
+                            </div>
+                        </XWrap>
+                    </div>
+                </XRow>
 
                 <Header attached="top">
                     Updates

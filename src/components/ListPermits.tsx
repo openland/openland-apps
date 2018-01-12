@@ -1,52 +1,41 @@
 import * as React from 'react';
 import { Permit } from '../api/Permits';
-import { Table } from 'semantic-ui-react';
 import { XLink } from './X/XLink';
 import { XDate } from './X/XDate';
 import { PermitStatus } from './PermitStatus';
 import { formatDuration } from '../utils/date';
+import { InfiniteListContainer, XInfiniteListItem } from './withInfiniteList';
 
 export function ListPermits(props: { permits: Permit[] }) {
     return (
-        <Table striped={true}>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell collapsing={true}>Permit Id</Table.HeaderCell>
-                    <Table.HeaderCell collapsing={true}>Status</Table.HeaderCell>
-                    <Table.HeaderCell collapsing={true}>Status Updated</Table.HeaderCell>
-                    <Table.HeaderCell collapsing={true}>Created</Table.HeaderCell>
-                    <Table.HeaderCell collapsing={true}>Approved</Table.HeaderCell>
-                    <Table.HeaderCell collapsing={true}>Type</Table.HeaderCell>
-                    <Table.HeaderCell>Description</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                {props.permits.map((item) => (
-                    <Table.Row key={item.id}>
-                        <Table.Cell collapsing={true}>
-                            <XLink path={'/permits/' + item.id}>{item.id}</XLink>
-                        </Table.Cell>
-                        <Table.Cell collapsing={true}>
-                            {item.status && <PermitStatus status={item.status}/>}
-                        </Table.Cell>
-                        <Table.Cell collapsing={true}>
-                            {item.statusUpdatedAt && (<XDate date={item.statusUpdatedAt}/>)}
-                        </Table.Cell>
-                        <Table.Cell collapsing={true}>
-                            {item.createdAt && (<XDate date={item.createdAt}/>)}
-                        </Table.Cell>
-                        <Table.Cell collapsing={true}>
-                            {item.approvalTime != null && 'in ' + formatDuration(item.approvalTime)}
-                        </Table.Cell>
-                        <Table.Cell collapsing={true}>
-                            {item.type}
-                        </Table.Cell>
-                        <Table.Cell>
-                            {item.description}
-                        </Table.Cell>
-                    </Table.Row>
-                ))}
-            </Table.Body>
-        </Table>
+        <InfiniteListContainer>
+            {props.permits.map((item) => (
+                <XInfiniteListItem key={item.id}>
+                    <div className="x-permit">
+                        <div className="x-permit--in">
+                            <div className="x-permit--id">{item.id}</div>
+                            <div className="x-permit--address">
+                                1222 Harrison St
+                                <div className="x-permit--counter visible-sm visible-md visible-lg"><span>219</span>units</div>
+                            </div>
+                            <div className="x-permit--counter hidden-sm hidden-md hidden-lg"><span>219</span>units</div>
+                            <div className="x-permit--info">
+                                {item.status && <div className="x-permit--status"><PermitStatus status={item.status}/></div>}
+                                {/*item.statusUpdatedAt && (<div className="x-permit--date"><XDate date={item.statusUpdatedAt}/></div>)*/}
+                                {item.createdAt && (<div className="x-permit--date"><XDate date={item.createdAt}/></div>)}
+                                {item.approvalTime != null && (<div className="x-permit--time">Approval time <span>{formatDuration(item.approvalTime)}</span></div>)}
+                            </div>
+                        </div>
+
+                        <div className="x-permit--box">
+                            <div className="x-permit--type">{item.type}</div>
+                            <div className="x-permit--text">{item.description}</div>
+
+                            <XLink path={'/permits/' + item.id} className="x-permit--btn"><span>View details</span></XLink>
+                        </div>
+                    </div>
+                </XInfiniteListItem>
+            ))}
+        </InfiniteListContainer>
     );
 }

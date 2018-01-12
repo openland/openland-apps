@@ -63,9 +63,7 @@ export default withPage(withPermitsPagedQuery((props) => {
                      panes={[
                          {
                              menuItem: 'Records', render: () => (
-                                 <Tab.Pane>
-                                     <PermitsItems data={props.data}/>
-                                 </Tab.Pane>
+                                <PermitsItems data={props.data}/>
                              )
                          },
                          {

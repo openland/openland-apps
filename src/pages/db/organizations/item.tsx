@@ -8,7 +8,7 @@ import { ListOrganizations } from '../../../components/ListOrganizations';
 import { ListProjects } from '../../../components/ListProjects';
 import { XCloudImage } from '../../../components/X/XCloudImage';
 import { XLink } from '../../../components/X/XLink';
-import { XWrap, XWrapBody } from '../../../components/X/XWrap';
+import { XWrap } from '../../../components/X/XWrap';
 import { XRow } from '../../../components/X/XRow';
 
 export default withPage(withOrganizationQuery(withLoader((props) => {
