@@ -20,7 +20,7 @@ export function NavigationHome() {
             <li className="x-header--item"><XLink path="/projects">Construction projects</XLink></li>
             <li className="x-header--item"><XLink path="/organizations">Organizations</XLink></li>
             <li className="x-header--item"><XLink path="/permits">Permits</XLink></li>
-            <li className="x-header--item"><a href="#">About</a></li>
+            {/*<li className="x-header--item"><a href="#">About</a></li>*/}
         </ul>
     );
 }

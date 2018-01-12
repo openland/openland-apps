@@ -37,10 +37,10 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
             </CounterList>
         </Counters>
         <ExploreData title="Explore Our Data">
-            <ExploreDataItem counter={3153} name="Construction projects" photo="//placehold.it/496x120" path="/" />
-            <ExploreDataItem counter={132} name="Developers" photo="//placehold.it/496x120" path="/" />
-            <ExploreDataItem counter={218} name="Contractors" photo="//placehold.it/496x120" path="/" />
-            <ExploreDataItem counter={1512153} name="Permits" photo="//placehold.it/496x120" path="/" />
+            <ExploreDataItem counter={props.data.globalStats.totalProjects} name="Construction projects" photo="//placehold.it/496x120" path="/" />
+            <ExploreDataItem counter={props.data.globalStats.totalDevelopers} name="Developers" photo="//placehold.it/496x120" path="/" />
+            <ExploreDataItem counter={props.data.globalStats.totalConstructors} name="Contractors" photo="//placehold.it/496x120" path="/" />
+            <ExploreDataItem counter={props.data.globalStats.totalPermits} name="Permits" photo="//placehold.it/496x120" path="/" />
         </ExploreData>
         <About title="About San Francisco Housing Analytics" mail="hello@statecraft.one">
             <AboutItem

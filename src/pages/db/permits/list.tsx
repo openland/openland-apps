@@ -79,6 +79,9 @@ export default withPage(withPermitsPagedQuery((props) => {
                 {/*)*/}
                 {/*}*/}
                 {/*]}/>*/}
+                <div className="x-in--title hidden-xs">
+                    <div>{props.data.items.pageInfo.itemsCount}<span>Permits</span></div>
+                </div>
                 <PermitsItems data={props.data}/>
             </DataListContent>
         </DataList>
