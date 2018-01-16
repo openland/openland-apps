@@ -12,6 +12,7 @@ import { XDate } from '../../../components/X/XDate';
 import { Icon } from 'semantic-ui-react';
 import { XDiff } from '../../../components/X/XDiff';
 import { PermitStatus } from '../../../components/PermitStatus';
+import { XColumn } from '../../../components/X/XColumn';
 
 function ChangeRender(props: { change: FieldChanged }) {
     if (props.change.oldValue === null) {
@@ -179,63 +180,18 @@ export default withPage(withPermitQuery((props) => {
                 </XWrap>
 
                 <XRow>
-                    <div className=" col-xs-12 col-md-9">
-                        {/*<XWrap title=" Permit details">*/}
-                        {/*<XWrapBody className=" x-permcard--counters">*/}
-                        {/*<XRow>*/}
-                        {/*<div className=" col-xs-12 col-sm-3">*/}
-                        {/*<div className=" x-permcard--counter">*/}
-                        {/*<span>Mar 28, 2020</span>*/}
-                        {/*Expiration date*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*<div className=" col-xs-12 col-sm-3">*/}
-                        {/*<div className=" x-permcard--counter">*/}
-                        {/*<span>7,000,000</span>*/}
-                        {/*Estimated cost*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*<div className=" col-xs-12 col-sm-3">*/}
-                        {/*<div className=" x-permcard--counter">*/}
-                        {/*<span>11,200,000</span>*/}
-                        {/*Revised cost*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*<div className=" col-xs-12 col-sm-3">*/}
-                        {/*<div className=" x-permcard--counter">*/}
-                        {/*<span>5</span>*/}
-                        {/*Proposed stories*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
-                        {/*</XRow>*/}
-                        {/*</XWrapBody>*/}
-                        {/*</XWrap>*/}
-
+                    <XColumn cols={9} mobile={12}>
                         <XWrap title=" More permits for the address">
                             <ListPermits permits={props.data.permit.relatedPermits} />
                         </XWrap>
-                    </div>
-
+                    </XColumn>
                     {props.data.permit.events.length > 0 && (
-                        <div className=" col-xs-12 col-md-3">
+                        <XColumn cols={3} mobile={12}>
                             <XWrap title=" Permit updates">
                                 <div className=" x-updates">
                                     {props.data.permit.events.map((p, i) => {
                                         if (p.__typename === 'PermitEventStatus') {
                                             let s = (p as StatusChanged);
-                                            // return (
-                                            //     <Table.Row key={'ind_' + i}>
-                                            //         <Table.Cell collapsing={true}>
-                                            //             {s.date}
-                                            //         </Table.Cell>
-                                            //         <Table.Cell collapsing={true}>
-                                            //             Status Changed
-                                            //         </Table.Cell>
-                                            //         <Table.Cell>
-                                            //             {s.oldStatus} -> {s.newStatus}
-                                            //         </Table.Cell>
-                                            //     </Table.Row>
-                                            // );
                                             return (
                                                 <div className=" x-update" key={'update-' + i}>
                                                     <div className=" x-update--date">{s.date}, Status</div>
@@ -260,7 +216,7 @@ export default withPage(withPermitQuery((props) => {
                                     })}
                                 </div>
                             </XWrap>
-                        </div>
+                        </XColumn>
                     )}
                 </XRow>
             </XContainer>
