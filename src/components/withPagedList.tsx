@@ -15,15 +15,6 @@ export function withPagedList<TResult extends { id: string }>(WrappedComponent: 
         if (props.data.items) {
             return (
                 <div>
-                    {/*<div style={{minHeight: 48, paddingBottom: 8}}>*/}
-
-                        {/*{props.filter === true && (*/}
-                            {/*<XFilterInput searchKey="filter"/>*/}
-                        {/*)}*/}
-
-                        {/*<XPaging totalPages={props.data.items.pageInfo.pagesCount}*/}
-                                 {/*currentPage={props.data.items.pageInfo.currentPage}/>*/}
-                    {/*</div>*/}
                     <div style={{position: 'relative'}}>
                         <Dimmer active={props.data.loading} inverted={true}>
                             <Loader inverted={true} content="Loading"/>
@@ -46,12 +37,6 @@ export function withPagedList<TResult extends { id: string }>(WrappedComponent: 
         } else {
             return (
                 <div>
-                    <div style={{minHeight: 48, paddingBottom: 8}}>
-                        {props.filter === true && (
-                            <XFilterInput searchKey="filter"/>
-                        )}
-                        <XPaging totalPages={0} currentPage={0}/>
-                    </div>
                     <div style={{position: 'relative'}}>
                         <Dimmer active={props.data.loading} inverted={true}>
                             <Loader inverted={true} content="Loading"/>
