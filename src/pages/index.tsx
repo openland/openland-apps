@@ -28,9 +28,9 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                 </IntroTitle>
                 <IntroCols>
                     <IntroCol title="Insights">
-                        <IntroLink title="Housing forecast 2017-2018" path="/" />
-                        <IntroLink title="Building permit approval times" path="/" />
-                        <IntroLink title="Building permits volume" path="/" />
+                        <IntroLink title="Housing forecast 2017-2018" anchor="#housing" />
+                        <IntroLink title="Building permit approval times" anchor="#approval" />
+                        <IntroLink title="Building permits volume" anchor="#volume" />
                     </IntroCol>
                     <IntroCol title="Data">
                         <IntroLink counter={props.data.globalStats.totalPermits} label="Permits" path="/permits" />
@@ -43,7 +43,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                 </IntroBox>
             </Intro>
 
-            <Counters title="Housing forecast 2017-2018">
+            <Counters id="housing" title="Housing forecast 2017-2018">
                 <CountersCols>
                     <CountersText
                         title="Housing production is facing a severe downturn"
@@ -63,7 +63,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                 </CountersList>
             </Counters>
 
-            <Counters title="Building permit approval times">
+            <Counters id="approval" title="Building permit approval times">
                 <CountersCols>
                     <CountersText
                         title="Approval times differ wildly"
@@ -87,7 +87,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                 </CountersList>
             </Counters>
 
-            <Trends title="Building permits volume">
+            <Trends id="volume" title="Building permits volume">
                 <TrendsItem>
                     <TrendsChart>
                         <XBarChart data={props.data.permitsUnitsFiledStats} stacked={true} />

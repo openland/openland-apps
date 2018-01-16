@@ -73,9 +73,9 @@ export function CountersText(props: {title?: string, text?: string }) {
     );
 }
 
-export function Counters(props: {title?: string, children: any }) {
+export function Counters(props: {id?: string, title?: string, children: any }) {
     return (
-        <div className="x-counters">
+        <div className="x-counters" id={props.id}>
             <XContainer wide={true}>
                 <div className="x-counters--title">
                     {props.title}

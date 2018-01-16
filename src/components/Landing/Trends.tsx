@@ -35,9 +35,9 @@ export function TrendsItem(props: {children: any }) {
     );
 }
 
-export function Trends(props: { title: string, children: any }) {
+export function Trends(props: { id?: string, title: string, children: any }) {
     return (
-        <div className="x-trends">
+        <div className="x-trends" id={props.id}>
             <XContainer wide={true}>
                 <div className="x-trends--title">
                     {props.title}

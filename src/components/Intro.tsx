@@ -64,12 +64,12 @@ export function IntroCol(props: { title?: string, children?: any }) {
     );
 }
 
-export function IntroLink(props: { counter?: number, label?: string, title?: string, path?: string, href?: string }) {
+export function IntroLink(props: { counter?: number, label?: string, title?: string, path?: string, href?: string, anchor?: string }) {
     return (
         <div className="x-intro--item">
-            {props.title && (<XLink path={props.path} href={props.href} className="x-intro--link">{props.title}</XLink>)}
+            {props.title && (<XLink path={props.path} href={props.href} anchor={props.anchor} className="x-intro--link">{props.title}</XLink>)}
 
-            {props.counter && (<XLink path={props.path} href={props.href} className="x-intro--link">
+            {props.counter && (<XLink path={props.path} href={props.href} anchor={props.anchor} className="x-intro--link">
                 {props.counter.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1,')}
                 {' ' + props.label}
             </XLink>)}

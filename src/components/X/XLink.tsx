@@ -11,7 +11,7 @@ function normalizePath(src: string): string {
     return src.endsWith('/') ? src.substring(0, src.length - 1) : src;
 }
 
-const LinkRender = withRouter<{ path?: string, href?: string, className?: string, children?: any, writeAccess?: boolean }>((props) => {
+const LinkRender = withRouter<{ path?: string, href?: string, anchor?: string, className?: string, children?: any, writeAccess?: boolean }>((props) => {
     var className = props.className;
 
     if (props.path) {
@@ -27,6 +27,10 @@ const LinkRender = withRouter<{ path?: string, href?: string, className?: string
                 <a className={className}>{props.children}</a>
             </LinkNext>
         );
+    } else if (props.anchor) {
+        return (
+            <a href={props.anchor} className={className}>{props.children}</a>
+        );
     } else {
         return (
             <a href={props.href} className={className} target="_blank">{props.children}</a>
@@ -34,12 +38,12 @@ const LinkRender = withRouter<{ path?: string, href?: string, className?: string
     }
 });
 
-export const XLink = withRouter<{ path?: string, href?: string, query?: { field: string, value?: string }, className?: string, children?: any, writeAccess?: boolean }>(withUserInfo((props) => {
+export const XLink = withRouter<{ path?: string, href?: string, anchor?: string, query?: { field: string, value?: string }, className?: string, children?: any, writeAccess?: boolean }>(withUserInfo((props) => {
     if (props.writeAccess !== true || props.account.writeAccess) {
         if (props.path) {
             return <LinkRender path={resolveActionPath(props)} className={props.className} children={props.children} />;
         } else {
-            return <LinkRender href={props.href} className={props.className} children={props.children} />;
+            return <LinkRender href={props.href} anchor={props.anchor} className={props.className} children={props.children} />;
         }
     } else {
         return null;
