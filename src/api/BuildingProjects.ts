@@ -5,6 +5,7 @@ import { Organization } from './Organizations';
 import { Picture } from './Picture';
 import { Geo } from './Geo';
 import { Permit } from './Permits';
+import { Chart } from './Chart';
 
 const BuildingProjectsStatsQuery = gql`
     query buildingProjectStats {
@@ -161,9 +162,6 @@ export interface BuildingProjectsStats {
     year2018NewUnitsVerified: number;
     fastestApprovalProject: BuildingProject;
     slowestApprovalProject: BuildingProject;
-    permitsUnitsFiledStats: Chart;
-    permitsUnitsIssuedStats: Chart;
-    permitsUnitsCompletedStats: Chart;
 }
 
 export interface GlobalStats {
@@ -350,6 +348,11 @@ const BuildingProjectsQuery = gql`
 export const withBuildingProjectsQuery = graphqlList<BuildingProject, BuildingProjectsQueryStats>(
     BuildingProjectsQuery,
     ['cursor', 'minUnits', 'year', 'filter']);
-export const withBuildingProjectsStats = graphqlRouted<{ stats: BuildingProjectsStats, globalStats: GlobalStats }>(BuildingProjectsStatsQuery, []);
+export const withBuildingProjectsStats = graphqlRouted<{
+    stats: BuildingProjectsStats, globalStats: GlobalStats,
+    permitsUnitsFiledStats: Chart,
+    permitsUnitsIssuedStats: Chart,
+    permitsUnitsCompletedStats: Chart
+}>(BuildingProjectsStatsQuery, []);
 
 export const withBuildingProjectQuery = graphqlRouted<{ project: BuildingProject }>(BuildingProjectQuery, ['projectId']);
