@@ -1647,8 +1647,11 @@ body {
 	box-shadow: 0 13px 26px 0 fade(@side, 7);
 	padding: 21px 32px 22px;
 
-	@media @media-xs-only { margin: 0 0 24px; }
-	@media @media-sm-only {
+	@media @media-xs-only {
+		margin: 0 0 24px;
+	}
+
+	@media @media-xs-sm {
 		padding: 20px 24px;
 	}
 
@@ -1659,7 +1662,7 @@ body {
 
 		.position (relative);
 
-		@media @media-sm-only {
+		@media @media-xs-sm {
 			margin: -20px -24px 20px;
 		}
 
@@ -1699,7 +1702,7 @@ body {
 
 		.font (15px, 20px, 500);
 
-		@media @media-sm-only {
+		@media @media-xs-md {
 			.font (13px, 20px);
 		}
 
@@ -1710,7 +1713,7 @@ body {
 			.display (inline-block);
 			.font (15px, 20px);
 
-			@media @media-sm-md {
+			@media @media-xs-md {
 				.font (13px, 20px);
 			}
 		}

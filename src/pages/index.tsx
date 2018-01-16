@@ -82,7 +82,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                                 address={fastest.name} path={'/projects/' + fastest.slug}
                                 caption="Construction project details"/>
                     <CountersItem counter={377} label="days"
-                                name="Median approval time" photo={fastest.preview}
+                                name="Median approval time" photo={{url: '/static/img/median-time.png', retina: '/static/img/median-time@2x.png 2x'}}
                                 path="/permits" caption="Browse permits by approval time"/>
                 </CountersList>
             </Counters>
