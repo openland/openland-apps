@@ -98,7 +98,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                 </TrendsItem>
                 <TrendsItem>
                     <TrendsChart>
-                        <XBarChart data={props.data.permitsUnitsFiledStats} maxY={9000} stacked={true} />
+                        <XBarChart data={props.data.permitsUnitsFiledStats} maxY={9000} defaultColor="#FAA61F" stacked={true} />
                     </TrendsChart>
                     <TrendsText title="2016 was a record year for new permit applications">
                         <p>However, year-to-year variation is high and the 2017 year saw significantly reduced volume of applications. To meet mayor’s goal in housing production, permit filings volume needs to stay high consistently for several years.</p>

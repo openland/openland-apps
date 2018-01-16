@@ -5,7 +5,7 @@ import { canUseDOM } from '../../utils/environment';
 
 let colors = ['#8884d8', '#82ca9d'];
 
-export class XBarChart extends React.Component<{ data: Chart, maxY?: number, minY?: number, stacked?: boolean }> {
+export class XBarChart extends React.Component<{ data: Chart, defaultColor?: string, maxY?: number, minY?: number, stacked?: boolean }> {
 
     render() {
         if (!canUseDOM) {
@@ -30,7 +30,7 @@ export class XBarChart extends React.Component<{ data: Chart, maxY?: number, min
                     {this.props.data.datasets.map((v, i) => (
                         <Bar key={'item-' + i}
                              dataKey={'item-' + i}
-                             fill={colors[i]}
+                             fill={(this.props.defaultColor) ? this.props.defaultColor : colors[i]}
                              name={v.label}
                              stackId={this.props.stacked === true ? 'someStackId' : undefined}
                              label={false}
