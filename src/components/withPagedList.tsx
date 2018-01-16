@@ -2,7 +2,6 @@ import { ListQueryPagedData } from '../utils/graphqlList';
 import * as React from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { XPaging } from './X/XPaging';
-import { XFilterInput } from './X/XFilterInput';
 
 export function withPagedList<TResult extends { id: string }>(WrappedComponent: React.ComponentType<{
     items: TResult[],
