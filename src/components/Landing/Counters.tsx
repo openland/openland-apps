@@ -1,40 +1,46 @@
 import * as React from 'react';
 import { XLink } from '../X/XLink';
+import { XContainer } from '../X/XContainer';
 
-export function CounterItem(props: {
+export function CountersItem(props: {
     counter: number | string,
     label?: string,
     name: string,
     photo?: { url: string, retina: string },
     address?: string,
-    path?: string
-    url?: string
+    path?: string,
+    href?: string,
+    caption?: string
 }) {
     return (
         <div className="col-xs-12 col-sm-4">
             <div className="x-counter">
+                {props.photo !== undefined &&
+                    <div className="x-counter--photo">
+                        {props.address !== undefined && <div className="x-counter--address">{props.address}</div>}
+
+                        <img src={props.photo.url} srcSet={props.photo.retina}/>
+                    </div>}
+                
                 <div className="x-counter--in">
                     <div className="x-counter--count">
                         {props.counter}
-
-                        {props.label !== undefined && <span>{props.label}</span>}
+                        {props.label !== undefined && (<span>{props.label}</span>)}
                     </div>
-                    <div className="x-counter--name">{props.name}</div>
+                    <div className="x-counter--name">
+                        {props.name}
+                    </div>
                 </div>
 
-                {props.photo !== undefined &&
-                <div className="x-counter--photo">
-                    <img src={props.photo.url} srcSet={props.photo.retina}/></div>}
-                {props.address !== undefined && <div className="x-counter--address">{props.address}</div>}
-
-                {props.path && <XLink path={props.path} className="x-counter--link">Details</XLink>}
-                {props.url && <a href={props.url} className="x-counter--link" target="_blank">Details</a>}
+                <XLink path={props.path} href={props.href} className="x-counter--link">
+                    {props.caption}
+                </XLink>
             </div>
         </div>
     );
 }
 
-export function CounterList(props: { children: any }) {
+export function CountersList(props: { children: any }) {
     return (
         <div className="x-counters--in">
             <div className="row sm-gutter-16">
@@ -44,50 +50,37 @@ export function CounterList(props: { children: any }) {
     );
 }
 
-export class Counters extends React.Component<{ title: string, times?: boolean, insights?: any, methodology?: any, children: any }, { isShown: boolean }> {
-    constructor(props: { title: string, times?: boolean, insights: any, methodology: any, children: any }) {
-        super(props);
+export function CountersCols(props: { children: any }) {
+    return (
+        <div className="x-counters--cols">
+            {props.children}
+        </div>
+    );
+}
 
-        this.state = {
-            isShown: false
-        };
-    }
-
-    render() {
-        return (
-            <div className={'x-counters' + (this.props.times === true ? ' is-times' : '')}>
-                <div className="x-container">
-
-                    <div className="x-counters--head">
-                        <div className="x-counters--title">{this.props.title}</div>
-                        {this.props.methodology !== undefined && this.props.insights !== undefined && (
-                            <div className="x-counters--btn">
-                                <a href="#" className="x-btn is-outline is-block" onClick={(e) => {
-                                    e.preventDefault();
-                                    this.setState({isShown: !this.state.isShown});
-                                }}>Insights and Methodolodgy</a>
-                            </div>
-                        )}
-                    </div>
-
-                    {this.props.methodology !== undefined && this.props.insights !== undefined && (
-                        <div className={'x-counters--more' + (this.state.isShown ? ' is-shown' : '')}>
-                            <div className="row">
-                                <div className="col-xs-12 col-sm-6">
-                                    <div className="x-counters--stitle">Insights</div>
-                                    <div className="x-counters--text">{this.props.insights}</div>
-                                </div>
-                                <div className="col-xs-12 col-sm-6">
-                                    <div className="x-counters--stitle">Methodology</div>
-                                    <div className="x-counters--text">{this.props.methodology}</div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {this.props.children}
-                </div>
+export function CountersText(props: {title?: string, text?: string }) {
+    return (
+        <div className="x-counters--col">
+            <div className="x-counters--stitle">
+                {props.title}
             </div>
-        );
-    }
+            <div className="x-counters--text">
+                {props.text}
+            </div>
+        </div>
+    );
+}
+
+export function Counters(props: {title?: string, children: any }) {
+    return (
+        <div className="x-counters">
+            <XContainer wide={true}>
+                <div className="x-counters--title">
+                    {props.title}
+                </div>
+
+                {props.children}
+            </XContainer>
+        </div>
+    );
 }
