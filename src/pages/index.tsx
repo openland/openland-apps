@@ -109,7 +109,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
             <About title="About Us" mail="hello@statecraft.one">
                 <AboutItem
                     title="Creators"
-                    text="This housing analytics portal is developed by [Statecraft](https://statecraft.one/), an urban analytics company based in San Francisco. We hope to significantly expand in near future, with data coverage for opportunity sites, affordable housing, and recently adopted policies."
+                    text="This housing analytics portal is developed by [Statecraft](https://statecraft.one/), an urban analytics company based in San Francisco. We hope to significantly expand our analysis in near future, with insights for affordable housing, inclusionary requirements, development incentives, and opportunity sites."
                 />
                 <AboutItem
                     title="Data sources"
