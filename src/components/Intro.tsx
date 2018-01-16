@@ -4,7 +4,6 @@ import { XContainer } from './X/XContainer';
 import { XLink } from './X/XLink';
 import { Header } from './Header';
 import { XRow } from './X/XRow';
-import { XColumn } from './X/XColumn';
 
 export class Intro extends React.Component<{ children: any }, { isShown: boolean }> {
     constructor(props: { children: any }) {
@@ -56,12 +55,12 @@ export function IntroCols(props: { children?: any }) {
 
 export function IntroCol(props: { title?: string, children?: any }) {
     return (
-        <XColumn cols={6} mobile={12}>
+        <div className="col-xs-12 col-sm-6">
             <div className="x-intro--stitle">{props.title}</div>
             <div className="x-intro--links">
                 {props.children}
             </div>
-        </XColumn>
+        </div>
     );
 }
 

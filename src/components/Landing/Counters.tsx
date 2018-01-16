@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XLink } from '../X/XLink';
 import { XContainer } from '../X/XContainer';
 import { XRow } from '../X/XRow';
-import { XColumn } from '../X/XColumn';
 
 export function CountersItem(props: {
     counter: number | string,
@@ -16,28 +15,27 @@ export function CountersItem(props: {
 }) {
     return (
         <div className="col-xs-12 col-sm-4">
-            <div className="x-counter">
+            <XLink path={props.path} href={props.href} className="x-counter">
                 {props.photo !== undefined &&
                     <div className="x-counter--photo">
                         {props.address !== undefined && <div className="x-counter--address">{props.address}</div>}
 
                         <img src={props.photo.url} srcSet={props.photo.retina}/>
                     </div>}
-                
-                <div className="x-counter--in">
-                    <div className="x-counter--count">
-                        {props.counter}
-                        {props.label !== undefined && (<span>{props.label}</span>)}
-                    </div>
-                    <div className="x-counter--name">
-                        {props.name}
-                    </div>
+
+                <div className="x-counter--count">
+                    {props.counter}
+                    {props.label !== undefined && (<span>{props.label}</span>)}
                 </div>
 
-                <XLink path={props.path} href={props.href} className="x-counter--link">
+                <div className="x-counter--name">
+                    {props.name}
+                </div>
+
+                <div className="x-counter--link">
                     {props.caption}
-                </XLink>
-            </div>
+                </div>
+            </XLink>
         </div>
     );
 }
@@ -64,14 +62,14 @@ export function CountersCols(props: { children: any }) {
 
 export function CountersText(props: {title?: string, text?: string }) {
     return (
-        <XColumn cols={5} mobile={12}>
+        <div className="col-xs-12 col-sm-6 col-xlg-5">
             <div className="x-counters--stitle">
                 {props.title}
             </div>
             <div className="x-counters--text">
                 {props.text}
             </div>
-        </XColumn>
+        </div>
     );
 }
 

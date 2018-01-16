@@ -8,18 +8,20 @@ export class Footer extends React.Component {
         return (
             <div className="x-footer">
                 <XContainer wide={true} clearfix={true}>
-                    <div className="x-footer--title">
-                        <div className="x-footer--logo">
-                            <img src="/static/img/logotype.svg" alt=""/>
+                    <div className="x-footer--in">
+                        <div className="x-footer--title">
+                            <div className="x-footer--logo">
+                                <img src="/static/img/logotype.svg" alt=""/>
+                            </div>
+
+                            <div className="x-footer--city">San Francisco</div>
                         </div>
 
-                        <div className="x-footer--city">San Francisco</div>
-                    </div>
+                        <NavigationFooter />
 
-                    <NavigationFooter />
-
-                    <div className="x-footer--box">
-                        <IntroForm />
+                        <div className="x-footer--box">
+                            <IntroForm />
+                        </div>
                     </div>
                 </XContainer>
             </div>
