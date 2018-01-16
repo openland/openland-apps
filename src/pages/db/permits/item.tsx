@@ -13,6 +13,7 @@ import { Icon } from 'semantic-ui-react';
 import { XDiff } from '../../../components/X/XDiff';
 import { PermitStatus } from '../../../components/PermitStatus';
 import { XColumn } from '../../../components/X/XColumn';
+import { withLoader } from '../../../components/withLoader';
 
 function ChangeRender(props: { change: FieldChanged }) {
     if (props.change.oldValue === null) {
@@ -28,7 +29,7 @@ function ChangeRender(props: { change: FieldChanged }) {
     }
 }
 
-export default withPage(withPermitQuery((props) => {
+export default withPage(withPermitQuery(withLoader((props) => {
 
     let progress = 1;
     let filedDate = <span>TBD</span>;
@@ -222,4 +223,4 @@ export default withPage(withPermitQuery((props) => {
             </XContainer>
         </div>
     );
-}));
+})));

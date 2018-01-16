@@ -1,23 +1,22 @@
 import * as React from 'react';
 import { QueryProps } from 'react-apollo';
 import { Loader } from './Loaders';
+import Error from 'next/error';
 
-export function withLoader<P>(WrappedComponent: React.ComponentType<P>): React.ComponentType<{ data: QueryProps } & P> {
+export function withLoader<P extends { data: QueryProps }>(WrappedComponent: React.ComponentType<P>): React.ComponentType<P> {
     return function (props: { data: QueryProps } & P) {
         if (props.data.loading) {
             return (
-                <Loader/>
+                <Loader />
             );
         } else if (props.data.error != null) {
             return (
-                <div key="_message">
-                    {props.data.error.message}
-                </div>
+                <Error key="_message" statusCode={500} />
             );
         }
 
         return (
-            <WrappedComponent {...props} key="_component"/>
+            <WrappedComponent {...props} key="_component" />
         );
     };
 }

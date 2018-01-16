@@ -7,9 +7,10 @@ import {
     DataListSearch
 } from '../../../components/DataList';
 import { withPagedList } from '../../../components/withPagedList';
+import { withLoader } from '../../../components/withLoader';
 
 const PermitsItems = withPagedList<Permit>((props) => <ListPermits permits={props.items} />);
-export default withPage(withPermitsPagedQuery((props) => {
+export default withPage(withPermitsPagedQuery(withLoader((props) => {
     return (
         <DataList>
             <DataListFilters title="Building Permits">
@@ -53,4 +54,4 @@ export default withPage(withPermitsPagedQuery((props) => {
             </DataListContent>
         </DataList>
     );
-}));
+})));

@@ -9,6 +9,7 @@ import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch
 } from '../../../components/DataList';
+import { withLoader } from '../../../components/withLoader';
 
 const AddForm = withOrganizationAddMutation((props) => {
     return (
@@ -22,7 +23,7 @@ const AddForm = withOrganizationAddMutation((props) => {
     );
 });
 
-export default withPage(withOrganizationsQuery((props) => {
+export default withPage(withOrganizationsQuery(withLoader((props) => {
 
     let data = props.data.organizations;
     if (props.router.query!!.type === 'developer') {
@@ -110,4 +111,4 @@ export default withPage(withOrganizationsQuery((props) => {
             </DataListContent>
         </DataList>
     );
-}));
+})));
