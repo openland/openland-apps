@@ -3,6 +3,8 @@ import { withRouter } from '../utils/withRouter';
 import { XContainer } from './X/XContainer';
 import { XLink } from './X/XLink';
 import { Header } from './Header';
+import { XRow } from './X/XRow';
+import { XColumn } from './X/XColumn';
 
 export class Intro extends React.Component<{ children: any }, { isShown: boolean }> {
     constructor(props: { children: any }) {
@@ -16,7 +18,7 @@ export class Intro extends React.Component<{ children: any }, { isShown: boolean
     render() {
         return (
             <div className="x-intro">
-                <Header home={true} />
+                <Header hero={true} />
 
                 <XContainer wide={true}>
                     <div className="x-intro--wrap">
@@ -45,27 +47,30 @@ export function IntroTitle(props: { title?: string, children?: any }) {
 export function IntroCols(props: { children?: any }) {
     return (
         <div className="x-intro--cols">
-            {props.children}
+            <XRow>
+                {props.children}
+            </XRow>
         </div>
     );
 }
 
 export function IntroCol(props: { title?: string, children?: any }) {
     return (
-        <div className="x-intro--col">
-            <div className="x-intro--ctitle">{props.title}</div>
-
-            {props.children}
-        </div>
+        <XColumn cols={6} mobile={12}>
+            <div className="x-intro--stitle">{props.title}</div>
+            <div className="x-intro--links">
+                {props.children}
+            </div>
+        </XColumn>
     );
 }
 
 export function IntroLink(props: { counter?: number, label?: string, title?: string, path?: string, href?: string }) {
     return (
-        <div className="x-intro--link">
-            {props.title && (<XLink path={props.path} href={props.href}>{props.title}</XLink>)}
+        <div className="x-intro--item">
+            {props.title && (<XLink path={props.path} href={props.href} className="x-intro--link">{props.title}</XLink>)}
 
-            {props.counter && (<XLink path={props.path} href={props.href}>
+            {props.counter && (<XLink path={props.path} href={props.href} className="x-intro--link">
                 {props.counter.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1,')}
                 {' ' + props.label}
             </XLink>)}

@@ -27,12 +27,10 @@ const LinkRender = withRouter<{ path?: string, href?: string, className?: string
                 <a className={className}>{props.children}</a>
             </LinkNext>
         );
-    } else if (props.href) {
+    } else {
         return (
             <a href={props.href} className={className} target="_blank">{props.children}</a>
         );
-    } else {
-        return null;
     }
 });
 
@@ -40,10 +38,8 @@ export const XLink = withRouter<{ path?: string, href?: string, query?: { field:
     if (props.writeAccess !== true || props.account.writeAccess) {
         if (props.path) {
             return <LinkRender path={resolveActionPath(props)} className={props.className} children={props.children} />;
-        } else if (props.href) {
-            return <LinkRender href={props.href} className={props.className} children={props.children} />;
         } else {
-            return null;
+            return <LinkRender href={props.href} className={props.className} children={props.children} />;
         }
     } else {
         return null;
