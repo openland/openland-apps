@@ -2023,10 +2023,8 @@ body {
 
 		@media @media-xs-only {
 			float: none;
-			margin: 0 auto;
+			padding: 15px 0 0;
 			border: none;
-			border-bottom: 2px solid @purple-1;
-			text-align: center;
 		}
 	}
 
@@ -2036,10 +2034,6 @@ body {
 		img {
 			.display (block);
 			.size (91px, 17px);
-
-			@media @media-xs-only {
-				margin: 0 auto;
-			}
 		}
 	}
 
@@ -2047,10 +2041,6 @@ body {
 		padding: 0 0 0 14px;
 
 		.font (14px, 20px, 500);
-
-		@media @media-xs-only {
-			padding: 0;
-		}
 	}
 
 	&--nav {
@@ -2071,19 +2061,14 @@ body {
 		float: left;
 
 		.clearfix ();
-
-		@media @media-xs-only {
-			float: none;
-			text-align: center;
-
-			.size (auto)!important;
-		}
 		
 		&:nth-child(1) { .size (180px);
+			@media @media-xs-only { .size (60%); }
 			@media @media-md-only { .size (170px); }
 		}
 
 		&:nth-child(2) { .size (126px);
+			@media @media-xs-only { .size (40%); }
 			@media @media-md-only { .size (100px); }
 		}
 
