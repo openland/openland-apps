@@ -18,7 +18,35 @@ const StatsQuery = gql`
                 values
             }
         }
+        permitsUnitsFiledStats: permitsUnitsFiledStats {
+            labels
+            datasets {
+                label
+                values
+            }
+        }
+        permitsUnitsIssuedStats: permitsUnitsIssuedStats {
+            labels
+            datasets {
+                label
+                values
+            }   
+        }
+        permitsUnitsCompletedStats: permitsUnitsCompletedStats {
+            labels
+            datasets {
+                label
+                values
+            }   
+        }
+
     }
 `;
 
-export const withStatsQuery = graphqlRouted<{ permitsApprovalStats: Chart, permitsApprovalUnits: Chart }>(StatsQuery, []);
+export const withStatsQuery = graphqlRouted<{
+    permitsApprovalStats: Chart,
+    permitsApprovalUnits: Chart,
+    permitsUnitsFiledStats: Chart,
+    permitsUnitsIssuedStats: Chart,
+    permitsUnitsCompletedStats: Chart
+}>(StatsQuery, []);

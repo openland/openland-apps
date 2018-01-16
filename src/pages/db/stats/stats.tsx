@@ -12,15 +12,36 @@ export default withPage(withStatsQuery((props) => {
                 <Header attached="top">
                     Approval Times Distribution (2007+, new_construction)
                 </Header>
-                <Segment>
+                <Segment attached="bottom">
                     <XBarChart data={props.data.permitsApprovalStats} stacked={true}/>
                 </Segment>
 
                 <Header attached="top">
                     Approved Units by Year
                 </Header>
-                <Segment>
+                <Segment attached="bottom">
                     <XBarChart data={props.data.permitsApprovalUnits} stacked={true}/>
+                </Segment>
+
+                <Header attached="top">
+                    Issued Units by Year
+                </Header>
+                <Segment attached="bottom">
+                    <XBarChart data={props.data.permitsUnitsIssuedStats} stacked={true}/>
+                </Segment>
+
+                <Header attached="top">
+                    Filed Units by Year
+                </Header>
+                <Segment attached="bottom">
+                    <XBarChart data={props.data.permitsUnitsFiledStats} stacked={true}/>
+                </Segment>
+
+                <Header attached="top">
+                    Completed Units by Year
+                </Header>
+                <Segment attached="bottom">
+                    <XBarChart data={props.data.permitsUnitsCompletedStats} stacked={true}/>
                 </Segment>
             </XContainer>
         </div>
