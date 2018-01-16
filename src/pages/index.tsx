@@ -59,7 +59,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                         path="/projects?year=2018" caption="Explore projects" />
                     <CountersItem counter={5000} name="Mayor’s annual target"
                         href="https://medium.com/@mayoredlee/making-a-more-affordable-san-francisco-f1ff3bae0d86"
-                        caption="Read an article" />
+                        caption="Read Mayor’s announcement" />
                 </CountersList>
             </Counters>
 
@@ -83,14 +83,14 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                                 caption="Construction project details"/>
                     <CountersItem counter={377} label="days"
                                 name="Median approval time" photo={fastest.preview}
-                                path="/" caption="Learn more"/>
+                                path="/permits" caption="Browse permits by approval time"/>
                 </CountersList>
             </Counters>
 
             <Trends id="volume" title="Building permits volume">
                 <TrendsItem>
                     <TrendsChart>
-                        <XBarChart data={props.data.permitsUnitsFiledStats} stacked={true} />
+                        <XBarChart data={props.data.permitsUnitsIssuedStats} maxY={9000} stacked={true} />
                     </TrendsChart>
                     <TrendsText title="Issued permits offer a glimpse of future supply">
                         <p>The last four years demonstrate a stable level of ~3000 housing units permitted per year. That gives little hope for meeting mayor’s annual target of 5000 units in near future.</p>
@@ -98,7 +98,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                 </TrendsItem>
                 <TrendsItem>
                     <TrendsChart>
-                        <XBarChart data={props.data.permitsUnitsIssuedStats} stacked={true} />
+                        <XBarChart data={props.data.permitsUnitsFiledStats} maxY={9000} stacked={true} />
                     </TrendsChart>
                     <TrendsText title="2016 was a record year for new permit applications">
                         <p>However, year-to-year variation is high and the 2017 year saw significantly reduced volume of applications. To meet mayor’s goal in housing production, permit filings volume needs to stay high consistently for several years.</p>
@@ -113,7 +113,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                 />
                 <AboutItem
                     title="Data sources"
-                    text="Our database was initially populated from [San Francisco Open Data](https://datasf.org/) portal. Further details such as expected completion dates are collected by our community of contributors from developer websites, press, and satellite images."
+                    text="Our database was initially populated from [San Francisco Open Data](https://datasf.org/) portal. Additional information is collected by volunteer contributors from publicly available sources such as developer websites. Statecraft is currently testing new tools to allow all stakeholders to correct and expand individual records."
                 />
             </About>
 
