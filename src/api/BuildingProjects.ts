@@ -8,6 +8,27 @@ import { Permit } from './Permits';
 
 const BuildingProjectsStatsQuery = gql`
     query buildingProjectStats {
+        permitsUnitsFiledStats: permitsUnitsFiledStats {
+            labels
+            datasets {
+                label
+                values
+            }
+        }
+        permitsUnitsIssuedStats: permitsUnitsIssuedStats {
+            labels
+            datasets {
+                label
+                values
+            }   
+        }
+        permitsUnitsCompletedStats: permitsUnitsCompletedStats {
+            labels
+            datasets {
+                label
+                values
+            }   
+        }
         globalStats: globalStats {
             totalProjects
             totalDevelopers
@@ -140,6 +161,9 @@ export interface BuildingProjectsStats {
     year2018NewUnitsVerified: number;
     fastestApprovalProject: BuildingProject;
     slowestApprovalProject: BuildingProject;
+    permitsUnitsFiledStats: Chart;
+    permitsUnitsIssuedStats: Chart;
+    permitsUnitsCompletedStats: Chart;
 }
 
 export interface GlobalStats {
