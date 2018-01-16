@@ -72,32 +72,30 @@ export const PipelineItems = withInfiniteList<BuildingProject>(items => {
 
 export default withPage(withBuildingProjectsQuery((props) => {
     return (
-        <React.Fragment>
-            <DataList>
-                <DataListFilters title="Construction projects">
-                    <DataListSearch searchKey="filter"/>
-                    <DataListRadio radioKey="year" title="Expected completion">
-                        <DataListRadioItem title="All"/>
-                        <DataListRadioItem title="2017" itemKey="2017"/>
-                        <DataListRadioItem title="2018" itemKey="2018"/>
-                        <DataListRadioItem title="2019+" itemKey="2019+"/>
-                    </DataListRadio>
-                    <DataListRadio radioKey="minUnits" title="Project size">
-                        <DataListRadioItem title="All"/>
-                        <DataListRadioItem title="10+ units" itemKey="10"/>
-                    </DataListRadio>
-                    <DataListInvite/>
-                </DataListFilters>
-                <DataListContent title="Pipeline">
-                    <DataListContentStats
-                        totalProjects={props.data.items ? props.data.items.stats.totalProjects : 0}
-                        totalProjectsVerified={props.data.items ? props.data.items.stats.totalProjectsVerified : 0}
-                        newUnits={props.data.items ? props.data.items.stats.newUnits : 0}
-                        newUnitsVerified={props.data.items ? props.data.items.stats.newUnitsVerified : 0}
-                    />
-                    <PipelineItems data={props.data}/>
-                </DataListContent>
-            </DataList>
-        </React.Fragment>
+        <DataList>
+            <DataListFilters title="Construction projects">
+                <DataListSearch searchKey="filter" />
+                <DataListRadio radioKey="year" title="Expected completion">
+                    <DataListRadioItem title="All" />
+                    <DataListRadioItem title="2017" itemKey="2017" />
+                    <DataListRadioItem title="2018" itemKey="2018" />
+                    <DataListRadioItem title="2019+" itemKey="2019+" />
+                </DataListRadio>
+                <DataListRadio radioKey="minUnits" title="Project size">
+                    <DataListRadioItem title="All" />
+                    <DataListRadioItem title="10+ units" itemKey="10" />
+                </DataListRadio>
+                <DataListInvite />
+            </DataListFilters>
+            <DataListContent title="Pipeline">
+                <DataListContentStats
+                    totalProjects={props.data.items ? props.data.items.stats.totalProjects : 0}
+                    totalProjectsVerified={props.data.items ? props.data.items.stats.totalProjectsVerified : 0}
+                    newUnits={props.data.items ? props.data.items.stats.newUnits : 0}
+                    newUnitsVerified={props.data.items ? props.data.items.stats.newUnitsVerified : 0}
+                />
+                <PipelineItems data={props.data} />
+            </DataListContent>
+        </DataList>
     );
 }));

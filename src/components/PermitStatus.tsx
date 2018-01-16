@@ -19,9 +19,6 @@ import * as React from 'react';
 // GRANTED
 // APPEAL
 
-
-
-
 // ICON LIST:
 // appealed
 // canceled

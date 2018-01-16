@@ -9,15 +9,14 @@ import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch
 } from '../../../components/DataList';
-import { Footer } from '../../../components/Footer';
 
 const AddForm = withOrganizationAddMutation((props) => {
     return (
         <XForm mutate={props.add}>
             <XFormGroup>
-                <XFormField name="slug" hint="Short Name"/>
-                <XFormField name="title" hint="Name of developer"/>
-                <XFormSubmit title="Add Developer"/>
+                <XFormField name="slug" hint="Short Name" />
+                <XFormField name="title" hint="Name of developer" />
+                <XFormSubmit title="Add Developer" />
             </XFormGroup>
         </XForm>
     );
@@ -38,80 +37,77 @@ export default withPage(withOrganizationsQuery((props) => {
         }
     }
     return (
-        <>
-            <DataList>
-                <DataListFilters title="Organizations">
-                    <DataListSearch searchKey="filter"/>
-                    <DataListRadio radioKey="type" title="Organization Type">
-                        <DataListRadioItem title="All"/>
-                        <DataListRadioItem title="Developers" itemKey="developer"/>
-                        <DataListRadioItem title="Contractors" itemKey="constructor"/>
-                    </DataListRadio>
+        <DataList>
+            <DataListFilters title="Organizations">
+                <DataListSearch searchKey="filter" />
+                <DataListRadio radioKey="type" title="Organization Type">
+                    <DataListRadioItem title="All" />
+                    <DataListRadioItem title="Developers" itemKey="developer" />
+                    <DataListRadioItem title="Contractors" itemKey="constructor" />
+                </DataListRadio>
 
-                    {/*<div className="x-join hidden-xs hidden-sm">*/}
-                    {/*<div className="x-join--btn">*/}
-                    {/*<a className="x-btn is-block is-outline" target="_blank" href="#">Add an organization</a>*/}
-                    {/*</div>*/}
-                    {/*</div>*/}
-                </DataListFilters>
-                <DataListContent title="organizations">
-                    <XWriteAcces>
-                        <AddForm/>
-                        <br/>
-                    </XWriteAcces>
+                {/*<div className="x-join hidden-xs hidden-sm">*/}
+                {/*<div className="x-join--btn">*/}
+                {/*<a className="x-btn is-block is-outline" target="_blank" href="#">Add an organization</a>*/}
+                {/*</div>*/}
+                {/*</div>*/}
+            </DataListFilters>
+            <DataListContent title="organizations">
+                <XWriteAcces>
+                    <AddForm />
+                    <br />
+                </XWriteAcces>
 
-                    <div className="x-in--title hidden-xs">
-                        <div>{data.length}<span>organizations</span></div>
-                    </div>
+                <div className="x-in--title hidden-xs">
+                    <div>{data.length}<span>organizations</span></div>
+                </div>
 
-                    <InfiniteListContainer>
-                        {data.map(p => {
-                            let subtitle = undefined;
-                            if (p.isDeveloper) {
-                                if (p.isConstructor) {
-                                    subtitle = 'Developer and Contractor';
-                                } else {
-                                    subtitle = 'Developer';
-                                }
+                <InfiniteListContainer>
+                    {data.map(p => {
+                        let subtitle = undefined;
+                        if (p.isDeveloper) {
+                            if (p.isConstructor) {
+                                subtitle = 'Developer and Contractor';
                             } else {
-                                subtitle = 'Contractor';
+                                subtitle = 'Developer';
                             }
+                        } else {
+                            subtitle = 'Contractor';
+                        }
 
-                            let project = null;
-                            if (p.developerIn && p.developerIn.length > 0) {
-                                project = p.developerIn!![0];
-                            } else if (p.constructorIn && p.constructorIn.length > 0) {
-                                project = p.constructorIn!![0];
-                            }
+                        let project = null;
+                        if (p.developerIn && p.developerIn.length > 0) {
+                            project = p.developerIn!![0];
+                        } else if (p.constructorIn && p.constructorIn.length > 0) {
+                            project = p.constructorIn!![0];
+                        }
 
-                            let featured = undefined;
-                            if (project !== null) {
-                                featured = {
-                                    title: project.name,
-                                    url: '/projects/' + project.slug,
-                                    picture: project.preview
-                                };
-                            }
+                        let featured = undefined;
+                        if (project !== null) {
+                            featured = {
+                                title: project.name,
+                                url: '/projects/' + project.slug,
+                                picture: project.preview
+                            };
+                        }
 
-                            return (
-                                <XInfiniteListItem key={p.id}>
-                                    <OrganizationDataListCard
-                                        slug={p.slug}
-                                        title={p.title}
-                                        profile={'/organizations/' + p.slug}
-                                        logo={p.logo}
-                                        url={p.url}
-                                        subtitle={subtitle}
-                                        projects={p.constructorIn!!.length + p.developerIn!!.length}
-                                        featuredProject={featured}
-                                    />
-                                </XInfiniteListItem>
-                            );
-                        })}
-                    </InfiniteListContainer>
-                </DataListContent>
-            </DataList>
-            <Footer/>
-        </>
+                        return (
+                            <XInfiniteListItem key={p.id}>
+                                <OrganizationDataListCard
+                                    slug={p.slug}
+                                    title={p.title}
+                                    profile={'/organizations/' + p.slug}
+                                    logo={p.logo}
+                                    url={p.url}
+                                    subtitle={subtitle}
+                                    projects={p.constructorIn!!.length + p.developerIn!!.length}
+                                    featuredProject={featured}
+                                />
+                            </XInfiniteListItem>
+                        );
+                    })}
+                </InfiniteListContainer>
+            </DataListContent>
+        </DataList>
     );
 }));

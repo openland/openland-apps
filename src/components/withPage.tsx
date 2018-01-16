@@ -8,6 +8,7 @@ import { PageContainer } from './PageContainer';
 import { Loader } from './Loaders';
 import '../utils/routing';
 import { Header } from './Header';
+import { Footer } from './Footer';
 
 //
 // Root Loader. We shouldn't render anything untill page is loaded since we have global progress indicator.
@@ -16,15 +17,15 @@ import { Header } from './Header';
 function withRootLoader<P>(WrappedComponent: React.ComponentType<P>): React.ComponentType<{ data: QueryProps } & P> {
     return function (props: { data: QueryProps } & P) {
         if (props.data.loading) {
-            return <Loader key="__loader"/>;
+            return <Loader key="__loader" />;
         } else if (props.data.error != null) {
             return (
-                <Error key="_message" statusCode={500}/>
+                <Error key="_message" statusCode={500} />
             );
         }
 
         return (
-            <WrappedComponent {...props} key="_component"/>
+            <WrappedComponent {...props} key="_component" />
         );
     };
 }
@@ -37,8 +38,9 @@ export function withPage(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAccountQuery(withRootLoader((props) => (
         <UserInfoProvider user={props.data.me} account={props.data.account} router={props.router}>
             <PageContainer>
-                <Header/>
-                <WrappedComponent/>
+                <Header />
+                <WrappedComponent />
+                <Footer />
             </PageContainer>
         </UserInfoProvider>
     ))));
@@ -48,7 +50,7 @@ export function withLandingPage(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAccountQuery(withRootLoader((props) => (
         <UserInfoProvider user={props.data.me} account={props.data.account} router={props.router}>
             <PageContainer>
-                <WrappedComponent/>
+                <WrappedComponent />
             </PageContainer>
         </UserInfoProvider>
     ))));
