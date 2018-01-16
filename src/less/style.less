@@ -2050,7 +2050,7 @@ body {
 		.clearfix ();
 
 		@media @media-xs-only {
-			padding: 30px 0 19px;
+			padding: 25px 0;
 		}
 	}
 
@@ -2074,12 +2074,22 @@ body {
 
 		li {
 			margin: 0 0 11px;
+
+			@media @media-xs-only {
+				margin: 0;
+			}
 		}
 
 		a {
 			color: @white;
 
 			.font (14px, 20px, 500);
+
+			@media @media-xs-only {
+				padding: 8px 0;
+
+				.display (block);
+			}
 		}
 	}
 
