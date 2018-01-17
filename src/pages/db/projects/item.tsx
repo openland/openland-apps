@@ -47,12 +47,13 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
                                 <div className="x-project--tools">
                                     <div className="x-project--counters">
                                         <div className="x-project--counter">
-                                            <span>{props.data.project.extrasYearEnd}</span>Expected completion
-                                            </div>
+                                            <span>{props.data.project.extrasYearEnd}</span>
+                                            Expected completion
+                                        </div>
                                         <div className="x-project--counter">
-                                            <span>{props.data.project.proposedUnits!! - props.data.project.existingUnits!!}</span>Net
-                                                units
-                                            </div>
+                                            <span>{props.data.project.proposedUnits!! - props.data.project.existingUnits!!}</span>
+                                            Net units
+                                        </div>
                                         {/*<div className="x-project--counter"><span>Rent</span>Building type</div>*/}
                                     </div>
 
@@ -72,22 +73,16 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
                     <XColumn cols={4} mobile={12}>
                         <XWrap>
                             <div className="x-project--box">
-                                {map &&
-                                    <div className="x-project--map" style={{ backgroundImage: 'url(' + map + ')' }} />}
-
-                                {/*<div className="x-project--map no-photo"/>*/}
+                                {map && <div className="x-project--map" style={{ backgroundImage: 'url(' + map + ')' }} />}
+                                {!map && <div className="x-project--map no-photo" />}
 
                                 <div className="x-project--links">
                                     {props.data.project.extrasUrl && (
-                                        <a href={props.data.project.extrasUrl}
-                                            className="x-project--link">Website</a>
+                                        <XLink href={props.data.project.extrasUrl} className="x-project--link">Website</XLink>
                                     )}
-                                    {/*{props.data.project.extrasUrl && (*/}
-                                    {/*<a href={props.data.project.extrasUrl}*/}
-                                    {/*className="x-project--link">Website</a>*/}
-                                    {/*)}*/}
-                                    {/*<a href="#" className="x-project--social"><i className="icon-inst"/></a>*/}
-                                    {/*<a href="#" className="x-project--social"><i className="icon-fb-o"/></a>*/}
+
+                                    {/*<XLink href="#" className="x-project--social"><i className="icon-inst"/></XLink>*/}
+                                    {/*<XLink href="#" className="x-project--social"><i className="icon-fb-o"/></XLink>*/}
                                 </div>
                             </div>
                         </XWrap>

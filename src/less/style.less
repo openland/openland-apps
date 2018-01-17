@@ -3596,8 +3596,6 @@ body {
 	}
 
 	&--title {
-		margin: 0 0 5px;
-
 		.font (0);
 	}
 
@@ -3645,12 +3643,14 @@ body {
 		letter-spacing: 0.6px;
 		text-transform: uppercase;
 		color: #262626;
-		margin: 0 0 21px;
+		margin: 5px 0 0;
 
 		.font (11px, 16px);
 	}
 
 	&--text {
+		margin: 21px 0 0;
+
 		.font (14px, 20px);
 	}
 
@@ -3731,8 +3731,11 @@ body {
 		background: center center no-repeat;
 		background-size: cover;
 
-		.size (auto, 384px);
+		.size (auto, 478px);
 		.position (relative);
+
+		@media @media-md-only { .size (auto, 363px); }
+		@media @media-lg-only { .size (auto, 402px); }
 
 		&:before {
 			content: "";
@@ -3751,7 +3754,7 @@ body {
 	}
 
 	&--links {
-		padding: 18px 15px 16px 24px;
+		padding: 0 15px 0 24px;
 
 		.clearfix ();
 	}
@@ -3759,7 +3762,7 @@ body {
 	&--link {
 		float: left;
 		color: @purple-1!important;
-		padding: 8px 0;
+		padding: 26px 0 24px;
 
 		.display (block);
 		.font (16px, 28px);
@@ -3779,6 +3782,7 @@ body {
 		float: right;
 		color: @purple-1!important;
 		text-align: center;
+		margin: 18px 0 16px;
 
 		.display (block);
 		.size (44px, 44px);
