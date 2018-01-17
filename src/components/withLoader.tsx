@@ -5,7 +5,8 @@ import Error from 'next/error';
 
 export function withLoader<P extends { data: QueryProps }>(WrappedComponent: React.ComponentType<P>): React.ComponentType<P> {
     return function (props: { data: QueryProps } & P) {
-        if (props.data.loading) {
+        console.warn(props.data);
+        if (props.data.loading && props.data.networkStatus === 1) {
             return (
                 <Loader />
             );

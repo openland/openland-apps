@@ -1,33 +1,63 @@
 import * as React from 'react';
-import { withRouter } from '../../utils/withRouter';
+import { withRouter, RouterState } from '../../utils/withRouter';
 import * as qs from 'query-string';
+import { ChangeEvent } from 'react';
 
-export const XFilterInput = withRouter<{ searchKey: string, placeholder?: string, className?: string }>((props) => {
-    let s = JSON.parse(JSON.stringify(props.router.query!!));
-    var value: string = '';
-    if (s[props.searchKey]) {
-        value = s[props.searchKey];
+type XFilterInputFieldProps = { searchKey: string, placeholder?: string, className?: string, router: RouterState };
+
+class XFilterInputField extends React.Component<XFilterInputFieldProps, { value: string }> {
+
+    timeout: number | null = null;
+
+    constructor(props: XFilterInputFieldProps, context?: any) {
+        super(props, context);
+        let s = JSON.parse(JSON.stringify(this.props.router.query!!));
+        var value: string = '';
+        if (s[this.props.searchKey]) {
+            value = s[this.props.searchKey];
+        }
+        this.state = { value: value }
     }
-    return (
-        <input
-            className={props.className}
-            type="text"
-            placeholder={props.placeholder}
-            value={value}
-            onChange={e => {
-                let s2 = JSON.parse(JSON.stringify(props.router.query!!));
-                if (e.target.value === '') {
-                    delete s2[props.searchKey];
-                } else {
-                    s2[props.searchKey] = e.target.value;
-                }
-                let q = qs.stringify(s2);
-                if (q !== '') {
-                    props.router.replace(props.router.pathname + '?' + q);
-                } else {
-                    props.router.replace(props.router.pathname);
-                }
-            }}
-        />
-    );
-});
+
+    resetTimeout() {
+        if (this.timeout !== null) {
+            window.clearTimeout(this.timeout);
+            this.timeout = null;
+        }
+    }
+
+    handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        this.setState({ value: e.target.value })
+
+        let s2 = JSON.parse(JSON.stringify(this.props.router.query!!));
+        if (e.target.value === '') {
+            delete s2[this.props.searchKey];
+        } else {
+            s2[this.props.searchKey] = e.target.value;
+        }
+        let q = qs.stringify(s2);
+
+        let path = q !== '' ? this.props.router.pathname + '?' + q : this.props.router.pathname;
+
+        this.resetTimeout()
+        this.timeout = window.setTimeout(() => { this.props.router.replace(path); }, 20)
+    }
+
+    render() {
+        return (
+            <input
+                className={this.props.className}
+                type="text"
+                placeholder={this.props.placeholder}
+                value={this.state.value}
+                onChange={this.handleChange}
+            />
+        );
+    }
+
+    componentWillUnmount() {
+        this.resetTimeout()
+    }
+}
+
+export const XFilterInput = withRouter<{ searchKey: string, placeholder?: string, className?: string }>(XFilterInputField);
