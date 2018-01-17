@@ -10,6 +10,7 @@ import {
     DataListRadioItem, DataListSearch
 } from '../../../components/DataList';
 import { withLoader } from '../../../components/withLoader';
+import Head from 'next/head';
 
 const AddForm = withOrganizationAddMutation((props) => {
     return (
@@ -39,6 +40,11 @@ export default withPage(withOrganizationsQuery(withLoader((props) => {
     }
     return (
         <DataList>
+            <Head>
+                <title>Statecraft » San Francisco » Organizations</title>
+                <meta property="og:title" content="Statecraft » San Francisco » Organizations" />
+            </Head>
+
             <DataListFilters title="Organizations">
                 <DataListSearch searchKey="filter" />
                 <DataListRadio radioKey="type" title="Organization Type">
