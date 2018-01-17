@@ -34,6 +34,7 @@ const BuildingProjectsStatsQuery = gql`
             totalProjects
             totalDevelopers
             totalConstructors
+            totalOrganizations
             totalPermits
         }
         stats: buildingProjectsStats {
@@ -169,6 +170,7 @@ export interface GlobalStats {
     totalDevelopers: number;
     totalConstructors: number;
     totalPermits: number;
+    totalOrganizations: number;
 }
 
 export interface BuildingProject {

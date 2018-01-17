@@ -35,7 +35,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                     <IntroCol title="Data">
                         <IntroLink counter={props.data.globalStats.totalPermits} label="Permits" path="/permits" />
                         <IntroLink counter={props.data.globalStats.totalProjects} label="Construction projects" path="/projects" />
-                        <IntroLink counter={props.data.globalStats.totalDevelopers + props.data.globalStats.totalConstructors} label="Organizations" path="/organizations" />
+                        <IntroLink counter={props.data.globalStats.totalOrganizations} label="Organizations" path="/organizations" />
                     </IntroCol>
                 </IntroCols>
                 <IntroBox>
