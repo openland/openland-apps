@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XLink } from '../X/XLink';
 import { XContainer } from '../X/XContainer';
-import { XRow } from '../X/XRow';
 
 export function CountersItem(props: {
     counter: number | string,
@@ -53,16 +52,16 @@ export function CountersList(props: { children: any }) {
 export function CountersCols(props: { children: any }) {
     return (
         <div className="x-counters--cols">
-            <XRow>
+            <div className="row lg-gutter-70">
                 {props.children}
-            </XRow>
+            </div>
         </div>
     );
 }
 
 export function CountersText(props: {title?: string, text?: string }) {
     return (
-        <div className="col-xs-12 col-sm-6 col-xlg-5">
+        <div className="col-xs-12 col-sm-6">
             <div className="x-counters--stitle">
                 {props.title}
             </div>

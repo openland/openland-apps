@@ -102,6 +102,15 @@ body {
 			}
 		}
 	}
+
+	@media @media-lg {
+		&.lg-gutter-70 { margin: 0 -35px;
+			& > * {
+				padding-left: 35px;
+				padding-right: 35px;
+			}
+		}
+	}
 }
 
 // --------
@@ -1379,12 +1388,12 @@ body {
 	}
 
 	&--signin {
-		padding: 13px 0;
+		padding: 15px 0;
 
 		> * {
 			text-decoration: none;
 			color: @white!important;
-			padding: 8px 14px;
+			padding: 6px 14px;
 			background: #192743;
 			border: 1px solid @white;
 			border-radius: 4px;

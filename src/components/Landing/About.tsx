@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { XMarkdown } from '../X/XMarkdown';
 import { XContainer } from '../X/XContainer';
+import { XRow } from '../X/XRow';
 
 export function AboutItem(props: { title: string, text: string }) {
     return (
@@ -18,10 +19,13 @@ export function About(props: { title: string, mail: string, children: any }) {
     return (
         <div className="x-about">
             <XContainer wide={true}>
-                <div className="x-about--title">{props.title}</div>
-                <div className="row">
-                    {props.children}
+                <div className="x-about--title">
+                    {props.title}
                 </div>
+
+                <XRow>
+                    {props.children}
+                </XRow>
 
                 <div className="x-about--contacts">
                     <span>Get in touch</span>
