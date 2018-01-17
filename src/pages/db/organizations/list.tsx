@@ -32,6 +32,16 @@ export default withPage(withOrganizationsQuery(withLoader((props) => {
     } else if (props.router.query!!.type === 'constructor') {
         data = data.filter((v) => v.isConstructor);
     }
+    data = data.slice(0).sort((a, b) => {
+        let ac = a.constructorIn!!.length + a.developerIn!!.length;
+        let bc = b.constructorIn!!.length + b.developerIn!!.length;
+        if (ac < bc) {
+            return 1;
+        } else if (ac > bc) {
+            return -1;
+        }
+        return a.title.localeCompare(b.title)
+    });
     if (props.router.query!!.filter) {
         let q = (props.router.query!!.filter as string).trim().toLowerCase();
         if (q.length > 0) {
