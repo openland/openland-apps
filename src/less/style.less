@@ -2529,6 +2529,7 @@ body {
 
 		.position-tl (absolute, -1px, -1px);
 		.size (244px, 164px);
+		.display (block);
 
 		&.no-photo { background: #e8e7ec url(../img/no-photo.png) center center no-repeat; }
 
@@ -2539,6 +2540,11 @@ body {
 
 		@media @media-sm-md {
 			.size (200px, 164px);
+		}
+
+		a {
+			.display (block);
+			.position (absolute, 0, 0, 0, 0);
 		}
 	}
 

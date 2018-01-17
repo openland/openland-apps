@@ -33,20 +33,21 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
             <div
                 className={'x-card' + (this.props.picture ? '' : ' without-photo') + (this.props.verified ? ' is-checked' : '') + (this.state.expanded ? ' is-expanded' : '')}>
                 {this.props.picture && (<div className="x-card--photo"
-                                             style={{backgroundImage: `url(${this.props.picture.retina})`}}>{}</div>)}
-                {!this.props.picture && (<div className="x-card--photo no-photo">{}</div>)}
+                                             style={{backgroundImage: `url(${this.props.picture.retina})`}}><XLink path={'/projects/' + this.props.slug} /></div>)}
+                {!this.props.picture && (<div className="x-card--photo no-photo"><XLink path={'/projects/' + this.props.slug} /></div>)}
 
                 <div className="x-card--info">
                     <div className="x-card--box">
-                        <div className="x-card--title">{this.props.title}</div>
+                        <div className="x-card--title"><XLink path={'/projects/' + this.props.slug}>{this.props.title}</XLink></div>
                         {this.props.subtitle && (<div className="x-card--text">{this.props.subtitle}</div>)}
                     </div>
 
                     {this.props.url && (
                         <div className="x-card--btns">
-                            {this.props.url && (<a className="x-card--btn" href={this.props.url} target="_blank"><i
-                                className="icon-share">{}</i></a>)}
-                            {/* <a className="x-card--btn" href="#"><i className="icon-edit">{}</i></a> */}
+                            {this.props.url && (<XLink className="x-card--btn" href={this.props.url}>
+                                    <i className="icon-share">{}</i>
+                                </XLink>)}
+                            {/* <XLink className="x-card--btn" path="#"><i className="icon-edit">{}</i></XLink> */}
                         </div>
                     )}
                 </div>
