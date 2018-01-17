@@ -54,18 +54,18 @@ export default withPage(withOrganizationQuery(withLoader((props) => {
 
                         <div className="x-dev--links">
                             {props.data.organization.url && (
-                                <a href={props.data.organization.url} className="x-dev--link">Website</a>)}
+                                <XLink href={props.data.organization.url} className="x-dev--link">Website</XLink>)}
 
                             <div className="x-dev--socials">
                                 {props.data.organization.facebook && (
-                                    <a href={props.data.organization.facebook} className="x-dev--social"><i
-                                        className="icon-fb-o" /></a>)}
+                                    <XLink href={props.data.organization.facebook} className="x-dev--social"><i
+                                        className="icon-fb-o" /></XLink>)}
                                 {props.data.organization.linkedin && (
-                                    <a href={props.data.organization.linkedin} className="x-dev--social"><i
-                                        className="icon-lin" /></a>)}
+                                    <XLink href={props.data.organization.linkedin} className="x-dev--social"><i
+                                        className="icon-lin" /></XLink>)}
                                 {props.data.organization.twitter && (
-                                    <a href={props.data.organization.twitter} className="x-dev--social"><i
-                                        className="icon-tw" /></a>)}
+                                    <XLink href={props.data.organization.twitter} className="x-dev--social"><i
+                                        className="icon-tw" /></XLink>)}
                             </div>
                         </div>
                     </div>
