@@ -15,41 +15,38 @@ export function ListPermits(props: { permits: Permit[]; hideCounter?: boolean })
                 <XInfiniteListItem key={item.id}>
                     <div className="x-permit">
                         <div className="x-permit--in">
-                            <div className="x-permit--id">{item.id}</div>
-                            <div className="x-permit--address">
+                            <XLink path={'/permits/' + item.id} className="x-permit--id">
+                                {item.id}
+                            </XLink>
+
+                            <div className="x-permit--keys">
                                 {item.streetNumbers!!.length > 0 && (
-                                    item.streetNumbers!![0].streetNumber + (item.streetNumbers!![0].streetNumberSuffix ? item.streetNumbers!![0].streetNumberSuffix!! : '') +
-                                    ' ' + item.streetNumbers!![0].streetName + (item.streetNumbers!![0].streetNameSuffix ? ' ' + item.streetNumbers!![0].streetNameSuffix : '')
+                                    <div className="x-permcard--key">
+                                        <span>
+                                            {item.streetNumbers!![0].streetNumber + (item.streetNumbers!![0].streetNumberSuffix ? item.streetNumbers!![0].streetNumberSuffix!! : '') +
+                                                ' ' + item.streetNumbers!![0].streetName + (item.streetNumbers!![0].streetNameSuffix ? ' ' + item.streetNumbers!![0].streetNameSuffix : '')}
+                                        </span>
+                                        Address
+                                    </div>
                                 )}
 
-                                {!props.hideCounter && (<div className="x-permit--counter visible-sm visible-md visible-lg">
-                                    {item.proposedUnits && (<span><XCounter value={item.proposedUnits!!}
-                                                                            oldValue={item.existingUnits}/></span>)}
-                                    {item.proposedUnits && 'units'}
-                                </div>)}
+                                {item.proposedUnits && (
+                                    <div className="x-permcard--key">
+                                        <span><XCounter value={item.proposedUnits!!} oldValue={item.existingUnits} /></span>
+                                        Units
+                                    </div>
+                                )}
+
+                                {item.approvalTime != null && (
+                                    <div className="x-permcard--key">
+                                        <span>{formatDuration(item.approvalTime)}</span>
+                                        Approval time
+                                    </div>
+                                )}
                             </div>
 
-                            {!props.hideCounter && (<div className="x-permit--counter hidden-sm hidden-md hidden-lg">
-                                {item.proposedUnits && (
-                                    <span><XCounter value={item.proposedUnits!!}
-                                                    oldValue={item.existingUnits}/></span>
-                                )}
-                                {item.proposedUnits && 'units'}
-                            </div>)}
-
-                            <div className="x-permit--info">
-                                <div className="x-permit--wrap">
-                                    {item.status &&
-                                    <div className="x-permit--status"><PermitStatus status={item.status}/></div>}
-                                    {/*item.statusUpdatedAt && (<div className="x-permit--date"><XDate date={item.statusUpdatedAt}/></div>)*/}
-                                    {item.statusUpdatedAt && (
-                                        <div className="x-permit--date">
-                                            <XDate date={item.statusUpdatedAt} format={'date'}/>
-                                        </div>
-                                    )}
-                                    {item.approvalTime != null && (<div className="x-permit--time">Approval
-                                        time <span>{formatDuration(item.approvalTime)}</span></div>)}
-                                </div>
+                            <div className="x-permit--wrap">
+                                {item.status && <PermitStatus status={item.status} date={item.statusUpdatedAt} />}
                             </div>
                         </div>
 

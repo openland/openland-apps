@@ -7,12 +7,12 @@ import { XRow } from '../../../components/X/XRow';
 import { ListPermits } from '../../../components/ListPermits';
 import { PermitType } from '../../../components/PermitType';
 import { XCounter } from '../../../components/X/XCounter';
+import { XLink } from '../../../components/X/XLink';
 import { formatDuration } from '../../../utils/date';
 import { XDate } from '../../../components/X/XDate';
 import { Icon } from 'semantic-ui-react';
 import { XDiff } from '../../../components/X/XDiff';
 import { PermitStatus } from '../../../components/PermitStatus';
-import { XColumn } from '../../../components/X/XColumn';
 import { withLoader } from '../../../components/withLoader';
 
 function ChangeRender(props: { change: FieldChanged }) {
@@ -85,140 +85,144 @@ export default withPage(withPermitQuery(withLoader((props) => {
         let streetNumber = props.data.permit.streetNumbers!![0];
         let address = streetNumber.streetNumber + '' + (streetNumber.streetNumberSuffix ? streetNumber.streetNumberSuffix!! : '') +
             ' ' + streetNumber.streetName + (streetNumber.streetNameSuffix ? ' ' + streetNumber.streetNameSuffix!! : '') + ', San Francisco, CA, USA';
-        map = 'https://maps.googleapis.com/maps/api/staticmap?center=' + encodeURIComponent(address) + '&zoom=18&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
+        map = 'https://maps.googleapis.com/maps/api/staticmap?center=' + encodeURIComponent(address) + '&zoom=18&size=640x640&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
     }
 
     return (
         <div className="x-in">
+            <div className="x-bigmap" />
+
             <XContainer wide={true}>
-                <XWrap>
-                    <XRow>
-                        <div className="col-xs-12 col-md-9">
+                <XRow>
+                    <div className="col-xs-12 col-xlg-10 col-xlg-offset-l-1">
+                        <XWrap>
                             <div className="x-permcard">
                                 <div className="x-permcard--in">
-                                    <XRow>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div className="x-permcard--id">{props.data.permit.id}</div>
-                                        </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div
-                                                className="x-permcard--key">{props.data.permit.streetNumbers!!.length > 0 && (
-                                                    <span>
-                                                        {props.data.permit.streetNumbers!![0].streetNumber + (props.data.permit.streetNumbers!![0].streetNumberSuffix ? props.data.permit.streetNumbers!![0].streetNumberSuffix!! : '') +
-                                                            ' ' + props.data.permit.streetNumbers!![0].streetName + (props.data.permit.streetNumbers!![0].streetNameSuffix ? ' ' + props.data.permit.streetNumbers!![0].streetNameSuffix : '')}
-                                                    </span>
-                                                )}
+                                    <div className="x-permcard--id">
+                                        {props.data.permit.id}
+                                    </div>
+
+                                    <div className="x-permcard--keys">
+                                        {props.data.permit.streetNumbers!!.length > 0 && (
+                                            <div className="x-permcard--key">
+                                                <span>
+                                                    {props.data.permit.streetNumbers!![0].streetNumber + (props.data.permit.streetNumbers!![0].streetNumberSuffix ? props.data.permit.streetNumbers!![0].streetNumberSuffix!! : '') +
+                                                        ' ' + props.data.permit.streetNumbers!![0].streetName + (props.data.permit.streetNumbers!![0].streetNameSuffix ? ' ' + props.data.permit.streetNumbers!![0].streetNameSuffix : '')}
+                                                </span>
+                                                Address
                                             </div>
-                                        </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            {props.data.permit.proposedUnits && (
-                                                <><span><XCounter value={props.data.permit.proposedUnits!!}
-                                                    oldValue={props.data.permit.existingUnits} /></span> units</>
-                                            )}
-                                        </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            {props.data.permit.approvalTime != null && (
-                                                <div className="x-permcard--key">Approval
-                                                        time <span>{formatDuration(props.data.permit.approvalTime)}</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </XRow>
+                                        )}
+
+                                        {props.data.permit.proposedUnits && (
+                                            <div className="x-permcard--key">
+                                                <span><XCounter value={props.data.permit.proposedUnits!!} oldValue={props.data.permit.existingUnits} /></span>
+                                                Units
+                                            </div>
+                                        )}
+
+                                        {props.data.permit.approvalTime != null && (
+                                            <div className="x-permcard--key">
+                                                <span>{formatDuration(props.data.permit.approvalTime)}</span>
+                                                Approval time
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <XLink href={props.data.permit.governmentalUrl} className="x-permcard--btn">
+                                        <span>
+                                            <i className="icon-share" />
+                                            SF DBI Record
+                                        </span>
+                                    </XLink>
                                 </div>
 
                                 <div className="x-permcard--box">
-                                    <div className="x-permcard--col">
-                                        <div className="x-permcard--type"><PermitType
-                                            type={props.data.permit.type!!} />
-                                        </div>
+                                    <div className="x-permcard--type">
+                                        <PermitType type={props.data.permit.type!!} />
                                     </div>
-                                    <div className="x-permcard--col">
-                                        <div className="x-permcard--text">{props.data.permit.description}</div>
-                                    </div>
-                                    <div className="x-permcard--col">
-                                        <a href={props.data.permit.governmentalUrl} target="_blank"
-                                            className="x-permcard--btn"><span><i
-                                                className="icon-share" />SF DBI Record</span></a>
+
+                                    <div className="x-permcard--text">
+                                        {props.data.permit.description}
                                     </div>
                                 </div>
 
                                 <div className="x-permcard--dates">
-                                    <XRow>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div className="x-permcard--label">Key dates</div>
+                                    <div className="x-permcard--date">
+                                        <div className="x-permcard--status">
+                                            <i className="icon-filed" />
+                                            <span>{filedDate}</span>
+                                            Filed
                                         </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div className="x-permcard--status"><span>{filedDate}</span>Filed</div>
+                                    </div>
+
+                                    <div className="x-permcard--date">
+                                        <div className={'x-permcard--status' + (progress < 2 ? ' is-disabled' : '')}>
+                                            <i className="icon-issued" />
+                                            <span>{issuedDate}</span>
+                                            Issued
                                         </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div
-                                                className={'x-permcard--status' + (progress < 2 ? ' is-disabled' : '')}>
-                                                <span>{issuedDate}</span>Issued
-                                                </div>
+                                    </div>
+                                    
+                                    <div className="x-permcard--date">
+                                        <div className={'x-permcard--status' + (progress < 3 ? ' is-disabled' : '')}>
+                                            <i className="icon-completed" />
+                                            <span>{completedDate}</span>
+                                            {completedTitle}
                                         </div>
-                                        <div className="col-xs-12 col-sm-3">
-                                            <div
-                                                className={'x-permcard--status' + (progress < 3 ? ' is-disabled' : '')}>
-                                                <span>{completedDate}</span>{completedTitle}
-                                            </div>
-                                        </div>
-                                    </XRow>
+                                    </div>
                                 </div>
 
                                 <div className={'x-permcard--progress' + (' is-s' + progress)} />
-
-                                {/*<div className=" x-permcard--progress is-s1" />*/}
-                                {/*<div className=" x-permcard--progress is-s3" />*/}
                             </div>
-                        </div>
+                        </XWrap>
 
-                        <div className=" col-xs-12 col-md-3 hidden-xs hidden-sm">
-                            <div className=" x-permcard--map"
-                                style={{ backgroundImage: 'url(' + map + ')' }} />
-                            {/*<div className=" x-permcard--map no-photo" />*/}
-                        </div>
-                    </XRow>
-                </XWrap>
+                        {props.data.permit.events.length > 0 && (
+                            <XWrap title="Permit updates">
+                                <table className="x-updates">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Field</th>
+                                            <th>Change</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {props.data.permit.events.map((p, i) => {
+                                            if (p.__typename === 'PermitEventStatus') {
+                                                let s = (p as StatusChanged);
+                                                return (
+                                                    <tr key={'update-' + i}>
+                                                        <td>{s.date}</td>
+                                                        <td>Status</td>
+                                                        <td>
+                                                            <PermitStatus status={s.oldStatus} /><span className="x-updates--change">-></span><PermitStatus status={s.newStatus} />
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            } else if (p.__typename === 'PermitEventFieldChanged') {
+                                                let s = (p as FieldChanged);
+                                                return (
+                                                    <tr key={'update-' + i}>
+                                                        <td>{s.date}</td>
+                                                        <td>{s.fieldName}</td>
+                                                        <td>
+                                                            <ChangeRender change={s} />
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            } else {
+                                                return null;
+                                            }
+                                        })}
+                                    </tbody>
+                                </table>
+                            </XWrap>
+                        )}
 
-                <XRow>
-                    <XColumn cols={9} mobile={12}>
-                        <XWrap title=" More permits for the address">
+                        <XWrap title="More permits for the address">
                             <ListPermits permits={props.data.permit.relatedPermits} />
                         </XWrap>
-                    </XColumn>
-                    {props.data.permit.events.length > 0 && (
-                        <XColumn cols={3} mobile={12}>
-                            <XWrap title=" Permit updates">
-                                <div className=" x-updates">
-                                    {props.data.permit.events.map((p, i) => {
-                                        if (p.__typename === 'PermitEventStatus') {
-                                            let s = (p as StatusChanged);
-                                            return (
-                                                <div className=" x-update" key={'update-' + i}>
-                                                    <div className=" x-update--date">{s.date}, Status</div>
-                                                    <div className=" x-update--text"><PermitStatus
-                                                        status={s.oldStatus} /> -> <PermitStatus
-                                                            status={s.newStatus} />
-                                                    </div>
-                                                </div>
-                                            );
-                                        } else if (p.__typename === 'PermitEventFieldChanged') {
-                                            let s = (p as FieldChanged);
-                                            return (
-                                                <div className=" x-update" key={'update-' + i}>
-                                                    <div className=" x-update--date">{s.date}, {s.fieldName}</div>
-                                                    <div className=" x-update--text"><ChangeRender change={s} />
-                                                    </div>
-                                                </div>
-                                            );
-                                        } else {
-                                            return null;
-                                        }
-                                    })}
-                                </div>
-                            </XWrap>
-                        </XColumn>
-                    )}
+                    </div>
                 </XRow>
             </XContainer>
         </div>

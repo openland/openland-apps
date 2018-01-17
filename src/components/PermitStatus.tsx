@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XDate } from './X/XDate';
 // FILING
 // FILED
 // ISSUED
@@ -29,7 +30,7 @@ import * as React from 'react';
 // suspended
 // withdrawn
 
-export function PermitStatus(props: { status: string }) {
+export function PermitStatus(props: { status: string, date?: string }) {
 
     var icon: string = 'question';
 
@@ -179,5 +180,22 @@ export function PermitStatus(props: { status: string }) {
         }
     }
 
-    return <span><i className={'icon-' + icon}/>{text}</span>;
+    return (
+        <>
+            {props.date && (
+                <div className="x-permit--status">
+                    <i className={'icon-' + icon} />
+                    <span><XDate date={props.date} format={'date'} /></span>
+                    {text}
+                </div>
+            )}
+
+            {!props.date && (
+                <div className="x-permit--status no-date">
+                    <i className={'icon-' + icon} />
+                    {text}
+                </div>
+            )}
+        </>
+    );
 }
