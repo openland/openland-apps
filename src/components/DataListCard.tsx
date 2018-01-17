@@ -133,8 +133,7 @@ export class OrganizationDataListCard extends React.Component<OrganizationListCa
                 </div>
 
                 <div className="x-card--tools">
-                    {this.props.projects !== undefined &&
-                    <div className="x-card--counter"><span>{this.props.projects || '?'}</span>recent projects</div>}
+                    {(this.props.projects !== undefined) && ((this.props.projects > 0) && (<div className="x-card--counter"><span>{this.props.projects}</span>recent projects</div>))}
 
                     {this.props.featuredProject && (
                         <XLink path={this.props.featuredProject.url}
