@@ -3240,11 +3240,15 @@ body {
 	}
 
 	&--wrap {
-		padding: 23px 32px 20px 0;
+		padding: 23px 20px 20px 0;
+
+		.size (170px);
 
 		@media @media-xs-only {
 			border-top: 1px solid fade(@text-sf, 8);
 			padding: 15px;
+
+			.size (auto);
 		}
 	}
 }
