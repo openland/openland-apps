@@ -1213,12 +1213,27 @@ body {
 	&--wrap {
 		.display (flex);
 		.size (auto, 64px);
+
+		@media @media-xs-only {
+			.display (block);
+		}
 	}
 
 	&--logo {
 		margin: 19px 0 0;
 
 		.display (block);
+		.size (205px);
+
+		@media @media-xs-only {
+			float: left;
+
+			.size (auto);
+		}
+
+		@media @media-sm-only {
+			.size (160px);
+		}
 
 		&:hover { opacity: 0.6; }
 		img {
@@ -1236,6 +1251,17 @@ body {
 
 		.display (block);
 		.font (14px, 20px, 700);
+		.size (205px);
+
+		@media @media-xs-only {
+			float: left;
+
+			.size (auto);
+		}
+
+		@media @media-sm-only {
+			.size (160px);
+		}
 	}
 
 	&--open {
@@ -1275,13 +1301,9 @@ body {
 		ul {
 			list-style: none;
 			margin: 0;
-			padding: 0 0 0 82px;
+			padding: 0;
 
 			.font (0);
-
-			@media @media-xs-only {
-				padding: 0;
-			}
 		}
 	}
 
@@ -1301,7 +1323,7 @@ body {
 		}
 
 		@media @media-sm-only {
-			margin: 0 10px;
+			margin: 0 10px 0 0;
 		}
 
 		> * {
@@ -1318,6 +1340,10 @@ body {
 			@media @media-xs-only {
 				padding: 8px 0 10px;
 				color: @grey-9!important;
+			}
+
+			@media @media-sm-only {
+				.font (13px, 20px);
 			}
 
 			&:before {
@@ -1419,7 +1445,7 @@ body {
 .x-intro {
 	background: @side url(../img/x-intro.png) center top no-repeat;
 	color: @white;
-	padding: 1px 0 69px;
+	padding: 0 0 69px;
 	background-size: cover;
 
 	@media @media-xs-only { padding: 0 0 48px; }
@@ -1444,6 +1470,10 @@ body {
 
 		@media @media-sm-only {
 			float: none;
+		}
+
+		@media @media-md-only {
+			.size (550px);
 		}
 	}
 
