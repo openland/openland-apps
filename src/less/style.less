@@ -2019,12 +2019,16 @@ body {
 		padding: 16px 0 13px;
 		float: left;
 
-		.size (133px);
+		.size (153px);
 
 		@media @media-xs-only {
 			float: none;
 			padding: 15px 0 0;
 			border: none;
+		}
+
+		@media @media-sm-only {
+			.size (133px);
 		}
 	}
 
@@ -2044,13 +2048,21 @@ body {
 	}
 
 	&--nav {
-		padding: 9px 0 0 24px;
+		padding: 9px 0 0 44px;
 		flex: 1;
 
 		.clearfix ();
 
 		@media @media-xs-only {
 			padding: 25px 0;
+		}
+
+		@media @media-sm-only {
+			padding-left: 24px;
+		}
+
+		@media @media-md-only {
+			padding-left: 34px;
 		}
 	}
 
@@ -2108,6 +2120,10 @@ body {
 
 		@media @media-md-only {
 			.size (420px);
+		}
+
+		@media @media-lg-only {
+			.size (450px);
 		}
 	}
 }
