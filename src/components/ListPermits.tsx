@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Permit } from '../api/Permits';
 import { XLink } from './X/XLink';
-import { XDate } from './X/XDate';
 import { PermitStatus } from './PermitStatus';
 import { formatDuration } from '../utils/date';
 import { InfiniteListContainer, XInfiniteListItem } from './withInfiniteList';
