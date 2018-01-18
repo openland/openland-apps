@@ -81,13 +81,13 @@ export default withPage(withPermitQuery(withLoader((props) => {
         }
     }
 
-    /*let map = 'https://maps.googleapis.com/maps/api/staticmap?center=37.7718238831,-122.4038848877&zoom=16&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
+    let map = 'https://maps.googleapis.com/maps/api/staticmap?center=37.7718238831,-122.4038848877&zoom=16&size=500x500&scale=2&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
     if (props.data.permit.streetNumbers!!.length > 0) {
         let streetNumber = props.data.permit.streetNumbers!![0];
         let address = streetNumber.streetNumber + '' + (streetNumber.streetNumberSuffix ? streetNumber.streetNumberSuffix!! : '') +
             ' ' + streetNumber.streetName + (streetNumber.streetNameSuffix ? ' ' + streetNumber.streetNameSuffix!! : '') + ', San Francisco, CA, USA';
-        map = 'https://maps.googleapis.com/maps/api/staticmap?center=' + encodeURIComponent(address) + '&zoom=18&size=640x640&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
-    }*/
+        map = 'https://maps.googleapis.com/maps/api/staticmap?center=' + encodeURIComponent(address) + '&zoom=18&size=640x640&scale=2&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
+    }
 
     return (
         <div className="x-in">
@@ -96,7 +96,9 @@ export default withPage(withPermitQuery(withLoader((props) => {
                 <meta property="og:title" content={'Statecraft » San Francisco » Permits » ' + props.data.permit.id} />
             </Head>
 
-            <div className="x-bigmap" />
+            <div className="x-bigmap">
+                <img src={map} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
 
             <XContainer wide={true}>
                 <XRow>
@@ -168,7 +170,7 @@ export default withPage(withPermitQuery(withLoader((props) => {
                                             Issued
                                         </div>
                                     </div>
-                                    
+
                                     <div className="x-permcard--date">
                                         <div className={'x-permcard--status' + (progress < 3 ? ' is-disabled' : '')}>
                                             <i className="icon-completed" />
