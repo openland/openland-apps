@@ -1,4 +1,4 @@
-import * as React from 'react';
+// import * as React from 'react';
 // import * as ReactMapboxGl from 'react-mapbox-gl';
 // import { canUseDOM } from '../../utils/environment';
 // import * as MapBoxGl from 'mapbox-gl';
