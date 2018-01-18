@@ -81,12 +81,12 @@ export default withPage(withPermitQuery(withLoader((props) => {
         }
     }
 
-    let map = 'https://maps.googleapis.com/maps/api/staticmap?center=37.7718238831,-122.4038848877&zoom=16&size=500x500&scale=2&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
+    let map = 'https://maps.googleapis.com/maps/api/staticmap?center=37.7718238831,-122.4038848877&zoom=15&size=500x500&scale=2&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
     if (props.data.permit.streetNumbers!!.length > 0) {
         let streetNumber = props.data.permit.streetNumbers!![0];
         let address = streetNumber.streetNumber + '' + (streetNumber.streetNumberSuffix ? streetNumber.streetNumberSuffix!! : '') +
             ' ' + streetNumber.streetName + (streetNumber.streetNameSuffix ? ' ' + streetNumber.streetNameSuffix!! : '') + ', San Francisco, CA, USA';
-        map = 'https://maps.googleapis.com/maps/api/staticmap?center=' + encodeURIComponent(address) + '&zoom=18&size=640x640&scale=2&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
+        map = 'https://maps.googleapis.com/maps/api/staticmap?center=' + encodeURIComponent(address) + '&zoom=15&size=640x640&scale=2&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';
     }
 
     return (
@@ -97,7 +97,7 @@ export default withPage(withPermitQuery(withLoader((props) => {
             </Head>
 
             <div className="x-bigmap">
-                <img src={map} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img className="x-bigmap--map"  style={{backgroundImage: `url(${map})`}}/>
             </div>
 
             <XContainer wide={true}>
