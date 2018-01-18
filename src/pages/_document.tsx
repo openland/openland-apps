@@ -21,7 +21,7 @@ export default class StateDocument extends Document {
                     <link rel="shortcut icon" href="/static/favicon.ico" />
                     <link rel="stylesheet" type="text/css" href="/static/loader.css" />
                     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
-                    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+                    <link rel="stylesheet" type="text/css" href="/static/css/style.css?1" />
                     <script type="text/javascript" src="/config.js">{}</script>
                 </Head>
                 <body className="custom_class">
