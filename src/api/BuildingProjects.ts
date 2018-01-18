@@ -349,7 +349,7 @@ const BuildingProjectsQuery = gql`
 
 export const withBuildingProjectsQuery = graphqlList<BuildingProject, BuildingProjectsQueryStats>(
     BuildingProjectsQuery,
-    ['cursor', 'minUnits', 'year', 'filter']);
+    ['cursor', 'minUnits', { key: 'year', default: '2018' }, 'filter']);
 export const withBuildingProjectsStats = graphqlRouted<{
     stats: BuildingProjectsStats, globalStats: GlobalStats,
     permitsUnitsFiledStats: Chart,

@@ -83,9 +83,9 @@ export default withPage(withBuildingProjectsQuery(withLoader((props) => {
             <DataListFilters title="Construction projects">
                 <DataListSearch searchKey="filter" />
                 <DataListRadio radioKey="year" title="Expected completion">
-                    <DataListRadioItem title="All" />
+                    <DataListRadioItem title="All" itemKey="all" />
                     <DataListRadioItem title="2017" itemKey="2017" />
-                    <DataListRadioItem title="2018" itemKey="2018" />
+                    <DataListRadioItem title="2018" />
                     <DataListRadioItem title="2019+" itemKey="2019+" />
                 </DataListRadio>
                 <DataListRadio radioKey="minUnits" title="Project size">
