@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { canUseDOM } from '../../utils/environment';
+import { Geo } from '../../api/Geo';
 
 interface XMapOverlayProps {
     records: OverlayRecord[];
@@ -8,7 +9,7 @@ interface XMapOverlayProps {
 
 interface OverlayRecord {
     id: string;
-    polygons: { longitude: number, latitude: number }[][]
+    geometry: Geo[][]
 }
 
 interface XMapOverlayState {
@@ -52,8 +53,8 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         let deck = await import('deck.gl');
         let polygons = this.props.records.map((v) => {
             let coordinates: number[][][] = [];
-            if (v.polygons.length > 0) {
-                coordinates = v.polygons.map((p) => p.map((c) => [c.longitude, c.latitude]));
+            if (v.geometry.length > 0) {
+                coordinates = v.geometry.map((p) => p.map((c) => [c.longitude, c.latitude]));
             }
             return {
                 type: 'Feature',

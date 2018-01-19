@@ -41,7 +41,7 @@ export class XMap extends React.Component<XMapProps, XMapState> {
         super(props);
         this.state = {
             inited: false,
-            latitude: 49.2407190, longitude: -123.0249569,
+            latitude: 37.80770456523733, longitude: -122.41461900033902,
             pitch: 45,
             bearing: 0,
             zoom: 16

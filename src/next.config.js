@@ -10,8 +10,12 @@ module.exports = {
                 openAnalyzer: true
             }))
         }
-        
-        return config
+
+        return config.merge({
+            module: {
+                noParse: /(mapbox-gl)\.js$/
+            }
+        })
     },
     useFileSystemPublicRoutes: false
 }
