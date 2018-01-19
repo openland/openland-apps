@@ -14,6 +14,7 @@ export default class StateDocument extends Document {
                     <link rel="stylesheet" type="text/css" href="/static/loader.css" />
                     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
                     <link rel="stylesheet" type="text/css" href="/static/css/style.css?1" />
+                    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
                     <script type="text/javascript" src="/config.js">{}</script>
                 </Head>
                 <body>

@@ -1,4 +1,28 @@
-//import * as React from 'react';
+declare module 'react-map-gl' {
+    interface StaticMapProps {
+        mapboxApiAccessToken: string;
+        width?: number | string;
+        height?: number | string;
+        latitude?: number;
+        longitude?: number;
+        zoom?: number;
+        mapStyle?: string;
+    }
+
+    interface InteractiveMapProps extends StaticMapProps {
+        viewport?: any;
+        onViewportChange?: (viewport: ViewPortChange) => void
+    }
+
+    interface ViewPortChange {
+        latitude: number;
+        longitude: number;
+        zoom: number;
+    }
+
+    export let StaticMap: React.ComponentClass<StaticMapProps>;
+    export let InteractiveMap: React.ComponentClass<InteractiveMapProps>;
+}
 
 declare module 'next-routes' {
     class Routes {

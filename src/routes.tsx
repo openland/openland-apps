@@ -17,6 +17,9 @@ routes.add('/projects', '/db/projects/list');
 routes.add('/projects/', '/db/projects/list');
 routes.add('/projects/:projectId', '/db/projects/item');
 
+routes.add('/parcels', '/db/parcels/map');
+routes.add('/parcels/', '/db/parcels/map');
+
 routes.add('/stats', '/db/stats/stats');
 routes.add('/stats/', '/db/stats/stats');
 
