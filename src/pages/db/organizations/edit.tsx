@@ -6,10 +6,13 @@ import { Segment } from 'semantic-ui-react';
 import { XForm, XFormField, XFormFieldCheck, XFormImage, XFormSubmit } from '../../../components/X/XForm';
 import { XContainer } from '../../../components/X/XContainer';
 import { XButton } from '../../../components/X/XButton';
+import { XHead } from '../../../components/X/XHead';
 
 export default withPage(withOrganizationAlter(withLoader((props) => {
 
     return (
+        <>
+        <XHead title="Edit Organization" imgCloud={props.data.organization.cover} />
         <div style={{ paddingTop: 32, paddingBottom: 32 }}>
             <XContainer wide={true}>
                 <Segment>
@@ -38,5 +41,6 @@ export default withPage(withOrganizationAlter(withLoader((props) => {
                 </Segment>
             </XContainer>
         </div>
+        </>
     );
 })));

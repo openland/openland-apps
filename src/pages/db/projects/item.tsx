@@ -9,7 +9,7 @@ import { XRow } from '../../../components/X/XRow';
 import { XWrap } from '../../../components/X/XWrap';
 import { XLink } from '../../../components/X/XLink';
 import { XColumn } from '../../../components/X/XColumn';
-import Head from 'next/head';
+import { XHead } from '../../../components/X/XHead';
 
 export default withPage(withBuildingProjectQuery(withLoader((props) => {
     let map = undefined;
@@ -20,15 +20,14 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
     if (props.data.project.extrasAddress && (props.data.project.extrasAddress.toLowerCase() !== props.data.project.name.toLowerCase())) {
         subtitle = props.data.project.extrasAddress;
     }
+
     return (
+        <>
+        <XHead
+            title={['Statecraft', 'San Francisco', 'Construction projects', props.data.project.name]}
+            imgUrl={props.data.project.preview && props.data.project.preview.url}
+        />
         <div className="x-in">
-            <Head>
-                <title>Statecraft » San Francisco » Construction projects » {props.data.project.name}</title>
-                <meta property="og:title" content={'Statecraft » San Francisco » Construction projects » ' + props.data.project.name} />
-
-                {props.data.project.preview && (<meta property="og:image" content={props.data.project.preview!!.url} />)}
-            </Head>
-
             <XContainer wide={true}>
                 <XRow>
                     <XColumn cols={8} mobile={12}>
@@ -111,5 +110,6 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
                 </XRow>
             </XContainer>
         </div>
+        </>
     );
 })));

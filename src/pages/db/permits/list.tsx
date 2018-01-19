@@ -8,17 +8,14 @@ import {
 } from '../../../components/DataList';
 import { withPagedList } from '../../../components/withPagedList';
 import { withLoader } from '../../../components/withLoader';
-import Head from 'next/head';
+import { XHead } from '../../../components/X/XHead';
 
 const PermitsItems = withPagedList<Permit>((props) => <ListPermits permits={props.items} />);
 export default withPage(withPermitsPagedQuery(withLoader((props) => {
     return (
+        <>
+        <XHead title={['Statecraft', 'San Francisco', 'Permits']} />
         <DataList>
-            <Head>
-                <title>Statecraft » San Francisco » Permits</title>
-                <meta property="og:title" content="Statecraft » San Francisco » Permits" />
-            </Head>
-
             <DataListFilters title="Building Permits">
                 <DataListSearch searchKey="filter" />
                 <DataListRadio radioKey="sort" title="Sort By">
@@ -59,5 +56,6 @@ export default withPage(withPermitsPagedQuery(withLoader((props) => {
                 <PermitsItems data={props.data} />
             </DataListContent>
         </DataList>
+        </>
     );
 })));

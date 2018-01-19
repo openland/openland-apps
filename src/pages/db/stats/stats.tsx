@@ -5,9 +5,12 @@ import { Header, Segment } from 'semantic-ui-react';
 import { withStatsQuery } from '../../../api/Stats';
 import { XBarChart } from '../../../components/X/XBarChart';
 import { withLoader } from '../../../components/withLoader';
+import { XHead } from '../../../components/X/XHead';
 
 export default withPage(withStatsQuery(withLoader((props) => {
     return (
+        <>
+        <XHead title="Statecraft Stats" />
         <div className="x-in">
             <XContainer wide={true}>
                 <Header attached="top">
@@ -46,5 +49,6 @@ export default withPage(withStatsQuery(withLoader((props) => {
                 </Segment>
             </XContainer>
         </div>
+        </>
     );
 })));

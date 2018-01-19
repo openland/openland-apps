@@ -12,6 +12,7 @@ import { XWrap } from '../../../components/X/XWrap';
 import { XRow } from '../../../components/X/XRow';
 import { BuildingProject } from '../../../api/BuildingProjects';
 import Head from 'next/head';
+import { XHead } from '../../../components/X/XHead';
 
 export default withPage(withOrganizationQuery(withLoader((props) => {
     let projects: BuildingProject[] = [];
@@ -26,12 +27,12 @@ export default withPage(withOrganizationQuery(withLoader((props) => {
         }
     }
     return (
+        <>
+        <XHead
+            title={['Statecraft', 'San Francisco', 'Organizations', props.data.organization.title]}
+            imgCloud={props.data.organization.cover}
+        />
         <div className="x-in">
-            <Head>
-                <title>Statecraft » San Francisco » Organizations » {props.data.organization.title}</title>
-                <meta property="og:title" content={'Statecraft » San Francisco » Organizations » ' + props.data.organization.title} />
-            </Head>
-
             <XContainer wide={true}>
                 <div className="x-dev">
                     {props.data.organization.cover && (<div className="x-dev--photo">
@@ -128,6 +129,6 @@ export default withPage(withOrganizationQuery(withLoader((props) => {
                 </XRow>
             </XContainer>
         </div>
-
+        </>
     );
 })));

@@ -11,7 +11,7 @@ import { DataListInvite } from '../../../components/DataListInvite';
 import { XLink } from '../../../components/X/XLink';
 import { XEnumeration } from '../../../components/X/XEnumerations';
 import { withLoader } from '../../../components/withLoader';
-import Head from 'next/head';
+import { XHead } from '../../../components/X/XHead';
 
 export const PipelineItems = withInfiniteList<BuildingProject>(items => {
     return items.map((item) => {
@@ -73,13 +73,11 @@ export const PipelineItems = withInfiniteList<BuildingProject>(items => {
 });
 
 export default withPage(withBuildingProjectsQuery(withLoader((props) => {
-    return (
-        <DataList>
-            <Head>
-                <title>Statecraft » San Francisco » Construction projects</title>
-                <meta property="og:title" content="Statecraft » San Francisco » Construction projects" />
-            </Head>
 
+    return (
+        <>
+        <XHead title={['Statecraft', 'San Francisco', 'Construction projects']} />
+        <DataList>
             <DataListFilters title="Construction projects">
                 <DataListSearch searchKey="filter" />
                 <DataListRadio radioKey="year" title="Expected completion">
@@ -104,5 +102,6 @@ export default withPage(withBuildingProjectsQuery(withLoader((props) => {
                 <PipelineItems data={props.data} />
             </DataListContent>
         </DataList>
+        </>
     );
 })));

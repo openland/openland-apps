@@ -14,7 +14,7 @@ import { Icon } from 'semantic-ui-react';
 import { XDiff } from '../../../components/X/XDiff';
 import { PermitStatus } from '../../../components/PermitStatus';
 import { withLoader } from '../../../components/withLoader';
-import Head from 'next/head';
+import { XHead } from '../../../components/X/XHead';
 
 function ChangeRender(props: { change: FieldChanged }) {
     if (props.change.oldValue === null) {
@@ -90,14 +90,11 @@ export default withPage(withPermitQuery(withLoader((props) => {
     }
 
     return (
+        <>
+        <XHead title={['Statecraft', 'San Francisco', 'Permits', props.data.permit.id]}/>
         <div className="x-in">
-            <Head>
-                <title>Statecraft » San Francisco » Permits » {props.data.permit.id}</title>
-                <meta property="og:title" content={'Statecraft » San Francisco » Permits » ' + props.data.permit.id} />
-            </Head>
-
             <div className="x-bigmap">
-                <img className="x-bigmap--map"  style={{backgroundImage: `url(${map})`}}/>
+                <img className="x-bigmap--map" style={{ backgroundImage: `url(${map})` }} />
             </div>
 
             <XContainer wide={true}>
@@ -234,5 +231,6 @@ export default withPage(withPermitQuery(withLoader((props) => {
                 </XRow>
             </XContainer>
         </div>
+        </>
     );
 })));
