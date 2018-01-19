@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
 import { XMap } from '../../../components/X/XMap';
+import { XMapOverlay } from '../../../components/X/XMapOverlay';
 
 // let page = JSON.parse(`{
 //     "took": 10,
@@ -178,7 +179,23 @@ export default withPage((props) => {
     return (
         <>
         <div className="x-in">
-            <XMap height={400} width={400} />
+            <XMap style={{ width: '100%', height: 400 }}>
+                <XMapOverlay
+                    records={[{
+                        id: '123',
+                        polygons: [[
+                            { latitude: 49.2407190, longitude: -123.0249569 },
+                            { latitude: 49.2407165, longitude: -123.0241582 },
+                            { latitude: 49.2406847, longitude: -123.0240445 },
+                            { latitude: 49.2407159, longitude: -123.0239311 },
+                            { latitude: 49.2407157, longitude: -123.0238530 },
+                            { latitude: 49.2404548, longitude: -123.0238536 },
+                            { latitude: 49.2404582, longitude: -123.0249568 },
+                            { latitude: 49.2407190, longitude: -123.0249569 }
+                        ]]
+                    }]}
+                />
+            </XMap>
         </div>
         </>
     )

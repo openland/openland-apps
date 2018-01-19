@@ -31,12 +31,14 @@ declare module 'react-map-gl' {
 
 declare module 'deck.gl' {
     interface DeckGLProps {
-        latitude?: number;
-        longitude?: number;
-        zoom?: number;
-        pitch?: number;
-        bearing?: number;
-        layers?: Layer<LayerProps>[];
+        latitude: number;
+        longitude: number;
+        zoom: number;
+        pitch: number;
+        bearing: number;
+        width: number;
+        height: number;
+        layers: Layer<LayerProps>[];
     }
 
     interface LayerProps {
