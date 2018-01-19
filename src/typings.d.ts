@@ -7,21 +7,69 @@ declare module 'react-map-gl' {
         longitude?: number;
         zoom?: number;
         mapStyle?: string;
+        pitch?: number;
+        bearing?: number;
     }
 
     interface InteractiveMapProps extends StaticMapProps {
-        viewport?: any;
-        onViewportChange?: (viewport: ViewPortChange) => void
+        maxZoom?: number;
+        onViewportChange?: (viewport: ViewPortChanged) => void
     }
 
-    interface ViewPortChange {
+    interface ViewPortChanged {
         latitude: number;
         longitude: number;
         zoom: number;
+        pitch: number;
+        bearing: number;
     }
+
 
     export let StaticMap: React.ComponentClass<StaticMapProps>;
     export let InteractiveMap: React.ComponentClass<InteractiveMapProps>;
+}
+
+declare module 'deck.gl' {
+    interface DeckGLProps {
+        latitude?: number;
+        longitude?: number;
+        zoom?: number;
+        pitch?: number;
+        bearing?: number;
+        layers?: Layer<LayerProps>[];
+    }
+
+    interface LayerProps {
+        id?: string;
+        data?: any;
+        visible?: boolean;
+        opacity?: number;
+
+        pickable?: boolean;
+        highlightColor?: number[];
+        autoHighlight?: boolean;
+
+        fp64?: boolean;
+    }
+
+    interface Layer<T extends LayerProps> {
+        new(props: T): Layer<T>;
+        context: any;
+        state: any;
+        props: T;
+    }
+
+    interface GeoJsonLayerProps extends LayerProps {
+        filled?: boolean;
+        stroked?: boolean;
+        extruded?: boolean;
+        wireframe?: boolean;
+    }
+
+    export let GeoJsonLayer: Layer<GeoJsonLayerProps>;
+
+    let clazz: React.ComponentClass<DeckGLProps>;
+    export default clazz;
 }
 
 declare module 'next-routes' {
@@ -58,39 +106,6 @@ declare module 'markdown' {
     var markdown: {
         toHTML(markdown: string): string;
     };
-}
-
-declare module 'graphiql' {
-    class GraphiQL extends React.Component<{ fetcher: any }, {}> {
-    }
-
-    export = GraphiQL
-}
-
-declare module 'react-simplemde-editor' {
-    class SimpleMDE extends React.Component<{ value: string, onChange: (value: string) => void }, {}> {
-    }
-
-    export = SimpleMDE
-}
-
-declare module 'react-handsontable' {
-    interface HotTableProps {
-        stretchH?: 'all'
-        stretchV?: 'all'
-        width?: string | number
-        height?: string | number
-        data?: any[][]
-        autoColumnSize?: boolean
-        colWidths?: number
-        rowHeaders?: boolean
-        colHeaders?: boolean
-    }
-
-    class HotTable extends React.Component<HotTableProps, {}> {
-    }
-
-    export = HotTable
 }
 
 declare module 'lodash.flowright' {
