@@ -336,6 +336,7 @@ const BuildingProjectsQuery = gql`
                 itemsCount
                 currentPage
                 pagesCount
+                openEnded
             }
             stats {
                 newUnits

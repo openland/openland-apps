@@ -23,6 +23,7 @@ export interface ListQueryConnection<T> {
         itemsCount: number;
         pagesCount: number;
         currentPage: number;
+        openEnded: boolean;
     };
 }
 

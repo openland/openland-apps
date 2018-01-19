@@ -104,6 +104,7 @@ const PermitsQuery = gql`
                 itemsCount
                 currentPage
                 pagesCount
+                openEnded
             }
 #            stats {
 #                approvalTimes {
