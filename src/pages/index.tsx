@@ -95,7 +95,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                     <XBarChart data={props.data.permitsUnitsIssuedStats} maxY={9000} stacked={true} />
                 </TrendsChart>
                 <TrendsText title="Issued permits offer a glimpse of future supply">
-                    <p>The last four years demonstrate a stable level of ~3000 housing units permitted per year. That gives little hope for meeting mayor’s annual target of 5000 units in near future.</p>
+                    <p>The last four years demonstrate a stable level of ~4000 housing units permitted per year. That gives little hope for meeting mayor’s annual target of 5000 units in near future.</p>
                 </TrendsText>
             </TrendsItem>
             <TrendsItem>
