@@ -10,7 +10,6 @@ import {
     DataListRadioItem, DataListSearch
 } from '../../../components/DataList';
 import { withLoader } from '../../../components/withLoader';
-import Head from 'next/head';
 import { XHead } from '../../../components/X/XHead';
 
 const AddForm = withOrganizationAddMutation((props) => {

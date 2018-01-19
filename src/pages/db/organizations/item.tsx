@@ -11,7 +11,6 @@ import { XLink } from '../../../components/X/XLink';
 import { XWrap } from '../../../components/X/XWrap';
 import { XRow } from '../../../components/X/XRow';
 import { BuildingProject } from '../../../api/BuildingProjects';
-import Head from 'next/head';
 import { XHead } from '../../../components/X/XHead';
 
 export default withPage(withOrganizationQuery(withLoader((props) => {
