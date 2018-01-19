@@ -11,11 +11,9 @@ module.exports = {
             }))
         }
 
-        return config.merge({
-            module: {
-                noParse: /(mapbox-gl)\.js$/
-            }
-        })
+        config.module.noParse = /(mapbox-gl)\.js$/
+
+        return config;
     },
     useFileSystemPublicRoutes: false
 }
