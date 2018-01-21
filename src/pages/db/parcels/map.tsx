@@ -11,8 +11,8 @@ export default withPage(withParcelsQuery((props) => {
     return (
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Parcels']} />
-        <XFullScreenPage underHeader={true}>
-            <XMap style={{ width: '100%', height: '100%' }}>
+        <XFullScreenPage behindHeader={true}>
+            <XMap>
                 <XMapOverlay records={props.data.parcels} />
             </XMap>
         </XFullScreenPage>
