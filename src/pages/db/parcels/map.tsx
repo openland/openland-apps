@@ -10,8 +10,8 @@ export default withPage(withParcelsQuery((props) => {
     return (
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Parcels']} />
-        <div className="x-in">
-            <XMap style={{ width: '100%', height: 400 }}>
+        <div className="x-in--map">
+            <XMap style={{ width: '100%', height: '100%' }}>
                 <XMapOverlay records={props.data.parcels} />
             </XMap>
         </div>

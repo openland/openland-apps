@@ -2280,7 +2280,7 @@ body {
 			@media @media-sm-only { margin: 0; }
 
 			a&:hover,
-			button&:hover, { color: fade(@white, 60); }
+			button&:hover { color: fade(@white, 60); }
 			img {
 				overflow: hidden;
 				border-radius: 28px;
@@ -2321,6 +2321,12 @@ body {
 
 .x-in { padding: 49px 0 75px;
 	@media @media-xs-only { padding-top: 16px; }
+
+	&--map {
+	  height: 100vh;
+	  padding: 0;
+	  margin-top: -64px;
+	}
 
 	&--title { margin: 0 0 30px;
 		.font (18px, 20px, 500);
