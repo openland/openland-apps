@@ -10,7 +10,7 @@ interface XMapOverlayProps {
 
 interface OverlayRecord {
     id: string;
-    geometry: Geo[][]
+    geometry: string;
 }
 
 interface XMapOverlayState {
@@ -110,7 +110,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         let polygons = src.map((v) => {
             let coordinates: number[][][] = [];
             if (v.geometry.length > 0) {
-                coordinates = (JSON.parse(v.geometry as any) as Geo[][]).map((p) => p.map((c) => [c.longitude, c.latitude]));
+                coordinates = (JSON.parse(v.geometry as any) as number[][]).map((p) => p.map((c) => [c[0], c[1]]));
             }
             return {
                 type: 'Feature',
@@ -142,7 +142,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
                 wireframe: false,
                 pickable: false,
                 opacity: 0.2,
-                fp64: false,
+                fp64: true,
                 getLineColor: () => [255, 255, 255],
                 getFillColor: () => [255, 0, 0],
                 data: this.state.data

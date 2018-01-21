@@ -5,7 +5,7 @@ import { graphqlMapOverlay } from '../utils/graphqlMapOverlay';
 export interface Parcel {
     id: string;
     title: string;
-    geometry: Geo[][];
+    geometry: string;
 }
 
 const ParcelsQuery = gql`
