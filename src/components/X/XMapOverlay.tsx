@@ -85,6 +85,9 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         }),
     };
 
+    items = new Map<string, any>();
+    latest = {};
+
     constructor(props: XMapOverlayProps, context?: any) {
         super(props, context);
         this.state = { data: this.convertProps(props.records) };
@@ -107,12 +110,18 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
     }
 
     convertProps = (src: OverlayRecord[]) => {
-        let polygons = src.map((v) => {
+        let changed = false
+        for (let v of src) {
+            if (this.items.has(v.id)) {
+                continue;
+            }
+            changed = true;
+
             let coordinates: number[][][] = [];
             if (v.geometry.length > 0) {
                 coordinates = (JSON.parse(v.geometry as any) as number[][]).map((p) => p.map((c) => [c[0], c[1]]));
             }
-            return {
+            let item = {
                 type: 'Feature',
                 properties: {
                     name: v.id
@@ -122,11 +131,16 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
                     coordinates: coordinates
                 }
             }
-        });
-        return {
-            type: 'FeatureCollection',
-            features: polygons
-        };
+            this.items.set(v.id, item);
+        }
+        if (changed) {
+            this.latest = {
+                type: 'FeatureCollection',
+                features: Array.from(this.items.values())
+            }
+        }
+        console.warn(this.latest);
+        return this.latest;
     }
 
     render() {
