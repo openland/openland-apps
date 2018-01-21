@@ -66,6 +66,9 @@ declare module 'deck.gl' {
         stroked?: boolean;
         extruded?: boolean;
         wireframe?: boolean;
+
+        getLineColor?: (src: any) => number[];
+        getFillColor?: (src: any) => number[];
     }
 
     export let GeoJsonLayer: Layer<GeoJsonLayerProps>;

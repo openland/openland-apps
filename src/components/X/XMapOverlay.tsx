@@ -58,6 +58,9 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
             }
             return {
                 type: 'Feature',
+                properties: {
+                    name: v.id
+                },
                 geometry: {
                     type: 'Polygon',
                     coordinates: coordinates
@@ -66,12 +69,15 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         });
         let layer = new deck.GeoJsonLayer({
             id: 'maps',
-            stroked: false,
+            stroked: true,
             filled: true,
             extruded: false,
             wireframe: true,
+            pickable: true,
             opacity: 0.2,
             fp64: true,
+            getLineColor: () => [255, 255, 255],
+            getFillColor: () => [255, 0, 0],
             data: {
                 type: 'FeatureCollection',
                 features: polygons

@@ -6,7 +6,6 @@ import { withParcelsQuery } from '../../../api/Parcels';
 import { XHead } from '../../../components/X/XHead';
 
 export default withPage(withParcelsQuery((props) => {
-    console.warn(props.data.parcels)
     return (
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Parcels']} />
