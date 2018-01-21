@@ -23,7 +23,37 @@ interface XMapOverlayState {
         height: number,
         layers: any[]
     }>,
-    layer?: any
+    layer?: Layer<GeoJsonLayerProps>
+}
+
+interface LayerProps {
+    id?: string;
+    data?: any;
+    visible?: boolean;
+    opacity?: number;
+
+    pickable?: boolean;
+    highlightColor?: number[];
+    autoHighlight?: boolean;
+
+    fp64?: boolean;
+}
+
+interface Layer<T extends LayerProps> {
+    context: any;
+    state: any;
+    props: T;
+    new(props: T): Layer<T>;
+}
+
+interface GeoJsonLayerProps extends LayerProps {
+    filled?: boolean;
+    stroked?: boolean;
+    extruded?: boolean;
+    wireframe?: boolean;
+
+    getLineColor?: (src: any) => number[];
+    getFillColor?: (src: any) => number[];
 }
 
 export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlayState> {
@@ -51,44 +81,13 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
 
     initDeck = async () => {
         let deck = await import('deck.gl');
-        let polygons = this.props.records.map((v) => {
-            let coordinates: number[][][] = [];
-            if (v.geometry.length > 0) {
-                coordinates = v.geometry.map((p) => p.map((c) => [c.longitude, c.latitude]));
-            }
-            return {
-                type: 'Feature',
-                properties: {
-                    name: v.id
-                },
-                geometry: {
-                    type: 'Polygon',
-                    coordinates: coordinates
-                }
-            }
-        });
-        let layer = new deck.GeoJsonLayer({
-            id: 'maps',
-            stroked: true,
-            filled: true,
-            extruded: false,
-            wireframe: true,
-            pickable: true,
-            opacity: 0.2,
-            fp64: true,
-            getLineColor: () => [255, 255, 255],
-            getFillColor: () => [255, 0, 0],
-            data: {
-                type: 'FeatureCollection',
-                features: polygons
-            }
-        });
-        this.setState({ deck: deck.default, layer: layer })
+
+        this.setState({ deck: deck.default, layer: deck.GeoJsonLayer })
     }
 
     render() {
         let Deck = this.state.deck;
-        let Layer = this.state.layer;
+        let layer = this.state.layer;
         let D = (this.context as {
             mapViewport: {
                 isEnabled: boolean,
@@ -101,7 +100,40 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
                 height?: number
             }
         }).mapViewport
-        if (Deck && Layer && D.isEnabled) {
+        if (Deck && layer && D.isEnabled) {
+            let polygons = this.props.records.map((v) => {
+                let coordinates: number[][][] = [];
+                if (v.geometry.length > 0) {
+                    coordinates = v.geometry.map((p) => p.map((c) => [c.longitude, c.latitude]));
+                }
+                return {
+                    type: 'Feature',
+                    properties: {
+                        name: v.id
+                    },
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates: coordinates
+                    }
+                }
+            });
+            let l = new layer({
+                id: 'maps',
+                stroked: true,
+                filled: true,
+                extruded: false,
+                wireframe: true,
+                pickable: true,
+                opacity: 0.2,
+                fp64: true,
+                getLineColor: () => [255, 255, 255],
+                getFillColor: () => [255, 0, 0],
+                data: {
+                    type: 'FeatureCollection',
+                    features: polygons
+                }
+            });
+
             return (
                 <Deck
                     latitude={D.latitude!!}
@@ -111,7 +143,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
                     bearing={D.bearing!!}
                     width={D.width!!}
                     height={D.height!!}
-                    layers={[Layer]}
+                    layers={[l]}
                 />
             );
         } else {

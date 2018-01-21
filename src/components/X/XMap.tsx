@@ -2,6 +2,9 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { canUseDOM } from '../../utils/environment';
 import { InteractiveMap, ViewPortChanged } from 'react-map-gl';
+import { SingletonRouter } from 'next/router';
+import * as qs from 'query-string';
+import { Router } from '../../routes';
 
 let MapBoxToken = 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw';
 
@@ -32,7 +35,7 @@ export class XMap extends React.Component<XMapProps, XMapState> {
             bearing: PropTypes.number,
             width: PropTypes.number,
             height: PropTypes.number
-        }),
+        })
     };
 
     private container: HTMLDivElement | null = null
