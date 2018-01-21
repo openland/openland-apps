@@ -5,18 +5,26 @@ import { DocumentNode } from 'graphql';
 import { NotNullableChildProps } from './graphql';
 import { getComponentDisplayName } from './utils';
 import { MapViewport } from './map';
-
+type Geo = { latitude: number, longitude: number };
 type ViewPortProps = {
-    center: { latitude: number, longitude: number },
+    center: Geo,
     bounds: {
-        ne: { latitude: number, longitude: number },
-        sw: { latitude: number, longitude: number }
+        ne: Geo,
+        sw: Geo
     }
 };
 type ViewPortFilterProps = { minZoom?: number, maxZoom?: number };
 
-export function withMapViewport<P = {}>(ComposedComponent: React.ComponentType<P & ViewPortProps>) {
-    return class WithMapViewPort extends React.Component<P & ViewPortFilterProps> {
+function withMapViewport<P = {}>(ComposedComponent: React.ComponentType<P & ViewPortProps>) {
+    return class WithMapViewPort extends React.Component<P & ViewPortFilterProps, {
+        enabled: boolean,
+        bounds?: {
+            ne: Geo,
+            sw: Geo
+        },
+        center?: Geo,
+        zoom?: number
+    }> {
         static displayName = `WithMapViewport(${getComponentDisplayName(ComposedComponent)})`;
         static contextTypes = {
             mapViewport: PropTypes.shape({
@@ -31,45 +39,86 @@ export function withMapViewport<P = {}>(ComposedComponent: React.ComponentType<P
             }),
         };
 
-        render() {
+        invalidate: number | null = null;
+
+        constructor(props: P & ViewPortFilterProps, context: any) {
+            super(props, context);
+
             let viewport = this.context.mapViewport as MapViewport;
-            if (viewport.isEnabled) {
-                if (this.props.maxZoom) {
-                    if (viewport.zoom!! > this.props.maxZoom) {
-                        return null;
-                    }
-                }
-                if (this.props.minZoom) {
-                    if (viewport.zoom!! < this.props.minZoom) {
-                        return null;
-                    }
-                }
-                return (
-                    <ComposedComponent
-                        center={viewport.center!!}
-                        bounds={viewport.bounds!!}
-                        {...this.props}
-                    />
-                );
-            } else {
-                return null;
+            this.state = {
+                enabled: viewport.isEnabled,
+                bounds: viewport.bounds,
+                center: viewport.center,
+                zoom: viewport.zoom
             }
+        }
+
+        componentWillReceiveProps(nextProps: Readonly<P & ViewPortFilterProps>, nextContext: any) {
+            let viewport = nextContext.mapViewport as MapViewport;
+            if (this.invalidate !== null) {
+                window.clearTimeout(this.invalidate);
+                this.invalidate = null;
+            }
+            this.invalidate = window.setTimeout(
+                () => {
+                    this.setState({
+                        enabled: viewport.isEnabled,
+                        bounds: viewport.bounds,
+                        center: viewport.center,
+                        zoom: viewport.zoom
+                    })
+                },
+                250);
+        }
+
+        render() {
+            if (!this.state.enabled) {
+                return null
+            }
+            if (this.props.maxZoom) {
+                if (this.state.zoom!! > this.props.maxZoom) {
+                    return null;
+                }
+            }
+            if (this.props.minZoom) {
+                if (this.state.zoom!! < this.props.minZoom) {
+                    return null;
+                }
+            }
+
+            return (
+                <ComposedComponent
+                    center={this.state.center!!}
+                    bounds={this.state.bounds!!}
+                    {...this.props}
+                />
+            );
         }
     };
 }
 
-export function graphqlMapOverlay<TResult>(document: DocumentNode) {
-    return function (component: React.ComponentType<NotNullableChildProps<TResult>>): React.ComponentType<ViewPortFilterProps> {
-        let qlWrapper = graphql<TResult, ViewPortProps, NotNullableChildProps<TResult>>(document, {
+function roundLocation(val: number) {
+    return Math.round(val * 1000) / 1000;
+}
+
+export function graphqlMapOverlay<TResult extends { id: string }>(document: DocumentNode) {
+    return function (component: React.ComponentType<NotNullableChildProps<{ points: TResult[] }>>): React.ComponentType<ViewPortFilterProps> {
+        let qlWrapper = graphql<{ points: TResult[] }, ViewPortProps, NotNullableChildProps<{ points: TResult[] }>>(document, {
             options: (props: ViewPortProps) => {
-                let latDiff = Math.abs(props.bounds.ne.latitude - props.bounds.sw.latitude) * 0.25;
-                let lonDiff = Math.abs(props.bounds.ne.longitude - props.bounds.sw.longitude) * 0.25;
+
+                let e = roundLocation(props.bounds.ne.latitude);
+                let n = roundLocation(props.bounds.ne.longitude);
+                let w = roundLocation(props.bounds.sw.latitude);
+                let s = roundLocation(props.bounds.sw.longitude);
+
+                // let latDiff = roundLocation(Math.abs(e - w) * 0.1);
+                // let lonDiff = roundLocation(Math.abs(n - s) * 0.1);
                 return {
                     variables: {
-                        latitude1: props.bounds.ne.latitude + latDiff,
-                        longitude1: props.bounds.ne.longitude + lonDiff,
-                        latitude2: props.bounds.sw.latitude - latDiff,
-                        longitude2: props.bounds.sw.longitude - lonDiff,
+                        latitude1: e,
+                        longitude1: n,
+                        latitude2: w,
+                        longitude2: s,
                     }
                 };
             }

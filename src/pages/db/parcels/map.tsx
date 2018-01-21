@@ -6,8 +6,8 @@ import { XHead } from '../../../components/X/XHead';
 import { withParcelsQuery } from '../../../api/Parcels';
 
 let ParcelsOverlay = withParcelsQuery((props) => {
-    if (props.data.parcels) {
-        return (<XMapOverlay records={props.data.parcels} />)
+    if (props.data.points) {
+        return (<XMapOverlay records={props.data.points} />)
     } else {
         return null;
     }

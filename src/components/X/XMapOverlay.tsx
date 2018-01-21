@@ -24,7 +24,8 @@ interface XMapOverlayState {
         height: number,
         layers: any[]
     }>,
-    layer?: Layer<GeoJsonLayerProps>
+    layer?: Layer<GeoJsonLayerProps>,
+    data?: any
 }
 
 interface LayerProps {
@@ -86,7 +87,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
 
     constructor(props: XMapOverlayProps, context?: any) {
         super(props, context);
-        this.state = {};
+        this.state = { data: this.convertProps(props.records) };
         if (canUseDOM) {
             this.initDeck();
         }
@@ -98,42 +99,53 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         this.setState({ deck: deck.default, layer: deck.GeoJsonLayer })
     }
 
+    componentWillReceiveProps(nextProps: XMapOverlayProps) {
+        if (this.props.records !== nextProps.records) {
+            console.warn('rebuild')
+            this.setState({ data: this.convertProps(nextProps.records) });
+        }
+    }
+
+    convertProps = (src: OverlayRecord[]) => {
+        let polygons = src.map((v) => {
+            let coordinates: number[][][] = [];
+            if (v.geometry.length > 0) {
+                coordinates = (JSON.parse(v.geometry as any) as Geo[][]).map((p) => p.map((c) => [c.longitude, c.latitude]));
+            }
+            return {
+                type: 'Feature',
+                properties: {
+                    name: v.id
+                },
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: coordinates
+                }
+            }
+        });
+        return {
+            type: 'FeatureCollection',
+            features: polygons
+        };
+    }
+
     render() {
         let Deck = this.state.deck;
         let layer = this.state.layer;
         let D = this.context.mapViewport as MapViewport
         if (Deck && layer && D.isEnabled) {
-            let polygons = this.props.records.map((v) => {
-                let coordinates: number[][][] = [];
-                if (v.geometry.length > 0) {
-                    coordinates = v.geometry.map((p) => p.map((c) => [c.longitude, c.latitude]));
-                }
-                return {
-                    type: 'Feature',
-                    properties: {
-                        name: v.id
-                    },
-                    geometry: {
-                        type: 'Polygon',
-                        coordinates: coordinates
-                    }
-                }
-            });
             let l = new layer({
                 id: 'maps',
                 stroked: true,
                 filled: true,
                 extruded: false,
-                wireframe: true,
-                pickable: true,
+                wireframe: false,
+                pickable: false,
                 opacity: 0.2,
-                fp64: true,
+                fp64: false,
                 getLineColor: () => [255, 255, 255],
                 getFillColor: () => [255, 0, 0],
-                data: {
-                    type: 'FeatureCollection',
-                    features: polygons
-                }
+                data: this.state.data
             });
 
             return (
