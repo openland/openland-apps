@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
+import { XFullScreenPage } from '../../../components/X/XFullScreenPage';
 import { XMap } from '../../../components/X/XMap';
 import { XMapOverlay } from '../../../components/X/XMapOverlay';
 import { withParcelsQuery } from '../../../api/Parcels';
@@ -10,11 +11,11 @@ export default withPage(withParcelsQuery((props) => {
     return (
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Parcels']} />
-        <div className="x-in--map">
+        <XFullScreenPage underHeader={true}>
             <XMap style={{ width: '100%', height: '100%' }}>
                 <XMapOverlay records={props.data.parcels} />
             </XMap>
-        </div>
+        </XFullScreenPage>
         </>
     )
 }));

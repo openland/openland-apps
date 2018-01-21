@@ -1161,6 +1161,15 @@ body {
 	}
 }
 
+.x-fullscreen {
+	height: 100vh;
+	width: 100%;
+
+	&.under-header {
+		margin-top: -64px;
+	}
+}
+
 .x-btn {
 	text-align: center;
 	border: none;
@@ -2321,12 +2330,6 @@ body {
 
 .x-in { padding: 49px 0 75px;
 	@media @media-xs-only { padding-top: 16px; }
-
-	&--map {
-	  height: 100vh;
-	  padding: 0;
-	  margin-top: -64px;
-	}
 
 	&--title { margin: 0 0 30px;
 		.font (18px, 20px, 500);
