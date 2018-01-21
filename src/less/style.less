@@ -2512,16 +2512,19 @@ body {
 .x-card {
 	background: @white;
 	border: 1px solid fade(@text-sf, 8);
-	padding: 0 0 0 243px;
 	color: @text-sf;
 	overflow: hidden;
 	border-radius: 4px;
 
-	.position (relative);
-	.min-size (initial, 164px);
+	&--in {
+		padding: 0 0 0 243px;
 
-	@media @media-xs-only { padding: 0; }
-	@media @media-sm-md { padding: 0 0 0 199px; }
+		.position (relative);
+		.min-size (initial, 164px);
+	
+		@media @media-xs-only { padding: 0; }
+		@media @media-sm-md { padding: 0 0 0 199px; }
+	}
 
 	&--photo {
 		background: center center no-repeat;
@@ -2775,7 +2778,7 @@ body {
 		}
 	}
 
-	&.is-checked &--title:after {
+	&--in.is-checked &--title:after {
 		background: @orange-1;
 		color: @white;
 		text-align: center;
@@ -2788,12 +2791,12 @@ body {
 		.font (7px, 16px);
 	}
 
-	&.is-expanded & {
+	&--in.is-expanded & {
 		&--toggler:before { content: "Hide details"; }
 		&--details { .display (block); }
 	}
 
-	&.is-organization {
+	&--in.is-organization {
 		padding-left: 176px;
 
 		@media @media-xs-only {
@@ -2801,7 +2804,7 @@ body {
 		}
 	}
 
-	&.is-organization & {
+	&--in.is-organization & {
 		&--photo {
 			.size (168px, 164px);
 
@@ -2855,15 +2858,6 @@ body {
 }
 
 .x-dev {
-	background: @white;
-	border: 1px solid fade(@text-sf, 8);
-	color: @text-sf;
-	overflow: hidden;
-	border-radius: 4px;
-	margin: 0 0 36px;
-
-	.position (relative);
-
 	&--photo {
 		margin: -1px -1px 0;
 		border-radius: 4px;
@@ -3108,12 +3102,6 @@ body {
 }
 
 .x-permit {
-	background: @white;
-	border: 1px solid fade(@text-sf, 8);
-	color: @text-sf;
-	overflow: hidden;
-	border-radius: 4px;
-
 	&--in {
 		.display (flex);
 
@@ -3344,10 +3332,6 @@ body {
 }
 
 .x-permcard {
-	background: @white;
-	border: 1px solid fade(@text-sf, 8);
-	color: @text-sf;
-
 	&--in {
 		.display (flex);
 
@@ -3641,15 +3625,7 @@ body {
 }
 
 .x-project {
-	background: @white;
-	border: 1px solid fade(@text-sf, 8);
-	color: @text-sf;
-	border-radius: 4px;
-	overflow: hidden;
-
 	&--photo {
-
-
 		img {
 			.display (block);
 			.size (100%);

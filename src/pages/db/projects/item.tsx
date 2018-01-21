@@ -10,6 +10,7 @@ import { XWrap } from '../../../components/X/XWrap';
 import { XLink } from '../../../components/X/XLink';
 import { XColumn } from '../../../components/X/XColumn';
 import { XHead } from '../../../components/X/XHead';
+import { XCard } from '../../../components/X/XCard';
 
 export default withPage(withBuildingProjectQuery(withLoader((props) => {
     let map = undefined;
@@ -32,7 +33,7 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
                 <XRow>
                     <XColumn cols={8} mobile={12}>
                         <XWrap>
-                            <div className="x-project">
+                            <XCard>
                                 <div className="x-project--photo">
                                     <img src={props.data.project.preview!!.url} alt="" />
                                 </div>
@@ -68,7 +69,7 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
                                         className="x-project--btn" writeAccess={true}><span><i
                                             className="icon-edit" />Edit profile</span></XLink>
                                 </div>
-                            </div>
+                            </XCard>
                         </XWrap>
 
                         {props.data.project.permits && props.data.project.permits.length > 0 && (

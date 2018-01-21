@@ -6,13 +6,14 @@ import { formatDuration } from '../utils/date';
 import { InfiniteListContainer, XInfiniteListItem } from './withInfiniteList';
 import { XCounter } from './X/XCounter';
 import { PermitType } from './PermitType';
+import { XCard } from './X/XCard';
 
 export function ListPermits(props: { permits: Permit[]; hideCounter?: boolean }) {
     return (
         <InfiniteListContainer>
             {props.permits.map((item) => (
                 <XInfiniteListItem key={item.id}>
-                    <div className="x-permit">
+                    <XCard>
                         <div className="x-permit--in">
                             <XLink path={'/permits/' + item.id} className="x-permit--id">
                                 {item.id}
@@ -56,7 +57,7 @@ export function ListPermits(props: { permits: Permit[]; hideCounter?: boolean })
                             <XLink path={'/permits/' + item.id}
                                    className="x-permit--btn"><span>View details</span></XLink>
                         </div>
-                    </div>
+                    </XCard>
                 </XInfiniteListItem>
             ))}
         </InfiniteListContainer>

@@ -15,6 +15,7 @@ import { XDiff } from '../../../components/X/XDiff';
 import { PermitStatus } from '../../../components/PermitStatus';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
+import { XCard } from '../../../components/X/XCard';
 
 function ChangeRender(props: { change: FieldChanged }) {
     if (props.change.oldValue === null) {
@@ -101,7 +102,7 @@ export default withPage(withPermitQuery(withLoader((props) => {
                 <XRow>
                     <div className="col-xs-12 col-xlg-10 col-xlg-offset-l-1">
                         <XWrap>
-                            <div className="x-permcard">
+                            <XCard>
                                 <div className="x-permcard--in">
                                     <div className="x-permcard--id">
                                         {props.data.permit.id}
@@ -178,7 +179,7 @@ export default withPage(withPermitQuery(withLoader((props) => {
                                 </div>
 
                                 <div className={'x-permcard--progress' + (' is-s' + progress)} />
-                            </div>
+                            </XCard>
                         </XWrap>
 
                         {props.data.permit.events.length > 0 && (
