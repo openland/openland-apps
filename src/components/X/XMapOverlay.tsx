@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { canUseDOM } from '../../utils/environment';
 import { Geo } from '../../api/Geo';
+import { MapViewport } from '../../utils/map';
 
 interface XMapOverlayProps {
     records: OverlayRecord[];
@@ -61,8 +62,20 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
     static contextTypes = {
         mapViewport: PropTypes.shape({
             isEnabled: PropTypes.bool.isRequired,
-            latitude: PropTypes.number,
-            longitude: PropTypes.number,
+            center: PropTypes.shape({
+                latitude: PropTypes.number,
+                longitude: PropTypes.number,
+            }),
+            bounds: PropTypes.shape({
+                ne: PropTypes.shape({
+                    latitude: PropTypes.number,
+                    longitude: PropTypes.number,
+                }),
+                sw: PropTypes.shape({
+                    latitude: PropTypes.number,
+                    longitude: PropTypes.number,
+                }),
+            }),
             zoom: PropTypes.number,
             pitch: PropTypes.number,
             bearing: PropTypes.number,
@@ -88,18 +101,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
     render() {
         let Deck = this.state.deck;
         let layer = this.state.layer;
-        let D = (this.context as {
-            mapViewport: {
-                isEnabled: boolean,
-                latitude?: number,
-                longitude?: number,
-                zoom?: number,
-                pitch?: number,
-                bearing?: number,
-                width?: number,
-                height?: number
-            }
-        }).mapViewport
+        let D = this.context.mapViewport as MapViewport
         if (Deck && layer && D.isEnabled) {
             let polygons = this.props.records.map((v) => {
                 let coordinates: number[][][] = [];
@@ -136,8 +138,8 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
 
             return (
                 <Deck
-                    latitude={D.latitude!!}
-                    longitude={D.longitude!!}
+                    latitude={D.center!!.latitude}
+                    longitude={D.center!!.longitude}
                     zoom={D.zoom!!}
                     pitch={D.pitch!!}
                     bearing={D.bearing!!}

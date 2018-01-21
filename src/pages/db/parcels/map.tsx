@@ -17,11 +17,9 @@ export default withPage((props) => {
     return (
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Parcels']} />
-        <div className="x-in">
-            <XMap style={{ width: '100%', height: 400 }}>
-                <ParcelsOverlay />
-            </XMap>
-        </div>
+        <XMap style={{ width: '100%', height: '100vh' }}>
+            <ParcelsOverlay />
+        </XMap>
         </>
     )
 });
