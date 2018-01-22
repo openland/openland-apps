@@ -209,7 +209,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         latSum = latSum / count;
         lonSum = lonSum / count;
 
-        navigateTo({ longitude: lonSum, latitude: latSum })
+        navigateTo({ longitude: lonSum, latitude: latSum, zoom: 17 })
     }
 
     render() {

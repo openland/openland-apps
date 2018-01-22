@@ -19,6 +19,7 @@ interface XMapState {
     longitude?: number;
     setLatitude?: number;
     setLongitude?: number;
+    setZoom?: number;
     zoom?: number;
     pitch?: number;
     bearing?: number;
@@ -71,7 +72,7 @@ export class XMap extends React.Component<XMapProps, XMapState> {
     }
 
     handleStateChange = (v: ViewPortChanged) => {
-        this.setState((s) => ({ ...s, ...v, setLatitude: undefined, setLongitude: undefined }));
+        this.setState((s) => ({ ...s, ...v, setLatitude: undefined, setLongitude: undefined, setZoom: undefined }));
     }
 
     handleResize = () => {
@@ -113,10 +114,12 @@ export class XMap extends React.Component<XMapProps, XMapState> {
         }
     }
 
-    navigateTo = (loc: { latitude: number, longitude: number }) => {
+    navigateTo = (loc: { latitude: number, longitude: number, zoom: number }) => {
         this.setState((s) => ({
             ...s,
-            setLatitude: loc.latitude, setLongitude: loc.longitude,
+            setLatitude: loc.latitude,
+            setLongitude: loc.longitude,
+            setZoom: loc.zoom,
             transitionDuration: 300,
             transitionInterpolator: new FlyToInterpolator()
         }));
@@ -182,7 +185,7 @@ export class XMap extends React.Component<XMapProps, XMapState> {
                         mapStyle="mapbox://styles/mapbox/streets-v9"
                         width={this.state.width}
                         height={this.state.height}
-                        zoom={this.state.zoom}
+                        zoom={this.state.setZoom ? this.state.setZoom : this.state.zoom}
                         pitch={this.state.pitch}
                         bearing={this.state.bearing}
                         latitude={this.state.setLatitude ? this.state.setLatitude : this.state.latitude}

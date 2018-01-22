@@ -12,5 +12,5 @@ export interface MapViewport {
     width?: number;
     height?: number;
     map?: Map.Map;
-    navigateTo?: (v: { latitude: number, longitude: number }) => void;
+    navigateTo?: (v: { latitude: number, longitude: number, zoom: number }) => void;
 }
