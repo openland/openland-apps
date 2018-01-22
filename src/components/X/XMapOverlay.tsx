@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { canUseDOM } from '../../utils/environment';
-import { Geo } from '../../api/Geo';
 import { MapViewport } from '../../utils/map';
 
 interface XMapOverlayProps {
