@@ -85,7 +85,10 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
     };
 
     items = new Map<string, any>();
-    latest = {};
+    latest = {
+        type: 'FeatureCollection',
+        features: []
+    };
 
     constructor(props: XMapOverlayProps, context?: any) {
         super(props, context);
