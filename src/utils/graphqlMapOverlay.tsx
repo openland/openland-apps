@@ -119,7 +119,8 @@ export function graphqlMapOverlay<TResult extends { id: string }>(document: Docu
                         longitude1: n,
                         latitude2: w,
                         longitude2: s,
-                    }
+                    },
+                    fetchPolicy: 'network-only'
                 };
             }
         });

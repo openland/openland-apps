@@ -1,5 +1,4 @@
 import gql from 'graphql-tag';
-import { Geo } from './Geo';
 import { graphqlMapOverlay } from '../utils/graphqlMapOverlay';
 
 export interface Parcel {
