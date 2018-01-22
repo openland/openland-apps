@@ -138,7 +138,6 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
                 features: Array.from(this.items.values())
             }
         }
-        console.warn(this.latest);
         return this.latest;
     }
 
