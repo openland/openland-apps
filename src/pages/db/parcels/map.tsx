@@ -14,16 +14,15 @@ let ParcelsOverlay = withParcelsQuery((props) => {
     }
 })
 
-export default withPage(withParcelsQuery((props) => {
-    console.warn(props.data.parcels)
+export default withPage((props) => {
     return (
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Parcels']} />
         <XFullScreenPage behindHeader={true}>
             <XMap>
-                <XMapOverlay records={props.data.parcels} />
+                <ParcelsOverlay />
             </XMap>
         </XFullScreenPage>
         </>
     )
-}));
+});
