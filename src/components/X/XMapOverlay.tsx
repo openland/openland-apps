@@ -21,7 +21,8 @@ interface XMapOverlayState {
         bearing: number,
         width: number,
         height: number,
-        layers: any[]
+        layers: any[],
+        useDevicePixels?: boolean
     }>,
     layer?: Layer<GeoJsonLayerProps>,
     data?: any
@@ -52,6 +53,8 @@ interface GeoJsonLayerProps extends LayerProps {
     stroked?: boolean;
     extruded?: boolean;
     wireframe?: boolean;
+    lineJointRounded?: boolean;
+    pointRadiusScale?: number;
 
     getLineColor?: (src: any) => number[];
     getFillColor?: (src: any) => number[];
@@ -84,10 +87,19 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         }),
     };
 
-    items = new Map<string, any>();
+    items = new Map<string, {
+        type: string,
+        properties: {
+            name: string
+        },
+        geometry: {
+            type: string,
+            coordinates: number[][][]
+        }
+    }>();
     latest = {
         type: 'FeatureCollection',
-        features: []
+        features: [] as any[]
     };
 
     constructor(props: XMapOverlayProps, context?: any) {
@@ -113,6 +125,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
 
     convertProps = (src: OverlayRecord[]) => {
         let changed = false
+        this.items.clear();
         for (let v of src) {
             if (this.items.has(v.id)) {
                 continue;
@@ -129,16 +142,26 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
                     name: v.id
                 },
                 geometry: {
-                    type: 'Polygon',
+                    type: 'MultiPolygon',
                     coordinates: coordinates
                 }
             }
             this.items.set(v.id, item);
         }
         if (changed) {
+            let items = Array.from(this.items.values());
+            let count = 0;
+            for (let i of items) {
+                for (let c of i.geometry.coordinates) {
+                    for (let v of c) {
+                        count += v.length;
+                    }
+                }
+            }
+            console.warn('Total vertexes: ' + count);
             this.latest = {
                 type: 'FeatureCollection',
-                features: Array.from(this.items.values())
+                features: items
             }
         }
         return this.latest;
@@ -156,10 +179,12 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
                 extruded: false,
                 wireframe: false,
                 pickable: false,
-                opacity: 0.2,
-                fp64: true,
-                getLineColor: () => [255, 255, 255],
-                getFillColor: () => [255, 0, 0],
+                opacity: 0.1,
+                fp64: false,
+                lineJointRounded: true,
+                pointRadiusScale: 2.0,
+                getLineColor: () => [255, 0, 0],
+                getFillColor: () => [0, 0, 255],
                 data: this.state.data
             });
 
@@ -173,6 +198,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
                     width={D.width!!}
                     height={D.height!!}
                     layers={[l]}
+                    useDevicePixels={false}
                 />
             );
         } else {

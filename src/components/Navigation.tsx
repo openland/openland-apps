@@ -8,6 +8,7 @@ export function Navigation() {
             <li className="x-header--item"><XLink path="/projects">Construction projects</XLink></li>
             <li className="x-header--item"><XLink path="/permits">Permits</XLink></li>
             <li className="x-header--item"><XLink path="/organizations">Organizations</XLink></li>
+            <li className="x-header--item"><XLink path="/parcels" writeAccess={true}>Parcels</XLink></li>
             <li className="x-header--item"><XLink path="/stats" writeAccess={true}>Stats</XLink></li>
         </ul>
     );

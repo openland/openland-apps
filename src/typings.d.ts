@@ -39,6 +39,7 @@ declare module 'deck.gl' {
         width: number;
         height: number;
         layers: Layer<LayerProps>[];
+        useDevicePixels?: boolean
     }
 
     interface LayerProps {
