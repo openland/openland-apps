@@ -174,7 +174,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         if (Deck && layer && D.isEnabled) {
             let l = new layer({
                 id: 'maps',
-                stroked: true,
+                stroked: false,
                 filled: true,
                 extruded: false,
                 wireframe: false,
@@ -183,8 +183,8 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
                 fp64: false,
                 lineJointRounded: true,
                 pointRadiusScale: 2.0,
-                getLineColor: () => [255, 0, 0],
-                getFillColor: () => [0, 0, 255],
+                // getLineColor: () => [255, 0, 0],
+                // getFillColor: () => [0, 0, 255],
                 data: this.state.data
             });
 
