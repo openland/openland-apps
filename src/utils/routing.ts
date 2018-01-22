@@ -2,6 +2,7 @@ import Router from 'next/router';
 import * as NProgress from 'nprogress';
 import { RouterState } from './withRouter';
 import * as qs from 'query-string';
+import { trackPage } from './analytics';
 
 NProgress.configure({ showSpinner: false, parent: '#progress_container' });
 
@@ -72,6 +73,8 @@ Router.onRouteChangeComplete = () => {
     // tslint:enable
 
     hideProgress();
+
+    trackPage(document.location.pathname);
 };
 
 Router.onRouteChangeError = () => {

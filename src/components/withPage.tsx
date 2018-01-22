@@ -9,6 +9,7 @@ import { Loader } from './Loaders';
 import '../utils/routing';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import '../utils/analytics';
 
 //
 // Root Loader. We shouldn't render anything untill page is loaded since we have global progress indicator.

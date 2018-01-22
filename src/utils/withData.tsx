@@ -10,6 +10,7 @@ import { isPageChanged } from './routing';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { HostNameProvider } from './HostNameProvider';
 import { getComponentDisplayName } from './utils';
+import { trackPage } from '../utils/analytics';
 
 export const withData = (ComposedComponent: React.ComponentType) => {
     return class WithData extends React.Component<{
@@ -32,7 +33,7 @@ export const withData = (ComposedComponent: React.ComponentType) => {
 
         static async getInitialProps(ctx: any) {
             let token = getToken(ctx.req);
-            let serverState = {apollo: {}};
+            let serverState = { apollo: {} };
             let host: string;
             let protocol: string;
             if (ctx.req) {
@@ -67,11 +68,11 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                     await getDataFromTree(
                         <ApolloProvider client={apollo}>
                             <HostNameProvider hostName={host} protocol={protocol}>
-                                <ComposedComponent/>
+                                <ComposedComponent />
                             </HostNameProvider>
                         </ApolloProvider>
                         ,
-                        {router: {query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath}});
+                        { router: { query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath } });
                 } catch (error) {
                     console.warn(error);
                     // Prevent Apollo Client GraphQL errors from crashing SSR.
@@ -105,11 +106,11 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                     await getDataFromTree(
                         <ApolloProvider client={apollo}>
                             <HostNameProvider hostName={host} protocol={protocol}>
-                                <ComposedComponent/>
+                                <ComposedComponent />
                             </HostNameProvider>
                         </ApolloProvider>
                         ,
-                        {router: {query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath}});
+                        { router: { query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath } });
                 } catch (error) {
                     console.warn(error);
                     // Prevent Apollo Client GraphQL errors from crashing SSR.
@@ -135,6 +136,11 @@ export const withData = (ComposedComponent: React.ComponentType) => {
         constructor(props: { serverState: { apollo: { data: any, token?: string } }, host: string, protocol: string, domain: string }) {
             super(props);
             this.apollo = apolloClient(this.props.domain, this.props.serverState.apollo.data, this.props.serverState.apollo.token);
+        }
+
+        componentDidMount() {
+            // Hack to track initial page view
+            trackPage(document.location.pathname);
         }
 
         render() {
