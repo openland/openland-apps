@@ -140,7 +140,7 @@ export const withData = (ComposedComponent: React.ComponentType) => {
 
         componentDidMount() {
             // Hack to track initial page view
-            trackPage(document.location.pathname);
+            trackPage();
         }
 
         render() {

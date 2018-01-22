@@ -74,7 +74,7 @@ Router.onRouteChangeComplete = () => {
 
     hideProgress();
 
-    trackPage(document.location.pathname);
+    trackPage();
 };
 
 Router.onRouteChangeError = () => {
