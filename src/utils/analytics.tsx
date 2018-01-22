@@ -1,2 +1,6 @@
 import * as ga from 'react-ga';
-ga.initialize('UA-99506931-3', { debug: process.env.NODE_ENV !== 'production' });
+import { canUseDOM } from './environment';
+ga.initialize('UA-99506931-3');
+if (canUseDOM) {
+    ga.pageview('/');
+}
