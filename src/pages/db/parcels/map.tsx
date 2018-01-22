@@ -4,9 +4,9 @@ import { XFullScreenPage } from '../../../components/X/XFullScreenPage';
 import { XMap } from '../../../components/X/XMap';
 import { XMapOverlay } from '../../../components/X/XMapOverlay';
 import { XHead } from '../../../components/X/XHead';
-import { withParcelsQuery } from '../../../api/Parcels';
+import { withBlocksQuery } from '../../../api/Parcels';
 
-let ParcelsOverlay = withParcelsQuery((props) => {
+let ParcelsOverlay = withBlocksQuery((props) => {
     if (props.data.points) {
         return (<XMapOverlay records={props.data.points} />)
     } else {
