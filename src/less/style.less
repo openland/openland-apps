@@ -2651,14 +2651,33 @@ body {
 		&.is-project {
 			span {
 				text-transform: none;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
 			}
 		}
 
 		&.with-photo {
+			padding-right: 10px;
+
+			.max-size (400px);
+
 			@media @media-sm-only, @media-xlg {
 				padding-left: 98px;
 
 				.position (relative);
+			}
+
+			@media @media-sm-only {
+				.max-size (270px);
+			}
+
+			@media @media-md-only {
+				.max-size (220px);
+			}
+
+			@media @media-lg-only {
+				.max-size (260px);
 			}
 
 			img {
