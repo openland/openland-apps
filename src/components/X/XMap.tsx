@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import * as classnames from 'classnames';
 import { canUseDOM } from '../../utils/environment';
 import { InteractiveMap, ViewPortChanged } from 'react-map-gl';
 import * as Map from 'mapbox-gl';
@@ -150,15 +151,15 @@ export class XMap extends React.Component<XMapProps, XMapState> {
     render() {
         if (!canUseDOM) {
             return (
-                <div className={this.props.className} style={this.props.style} />
+                <div className={classnames('x-map', this.props.className)} style={this.props.style} />
             )
         } else if (canUseDOM && !this.state.inited) {
             return (
-                <div className={this.props.className} style={this.props.style} ref={this.handleRef} />
+                <div className={classnames('x-map', this.props.className)} style={this.props.style} ref={this.handleRef} />
             )
         } else {
             return (
-                <div className={this.props.className} style={this.props.style} ref={this.handleRef}>
+                <div className={classnames('x-map', this.props.className)} style={this.props.style} ref={this.handleRef}>
                     <InteractiveMap
                         mapboxApiAccessToken={MapBoxToken}
                         mapStyle="mapbox://styles/mapbox/streets-v9"
