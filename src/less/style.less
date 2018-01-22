@@ -1161,6 +1161,20 @@ body {
 	}
 }
 
+.x-fullscreen {
+	height: 100vh;
+	width: 100%;
+
+	&.behind-header {
+		margin-top: -64px;
+	}
+}
+
+.x-map {
+	width: 100%;
+	height: 100%;
+}
+
 .x-btn {
 	text-align: center;
 	border: none;
@@ -2280,7 +2294,7 @@ body {
 			@media @media-sm-only { margin: 0; }
 
 			a&:hover,
-			button&:hover, { color: fade(@white, 60); }
+			button&:hover { color: fade(@white, 60); }
 			img {
 				overflow: hidden;
 				border-radius: 28px;
