@@ -98,7 +98,7 @@ function withMapViewport<P = {}>(ComposedComponent: React.ComponentType<P & View
 }
 
 function roundLocation(val: number) {
-    return Math.round(val * 1000) / 1000;
+    return val; // Math.round(val * 1000) / 1000;
 }
 
 export function graphqlMapOverlay<TResult extends { id: string }>(document: DocumentNode) {
@@ -113,6 +113,7 @@ export function graphqlMapOverlay<TResult extends { id: string }>(document: Docu
 
                 // let latDiff = roundLocation(Math.abs(e - w) * 0.1);
                 // let lonDiff = roundLocation(Math.abs(n - s) * 0.1);
+                
                 return {
                     variables: {
                         latitude1: e,
