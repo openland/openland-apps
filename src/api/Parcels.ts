@@ -1,24 +1,21 @@
 import gql from 'graphql-tag';
-import { graphqlRouted } from '../utils/graphqlRouted';
 import { Geo } from './Geo';
+import { graphqlMapOverlay } from '../utils/graphqlMapOverlay';
 
-export interface Parcels {
+export interface Parcel {
     id: string;
     title: string;
-    geometry: Geo[][];
+    geometry: string;
 }
 
 const ParcelsQuery = gql`
-    query Parcels {
-        parcels {
+    query Parcels($latitude1: Float!, $longitude1: Float!, $latitude2: Float!, $longitude2: Float!) {
+        points: parcels(envelope: {leftTop: {latitude: $latitude1, longitude: $longitude1}, rightBottom: {latitude: $latitude2, longitude: $longitude2}}) {
             id
             title
-            geometry {
-                latitude
-                longitude
-            }
+            geometry
         }
     }
 `
 
-export const withParcelsQuery = graphqlRouted<{ parcels: Parcels[] }>(ParcelsQuery);
+export const withParcelsQuery = graphqlMapOverlay<Parcel>(ParcelsQuery);

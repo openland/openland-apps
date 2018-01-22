@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import * as classnames from 'classnames';
 import { canUseDOM } from '../../utils/environment';
 import { InteractiveMap, ViewPortChanged } from 'react-map-gl';
+import * as Map from 'mapbox-gl';
 
 let MapBoxToken = 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw';
 
@@ -20,20 +21,33 @@ interface XMapState {
     bearing?: number;
     width?: number;
     height?: number;
+    map?: Map.Map;
 }
 
 export class XMap extends React.Component<XMapProps, XMapState> {
     static childContextTypes = {
         mapViewport: PropTypes.shape({
             isEnabled: PropTypes.bool.isRequired,
-            latitude: PropTypes.number,
-            longitude: PropTypes.number,
+            center: PropTypes.shape({
+                latitude: PropTypes.number,
+                longitude: PropTypes.number,
+            }),
+            bounds: PropTypes.shape({
+                ne: PropTypes.shape({
+                    latitude: PropTypes.number,
+                    longitude: PropTypes.number,
+                }),
+                sw: PropTypes.shape({
+                    latitude: PropTypes.number,
+                    longitude: PropTypes.number,
+                }),
+            }),
             zoom: PropTypes.number,
             pitch: PropTypes.number,
             bearing: PropTypes.number,
             width: PropTypes.number,
             height: PropTypes.number
-        }),
+        })
     };
 
     private container: HTMLDivElement | null = null
@@ -42,8 +56,8 @@ export class XMap extends React.Component<XMapProps, XMapState> {
         super(props);
         this.state = {
             inited: false,
-            latitude: 37.80770456523733, longitude: -122.41461900033902,
-            pitch: 45,
+            latitude: 37.7717807, longitude: -122.4196095,
+            pitch: 0,
             bearing: 0,
             zoom: 16
         };
@@ -92,17 +106,44 @@ export class XMap extends React.Component<XMapProps, XMapState> {
         }
     }
 
+    handleMapRef = (v: any | null) => {
+        if (v != null) {
+            this.setState({ map: v.getMap() })
+        }
+    }
+
     getChildContext() {
-        return {
-            mapViewport: {
-                isEnabled: this.state.inited,
-                latitude: this.state.inited ? this.state.latitude : undefined,
-                longitude: this.state.inited ? this.state.longitude : undefined,
-                zoom: this.state.inited ? this.state.zoom : undefined,
-                pitch: this.state.inited ? this.state.pitch : undefined,
-                bearing: this.state.inited ? this.state.bearing : undefined,
-                width: this.state.inited ? this.state.width : undefined,
-                height: this.state.inited ? this.state.height : undefined
+        if (this.state.inited && this.state.map) {
+            let bounds = this.state.map.getBounds();
+            return {
+                mapViewport: {
+                    isEnabled: true,
+                    center: {
+                        latitude: this.state.latitude,
+                        longitude: this.state.longitude,
+                    },
+                    bounds: {
+                        sw: {
+                            latitude: bounds.getSouthWest().lat,
+                            longitude: bounds.getSouthWest().lng
+                        },
+                        ne: {
+                            latitude: bounds.getNorthEast().lat,
+                            longitude: bounds.getNorthEast().lng
+                        }
+                    },
+                    zoom: this.state.zoom,
+                    pitch: this.state.pitch,
+                    bearing: this.state.bearing,
+                    width: this.state.width,
+                    height: this.state.height
+                }
+            }
+        } else {
+            return {
+                mapViewport: {
+                    isEnabled: false
+                }
             }
         }
     }
@@ -130,10 +171,11 @@ export class XMap extends React.Component<XMapProps, XMapState> {
                         latitude={this.state.latitude}
                         longitude={this.state.longitude}
                         onViewportChange={this.handleStateChange}
+                        ref={this.handleMapRef}
                     >
                         {this.props.children}
                     </InteractiveMap>
-                </div>
+                </div >
             )
         }
     }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { XLink } from './X/XLink';
 import { XCloudImage } from './X/XCloudImage';
+import { XCard } from './X/XCard';
 
 function makeLocationUrl(location: { latitude: number, longitude: number }) {
     return `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=16&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY`;
@@ -30,53 +31,54 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
 
     render() {
         return (
-            <div
-                className={'x-card' + (this.props.picture ? '' : ' without-photo') + (this.props.verified ? ' is-checked' : '') + (this.state.expanded ? ' is-expanded' : '')}>
-                {this.props.picture && (<div className="x-card--photo"
-                                             style={{backgroundImage: `url(${this.props.picture.retina})`}}><XLink path={'/projects/' + this.props.slug} /></div>)}
-                {!this.props.picture && (<div className="x-card--photo no-photo"><XLink path={'/projects/' + this.props.slug} /></div>)}
+            <XCard>
+                <div className={'x-card--in' + (this.props.picture ? '' : ' without-photo') + (this.props.verified ? ' is-checked' : '') + (this.state.expanded ? ' is-expanded' : '')}>
+                    {this.props.picture && (<div className="x-card--photo"
+                                                style={{backgroundImage: `url(${this.props.picture.retina})`}}><XLink path={'/projects/' + this.props.slug} /></div>)}
+                    {!this.props.picture && (<div className="x-card--photo no-photo"><XLink path={'/projects/' + this.props.slug} /></div>)}
 
-                <div className="x-card--info">
-                    <div className="x-card--box">
-                        <div className="x-card--title"><XLink path={'/projects/' + this.props.slug}>{this.props.title}</XLink></div>
-                        {this.props.subtitle && (<div className="x-card--text">{this.props.subtitle}</div>)}
-                    </div>
-
-                    {this.props.url && (
-                        <div className="x-card--btns">
-                            {this.props.url && (<XLink className="x-card--btn" href={this.props.url}>
-                                    <i className="icon-share">{}</i>
-                                </XLink>)}
-                            {/* <XLink className="x-card--btn" path="#"><i className="icon-edit">{}</i></XLink> */}
+                    <div className="x-card--info">
+                        <div className="x-card--box">
+                            <div className="x-card--title"><XLink path={'/projects/' + this.props.slug}>{this.props.title}</XLink></div>
+                            {this.props.subtitle && (<div className="x-card--text">{this.props.subtitle}</div>)}
                         </div>
-                    )}
-                </div>
 
-                <div className="x-card--tools">
-                    <div className="x-card--counter"><span>{this.props.newUnits || '?'}</span>Net new units</div>
-                    <div className="x-card--counter"><span>{this.props.endYear || '?'}</span>Expected completion</div>
+                        {this.props.url && (
+                            <div className="x-card--btns">
+                                {this.props.url && (<XLink className="x-card--btn" href={this.props.url}>
+                                        <i className="icon-share">{}</i>
+                                    </XLink>)}
+                                {/* <XLink className="x-card--btn" path="#"><i className="icon-edit">{}</i></XLink> */}
+                            </div>
+                        )}
+                    </div>
 
-                    {this.props.slug && (<XLink path={'/projects/' + this.props.slug} className="x-card--toggler"/>)}
-                    {!this.props.slug && (<a className="x-card--toggler" href="#" onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({expanded: !this.state.expanded});
-                    }}>{}</a>)}
-                </div>
+                    <div className="x-card--tools">
+                        <div className="x-card--counter"><span>{this.props.newUnits || '?'}</span>Net new units</div>
+                        <div className="x-card--counter"><span>{this.props.endYear || '?'}</span>Expected completion</div>
 
-                <div className="x-card--details">
-                    {this.props.location && (<div className="x-card--map"
-                                                  style={{backgroundImage: 'url(' + makeLocationUrl(this.props.location) + ')'}}>{}</div>)}
-                    {!this.props.location && (<div className="x-card--map no-photo">{}</div>)}
+                        {this.props.slug && (<XLink path={'/projects/' + this.props.slug} className="x-card--toggler"/>)}
+                        {!this.props.slug && (<a className="x-card--toggler" href="#" onClick={(e) => {
+                            e.preventDefault();
+                            this.setState({expanded: !this.state.expanded});
+                        }}>{}</a>)}
+                    </div>
 
-                    <div className="x-card--fields">
-                        <table>
-                            <tbody>
-                            {this.props.children}
-                            </tbody>
-                        </table>
+                    <div className="x-card--details">
+                        {this.props.location && (<div className="x-card--map"
+                                                    style={{backgroundImage: 'url(' + makeLocationUrl(this.props.location) + ')'}}>{}</div>)}
+                        {!this.props.location && (<div className="x-card--map no-photo">{}</div>)}
+
+                        <div className="x-card--fields">
+                            <table>
+                                <tbody>
+                                {this.props.children}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </XCard>
         );
     }
 }
@@ -108,48 +110,49 @@ export interface OrganizationListCardProps {
 export class OrganizationDataListCard extends React.Component<OrganizationListCardProps, {}> {
     render() {
         return (
-            <div
-                className={'x-card is-organization' + (this.props.logo ? '' : ' without-photo')}>
-                <XLink path={'/organizations/' + this.props.slug}>
-                    {this.props.logo && (<div className="x-card--photo">
-                        <XCloudImage src={this.props.logo} maxWidth={140} maxHeight={140}/>
-                    </div>)}
-                    {!this.props.logo && (<div className="x-card--photo no-photo">{}</div>)}
-                </XLink>
+            <XCard>
+                <div className={'x-card--in is-organization' + (this.props.logo ? '' : ' without-photo')}>
+                    <XLink path={'/organizations/' + this.props.slug}>
+                        {this.props.logo && (<div className="x-card--photo">
+                            <XCloudImage src={this.props.logo} maxWidth={140} maxHeight={140}/>
+                        </div>)}
+                        {!this.props.logo && (<div className="x-card--photo no-photo">{}</div>)}
+                    </XLink>
 
-                <div className="x-card--info">
-                    <div className="x-card--box">
-                        <div className="x-card--title" style={{textColor: '#000000'}}><XLink
-                            path={'/organizations/' + this.props.slug}>{this.props.title}</XLink></div>
-                        {this.props.subtitle && (<div className="x-card--text">{this.props.subtitle}</div>)}
+                    <div className="x-card--info">
+                        <div className="x-card--box">
+                            <div className="x-card--title" style={{textColor: '#000000'}}><XLink
+                                path={'/organizations/' + this.props.slug}>{this.props.title}</XLink></div>
+                            {this.props.subtitle && (<div className="x-card--text">{this.props.subtitle}</div>)}
+                        </div>
+
+                        {this.props.url && (
+                            <div className="x-card--btns">
+                                {this.props.url && (<a className="x-card--btn" href={this.props.url} target="_blank"><i
+                                    className="icon-share">{}</i></a>)}
+                                {/* <a className="x-card--btn" href="#"><i className="icon-edit">{}</i></a> */}
+                            </div>
+                        )}
                     </div>
 
-                    {this.props.url && (
-                        <div className="x-card--btns">
-                            {this.props.url && (<a className="x-card--btn" href={this.props.url} target="_blank"><i
-                                className="icon-share">{}</i></a>)}
-                            {/* <a className="x-card--btn" href="#"><i className="icon-edit">{}</i></a> */}
-                        </div>
-                    )}
+                    <div className="x-card--tools">
+                        {(this.props.projects !== undefined) && ((this.props.projects > 0) && (<div className="x-card--counter"><span>{this.props.projects}</span>recent projects</div>))}
+
+                        {this.props.featuredProject && (
+                            <XLink path={this.props.featuredProject.url}
+                                className={'x-card--counter is-project' + (this.props.featuredProject.picture ? ' with-photo' : '')}>
+                                {this.props.featuredProject.picture && (
+                                    <img src={this.props.featuredProject.picture.retina} alt=""/>)}
+
+                                <span>{this.props.featuredProject.title}</span>
+                                featured project
+                            </XLink>
+                        )}
+
+                        <XLink className="x-card--toggler is-link" path={this.props.profile}>View profile</XLink>
+                    </div>
                 </div>
-
-                <div className="x-card--tools">
-                    {(this.props.projects !== undefined) && ((this.props.projects > 0) && (<div className="x-card--counter"><span>{this.props.projects}</span>recent projects</div>))}
-
-                    {this.props.featuredProject && (
-                        <XLink path={this.props.featuredProject.url}
-                               className={'x-card--counter is-project' + (this.props.featuredProject.picture ? ' with-photo' : '')}>
-                            {this.props.featuredProject.picture && (
-                                <img src={this.props.featuredProject.picture.retina} alt=""/>)}
-
-                            <span>{this.props.featuredProject.title}</span>
-                            featured project
-                        </XLink>
-                    )}
-
-                    <XLink className="x-card--toggler is-link" path={this.props.profile}>View profile</XLink>
-                </div>
-            </div>
+            </XCard>
         );
     }
 }
