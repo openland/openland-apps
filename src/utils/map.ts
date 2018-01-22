@@ -1,3 +1,4 @@
+import * as Map from 'mapbox-gl';
 export interface MapViewport {
     isEnabled: boolean;
     center?: { latitude: number, longitude: number };
@@ -10,4 +11,6 @@ export interface MapViewport {
     bearing?: number;
     width?: number;
     height?: number;
+    map?: Map.Map;
+    navigateTo?: (v: { latitude: number, longitude: number }) => void;
 }

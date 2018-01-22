@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import * as classnames from 'classnames';
 import { canUseDOM } from '../../utils/environment';
-import { InteractiveMap, ViewPortChanged } from 'react-map-gl';
+import { InteractiveMap, ViewPortChanged, FlyToInterpolator } from 'react-map-gl';
 import * as Map from 'mapbox-gl';
 
 let MapBoxToken = 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw';
@@ -10,17 +10,23 @@ let MapBoxToken = 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMH
 export interface XMapProps {
     style?: React.CSSProperties;
     className?: string;
+    rotation?: boolean;
 }
 
 interface XMapState {
     inited: boolean;
     latitude?: number;
     longitude?: number;
+    setLatitude?: number;
+    setLongitude?: number;
     zoom?: number;
     pitch?: number;
     bearing?: number;
     width?: number;
     height?: number;
+    transitionDuration?: number;
+    transitionInterpolator?: FlyToInterpolator;
+
     map?: Map.Map;
 }
 
@@ -28,6 +34,7 @@ export class XMap extends React.Component<XMapProps, XMapState> {
     static childContextTypes = {
         mapViewport: PropTypes.shape({
             isEnabled: PropTypes.bool.isRequired,
+            navigateTo: PropTypes.func,
             center: PropTypes.shape({
                 latitude: PropTypes.number,
                 longitude: PropTypes.number,
@@ -56,15 +63,15 @@ export class XMap extends React.Component<XMapProps, XMapState> {
         super(props);
         this.state = {
             inited: false,
-            latitude: 37.7717807, longitude: -122.4196095,
+            latitude: 37.75444398077139, longitude: -122.43963811583545,
             pitch: 0,
             bearing: 0,
-            zoom: 16
+            zoom: 12
         };
     }
 
     handleStateChange = (v: ViewPortChanged) => {
-        this.setState({ ...v });
+        this.setState((s) => ({ ...s, ...v, setLatitude: undefined, setLongitude: undefined }));
     }
 
     handleResize = () => {
@@ -106,6 +113,15 @@ export class XMap extends React.Component<XMapProps, XMapState> {
         }
     }
 
+    navigateTo = (loc: { latitude: number, longitude: number }) => {
+        this.setState((s) => ({
+            ...s,
+            setLatitude: loc.latitude, setLongitude: loc.longitude,
+            transitionDuration: 300,
+            transitionInterpolator: new FlyToInterpolator()
+        }));
+    }
+
     handleMapRef = (v: any | null) => {
         if (v != null) {
             this.setState({ map: v.getMap() })
@@ -118,6 +134,7 @@ export class XMap extends React.Component<XMapProps, XMapState> {
             return {
                 mapViewport: {
                     isEnabled: true,
+                    navigateTo: this.navigateTo,
                     center: {
                         latitude: this.state.latitude,
                         longitude: this.state.longitude,
@@ -168,9 +185,14 @@ export class XMap extends React.Component<XMapProps, XMapState> {
                         zoom={this.state.zoom}
                         pitch={this.state.pitch}
                         bearing={this.state.bearing}
-                        latitude={this.state.latitude}
-                        longitude={this.state.longitude}
+                        latitude={this.state.setLatitude ? this.state.setLatitude : this.state.latitude}
+                        longitude={this.state.setLongitude ? this.state.setLongitude : this.state.longitude}
                         onViewportChange={this.handleStateChange}
+                        dragPan={true}
+                        dragRotate={this.props.rotation}
+                        touchRotate={this.props.rotation}
+                        transitionDuration={this.state.transitionDuration}
+                        transitionInterpolator={this.state.transitionInterpolator}
                         ref={this.handleMapRef}
                     >
                         {this.props.children}

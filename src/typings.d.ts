@@ -9,10 +9,15 @@ declare module 'react-map-gl' {
         mapStyle?: string;
         pitch?: number;
         bearing?: number;
+        transitionDuration?: number;
+        transitionInterpolator?: FlyToInterpolator;
     }
 
     interface InteractiveMapProps extends StaticMapProps {
         maxZoom?: number;
+        dragPan?: boolean;
+        dragRotate?: boolean;
+        touchRotate?: boolean;
         onViewportChange?: (viewport: ViewPortChanged) => void
     }
 
@@ -24,7 +29,7 @@ declare module 'react-map-gl' {
         bearing: number;
     }
 
-
+    export class FlyToInterpolator { }
     export let StaticMap: React.ComponentClass<StaticMapProps>;
     export let InteractiveMap: React.ComponentClass<InteractiveMapProps>;
 }

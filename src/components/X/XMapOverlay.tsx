@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { canUseDOM } from '../../utils/environment';
 import { MapViewport } from '../../utils/map';
-
+import * as M from 'mapbox-gl';
 interface XMapOverlayProps {
     records: OverlayRecord[];
 }
@@ -25,7 +25,9 @@ interface XMapOverlayState {
         useDevicePixels?: boolean
     }>,
     layer?: Layer<GeoJsonLayerProps>,
-    data?: any
+    data?: any,
+    selected?: string,
+    map?: M.Map
 }
 
 interface LayerProps {
@@ -38,7 +40,11 @@ interface LayerProps {
     highlightColor?: number[];
     autoHighlight?: boolean;
 
+    enabled?: boolean;
+
     fp64?: boolean;
+
+    updateTriggers?: any;
 }
 
 interface Layer<T extends LayerProps> {
@@ -58,6 +64,8 @@ interface GeoJsonLayerProps extends LayerProps {
 
     getLineColor?: (src: any) => number[];
     getFillColor?: (src: any) => number[];
+    onHover?: (src: any) => void;
+    onClick?: (src: any) => void;
 }
 
 export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlayState> {
@@ -167,6 +175,43 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         return this.latest;
     }
 
+    getFillColor = (src: { properties: { name: string } }) => {
+        if (this.state.selected) {
+            if (src.properties.name === this.state.selected) {
+                return [254, 173, 84];
+            }
+        }
+        return [1, 152, 189];
+    }
+    getLineColor = (src: any) => [0, 0, 0];
+
+    onHover = (src: { object?: { properties: { name: string } } }) => {
+        if (src.object) {
+            this.setState({ selected: src.object.properties.name });
+        } else {
+            this.setState({ selected: undefined });
+        }
+    }
+
+    onClick = (src: { object?: { geometry: { coordinates: number[][][] }, properties: { name: string } } }) => {
+        let navigateTo = (this.context.mapViewport as MapViewport).navigateTo!!
+
+        let count = 0
+        let latSum = 0
+        let lonSum = 0
+        for (let s of src.object!!.geometry.coordinates) {
+            for (let c of s) {
+                latSum += c[1];
+                lonSum += c[0];
+                count++
+            }
+        }
+        latSum = latSum / count;
+        lonSum = lonSum / count;
+
+        navigateTo({ longitude: lonSum, latitude: latSum })
+    }
+
     render() {
         let Deck = this.state.deck;
         let layer = this.state.layer;
@@ -178,16 +223,18 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
                 filled: true,
                 extruded: false,
                 wireframe: false,
-                pickable: false,
-                opacity: 0.1,
+                pickable: true,
+                opacity: 0.8,
                 fp64: false,
-                lineJointRounded: true,
-                pointRadiusScale: 2.0,
-                // getLineColor: () => [255, 0, 0],
-                // getFillColor: () => [0, 0, 255],
-                data: this.state.data
+                getFillColor: this.getFillColor,
+                getLineColor: this.getLineColor,
+                onHover: this.onHover,
+                onClick: this.onClick,
+                data: this.state.data,
+                updateTriggers: {
+                    getFillColor: this.state.selected
+                }
             });
-
             return (
                 <Deck
                     latitude={D.center!!.latitude}
