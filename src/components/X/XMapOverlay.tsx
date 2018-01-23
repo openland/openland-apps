@@ -47,6 +47,11 @@ export class XMapJsonOverlay extends React.Component<{ records: OverlayRecord[];
 }
 
 export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlayState> {
+    static contextTypes = {
+        mapViewport: PropTypes.shape({
+            navigateTo: PropTypes.func.isRequired
+        }).isRequired
+    };
     items = new Map<string, {
         type: string,
         properties: {

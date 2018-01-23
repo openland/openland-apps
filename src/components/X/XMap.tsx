@@ -46,7 +46,7 @@ export class XMap extends React.Component<XMapProps, XMapState> {
     static childContextTypes = {
         mapViewport: PropTypes.shape({
             isEnabled: PropTypes.bool.isRequired,
-            navigateTo: PropTypes.func,
+            navigateTo: PropTypes.func.isRequired,
             center: PropTypes.shape({
                 latitude: PropTypes.number,
                 longitude: PropTypes.number,
@@ -66,7 +66,7 @@ export class XMap extends React.Component<XMapProps, XMapState> {
             bearing: PropTypes.number,
             width: PropTypes.number,
             height: PropTypes.number
-        })
+        }).isRequired
     };
 
     private container: HTMLDivElement | null = null
@@ -139,7 +139,8 @@ export class XMap extends React.Component<XMapProps, XMapState> {
         } else {
             return {
                 mapViewport: {
-                    isEnabled: false
+                    isEnabled: false,
+                    navigateTo: this.navigateTo
                 }
             }
         }
