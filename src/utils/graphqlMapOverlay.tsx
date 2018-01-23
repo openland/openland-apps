@@ -7,22 +7,20 @@ import { getComponentDisplayName } from './utils';
 import { MapViewport } from './map';
 type Geo = { latitude: number, longitude: number };
 type ViewPortProps = {
-    center: Geo,
     bounds: {
         ne: Geo,
         sw: Geo
-    }
+    },
 };
 type ViewPortFilterProps = { minZoom?: number, maxZoom?: number };
 
 function withMapViewport<P = {}>(ComposedComponent: React.ComponentType<P & ViewPortProps>) {
-    return class WithMapViewPort extends React.PureComponent<P & ViewPortFilterProps, {
+    return class WithMapViewPort extends React.Component<P & ViewPortFilterProps, {
         enabled: boolean,
         bounds?: {
             ne: Geo,
             sw: Geo
         },
-        center?: Geo,
         zoom?: number
     }> {
         static displayName = `WithMapViewport(${getComponentDisplayName(ComposedComponent)})`;
@@ -48,7 +46,6 @@ function withMapViewport<P = {}>(ComposedComponent: React.ComponentType<P & View
             this.state = {
                 enabled: viewport.isEnabled,
                 bounds: viewport.bounds,
-                center: viewport.center,
                 zoom: viewport.zoom
             }
         }
@@ -64,7 +61,6 @@ function withMapViewport<P = {}>(ComposedComponent: React.ComponentType<P & View
                     this.setState({
                         enabled: viewport.isEnabled,
                         bounds: viewport.bounds,
-                        center: viewport.center,
                         zoom: viewport.zoom
                     })
                 },
@@ -88,7 +84,6 @@ function withMapViewport<P = {}>(ComposedComponent: React.ComponentType<P & View
 
             return (
                 <ComposedComponent
-                    center={this.state.center!!}
                     bounds={this.state.bounds!!}
                     {...this.props}
                 />
@@ -105,7 +100,8 @@ export function graphqlMapOverlay<TResult extends { id: string }>(document: Docu
     return function (component: React.ComponentType<NotNullableChildProps<{ points: TResult[] }>>): React.ComponentType<ViewPortFilterProps> {
         let qlWrapper = graphql<{ points: TResult[] }, ViewPortProps, NotNullableChildProps<{ points: TResult[] }>>(document, {
             options: (props: ViewPortProps) => {
-
+                // console.warn('Render');
+                // console.warn(props);
                 let e = roundLocation(props.bounds.ne.latitude);
                 let n = roundLocation(props.bounds.ne.longitude);
                 let w = roundLocation(props.bounds.sw.latitude);
@@ -113,7 +109,7 @@ export function graphqlMapOverlay<TResult extends { id: string }>(document: Docu
 
                 // let latDiff = roundLocation(Math.abs(e - w) * 0.1);
                 // let lonDiff = roundLocation(Math.abs(n - s) * 0.1);
-                
+
                 return {
                     variables: {
                         latitude1: e,

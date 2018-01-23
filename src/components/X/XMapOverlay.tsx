@@ -12,7 +12,10 @@ if (!canUseDOM) {
 }
 
 interface XMapOverlayProps {
+    maxZoom?: number;
+    minZoom?: number;
     records: OverlayRecord[];
+    id: string;
 }
 
 interface OverlayRecord {
@@ -49,7 +52,8 @@ export class XMapJsonOverlay extends React.Component<{ records: OverlayRecord[];
 export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlayState> {
     static contextTypes = {
         mapViewport: PropTypes.shape({
-            navigateTo: PropTypes.func.isRequired
+            navigateTo: PropTypes.func.isRequired,
+            zoom: PropTypes.number
         }).isRequired
     };
     items = new Map<string, {
@@ -163,15 +167,27 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
     }
 
     render() {
+        let zoom = (this.context.mapViewport as MapViewport).zoom;
+        let alpha = 0.8
+        if (this.props.maxZoom) {
+            if (zoom && zoom > this.props.maxZoom) {
+                if (zoom < this.props.maxZoom) {
+                    alpha = 0.8 * (1 - (zoom - this.props.maxZoom));
+                } else {
+                    alpha = 0.0;
+                }
+            }
+        }
+
         let l = new GeoJsonLayer({
-            id: 'maps',
+            id: this.props.id,
             stroked: true,
             filled: true,
             extruded: false,
             wireframe: false,
             pickable: true,
-            opacity: 0.8,
-            fp64: true,
+            opacity: alpha,
+            fp64: zoom ? zoom > 14 : false,
             getFillColor: this.getFillColor,
             getLineColor: this.getLineColor,
             onHover: this.onHover,
