@@ -4,31 +4,42 @@ import * as classnames from 'classnames';
 import { canUseDOM } from '../../utils/environment';
 import { InteractiveMap, ViewPortChanged, FlyToInterpolator } from 'react-map-gl';
 import * as Map from 'mapbox-gl';
+import { XMapOverlayProvider } from './XMapOverlayProvider';
 
 let MapBoxToken = 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw';
 
 export interface XMapProps {
     style?: React.CSSProperties;
     className?: string;
-    rotation?: boolean;
+
+    initLatitude?: number;
+    initLongitude?: number;
+    initZoom?: number;
+    initPitch?: number;
+    initBearing?: number;
+
+    allowRotation?: boolean;
 }
 
 interface XMapState {
     inited: boolean;
-    latitude?: number;
-    longitude?: number;
+    width?: number;
+    height?: number;
+    initedMap: boolean;
+    map?: Map.Map;
+
+    latitude: number;
+    longitude: number;
+    zoom: number;
+    pitch: number;
+    bearing: number;
+
     setLatitude?: number;
     setLongitude?: number;
     setZoom?: number;
-    zoom?: number;
-    pitch?: number;
-    bearing?: number;
-    width?: number;
-    height?: number;
+
     transitionDuration?: number;
     transitionInterpolator?: FlyToInterpolator;
-
-    map?: Map.Map;
 }
 
 export class XMap extends React.Component<XMapProps, XMapState> {
@@ -64,32 +75,18 @@ export class XMap extends React.Component<XMapProps, XMapState> {
         super(props);
         this.state = {
             inited: false,
-            latitude: 37.75444398077139, longitude: -122.43963811583545,
-            pitch: 0,
-            bearing: 0,
-            zoom: 12
+            initedMap: false,
+            latitude: props.initLatitude ? props.initLatitude : 37.75444398077139,
+            longitude: props.initLongitude ? props.initLongitude : -122.43963811583545,
+            pitch: props.initPitch ? props.initPitch : 0,
+            bearing: props.initBearing ? props.initBearing : 0,
+            zoom: props.initZoom ? props.initZoom : 12
         };
-    }
-
-    handleStateChange = (v: ViewPortChanged) => {
-        this.setState((s) => ({ ...s, ...v, setLatitude: undefined, setLongitude: undefined, setZoom: undefined }));
-    }
-
-    handleResize = () => {
-        if (this.container !== null) {
-            this.setState({
-                inited: true,
-                width: this.container!!.clientWidth,
-                height: this.container!!.clientHeight
-            })
-        }
     }
 
     componentDidMount() {
         this.handleResize();
-        if (canUseDOM) {
-            window.addEventListener('resize', this.handleResize);
-        }
+        window.addEventListener('resize', this.handleResize);
     }
 
     componentWillUnmount() {
@@ -97,21 +94,7 @@ export class XMap extends React.Component<XMapProps, XMapState> {
             this.container.removeEventListener('resize', this.handleResize);
             this.container = null;
         }
-        if (canUseDOM) {
-            window.removeEventListener('resize', this.handleResize);
-        }
-    }
-
-    handleRef = (v: HTMLDivElement | null) => {
-        if (v != null) {
-            if (this.container !== null) {
-                this.container.removeEventListener('resize', this.handleResize);
-                this.container = null;
-            }
-            this.container = v;
-            this.container.addEventListener('resize', this.handleResize);
-            this.handleResize();
-        }
+        window.removeEventListener('resize', this.handleResize);
     }
 
     navigateTo = (loc: { latitude: number, longitude: number, zoom: number }) => {
@@ -123,12 +106,6 @@ export class XMap extends React.Component<XMapProps, XMapState> {
             transitionDuration: 300,
             transitionInterpolator: new FlyToInterpolator()
         }));
-    }
-
-    handleMapRef = (v: any | null) => {
-        if (v != null) {
-            this.setState({ map: v.getMap() })
-        }
     }
 
     getChildContext() {
@@ -183,25 +160,73 @@ export class XMap extends React.Component<XMapProps, XMapState> {
                     <InteractiveMap
                         mapboxApiAccessToken={MapBoxToken}
                         mapStyle="mapbox://styles/mapbox/streets-v9"
-                        width={this.state.width}
-                        height={this.state.height}
-                        zoom={this.state.setZoom ? this.state.setZoom : this.state.zoom}
+                        width={this.state.width!!}
+                        height={this.state.height!!}
                         pitch={this.state.pitch}
                         bearing={this.state.bearing}
+                        zoom={this.state.setZoom ? this.state.setZoom : this.state.zoom}
                         latitude={this.state.setLatitude ? this.state.setLatitude : this.state.latitude}
                         longitude={this.state.setLongitude ? this.state.setLongitude : this.state.longitude}
                         onViewportChange={this.handleStateChange}
                         dragPan={true}
-                        dragRotate={this.props.rotation}
-                        touchRotate={this.props.rotation}
+                        dragRotate={this.props.allowRotation ? this.props.allowRotation : true}
+                        touchRotate={this.props.allowRotation ? this.props.allowRotation : true}
                         transitionDuration={this.state.transitionDuration}
                         transitionInterpolator={this.state.transitionInterpolator}
                         ref={this.handleMapRef}
                     >
-                        {this.props.children}
+                        <XMapOverlayProvider
+                            width={this.state.width!!}
+                            height={this.state.height!!}
+                            pitch={this.state.pitch}
+                            bearing={this.state.bearing}
+                            zoom={this.state.zoom}
+                            latitude={this.state.latitude}
+                            longitude={this.state.longitude}
+                        >
+                            {this.props.children}
+                        </XMapOverlayProvider>
                     </InteractiveMap>
                 </div >
             )
+        }
+    }
+
+    private handleStateChange = (v: ViewPortChanged) => {
+        this.setState((s) => ({
+            ...s, ...v,
+            setLatitude: undefined,
+            setLongitude: undefined,
+            setZoom: undefined
+        }));
+    }
+
+    private handleResize = () => {
+        if (this.container !== null) {
+            this.setState({
+                inited: true,
+                width: this.container!!.clientWidth,
+                height: this.container!!.clientHeight
+            })
+        }
+    }
+
+    private handleMapRef = (v: any | null) => {
+        if (v != null) {
+            this.setState({ map: v.getMap() })
+        }
+    }
+
+    private handleRef = (v: HTMLDivElement | null) => {
+        if (v != null) {
+            if (this.container !== null) {
+                this.container.removeEventListener('resize', this.handleResize);
+                this.container = null;
+            }
+            this.container = v;
+            this.container.addEventListener('resize', this.handleResize);
+            this.handleResize();
+            window.setTimeout(this.handleResize);
         }
     }
 }

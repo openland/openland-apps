@@ -1,10 +1,10 @@
 declare module 'react-map-gl' {
     interface StaticMapProps {
         mapboxApiAccessToken: string;
-        width?: number | string;
-        height?: number | string;
-        latitude?: number;
-        longitude?: number;
+        width: number | string;
+        height: number | string;
+        latitude: number;
+        longitude: number;
         zoom?: number;
         mapStyle?: string;
         pitch?: number;

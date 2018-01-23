@@ -2,9 +2,11 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { canUseDOM } from '../../utils/environment';
 import { MapViewport } from '../../utils/map';
+import { XMapOverlaySetter } from './XMapOverlayProvider';
+
 import * as M from 'mapbox-gl';
 let w = typeof window === 'undefined' ? undefined : window;
-import Deck, { GeoJsonLayer } from 'deck.gl';
+import { GeoJsonLayer } from 'deck.gl';
 if (!canUseDOM) {
     window = w!!;
 }
@@ -24,7 +26,7 @@ interface XMapOverlayState {
     map?: M.Map;
 }
 
-export class XMapJsonOverlay extends React.PureComponent<{ records: OverlayRecord[]; }> {
+export class XMapJsonOverlay extends React.Component<{ records: OverlayRecord[]; }> {
     static contextTypes = {
         mapOverlays: PropTypes.shape({
             register: PropTypes.func.isRequired,
@@ -45,32 +47,6 @@ export class XMapJsonOverlay extends React.PureComponent<{ records: OverlayRecor
 }
 
 export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlayState> {
-
-    static contextTypes = {
-        mapViewport: PropTypes.shape({
-            isEnabled: PropTypes.bool.isRequired,
-            center: PropTypes.shape({
-                latitude: PropTypes.number,
-                longitude: PropTypes.number,
-            }),
-            bounds: PropTypes.shape({
-                ne: PropTypes.shape({
-                    latitude: PropTypes.number,
-                    longitude: PropTypes.number,
-                }),
-                sw: PropTypes.shape({
-                    latitude: PropTypes.number,
-                    longitude: PropTypes.number,
-                }),
-            }),
-            zoom: PropTypes.number,
-            pitch: PropTypes.number,
-            bearing: PropTypes.number,
-            width: PropTypes.number,
-            height: PropTypes.number
-        }),
-    };
-
     items = new Map<string, {
         type: string,
         properties: {
@@ -182,41 +158,24 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
     }
 
     render() {
-        let D = this.context.mapViewport as MapViewport
-        if (canUseDOM && D.isEnabled) {
-            let l = new GeoJsonLayer({
-                id: 'maps',
-                stroked: true,
-                filled: true,
-                extruded: false,
-                wireframe: false,
-                pickable: true,
-                opacity: 0.8,
-                fp64: false,
-                getFillColor: this.getFillColor,
-                getLineColor: this.getLineColor,
-                onHover: this.onHover,
-                onClick: this.onClick,
-                data: this.state.data,
-                updateTriggers: {
-                    getFillColor: this.state.selected
-                }
-            });
-            return (
-                <Deck
-                    latitude={D.center!!.latitude}
-                    longitude={D.center!!.longitude}
-                    zoom={D.zoom!!}
-                    pitch={D.pitch!!}
-                    bearing={D.bearing!!}
-                    width={D.width!!}
-                    height={D.height!!}
-                    layers={[l]}
-                    useDevicePixels={false}
-                />
-            );
-        } else {
-            return null;
-        }
+        let l = new GeoJsonLayer({
+            id: 'maps',
+            stroked: true,
+            filled: true,
+            extruded: false,
+            wireframe: false,
+            pickable: true,
+            opacity: 0.8,
+            fp64: true,
+            getFillColor: this.getFillColor,
+            getLineColor: this.getLineColor,
+            onHover: this.onHover,
+            onClick: this.onClick,
+            data: this.state.data,
+            updateTriggers: {
+                getFillColor: this.state.selected
+            }
+        });
+        return <XMapOverlaySetter layer={l} />;
     }
 }

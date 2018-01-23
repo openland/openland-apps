@@ -16,7 +16,7 @@ type ViewPortProps = {
 type ViewPortFilterProps = { minZoom?: number, maxZoom?: number };
 
 function withMapViewport<P = {}>(ComposedComponent: React.ComponentType<P & ViewPortProps>) {
-    return class WithMapViewPort extends React.Component<P & ViewPortFilterProps, {
+    return class WithMapViewPort extends React.PureComponent<P & ViewPortFilterProps, {
         enabled: boolean,
         bounds?: {
             ne: Geo,
