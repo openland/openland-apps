@@ -20,7 +20,7 @@ export default withPage((props) => {
         <XHead title={['Statecraft', 'San Francisco', 'Parcels']} />
         <XFullScreenPage behindHeader={true}>
             <XMap rotation={false}>
-                <ParcelsOverlay />
+                <ParcelsOverlay maxZoom={16} />
             </XMap>
         </XFullScreenPage>
         </>

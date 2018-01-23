@@ -3,6 +3,12 @@ import * as PropTypes from 'prop-types';
 import { canUseDOM } from '../../utils/environment';
 import { MapViewport } from '../../utils/map';
 import * as M from 'mapbox-gl';
+let w = typeof window === 'undefined' ? undefined : window;
+import Deck, { GeoJsonLayer } from 'deck.gl';
+if (!canUseDOM) {
+    window = w!!;
+}
+
 interface XMapOverlayProps {
     records: OverlayRecord[];
 }
@@ -13,59 +19,29 @@ interface OverlayRecord {
 }
 
 interface XMapOverlayState {
-    deck?: React.ComponentClass<{
-        zoom: number,
-        longitude: number,
-        latitude: number,
-        pitch: number,
-        bearing: number,
-        width: number,
-        height: number,
-        layers: any[],
-        useDevicePixels?: boolean
-    }>,
-    layer?: Layer<GeoJsonLayerProps>,
-    data?: any,
-    selected?: string,
-    map?: M.Map
-}
-
-interface LayerProps {
-    id?: string;
     data?: any;
-    visible?: boolean;
-    opacity?: number;
-
-    pickable?: boolean;
-    highlightColor?: number[];
-    autoHighlight?: boolean;
-
-    enabled?: boolean;
-
-    fp64?: boolean;
-
-    updateTriggers?: any;
+    selected?: string;
+    map?: M.Map;
 }
 
-interface Layer<T extends LayerProps> {
-    context: any;
-    state: any;
-    props: T;
-    new(props: T): Layer<T>;
-}
+export class XMapJsonOverlay extends React.PureComponent<{ records: OverlayRecord[]; }> {
+    static contextTypes = {
+        mapOverlays: PropTypes.shape({
+            register: PropTypes.func.isRequired,
+            unregister: PropTypes.func.isRequired
+        })
+    }
 
-interface GeoJsonLayerProps extends LayerProps {
-    filled?: boolean;
-    stroked?: boolean;
-    extruded?: boolean;
-    wireframe?: boolean;
-    lineJointRounded?: boolean;
-    pointRadiusScale?: number;
+    componentDidMount() {
+        //
+    }
+    componentWillUnmount() {
+        //
+    }
 
-    getLineColor?: (src: any) => number[];
-    getFillColor?: (src: any) => number[];
-    onHover?: (src: any) => void;
-    onClick?: (src: any) => void;
+    render() {
+        return null;
+    }
 }
 
 export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlayState> {
@@ -102,7 +78,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         },
         geometry: {
             type: string,
-            coordinates: number[][][]
+            coordinates: number[][][][]
         }
     }>();
     latest = {
@@ -113,15 +89,6 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
     constructor(props: XMapOverlayProps, context?: any) {
         super(props, context);
         this.state = { data: this.convertProps(props.records) };
-        if (canUseDOM) {
-            this.initDeck();
-        }
-    }
-
-    initDeck = async () => {
-        let deck = await import('deck.gl');
-
-        this.setState({ deck: deck.default, layer: deck.GeoJsonLayer })
     }
 
     componentWillReceiveProps(nextProps: XMapOverlayProps) {
@@ -140,9 +107,9 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
             }
             changed = true;
 
-            let coordinates: number[][][] = [];
+            let coordinates: number[][][][] = [];
             if (v.geometry.length > 0) {
-                coordinates = (JSON.parse(v.geometry as any) as number[][]).map((p) => p.map((c) => [c[0], c[1]]));
+                coordinates = (JSON.parse(v.geometry as any) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]);
             }
             let item = {
                 type: 'Feature',
@@ -193,7 +160,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         }
     }
 
-    onClick = (src: { object?: { geometry: { coordinates: number[][][] }, properties: { name: string } } }) => {
+    onClick = (src: { object?: { geometry: { coordinates: number[][][][] }, properties: { name: string } } }) => {
         let navigateTo = (this.context.mapViewport as MapViewport).navigateTo!!
 
         let count = 0
@@ -201,9 +168,11 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         let lonSum = 0
         for (let s of src.object!!.geometry.coordinates) {
             for (let c of s) {
-                latSum += c[1];
-                lonSum += c[0];
-                count++
+                for (let c2 of c) {
+                    latSum += c2[1];
+                    lonSum += c2[0];
+                    count++
+                }
             }
         }
         latSum = latSum / count;
@@ -213,13 +182,11 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
     }
 
     render() {
-        let Deck = this.state.deck;
-        let layer = this.state.layer;
         let D = this.context.mapViewport as MapViewport
-        if (Deck && layer && D.isEnabled) {
-            let l = new layer({
+        if (canUseDOM && D.isEnabled) {
+            let l = new GeoJsonLayer({
                 id: 'maps',
-                stroked: false,
+                stroked: true,
                 filled: true,
                 extruded: false,
                 wireframe: false,

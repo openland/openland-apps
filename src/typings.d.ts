@@ -75,6 +75,9 @@ declare module 'deck.gl' {
 
         getLineColor?: (src: any) => number[];
         getFillColor?: (src: any) => number[];
+        onHover?: (src: any) => void;
+        onClick?: (src: any) => void;
+        updateTriggers?: any;
     }
 
     export let GeoJsonLayer: Layer<GeoJsonLayerProps>;
