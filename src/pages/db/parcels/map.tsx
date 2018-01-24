@@ -8,7 +8,7 @@ import { withBlocksQuery, withParcelsQuery } from '../../../api/Parcels';
 
 let BlocksOverlay = withBlocksQuery((props) => {
     if (props.data.points) {
-        return (<XMapOverlay id="blocks" records={props.data.points} maxZoom={16} />)
+        return (<XMapOverlay id="blocks" records={props.data.points} maxZoom={17} minZoom={14} />)
     } else {
         return null;
     }
@@ -16,7 +16,7 @@ let BlocksOverlay = withBlocksQuery((props) => {
 
 let ParcelsOverlay = withParcelsQuery((props) => {
     if (props.data.points) {
-        return (<XMapOverlay id="parcels" records={props.data.points} minZoom={15} />)
+        return (<XMapOverlay id="parcels" records={props.data.points} minZoom={16} />)
     } else {
         return null;
     }
@@ -27,9 +27,9 @@ export default withPage((props) => {
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Parcels']} />
         <XFullScreenPage behindHeader={true}>
-            <XMap allowRotation={false}>
-                <BlocksOverlay maxZoom={16} />
-                <ParcelsOverlay minZoom={15} />
+            <XMap allowRotation={false} mapStyle="mapbox://styles/steve-kite/cjcsbw6zq00dg2squfjuum14i">
+                {/* <BlocksOverlay maxZoom={17} minZoom={14} />
+                <ParcelsOverlay minZoom={13} /> */}
             </XMap>
         </XFullScreenPage>
         </>

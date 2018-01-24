@@ -169,12 +169,24 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
     render() {
         let zoom = (this.context.mapViewport as MapViewport).zoom;
         let alpha = 0.8
+        let isVisible = true;
         if (this.props.maxZoom) {
-            if (zoom && zoom > this.props.maxZoom) {
+            if (zoom && zoom > this.props.maxZoom - 1) {
                 if (zoom < this.props.maxZoom) {
-                    alpha = 0.8 * (1 - (zoom - this.props.maxZoom));
+                    alpha = 0.8 * (1 - (zoom - this.props.maxZoom + 1));
                 } else {
-                    alpha = 0.0;
+                    alpha = 0.8;
+                    isVisible = false;
+                }
+            }
+        }
+        if (this.props.minZoom) {
+            if (zoom && zoom < this.props.minZoom + 1) {
+                if (zoom > this.props.minZoom) {
+                    alpha = 0.8 * (zoom - this.props.minZoom);
+                } else {
+                    alpha = 0.8;
+                    isVisible = false;
                 }
             }
         }
@@ -193,6 +205,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
             onHover: this.onHover,
             onClick: this.onClick,
             data: this.state.data,
+            visible: isVisible,
             updateTriggers: {
                 getFillColor: this.state.selected
             }

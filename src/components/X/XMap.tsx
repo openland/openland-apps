@@ -19,6 +19,8 @@ export interface XMapProps {
     initBearing?: number;
 
     allowRotation?: boolean;
+
+    mapStyle?: 'light' | 'dark' | string;
 }
 
 interface XMapState {
@@ -156,11 +158,19 @@ export class XMap extends React.Component<XMapProps, XMapState> {
                 <div className={classnames('x-map', this.props.className)} style={this.props.style} ref={this.handleRef} />
             )
         } else {
+            let style = 'mapbox://styles/mapbox/streets-v9';
+            if (this.props.mapStyle === 'light') {
+                style = 'mapbox://styles/mapbox/light-v9';
+            } else if (this.props.mapStyle === 'dark') {
+                style = 'mapbox://styles/mapbox/dark-v9';
+            } else if (this.props.mapStyle) {
+                style = this.props.mapStyle;
+            }
             return (
                 <div className={classnames('x-map', this.props.className)} style={this.props.style} ref={this.handleRef}>
                     <InteractiveMap
                         mapboxApiAccessToken={MapBoxToken}
-                        mapStyle="mapbox://styles/mapbox/streets-v9"
+                        mapStyle={style}
                         width={this.state.width!!}
                         height={this.state.height!!}
                         pitch={this.state.pitch}
