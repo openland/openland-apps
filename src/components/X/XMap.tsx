@@ -175,13 +175,13 @@ export class XMap extends React.Component<XMapProps, XMapState> {
                         height={this.state.height!!}
                         pitch={this.state.pitch}
                         bearing={this.state.bearing}
-                        zoom={this.state.setZoom ? this.state.setZoom : this.state.zoom}
-                        latitude={this.state.setLatitude ? this.state.setLatitude : this.state.latitude}
-                        longitude={this.state.setLongitude ? this.state.setLongitude : this.state.longitude}
+                        zoom={this.state.setZoom !== undefined ? this.state.setZoom : this.state.zoom}
+                        latitude={this.state.setLatitude !== undefined ? this.state.setLatitude : this.state.latitude}
+                        longitude={this.state.setLongitude !== undefined ? this.state.setLongitude : this.state.longitude}
                         onViewportChange={this.handleStateChange}
                         dragPan={true}
-                        dragRotate={this.props.allowRotation ? this.props.allowRotation : true}
-                        touchRotate={this.props.allowRotation ? this.props.allowRotation : true}
+                        dragRotate={this.props.allowRotation !== undefined ? this.props.allowRotation : true}
+                        touchRotate={this.props.allowRotation !== undefined ? this.props.allowRotation : true}
                         transitionDuration={this.state.transitionDuration}
                         transitionInterpolator={this.state.transitionInterpolator}
                         ref={this.handleMapRef}
