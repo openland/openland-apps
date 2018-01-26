@@ -160,7 +160,7 @@ export class ListCard extends React.Component<ListCardProps, { cardData?: any; c
                                                 </XLink>
                                             )}
 
-                                            <XLink className="x-card--toggler is-link" path={`/organizations/'${item.profile}`}>View profile</XLink>
+                                            <XLink className="x-card--toggler is-link" path={`/organizations/${item.slug}`}>View profile</XLink>
                                         </div>
                                     </div>
                                 </XCard>
