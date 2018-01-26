@@ -8,7 +8,7 @@ import { XCard } from '../../../components/X/XCard';
 export default withPageFullScreen((props) => {
     return (
         <>
-        <XHead title={['Statecraft', 'San Francisco', 'Parcels']} />
+        <XHead title={['Statecraft', 'San Francisco', 'Zoning']} />
         <XFullScreenPage behindHeader={true}>
             <XMap2 mapStyle="mapbox://styles/steve-kite/cjcsbw6zq00dg2squfjuum14i" />
             <div className={'x-map--legend'}>
