@@ -53,28 +53,28 @@ export class XMap2 extends React.Component<XMap2Props> {
                     container: this.ref!!,
                     center: [longitude, latitude],
                     zoom: zoom,
-                    style: 'mapbox://styles/mapbox/light-v9'// this.props.mapStyle
+                    style: this.props.mapStyle
                 });
-                mp.on('load', () => {
-                    mp.addLayer({
-                        'id': 'terrain-data',
-                        'type': 'fill',
-                        'source': {
-                            type: 'vector',
-                            url: 'mapbox://mapbox.mapbox-streets-v7,steve-kite.sf_zoning'
-                        },
-                        'source-layer': 'sf_zoning',
-                        'filter': ['==', '$type', 'Polygon'],
-                        // 'layout': {
-                        //     'line-join': 'round',
-                        //     'line-cap': 'round'
-                        // },
-                        // 'paint': {
-                        //     'line-color': '#ff69b4',
-                        //     'line-width': 1
-                        // }
-                    });
-                });
+                // mp.on('load', () => {
+                //     mp.addLayer({
+                //         'id': 'terrain-data',
+                //         'type': 'fill',
+                //         'source': {
+                //             type: 'vector',
+                //             url: 'mapbox://mapbox.mapbox-streets-v7,steve-kite.sf_zoning'
+                //         },
+                //         'source-layer': 'sf_zoning',
+                //         'filter': ['==', '$type', 'Polygon'],
+                //         // 'layout': {
+                //         //     'line-join': 'round',
+                //         //     'line-cap': 'round'
+                //         // },
+                //         // 'paint': {
+                //         //     'line-color': '#ff69b4',
+                //         //     'line-width': 1
+                //         // }
+                //     });
+                // });
                 this.map = mp;
             })
         }

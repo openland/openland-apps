@@ -3,8 +3,9 @@ import { withPage } from '../../../components/withPage';
 import { withOrganizationsQuery, withOrganizationAddMutation } from '../../../api/Organizations';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
-import { OrganizationDataListCard } from '../../../components/DataListCard';
-import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
+// import { OrganizationDataListCard } from '../../../components/DataListCard';
+// import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
+import { ListCard } from '../../../components/ListCard';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch
@@ -76,51 +77,7 @@ export default withPage(withOrganizationsQuery(withLoader((props) => {
                     <div>{data.length}<span>organizations</span></div>
                 </div>
 
-                <InfiniteListContainer>
-                    {data.map(p => {
-                        let subtitle = undefined;
-                        if (p.isDeveloper) {
-                            if (p.isConstructor) {
-                                subtitle = 'Developer and Contractor';
-                            } else {
-                                subtitle = 'Developer';
-                            }
-                        } else {
-                            subtitle = 'Contractor';
-                        }
-
-                        let project = null;
-                        if (p.developerIn && p.developerIn.length > 0) {
-                            project = p.developerIn!![0];
-                        } else if (p.constructorIn && p.constructorIn.length > 0) {
-                            project = p.constructorIn!![0];
-                        }
-
-                        let featured = undefined;
-                        if (project !== null) {
-                            featured = {
-                                title: project.name,
-                                url: '/projects/' + project.slug,
-                                picture: project.preview
-                            };
-                        }
-
-                        return (
-                            <XInfiniteListItem key={p.id}>
-                                <OrganizationDataListCard
-                                    slug={p.slug}
-                                    title={p.title}
-                                    profile={'/organizations/' + p.slug}
-                                    logo={p.logo}
-                                    url={p.url}
-                                    subtitle={subtitle}
-                                    projects={p.constructorIn!!.length + p.developerIn!!.length}
-                                    featuredProject={featured}
-                                />
-                            </XInfiniteListItem>
-                        );
-                    })}
-                </InfiniteListContainer>
+                <ListCard cardData={data} cardType={'organizations'} />
             </DataListContent>
         </DataList>
         </>

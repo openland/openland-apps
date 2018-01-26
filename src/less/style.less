@@ -1164,6 +1164,7 @@ body {
 .x-fullscreen {
 	height: 100vh;
 	width: 100%;
+	position: relative;
 
 	&.behind-header {
 		margin-top: -64px;
@@ -1173,6 +1174,43 @@ body {
 .x-map {
 	width: 100%;
 	height: 100%;
+}
+
+.x-map--legend {
+	position: absolute;
+	right: 15px;
+	top: 15px;
+	opacity: .6;
+
+	&:hover {
+		opacity: 1;
+	}
+
+	.x-card {
+		padding: 10px;
+		
+		.legend-cell {
+			display: flex;
+			align-items: center;
+			margin-bottom: 5px;
+			cursor: pointer;
+	
+			&:last-child {
+				margin-bottom: 0
+			}
+	
+			.legend-indicator {
+				width: 25px;
+				height: 16px;
+				margin-right: 4px;
+				background-color: #F28BB3;
+			}
+	
+			.legend-description {
+				.font (15px, normal, normal);
+			}
+		}
+	}
 }
 
 .x-btn {
