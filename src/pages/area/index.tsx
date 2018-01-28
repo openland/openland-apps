@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { withLandingPage } from '../components/withPage';
-import { Intro, IntroTitle, IntroCols, IntroCol, IntroLink, IntroBox, IntroForm } from '../components/Intro';
-import { withBuildingProjectsStats } from '../api/BuildingProjects';
-import { Counters, CountersList, CountersItem, CountersCols, CountersText } from '../components/Landing/Counters';
-import { About, AboutItem } from '../components/Landing/About';
-import { Footer } from '../components/Footer';
-import { Trends, TrendsItem, TrendsChart, TrendsText } from '../components/Landing/Trends';
-import { buildDuration } from '../utils/date';
-import { withLoader } from '../components/withLoader';
-import { XBarChart } from '../components/X/XBarChart';
-import { XHead } from '../components/X/XHead';
-import { Links, ExternalLinks } from '../Links';
+import { withLandingPage } from '../../components/withPage';
+import { Intro, IntroTitle, IntroCols, IntroCol, IntroLink, IntroBox, IntroForm } from '../../components/Intro';
+import { withBuildingProjectsStats } from '../../api/BuildingProjects';
+import { Counters, CountersList, CountersItem, CountersCols, CountersText } from '../../components/Landing/Counters';
+import { About, AboutItem } from '../../components/Landing/About';
+import { Footer } from '../../components/Footer';
+import { Trends, TrendsItem, TrendsChart, TrendsText } from '../../components/Landing/Trends';
+import { buildDuration } from '../../utils/date';
+import { withLoader } from '../../components/withLoader';
+import { XBarChart } from '../../components/X/XBarChart';
+import { XHead } from '../../components/X/XHead';
+import { Links, ExternalLinks } from '../../Links';
 
 export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
 
@@ -39,7 +39,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                 </IntroCol>
                 <IntroCol title="Data">
                     <IntroLink counter={props.data.area.stats.totalPermits} label="Permits" path={links.permits} />
-                    <IntroLink counter={props.data.area.stats.totalProjects} label="Construction projects" path={links.projects} />
+                    <IntroLink counter={props.data.area.stats.totalProjects} label="Construction projects" path={links.projects()} />
                     <IntroLink counter={props.data.area.stats.totalOrganizations} label="Organizations" path={links.organizations} />
                 </IntroCol>
             </IntroCols>
@@ -59,9 +59,9 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
             </CountersCols>
             <CountersList>
                 <CountersItem counter={props.data.stats.year2017NewUnits} name="2017 net new units"
-                    path="/projects?year=2017" caption="Explore projects" />
+                    path={links.projects('2017')} caption="Explore projects" />
                 <CountersItem counter={props.data.stats.year2018NewUnits} name="2018 net new units"
-                    path="/projects?year=2018" caption="Explore projects" />
+                    path={links.projects('2018')} caption="Explore projects" />
                 <CountersItem counter={5000} name="Mayor’s annual target"
                     href="https://medium.com/@mayoredlee/making-a-more-affordable-san-francisco-f1ff3bae0d86"
                     caption="Read Mayor’s announcement" />
@@ -111,7 +111,7 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
             </TrendsItem>
         </Trends>
 
-        <About title="About Us" mail="hello@statecraft.one">
+        <About title="About Us" mail={ExternalLinks.corporateEmail}>
             <AboutItem
                 title="Creators"
                 text={'This housing analytics portal is developed by [Statecraft](' + ExternalLinks.corporateSite + '), an urban analytics company based in San Francisco. We hope to significantly expand our analysis in near future, with insights for affordable housing, inclusionary requirements, development incentives, and opportunity sites.'}

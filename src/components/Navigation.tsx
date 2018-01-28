@@ -18,7 +18,7 @@ export function NavigationFooter() {
     return (
         <div className="x-footer--nav">
             <ul className="x-footer--list">
-                <li><a href="/">Insights</a></li>
+                <li><a href="/sf/">Insights</a></li>
                 <li><XLink path="/sf/projects">Construction Projects</XLink></li>
             </ul>
 

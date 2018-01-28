@@ -2,27 +2,27 @@ import * as Routes from 'next-routes';
 
 let routes = Routes();
 
-routes.add('/:areaId', 'index');
-routes.add('/:areaId/', 'index');
+routes.add('/:areaId', '/area/index');
+routes.add('/:areaId/', '/area/index');
 
-routes.add('/:areaId/permits', '/db/permits/list');
-routes.add('/:areaId/permits/', '/db/permits/list');
-routes.add('/:areaId/permits/:permitId', '/db/permits/item');
+routes.add('/:areaId/permits', '/area/permits/list');
+routes.add('/:areaId/permits/', '/area/permits/list');
+routes.add('/:areaId/permits/:permitId', '/area/permits/item');
 
-routes.add('/:areaId/organizations', '/db/organizations/list');
-routes.add('/:areaId/organizations/', '/db/organizations/list');
-routes.add('/:areaId/organizations/:orgId', '/db/organizations/item');
-routes.add('/:areaId/organizations/:orgId/edit', '/db/organizations/edit');
+routes.add('/:areaId/organizations', '/area/organizations/list');
+routes.add('/:areaId/organizations/', '/area/organizations/list');
+routes.add('/:areaId/organizations/:orgId', '/area/organizations/item');
+routes.add('/:areaId/organizations/:orgId/edit', '/area/organizations/edit');
 
-routes.add('/:areaId/projects', '/db/projects/list');
-routes.add('/:areaId/projects/', '/db/projects/list');
-routes.add('/:areaId/projects/:projectId', '/db/projects/item');
+routes.add('/:areaId/projects', '/area/projects/list');
+routes.add('/:areaId/projects/', '/area/projects/list');
+routes.add('/:areaId/projects/:projectId', '/area/projects/item');
 
-routes.add('/:areaId/zoning', '/db/zoning/map');
-routes.add('/:areaId/zoning/', '/db/zoning/map');
+routes.add('/:areaId/zoning', '/area/zoning/map');
+routes.add('/:areaId/zoning/', '/area/zoning/map');
 
-routes.add('/:areaId/stats', '/db/stats/stats');
-routes.add('/:areaId/stats/', '/db/stats/stats');
+routes.add('/:areaId/stats', '/area/stats/stats');
+routes.add('/:areaId/stats/', '/area/stats/stats');
 
 // Compatibility
 routes.add('/', '/compat/root');

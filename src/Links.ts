@@ -2,7 +2,7 @@ export const Links = {
     area: (areaId: string) => {
         return {
             insights: `/${areaId}/`,
-            projects: `/${areaId}/projects`,
+            projects: (year?: string) => (year ? `/${areaId}/projects?year=${year}` : `/${areaId}/projects`),
             permits: `/${areaId}/permits`,
             zoning: `/${areaId}/zoning`,
             organizations: `/${areaId}/organizations`,
@@ -14,5 +14,6 @@ export const Links = {
 }
 
 export const ExternalLinks = {
-    corporateSite: 'https://statecraft.one'
+    corporateSite: 'https://statecraft.one',
+    corporateEmail: 'hello@statecraft.one'
 }
