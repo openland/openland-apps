@@ -8,7 +8,17 @@ import { Permit } from './Permits';
 import { Chart } from './Chart';
 
 const BuildingProjectsStatsQuery = gql`
-    query buildingProjectStats {
+    query buildingProjectStats($areaId: String!) {
+        area(slug: $areaId) {
+            slug
+            stats {
+                totalProjects
+                totalDevelopers
+                totalConstructors
+                totalOrganizations
+                totalPermits
+            }
+        }
         permitsUnitsFiledStats: permitsUnitsFiledStats {
             labels
             datasets {
@@ -29,13 +39,6 @@ const BuildingProjectsStatsQuery = gql`
                 label
                 values
             }   
-        }
-        globalStats: globalStats {
-            totalProjects
-            totalDevelopers
-            totalConstructors
-            totalOrganizations
-            totalPermits
         }
         stats: buildingProjectsStats {
             projectsTracked
@@ -352,7 +355,7 @@ export const withBuildingProjectsQuery = graphqlList<BuildingProject, BuildingPr
     BuildingProjectsQuery,
     ['cursor', 'minUnits', { key: 'year', default: '2018' }, 'filter']);
 export const withBuildingProjectsStats = graphqlRouted<{
-    stats: BuildingProjectsStats, globalStats: GlobalStats,
+    stats: BuildingProjectsStats, area: { slug: string, stats: GlobalStats },
     permitsUnitsFiledStats: Chart,
     permitsUnitsIssuedStats: Chart,
     permitsUnitsCompletedStats: Chart

@@ -2,28 +2,31 @@ import * as Routes from 'next-routes';
 
 let routes = Routes();
 
-routes.add('index', '/');
+routes.add('/:areaId', 'index');
+routes.add('/:areaId/', 'index');
 
-routes.add('/permits', '/db/permits/list');
-routes.add('/permits/', '/db/permits/list');
-routes.add('/permits/:permitId', '/db/permits/item');
+routes.add('/:areaId/permits', '/db/permits/list');
+routes.add('/:areaId/permits/', '/db/permits/list');
+routes.add('/:areaId/permits/:permitId', '/db/permits/item');
 
-routes.add('/organizations', '/db/organizations/list');
-routes.add('/organizations/', '/db/organizations/list');
-routes.add('/organizations/:orgId', '/db/organizations/item');
-routes.add('/organizations/:orgId/edit', '/db/organizations/edit');
+routes.add('/:areaId/organizations', '/db/organizations/list');
+routes.add('/:areaId/organizations/', '/db/organizations/list');
+routes.add('/:areaId/organizations/:orgId', '/db/organizations/item');
+routes.add('/:areaId/organizations/:orgId/edit', '/db/organizations/edit');
 
-routes.add('/projects', '/db/projects/list');
-routes.add('/projects/', '/db/projects/list');
-routes.add('/projects/:projectId', '/db/projects/item');
+routes.add('/:areaId/projects', '/db/projects/list');
+routes.add('/:areaId/projects/', '/db/projects/list');
+routes.add('/:areaId/projects/:projectId', '/db/projects/item');
 
-routes.add('/zoning', '/db/zoning/map');
-routes.add('/zoning/', '/db/zoning/map');
+routes.add('/:areaId/zoning', '/db/zoning/map');
+routes.add('/:areaId/zoning/', '/db/zoning/map');
 
-routes.add('/stats', '/db/stats/stats');
-routes.add('/stats/', '/db/stats/stats');
+routes.add('/:areaId/stats', '/db/stats/stats');
+routes.add('/:areaId/stats/', '/db/stats/stats');
 
 // Compatibility
+routes.add('/', '/compat/root');
+routes.add('index', '/compat/root');
 routes.add('/pipeline', '/compat/pipeline');
 
 // Technical pages
