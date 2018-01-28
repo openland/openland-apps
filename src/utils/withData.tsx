@@ -27,7 +27,6 @@ export const withData = (ComposedComponent: React.ComponentType) => {
             serverState: PropTypes.object.isRequired,
             host: PropTypes.string.isRequired,
             protocol: PropTypes.string.isRequired,
-            domain: PropTypes.string.isRequired
         };
         private apollo: ApolloClient<NormalizedCacheObject>;
 
@@ -43,10 +42,6 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                 host = window.location.host;
                 protocol = window.location.protocol.replace(':', '');
             }
-            if (host.indexOf('.') < 0) {
-                throw 'Wrong subdomain!';
-            }
-            let domain = host.split('.')[0];
             // console.warn(ctx.req);
 
             // Evaluate the composed component's getInitialProps()
@@ -58,7 +53,7 @@ export const withData = (ComposedComponent: React.ComponentType) => {
             // Run all GraphQL queries in the component tree
             // and extract the resulting data
             if (!canUseDOM) {
-                const apollo = apolloClient(domain, serverState, token);
+                const apollo = apolloClient(serverState, token);
                 // Provide the `url` prop data in case a GraphQL query uses it
                 // const url = { query: ctx.query, pathname: ctx.pathname }
 
@@ -98,7 +93,7 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                     }
                 };
             } else if (isPageChanged()) {
-                const apollo = apolloClient(domain, serverState, token);
+                const apollo = apolloClient(serverState, token);
                 // Provide the `url` prop data in case a GraphQL query uses it
                 // const url = { query: ctx.query, pathname: ctx.pathname }
                 try {
@@ -128,14 +123,13 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                 serverState,
                 ...composedInitialProps,
                 host,
-                protocol,
-                domain
+                protocol
             };
         }
 
         constructor(props: { serverState: { apollo: { data: any, token?: string } }, host: string, protocol: string, domain: string }) {
             super(props);
-            this.apollo = apolloClient(this.props.domain, this.props.serverState.apollo.data, this.props.serverState.apollo.token);
+            this.apollo = apolloClient(this.props.serverState.apollo.data, this.props.serverState.apollo.token);
         }
 
         componentDidMount() {

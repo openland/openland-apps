@@ -25,10 +25,7 @@ async function start() {
         res.send('window.server = { "endpoint": "' + endpoint + '" }');
     });
 
-    server.use('/sandbox', graphiqlExpress({
-        endpointURL: endpoint + '/api',
-        passHeader: '\'x-statecraft-domain\': \'sf\''
-    }));
+    server.use('/sandbox', graphiqlExpress({ endpointURL: endpoint + '/api' }));
 
     server.get('*', handle);
 
