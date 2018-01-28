@@ -10,6 +10,7 @@ import { XCounter } from './X/XCounter';
 import { XCloudImage } from './X/XCloudImage';
 import { XEnumeration } from './X/XEnumerations';
 import { PermitType } from './PermitType';
+import { Links } from '../Links';
 
 export class ListCard extends React.Component<ListCardProps, { cardData?: any; cardType?: string }> {
     constructor(props: ListCardProps) {
@@ -27,10 +28,10 @@ export class ListCard extends React.Component<ListCardProps, { cardData?: any; c
                                 <XCard>
                                     <div className="x-permit">
                                         <div className="x-permit--in">
-                                            <XLink path={'/permits/' + item.id} className="x-permit--id">
+                                            <XLink path={Links.area('sf').permit(item.id).view} className="x-permit--id">
                                                 {item.id}
                                             </XLink>
-                
+
                                             <div className="x-permit--keys">
                                                 {item.streetNumbers!!.length > 0 && (
                                                     <div className="x-permcard--key">
@@ -41,14 +42,14 @@ export class ListCard extends React.Component<ListCardProps, { cardData?: any; c
                                                         Address
                                                     </div>
                                                 )}
-                
+
                                                 {item.proposedUnits && (
                                                     <div className="x-permcard--key">
                                                         <span><XCounter value={item.proposedUnits!!} oldValue={item.existingUnits} /></span>
                                                         Units
                                                     </div>
                                                 )}
-                
+
                                                 {item.approvalTime != null && (
                                                     <div className="x-permcard--key">
                                                         <span>{formatDuration(item.approvalTime)}</span>
@@ -56,18 +57,22 @@ export class ListCard extends React.Component<ListCardProps, { cardData?: any; c
                                                     </div>
                                                 )}
                                             </div>
-                
+
                                             <div className="x-permit--wrap">
                                                 {item.status && <PermitStatus status={item.status} date={item.statusUpdatedAt} />}
                                             </div>
                                         </div>
-                
+
                                         <div className="x-permit--box">
-                                            <div className="x-permit--type"><PermitType type={item.type!!}/></div>
+                                            <div className="x-permit--type"><PermitType type={item.type!!} /></div>
                                             <div className="x-permit--text">{item.description}</div>
-                
-                                            <XLink path={'/permits/' + item.id}
-                                                className="x-permit--btn"><span>View details</span></XLink>
+
+                                            <XLink
+                                                path={Links.area('sf').permit(item.id).view}
+                                                className="x-permit--btn"
+                                            >
+                                                <span>View details</span>
+                                            </XLink>
                                         </div>
                                     </div>
                                 </XCard>
@@ -104,7 +109,7 @@ export class ListCard extends React.Component<ListCardProps, { cardData?: any; c
                         if (project !== null) {
                             featured = {
                                 title: project.name,
-                                url: '/projects/' + project.slug,
+                                url: Links.area('sf').project(project.slug).view,
                                 picture: project.preview
                             };
                         }
@@ -115,17 +120,17 @@ export class ListCard extends React.Component<ListCardProps, { cardData?: any; c
                             <XInfiniteListItem key={item.id}>
                                 <XCard>
                                     <div className={'x-card--in is-organization' + (item.logo ? '' : ' without-photo')}>
-                                        <XLink path={'/organizations/' + item.slug}>
+                                        <XLink path={Links.area('sf').org(item.slug).view}>
                                             {item.logo && (<div className="x-card--photo">
-                                                <XCloudImage src={item.logo} maxWidth={140} maxHeight={140}/>
+                                                <XCloudImage src={item.logo} maxWidth={140} maxHeight={140} />
                                             </div>)}
                                             {!item.logo && (<div className="x-card--photo no-photo">{}</div>)}
                                         </XLink>
 
                                         <div className="x-card--info">
                                             <div className="x-card--box">
-                                                <div className="x-card--title" style={{textColor: '#000000'}}><XLink
-                                                    path={'/organizations/' + item.slug}>{item.title}</XLink></div>
+                                                <div className="x-card--title" style={{ textColor: '#000000' }}><XLink
+                                                    path={Links.area('sf').org(item.slug).view}>{item.title}</XLink></div>
                                                 {subtitle && (<div className="x-card--text">{subtitle}</div>)}
                                             </div>
 
@@ -140,27 +145,27 @@ export class ListCard extends React.Component<ListCardProps, { cardData?: any; c
 
                                         <div className="x-card--tools">
                                             {
-                                                (projectsLenght !== undefined) && 
-                                                ((projectsLenght > 0) && 
-                                                (<div className="x-card--counter">
-                                                <span>{
-                                                    projectsLenght
-                                                }
-                                                </span>recent projects</div>))
+                                                (projectsLenght !== undefined) &&
+                                                ((projectsLenght > 0) &&
+                                                    (<div className="x-card--counter">
+                                                        <span>{
+                                                            projectsLenght
+                                                        }
+                                                        </span>recent projects</div>))
                                             }
 
                                             {featured && (
-                                                <XLink path={`/projects/${featured.url}`}
+                                                <XLink path={featured.url}
                                                     className={'x-card--counter is-project' + (featured.picture ? ' with-photo' : '')}>
                                                     {featured.picture && (
-                                                        <img src={featured.picture.retina} alt=""/>)}
+                                                        <img src={featured.picture.retina} alt="" />)}
 
                                                     <span>{featured.title}</span>
                                                     featured project
                                                 </XLink>
                                             )}
 
-                                            <XLink className="x-card--toggler is-link" path={`/organizations/${item.slug}`}>View profile</XLink>
+                                            <XLink className="x-card--toggler is-link" path={Links.area('sf').org(item.slug).view}>View profile</XLink>
                                         </div>
                                     </div>
                                 </XCard>
@@ -203,7 +208,7 @@ export class ListCard extends React.Component<ListCardProps, { cardData?: any; c
                                     <DataListCardItem title="Developers">
                                         <XEnumeration>
                                             {item.developers!!.map((d: any) => (
-                                                <XLink path={'/organizations/' + d.slug}>{d.title}</XLink>
+                                                <XLink path={Links.area('sf').org(d.slug).view}>{d.title}</XLink>
                                             ))}
                                         </XEnumeration>
                                     </DataListCardItem>
@@ -212,12 +217,12 @@ export class ListCard extends React.Component<ListCardProps, { cardData?: any; c
                                     <DataListCardItem title="Contractors">
                                         <XEnumeration>
                                             {item.constructors!!.map((d: any) => (
-                                                <XLink path={'/organizations/' + d.slug}>{d.title}</XLink>
+                                                <XLink path={Links.area('sf').org(d.slug).view}>{d.title}</XLink>
                                             ))}
                                         </XEnumeration>
                                     </DataListCardItem>
                                 )}
-            
+
                                 {item.extrasComment && (
                                     <DataListCardItem title="Comment">{item.extrasComment}</DataListCardItem>
                                 )}

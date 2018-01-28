@@ -10,6 +10,7 @@ import { Chart } from './Chart';
 const BuildingProjectsStatsQuery = gql`
     query buildingProjectStats($areaId: String!) {
         area(slug: $areaId) {
+            id
             slug
             stats {
                 totalProjects

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withBuildingProjectsQuery, BuildingProject } from '../../../api/BuildingProjects';
-import { withPage } from '../../../components/withPage';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch, DataListContentStats
@@ -13,10 +12,11 @@ import { DataListInvite } from '../../../components/DataListInvite';
 // import { XEnumeration } from '../../../components/X/XEnumerations';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
+import { withAreaPage } from '../../../components/withAreaPage';
 
 export const PipelineItems = withInfiniteList<BuildingProject>(items => <ListCard cardData={items} cardType={'projects'} />);
 
-export default withPage(withBuildingProjectsQuery(withLoader((props) => {
+export default withAreaPage(withBuildingProjectsQuery(withLoader((props) => {
 
     return (
         <>

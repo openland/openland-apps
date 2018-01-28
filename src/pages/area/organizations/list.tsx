@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withPage } from '../../../components/withPage';
 import { withOrganizationsQuery, withOrganizationAddMutation } from '../../../api/Organizations';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
@@ -12,6 +11,7 @@ import {
 } from '../../../components/DataList';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
+import { withAreaPage } from '../../../components/withAreaPage';
 
 const AddForm = withOrganizationAddMutation((props) => {
     return (
@@ -25,7 +25,7 @@ const AddForm = withOrganizationAddMutation((props) => {
     );
 });
 
-export default withPage(withOrganizationsQuery(withLoader((props) => {
+export default withAreaPage(withOrganizationsQuery(withLoader((props) => {
 
     let data = props.data.organizations;
     if (props.router.query!!.type === 'developer') {

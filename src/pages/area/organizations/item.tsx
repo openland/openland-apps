@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withPage } from '../../../components/withPage';
 import { withOrganizationQuery } from '../../../api/Organizations';
 import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
@@ -13,8 +12,10 @@ import { XRow } from '../../../components/X/XRow';
 import { BuildingProject } from '../../../api/BuildingProjects';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
+import { Links } from '../../../Links';
+import { withAreaPage } from '../../../components/withAreaPage';
 
-export default withPage(withOrganizationQuery(withLoader((props) => {
+export default withAreaPage(withOrganizationQuery(withLoader((props) => {
     let projects: BuildingProject[] = [];
     for (let p of props.data.organization.developerIn!!) {
         if (!projects.find((v) => v.id === p.id)) {
@@ -84,9 +85,12 @@ export default withPage(withOrganizationQuery(withLoader((props) => {
 
                             <XWriteAcces>
                                 <div className="x-dev--side">
-                                    <XLink path={'/organizations/' + props.data.organization.slug + '/edit'}
-                                        className="x-dev--edit"><span><i
-                                            className="icon-edit" />Edit profile</span></XLink>
+                                    <XLink
+                                        path={Links.area('sf').org(props.data.organization.slug).edit}
+                                        className="x-dev--edit"
+                                    >
+                                        <span><i className="icon-edit" />Edit profile</span>
+                                    </XLink>
                                 </div>
                             </XWriteAcces>
                         </div>

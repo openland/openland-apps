@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withPage } from '../../../components/withPage';
 import { FieldChanged, StatusChanged, withPermitQuery } from '../../../api/Permits';
 import { XContainer } from '../../../components/X/XContainer';
 import { XWrap } from '../../../components/X/XWrap';
@@ -16,6 +15,7 @@ import { PermitStatus } from '../../../components/PermitStatus';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
+import { withAreaPage } from '../../../components/withAreaPage';
 
 function ChangeRender(props: { change: FieldChanged }) {
     if (props.change.oldValue === null) {
@@ -31,7 +31,7 @@ function ChangeRender(props: { change: FieldChanged }) {
     }
 }
 
-export default withPage(withPermitQuery(withLoader((props) => {
+export default withAreaPage(withPermitQuery(withLoader((props) => {
 
     let progress = 1;
     let filedDate = <span>TBD</span>;

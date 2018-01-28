@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XLink } from './X/XLink';
 import { XCloudImage } from './X/XCloudImage';
 import { XCard } from './X/XCard';
+import { Links } from '../Links';
 
 function makeLocationUrl(location: { latitude: number, longitude: number }) {
     return `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=16&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY`;
@@ -34,12 +35,12 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
             <XCard>
                 <div className={'x-card--in' + (this.props.picture ? '' : ' without-photo') + (this.props.verified ? ' is-checked' : '') + (this.state.expanded ? ' is-expanded' : '')}>
                     {this.props.picture && (<div className="x-card--photo"
-                        style={{ backgroundImage: `url(${this.props.picture.retina})` }}><XLink path={'/projects/' + this.props.slug} /></div>)}
-                    {!this.props.picture && (<div className="x-card--photo no-photo"><XLink path={'/projects/' + this.props.slug} /></div>)}
+                        style={{ backgroundImage: `url(${this.props.picture.retina})` }}><XLink path={Links.area('sf').project(this.props.slug!!).view} /></div>)}
+                    {!this.props.picture && (<div className="x-card--photo no-photo"><XLink path={Links.area('sf').project(this.props.slug!!).view} /></div>)}
 
                     <div className="x-card--info">
                         <div className="x-card--box">
-                            <div className="x-card--title"><XLink path={'/projects/' + this.props.slug}>{this.props.title}</XLink></div>
+                            <div className="x-card--title"><XLink path={Links.area('sf').project(this.props.slug!!).view}>{this.props.title}</XLink></div>
                             {this.props.subtitle && (<div className="x-card--text">{this.props.subtitle}</div>)}
                         </div>
 
@@ -57,7 +58,7 @@ export class DataListCard extends React.Component<ListCardProps, { expanded: boo
                         <div className="x-card--counter"><span>{this.props.newUnits || '?'}</span>Net new units</div>
                         <div className="x-card--counter"><span>{this.props.endYear || '?'}</span>Expected completion</div>
 
-                        {this.props.slug && (<XLink path={'/projects/' + this.props.slug} className="x-card--toggler" />)}
+                        {this.props.slug && (<XLink path={Links.area('sf').project(this.props.slug!!).view} className="x-card--toggler" />)}
                         {!this.props.slug && (<a className="x-card--toggler" href="#" onClick={(e) => {
                             e.preventDefault();
                             this.setState({ expanded: !this.state.expanded });

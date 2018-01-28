@@ -7,6 +7,7 @@ import { InfiniteListContainer, XInfiniteListItem } from './withInfiniteList';
 import { XCounter } from './X/XCounter';
 import { PermitType } from './PermitType';
 import { XCard } from './X/XCard';
+import { Links } from '../Links';
 
 export function ListPermits(props: { permits: Permit[]; hideCounter?: boolean }) {
     return (
@@ -15,7 +16,7 @@ export function ListPermits(props: { permits: Permit[]; hideCounter?: boolean })
                 <XInfiniteListItem key={item.id}>
                     <XCard>
                         <div className="x-permit--in">
-                            <XLink path={'/permits/' + item.id} className="x-permit--id">
+                            <XLink path={Links.area('sf').permit(item.id).view} className="x-permit--id">
                                 {item.id}
                             </XLink>
 
@@ -51,11 +52,11 @@ export function ListPermits(props: { permits: Permit[]; hideCounter?: boolean })
                         </div>
 
                         <div className="x-permit--box">
-                            <div className="x-permit--type"><PermitType type={item.type!!}/></div>
+                            <div className="x-permit--type"><PermitType type={item.type!!} /></div>
                             <div className="x-permit--text">{item.description}</div>
 
-                            <XLink path={'/permits/' + item.id}
-                                   className="x-permit--btn"><span>View details</span></XLink>
+                            <XLink path={Links.area('sf').permit(item.id).view}
+                                className="x-permit--btn"><span>View details</span></XLink>
                         </div>
                     </XCard>
                 </XInfiniteListItem>

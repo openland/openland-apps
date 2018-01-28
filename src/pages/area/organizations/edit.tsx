@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withPage } from '../../../components/withPage';
 import { withOrganizationAlter } from '../../../api/Organizations';
 import { withLoader } from '../../../components/withLoader';
 import { Segment } from 'semantic-ui-react';
@@ -7,8 +6,10 @@ import { XForm, XFormField, XFormFieldCheck, XFormImage, XFormSubmit } from '../
 import { XContainer } from '../../../components/X/XContainer';
 import { XButton } from '../../../components/X/XButton';
 import { XHead } from '../../../components/X/XHead';
+import { Links } from '../../../Links';
+import { withAreaPage } from '../../../components/withAreaPage';
 
-export default withPage(withOrganizationAlter(withLoader((props) => {
+export default withAreaPage(withOrganizationAlter(withLoader((props) => {
 
     return (
         <>
@@ -19,7 +20,7 @@ export default withPage(withOrganizationAlter(withLoader((props) => {
                     <XForm
                         defaultValues={props.data.organization}
                         mutate={props.alter}
-                        afterPath={'/organizations/' + props.data.organization.slug}
+                        afterPath={Links.area('sf').org(props.data.organization.slug).view}
                     >
                         <XFormField name="title" title="Developer Name" hint="ACME Inc." />
                         <XFormImage name="logo" title="Logo" />
@@ -35,8 +36,13 @@ export default withPage(withOrganizationAlter(withLoader((props) => {
                         <XFormField name="description" title="Description" hint="Description" />
                         <XFormField name="comments" title="Comments" hint="Comments" />
                         <XFormSubmit title="Save" />
-                        <XButton mutation={props.remove} afterPath="/organizations/"
-                            negative={true}>Remove</XButton>
+                        <XButton
+                            mutation={props.remove}
+                            afterPath={Links.area('sf').organizations}
+                            negative={true}
+                        >
+                            Remove
+                        </XButton>
                     </XForm>
                 </Segment>
             </XContainer>

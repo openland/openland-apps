@@ -80,11 +80,11 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
             <CountersList>
                 <CountersItem counter={slowestDuration.value} label={slowestDuration.subtitle}
                     name="The longest approval" photo={slowest.preview}
-                    address={slowest.name} path={links.project(slowest.slug)}
+                    address={slowest.name} path={links.project(slowest.slug).view}
                     caption="Construction project details" />
                 <CountersItem counter={fastestDuration.value} label={fastestDuration.subtitle}
                     name="The shortest approval" photo={fastest.preview}
-                    address={fastest.name} path={links.project(fastest.slug)}
+                    address={fastest.name} path={links.project(fastest.slug).view}
                     caption="Construction project details" />
                 <CountersItem counter={377} label="days"
                     name="Median approval time" photo={{ url: '/static/img/median-time.png', retina: '/static/img/median-time@2x.png 2x' }}
