@@ -115,42 +115,63 @@ export default withPage(withOrganizationsQuery(withLoader((props) => {
 
                         return (
                             <XInfiniteListItem key={item.id}>
-                                <div className="x-card-test organization">
+                                <div className="x-card-test with-image">
                                     <div className="x-card-photo">
-                                        <XLink path={'/organizations/' + item.slug}>
-                                            {item.logo && (<XCloudImage src={item.logo} maxWidth={140} maxHeight={140}/>)}
-                                            {!item.logo && (<div className="x-card--photo no-photo">{}</div>)}
-                                        </XLink>
+                                        {item.logo && (<XLink path={'/organizations/' + item.slug}>
+                                            <XCloudImage src={item.logo} />
+                                        </XLink>)}
+                                        {!item.logo && (<XLink path={'/organizations/' + item.slug} className="no-photo" />)}
                                     </div>
                                     <div className="x-card-box">
-                                        <div className="x-card-topRow">
+                                        <div className="x-card-row top">
                                             <div className="x-card-title">
-                                                <div className="title">{item.title}</div>
-                                                <div className="description">{subtitle}</div>
+                                                <div className="title">
+                                                    <XLink path={'/organizations/' + item.slug}>
+                                                        {item.title}
+                                                    </XLink>
+                                                </div>
+                                                <div className="text">{subtitle}</div>
                                             </div>
-                                            <div className="x-card-link">
-                                                <div className="link-icon">1</div>
-                                            </div>
-                                        </div>
-                                        <div className="x-card-bottomRow">
-                                            <div className="x-card-count">
-                                                <div className="count-title">{projectsLenght}</div>
-                                                <div className="count-description">recent projects</div>
-                                            </div>
-                                            {featured && (
-                                                <div className="x-card-project">
-                                                    <div className="project-img">
-                                                        <img src={featured.picture.retina}/>
-                                                    </div>
-                                                    <div className="project-description">
-                                                        <div className="title">{featured.title}</div>
-                                                        <div className="description">featured project</div>
-                                                    </div>
+                                            {item.url && (
+                                                <div className="x-card-link">
+                                                    {item.url && (
+                                                        <a className="x-card-btn" href={item.url} target="_blank">
+                                                            <i className="icon-share" />
+                                                        </a>
+                                                    )}
                                                 </div>
                                             )}
-                                            <div className="x-card-details">
-                                                <a className="show">VIEW PROFILE</a>
-                                            </div>
+                                        </div>
+                                        <div className="x-card-row bottom">
+                                            {(projectsLenght !== undefined) && ((projectsLenght > 0) && (
+                                                    <div className="x-card-count">
+                                                        <div className="title">{projectsLenght}</div>
+                                                        <div className="text">recent projects</div>
+                                                    </div>
+                                                ))
+                                            }
+                                            {featured && (
+                                                <XLink
+                                                    className={'x-card-project' + (featured.picture ? ' with-photo' : '')}
+                                                    path={`/projects/${featured.url}`}
+                                                >
+                                                    {featured.picture && (
+                                                        <div className="project-img">
+                                                            <img src={featured.picture.retina} alt="" />
+                                                        </div>
+                                                    )}
+                                                    <div className="x-card-count">
+                                                        <div className="title">{featured.title}</div>
+                                                        <div className="text">featured project</div>
+                                                    </div>
+                                                </XLink>
+                                            )}
+                                            <XLink
+                                                className="x-card-details"
+                                                path={`/organizations/'${item.profile}`}
+                                            >
+                                                <span>View profile</span>
+                                            </XLink>
                                         </div>
                                     </div>
                                 </div>
