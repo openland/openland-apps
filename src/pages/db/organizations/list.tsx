@@ -4,7 +4,7 @@ import { withOrganizationsQuery, withOrganizationAddMutation } from '../../../ap
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
 // import { OrganizationDataListCard } from '../../../components/DataListCard';
-// import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
+import { InfiniteListContainer } from '../../../components/withInfiniteList'; // XInfiniteListItem
 import { ListCard } from '../../../components/ListCard';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
@@ -12,6 +12,13 @@ import {
 } from '../../../components/DataList';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
+
+import {
+    ListCardContainer,
+    ListCardImageElement,
+    ListCardTopBarElement,
+    ListCardDownBarElement
+} from '../../../components/NewListCard';
 
 const AddForm = withOrganizationAddMutation((props) => {
     return (
@@ -76,6 +83,29 @@ export default withPage(withOrganizationsQuery(withLoader((props) => {
                 <div className="x-in--title hidden-xs">
                     <div>{data.length}<span>organizations</span></div>
                 </div>
+
+                <InfiniteListContainer>
+                    <ListCardContainer>
+                        <ListCardImageElement>
+                            <img src="https://www.wmj.ru/imgs/2016/12/05/09/929194/d1bbd77c2612ef45eee03defa5c373710d7c56e8.jpg"/>
+                        </ListCardImageElement>
+                        <div className="x-card--box">
+                            <ListCardTopBarElement>
+                                <div className="x-card--title">
+                                    Card Title
+                                </div>
+                                <div className="x-card--description">
+                                    Card Description
+                                </div>
+                            </ListCardTopBarElement>
+                            <ListCardDownBarElement>
+                                <div className="x-card--details">
+                                    Card Details
+                                </div>
+                            </ListCardDownBarElement>
+                        </div>
+                    </ListCardContainer>
+                </InfiniteListContainer>
 
                 <ListCard cardData={data} cardType={'organizations'} />
             </DataListContent>
