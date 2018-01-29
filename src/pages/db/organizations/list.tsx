@@ -4,21 +4,16 @@ import { withOrganizationsQuery, withOrganizationAddMutation } from '../../../ap
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
 // import { OrganizationDataListCard } from '../../../components/DataListCard';
-import { InfiniteListContainer } from '../../../components/withInfiniteList'; // XInfiniteListItem
-import { ListCard } from '../../../components/ListCard';
+import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
+import { XCloudImage } from '../../../components/X/XCloudImage';
+import { XLink } from '../../../components/X/XLink';
+// import { ListCard } from '../../../components/ListCard';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch
 } from '../../../components/DataList';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
-
-import {
-    ListCardContainer,
-    ListCardImageElement,
-    ListCardTopBarElement,
-    ListCardDownBarElement
-} from '../../../components/NewListCard';
 
 const AddForm = withOrganizationAddMutation((props) => {
     return (
@@ -85,29 +80,84 @@ export default withPage(withOrganizationsQuery(withLoader((props) => {
                 </div>
 
                 <InfiniteListContainer>
-                    <ListCardContainer>
-                        <ListCardImageElement>
-                            <img src="https://www.wmj.ru/imgs/2016/12/05/09/929194/d1bbd77c2612ef45eee03defa5c373710d7c56e8.jpg"/>
-                        </ListCardImageElement>
-                        <div className="x-card--box">
-                            <ListCardTopBarElement>
-                                <div className="x-card--title">
-                                    Card Title
-                                </div>
-                                <div className="x-card--description">
-                                    Card Description
-                                </div>
-                            </ListCardTopBarElement>
-                            <ListCardDownBarElement>
-                                <div className="x-card--details">
-                                    Card Details
-                                </div>
-                            </ListCardDownBarElement>
-                        </div>
-                    </ListCardContainer>
-                </InfiniteListContainer>
+                    {data.map((item: any) => {
 
-                <ListCard cardData={data} cardType={'organizations'} />
+                        let subtitle = undefined
+
+                        if (item.isDeveloper) {
+                            if (item.isConstructor) {
+                                subtitle = 'Developer and Contractor'
+                            } else {
+                                subtitle = 'Developer'
+                            }
+                        } else {
+                            subtitle = 'Contractor'
+                        }
+
+                        let project = null
+
+                        if (item.developerIn && item.developerIn.length > 0) {
+                            project = item.developerIn!![0]
+                        } else if (item.constructorIn && item.constructorIn.length > 0) {
+                            project = item.constructorIn!![0]
+                        }
+
+                        let featured = undefined;
+                        if (project !== null) {
+                            featured = {
+                                title: project.name,
+                                url: '/projects/' + project.slug,
+                                picture: project.preview
+                            };
+                        }
+
+                        let projectsLenght: number = item.constructorIn!!.length + item.developerIn!!.length
+
+                        return (
+                            <XInfiniteListItem key={item.id}>
+                                <div className="x-card-test organization">
+                                    <div className="x-card-photo">
+                                        <XLink path={'/organizations/' + item.slug}>
+                                            {item.logo && (<XCloudImage src={item.logo} maxWidth={140} maxHeight={140}/>)}
+                                            {!item.logo && (<div className="x-card--photo no-photo">{}</div>)}
+                                        </XLink>
+                                    </div>
+                                    <div className="x-card-box">
+                                        <div className="x-card-topRow">
+                                            <div className="x-card-title">
+                                                <div className="title">{item.title}</div>
+                                                <div className="description">{subtitle}</div>
+                                            </div>
+                                            <div className="x-card-link">
+                                                <div className="link-icon">1</div>
+                                            </div>
+                                        </div>
+                                        <div className="x-card-bottomRow">
+                                            <div className="x-card-count">
+                                                <div className="count-title">{projectsLenght}</div>
+                                                <div className="count-description">recent projects</div>
+                                            </div>
+                                            {featured && (
+                                                <div className="x-card-project">
+                                                    <div className="project-img">
+                                                        <img src={featured.picture.retina}/>
+                                                    </div>
+                                                    <div className="project-description">
+                                                        <div className="title">{featured.title}</div>
+                                                        <div className="description">featured project</div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            <div className="x-card-details">
+                                                <a className="show">VIEW PROFILE</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </XInfiniteListItem>
+                        )
+                    })}
+                </InfiniteListContainer>
             </DataListContent>
         </DataList>
         </>

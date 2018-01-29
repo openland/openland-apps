@@ -2902,6 +2902,76 @@ body {
 	}
 }
 
+.x-card-test {
+	display: flex;
+	background-color: #fff;
+
+	.x-card-photo {
+		width: 168px;
+		height: 164px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		a {
+			width: 140px;
+			height: 140px;
+			overflow: hidden;
+
+			img {
+				display: block;
+				height: 100%;
+				object-fit: contain;
+			}
+		}
+	}
+
+	&.organization {
+
+		.x-card-box {
+			width: calc(~'100% - 164px');
+		}
+	}
+
+	.x-card-box {
+		width: 100%;
+
+		.x-card-topRow {
+			height: 82px;
+			border-bottom: 1px solid rgba(38, 38, 38, 0.08);
+			display: flex;
+			align-items: center;
+		}
+
+		.x-card-bottomRow {
+			display: flex;
+			height: calc(~'100% - 82px');
+			align-items: center;
+
+			.x-card-project {
+				display: flex;
+				align-items: center;
+
+				.project-img {
+					width: 85px;
+					height: 58px;
+					overflow: hidden;
+
+					img {
+						display: block;
+						height: 100%;
+						object-fit: contain;
+					}
+				}
+			}
+
+			.x-card-details {
+				margin-left: auto;
+			}
+		}
+	}
+}
+
 .x-empty {
 	text-align: center;
 	padding: 334px 0 50px;
