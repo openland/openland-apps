@@ -18,7 +18,7 @@ const buildClient = (initialState?: any, token?: string) => {
     }
     return new ApolloClient({
         link: new HttpLink({
-            uri: API_ENDPOINT + '/api',
+            uri: API_ENDPOINT,
             headers: headers
         }),
         cache: cache,

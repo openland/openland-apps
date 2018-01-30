@@ -17,6 +17,7 @@
     "@types/diff": "^3.2.2",
     "@types/express": "^4.0.39",
     "@types/graphql": "^0.11.7",
+    "@types/http-proxy-middleware": "^0.17.2",
     "@types/js-cookie": "^2.1.0",
     "@types/lodash-es": "^4.17.0",
     "@types/mapbox-gl": "^0.43.0",
@@ -103,7 +104,7 @@
     "predev": "yarn bundle",
     "dev": "concurrently \"yarn sources:watch\" \"yarn assets:watch\" \"yarn less:watch\" \"yarn server\"",
     "dev:staging": "API_ENDPOINT=\"https://statecraft-api-staging.herokuapp.com\" yarn dev",
-    "dev:production": "API_ENDPOINT=\"https://api.statecraft.one\" yarn dev",
+    "dev:production": "API_ENDPOINT=\"https://api.statecrafthq.com\" yarn dev",
     "analyze": "yarn build && cross-env ANALYZE=1 next build ./build/dist",
     "start": "NODE_ENV=production yarn server",
     "heroku-postbuild": "yarn build"

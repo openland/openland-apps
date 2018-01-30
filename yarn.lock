@@ -134,6 +134,12 @@
   dependencies:
     "@types/express" "*"
 
+"@types/connect@*":
+  version "3.4.31"
+  resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.31.tgz#1f92d6b117ecc05076c49ecd024f7976e528bad9"
+  dependencies:
+    "@types/node" "*"
+
 "@types/d3-path@*":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@types/d3-path/-/d3-path-1.0.6.tgz#c1a7d2dc07b295fdd1c84dabe4404df991b48693"
@@ -178,6 +184,21 @@
 "@types/history@*":
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.2.tgz#12cfaba693ba20f114ed5765467ff25fdf67ddb0"
+
+"@types/http-proxy-middleware@^0.17.2":
+  version "0.17.2"
+  resolved "https://registry.yarnpkg.com/@types/http-proxy-middleware/-/http-proxy-middleware-0.17.2.tgz#78dde05402faa5f09cfe83807a64541022628429"
+  dependencies:
+    "@types/connect" "*"
+    "@types/http-proxy" "*"
+    "@types/node" "*"
+
+"@types/http-proxy@*":
+  version "1.12.4"
+  resolved "https://registry.yarnpkg.com/@types/http-proxy/-/http-proxy-1.12.4.tgz#b13d8c1f6829e307de09286da0618d1141547d52"
+  dependencies:
+    "@types/events" "*"
+    "@types/node" "*"
 
 "@types/js-cookie@^2.1.0":
   version "2.1.0"

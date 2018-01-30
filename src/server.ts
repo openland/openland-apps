@@ -2,7 +2,7 @@ import * as compression from 'compression';
 import * as express from 'express';
 import * as next from 'next';
 import { redirectToHTTPS } from 'express-http-to-https';
-// import * as proxy from 'http-proxy-middleware';
+import * as proxy from 'http-proxy-middleware';
 import { RequestHandler } from 'express';
 import * as Routes from './routes';
 import { graphiqlExpress } from 'apollo-server-express';
@@ -40,9 +40,10 @@ async function start() {
     // Configuration for WebApp
     // TODO: Remove this endpoint
     //
-    server.get('/config.js', (req, res) => {
-        res.send('window.server = { "endpoint": "' + endpoint + '" }');
-    });
+    server.use('/graphql', proxy({
+        changeOrigin: true,
+        target: endpoint + '/api',
+    }));
 
     //
     // GraphiQL Sandbox
