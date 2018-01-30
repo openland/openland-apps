@@ -31,7 +31,7 @@ jobs:
   #     - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
   #     - run: docker build -t statecraft/statecraft-web:v${CIRCLE_BUILD_NUM} ./dist/.
   #     - run: docker push statecraft/statecraft-web:v${CIRCLE_BUILD_NUM}
-  staging:
+  build:
     docker:
       - image: google/cloud-sdk
     steps:
