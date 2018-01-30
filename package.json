@@ -107,6 +107,7 @@
     "dev:production": "API_ENDPOINT=\"https://api.statecrafthq.com\" yarn dev",
     "analyze": "yarn build && cross-env ANALYZE=1 next build ./build/dist",
     "start": "NODE_ENV=production yarn server",
-    "heroku-postbuild": "yarn build"
+    "heroku-postbuild": "yarn build",
+    "promote": "kubectl set image deployment/statecraft-web-staging statecraft-web-staging=`kubectl get deployment statecraft-web-staging -o=jsonpath='{$.spec.template.spec.containers[:1].image}'` && kubectl rollout status deployments statecraft-web-staging"
   }
 }
