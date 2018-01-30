@@ -40,9 +40,19 @@ async function start() {
     // Configuration for WebApp
     // TODO: Remove this endpoint
     //
+    server.use('/authenticate', proxy({
+        changeOrigin: true,
+        target: endpoint,
+        pathRewrite: function (path: string) {
+            return '/auth';
+        }
+    }));
     server.use('/graphql', proxy({
         changeOrigin: true,
-        target: endpoint + '/api',
+        target: endpoint,
+        pathRewrite: function (path: string) {
+            return '/api';
+        }
     }));
 
     //

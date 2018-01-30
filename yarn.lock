@@ -105,9 +105,9 @@
   version "4.7.4"
   resolved "https://registry.yarnpkg.com/@turf/meta/-/meta-4.7.4.tgz#6de2f1e9890b8f64b669e4b47c09b20893063977"
 
-"@types/async@2.0.46":
-  version "2.0.46"
-  resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.46.tgz#f13a6c336a6582b95d0c0269e796b709488fd54d"
+"@types/async@2.0.47":
+  version "2.0.47"
+  resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.47.tgz#f49ba1dd1f189486beb6e1d070a850f6ab4bd521"
 
 "@types/auth0-js@^8.11.0":
   version "8.11.2"
@@ -174,8 +174,8 @@
     "@types/serve-static" "*"
 
 "@types/geojson@*":
-  version "7946.0.0"
-  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.0.tgz#e8bc74e8183d966455f82023f0c72e1072a952d0"
+  version "7946.0.1"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.1.tgz#1fc41280e42f08f0d568401a556bc97c34f5262e"
 
 "@types/graphql@^0.11.7":
   version "0.11.8"
@@ -211,12 +211,12 @@
     "@types/lodash" "*"
 
 "@types/lodash@*":
-  version "4.14.97"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.97.tgz#7262d6d5fc5e87cdb3f68eb33accd4024f2b211e"
+  version "4.14.98"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.98.tgz#aaf012ae443e657e7885e605a4c1b340db160609"
 
 "@types/mapbox-gl@^0.43.0":
-  version "0.43.1"
-  resolved "https://registry.yarnpkg.com/@types/mapbox-gl/-/mapbox-gl-0.43.1.tgz#ec089211d3a322e89a6c98335fa6abbb443361ff"
+  version "0.43.2"
+  resolved "https://registry.yarnpkg.com/@types/mapbox-gl/-/mapbox-gl-0.43.2.tgz#189b68509b783552775e4f9a1671396689b0b4e6"
   dependencies:
     "@types/geojson" "*"
 
@@ -459,32 +459,32 @@ apollo-cache-control@^0.0.x:
     graphql-extensions "^0.0.x"
 
 apollo-cache-inmemory@^1.1.4:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/apollo-cache-inmemory/-/apollo-cache-inmemory-1.1.5.tgz#74111367fd59caee120197ef663dcb2516971300"
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/apollo-cache-inmemory/-/apollo-cache-inmemory-1.1.6.tgz#05239803cad0ff5a865b6c82db6dd2176abadc93"
   dependencies:
-    apollo-cache "^1.1.0"
-    apollo-utilities "^1.0.4"
-    graphql-anywhere "^4.1.1"
+    apollo-cache "^1.1.1"
+    apollo-utilities "^1.0.5"
+    graphql-anywhere "^4.1.2"
 
-apollo-cache@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.1.0.tgz#281b6a0fb6ca2c5bce69825642f685de92d05f3c"
+apollo-cache@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.1.1.tgz#bfe9b718ebc94774fbf1981a1ef4f1391bdfc7ae"
   dependencies:
-    apollo-utilities "^1.0.4"
+    apollo-utilities "^1.0.5"
 
 apollo-client@^2.0.4:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.2.0.tgz#e22c4ba3a3c01aec6dc916a5dbc0f39c58d277fb"
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.2.1.tgz#9402ea5aa71d49c668c5a8451025001e135b0beb"
   dependencies:
     "@types/zen-observable" "^0.5.3"
-    apollo-cache "^1.1.0"
+    apollo-cache "^1.1.1"
     apollo-link "^1.0.0"
     apollo-link-dedup "^1.0.0"
-    apollo-utilities "^1.0.4"
+    apollo-utilities "^1.0.5"
     symbol-observable "^1.0.2"
     zen-observable "^0.7.0"
   optionalDependencies:
-    "@types/async" "2.0.46"
+    "@types/async" "2.0.47"
 
 apollo-link-dedup@^1.0.0:
   version "1.0.5"
@@ -531,9 +531,9 @@ apollo-tracing@^0.1.0:
   dependencies:
     graphql-extensions "^0.0.x"
 
-apollo-utilities@^1.0.0, apollo-utilities@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.4.tgz#560009ea5541b9fdc4ee07ebb1714ee319a76c15"
+apollo-utilities@^1.0.0, apollo-utilities@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.5.tgz#a5e99507d730ce21e84e07c7a9c7586b2ccdc58e"
 
 aproba@^1.0.3:
   version "1.2.0"
@@ -3163,11 +3163,11 @@ graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
-graphql-anywhere@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-4.1.1.tgz#67924b67b053d1a23bc30d0e4c8db943c1d791a8"
+graphql-anywhere@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-4.1.2.tgz#55e58593158f3deb0814def522c55e948c57cabb"
   dependencies:
-    apollo-utilities "^1.0.4"
+    apollo-utilities "^1.0.5"
 
 graphql-extensions@^0.0.x:
   version "0.0.7"
@@ -3882,9 +3882,9 @@ lcov-parse@0.0.10:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/lcov-parse/-/lcov-parse-0.0.10.tgz#1b0b8ff9ac9c7889250582b70b71315d9da6d9a3"
 
-less-watch-compiler@^1.10.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/less-watch-compiler/-/less-watch-compiler-1.11.0.tgz#41120d53593c0c3598e5dc6f79e197ec87c707b7"
+less-watch-compiler@1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/less-watch-compiler/-/less-watch-compiler-1.10.0.tgz#b9c691aac62227577b447c605e6072f1c691348c"
   dependencies:
     amdefine ">= 0.1.0"
     commander "^2.9.0"
@@ -4407,8 +4407,8 @@ minimist@~0.0.1:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.10.tgz#de3f98543dbf96082be48ad1a0c7cda836301dcf"
 
 mjolnir.js@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/mjolnir.js/-/mjolnir.js-1.0.0.tgz#881eaac896f2c2693bc39f5127b4fabe99ff56fb"
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/mjolnir.js/-/mjolnir.js-1.0.1.tgz#0ce2389c18e8de00a402b3ff4b91aaee0b2a6dc6"
   dependencies:
     hammerjs "^2.0.8"
 
