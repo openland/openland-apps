@@ -2906,8 +2906,42 @@ body {
 	background-color: #fff;
 	border: 1px solid rgba(38, 38, 38, 0.08);
 
+	&.with-image {
+
+		.x-card-photo {
+			width: 168px;
+
+			a {
+				width: 140px;
+				height: 140px;
+			}
+		}
+
+		.x-card-box {
+			padding-left: 8px;
+		}
+
+		&.wide-image {
+			.x-card-photo {
+				width: 244px;
+
+				a {
+					width: 100%;
+					height: 100%;
+				}
+			}
+
+			.x-card-box {
+				padding-left: 0;
+
+				.x-card-row {
+					padding-left: 33px;
+				}
+			}
+		}
+	}
+
 	.x-card-photo {
-		width: 168px;
 		height: 164px;
 		display: flex;
 		justify-content: center;
@@ -2920,30 +2954,21 @@ body {
 		}
 
 		a {
-			width: 140px;
-			height: 140px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			overflow: hidden;
 
 			img {
-				display: block;
 				width: 100%;
+				display: block;
 				object-fit: contain;
 			}
 		}
 	}
 
-	&.with-image {
-
-		.x-card-box {
-			width: calc(~'100% - 164px');
-		}
-	}
-
 	.x-card-box {
-		width: 100%;
-		padding-left: 8px;
+		flex-grow: 1;
 
 		.x-card-row {
 			display: flex;
@@ -2955,7 +2980,19 @@ body {
 
 				.x-card-title {
 					.title {
-						margin-bottom: 4px;
+
+						&.is-checked:after {
+							background: @orange-1;
+							color: @white;
+							text-align: center;
+							border-radius: 2px;
+							margin: 2px 0 0 10px;
+
+							.display (inline-block);
+							.size (16px, 16px);
+							.icon ('\e915');
+							.font (7px, 16px);
+						}
 
 						a {
 							color: inherit;
@@ -2968,6 +3005,7 @@ body {
 					}
 
 					.text {
+						margin-top: 4px;
 						text-transform: uppercase;
 						letter-spacing: 0.6px;
 						color: fade(@text-sf, 60);

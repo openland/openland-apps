@@ -6,6 +6,7 @@ import { XWriteAcces } from '../../../components/X/XWriteAccess';
 import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
 import { XCloudImage } from '../../../components/X/XCloudImage';
 import { XLink } from '../../../components/X/XLink';
+import { Links } from '../../../Links';
 // import { ListCard } from '../../../components/ListCard';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
@@ -106,7 +107,7 @@ export default withAreaPage(withOrganizationsQuery(withLoader((props) => {
                         if (project !== null) {
                             featured = {
                                 title: project.name,
-                                url: '/projects/' + project.slug,
+                                url: Links.area('sf').project(project.slug).view,
                                 picture: project.preview
                             };
                         }
@@ -117,16 +118,16 @@ export default withAreaPage(withOrganizationsQuery(withLoader((props) => {
                             <XInfiniteListItem key={item.id}>
                                 <div className="x-card-test with-image">
                                     <div className="x-card-photo">
-                                        {item.logo && (<XLink path={'/organizations/' + item.slug}>
-                                            <XCloudImage src={item.logo} />
+                                        {item.logo && (<XLink path={Links.area('sf').org(item.slug).view}>
+                                            <XCloudImage src={item.logo} maxWidth={140} maxHeight={140} />
                                         </XLink>)}
-                                        {!item.logo && (<XLink path={'/organizations/' + item.slug} className="no-photo" />)}
+                                        {!item.logo && (<XLink path={Links.area('sf').org(item.slug).view} className="no-photo" />)}
                                     </div>
                                     <div className="x-card-box">
                                         <div className="x-card-row top">
                                             <div className="x-card-title">
                                                 <div className="title">
-                                                    <XLink path={'/organizations/' + item.slug}>
+                                                    <XLink path={Links.area('sf').org(item.slug).view}>
                                                         {item.title}
                                                     </XLink>
                                                 </div>
@@ -134,11 +135,9 @@ export default withAreaPage(withOrganizationsQuery(withLoader((props) => {
                                             </div>
                                             {item.url && (
                                                 <div className="x-card-link">
-                                                    {item.url && (
-                                                        <a className="x-card-btn" href={item.url} target="_blank">
-                                                            <i className="icon-share" />
-                                                        </a>
-                                                    )}
+                                                    <a className="x-card-btn" href={item.url} target="_blank">
+                                                        <i className="icon-share" />
+                                                    </a>
                                                 </div>
                                             )}
                                         </div>
@@ -153,7 +152,7 @@ export default withAreaPage(withOrganizationsQuery(withLoader((props) => {
                                             {featured && (
                                                 <XLink
                                                     className={'x-card-project' + (featured.picture ? ' with-photo' : '')}
-                                                    path={`/projects/${featured.url}`}
+                                                    path={featured.url}
                                                 >
                                                     {featured.picture && (
                                                         <div className="project-img">
@@ -168,7 +167,7 @@ export default withAreaPage(withOrganizationsQuery(withLoader((props) => {
                                             )}
                                             <XLink
                                                 className="x-card-details"
-                                                path={`/organizations/'${item.profile}`}
+                                                path={Links.area('sf').org(item.slug).view}
                                             >
                                                 <span>View profile</span>
                                             </XLink>
