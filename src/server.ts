@@ -50,12 +50,17 @@ async function start() {
     server.use('/sandbox', graphiqlExpress({ endpointURL: endpoint + '/api' }));
 
     //
+    // Health
+    //
+    server.get('/status', (req, res) => res.send('Welcome to Statecraft!'));
+
+    //
     // Main Handler
     //
     server.get('*', handle);
 
     //
-    // Starting Server 
+    // Starting Server
     //
     server.listen(port, bindHost, (err: any) => {
         if (err) { throw err; }
