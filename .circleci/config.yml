@@ -1,37 +1,37 @@
 
 version: 2
 jobs:
-  # build:
-  #   working_directory: /build
-  #   docker:
-  #     - image: node:8.9.4
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         key: dependency-cache-{{ checksum "yarn.lock" }}
-  #     - run: yarn install
-  #     - save_cache:
-  #         key: dependency-cache-{{ checksum "yarn.lock" }}
-  #         paths:
-  #           - ./node_modules
-  #     - run: yarn build
-  #     - run: yarn install --production --ignore-scripts --prefer-offline
-  #     - persist_to_workspace:
-  #         root: /build
-  #         paths:
-  #           - './node_modules'
-  #           - './build'
-  #           - './package.json'
-  #           - './Dockerfile'
-  # docker:
-  #   machine: true
-  #   steps:
-  #     - attach_workspace:
-  #         at: ./dist
-  #     - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-  #     - run: docker build -t statecraft/statecraft-web:v${CIRCLE_BUILD_NUM} ./dist/.
-  #     - run: docker push statecraft/statecraft-web:v${CIRCLE_BUILD_NUM}
   build:
+    working_directory: /build
+    docker:
+      - image: node:8.9.4
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+      - run: yarn build
+      - run: yarn install --production --ignore-scripts --prefer-offline
+      - persist_to_workspace:
+          root: /build
+          paths:
+            - './node_modules'
+            - './build'
+            - './package.json'
+            - './Dockerfile'
+  docker:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: ./dist
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - run: docker build -t statecraft/statecraft-web:v${CIRCLE_BUILD_NUM} ./dist/.
+      - run: docker push statecraft/statecraft-web:v${CIRCLE_BUILD_NUM}
+  staging:
     docker:
       - image: google/cloud-sdk
     steps:
@@ -42,12 +42,15 @@ jobs:
       - run: gcloud --quiet container clusters get-credentials statekube
       - run: kubectl get po
    
-# workflows:
-#   version: 2
+workflows:
+  version: 2
 
-#   build:
-#     jobs:
-#       - build
-#       - docker:
-#           requires:
-#             - build
+  build:
+    jobs:
+      - build
+      - docker:
+          requires:
+            - build
+      - staging: 
+          requires:
+            - docker
