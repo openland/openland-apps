@@ -23,6 +23,6 @@ export const Links = {
 }
 
 export const ExternalLinks = {
-    corporateSite: 'https://statecraft.one',
+    corporateSite: 'https://statecrafthq.com',
     corporateEmail: 'hello@statecraft.one'
 }
