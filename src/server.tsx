@@ -18,7 +18,7 @@ async function start() {
     await app.prepare();
     const server = express();
     server.use(compression() as RequestHandler);
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.APP_REDIRECT_HTTPS === 'true') {
         server.use(redirectToHTTPS());
     }
 
@@ -39,7 +39,7 @@ async function start() {
 }
 
 // Hack for handling Ctrl-C
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
     process.exit();
 });
 
