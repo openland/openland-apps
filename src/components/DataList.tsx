@@ -105,7 +105,7 @@ export const DataListRadioItem = withRouter<{ title: string, itemKey?: string, r
     let path = props.router.pathname;
     let checked = false;
     if (props.radioKey) {
-        let s = JSON.parse(JSON.stringify(props.router.query!!));
+        let s = JSON.parse(JSON.stringify(props.router.queryString!!));
         if (props.itemKey) {
             checked = s[props.radioKey] === props.itemKey;
             s[props.radioKey] = props.itemKey;

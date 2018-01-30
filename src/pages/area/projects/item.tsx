@@ -11,6 +11,7 @@ import { XLink } from '../../../components/X/XLink';
 import { XColumn } from '../../../components/X/XColumn';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
+import { Links } from '../../../Links';
 
 export default withPage(withBuildingProjectQuery(withLoader((props) => {
     let map = undefined;
@@ -65,9 +66,11 @@ export default withPage(withBuildingProjectQuery(withLoader((props) => {
                                         {/*<div className="x-project--counter"><span>Rent</span>Building type</div>*/}
                                     </div>
 
-                                    <XLink path={'/projects/' + props.data.project.slug + '/edit'}
-                                        className="x-project--btn" writeAccess={true}><span><i
-                                            className="icon-edit" />Edit profile</span></XLink>
+                                    <XLink
+                                        path={Links.area('sf').project(props.data.project.slug).edit}
+                                        className="x-project--btn" writeAccess={true}
+                                    ><span><i className="icon-edit" />Edit profile</span>
+                                    </XLink>
                                 </div>
                             </XCard>
                         </XWrap>

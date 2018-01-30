@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { withLandingPage } from '../components/withPage';
-import { Intro, IntroTitle, IntroCols, IntroCol, IntroLink, IntroBox, IntroForm } from '../components/Intro';
-import { withBuildingProjectsStats } from '../api/BuildingProjects';
-import { Counters, CountersList, CountersItem, CountersCols, CountersText } from '../components/Landing/Counters';
-import { About, AboutItem } from '../components/Landing/About';
-import { Footer } from '../components/Footer';
-import { Trends, TrendsItem, TrendsChart, TrendsText } from '../components/Landing/Trends';
-import { buildDuration } from '../utils/date';
-import { withLoader } from '../components/withLoader';
-import { XBarChart } from '../components/X/XBarChart';
-import { XHead } from '../components/X/XHead';
+import { withLandingPage } from '../../components/withPage';
+import { Intro, IntroTitle, IntroCols, IntroCol, IntroLink, IntroBox, IntroForm } from '../../components/Intro';
+import { withBuildingProjectsStats } from '../../api/BuildingProjects';
+import { Counters, CountersList, CountersItem, CountersCols, CountersText } from '../../components/Landing/Counters';
+import { About, AboutItem } from '../../components/Landing/About';
+import { Footer } from '../../components/Footer';
+import { Trends, TrendsItem, TrendsChart, TrendsText } from '../../components/Landing/Trends';
+import { buildDuration } from '../../utils/date';
+import { withLoader } from '../../components/withLoader';
+import { XBarChart } from '../../components/X/XBarChart';
+import { XHead } from '../../components/X/XHead';
+import { Links, ExternalLinks } from '../../Links';
 
 export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
 
@@ -20,6 +21,8 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
 
     let slowestPermits = slowest.permits!!.filter((v) => v.approvalTime != null).map((v) => v.approvalTime!!);
     let slowestDuration = buildDuration(Math.max(...slowestPermits));
+
+    let links = Links.area(props.data.area.slug);
 
     return (
         <>
@@ -35,9 +38,9 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                     <IntroLink title="Building permits volume" anchor="#volume" />
                 </IntroCol>
                 <IntroCol title="Data">
-                    <IntroLink counter={props.data.globalStats.totalPermits} label="Permits" path="/permits" />
-                    <IntroLink counter={props.data.globalStats.totalProjects} label="Construction projects" path="/projects" />
-                    <IntroLink counter={props.data.globalStats.totalOrganizations} label="Organizations" path="/organizations" />
+                    <IntroLink counter={props.data.area.stats.totalPermits} label="Permits" path={links.permits} />
+                    <IntroLink counter={props.data.area.stats.totalProjects} label="Construction projects" path={links.projects()} />
+                    <IntroLink counter={props.data.area.stats.totalOrganizations} label="Organizations" path={links.organizations} />
                 </IntroCol>
             </IntroCols>
             <IntroBox>
@@ -56,9 +59,9 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
             </CountersCols>
             <CountersList>
                 <CountersItem counter={props.data.stats.year2017NewUnits} name="2017 net new units"
-                    path="/projects?year=2017" caption="Explore projects" />
+                    path={links.projects('2017')} caption="Explore projects" />
                 <CountersItem counter={props.data.stats.year2018NewUnits} name="2018 net new units"
-                    path="/projects?year=2018" caption="Explore projects" />
+                    path={links.projects('2018')} caption="Explore projects" />
                 <CountersItem counter={5000} name="Mayor’s annual target"
                     href="https://medium.com/@mayoredlee/making-a-more-affordable-san-francisco-f1ff3bae0d86"
                     caption="Read Mayor’s announcement" />
@@ -77,15 +80,15 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
             <CountersList>
                 <CountersItem counter={slowestDuration.value} label={slowestDuration.subtitle}
                     name="The longest approval" photo={slowest.preview}
-                    address={slowest.name} path={'/projects/' + slowest.slug}
+                    address={slowest.name} path={links.project(slowest.slug).view}
                     caption="Construction project details" />
                 <CountersItem counter={fastestDuration.value} label={fastestDuration.subtitle}
                     name="The shortest approval" photo={fastest.preview}
-                    address={fastest.name} path={'/projects/' + fastest.slug}
+                    address={fastest.name} path={links.project(fastest.slug).view}
                     caption="Construction project details" />
                 <CountersItem counter={377} label="days"
                     name="Median approval time" photo={{ url: '/static/img/median-time.png', retina: '/static/img/median-time@2x.png 2x' }}
-                    path="/permits" caption="Browse permits by approval time" />
+                    path={links.permits} caption="Browse permits by approval time" />
             </CountersList>
         </Counters>
 
@@ -108,10 +111,10 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
             </TrendsItem>
         </Trends>
 
-        <About title="About Us" mail="hello@statecraft.one">
+        <About title="About Us" mail={ExternalLinks.corporateEmail}>
             <AboutItem
                 title="Creators"
-                text="This housing analytics portal is developed by [Statecraft](https://statecraft.one/), an urban analytics company based in San Francisco. We hope to significantly expand our analysis in near future, with insights for affordable housing, inclusionary requirements, development incentives, and opportunity sites."
+                text={'This housing analytics portal is developed by [Statecraft](' + ExternalLinks.corporateSite + '), an urban analytics company based in San Francisco. We hope to significantly expand our analysis in near future, with insights for affordable housing, inclusionary requirements, development incentives, and opportunity sites.'}
             />
             <AboutItem
                 title="Data sources"

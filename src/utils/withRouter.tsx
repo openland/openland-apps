@@ -3,12 +3,14 @@ import * as PropTypes from 'prop-types';
 import { getComponentDisplayName } from '../utils/utils';
 import { SingletonRouter } from 'next/router';
 import { Router } from '../routes';
+import * as qs from 'query-string';
 
 export interface RouterState {
     readonly pathname: string;
     readonly route: string;
     readonly asPath?: string;
     readonly query?: { [key: string]: any };
+    readonly queryString?: { [key: string]: any };
     readonly hostName: string;
     readonly protocol: string;
     readonly href: string;
@@ -36,11 +38,13 @@ export function withRouter<P = {}>(ComposedComponent: React.ComponentType<P & { 
             if (nRouter.asPath) {
                 href += nRouter.asPath;
             }
+            let parts = nRouter.asPath!!.split('?');
             var router: RouterState = {
-                pathname: nRouter.asPath!!.split('?')[0],
+                pathname: parts[0],
                 route: nRouter.route,
                 asPath: nRouter.asPath,
                 query: nRouter.query,
+                queryString: (parts[1] ? qs.parse(parts[1]) : {}),
                 hostName: hostName,
                 protocol: protocol,
                 href: href,
