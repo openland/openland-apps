@@ -1,18 +1,23 @@
 declare module 'react-map-gl' {
     interface StaticMapProps {
         mapboxApiAccessToken: string;
-        width?: number | string;
-        height?: number | string;
-        latitude?: number;
-        longitude?: number;
+        width: number | string;
+        height: number | string;
+        latitude: number;
+        longitude: number;
         zoom?: number;
         mapStyle?: string;
         pitch?: number;
         bearing?: number;
+        transitionDuration?: number;
+        transitionInterpolator?: FlyToInterpolator;
     }
 
     interface InteractiveMapProps extends StaticMapProps {
         maxZoom?: number;
+        dragPan?: boolean;
+        dragRotate?: boolean;
+        touchRotate?: boolean;
         onViewportChange?: (viewport: ViewPortChanged) => void
     }
 
@@ -24,7 +29,7 @@ declare module 'react-map-gl' {
         bearing: number;
     }
 
-
+    export class FlyToInterpolator { }
     export let StaticMap: React.ComponentClass<StaticMapProps>;
     export let InteractiveMap: React.ComponentClass<InteractiveMapProps>;
 }
@@ -70,6 +75,9 @@ declare module 'deck.gl' {
 
         getLineColor?: (src: any) => number[];
         getFillColor?: (src: any) => number[];
+        onHover?: (src: any) => void;
+        onClick?: (src: any) => void;
+        updateTriggers?: any;
     }
 
     export let GeoJsonLayer: Layer<GeoJsonLayerProps>;

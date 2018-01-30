@@ -47,6 +47,17 @@ export function withPage(WrappedComponent: React.ComponentType<{}>) {
     ))));
 }
 
+export function withPageFullScreen(WrappedComponent: React.ComponentType<{}>) {
+    return withData(withAccountQuery(withRootLoader((props) => (
+        <UserInfoProvider user={props.data.me} account={props.data.account} router={props.router}>
+            <PageContainer>
+                <Header />
+                <WrappedComponent />
+            </PageContainer>
+        </UserInfoProvider>
+    ))));
+}
+
 export function withLandingPage(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAccountQuery(withRootLoader((props) => (
         <UserInfoProvider user={props.data.me} account={props.data.account} router={props.router}>
