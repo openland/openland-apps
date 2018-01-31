@@ -13,8 +13,6 @@ export interface Permit {
     filedAt?: string;
     completedAt?: string;
 
-    approvalTime?: number;
-
     status?: string;
     statusUpdatedAt?: string;
     streetNumbers?: [StreetNumber];
@@ -37,7 +35,7 @@ export interface Permit {
 
     governmentalUrl: string;
 
-    fasterThan?: number;
+    approvalTime?: number;
 }
 
 export interface StatusChanged extends PermitEvent {
@@ -106,22 +104,7 @@ const PermitsQuery = gql`
                 pagesCount
                 openEnded
             }
-#            stats {
-#                approvalTimes {
-#                    labels
-#                    datasets {
-#                        label
-#                        values
-#                    }
-#                }
-#                approvalDistribution {
-#                    labels
-#                    datasets {
-#                        label
-#                        values
-#                    }
-#                }
-#            }
+
         }
     }
 `;
@@ -150,7 +133,6 @@ const PermitQuery = gql`
             proposedUse
             description
             governmentalUrl
-            fasterThan
             approvalTime
 
             streetNumbers {
