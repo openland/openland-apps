@@ -10,6 +10,7 @@ export default class Redirect extends React.Component {
         } else {
             document.location.pathname = '/sf';
         }
+        return {};
     }
 
     render() {

@@ -18,11 +18,11 @@ export class Header extends React.Component<{hero?: boolean}, { isShown: boolean
             <div className={'x-header' + (this.props.hero ? '' : ' is-top') + (this.state.isShown ? ' is-shown' : '')}>
                 <XContainer wide={true} clearfix={true}>
                     <div className="x-header--wrap">
-                        {this.props.hero && (<XLink className="x-header--logo" href="https://statecraft.one/">
+                        {this.props.hero && (<XLink className="x-header--logo" href="https://statecrafthq.com/">
                                 <img src="/static/img/logotype.svg" alt=""/>
                             </XLink>)}
 
-                        {!this.props.hero && (<XLink className="x-header--label" path="/">San Francisco</XLink>)}
+                        {!this.props.hero && (<XLink className="x-header--label" path="/sf">San Francisco</XLink>)}
 
                         <a className="x-header--open visible-xs" href="#" onClick={(e) => {
                             e.preventDefault();
