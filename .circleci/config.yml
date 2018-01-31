@@ -1,4 +1,3 @@
-
 version: 2
 jobs:
   build:
@@ -42,11 +41,12 @@ jobs:
       - run: gcloud --quiet config set compute/zone us-west1-a
       - run: gcloud --quiet container clusters get-credentials statekube
       - run: kubectl set image deployment/statecraft-web-staging statecraft-web-staging=index.docker.io/statecraft/statecraft-web:git-${CIRCLE_SHA1}
+      - run: kubectl set image deployment/statecraft-web-dev statecraft-web-dev=index.docker.io/statecraft/statecraft-web:git-${CIRCLE_SHA1}
       - run: kubectl rollout status deployments statecraft-web-staging || true
+      - run: kubectl rollout status deployments statecraft-web-dev || true
    
 workflows:
   version: 2
-
   build:
     jobs:
       - build
