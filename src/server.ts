@@ -36,6 +36,8 @@ async function start() {
         server.use(redirectToHTTPS());
     }
 
+    server.use('/loaderio-23ea4600e6ea952918b82dfd9352d8d7/', (req, res) => res.send('loaderio-23ea4600e6ea952918b82dfd9352d8d7'));
+
     //
     // Configuration for WebApp
     // TODO: Remove this endpoint
