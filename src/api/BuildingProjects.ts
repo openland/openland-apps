@@ -14,10 +14,36 @@ const BuildingProjectsStatsQuery = gql`
             slug
             stats {
                 totalProjects
+                totalProjectsVerified
                 totalDevelopers
                 totalConstructors
                 totalOrganizations
                 totalPermits
+                year2017NewUnits
+                year2017NewUnitsVerified
+                year2018NewUnits
+                year2018NewUnitsVerified
+
+                fastestApprovalProject {
+                    id
+                    slug
+                    name
+                    approvalTime
+                    preview: picture(width: 310, height: 181) {
+                        url
+                        retina
+                    }
+                }
+                slowestApprovalProject {
+                    id
+                    slug
+                    name
+                    approvalTime
+                    preview: picture(width: 310, height: 181) {
+                        url
+                        retina
+                    }
+                }
             }
         }
         permitsUnitsFiledStats: permitsUnitsFiledStats {
@@ -41,140 +67,29 @@ const BuildingProjectsStatsQuery = gql`
                 values
             }   
         }
-        stats: buildingProjectsStats {
-            projectsTracked
-            projectsVerified
-            year2017NewUnits
-            year2017NewUnitsVerified
-            year2018NewUnits
-            year2018NewUnitsVerified
-            fastestApprovalProject {
-                id
-                slug
-                name
-                description
-                status
-                startedAt
-                completedAt
-                expectedCompletedAt
-                verified
-                existingUnits
-                proposedUnits
-                existingAffordableUnits
-                proposedAffordableUnits
-
-                preview: picture(width: 310, height: 181) {
-                    url
-                    retina
-                }
-                extrasDeveloper
-                extrasGeneralConstructor
-                extrasYearEnd
-                extrasAddress
-                extrasAddressSecondary
-                extrasPermit
-                extrasComment
-                extrasUrl
-                extrasLocation {
-                    latitude
-                    longitude
-                }
-                developers {
-                    id
-                    slug
-                    title
-                }
-                permits {
-                    id
-                    createdAt
-                    status
-                    type
-                    typeWood
-                    description
-                    approvalTime
-                    streetNumbers {
-                        streetId
-                        streetName
-                        streetNameSuffix
-                        streetNumber
-                        streetNumberSuffix
-                    }
-                }
-            }
-            slowestApprovalProject {
-                id
-                slug
-                name
-                description
-                status
-                startedAt
-                completedAt
-                expectedCompletedAt
-                verified
-                existingUnits
-                proposedUnits
-                existingAffordableUnits
-                proposedAffordableUnits
-
-                preview: picture(width: 310, height: 181) {
-                    url
-                    retina
-                }
-                extrasDeveloper
-                extrasGeneralConstructor
-                extrasYearEnd
-                extrasAddress
-                extrasAddressSecondary
-                extrasPermit
-                extrasComment
-                extrasUrl
-                extrasLocation {
-                    latitude
-                    longitude
-                }
-                developers {
-                    id
-                    slug
-                    title
-                }
-                permits {
-                    id
-                    createdAt
-                    status
-                    type
-                    typeWood
-                    description
-                    approvalTime
-                    streetNumbers {
-                        streetId
-                        streetName
-                        streetNameSuffix
-                        streetNumber
-                        streetNumberSuffix
-                    }
-                }
-            }
-        }
     }
 `;
-
-export interface BuildingProjectsStats {
-    projectsTracked: number;
-    projectsVerified: number;
-    year2017NewUnits: number;
-    year2017NewUnitsVerified: number;
-    year2018NewUnits: number;
-    year2018NewUnitsVerified: number;
-    fastestApprovalProject: BuildingProject;
-    slowestApprovalProject: BuildingProject;
-}
-
-export interface GlobalStats {
+export interface AreaStats {
     totalProjects: number;
+    totalProjectsVerified: number;
     totalDevelopers: number;
     totalConstructors: number;
     totalPermits: number;
     totalOrganizations: number;
+    year2017NewUnits: number;
+    year2017NewUnitsVerified: number;
+    year2018NewUnits: number;
+    year2018NewUnitsVerified: number;
+    fastestApprovalProject: BuildingShortProject;
+    slowestApprovalProject: BuildingShortProject;
+}
+
+export interface BuildingShortProject {
+    id: string;
+    slug: string;
+    name: string;
+    preview?: Picture;
+    approvalTime: number;
 }
 
 export interface BuildingProject {
@@ -356,7 +271,7 @@ export const withBuildingProjectsQuery = graphqlList<BuildingProject, BuildingPr
     BuildingProjectsQuery,
     ['cursor', 'minUnits', { key: 'year', default: '2018' }, 'filter']);
 export const withBuildingProjectsStats = graphqlRouted<{
-    stats: BuildingProjectsStats, area: { slug: string, stats: GlobalStats },
+    area: { slug: string, stats: AreaStats },
     permitsUnitsFiledStats: Chart,
     permitsUnitsIssuedStats: Chart,
     permitsUnitsCompletedStats: Chart

@@ -14,13 +14,10 @@ import { Links, ExternalLinks } from '../../Links';
 
 export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
 
-    let fastest = props.data.stats.fastestApprovalProject!!;
-    let slowest = props.data.stats.slowestApprovalProject!!;
-    let fastestPermits = fastest.permits!!.filter((v) => v.approvalTime != null).map((v) => v.approvalTime!!);
-    let fastestDuration = buildDuration(Math.max(...fastestPermits));
-
-    let slowestPermits = slowest.permits!!.filter((v) => v.approvalTime != null).map((v) => v.approvalTime!!);
-    let slowestDuration = buildDuration(Math.max(...slowestPermits));
+    let fastest = props.data.area.stats.fastestApprovalProject!!;
+    let slowest = props.data.area.stats.slowestApprovalProject!!;
+    let fastestDuration = buildDuration(fastest.approvalTime);
+    let slowestDuration = buildDuration(slowest.approvalTime);
 
     let links = Links.area(props.data.area.slug);
 
@@ -58,9 +55,9 @@ export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
                     text="Unit counts, expected completion dates, and other property attributes change frequently. Our pipeline verification tools allow all stakeholders to add, correct, and expand individual records." />
             </CountersCols>
             <CountersList>
-                <CountersItem counter={props.data.stats.year2017NewUnits} name="2017 net new units"
+                <CountersItem counter={props.data.area.stats.year2017NewUnits} name="2017 net new units"
                     path={links.projects('2017')} caption="Explore projects" />
-                <CountersItem counter={props.data.stats.year2018NewUnits} name="2018 net new units"
+                <CountersItem counter={props.data.area.stats.year2018NewUnits} name="2018 net new units"
                     path={links.projects('2018')} caption="Explore projects" />
                 <CountersItem counter={5000} name="Mayor’s annual target"
                     href="https://medium.com/@mayoredlee/making-a-more-affordable-san-francisco-f1ff3bae0d86"
