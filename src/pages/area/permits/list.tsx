@@ -1,8 +1,13 @@
 import * as React from 'react';
 import { Permit, withPermitsPagedQuery } from '../../../api/Permits';
+import { formatDuration } from '../../../utils/date';
 import { withPage } from '../../../components/withPage';
 // import { ListPermits } from '../../../components/ListPermits';
-import { ListCard } from '../../../components/ListCard';
+// import { ListCard } from '../../../components/ListCard';
+import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
+import { PermitType } from '../../../components/PermitType';
+import { PermitStatusTest } from '../../../components/PermitStatus';
+import { XLink } from '../../../components/X/XLink';
 import {
     DataList, DataListContent, DataListFilters, DataListRadio, DataListRadioItem,
     DataListSearch
@@ -10,8 +15,73 @@ import {
 import { withPagedList } from '../../../components/withPagedList';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
+import { XCounter } from '../../../components/X/XCounter';
+import { Links } from '../../../Links';
 
-const PermitsItems = withPagedList<Permit>((props) => <ListCard cardData={props.items} cardType={'permits'} />);
+const PermitsItems = withPagedList<Permit>((props) => (
+    <InfiniteListContainer>
+        {props.items.map((item: any) => {
+            return (
+                <XInfiniteListItem key={item.id}>
+                    <div className="x-card-test">
+                        <div className="x-card-box">
+                            <div className="x-card-row top">
+                                <div className="x-card-title larger">
+                                    <div className="title">
+                                        <XLink path={Links.area('sf').permit(item.id).view}>
+                                            <span>{item.id}</span>
+                                        </XLink>
+                                    </div>
+                                </div>
+                                {item.streetNumbers!!.length > 0 && (
+                                    <div className="x-card-count smaller">
+                                        <div className="title">{
+                                            item.streetNumbers!![0].streetNumber + (item.streetNumbers!![0].streetNumberSuffix ? item.streetNumbers!![0].streetNumberSuffix!! : '') +
+                                        ' ' + item.streetNumbers!![0].streetName + (item.streetNumbers!![0].streetNameSuffix ? ' ' + item.streetNumbers!![0].streetNameSuffix : '')
+                                        }
+                                        </div>
+                                        <div className="text">Address</div>
+                                    </div>
+                                )}
+
+                                {item.proposedUnits && (
+                                    <div className="x-card-count smaller">
+                                        <div className="title">
+                                            <XCounter value={item.proposedUnits!!} oldValue={item.existingUnits} />
+                                        </div>
+                                        <div className="text">Units</div>
+                                    </div>
+                                )}
+                                {item.approvalTime != null && (
+                                    <div className="x-card-count smaller">
+                                        <div className="title">{formatDuration(item.approvalTime)}</div>
+                                        <div className="text">Approval time</div>
+                                    </div>
+                                )}
+                                {item.status && <PermitStatusTest status={item.status} date={item.statusUpdatedAt} />}
+                            </div>
+                            <div className="x-card-row bottom">
+                                <div className="x-card-addition">
+                                    <span>
+                                        <PermitType type={item.type!!}/>
+                                    </span>
+                                </div>
+                                <div className="x-card-description">{item.description}</div>
+                                <XLink
+                                    className="x-card-details"
+                                    path={Links.area('sf').permit(item.id).view}
+                                >
+                                    <span>View details</span>
+                                </XLink>
+                            </div>
+                        </div>
+                    </div>
+                </XInfiniteListItem>
+            )
+        })}
+    </InfiniteListContainer>
+));
+
 export default withPage(withPermitsPagedQuery(withLoader((props) => {
     return (
         <>
