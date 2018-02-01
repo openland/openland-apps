@@ -2,10 +2,8 @@ import * as React from 'react';
 import { withOrganizationAddMutation, withOrganizations } from '../../../api';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
-import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
-import { XCloudImage } from '../../../components/X/XCloudImage';
-import { XLink } from '../../../components/X/XLink';
-import { Links } from '../../../Links';
+import { InfiniteListContainer } from '../../../components/withInfiniteList';
+import { OrganizationsListCard } from '../../../components/ListCard';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch
@@ -105,7 +103,7 @@ export default withAreaPage(withOrganizations(withLoader((props) => {
                         if (project !== null) {
                             featured = {
                                 title: project.name,
-                                url: Links.area('sf').project(project.slug).view,
+                                url: project.slug,
                                 picture: project.preview
                             };
                         }
@@ -113,66 +111,17 @@ export default withAreaPage(withOrganizations(withLoader((props) => {
                         let projectsLenght: number = item.constructorIn!!.length + item.developerIn!!.length
 
                         return (
-                            <XInfiniteListItem key={item.id}>
-                                <div className="x-card-test with-image">
-                                    <div className="x-card-photo">
-                                        {item.logo && (<XLink path={Links.area('sf').org(item.slug).view}>
-                                            <XCloudImage src={item.logo} maxWidth={140} maxHeight={140} />
-                                        </XLink>)}
-                                        {!item.logo && (<XLink path={Links.area('sf').org(item.slug).view} className="no-photo" />)}
-                                    </div>
-                                    <div className="x-card-box">
-                                        <div className="x-card-row top">
-                                            <div className="x-card-title">
-                                                <div className="title">
-                                                    <XLink path={Links.area('sf').org(item.slug).view}>
-                                                        {item.title}
-                                                    </XLink>
-                                                </div>
-                                                <div className="text">{subtitle}</div>
-                                            </div>
-                                            {item.url && (
-                                                <div className="x-card-link">
-                                                    <a className="x-card-btn" href={item.url} target="_blank">
-                                                        <i className="icon-share" />
-                                                    </a>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="x-card-row bottom">
-                                            {(projectsLenght !== undefined) && ((projectsLenght > 0) && (
-                                                    <div className="x-card-count">
-                                                        <div className="title">{projectsLenght}</div>
-                                                        <div className="text">recent projects</div>
-                                                    </div>
-                                                ))
-                                            }
-                                            {featured && (
-                                                <XLink
-                                                    className={'x-card-project' + (featured.picture ? ' with-photo' : '')}
-                                                    path={featured.url}
-                                                >
-                                                    {featured.picture && (
-                                                        <div className="project-img">
-                                                            <img src={featured.picture.retina} alt="" />
-                                                        </div>
-                                                    )}
-                                                    <div className="x-card-count">
-                                                        <div className="title">{featured.title}</div>
-                                                        <div className="text">featured project</div>
-                                                    </div>
-                                                </XLink>
-                                            )}
-                                            <XLink
-                                                className="x-card-details"
-                                                path={Links.area('sf').org(item.slug).view}
-                                            >
-                                                <span>View profile</span>
-                                            </XLink>
-                                        </div>
-                                    </div>
-                                </div>
-                            </XInfiniteListItem>
+                            <OrganizationsListCard
+                                key={item.id}
+                                id={item.id}
+                                slug={item.slug}
+                                title={item.title}
+                                subtitle={subtitle}
+                                projects={projectsLenght}
+                                logo={item.logo}
+                                featuredProject={featured}
+                                url={item.url}
+                            />
                         )
                     })}
                 </InfiniteListContainer>

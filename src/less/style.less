@@ -2987,7 +2987,7 @@ body {
 
 			.x-card-title {
 				.title {
-					&.is-checked:after {
+					&.is-checked span:after {
 						background: @orange-1;
 						color: @white;
 						text-align: center;
@@ -3128,6 +3128,20 @@ body {
 						.font (11px, 16px, 500);
 					}
 				}
+
+				&.static-width {
+					width: 120px;
+
+					&.small {
+						width: 60px;
+					}
+
+					.title {
+						overflow: hidden;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+					}
+				}
 			}
 
 			.x-card-project {
@@ -3153,6 +3167,16 @@ body {
 						display: block;
 						height: 100%;
 						object-fit: contain;
+					}
+				}
+
+				.x-card-count {
+					max-width: 240px;
+
+					.title {
+						overflow: hidden;
+						white-space: nowrap;
+						text-overflow: ellipsis;
 					}
 				}
 			}

@@ -1,241 +1,177 @@
 import * as React from 'react';
-import { ListCardProps } from './List';
-import { formatDuration } from '../utils/date';
-import { PermitStatus } from './PermitStatus';
-import { InfiniteListContainer, XInfiniteListItem } from './withInfiniteList';
-import { DataListCard, DataListCardItem } from './DataListCard';
-import { XCard } from './X/XCard';
+import { ListCardContainer } from './ListCardComponents';
+import { ListCardImageBox } from './ListCardComponents';
+import { ListCardBox } from './ListCardComponents';
+import { ListCardRow } from './ListCardComponents';
+import { ListCardMainTitle } from './ListCardComponents';
+import { ListCardMainLink } from './ListCardComponents';
+import { ListCardCount } from './ListCardComponents';
+import { ListCardDetails } from './ListCardComponents';
+
+import { XCloudImage } from './X/XCloudImage';
 import { XLink } from './X/XLink';
 import { XCounter } from './X/XCounter';
-import { XCloudImage } from './X/XCloudImage';
-import { XEnumeration } from './X/XEnumerations';
-import { PermitType } from './PermitType';
+
 import { Links } from '../Links';
+import { formatDuration } from '../utils/date';
+import { PermitShortFragment } from '../api/Types';
+import { PermitStatusTest } from './PermitStatus';
+import { PermitType } from './PermitType';
 
-export class ListCard extends React.Component<ListCardProps, { cardData?: any; cardType?: string }> {
-    constructor(props: ListCardProps) {
-        super(props);
-    }
+export interface OrganizationListCardProps {
+    id: string;
+    slug: string;
+    title: string;
+    subtitle?: string;
+    projects: number;
+    logo?: string;
+    profile?: string;
+    featuredProject?: {
+        title: string,
+        url: string,
+        picture?: { url: string; retina: string; }
+    };
+    url?: string;
+}
 
-    render() {
+export function OrganizationsListCard(props: OrganizationListCardProps) {
+    return (
+        <ListCardContainer key={props.id} withImage={true}>
+            {props.logo && (
+                <ListCardImageBox path={Links.area('sf').org(props.slug).view} noPhoto={true} >
+                    <XCloudImage src={props.logo} maxWidth={140} maxHeight={140} />
+                </ListCardImageBox>
+            )}
+            {!props.logo && (
+                <ListCardImageBox path={Links.area('sf').org(props.slug).view} />
+            )}
+            <ListCardBox>
+                <ListCardRow className={'top'}>
+                    <ListCardMainTitle
+                        link={Links.area('sf').org(props.slug).view}
+                        title={props.title}
+                        subtitle={props.subtitle}
+                    />
+                    {props.url && (
+                        <ListCardMainLink
+                            link={props.url}
+                        />
+                    )}
+                </ListCardRow>
+                <ListCardRow className={'bottom'}>
+                    {(props.projects || props.projects > 0) && (
+                        <ListCardCount title={props.projects} subtitle={'recent projects'}/>
+                    )}
+                    {props.featuredProject && (
+                        <XLink
+                            className={'x-card-project' + (props.featuredProject.picture ? ' with-photo' : '')}
+                            path={Links.area('sf').project(props.featuredProject.url).view}
+                        >
+                            {props.featuredProject.picture && (
+                                <div className="project-img">
+                                    <img src={props.featuredProject.picture.retina} alt="" />
+                                </div>
+                            )}
+                            <ListCardCount title={props.featuredProject.title} subtitle={'featured project'}/>
+                        </XLink>
+                    )}
+                    <ListCardDetails path={Links.area('sf').org(props.slug).view} title={'View profile'}/>
+                </ListCardRow>
+            </ListCardBox>
+        </ListCardContainer>
+    )
+}
 
-        if (this.props.cardType === 'permits') {
-            return (
-                <InfiniteListContainer>
-                    {
-                        this.props.cardData.map((item: any) => (
-                            <XInfiniteListItem key={item.id}>
-                                <XCard>
-                                    <div className="x-permit">
-                                        <div className="x-permit--in">
-                                            <XLink path={Links.area('sf').permit(item.id).view} className="x-permit--id">
-                                                {item.id}
-                                            </XLink>
+export interface ProjectsListCardProps {
+    id: string;
+    title: string;
+    newUnits?: number;
+    subtitle?: string;
+    endYear: string;
+    picture: {
+        url: string,
+        retina: string
+    };
+    verified?: boolean;
+    url?: string;
+    location?: { latitude: number, longitude: number };
+    slug?: string;
+}
 
-                                            <div className="x-permit--keys">
-                                                {item.streetNumbers!!.length > 0 && (
-                                                    <div className="x-permcard--key">
-                                                        <span>
-                                                            {item.streetNumbers!![0].streetNumber + (item.streetNumbers!![0].streetNumberSuffix ? item.streetNumbers!![0].streetNumberSuffix!! : '') +
-                                                                ' ' + item.streetNumbers!![0].streetName + (item.streetNumbers!![0].streetNameSuffix ? ' ' + item.streetNumbers!![0].streetNameSuffix : '')}
-                                                        </span>
-                                                        Address
-                                                    </div>
-                                                )}
+export function ProjectsListCard(props: ProjectsListCardProps) {
+    return (
+        <ListCardContainer key={props.id} withImage={true} className={'wide-image'}>
+            <ListCardImageBox path={props.picture.url}>
+                <img src={props.picture.retina} alt="" />
+            </ListCardImageBox>
+            <ListCardBox>
+                <ListCardRow className={'top'}>
+                    <ListCardMainTitle
+                        link={Links.area('sf').project(props.slug!!).view}
+                        title={props.title}
+                        titleAdditionallyClass={props.verified ? ' is-checked' : ''}
+                        subtitle={props.subtitle ? props.subtitle : undefined}
+                    />
+                    {props.url && (
+                        <ListCardMainLink
+                            link={props.url}
+                        />
+                    )}
+                </ListCardRow>
+                <ListCardRow className={'bottom'}>
+                    <ListCardCount title={props.newUnits} subtitle={'Net new units'}/>
+                    <ListCardCount title={props.endYear} subtitle={'Expected completion'}/>
+                    <ListCardDetails path={Links.area('sf').project(props.slug!!).view} title={'Show details'}/>
+                </ListCardRow>
+            </ListCardBox>
+        </ListCardContainer>
+    )
+}
 
-                                                {item.proposedUnits && (
-                                                    <div className="x-permcard--key">
-                                                        <span><XCounter value={item.proposedUnits!!} oldValue={item.existingUnits} /></span>
-                                                        Units
-                                                    </div>
-                                                )}
-
-                                                {item.approvalTime != null && (
-                                                    <div className="x-permcard--key">
-                                                        <span>{formatDuration(item.approvalTime)}</span>
-                                                        Approval time
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            <div className="x-permit--wrap">
-                                                {item.status && <PermitStatus status={item.status} date={item.statusUpdatedAt} />}
-                                            </div>
-                                        </div>
-
-                                        <div className="x-permit--box">
-                                            <div className="x-permit--type"><PermitType type={item.type!!} /></div>
-                                            <div className="x-permit--text">{item.description}</div>
-
-                                            <XLink
-                                                path={Links.area('sf').permit(item.id).view}
-                                                className="x-permit--btn"
-                                            >
-                                                <span>View details</span>
-                                            </XLink>
-                                        </div>
-                                    </div>
-                                </XCard>
-                            </XInfiniteListItem>
-                        ))
-                    }
-                </InfiniteListContainer>
-            )
-        }
-
-        if (this.props.cardType === 'organizations') {
-            return (
-                <InfiniteListContainer>
-                    {this.props.cardData.map((item: any) => {
-                        let subtitle = undefined;
-                        if (item.isDeveloper) {
-                            if (item.isConstructor) {
-                                subtitle = 'Developer and Contractor';
-                            } else {
-                                subtitle = 'Developer';
+export function PermitsListCard(props: PermitShortFragment) {
+    return (
+        <ListCardContainer key={props.id}>
+            <ListCardBox>
+                <ListCardRow className={'top'}>
+                    <ListCardMainTitle
+                        link={Links.area('sf').permit(props.id).view}
+                        title={props.id}
+                        larger={true}
+                    />
+                    {props.streetNumbers!!.length > 0 && (
+                        <ListCardCount
+                            title={
+                                props.streetNumbers!![0].streetNumber + (props.streetNumbers!![0].streetNumberSuffix ? props.streetNumbers!![0].streetNumberSuffix!! : '') +
+                                ' ' + props.streetNumbers!![0].streetName + (props.streetNumbers!![0].streetNameSuffix ? ' ' + props.streetNumbers!![0].streetNameSuffix : '')
                             }
-                        } else {
-                            subtitle = 'Contractor';
-                        }
-
-                        let project = null;
-                        if (item.developerIn && item.developerIn.length > 0) {
-                            project = item.developerIn!![0];
-                        } else if (item.constructorIn && item.constructorIn.length > 0) {
-                            project = item.constructorIn!![0];
-                        }
-
-                        let featured = undefined;
-                        if (project !== null) {
-                            featured = {
-                                title: project.name,
-                                url: Links.area('sf').project(project.slug).view,
-                                picture: project.preview
-                            };
-                        }
-
-                        let projectsLenght: number = item.constructorIn!!.length + item.developerIn!!.length
-
-                        return (
-                            <XInfiniteListItem key={item.id}>
-                                <XCard>
-                                    <div className={'x-card--in is-organization' + (item.logo ? '' : ' without-photo')}>
-                                        <XLink path={Links.area('sf').org(item.slug).view}>
-                                            {item.logo && (<div className="x-card--photo">
-                                                <XCloudImage src={item.logo} maxWidth={140} maxHeight={140} />
-                                            </div>)}
-                                            {!item.logo && (<div className="x-card--photo no-photo">{}</div>)}
-                                        </XLink>
-
-                                        <div className="x-card--info">
-                                            <div className="x-card--box">
-                                                <div className="x-card--title" style={{ textColor: '#000000' }}><XLink
-                                                    path={Links.area('sf').org(item.slug).view}>{item.title}</XLink></div>
-                                                {subtitle && (<div className="x-card--text">{subtitle}</div>)}
-                                            </div>
-
-                                            {item.url && (
-                                                <div className="x-card--btns">
-                                                    {item.url && (<a className="x-card--btn" href={item.url} target="_blank"><i
-                                                        className="icon-share">{}</i></a>)}
-                                                    {/* <a className="x-card--btn" href="#"><i className="icon-edit">{}</i></a> */}
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        <div className="x-card--tools">
-                                            {
-                                                (projectsLenght !== undefined) &&
-                                                ((projectsLenght > 0) &&
-                                                    (<div className="x-card--counter">
-                                                        <span>{
-                                                            projectsLenght
-                                                        }
-                                                        </span>recent projects</div>))
-                                            }
-
-                                            {featured && (
-                                                <XLink path={featured.url}
-                                                    className={'x-card--counter is-project' + (featured.picture ? ' with-photo' : '')}>
-                                                    {featured.picture && (
-                                                        <img src={featured.picture.retina} alt="" />)}
-
-                                                    <span>{featured.title}</span>
-                                                    featured project
-                                                </XLink>
-                                            )}
-
-                                            <XLink className="x-card--toggler is-link" path={Links.area('sf').org(item.slug).view}>View profile</XLink>
-                                        </div>
-                                    </div>
-                                </XCard>
-                            </XInfiniteListItem>
-                        )
-                    })}
-                </InfiniteListContainer>
-            )
-        }
-
-        if (this.props.cardType === 'projects') {
-            return (
-                this.props.cardData.map((item: any) => {
-                    let units: number | null = null;
-                    let subtitle: string | null = null;
-                    if (item.proposedUnits !== null && item.existingUnits !== null) {
-                        units = item.proposedUnits!! - item.existingUnits!!;
-                    }
-                    if (item.extrasAddress && (item.extrasAddress.toLowerCase() !== item.name.toLowerCase())) {
-                        subtitle = item.extrasAddress;
-                    }
-
-                    return (
-                        <XInfiniteListItem key={item.id}>
-                            <DataListCard
-                                title={item.name}
-                                newUnits={units}
-                                endYear={item.extrasYearEnd}
-                                subtitle={subtitle}
-                                picture={item.preview}
-                                verified={item.verified}
-                                url={item.extrasUrl}
-                                location={item.extrasLocation}
-                                slug={item.slug}
-                            >
-                                {item.extrasAddressSecondary && (
-                                    <DataListCardItem title="Secondary address">{item.extrasAddressSecondary}</DataListCardItem>
-                                )}
-                                {item.developers!!.length > 0 && (
-                                    <DataListCardItem title="Developers">
-                                        <XEnumeration>
-                                            {item.developers!!.map((d: any) => (
-                                                <XLink path={Links.area('sf').org(d.slug).view}>{d.title}</XLink>
-                                            ))}
-                                        </XEnumeration>
-                                    </DataListCardItem>
-                                )}
-                                {item.constructors!!.length > 0 && (
-                                    <DataListCardItem title="Contractors">
-                                        <XEnumeration>
-                                            {item.constructors!!.map((d: any) => (
-                                                <XLink path={Links.area('sf').org(d.slug).view}>{d.title}</XLink>
-                                            ))}
-                                        </XEnumeration>
-                                    </DataListCardItem>
-                                )}
-
-                                {item.extrasComment && (
-                                    <DataListCardItem title="Comment">{item.extrasComment}</DataListCardItem>
-                                )}
-
-                            </DataListCard>
-                        </XInfiniteListItem>
-                    );
-                })
-            )
-        } else {
-            return (
-                <div>приветик</div>
-            )
-        }
-    }
+                            subtitle={'Address'}
+                            className={'smaller static-width'}
+                        />
+                    )}
+                    {props.proposedUnits && (
+                        <ListCardCount subtitle={'Units'} className={'smaller static-width small'}>
+                            <XCounter value={props.proposedUnits!!} oldValue={props.existingUnits} />
+                        </ListCardCount>
+                    )}
+                    {props.approvalTime != null && (
+                        <ListCardCount subtitle={'Approval time'} className={'smaller static-width'}>
+                            {formatDuration(props.approvalTime)}
+                        </ListCardCount>
+                    )}
+                    {props.status && (
+                        <PermitStatusTest status={props.status} date={props.statusUpdatedAt} />
+                    )}
+                </ListCardRow>
+                <ListCardRow className={'bottom'}>
+                    <div className="x-card-addition">
+                        <span>
+                            <PermitType type={props.type!!} />
+                        </span>
+                    </div>
+                    <div className="x-card-description">{props.description}</div>
+                    <ListCardDetails path={Links.area('sf').permit(props.id).view} title={'View details'}/>
+                </ListCardRow>
+            </ListCardBox>
+        </ListCardContainer>
+    )
 }

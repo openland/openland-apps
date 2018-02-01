@@ -200,7 +200,7 @@ export function PermitStatus(props: { status: string | null, date?: string | nul
     );
 }
 
-export function PermitStatusTest(props: { status: string, date?: string }) {
+export function PermitStatusTest(props: { status?: string | null, date?: string | null }) {
 
     let icon: string = 'question';
 
