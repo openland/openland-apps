@@ -36,7 +36,7 @@ export interface OrganizationListCardProps {
 
 export function OrganizationsListCard(props: OrganizationListCardProps) {
     return (
-        <ListCardContainer key={props.id} withImage={true}>
+        <ListCardContainer withImage={true}>
             {props.logo && (
                 <ListCardImageBox path={Links.area('sf').org(props.slug).view} noPhoto={true} >
                     <XCloudImage src={props.logo} maxWidth={140} maxHeight={140} />
@@ -100,7 +100,7 @@ export interface ProjectsListCardProps {
 
 export function ProjectsListCard(props: ProjectsListCardProps) {
     return (
-        <ListCardContainer key={props.id} withImage={true} className={'wide-image'}>
+        <ListCardContainer withImage={true} className={'wide-image'}>
             <ListCardImageBox path={props.picture.url}>
                 <img src={props.picture.retina} alt="" />
             </ListCardImageBox>
@@ -130,7 +130,7 @@ export function ProjectsListCard(props: ProjectsListCardProps) {
 
 export function PermitsListCard(props: PermitShortFragment) {
     return (
-        <ListCardContainer key={props.id}>
+        <ListCardContainer>
             <ListCardBox>
                 <ListCardRow className={'top'}>
                     <ListCardMainTitle

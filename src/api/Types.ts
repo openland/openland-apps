@@ -1079,17 +1079,17 @@ export interface OrganizationFullFragment {
 };
 
 export interface PermitShortFragment {
-  __typename?: "Permit",
+  __typename: "Permit",
   id: string,
-  createdAt?: string | null,
+  createdAt: string | null,
   status: PermitStatus | null,
   statusUpdatedAt: string | null,
   type: PermitType | null,
-  typeWood?: boolean | null,
+  typeWood: boolean | null,
   description: string | null,
   approvalTime: number | null,
   proposedUnits: number | null,
-  existingUnits?: number | null,
+  existingUnits: number | null,
   streetNumbers:  Array< {
     __typename: string,
     streetId: string,

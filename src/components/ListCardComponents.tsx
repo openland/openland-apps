@@ -3,9 +3,9 @@ import { XInfiniteListItem } from './withInfiniteList';
 import { XLink } from './X/XLink';
 import * as classnames from 'classnames';
 
-export function ListCardContainer(props: { children: any; key: string | number; withImage?: boolean; className?: string }) {
+export function ListCardContainer(props: { children: any; withImage?: boolean; className?: string }) {
     return (
-        <XInfiniteListItem key={props.key}>
+        <XInfiniteListItem>
             <div className={classnames('x-card-test', props.withImage ? 'with-image' : '', props.className)}>
                 {props.children}
             </div>

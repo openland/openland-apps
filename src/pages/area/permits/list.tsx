@@ -18,6 +18,7 @@ const PermitsItems = withPagedList<PermitShortFragment>((props) => (
         {props.items.map((item: any) => {
             return (
                 <PermitsListCard
+                    __typename={'Permit'}
                     key={item.id}
                     id={item.id}
                     streetNumbers={item.streetNumbers}
@@ -27,6 +28,10 @@ const PermitsItems = withPagedList<PermitShortFragment>((props) => (
                     statusUpdatedAt={item.statusUpdatedAt}
                     type={item.type}
                     description={item.description}
+                    existingUnits={item.existingUnits}
+
+                    createdAt={null}
+                    typeWood={null}
                 />
             )
         })}
