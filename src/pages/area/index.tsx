@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withLandingPage } from '../../components/withPage';
 import { Intro, IntroTitle, IntroCols, IntroCol, IntroLink, IntroBox, IntroForm } from '../../components/Intro';
-import { withBuildingProjectsStats } from '../../api/BuildingProjects';
 import { Counters, CountersList, CountersItem, CountersCols, CountersText } from '../../components/Landing/Counters';
 import { About, AboutItem } from '../../components/Landing/About';
 import { Footer } from '../../components/Footer';
@@ -11,8 +10,9 @@ import { withLoader } from '../../components/withLoader';
 import { XBarChart } from '../../components/X/XBarChart';
 import { XHead } from '../../components/X/XHead';
 import { Links, ExternalLinks } from '../../Links';
+import { withAreaStats } from '../../api/AreaStats';
 
-export default withLandingPage(withBuildingProjectsStats(withLoader((props) => {
+export default withLandingPage(withAreaStats(withLoader((props) => {
 
     let fastest = props.data.area.stats.fastestApprovalProject!!;
     let slowest = props.data.area.stats.slowestApprovalProject!!;

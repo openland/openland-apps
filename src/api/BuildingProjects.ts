@@ -5,92 +5,6 @@ import { Organization } from './Organizations';
 import { Picture } from './Picture';
 import { Geo } from './Geo';
 import { Permit } from './Permits';
-import { Chart } from './Chart';
-
-const BuildingProjectsStatsQuery = gql`
-    query buildingProjectStats($areaId: String!) {
-        area(slug: $areaId) {
-            id
-            slug
-            stats {
-                totalProjects
-                totalProjectsVerified
-                totalDevelopers
-                totalConstructors
-                totalOrganizations
-                totalPermits
-                year2017NewUnits
-                year2017NewUnitsVerified
-                year2018NewUnits
-                year2018NewUnitsVerified
-
-                fastestApprovalProject {
-                    id
-                    slug
-                    name
-                    approvalTime
-                    preview: picture(width: 310, height: 181) {
-                        url
-                        retina
-                    }
-                }
-                slowestApprovalProject {
-                    id
-                    slug
-                    name
-                    approvalTime
-                    preview: picture(width: 310, height: 181) {
-                        url
-                        retina
-                    }
-                }
-            }
-        }
-        permitsUnitsFiledStats: permitsUnitsFiledStats {
-            labels
-            datasets {
-                label
-                values
-            }
-        }
-        permitsUnitsIssuedStats: permitsUnitsIssuedStats {
-            labels
-            datasets {
-                label
-                values
-            }   
-        }
-        permitsUnitsCompletedStats: permitsUnitsCompletedStats {
-            labels
-            datasets {
-                label
-                values
-            }   
-        }
-    }
-`;
-export interface AreaStats {
-    totalProjects: number;
-    totalProjectsVerified: number;
-    totalDevelopers: number;
-    totalConstructors: number;
-    totalPermits: number;
-    totalOrganizations: number;
-    year2017NewUnits: number;
-    year2017NewUnitsVerified: number;
-    year2018NewUnits: number;
-    year2018NewUnitsVerified: number;
-    fastestApprovalProject: BuildingShortProject;
-    slowestApprovalProject: BuildingShortProject;
-}
-
-export interface BuildingShortProject {
-    id: string;
-    slug: string;
-    name: string;
-    preview?: Picture;
-    approvalTime: number;
-}
 
 export interface BuildingProject {
     id: string;
@@ -270,11 +184,5 @@ const BuildingProjectsQuery = gql`
 export const withBuildingProjectsQuery = graphqlList<BuildingProject, BuildingProjectsQueryStats>(
     BuildingProjectsQuery,
     ['cursor', 'minUnits', { key: 'year', default: '2018' }, 'filter']);
-export const withBuildingProjectsStats = graphqlRouted<{
-    area: { slug: string, stats: AreaStats },
-    permitsUnitsFiledStats: Chart,
-    permitsUnitsIssuedStats: Chart,
-    permitsUnitsCompletedStats: Chart
-}>(BuildingProjectsStatsQuery, []);
 
 export const withBuildingProjectQuery = graphqlRouted<{ project: BuildingProject }>(BuildingProjectQuery, ['projectId']);
