@@ -2,12 +2,10 @@ import * as React from 'react';
 import { withOrganizationsQuery, withOrganizationAddMutation } from '../../../api/Organizations';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
-// import { OrganizationDataListCard } from '../../../components/DataListCard';
 import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
 import { XCloudImage } from '../../../components/X/XCloudImage';
 import { XLink } from '../../../components/X/XLink';
 import { Links } from '../../../Links';
-// import { ListCard } from '../../../components/ListCard';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { BuildingProject } from '../api/BuildingProjects';
 import { XInfiniteListItem } from './withInfiniteList';
 import { DataListCard } from './DataListCard';
+import { ProjectShortFragment } from '../api/queries/Types';
 
-export function ListProjects(props: { projects: BuildingProject[] }) {
+export function ListProjects(props: { projects: ProjectShortFragment[] }) {
     return (
         <>
             {props.projects.map(p => {

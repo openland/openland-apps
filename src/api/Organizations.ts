@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import { graphqlRouted } from '../utils/graphqlRouted';
 import { MutationFunc } from 'react-apollo';
 import { graphqlCompose3 } from '../utils/graphqlCompose';
-import { BuildingProject } from './BuildingProjects';
+import * as Types from './queries/Types';
 import { graphqlMutation } from '../utils/graphqlMutation';
 
 export interface Organization {
@@ -10,7 +10,7 @@ export interface Organization {
     slug: string;
     title: string;
     comments?: string;
-    logo?: string;
+    logo: string | null;
     cover?: string,
     url?: string;
     city?: string;
@@ -18,11 +18,11 @@ export interface Organization {
     twitter?: string;
     linkedin?: string;
     facebook?: string;
-    isDeveloper?: boolean;
-    isConstructor?: boolean;
+    isDeveloper: boolean;
+    isConstructor: boolean;
     description?: string;
-    developerIn?: BuildingProject[];
-    constructorIn?: BuildingProject[];
+    developerIn?: Types.ProjectShortFragment[];
+    constructorIn?: Types.ProjectShortFragment[];
     partners: Organization[];
 }
 

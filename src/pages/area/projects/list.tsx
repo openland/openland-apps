@@ -1,25 +1,21 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
-import { withBuildingProjectsQuery, BuildingProject } from '../../../api/BuildingProjects';
+import { withBuildingProjectsQuery } from '../../../api/Projects';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch, DataListContentStats
 } from '../../../components/DataList';
 import { withInfiniteList } from '../../../components/withInfiniteList';
-// import { ListCard } from '../../../components/ListCard';
-// import { DataListCard, DataListCardItem } from '../../../components/DataListCard';
 import { DataListInvite } from '../../../components/DataListInvite';
-
 import { Links } from '../../../Links';
 import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
 import { XLink } from '../../../components/X/XLink';
-
-// import { XEnumeration } from '../../../components/X/XEnumerations';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { withAreaPage } from '../../../components/withAreaPage';
+import { ProjectShortFragment } from '../../../api/queries/Types';
 
-export const PipelineItems = withInfiniteList<BuildingProject>(items => (
+export const PipelineItems = withInfiniteList<ProjectShortFragment>(items => (
     <InfiniteListContainer>
         {items.map((item: any) => {
             let units: number | undefined = undefined;
@@ -36,7 +32,7 @@ export const PipelineItems = withInfiniteList<BuildingProject>(items => (
                     <div className="x-card-test with-image wide-image">
                         <div className="x-card-photo">
                             <XLink>
-                                <img src={item.preview.retina}/>
+                                <img src={item.preview.retina} />
                             </XLink>
                         </div>
                         <div className="x-card-box">

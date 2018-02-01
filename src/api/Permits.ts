@@ -181,7 +181,9 @@ const PermitQuery = gql`
     }
 `;
 
-export const withPermitsQuery = graphqlList<Permit, PermitsStats>(PermitsQuery, ['filter', 'cursor', 'page', 'type', 'sort', 'minUnits', 'issuedYear', 'fromPipeline']);
+export const withPermitsQuery = graphqlList<Permit, PermitsStats>(PermitsQuery, {
+    params: ['filter', 'cursor', 'page', 'type', 'sort', 'minUnits', 'issuedYear', 'fromPipeline']
+});
 
 export const withPermitsPagedQuery = graphqlListPaged<Permit, PermitsStats>(PermitsQuery, ['filter', 'cursor', 'page', 'type', 'sort', 'minUnits', 'issuedYear', 'fromPipeline']);
 

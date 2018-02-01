@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
-import { withBuildingProjectQuery } from '../../../api/BuildingProjects';
+import { withBuildingProjectQuery } from '../../../api/Projects';
 import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
 import { ListOrganizations } from '../../../components/ListOrganizations';

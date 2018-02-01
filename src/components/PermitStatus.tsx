@@ -30,7 +30,7 @@ import { XDate } from './X/XDate';
 // suspended
 // withdrawn
 
-export function PermitStatus(props: { status: string, date?: string }) {
+export function PermitStatus(props: { status: string, date: string | null }) {
 
     var icon: string = 'question';
 
@@ -182,20 +182,20 @@ export function PermitStatus(props: { status: string, date?: string }) {
 
     return (
         <>
-            {props.date && (
-                <div className="x-permit--status">
-                    <i className={'icon-' + icon} />
-                    <span><XDate date={props.date} format={'date'} /></span>
-                    {text}
-                </div>
-            )}
+        {props.date && (
+            <div className="x-permit--status">
+                <i className={'icon-' + icon} />
+                <span><XDate date={props.date} format={'date'} /></span>
+                {text}
+            </div>
+        )}
 
-            {!props.date && (
-                <div className="x-permit--status no-date">
-                    <i className={'icon-' + icon} />
-                    {text}
-                </div>
-            )}
+        {!props.date && (
+            <div className="x-permit--status no-date">
+                <i className={'icon-' + icon} />
+                {text}
+            </div>
+        )}
         </>
     );
 }

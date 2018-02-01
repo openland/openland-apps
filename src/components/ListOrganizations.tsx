@@ -1,11 +1,17 @@
 import * as React from 'react';
-import { Organization } from '../api/Organizations';
 import { XWrapBody } from './X/XWrap';
 import { XLink } from './X/XLink';
 import { XCloudImage } from './X/XCloudImage';
 import { Links } from '../Links';
 
-export function ListOrganizations(props: { developers: Organization[] }) {
+export function ListOrganizations(props: {
+    developers: {
+        id: string, slug: string,
+        title: string,
+        logo: string | null,
+        isDeveloper: boolean, isConstructor: boolean
+    }[]
+}) {
     return (
         <XWrapBody>
             {props.developers.map(p => {

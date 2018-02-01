@@ -9,14 +9,14 @@ import { XCloudImage } from '../../../components/X/XCloudImage';
 import { XLink } from '../../../components/X/XLink';
 import { XWrap } from '../../../components/X/XWrap';
 import { XRow } from '../../../components/X/XRow';
-import { BuildingProject } from '../../../api/BuildingProjects';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
 import { Links } from '../../../Links';
 import { withAreaPage } from '../../../components/withAreaPage';
+import { ProjectShortFragment } from '../../../api/queries/Types';
 
 export default withAreaPage(withOrganizationQuery(withLoader((props) => {
-    let projects: BuildingProject[] = [];
+    let projects: ProjectShortFragment[] = [];
     for (let p of props.data.organization.developerIn!!) {
         if (!projects.find((v) => v.id === p.id)) {
             projects.push(p);

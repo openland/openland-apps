@@ -36,7 +36,17 @@ export type GraphQLListComponentProps<TResult, TExtras> = GraphQLRoutedComponent
 
 export type GraphQLListComponentPagedProps<TResult, TExtras> = GraphQLRoutedComponentProps<ListPagedQueryResponse<TResult, TExtras>>;
 
-export function graphqlList<TResult, TExtras = {}>(document: DocumentNode, params: ({ key: string, default?: string } | string)[] = []) {
+export type GraphQLParamDescription = ({ key: string, default?: string } | string);
+
+export interface GraphQLListConfig {
+    params?: GraphQLParamDescription[];
+}
+
+export function graphqlList<TResult, TExtras = {}>(document: DocumentNode, config?: GraphQLListConfig) {
+    let params: GraphQLParamDescription[] = [];
+    if (config && config.params) {
+        params = config.params;
+    }
     return function (component: React.ComponentType<GraphQLListComponentProps<TResult, TExtras>>): React.ComponentType<{}> {
         let qlWrapper = graphql<ListQueryResponse<TResult, TExtras>, { router: RouterState }, GraphQLListComponentProps<TResult, TExtras>>(document, {
             options: (props: { router: RouterState }) => {

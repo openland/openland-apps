@@ -179,9 +179,9 @@ export class ListCard extends React.Component<ListCardProps, { cardData?: any; c
         if (this.props.cardType === 'projects') {
             return (
                 this.props.cardData.map((item: any) => {
-                    let units: number | undefined = undefined;
-                    let subtitle: string | undefined = undefined;
-                    if (item.proposedUnits !== undefined && item.existingUnits !== undefined) {
+                    let units: number | null = null;
+                    let subtitle: string | null = null;
+                    if (item.proposedUnits !== null && item.existingUnits !== null) {
                         units = item.proposedUnits!! - item.existingUnits!!;
                     }
                     if (item.extrasAddress && (item.extrasAddress.toLowerCase() !== item.name.toLowerCase())) {

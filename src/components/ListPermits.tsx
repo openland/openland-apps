@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Permit } from '../api/Permits';
 import { XLink } from './X/XLink';
 import { PermitStatus } from './PermitStatus';
 import { formatDuration } from '../utils/date';
@@ -8,8 +7,9 @@ import { XCounter } from './X/XCounter';
 import { PermitType } from './PermitType';
 import { XCard } from './X/XCard';
 import { Links } from '../Links';
+import { PermitShortFragment } from '../api/queries/Types';
 
-export function ListPermits(props: { permits: Permit[]; hideCounter?: boolean }) {
+export function ListPermits(props: { permits: PermitShortFragment[]; hideCounter?: boolean }) {
     return (
         <InfiniteListContainer>
             {props.permits.map((item) => (

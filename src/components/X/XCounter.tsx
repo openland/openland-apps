@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export function XCounter(props: { value: number, oldValue?: number }) {
+export function XCounter(props: { value: number, oldValue: number | null | undefined }) {
     if (props.oldValue) {
         if (props.oldValue < props.value) {
             return <span>{props.value} <span style={{ color: 'green' }}>(+{props.value - props.oldValue})</span></span>;

@@ -10,12 +10,12 @@ function makeLocationUrl(location: { latitude: number, longitude: number }) {
 
 export interface ListCardProps {
     title: string;
-    newUnits?: number;
-    subtitle?: string;
-    endYear?: string;
-    picture?: { url: string, retina: string };
+    newUnits: number | null;
+    subtitle?: string | null;
+    endYear: string | null;
+    picture?: { url: string, retina: string } | null;
     verified?: boolean;
-    url?: string;
+    url?: string | null;
     location?: { latitude: number, longitude: number };
     slug?: string;
 }
