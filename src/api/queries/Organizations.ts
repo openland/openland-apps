@@ -21,8 +21,6 @@ export const OrganizationShort = gql`
     ${ProjectShort}
 `;
 
-console.warn(OrganizationShort);
-
 export const OrganizationFull = gql`
     fragment OrganizationFull on Organization {
         id
