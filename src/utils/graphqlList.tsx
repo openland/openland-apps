@@ -17,7 +17,7 @@ export type ListQueryData<T> = NotNullableDataProps<ListQueryResponse<T, {}>>;
 export type ListQueryPagedData<T> = NotNullableDataProps<ListPagedQueryResponse<T, {}>>;
 
 export interface ListQueryConnection<T> {
-    edges: [ListQueryEdge<T>];
+    edges: ListQueryEdge<T>[];
     pageInfo: {
         hasNextPage: boolean;
         itemsCount: number;

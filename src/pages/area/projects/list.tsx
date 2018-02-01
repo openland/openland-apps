@@ -1,11 +1,10 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
-import { withBuildingProjectsQuery } from '../../../api/Projects';
+import { withBuildingProjectsPagedQuery } from '../../../api/Projects';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch, DataListContentStats
 } from '../../../components/DataList';
-import { withInfiniteList } from '../../../components/withInfiniteList';
 import { DataListInvite } from '../../../components/DataListInvite';
 import { Links } from '../../../Links';
 import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
@@ -14,10 +13,11 @@ import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { withAreaPage } from '../../../components/withAreaPage';
 import { ProjectShortFragment } from '../../../api/queries/Types';
+import { withPagedList } from '../../../components/withPagedList';
 
-export const PipelineItems = withInfiniteList<ProjectShortFragment>(items => (
+const PipelineItems = withPagedList<ProjectShortFragment>((props) => (
     <InfiniteListContainer>
-        {items.map((item: any) => {
+        {props.items.map((item: any) => {
             let units: number | undefined = undefined;
             let subtitle: string | undefined = undefined;
             if (item.proposedUnits !== undefined && item.existingUnits !== undefined) {
@@ -77,7 +77,7 @@ export const PipelineItems = withInfiniteList<ProjectShortFragment>(items => (
     </InfiniteListContainer>
 ));
 
-export default withAreaPage(withBuildingProjectsQuery(withLoader((props) => {
+export default withAreaPage(withBuildingProjectsPagedQuery(withLoader((props) => {
 
     return (
         <>
@@ -104,7 +104,7 @@ export default withAreaPage(withBuildingProjectsQuery(withLoader((props) => {
                     newUnits={props.data.items ? props.data.items.stats.newUnits : 0}
                     newUnitsVerified={props.data.items ? props.data.items.stats.newUnitsVerified : 0}
                 />
-                <PipelineItems data={props.data} />
+                {props.data.items && (<PipelineItems data={props.data} />)}
             </DataListContent>
         </DataList>
         </>

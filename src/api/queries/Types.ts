@@ -168,7 +168,7 @@ export interface PermitsConnectionQuery {
       pagesCount: number,
       openEnded: boolean,
     },
-  } | null,
+  },
 };
 
 export interface ProjectQueryVariables {
@@ -255,6 +255,7 @@ export interface ProjectQuery {
 export interface ProjectsConnectionQueryVariables {
   areaId: string,
   cursor?: string | null,
+  page?: number | null,
   minUnits?: number | null,
   year?: string | null,
   filter?: string | null,

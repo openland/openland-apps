@@ -86,8 +86,8 @@ export const ProjectQuery = gql`
 `;
 
 export const ProjectsConnection = gql`
-    query ProjectsConnection($areaId: String!, $cursor: String, $minUnits: Int, $year: String, $filter: String) {
-        items: projects(area: $areaId, first: 50, minUnits: $minUnits, year: $year, filter: $filter, after: $cursor) {
+    query ProjectsConnection($areaId: String!, $cursor: String, $page: Int, $minUnits: Int, $year: String, $filter: String) {
+        items: projects(area: $areaId, first: 50, minUnits: $minUnits, year: $year, filter: $filter, after: $cursor, page: $page) {
             edges {
                 node {
                     ...ProjectShort
