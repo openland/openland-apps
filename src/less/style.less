@@ -2903,8 +2903,9 @@ body {
 
 .x-card-test {
 	display: flex;
-	background-color: #fff;
-	border: 1px solid rgba(38, 38, 38, 0.08);
+	background-color: @white;
+	border: 1px solid fade(@text-sf, 8);
+	border-radius: 4px;
 
 	&.with-image {
 
@@ -2942,7 +2943,7 @@ body {
 	}
 
 	.x-card-photo {
-		height: 164px;
+		max-height: 164px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -2977,135 +2978,205 @@ body {
 			&.top {
 				height: 82px;
 				border-bottom: 1px solid fade(@text-sf, 8);
+			}
 
-				.x-card-title {
-					.title {
+			&.bottom {
+				height: calc(~'100% - 82px');
+				min-height: 80px;
+			}
 
-						&.is-checked:after {
-							background: @orange-1;
-							color: @white;
-							text-align: center;
-							border-radius: 2px;
-							margin: 2px 0 0 10px;
+			.x-card-title {
+				.title {
+					&.is-checked:after {
+						background: @orange-1;
+						color: @white;
+						text-align: center;
+						border-radius: 2px;
+						margin: 2px 0 0 10px;
 
-							.display (inline-block);
-							.size (16px, 16px);
-							.icon ('\e915');
-							.font (7px, 16px);
-						}
-
-						a {
-							color: inherit;
-							.font (18px, 20px, 500);
-
-							&:hover {
-								color: @purple-1;
-							}
-						}
+						.display (inline-block);
+						.size (16px, 16px);
+						.icon ('\e915');
+						.font (7px, 16px);
 					}
 
-					.text {
-						margin-top: 4px;
-						text-transform: uppercase;
-						letter-spacing: 0.6px;
-						color: fade(@text-sf, 60);
-						.font (11px, 16px, 500);
+					a {
+						color: inherit;
+						.font (18px, 20px, 500);
+
+						&:hover {
+							color: @purple-1;
+						}
+
+						span {
+							display: block;
+						}
 					}
 				}
 
-				.x-card-link {
-					margin-left: auto;
+				.text {
+					margin-top: 4px;
+					text-transform: uppercase;
+					letter-spacing: 0.6px;
+					color: fade(@text-sf, 60);
+					.font (11px, 16px, 500);
+				}
+
+				&.larger {
 					height: 100%;
+					margin-right: 32px;
 
-					.x-card-btn {
-						text-decoration: none;
-						padding-right: 17px;
-						color: #6B50FF !important;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						.size(72px, 100%);
+					.title {
+						height: 100%;
+						border-right: 1px solid fade(@text-sf, 8);
 
-						&:hover {
-							opacity: 0.7;
-						}
-
-						i {
-							display: block;
-							font-size: 20px;
+						a {
+							display: flex;
+							align-items: center;
+							padding-left: 32px;
+							.size(224px, 100%);
+							.font (22px, 20px, 500);
 						}
 					}
 				}
 			}
 
-			&.bottom {
-				height: calc(~'100% - 82px');
+			.x-card-link {
+				margin-left: auto;
+				height: 100%;
 
-				.x-card-count {
-					margin-right: 40px;
-
-					.title {
-						margin-bottom: 2px;
-						letter-spacing: 0;
-						color: @text-sf;
-						display: block;
-						.font (18px, 20px, 500);
-					}
-
-					.text {
-						text-transform: uppercase;
-						letter-spacing: 0.6px;
-						color: fade(@text-sf, 60)!important;
-						.font (11px, 16px, 500);
-					}
-				}
-
-				.x-card-project {
-					display: flex;
-					align-items: center;
-
-					&:hover {
-						.x-card-count {
-							.title {
-								color: @purple-1;
-							}
-						}
-					}
-
-					.project-img {
-						width: 85px;
-						height: 58px;
-						overflow: hidden;
-						margin-right: 15px;
-
-						img {
-							display: block;
-							height: 100%;
-							object-fit: contain;
-						}
-					}
-				}
-
-				.x-card-details {
-					margin-left: auto;
-					text-align: center;
+				.x-card-btn {
+					text-decoration: none;
+					padding-right: 17px;
+					color: @purple-1 !important;
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					border-left: 1px solid fade(@text-sf, 8);
-					.size (160px, 100%);
+					.size(72px, 100%);
 
 					&:hover {
-						background: fade(@text-sf, 1);
+						opacity: 0.7;
 					}
 
-					span {
+					i {
 						display: block;
-						color: @purple-1!important;
-						text-transform: uppercase;
-						letter-spacing: 0.6px;
-						.font (11px, 20px, 500);
+						font-size: 20px;
 					}
+				}
+			}
+
+			.x-card-date {
+				margin-left: auto;
+				display: flex;
+				align-items: center;
+
+				.x-card-count {
+					margin-left: 22px;
+				}
+
+				i {
+					color: fade(@side, 60);
+					.display (block);
+					.font (20px, 34px);
+				}
+			}
+
+			.x-card-addition {
+				flex: 0 0 224px;
+				margin-right: 32px;
+				display: block;
+				align-items: center;
+				color: fade(@text-sf, 60);
+				padding-left: 32px;
+				.font (16px, 24px);
+
+				span {
+					display: block;
+				}
+			}
+
+			.x-card-description {
+				padding-right: 25px;
+				margin: 15px 0;
+				.font (16px, 24px);
+			}
+
+			.x-card-count {
+				margin-right: 40px;
+
+				.title {
+					margin-bottom: 2px;
+					letter-spacing: 0;
+					color: @text-sf;
+					display: block;
+					.font (18px, 20px, 500);
+				}
+
+				.text {
+					text-transform: uppercase;
+					letter-spacing: 0.6px;
+					color: fade(@text-sf, 60)!important;
+					.font (11px, 16px, 500);
+				}
+
+				&.smaller {
+					.title {
+						.font (14px, 20px, 700);
+					}
+
+					.text {
+						.font (11px, 16px, 500);
+					}
+				}
+			}
+
+			.x-card-project {
+				display: flex;
+				align-items: center;
+				margin: 10px 0;
+
+				&:hover {
+					.x-card-count {
+						.title {
+							color: @purple-1;
+						}
+					}
+				}
+
+				.project-img {
+					width: 85px;
+					height: 58px;
+					overflow: hidden;
+					margin-right: 15px;
+
+					img {
+						display: block;
+						height: 100%;
+						object-fit: contain;
+					}
+				}
+			}
+
+			.x-card-details {
+				height: 100%;
+				margin-left: auto;
+				text-align: center;
+				display: flex;
+				flex: 0 0 160px;
+				align-items: center;
+				justify-content: center;
+				border-left: 1px solid fade(@text-sf, 8);
+
+				&:hover {
+					background: fade(@text-sf, 1);
+				}
+
+				span {
+					display: block;
+					color: @purple-1!important;
+					text-transform: uppercase;
+					letter-spacing: 0.6px;
+					.font (11px, 20px, 500);
 				}
 			}
 		}
@@ -3508,6 +3579,7 @@ body {
 		}
 
 		i {
+			color: fade(@text-sf, 60);
 			.display (block);
 			.position-tl (absolute, 0, 0);
 			.font (20px, 34px);
