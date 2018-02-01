@@ -1,23 +1,20 @@
 import gql from 'graphql-tag';
 import { PermitShort } from './Permits';
-export const ProjectShort = gql`
-    fragment ProjectShort on BuildingProject {
+import { OrganizationShort } from './Organizations';
+import { GeoShort } from './Geo';
+import { ProjectShort as PS } from './ProjectShort';
+
+export const ProjectShort = PS;
+export const ProjectPreview = gql`
+    fragment ProjectPreview on BuildingProject {
         id
         slug
         name
-        description
-        status
-        extrasYearEnd
-        extrasAddress
-        extrasAddressSecondary
-        existingUnits
-        proposedUnits
-        verified
-        extrasUrl
-        preview: picture(width: 224, height: 164) {
+        approvalTime
+        preview: picture(width: 310, height: 181) {
             url
             retina
-        }   
+        }
     }
 `;
 
@@ -50,30 +47,21 @@ export const ProjectFull = gql`
         extrasComment
         extrasUrl
         extrasLocation {
-            latitude
-            longitude
+            ...GeoShort
         }
         developers {
-            id
-            slug
-            title
-            logo
-            isDeveloper
-            isConstructor
+            ...OrganizationShort
         }
         constructors {
-            id
-            slug
-            title
-            logo
-            isDeveloper
-            isConstructor
+            ...OrganizationShort
         }
         permits {
             ...PermitShort
         }
     }
     ${PermitShort}
+    ${OrganizationShort}
+    ${GeoShort}
 `;
 
 export const ProjectQuery = gql`

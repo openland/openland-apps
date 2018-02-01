@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XInfiniteListItem } from './withInfiniteList';
 import { DataListCard } from './DataListCard';
-import { ProjectShortFragment } from '../api/queries/Types';
+import { ProjectShortFragment } from '../api/Types';
 
 export function ListProjects(props: { projects: ProjectShortFragment[] }) {
     return (

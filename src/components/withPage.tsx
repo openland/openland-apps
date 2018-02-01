@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withAccountQuery } from '../api/Account';
 import { withData } from '../utils/withData';
 import { UserInfoProvider } from '../components/UserInfo';
 import { QueryProps } from 'react-apollo';
@@ -10,6 +9,7 @@ import '../utils/routing';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import '../utils/analytics';
+import { withAreaQuery } from '../api';
 
 //
 // Root Loader. We shouldn't render anything untill page is loaded since we have global progress indicator.
@@ -36,8 +36,8 @@ function withRootLoader<P>(WrappedComponent: React.ComponentType<P>): React.Comp
 //
 
 export function withPage(WrappedComponent: React.ComponentType<{}>) {
-    return withData(withAccountQuery(withRootLoader((props) => (
-        <UserInfoProvider user={props.data.me} account={props.data.account} router={props.router}>
+    return withData(withAreaQuery(withRootLoader((props) => (
+        <UserInfoProvider user={props.data.me} router={props.router}>
             <PageContainer>
                 <Header />
                 <WrappedComponent />
@@ -48,8 +48,8 @@ export function withPage(WrappedComponent: React.ComponentType<{}>) {
 }
 
 export function withPageFullScreen(WrappedComponent: React.ComponentType<{}>) {
-    return withData(withAccountQuery(withRootLoader((props) => (
-        <UserInfoProvider user={props.data.me} account={props.data.account} router={props.router}>
+    return withData(withAreaQuery(withRootLoader((props) => (
+        <UserInfoProvider user={props.data.me} router={props.router}>
             <PageContainer>
                 <Header />
                 <WrappedComponent />
@@ -59,8 +59,8 @@ export function withPageFullScreen(WrappedComponent: React.ComponentType<{}>) {
 }
 
 export function withLandingPage(WrappedComponent: React.ComponentType<{}>) {
-    return withData(withAccountQuery(withRootLoader((props) => (
-        <UserInfoProvider user={props.data.me} account={props.data.account} router={props.router}>
+    return withData(withAreaQuery(withRootLoader((props) => (
+        <UserInfoProvider user={props.data.me} router={props.router}>
             <PageContainer>
                 <WrappedComponent />
             </PageContainer>

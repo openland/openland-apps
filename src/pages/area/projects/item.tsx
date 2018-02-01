@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
-import { withBuildingProjectQuery } from '../../../api/Projects';
 import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
 import { ListOrganizations } from '../../../components/ListOrganizations';
@@ -12,8 +11,9 @@ import { XColumn } from '../../../components/X/XColumn';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
 import { Links } from '../../../Links';
+import { withBuildingProject } from '../../../api';
 
-export default withPage(withBuildingProjectQuery(withLoader((props) => {
+export default withPage(withBuildingProject(withLoader((props) => {
     let map = undefined;
     if (props.data.project.extrasLocation) {
         map = 'https://maps.googleapis.com/maps/api/staticmap?center=' + props.data.project.extrasLocation!!.latitude + ',' + props.data.project.extrasLocation!!.longitude + '&zoom=16&size=500x500&key=AIzaSyAZNqmyhPrPT5gRDMljsEwwyYwDuWIMIZY';

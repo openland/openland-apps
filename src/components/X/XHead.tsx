@@ -2,7 +2,7 @@ import * as React from 'react';
 import Head from 'next/head';
 import { formatPageTitle } from '../../utils/strings';
 import { withRouter } from '../../utils/withRouter';
-export const XHead = withRouter<{ title: string | string[], imgCloud?: string, imgUrl?: string | null }>((props) => {
+export const XHead = withRouter<{ title: string | string[], imgCloud?: string | null, imgUrl?: string | null }>((props) => {
 
     let title = '';
     if (typeof (props.title) === 'string') {

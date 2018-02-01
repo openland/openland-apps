@@ -116,6 +116,6 @@
 		"schema:local": "yarn schema:download:local && yarn schema:generate",
 		"schema:download": "yarn apollo-codegen introspect-schema https://api.statecrafthq.com/api --output schema.json",
 		"schema:download:local": "yarn apollo-codegen introspect-schema http://localhost:9000/api --output schema.json",
-		"schema:generate": "yarn apollo-codegen generate ./src/api/queries/*.ts --schema schema.json --target typescript --output ./src/api/queries/Types.ts --addTypename --tag-name gql"
+		"schema:generate": "yarn apollo-codegen generate ./src/api/queries/*.ts --schema schema.json --target typescript --output ./src/api/Types.ts --addTypename --tag-name gql"
 	}
 }

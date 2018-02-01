@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withOrganizationAlter } from '../../../api/Organizations';
+import { withOrganizationAlter } from '../../../api';
 import { withLoader } from '../../../components/withLoader';
 import { Segment } from 'semantic-ui-react';
 import { XForm, XFormField, XFormFieldCheck, XFormImage, XFormSubmit } from '../../../components/X/XForm';

@@ -11,8 +11,8 @@ function normalizePath(src: string): string {
     return src.endsWith('/') ? src.substring(0, src.length - 1) : src;
 }
 
-const LinkRender = withRouter<{ path?: string, href?: string, anchor?: string, className?: string, children?: any, writeAccess?: boolean }>((props) => {
-    var className = props.className;
+const LinkRender = withRouter<{ path?: string | null, href?: string | null, anchor?: string | null, className?: string | null, children?: any, writeAccess?: boolean | null }>((props) => {
+    var className = props.className ? props.className : undefined;
 
     if (props.path) {
         if (normalizePath(props.router.asPath!!) === normalizePath(props.path)) {
@@ -33,13 +33,13 @@ const LinkRender = withRouter<{ path?: string, href?: string, anchor?: string, c
         );
     } else {
         return (
-            <a href={props.href} className={className} target="_blank">{props.children}</a>
+            <a href={props.href ? props.href : undefined} className={className} target="_blank">{props.children}</a>
         );
     }
 });
 
-export const XLink = withRouter<{ path?: string, href?: string, anchor?: string, query?: { field: string, value?: string }, className?: string, children?: any, writeAccess?: boolean }>(withUserInfo((props) => {
-    if (props.writeAccess !== true || props.account.writeAccess) {
+export const XLink = withRouter<{ path?: string | null, href?: string | null, anchor?: string | null, query?: { field: string, value?: string } | null, className?: string | null, children?: any, writeAccess?: boolean | null }>(withUserInfo((props) => {
+    if (props.writeAccess !== true /*|| props.account.writeAccess*/) {
         if (props.path || props.query) {
             return <LinkRender path={resolveActionPath(props)} className={props.className} children={props.children} />;
         } else {

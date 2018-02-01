@@ -70,26 +70,10 @@ export const PermitFull = gql`
     }
 
     relatedPermits {
-        id
-        createdAt
-        status
-        type
-        typeWood
-        description
-        approvalTime
-        existingUnits
-        proposedUnits
-        statusUpdatedAt
-        filedAt
-        streetNumbers {
-            streetId
-            streetName
-            streetNameSuffix
-            streetNumber
-            streetNumberSuffix
-        }
+        ...PermitShort
     }
   }
+  ${PermitShort}
 `;
 
 export const PermitQuery = gql`

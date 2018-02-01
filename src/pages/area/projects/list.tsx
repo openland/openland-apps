@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
-import { withBuildingProjectsPagedQuery } from '../../../api/Projects';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch, DataListContentStats
@@ -12,8 +11,9 @@ import { XLink } from '../../../components/X/XLink';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { withAreaPage } from '../../../components/withAreaPage';
-import { ProjectShortFragment } from '../../../api/queries/Types';
+import { ProjectShortFragment } from '../../../api/Types';
 import { withPagedList } from '../../../components/withPagedList';
+import { withBuildingProjects } from '../../../api';
 
 const PipelineItems = withPagedList<ProjectShortFragment>((props) => (
     <InfiniteListContainer>
@@ -77,7 +77,7 @@ const PipelineItems = withPagedList<ProjectShortFragment>((props) => (
     </InfiniteListContainer>
 ));
 
-export default withAreaPage(withBuildingProjectsPagedQuery(withLoader((props) => {
+export default withAreaPage(withBuildingProjects(withLoader((props) => {
 
     return (
         <>

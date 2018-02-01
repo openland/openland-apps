@@ -2,12 +2,12 @@ import * as React from 'react';
 import { withPage } from '../../../components/withPage';
 import { XContainer } from '../../../components/X/XContainer';
 import { Header, Segment } from 'semantic-ui-react';
-import { withStatsQuery } from '../../../api/Stats';
 import { XBarChart } from '../../../components/X/XBarChart';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
+import { withInternalStats } from '../../../api';
 
-export default withPage(withStatsQuery(withLoader((props) => {
+export default withPage(withInternalStats(withLoader((props) => {
     return (
         <>
         <XHead title="Statecraft Stats" />

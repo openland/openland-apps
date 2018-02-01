@@ -10,14 +10,14 @@ import { withLoader } from '../../components/withLoader';
 import { XBarChart } from '../../components/X/XBarChart';
 import { XHead } from '../../components/X/XHead';
 import { Links, ExternalLinks } from '../../Links';
-import { withAreaStats } from '../../api/AreaStats';
+import { withAreaStats } from '../../api';
 
 export default withLandingPage(withAreaStats(withLoader((props) => {
 
     let fastest = props.data.area.stats.fastestApprovalProject!!;
     let slowest = props.data.area.stats.slowestApprovalProject!!;
-    let fastestDuration = buildDuration(fastest.approvalTime);
-    let slowestDuration = buildDuration(slowest.approvalTime);
+    let fastestDuration = buildDuration(fastest.approvalTime!!);
+    let slowestDuration = buildDuration(slowest.approvalTime!!);
 
     let links = Links.area(props.data.area.slug);
 
@@ -75,14 +75,20 @@ export default withLandingPage(withAreaStats(withLoader((props) => {
                     text="Statecraft system allows quick research on fastest and slowest approvals in individual categories, filtering permits by period, project size, key dates, and application status." />
             </CountersCols>
             <CountersList>
-                <CountersItem counter={slowestDuration.value} label={slowestDuration.subtitle}
+                <CountersItem
+                    counter={slowestDuration.value}
+                    label={slowestDuration.subtitle}
                     name="The longest approval" photo={slowest.preview}
                     address={slowest.name} path={links.project(slowest.slug).view}
-                    caption="Construction project details" />
-                <CountersItem counter={fastestDuration.value} label={fastestDuration.subtitle}
+                    caption="Construction project details"
+                />
+                <CountersItem
+                    counter={fastestDuration.value}
+                    label={fastestDuration.subtitle}
                     name="The shortest approval" photo={fastest.preview}
                     address={fastest.name} path={links.project(fastest.slug).view}
-                    caption="Construction project details" />
+                    caption="Construction project details"
+                />
                 <CountersItem counter={377} label="days"
                     name="Median approval time" photo={{ url: '/static/img/median-time.png', retina: '/static/img/median-time@2x.png 2x' }}
                     path={links.permits} caption="Browse permits by approval time" />

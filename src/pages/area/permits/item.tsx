@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withPermitQuery } from '../../../api/Permits';
 import { XContainer } from '../../../components/X/XContainer';
 import { XWrap } from '../../../components/X/XWrap';
 import { XRow } from '../../../components/X/XRow';
@@ -16,6 +15,7 @@ import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
 import { withAreaPage } from '../../../components/withAreaPage';
+import { withPermit } from '../../../api';
 
 function ChangeRender(props: {
     change: {
@@ -39,7 +39,7 @@ function ChangeRender(props: {
     }
 }
 
-export default withAreaPage(withPermitQuery(withLoader((props) => {
+export default withAreaPage(withPermit(withLoader((props) => {
     if (props.data.permit === null) {
         return <div />; // Hot Fix
     }

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Chart } from '../../api/Chart';
+import * as Types from '../../api/Types';
 import { ResponsiveContainer, BarChart, CartesianGrid, Bar, Tooltip, XAxis, YAxis } from 'recharts';
 import { canUseDOM } from '../../utils/environment';
 
 let colors = ['#8884d8', '#82ca9d'];
 
-export class XBarChart extends React.Component<{ data: Chart, defaultColor?: string, maxY?: number, minY?: number, stacked?: boolean }> {
+export class XBarChart extends React.Component<{ data: Types.ChartFullFragment, defaultColor?: string, maxY?: number, minY?: number, stacked?: boolean }> {
 
     render() {
         if (!canUseDOM) {

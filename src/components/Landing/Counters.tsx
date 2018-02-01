@@ -4,22 +4,22 @@ import { XContainer } from '../X/XContainer';
 
 export function CountersItem(props: {
     counter: number | string,
-    label?: string,
+    label?: string | null,
     name: string,
-    photo?: { url: string, retina: string },
-    address?: string,
-    path?: string,
-    href?: string,
-    caption?: string
+    photo?: { url: string, retina: string } | null,
+    address?: string | null,
+    path?: string | null,
+    href?: string | null,
+    caption?: string | null
 }) {
     return (
         <div className="col-xs-12 col-sm-4">
             <XLink path={props.path} href={props.href} className="x-counter">
-                {props.photo !== undefined &&
+                {props.photo &&
                     <div className="x-counter--photo">
                         {props.address !== undefined && <div className="x-counter--address">{props.address}</div>}
 
-                        <img src={props.photo.url} srcSet={props.photo.retina}/>
+                        <img src={props.photo.url} srcSet={props.photo.retina} />
                     </div>}
 
                 <div className="x-counter--count">
@@ -59,7 +59,7 @@ export function CountersCols(props: { children: any }) {
     );
 }
 
-export function CountersText(props: {title?: string, text?: string }) {
+export function CountersText(props: { title?: string, text?: string }) {
     return (
         <div className="col-xs-12 col-sm-6">
             <div className="x-counters--stitle">
@@ -72,7 +72,7 @@ export function CountersText(props: {title?: string, text?: string }) {
     );
 }
 
-export function Counters(props: {id?: string, title?: string, children: any }) {
+export function Counters(props: { id?: string, title?: string, children: any }) {
     return (
         <div className="x-counters" id={props.id}>
             <XContainer wide={true}>

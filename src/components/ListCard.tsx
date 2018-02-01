@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ListCardProps } from '../api/List';
+import { ListCardProps } from './List';
 import { formatDuration } from '../utils/date';
 import { PermitStatus } from './PermitStatus';
 import { InfiniteListContainer, XInfiniteListItem } from './withInfiniteList';

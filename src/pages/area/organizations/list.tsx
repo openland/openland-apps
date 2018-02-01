@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withOrganizationsQuery, withOrganizationAddMutation } from '../../../api/Organizations';
+import { withOrganizationAddMutation, withOrganizations } from '../../../api';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
 import { InfiniteListContainer, XInfiniteListItem } from '../../../components/withInfiniteList';
@@ -26,7 +26,7 @@ const AddForm = withOrganizationAddMutation((props) => {
     );
 });
 
-export default withAreaPage(withOrganizationsQuery(withLoader((props) => {
+export default withAreaPage(withOrganizations(withLoader((props) => {
 
     let data = props.data.organizations;
     if (props.router.query!!.type === 'developer') {

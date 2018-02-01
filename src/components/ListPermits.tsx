@@ -7,7 +7,7 @@ import { XCounter } from './X/XCounter';
 import { PermitType } from './PermitType';
 import { XCard } from './X/XCard';
 import { Links } from '../Links';
-import { PermitShortFragment } from '../api/queries/Types';
+import { PermitShortFragment } from '../api/Types';
 
 export function ListPermits(props: { permits: PermitShortFragment[]; hideCounter?: boolean }) {
     return (

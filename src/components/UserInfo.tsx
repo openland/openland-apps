@@ -1,13 +1,14 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Account } from '../api/Account';
-import { User } from '../api/User';
+// import { Account } from '../api/Account';
+// import { User } from '../api/User';
+import * as Types from '../api/Types';
 import { withRouter, RouterState } from '../utils/withRouter';
 
-export class UserInfoProvider extends React.Component<{ user?: User, account: Account, router: RouterState }> implements React.ChildContextProvider<{}> {
+export class UserInfoProvider extends React.Component<{ user?: Types.UserShortFragment | null, router: RouterState }> implements React.ChildContextProvider<{}> {
     static childContextTypes = {
         user: PropTypes.object,
-        account: PropTypes.object.isRequired,
+        // account: PropTypes.object.isRequired,
         isLoggedIn: PropTypes.bool.isRequired,
         doLogin: PropTypes.func.isRequired,
         doLogout: PropTypes.func.isRequired
@@ -29,7 +30,7 @@ export class UserInfoProvider extends React.Component<{ user?: User, account: Ac
     getChildContext() {
         return {
             user: this.props.user,
-            account: this.props.account,
+            // account: this.props.account,
             isLoggedIn: this.props.user !== undefined,
             doLogin: () => {
                 this.props.router.push('/auth/login');
@@ -42,8 +43,8 @@ export class UserInfoProvider extends React.Component<{ user?: User, account: Ac
 }
 
 export interface UserInfoComponentProps {
-    user?: User;
-    account: Account;
+    user?: Types.UserShortFragment;
+    // account: Account;
     isLoggedIn: boolean;
     doLogin: () => void;
     doLogout: () => void;
@@ -59,8 +60,8 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
     };
 
     render() {
-        var user = this.context.user as User | undefined;
-        var account = this.context.account as Account;
+        var user = this.context.user as Types.UserShortFragment | undefined;
+        // var account = this.context.account as Account;
         var isLoggedIn = this.context.isLoggedIn as boolean;
         var doLogin = this.context.doLogin as () => void;
         var doLogout = this.context.doLogout as () => void;
@@ -68,7 +69,7 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
         return (
             <Wrapped
                 user={user}
-                account={account}
+                // account={account}
                 isLoggedIn={isLoggedIn}
                 doLogin={doLogin}
                 doLogout={doLogout}

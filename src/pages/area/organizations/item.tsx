@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withOrganizationQuery } from '../../../api/Organizations';
 import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
@@ -13,9 +12,10 @@ import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
 import { Links } from '../../../Links';
 import { withAreaPage } from '../../../components/withAreaPage';
-import { ProjectShortFragment } from '../../../api/queries/Types';
+import { ProjectShortFragment } from '../../../api/Types';
+import { withOrganization } from '../../../api';
 
-export default withAreaPage(withOrganizationQuery(withLoader((props) => {
+export default withAreaPage(withOrganization(withLoader((props) => {
     let projects: ProjectShortFragment[] = [];
     for (let p of props.data.organization.developerIn!!) {
         if (!projects.find((v) => v.id === p.id)) {

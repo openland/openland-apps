@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Picture } from '../../api/Picture';
+import { Picture } from '../../api';
 
 export function XPicture(props: { picture: Picture | string }) {
     if (typeof (props.picture) === 'string') {

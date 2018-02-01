@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withPermitsPagedQuery } from '../../../api/Permits';
 import { withPage } from '../../../components/withPage';
 import { ListCard } from '../../../components/ListCard';
 import {
@@ -9,10 +8,11 @@ import {
 import { withPagedList } from '../../../components/withPagedList';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
-import { PermitShortFragment } from '../../../api/queries/Types';
+import { PermitShortFragment } from '../../../api/Types';
+import { withPermits } from '../../../api';
 
 const PermitsItems = withPagedList<PermitShortFragment>((props) => <ListCard cardData={props.items} cardType={'permits'} />);
-export default withPage(withPermitsPagedQuery(withLoader((props) => {
+export default withPage(withPermits(withLoader((props) => {
     return (
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Permits']} />
