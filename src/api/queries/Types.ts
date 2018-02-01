@@ -35,6 +35,142 @@ export enum PermitType {
 }
 
 
+export enum PermitSorting {
+  STATUS_CHANGE_TIME = "STATUS_CHANGE_TIME",
+  CREATE_TIME = "CREATE_TIME",
+  COMPLETE_TIME = "COMPLETE_TIME",
+  ISSUED_TIME = "ISSUED_TIME",
+  APPROVAL_TIME_ASC = "APPROVAL_TIME_ASC",
+  APPROVAL_TIME_DESC = "APPROVAL_TIME_DESC",
+}
+
+
+export interface PermitQueryVariables {
+  permitId: string,
+};
+
+export interface PermitQuery {
+  permit:  {
+    __typename: "Permit",
+    id: string,
+    issuedAt: string | null,
+    createdAt: string | null,
+    startedAt: string | null,
+    expiresAt: string | null,
+    expiredAt: string | null,
+    completedAt: string | null,
+    filedAt: string | null,
+    status: PermitStatus | null,
+    statusUpdatedAt: string | null,
+    type: PermitType | null,
+    typeWood: boolean | null,
+    existingStories: number | null,
+    proposedStories: number | null,
+    existingUnits: number | null,
+    proposedUnits: number | null,
+    existingAffordableUnits: number | null,
+    proposedAffordableUnits: number | null,
+    proposedUse: string | null,
+    description: string | null,
+    governmentalUrl: string,
+    approvalTime: number | null,
+    streetNumbers:  Array< {
+      __typename: "StreetNumber",
+      streetId: string,
+      streetName: string,
+      streetNameSuffix: string | null,
+      streetNumber: number,
+      streetNumberSuffix: string | null,
+    } >,
+    events:  Array<( {
+        __typename: "PermitEventStatus",
+        oldStatus: PermitStatus | null,
+        newStatus: PermitStatus | null,
+        date: string | null,
+      } | {
+        __typename: "PermitEventFieldChanged",
+        fieldName: string,
+        oldValue: string | null,
+        newValue: string | null,
+        date: string | null,
+      }
+    ) >,
+    relatedPermits:  Array< {
+      __typename: "Permit",
+      id: string,
+      createdAt: string | null,
+      status: PermitStatus | null,
+      type: PermitType | null,
+      typeWood: boolean | null,
+      description: string | null,
+      approvalTime: number | null,
+      existingUnits: number | null,
+      proposedUnits: number | null,
+      statusUpdatedAt: string | null,
+      filedAt: string | null,
+      streetNumbers:  Array< {
+        __typename: "StreetNumber",
+        streetId: string,
+        streetName: string,
+        streetNameSuffix: string | null,
+        streetNumber: number,
+        streetNumberSuffix: string | null,
+      } >,
+    } >,
+  } | null,
+};
+
+export interface PermitsConnectionQueryVariables {
+  cursor?: string | null,
+  filter?: string | null,
+  page?: number | null,
+  type?: PermitType | null,
+  sort?: PermitSorting | null,
+  minUnits?: number | null,
+  issuedYear?: string | null,
+  fromPipeline?: boolean | null,
+};
+
+export interface PermitsConnectionQuery {
+  items:  {
+    __typename: "PermitsConnection",
+    edges:  Array< {
+      __typename: "PermitEdge",
+      node:  {
+        __typename: "Permit",
+        id: string,
+        createdAt: string | null,
+        status: PermitStatus | null,
+        statusUpdatedAt: string | null,
+        type: PermitType | null,
+        typeWood: boolean | null,
+        description: string | null,
+        approvalTime: number | null,
+        proposedUnits: number | null,
+        existingUnits: number | null,
+        streetNumbers:  Array< {
+          __typename: "StreetNumber",
+          streetId: string,
+          streetName: string,
+          streetNameSuffix: string | null,
+          streetNumber: number,
+          streetNumberSuffix: string | null,
+        } >,
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+  } | null,
+};
+
 export interface ProjectQueryVariables {
   areaId: string,
   projectId: string,
@@ -189,6 +325,75 @@ export interface PermitShortFragment {
     streetNameSuffix: string | null,
     streetNumber: number,
     streetNumberSuffix: string | null,
+  } >,
+};
+
+export interface PermitFullFragment {
+  __typename: "Permit",
+  id: string,
+  issuedAt: string | null,
+  createdAt: string | null,
+  startedAt: string | null,
+  expiresAt: string | null,
+  expiredAt: string | null,
+  completedAt: string | null,
+  filedAt: string | null,
+  status: PermitStatus | null,
+  statusUpdatedAt: string | null,
+  type: PermitType | null,
+  typeWood: boolean | null,
+  existingStories: number | null,
+  proposedStories: number | null,
+  existingUnits: number | null,
+  proposedUnits: number | null,
+  existingAffordableUnits: number | null,
+  proposedAffordableUnits: number | null,
+  proposedUse: string | null,
+  description: string | null,
+  governmentalUrl: string,
+  approvalTime: number | null,
+  streetNumbers:  Array< {
+    __typename: string,
+    streetId: string,
+    streetName: string,
+    streetNameSuffix: string | null,
+    streetNumber: number,
+    streetNumberSuffix: string | null,
+  } >,
+  events:  Array<( {
+      __typename: "PermitEventStatus",
+      oldStatus: PermitStatus | null,
+      newStatus: PermitStatus | null,
+      date: string | null,
+    } | {
+      __typename: "PermitEventFieldChanged",
+      fieldName: string,
+      oldValue: string | null,
+      newValue: string | null,
+      date: string | null,
+    }
+  ) >,
+  relatedPermits:  Array< {
+    __typename: string,
+    id: string,
+    createdAt: string | null,
+    status: PermitStatus | null,
+    type: PermitType | null,
+    typeWood: boolean | null,
+    description: string | null,
+    approvalTime: number | null,
+    existingUnits: number | null,
+    proposedUnits: number | null,
+    statusUpdatedAt: string | null,
+    filedAt: string | null,
+    streetNumbers:  Array< {
+      __typename: string,
+      streetId: string,
+      streetName: string,
+      streetNameSuffix: string | null,
+      streetNumber: number,
+      streetNumberSuffix: string | null,
+    } >,
   } >,
 };
 

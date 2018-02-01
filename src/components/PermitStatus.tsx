@@ -30,7 +30,7 @@ import { XDate } from './X/XDate';
 // suspended
 // withdrawn
 
-export function PermitStatus(props: { status: string, date: string | null }) {
+export function PermitStatus(props: { status: string | null, date?: string | null }) {
 
     var icon: string = 'question';
 

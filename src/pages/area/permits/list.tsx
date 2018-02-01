@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Permit, withPermitsPagedQuery } from '../../../api/Permits';
+import { withPermitsPagedQuery } from '../../../api/Permits';
 import { withPage } from '../../../components/withPage';
-// import { ListPermits } from '../../../components/ListPermits';
 import { ListCard } from '../../../components/ListCard';
 import {
     DataList, DataListContent, DataListFilters, DataListRadio, DataListRadioItem,
@@ -10,8 +9,9 @@ import {
 import { withPagedList } from '../../../components/withPagedList';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
+import { PermitShortFragment } from '../../../api/queries/Types';
 
-const PermitsItems = withPagedList<Permit>((props) => <ListCard cardData={props.items} cardType={'permits'} />);
+const PermitsItems = withPagedList<PermitShortFragment>((props) => <ListCard cardData={props.items} cardType={'permits'} />);
 export default withPage(withPermitsPagedQuery(withLoader((props) => {
     return (
         <>

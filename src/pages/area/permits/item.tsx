@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FieldChanged, StatusChanged, withPermitQuery } from '../../../api/Permits';
+import { withPermitQuery } from '../../../api/Permits';
 import { XContainer } from '../../../components/X/XContainer';
 import { XWrap } from '../../../components/X/XWrap';
 import { XRow } from '../../../components/X/XRow';
@@ -17,7 +17,15 @@ import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
 import { withAreaPage } from '../../../components/withAreaPage';
 
-function ChangeRender(props: { change: FieldChanged }) {
+function ChangeRender(props: {
+    change: {
+        __typename: 'PermitEventFieldChanged',
+        fieldName: string,
+        oldValue: string | null,
+        newValue: string | null,
+        date: string | null,
+    }
+}) {
     if (props.change.oldValue === null) {
         return <span><Icon name="plus" color="green" /> {props.change.newValue}</span>;
     } else if (props.change.newValue === null) {
@@ -32,17 +40,19 @@ function ChangeRender(props: { change: FieldChanged }) {
 }
 
 export default withAreaPage(withPermitQuery(withLoader((props) => {
-
+    if (props.data.permit === null) {
+        return <div />; // Hot Fix
+    }
     let progress = 1;
     let filedDate = <span>TBD</span>;
-    if (props.data.permit.filedAt) {
-        filedDate = <XDate date={props.data.permit.filedAt} />;
+    if (props.data.permit!!.filedAt) {
+        filedDate = <XDate date={props.data.permit!!.filedAt!!} />;
     }
 
     let issuedDate = <span>TBD</span>;
-    if (props.data.permit.issuedAt) {
+    if (props.data.permit!!.issuedAt) {
         progress = 2;
-        issuedDate = <XDate date={props.data.permit.issuedAt} />;
+        issuedDate = <XDate date={props.data.permit!!.issuedAt!!} />;
     }
 
     let completedDate = <span>TBD</span>;
@@ -92,7 +102,7 @@ export default withAreaPage(withPermitQuery(withLoader((props) => {
 
     return (
         <>
-        <XHead title={['Statecraft', 'San Francisco', 'Permits', props.data.permit.id]}/>
+        <XHead title={['Statecraft', 'San Francisco', 'Permits', props.data.permit.id]} />
         <div className="x-in">
             <div className="x-bigmap">
                 <img className="x-bigmap--map" style={{ backgroundImage: `url(${map})` }} />
@@ -195,24 +205,22 @@ export default withAreaPage(withPermitQuery(withLoader((props) => {
                                     <tbody>
                                         {props.data.permit.events.map((p, i) => {
                                             if (p.__typename === 'PermitEventStatus') {
-                                                let s = (p as StatusChanged);
                                                 return (
                                                     <tr key={'update-' + i}>
-                                                        <td>{s.date}</td>
+                                                        <td>{p.date}</td>
                                                         <td>Status</td>
                                                         <td>
-                                                            <PermitStatus status={s.oldStatus} /><span className="x-updates--change">-></span><PermitStatus status={s.newStatus} />
+                                                            <PermitStatus status={p.oldStatus} /><span className="x-updates--change">-></span><PermitStatus status={p.newStatus} />
                                                         </td>
                                                     </tr>
                                                 );
                                             } else if (p.__typename === 'PermitEventFieldChanged') {
-                                                let s = (p as FieldChanged);
                                                 return (
                                                     <tr key={'update-' + i}>
-                                                        <td>{s.date}</td>
-                                                        <td>{s.fieldName}</td>
+                                                        <td>{p.date}</td>
+                                                        <td>{p.fieldName}</td>
                                                         <td>
-                                                            <ChangeRender change={s} />
+                                                            <ChangeRender change={p} />
                                                         </td>
                                                     </tr>
                                                 );
