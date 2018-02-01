@@ -58,7 +58,6 @@ export function graphqlList<TResult, TExtras = {}>(document: DocumentNode, param
                                 query: document,
                                 variables: {
                                     ...prepareParams(params, props.ownProps.router.query),
-                                    ...props.ownProps.router.query,
                                     cursor: props.data!!.items.edges.slice(-1)[0].cursor,
                                 },
                                 updateQuery: (previousResult, { fetchMoreResult }) => {

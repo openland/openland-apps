@@ -48,8 +48,8 @@ export interface BuildingProjectsQueryStats {
 }
 
 const BuildingProjectQuery = gql`
-    query buildingProject($projectId: String!) {
-        project: buildingProject(slug: $projectId) {
+    query buildingProject($areaId: String, $projectId: String!) {
+        project: project(area: $areaId, slug: $projectId) {
             id
             slug
             name
@@ -114,8 +114,8 @@ const BuildingProjectQuery = gql`
 `;
 
 const BuildingProjectsQuery = gql`
-    query buildingProjects($cursor: String, $minUnits: Int, $year: String, $filter: String) {
-        items: buildingProjects(first: 50, minUnits: $minUnits, year: $year, filter: $filter, after: $cursor) {
+    query buildingProjects($areaId: String, $cursor: String, $minUnits: Int, $year: String, $filter: String) {
+        items: projects(area: $areaId, first: 50, minUnits: $minUnits, year: $year, filter: $filter, after: $cursor) {
             edges {
                 node {
                     id
