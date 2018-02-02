@@ -101,7 +101,7 @@ export interface ProjectsListCardProps {
 export function ProjectsListCard(props: ProjectsListCardProps) {
     return (
         <ListCardContainer withImage={true} className={'wide-image project-card'}>
-            <ListCardImageBox path={props.picture.url}>
+            <ListCardImageBox path={Links.area('sf').project(props.slug!!).view}>
                 <img src={props.picture.retina} alt="" />
             </ListCardImageBox>
             <ListCardBox>
