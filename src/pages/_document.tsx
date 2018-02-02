@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import { isPrimitive } from 'util';
 
 let isProduction = process.env.APP_PRODUCTION === 'true';
 
