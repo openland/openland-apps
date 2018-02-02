@@ -13,7 +13,7 @@ export default class StateDocument extends Document {
                     <meta name="theme-color" content="#000000" />
                     <link rel="shortcut icon" href="/static/favicon.ico" />
                     <link rel="stylesheet" type="text/css" href="/static/loader.css" />
-                    <link rel="stylesheet" type="text/css" href="/static/css/style.min.css?6" />
+                    <link rel="stylesheet" type="text/css" href="/static/css/style.min.css?7" />
                     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
                     {isProduction && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}
