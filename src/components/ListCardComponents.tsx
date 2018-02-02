@@ -16,7 +16,7 @@ export function ListCardContainer(props: { children: any; withImage?: boolean; c
 export function ListCardImageBox(props: { children?: any; path?: string; noPhoto?: boolean; wideImage?: boolean }) {
     return (
         <div className={classnames('x-card-photo', props.wideImage ? 'wide-image' : '')}>
-            <XLink path={props.path} className={classnames(props.noPhoto ? '' : 'no-photo')}>
+            <XLink path={props.path} className={classnames(props.noPhoto ? 'no-photo' : '')}>
                 {props.children}
             </XLink>
         </div>

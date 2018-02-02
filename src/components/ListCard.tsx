@@ -38,12 +38,12 @@ export function OrganizationsListCard(props: OrganizationListCardProps) {
     return (
         <ListCardContainer withImage={true} className={'organization-card'}>
             {props.logo && (
-                <ListCardImageBox path={Links.area('sf').org(props.slug).view} noPhoto={true} >
+                <ListCardImageBox path={Links.area('sf').org(props.slug).view}>
                     <XCloudImage src={props.logo} maxWidth={140} maxHeight={140} />
                 </ListCardImageBox>
             )}
             {!props.logo && (
-                <ListCardImageBox path={Links.area('sf').org(props.slug).view} />
+                <ListCardImageBox path={Links.area('sf').org(props.slug).view} noPhoto={true} />
             )}
             <ListCardBox>
                 <ListCardRow className={'top'}>
