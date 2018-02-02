@@ -34,6 +34,11 @@ declare module 'react-map-gl' {
     export let InteractiveMap: React.ComponentClass<InteractiveMapProps>;
 }
 
+declare module 'mixpanel-browser' {
+    export function init(token: string): void;
+    export function track(event: string): void;
+}
+
 declare module 'deck.gl' {
     interface DeckGLProps {
         latitude: number;

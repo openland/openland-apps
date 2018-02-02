@@ -4600,6 +4600,10 @@ minimist@~0.0.1:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.10.tgz#de3f98543dbf96082be48ad1a0c7cda836301dcf"
 
+mixpanel-browser@^2.16.0:
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/mixpanel-browser/-/mixpanel-browser-2.16.0.tgz#0f08331699a4f946af98af608dbbbe768d997949"
+
 mjolnir.js@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/mjolnir.js/-/mjolnir.js-1.0.1.tgz#0ce2389c18e8de00a402b3ff4b91aaee0b2a6dc6"
