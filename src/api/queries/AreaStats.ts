@@ -27,13 +27,16 @@ export const AreaStatsQuery = gql`
                 }
             }
         }
-        permitsUnitsFiledStats: permitsUnitsFiledStats {
+        permitsUnitsFiledStats {
             ...ChartFull
         }
-        permitsUnitsIssuedStats: permitsUnitsIssuedStats {
+        permitsUnitsIssuedStats {
             ...ChartFull
         }
-        permitsUnitsCompletedStats: permitsUnitsCompletedStats {
+        permitsUnitsCompletedStats {
+            ...ChartFull
+        }
+        permitsUnitsFiledStatsMonthly {
             ...ChartFull
         }
     }
@@ -43,19 +46,22 @@ export const AreaStatsQuery = gql`
 
 export const InternalStatsQuery = gql`
     query InternalStats {
-        permitsApprovalStats: permitsApprovalStats {
+        permitsApprovalStats {
             ...ChartFull
         }
-        permitsApprovalUnits: permitsApprovalUnits {
+        permitsApprovalUnits {
             ...ChartFull
         }
-        permitsUnitsFiledStats: permitsUnitsFiledStats {
+        permitsUnitsFiledStats {
             ...ChartFull
         }
-        permitsUnitsIssuedStats: permitsUnitsIssuedStats {
+        permitsUnitsIssuedStats {
             ...ChartFull
         }
-        permitsUnitsCompletedStats: permitsUnitsCompletedStats {
+        permitsUnitsCompletedStats {
+            ...ChartFull
+        }
+        permitsUnitsFiledStatsMonthly {
             ...ChartFull
         }
     }

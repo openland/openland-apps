@@ -11,6 +11,7 @@ import { XBarChart } from '../../components/X/XBarChart';
 import { XHead } from '../../components/X/XHead';
 import { Links, ExternalLinks } from '../../Links';
 import { withAreaStats } from '../../api';
+import { XWriteAcces } from '../../components/X/XWriteAccess';
 
 export default withLandingPage(withAreaStats(withLoader((props) => {
 
@@ -112,6 +113,16 @@ export default withLandingPage(withAreaStats(withLoader((props) => {
                     <p>However, year-to-year variation is high and the 2017 year saw significantly reduced volume of applications. To meet mayor’s goal in housing production, permit filings volume needs to stay high consistently for several years.</p>
                 </TrendsText>
             </TrendsItem>
+            <XWriteAcces>
+                <TrendsItem>
+                    <TrendsChart>
+                        <XBarChart data={props.data.permitsUnitsFiledStatsMonthly} defaultColor="#FAA61F" stacked={true} />
+                    </TrendsChart>
+                    <TrendsText title="Monlthly filed">
+                        <p>However, year-to-year variation is high and the 2017 year saw significantly reduced volume of applications. To meet mayor’s goal in housing production, permit filings volume needs to stay high consistently for several years.</p>
+                    </TrendsText>
+                </TrendsItem>
+            </XWriteAcces>
         </Trends>
 
         <About title="About Us" mail={ExternalLinks.corporateEmail}>

@@ -37,7 +37,7 @@ function withRootLoader<P>(WrappedComponent: React.ComponentType<P>): React.Comp
 
 export function withPage(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAreaQuery(withRootLoader((props) => (
-        <UserInfoProvider user={props.data.me} router={props.router}>
+        <UserInfoProvider user={props.data.me} area={props.data.area} router={props.router}>
             <PageContainer>
                 <Header />
                 <WrappedComponent />
@@ -49,7 +49,7 @@ export function withPage(WrappedComponent: React.ComponentType<{}>) {
 
 export function withPageFullScreen(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAreaQuery(withRootLoader((props) => (
-        <UserInfoProvider user={props.data.me} router={props.router}>
+        <UserInfoProvider user={props.data.me} area={props.data.area} router={props.router}>
             <PageContainer>
                 <Header />
                 <WrappedComponent />
@@ -60,7 +60,7 @@ export function withPageFullScreen(WrappedComponent: React.ComponentType<{}>) {
 
 export function withLandingPage(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAreaQuery(withRootLoader((props) => (
-        <UserInfoProvider user={props.data.me} router={props.router}>
+        <UserInfoProvider user={props.data.me} area={props.data.area} router={props.router}>
             <PageContainer>
                 <WrappedComponent />
             </PageContainer>

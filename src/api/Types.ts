@@ -54,6 +54,7 @@ export interface AreaQuery {
     __typename: "Area",
     id: string,
     slug: string,
+    writeAccess: boolean,
   },
   me:  {
     __typename: "User",
@@ -139,6 +140,15 @@ export interface AreaStatsQuery {
       values: Array< number >,
     } >,
   },
+  permitsUnitsFiledStatsMonthly:  {
+    __typename: "Chart",
+    labels: Array< string >,
+    datasets:  Array< {
+      __typename: "ChartDataSet",
+      label: string,
+      values: Array< number >,
+    } >,
+  },
 };
 
 export interface InternalStatsQuery {
@@ -179,6 +189,15 @@ export interface InternalStatsQuery {
     } >,
   },
   permitsUnitsCompletedStats:  {
+    __typename: "Chart",
+    labels: Array< string >,
+    datasets:  Array< {
+      __typename: "ChartDataSet",
+      label: string,
+      values: Array< number >,
+    } >,
+  },
+  permitsUnitsFiledStatsMonthly:  {
     __typename: "Chart",
     labels: Array< string >,
     datasets:  Array< {
@@ -900,6 +919,13 @@ export interface ProjectsConnectionQuery {
   },
 };
 
+export interface AreaShortFragment {
+  __typename: "Area",
+  id: string,
+  slug: string,
+  writeAccess: boolean,
+};
+
 export interface ChartFullFragment {
   __typename: "Chart",
   labels: Array< string >,
@@ -1168,19 +1194,6 @@ export interface PermitFullFragment {
   } >,
 };
 
-export interface ProjectPreviewFragment {
-  __typename: "BuildingProject",
-  id: string,
-  slug: string,
-  name: string,
-  approvalTime: number | null,
-  preview:  {
-    __typename: string,
-    url: string,
-    retina: string,
-  } | null,
-};
-
 export interface ProjectShortFragment {
   __typename: "BuildingProject",
   id: string,
@@ -1195,6 +1208,19 @@ export interface ProjectShortFragment {
   proposedUnits: number | null,
   verified: boolean,
   extrasUrl: string | null,
+  preview:  {
+    __typename: string,
+    url: string,
+    retina: string,
+  } | null,
+};
+
+export interface ProjectPreviewFragment {
+  __typename: "BuildingProject",
+  id: string,
+  slug: string,
+  name: string,
+  approvalTime: number | null,
   preview:  {
     __typename: string,
     url: string,

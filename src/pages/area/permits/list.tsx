@@ -18,10 +18,11 @@ import { XHead } from '../../../components/X/XHead';
 import { XCounter } from '../../../components/X/XCounter';
 import { Links } from '../../../Links';
 import { PermitShortFragment } from '../../../api/Types';
+import { XWriteAcces } from '../../../components/X/XWriteAccess';
 
 const PermitsItems = withPagedList<PermitShortFragment>((props) => (
     <InfiniteListContainer>
-        {props.items.map((item: any) => {
+        {props.items.map((item) => {
             return (
                 <XInfiniteListItem key={item.id}>
                     <div className="x-card-test">
@@ -33,6 +34,15 @@ const PermitsItems = withPagedList<PermitShortFragment>((props) => (
                                             <span>{item.id}</span>
                                         </XLink>
                                     </div>
+                                    <XWriteAcces>
+                                        <div style={{
+                                            marginTop: '-28px', width: '100%',
+                                            marginLeft: '32px',
+                                            opacity: 0.7
+                                        }}>
+                                            {item.createdAt}
+                                        </div>
+                                    </XWriteAcces>
                                 </div>
                                 {item.streetNumbers!!.length > 0 && (
                                     <div className="x-card-count smaller">

@@ -39,7 +39,7 @@ const LinkRender = withRouter<{ path?: string | null, href?: string | null, anch
 });
 
 export const XLink = withRouter<{ path?: string | null, href?: string | null, anchor?: string | null, query?: { field: string, value?: string } | null, className?: string | null, children?: any, writeAccess?: boolean | null }>(withUserInfo((props) => {
-    if (props.writeAccess !== true /*|| props.account.writeAccess*/) {
+    if (props.writeAccess !== true || (props.area && props.area.writeAccess)) {
         if (props.path || props.query) {
             return <LinkRender path={resolveActionPath(props)} className={props.className} children={props.children} />;
         } else {

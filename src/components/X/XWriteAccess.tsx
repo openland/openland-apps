@@ -1,15 +1,14 @@
-// import * as React from 'react';
+import * as React from 'react';
 import { withUserInfo } from '../UserInfo';
 
 export const XWriteAcces = withUserInfo<{ children: any }>((props) => {
-    // if (props.account.writeAccess) {
-    //     return (
-    //         <React.Fragment>
-    //             {props.children}
-    //         </React.Fragment>
-    //     );
-    // } else {
-    //     return null;
-    // }
-    return null;
+    if (props.area && props.area.writeAccess) {
+        return (
+            <>
+            {props.children}
+            </>
+        );
+    } else {
+        return null;
+    }
 });
