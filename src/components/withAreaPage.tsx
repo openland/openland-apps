@@ -8,7 +8,7 @@ import { withAreaQuery } from '../api';
 
 export function withAreaPage(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAreaQuery((props) => (
-        <UserInfoProvider user={props.data.me} router={props.router}>
+        <UserInfoProvider user={props.data.me} area={props.data.area} router={props.router}>
             <PageContainer>
                 <Header />
                 <WrappedComponent />
