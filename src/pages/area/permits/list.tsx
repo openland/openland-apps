@@ -29,8 +29,7 @@ const PermitsItems = withPagedList<PermitShortFragment>((props) => (
                     type={item.type}
                     description={item.description}
                     existingUnits={item.existingUnits}
-
-                    createdAt={null}
+                    createdAt={item.createdAt}
                     typeWood={null}
                 />
             )

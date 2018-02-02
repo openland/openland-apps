@@ -44,18 +44,27 @@ export function ListCardMainTitle(props: {
     titleAdditionallyClass?: string;
     link?: string;
     title: string;
-    subtitle?: string;
+    subtitle?: string | null;
 }) {
     return (
         <div className={classnames('x-card-title', props.larger ? 'larger' : '')}>
-            <div className={classnames('title', props.titleAdditionallyClass)}>
-                <XLink path={props.link}>
-                    <span>{props.title}</span>
-                </XLink>
-                {props.subtitle && (
-                    <div className="text">{props.subtitle}</div>
-                )}
-            </div>
+            {props.larger ? (
+                <div className={classnames('title', props.titleAdditionallyClass)}>
+                    <XLink path={props.link}>
+                        <span>{props.title}</span>
+                        <span className="text">{props.subtitle}</span>
+                    </XLink>
+                </div>
+            ) : (
+                <div className={classnames('title', props.titleAdditionallyClass)}>
+                    <XLink path={props.link}>
+                        <span>{props.title}</span>
+                    </XLink>
+                    {props.subtitle && (
+                        <div className="text">{props.subtitle}</div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
