@@ -20,6 +20,8 @@ export default class StateDocument extends Document {
                     {isProduction && (<script dangerouslySetInnerHTML={{ __html: `Raven.config('https://29519b8b62b94a1aa77e3329732fe5b2@sentry.io/281742').install();` }}>{}</script>)}
                 </Head>
                 <body>
+                    {isProduction && <script type="text/javascript" dangerouslySetInnerHTML={{ __html: `(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter47431468 = new Ya.Metrika2({ id:47431468, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/tag.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks2");` }} >{}</script>}
+                    {isProduction && <noscript><div><img src="https://mc.yandex.ru/watch/47431468" style={{ position: 'absolute'; left: '-9999px' }} alt="" /></div></noscript>}
                     <Main />
                     <NextScript />
                     <div style={{ position: 'fixed', height: 16, top: 0, width: '100vw', pointerEvents: 'none', zIndex: 100 }} id="progress_container" />
