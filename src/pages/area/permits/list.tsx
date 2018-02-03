@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withPermits } from '../../../api';
 import { withPage } from '../../../components/withPage';
 import { InfiniteListContainer } from '../../../components/withInfiniteList';
-import { PermitsListCard } from '../../../components/ListCard';
+import { PermitsListCard } from '../../../components/PermitsListCard';
 
 import {
     DataList, DataListContent, DataListFilters, DataListRadio, DataListRadioItem,

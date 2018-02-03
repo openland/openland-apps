@@ -3,7 +3,7 @@ import { withOrganizationAddMutation, withOrganizations } from '../../../api';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
 import { InfiniteListContainer } from '../../../components/withInfiniteList';
-import { OrganizationsListCard } from '../../../components/ListCard';
+import { OrganizationsListCard } from '../../../components/OrganizationsListCard';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
     DataListRadioItem, DataListSearch

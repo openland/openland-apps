@@ -5,7 +5,7 @@ import {
 } from '../../../components/DataList';
 import { DataListInvite } from '../../../components/DataListInvite';
 import { InfiniteListContainer } from '../../../components/withInfiniteList';
-import { ProjectsListCard } from '../../../components/ListCard';
+import { ProjectsListCard } from '../../../components/ProjectsListCard';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { withAreaPage } from '../../../components/withAreaPage';
