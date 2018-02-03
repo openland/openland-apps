@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { Links } from '../Links';
 import {
     XCard,
     XCardPhoto,
@@ -9,72 +8,87 @@ import {
     XCardExternalLink,
     XCardButton
 } from './X/XCard';
-import { XListItem } from './X/XList';
 import { XRow } from './X/XRow';
+import { Links } from '../Links';
+import * as Types from '../api/Types';
 
-export interface OrganizationListCardProps {
-    id: string;
-    slug: string;
-    title: string;
-    subtitle?: string;
-    projects: number;
-    logo?: string;
-    profile?: string;
-    featuredProject?: {
-        title: string,
-        url: string,
-        picture?: { url: string; retina: string; }
-    };
-    url?: string;
-}
+export function OrganizationsListCard(props: { org: Types.OrganizationShortFragment }) {
 
-export function OrganizationsListCard(props: OrganizationListCardProps) {
+    let subtitle = undefined
+
+    if (props.org.isDeveloper) {
+        if (props.org.isConstructor) {
+            subtitle = 'Developer and Contractor'
+        } else {
+            subtitle = 'Developer'
+        }
+    } else {
+        subtitle = 'Contractor'
+    }
+
+    let project = null
+
+    if (props.org.developerIn && props.org.developerIn.length > 0) {
+        project = props.org.developerIn!![0]
+    } else if (props.org.constructorIn && props.org.constructorIn.length > 0) {
+        project = props.org.constructorIn!![0]
+    }
+
+    let featured = undefined;
+    if (project !== null) {
+        featured = {
+            title: project.name,
+            url: project.slug,
+            picture: project.preview
+        };
+    }
+
+    let projectsLength: number = props.org.constructorIn!!.length + props.org.developerIn!!.length
+
     return (
-        <XListItem>
-            <XCard>
-                <XCardPhoto path={Links.area('sf').org(props.slug).view} src={props.logo} />
-                <XRow>
-                    <XCardColumn mode="fill">
-                        <XCardTitle
-                            title={props.title}
-                            subtitle={props.subtitle}
-                            path={Links.area('sf').org(props.slug).view}
-                        />
-                    </XCardColumn>
+        <XCard>
+            <XCardPhoto path={Links.area('sf').org(props.org.slug).view} src={props.org.logo} />
+            <XRow>
+                <XCardColumn mode="fill">
+                    <XCardTitle
+                        title={props.org.title}
+                        subtitle={subtitle}
+                        path={Links.area('sf').org(props.org.slug).view}
+                    />
+                </XCardColumn>
 
-                    {props.url && (
-                        <XCardColumn>
-                            <XCardExternalLink href={props.url} />
-                        </XCardColumn>
-                    )}
-                </XRow>
-                <XRow>
-                    {props.projects !== null && props.projects > 0 && (
-                        <XCardColumn mode="fixed">
-                            <XCardTitle
-                                title={props.projects.toString()}
-                                subtitle="Recent Projects"
-                            />
-                        </XCardColumn>
-                    )}
-                    <XCardColumn mode="fill">
-                        {props.featuredProject && (
-                            <XCardTitle
-                                title={props.featuredProject.title}
-                                subtitle="Featured Project"
-                                path={Links.area('sf').project(props.featuredProject.url).view}
-                                preview={props.featuredProject.picture ? props.featuredProject.picture.url : null}
-                            />
-                        )}
+                {props.org.url && (
+                    <XCardColumn>
+                        <XCardExternalLink href={props.org.url} />
                     </XCardColumn>
+                )}
+            </XRow>
+            <XRow>
+                {projectsLength > 0 && (
                     <XCardColumn mode="fixed">
-                        <XCardButton
-                            title="View Profile"
-                            path={Links.area('sf').org(props.slug).view}
+                        <XCardTitle
+                            title={projectsLength.toString()}
+                            subtitle="Recent Projects"
                         />
                     </XCardColumn>
-                </XRow>
-            </XCard>
-        </XListItem>
-    )
+                )}
+                <XCardColumn mode="fill">
+                    {featured && (
+                        <XCardTitle
+                            title={featured.title}
+                            subtitle="Featured Project"
+                            path={Links.area('sf').project(featured.url).view}
+                            preview={featured.picture ? featured.picture.url : null}
+                        />
+                    )}
+                </XCardColumn>
+                <XCardColumn mode="fixed">
+                    <XCardButton
+                        title="View Profile"
+                        path={Links.area('sf').org(props.org.slug).view}
+                    />
+                </XCardColumn>
+            </XRow>
+        </XCard>
+    );
 }

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XLink } from './X/XLink';
 import * as qs from 'query-string';
 import { XContainer } from './X/XContainer';
-import { XRow } from './X/XRow';
 import { XFilterInput } from './X/XFilterInput';
 import { withRouter } from '../utils/withRouter';
 import { XColumn } from './X/XColumn';
@@ -11,9 +10,9 @@ export function DataList(props: { children?: any }) {
     return (
         <div className="x-in">
             <XContainer wide={true}>
-                <XRow>
+                <div className={'row'}>
                     {props.children}
-                </XRow>
+                </div>
             </XContainer>
         </div>
     );

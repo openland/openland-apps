@@ -4,7 +4,6 @@ import { withLoader } from '../../../components/withLoader';
 import { XContainer } from '../../../components/X/XContainer';
 import { ListOrganizations } from '../../../components/ListOrganizations';
 import { ListPermits } from '../../../components/ListPermits';
-import { XRow } from '../../../components/X/XRow';
 import { XWrap } from '../../../components/X/XWrap';
 import { XLink } from '../../../components/X/XLink';
 import { XColumn } from '../../../components/X/XColumn';
@@ -31,7 +30,7 @@ export default withPage(withBuildingProject(withLoader((props) => {
         />
         <div className="x-in">
             <XContainer wide={true}>
-                <XRow>
+                <div className="row">
                     <XColumn cols={8} mobile={12}>
                         <XWrap>
                             <XCard>
@@ -111,7 +110,7 @@ export default withPage(withBuildingProject(withLoader((props) => {
                         )}
 
                     </XColumn>
-                </XRow>
+                </div>
             </XContainer>
         </div>
         </>

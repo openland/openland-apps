@@ -3,7 +3,6 @@ import { withRouter } from '../utils/withRouter';
 import { XContainer } from './X/XContainer';
 import { XLink } from './X/XLink';
 import { Header } from './Header';
-import { XRow } from './X/XRow';
 
 export class Intro extends React.Component<{ children: any }, { isShown: boolean }> {
     constructor(props: { children: any }) {
@@ -46,9 +45,9 @@ export function IntroTitle(props: { title?: string, children?: any }) {
 export function IntroCols(props: { children?: any }) {
     return (
         <div className="x-intro--cols">
-            <XRow>
+            <div className={'row'}>
                 {props.children}
-            </XRow>
+            </div>
         </div>
     );
 }

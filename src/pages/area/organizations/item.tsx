@@ -7,7 +7,6 @@ import { ListProjects } from '../../../components/ListProjects';
 import { XCloudImage } from '../../../components/X/XCloudImage';
 import { XLink } from '../../../components/X/XLink';
 import { XWrap } from '../../../components/X/XWrap';
-import { XRow } from '../../../components/X/XRow';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
 import { Links } from '../../../Links';
@@ -116,7 +115,7 @@ export default withAreaPage(withOrganization(withLoader((props) => {
                     {props.data.organization.comments && (<div>Comments: {props.data.organization.comments}</div>)}
                 </Segment>*/}
 
-                <XRow>
+                <div className="row">
                     <div className="col-xs-12 col-md-8">
                         {projects.length > 0 && (
                             <XWrap title="Recent Projects">
@@ -132,7 +131,7 @@ export default withAreaPage(withOrganization(withLoader((props) => {
                             </XWrap>
                         )}
                     </div>
-                </XRow>
+                </div>
             </XContainer>
         </div>
         </>

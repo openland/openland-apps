@@ -40,18 +40,19 @@
     flex-grow: 1;
     padding-left: 8px;
 
-    .row {
+    .x-row {
         height: 81px;
-        margin: 0 0;
-        display: flex;
-        flex-direction: row;
-        font-size: 16px;
-        line-height: 16px;
         border-bottom: 1px solid rgba(38,38,38,0.08);
         &:last-child { 
             border-bottom: 0;
         }
     }
+}
+
+.x-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 }
 
 .x-card-s-photo {
@@ -135,17 +136,17 @@
     justify-content: center;
     align-items: flex-start;
 
-    a {
-        color: inherit;
+    // a {
+    //     color: inherit;
 
-        &:hover {
-            color: @purple-1;
-        }
+    //     &:hover {
+    //         color: @purple-1;
+    //     }
 
-        span {
-            display: block;
-        }
-    }
+    //     span {
+    //         display: block;
+    //     }
+    // }
 
     .title {
         font-size: 18px;

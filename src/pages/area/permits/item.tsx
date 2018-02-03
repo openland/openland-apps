@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XContainer } from '../../../components/X/XContainer';
 import { XWrap } from '../../../components/X/XWrap';
-import { XRow } from '../../../components/X/XRow';
 import { ListPermits } from '../../../components/ListPermits';
 import { PermitType } from '../../../components/PermitType';
 import { XCounter } from '../../../components/X/XCounter';
@@ -109,7 +108,7 @@ export default withAreaPage(withPermit(withLoader((props) => {
             </div>
 
             <XContainer wide={true}>
-                <XRow>
+                <div className="row">
                     <div className="col-xs-12 col-xlg-10 col-xlg-offset-l-1">
                         <XWrap>
                             <XCard>
@@ -237,7 +236,7 @@ export default withAreaPage(withPermit(withLoader((props) => {
                             <ListPermits permits={props.data.permit.relatedPermits} />
                         </XWrap>
                     </div>
-                </XRow>
+                </div>
             </XContainer>
         </div>
         </>

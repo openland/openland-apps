@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withOrganizationAddMutation, withOrganizations } from '../../../api';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
-import { XList } from '../../../components/X/XList';
+import { XList, XListItem } from '../../../components/X/XList';
 import { OrganizationsListCard } from '../../../components/OrganizationsListCard';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
@@ -78,50 +78,13 @@ export default withAreaPage(withOrganizations(withLoader((props) => {
 
                 <XList>
                     {data.map((item: any) => {
-
-                        let subtitle = undefined
-
-                        if (item.isDeveloper) {
-                            if (item.isConstructor) {
-                                subtitle = 'Developer and Contractor'
-                            } else {
-                                subtitle = 'Developer'
-                            }
-                        } else {
-                            subtitle = 'Contractor'
-                        }
-
-                        let project = null
-
-                        if (item.developerIn && item.developerIn.length > 0) {
-                            project = item.developerIn!![0]
-                        } else if (item.constructorIn && item.constructorIn.length > 0) {
-                            project = item.constructorIn!![0]
-                        }
-
-                        let featured = undefined;
-                        if (project !== null) {
-                            featured = {
-                                title: project.name,
-                                url: project.slug,
-                                picture: project.preview
-                            };
-                        }
-
-                        let projectsLenght: number = item.constructorIn!!.length + item.developerIn!!.length
-
                         return (
-                            <OrganizationsListCard
-                                key={item.id}
-                                id={item.id}
-                                slug={item.slug}
-                                title={item.title}
-                                subtitle={subtitle}
-                                projects={projectsLenght}
-                                logo={item.logo}
-                                featuredProject={featured}
-                                url={item.url}
-                            />
+                            <XListItem key={item.id}>
+                                <OrganizationsListCard
+                                    key={item.id}
+                                    org={item}
+                                />
+                            </XListItem>
                         )
                     })}
                 </XList>

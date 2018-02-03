@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XContainer } from '../X/XContainer';
-import { XRow } from '../X/XRow';
 
 export function TrendsChart(props: { children: any }) {
     return (
@@ -28,9 +27,9 @@ export function TrendsText(props: { title: string, children: any }) {
 export function TrendsItem(props: {children: any }) {
     return (
         <div className="x-trends--item">
-            <XRow>
+            <div className="row">
                 {props.children}
-            </XRow>
+            </div>
         </div>
     );
 }

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XMarkdown } from '../X/XMarkdown';
 import { XContainer } from '../X/XContainer';
-import { XRow } from '../X/XRow';
 
 export function AboutItem(props: { title: string, text: string }) {
     return (
@@ -23,9 +22,9 @@ export function About(props: { title: string, mail: string, children: any }) {
                     {props.title}
                 </div>
 
-                <XRow>
+                <div className={'row'}>
                     {props.children}
-                </XRow>
+                </div>
 
                 <div className="x-about--contacts">
                     <span>Get in touch</span>
