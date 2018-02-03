@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XLink } from './X/XLink';
 import { PermitStatus } from './PermitStatus';
 import { formatDuration } from '../utils/date';
-import { InfiniteListContainer, XInfiniteListItem } from './withInfiniteList';
+import { XList, XListItem } from './X/XList';
 import { XCounter } from './X/XCounter';
 import { PermitType } from './PermitType';
 import { XCard } from './X/XCard';
@@ -11,9 +11,9 @@ import { PermitShortFragment } from '../api/Types';
 
 export function ListPermits(props: { permits: PermitShortFragment[]; hideCounter?: boolean }) {
     return (
-        <InfiniteListContainer>
+        <XList>
             {props.permits.map((item) => (
-                <XInfiniteListItem key={item.id}>
+                <XListItem key={item.id}>
                     <XCard>
                         <div className="x-permit--in">
                             <XLink path={Links.area('sf').permit(item.id).view} className="x-permit--id">
@@ -59,8 +59,8 @@ export function ListPermits(props: { permits: PermitShortFragment[]; hideCounter
                                 className="x-permit--btn"><span>View details</span></XLink>
                         </div>
                     </XCard>
-                </XInfiniteListItem>
+                </XListItem>
             ))}
-        </InfiniteListContainer>
+        </XList>
     );
 }

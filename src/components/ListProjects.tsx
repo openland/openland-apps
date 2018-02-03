@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XInfiniteListItem } from './withInfiniteList';
+import { XListItem } from './X/XList';
 import { DataListCard } from './DataListCard';
 import { ProjectShortFragment } from '../api/Types';
 
@@ -8,7 +8,7 @@ export function ListProjects(props: { projects: ProjectShortFragment[] }) {
         <>
             {props.projects.map(p => {
                 return (
-                    <XInfiniteListItem key={p.id}>
+                    <XListItem key={p.id}>
                         <DataListCard
                             title={p.name}
                             url={p.extrasUrl}
@@ -18,7 +18,7 @@ export function ListProjects(props: { projects: ProjectShortFragment[] }) {
                             verified={p.verified}
                             slug={p.slug}
                         />
-                    </XInfiniteListItem>
+                    </XListItem>
                 );
             })}
         </>

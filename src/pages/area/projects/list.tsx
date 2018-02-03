@@ -4,7 +4,7 @@ import {
     DataListRadioItem, DataListSearch, DataListContentStats
 } from '../../../components/DataList';
 import { DataListInvite } from '../../../components/DataListInvite';
-import { InfiniteListContainer } from '../../../components/withInfiniteList';
+import { XList } from '../../../components/X/XList';
 import { ProjectsListCard } from '../../../components/ProjectsListCard';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
@@ -14,7 +14,7 @@ import { withPagedList } from '../../../components/withPagedList';
 import { withBuildingProjects } from '../../../api';
 
 const PipelineItems = withPagedList<ProjectShortFragment>((props) => (
-    <InfiniteListContainer>
+    <XList>
         {props.items.map((item: any) => {
             let units: number | undefined = undefined;
             let subtitle: string | undefined = undefined;
@@ -40,7 +40,7 @@ const PipelineItems = withPagedList<ProjectShortFragment>((props) => (
                 />
             )
         })}
-    </InfiniteListContainer>
+    </XList>
 ));
 
 export default withAreaPage(withBuildingProjects(withLoader((props) => {

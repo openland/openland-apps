@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withPermits } from '../../../api';
 import { withPage } from '../../../components/withPage';
-import { InfiniteListContainer } from '../../../components/withInfiniteList';
+import { XList } from '../../../components/X/XList';
 import { PermitsListCard } from '../../../components/PermitsListCard';
 
 import {
@@ -14,7 +14,7 @@ import { XHead } from '../../../components/X/XHead';
 import { PermitShortFragment } from '../../../api/Types';
 
 const PermitsItems = withPagedList<PermitShortFragment>((props) => (
-    <InfiniteListContainer>
+    <XList>
         {props.items.map((item) => {
             return (
                 <PermitsListCard
@@ -34,7 +34,7 @@ const PermitsItems = withPagedList<PermitShortFragment>((props) => (
                 />
             )
         })}
-    </InfiniteListContainer>
+    </XList>
 ));
 
 export default withPage(withPermits(withLoader((props) => {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withOrganizationAddMutation, withOrganizations } from '../../../api';
 import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
-import { InfiniteListContainer } from '../../../components/withInfiniteList';
+import { XList } from '../../../components/X/XList';
 import { OrganizationsListCard } from '../../../components/OrganizationsListCard';
 import {
     DataList, DataListFilters, DataListContent, DataListRadio,
@@ -76,7 +76,7 @@ export default withAreaPage(withOrganizations(withLoader((props) => {
                     <div>{data.length}<span>organizations</span></div>
                 </div>
 
-                <InfiniteListContainer>
+                <XList>
                     {data.map((item: any) => {
 
                         let subtitle = undefined
@@ -124,7 +124,7 @@ export default withAreaPage(withOrganizations(withLoader((props) => {
                             />
                         )
                     })}
-                </InfiniteListContainer>
+                </XList>
             </DataListContent>
         </DataList>
         </>

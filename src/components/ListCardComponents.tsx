@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { XInfiniteListItem } from './withInfiniteList';
+import { XListItem } from './X/XList';
 import { XLink } from './X/XLink';
 import * as classnames from 'classnames';
 
 export function ListCardContainer(props: { children: any; withImage?: boolean; className?: string }) {
     return (
-        <XInfiniteListItem>
+        <XListItem>
             <div className={classnames('x-card-test', props.withImage ? 'with-image' : '', props.className)}>
                 {props.children}
             </div>
-        </XInfiniteListItem>
+        </XListItem>
     );
 }
 
