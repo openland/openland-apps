@@ -121,7 +121,7 @@ export function ProjectsListCard(props: ProjectsListCardProps) {
                 <ListCardRow className={'bottom'}>
                     <ListCardCount title={props.newUnits} subtitle={'Net new units'}/>
                     <ListCardCount title={props.endYear} subtitle={'Expected completion'}/>
-                    <ListCardDetails path={Links.area('sf').project(props.slug!!).view} title={'Show details'}/>
+                    <ListCardDetails path={Links.area('sf').project(props.slug!!).view} title={'View details'}/>
                 </ListCardRow>
             </ListCardBox>
         </ListCardContainer>
