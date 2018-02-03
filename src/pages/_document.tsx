@@ -1,9 +1,24 @@
 import * as React from 'react';
-import Document, { Head, Main, NextScript } from 'next/document';
+import Document, { Head, Main, NextScript, DocumentProps } from 'next/document';
+import { renderStaticOptimized } from 'glamor/server';
 
 let isProduction = process.env.APP_PRODUCTION === 'true';
 
 export default class StateDocument extends Document {
+    static async getInitialProps(props: { renderPage: () => { html: string } }) {
+        const page = props.renderPage()
+        const styles = renderStaticOptimized(() => page.html)
+        return { ...page, ...styles }
+    }
+
+    constructor(props: DocumentProps) {
+        super(props);
+        const { __NEXT_DATA__, ids } = props
+        if (ids) {
+            __NEXT_DATA__.ids = this.props.ids
+        }
+    }
+
     render() {
         return (
             <html>
@@ -16,6 +31,7 @@ export default class StateDocument extends Document {
                     <link rel="stylesheet" type="text/css" href="/static/css/style.min.css?7" />
                     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
+                    <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
                     {isProduction && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}
                     {isProduction && <script dangerouslySetInnerHTML={{ __html: `Raven.config('https://29519b8b62b94a1aa77e3329732fe5b2@sentry.io/281742').install();` }}>{}</script>}
                     {isProduction && <script type="text/javascript"

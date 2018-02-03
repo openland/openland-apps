@@ -3,6 +3,8 @@ import { hasChildren, filterChildren } from './utils';
 import * as classnames from 'classnames';
 import { XLink } from './XLink';
 import { XCloudImage } from './XCloudImage';
+import Glamorous from 'glamorous';
+import { XRow } from './XRow';
 
 export class XCard extends React.Component {
     render() {
@@ -37,6 +39,14 @@ export class XCardPhoto extends React.Component<{ path?: string, src?: string | 
         );
     }
 }
+
+export const XCardRow = Glamorous(XRow)({
+    height: 82,
+    borderBottom: '1px solid rgba(38,38,38,0.08)',
+    '&:last-child': {
+        borderBottom: 0
+    }
+});
 
 export class XCardColumn extends React.Component<{ mode?: 'fixed' | 'fit' | 'fill' | null }> {
     render() {

@@ -1,9 +1,7 @@
-import * as React from 'react';
+import Glamorous from 'glamorous';
 
-export function XRow(props: { children: any }) {
-    return (
-        <div className={'x-row'}>
-            {props.children}
-        </div>
-    );
-}
+export let XRow = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%'
+});

@@ -6,9 +6,9 @@ import {
     XCardColumn,
     XCardTitle,
     XCardExternalLink,
-    XCardButton
+    XCardButton,
+    XCardRow
 } from './X/XCard';
-import { XRow } from './X/XRow';
 import { Links } from '../Links';
 import * as Types from '../api/Types';
 
@@ -48,7 +48,7 @@ export function OrganizationsListCard(props: { org: Types.OrganizationShortFragm
     return (
         <XCard>
             <XCardPhoto path={Links.area('sf').org(props.org.slug).view} src={props.org.logo} />
-            <XRow>
+            <XCardRow>
                 <XCardColumn mode="fill">
                     <XCardTitle
                         title={props.org.title}
@@ -62,8 +62,8 @@ export function OrganizationsListCard(props: { org: Types.OrganizationShortFragm
                         <XCardExternalLink href={props.org.url} />
                     </XCardColumn>
                 )}
-            </XRow>
-            <XRow>
+            </XCardRow>
+            <XCardRow>
                 {projectsLength > 0 && (
                     <XCardColumn mode="fixed">
                         <XCardTitle
@@ -88,7 +88,7 @@ export function OrganizationsListCard(props: { org: Types.OrganizationShortFragm
                         path={Links.area('sf').org(props.org.slug).view}
                     />
                 </XCardColumn>
-            </XRow>
+            </XCardRow>
         </XCard>
     );
 }
