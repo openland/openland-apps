@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XCard } from './X/XCard';
 import { Links } from '../Links';
 import * as Types from '../api/Types';
-import { XGrid, XCell } from './X/XGrid';
 
 export function OrganizationsListCard(props: { org: Types.OrganizationShortFragment }) {
 
