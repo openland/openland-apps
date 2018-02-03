@@ -39,57 +39,7 @@ export function OrganizationsListCard(props: { org: Types.OrganizationShortFragm
 
     return (
         <XCard>
-            <XGrid>
-                <XCell area="sidebar">
-                    <XCard.Photo path={Links.area('sf').org(props.org.slug).view} src={props.org.logo} />
-                </XCell>
-                <XCell area="header">
-                    <XCard.Row>
-                        <XCard.Col mode="fill">
-                            <XCard.Title
-                                title={props.org.title}
-                                subtitle={subtitle}
-                                path={Links.area('sf').org(props.org.slug).view}
-                            />
-                        </XCard.Col>
-
-                        {props.org.url && (
-                            <XCard.Col>
-                                <XCard.ExternalLink href={props.org.url} />
-                            </XCard.Col>
-                        )}
-                    </XCard.Row>
-                </XCell>
-                <XCell area="footer">
-                    <XCard.Row>
-                        {projectsLength > 0 && (
-                            <XCard.Col mode="fixed">
-                                <XCard.Title
-                                    title={projectsLength.toString()}
-                                    subtitle="Recent Projects"
-                                />
-                            </XCard.Col>
-                        )}
-                        <XCard.Col mode="fill">
-                            {featured && (
-                                <XCard.Title
-                                    title={featured.title}
-                                    subtitle="Featured Project"
-                                    path={Links.area('sf').project(featured.url).view}
-                                    preview={featured.picture ? featured.picture.url : null}
-                                />
-                            )}
-                        </XCard.Col>
-                    </XCard.Row>
-                </XCell>
-                <XCell area="button">
-                    <XCard.Button
-                        title="View Profile"
-                        path={Links.area('sf').org(props.org.slug).view}
-                    />
-                </XCell>
-            </XGrid>
-            {/* <XCard.Photo path={Links.area('sf').org(props.org.slug).view} src={props.org.logo} />
+            <XCard.Photo path={Links.area('sf').org(props.org.slug).view} src={props.org.logo} />
             <XCard.Row>
                 <XCard.Col mode="fill">
                     <XCard.Title
@@ -130,7 +80,7 @@ export function OrganizationsListCard(props: { org: Types.OrganizationShortFragm
                         path={Links.area('sf').org(props.org.slug).view}
                     />
                 </XCard.Col>
-            </XCard.Row> */}
+            </XCard.Row>
         </XCard>
     );
 }

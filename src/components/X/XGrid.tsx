@@ -25,16 +25,20 @@ export let XGrid = Glamorous.div<{ mode?: 'two-row' }>({
     height: '100%',
     display: 'grid',
     gridGap: 0,
-    gridTemplateColumns: '168px auto',
+    gridTemplateColumns: '168px max-content fit-conten',
+    gridTemplateRows: '82px 82px',
     gridTemplateAreas: `
       "sidebar header header"
       "sidebar footer button"
     `,
     '@media(max-width: 767px)': {
+        gridTemplateColumns: '168px auto',
+        gridTemplateRows: '168px 82px 82px',
         gridTemplateAreas: `
-        "sidebar header header"
-        "footer  footer footer"
-        "button  button button"
+        "sidebar sidebar sidebar"
+        "header  header  header"
+        "footer  footer  footer"
+        "button  button  button"
       `,
     }
 });
