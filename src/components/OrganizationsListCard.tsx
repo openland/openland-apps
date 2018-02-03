@@ -1,14 +1,5 @@
 import * as React from 'react';
-
-import {
-    XCard,
-    XCardPhoto,
-    XCardTitle,
-    XCardExternalLink,
-    XCardButton,
-    XCardRow
-} from './X/XCard';
-import { XColumn } from './X/XGrid';
+import { XCard } from './X/XCard';
 import { Links } from '../Links';
 import * as Types from '../api/Types';
 
@@ -47,48 +38,48 @@ export function OrganizationsListCard(props: { org: Types.OrganizationShortFragm
 
     return (
         <XCard>
-            <XCardPhoto path={Links.area('sf').org(props.org.slug).view} src={props.org.logo} />
-            <XCardRow>
-                <XColumn mode="fill">
-                    <XCardTitle
+            <XCard.Photo path={Links.area('sf').org(props.org.slug).view} src={props.org.logo} />
+            <XCard.Row>
+                <XCard.Col mode="fill">
+                    <XCard.Title
                         title={props.org.title}
                         subtitle={subtitle}
                         path={Links.area('sf').org(props.org.slug).view}
                     />
-                </XColumn>
+                </XCard.Col>
 
                 {props.org.url && (
-                    <XColumn>
-                        <XCardExternalLink href={props.org.url} />
-                    </XColumn>
+                    <XCard.Col>
+                        <XCard.ExternalLink href={props.org.url} />
+                    </XCard.Col>
                 )}
-            </XCardRow>
-            <XCardRow>
+            </XCard.Row>
+            <XCard.Row>
                 {projectsLength > 0 && (
-                    <XColumn mode="fixed">
-                        <XCardTitle
+                    <XCard.Col mode="fixed">
+                        <XCard.Title
                             title={projectsLength.toString()}
                             subtitle="Recent Projects"
                         />
-                    </XColumn>
+                    </XCard.Col>
                 )}
-                <XColumn mode="fill">
+                <XCard.Col mode="fill">
                     {featured && (
-                        <XCardTitle
+                        <XCard.Title
                             title={featured.title}
                             subtitle="Featured Project"
                             path={Links.area('sf').project(featured.url).view}
                             preview={featured.picture ? featured.picture.url : null}
                         />
                     )}
-                </XColumn>
-                <XColumn mode="fixed">
-                    <XCardButton
+                </XCard.Col>
+                <XCard.Col mode="fixed">
+                    <XCard.Button
                         title="View Profile"
                         path={Links.area('sf').org(props.org.slug).view}
                     />
-                </XColumn>
-            </XCardRow>
+                </XCard.Col>
+            </XCard.Row>
         </XCard>
     );
 }

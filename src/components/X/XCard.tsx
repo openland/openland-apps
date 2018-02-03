@@ -4,25 +4,15 @@ import * as classnames from 'classnames';
 import { XLink } from './XLink';
 import { XCloudImage } from './XCloudImage';
 import Glamorous from 'glamorous';
-import { XRow } from './XGrid';
+import { XRow, XColumn } from './XGrid';
 
-export class XCard extends React.Component {
-    render() {
-        let photoComponent = hasChildren('_xCardPhoto', this.props.children);
-        let otherChildren = filterChildren('_xCardPhoto', this.props.children);
-        return (
-            <div className={classnames('x-card-s', { 'horizontal': photoComponent !== null })}>
-                {photoComponent}
-                {photoComponent !== null && (
-                    <div className="x-card-s-content">
-                        {otherChildren}
-                    </div>
-                )}
-                {photoComponent === null && otherChildren}
-            </div>
-        );
+export const XCardRow = Glamorous(XRow)({
+    height: 82,
+    borderBottom: '1px solid rgba(38,38,38,0.08)',
+    '&:last-child': {
+        borderBottom: 0
     }
-}
+});
 
 export class XCardPhoto extends React.Component<{ path?: string, src?: string | null }> {
     static defaultProps = {
@@ -39,29 +29,6 @@ export class XCardPhoto extends React.Component<{ path?: string, src?: string | 
         );
     }
 }
-
-export const XCardRow = Glamorous(XRow)({
-    height: 82,
-    borderBottom: '1px solid rgba(38,38,38,0.08)',
-    '&:last-child': {
-        borderBottom: 0
-    }
-});
-
-// export class XCardColumn extends React.Component<{ mode?: 'fixed' | 'fit' | 'fill' | null }> {
-//     render() {
-//         let className = classnames(
-//             'x-card-column',
-//             { 'x-card-column-fixed': this.props.mode === 'fixed' },
-//             { 'x-card-column-fill': this.props.mode === 'fill' }
-//         );
-//         return (
-//             <div className={className}>
-//                 {this.props.children}
-//             </div >
-//         )
-//     }
-// }
 
 export class XCardTitle extends React.Component<{ title: string, subtitle?: string | null, path?: string | null, preview?: string | null }> {
     render() {
@@ -110,12 +77,28 @@ export class XCardExternalLink extends React.Component<{ href: string }> {
     }
 }
 
-// export class XCardContent extends React.Component {
-//     render() {
-//         return (
-//             <div className="x-card-box">
-//                 {this.props.children}
-//             </div>
-//         );
-//     }
-// }
+export class XCard extends React.Component {
+
+    static Row = XCardRow;
+    static Col = XColumn;
+    static Photo = XCardPhoto;
+    static Title = XCardTitle;
+    static Button = XCardButton;
+    static ExternalLink = XCardExternalLink;
+
+    render() {
+        let photoComponent = hasChildren('_xCardPhoto', this.props.children);
+        let otherChildren = filterChildren('_xCardPhoto', this.props.children);
+        return (
+            <div className={classnames('x-card-s', { 'horizontal': photoComponent !== null })}>
+                {photoComponent}
+                {photoComponent !== null && (
+                    <div className="x-card-s-content">
+                        {otherChildren}
+                    </div>
+                )}
+                {photoComponent === null && otherChildren}
+            </div>
+        );
+    }
+}
