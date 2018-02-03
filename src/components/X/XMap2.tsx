@@ -55,7 +55,7 @@ export class XMap2 extends React.Component<XMap2Props> {
                     zoom: zoom,
                     style: this.props.mapStyle
                 });
-                mp.addControl(new v2.NavigationControl(), 'bottom-right');
+                mp.addControl(new v2.NavigationControl(), 'top-left');
                 // mp.on('load', () => {
                 //     mp.addLayer({
                 //         'id': 'terrain-data',
