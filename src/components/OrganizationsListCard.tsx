@@ -3,12 +3,12 @@ import * as React from 'react';
 import {
     XCard,
     XCardPhoto,
-    XCardColumn,
     XCardTitle,
     XCardExternalLink,
     XCardButton,
     XCardRow
 } from './X/XCard';
+import { XColumn } from './X/XGrid';
 import { Links } from '../Links';
 import * as Types from '../api/Types';
 
@@ -49,30 +49,30 @@ export function OrganizationsListCard(props: { org: Types.OrganizationShortFragm
         <XCard>
             <XCardPhoto path={Links.area('sf').org(props.org.slug).view} src={props.org.logo} />
             <XCardRow>
-                <XCardColumn mode="fill">
+                <XColumn mode="fill">
                     <XCardTitle
                         title={props.org.title}
                         subtitle={subtitle}
                         path={Links.area('sf').org(props.org.slug).view}
                     />
-                </XCardColumn>
+                </XColumn>
 
                 {props.org.url && (
-                    <XCardColumn>
+                    <XColumn>
                         <XCardExternalLink href={props.org.url} />
-                    </XCardColumn>
+                    </XColumn>
                 )}
             </XCardRow>
             <XCardRow>
                 {projectsLength > 0 && (
-                    <XCardColumn mode="fixed">
+                    <XColumn mode="fixed">
                         <XCardTitle
                             title={projectsLength.toString()}
                             subtitle="Recent Projects"
                         />
-                    </XCardColumn>
+                    </XColumn>
                 )}
-                <XCardColumn mode="fill">
+                <XColumn mode="fill">
                     {featured && (
                         <XCardTitle
                             title={featured.title}
@@ -81,13 +81,13 @@ export function OrganizationsListCard(props: { org: Types.OrganizationShortFragm
                             preview={featured.picture ? featured.picture.url : null}
                         />
                     )}
-                </XCardColumn>
-                <XCardColumn mode="fixed">
+                </XColumn>
+                <XColumn mode="fixed">
                     <XCardButton
                         title="View Profile"
                         path={Links.area('sf').org(props.org.slug).view}
                     />
-                </XCardColumn>
+                </XColumn>
             </XCardRow>
         </XCard>
     );

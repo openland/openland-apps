@@ -4,7 +4,7 @@ import * as classnames from 'classnames';
 import { XLink } from './XLink';
 import { XCloudImage } from './XCloudImage';
 import Glamorous from 'glamorous';
-import { XRow } from './XRow';
+import { XRow } from './XGrid';
 
 export class XCard extends React.Component {
     render() {
@@ -48,20 +48,20 @@ export const XCardRow = Glamorous(XRow)({
     }
 });
 
-export class XCardColumn extends React.Component<{ mode?: 'fixed' | 'fit' | 'fill' | null }> {
-    render() {
-        let className = classnames(
-            'x-card-column',
-            { 'x-card-column-fixed': this.props.mode === 'fixed' },
-            { 'x-card-column-fill': this.props.mode === 'fill' }
-        );
-        return (
-            <div className={className}>
-                {this.props.children}
-            </div >
-        )
-    }
-}
+// export class XCardColumn extends React.Component<{ mode?: 'fixed' | 'fit' | 'fill' | null }> {
+//     render() {
+//         let className = classnames(
+//             'x-card-column',
+//             { 'x-card-column-fixed': this.props.mode === 'fixed' },
+//             { 'x-card-column-fill': this.props.mode === 'fill' }
+//         );
+//         return (
+//             <div className={className}>
+//                 {this.props.children}
+//             </div >
+//         )
+//     }
+// }
 
 export class XCardTitle extends React.Component<{ title: string, subtitle?: string | null, path?: string | null, preview?: string | null }> {
     render() {
