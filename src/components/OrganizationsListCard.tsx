@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { ListCardContainer } from './ListCardComponents';
-import { ListCardImageBox } from './ListCardComponents';
-import { ListCardBox } from './ListCardComponents';
-import { ListCardRow } from './ListCardComponents';
-import { ListCardMainTitle } from './ListCardComponents';
-import { ListCardMainLink } from './ListCardComponents';
-import { ListCardCount } from './ListCardComponents';
-import { ListCardDetails } from './ListCardComponents';
-
-import { XCloudImage } from './X/XCloudImage';
-import { XLink } from './X/XLink';
 
 import { Links } from '../Links';
+import {
+    XCard,
+    XCardPhoto,
+    XCardColumn,
+    XCardTitle,
+    XCardExternalLink,
+    XCardButton
+} from './X/XCard';
+import { XListItem } from './X/XList';
+import { XRow } from './X/XRow';
 
 export interface OrganizationListCardProps {
     id: string;
@@ -31,48 +30,51 @@ export interface OrganizationListCardProps {
 
 export function OrganizationsListCard(props: OrganizationListCardProps) {
     return (
-        <ListCardContainer withImage={true} className={'organization-card'}>
-            {props.logo && (
-                <ListCardImageBox path={Links.area('sf').org(props.slug).view}>
-                    <XCloudImage src={props.logo} maxWidth={140} maxHeight={140} />
-                </ListCardImageBox>
-            )}
-            {!props.logo && (
-                <ListCardImageBox path={Links.area('sf').org(props.slug).view} noPhoto={true} />
-            )}
-            <ListCardBox>
-                <ListCardRow className={'top'}>
-                    <ListCardMainTitle
-                        link={Links.area('sf').org(props.slug).view}
-                        title={props.title}
-                        subtitle={props.subtitle}
-                    />
-                    {props.url && (
-                        <ListCardMainLink
-                            link={props.url}
+        <XListItem>
+            <XCard>
+                <XCardPhoto path={Links.area('sf').org(props.slug).view} src={props.logo} />
+                <XRow>
+                    <XCardColumn mode="fill">
+                        <XCardTitle
+                            title={props.title}
+                            subtitle={props.subtitle}
+                            path={Links.area('sf').org(props.slug).view}
                         />
+                    </XCardColumn>
+
+                    {props.url && (
+                        <XCardColumn>
+                            <XCardExternalLink href={props.url} />
+                        </XCardColumn>
                     )}
-                </ListCardRow>
-                <ListCardRow className={'bottom'}>
-                    {(props.projects || props.projects > 0) && (
-                        <ListCardCount title={props.projects} subtitle={'recent projects'}/>
+                </XRow>
+                <XRow>
+                    {props.projects !== null && props.projects > 0 && (
+                        <XCardColumn mode="fixed">
+                            <XCardTitle
+                                title={props.projects.toString()}
+                                subtitle="Recent Projects"
+                            />
+                        </XCardColumn>
                     )}
-                    {props.featuredProject && (
-                        <XLink
-                            className={'x-card-project' + (props.featuredProject.picture ? ' with-photo' : '')}
-                            path={Links.area('sf').project(props.featuredProject.url).view}
-                        >
-                            {props.featuredProject.picture && (
-                                <div className="project-img">
-                                    <img src={props.featuredProject.picture.retina} alt="" />
-                                </div>
-                            )}
-                            <ListCardCount title={props.featuredProject.title} subtitle={'featured project'}/>
-                        </XLink>
-                    )}
-                    <ListCardDetails path={Links.area('sf').org(props.slug).view} title={'View profile'}/>
-                </ListCardRow>
-            </ListCardBox>
-        </ListCardContainer>
+                    <XCardColumn mode="fill">
+                        {props.featuredProject && (
+                            <XCardTitle
+                                title={props.featuredProject.title}
+                                subtitle="Featured Project"
+                                path={Links.area('sf').project(props.featuredProject.url).view}
+                                preview={props.featuredProject.picture ? props.featuredProject.picture.url : null}
+                            />
+                        )}
+                    </XCardColumn>
+                    <XCardColumn mode="fixed">
+                        <XCardButton
+                            title="View Profile"
+                            path={Links.area('sf').org(props.slug).view}
+                        />
+                    </XCardColumn>
+                </XRow>
+            </XCard>
+        </XListItem>
     )
 }

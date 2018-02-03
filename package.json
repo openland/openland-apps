@@ -97,7 +97,7 @@
 		"sources": "./node_modules/typescript/bin/tsc",
 		"sources:watch": "./node_modules/typescript/bin/tsc --watch",
 		"less": "yarn less-watch-compiler --run-once src/less build/dist/static/css style.less",
-		"less:watch": "yarn less-watch-compiler src/less build/dist/static/css style.less",
+		"less:watch": "yarn less-watch-compiler --minified false src/less build/dist/static/css style.less",
 		"assets": "yarn cpx \"./src/static/**/*\" ./build/dist/static/",
 		"assets:watch": "yarn cpx \"./src/static/**/*\" ./build/dist/static/ --watch",
 		"bundle": "yarn sources && yarn assets && yarn less",
