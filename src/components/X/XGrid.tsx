@@ -1,10 +1,11 @@
 import Glamorous from 'glamorous';
 
-export let XRow = Glamorous.div({
+export let XRow = Glamorous.div<{ padding?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
-    width: '100%'
-});
+    width: '100%',
+    padding: props.padding === true ? 15 : undefined
+}));
 
 export const XColumn = Glamorous.div<{ mode?: 'fixed' | 'fit' | 'fill' | null }>((props) => ({
     height: '100%',

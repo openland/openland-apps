@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { withPage } from '../../../components/withPage';
 import { withLoader } from '../../../components/withLoader';
-import { XContainer } from '../../../components/X/XContainer';
 import { ListOrganizations } from '../../../components/ListOrganizations';
 import { ListPermits } from '../../../components/ListPermits';
 import { XWrap } from '../../../components/X/XWrap';
 import { XLink } from '../../../components/X/XLink';
-import { XColumn } from '../../../components/X/XColumn';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
 import { Links } from '../../../Links';
 import { withBuildingProject } from '../../../api';
+import { XPageTwoColumns } from '../../../components/X/XPageTwoColumns';
+import { XTitle } from '../../../components/X/XTitle';
+import { XSection } from '../../../components/X/XSection';
 
 export default withPage(withBuildingProject(withLoader((props) => {
     let map = undefined;
@@ -28,91 +29,86 @@ export default withPage(withBuildingProject(withLoader((props) => {
             title={['Statecraft', 'San Francisco', 'Construction projects', props.data.project.name]}
             imgUrl={props.data.project.preview && props.data.project.preview.url}
         />
-        <div className="x-in">
-            <XContainer wide={true}>
-                <div className="row">
-                    <XColumn cols={8} mobile={12}>
-                        <XWrap>
-                            <XCard>
-                                <div className="x-project--photo">
-                                    <img src={props.data.project.preview!!.url} alt="" />
-                                </div>
+        <XPageTwoColumns>
+            <XPageTwoColumns.Primary>
+                <XSection>
+                    <XCard>
+                        <div className="x-project--photo">
+                            <img src={props.data.project.preview!!.url} alt="" />
+                        </div>
 
-                                <div className="x-project--info">
-                                    <div className="x-project--title">
-                                        <div className="x-project--name">{props.data.project.name}</div>
+                        <div className="x-project--info">
+                            <div className="x-project--title">
+                                <div className="x-project--name">{props.data.project.name}</div>
 
-                                        {props.data.project.verified &&
-                                            <div className="x-project--verified"><span>Verified profile</span></div>}
-                                    </div>
-
-                                    {subtitle && <div className="x-project--address">{subtitle}</div>}
-                                    {props.data.project.description && (
-                                        <div className="x-project--text">{props.data.project.description}</div>
-                                    )}
-                                </div>
-
-                                <div className="x-project--tools">
-                                    <div className="x-project--counters">
-                                        <div className="x-project--counter">
-                                            <span>{props.data.project.extrasYearEnd}</span>
-                                            Expected completion
-                                        </div>
-                                        <div className="x-project--counter">
-                                            <span>{props.data.project.proposedUnits!! - props.data.project.existingUnits!!}</span>
-                                            Net units
-                                        </div>
-                                        {/*<div className="x-project--counter"><span>Rent</span>Building type</div>*/}
-                                    </div>
-
-                                    <XLink
-                                        path={Links.area('sf').project(props.data.project.slug).edit}
-                                        className="x-project--btn" writeAccess={true}
-                                    ><span><i className="icon-edit" />Edit profile</span>
-                                    </XLink>
-                                </div>
-                            </XCard>
-                        </XWrap>
-
-                        {props.data.project.permits && props.data.project.permits.length > 0 && (
-                            <XWrap title="Building permits">
-                                <ListPermits permits={props.data.project.permits} hideCounter={true} />
-                            </XWrap>
-                        )}
-                    </XColumn>
-                    <XColumn cols={4} mobile={12}>
-                        <XWrap>
-                            <div className="x-project--box">
-                                {map && <div className="x-project--map" style={{ backgroundImage: 'url(' + map + ')' }} />}
-                                {!map && <div className="x-project--map no-photo" />}
-
-                                <div className="x-project--links">
-                                    {props.data.project.extrasUrl && (
-                                        <XLink href={props.data.project.extrasUrl} className="x-project--link">Website</XLink>
-                                    )}
-
-                                    {/*<XLink href="#" className="x-project--social"><i className="icon-inst"/></XLink>*/}
-                                    {/*<XLink href="#" className="x-project--social"><i className="icon-fb-o"/></XLink>*/}
-                                </div>
+                                {props.data.project.verified &&
+                                    <div className="x-project--verified"><span>Verified profile</span></div>}
                             </div>
-                        </XWrap>
 
-                        {props.data.project.developers && props.data.project.developers.length > 0 && (
-                            <XWrap title="Developers">
-                                <ListOrganizations developers={props.data.project.developers} />
-                            </XWrap>
-                        )}
+                            {subtitle && <div className="x-project--address">{subtitle}</div>}
+                            {props.data.project.description && (
+                                <div className="x-project--text">{props.data.project.description}</div>
+                            )}
+                        </div>
 
-                        {props.data.project.constructors && props.data.project.constructors.length > 0 && (
-                            <XWrap title="Contractors">
-                                <ListOrganizations developers={props.data.project.constructors} />
-                            </XWrap>
-                        )}
+                        <div className="x-project--tools">
+                            <div className="x-project--counters">
+                                <div className="x-project--counter">
+                                    <span>{props.data.project.extrasYearEnd}</span>
+                                    Expected completion
+                                        </div>
+                                <div className="x-project--counter">
+                                    <span>{props.data.project.proposedUnits!! - props.data.project.existingUnits!!}</span>
+                                    Net units
+                                        </div>
+                                {/*<div className="x-project--counter"><span>Rent</span>Building type</div>*/}
+                            </div>
 
-                    </XColumn>
-                </div>
-            </XContainer>
-        </div>
+                            <XLink
+                                path={Links.area('sf').project(props.data.project.slug).edit}
+                                className="x-project--btn" writeAccess={true}
+                            ><span><i className="icon-edit" />Edit profile</span>
+                            </XLink>
+                        </div>
+                    </XCard>
+                </XSection>
+                {props.data.project.permits && props.data.project.permits.length > 0 && (
+                    <XSection>
+                        <XTitle>Building Permits</XTitle>
+                        <ListPermits permits={props.data.project.permits} hideCounter={true} />
+                    </XSection>
+                )}
+            </XPageTwoColumns.Primary>
+            <XPageTwoColumns.Secondary>
+
+                <XSection>
+                    <div className="x-project--box">
+                        {map && <div className="x-project--map" style={{ backgroundImage: 'url(' + map + ')' }} />}
+                        {!map && <div className="x-project--map no-photo" />}
+
+                        <div className="x-project--links">
+                            {props.data.project.extrasUrl && (
+                                <XLink href={props.data.project.extrasUrl} className="x-project--link">Website</XLink>
+                            )}
+                        </div>
+                    </div>
+                </XSection>
+
+                {props.data.project.developers && props.data.project.developers.length > 0 && (
+                    <XSection>
+                        <XTitle>Developers</XTitle>
+                        <ListOrganizations developers={props.data.project.developers} />
+                    </XSection>
+                )}
+
+                {props.data.project.constructors && props.data.project.constructors.length > 0 && (
+                    <XSection>
+                        <XTitle>Contractors</XTitle>
+                        <ListOrganizations developers={props.data.project.constructors} />
+                    </XSection>
+                )}
+            </XPageTwoColumns.Secondary>
+        </XPageTwoColumns>
         </>
     );
 })));

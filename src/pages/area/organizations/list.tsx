@@ -4,10 +4,7 @@ import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
 import { XList, XListItem } from '../../../components/X/XList';
 import { OrganizationsListCard } from '../../../components/OrganizationsListCard';
-import {
-    DataList, DataListFilters, DataListContent, DataListRadio,
-    DataListRadioItem, DataListSearch
-} from '../../../components/DataList';
+import { DataList } from '../../../components/DataList';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { withAreaPage } from '../../../components/withAreaPage';
@@ -52,21 +49,15 @@ export default withAreaPage(withOrganizations(withLoader((props) => {
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Organizations']} />
         <DataList>
-            <DataListFilters title="Organizations">
-                <DataListSearch searchKey="filter" />
-                <DataListRadio radioKey="type" title="Organization Type">
-                    <DataListRadioItem title="All" />
-                    <DataListRadioItem title="Developers" itemKey="developer" />
-                    <DataListRadioItem title="Contractors" itemKey="constructor" />
-                </DataListRadio>
-
-                {/*<div className="x-join hidden-xs hidden-sm">*/}
-                {/*<div className="x-join--btn">*/}
-                {/*<a className="x-btn is-block is-outline" target="_blank" href="#">Add an organization</a>*/}
-                {/*</div>*/}
-                {/*</div>*/}
-            </DataListFilters>
-            <DataListContent title="organizations">
+            <DataList.Filters title="Organizations">
+                <DataList.Search searchKey="filter" />
+                <DataList.Radio radioKey="type" title="Organization Type">
+                    <DataList.RadioItem title="All" />
+                    <DataList.RadioItem title="Developers" itemKey="developer" />
+                    <DataList.RadioItem title="Contractors" itemKey="constructor" />
+                </DataList.Radio>
+            </DataList.Filters>
+            <DataList.Content>
                 <XWriteAcces>
                     <AddForm />
                     <br />
@@ -80,15 +71,12 @@ export default withAreaPage(withOrganizations(withLoader((props) => {
                     {data.map((item: any) => {
                         return (
                             <XListItem key={item.id}>
-                                <OrganizationsListCard
-                                    key={item.id}
-                                    org={item}
-                                />
+                                <OrganizationsListCard key={item.id} org={item} />
                             </XListItem>
                         )
                     })}
                 </XList>
-            </DataListContent>
+            </DataList.Content>
         </DataList>
         </>
     );

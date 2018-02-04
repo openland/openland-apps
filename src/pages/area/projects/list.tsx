@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-    DataList, DataListFilters, DataListContent, DataListRadio,
-    DataListRadioItem, DataListSearch, DataListContentStats
-} from '../../../components/DataList';
+import { DataList } from '../../../components/DataList';
 import { DataListInvite } from '../../../components/DataListInvite';
 import { XList } from '../../../components/X/XList';
 import { ProjectsListCard } from '../../../components/ProjectsListCard';
@@ -44,34 +41,33 @@ const PipelineItems = withPagedList<ProjectShortFragment>((props) => (
 ));
 
 export default withAreaPage(withBuildingProjects(withLoader((props) => {
-
     return (
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Construction projects']} />
         <DataList>
-            <DataListFilters title="Construction projects">
-                <DataListSearch searchKey="filter" />
-                <DataListRadio radioKey="year" title="Expected completion">
-                    <DataListRadioItem title="All" itemKey="all" />
-                    <DataListRadioItem title="2017" itemKey="2017" />
-                    <DataListRadioItem title="2018" />
-                    <DataListRadioItem title="2019+" itemKey="2019+" />
-                </DataListRadio>
-                <DataListRadio radioKey="minUnits" title="Project size">
-                    <DataListRadioItem title="All" />
-                    <DataListRadioItem title="10+ units" itemKey="10" />
-                </DataListRadio>
+            <DataList.Filters title="Construction projects">
+                <DataList.Search searchKey="filter" />
+                <DataList.Radio radioKey="year" title="Expected completion">
+                    <DataList.RadioItem title="All" itemKey="all" />
+                    <DataList.RadioItem title="2017" itemKey="2017" />
+                    <DataList.RadioItem title="2018" />
+                    <DataList.RadioItem title="2019+" itemKey="2019+" />
+                </DataList.Radio>
+                <DataList.Radio radioKey="minUnits" title="Project size">
+                    <DataList.RadioItem title="All" />
+                    <DataList.RadioItem title="10+ units" itemKey="10" />
+                </DataList.Radio>
                 <DataListInvite />
-            </DataListFilters>
-            <DataListContent title="Pipeline">
-                <DataListContentStats
+            </DataList.Filters>
+            <DataList.Content>
+                <DataList.ContentStats
                     totalProjects={props.data.items ? props.data.items.stats.totalProjects : 0}
                     totalProjectsVerified={props.data.items ? props.data.items.stats.totalProjectsVerified : 0}
                     newUnits={props.data.items ? props.data.items.stats.newUnits : 0}
                     newUnitsVerified={props.data.items ? props.data.items.stats.newUnitsVerified : 0}
                 />
                 {props.data.items && (<PipelineItems data={props.data} />)}
-            </DataListContent>
+            </DataList.Content>
         </DataList>
         </>
     );

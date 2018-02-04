@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withData } from '../utils/withData';
 import { UserInfoProvider } from '../components/UserInfo';
-import { PageContainer } from './PageContainer';
+import { XDocumentRoot } from '../components/X/Scaffold/XDocumentRoot';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { withAreaQuery } from '../api';
@@ -9,11 +9,11 @@ import { withAreaQuery } from '../api';
 export function withAreaPage(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAreaQuery((props) => (
         <UserInfoProvider user={props.data.me} area={props.data.area} router={props.router}>
-            <PageContainer>
+            <XDocumentRoot>
                 <Header />
                 <WrappedComponent />
                 <Footer />
-            </PageContainer>
+            </XDocumentRoot>
         </UserInfoProvider>
     )));
 };

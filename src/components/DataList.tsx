@@ -1,22 +1,11 @@
 import * as React from 'react';
 import { XLink } from './X/XLink';
 import * as qs from 'query-string';
-import { XContainer } from './X/XContainer';
 import { XFilterInput } from './X/XFilterInput';
 import { withRouter } from '../utils/withRouter';
 import { XColumn } from './X/XColumn';
-
-export function DataList(props: { children?: any }) {
-    return (
-        <div className="x-in">
-            <XContainer wide={true}>
-                <div className={'row'}>
-                    {props.children}
-                </div>
-            </XContainer>
-        </div>
-    );
-}
+import { XPageContent } from './X/XPageContent';
+import { XRow } from './X/XGrid';
 
 export class DataListFilters extends React.Component<{ title: string, children?: any }, { isShown: boolean }> {
     constructor(props: { title: string, children?: any }) {
@@ -63,7 +52,7 @@ export class DataListFilters extends React.Component<{ title: string, children?:
     }
 }
 
-export function DataListContent(props: { title?: string, children?: any }) {
+export function DataListContent(props: { children?: any }) {
     return (
         <XColumn cols={9} mobile={12}>
             {props.children}
@@ -141,3 +130,23 @@ export const DataListSearch = withRouter<{ searchKey: string }>(props => {
         </div>
     );
 });
+
+export class DataList extends React.Component {
+
+    static Filters = DataListFilters;
+    static Content = DataListContent;
+    static ContentStats = DataListContentStats;
+    static Radio = DataListRadio;
+    static RadioItem = DataListRadioItem;
+    static Search = DataListSearch;
+
+    render() {
+        return (
+            <XPageContent>
+                <XRow>
+                    {this.props.children}
+                </XRow>
+            </XPageContent>
+        );
+    }
+}

@@ -1128,18 +1128,6 @@ body {
 
 // --------
 
-.x-page {
-	font: normal normal 14px/20px 'Aktiv Grotesk Corp', arial, sans-serif;
-	background: #F5F6F8;
-	color: @side;
-
-	flex-direction: column;
-
-	.display (flex);
-	.min-size (initial, 100vh);
-
-	input, textarea, button { font-family: 'Aktiv Grotesk Corp', arial, sans-serif; }
-}
 
 .x-in {
 	flex: 1;
@@ -1261,6 +1249,7 @@ body {
 .x-header {
 	z-index: 2;
 	color: @white;
+	align-self: stretch;
 
 	.position (relative);
 
@@ -1509,6 +1498,7 @@ body {
 	color: @white;
 	padding: 0 0 69px;
 	background-size: cover;
+	align-self: stretch;
 
 	@media @media-xs-only { padding: 0 0 48px; }
 
@@ -2095,6 +2085,7 @@ body {
 	background: @side;
 	color: @white;
 	padding: 32px 0;
+	align-self: stretch;
 
 	@media @media-xs-only { padding: 30px 0; }
 

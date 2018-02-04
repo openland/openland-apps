@@ -3,7 +3,7 @@ import { withData } from '../utils/withData';
 import { UserInfoProvider } from '../components/UserInfo';
 import { QueryProps } from 'react-apollo';
 import Error from 'next/error';
-import { PageContainer } from './PageContainer';
+import { XDocumentRoot } from './X/Scaffold/XDocumentRoot';
 import { Loader } from './Loaders';
 import '../utils/routing';
 import { Header } from './Header';
@@ -38,11 +38,11 @@ function withRootLoader<P>(WrappedComponent: React.ComponentType<P>): React.Comp
 export function withPage(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAreaQuery(withRootLoader((props) => (
         <UserInfoProvider user={props.data.me} area={props.data.area} router={props.router}>
-            <PageContainer>
+            <XDocumentRoot>
                 <Header />
                 <WrappedComponent />
                 <Footer />
-            </PageContainer>
+            </XDocumentRoot>
         </UserInfoProvider>
     ))));
 }
@@ -50,10 +50,10 @@ export function withPage(WrappedComponent: React.ComponentType<{}>) {
 export function withPageFullScreen(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAreaQuery(withRootLoader((props) => (
         <UserInfoProvider user={props.data.me} area={props.data.area} router={props.router}>
-            <PageContainer>
+            <XDocumentRoot>
                 <Header />
                 <WrappedComponent />
-            </PageContainer>
+            </XDocumentRoot>
         </UserInfoProvider>
     ))));
 }
@@ -61,9 +61,9 @@ export function withPageFullScreen(WrappedComponent: React.ComponentType<{}>) {
 export function withLandingPage(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAreaQuery(withRootLoader((props) => (
         <UserInfoProvider user={props.data.me} area={props.data.area} router={props.router}>
-            <PageContainer>
+            <XDocumentRoot>
                 <WrappedComponent />
-            </PageContainer>
+            </XDocumentRoot>
         </UserInfoProvider>
     ))));
 }

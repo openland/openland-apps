@@ -38,10 +38,12 @@ export type XMediaSizes =
     'md-';
 
 class CssUtils {
-    forXS = '@media(max-width: 767px)';
-    forSM = '@media((min-width: 768px) and (max-width: 959px))';
-    forMD = '@media((min-width: 960px) and (max-width: 1055px))';
-    forLG = '@media(min-width: 1056px)';
+    forXS = '@media (max-width: 767px)';
+    forSM = '@media (min-width: 768px) and (max-width: 959px)';
+    forMD = '@media (min-width: 960px) and (max-width: 1055px)';
+    forLG = '@media (min-width: 1056px) and (max-width: 1247px)';
+    forXLG = '@media (min-width: 1248px) ';
+
     media(medias: [XMediaSizes]) {
         let queries: string[] = [];
         for (let m of medias) {

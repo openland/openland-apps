@@ -2,6 +2,7 @@ import Glamorous from 'glamorous';
 import { CSSUtils, XMediaSizes } from './utils';
 
 interface XGridLayout {
+    gap?: number,
     templateColumns?: string;
     templateRows?: string;
     templateAreas?: string[][];
@@ -16,6 +17,7 @@ interface XGridProps {
 function convertLayout(src?: XGridLayout) {
     if (src) {
         return {
+            gridGap: src.gap,
             gridTemplateColumns: src.templateColumns,
             gridTemplateRows: src.templateRows,
             gridTemplateAreas: src.templateAreas ? src.templateAreas.map((v) => '"' + v.join(' ') + '"').join(' ') : undefined,
