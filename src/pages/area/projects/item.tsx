@@ -3,7 +3,6 @@ import { withPage } from '../../../components/withPage';
 import { withLoader } from '../../../components/withLoader';
 import { ListOrganizations } from '../../../components/ListOrganizations';
 import { ListPermits } from '../../../components/ListPermits';
-import { XWrap } from '../../../components/X/XWrap';
 import { XLink } from '../../../components/X/XLink';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
