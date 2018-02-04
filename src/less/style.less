@@ -1182,32 +1182,34 @@ body {
 	top: 79px;
 	opacity: .6;
 
+	&--wrapper {
+		display: flex;
+		flex-direction: column;
+		padding: 10px;
+	}
+
 	&:hover {
 		opacity: 1;
 	}
 
-	.x-card {
-		padding: 10px;
-		
-		.legend-cell {
-			display: flex;
-			align-items: center;
-			margin-bottom: 5px;
-			cursor: pointer;
-	
-			&:last-child {
-				margin-bottom: 0
-			}
-	
-			.legend-indicator {
-				width: 25px;
-				height: 16px;
-				margin-right: 4px;
-			}
-	
-			.legend-description {
-				.font (15px, normal, normal);
-			}
+	.legend-cell {
+		display: flex;
+		align-items: center;
+		margin-bottom: 5px;
+		cursor: pointer;
+
+		&:last-child {
+			margin-bottom: 0
+		}
+
+		.legend-indicator {
+			width: 25px;
+			height: 16px;
+			margin-right: 4px;
+		}
+
+		.legend-description {
+			.font (15px, normal, normal);
 		}
 	}
 }
