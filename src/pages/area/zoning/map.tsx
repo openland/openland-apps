@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { XHead } from '../../../components/X/XHead';
 import { withPageFullScreen } from '../../../components/withPage';
-import { XFullScreenPage } from '../../../components/X/XFullScreenPage';
 import { XMap2 } from '../../../components/X/XMap2';
 import { XCard } from '../../../components/X/XCard';
+import { XPageFullScreen } from '../../../components/X/XPageFullScreen';
 
 export function XMapLegendContainer (props: {children: any}) {
     return (
@@ -30,7 +30,7 @@ export default withPageFullScreen((props) => {
     return (
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Zoning']} />
-        <XFullScreenPage behindHeader={true}>
+        <XPageFullScreen behindHeader={true}>
             <XMap2 mapStyle="mapbox://styles/steve-kite/cjcsbw6zq00dg2squfjuum14i" />
             <XMapLegendContainer>
                 <XMapLegendCell title={'Residental'} color={'hsl(336, 82%, 51%)'} />
@@ -39,7 +39,7 @@ export default withPageFullScreen((props) => {
                 <XMapLegendCell title={'Commercial'} color={'hsl(220, 79%, 52%)'} />
                 <XMapLegendCell title={'Public'} color={'hsl(112, 59%, 68%)'} />
             </XMapLegendContainer>
-        </XFullScreenPage>
+        </XPageFullScreen>
         </>
     )
 });
