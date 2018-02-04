@@ -9,7 +9,9 @@ export function XMapLegendContainer (props: {children: any}) {
     return (
         <div className="x-map--legend">
             <XCard>
-                {props.children}
+                <div className="x-map--legend--wrapper">
+                    {props.children}
+                </div>
             </XCard>
         </div>
     )
