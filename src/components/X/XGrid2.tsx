@@ -34,11 +34,9 @@ export let XGrid2 = Glamorous.div<XGridProps>((props) => ({
     [CSSUtils.media(['md'])]: convertLayout(props.layouts.md),
     [CSSUtils.media(['lg'])]: convertLayout(props.layouts.lg),
 
-    [CSSUtils.media(['xs-'])]: convertLayout(props.layouts['xs-']),
     [CSSUtils.media(['sm-'])]: convertLayout(props.layouts['sm-']),
     [CSSUtils.media(['md-'])]: convertLayout(props.layouts['md-']),
 
     [CSSUtils.media(['sm+'])]: convertLayout(props.layouts['sm+']),
     [CSSUtils.media(['md+'])]: convertLayout(props.layouts['md+']),
-    [CSSUtils.media(['lg+'])]: convertLayout(props.layouts['lg+']),
 }));

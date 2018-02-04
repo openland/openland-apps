@@ -15,13 +15,13 @@ export default withPage((props) => {
                         ['sidebar', 'header', 'header'],
                         ['sidebar', 'footer', 'footer']
                     ],
-                    // 'xs': {
-                    //     templateAreas: [
-                    //         ['sidebar', 'sidebar'],
-                    //         ['header', 'header'],
-                    //         ['footer', 'footer']
-                    //     ],
-                    // },
+                    'xs': {
+                        templateAreas: [
+                            ['header', 'sidebar'],
+                            ['header', 'sidebar'],
+                            ['footer', 'sidebar']
+                        ],
+                    },
                     'sm': {
                         templateAreas: [
                             ['sidebar', 'sidebar'],

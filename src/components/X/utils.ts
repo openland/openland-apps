@@ -33,9 +33,7 @@ export type XMediaSizes =
 
     'sm+' |
     'md+' |
-    'lg+' |
 
-    'xs-' |
     'sm-' |
     'md-';
 
@@ -47,16 +45,16 @@ class CssUtils {
     media(medias: [XMediaSizes]) {
         let queries: string[] = [];
         for (let m of medias) {
-            if (m === 'xs' || m === 'xs-') {
-                queries.push('max-width: 767px');
+            if (m === 'xs') {
+                queries.push('(max-width: 767px)');
             } else if (m === 'sm') {
                 queries.push('(min-width: 768px) and (max-width: 959px)');
             } else if (m === 'md') {
                 queries.push('(min-width: 960px) and (max-width: 1055px)');
-            } else if (m === 'lg' || m === 'lg+') {
+            } else if (m === 'lg') {
                 queries.push('(min-width: 1056px)');
             } else if (m === 'sm+') {
-                queries.push('min-width: 768px)');
+                queries.push('(min-width: 768px)');
             } else if (m === 'md+') {
                 queries.push('(min-width: 960px)');
             } else if (m === 'sm-') {
