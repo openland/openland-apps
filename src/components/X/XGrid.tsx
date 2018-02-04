@@ -43,6 +43,6 @@ export let XGrid = Glamorous.div<{ mode?: 'two-row' }>({
     }
 });
 
-export let XCell = Glamorous.div<{ area: 'sidebar' | 'header' | 'footer' | 'button' }>((props) => ({
+export let XCell = Glamorous.div<{ area: string }>((props) => ({
     gridArea: props.area
 }));

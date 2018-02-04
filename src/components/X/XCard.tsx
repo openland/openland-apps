@@ -1,17 +1,43 @@
 import * as React from 'react';
-import { hasChildren, filterChildren } from './utils';
+import { hasChildren, filterChildren, CSSUtils } from './utils';
 import * as classnames from 'classnames';
 import { XLink } from './XLink';
 import { XCloudImage } from './XCloudImage';
 import Glamorous from 'glamorous';
 import { XRow, XColumn } from './XGrid';
 
-export const XCardRow = Glamorous(XRow)({
+//
+// Basic Row
+//
+
+export const XCardRowDiv = Glamorous(XRow)({
     height: 82,
     borderBottom: '1px solid rgba(38,38,38,0.08)',
     '&:last-child': {
         borderBottom: 0
     }
+});
+
+export const XCardRowDivVert = Glamorous(XCardRowDiv)({
+    height: 'auto',
+    [CSSUtils.forXS]: {
+        flexDirection: 'column',
+    }
+});
+
+export class XCardRow extends React.Component<{ verticalize?: boolean }> {
+    render() {
+        let Wrapper = this.props.verticalize === true ? XCardRowDivVert : XCardRowDiv;
+        return (
+            <Wrapper>
+                {this.props.children}
+            </Wrapper>
+        );
+    }
+}
+
+export const XCardColumn = Glamorous(XColumn)({
+    height: 82,
 });
 
 export class XCardPhoto extends React.Component<{ path?: string, src?: string | null }> {
@@ -21,11 +47,11 @@ export class XCardPhoto extends React.Component<{ path?: string, src?: string | 
 
     render() {
         return (
-            <div className={classnames('x-card-s-photo')}>
-                <XLink path={this.props.path} className={classnames({ 'no-photo': !this.props.src })}>
-                    {this.props.src && <XCloudImage src={this.props.src} maxWidth={140} maxHeight={140} />}
-                </XLink>
-            </div>
+            // <div className={classnames('x-card-s-photo')}>
+            <XLink path={this.props.path} className={classnames({ 'no-photo': !this.props.src })}>
+                {this.props.src && <XCloudImage src={this.props.src} maxWidth={140} maxHeight={140} />}
+            </XLink>
+            // </div>
         );
     }
 }
@@ -57,6 +83,17 @@ export class XCardTitle extends React.Component<{ title: string, subtitle?: stri
     }
 }
 
+export class XCardTitleLarge extends React.Component<{ title: string, subtitle?: string | null, path?: string | null }> {
+    render() {
+        return (
+            <div className="x-card-s-title">
+                {this.props.path && (<XLink path={this.props.path}><div className="title">{this.props.title}</div></XLink>)}
+                {!this.props.path && (<div className="title">{this.props.title}</div>)}
+                {this.props.subtitle && <div className="subtitle">{this.props.subtitle}</div>}
+            </div>
+        );
+    }
+}
 export class XCardButton extends React.Component<{ title: string, path: string }> {
     render() {
         return (
@@ -77,10 +114,39 @@ export class XCardExternalLink extends React.Component<{ href: string }> {
     }
 }
 
+let XCardDiv = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    background: '#ffffff',
+    border: '1px solid fade(#262626, 8)',
+    color: '#262626',
+    overflow: 'hidden',
+    borderRadius: 4
+});
+
+let XCardDivIconized = Glamorous(XCardDiv)({
+    flexDirection: 'row',
+    [CSSUtils.forXS]: {
+        flexDirection: 'column',
+    }
+});
+
+let XCardDivIcon = Glamorous.div({
+    width: 168,
+    maxHeight: 164,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 0,
+    [CSSUtils.forXS]: {
+        width: '100%'
+    }
+});
+
 export class XCard extends React.Component {
 
     static Row = XCardRow;
-    static Col = XColumn;
+    static Col = XCardColumn;
     static Photo = XCardPhoto;
     static Title = XCardTitle;
     static Button = XCardButton;
@@ -89,16 +155,19 @@ export class XCard extends React.Component {
     render() {
         let photoComponent = hasChildren('_xCardPhoto', this.props.children);
         let otherChildren = filterChildren('_xCardPhoto', this.props.children);
+        let Wrapper = photoComponent !== null ? XCardDivIconized : XCardDiv;
         return (
-            <div className={classnames('x-card-s', { 'horizontal': photoComponent !== null })}>
-                {photoComponent}
+            <Wrapper>
+                {/* <div className={classnames('x-card-s', { 'horizontal': photoComponent !== null })}> */}
+                {photoComponent !== null && (<XCardDivIcon>{photoComponent}</XCardDivIcon>)}
                 {photoComponent !== null && (
                     <div className="x-card-s-content">
                         {otherChildren}
                     </div>
                 )}
                 {photoComponent === null && otherChildren}
-            </div>
+                {/* </div> */}
+            </Wrapper>
         );
     }
 }

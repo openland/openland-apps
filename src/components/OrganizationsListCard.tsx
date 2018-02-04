@@ -54,7 +54,7 @@ export function OrganizationsListCard(props: { org: Types.OrganizationShortFragm
                     </XCard.Col>
                 )}
             </XCard.Row>
-            <XCard.Row>
+            <XCard.Row verticalize={true}>
                 {projectsLength > 0 && (
                     <XCard.Col mode="fixed">
                         <XCard.Title

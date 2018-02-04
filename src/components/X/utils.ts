@@ -24,3 +24,53 @@ export function filterChildren(type: string, children?: any): any {
     }
     return res;
 }
+
+export type XMediaSizes =
+    'xs' |
+    'sm' |
+    'md' |
+    'lg' |
+
+    'sm+' |
+    'md+' |
+    'lg+' |
+
+    'xs-' |
+    'sm-' |
+    'md-';
+
+class CssUtils {
+    forXS = '@media(max-width: 767px)';
+    forSM = '@media((min-width: 768px) and (max-width: 959px))';
+    forMD = '@media((min-width: 960px) and (max-width: 1055px))';
+    forLG = '@media(min-width: 1056px)';
+    media(medias: [XMediaSizes]) {
+        let queries: string[] = [];
+        for (let m of medias) {
+            if (m === 'xs' || m === 'xs-') {
+                queries.push('max-width: 767px');
+            } else if (m === 'sm') {
+                queries.push('(min-width: 768px) and (max-width: 959px)');
+            } else if (m === 'md') {
+                queries.push('(min-width: 960px) and (max-width: 1055px)');
+            } else if (m === 'lg' || m === 'lg+') {
+                queries.push('(min-width: 1056px)');
+            } else if (m === 'sm+') {
+                queries.push('min-width: 768px)');
+            } else if (m === 'md+') {
+                queries.push('(min-width: 960px)');
+            } else if (m === 'sm-') {
+                queries.push('(max-width: 959px)');
+            } else if (m === 'md-') {
+                queries.push('(max-width: 1055px)');
+            }
+        }
+        if (queries.length === 1) {
+            return '@media ' + queries[0];
+        } else {
+            return '@media ' + queries.map((v) => '(' + v + ')').join(' or ');
+        }
+    }
+}
+
+export let CSSUtils = new CssUtils();

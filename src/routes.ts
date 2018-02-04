@@ -24,6 +24,9 @@ routes.add('/:areaId/zoning/', '/area/zoning/map');
 routes.add('/:areaId/stats', '/area/stats/stats');
 routes.add('/:areaId/stats/', '/area/stats/stats');
 
+routes.add('/:areaId/ui', '/area/ui/index');
+routes.add('/:areaId/ui/', '/area/ui/index');
+
 // Compatibility
 routes.add('/', '/compat/root');
 routes.add('index', '/compat/root');
