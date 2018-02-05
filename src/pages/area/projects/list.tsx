@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { DataList } from '../../../components/DataList';
-import { DataListInvite } from '../../../components/DataListInvite';
 import { XList } from '../../../components/X/XList';
 import { ProjectsListCard } from '../../../components/ProjectsListCard';
 import { withLoader } from '../../../components/withLoader';
@@ -59,7 +58,7 @@ export default withAreaPage(withBuildingProjects(withLoader((props) => {
                         <DataList.RadioItem title="All" />
                         <DataList.RadioItem title="10+ units" itemKey="10" />
                     </DataList.Radio>
-                    <DataListInvite />
+                    <DataList.Invite />
                 </DataList.Filters>
                 <DataList.Content>
                     <DataList.Stats>
