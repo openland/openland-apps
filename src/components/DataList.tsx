@@ -4,7 +4,6 @@ import * as qs from 'query-string';
 import { XFilterInput } from './X/XFilterInput';
 import { withRouter } from '../utils/withRouter';
 import { XColumn } from './X/XColumn';
-import { XPageContent } from './X/XPageContent';
 import { XRow } from './X/XGrid';
 
 export class DataListFilters extends React.Component<{ title: string, children?: any }, { isShown: boolean }> {
