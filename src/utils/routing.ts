@@ -94,7 +94,7 @@ export function resolveActionPath(props: {
     if (props.path) {
         destPath = props.path;
     } else if (props.query) {
-        let s = JSON.parse(JSON.stringify(props.router.query!!));
+        let s = JSON.parse(JSON.stringify(props.router.queryString!!));
         if (props.query.value) {
             s[props.query.field] = props.query.value;
         } else {

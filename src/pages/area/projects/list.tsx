@@ -62,13 +62,18 @@ export default withAreaPage(withBuildingProjects(withLoader((props) => {
                     <DataListInvite />
                 </DataList.Filters>
                 <DataList.Content>
-                    <DataList.ContentStats
-                        totalProjects={props.data.items ? props.data.items.stats.totalProjects : 0}
-                        totalProjectsVerified={props.data.items ? props.data.items.stats.totalProjectsVerified : 0}
-                        newUnits={props.data.items ? props.data.items.stats.newUnits : 0}
-                        newUnitsVerified={props.data.items ? props.data.items.stats.newUnitsVerified : 0}
-                    />
-                    {props.data.items && (<PipelineItems data={props.data} />)}
+                    <DataList.Stats>
+                        <DataList.Stats.Record counter={props.data.items ? props.data.items.stats.totalProjects : 0} title="Buildings" />
+                        <DataList.Stats.Record counter={props.data.items ? props.data.items.stats.newUnits : 0} title="Units" />
+                        {props.data.items.stats.totalProjectsVerified > 0 && props.data.items.stats.newUnitsVerified > 0 && (
+                            <>
+                            <DataList.Stats.Verified />
+                            <DataList.Stats.Record counter={props.data.items ? props.data.items.stats.totalProjectsVerified : 0} title="Buildings" />
+                            <DataList.Stats.Record counter={props.data.items ? props.data.items.stats.newUnitsVerified : 0} title="Units" />
+                            </>
+                        )}
+                    </DataList.Stats>
+                    <PipelineItems data={props.data} />
                 </DataList.Content>
             </DataList>
         </XPageContent>

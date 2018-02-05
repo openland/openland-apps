@@ -78,9 +78,9 @@ export default withPage(withPermits(withLoader((props) => {
                     </DataListRadio>
                 </DataListFilters>
                 <DataListContent>
-                    <div className="x-in--title hidden-xs">
-                        <div>{props.data.items.pageInfo.itemsCount}<span>Permits</span></div>
-                    </div>
+                    <DataList.Stats>
+                        <DataList.Stats.Record counter={props.data.items.pageInfo.itemsCount} title="Permits" />
+                    </DataList.Stats>
                     <PermitsItems data={props.data} />
                 </DataListContent>
             </DataList>

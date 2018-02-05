@@ -1,26 +1,19 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { Layout } from './_Layout';
 import { XVertical } from './XVertical';
+import { XFixedWidthContainer } from './Scaffold/XFixedWidthContainer';
 
-export let XPageContentDiv = Glamorous.div({
+export let XPageContentDiv = Glamorous(XFixedWidthContainer)({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
 
     paddingTop: 32,
-    paddingLeft: 8,
-    paddingRight: 8,
-    paddingBottom: 75,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingBottom: 80,
 
-    position: 'relative',
-
-    minWidth: 320,
-    [Layout.XS]: { width: '100%' },
-    [Layout.SM]: { width: 768 },
-    [Layout.MD]: { width: 960 },
-    [Layout.LG]: { width: 1056 },
-    [Layout.XLG]: { width: 1248 },
+    position: 'relative'
 });
 
 export function XPageContent(props: { children?: any }) {

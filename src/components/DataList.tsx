@@ -3,73 +3,100 @@ import { XLink } from './X/XLink';
 import * as qs from 'query-string';
 import { XFilterInput } from './X/XFilterInput';
 import { withRouter } from '../utils/withRouter';
-import { XColumn } from './X/XColumn';
-import { XRow } from './X/XGrid';
+import { XLayoutColumnWithMenu } from './X/XLayoutColumnWithMenu';
+import Glamorous from 'glamorous';
 
-export class DataListFilters extends React.Component<{ title: string, children?: any }, { isShown: boolean }> {
-    constructor(props: { title: string, children?: any }) {
+let FiltersTitle = Glamorous.div({
+    fontSize: '18px',
+    lineHeight: '20px',
+    fontWeight: 500,
+    marginTop: 8,
+    marginBottom: 8,
+});
+
+export class DataListFilters extends React.Component<{ title: string }> {
+    constructor(props: { title: string }) {
         super(props);
-
-        this.state = {
-            isShown: false
-        };
     }
 
     render() {
         return (
-            <XColumn cols={3} mobile={12}>
-                <div className={'x-filters' + (this.state.isShown ? ' is-shown' : '')}>
-                    <a
-                        className="x-filters--head"
-                        href="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            this.setState({ isShown: true });
-                        }}
-                    >
-                        Filters
-                    </a>
-                    <div className="x-filters--body">
-                        <a className="x-filters--close" href="#" onClick={(e) => {
-                            e.preventDefault();
-                            this.setState({ isShown: false });
-                        }}><i className="icon-close" /></a>
-
-                        <div className="x-in--title">{this.props.title}</div>
-                        {this.props.children}
-
-                        <div className="x-join visible-xs visible-sm">
-                            <div className="x-join--btn"><a className="x-btn is-block" href="#" onClick={(e) => {
-                                e.preventDefault();
-                                this.setState({ isShown: false });
-                            }}>Apply filters</a></div>
-                        </div>
-                    </div>
-                </div>
-            </XColumn>
+            <XLayoutColumnWithMenu.Menu buttonTitle="Filters" actionTitle="Apply Filters">
+                <FiltersTitle>{this.props.title}</FiltersTitle>
+                {this.props.children}
+            </XLayoutColumnWithMenu.Menu>
         );
     }
 }
 
 export function DataListContent(props: { children?: any }) {
     return (
-        <XColumn cols={9} mobile={12}>
+        <XLayoutColumnWithMenu.Content>
             {props.children}
-        </XColumn>
+        </XLayoutColumnWithMenu.Content>
     );
 }
 
-export function DataListContentStats(props: { totalProjects: number, totalProjectsVerified: number, newUnits: number, newUnitsVerified: number }) {
+let DataListStatsDiv = Glamorous.div({
+    display: 'flex',
+    fontSize: '18px',
+    lineHeight: '20px',
+    fontWeight: 500,
+    marginTop: 8,
+    marginBottom: 8,
+    marginLeft: 16,
+    '> div > span': {
+        color: 'rgba(38,38,38,0.6)',
+        textTransform: 'uppercase',
+        letterSpacing: '0.6px',
+        whiteSpace: 'nowrap',
+        margin: '2px 12px -2px 8px',
+        fontSize: '11px'
+    }
+})
+
+export function DataListStatsRecord(props: { title: string, counter: number }) {
     return (
-        <div className="x-in--title hidden-xs">
-            {(props.totalProjects !== 0) && <div>{props.totalProjects}<span>Buildings</span></div>}
-            {(props.newUnits !== 0) && <div>{props.newUnits}<span>Net new units</span></div>}
-            {((props.totalProjectsVerified !== 0) || (props.newUnitsVerified !== 0)) &&
-                <span className="is-verified">Verified</span>}
-            {(props.totalProjectsVerified !== 0) && <div>{props.totalProjectsVerified}<span>Buildings</span></div>}
-            {(props.newUnitsVerified !== 0) && <div>{props.newUnitsVerified}<span>Net new units</span></div>}
-        </div>
-    );
+        <div>{props.counter}<span>{props.title}</span></div>
+    )
+}
+
+let VerifiedWrapper = Glamorous.div({
+    marginLeft: '62px',
+    color: 'rgba(38,38,38,0.6)',
+    textTransform: 'uppercase',
+    margin: '2px 12px -2px 8px',
+    fontSize: '11px',
+})
+
+let VerifiedIcon = Glamorous.span({
+    fontFamily: '\'icomoon\'!important',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontVariant: 'normal',
+    textTransform: 'none',
+    '-webkit-font-smoothing': 'antialiased',
+    '-moz-osx-font-smoothing': 'grayscale',
+    margin: '2px 4px -2px 8px',
+})
+
+export function DataListStatsVerified(props: {}) {
+    return (
+        <VerifiedWrapper><VerifiedIcon>{'\ue91d'}</VerifiedIcon>Verified</VerifiedWrapper>
+    )
+}
+
+export class DataListStats extends React.Component {
+    static Record = DataListStatsRecord;
+    static Verified = DataListStatsVerified;
+
+    render() {
+        return (
+            <DataListStatsDiv>
+                {this.props.children}
+            </DataListStatsDiv>
+        )
+    }
 }
 
 export function DataListRadio(props: { title: string, radioKey: string, children?: any }) {
@@ -130,20 +157,33 @@ export const DataListSearch = withRouter<{ searchKey: string }>(props => {
     );
 });
 
+export function DataListInvite() {
+    return (
+        <div className="x-join hidden-xs hidden-sm">
+            <div className="x-join--btn">
+                <a className="x-btn is-block" target="_blank" href="https://goo.gl/forms/YX8LSpH6jWLzbEj02">
+                    Join as a contributor
+                </a>
+            </div>
+        </div>
+    );
+}
+
 export class DataList extends React.Component {
 
     static Filters = DataListFilters;
     static Content = DataListContent;
-    static ContentStats = DataListContentStats;
+    static Stats = DataListStats;
     static Radio = DataListRadio;
     static RadioItem = DataListRadioItem;
     static Search = DataListSearch;
+    static Invite = DataListInvite;
 
     render() {
         return (
-            <XRow>
+            <XLayoutColumnWithMenu>
                 {this.props.children}
-            </XRow>
+            </XLayoutColumnWithMenu>
         );
     }
 }

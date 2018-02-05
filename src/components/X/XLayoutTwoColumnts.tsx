@@ -36,7 +36,7 @@ export class XLayoutTwoColumns extends React.Component {
         return (
             <XGrid2
                 layouts={{
-                    gap: 30,
+                    gap: 32,
                     templateColumns: '2fr 1fr',
                     templateAreas: [
                         ['content', 'info'],

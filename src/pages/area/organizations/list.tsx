@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { withOrganizationAddMutation, withOrganizations } from '../../../api';
-import { XForm, XFormField, XFormSubmit, XFormGroup } from '../../../components/X/XForm';
-import { XWriteAcces } from '../../../components/X/XWriteAccess';
+import { withOrganizations } from '../../../api';
 import { XList, XListItem } from '../../../components/X/XList';
 import { OrganizationsListCard } from '../../../components/OrganizationsListCard';
 import { DataList } from '../../../components/DataList';
@@ -9,18 +7,6 @@ import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { withAreaPage } from '../../../components/withAreaPage';
 import { XPageContent } from '../../../components/X/XPageContent';
-
-const AddForm = withOrganizationAddMutation((props) => {
-    return (
-        <XForm mutate={props.add}>
-            <XFormGroup>
-                <XFormField name="slug" hint="Short Name" />
-                <XFormField name="title" hint="Name of developer" />
-                <XFormSubmit title="Add Developer" />
-            </XFormGroup>
-        </XForm>
-    );
-});
 
 export default withAreaPage(withOrganizations(withLoader((props) => {
 
@@ -60,15 +46,13 @@ export default withAreaPage(withOrganizations(withLoader((props) => {
                     </DataList.Radio>
                 </DataList.Filters>
                 <DataList.Content>
-                    <XWriteAcces>
+                    {/* <XWriteAcces>
                         <AddForm />
                         <br />
-                    </XWriteAcces>
-
-                    <div className="x-in--title hidden-xs">
-                        <div>{data.length}<span>organizations</span></div>
-                    </div>
-
+                    </XWriteAcces> */}
+                    <DataList.Stats>
+                        <DataList.Stats.Record counter={data.length} title="organizations" />
+                    </DataList.Stats>
                     <XList>
                         {data.map((item: any) => {
                             return (
