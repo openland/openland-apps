@@ -40,7 +40,7 @@ export function CardOrganization(props: { org: Types.OrganizationShortFragment }
     return (
         <XCard>
             <div className={'x-card--in is-organization' + (props.org.logo ? '' : ' without-photo')}>
-                <XLink path={'/organizations/' + props.org.slug}>
+                <XLink path={'/sf/organizations/' + props.org.slug}>
                     {props.org.logo && (<div className="x-card--photo">
                         <XCloudImage src={props.org.logo} maxWidth={140} maxHeight={140} />
                     </div>)}
@@ -50,7 +50,7 @@ export function CardOrganization(props: { org: Types.OrganizationShortFragment }
                 <div className="x-card--info">
                     <div className="x-card--box">
                         <div className="x-card--title" style={{ textColor: '#000000' }}><XLink
-                            path={'/organizations/' + props.org.slug}>{props.org.title}</XLink></div>
+                            path={'/sf/organizations/' + props.org.slug}>{props.org.title}</XLink></div>
                         {subtitle && (<div className="x-card--text">{subtitle}</div>)}
                     </div>
 
@@ -77,7 +77,7 @@ export function CardOrganization(props: { org: Types.OrganizationShortFragment }
                             </XLink>
                     )}
 
-                    <XLink className="x-card--toggler is-link" path={'/organizations/' + props.org.slug}>View profile</XLink>
+                    <XLink className="x-card--toggler is-link" path={'/sf/organizations/' + props.org.slug}>View profile</XLink>
                 </div>
             </div>
         </XCard>
