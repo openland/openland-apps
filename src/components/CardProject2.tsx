@@ -9,6 +9,7 @@ import { ListCardCount } from './Incubator/ListCardComponents';
 import { ListCardDetails } from './Incubator/ListCardComponents';
 
 import { Links } from '../Links';
+import * as Types from '../api/Types';
 
 export interface CardProject2Props {
     id: string;
@@ -26,30 +27,38 @@ export interface CardProject2Props {
     slug?: string;
 }
 
-export function CardProject2(props: CardProject2Props) {
+export function CardProject2(props: { project: Types.ProjectShortFragment }) {
+    let units: number | undefined = undefined;
+    let subtitle: string | undefined = undefined;
+    if (props.project.proposedUnits !== undefined && props.project.existingUnits !== undefined) {
+        units = props.project.proposedUnits!! - props.project.existingUnits!!;
+    }
+    if (props.project.extrasAddress && (props.project.extrasAddress.toLowerCase() !== props.project.name.toLowerCase())) {
+        subtitle = props.project.extrasAddress;
+    }
     return (
         <ListCardContainer withImage={true} className={'wide-image project-card'}>
-            <ListCardImageBox path={Links.area('sf').project(props.slug!!).view}>
-                <img src={props.picture.retina} alt="" />
+            <ListCardImageBox path={Links.area('sf').project(props.project.slug!!).view}>
+                <img src={props.project.preview!!.retina} alt="" />
             </ListCardImageBox>
             <ListCardBox>
                 <ListCardRow className={'top'}>
                     <ListCardMainTitle
-                        link={Links.area('sf').project(props.slug!!).view}
-                        title={props.title}
-                        titleAdditionallyClass={props.verified ? ' is-checked' : ''}
-                        subtitle={props.subtitle ? props.subtitle : undefined}
+                        link={Links.area('sf').project(props.project.slug).view}
+                        title={props.project.name}
+                        titleAdditionallyClass={props.project.verified ? ' is-checked' : ''}
+                        subtitle={subtitle ? subtitle : undefined}
                     />
-                    {props.url && (
+                    {props.project.extrasUrl && (
                         <ListCardMainLink
-                            link={props.url}
+                            link={props.project.extrasUrl}
                         />
                     )}
                 </ListCardRow>
                 <ListCardRow className={'bottom'}>
-                    <ListCardCount title={props.newUnits} subtitle={'Net new units'}/>
-                    <ListCardCount title={props.endYear} subtitle={'Expected completion'}/>
-                    <ListCardDetails path={Links.area('sf').project(props.slug!!).view} title={'View details'}/>
+                    <ListCardCount title={units} subtitle={'Net new units'} />
+                    {props.project.extrasYearEnd && (<ListCardCount title={props.project.extrasYearEnd!!} subtitle={'Expected completion'} />)}
+                    <ListCardDetails path={Links.area('sf').project(props.project.slug).view} title={'View details'} />
                 </ListCardRow>
             </ListCardBox>
         </ListCardContainer>

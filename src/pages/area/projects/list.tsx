@@ -13,27 +13,10 @@ import { XPageContent } from '../../../components/X/XPageContent';
 const PipelineItems = withPagedList<ProjectShortFragment>((props) => (
     <XList>
         {props.items.map((item: any) => {
-            let units: number | undefined = undefined;
-            let subtitle: string | undefined = undefined;
-            if (item.proposedUnits !== undefined && item.existingUnits !== undefined) {
-                units = item.proposedUnits!! - item.existingUnits!!;
-            }
-            if (item.extrasAddress && (item.extrasAddress.toLowerCase() !== item.name.toLowerCase())) {
-                subtitle = item.extrasAddress;
-            }
-
             return (
                 <CardProject2
+                    project={item}
                     key={item.id}
-                    id={item.id}
-                    title={item.name}
-                    newUnits={units}
-                    subtitle={subtitle}
-                    endYear={item.extrasYearEnd}
-                    picture={item.preview}
-                    verified={item.verified}
-                    url={item.extrasUrl}
-                    slug={item.slug}
                 />
             )
         })}

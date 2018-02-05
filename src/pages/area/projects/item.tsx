@@ -97,14 +97,14 @@ export default withPage(withBuildingProject(withLoader((props) => {
                     {props.data.project.developers && props.data.project.developers.length > 0 && (
                         <XSection>
                             <XTitle>Developers</XTitle>
-                            <ListOrganizations developers={props.data.project.developers} />
+                            <ListOrganizations orgs={props.data.project.developers} />
                         </XSection>
                     )}
 
                     {props.data.project.constructors && props.data.project.constructors.length > 0 && (
                         <XSection>
                             <XTitle>Contractors</XTitle>
-                            <ListOrganizations developers={props.data.project.constructors} />
+                            <ListOrganizations orgs={props.data.project.constructors} />
                         </XSection>
                     )}
                 </XLayoutTwoColumns.Secondary>

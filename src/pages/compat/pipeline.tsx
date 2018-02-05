@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-require('../../components/withPage');
+require('../../components/Navigation/withPage');
 
 export default class Redirect extends React.Component {
     static async getInitialProps(ctx: any) {

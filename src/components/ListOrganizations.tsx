@@ -3,18 +3,12 @@ import { XWrapBody } from './X/XWrap';
 import { XLink } from './X/XLink';
 import { XCloudImage } from './X/XCloudImage';
 import { Links } from '../Links';
+import * as Types from '../api/Types';
 
-export function ListOrganizations(props: {
-    developers: {
-        id: string, slug: string,
-        title: string,
-        logo: string | null,
-        isDeveloper: boolean, isConstructor: boolean
-    }[]
-}) {
+export function ListOrganizations(props: { orgs: Types.OrganizationShortFragment[] }) {
     return (
         <XWrapBody>
-            {props.developers.map(p => {
+            {props.orgs.map(p => {
                 return (
                     <XLink key={p.id} path={Links.area('sf').org(p.slug).view} className="x-dev--short">
                         <div className="x-dev--short-l"><XCloudImage src={p.logo}

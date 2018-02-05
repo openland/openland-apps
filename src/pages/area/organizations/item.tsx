@@ -107,7 +107,7 @@ export default withAreaPage(withOrganization(withLoader((props) => {
                     {props.data.organization.partners!!.length > 0 && (
                         <XSection>
                             <XTitle>Partners</XTitle>
-                            <ListOrganizations developers={props.data.organization.partners!!} />
+                            <ListOrganizations orgs={props.data.organization.partners!!} />
                         </XSection>
                     )}
                 </XLayoutTwoColumns.Secondary>

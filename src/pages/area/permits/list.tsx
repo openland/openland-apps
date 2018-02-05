@@ -12,25 +12,7 @@ import { XPageContent } from '../../../components/X/XPageContent';
 
 const PermitsItems = withPagedList<PermitShortFragment>((props) => (
     <XList>
-        {props.items.map((item) => {
-            return (
-                <CardPermit
-                    __typename={'Permit'}
-                    key={item.id}
-                    id={item.id}
-                    streetNumbers={item.streetNumbers}
-                    proposedUnits={item.proposedUnits}
-                    approvalTime={item.approvalTime}
-                    status={item.status}
-                    statusUpdatedAt={item.statusUpdatedAt}
-                    type={item.type}
-                    description={item.description}
-                    existingUnits={item.existingUnits}
-                    createdAt={item.createdAt}
-                    typeWood={null}
-                />
-            )
-        })}
+        {props.items.map((item) => <CardPermit key={item.id} permit={item} />)}
     </XList>
 ));
 

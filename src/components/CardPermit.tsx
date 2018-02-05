@@ -14,49 +14,49 @@ import { ListCardDetails } from './Incubator/ListCardComponents';
 
 import { Links } from '../Links';
 
-export function CardPermit(props: PermitShortFragment) {
+export function CardPermit(props: { permit: PermitShortFragment }) {
     return (
         <ListCardContainer className={'permit-card'}>
             <ListCardBox>
                 <ListCardRow className={'top'}>
                     <ListCardMainTitle
-                        link={Links.area('sf').permit(props.id).view}
-                        title={props.id}
+                        link={Links.area('sf').permit(props.permit.id).view}
+                        title={props.permit.id}
                         larger={true}
-                        subtitle={props.createdAt}
+                        subtitle={props.permit.createdAt}
                     />
-                    {props.streetNumbers!!.length > 0 && (
+                    {props.permit.streetNumbers!!.length > 0 && (
                         <ListCardCount
                             title={
-                                props.streetNumbers!![0].streetNumber + (props.streetNumbers!![0].streetNumberSuffix ? props.streetNumbers!![0].streetNumberSuffix!! : '') +
-                                ' ' + props.streetNumbers!![0].streetName + (props.streetNumbers!![0].streetNameSuffix ? ' ' + props.streetNumbers!![0].streetNameSuffix : '')
+                                props.permit.streetNumbers!![0].streetNumber + (props.permit.streetNumbers!![0].streetNumberSuffix ? props.permit.streetNumbers!![0].streetNumberSuffix!! : '') +
+                                ' ' + props.permit.streetNumbers!![0].streetName + (props.permit.streetNumbers!![0].streetNameSuffix ? ' ' + props.permit.streetNumbers!![0].streetNameSuffix : '')
                             }
                             subtitle={'Address'}
                             className={'smaller static-width'}
                         />
                     )}
-                    {props.proposedUnits && (
+                    {props.permit.proposedUnits && (
                         <ListCardCount subtitle={'Units'} className={'smaller static-width small'}>
-                            <XCounter value={props.proposedUnits!!} oldValue={props.existingUnits} />
+                            <XCounter value={props.permit.proposedUnits!!} oldValue={props.permit.existingUnits} />
                         </ListCardCount>
                     )}
-                    {props.approvalTime != null && (
+                    {props.permit.approvalTime != null && (
                         <ListCardCount subtitle={'Approval time'} className={'smaller static-width'}>
-                            {formatDuration(props.approvalTime)}
+                            {formatDuration(props.permit.approvalTime)}
                         </ListCardCount>
                     )}
-                    {props.status && (
-                        <PermitStatus2 status={props.status} date={props.statusUpdatedAt} />
+                    {props.permit.status && (
+                        <PermitStatus2 status={props.permit.status} date={props.permit.statusUpdatedAt} />
                     )}
                 </ListCardRow>
                 <ListCardRow className={'bottom'}>
                     <div className="x-card-addition">
                         <span>
-                            <PermitType type={props.type!!} />
+                            <PermitType type={props.permit.type!!} />
                         </span>
                     </div>
-                    <div className="x-card-description">{props.description}</div>
-                    <ListCardDetails path={Links.area('sf').permit(props.id).view} title={'View details'}/>
+                    <div className="x-card-description">{props.permit.description}</div>
+                    <ListCardDetails path={Links.area('sf').permit(props.permit.id).view} title={'View details'} />
                 </ListCardRow>
             </ListCardBox>
         </ListCardContainer>
