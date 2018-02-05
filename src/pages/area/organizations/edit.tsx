@@ -1,22 +1,25 @@
 import * as React from 'react';
 import { withOrganizationAlter } from '../../../api';
 import { withLoader } from '../../../components/withLoader';
-import { Segment } from 'semantic-ui-react';
 import { XForm, XFormField, XFormFieldCheck, XFormImage, XFormSubmit } from '../../../components/X/XForm';
-import { XContainer } from '../../../components/X/XContainer';
 import { XButton } from '../../../components/X/XButton';
 import { XHead } from '../../../components/X/XHead';
 import { Links } from '../../../Links';
 import { withAreaPage } from '../../../components/withAreaPage';
+import { XPageContent } from '../../../components/X/XPageContent';
+import { XCard } from '../../../components/X/XCard';
+import { XSection } from '../../../components/X/XSection';
+import { XTitle } from '../../../components/X/XTitle';
 
 export default withAreaPage(withOrganizationAlter(withLoader((props) => {
 
     return (
         <>
         <XHead title="Edit Organization" imgCloud={props.data.organization.cover} />
-        <div style={{ paddingTop: 32, paddingBottom: 32 }}>
-            <XContainer wide={true}>
-                <Segment>
+        <XPageContent>
+            <XSection>
+                <XTitle>Edit Organization</XTitle>
+                <XCard>
                     <XForm
                         defaultValues={props.data.organization}
                         mutate={props.alter}
@@ -44,9 +47,9 @@ export default withAreaPage(withOrganizationAlter(withLoader((props) => {
                             Remove
                         </XButton>
                     </XForm>
-                </Segment>
-            </XContainer>
-        </div>
+                </XCard>
+            </XSection>
+        </XPageContent>
         </>
     );
 })));

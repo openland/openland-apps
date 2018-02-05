@@ -8,6 +8,7 @@ import { DataList } from '../../../components/DataList';
 import { withLoader } from '../../../components/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { withAreaPage } from '../../../components/withAreaPage';
+import { XPageContent } from '../../../components/X/XPageContent';
 
 const AddForm = withOrganizationAddMutation((props) => {
     return (
@@ -48,36 +49,38 @@ export default withAreaPage(withOrganizations(withLoader((props) => {
     return (
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Organizations']} />
-        <DataList>
-            <DataList.Filters title="Organizations">
-                <DataList.Search searchKey="filter" />
-                <DataList.Radio radioKey="type" title="Organization Type">
-                    <DataList.RadioItem title="All" />
-                    <DataList.RadioItem title="Developers" itemKey="developer" />
-                    <DataList.RadioItem title="Contractors" itemKey="constructor" />
-                </DataList.Radio>
-            </DataList.Filters>
-            <DataList.Content>
-                <XWriteAcces>
-                    <AddForm />
-                    <br />
-                </XWriteAcces>
+        <XPageContent>
+            <DataList>
+                <DataList.Filters title="Organizations">
+                    <DataList.Search searchKey="filter" />
+                    <DataList.Radio radioKey="type" title="Organization Type">
+                        <DataList.RadioItem title="All" />
+                        <DataList.RadioItem title="Developers" itemKey="developer" />
+                        <DataList.RadioItem title="Contractors" itemKey="constructor" />
+                    </DataList.Radio>
+                </DataList.Filters>
+                <DataList.Content>
+                    <XWriteAcces>
+                        <AddForm />
+                        <br />
+                    </XWriteAcces>
 
-                <div className="x-in--title hidden-xs">
-                    <div>{data.length}<span>organizations</span></div>
-                </div>
+                    <div className="x-in--title hidden-xs">
+                        <div>{data.length}<span>organizations</span></div>
+                    </div>
 
-                <XList>
-                    {data.map((item: any) => {
-                        return (
-                            <XListItem key={item.id}>
-                                <OrganizationsListCard key={item.id} org={item} />
-                            </XListItem>
-                        )
-                    })}
-                </XList>
-            </DataList.Content>
-        </DataList>
+                    <XList>
+                        {data.map((item: any) => {
+                            return (
+                                <XListItem key={item.id}>
+                                    <OrganizationsListCard key={item.id} org={item} />
+                                </XListItem>
+                            )
+                        })}
+                    </XList>
+                </DataList.Content>
+            </DataList>
+        </XPageContent>
         </>
     );
 })));

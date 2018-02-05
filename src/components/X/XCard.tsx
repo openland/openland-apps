@@ -118,7 +118,7 @@ let XCardDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     background: '#ffffff',
-    border: '1px solid fade(#262626, 8)',
+    border: '1px solid rgba(38,38,38,0.08)',
     color: '#262626',
     overflow: 'hidden',
     borderRadius: 4
@@ -143,6 +143,10 @@ let XCardDivIcon = Glamorous.div({
     }
 });
 
+let XCardDivContent = Glamorous.div({
+    padding: 30
+})
+
 export class XCard extends React.Component {
 
     static Row = XCardRow;
@@ -151,6 +155,7 @@ export class XCard extends React.Component {
     static Title = XCardTitle;
     static Button = XCardButton;
     static ExternalLink = XCardExternalLink;
+    static Content = XCardDivContent;
 
     render() {
         let photoComponent = hasChildren('_xCardPhoto', this.props.children);

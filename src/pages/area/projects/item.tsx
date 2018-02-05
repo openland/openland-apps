@@ -8,9 +8,10 @@ import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
 import { Links } from '../../../Links';
 import { withBuildingProject } from '../../../api';
-import { XPageTwoColumns } from '../../../components/X/XPageTwoColumns';
 import { XTitle } from '../../../components/X/XTitle';
 import { XSection } from '../../../components/X/XSection';
+import { XPageContent } from '../../../components/X/XPageContent';
+import { XLayoutTwoColumns } from '../../../components/X/XLayoutTwoColumnts';
 
 export default withPage(withBuildingProject(withLoader((props) => {
     let map = undefined;
@@ -28,86 +29,87 @@ export default withPage(withBuildingProject(withLoader((props) => {
             title={['Statecraft', 'San Francisco', 'Construction projects', props.data.project.name]}
             imgUrl={props.data.project.preview && props.data.project.preview.url}
         />
-        <XPageTwoColumns>
-            <XPageTwoColumns.Primary>
-                <XSection>
-                    <XCard>
-                        <div className="x-project--photo">
-                            <img src={props.data.project.preview!!.url} alt="" />
-                        </div>
-
-                        <div className="x-project--info">
-                            <div className="x-project--title">
-                                <div className="x-project--name">{props.data.project.name}</div>
-
-                                {props.data.project.verified &&
-                                    <div className="x-project--verified"><span>Verified profile</span></div>}
+        <XPageContent>
+            <XLayoutTwoColumns>
+                <XLayoutTwoColumns.Primary>
+                    <XSection>
+                        <XCard>
+                            <div className="x-project--photo">
+                                <img src={props.data.project.preview!!.url} alt="" />
                             </div>
 
-                            {subtitle && <div className="x-project--address">{subtitle}</div>}
-                            {props.data.project.description && (
-                                <div className="x-project--text">{props.data.project.description}</div>
-                            )}
-                        </div>
+                            <div className="x-project--info">
+                                <div className="x-project--title">
+                                    <div className="x-project--name">{props.data.project.name}</div>
 
-                        <div className="x-project--tools">
-                            <div className="x-project--counters">
-                                <div className="x-project--counter">
-                                    <span>{props.data.project.extrasYearEnd}</span>
-                                    Expected completion
-                                        </div>
-                                <div className="x-project--counter">
-                                    <span>{props.data.project.proposedUnits!! - props.data.project.existingUnits!!}</span>
-                                    Net units
-                                        </div>
-                                {/*<div className="x-project--counter"><span>Rent</span>Building type</div>*/}
+                                    {props.data.project.verified &&
+                                        <div className="x-project--verified"><span>Verified profile</span></div>}
+                                </div>
+
+                                {subtitle && <div className="x-project--address">{subtitle}</div>}
+                                {props.data.project.description && (
+                                    <div className="x-project--text">{props.data.project.description}</div>
+                                )}
                             </div>
 
-                            <XLink
-                                path={Links.area('sf').project(props.data.project.slug).edit}
-                                className="x-project--btn" writeAccess={true}
-                            ><span><i className="icon-edit" />Edit profile</span>
-                            </XLink>
+                            <div className="x-project--tools">
+                                <div className="x-project--counters">
+                                    <div className="x-project--counter">
+                                        <span>{props.data.project.extrasYearEnd}</span>
+                                        Expected completion
+                                        </div>
+                                    <div className="x-project--counter">
+                                        <span>{props.data.project.proposedUnits!! - props.data.project.existingUnits!!}</span>
+                                        Net units
+                                        </div>
+                                    {/*<div className="x-project--counter"><span>Rent</span>Building type</div>*/}
+                                </div>
+
+                                <XLink
+                                    path={Links.area('sf').project(props.data.project.slug).edit}
+                                    className="x-project--btn" writeAccess={true}
+                                ><span><i className="icon-edit" />Edit profile</span>
+                                </XLink>
+                            </div>
+                        </XCard>
+                    </XSection>
+                    {props.data.project.permits && props.data.project.permits.length > 0 && (
+                        <XSection>
+                            <XTitle>Building Permits</XTitle>
+                            <ListPermits permits={props.data.project.permits} hideCounter={true} />
+                        </XSection>
+                    )}
+                </XLayoutTwoColumns.Primary>
+                <XLayoutTwoColumns.Secondary>
+                    <XSection>
+                        <div className="x-project--box">
+                            {map && <div className="x-project--map" style={{ backgroundImage: 'url(' + map + ')' }} />}
+                            {!map && <div className="x-project--map no-photo" />}
+
+                            <div className="x-project--links">
+                                {props.data.project.extrasUrl && (
+                                    <XLink href={props.data.project.extrasUrl} className="x-project--link">Website</XLink>
+                                )}
+                            </div>
                         </div>
-                    </XCard>
-                </XSection>
-                {props.data.project.permits && props.data.project.permits.length > 0 && (
-                    <XSection>
-                        <XTitle>Building Permits</XTitle>
-                        <ListPermits permits={props.data.project.permits} hideCounter={true} />
                     </XSection>
-                )}
-            </XPageTwoColumns.Primary>
-            <XPageTwoColumns.Secondary>
 
-                <XSection>
-                    <div className="x-project--box">
-                        {map && <div className="x-project--map" style={{ backgroundImage: 'url(' + map + ')' }} />}
-                        {!map && <div className="x-project--map no-photo" />}
+                    {props.data.project.developers && props.data.project.developers.length > 0 && (
+                        <XSection>
+                            <XTitle>Developers</XTitle>
+                            <ListOrganizations developers={props.data.project.developers} />
+                        </XSection>
+                    )}
 
-                        <div className="x-project--links">
-                            {props.data.project.extrasUrl && (
-                                <XLink href={props.data.project.extrasUrl} className="x-project--link">Website</XLink>
-                            )}
-                        </div>
-                    </div>
-                </XSection>
-
-                {props.data.project.developers && props.data.project.developers.length > 0 && (
-                    <XSection>
-                        <XTitle>Developers</XTitle>
-                        <ListOrganizations developers={props.data.project.developers} />
-                    </XSection>
-                )}
-
-                {props.data.project.constructors && props.data.project.constructors.length > 0 && (
-                    <XSection>
-                        <XTitle>Contractors</XTitle>
-                        <ListOrganizations developers={props.data.project.constructors} />
-                    </XSection>
-                )}
-            </XPageTwoColumns.Secondary>
-        </XPageTwoColumns>
+                    {props.data.project.constructors && props.data.project.constructors.length > 0 && (
+                        <XSection>
+                            <XTitle>Contractors</XTitle>
+                            <ListOrganizations developers={props.data.project.constructors} />
+                        </XSection>
+                    )}
+                </XLayoutTwoColumns.Secondary>
+            </XLayoutTwoColumns>
+        </XPageContent>
         </>
     );
 })));

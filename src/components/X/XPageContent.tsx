@@ -1,7 +1,9 @@
+import * as React from 'react';
 import Glamorous from 'glamorous';
 import { Layout } from './_Layout';
+import { XVertical } from './XVertical';
 
-export let XPageContent = Glamorous.div({
+export let XPageContentDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
@@ -20,3 +22,13 @@ export let XPageContent = Glamorous.div({
     [Layout.LG]: { width: 1056 },
     [Layout.XLG]: { width: 1248 },
 });
+
+export function XPageContent(props: { children?: any }) {
+    return (
+        <XPageContentDiv>
+            <XVertical>
+                {props.children}
+            </XVertical>
+        </XPageContentDiv>
+    )
+}

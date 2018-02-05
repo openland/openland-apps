@@ -142,11 +142,9 @@ export class DataList extends React.Component {
 
     render() {
         return (
-            <XPageContent>
-                <XRow>
-                    {this.props.children}
-                </XRow>
-            </XPageContent>
+            <XRow>
+                {this.props.children}
+            </XRow>
         );
     }
 }
