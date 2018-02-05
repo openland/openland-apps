@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataList } from '../../../components/Incubator/DataList';
-import { XList } from '../../../components/X/XList';
+import { XList, XListItem } from '../../../components/X/XList';
 import { CardProject } from '../../../components/CardProject';
 import { withLoader } from '../../../components/Base/withLoader';
 import { XHead } from '../../../components/X/XHead';
@@ -14,10 +14,9 @@ const PipelineItems = withPagedList<ProjectShortFragment>((props) => (
     <XList>
         {props.items.map((item: any) => {
             return (
-                <CardProject
-                    project={item}
-                    key={item.id}
-                />
+                <XListItem key={item.id}>
+                    <CardProject project={item} />
+                </XListItem>
             )
         })}
     </XList>

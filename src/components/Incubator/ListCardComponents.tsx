@@ -1,15 +1,12 @@
 import * as React from 'react';
-import { XListItem } from '../X/XList';
 import { XLink } from '../X/XLink';
 import * as classnames from 'classnames';
 
 export function ListCardContainer(props: { children: any; withImage?: boolean; className?: string }) {
     return (
-        <XListItem>
-            <div className={classnames('x-card-test', { 'with-image': props.withImage }, props.className)}>
-                {props.children}
-            </div>
-        </XListItem>
+        <div className={classnames('x-card-test', { 'with-image': props.withImage }, props.className)}>
+            {props.children}
+        </div>
     );
 }
 

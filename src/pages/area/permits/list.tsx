@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withPermits } from '../../../api';
 import { withPage } from '../../../components/Navigation/withPage';
-import { XList } from '../../../components/X/XList';
+import { XList, XListItem } from '../../../components/X/XList';
 import { CardPermit } from '../../../components/CardPermit';
 import { DataList } from '../../../components/Incubator/DataList';
 import { withPagedList } from '../../../components/Base/withPagedList';
@@ -12,7 +12,7 @@ import { XPageContent } from '../../../components/X/XPageContent';
 
 const PermitsItems = withPagedList<PermitShortFragment>((props) => (
     <XList>
-        {props.items.map((item) => <CardPermit key={item.id} permit={item} />)}
+        {props.items.map((item) => <XListItem key={item.id}><CardPermit permit={item} /></XListItem>)}
     </XList>
 ));
 
