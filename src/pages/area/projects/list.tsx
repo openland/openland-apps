@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataList } from '../../../components/Incubator/DataList';
 import { XList } from '../../../components/X/XList';
-import { CardProject2 } from '../../../components/CardProject2';
+import { CardProject } from '../../../components/CardProject';
 import { withLoader } from '../../../components/Base/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { withAreaPage } from '../../../components/Navigation/withAreaPage';
@@ -14,7 +14,7 @@ const PipelineItems = withPagedList<ProjectShortFragment>((props) => (
     <XList>
         {props.items.map((item: any) => {
             return (
-                <CardProject2
+                <CardProject
                     project={item}
                     key={item.id}
                 />

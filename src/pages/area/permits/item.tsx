@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XContainer } from '../../../components/X/XContainer';
 import { XWrap } from '../../../components/X/XWrap';
 import { ListPermits } from '../../../components/ListPermits';
 import { PermitType } from '../../../components/PermitType';
@@ -15,6 +14,8 @@ import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
 import { withAreaPage } from '../../../components/Navigation/withAreaPage';
 import { withPermit } from '../../../api';
+import { XPageCover } from '../../../components/X/XPageCover';
+import { XPageContent } from '../../../components/X/XPageContent';
 
 function ChangeRender(props: {
     change: {
@@ -102,143 +103,139 @@ export default withAreaPage(withPermit(withLoader((props) => {
     return (
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Permits', props.data.permit.id]} />
-        <div className="x-in">
-            <div className="x-bigmap">
-                <img className="x-bigmap--map" style={{ backgroundImage: `url(${map})` }} />
-            </div>
+        <XPageCover src={map}>
+            <XPageContent>
+            <div className="row">
+                <div className="col-xs-12 col-xlg-10 col-xlg-offset-l-1">
+                    <XWrap>
+                        <XCard>
+                            <div className="x-permcard--in">
+                                <div className="x-permcard--id">
+                                    {props.data.permit.id}
+                                </div>
 
-            <XContainer wide={true}>
-                <div className="row">
-                    <div className="col-xs-12 col-xlg-10 col-xlg-offset-l-1">
-                        <XWrap>
-                            <XCard>
-                                <div className="x-permcard--in">
-                                    <div className="x-permcard--id">
-                                        {props.data.permit.id}
-                                    </div>
-
-                                    <div className="x-permcard--keys">
-                                        {props.data.permit.streetNumbers!!.length > 0 && (
-                                            <div className="x-permcard--key">
-                                                <span>
-                                                    {props.data.permit.streetNumbers!![0].streetNumber + (props.data.permit.streetNumbers!![0].streetNumberSuffix ? props.data.permit.streetNumbers!![0].streetNumberSuffix!! : '') +
-                                                        ' ' + props.data.permit.streetNumbers!![0].streetName + (props.data.permit.streetNumbers!![0].streetNameSuffix ? ' ' + props.data.permit.streetNumbers!![0].streetNameSuffix : '')}
-                                                </span>
-                                                Address
+                                <div className="x-permcard--keys">
+                                    {props.data.permit.streetNumbers!!.length > 0 && (
+                                        <div className="x-permcard--key">
+                                            <span>
+                                                {props.data.permit.streetNumbers!![0].streetNumber + (props.data.permit.streetNumbers!![0].streetNumberSuffix ? props.data.permit.streetNumbers!![0].streetNumberSuffix!! : '') +
+                                                    ' ' + props.data.permit.streetNumbers!![0].streetName + (props.data.permit.streetNumbers!![0].streetNameSuffix ? ' ' + props.data.permit.streetNumbers!![0].streetNameSuffix : '')}
+                                            </span>
+                                            Address
                                             </div>
-                                        )}
+                                    )}
 
-                                        {props.data.permit.proposedUnits && (
-                                            <div className="x-permcard--key">
-                                                <span><XCounter value={props.data.permit.proposedUnits!!} oldValue={props.data.permit.existingUnits} /></span>
-                                                Units
+                                    {props.data.permit.proposedUnits && (
+                                        <div className="x-permcard--key">
+                                            <span><XCounter value={props.data.permit.proposedUnits!!} oldValue={props.data.permit.existingUnits} /></span>
+                                            Units
                                             </div>
-                                        )}
+                                    )}
 
-                                        {props.data.permit.approvalTime != null && (
-                                            <div className="x-permcard--key">
-                                                <span>{formatDuration(props.data.permit.approvalTime)}</span>
-                                                Approval time
+                                    {props.data.permit.approvalTime != null && (
+                                        <div className="x-permcard--key">
+                                            <span>{formatDuration(props.data.permit.approvalTime)}</span>
+                                            Approval time
                                             </div>
-                                        )}
-                                    </div>
+                                    )}
+                                </div>
 
-                                    <XLink href={props.data.permit.governmentalUrl} className="x-permcard--btn">
-                                        <span>
-                                            <i className="icon-share" />
-                                            SF DBI Record
+                                <XLink href={props.data.permit.governmentalUrl} className="x-permcard--btn">
+                                    <span>
+                                        <i className="icon-share" />
+                                        SF DBI Record
                                         </span>
-                                    </XLink>
+                                </XLink>
+                            </div>
+
+                            <div className="x-permcard--box">
+                                <div className="x-permcard--type">
+                                    <PermitType type={props.data.permit.type!!} />
                                 </div>
 
-                                <div className="x-permcard--box">
-                                    <div className="x-permcard--type">
-                                        <PermitType type={props.data.permit.type!!} />
-                                    </div>
+                                <div className="x-permcard--text">
+                                    {props.data.permit.description}
+                                </div>
+                            </div>
 
-                                    <div className="x-permcard--text">
-                                        {props.data.permit.description}
-                                    </div>
+                            <div className="x-permcard--dates">
+                                <div className="x-permcard--date">
+                                    <div className="x-permcard--status">
+                                        <i className="icon-filed" />
+                                        <span>{filedDate}</span>
+                                        Filed
+                                        </div>
                                 </div>
 
-                                <div className="x-permcard--dates">
-                                    <div className="x-permcard--date">
-                                        <div className="x-permcard--status">
-                                            <i className="icon-filed" />
-                                            <span>{filedDate}</span>
-                                            Filed
+                                <div className="x-permcard--date">
+                                    <div className={'x-permcard--status' + (progress < 2 ? ' is-disabled' : '')}>
+                                        <i className="icon-issued" />
+                                        <span>{issuedDate}</span>
+                                        Issued
                                         </div>
-                                    </div>
-
-                                    <div className="x-permcard--date">
-                                        <div className={'x-permcard--status' + (progress < 2 ? ' is-disabled' : '')}>
-                                            <i className="icon-issued" />
-                                            <span>{issuedDate}</span>
-                                            Issued
-                                        </div>
-                                    </div>
-
-                                    <div className="x-permcard--date">
-                                        <div className={'x-permcard--status' + (progress < 3 ? ' is-disabled' : '')}>
-                                            <i className="icon-completed" />
-                                            <span>{completedDate}</span>
-                                            {completedTitle}
-                                        </div>
-                                    </div>
                                 </div>
 
-                                <div className={'x-permcard--progress' + (' is-s' + progress)} />
-                            </XCard>
+                                <div className="x-permcard--date">
+                                    <div className={'x-permcard--status' + (progress < 3 ? ' is-disabled' : '')}>
+                                        <i className="icon-completed" />
+                                        <span>{completedDate}</span>
+                                        {completedTitle}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={'x-permcard--progress' + (' is-s' + progress)} />
+                        </XCard>
+                    </XWrap>
+
+                    {props.data.permit.events.length > 0 && (
+                        <XWrap title="Permit updates">
+                            <table className="x-updates">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Field</th>
+                                        <th>Change</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {props.data.permit.events.map((p, i) => {
+                                        if (p.__typename === 'PermitEventStatus') {
+                                            return (
+                                                <tr key={'update-' + i}>
+                                                    <td>{p.date}</td>
+                                                    <td>Status</td>
+                                                    <td>
+                                                        <PermitStatus status={p.oldStatus} /><span className="x-updates--change">-></span><PermitStatus status={p.newStatus} />
+                                                    </td>
+                                                </tr>
+                                            );
+                                        } else if (p.__typename === 'PermitEventFieldChanged') {
+                                            return (
+                                                <tr key={'update-' + i}>
+                                                    <td>{p.date}</td>
+                                                    <td>{p.fieldName}</td>
+                                                    <td>
+                                                        <ChangeRender change={p} />
+                                                    </td>
+                                                </tr>
+                                            );
+                                        } else {
+                                            return null;
+                                        }
+                                    })}
+                                </tbody>
+                            </table>
                         </XWrap>
+                    )}
 
-                        {props.data.permit.events.length > 0 && (
-                            <XWrap title="Permit updates">
-                                <table className="x-updates">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Field</th>
-                                            <th>Change</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {props.data.permit.events.map((p, i) => {
-                                            if (p.__typename === 'PermitEventStatus') {
-                                                return (
-                                                    <tr key={'update-' + i}>
-                                                        <td>{p.date}</td>
-                                                        <td>Status</td>
-                                                        <td>
-                                                            <PermitStatus status={p.oldStatus} /><span className="x-updates--change">-></span><PermitStatus status={p.newStatus} />
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            } else if (p.__typename === 'PermitEventFieldChanged') {
-                                                return (
-                                                    <tr key={'update-' + i}>
-                                                        <td>{p.date}</td>
-                                                        <td>{p.fieldName}</td>
-                                                        <td>
-                                                            <ChangeRender change={p} />
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            } else {
-                                                return null;
-                                            }
-                                        })}
-                                    </tbody>
-                                </table>
-                            </XWrap>
-                        )}
-
-                        <XWrap title="More permits for the address">
-                            <ListPermits permits={props.data.permit.relatedPermits} />
-                        </XWrap>
-                    </div>
+                    <XWrap title="More permits for the address">
+                        <ListPermits permits={props.data.permit.relatedPermits} />
+                    </XWrap>
                 </div>
-            </XContainer>
-        </div>
+            </div>
+            </XPageContent>
+        </XPageCover>
         </>
     );
 })));

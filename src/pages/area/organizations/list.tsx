@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withOrganizations } from '../../../api';
 import { XList, XListItem } from '../../../components/X/XList';
-import { CardOrganization2 } from '../../../components/CardOrganization2';
+import { CardOrganization } from '../../../components/CardOrganization';
 import { DataList } from '../../../components/Incubator/DataList';
 import { withLoader } from '../../../components/Base/withLoader';
 import { XHead } from '../../../components/X/XHead';
@@ -57,7 +57,7 @@ export default withAreaPage(withOrganizations(withLoader((props) => {
                         {data.map((item: any) => {
                             return (
                                 <XListItem key={item.id}>
-                                    <CardOrganization2 key={item.id} org={item} />
+                                    <CardOrganization key={item.id} org={item} />
                                 </XListItem>
                             )
                         })}
