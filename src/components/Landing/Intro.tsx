@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { withRouter } from '../utils/withRouter';
-import { XContainer } from './X/XContainer';
-import { XLink } from './X/XLink';
-import { Header } from './Header';
+import { withRouter } from '../../utils/withRouter';
+import { XContainer } from '../X/XContainer';
+import { XLink } from '../X/XLink';
+import { Header } from '../Navigation/Header';
 
 export class Intro extends React.Component<{ children: any }, { isShown: boolean }> {
     constructor(props: { children: any }) {

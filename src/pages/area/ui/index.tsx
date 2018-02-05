@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withPage } from '../../../components/withPage';
+import { withPage } from '../../../components/Navigation/withPage';
 import { XHead } from '../../../components/X/XHead';
 import { XGrid2 } from '../../../components/X/XGrid2';
 import { XCell } from '../../../components/X/XGrid';

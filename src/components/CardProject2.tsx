@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { ListCardContainer } from './ListCardComponents';
-import { ListCardImageBox } from './ListCardComponents';
-import { ListCardBox } from './ListCardComponents';
-import { ListCardRow } from './ListCardComponents';
-import { ListCardMainTitle } from './ListCardComponents';
-import { ListCardMainLink } from './ListCardComponents';
-import { ListCardCount } from './ListCardComponents';
-import { ListCardDetails } from './ListCardComponents';
+import { ListCardContainer } from './Incubator/ListCardComponents';
+import { ListCardImageBox } from './Incubator/ListCardComponents';
+import { ListCardBox } from './Incubator/ListCardComponents';
+import { ListCardRow } from './Incubator/ListCardComponents';
+import { ListCardMainTitle } from './Incubator/ListCardComponents';
+import { ListCardMainLink } from './Incubator/ListCardComponents';
+import { ListCardCount } from './Incubator/ListCardComponents';
+import { ListCardDetails } from './Incubator/ListCardComponents';
 
 import { Links } from '../Links';
 
-export interface ProjectsListCardProps {
+export interface CardProject2Props {
     id: string;
     title: string;
     newUnits?: number;
@@ -26,7 +26,7 @@ export interface ProjectsListCardProps {
     slug?: string;
 }
 
-export function ProjectsListCard(props: ProjectsListCardProps) {
+export function CardProject2(props: CardProject2Props) {
     return (
         <ListCardContainer withImage={true} className={'wide-image project-card'}>
             <ListCardImageBox path={Links.area('sf').project(props.slug!!).view}>

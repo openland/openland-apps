@@ -1,16 +1,18 @@
 import * as React from 'react';
-import { XLink } from './X/XLink';
+import { XLink } from '../X/XLink';
 import * as qs from 'query-string';
-import { XFilterInput } from './X/XFilterInput';
-import { withRouter } from '../utils/withRouter';
-import { XLayoutColumnWithMenu } from './X/XLayoutColumnWithMenu';
+import { XFilterInput } from '../X/XFilterInput';
+import { withRouter } from '../../utils/withRouter';
+import { XLayoutColumnWithMenu } from '../X/XLayoutColumnWithMenu';
 import Glamorous from 'glamorous';
+import { XDesktopContainer } from '../X/XDesktopContainer';
 
 let FiltersTitle = Glamorous.div({
     fontSize: '18px',
     lineHeight: '20px',
     fontWeight: 500,
     marginTop: 8,
+    marginLeft: 16,
     marginBottom: 8,
 });
 
@@ -80,6 +82,16 @@ let VerifiedIcon = Glamorous.span({
     margin: '2px 4px -2px 8px',
 })
 
+// let Separator =  Glamorous.div({
+//     height: 1,
+//     marginTop: '16px',
+//     background: 'rgba(38,38,38,0.08)'
+// })
+
+let Separator = function () {
+    return null
+};
+
 export function DataListStatsVerified(props: {}) {
     return (
         <VerifiedWrapper><VerifiedIcon>{'\ue91d'}</VerifiedIcon>Verified</VerifiedWrapper>
@@ -99,6 +111,20 @@ export class DataListStats extends React.Component {
     }
 }
 
+let FilterTitle = Glamorous.div({
+    letterSpacing: '0.6px',
+    marginTop: '8px',
+    marginBottom: '8px',
+    paddingLeft: '16px',
+    textTransform: 'uppercase',
+
+    color: 'rgba(24,38,66,0.8)',
+
+    fontSize: '11px',
+    lineHeight: '18px',
+    fontWeight: 500
+})
+
 export function DataListRadio(props: { title: string, radioKey: string, children?: any }) {
     var childrenWithProps = React.Children.map(props.children, child => {
         if (React.isValidElement(child)) {
@@ -108,12 +134,33 @@ export function DataListRadio(props: { title: string, radioKey: string, children
         }
     });
     return (
-        <div className="x-filter">
-            <div className="x-filter--title">{props.title}</div>
-            {childrenWithProps}
-        </div>
+        <>
+        <FilterTitle>{props.title}</FilterTitle>
+        {childrenWithProps}
+        <Separator />
+        </>
     );
 }
+
+let RadioLink = Glamorous(XLink)({
+    margin: '0 0 1px',
+    padding: '10px 16px',
+    color: 'rgba(107,80,255,0.8) !important',
+    borderRadius: '4px',
+    textDecoration: 'none',
+
+    position: 'relative',
+    fontSize: '15px',
+    lineHeight: '20px',
+    fontWeight: 500,
+
+    '&:hover': { background: '#f0edff' }
+});
+
+let RadioLinkChecked = Glamorous(RadioLink)({
+    background: '#F0EDFF',
+    color: '#6B50FF'
+});
 
 export const DataListRadioItem = withRouter<{ title: string, itemKey?: string, radioKey?: string, reset?: string[] }>(props => {
     let path = props.router.pathname;
@@ -141,31 +188,89 @@ export const DataListRadioItem = withRouter<{ title: string, itemKey?: string, r
             path = props.router.pathname;
         }
     }
+    let Component = checked ? RadioLinkChecked : RadioLink;
     return (
-        <XLink path={path} className={'x-filter--radio' + (checked ? ' is-checked' : '')}>{props.title}</XLink>
+        <Component path={path}>{props.title}</Component>
     );
+});
+
+let DataListSearchBox = Glamorous.div({
+    position: 'relative'
+});
+
+let DataListSearchInput = Glamorous(XFilterInput)({
+    background: '#F0EDFF',
+    borderRadius: '4px!important',
+    color: 'rgb(135, 113, 253)',
+    padding: '14px 62px 16px 16px',
+    border: 'none',
+    display: 'block',
+    width: '100%',
+    height: '56px',
+    fontSize: '15px',
+    lineHeight: '26px',
+    fontWeight: 500,
+    fontFamily: '\'Aktiv Grotesk Corp\',arial,sans-serif',
+
+    '::placeholder': {
+        color: 'rgb(135, 113, 253)'
+    },
+    '&:focus': {
+        '::placeholder': { color: 'rgba(135, 113, 253, 0.7)' }
+    }
+});
+
+let DataListSearchButton = Glamorous.button({
+    textAlign: 'center',
+    border: 'none',
+    background: 'none',
+    color: '#6B50FF',
+    padding: 0,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    height: '56px',
+    width: '62px',
+
+    '> i': {
+        fontSize: '14px',
+        lineHeight: '56px'
+    }
 });
 
 export const DataListSearch = withRouter<{ searchKey: string }>(props => {
     return (
-        <div className="x-search">
-            <div className="x-search--box">
-                <XFilterInput className="x-search--input" searchKey={props.searchKey} placeholder="Search" />
-                <button className="x-search--button" type="submit"><i className="icon-search">{}</i></button>
-            </div>
-        </div>
+        <>
+        <DataListSearchBox>
+            <DataListSearchInput searchKey={props.searchKey} placeholder="Search" />
+            <DataListSearchButton type="submit"><i className="icon-search">{}</i></DataListSearchButton>
+        </DataListSearchBox>
+        <Separator />
+        </>
     );
 });
 
+let InviteLink = Glamorous.a({
+    textAlign: 'center',
+    border: 'none',
+    background: '#6B50FF',
+    color: '#ffffff!important',
+    padding: '18px 20px',
+    textDecoration: 'none',
+    borderRadius: '4px',
+
+    fontSize: '15px',
+    lineHeight: '20px',
+    fontWeight: 500
+})
+
 export function DataListInvite() {
     return (
-        <div className="x-join hidden-xs hidden-sm">
-            <div className="x-join--btn">
-                <a className="x-btn is-block" target="_blank" href="https://goo.gl/forms/YX8LSpH6jWLzbEj02">
-                    Join as a contributor
-                </a>
-            </div>
-        </div>
+        <XDesktopContainer>
+            <InviteLink target="_blank" href="https://goo.gl/forms/YX8LSpH6jWLzbEj02">
+                Join as a contributor
+            </InviteLink>
+        </XDesktopContainer>
     );
 }
 

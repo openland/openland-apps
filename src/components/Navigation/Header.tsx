@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { XLink } from './X/XLink';
-import { XContainer } from './X/XContainer';
+import { XLink } from '../X/XLink';
+import { XContainer } from '../X/XContainer';
 import { AuthenticationControlls } from './Login';
 import { Navigation } from './Navigation';
 

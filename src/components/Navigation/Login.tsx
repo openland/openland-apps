@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withUserInfo } from './UserInfo';
+import { withUserInfo } from '../Base/UserInfo';
 import { Dropdown } from 'semantic-ui-react';
 
 export const AuthenticationControlls = () => {

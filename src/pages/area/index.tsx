@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { withLandingPage } from '../../components/withPage';
-import { Intro, IntroTitle, IntroCols, IntroCol, IntroLink, IntroBox, IntroForm } from '../../components/Intro';
+import { withLandingPage } from '../../components/Navigation/withPage';
+import { Intro, IntroTitle, IntroCols, IntroCol, IntroLink, IntroBox, IntroForm } from '../../components/Landing/Intro';
 import { Counters, CountersList, CountersItem, CountersCols, CountersText } from '../../components/Landing/Counters';
 import { About, AboutItem } from '../../components/Landing/About';
-import { Footer } from '../../components/Footer';
+import { Footer } from '../../components/Navigation/Footer';
 import { Trends, TrendsItem, TrendsChart, TrendsText } from '../../components/Landing/Trends';
 import { buildDuration } from '../../utils/date';
-import { withLoader } from '../../components/withLoader';
+import { withLoader } from '../../components/Base/withLoader';
 import { XBarChart } from '../../components/X/XBarChart';
 import { XHead } from '../../components/X/XHead';
 import { Links, ExternalLinks } from '../../Links';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XHead } from '../../../components/X/XHead';
-import { withPageFullScreen } from '../../../components/withPage';
+import { withPageFullScreen } from '../../../components/Navigation/withPage';
 import { XMap2 } from '../../../components/X/XMap2';
 import { XCard } from '../../../components/X/XCard';
 import { XPageFullScreen } from '../../../components/X/XPageFullScreen';

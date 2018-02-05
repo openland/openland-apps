@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XLink } from './X/XLink';
+import { XLink } from '../X/XLink';
 
 export function Navigation() {
     return (

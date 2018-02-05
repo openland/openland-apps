@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { withData } from '../utils/withData';
-import { UserInfoProvider } from '../components/UserInfo';
-import { XDocumentRoot } from '../components/X/Scaffold/XDocumentRoot';
-import { Header } from './Header';
+import { withData } from '../../utils/withData';
+import { UserInfoProvider } from '../Base/UserInfo';
+import { XDocumentRoot } from '../X/Scaffold/XDocumentRoot';
+import { Header } from '../Navigation/Header';
 import { Footer } from './Footer';
-import { withAreaQuery } from '../api';
+import { withAreaQuery } from '../../api';
 
 export function withAreaPage(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAreaQuery((props) => (

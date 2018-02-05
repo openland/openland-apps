@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { withPage } from '../../../components/withPage';
+import { withPage } from '../../../components/Navigation/withPage';
 import { XBarChart } from '../../../components/X/XBarChart';
-import { withLoader } from '../../../components/withLoader';
+import { withLoader } from '../../../components/Base/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { withInternalStats } from '../../../api';
 import { XPageContent } from '../../../components/X/XPageContent';

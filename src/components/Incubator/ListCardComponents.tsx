@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { XListItem } from './X/XList';
-import { XLink } from './X/XLink';
+import { XListItem } from '../X/XList';
+import { XLink } from '../X/XLink';
 import * as classnames from 'classnames';
 
 export function ListCardContainer(props: { children: any; withImage?: boolean; className?: string }) {

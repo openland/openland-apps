@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withUserInfo } from '../UserInfo';
+import { withUserInfo } from '../Base/UserInfo';
 
 export const XWriteAcces = withUserInfo<{ children: any }>((props) => {
     if (props.area && props.area.writeAccess) {

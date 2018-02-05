@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link as LinkNext } from '../../routes';
-import { withUserInfo } from '../UserInfo';
+import { withUserInfo } from '../Base/UserInfo';
 import { withRouter } from '../../utils/withRouter';
 import { resolveActionPath } from '../../utils/routing';
 

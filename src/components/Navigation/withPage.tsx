@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { withData } from '../utils/withData';
-import { UserInfoProvider } from '../components/UserInfo';
+import { withData } from '../../utils/withData';
+import { UserInfoProvider } from '../Base/UserInfo';
 import { QueryProps } from 'react-apollo';
 import Error from 'next/error';
-import { XDocumentRoot } from './X/Scaffold/XDocumentRoot';
-import { Loader } from './Loaders';
-import '../utils/routing';
+import { XDocumentRoot } from '../X/Scaffold/XDocumentRoot';
+import { Loader } from '../Incubator/Loaders';
+import '../../utils/routing';
 import { Header } from './Header';
 import { Footer } from './Footer';
-import '../utils/analytics';
-import { withAreaQuery } from '../api';
+import '../../utils/analytics';
+import { withAreaQuery } from '../../api';
 
 //
 // Root Loader. We shouldn't render anything untill page is loaded since we have global progress indicator.

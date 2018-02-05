@@ -5,6 +5,8 @@ import { Layout } from './_Layout';
 import { XVertical } from './XVertical';
 import { withRouter, RouterState } from '../../utils/withRouter';
 import { XLink } from './XLink';
+import { XDesktopContainer } from './XDesktopContainer';
+import { XMobileContainer } from './XMobileContainer';
 
 let FixedContainer = Glamorous.div({
     zIndex: 100,
@@ -75,20 +77,13 @@ let CloseButton = Glamorous(XLink)({
     }
 })
 
-let MobileContainer = Glamorous(XVertical)({
-    display: 'none',
-    [Layout.SMMinus]: {
-        display: 'flex',
-    }
+let MobileContainer = Glamorous(XMobileContainer)({
+    
 })
 
-let DesktopContainer = Glamorous(XVertical)({
-    display: 'flex',
+let DesktopContainer = Glamorous(XDesktopContainer)({
     flexBasis: '25%',
     marginRight: 16,
-    [Layout.SMMinus]: {
-        display: 'none',
-    }
 })
 
 let SaveButton = Glamorous(XLink)({

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { withOrganizations } from '../../../api';
 import { XList, XListItem } from '../../../components/X/XList';
-import { OrganizationsListCard } from '../../../components/OrganizationsListCard';
-import { DataList } from '../../../components/DataList';
-import { withLoader } from '../../../components/withLoader';
+import { CardOrganization2 } from '../../../components/CardOrganization2';
+import { DataList } from '../../../components/Incubator/DataList';
+import { withLoader } from '../../../components/Base/withLoader';
 import { XHead } from '../../../components/X/XHead';
-import { withAreaPage } from '../../../components/withAreaPage';
+import { withAreaPage } from '../../../components/Navigation/withAreaPage';
 import { XPageContent } from '../../../components/X/XPageContent';
 
 export default withAreaPage(withOrganizations(withLoader((props) => {
@@ -57,7 +57,7 @@ export default withAreaPage(withOrganizations(withLoader((props) => {
                         {data.map((item: any) => {
                             return (
                                 <XListItem key={item.id}>
-                                    <OrganizationsListCard key={item.id} org={item} />
+                                    <CardOrganization2 key={item.id} org={item} />
                                 </XListItem>
                             )
                         })}

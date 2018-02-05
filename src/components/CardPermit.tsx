@@ -2,19 +2,19 @@ import * as React from 'react';
 
 import { formatDuration } from '../utils/date';
 import { PermitShortFragment } from '../api/Types';
-import { PermitStatusTest } from './PermitStatus';
+import { PermitStatus2 } from './PermitStatus2';
 import { PermitType } from './PermitType';
 import { XCounter } from './X/XCounter';
-import { ListCardContainer } from './ListCardComponents';
-import { ListCardBox } from './ListCardComponents';
-import { ListCardRow } from './ListCardComponents';
-import { ListCardMainTitle } from './ListCardComponents';
-import { ListCardCount } from './ListCardComponents';
-import { ListCardDetails } from './ListCardComponents';
+import { ListCardContainer } from './Incubator/ListCardComponents';
+import { ListCardBox } from './Incubator/ListCardComponents';
+import { ListCardRow } from './Incubator/ListCardComponents';
+import { ListCardMainTitle } from './Incubator/ListCardComponents';
+import { ListCardCount } from './Incubator/ListCardComponents';
+import { ListCardDetails } from './Incubator/ListCardComponents';
 
 import { Links } from '../Links';
 
-export function PermitsListCard(props: PermitShortFragment) {
+export function CardPermit(props: PermitShortFragment) {
     return (
         <ListCardContainer className={'permit-card'}>
             <ListCardBox>
@@ -46,7 +46,7 @@ export function PermitsListCard(props: PermitShortFragment) {
                         </ListCardCount>
                     )}
                     {props.status && (
-                        <PermitStatusTest status={props.status} date={props.statusUpdatedAt} />
+                        <PermitStatus2 status={props.status} date={props.statusUpdatedAt} />
                     )}
                 </ListCardRow>
                 <ListCardRow className={'bottom'}>

@@ -3,7 +3,7 @@ import { XCard } from './X/XCard';
 import { Links } from '../Links';
 import * as Types from '../api/Types';
 
-export function OrganizationsListCard(props: { org: Types.OrganizationShortFragment }) {
+export function CardOrganization2(props: { org: Types.OrganizationShortFragment }) {
 
     let subtitle = undefined
 

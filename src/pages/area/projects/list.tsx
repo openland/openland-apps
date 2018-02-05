@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { DataList } from '../../../components/DataList';
+import { DataList } from '../../../components/Incubator/DataList';
 import { XList } from '../../../components/X/XList';
-import { ProjectsListCard } from '../../../components/ProjectsListCard';
-import { withLoader } from '../../../components/withLoader';
+import { CardProject2 } from '../../../components/CardProject2';
+import { withLoader } from '../../../components/Base/withLoader';
 import { XHead } from '../../../components/X/XHead';
-import { withAreaPage } from '../../../components/withAreaPage';
+import { withAreaPage } from '../../../components/Navigation/withAreaPage';
 import { ProjectShortFragment } from '../../../api/Types';
-import { withPagedList } from '../../../components/withPagedList';
+import { withPagedList } from '../../../components/Base/withPagedList';
 import { withBuildingProjects } from '../../../api';
 import { XPageContent } from '../../../components/X/XPageContent';
 
@@ -23,7 +23,7 @@ const PipelineItems = withPagedList<ProjectShortFragment>((props) => (
             }
 
             return (
-                <ProjectsListCard
+                <CardProject2
                     key={item.id}
                     id={item.id}
                     title={item.name}

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { withPage } from '../../../components/withPage';
-import { withLoader } from '../../../components/withLoader';
+import { withPage } from '../../../components/Navigation/withPage';
+import { withLoader } from '../../../components/Base/withLoader';
 import { ListOrganizations } from '../../../components/ListOrganizations';
 import { ListPermits } from '../../../components/ListPermits';
 import { XLink } from '../../../components/X/XLink';

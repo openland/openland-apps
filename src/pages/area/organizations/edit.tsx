@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { withOrganizationAlter } from '../../../api';
-import { withLoader } from '../../../components/withLoader';
+import { withLoader } from '../../../components/Base/withLoader';
 import { XForm, XFormField, XFormFieldCheck, XFormImage, XFormSubmit } from '../../../components/X/XForm';
 import { XButton } from '../../../components/X/XButton';
 import { XHead } from '../../../components/X/XHead';
 import { Links } from '../../../Links';
-import { withAreaPage } from '../../../components/withAreaPage';
+import { withAreaPage } from '../../../components/Navigation/withAreaPage';
 import { XPageContent } from '../../../components/X/XPageContent';
 import { XCard } from '../../../components/X/XCard';
 import { XSection } from '../../../components/X/XSection';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { QueryProps } from 'react-apollo';
-import { Loader } from './Loaders';
+import { Loader } from '../Incubator/Loaders';
 import Error from 'next/error';
 
 export function withLoader<P extends { data: QueryProps }>(WrappedComponent: React.ComponentType<P>): React.ComponentType<P> {

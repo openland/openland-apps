@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { XContainer } from './X/XContainer';
+import { XContainer } from '../X/XContainer';
 import { NavigationFooter } from './Navigation';
-import { IntroForm } from './Intro';
+import { IntroForm } from '../Landing/Intro';
 
 export class Footer extends React.Component {
     render() {

@@ -1,36 +1,7 @@
 import * as React from 'react';
 import { XDate } from './X/XDate';
-// FILING
-// FILED
-// ISSUED
-// COMPLETED
-// EXPIRED
-// CANCELLED
-// DISAPPROVED
-// APPROVED
-// ISSUING
-// REVOKED
-// WITHDRAWN
-// PLANCHECK
-// SUSPENDED
-// REINSTATED
-// INSPECTING
-// UPHELD
-// INCOMPLETE
-// GRANTED
-// APPEAL
 
-// ICON LIST:
-// appealed
-// canceled
-// completed
-// expired
-// filed
-// issued
-// suspended
-// withdrawn
-
-export function PermitStatus(props: { status: string | null, date?: string | null }) {
+export function PermitStatus2(props: { status?: string | null, date?: string | null }) {
 
     let icon: string = 'question';
 
@@ -183,17 +154,21 @@ export function PermitStatus(props: { status: string | null, date?: string | nul
     return (
         <>
         {props.date && (
-            <div className="x-permit--status">
+            <div className="x-card-date">
                 <i className={'icon-' + icon} />
-                <span><XDate date={props.date} format={'date'} /></span>
-                {text}
+                <div className="x-card-count smaller">
+                    <div className="title">
+                        <XDate date={props.date} format={'date'} />
+                    </div>
+                    <div className="text">{text}</div>
+                </div>
             </div>
         )}
 
         {!props.date && (
-            <div className="x-permit--status no-date">
+            <div className="x-card-date">
                 <i className={'icon-' + icon} />
-                {text}
+                <div className="text">{text}</div>
             </div>
         )}
         </>

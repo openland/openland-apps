@@ -1,15 +1,11 @@
 import * as React from 'react';
 import { withPermits } from '../../../api';
-import { withPage } from '../../../components/withPage';
+import { withPage } from '../../../components/Navigation/withPage';
 import { XList } from '../../../components/X/XList';
-import { PermitsListCard } from '../../../components/PermitsListCard';
-
-import {
-    DataList, DataListContent, DataListFilters, DataListRadio, DataListRadioItem,
-    DataListSearch
-} from '../../../components/DataList';
-import { withPagedList } from '../../../components/withPagedList';
-import { withLoader } from '../../../components/withLoader';
+import { CardPermit } from '../../../components/CardPermit';
+import { DataList } from '../../../components/Incubator/DataList';
+import { withPagedList } from '../../../components/Base/withPagedList';
+import { withLoader } from '../../../components/Base/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { PermitShortFragment } from '../../../api/Types';
 import { XPageContent } from '../../../components/X/XPageContent';
@@ -18,7 +14,7 @@ const PermitsItems = withPagedList<PermitShortFragment>((props) => (
     <XList>
         {props.items.map((item) => {
             return (
-                <PermitsListCard
+                <CardPermit
                     __typename={'Permit'}
                     key={item.id}
                     id={item.id}
@@ -44,45 +40,45 @@ export default withPage(withPermits(withLoader((props) => {
         <XHead title={['Statecraft', 'San Francisco', 'Permits']} />
         <XPageContent>
             <DataList>
-                <DataListFilters title="Building Permits">
-                    <DataListSearch searchKey="filter" />
-                    <DataListRadio radioKey="sort" title="Sort By">
-                        <DataListRadioItem title="Filing date" reset={['page']} />
-                        <DataListRadioItem title="Last action date" reset={['page']} itemKey="STATUS_CHANGE_TIME" />
-                        <DataListRadioItem title="Completion date" reset={['page']} itemKey="COMPLETE_TIME" />
-                        <DataListRadioItem title="Issuing date" reset={['page']} itemKey="ISSUED_TIME" />
-                        <DataListRadioItem title="Approval time ascending" reset={['page']}
+                <DataList.Filters title="Building Permits">
+                    <DataList.Search searchKey="filter" />
+                    <DataList.Radio radioKey="sort" title="Sort By">
+                        <DataList.RadioItem title="Filing date" reset={['page']} />
+                        <DataList.RadioItem title="Last action date" reset={['page']} itemKey="STATUS_CHANGE_TIME" />
+                        <DataList.RadioItem title="Completion date" reset={['page']} itemKey="COMPLETE_TIME" />
+                        <DataList.RadioItem title="Issuing date" reset={['page']} itemKey="ISSUED_TIME" />
+                        <DataList.RadioItem title="Approval time ascending" reset={['page']}
                             itemKey="APPROVAL_TIME_ASC" />
-                        <DataListRadioItem title="Approval time descending" reset={['page']}
+                        <DataList.RadioItem title="Approval time descending" reset={['page']}
                             itemKey="APPROVAL_TIME_DESC" />
-                    </DataListRadio>
-                    <DataListRadio radioKey="type" title="Type">
-                        <DataListRadioItem title="All" reset={['page']} />
-                        <DataListRadioItem title="New constructions" itemKey="NEW_CONSTRUCTION" reset={['page']} />
-                        <DataListRadioItem title="Demolitions" itemKey="DEMOLITIONS" reset={['page']} />
-                    </DataListRadio>
-                    <DataListRadio radioKey="issuedYear" title="Issued">
-                        <DataListRadioItem title="All" reset={['page']} />
-                        <DataListRadioItem title="Last 5 years" reset={['page']} itemKey="2012" />
-                        <DataListRadioItem title="Last 10 years" reset={['page']} itemKey="2007" />
-                    </DataListRadio>
-                    <DataListRadio radioKey="minUnits" title="Project size">
-                        <DataListRadioItem title="All" reset={['page']} />
-                        <DataListRadioItem title="10+ units" itemKey="10" reset={['page']} />
-                        <DataListRadioItem title="50+ units" itemKey="50" reset={['page']} />
-                        <DataListRadioItem title="100+ units" itemKey="100" reset={['page']} />
-                    </DataListRadio>
-                    <DataListRadio radioKey="fromPipeline" title="Segments">
-                        <DataListRadioItem title="All" reset={['page']} />
-                        <DataListRadioItem title="Housing Pipeline" itemKey="true" reset={['page']} />
-                    </DataListRadio>
-                </DataListFilters>
-                <DataListContent>
+                    </DataList.Radio>
+                    <DataList.Radio radioKey="type" title="Type">
+                        <DataList.RadioItem title="All" reset={['page']} />
+                        <DataList.RadioItem title="New constructions" itemKey="NEW_CONSTRUCTION" reset={['page']} />
+                        <DataList.RadioItem title="Demolitions" itemKey="DEMOLITIONS" reset={['page']} />
+                    </DataList.Radio>
+                    <DataList.Radio radioKey="issuedYear" title="Issued">
+                        <DataList.RadioItem title="All" reset={['page']} />
+                        <DataList.RadioItem title="Last 5 years" reset={['page']} itemKey="2012" />
+                        <DataList.RadioItem title="Last 10 years" reset={['page']} itemKey="2007" />
+                    </DataList.Radio>
+                    <DataList.Radio radioKey="minUnits" title="Project size">
+                        <DataList.RadioItem title="All" reset={['page']} />
+                        <DataList.RadioItem title="10+ units" itemKey="10" reset={['page']} />
+                        <DataList.RadioItem title="50+ units" itemKey="50" reset={['page']} />
+                        <DataList.RadioItem title="100+ units" itemKey="100" reset={['page']} />
+                    </DataList.Radio>
+                    <DataList.Radio radioKey="fromPipeline" title="Segments">
+                        <DataList.RadioItem title="All" reset={['page']} />
+                        <DataList.RadioItem title="Housing Pipeline" itemKey="true" reset={['page']} />
+                    </DataList.Radio>
+                </DataList.Filters>
+                <DataList.Content>
                     <DataList.Stats>
                         <DataList.Stats.Record counter={props.data.items.pageInfo.itemsCount} title="Permits" />
                     </DataList.Stats>
                     <PermitsItems data={props.data} />
-                </DataListContent>
+                </DataList.Content>
             </DataList>
         </XPageContent>
         </>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XListItem } from './X/XList';
-import { DataListCard } from './DataListCard';
+import { CardProject } from './CardProject';
 import { ProjectShortFragment } from '../api/Types';
 
 export function ListProjects(props: { projects: ProjectShortFragment[] }) {
@@ -9,7 +9,7 @@ export function ListProjects(props: { projects: ProjectShortFragment[] }) {
             {props.projects.map(p => {
                 return (
                     <XListItem key={p.id}>
-                        <DataListCard
+                        <CardProject
                             title={p.name}
                             url={p.extrasUrl}
                             picture={p.preview}

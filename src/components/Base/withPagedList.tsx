@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { ListQueryPagedData } from '../utils/graphqlList';
-
+import { ListQueryPagedData } from '../../utils/graphqlList';
 
 export function withPagedList<TResult extends { id: string }>(WrappedComponent: React.ComponentType<{
     items: TResult[],

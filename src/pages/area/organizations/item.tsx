@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withLoader } from '../../../components/withLoader';
+import { withLoader } from '../../../components/Base/withLoader';
 import { XWriteAcces } from '../../../components/X/XWriteAccess';
 import { ListOrganizations } from '../../../components/ListOrganizations';
 import { ListProjects } from '../../../components/ListProjects';
@@ -8,7 +8,7 @@ import { XLink } from '../../../components/X/XLink';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
 import { Links } from '../../../Links';
-import { withAreaPage } from '../../../components/withAreaPage';
+import { withAreaPage } from '../../../components/Navigation/withAreaPage';
 import { ProjectShortFragment } from '../../../api/Types';
 import { withOrganization } from '../../../api';
 import { XPageContent } from '../../../components/X/XPageContent';

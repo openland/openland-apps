@@ -10,10 +10,10 @@ import { XDate } from '../../../components/X/XDate';
 import { Icon } from 'semantic-ui-react';
 import { XDiff } from '../../../components/X/XDiff';
 import { PermitStatus } from '../../../components/PermitStatus';
-import { withLoader } from '../../../components/withLoader';
+import { withLoader } from '../../../components/Base/withLoader';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
-import { withAreaPage } from '../../../components/withAreaPage';
+import { withAreaPage } from '../../../components/Navigation/withAreaPage';
 import { withPermit } from '../../../api';
 
 function ChangeRender(props: {
