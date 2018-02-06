@@ -5,7 +5,6 @@ import { Navigation } from './Navigation';
 import { XFixedWidthContainer } from '../X/Scaffold/XFixedWidthContainer';
 import Glamorous from 'glamorous';
 import { XDesktopContainer } from '../X/XDesktopContainer';
-import { XRow } from '../X/XGrid';
 
 let HeaderHeroDiv = Glamorous.div({
     display: 'flex',
