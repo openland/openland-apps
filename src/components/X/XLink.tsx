@@ -4,6 +4,15 @@ import { withUserInfo } from '../Base/UserInfo';
 import { withRouter } from '../../utils/withRouter';
 import { resolveActionPath } from '../../utils/routing';
 
+export interface XLinkProps {
+    path?: string | null;
+    href?: string | null;
+    anchor?: string | null;
+    query?: { field: string, value?: string } | null;
+    className?: string | null;
+    writeAccess?: boolean | null;
+}
+
 function normalizePath(src: string): string {
     if (src.indexOf('?') >= 0) {
         src = src.split('?', 2)[0];
@@ -11,7 +20,7 @@ function normalizePath(src: string): string {
     return src.endsWith('/') ? src.substring(0, src.length - 1) : src;
 }
 
-const LinkRender = withRouter<{ path?: string | null, href?: string | null, anchor?: string | null, className?: string | null, children?: any, writeAccess?: boolean | null }>((props) => {
+const LinkRender = withRouter<XLinkProps & { children?: any }>((props) => {
     var className = props.className ? props.className : undefined;
 
     if (props.path) {
@@ -38,7 +47,7 @@ const LinkRender = withRouter<{ path?: string | null, href?: string | null, anch
     }
 });
 
-export const XLink = withRouter<{ path?: string | null, href?: string | null, anchor?: string | null, query?: { field: string, value?: string } | null, className?: string | null, children?: any, writeAccess?: boolean | null }>(withUserInfo((props) => {
+export const XLink = withRouter<XLinkProps & { children?: any }>(withUserInfo((props) => {
     if (props.writeAccess !== true || (props.area && props.area.writeAccess)) {
         if (props.path || props.query) {
             return <LinkRender path={resolveActionPath(props)} className={props.className} children={props.children} />;

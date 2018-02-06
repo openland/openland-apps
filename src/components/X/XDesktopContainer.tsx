@@ -1,9 +1,9 @@
 import Glamorous from 'glamorous';
-import { XVertical } from './XVertical';
 import { Layout } from './_Layout';
 
-export let XDesktopContainer = Glamorous(XVertical)({
+export let XDesktopContainer = Glamorous.div({
     display: 'flex',
+    flexDirection: 'column',
     [Layout.SMMinus]: {
         display: 'none',
     }

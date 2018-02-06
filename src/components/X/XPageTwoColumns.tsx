@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XGrid2 } from './XGrid2';
+import { XGrid } from './XGrid';
 import { XCell } from './XGrid';
 import { XPageContent } from './XPageContent';
 import { XVertical } from './XVertical';
@@ -36,7 +36,7 @@ export class XPageTwoColumns extends React.Component {
     render() {
         return (
             <XPageContent>
-                <XGrid2
+                <XGrid
                     layouts={{
                         gap: 30,
                         templateColumns: '2fr 1fr',
@@ -52,7 +52,7 @@ export class XPageTwoColumns extends React.Component {
                         }
                     }}>
                     {this.props.children}
-                </XGrid2>
+                </XGrid>
             </XPageContent>
         );
     }

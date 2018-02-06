@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withPage } from '../../../components/Navigation/withPage';
 import { XHead } from '../../../components/X/XHead';
-import { XGrid2 } from '../../../components/X/XGrid2';
+import { XGrid } from '../../../components/X/XGrid';
 import { XCell } from '../../../components/X/XGrid';
 export default withPage((props) => {
 
@@ -9,7 +9,7 @@ export default withPage((props) => {
         <>
         <XHead title="San Francisco Housing Analytics" />
         <div className="x-in">
-            <XGrid2
+            <XGrid
                 layouts={{
                     templateAreas: [
                         ['sidebar', 'header', 'header'],
@@ -40,7 +40,7 @@ export default withPage((props) => {
                 <XCell area="footer">
                     Footer
                 </XCell>
-            </XGrid2>
+            </XGrid>
         </div>
         </>
     );

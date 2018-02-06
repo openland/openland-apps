@@ -1,17 +1,28 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
+import { XVertical } from './XVertical';
 
-export function XList(props: { children?: any }) {
-    return (
-        <div className="x-list">
-            {props.children}
-        </div>
-    );
-}
+let XListDiv = Glamorous.div({
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch'
+});
 
-export function XListItem(props: { children?: any }) {
-    return (
-        <div className="x-list-item">
-            {props.children}
-        </div>
-    )
-}
+export let XListItem = Glamorous.div({
+
+});
+
+export class XList extends React.Component {
+    static Item = XListItem;
+
+    render() {
+        return (
+            <XListDiv>
+                <XVertical>
+                    {this.props.children}
+                </XVertical>
+            </XListDiv>
+        );
+    }
+};

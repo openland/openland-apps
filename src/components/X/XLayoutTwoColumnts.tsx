@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XGrid2 } from './XGrid2';
+import { XGrid } from './XGrid';
 import { XCell } from './XGrid';
 import { XVertical } from './XVertical';
 
@@ -34,7 +34,7 @@ export class XLayoutTwoColumns extends React.Component {
 
     render() {
         return (
-            <XGrid2
+            <XGrid
                 layouts={{
                     gap: 32,
                     templateColumns: '2fr 1fr',
@@ -50,7 +50,7 @@ export class XLayoutTwoColumns extends React.Component {
                     }
                 }}>
                 {this.props.children}
-            </XGrid2>
+            </XGrid>
         );
     }
 }

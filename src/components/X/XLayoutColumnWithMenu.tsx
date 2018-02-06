@@ -78,10 +78,13 @@ let CloseButton = Glamorous(XLink)({
 })
 
 let MobileContainer = Glamorous(XMobileContainer)({
-    
+    flexDirection: 'column',
+    alignItems: 'stretch',
 })
 
 let DesktopContainer = Glamorous(XDesktopContainer)({
+    flexDirection: 'column',
+    alignItems: 'stretch',
     flexBasis: '25%',
     marginRight: 16,
 })
@@ -174,7 +177,9 @@ class XLayoutColumnWithMenuMenuBase extends React.Component<{ buttonTitle: strin
                 )}
             </MobileContainer>
             <DesktopContainer>
-                {this.props.children}
+                <XVertical>
+                    {this.props.children}
+                </XVertical>
             </DesktopContainer>
             </>
         )

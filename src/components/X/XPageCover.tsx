@@ -14,7 +14,7 @@ let PageRootDiv = Glamorous.div({
 let CoverDiv = Glamorous.div({
     position: 'relative',
 
-    margin: '-16px 0 -170px',
+    margin: '0 0 -196px',
 
     background: '#ffffff center calc(50% - 85px) no-repeat',
     backgroundSize: '100% auto',

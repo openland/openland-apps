@@ -9,3 +9,7 @@ export let XFixedWidthContainer = Glamorous.div({
     [Layout.LG]: { width: 1056 },
     [Layout.XLG]: { width: 1248 },
 });
+
+export let XFixedWidthContainerThin = Glamorous(XFixedWidthContainer)({
+    [Layout.XLG]: { width: 1056 },
+});

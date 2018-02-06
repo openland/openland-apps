@@ -3,14 +3,14 @@ import { XLink } from '../X/XLink';
 
 export function Navigation() {
     return (
-        <ul>
-            <li className="x-header--item"><XLink path="/sf">Insights</XLink></li>
-            <li className="x-header--item"><XLink path="/sf/projects">Construction projects</XLink></li>
-            <li className="x-header--item"><XLink path="/sf/permits">Permits</XLink></li>
-            <li className="x-header--item"><XLink path="/sf/zoning">Zoning</XLink></li>
-            <li className="x-header--item"><XLink path="/sf/organizations">Organizations</XLink></li>
-            <li className="x-header--item"><XLink path="/sf/stats" writeAccess={true}>Stats</XLink></li>
-        </ul>
+        <>
+        <div className="x-header-item"><XLink path="/sf">Insights</XLink></div>
+        <div className="x-header-item"><XLink path="/sf/projects">Construction projects</XLink></div>
+        <div className="x-header-item"><XLink path="/sf/permits">Permits</XLink></div>
+        <div className="x-header-item"><XLink path="/sf/zoning">Zoning</XLink></div>
+        <div className="x-header-item"><XLink path="/sf/organizations">Organizations</XLink></div>
+        <div className="x-header-item"><XLink path="/sf/stats" writeAccess={true}>Stats</XLink></div>
+        </>
     );
 }
 

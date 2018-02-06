@@ -1,4 +1,5 @@
 import Glamorous from 'glamorous';
+import { CSSUtils, XMediaSizes } from './utils';
 
 export let XRow = Glamorous.div<{ padding?: boolean }>((props) => ({
     display: 'flex',
@@ -21,29 +22,48 @@ export const XColumn = Glamorous.div<{ mode?: 'fixed' | 'fit' | 'fill' | null }>
     '&:last-child': props.mode === 'fixed' ? { paddingRight: 0 } : undefined
 }));
 
-export let XGrid = Glamorous.div<{ mode?: 'two-row' }>({
-    width: '100%',
-    height: '100%',
-    display: 'grid',
-    gridGap: 0,
-    gridTemplateColumns: '168px max-content fit-conten',
-    gridTemplateRows: '82px 82px',
-    gridTemplateAreas: `
-      "sidebar header header"
-      "sidebar footer button"
-    `,
-    '@media(max-width: 767px)': {
-        gridTemplateColumns: '168px auto',
-        gridTemplateRows: '168px 82px 82px',
-        gridTemplateAreas: `
-        "sidebar sidebar sidebar"
-        "header  header  header"
-        "footer  footer  footer"
-        "button  button  button"
-      `,
-    }
-});
-
 export let XCell = Glamorous.div<{ area: string }>((props) => ({
     gridArea: props.area
+}));
+
+interface XGridLayout {
+    gap?: number,
+    templateColumns?: string;
+    templateRows?: string;
+    templateAreas?: string[][];
+}
+interface XGridProps {
+    layouts: XGridLayout & {
+        [K in XMediaSizes]?: XGridLayout
+    }
+    children?: any;
+}
+
+function convertLayout(src?: XGridLayout) {
+    if (src) {
+        return {
+            gridGap: src.gap,
+            gridTemplateColumns: src.templateColumns,
+            gridTemplateRows: src.templateRows,
+            gridTemplateAreas: src.templateAreas ? src.templateAreas.map((v) => '"' + v.join(' ') + '"').join(' ') : undefined,
+        }
+    } else {
+        return {}
+    }
+}
+
+export let XGrid = Glamorous.div<XGridProps>((props) => ({
+    display: 'grid',
+    ...convertLayout(props.layouts),
+
+    [CSSUtils.media(['xs'])]: convertLayout(props.layouts.xs),
+    [CSSUtils.media(['sm'])]: convertLayout(props.layouts.sm),
+    [CSSUtils.media(['md'])]: convertLayout(props.layouts.md),
+    [CSSUtils.media(['lg'])]: convertLayout(props.layouts.lg),
+
+    [CSSUtils.media(['sm-'])]: convertLayout(props.layouts['sm-']),
+    [CSSUtils.media(['md-'])]: convertLayout(props.layouts['md-']),
+
+    [CSSUtils.media(['sm+'])]: convertLayout(props.layouts['sm+']),
+    [CSSUtils.media(['md+'])]: convertLayout(props.layouts['md+']),
 }));

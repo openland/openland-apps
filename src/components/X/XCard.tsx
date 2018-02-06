@@ -144,7 +144,7 @@ let XCardDivIcon = Glamorous.div({
 });
 
 let XCardDivContent = Glamorous.div({
-    padding: 30
+    padding: 24
 })
 
 export class XCard extends React.Component {

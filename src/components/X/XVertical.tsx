@@ -7,21 +7,21 @@ export let XVerticalDiv = Glamorous.div({
     alignItems: 'stretch'
 })
 
-export let XVerticalSpaceDiv = Glamorous.div({
-    height: 16,
+export let XVerticalSpaceDiv = Glamorous.div<{ separator?: 'large' | 'normal' }>((props) => ({
+    height: props.separator === 'large' ? 32 : 16,
     alignSelf: 'stretch',
     flexShrink: 0,
     flexGrow: 0
-})
+}));
 
-export class XVertical extends React.Component<{ className?: string }> {
+export class XVertical extends React.Component<{ separator?: 'large' | 'normal', className?: string }> {
     render() {
         let elements = React.Children.toArray(this.props.children);
         let children: any[] = [];
         let isFirst = true;
         for (let el of elements) {
             if (!isFirst) {
-                children.push(<XVerticalSpaceDiv />);
+                children.push(<XVerticalSpaceDiv separator={this.props.separator} />);
             } else {
                 isFirst = false;
             }

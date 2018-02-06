@@ -6,6 +6,7 @@ import { withRouter } from '../../utils/withRouter';
 import { XLayoutColumnWithMenu } from '../X/XLayoutColumnWithMenu';
 import Glamorous from 'glamorous';
 import { XDesktopContainer } from '../X/XDesktopContainer';
+import { XVertical } from '../X/XVertical';
 
 let FiltersTitle = Glamorous.div({
     fontSize: '18px',
@@ -267,9 +268,11 @@ let InviteLink = Glamorous.a({
 export function DataListInvite() {
     return (
         <XDesktopContainer>
-            <InviteLink target="_blank" href="https://goo.gl/forms/YX8LSpH6jWLzbEj02">
-                Join as a contributor
+            <XVertical>
+                <InviteLink target="_blank" href="https://goo.gl/forms/YX8LSpH6jWLzbEj02">
+                    Join as a contributor
             </InviteLink>
+            </XVertical>
         </XDesktopContainer>
     );
 }
