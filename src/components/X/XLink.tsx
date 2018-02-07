@@ -11,6 +11,7 @@ export interface XLinkProps {
     query?: { field: string, value?: string } | null;
     className?: string | null;
     writeAccess?: boolean | null;
+    activateForSubpaths?: boolean | null;
 }
 
 function normalizePath(src: string): string {
@@ -24,7 +25,9 @@ const LinkRender = withRouter<XLinkProps & { children?: any }>((props) => {
     var className = props.className ? props.className : undefined;
 
     if (props.path) {
-        if (normalizePath(props.router.asPath!!) === normalizePath(props.path)) {
+        let ncurrent = normalizePath(props.router.asPath!!);
+        let ntarget = normalizePath(props.path);
+        if (ncurrent === ntarget || (ncurrent.startsWith(ntarget + '/') && props.activateForSubpaths)) {
             if (className) {
                 className += ' is-active';
             } else {
@@ -50,7 +53,7 @@ const LinkRender = withRouter<XLinkProps & { children?: any }>((props) => {
 export const XLink = withRouter<XLinkProps & { children?: any }>(withUserInfo((props) => {
     if (props.writeAccess !== true || (props.area && props.area.writeAccess)) {
         if (props.path || props.query) {
-            return <LinkRender path={resolveActionPath(props)} className={props.className} children={props.children} />;
+            return <LinkRender path={resolveActionPath(props)} className={props.className} children={props.children} activateForSubpaths={props.activateForSubpaths} />;
         } else {
             return <LinkRender href={props.href} anchor={props.anchor} className={props.className} children={props.children} />;
         }
