@@ -46,7 +46,7 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
     return {
         textDecoration: 'none',
         textAlign: 'center',
-        cursor: 'pointer',
+        cursor: props.loading ? 'inherit' : 'pointer',
         userSelect: 'none',
         whiteSpace: 'nowrap',
         wordBreak: 'keep-all',
