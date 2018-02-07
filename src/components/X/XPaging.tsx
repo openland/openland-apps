@@ -1,16 +1,21 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { Menu, Icon } from 'semantic-ui-react';
 import { XLink } from './XLink';
+
+export const MenuItem = Glamorous(Menu.Item) ({
+    color: '#6638F0'
+})
 
 function XPageItem(props: { toPage: number, currentPage: number }) {
     if (props.toPage > 0) {
         return (
-            <Menu.Item
+            <MenuItem
                 as={XLink}
                 query={{ field: 'page', value: props.toPage.toString() }}
                 active={props.currentPage === props.toPage}>
                 {props.toPage}
-            </Menu.Item>
+            </MenuItem>
         );
     } else {
         return <Menu.Item as={XLink} query={{ field: 'page' }} active={props.currentPage === props.toPage}>1</Menu.Item>;
@@ -22,9 +27,9 @@ export function XPaging(props: { totalPages: number, currentPage: number, openEn
     var elements = new Array<any>();
     if (props.currentPage > 1) {
         elements.push(
-            <Menu.Item key="page_prev" as={XLink} query={{ field: 'page', value: props.currentPage - 1 }} icon={true}>
+            <MenuItem key="page_prev" as={XLink} query={{ field: 'page', value: props.currentPage - 1 }} icon={true}>
                 <Icon name="chevron left" />
-            </Menu.Item>
+            </MenuItem>
         );
     }
 
@@ -45,12 +50,12 @@ export function XPaging(props: { totalPages: number, currentPage: number, openEn
                 );
             }
             elements.push(
-                <Menu.Item key={'spread'} disabled={true}>...</Menu.Item>
+                <MenuItem key={'spread'} disabled={true}>...</MenuItem>
             );
 
         } else if (props.totalPages - props.currentPage < 3) {
             elements.push(
-                <Menu.Item key={'spread'} disabled={true}>...</Menu.Item>
+                <MenuItem key={'spread'} disabled={true}>...</MenuItem>
             );
             if (!props.openEnded) {
                 for (let i = 2; i < 5; i++) {
@@ -62,7 +67,7 @@ export function XPaging(props: { totalPages: number, currentPage: number, openEn
             }
         } else {
             elements.push(
-                <Menu.Item disabled={true}>...</Menu.Item>
+                <MenuItem disabled={true}>...</MenuItem>
             );
             for (let i = 0; i < 3; i++) {
                 elements.push(
@@ -71,7 +76,7 @@ export function XPaging(props: { totalPages: number, currentPage: number, openEn
                 );
             }
             elements.push(
-                <Menu.Item key={'spread'} disabled={true}>...</Menu.Item>
+                <MenuItem key={'spread'} disabled={true}>...</MenuItem>
             );
         }
         if (!props.openEnded) {
@@ -83,9 +88,9 @@ export function XPaging(props: { totalPages: number, currentPage: number, openEn
 
     if (props.currentPage < props.totalPages - 1) {
         elements.push(
-            <Menu.Item key="page_next" as={XLink} query={{ field: 'page', value: props.currentPage + 1 }} icon={true}>
+            <MenuItem key="page_next" as={XLink} query={{ field: 'page', value: props.currentPage + 1 }} icon={true}>
                 <Icon name="chevron right" />
-            </Menu.Item>
+            </MenuItem>
         );
     }
 

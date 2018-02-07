@@ -1,3 +1,4 @@
+import * as glamor from 'glamor'
 import { XLink, XLinkProps } from './XLink';
 import XStyled from './XStyled';
 
@@ -6,7 +7,13 @@ interface XButtonProps extends XLinkProps {
     style?: 'normal' | 'dark' | 'important';
     size?: 'large' | 'normal';
     bounce?: boolean;
+    loading?: boolean;
 }
+
+const loading = glamor.keyframes({
+    '0%': { transform: `rotate(0deg)` },
+    '100%': { transform: `rotate(360deg)` }
+})
 
 let textColors = {
     'normal': '#525f7f',
@@ -43,6 +50,7 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
         userSelect: 'none',
         whiteSpace: 'nowrap',
         wordBreak: 'keep-all',
+        position: 'relative',
 
         padding: props.size === 'large' ? '16px 20px' : '6px 14px',
 
@@ -79,6 +87,18 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
             outline: 0
+        },
+        '&::after': {
+            content: props.loading ? `''` : undefined,
+            display: 'block',
+            position: 'absolute',
+            width: '20px',
+            height: '20px',
+            left: 'calc(50% - 10px)',
+            top: 'calc(50% - 10px)',
+            backgroundImage: 'url(/static/X/loading.svg)',
+            backgroundSize: '20px',
+            animation: `${loading} 2s linear infinite`
         }
     }
 });
