@@ -147,7 +147,7 @@ let XCardDivContent = Glamorous.div({
     padding: 24
 })
 
-export class XCard extends React.Component {
+export class XCard extends React.Component<{ className?: string }> {
 
     static Row = XCardRow;
     static Col = XCardColumn;
@@ -162,7 +162,7 @@ export class XCard extends React.Component {
         let otherChildren = filterChildren('_xCardPhoto', this.props.children);
         let Wrapper = photoComponent !== null ? XCardDivIconized : XCardDiv;
         return (
-            <Wrapper>
+            <Wrapper className={this.props.className}>
                 {/* <div className={classnames('x-card-s', { 'horizontal': photoComponent !== null })}> */}
                 {photoComponent !== null && (<XCardDivIcon>{photoComponent}</XCardDivIcon>)}
                 {photoComponent !== null && (
