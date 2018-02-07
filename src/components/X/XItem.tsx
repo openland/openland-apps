@@ -3,8 +3,9 @@ import Glamorous from 'glamorous';
 import * as React from 'react';
 import { XLink, XLinkProps } from './XLink';
 import { XCloudImage } from './XCloudImage';
+import XStyled from './XStyled';
 
-let XItemDiv = Glamorous(XLink)({
+let XItemDiv = XStyled(XLink)({
     display: 'flex',
     flexDirection: 'row',
     overflow: 'hidden',

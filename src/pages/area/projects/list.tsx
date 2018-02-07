@@ -9,6 +9,7 @@ import { ProjectShortFragment } from '../../../api/Types';
 import { withPagedList } from '../../../components/Base/withPagedList';
 import { withBuildingProjects } from '../../../api';
 import { XPageContent } from '../../../components/X/XPageContent';
+import { XButton } from '../../../components/X/XButton';
 
 const PipelineItems = withPagedList<ProjectShortFragment>((props) => (
     <XList>
@@ -40,7 +41,14 @@ export default withAreaPage(withBuildingProjects(withLoader((props) => {
                         <DataList.RadioItem title="All" />
                         <DataList.RadioItem title="10+ units" itemKey="10" />
                     </DataList.Radio>
-                    <DataList.Invite />
+                    <XButton
+                        style="dark"
+                        size="large"
+                        bounce={true}
+                        href="https://goo.gl/forms/YX8LSpH6jWLzbEj02"
+                    >
+                        Join as a contributor
+                    </XButton>
                 </DataList.Filters>
                 <DataList.Content>
                     <DataList.Stats>

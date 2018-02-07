@@ -6,6 +6,7 @@ import { XFixedWidthContainer } from '../X/Scaffold/XFixedWidthContainer';
 import Glamorous from 'glamorous';
 import { XDesktopContainer } from '../X/XDesktopContainer';
 import { XMobileContainer } from '../X/XMobileContainer';
+import XStyled from '../X/XStyled';
 
 let HeaderHeroDiv = Glamorous.div({
     position: 'relative',
@@ -34,7 +35,7 @@ let Logo = Glamorous.img<{ large?: boolean }>((props) => ({
     marginRight: 6
 }));
 
-let HeaderLogo = Glamorous(XLink)({
+let HeaderLogo = XStyled(XLink)({
     display: 'flex',
     flexDirection: 'row',
     textDecoration: 'none',

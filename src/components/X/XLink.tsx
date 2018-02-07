@@ -10,6 +10,8 @@ export interface XLinkProps {
     anchor?: string | null;
     query?: { field: string, value?: string } | null;
     className?: string | null;
+    // theme?: object | null;
+    // {className?: string; theme?: object}
     writeAccess?: boolean | null;
     activateForSubpaths?: boolean | null;
 }
@@ -21,7 +23,7 @@ function normalizePath(src: string): string {
     return src.endsWith('/') ? src.substring(0, src.length - 1) : src;
 }
 
-const LinkRender = withRouter<XLinkProps & { children?: any }>((props) => {
+const LinkRender = withRouter<XLinkProps>((props) => {
     var className = props.className ? props.className : undefined;
 
     if (props.path) {
@@ -43,9 +45,13 @@ const LinkRender = withRouter<XLinkProps & { children?: any }>((props) => {
         return (
             <a href={props.anchor} className={className}>{props.children}</a>
         );
+    } else if (props.href) {
+        return (
+            <a href={props.href} className={className} target="_blank">{props.children}</a>
+        );
     } else {
         return (
-            <a href={props.href ? props.href : undefined} className={className} target="_blank">{props.children}</a>
+            <a href={'#'} className={className}>{props.children}</a>
         );
     }
 });

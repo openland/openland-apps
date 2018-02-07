@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withOrganizationAlter } from '../../../api';
 import { withLoader } from '../../../components/Base/withLoader';
 import { XForm, XFormField, XFormFieldCheck, XFormImage, XFormSubmit } from '../../../components/X/XForm';
-import { XButton } from '../../../components/X/XButton';
+import { XButton2 } from '../../../components/X/XButton2';
 import { XHead } from '../../../components/X/XHead';
 import { Links } from '../../../Links';
 import { withAreaPage } from '../../../components/Navigation/withAreaPage';
@@ -39,13 +39,13 @@ export default withAreaPage(withOrganizationAlter(withLoader((props) => {
                         <XFormField name="description" title="Description" hint="Description" />
                         <XFormField name="comments" title="Comments" hint="Comments" />
                         <XFormSubmit title="Save" />
-                        <XButton
+                        <XButton2
                             mutation={props.remove}
                             afterPath={Links.area('sf').organizations}
                             negative={true}
                         >
                             Remove
-                        </XButton>
+                        </XButton2>
                     </XForm>
                 </XCard>
             </XSection>

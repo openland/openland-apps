@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XButton } from './XButton';
+import { XButton2 } from './XButton2';
 import { XCloudImage } from './XCloudImage';
 import * as UploadCare from 'uploadcare-widget';
 
@@ -64,10 +64,10 @@ export class XImageUpload extends React.Component<XImageUploadProps, { isLoading
         return (
             <div style={{paddingBottom: 8}}>
                 <div>
-                    <XButton onClick={this.doUpload} loading={this.state.isLoading} positive={true}>
+                    <XButton2 onClick={this.doUpload} loading={this.state.isLoading} positive={true}>
                         Upload Logo
-                    </XButton>
-                    {uuid && <XButton onClick={this.doClear} negative={true}>Remove Logo</XButton>}
+                    </XButton2>
+                    {uuid && <XButton2 onClick={this.doClear} negative={true}>Remove Logo</XButton2>}
                 </div>
                 {uuid && (
                     <div style={{marginTop: 8, width: 200, height: 200}}>

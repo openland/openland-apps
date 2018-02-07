@@ -3,45 +3,65 @@ import { withPage } from '../../../components/Navigation/withPage';
 import { XHead } from '../../../components/X/XHead';
 import { XGrid } from '../../../components/X/XGrid';
 import { XCell } from '../../../components/X/XGrid';
+import { XPageContent } from '../../../components/X/XPageContent';
+import { XCard } from '../../../components/X/XCard';
+import { XButton } from '../../../components/X/XButton';
+import { XTitle } from '../../../components/X/XTitle';
+import { XVertical } from '../../../components/X/XVertical';
 export default withPage((props) => {
 
     return (
         <>
         <XHead title="San Francisco Housing Analytics" />
-        <div className="x-in">
-            <XGrid
-                layouts={{
-                    templateAreas: [
-                        ['sidebar', 'header', 'header'],
-                        ['sidebar', 'footer', 'footer']
-                    ],
-                    'xs': {
-                        templateAreas: [
-                            ['header', 'sidebar'],
-                            ['header', 'sidebar'],
-                            ['footer', 'sidebar']
-                        ],
-                    },
-                    'sm': {
-                        templateAreas: [
-                            ['sidebar', 'sidebar'],
-                            ['header', 'header'],
-                            ['footer', 'footer']
-                        ],
-                    }
-                }}
-            >
-                <XCell area="sidebar">
-                    Sidebar
-                </XCell>
-                <XCell area="header">
-                    Header
-                </XCell>
-                <XCell area="footer">
-                    Footer
-                </XCell>
-            </XGrid>
-        </div>
+        <XPageContent>
+            <XCard>
+                <XCard.Content>
+                    <XGrid
+                        layouts={{
+                            templateAreas: [
+                                ['sidebar', 'header', 'header'],
+                                ['sidebar', 'footer', 'footer']
+                            ],
+                            'xs': {
+                                templateAreas: [
+                                    ['header', 'sidebar'],
+                                    ['header', 'sidebar'],
+                                    ['footer', 'sidebar']
+                                ],
+                            },
+                            'sm': {
+                                templateAreas: [
+                                    ['sidebar', 'sidebar'],
+                                    ['header', 'header'],
+                                    ['footer', 'footer']
+                                ],
+                            }
+                        }}
+                    >
+                        <XCell area="sidebar">
+                            Sidebar
+                        </XCell>
+                        <XCell area="header">
+                            Header
+                        </XCell>
+                        <XCell area="footer">
+                            Footer
+                        </XCell>
+                    </XGrid>
+                </XCard.Content>
+            </XCard>
+            <XCard>
+                <XCard.Content>
+                    <XTitle>Default Button</XTitle>
+                    <XVertical>
+                        <XButton alignSelf="flex-start">Default</XButton>
+                        <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                        <XButton alignSelf="flex-start" style="dark" size="large">Large</XButton>
+                        <XButton alignSelf="flex-start" style="dark" size="large" bounce={true}>Bounce</XButton>
+                    </XVertical>
+                </XCard.Content>
+            </XCard>
+        </XPageContent>
         </>
     );
 });

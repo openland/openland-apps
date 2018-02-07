@@ -39,7 +39,7 @@ export class XMapOverlayProvider extends React.Component<XMapOverlayProviderProp
 
     nextId = 0;
     layers = new Map<number, any>();
-    convertedLayers = [];
+    convertedLayers: any[] = [];
     layerComponent: XMapOverlayLayerComponent | null = null;
 
     childContext = {

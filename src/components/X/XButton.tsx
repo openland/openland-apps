@@ -1,49 +1,55 @@
-import * as React from 'react';
-import { Button, ButtonProps } from 'semantic-ui-react';
-import { RouterState, withRouter } from '../../utils/withRouter';
-import { resolveActionPath } from '../../utils/routing';
-import { MutationFunc } from 'react-apollo';
+import { XLink, XLinkProps } from './XLink';
+import XStyled from './XStyled';
 
-export interface XButtonProps extends ButtonProps {
-    path?: string;
-    query?: { field: string, value?: string };
-    mutation?: MutationFunc<{}>;
-    afterPath?: string;
+interface XButtonProps extends XLinkProps {
+    alignSelf?: 'stretch' | 'flex-start' | 'flex-end';
+    style?: 'normal' | 'dark';
+    size?: 'large' | 'normal';
+    bounce?: boolean;
 }
 
-class XButtonComponent extends React.Component<{ router: RouterState } & XButtonProps, { isLoading: boolean }> {
+export const XButton = XStyled<XButtonProps>(XLink)((props) => ({
+    textDecoration: 'none',
+    textAlign: 'center',
+    cursor: 'pointer',
+    userSelect: 'none',
+    whiteSpace: 'nowrap',
+    wordBreak: 'keep-all',
 
-    constructor(props: { router: RouterState } & XButtonProps) {
-        super(props);
-        this.state = {isLoading: false};
+    padding: props.size === 'large' ? '16px 20px' : '6px 14px',
+
+    color: props.style === 'dark' ? '#ffffff' : '#525f7f',
+    backgroundColor: props.style === 'dark' ? '#6B50FF' : '#ffffff',
+
+    borderRadius: '4px',
+
+    boxShadow: '0 0 0 1px rgba(50,50,93,.1), 0 2px 5px 0 rgba(50,50,93,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent',
+    transition: 'box-shadow .08s ease-in,color .08s ease-in,all .15s ease',
+
+    fontSize: props.size === 'large' ? '15px' : '13px',
+    lineHeight: '20px',
+    fontWeight: 500,
+
+    alignSelf: props.alignSelf,
+
+    '&:hover': {
+        transform: props.bounce ? 'translateY(-1px)' : undefined,
+        color: props.style === 'dark' ? '#ffffff' : '#32325d',
+        backgroundColor: props.style === 'dark' ? '#8571f3' : undefined,
+        boxShadow: props.size === 'large'
+            ? '0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08)'
+            : '0 0 0 1px rgba(50,50,93,.1), 0 2px 5px 0 rgba(50,50,93,.1), 0 3px 9px 0 rgba(50,50,93,.08), 0 1px 1.5px 0 rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.08)'
+    },
+    '&:active': {
+        transform: props.bounce ? 'translateY(1px)' : undefined,
+        color: props.style === 'dark' ? '#ffffff' : '#32325d',
+        backgroundColor: props.style === 'dark' ? '#5032f3' : undefined,
+        boxShadow: props.size === 'large'
+            ? '0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08)'
+            : '0 0 0 1px rgba(50,50,93,.08), 0 2px 5px 0 rgba(50,50,93,.06), 0 1px 1.5px 0 rgba(0,0,0,.05), 0 1px 2px 0 rgba(0,0,0,.06), 0 0 0 0 transparent'
+    },
+    '&:focus': {
+        boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        outline: 0
     }
-
-    handleClick = (event: React.MouseEvent<HTMLButtonElement>, data: ButtonProps) => {
-        event.preventDefault();
-        if (this.props.onClick) {
-            this.props.onClick(event, data);
-        } else if (this.props.mutation !== undefined) {
-            if (!this.state.isLoading) {
-                this.setState({isLoading: true});
-                this.props.mutation({}).then((v) => {
-                    this.setState({isLoading: false});
-                    if (this.props.afterPath) {
-                        this.props.router.push(this.props.afterPath);
-                    }
-                }).catch((e: any) => {
-                    this.setState({isLoading: false});
-                });
-            }
-        } else {
-            let path = resolveActionPath(this.props);
-            this.props.router.push(path);
-        }
-    };
-
-    render() {
-        let {onClick, afterPath, ...other} = this.props;
-        return <Button {...other} onClick={this.handleClick} loading={this.state.isLoading}/>;
-    }
-}
-
-export const XButton = withRouter<XButtonProps>(XButtonComponent);
+}));

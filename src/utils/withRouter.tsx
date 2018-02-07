@@ -19,7 +19,7 @@ export interface RouterState {
     replace: (path: string) => void;
 }
 
-export function withRouter<P = {}>(ComposedComponent: React.ComponentType<P & { router: RouterState }>) {
+export function withRouter<P = {}>(ComposedComponent: React.ComponentType<P & { router: RouterState }>): React.ComponentClass<P> {
     return class WithRouter extends React.Component<P> {
         static displayName = `WithRouter(${getComponentDisplayName(
             ComposedComponent

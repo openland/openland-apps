@@ -7,6 +7,7 @@ import { XLayoutColumnWithMenu } from '../X/XLayoutColumnWithMenu';
 import Glamorous from 'glamorous';
 import { XDesktopContainer } from '../X/XDesktopContainer';
 import { XVertical } from '../X/XVertical';
+import XStyled from '../X/XStyled';
 
 let FiltersTitle = Glamorous.div({
     fontSize: '18px',
@@ -143,7 +144,7 @@ export function DataListRadio(props: { title: string, radioKey: string, children
     );
 }
 
-let RadioLink = Glamorous(XLink)({
+let RadioLink = XStyled(XLink)({
     margin: '0 0 1px',
     padding: '10px 16px',
     color: 'rgba(107,80,255,0.8) !important',

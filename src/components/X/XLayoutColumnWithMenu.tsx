@@ -7,6 +7,7 @@ import { withRouter, RouterState } from '../../utils/withRouter';
 import { XLink } from './XLink';
 import { XDesktopContainer } from './XDesktopContainer';
 import { XMobileContainer } from './XMobileContainer';
+import XStyled from './XStyled';
 
 let FixedContainer = Glamorous.div({
     zIndex: 100,
@@ -41,7 +42,7 @@ let ScrollableContent = Glamorous(XVertical)({
     overflow: 'auto'
 })
 
-let MainButton = Glamorous(XLink)({
+let MainButton = XStyled(XLink)({
     display: 'flex',
 
     color: '#ffffff!important',
@@ -63,7 +64,7 @@ let MainButton = Glamorous(XLink)({
     pointerEvents: 'auto'
 });
 
-let CloseButton = Glamorous(XLink)({
+let CloseButton = XStyled(XLink)({
     textDecoration: 'none',
     // color: @text-sf
     zIndex: 10,
@@ -89,7 +90,7 @@ let DesktopContainer = Glamorous(XDesktopContainer)({
     marginRight: 16,
 })
 
-let SaveButton = Glamorous(XLink)({
+let SaveButton = XStyled(XLink)({
     textAlign: 'center',
     border: 'none',
     backgroundColor: '#6B50FF',
