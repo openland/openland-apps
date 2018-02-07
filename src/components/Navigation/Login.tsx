@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { withUserInfo } from '../Base/UserInfo';
 import Glamorous from 'glamorous';
+import { XButton } from '../X/XButton';
 
 export const AuthenticationControlls = () => {
     return (
@@ -59,7 +60,8 @@ const SignInButtonElement = Glamorous.button({
 
 export const SignInButton = withUserInfo<{}>((props) => {
     if (!props.user) {
-        return <SignInButtonElement onClick={e => props.doLogin()}>Sign In</SignInButtonElement>;
+        // return <SignInButtonElement onClick={e => props.doLogin()}>Sign In</SignInButtonElement>;
+        return <XButton style="dark" bounce={true} path="/auth/login" alignSelf="center">Sign In</XButton>
     } else {
         return null;
     }
