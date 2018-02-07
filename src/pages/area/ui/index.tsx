@@ -60,7 +60,7 @@ export default withPage((props) => {
                         <XButton alignSelf="flex-start" style="dark" size="large" bounce={true}>Bounce</XButton>
 
                         <XButton alignSelf="flex-start" style="important">Important</XButton>
-                        <XButton alignSelf="flex-start" size="large" loading={true}/>
+                        <XButton alignSelf="flex-start" loading={true}>Loading</XButton>
                     </XVertical>
                 </XCard.Content>
             </XCard>

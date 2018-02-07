@@ -54,7 +54,7 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
 
         padding: props.size === 'large' ? '16px 20px' : '6px 14px',
 
-        color: textColors[style],
+        color: props.loading ? 'transparent' : textColors[style],
         backgroundColor: backgroundColors[style],
 
         borderRadius: '4px',
@@ -70,7 +70,7 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
 
         '&:hover': {
             transform: props.bounce ? 'translateY(-1px)' : undefined,
-            color: textHoveredColors[style],
+            color: props.loading ? 'transparent' : textHoveredColors[style],
             backgroundColor: backgroundHoveredColors[style],
             boxShadow: props.size === 'large'
                 ? '0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08)'
@@ -78,7 +78,7 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
         },
         '&:active': {
             transform: props.bounce ? 'translateY(1px)' : undefined,
-            color: textHoveredColors[style],
+            color: props.loading ? 'transparent' : textHoveredColors[style],
             backgroundColor: backgroundPressedColors[style],
             boxShadow: props.size === 'large'
                 ? '0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08)'
