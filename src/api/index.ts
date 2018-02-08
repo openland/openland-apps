@@ -66,6 +66,7 @@ export const withPermit = graphqlRouted<Types.PermitQuery>(Permits.PermitQuery, 
 
 export const withBuildingProjects = graphqlRouted<Types.ProjectsConnectionQuery>(Projects.ProjectsConnection, ['page', 'minUnits', { key: 'year', default: '2018' }, 'filter']);
 export const withBuildingProject = graphqlRouted<Types.ProjectQuery>(Projects.ProjectQuery, ['projectId']);
+export const withSFBuildingProjects = graphqlRouted<Types.ProjectsSFConnectionQuery>(Projects.ProjectsSFConnection, ['page', 'minUnits', 'year', 'filter']);
 
 //
 // Pictures

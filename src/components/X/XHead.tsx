@@ -11,7 +11,7 @@ export const XHead = withRouter<{ title: string | string[], imgCloud?: string | 
         title = formatPageTitle(...props.title)
     }
 
-    let img = 'https://sf.statecraft.one/static/img/x-pipeline--list.png';
+    let img = 'https://statecraft.one/static/img/x-pipeline--list.png';
     if (props.imgUrl) {
         img = props.imgUrl;
     } else if (props.imgCloud) {

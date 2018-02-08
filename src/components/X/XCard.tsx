@@ -5,6 +5,7 @@ import { XLink } from './XLink';
 import { XCloudImage } from './XCloudImage';
 import Glamorous from 'glamorous';
 import { XRow, XColumn } from './XGrid';
+import { XCardTable } from './XCardTable';
 
 //
 // Basic Row
@@ -161,6 +162,7 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
     static Button = XCardButton;
     static ExternalLink = XCardExternalLink;
     static Content = XCardDivContent;
+    static Table = XCardTable;
 
     render() {
         let photoComponent = hasChildren('_xCardPhoto', this.props.children);
