@@ -2,6 +2,9 @@ import * as Routes from 'next-routes';
 
 let routes = Routes();
 
+routes.add('/app/', '/app/index');
+routes.add('/app', '/app/index');
+
 routes.add('/:areaId', '/area/index');
 routes.add('/:areaId/', '/area/index');
 

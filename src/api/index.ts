@@ -8,6 +8,7 @@ import * as AreaStats from './queries/AreaStats';
 import * as Organizations from './queries/Organizations';
 import * as Permits from './queries/Permits';
 import * as Projects from './queries/Projects';
+import * as Account from './queries/Account';
 
 //
 // Area
@@ -16,6 +17,12 @@ import * as Projects from './queries/Projects';
 export const withAreaQuery = graphqlRouted<Types.AreaQuery>(Area.AreaQuery, []);
 export const withAreaStats = graphqlRouted<Types.AreaStatsQuery>(AreaStats.AreaStatsQuery, []);
 export const withInternalStats = graphqlRouted<Types.InternalStatsQuery>(AreaStats.InternalStatsQuery, []);
+
+//
+// Account
+//
+
+export const withAccountQuery = graphqlRouted<Types.AccountQuery>(Account.AccountQuery, []);
 
 //
 // Organizations

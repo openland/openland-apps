@@ -114,15 +114,20 @@ export class XCardExternalLink extends React.Component<{ href: string }> {
     }
 }
 
-let XCardDiv = Glamorous.div({
+let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium' }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     background: '#ffffff',
-    border: '1px solid rgba(38,38,38,0.08)',
+    border: (props.shadow === 'none' || props.shadow === undefined) ? '1px solid rgba(38,38,38,0.08)' : undefined,
+    boxShadow: props.shadow === 'normal'
+        ? '0 2px 15px rgba(84,96,103,.25)'
+        : props.shadow === 'medium'
+            ? '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)'
+            : undefined,
     color: '#262626',
     overflow: 'hidden',
     borderRadius: 4
-});
+}));
 
 let XCardDivIconized = Glamorous(XCardDiv)({
     flexDirection: 'row',
@@ -147,7 +152,7 @@ let XCardDivContent = Glamorous.div({
     padding: 24
 })
 
-export class XCard extends React.Component<{ className?: string }> {
+export class XCard extends React.Component<{ className?: string, shadow?: 'none' | 'normal' | 'medium' }> {
 
     static Row = XCardRow;
     static Col = XCardColumn;
@@ -162,7 +167,7 @@ export class XCard extends React.Component<{ className?: string }> {
         let otherChildren = filterChildren('_xCardPhoto', this.props.children);
         let Wrapper = photoComponent !== null ? XCardDivIconized : XCardDiv;
         return (
-            <Wrapper className={this.props.className}>
+            <Wrapper className={this.props.className} shadow={this.props.shadow}>
                 {/* <div className={classnames('x-card-s', { 'horizontal': photoComponent !== null })}> */}
                 {photoComponent !== null && (<XCardDivIcon>{photoComponent}</XCardDivIcon>)}
                 {photoComponent !== null && (

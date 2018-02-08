@@ -16,3 +16,15 @@ export let XDocumentRoot = Glamorous.div({
         fontFamily: '\'Aktiv Grotesk Corp\', arial, sans-serif'
     }
 });
+
+export let XDocumentAppRoot = Glamorous.div({
+    background: '#F5F6F8',
+    color: '#182642',
+
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'stretch',
+
+    minWidth: '1020px',
+    minHeight: '100vh'
+});

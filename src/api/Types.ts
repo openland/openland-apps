@@ -45,6 +45,17 @@ export enum PermitSorting {
 }
 
 
+export interface AccountQuery {
+  me:  {
+    __typename: "User",
+    id: string,
+    name: string,
+    firstName: string,
+    lastName: string,
+    picture: string,
+  } | null,
+};
+
 export interface AreaQueryVariables {
   areaId: string,
 };
