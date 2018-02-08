@@ -3,8 +3,44 @@ import Glamorous from 'glamorous';
 import { Menu, Icon } from 'semantic-ui-react';
 import { XLink } from './XLink';
 
-export const MenuItem = Glamorous(Menu.Item) ({
-    color: '#6638F0'
+export const MenuItem = Glamorous(Menu.Item)({
+    color: '#6638F0',
+    fontSize: '15px',
+    fontWeight: 500,
+    margin: '0 20px',
+    boxSizing: 'border-box',
+    '&.active': {
+        margin: '0 10px',
+        color: '#fff',
+        width: '40px',
+        height: '40px',
+        borderRadius: '25px',
+        backgroundColor: '#553ed6',
+        textAlign: 'center',
+        lineHeight: '40px'
+    },
+    '&.icon': {
+        width: '40px',
+        height: '40px',
+        borderRadius: '25px',
+        border: 'solid 1px #553ed6',
+    }
+})
+
+interface XPagingProps {
+    totalPages: number,
+    currentPage: number,
+    openEnded: boolean,
+    alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center' | undefined;
+}
+
+export const PaginationWrapper = Glamorous(Menu)((props) => {
+    return {
+        display: 'flex',
+        flexShrink: 0,
+        alignItems: 'center',
+        alignSelf: props.alignSelf
+    }
 })
 
 function XPageItem(props: { toPage: number, currentPage: number }) {
@@ -18,13 +54,13 @@ function XPageItem(props: { toPage: number, currentPage: number }) {
             </MenuItem>
         );
     } else {
-        return <Menu.Item as={XLink} query={{ field: 'page' }} active={props.currentPage === props.toPage}>1</Menu.Item>;
+        return <MenuItem as={XLink} query={{ field: 'page' }} active={props.currentPage === props.toPage}>1</MenuItem>;
     }
 }
 
-export function XPaging(props: { totalPages: number, currentPage: number, openEnded: boolean }) {
+export function XPaging(props: XPagingProps ) {
 
-    var elements = new Array<any>();
+    let elements = new Array<any>();
     if (props.currentPage > 1) {
         elements.push(
             <MenuItem key="page_prev" as={XLink} query={{ field: 'page', value: props.currentPage - 1 }} icon={true}>
@@ -95,8 +131,8 @@ export function XPaging(props: { totalPages: number, currentPage: number, openEn
     }
 
     return (
-        <Menu floated="right">
+        <PaginationWrapper alignSelf={props.alignSelf}>
             {elements}
-        </Menu>
+        </PaginationWrapper>
     );
 }

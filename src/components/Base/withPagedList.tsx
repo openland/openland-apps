@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ListQueryPagedData } from '../../utils/graphqlList';
 import { XPaging } from '../X/XPaging';
+import { XVertical } from '../X/XVertical';
 
 export function withPagedList<TResult extends { id: string }>(WrappedComponent: React.ComponentType<{
     items: TResult[],
@@ -13,7 +14,7 @@ export function withPagedList<TResult extends { id: string }>(WrappedComponent: 
     return function (props: ListQueryPagedData<TResult> & { filter?: boolean }) {
         if (props.data.items) {
             return (
-                <div>
+                <XVertical>
                     <WrappedComponent
                         items={props.data.items!!.edges.map((p) => p.node)}
                         loading={props.data.loading}
@@ -26,8 +27,9 @@ export function withPagedList<TResult extends { id: string }>(WrappedComponent: 
                         totalPages={props.data.items.pageInfo.pagesCount}
                         currentPage={props.data.items.pageInfo.currentPage}
                         openEnded={props.data.items.pageInfo.openEnded}
+                        alignSelf="center"
                     />
-                </div>
+                </XVertical>
             );
         } else {
             return (
