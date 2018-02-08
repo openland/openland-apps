@@ -6,10 +6,11 @@ import { XLink } from './XLink';
 export const MenuItem = Glamorous(Menu.Item)({
     color: '#6638F0',
     fontSize: '15px',
-    fontWeight: 500,
+    fontWeight: 'normal',
     margin: '0 20px',
     boxSizing: 'border-box',
     '&.active': {
+        fontWeight: 500,
         margin: '0 10px',
         color: '#fff',
         width: '40px',

@@ -28,7 +28,7 @@ export default withLandingPage(withAreaStats(withLoader((props) => {
         <Intro>
             <IntroTitle>
                 San Francisco<br /> Housing Analytics
-                </IntroTitle>
+            </IntroTitle>
             <IntroCols>
                 <IntroCol title="Insights">
                     <IntroLink title="Housing forecast 2017-2018" anchor="#housing" />
