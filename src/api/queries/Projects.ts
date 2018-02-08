@@ -128,3 +128,12 @@ export const ProjectsSFConnection = gql`
     }
     ${ProjectShort}
 `;
+
+export const ProjectSFQuery = gql`
+    query ProjectSF($projectId: String!) {
+        project: project(area: "sf", slug: $projectId) {
+            ...ProjectFull
+        }
+    }
+    ${ProjectFull}
+`;

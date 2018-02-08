@@ -2,8 +2,15 @@ import * as Routes from 'next-routes';
 
 let routes = Routes();
 
-routes.add('/app/', '/app/index');
+// new
+
 routes.add('/app', '/app/index');
+routes.add('/app/', '/app/index');
+
+routes.add('/app/projects/:projectId', '/app/projects/view');
+routes.add('/app/projects/:projectId/', '/app/projects/view');
+
+// Old
 
 routes.add('/:areaId', '/area/index');
 routes.add('/:areaId/', '/area/index');
