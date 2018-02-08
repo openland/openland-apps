@@ -24,7 +24,7 @@ export class Intro extends React.Component<{ children: any }, { isShown: boolean
                             {this.props.children}
                         </div>
                         <div className="x-intro--city">
-                            <img src="/static/img/intro-city.png" srcSet="/static/img/intro-city@2x.png" alt="" />
+                            <img src="/static/img/intro-city.png" srcSet="/static/img/intro-city@2x.png 2x" alt="" />
                         </div>
                     </div>
                 </XContainer>
