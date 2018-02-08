@@ -930,6 +930,60 @@ export interface ProjectsConnectionQuery {
   },
 };
 
+export interface ProjectsSFConnectionQueryVariables {
+  cursor?: string | null,
+  page?: number | null,
+  minUnits?: number | null,
+  year?: string | null,
+  filter?: string | null,
+};
+
+export interface ProjectsSFConnectionQuery {
+  items:  {
+    __typename: "BuildingProjectConnection",
+    edges:  Array< {
+      __typename: "BuildingProjectEdge",
+      node:  {
+        __typename: "BuildingProject",
+        id: string,
+        slug: string,
+        name: string,
+        description: string | null,
+        status: string | null,
+        extrasYearEnd: string | null,
+        extrasAddress: string | null,
+        extrasAddressSecondary: string | null,
+        existingUnits: number | null,
+        proposedUnits: number | null,
+        verified: boolean,
+        extrasUrl: string | null,
+        preview:  {
+          __typename: "Picture",
+          url: string,
+          retina: string,
+        } | null,
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+    stats:  {
+      __typename: "BuildingProjectConnectionStats",
+      newUnits: number,
+      newUnitsVerified: number,
+      totalProjects: number,
+      totalProjectsVerified: number,
+    },
+  },
+};
+
 export interface AreaShortFragment {
   __typename: "Area",
   id: string,

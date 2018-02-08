@@ -100,3 +100,31 @@ export const ProjectsConnection = gql`
     }
     ${ProjectShort}
 `;
+
+export const ProjectsSFConnection = gql`
+    query ProjectsSFConnection($cursor: String, $page: Int, $minUnits: Int, $year: String, $filter: String) {
+        items: projects(area: "sf", first: 50, minUnits: $minUnits, year: $year, filter: $filter, after: $cursor, page: $page) {
+            edges {
+                node {
+                    ...ProjectShort
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+                openEnded
+            }
+            stats {
+                newUnits
+                newUnitsVerified
+                totalProjects
+                totalProjectsVerified
+            }
+        }
+    }
+    ${ProjectShort}
+`;

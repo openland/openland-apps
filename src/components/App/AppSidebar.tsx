@@ -8,8 +8,8 @@ let Container = Glamorous.div({
     flexDirection: 'column',
     width: '240px',
     alignSelf: 'stretch',
-    paddingTop: '56px'
-})
+    // paddingTop: '16px'
+});
 
 let SidebarItemDiv = XStyled(XLink)({
     display: 'flex',
@@ -23,11 +23,27 @@ let SidebarItemDiv = XStyled(XLink)({
     alignItems: 'center',
 
     fontWeight: 500,
+});
+
+let SidebarTitleDiv = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: '16px',
+    height: '32px',
+    marginBottom: '16px',
+    paddingLeft: '32px',
+    paddingRight: '32px'
 })
 
 function AppSidebarItem(props: { title: string }) {
     return (
         <SidebarItemDiv>{props.title}</SidebarItemDiv>
+    )
+}
+
+function AppSidebarFilter(props: { title: string }) {
+    return (
+        <SidebarTitleDiv>{props.title}</SidebarTitleDiv>
     )
 }
 
@@ -37,6 +53,7 @@ export class AppSidebar extends React.Component {
     render() {
         return (
             <Container>
+                <AppSidebarFilter title="All Cities" />
                 {this.props.children}
             </Container>
         )
