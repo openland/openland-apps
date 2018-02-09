@@ -5,7 +5,7 @@ export let XRow = Glamorous.div<{ padding?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    padding: props.padding === true ? 15 : undefined
+    padding: props.padding === true ? 16 : undefined
 }));
 
 export const XColumn = Glamorous.div<{ mode?: 'fixed' | 'fit' | 'fill' | null }>((props) => ({
