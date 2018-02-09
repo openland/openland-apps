@@ -70,10 +70,10 @@ export function XCardExample(props: XCardExampleProps) {
                         <Text>{props.headerDescription}</Text>
                         <a>description column child components</a>
                     </XRowContent>
-                    <div>
+                    <XRowContent spaceBetween={true}>
                         <XButton alignSelf="flex-end" style="dark">Bordered</XButton>
                         <XButton alignSelf="flex-end" style="dark">Bordered</XButton>
-                    </div>
+                    </XRowContent>
                 </XRowContent>
             </XRow>
         </XCardWrapper>
