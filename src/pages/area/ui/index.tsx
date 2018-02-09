@@ -62,6 +62,7 @@ export default withPage((props) => {
 
                         <XButton alignSelf="flex-start" style="important">Important</XButton>
                         <XButton alignSelf="flex-start" loading={true} />
+                        <XButton alignSelf="flex-start" loading={true}>Loading</XButton>
                     </XVertical>
                     <XCardExample
                         headerTitle="Header Title Example"
