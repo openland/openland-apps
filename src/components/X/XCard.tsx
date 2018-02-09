@@ -8,6 +8,7 @@ import { XRow, XColumn } from './XGrid';
 import { XCardTable } from './XCardTable';
 import { XCardProperty, XCardPropertyList } from './XCardProperty';
 import { XCardGallery } from './XCardGallery';
+import { XCardMap } from './XCardMap';
 //
 // Basic Row
 //
@@ -168,6 +169,7 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
     static PropertyList = XCardPropertyList;
     static Gallery = XCardGallery;
     static GalleryItem = XCardGallery.Item;
+    static Map = XCardMap;
 
     render() {
         let photoComponent = hasChildren('_xCardPhoto', this.props.children);

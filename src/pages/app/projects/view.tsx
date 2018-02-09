@@ -10,7 +10,6 @@ export default withApp(withSFBuildingProject((props) => {
     return (
         <XVertical>
             <XCard shadow="medium">
-                {/* <XCard.Photo src={props.data.project.preview!!.url} /> */}
                 <XCard.Content>
                     <XTitle>{props.data.project.name}</XTitle>
                 </XCard.Content>
@@ -28,20 +27,8 @@ export default withApp(withSFBuildingProject((props) => {
 
             {props.data.project.preview && (
                 <XCard shadow="medium">
+                    {props.data.project.extrasLocation && (<XCard.Map location={props.data.project.extrasLocation!!} />)}
                     <XCard.Gallery>
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
-                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
                         <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
                     </XCard.Gallery>
                 </XCard>
