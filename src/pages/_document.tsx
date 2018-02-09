@@ -27,6 +27,7 @@ export default class StateDocument extends Document {
                     <meta name="format-detection" content="telephone=no" />
                     <meta name="theme-color" content="#000000" />
                     <link rel="shortcut icon" href="/static/favicon.ico" />
+                    <link rel="icon" href="/static/favicon-32.png" sizes="32x32" />
                     <link rel="stylesheet" type="text/css" href="/static/loader.css" />
                     <link rel="stylesheet" type="text/css" href="/static/css/style.min.css?9" />
                     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
