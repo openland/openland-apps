@@ -51,8 +51,8 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
         whiteSpace: 'nowrap',
         wordBreak: 'keep-all',
         position: 'relative',
-        minHeight: props.loading ? '32px' : 'auto',
-        minWidth: props.loading ? '32px' : 'auto',
+        minHeight: '32px',
+        minWidth: '32px',
 
         padding: props.size === 'large' ? '16px 20px' : '6px 14px',
 

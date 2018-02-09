@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { withPage } from '../../../components/Navigation/withPage';
+import { XCardExample } from '../../../components/Incubator/XRowsExample';
 import { XHead } from '../../../components/X/XHead';
 import { XGrid } from '../../../components/X/XGrid';
 import { XCell } from '../../../components/X/XGrid';
@@ -62,6 +63,10 @@ export default withPage((props) => {
                         <XButton alignSelf="flex-start" style="important">Important</XButton>
                         <XButton alignSelf="flex-start" loading={true} />
                     </XVertical>
+                    <XCardExample
+                        headerTitle="Header Title Example"
+                        headerDescription="Description example."
+                    />
                 </XCard.Content>
             </XCard>
         </XPageContent>

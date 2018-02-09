@@ -1,10 +1,24 @@
 import * as React from 'react';
-import * as classnames from 'classnames';
+import Glamorous from 'glamorous';
 
-export function XPageFullScreen (props: { behindHeader?: boolean, children: any }) {
+interface XPageFullScreenProps {
+    children: any,
+    behindHeader?: boolean
+}
+
+export const XPageFullScreenContainer = Glamorous.div<XPageFullScreenProps>((props) => {
+    return {
+        height: '100vh',
+        width: '100%',
+        position: 'relative',
+        marginTop: props.behindHeader ? '-54px' : undefined
+    }
+})
+
+export function XPageFullScreen (props: XPageFullScreenProps) {
     return (
-        <div className={classnames('x-fullscreen', props.behindHeader ? 'behind-header' : '')}>
+        <XPageFullScreenContainer behindHeader={props.behindHeader}>
             {props.children}
-        </div>
+        </XPageFullScreenContainer>
     )
 }
