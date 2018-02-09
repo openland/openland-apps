@@ -13,11 +13,11 @@ export function withApp(WrappedComponent: React.ComponentType<{}>) {
             <XDocumentAppRoot>
                 <XHead title="Dashboard" />
                 <AppSidebar>
-                    <AppSidebar.Item title="Projects" />
-                    <AppSidebar.Item title="Parcels" />
-                    <AppSidebar.Item title="Zoning" />
-                    <AppSidebar.Item title="Permits" />
-                    <AppSidebar.Item title="Entitlements" />
+                    <AppSidebar.Item path="/app">Home</AppSidebar.Item>
+                    <AppSidebar.Item path="/app/projects">Projects</AppSidebar.Item>
+                    {/* <AppSidebar.Item>Parcels</AppSidebar.Item> */}
+                    {/* <AppSidebar.Item>Zoning</AppSidebar.Item> */}
+                    {/* <AppSidebar.Item>Permits</AppSidebar.Item> */}
                 </AppSidebar>
                 <AppContent>
                     <WrappedComponent />

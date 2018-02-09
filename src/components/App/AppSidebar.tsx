@@ -9,7 +9,6 @@ let Container = Glamorous.div({
     width: '240px',
     alignSelf: 'stretch',
     flexShrink: 0
-    // paddingTop: '16px'
 });
 
 let SidebarItemDiv = XStyled(XLink)({
@@ -34,28 +33,17 @@ let SidebarTitleDiv = Glamorous.div({
     marginBottom: '16px',
     paddingLeft: '32px',
     paddingRight: '32px',
-    fontWeight: 500
+    fontWeight: 600,
+    fontSize: '16px'
 })
 
-function AppSidebarItem(props: { title: string }) {
-    return (
-        <SidebarItemDiv>{props.title}</SidebarItemDiv>
-    )
-}
-
-function AppSidebarFilter(props: { title: string }) {
-    return (
-        <SidebarTitleDiv>{props.title}</SidebarTitleDiv>
-    )
-}
-
 export class AppSidebar extends React.Component {
-    static Item = AppSidebarItem;
+    static Item = SidebarItemDiv;
 
     render() {
         return (
             <Container>
-                <AppSidebarFilter title="All Cities" />
+                <SidebarTitleDiv>San Francisco</SidebarTitleDiv>
                 {this.props.children}
             </Container>
         )
