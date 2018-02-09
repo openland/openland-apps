@@ -7,6 +7,8 @@ let Container = Glamorous.div({
     flexDirection: 'column',
     alignSelf: 'stretch',
     flexGrow: 1,
+    flexShrink: 1,
+    overflow: 'hidden',
     paddingTop: '56px',
     paddingLeft: '32px',
     paddingRight: '32px',

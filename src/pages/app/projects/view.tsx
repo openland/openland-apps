@@ -3,36 +3,89 @@ import { withApp } from '../../../components/App/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withSFBuildingProject } from '../../../api/index';
 import { XTitle } from '../../../components/X/XTitle';
+import { XVertical } from '../../../components/X/XVertical';
+import { XLink } from '../../../components/X/XLink';
 
 export default withApp(withSFBuildingProject((props) => {
     return (
-        <>
-        <XCard shadow="medium">
-            <XTitle>{props.data.project.name}</XTitle>
-            <XCard.Content>
-                {props.data.project.proposedUnits}
-            </XCard.Content>
-            {/* <XCard.Table>
-                <XCard.Table.Header>
-                    <XCard.Table.Cell>Name</XCard.Table.Cell>
-                    <XCard.Table.Cell>Net Units</XCard.Table.Cell>
-                    <XCard.Table.Cell>Year End</XCard.Table.Cell>
-                    <XCard.Table.Cell>Address</XCard.Table.Cell>
-                    <XCard.Table.Cell>Address 2</XCard.Table.Cell>
-                </XCard.Table.Header>
-                <tbody>
-                    {props.data.items.edges.map((v) => (
-                        <tr key={v.node.id}>
-                            <XCard.Table.Cell>{v.node.name}</XCard.Table.Cell>
-                            <XCard.Table.Cell>{v.node.proposedUnits!! - v.node.existingUnits!!}</XCard.Table.Cell>
-                            <XCard.Table.Cell>{v.node.extrasYearEnd}</XCard.Table.Cell>
-                            <XCard.Table.Cell>{v.node.extrasAddress}</XCard.Table.Cell>
-                            <XCard.Table.Cell>{v.node.extrasAddressSecondary}</XCard.Table.Cell>
-                        </tr>
-                    ))}
-                </tbody>
-            </XCard.Table> */}
-        </XCard>
-        </>
+        <XVertical>
+            <XCard shadow="medium">
+                {/* <XCard.Photo src={props.data.project.preview!!.url} /> */}
+                <XCard.Content>
+                    <XTitle>{props.data.project.name}</XTitle>
+                </XCard.Content>
+                {props.data.project.description && (
+                    <XCard.Content>
+                        {props.data.project.description}
+                    </XCard.Content>
+                )}
+                <XCard.PropertyList>
+                    <XCard.Property title="Existing Units">{props.data.project.existingUnits}</XCard.Property>
+                    <XCard.Property title="Proposed Units">{props.data.project.proposedUnits}</XCard.Property>
+                    {props.data.project.extrasUrl && <XCard.Property title="Link" ><XLink href={props.data.project.extrasUrl}>{props.data.project.extrasUrl}</XLink></XCard.Property>}
+                </XCard.PropertyList>
+            </XCard>
+
+            {props.data.project.preview && (
+                <XCard shadow="medium">
+                    <XCard.Gallery>
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                        <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
+                    </XCard.Gallery>
+                </XCard>
+            )}
+
+            {props.data.project.developers.length > 0 && (
+                <XCard shadow="medium">
+                    <XCard.Content>
+                        <XTitle>Developers</XTitle>
+                    </XCard.Content>
+                    <XCard.Table>
+                        <XCard.Table.Header>
+                            <XCard.Table.Cell>Organization Name</XCard.Table.Cell>
+                        </XCard.Table.Header>
+                        <tbody>
+                            {props.data.project.developers.map((d) => (
+                                <tr key={d.id}>
+                                    <XCard.Table.Cell>{d.title}</XCard.Table.Cell>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </XCard.Table>
+                </XCard>
+            )}
+
+            {props.data.project.constructors.length > 0 && (
+                <XCard shadow="medium">
+                    <XCard.Content>
+                        <XTitle>Contractors</XTitle>
+                    </XCard.Content>
+                    <XCard.Table>
+                        <XCard.Table.Header>
+                            <XCard.Table.Cell>Organization Name</XCard.Table.Cell>
+                        </XCard.Table.Header>
+                        <tbody>
+                            {props.data.project.constructors.map((d) => (
+                                <tr key={d.id}>
+                                    <XCard.Table.Cell>{d.title}</XCard.Table.Cell>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </XCard.Table>
+                </XCard>
+            )}
+        </XVertical>
     );
 }));

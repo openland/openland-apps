@@ -32,7 +32,8 @@ let SidebarTitleDiv = Glamorous.div({
     height: '32px',
     marginBottom: '16px',
     paddingLeft: '32px',
-    paddingRight: '32px'
+    paddingRight: '32px',
+    fontWeight: 500
 })
 
 function AppSidebarItem(props: { title: string }) {

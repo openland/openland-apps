@@ -6,7 +6,8 @@ import { XCloudImage } from './XCloudImage';
 import Glamorous from 'glamorous';
 import { XRow, XColumn } from './XGrid';
 import { XCardTable } from './XCardTable';
-
+import { XCardProperty, XCardPropertyList } from './XCardProperty';
+import { XCardGallery } from './XCardGallery';
 //
 // Basic Row
 //
@@ -163,6 +164,10 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
     static ExternalLink = XCardExternalLink;
     static Content = XCardDivContent;
     static Table = XCardTable;
+    static Property = XCardProperty;
+    static PropertyList = XCardPropertyList;
+    static Gallery = XCardGallery;
+    static GalleryItem = XCardGallery.Item;
 
     render() {
         let photoComponent = hasChildren('_xCardPhoto', this.props.children);

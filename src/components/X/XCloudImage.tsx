@@ -1,7 +1,9 @@
 import * as React from 'react';
 
 export function XCloudImage(props: {
-    src?: string | null, placeholder?: string | null, className?: string,
+    src?: string | null,
+    srcUrl?: string | null,
+    placeholder?: string | null, className?: string,
     maxWidth?: number, maxHeight?: number,
     width?: number, height?: number,
     resize?: 'fill' | 'fit'
@@ -38,37 +40,48 @@ export function XCloudImage(props: {
             let urlRetina = 'https://ucarecdn.com/' + props.src + '/' + opsRetina;
             return (
                 <img src={url}
-                     srcSet={urlRetina}
-                     className={props.className}
-                     style={{
-                         maxWidth: props.maxWidth,
-                         maxHeight: props.maxHeight,
-                         width: props.width,
-                         height: props.height
-                     }}/>
+                    srcSet={urlRetina}
+                    className={props.className}
+                    style={{
+                        maxWidth: props.maxWidth,
+                        maxHeight: props.maxHeight,
+                        width: props.width,
+                        height: props.height
+                    }} />
             );
         } else {
             let url2 = 'https://ucarecdn.com/' + props.src + '/';
             return (
                 <img src={url2}
-                     className={props.className}
-                     style={{
-                         maxWidth: props.maxWidth,
-                         maxHeight: props.maxHeight,
-                         width: props.width,
-                         height: props.height
-                     }}/>
+                    className={props.className}
+                    style={{
+                        maxWidth: props.maxWidth,
+                        maxHeight: props.maxHeight,
+                        width: props.width,
+                        height: props.height
+                    }} />
             );
         }
+    } else if (props.srcUrl) {
+        return (
+            <img src={props.srcUrl!!}
+                className={props.className}
+                style={{
+                    maxWidth: props.maxWidth,
+                    maxHeight: props.maxHeight,
+                    width: props.width,
+                    height: props.height
+                }} />
+        );
     } else {
         return (
             <img src={props.placeholder!!} className={props.className}
-                 style={{
-                     maxWidth: props.maxWidth,
-                     maxHeight: props.maxHeight,
-                     width: props.width,
-                     height: props.height
-                 }}/>
+                style={{
+                    maxWidth: props.maxWidth,
+                    maxHeight: props.maxHeight,
+                    width: props.width,
+                    height: props.height
+                }} />
         );
     }
 }
