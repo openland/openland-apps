@@ -32,6 +32,10 @@ export default withApp(withSFBuildingProjects((props) => {
                         ))}
                     </tbody>
                 </XCard.Table>
+                <XCard.Footer>
+                    <XButton>Prev</XButton>
+                    <XButton>Next</XButton>
+                </XCard.Footer>
             </XCard>
         </AppContent>
     );
