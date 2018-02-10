@@ -7,7 +7,6 @@ import { AppSidebar } from './AppSidebar';
 import { AppContent } from './AppContent';
 import { UserInfoProvider } from '../Base/UserInfo';
 import { AuthenticationRequired } from './AuthenticationRequired';
-import { XIcon } from '../X/XIcon';
 
 export function withApp(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAccountQuery((props) => (
