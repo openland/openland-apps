@@ -21,25 +21,24 @@ export const XCardDescription = Glamorous.div({
 })
 
 let XCardHeaderDiv = Glamorous.div({
-    padding: 24,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 16,
+    paddingBottom: 16,
     display: 'flex',
     flexDirection: 'column'
 })
 
-export function XCardHeader(props: {children?: any, title?: string | null, description?: string | null}) {
+export function XCardHeader(props: { children?: any, title?: string | null, description?: string | null }) {
     return (
         <XCardHeaderDiv>
             <XCardTitle>{props.title}</XCardTitle>
-            {props.children ? (
-                <XHorizontalDiv>
-                    <XCardDescription>
-                        {props.description}
-                    </XCardDescription>
-                    {props.children}
-                </XHorizontalDiv>
-            ) : (
-                <XCardDescription>{props.description}</XCardDescription>
-            )}
+            <XHorizontalDiv>
+                <XCardDescription>
+                    {props.description}
+                </XCardDescription>
+                {props.children}
+            </XHorizontalDiv>
         </XCardHeaderDiv>
     )
 }

@@ -7,14 +7,14 @@ export let XHorizontalDiv = Glamorous.div({
     alignItems: 'stretch'
 })
 
-export let XHorizontalSpaceDiv = Glamorous.div({
-    width: 32,
+export let XHorizontalSpaceDiv = Glamorous.div<{ separator?: 'large' | 'normal' }>((props) => ({
+    width: props.separator === 'large' ? 32 : 16,
     alignSelf: 'stretch',
     flexShrink: 0,
     flexGrow: 0
-})
+}));
 
-export class XHorizontal extends React.Component<{ className?: string }> {
+export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal', className?: string }> {
     render() {
         let elements = React.Children.toArray(this.props.children);
         let children: any[] = [];

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink } from './XLink'
 import { XHorizontal } from './XHorizontal'
 
 export const XCardText = Glamorous.div({
@@ -16,22 +15,22 @@ export const XCardText = Glamorous.div({
 })
 
 let XCardFooterDiv = Glamorous.div({
-    padding: 24,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 16,
+    paddingBottom: 16,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between'
 })
 
-export function XCardFooter(props: {children?: any, text?: string | null, linkTitle?: any, path?: string}) {
+export function XCardFooter(props: { children?: any, text?: string | null }) {
     return (
         <XCardFooterDiv>
             <XCardText>
                 {props.text}
-                {props.path && (
-                    <XLink path={props.path}>{props.linkTitle}</XLink>
-                )}
             </XCardText>
-            <XHorizontal>
+            <XHorizontal separator="normal">
                 {props.children}
             </XHorizontal>
         </XCardFooterDiv>
