@@ -36,7 +36,7 @@ export let AppHeader = () => {
                 </XPopover.Target>
                 <XPopover.Content>
                     <XMenu>
-                        <XMenu.Item>Make something people want</XMenu.Item>
+                        <XMenu.Item path="/auth/logout">Log Out</XMenu.Item>
                     </XMenu>
                 </XPopover.Content>
             </XPopover>

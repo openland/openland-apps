@@ -9,7 +9,7 @@ import { XLink } from '../../../components/X/XLink';
 export default withApp(withSFBuildingProject((props) => {
     return (
         <XVertical>
-            <XCard shadow="medium">
+            <XCard shadow="medium" separators={true}>
                 <XCard.Content>
                     <XTitle>{props.data.project.name}</XTitle>
                 </XCard.Content>
