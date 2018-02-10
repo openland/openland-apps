@@ -43,8 +43,6 @@ export class XPopover extends React.Component<{}, {
 
     handler = (target: any) => {
         this.setState((src) => {
-            console.warn('setState(handler)');
-            console.warn(target);
             if (src.popper) {
                 src.popper.destroy();
             }
@@ -54,7 +52,6 @@ export class XPopover extends React.Component<{}, {
                     popper: null
                 }
             } else {
-                console.warn('set');
                 let popper = null;
                 if (src.portal) {
                     popper = new Popper(target, src.portal);
@@ -104,12 +101,14 @@ export class XPopover extends React.Component<{}, {
             throw Error('Content must be set!');
         }
 
+        //
+        // Portal's reference callback is expected to be called BEFORE adding to DOM tree and it seems to be true
+        // for React.
+        //
+
         let targetClone = React.cloneElement(target as any, { handler: this.handler as any });
         let children = (
-            <div
-                ref={this.handlePortal}
-                style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
-            >
+            <div ref={this.handlePortal}>
                 {content}
             </div>
         );
