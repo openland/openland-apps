@@ -32,7 +32,7 @@ export default withApp(withSFBuildingProjects((props) => {
                         ))}
                     </tbody>
                 </XCard.Table>
-                <XCard.Footer>
+                <XCard.Footer text={props.data.items.pageInfo.itemsCount + ' items'}>
                     <XButton>Prev</XButton>
                     <XButton>Next</XButton>
                 </XCard.Footer>
