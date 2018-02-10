@@ -6,6 +6,8 @@ import { XCloudImage } from './XCloudImage';
 import Glamorous from 'glamorous';
 import { XRow, XColumn } from './XGrid';
 import { XCardTable } from './XCardTable';
+import { XCardHeader } from './XCardHeader';
+import { XCardFooter } from './XCardFooter';
 import { XCardProperty, XCardPropertyList } from './XCardProperty';
 import { XCardGallery } from './XCardGallery';
 import { XCardMap } from './XCardMap';
@@ -157,6 +159,8 @@ let XCardDivContent = Glamorous.div({
 
 export class XCard extends React.Component<{ className?: string, shadow?: 'none' | 'normal' | 'medium' }> {
 
+    static Header = XCardHeader;
+    static Footer = XCardFooter;
     static Row = XCardRow;
     static Col = XCardColumn;
     static Photo = XCardPhoto;
