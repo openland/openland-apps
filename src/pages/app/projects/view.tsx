@@ -3,12 +3,12 @@ import { withApp } from '../../../components/App/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withSFBuildingProject } from '../../../api/index';
 import { XTitle } from '../../../components/X/XTitle';
-import { XVertical } from '../../../components/X/XVertical';
 import { XLink } from '../../../components/X/XLink';
+import { AppContent } from '../../../components/App/AppContent';
 
 export default withApp(withSFBuildingProject((props) => {
     return (
-        <XVertical>
+        <AppContent>
             <XCard shadow="medium" separators={true}>
                 <XCard.Header
                     title={props.data.project.name}
@@ -69,6 +69,6 @@ export default withApp(withSFBuildingProject((props) => {
                     </XCard.Table>
                 </XCard>
             )}
-        </XVertical>
+        </AppContent>
     );
 }));

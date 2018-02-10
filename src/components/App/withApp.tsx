@@ -4,7 +4,6 @@ import { XDocumentAppRoot } from '../X/Scaffold/XDocumentRoot';
 import { withAccountQuery } from '../../api';
 import { XHead } from '../X/XHead';
 import { AppSidebar } from './AppSidebar';
-import { AppContent } from './AppContent';
 import { UserInfoProvider } from '../Base/UserInfo';
 import { AuthenticationRequired } from './AuthenticationRequired';
 
@@ -20,9 +19,7 @@ export function withApp(WrappedComponent: React.ComponentType<{}>) {
                         <AppSidebar.Item path="/app/parcels" title="Parcels" icon="layers" />
                         <AppSidebar.Item path="/app/zoning" title="Zoning" icon="dashboard" />
                     </AppSidebar>
-                    <AppContent>
-                        <WrappedComponent />
-                    </AppContent>
+                    <WrappedComponent />
                 </AuthenticationRequired>
             </XDocumentAppRoot>
         </UserInfoProvider>

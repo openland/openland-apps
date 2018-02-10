@@ -13,6 +13,9 @@ routes.add('/app/projects', '/app/projects/list');
 routes.add('/app/projects/:projectId', '/app/projects/view');
 routes.add('/app/projects/:projectId/', '/app/projects/view');
 
+routes.add('/app/zoning/', '/app/zoning/index');
+routes.add('/app/zoning', '/app/zoning/index');
+
 // Old
 
 routes.add('/:areaId', '/area/index');
