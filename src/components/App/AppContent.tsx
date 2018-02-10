@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from '../X/XVertical';
+import { AppHeader } from './AppHeader';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -9,7 +10,6 @@ let Container = Glamorous.div({
     flexGrow: 1,
     flexShrink: 1,
     overflow: 'hidden',
-    paddingTop: '56px',
     paddingLeft: '32px',
     paddingRight: '32px',
     paddingBottom: '32px',
@@ -20,6 +20,7 @@ export class AppContent extends React.Component {
         return (
             <Container>
                 <XVertical>
+                    <AppHeader />
                     {this.props.children}
                 </XVertical>
             </Container>
