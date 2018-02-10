@@ -1,10 +1,11 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
+import { Layout } from '../X/_Layout';
 import { XLink } from '../X/XLink';
-import * as qs from 'query-string';
+// import * as qs from 'query-string';
 import { XFilterInput } from '../X/XFilterInput';
 import { withRouter } from '../../utils/withRouter';
 import { XLayoutColumnWithMenu } from '../X/XLayoutColumnWithMenu';
-import Glamorous from 'glamorous';
 import { XDesktopContainer } from '../X/XDesktopContainer';
 import { XVertical } from '../X/XVertical';
 import XStyled from '../X/XStyled';
@@ -49,13 +50,21 @@ let DataListStatsDiv = Glamorous.div({
     marginTop: 8,
     marginBottom: 8,
     marginLeft: 16,
-    '> div > span': {
-        color: 'rgba(38,38,38,0.6)',
-        textTransform: 'uppercase',
-        letterSpacing: '0.6px',
-        whiteSpace: 'nowrap',
-        margin: '2px 12px -2px 8px',
-        fontSize: '11px'
+    '> div': {
+        [Layout.XS]: {
+            marginBottom: 12
+        },
+        '> span': {
+            color: 'rgba(38,38,38,0.6)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.6px',
+            whiteSpace: 'nowrap',
+            margin: '2px 12px -2px 8px',
+            fontSize: '11px',
+        }
+    },
+    [Layout.XS]: {
+        flexWrap: 'wrap'
     }
 })
 
@@ -70,7 +79,10 @@ let VerifiedWrapper = Glamorous.div({
     color: 'rgba(38,38,38,0.6)',
     textTransform: 'uppercase',
     margin: '2px 12px -2px 8px',
-    fontSize: '11px',
+    fontSize: '11px',    
+    [Layout.XS]: {
+        margin: '2px 12px -2px 0',
+    }
 })
 
 let VerifiedIcon = Glamorous.span({
@@ -82,6 +94,9 @@ let VerifiedIcon = Glamorous.span({
     '-webkit-font-smoothing': 'antialiased',
     '-moz-osx-font-smoothing': 'grayscale',
     margin: '2px 4px -2px 8px',
+    [Layout.XS]: {
+        margin: '2px 12px -2px 0 !important',
+    }
 })
 
 // let Separator =  Glamorous.div({
@@ -183,7 +198,8 @@ export const DataListRadioItem = withRouter<{ title: string, itemKey?: string, r
             }
         }
 
-        let q = qs.stringify(s);
+        // let q = qs.stringify(s);
+        let q = '';
         if (q !== '') {
             path = props.router.pathname + '?' + q;
         } else {
