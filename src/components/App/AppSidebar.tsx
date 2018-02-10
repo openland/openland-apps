@@ -56,10 +56,10 @@ let ItemIcon = Glamorous(XIcon)({
     fontSize: '18px'
 })
 
-export class AppSidebarItem extends React.Component<{ title: string, icon: string, path: string }> {
+export class AppSidebarItem extends React.Component<{ title: string, icon: string, path: string, activateForSubpaths?: boolean }> {
     render() {
         return (
-            <SidebarItemDiv path={this.props.path}>
+            <SidebarItemDiv path={this.props.path} activateForSubpaths={this.props.activateForSubpaths}>
                 <ItemIcon icon={this.props.icon} />
                 {this.props.title}
             </SidebarItemDiv>
