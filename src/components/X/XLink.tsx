@@ -14,6 +14,7 @@ export interface XLinkProps {
     // {className?: string; theme?: object}
     writeAccess?: boolean | null;
     activateForSubpaths?: boolean | null;
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
 function normalizePath(src: string): string {
@@ -37,21 +38,21 @@ const LinkRender = withRouter<XLinkProps>((props) => {
             }
         }
         return (
-            <LinkNext route={props.path}>
+            <LinkNext route={props.path} onClick={props.onClick}>
                 <a className={className}>{props.children}</a>
             </LinkNext>
         );
     } else if (props.anchor) {
         return (
-            <a href={props.anchor} className={className}>{props.children}</a>
+            <a href={props.anchor} className={className} onClick={props.onClick}>{props.children}</a>
         );
     } else if (props.href) {
         return (
-            <a href={props.href} className={className} target="_blank">{props.children}</a>
+            <a href={props.href} className={className} target="_blank" onClick={props.onClick}>{props.children}</a>
         );
     } else {
         return (
-            <a href={'#'} className={className}>{props.children}</a>
+            <a href={'#'} className={className} onClick={props.onClick}>{props.children}</a>
         );
     }
 });
@@ -59,9 +60,25 @@ const LinkRender = withRouter<XLinkProps>((props) => {
 export const XLink = withRouter<XLinkProps & { children?: any }>(withUserInfo((props) => {
     if (props.writeAccess !== true || (props.area && props.area.writeAccess)) {
         if (props.path || props.query) {
-            return <LinkRender path={resolveActionPath(props)} className={props.className} children={props.children} activateForSubpaths={props.activateForSubpaths} />;
+            return (
+                <LinkRender
+                    path={resolveActionPath(props)}
+                    className={props.className}
+                    children={props.children}
+                    activateForSubpaths={props.activateForSubpaths}
+                    onClick={props.onClick}
+                />
+            );
         } else {
-            return <LinkRender href={props.href} anchor={props.anchor} className={props.className} children={props.children} />;
+            return (
+                <LinkRender
+                    href={props.href}
+                    anchor={props.anchor}
+                    className={props.className}
+                    children={props.children}
+                    onClick={props.onClick}
+                />
+            );
         }
     } else {
         return null;

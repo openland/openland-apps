@@ -1,6 +1,9 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withUserInfo } from '../Base/UserInfo';
+import { XPopover } from '../X/XPopover';
+import { XButton } from '../X/XButton';
+import { XCard } from '../X/XCard';
 
 let Header = Glamorous.div({
     display: 'flex',
@@ -25,5 +28,18 @@ let Avatar = withUserInfo((props) => {
 });
 
 export let AppHeader = () => {
-    return (<Header><div /><Avatar /></Header>)
+    return (
+        <Header>
+            <XPopover>
+                <XPopover.Target>
+                    <XButton>Hey!</XButton>
+                </XPopover.Target>
+                <XPopover.Content>
+                    <XCard>
+                        Make something people want
+                    </XCard>
+                </XPopover.Content>
+            </XPopover>
+            <Avatar />
+        </Header>)
 }

@@ -102,7 +102,7 @@ declare module 'next-routes' {
 
         getRequestHandler(app: any): any;
 
-        Link: React.ComponentClass<{ route: string }>;
+        Link: React.ComponentClass<{ route: string, onClick?: React.MouseEventHandler<HTMLAnchorElement> }>;
         Router: {
             pushRoute(route: string): void;
             replaceRoute(route: string): void;
@@ -117,14 +117,14 @@ declare module 'glamor/server' {
     export interface ServerRule {
         cssText: string;
     }
-    
+
     export interface ServerResult {
         html: string;
         css: string;
         ids: string[];
         rules: ServerRule[];
     }
-    
+
     export function renderStatic(fn: () => string): ServerResult;
     export function renderStaticOptimized(fn: () => string): ServerResult;
 }
