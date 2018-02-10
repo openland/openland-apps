@@ -2,8 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withUserInfo } from '../Base/UserInfo';
 import { XPopover } from '../X/XPopover';
-import { XButton } from '../X/XButton';
-import { XCard } from '../X/XCard';
 import { XMenu } from '../X/XMenu';
 
 let Header = Glamorous.div({
