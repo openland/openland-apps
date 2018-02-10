@@ -30,7 +30,22 @@ export class XPopoverContent extends React.Component {
     }
 }
 
-export class XPopover extends React.Component<{}, {
+export type XPopoverPlacement =
+    'auto' |
+    'top' |
+    'bottom' |
+    'right' |
+    'left' |
+    'top-start' |
+    'top-end' |
+    'bottom-start' |
+    'bottom-end' |
+    'right-start' |
+    'right-end' |
+    'left-start' |
+    'left-end'
+
+export class XPopover extends React.Component<{ placement?: XPopoverPlacement }, {
     target: any | null, portal: any | null, popper: Popper | null
 }> {
     static Target = XPopoverTarget;
@@ -54,7 +69,9 @@ export class XPopover extends React.Component<{}, {
             } else {
                 let popper = null;
                 if (src.portal) {
-                    popper = new Popper(target, src.portal);
+                    popper = new Popper(target, src.portal, {
+                        placement: this.props.placement || 'auto'
+                    });
                 }
                 return {
                     target: target,
@@ -66,11 +83,12 @@ export class XPopover extends React.Component<{}, {
 
     handlePortal = (e?: any) => {
         this.setState((src) => {
-            console.warn('setState(handlePortal)');
             if (e) {
                 let popper = null;
                 if (src.target) {
-                    popper = new Popper(src.target, e);
+                    popper = new Popper(src.target, e, {
+                        placement: this.props.placement || 'auto'
+                    });
                 }
                 return {
                     portal: e,
@@ -86,6 +104,22 @@ export class XPopover extends React.Component<{}, {
                 }
             }
         })
+    }
+
+    handleClick = (e: MouseEvent) => {
+        let isInTarget = this.state.target && (this.state.target as Node).contains(e.target as Node);
+        let isInPortal = this.state.portal && (this.state.portal as Node).contains(e.target as Node);
+        if (!isInTarget && !isInPortal && this.state.popper) {
+            this.setState((src) => {
+                if (src.popper) {
+                    src.popper.destroy();
+                }
+                return {
+                    popper: null,
+                    target: null
+                }
+            })
+        }
     }
 
     render() {
@@ -119,5 +153,16 @@ export class XPopover extends React.Component<{}, {
             {canUseDOM && this.state.target && ReactDOM.createPortal(children, document.body)}
             </>
         );
+    }
+
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClick);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClick);
+        if (this.state.popper) {
+            this.state.popper.destroy();
+        }
     }
 }
