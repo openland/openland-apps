@@ -31,8 +31,11 @@ export default class StateDocument extends Document {
                     <link rel="stylesheet" type="text/css" href="/static/loader.css" />
                     <link rel="stylesheet" type="text/css" href="/static/css/style.min.css?9" />
                     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
+                    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
+
                     <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
+                    
                     {isProduction && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}
                     {isProduction && <script dangerouslySetInnerHTML={{ __html: `Raven.config('https://29519b8b62b94a1aa77e3329732fe5b2@sentry.io/281742').install();` }}>{}</script>}
                     {isProduction && <script type="text/javascript"

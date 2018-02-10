@@ -11,6 +11,7 @@ import { XCardFooter } from './XCardFooter';
 import { XCardProperty, XCardPropertyList } from './XCardProperty';
 import { XCardGallery } from './XCardGallery';
 import { XCardMap } from './XCardMap';
+import { XSeparated } from './XSeparated';
 //
 // Basic Row
 //
@@ -157,7 +158,12 @@ let XCardDivContent = Glamorous.div({
     padding: 24
 })
 
-export class XCard extends React.Component<{ className?: string, shadow?: 'none' | 'normal' | 'medium' }> {
+let XCardSeparator = Glamorous.div({
+    height: 1,
+    backgroundColor: '#e6ebf1'
+})
+
+export class XCard extends React.Component<{ className?: string, shadow?: 'none' | 'normal' | 'medium', separators?: boolean }> {
 
     static Header = XCardHeader;
     static Footer = XCardFooter;
@@ -185,10 +191,12 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
                 {photoComponent !== null && (<XCardDivIcon>{photoComponent}</XCardDivIcon>)}
                 {photoComponent !== null && (
                     <div className="x-card-s-content">
-                        {otherChildren}
+                        {this.props.separators && <XSeparated separator={XCardSeparator}>{otherChildren}</XSeparated>}
+                        {!this.props.separators && otherChildren}
                     </div>
                 )}
-                {photoComponent === null && otherChildren}
+                {photoComponent === null && this.props.separators && <XSeparated separator={XCardSeparator}>{otherChildren}</XSeparated>}
+                {photoComponent === null && !this.props.separators && otherChildren}
                 {/* </div> */}
             </Wrapper>
         );

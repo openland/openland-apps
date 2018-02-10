@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withUserInfo } from '../Base/UserInfo';
+import { XPopover } from '../X/XPopover';
+import { XMenu } from '../X/XMenu';
 
 let Header = Glamorous.div({
     display: 'flex',
@@ -20,10 +22,23 @@ const AvatarImg = Glamorous.img({
     boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)'
 });
 
-let Avatar = withUserInfo((props) => {
-    return (<AvatarImg src={props.user!!.picture} />)
+let Avatar = withUserInfo<{ onClick?: any }>((props) => {
+    return (<AvatarImg src={props.user!!.picture} onClick={props.onClick} />)
 });
 
 export let AppHeader = () => {
-    return (<Header><div /><Avatar /></Header>)
+    return (
+        <Header>
+            <div />
+            <XPopover placement="bottom-end">
+                <XPopover.Target>
+                    <Avatar />
+                </XPopover.Target>
+                <XPopover.Content>
+                    <XMenu>
+                        <XMenu.Item path="/auth/logout">Log Out</XMenu.Item>
+                    </XMenu>
+                </XPopover.Content>
+            </XPopover>
+        </Header>)
 }

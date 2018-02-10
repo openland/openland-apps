@@ -9,11 +9,15 @@ import { XLink } from '../../../components/X/XLink';
 export default withApp(withSFBuildingProject((props) => {
     return (
         <XVertical>
-            <XCard shadow="medium">
-                <XCard.Header
-                    title={props.data.project.name}
-                    description={props.data.project.description}
-                />
+            <XCard shadow="medium" separators={true}>
+                <XCard.Content>
+                    <XTitle>{props.data.project.name}</XTitle>
+                </XCard.Content>
+                {props.data.project.description && (
+                    <XCard.Content>
+                        {props.data.project.description}
+                    </XCard.Content>
+                )}
                 <XCard.PropertyList>
                     <XCard.Property title="Existing Units">{props.data.project.existingUnits}</XCard.Property>
                     <XCard.Property title="Proposed Units">{props.data.project.proposedUnits}</XCard.Property>
