@@ -17,6 +17,7 @@ let TableHeader = Glamorous.table({
         
         '> tr': {
             borderBottom: '1px solid #e6ebf1',
+            borderTop: '1px solid #e6ebf1',
         },
 
         '> tr > td > div': {

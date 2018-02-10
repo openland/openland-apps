@@ -5,6 +5,7 @@ import { withSFBuildingProject } from '../../../api/index';
 import { XTitle } from '../../../components/X/XTitle';
 import { XLink } from '../../../components/X/XLink';
 import { AppContent } from '../../../components/App/AppContent';
+import { XButton } from '../../../components/X/XButton';
 
 export default withApp(withSFBuildingProject((props) => {
     return (
@@ -13,7 +14,9 @@ export default withApp(withSFBuildingProject((props) => {
                 <XCard.Header
                     title={props.data.project.name}
                     description={props.data.project.description}
-                />
+                >
+                    <XButton>Edit</XButton>
+                </XCard.Header>
                 <XCard.PropertyList>
                     <XCard.Property title="Existing Units">{props.data.project.existingUnits}</XCard.Property>
                     <XCard.Property title="Proposed Units">{props.data.project.proposedUnits}</XCard.Property>
@@ -34,9 +37,7 @@ export default withApp(withSFBuildingProject((props) => {
 
             {props.data.project.developers.length > 0 && (
                 <XCard shadow="medium">
-                    <XCard.Content>
-                        <XTitle>Developers</XTitle>
-                    </XCard.Content>
+                    <XCard.Header title="Developers" />
                     <XCard.Table>
                         <XCard.Table.Header>
                             <XCard.Table.Cell>Organization Name</XCard.Table.Cell>
@@ -54,9 +55,7 @@ export default withApp(withSFBuildingProject((props) => {
 
             {props.data.project.constructors.length > 0 && (
                 <XCard shadow="medium">
-                    <XCard.Content>
-                        <XTitle>Contractors</XTitle>
-                    </XCard.Content>
+                    <XCard.Header title="Contractors" />
                     <XCard.Table>
                         <XCard.Table.Header>
                             <XCard.Table.Cell>Organization Name</XCard.Table.Cell>
