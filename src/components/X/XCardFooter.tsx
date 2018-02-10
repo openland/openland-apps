@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from './XHorizontal'
 import { XView } from './XView'
-import { XCard } from './XCard';
 
 export const XHorizontalDiv = Glamorous(XHorizontal)({
     alignItems: 'center'
