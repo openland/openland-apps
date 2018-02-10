@@ -15,6 +15,7 @@ export const XCardText = Glamorous.div({
 })
 
 let XCardFooterDiv = Glamorous.div({
+    minHeight: 50,
     paddingLeft: 24,
     paddingRight: 24,
     paddingTop: 16,
