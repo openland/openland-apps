@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { Layout } from '../X/_Layout';
 import { XLink } from '../X/XLink';
-// import * as qs from 'query-string';
+import * as qs from 'query-string';
 import { XFilterInput } from '../X/XFilterInput';
 import { withRouter } from '../../utils/withRouter';
 import { XLayoutColumnWithMenu } from '../X/XLayoutColumnWithMenu';
@@ -198,8 +198,7 @@ export const DataListRadioItem = withRouter<{ title: string, itemKey?: string, r
             }
         }
 
-        // let q = qs.stringify(s);
-        let q = '';
+        let q = qs.stringify(s);
         if (q !== '') {
             path = props.router.pathname + '?' + q;
         } else {
