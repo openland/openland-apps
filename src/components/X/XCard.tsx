@@ -12,6 +12,7 @@ import { XCardProperty, XCardPropertyList } from './XCardProperty';
 import { XCardGallery } from './XCardGallery';
 import { XCardMap } from './XCardMap';
 import { XSeparated } from './XSeparated';
+import { XCardFormList, XCardFormCell } from './XCardForm';
 //
 // Basic Row
 //
@@ -180,6 +181,8 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
     static Gallery = XCardGallery;
     static GalleryItem = XCardGallery.Item;
     static Map = XCardMap;
+    static FormList = XCardFormList;
+    static FormCell = XCardFormCell;
 
     render() {
         let photoComponent = hasChildren('_xCardPhoto', this.props.children);

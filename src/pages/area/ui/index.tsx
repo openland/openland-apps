@@ -76,6 +76,15 @@ export default withPage((props) => {
                 </XCard.Footer>
             </XCard>
             <XCard>
+                <XCard.FormList>
+                    <XCard.FormCell 
+                        title="XForm example"
+                        placeholder="Placeholder"
+                        description="Form description"
+                    />
+                </XCard.FormList>
+            </XCard>
+            <XCard>
                 <XCard.Content>
                     <XView>
                         <Title>Example title</Title>
