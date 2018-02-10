@@ -16,9 +16,15 @@ export const Title = Glamorous.span({
 })
 
 export const Text = Glamorous.span({
+    display: 'flex',
+    alignItems: 'center',
     color: '#5D677A',
     fontSize: '17px',
-    lineHeight: '26px'
+    lineHeight: '26px',
+    whiteSpace: 'pre',
+    '& *::before': {
+        content: ' '
+    }
 })
 
 export function XCardExample(props: XCardExampleProps) {

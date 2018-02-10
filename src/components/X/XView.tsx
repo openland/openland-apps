@@ -4,14 +4,18 @@ type Align = 'center' | 'start' | 'end' | 'stretch' | 'baseline';
 type Direction = 'column' | 'row';
 type Justify = 'center' | 'start' | 'end' | 'space-between';
 
+type ForAlignConvertFunc = 'center' | 'flex-start' | 'flex-end' | 'baseline' | 'stretch' | undefined 
+type ForJustifyConvertFunc = 'center' | 'flex-start' | 'flex-end' | 'space-between' | undefined 
+
 interface XViewProps {
     alignSelf?: Align | null;
     alignItems?: Align | null;
     justifyContent?: Justify | null;
     direction?: Direction | null;
+    childWhiteSpace?: boolean;
 }
 
-function convertAlign(own: boolean, align?: Align | null): 'center' | 'flex-start' | 'flex-end' | 'baseline' | 'stretch' | undefined {
+function convertAlign(own: boolean, align?: Align | null): ForAlignConvertFunc {
     switch (align) {
         case 'center': {
             return 'center';
@@ -38,7 +42,7 @@ function convertAlign(own: boolean, align?: Align | null): 'center' | 'flex-star
     }
 }
 
-function convertJustify(justify?: Justify | null): 'center' | 'flex-start' | 'flex-end' | 'space-between' | undefined {
+function convertJustify(justify?: Justify | null): ForJustifyConvertFunc {
     switch (justify) {
         case 'center': {
             return 'center';
@@ -64,6 +68,12 @@ export const XView = Glamorous.div<XViewProps>((props) => {
         alignItems: convertAlign(false, props.alignItems),
         alignSelf: convertAlign(true, props.alignSelf),
         justifyContent: convertJustify(props.justifyContent),
-        flexDirection: props.direction ? props.direction : 'column'
+        flexDirection: props.direction ? props.direction : 'column',
+        '> *': {
+            margin: props.childWhiteSpace ? '0 7px' : undefined,
+            '&:last-child': {
+                marginRight: '0 !important'
+            }
+        }
     }
 })
