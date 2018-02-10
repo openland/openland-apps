@@ -24,6 +24,10 @@ let SidebarItemDiv = XStyled(XLink)({
     alignItems: 'center',
 
     fontWeight: 500,
+
+    '.is-active': {
+        color: '#4428e0'
+    }
 });
 
 let SidebarTitleDiv = Glamorous.div({
