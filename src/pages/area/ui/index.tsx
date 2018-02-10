@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withPage } from '../../../components/Navigation/withPage';
-import { XCardExample } from '../../../components/Incubator/XRowsExample';
 import { XHead } from '../../../components/X/XHead';
 import { XGrid } from '../../../components/X/XGrid';
 import { XCell } from '../../../components/X/XGrid';
