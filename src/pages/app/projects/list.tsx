@@ -3,11 +3,15 @@ import { withApp } from '../../../components/App/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withSFBuildingProjects } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
+import { XButton } from '../../../components/X/XButton';
 
 export default withApp(withSFBuildingProjects((props) => {
     return (
         <AppContent>
             <XCard shadow="medium">
+                <XCard.Header title="Building Projects">
+                    <XButton>Add New</XButton>
+                </XCard.Header>
                 <XCard.Table>
                     <XCard.Table.Header>
                         <XCard.Table.Cell>Name</XCard.Table.Cell>
