@@ -7,6 +7,7 @@ import { AppSidebar } from './AppSidebar';
 import { AppContent } from './AppContent';
 import { UserInfoProvider } from '../Base/UserInfo';
 import { AuthenticationRequired } from './AuthenticationRequired';
+import { XIcon } from '../X/XIcon';
 
 export function withApp(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAccountQuery((props) => (
@@ -15,11 +16,10 @@ export function withApp(WrappedComponent: React.ComponentType<{}>) {
                 <AuthenticationRequired>
                     <XHead title="Dashboard" />
                     <AppSidebar>
-                        <AppSidebar.Item path="/app">Home</AppSidebar.Item>
-                        <AppSidebar.Item path="/app/projects">Projects</AppSidebar.Item>
-                        {/* <AppSidebar.Item>Parcels</AppSidebar.Item> */}
-                        {/* <AppSidebar.Item>Zoning</AppSidebar.Item> */}
-                        {/* <AppSidebar.Item>Permits</AppSidebar.Item> */}
+                        <AppSidebar.Item path="/app" title="Home" icon="home" />
+                        <AppSidebar.Item path="/app/projects" title="Projects" icon="folder" />
+                        <AppSidebar.Item path="/app/parcels" title="Parcels" icon="layers" />
+                        <AppSidebar.Item path="/app/zoning" title="Zoning" icon="dashboard" />
                     </AppSidebar>
                     <AppContent>
                         <WrappedComponent />
