@@ -15,9 +15,9 @@ export function withApp(WrappedComponent: React.ComponentType<{}>) {
                     <XHead title="Dashboard" />
                     <AppSidebar>
                         <AppSidebar.Item path="/app" title="Home" icon="home" />
-                        <AppSidebar.Item path="/app/projects" title="Projects" icon="folder" />
-                        <AppSidebar.Item path="/app/parcels" title="Parcels" icon="layers" />
-                        <AppSidebar.Item path="/app/zoning" title="Zoning" icon="dashboard" />
+                        <AppSidebar.Item path="/app/projects" title="Projects" icon="folder" activateForSubpaths={true} />
+                        <AppSidebar.Item path="/app/parcels" title="Parcels" icon="layers" activateForSubpaths={true} />
+                        <AppSidebar.Item path="/app/zoning" title="Zoning" icon="dashboard" activateForSubpaths={true} />
                     </AppSidebar>
                     <WrappedComponent />
                 </AuthenticationRequired>
