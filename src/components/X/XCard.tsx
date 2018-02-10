@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { hasChildren, filterChildren, CSSUtils } from './utils';
 import * as classnames from 'classnames';
+import Glamorous from 'glamorous';
+import * as glamor from 'glamor'
+import { hasChildren, filterChildren, CSSUtils } from './utils';
 import { XLink } from './XLink';
 import { XCloudImage } from './XCloudImage';
-import Glamorous from 'glamorous';
 import { XRow, XColumn } from './XGrid';
 import { XCardTable } from './XCardTable';
 import { XCardHeader } from './XCardHeader';
@@ -16,6 +17,11 @@ import { XCardFormList, XCardFormCell } from './XCardForm';
 //
 // Basic Row
 //
+
+const loading = glamor.keyframes({
+    '0%': { transform: `rotate(0deg)` },
+    '100%': { transform: `rotate(360deg)` }
+})
 
 export const XCardRowDiv = Glamorous(XRow)({
     height: 82,
@@ -121,7 +127,7 @@ export class XCardExternalLink extends React.Component<{ href: string }> {
     }
 }
 
-let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium' }>((props) => ({
+let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium', loading?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     background: '#ffffff',
@@ -133,7 +139,32 @@ let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium' }>((props) 
             : undefined,
     color: '#262626',
     overflow: 'hidden',
-    borderRadius: 4
+    borderRadius: 4,
+    position: 'relative',
+    '&::before': {
+        content: props.loading ? `''` : undefined,
+        display: 'block',
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        left: 0,
+        top: 0,
+        background: '#fff',
+        zIndex: 1
+    },
+    '&::after': {
+        content: props.loading ? `''` : undefined,
+        display: 'block',
+        position: 'absolute',
+        width: '20px',
+        height: '20px',
+        left: 'calc(50% - 10px)',
+        top: 'calc(50% - 10px)',
+        backgroundImage: 'url(/static/X/loading.svg)',
+        backgroundSize: '20px',
+        animation: `${loading} 2s linear infinite`,
+        zIndex: 2
+    }
 }));
 
 let XCardDivIconized = Glamorous(XCardDiv)({
@@ -164,7 +195,7 @@ let XCardSeparator = Glamorous.div({
     backgroundColor: '#e6ebf1'
 })
 
-export class XCard extends React.Component<{ className?: string, shadow?: 'none' | 'normal' | 'medium', separators?: boolean }> {
+export class XCard extends React.Component<{ className?: string, shadow?: 'none' | 'normal' | 'medium', separators?: boolean, loading?: boolean }> {
 
     static Header = XCardHeader;
     static Footer = XCardFooter;
@@ -189,7 +220,7 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
         let otherChildren = filterChildren('_xCardPhoto', this.props.children);
         let Wrapper = photoComponent !== null ? XCardDivIconized : XCardDiv;
         return (
-            <Wrapper className={this.props.className} shadow={this.props.shadow}>
+            <Wrapper className={this.props.className} shadow={this.props.shadow} loading={this.props.loading}>
                 {/* <div className={classnames('x-card-s', { 'horizontal': photoComponent !== null })}> */}
                 {photoComponent !== null && (<XCardDivIcon>{photoComponent}</XCardDivIcon>)}
                 {photoComponent !== null && (
