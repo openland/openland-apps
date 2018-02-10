@@ -70,7 +70,7 @@ export default withPage((props) => {
                 </XCard.Content>
             </XCard>
             <XCard shadow="medium">
-                <XCard.Footer text="footer" textLink={(<a>text link</a>)}>
+                <XCard.Footer text="footer" path="#" linkTitle="link">
                     <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
                     <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
                 </XCard.Footer>

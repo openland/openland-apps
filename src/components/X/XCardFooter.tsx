@@ -1,15 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XLink } from './XLink'
 import { XHorizontal } from './XHorizontal'
-import { XView } from './XView'
-
-export const XHorizontalDiv = Glamorous(XHorizontal)({
-    alignItems: 'center'
-})
-
-export const XViewDiv = Glamorous(XView)({
-    width: '100%'
-})
 
 export const XCardText = Glamorous.div({
     display: 'flex',
@@ -17,34 +9,31 @@ export const XCardText = Glamorous.div({
     color: '#5D677A',
     fontSize: '17px',
     lineHeight: '26px',
+    whiteSpace: 'pre',
+    '& *::before': {
+        content: ' '
+    }
 })
 
 let XCardFooterDiv = Glamorous.div({
     padding: 24,
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between'
 })
 
-export function XCardFooter(props: {children?: any, text?: string | null, textLink?: any}) {
+export function XCardFooter(props: {children?: any, text?: string | null, linkTitle?: any, path?: string}) {
     return (
         <XCardFooterDiv>
-            <XViewDiv justifyContent="space-between" direction="row">
-                {props.textLink ? (
-                    <XHorizontalDiv>
-                        <XCardText>{props.text}</XCardText>
-                        {props.textLink}
-                    </XHorizontalDiv>
-                ) : (
-                    <XCardText>{props.text}</XCardText>
+            <XCardText>
+                {props.text}
+                {props.path && (
+                    <XLink path={props.path}>{props.linkTitle}</XLink>
                 )}
-                {props.children && (
-                    <XView>
-                        <XHorizontalDiv>
-                            {props.children}
-                        </XHorizontalDiv>
-                    </XView>
-                )}
-            </XViewDiv>
+            </XCardText>
+            <XHorizontal>
+                {props.children}
+            </XHorizontal>
         </XCardFooterDiv>
     )
 }

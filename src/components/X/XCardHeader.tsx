@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from './XHorizontal'
-import { XVertical } from './XVertical'
 
 export const XHorizontalDiv = Glamorous(XHorizontal)({
     alignItems: 'center'
@@ -30,19 +29,17 @@ let XCardHeaderDiv = Glamorous.div({
 export function XCardHeader(props: {children?: any, title?: string | null, description?: string | null}) {
     return (
         <XCardHeaderDiv>
-            <XVertical>
-                <XCardTitle>{props.title}</XCardTitle>
-                {props.children ? (
-                    <XHorizontalDiv>
-                        <XCardDescription>
-                            {props.description}
-                        </XCardDescription>
-                        {props.children}
-                    </XHorizontalDiv>
-                ) : (
-                    <XCardDescription>{props.description}</XCardDescription>
-                )}
-            </XVertical>
+            <XCardTitle>{props.title}</XCardTitle>
+            {props.children ? (
+                <XHorizontalDiv>
+                    <XCardDescription>
+                        {props.description}
+                    </XCardDescription>
+                    {props.children}
+                </XHorizontalDiv>
+            ) : (
+                <XCardDescription>{props.description}</XCardDescription>
+            )}
         </XCardHeaderDiv>
     )
 }
