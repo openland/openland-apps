@@ -5,6 +5,7 @@ import { withBlock } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { convertMapPatch, findCenter } from '../../../utils/map';
+import { XMapOverlay } from '../../../components/X/XMapOverlay';
 
 export default withApp(withBlock((props) => {
     return (
@@ -20,7 +21,9 @@ export default withApp(withBlock((props) => {
             </XCard>
             {props.data.item.geometry && (
                 <XCard shadow="medium">
-                    <XCard.Map location={findCenter(convertMapPatch(props.data.item.geometry))} />
+                    <XCard.Map location={findCenter(convertMapPatch(props.data.item.geometry))}>
+                        <XMapOverlay id={'some'} records={[{ id: props.data.item.id, geometry: props.data.item.geometry }]} />
+                    </XCard.Map>
                 </XCard>
             )}
         </AppContent>

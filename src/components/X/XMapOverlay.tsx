@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import { canUseDOM } from '../../utils/environment';
 import { MapViewport } from '../../utils/map';
 import { XMapOverlaySetter } from './XMapOverlayProvider';
+import * as GeoLib from 'geolib';
 
 import * as M from 'mapbox-gl';
 let w = typeof window === 'undefined' ? undefined : window;
@@ -148,22 +149,18 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
     onClick = (src: { object?: { geometry: { coordinates: number[][][][] }, properties: { name: string } } }) => {
         let navigateTo = (this.context.mapViewport as MapViewport).navigateTo!!
 
-        let count = 0
-        let latSum = 0
-        let lonSum = 0
+        let points: { latitude: number, longitude: number }[] = [];
         for (let s of src.object!!.geometry.coordinates) {
             for (let c of s) {
                 for (let c2 of c) {
-                    latSum += c2[1];
-                    lonSum += c2[0];
-                    count++
+                    points.push({ latitude: c2[1], longitude: c2[0] })
                 }
             }
         }
-        latSum = latSum / count;
-        lonSum = lonSum / count;
 
-        navigateTo({ longitude: lonSum, latitude: latSum, zoom: 17 })
+        let center = GeoLib.getCenterOfBounds(points);
+        
+        navigateTo({ longitude: center.longitude, latitude: center.latitude, zoom: 17 })
     }
 
     render() {

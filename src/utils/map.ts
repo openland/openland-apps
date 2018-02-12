@@ -31,5 +31,5 @@ export function findCenter(src: PolygonCollection) {
             coords.push({ latitude: pt[1], longitude: pt[0] });
         }
     }
-    return GeoLib.getCenter(coords);
+    return GeoLib.getCenterOfBounds(coords);
 }
