@@ -7,11 +7,27 @@ let routes = Routes();
 routes.add('/app', '/app/index');
 routes.add('/app/', '/app/index');
 
+//
+// Blocks
+//
+
+routes.add('/app/blocks', '/app/blocks/list');
+routes.add('/app/blocks/', '/app/blocks/list');
+routes.add('/app/blocks/:blockId', '/app/blocks/item');
+routes.add('/app/blocks/:blockId/', '/app/blocks/item');
+
+//
+// Projects
+//
+
 routes.add('/app/projects/', '/app/projects/list');
 routes.add('/app/projects', '/app/projects/list');
-
 routes.add('/app/projects/:projectId', '/app/projects/view');
 routes.add('/app/projects/:projectId/', '/app/projects/view');
+
+//
+// Zoning
+//
 
 routes.add('/app/zoning/', '/app/zoning/index');
 routes.add('/app/zoning', '/app/zoning/index');

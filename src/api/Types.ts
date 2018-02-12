@@ -219,6 +219,53 @@ export interface InternalStatsQuery {
   },
 };
 
+export interface BlocksConnectionQueryVariables {
+  cursor?: string | null,
+  filter?: string | null,
+  page?: number | null,
+};
+
+export interface BlocksConnectionQuery {
+  items:  {
+    __typename: "BlockConnection",
+    edges:  Array< {
+      __typename: "BlockEdge",
+      node:  {
+        __typename: "Block",
+        id: string,
+        title: string,
+        extrasArea: number | null,
+        extrasSupervisorDistrict: string | null,
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+  },
+};
+
+export interface BlockQueryVariables {
+  blockId: string,
+};
+
+export interface BlockQuery {
+  item:  {
+    __typename: "Block",
+    id: string,
+    title: string,
+    extrasArea: number | null,
+    extrasSupervisorDistrict: string | null,
+    geometry: string | null,
+  },
+};
+
 export interface OrganizationsQuery {
   organizations:  Array< {
     __typename: "Organization",
@@ -1153,6 +1200,23 @@ export interface AreaShortFragment {
   id: string,
   slug: string,
   writeAccess: boolean,
+};
+
+export interface BlockShortFragment {
+  __typename: "Block",
+  id: string,
+  title: string,
+  extrasArea: number | null,
+  extrasSupervisorDistrict: string | null,
+};
+
+export interface BlockFullFragment {
+  __typename: "Block",
+  id: string,
+  title: string,
+  extrasArea: number | null,
+  extrasSupervisorDistrict: string | null,
+  geometry: string | null,
 };
 
 export interface ChartFullFragment {

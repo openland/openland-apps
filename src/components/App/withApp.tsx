@@ -17,6 +17,7 @@ export function withApp(WrappedComponent: React.ComponentType<{}>) {
                         <AppSidebar.Item path="/app" title="Home" icon="home" />
                         <AppSidebar.Item path="/app/projects" title="Projects" icon="folder" activateForSubpaths={true} />
                         <AppSidebar.Item path="/app/parcels" title="Parcels" icon="layers" activateForSubpaths={true} />
+                        <AppSidebar.Item path="/app/blocks" title="Blocks" icon="layers" activateForSubpaths={true} />
                         <AppSidebar.Item path="/app/zoning" title="Zoning" icon="dashboard" activateForSubpaths={true} />
                     </AppSidebar>
                     <WrappedComponent />
