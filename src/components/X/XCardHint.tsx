@@ -5,10 +5,10 @@ export const XHintText = Glamorous.div({
     textAlign: 'center',
     color: '#FFF',
     fontSize: '10px',
-    lineHeight: '13px',
+    lineHeight: '10px',
     textTransform: 'uppercase',
-    backgroundColor: '#FEBD6E',
-    padding: '0 8px',
+    backgroundColor: '#fdbc72',
+    padding: '2px 8px',
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5
 })
@@ -16,7 +16,7 @@ export const XHintText = Glamorous.div({
 let XHintDiv = Glamorous.div({
     height: 1,
     width: '100%',
-    backgroundColor: '#FEBD6E',
+    backgroundColor: '#fdbc72',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
