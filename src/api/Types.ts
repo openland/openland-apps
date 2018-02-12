@@ -272,6 +272,21 @@ export interface BlockQuery {
   },
 };
 
+export interface ParcelQueryVariables {
+  parcelId: string,
+};
+
+export interface ParcelQuery {
+  item:  {
+    __typename: "Parcel",
+    id: string,
+    title: string,
+    geometry: string | null,
+    extrasArea: number | null,
+    extrasSupervisorDistrict: string | null,
+  },
+};
+
 export interface OrganizationsQuery {
   organizations:  Array< {
     __typename: "Organization",
@@ -1206,6 +1221,15 @@ export interface AreaShortFragment {
   id: string,
   slug: string,
   writeAccess: boolean,
+};
+
+export interface ParcelFullFragment {
+  __typename: "Parcel",
+  id: string,
+  title: string,
+  geometry: string | null,
+  extrasArea: number | null,
+  extrasSupervisorDistrict: string | null,
 };
 
 export interface BlockShortFragment {

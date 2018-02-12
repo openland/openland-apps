@@ -47,7 +47,7 @@ export default withApp(withBlock((props) => {
                         </XCard.Table.Header>
                         <tbody>
                             {props.data.item.parcels.map((v) => (
-                                <tr key={v.id} onClick={() => props.router.push('/app/parcel/' + v.id)}>
+                                <tr key={v.id} onClick={() => props.router.push('/app/parcels/' + v.id)}>
                                     <XCard.Table.Cell>{v.title}</XCard.Table.Cell>
                                 </tr>)
                             )}

@@ -16,6 +16,9 @@ routes.add('/app/blocks/', '/app/blocks/list');
 routes.add('/app/blocks/:blockId', '/app/blocks/item');
 routes.add('/app/blocks/:blockId/', '/app/blocks/item');
 
+routes.add('/app/parcels/:parcelId', '/app/parcels/item');
+routes.add('/app/parcels/:parcelId/', '/app/parcels/item');
+
 //
 // Projects
 //

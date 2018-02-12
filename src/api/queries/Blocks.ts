@@ -1,5 +1,15 @@
 import gql from 'graphql-tag';
 
+export const ParcelFull = gql`
+  fragment ParcelFull on Parcel {
+      id
+      title
+      geometry
+      extrasArea
+      extrasSupervisorDistrict
+  }
+`
+
 export const BlockShort = gql`
    fragment BlockShort on Block {
         id
@@ -53,4 +63,13 @@ export const BlockQuery = gql`
         }
     }
     ${BlockFull}
+`;
+
+export const ParcelQuery = gql`
+    query Parcel($parcelId: ID!) {
+        item: parcel(id: $parcelId) {
+            ...ParcelFull
+        }
+    }
+    ${ParcelFull}
 `;
