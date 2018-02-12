@@ -59,13 +59,13 @@ export default withPage((props) => {
                     <XTitle>Default Button</XTitle>
                     <XVertical>
                         <XButton alignSelf="flex-start">Default</XButton>
-                        <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                        <XButton alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton>
                         <XButton alignSelf="flex-start" style="dark" size="large">Large</XButton>
                         <XButton alignSelf="flex-start" style="dark" size="large" bounce={true}>Bounce</XButton>
 
                         <XButton alignSelf="flex-start" style="important">Important</XButton>
                         <XButton alignSelf="flex-start" loading={true} />
-                        <XButton alignSelf="flex-start" loading={true}>Loading</XButton>
+                        <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
                     </XVertical>
                 </XCard.Content>
             </XCard>

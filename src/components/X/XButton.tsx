@@ -8,6 +8,7 @@ interface XButtonProps extends XLinkProps {
     size?: 'large' | 'normal';
     bounce?: boolean;
     loading?: boolean;
+    disabled?: boolean;
 }
 
 const loading = glamor.keyframes({
@@ -46,13 +47,15 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
     return {
         textDecoration: 'none',
         textAlign: 'center',
-        cursor: props.loading ? 'inherit' : 'pointer',
+        cursor: (props.loading || props.disabled) ? 'inherit' : 'pointer',
         userSelect: 'none',
         whiteSpace: 'nowrap',
         wordBreak: 'keep-all',
         position: 'relative',
         minHeight: '32px',
         minWidth: '32px',
+        outline: 'none',
+        opacity: props.disabled ? 0.8 : 1,
 
         padding: props.size === 'large' ? '16px 20px' : '6px 14px',
 
@@ -73,7 +76,7 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
         '&:hover': {
             transform: props.bounce ? 'translateY(-1px)' : undefined,
             color: props.loading ? 'transparent' : textHoveredColors[style],
-            backgroundColor: backgroundHoveredColors[style],
+            backgroundColor: (props.loading || props.disabled) ? backgroundColors[style] : backgroundHoveredColors[style],
             boxShadow: props.size === 'large'
                 ? '0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08)'
                 : '0 0 0 1px rgba(50,50,93,.1), 0 2px 5px 0 rgba(50,50,93,.1), 0 3px 9px 0 rgba(50,50,93,.08), 0 1px 1.5px 0 rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.08)'
@@ -81,14 +84,13 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
         '&:active': {
             transform: props.bounce ? 'translateY(1px)' : undefined,
             color: props.loading ? 'transparent' : textHoveredColors[style],
-            backgroundColor: backgroundPressedColors[style],
+            backgroundColor: (props.loading || props.disabled) ? backgroundColors[style] : backgroundPressedColors[style],
             boxShadow: props.size === 'large'
                 ? '0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08)'
                 : '0 0 0 1px rgba(50,50,93,.08), 0 2px 5px 0 rgba(50,50,93,.06), 0 1px 1.5px 0 rgba(0,0,0,.05), 0 1px 2px 0 rgba(0,0,0,.06), 0 0 0 0 transparent'
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
-            outline: 0
         },
         '&::after': {
             content: props.loading ? `''` : undefined,
