@@ -234,6 +234,8 @@ export interface BlocksConnectionQuery {
         __typename: "Block",
         id: string,
         title: string,
+        extrasArea: number | null,
+        extrasSupervisorDistrict: string | null,
       },
       cursor: string,
     } >,
@@ -1189,6 +1191,8 @@ export interface BlockShortFragment {
   __typename: "Block",
   id: string,
   title: string,
+  extrasArea: number | null,
+  extrasSupervisorDistrict: string | null,
 };
 
 export interface ChartFullFragment {

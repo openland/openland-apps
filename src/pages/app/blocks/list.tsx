@@ -15,11 +15,15 @@ export default withApp(withBlocks((props) => {
                 <XCard.Table>
                     <XCard.Table.Header>
                         <XCard.Table.Cell>Block ID</XCard.Table.Cell>
+                        <XCard.Table.Cell>Area</XCard.Table.Cell>
+                        <XCard.Table.Cell>Supervisor District</XCard.Table.Cell>
                     </XCard.Table.Header>
                     <tbody>
                         {props.data.items.edges.map((v) => (
                             <tr key={v.node.id} onClick={() => props.router.push('/app/blocks/' + v.node.id)}>
                                 <XCard.Table.Cell>{v.node.title}</XCard.Table.Cell>
+                                <XCard.Table.Cell>{v.node.extrasArea}</XCard.Table.Cell>
+                                <XCard.Table.Cell>{v.node.extrasSupervisorDistrict}</XCard.Table.Cell>
                             </tr>
                         ))}
                     </tbody>

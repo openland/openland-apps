@@ -4,6 +4,8 @@ export const BlockShort = gql`
    fragment BlockShort on Block {
         id
         title
+        extrasArea
+        extrasSupervisorDistrict
    }
 `;
 
