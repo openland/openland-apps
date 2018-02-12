@@ -78,7 +78,7 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
             transform: props.bounce ? 'translateY(-1px)' : undefined,
             color: props.loading ? 'transparent' : textHoveredColors[style],
             backgroundColor: (props.loading || props.disabled) ? backgroundColors[style] : backgroundHoveredColors[style],
-            boxShadow: (props.disabled ? '0 0 0 1px rgba(50,50,93,.1), 0 2px 5px 0 rgba(50,50,93,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent' 
+            boxShadow: (props.disabled ? undefined 
                 : (props.size === 'large'
                     ? '0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08)'
                     : '0 0 0 1px rgba(50,50,93,.1), 0 2px 5px 0 rgba(50,50,93,.1), 0 3px 9px 0 rgba(50,50,93,.08), 0 1px 1.5px 0 rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.08)'
@@ -89,7 +89,7 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
             transform: props.bounce ? 'translateY(1px)' : undefined,
             color: props.loading ? 'transparent' : textHoveredColors[style],
             backgroundColor: (props.loading || props.disabled) ? backgroundColors[style] : backgroundPressedColors[style],
-            boxShadow: (props.disabled ? '0 0 0 1px rgba(50,50,93,.1), 0 2px 5px 0 rgba(50,50,93,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent' 
+            boxShadow: (props.disabled ? undefined 
                 : (props.size === 'large'
                     ? '0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08)'
                     : '0 0 0 1px rgba(50,50,93,.08), 0 2px 5px 0 rgba(50,50,93,.06), 0 1px 1.5px 0 rgba(0,0,0,.05), 0 1px 2px 0 rgba(0,0,0,.06), 0 0 0 0 transparent'
@@ -98,7 +98,7 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
         },
         '&:focus': {
             boxShadow: (props.loading || props.disabled)
-                ? '0 0 0 1px rgba(50,50,93,.1), 0 2px 5px 0 rgba(50,50,93,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent'
+                ? undefined
                 : '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         },
         '&::after': {
