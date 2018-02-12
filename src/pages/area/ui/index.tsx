@@ -85,7 +85,7 @@ export default withPage((props) => {
             <XCard separators={true}>
                 <XCard.Hint title="test data"/>
                 <XCard.Header title="Loader block title"/>
-                <XCard.Loader load={true} >
+                <XCard.Loader loading={true} >
                     <XCard.FormList>
                         <XCard.FormCell 
                             title="XForm example"

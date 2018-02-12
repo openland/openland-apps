@@ -8,8 +8,8 @@ const loading = glamor.keyframes({
     '100%': { transform: `rotate(360deg) scaleX(-1)` }
 })
 
-let ItemIcon = Glamorous(XIcon)<{load?: boolean}>((props) => ({
-    display: props.load ? 'block' : 'none',
+let ItemIcon = Glamorous(XIcon)<{loading?: boolean}>((props) => ({
+    display: props.loading ? 'block' : 'none',
     position: 'absolute',
     top: 'calc(50% - 12.5px)',
     left: 'calc(50% - 12.5px)',
@@ -19,8 +19,8 @@ let ItemIcon = Glamorous(XIcon)<{load?: boolean}>((props) => ({
     animation: `${loading} 1s linear infinite`,
 }))
 
-let HidenComponents = Glamorous.div<{load?: boolean | undefined}>((props) => ({
-    opacity: props.load ? 0 : 1
+let HidenComponents = Glamorous.div<{loading?: boolean | undefined}>((props) => ({
+    opacity: props.loading ? 0 : 1
 }))
 
 let XCardLoaderDiv = Glamorous.div({
@@ -29,11 +29,11 @@ let XCardLoaderDiv = Glamorous.div({
     position: 'relative'
 })
 
-export function XCardLoader(props: { children?: any, load?: boolean }) {
+export function XCardLoader(props: { children?: any, loading?: boolean }) {
     return (
         <XCardLoaderDiv>
-            <ItemIcon icon="cached" load={props.load} />
-            <HidenComponents load={props.load}>
+            <ItemIcon icon="cached" loading={props.loading} />
+            <HidenComponents loading={props.loading}>
                 {props.children}
             </HidenComponents>
         </XCardLoaderDiv>
