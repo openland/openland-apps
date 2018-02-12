@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 import Glamorous from 'glamorous';
 import { canUseDOM } from '../../utils/environment';
 import { InteractiveMap, ViewPortChanged, FlyToInterpolator, NavigationControl } from 'react-map-gl';
-import * as Map from 'mapbox-gl';
 import { XMapOverlayProvider } from './Map/XMapOverlayProvider';
 import { XMapOverlay } from './Map/XMapOverlay';
 
@@ -33,7 +32,6 @@ interface XMapState {
     width?: number;
     height?: number;
     initedMap: boolean;
-    map?: Map.Map;
 
     latitude: number;
     longitude: number;
@@ -53,6 +51,7 @@ export class XMap extends React.Component<XMapProps, XMapState> {
     static childContextTypes = {
         mapViewport: PropTypes.shape({
             navigateTo: PropTypes.func.isRequired,
+            navigateToBounds: PropTypes.func.isRequired,
         }).isRequired
     };
 
@@ -74,7 +73,8 @@ export class XMap extends React.Component<XMapProps, XMapState> {
         };
         this.childContexts = {
             mapViewport: {
-                navigateTo: this.navigateTo
+                navigateTo: this.navigateTo,
+                navigateToBounds: this.navigateToBounds
             }
         }
     }
@@ -101,6 +101,10 @@ export class XMap extends React.Component<XMapProps, XMapState> {
             transitionDuration: 300,
             transitionInterpolator: new FlyToInterpolator()
         }));
+    }
+
+    navigateToBounds = () => {
+        // TODO: Implement
     }
 
     getChildContext() {
@@ -143,7 +147,6 @@ export class XMap extends React.Component<XMapProps, XMapState> {
                         touchRotate={this.props.allowRotation !== undefined ? this.props.allowRotation : true}
                         transitionDuration={this.state.transitionDuration}
                         transitionInterpolator={this.state.transitionInterpolator}
-                        ref={this.handleMapRef}
                     >
                         <XMapOverlayProvider
                             width={this.state.width!!}
@@ -181,12 +184,6 @@ export class XMap extends React.Component<XMapProps, XMapState> {
                 width: this.container!!.clientWidth,
                 height: this.container!!.clientHeight
             })
-        }
-    }
-
-    private handleMapRef = (v: any | null) => {
-        if (v != null) {
-            this.setState({ map: v.getMap() })
         }
     }
 

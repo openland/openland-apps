@@ -30,26 +30,6 @@ interface XMapOverlayState {
     map?: M.Map;
 }
 
-export class XMapJsonOverlay extends React.Component<{ records: OverlayRecord[]; }> {
-    static contextTypes = {
-        mapOverlays: PropTypes.shape({
-            register: PropTypes.func.isRequired,
-            unregister: PropTypes.func.isRequired
-        })
-    }
-
-    componentDidMount() {
-        //
-    }
-    componentWillUnmount() {
-        //
-    }
-
-    render() {
-        return null;
-    }
-}
-
 export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlayState> {
     static contextTypes = {
         mapViewport: PropTypes.shape({
@@ -168,7 +148,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
         let alpha = 0.8
         let isVisible = true;
         if (this.props.maxZoom) {
-            if (zoom && zoom > this.props.maxZoom - 1) {
+            if (zoom && zoom > this.props.maxZoom) {
                 if (zoom < this.props.maxZoom) {
                     alpha = 0.8 * (1 - (zoom - this.props.maxZoom + 1));
                 } else {
@@ -178,7 +158,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
             }
         }
         if (this.props.minZoom) {
-            if (zoom && zoom < this.props.minZoom + 1) {
+            if (zoom && zoom <= this.props.minZoom) {
                 if (zoom > this.props.minZoom) {
                     alpha = 0.8 * (zoom - this.props.minZoom);
                 } else {

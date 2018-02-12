@@ -16,6 +16,11 @@ export const BlockFull = gql`
         extrasArea
         extrasSupervisorDistrict
         geometry
+        parcels {
+            id
+            title
+            geometry
+        }
    }
 `;
 
