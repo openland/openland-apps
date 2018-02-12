@@ -2,7 +2,9 @@ import * as Routes from 'next-routes';
 
 let routes = Routes();
 
-// new
+//
+// App Root
+//
 
 routes.add('/app', '/app/index');
 routes.add('/app/', '/app/index');
@@ -16,6 +18,12 @@ routes.add('/app/blocks/', '/app/blocks/list');
 routes.add('/app/blocks/:blockId', '/app/blocks/item');
 routes.add('/app/blocks/:blockId/', '/app/blocks/item');
 
+//
+// Parcels
+//
+
+routes.add('/app/parcels', '/app/parcels/list');
+routes.add('/app/parcels/', '/app/parcels/list');
 routes.add('/app/parcels/:parcelId', '/app/parcels/item');
 routes.add('/app/parcels/:parcelId/', '/app/parcels/item');
 

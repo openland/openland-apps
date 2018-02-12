@@ -272,6 +272,45 @@ export interface BlockQuery {
   },
 };
 
+export interface ParcelsConnectionQueryVariables {
+  cursor?: string | null,
+  filter?: string | null,
+  page?: number | null,
+};
+
+export interface ParcelsConnectionQuery {
+  items:  {
+    __typename: "ParcelConnection",
+    edges:  Array< {
+      __typename: "ParcelEdge",
+      node:  {
+        __typename: "Parcel",
+        id: string,
+        title: string,
+        geometry: string | null,
+        extrasArea: number | null,
+        extrasSupervisorDistrict: string | null,
+        block:  {
+          __typename: "Block",
+          id: string,
+          title: string,
+          extrasArea: number | null,
+        },
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+  },
+};
+
 export interface ParcelQueryVariables {
   parcelId: string,
 };

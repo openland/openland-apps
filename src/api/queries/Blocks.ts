@@ -70,6 +70,28 @@ export const BlockQuery = gql`
     ${BlockFull}
 `;
 
+export const ParcelsConnection = gql`
+    query ParcelsConnection($cursor: String, $filter: String, $page: Int) {
+        items: parcelsConnection(state: "CA", county: "San Francisco", city: "San Francisco", filter: $filter, first: 50, after: $cursor, page: $page) {
+            edges {
+                node {
+                    ...ParcelFull
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+                openEnded
+            }
+        }
+    }
+    ${ParcelFull}
+`;
+
 export const ParcelQuery = gql`
     query Parcel($parcelId: ID!) {
         item: parcel(id: $parcelId) {
