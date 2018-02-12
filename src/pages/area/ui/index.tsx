@@ -82,6 +82,14 @@ export default withPage((props) => {
                     <XButton alignSelf="flex-start">Default</XButton>
                 </XCard.Warning>
             </XCard>
+            <XCard>
+                <XCard.Hint title="test data"/>
+                <XCard.Loader>
+                    <XCard.Warning title="Warning example with hint and button element">
+                        <XButton alignSelf="flex-start">Default</XButton>
+                    </XCard.Warning>
+                </XCard.Loader>
+            </XCard>
             <XCard shadow="medium" loading={true}>
                 <XCard.Footer text="footer">
                     <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
