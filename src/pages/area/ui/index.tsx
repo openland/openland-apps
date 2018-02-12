@@ -82,9 +82,17 @@ export default withPage((props) => {
                     <XButton alignSelf="flex-start">Default</XButton>
                 </XCard.Warning>
             </XCard>
-            <XCard>
+            <XCard separators={true}>
                 <XCard.Hint title="test data"/>
-                <XCard.Loader>
+                <XCard.Header title="Loader block title"/>
+                <XCard.Loader load={true} >
+                    <XCard.FormList>
+                        <XCard.FormCell 
+                            title="XForm example"
+                            placeholder="Placeholder"
+                            description="Form description"
+                        />
+                    </XCard.FormList>
                     <XCard.Warning title="Warning example with hint and button element">
                         <XButton alignSelf="flex-start">Default</XButton>
                     </XCard.Warning>
