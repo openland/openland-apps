@@ -24,6 +24,7 @@ let XHintDiv = Glamorous.div({
     position: 'absolute',
     left: 0,
     top: 0,
+    zIndex: 1
 })
 
 export function XCardHint(props: { title: string }) {
