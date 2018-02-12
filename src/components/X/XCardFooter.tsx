@@ -5,9 +5,9 @@ import { XHorizontal } from './XHorizontal'
 export const XCardText = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
-    color: '#5D677A',
-    fontSize: '17px',
-    lineHeight: '26px',
+    color: '#6b7c93',
+    fontSize: '13px',
+    lineHeight: '1.6',
     whiteSpace: 'pre',
     '& *::before': {
         content: ' '

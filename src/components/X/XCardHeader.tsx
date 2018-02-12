@@ -5,15 +5,17 @@ export const XCardTitle = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    fontSize: '24px',
-    lineHeight: '34px',
+    fontSize: '22px',
+    lineHeight: '1.6',
     fontWeight: 500,
+    color: '#32325d'
 })
 
 export const XCardDescription = Glamorous.div({
-    color: '#5D677A',
-    fontSize: '17px',
-    lineHeight: '26px',
+    color: '#525f7f',
+    fontSize: '14px',
+    lineHeight: '1.6',
+    fontWeight: 400
 })
 
 let XCardHeaderDiv = Glamorous.div({
