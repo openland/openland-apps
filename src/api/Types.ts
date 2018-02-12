@@ -262,6 +262,7 @@ export interface BlockQuery {
     title: string,
     extrasArea: number | null,
     extrasSupervisorDistrict: string | null,
+    geometry: string | null,
   },
 };
 
@@ -1207,6 +1208,15 @@ export interface BlockShortFragment {
   title: string,
   extrasArea: number | null,
   extrasSupervisorDistrict: string | null,
+};
+
+export interface BlockFullFragment {
+  __typename: "Block",
+  id: string,
+  title: string,
+  extrasArea: number | null,
+  extrasSupervisorDistrict: string | null,
+  geometry: string | null,
 };
 
 export interface ChartFullFragment {

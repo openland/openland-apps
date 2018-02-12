@@ -9,6 +9,16 @@ export const BlockShort = gql`
    }
 `;
 
+export const BlockFull = gql`
+   fragment BlockFull on Block {
+        id
+        title
+        extrasArea
+        extrasSupervisorDistrict
+        geometry
+   }
+`;
+
 export const BlocksConnection = gql`
     query BlocksConnection($cursor: String, $filter: String, $page: Int) {
         items: blocksConnection(state: "CA", county: "San Francisco", city: "San Francisco", filter: $filter, first: 50, after: $cursor, page: $page) {
@@ -34,8 +44,8 @@ export const BlocksConnection = gql`
 export const BlockQuery = gql`
     query Block($blockId: ID!) {
         item: block(id: $blockId) {
-            ...BlockShort
+            ...BlockFull
         }
     }
-    ${BlockShort}
+    ${BlockFull}
 `;
