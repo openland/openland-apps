@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withPageFullScreen } from '../../../components/Navigation/withPage';
-import { XMap2 } from '../../../components/X/XMap2';
+import { XMapLight } from '../../../components/X/XMapLight';
 import { XCard } from '../../../components/X/XCard';
 import { XPageFullScreen } from '../../../components/X/XPageFullScreen';
 
@@ -56,7 +56,7 @@ export default withPageFullScreen((props) => {
         <>
         <XHead title={['Statecraft', 'San Francisco', 'Zoning']} />
         <XPageFullScreen behindHeader={true}>
-            <XMap2 mapStyle="mapbox://styles/steve-kite/cjcsbw6zq00dg2squfjuum14i" />
+            <XMapLight mapStyle="mapbox://styles/steve-kite/cjcsbw6zq00dg2squfjuum14i" />
             <XMapLegendContainer>
                 <XCard>
                     <XMapLegendWrapper>

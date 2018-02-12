@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { canUseDOM } from '../../utils/environment';
-import { MapViewport } from '../../utils/map';
+import { canUseDOM } from '../../../utils/environment';
+import { MapViewport } from '../../../utils/map';
 import { XMapOverlaySetter } from './XMapOverlayProvider';
 import * as GeoLib from 'geolib';
 
@@ -196,7 +196,7 @@ export class XMapOverlay extends React.Component<XMapOverlayProps, XMapOverlaySt
             wireframe: false,
             pickable: true,
             opacity: alpha,
-            fp64: zoom ? zoom > 14 : false,
+            fp64: true, // zoom ? zoom > 14 : false,
             getFillColor: this.getFillColor,
             getLineColor: this.getLineColor,
             onHover: this.onHover,

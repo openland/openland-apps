@@ -1,11 +1,14 @@
 import * as React from 'react';
-import * as classnames from 'classnames';
 import { canUseDOM } from '../../utils/environment';
+import Glamorous from 'glamorous';
 let MapBox = canUseDOM ? import('mapbox-gl') : null;
-// import * as MapBox from 'mapbox-gl';
 
-interface XMap2Props {
-    style?: React.CSSProperties;
+let Wrapper = Glamorous.div({
+    width: '100%',
+    height: '100%'
+})
+
+interface XMapLightProps {
     className?: string;
 
     initLatitude?: number;
@@ -15,20 +18,19 @@ interface XMap2Props {
     mapStyle?: mapboxgl.Style | string
 }
 
-export class XMap2 extends React.Component<XMap2Props> {
+export class XMapLight extends React.Component<XMapLightProps> {
 
     private ref: HTMLDivElement | null = null;
-    // private map: MapBox.Map | null = null;
     private map: any | null = null;
 
     render() {
         if (!canUseDOM) {
             return (
-                <div className={classnames('x-map', this.props.className)} style={this.props.style} />
+                <Wrapper className={this.props.className} />
             )
         } else {
             return (
-                <div className={classnames('x-map', this.props.className)} style={this.props.style} ref={this.handleRef} />
+                <Wrapper className={this.props.className} innerRef={this.handleRef} />
             )
         }
     }
@@ -56,26 +58,6 @@ export class XMap2 extends React.Component<XMap2Props> {
                     style: this.props.mapStyle
                 });
                 mp.addControl(new v2.NavigationControl(), 'bottom-left');
-                // mp.on('load', () => {
-                //     mp.addLayer({
-                //         'id': 'terrain-data',
-                //         'type': 'fill',
-                //         'source': {
-                //             type: 'vector',
-                //             url: 'mapbox://mapbox.mapbox-streets-v7,steve-kite.sf_zoning'
-                //         },
-                //         'source-layer': 'sf_zoning',
-                //         'filter': ['==', '$type', 'Polygon'],
-                //         // 'layout': {
-                //         //     'line-join': 'round',
-                //         //     'line-cap': 'round'
-                //         // },
-                //         // 'paint': {
-                //         //     'line-color': '#ff69b4',
-                //         //     'line-width': 1
-                //         // }
-                //     });
-                // });
                 this.map = mp;
             })
         }

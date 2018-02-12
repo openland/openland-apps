@@ -1,15 +1,20 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import * as classnames from 'classnames';
+import Glamorous from 'glamorous';
 import { canUseDOM } from '../../utils/environment';
-import { InteractiveMap, ViewPortChanged, FlyToInterpolator } from 'react-map-gl';
+import { InteractiveMap, ViewPortChanged, FlyToInterpolator, NavigationControl } from 'react-map-gl';
 import * as Map from 'mapbox-gl';
-import { XMapOverlayProvider } from './XMapOverlayProvider';
+import { XMapOverlayProvider } from './Map/XMapOverlayProvider';
+import { XMapOverlay } from './Map/XMapOverlay';
 
 let MapBoxToken = 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw';
 
+let Wrapper = Glamorous.div({
+    width: '100%',
+    height: '100%'
+})
+
 export interface XMapProps {
-    style?: React.CSSProperties;
     className?: string;
 
     initLatitude?: number;
@@ -47,31 +52,14 @@ interface XMapState {
 export class XMap extends React.Component<XMapProps, XMapState> {
     static childContextTypes = {
         mapViewport: PropTypes.shape({
-            isEnabled: PropTypes.bool.isRequired,
             navigateTo: PropTypes.func.isRequired,
-            center: PropTypes.shape({
-                latitude: PropTypes.number,
-                longitude: PropTypes.number,
-            }),
-            bounds: PropTypes.shape({
-                ne: PropTypes.shape({
-                    latitude: PropTypes.number,
-                    longitude: PropTypes.number,
-                }),
-                sw: PropTypes.shape({
-                    latitude: PropTypes.number,
-                    longitude: PropTypes.number,
-                }),
-            }),
-            zoom: PropTypes.number,
-            pitch: PropTypes.number,
-            bearing: PropTypes.number,
-            width: PropTypes.number,
-            height: PropTypes.number
         }).isRequired
     };
 
+    static Overlay = XMapOverlay;
+
     private container: HTMLDivElement | null = null
+    private childContexts: any;
 
     constructor(props: XMapProps) {
         super(props);
@@ -84,6 +72,11 @@ export class XMap extends React.Component<XMapProps, XMapState> {
             bearing: props.initBearing ? props.initBearing : 0,
             zoom: props.initZoom ? props.initZoom : 12
         };
+        this.childContexts = {
+            mapViewport: {
+                navigateTo: this.navigateTo
+            }
+        }
     }
 
     componentDidMount() {
@@ -111,51 +104,17 @@ export class XMap extends React.Component<XMapProps, XMapState> {
     }
 
     getChildContext() {
-        if (this.state.inited && this.state.map) {
-            let bounds = this.state.map.getBounds();
-            return {
-                mapViewport: {
-                    isEnabled: true,
-                    navigateTo: this.navigateTo,
-                    center: {
-                        latitude: this.state.latitude,
-                        longitude: this.state.longitude,
-                    },
-                    bounds: {
-                        sw: {
-                            latitude: bounds.getSouthWest().lat,
-                            longitude: bounds.getSouthWest().lng
-                        },
-                        ne: {
-                            latitude: bounds.getNorthEast().lat,
-                            longitude: bounds.getNorthEast().lng
-                        }
-                    },
-                    zoom: this.state.zoom,
-                    pitch: this.state.pitch,
-                    bearing: this.state.bearing,
-                    width: this.state.width,
-                    height: this.state.height
-                }
-            }
-        } else {
-            return {
-                mapViewport: {
-                    isEnabled: false,
-                    navigateTo: this.navigateTo
-                }
-            }
-        }
+        return this.childContexts;
     }
 
     render() {
         if (!canUseDOM) {
             return (
-                <div className={classnames('x-map', this.props.className)} style={this.props.style} />
+                <Wrapper className={this.props.className} />
             )
         } else if (canUseDOM && !this.state.inited) {
             return (
-                <div className={classnames('x-map', this.props.className)} style={this.props.style} ref={this.handleRef} />
+                <Wrapper className={this.props.className} innerRef={this.handleRef} />
             )
         } else {
             let style = 'mapbox://styles/mapbox/streets-v9';
@@ -167,7 +126,7 @@ export class XMap extends React.Component<XMapProps, XMapState> {
                 style = this.props.mapStyle;
             }
             return (
-                <div className={classnames('x-map', this.props.className)} style={this.props.style} ref={this.handleRef}>
+                <Wrapper className={this.props.className} innerRef={this.handleRef} >
                     <InteractiveMap
                         mapboxApiAccessToken={MapBoxToken}
                         mapStyle={style}
@@ -197,8 +156,11 @@ export class XMap extends React.Component<XMapProps, XMapState> {
                         >
                             {this.props.children}
                         </XMapOverlayProvider>
+                        <div style={{ position: 'absolute', left: 12, bottom: 44 }}>
+                            <NavigationControl onViewportChange={this.handleStateChange} />
+                        </div>
                     </InteractiveMap>
-                </div >
+                </Wrapper>
             )
         }
     }

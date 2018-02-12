@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { XMap } from './XMap';
 
 let XCardMapDiv = Glamorous.div({
-    height: '240px',
+    height: '360px',
 })
 
 export function XCardMap(props: { location: { latitude: number, longitude: number }, children?: any }) {

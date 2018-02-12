@@ -29,6 +29,8 @@ declare module 'react-map-gl' {
         bearing: number;
     }
 
+    export let NavigationControl: React.ComponentClass<{ onViewportChange?: (viewport: ViewPortChanged) => void }>;
+
     export class FlyToInterpolator { }
     export let StaticMap: React.ComponentClass<StaticMapProps>;
     export let InteractiveMap: React.ComponentClass<InteractiveMapProps>;

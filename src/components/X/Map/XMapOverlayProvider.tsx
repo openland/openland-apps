@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { canUseDOM } from '../../utils/environment';
+import { canUseDOM } from '../../../utils/environment';
 
 let w = typeof window === 'undefined' ? undefined : window;
 import Deck from 'deck.gl';
@@ -139,7 +139,7 @@ export class XMapOverlayLayerComponent extends React.PureComponent<XMapOverlayLa
                     width={this.props.width}
                     height={this.props.height}
                     layers={this.state.layers}
-                    useDevicePixels={false}
+                    useDevicePixels={true}
                 />
             );
         } else {
