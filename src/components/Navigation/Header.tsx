@@ -48,7 +48,7 @@ let HeaderLogo = XStyled(XLink)({
     fontWeight: 700,
 
     width: 140,
-    marginLeft: 16,
+    marginLeft: 0,
     marginRight: 16,
 
     // [Layout.XLG]: {
