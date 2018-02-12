@@ -9,6 +9,7 @@ import * as Organizations from './queries/Organizations';
 import * as Permits from './queries/Permits';
 import * as Projects from './queries/Projects';
 import * as Account from './queries/Account';
+import * as Blocks from './queries/Blocks';
 
 //
 // Area
@@ -68,6 +69,12 @@ export const withBuildingProjects = graphqlRouted<Types.ProjectsConnectionQuery>
 export const withBuildingProject = graphqlRouted<Types.ProjectQuery>(Projects.ProjectQuery, ['projectId']);
 export const withSFBuildingProjects = graphqlRouted<Types.ProjectsSFConnectionQuery>(Projects.ProjectsSFConnection, ['page', 'minUnits', 'year', 'filter']);
 export const withSFBuildingProject = graphqlRouted<Types.ProjectSFQuery>(Projects.ProjectSFQuery, ['projectId']);
+
+//
+// Blocks
+//
+
+export const withBlocks = graphqlRouted<Types.BlocksConnectionQuery>(Blocks.PermitsConnection, ['page']);
 
 //
 // Pictures

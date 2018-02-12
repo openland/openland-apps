@@ -10,6 +10,9 @@ routes.add('/app/', '/app/index');
 routes.add('/app/projects/', '/app/projects/list');
 routes.add('/app/projects', '/app/projects/list');
 
+routes.add('/app/blocks/', '/app/blocks/list');
+routes.add('/app/blocks', '/app/blocks/list');
+
 routes.add('/app/projects/:projectId', '/app/projects/view');
 routes.add('/app/projects/:projectId/', '/app/projects/view');
 
