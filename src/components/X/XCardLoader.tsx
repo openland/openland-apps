@@ -19,8 +19,11 @@ let ItemIcon = Glamorous(XIcon)<{loading?: boolean}>((props) => ({
     animation: `${loading} 1s linear infinite`,
 }))
 
-let HidenComponents = Glamorous.div<{loading?: boolean | undefined}>((props) => ({
-    opacity: props.loading ? 0 : 1
+let HidenComponents = Glamorous.div<{loading?: boolean}>((props) => ({
+    opacity: props.loading ? 0 : 1,
+    '& *': {
+        cursor: 'default'
+    }
 }))
 
 let XCardLoaderDiv = Glamorous.div({
