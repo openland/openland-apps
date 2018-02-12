@@ -9,7 +9,7 @@ export const BlockShort = gql`
    }
 `;
 
-export const PermitsConnection = gql`
+export const BlocksConnection = gql`
     query BlocksConnection($cursor: String, $filter: String, $page: Int) {
         items: blocksConnection(state: "CA", county: "San Francisco", city: "San Francisco", filter: $filter, first: 50, after: $cursor, page: $page) {
             edges {
@@ -26,6 +26,15 @@ export const PermitsConnection = gql`
                 pagesCount
                 openEnded
             }
+        }
+    }
+    ${BlockShort}
+`;
+
+export const BlockQuery = gql`
+    query Block($blockId: ID!) {
+        item: block(id: $blockId) {
+            ...BlockShort
         }
     }
     ${BlockShort}

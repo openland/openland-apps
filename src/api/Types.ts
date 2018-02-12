@@ -251,6 +251,20 @@ export interface BlocksConnectionQuery {
   },
 };
 
+export interface BlockQueryVariables {
+  blockId: string,
+};
+
+export interface BlockQuery {
+  item:  {
+    __typename: "Block",
+    id: string,
+    title: string,
+    extrasArea: number | null,
+    extrasSupervisorDistrict: string | null,
+  },
+};
+
 export interface OrganizationsQuery {
   organizations:  Array< {
     __typename: "Organization",
