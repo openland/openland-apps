@@ -284,6 +284,12 @@ export interface ParcelQuery {
     geometry: string | null,
     extrasArea: number | null,
     extrasSupervisorDistrict: string | null,
+    block:  {
+      __typename: "Block",
+      id: string,
+      title: string,
+      extrasArea: number | null,
+    },
   },
 };
 
@@ -1230,6 +1236,12 @@ export interface ParcelFullFragment {
   geometry: string | null,
   extrasArea: number | null,
   extrasSupervisorDistrict: string | null,
+  block:  {
+    __typename: string,
+    id: string,
+    title: string,
+    extrasArea: number | null,
+  },
 };
 
 export interface BlockShortFragment {

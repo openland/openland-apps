@@ -6,17 +6,24 @@ import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { convertMapPatch, findCenter } from '../../../utils/map';
 import { XMap } from '../../../components/X/XMap';
+import { XLink } from '../../../components/X/XLink';
+import { XArea } from '../../../components/X/XArea';
 
 export default withApp(withParcel((props) => {
     return (
         <AppContent>
-            <XCard shadow="medium">
+            <XCard shadow="medium" separators={true}>
                 <XCard.Header title={'Parcel #' + props.data.item.title}>
                     <XButton>Edit</XButton>
                 </XCard.Header>
                 <XCard.PropertyList>
-                    <XCard.Property title="Parcel Area">{props.data.item.extrasArea}</XCard.Property>
-                    <XCard.Property title="Supervisor District">{props.data.item.extrasSupervisorDistrict}</XCard.Property>
+                    <XCard.Property title="Block"><XLink path={'/app/blocks/' + props.data.item.block.id}>{props.data.item.block.title}</XLink></XCard.Property>
+                    {props.data.item.extrasArea &&
+                        <XCard.Property title="Parcel Area"><XArea area={props.data.item.extrasArea} /></XCard.Property>
+                    }
+                    {props.data.item.extrasSupervisorDistrict &&
+                        <XCard.Property title="Supervisor District">{props.data.item.extrasSupervisorDistrict}</XCard.Property>
+                    }
                 </XCard.PropertyList>
             </XCard>
             {props.data.item.geometry && (
@@ -25,7 +32,7 @@ export default withApp(withParcel((props) => {
                         <XMap.Overlay
                             id={'some'}
                             records={[{ id: 'parcel', geometry: props.data.item.geometry }]}
-                    />
+                        />
                     </XCard.Map>
                 </XCard>
             )}

@@ -8,7 +8,7 @@ import { XButton } from '../../../components/X/XButton';
 export default withApp(withBlocks((props) => {
     return (
         <AppContent>
-            <XCard shadow="medium">
+            <XCard shadow="medium" separators={true}>
                 <XCard.Header title="Blocks">
                     <XButton>Add New</XButton>
                 </XCard.Header>
