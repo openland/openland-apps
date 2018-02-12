@@ -13,7 +13,9 @@ export function XCardMap(props: { location: { latitude: number, longitude: numbe
                 mapStyle="mapbox://styles/mapbox/streets-v9"
                 initZoom={16}
                 initLatitude={props.location.latitude}
-                initLongitude={props.location.longitude}>
+                initLongitude={props.location.longitude}
+                allowRotation={false}
+            >
                 {props.children}
             </XMap>
         </XCardMapDiv>
