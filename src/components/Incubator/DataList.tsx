@@ -15,7 +15,6 @@ let FiltersTitle = Glamorous.div({
     lineHeight: '20px',
     fontWeight: 500,
     marginTop: 8,
-    marginLeft: 16,
     marginBottom: 8,
 });
 
@@ -132,7 +131,6 @@ let FilterTitle = Glamorous.div({
     letterSpacing: '0.6px',
     marginTop: '8px',
     marginBottom: '8px',
-    paddingLeft: '16px',
     textTransform: 'uppercase',
 
     color: 'rgba(24,38,66,0.8)',

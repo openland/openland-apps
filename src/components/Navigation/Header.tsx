@@ -1,9 +1,10 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
+import { Layout } from '../X/_Layout'
 import { XLink } from '../X/XLink';
 import { AuthenticationControlls } from './Login';
 import { Navigation } from './Navigation';
 import { XFixedWidthContainer } from '../X/Scaffold/XFixedWidthContainer';
-import Glamorous from 'glamorous';
 import { XDesktopContainer } from '../X/XDesktopContainer';
 import { XMobileContainer } from '../X/XMobileContainer';
 import XStyled from '../X/XStyled';
@@ -49,26 +50,6 @@ let HeaderLogo = XStyled(XLink)({
     fontWeight: 700,
 
     width: 140,
-    // marginLeft: 16,
-    // marginRight: 16,
-
-    // [Layout.XLG]: {
-    //     width: 304,
-    // },
-
-    // .display (block);
-    // .font (14px, 20px, 700);
-    // .size (205px);
-
-    // @media @media-xs-only {
-    //     float: left;
-
-    //     .size (auto);
-    // }
-
-    // @media @media-sm-only {
-    //     .size (160px);
-    // }
 });
 
 let HeaderLogoDiv = Glamorous.div({
@@ -76,9 +57,17 @@ let HeaderLogoDiv = Glamorous.div({
     flexDirection: 'row',
     textDecoration: 'none',
     alignItems: 'center',
-    width: 285,
-    marginLeft: 16,
-    marginRight: 16,
+    width: 317,
+
+    [Layout.LG]: {
+        width: 272
+    },
+    [Layout.MDMinus]: {
+        width: 242
+    },
+    [Layout.XS]: {
+        width: 140
+    }
 })
 
 let DesktopLayout = Glamorous(XDesktopContainer)({
