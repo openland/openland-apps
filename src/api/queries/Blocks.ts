@@ -8,6 +8,10 @@ export const ParcelFull = gql`
       extrasArea
       extrasSupervisorDistrict
       extrasZoning
+      extrasLandValue
+      extrasImprovementValue
+      extrasPropertyValue
+      extrasFixturesValue
       block {
         id
         title

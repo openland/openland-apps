@@ -27,6 +27,19 @@ export default withApp(withParcel((props) => {
                     {props.data.item.extrasZoning && props.data.item.extrasZoning.length > 0 &&
                         <XCard.Property title="Zoning">{props.data.item.extrasZoning.join()}</XCard.Property>
                     }
+
+                    {props.data.item.extrasLandValue !== null &&
+                        <XCard.Property title="Land Value">{props.data.item.extrasLandValue}</XCard.Property>
+                    }
+                    {props.data.item.extrasImprovementValue !== null &&
+                        <XCard.Property title="Improvement Value">{props.data.item.extrasImprovementValue}</XCard.Property>
+                    }
+                    {props.data.item.extrasFixturesValue !== null &&
+                        <XCard.Property title="Fixtures Value">{props.data.item.extrasFixturesValue}</XCard.Property>
+                    }
+                    {props.data.item.extrasPropertyValue !== null &&
+                        <XCard.Property title="Personal Property Value">{props.data.item.extrasPropertyValue}</XCard.Property>
+                    }
                 </XCard.PropertyList>
             </XCard>
             {props.data.item.geometry && (

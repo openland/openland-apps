@@ -294,6 +294,10 @@ export interface ParcelsConnectionQuery {
         extrasArea: number | null,
         extrasSupervisorDistrict: string | null,
         extrasZoning: Array< string > | null,
+        extrasLandValue: number | null,
+        extrasImprovementValue: number | null,
+        extrasPropertyValue: number | null,
+        extrasFixturesValue: number | null,
         block:  {
           __typename: "Block",
           id: string,
@@ -328,6 +332,10 @@ export interface ParcelQuery {
     extrasArea: number | null,
     extrasSupervisorDistrict: string | null,
     extrasZoning: Array< string > | null,
+    extrasLandValue: number | null,
+    extrasImprovementValue: number | null,
+    extrasPropertyValue: number | null,
+    extrasFixturesValue: number | null,
     block:  {
       __typename: "Block",
       id: string,
@@ -1281,6 +1289,10 @@ export interface ParcelFullFragment {
   extrasArea: number | null,
   extrasSupervisorDistrict: string | null,
   extrasZoning: Array< string > | null,
+  extrasLandValue: number | null,
+  extrasImprovementValue: number | null,
+  extrasPropertyValue: number | null,
+  extrasFixturesValue: number | null,
   block:  {
     __typename: string,
     id: string,
