@@ -5,7 +5,7 @@ import { XCard } from './X/XCard';
 import * as Types from '../api/Types';
 
 export function CardOrganization(props: { org: Types.OrganizationShortFragment }) {
-    
+
     let subtitle = undefined
 
     if (props.org.isDeveloper) {
@@ -67,7 +67,7 @@ export function CardOrganization(props: { org: Types.OrganizationShortFragment }
                     {(projectsLength !== undefined) && ((projectsLength > 0) && (<div className="x-card--counter"><span>{projectsLength}</span>recent projects</div>))}
 
                     {featured && (
-                        <XLink path={featured.url}
+                        <XLink path={'/sf/projects/' + featured.url}
                             className={'x-card--counter is-project' + (featured.picture ? ' with-photo' : '')}>
                             {featured.picture && (
                                 <img src={featured.picture.retina} alt="" />)}
