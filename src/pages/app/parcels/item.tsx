@@ -8,8 +8,10 @@ import { convertMapPatch, findCenter } from '../../../utils/map';
 import { XMap } from '../../../components/X/XMap';
 import { XLink } from '../../../components/X/XLink';
 import { XArea } from '../../../components/X/XArea';
+import { XMoney } from '../../../components/X/XMoney';
 
 export default withApp(withParcel((props) => {
+
     return (
         <AppContent>
             <XCard shadow="medium" separators={true}>
@@ -23,6 +25,22 @@ export default withApp(withParcel((props) => {
                     }
                     {props.data.item.extrasSupervisorDistrict &&
                         <XCard.Property title="Supervisor District">{props.data.item.extrasSupervisorDistrict}</XCard.Property>
+                    }
+                    {props.data.item.extrasZoning && props.data.item.extrasZoning.length > 0 &&
+                        <XCard.Property title="Zoning">{props.data.item.extrasZoning.join()}</XCard.Property>
+                    }
+
+                    {props.data.item.extrasLandValue !== null &&
+                        <XCard.Property title="Land Value"><XMoney value={props.data.item.extrasLandValue} /></XCard.Property>
+                    }
+                    {props.data.item.extrasImprovementValue !== null &&
+                        <XCard.Property title="Improvement Value"><XMoney value={props.data.item.extrasImprovementValue} /></XCard.Property>
+                    }
+                    {props.data.item.extrasFixturesValue !== null &&
+                        <XCard.Property title="Fixtures Value"><XMoney value={props.data.item.extrasFixturesValue} /></XCard.Property>
+                    }
+                    {props.data.item.extrasPropertyValue !== null &&
+                        <XCard.Property title="Personal Property Value"><XMoney value={props.data.item.extrasPropertyValue} /></XCard.Property>
                     }
                 </XCard.PropertyList>
             </XCard>

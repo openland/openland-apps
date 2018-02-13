@@ -7,6 +7,11 @@ export const ParcelFull = gql`
       geometry
       extrasArea
       extrasSupervisorDistrict
+      extrasZoning
+      extrasLandValue
+      extrasImprovementValue
+      extrasPropertyValue
+      extrasFixturesValue
       block {
         id
         title
@@ -21,6 +26,7 @@ export const BlockShort = gql`
         title
         extrasArea
         extrasSupervisorDistrict
+        extrasZoning
    }
 `;
 
@@ -29,12 +35,14 @@ export const BlockFull = gql`
         id
         title
         extrasArea
+        extrasZoning
         extrasSupervisorDistrict
         geometry
         parcels {
             id
             title
             geometry
+            extrasZoning
         }
    }
 `;

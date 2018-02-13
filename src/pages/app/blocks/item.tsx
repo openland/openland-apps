@@ -22,6 +22,9 @@ export default withApp(withBlock((props) => {
                     {props.data.item.extrasSupervisorDistrict &&
                         <XCard.Property title="Supervisor District">{props.data.item.extrasSupervisorDistrict}</XCard.Property>
                     }
+                    {props.data.item.extrasZoning &&
+                        <XCard.Property title="Zoning">{props.data.item.extrasZoning.join()}</XCard.Property>
+                    }
                 </XCard.PropertyList>
             </XCard>
             {props.data.item.parcels.length === 0 && props.data.item.geometry && (
@@ -49,11 +52,13 @@ export default withApp(withBlock((props) => {
                     <XCard.Table>
                         <XCard.Table.Header>
                             <XCard.Table.Cell>Lot Id</XCard.Table.Cell>
+                            <XCard.Table.Cell>Zoning</XCard.Table.Cell>
                         </XCard.Table.Header>
                         <tbody>
                             {props.data.item.parcels.map((v) => (
                                 <tr key={v.id} onClick={() => props.router.push('/app/parcels/' + v.id)}>
                                     <XCard.Table.Cell>{v.title}</XCard.Table.Cell>
+                                    <XCard.Table.Cell>{v.extrasZoning ? v.extrasZoning.join() : 'unknown'}</XCard.Table.Cell>
                                 </tr>)
                             )}
                         </tbody>

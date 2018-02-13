@@ -17,6 +17,7 @@ export default withApp(withBlocks((props) => {
                         <XCard.Table.Cell>Block ID</XCard.Table.Cell>
                         <XCard.Table.Cell>Area</XCard.Table.Cell>
                         <XCard.Table.Cell>Supervisor District</XCard.Table.Cell>
+                        <XCard.Table.Cell>Zoning</XCard.Table.Cell>
                     </XCard.Table.Header>
                     <tbody>
                         {props.data.items.edges.map((v) => (
@@ -24,6 +25,7 @@ export default withApp(withBlocks((props) => {
                                 <XCard.Table.Cell>{v.node.title}</XCard.Table.Cell>
                                 <XCard.Table.Cell>{v.node.extrasArea}</XCard.Table.Cell>
                                 <XCard.Table.Cell>{v.node.extrasSupervisorDistrict}</XCard.Table.Cell>
+                                <XCard.Table.Cell>{v.node.extrasZoning ? v.node.extrasZoning!.join() : 'unknown'}</XCard.Table.Cell>
                             </tr>
                         ))}
                     </tbody>
