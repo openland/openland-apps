@@ -236,6 +236,7 @@ export interface BlocksConnectionQuery {
         title: string,
         extrasArea: number | null,
         extrasSupervisorDistrict: string | null,
+        extrasZoning: Array< string > | null,
       },
       cursor: string,
     } >,
@@ -261,6 +262,7 @@ export interface BlockQuery {
     id: string,
     title: string,
     extrasArea: number | null,
+    extrasZoning: Array< string > | null,
     extrasSupervisorDistrict: string | null,
     geometry: string | null,
     parcels:  Array< {
@@ -268,6 +270,7 @@ export interface BlockQuery {
       id: string,
       title: string,
       geometry: string | null,
+      extrasZoning: Array< string > | null,
     } >,
   },
 };
@@ -1292,6 +1295,7 @@ export interface BlockShortFragment {
   title: string,
   extrasArea: number | null,
   extrasSupervisorDistrict: string | null,
+  extrasZoning: Array< string > | null,
 };
 
 export interface BlockFullFragment {
@@ -1299,6 +1303,7 @@ export interface BlockFullFragment {
   id: string,
   title: string,
   extrasArea: number | null,
+  extrasZoning: Array< string > | null,
   extrasSupervisorDistrict: string | null,
   geometry: string | null,
   parcels:  Array< {
@@ -1306,6 +1311,7 @@ export interface BlockFullFragment {
     id: string,
     title: string,
     geometry: string | null,
+    extrasZoning: Array< string > | null,
   } >,
 };
 
