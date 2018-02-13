@@ -60,8 +60,8 @@ const SignInButtonElement = Glamorous.button({
 
 export const SignInButton = withUserInfo<{}>((props) => {
     if (!props.user) {
-        // return <SignInButtonElement onClick={e => props.doLogin()}>Sign In</SignInButtonElement>;
-        return <XButton style="dark" bounce={true} path="/auth/login" alignSelf="center">Sign In</XButton>
+        return <SignInButtonElement onClick={e => props.doLogin()}>Sign In</SignInButtonElement>;
+        // return <XButton style="dark" bounce={true} path="/auth/login" alignSelf="center">Sign In</XButton>
     } else {
         return null;
     }

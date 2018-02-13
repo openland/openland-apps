@@ -30,9 +30,9 @@ let HeaderContentDiv = Glamorous(XFixedWidthContainer)({
     paddingRight: 16
 })
 
-let Logo = Glamorous.img<{ large?: boolean }>((props) => ({
+let Logo = Glamorous.img<{ large?: boolean, noMarginLeft?: boolean }>((props) => ({
     width: props.large ? '100px' : '24px',
-    marginLeft: props.large ? '0' : '16px',
+    marginLeft: (props.noMarginLeft ? '0' : (props.large ? '0' : '16px')),
     marginRight: 6
 }));
 
@@ -48,9 +48,9 @@ let HeaderLogo = XStyled(XLink)({
     lineHeight: '20px',
     fontWeight: 700,
 
-    width: 300,
-    marginLeft: 16,
-    marginRight: 16,
+    width: 140,
+    // marginLeft: 16,
+    // marginRight: 16,
 
     // [Layout.XLG]: {
     //     width: 304,
@@ -70,6 +70,16 @@ let HeaderLogo = XStyled(XLink)({
     //     .size (160px);
     // }
 });
+
+let HeaderLogoDiv = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    textDecoration: 'none',
+    alignItems: 'center',
+    width: 285,
+    marginLeft: 16,
+    marginRight: 16,
+})
 
 let DesktopLayout = Glamorous(XDesktopContainer)({
     flexDirection: 'row',
@@ -194,7 +204,7 @@ export class Header extends React.Component<{ hero?: boolean }, { isShown: boole
         let Wrapper = this.props.hero ? HeaderHeroDiv : HeaderDiv;
         let RenderedLogo = this.props.hero
             ? (<Logo large={true} src={'/static/img/logotype.svg'} />)
-            : (<><Logo src={'/static/img/x-header--label.svg'} />San Francisco</>)
+            : (<><Logo noMarginLeft={true} src={'/static/img/x-header--label.svg'} />San Francisco</>)
         return (
             // <div className={'x-header' + (this.props.hero ? '' : ' is-top') + (this.state.isShown ? ' is-shown' : '')}>
             <Wrapper>
@@ -215,7 +225,9 @@ export class Header extends React.Component<{ hero?: boolean }, { isShown: boole
                     )} */}
 
                     <MobileLayout>
-                        <HeaderLogo path="/sf">{RenderedLogo}</HeaderLogo>
+                        <HeaderLogoDiv>
+                            <HeaderLogo path="/sf">{RenderedLogo}</HeaderLogo>
+                        </HeaderLogoDiv>
                         <HeaderMenu>
                             <Navigation />
                             {/* <AuthenticationControlls /> */}
@@ -225,7 +237,9 @@ export class Header extends React.Component<{ hero?: boolean }, { isShown: boole
                         </HeaderMenu>
                     </MobileLayout>
                     <DesktopLayout>
-                        <HeaderLogo path="/sf">{RenderedLogo}</HeaderLogo>
+                        <HeaderLogoDiv>
+                            <HeaderLogo path="/sf">{RenderedLogo}</HeaderLogo>
+                        </HeaderLogoDiv>
                         <NavigationDiv>
                             <Navigation />
                         </NavigationDiv>
