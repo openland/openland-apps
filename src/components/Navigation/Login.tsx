@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withUserInfo } from '../Base/UserInfo';
 import Glamorous from 'glamorous';
-import { XButton } from '../X/XButton';
 
 export const AuthenticationControlls = () => {
     return (
@@ -48,7 +47,7 @@ const SignInButtonElement = Glamorous.button({
     color: '#ffffff !important',
     padding: '6px 14px',
     background: '#192743',
-    border: '1px solid #ffffff',
+    border: '1px solid rgba(255, 255, 255, 0.6)',
     borderRadius: '4px',
     fontSize: '13px',
     lineHeight: '20px',
