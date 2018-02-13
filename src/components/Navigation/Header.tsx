@@ -47,7 +47,7 @@ let HeaderLogo = XStyled(XLink)({
     lineHeight: '20px',
     fontWeight: 700,
 
-    width: 140,
+    width: 300,
     marginLeft: 16,
     marginRight: 16,
 
@@ -89,25 +89,9 @@ let NavigationDiv = Glamorous.div({
     flexDirection: 'row',
     alignSelf: 'stretch',
     alignItems: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     flexShrink: 0,
-    flexGrow: 1,
-    '> .item': {
-        display: 'flex',
-        color: '#ffffff',
-        fontSize: '14px',
-        fontWeight: 500,
-        opacity: 0.6,
-        marginLeft: 8,
-        marginRight: 8,
-        alignItems: 'center',
-        '&:hover': {
-            opacity: 1.0
-        }
-    },
-    '> .is-active': {
-        opacity: 1.0
-    }
+    flexGrow: 1
 });
 
 let NavigationDivVert = Glamorous.div({
@@ -127,8 +111,8 @@ let NavigationDivVert = Glamorous.div({
         fontWeight: 500,
         height: 54,
         opacity: 0.6,
-        marginLeft: 8,
-        marginRight: 8,
+        marginLeft: 12,
+        marginRight: 12,
         alignItems: 'center',
         '&:hover': {
             opacity: 1.0

@@ -1,15 +1,35 @@
 import * as React from 'react';
 import { XLink } from '../X/XLink';
+import XStyled from '../X/XStyled';
+
+const NavigationLink = XStyled(XLink)({
+    display: 'flex',
+    color: '#babec6',
+    fontSize: '14px',
+    fontWeight: 500,
+    opacity: 0.6,
+    marginLeft: 12,
+    marginRight: 12,
+    alignItems: 'center',
+    '&:hover': {
+        color: '#fff',
+        opacity: 1.0
+    },
+    '&.is-active': {
+        color: '#fff',
+        opacity: 1.0
+    }
+})
 
 export function Navigation() {
     return (
         <>
-        <XLink path="/sf" className="item">Insights</XLink>
-        <XLink path="/sf/projects" className="item" activateForSubpaths={true}>Construction projects</XLink>
-        <XLink path="/sf/permits" className="item" activateForSubpaths={true}>Permits</XLink>
-        <XLink path="/sf/zoning" className="item" activateForSubpaths={true}>Zoning</XLink>
-        <XLink path="/sf/organizations" className="item" activateForSubpaths={true}>Organizations</XLink>
-        <XLink path="/sf/stats" writeAccess={true} className="item" activateForSubpaths={true}>Stats</XLink>
+        <NavigationLink path="/sf" className="item">Insights</NavigationLink>
+        <NavigationLink path="/sf/projects" className="item" activateForSubpaths={true}>Construction projects</NavigationLink>
+        <NavigationLink path="/sf/permits" className="item" activateForSubpaths={true}>Permits</NavigationLink>
+        <NavigationLink path="/sf/zoning" className="item" activateForSubpaths={true}>Zoning</NavigationLink>
+        <NavigationLink path="/sf/organizations" className="item" activateForSubpaths={true}>Organizations</NavigationLink>
+        <NavigationLink path="/sf/stats" writeAccess={true} className="item" activateForSubpaths={true}>Stats</NavigationLink>
         </>
     );
 }
