@@ -24,6 +24,9 @@ export default withApp(withParcel((props) => {
                     {props.data.item.extrasSupervisorDistrict &&
                         <XCard.Property title="Supervisor District">{props.data.item.extrasSupervisorDistrict}</XCard.Property>
                     }
+                    {props.data.item.extrasZoning && props.data.item.extrasZoning.length > 0 &&
+                        <XCard.Property title="Zoning">{props.data.item.extrasZoning.join()}</XCard.Property>
+                    }
                 </XCard.PropertyList>
             </XCard>
             {props.data.item.geometry && (

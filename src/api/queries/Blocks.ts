@@ -7,6 +7,7 @@ export const ParcelFull = gql`
       geometry
       extrasArea
       extrasSupervisorDistrict
+      extrasZoning
       block {
         id
         title
