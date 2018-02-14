@@ -61,20 +61,20 @@ export default withPage((props) => {
                     <XVertical>
                         <XButton alignSelf="flex-start">Default</XButton>
                         <XButton alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton>
+
+                        <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
+
                         <XButton alignSelf="flex-start" style="dark" size="large">Large</XButton>
                         <XButton alignSelf="flex-start" style="dark" size="large" bounce={true} disabled={true}>Bounce</XButton>
-
                         <XButton alignSelf="flex-start" style="important">Important</XButton>
                         <XButton alignSelf="flex-start" loading={true} />
                         <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
                         <XLinkExternal path="https://goo.gl/urJT1F" />
-                        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                            <XBullet title="bullet" />
-                            <XBullet title="bullet" color="red" />
-                            <XBullet title="bullet" color="green" />
-                            <XBullet title="bullet" color="blue" />
-                            <XBullet title="bullet" color="yellow" />
-                        </div>
+                        <XBullet title="bullet" alignSelf="flex-start" />
+                        <XBullet title="bullet" alignSelf="flex-start" color="red" />
+                        <XBullet title="bullet" alignSelf="flex-start" color="green" />
+                        <XBullet title="bullet" alignSelf="flex-start" color="blue" />
+                        <XBullet title="bullet" alignSelf="flex-start" color="yellow" />
                     </XVertical>
                 </XCard.Content>
             </XCard>
