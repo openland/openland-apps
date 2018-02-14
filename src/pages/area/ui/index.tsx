@@ -10,6 +10,7 @@ import { XTitle } from '../../../components/X/XTitle';
 import { XVertical } from '../../../components/X/XVertical';
 import { XLinkExternal } from '../../../components/X/XLinkExternal';
 import { XView } from '../../../components/X/XView';
+import { XBullet } from '../../../components/X/XBullet';
 import { Title, Text } from '../../../components/Incubator/XRowsExample';
 
 export default withPage((props) => {
@@ -67,6 +68,13 @@ export default withPage((props) => {
                         <XButton alignSelf="flex-start" loading={true} />
                         <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
                         <XLinkExternal path="https://goo.gl/urJT1F" />
+                        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                            <XBullet title="bullet" />
+                            <XBullet title="bullet" color="red" />
+                            <XBullet title="bullet" color="green" />
+                            <XBullet title="bullet" color="blue" />
+                            <XBullet title="bullet" color="yellow" />
+                        </div>
                     </XVertical>
                 </XCard.Content>
             </XCard>
