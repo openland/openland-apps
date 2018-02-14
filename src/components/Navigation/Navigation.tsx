@@ -7,7 +7,7 @@ const NavigationLink = XStyled(XLink)({
     color: '#babec6',
     fontSize: '14px',
     fontWeight: 500,
-    opacity: 0.6,
+    opacity: 0.72,
     marginLeft: 12,
     marginRight: 12,
     alignItems: 'center',
