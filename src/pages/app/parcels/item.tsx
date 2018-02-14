@@ -15,6 +15,7 @@ export default withApp(withParcel((props) => {
     return (
         <AppContent>
             <XCard shadow="medium" separators={true}>
+                <XCard.Hint title="Public" />
                 <XCard.Header title={'Parcel #' + props.data.item.title}>
                     <XButton>Edit</XButton>
                 </XCard.Header>

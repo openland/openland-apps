@@ -4,26 +4,33 @@ import { XCard } from '../../../components/X/XCard';
 import { withParcels } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
+import { XArea } from '../../../components/X/XArea';
+import { XMoney } from '../../../components/X/XMoney';
 
 export default withApp(withParcels((props) => {
+
     return (
         <AppContent>
             <XCard shadow="medium" separators={true}>
                 <XCard.Header title="Parcels">
-                    <XButton>Add New</XButton>
+                    <XButton query={{ field: 'sort', value: 'LAND_DESC' }}>Land Value Descending</XButton>
                 </XCard.Header>
                 <XCard.Table>
                     <XCard.Table.Header>
                         <XCard.Table.Cell>Parcel ID</XCard.Table.Cell>
                         <XCard.Table.Cell>Area</XCard.Table.Cell>
                         <XCard.Table.Cell>Supervisor District</XCard.Table.Cell>
+                        <XCard.Table.Cell>Land Value</XCard.Table.Cell>
+                        <XCard.Table.Cell>Improvement Value</XCard.Table.Cell>
                     </XCard.Table.Header>
                     <tbody>
                         {props.data.items.edges.map((v) => (
                             <tr key={v.node.id} onClick={() => props.router.push('/app/parcels/' + v.node.id)}>
                                 <XCard.Table.Cell>{v.node.title}</XCard.Table.Cell>
-                                <XCard.Table.Cell>{v.node.extrasArea}</XCard.Table.Cell>
+                                <XCard.Table.Cell>{v.node.extrasArea && <XArea area={v.node.extrasArea} />}</XCard.Table.Cell>
                                 <XCard.Table.Cell>{v.node.extrasSupervisorDistrict}</XCard.Table.Cell>
+                                <XCard.Table.Cell>{v.node.extrasLandValue && <XMoney value={v.node.extrasLandValue} />}</XCard.Table.Cell>
+                                <XCard.Table.Cell>{v.node.extrasImprovementValue && <XMoney value={v.node.extrasImprovementValue} />}</XCard.Table.Cell>
                             </tr>
                         ))}
                     </tbody>
