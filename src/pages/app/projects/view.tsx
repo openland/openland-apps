@@ -24,7 +24,7 @@ export default withApp(withSFBuildingProject((props) => {
                     {props.data.project.extrasPermit && <XCard.Property title="Permit">{props.data.project.extrasPermit}</XCard.Property>}
                     {props.data.project.extrasAddress && <XCard.Property title="Address">{props.data.project.extrasAddress}</XCard.Property>}
                     {props.data.project.extrasAddressSecondary && <XCard.Property title="Address">{props.data.project.extrasAddressSecondary}</XCard.Property>}
-                    {props.data.project.extrasUrl && <XCard.Property title="Link" ><XLinkExternal href={props.data.project.extrasUrl}>{props.data.project.extrasUrl}</XLink></XCard.Property>}
+                    {props.data.project.extrasUrl && <XCard.Property title="Link" ><XLinkExternal href={props.data.project.extrasUrl}>{props.data.project.extrasUrl}</XLinkExternal></XCard.Property>}
                 </XCard.PropertyList>
             </XCard>
 
