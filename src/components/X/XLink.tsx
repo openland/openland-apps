@@ -1,11 +1,8 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { Link as LinkNext } from '../../routes';
 import { withUserInfo } from '../Base/UserInfo';
 import { withRouter } from '../../utils/withRouter';
 import { resolveActionPath } from '../../utils/routing';
-import { XIcon } from './XIcon'
-import XStyled from './XStyled';
 
 export interface XLinkProps {
     path?: string | null;
@@ -87,39 +84,3 @@ export const XLink = withRouter<XLinkProps & { children?: any }>(withUserInfo((p
         return null;
     }
 }));
-
-export const ExternalLinkDiv = XStyled(XLink)({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    color: '#3297d3',
-    fontSize: '14px',
-    fontWeight: 500,
-    '&:hover': {
-        color: '#32325d'
-    }
-})
-
-export const ExternalLinkIcon = Glamorous(XIcon)({
-    marginLeft: 3,
-    fontSize: 14,
-})
-
-export function ExternalLink(props: { path: string }) {
-    let url: string | null | RegExpMatchArray = props.path
-
-    if (url.search(/^https?\:\/\//) !== -1) {
-        url = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)
-    } else {
-        url = url.match(/^([^\/?#]+)(?:[\/?#]|$)/i)
-    }
-
-    return (
-        <ExternalLinkDiv href={props.path}>
-            <span>{
-                !url ? props.path : url[1]
-            }</span>
-            <ExternalLinkIcon icon="launch" />
-        </ExternalLinkDiv>
-    )
-}

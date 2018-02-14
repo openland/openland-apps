@@ -2,11 +2,12 @@ import * as React from 'react';
 import { withApp } from '../../../components/App/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withSFBuildingProject } from '../../../api/index';
-import { XLink } from '../../../components/X/XLink';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
+import { XLinkExternal } from '../../../components/X/XLinkExternal';
 
 export default withApp(withSFBuildingProject((props) => {
+    
     return (
         <AppContent>
             <XCard shadow="medium" separators={true}>
@@ -22,7 +23,7 @@ export default withApp(withSFBuildingProject((props) => {
                     {props.data.project.extrasPermit && <XCard.Property title="Permit">{props.data.project.extrasPermit}</XCard.Property>}
                     {props.data.project.extrasAddress && <XCard.Property title="Address">{props.data.project.extrasAddress}</XCard.Property>}
                     {props.data.project.extrasAddressSecondary && <XCard.Property title="Address">{props.data.project.extrasAddressSecondary}</XCard.Property>}
-                    {props.data.project.extrasUrl && <XCard.Property title="Link" ><XLink href={props.data.project.extrasUrl}>{props.data.project.extrasUrl}</XLink></XCard.Property>}
+                    {props.data.project.extrasUrl && <XCard.Property title="Link" ><XLinkExternal href={props.data.project.extrasUrl}>{props.data.project.extrasUrl}</XLinkExternal></XCard.Property>}
                 </XCard.PropertyList>
             </XCard>
 

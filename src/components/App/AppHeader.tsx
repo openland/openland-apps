@@ -3,6 +3,7 @@ import Glamorous from 'glamorous';
 import { withUserInfo } from '../Base/UserInfo';
 import { XPopover } from '../X/XPopover';
 import { XMenu } from '../X/XMenu';
+import { AppSearch } from './AppSearch';
 
 let Header = Glamorous.div({
     display: 'flex',
@@ -29,7 +30,7 @@ let Avatar = withUserInfo<{ onClick?: any }>((props) => {
 export let AppHeader = () => {
     return (
         <Header>
-            <div />
+            <AppSearch />
             <XPopover placement="bottom-end">
                 <XPopover.Target>
                     <Avatar />

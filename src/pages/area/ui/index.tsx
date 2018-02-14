@@ -8,7 +8,7 @@ import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { XTitle } from '../../../components/X/XTitle';
 import { XVertical } from '../../../components/X/XVertical';
-import { ExternalLink } from '../../../components/X/XLink';
+import { XLinkExternal } from '../../../components/X/XLinkExternal';
 import { XView } from '../../../components/X/XView';
 import { Title, Text } from '../../../components/Incubator/XRowsExample';
 
@@ -66,7 +66,7 @@ export default withPage((props) => {
                         <XButton alignSelf="flex-start" style="important">Important</XButton>
                         <XButton alignSelf="flex-start" loading={true} />
                         <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
-                        <ExternalLink path="https://goo.gl/urJT1F" />
+                        <XLinkExternal href="https://goo.gl/urJT1F" />
                     </XVertical>
                 </XCard.Content>
             </XCard>
