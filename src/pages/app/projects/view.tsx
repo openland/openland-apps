@@ -2,7 +2,6 @@ import * as React from 'react';
 import { withApp } from '../../../components/App/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withSFBuildingProject } from '../../../api/index';
-import { XLink } from '../../../components/X/XLink';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { XLinkExternal } from '../../../components/X/XLinkExternal';
