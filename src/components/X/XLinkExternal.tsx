@@ -19,27 +19,22 @@ export const ExternalLinkDiv = XStyled(XLink)({
 export const ExternalLinkIcon = Glamorous(XIcon)({
     marginLeft: 3,
     fontSize: 14,
-    marginTop: 1
 })
 
-export function XLinkExternal(props: { href: string }) {
-    let matched = null
-    if (props.href.search(/^https?\:\/\//) !== -1) {
-        matched = props.href.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)
-    } else {
-        matched = props.href.match(/^([^\/?#]+)(?:[\/?#]|$)/i)
-    }
+export function XLinkExternal(props: { path: string }) {
+    let url: string | null | RegExpMatchArray = props.path
 
-    let domain;
-    if (!matched) {
-        domain = props.href
+    if (url.search(/^https?\:\/\//) !== -1) {
+        url = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)
     } else {
-        domain = matched[1]
+        url = url.match(/^([^\/?#]+)(?:[\/?#]|$)/i)
     }
 
     return (
-        <ExternalLinkDiv href={props.href}>
-            <span>{domain}</span>
+        <ExternalLinkDiv href={props.path}>
+            <span>{
+                !url ? props.path : url[1]
+            }</span>
             <ExternalLinkIcon icon="launch" />
         </ExternalLinkDiv>
     )

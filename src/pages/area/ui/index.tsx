@@ -66,7 +66,7 @@ export default withPage((props) => {
                         <XButton alignSelf="flex-start" style="important">Important</XButton>
                         <XButton alignSelf="flex-start" loading={true} />
                         <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
-                        <XLinkExternal href="https://goo.gl/urJT1F" />
+                        <XLinkExternal path="https://goo.gl/urJT1F" />
                     </XVertical>
                 </XCard.Content>
             </XCard>
