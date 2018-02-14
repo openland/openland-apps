@@ -77,9 +77,9 @@ export const withSFBuildingProject = graphqlRouted<Types.ProjectSFQuery>(Project
 //
 
 export const withBlocks = graphqlRouted<Types.BlocksConnectionQuery>(Blocks.BlocksConnection, ['page']);
-export const withBlock = graphqlRouted<Types.BlockQuery>(Blocks.BlockQuery, ['blockId'])
-export const withParcels = graphqlRouted<Types.ParcelsConnectionQuery>(Blocks.ParcelsConnection)
-export const withParcel = graphqlRouted<Types.ParcelQuery>(Blocks.ParcelQuery, ['parcelId'])
+export const withBlock = graphqlRouted<Types.BlockQuery>(Blocks.BlockQuery, ['blockId']);
+export const withParcels = graphqlRouted<Types.ParcelsConnectionQuery>(Blocks.ParcelsConnection, ['page']);
+export const withParcel = graphqlRouted<Types.ParcelQuery>(Blocks.ParcelQuery, ['parcelId']);
 
 //
 // Pictures
