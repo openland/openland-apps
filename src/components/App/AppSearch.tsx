@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withSearch } from '../../api';
 import { XCard } from '../X/XCard';
-import { XLink } from '../X/XLink';
 
 const Container = Glamorous.div({
     display: 'flex',

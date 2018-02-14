@@ -1,8 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as PropTypes from 'prop-types';
-import { RouterState } from '../../utils/withRouter';
-
 import { Router } from '../../routes';
 
 const XCardWrapper = Glamorous.div({
