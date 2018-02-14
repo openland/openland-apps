@@ -68,6 +68,12 @@ async function start() {
     server.get('/status', (req, res) => res.send('Welcome to Statecraft!'));
 
     //
+    // Favicon support endpoint
+    //
+
+    server.get('/favicon.ico', (req, res) => res.sendfile(__dirname + '/static/favicon.ico'));
+
+    //
     // Main Handler
     //
     server.get('*', handle);
