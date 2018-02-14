@@ -92,6 +92,24 @@ export class XMap extends React.Component<XMapProps, XMapState> {
         window.removeEventListener('resize', this.handleResize);
     }
 
+    componentWillReceiveProps(nextProps: XMapProps) {
+        if (
+            nextProps.initLatitude &&
+            nextProps.initLongitude &&
+            this.props.initLatitude &&
+            this.props.initLongitude &&
+            (nextProps.initLatitude !== this.props.initLatitude || nextProps.initLongitude !== this.props.initLongitude)) {
+            this.setState((s) => ({
+                ...s,
+                setLatitude: nextProps.initLatitude,
+                setLongitude: nextProps.initLongitude,
+                setZoom: s.zoom,
+                transitionDuration: 300,
+                transitionInterpolator: new FlyToInterpolator()
+            }));
+        }
+    }
+
     navigateTo = (loc: { latitude: number, longitude: number, zoom: number }) => {
         this.setState((s) => ({
             ...s,

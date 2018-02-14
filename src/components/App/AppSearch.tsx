@@ -46,7 +46,7 @@ let SearchResults = withSearch((props) => {
             <ResultsContainer shadow="medium">
                 <XCard.List>
                     {props.data.search.parcels.edges.map((v) => (
-                        <XCard.ListItem path={'/app/parcels/' + v.node.id}>Parcel #{v.node.title}</XCard.ListItem>
+                        <XCard.ListItem key={v.node.id} path={'/app/parcels/' + v.node.id}>Parcel #{v.node.title}</XCard.ListItem>
                     ))}
                 </XCard.List>
             </ResultsContainer>
