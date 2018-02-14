@@ -1,5 +1,7 @@
+import * as React from 'react';
 import * as glamor from 'glamor'
 import { XLink, XLinkProps } from './XLink';
+import { XIcon } from './XIcon'
 import XStyled from './XStyled';
 
 interface XButtonProps extends XLinkProps {
@@ -9,6 +11,7 @@ interface XButtonProps extends XLinkProps {
     bounce?: boolean;
     loading?: boolean;
     disabled?: boolean;
+    icon?: string
 }
 
 const loading = glamor.keyframes({
@@ -42,11 +45,13 @@ let backgroundPressedColors = {
     'important': undefined
 }
 
-export const XButton = XStyled<XButtonProps>(XLink)((props) => {
+export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
     let style = props.style !== undefined && props.style !== 'normal' ? props.style : 'normal'
     return {
+        display: 'flex',
+        alignItems: 'center',
         textDecoration: 'none',
-        textAlign: 'center',
+        textAlign: props.icon ? 'left' : 'center',
         cursor: (props.loading || props.disabled) ? 'inherit' : 'pointer',
         userSelect: 'none',
         whiteSpace: 'nowrap',
@@ -112,6 +117,28 @@ export const XButton = XStyled<XButtonProps>(XLink)((props) => {
             backgroundImage: 'url(/static/X/loading.svg)',
             backgroundSize: '20px',
             animation: `${loading} 2s linear infinite`
+        },
+        '& > i': {
+            fontSize: props.size === 'large' ? '15px' : '13px',
+            lineHeight: '20px',
+            marginLeft: 3
         }
     }
 });
+
+export function XButton(props: XButtonProps & {children?: any}) {
+    return (
+        <XButtonComponent 
+            alignSelf={props.alignSelf}
+            style={props.style}
+            size={props.size}
+            bounce={props.bounce}
+            loading={props.loading}
+            disabled={props.disabled}
+            icon={props.icon}
+        >
+            {props.children}
+            {props.icon && <XIcon icon={props.icon} />}
+        </XButtonComponent>
+    )
+}
