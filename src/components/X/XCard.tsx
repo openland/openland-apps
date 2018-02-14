@@ -17,6 +17,7 @@ import { XCardFormList, XCardFormCell } from './XCardForm';
 import { XCardHint } from './XCardHint';
 import { XCardWarning } from './XCardWarning';
 import { XCardLoader } from './XCardLoader';
+import { XCardList, XCardListItem } from './XCardList';
 //
 // Basic Row
 //
@@ -225,6 +226,8 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
     static Hint = XCardHint;
     static Warning = XCardWarning;
     static Loader = XCardLoader;
+    static List = XCardList;
+    static ListItem = XCardListItem;
 
     render() {
         let photoComponent = hasChildren('_xCardPhoto', this.props.children);

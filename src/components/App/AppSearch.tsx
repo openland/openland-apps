@@ -45,7 +45,11 @@ let SearchResults = withSearch((props) => {
     if (props.data && props.data.search && props.data.search.parcels.edges.length > 0) {
         return (
             <ResultsContainer shadow="medium">
-                <XCard.Content>{props.data.search.parcels.edges.map((v) => (<div><XLink path={'/app/parcels/' + v.node.id}>Parcel #{v.node.title}</XLink></div>))}</XCard.Content>
+                <XCard.List>
+                    {props.data.search.parcels.edges.map((v) => (
+                        <XCard.ListItem path={'/app/parcels/' + v.node.id}>Parcel #{v.node.title}</XCard.ListItem>
+                    ))}
+                </XCard.List>
             </ResultsContainer>
         );
     } else {
