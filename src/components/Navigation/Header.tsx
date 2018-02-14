@@ -95,6 +95,9 @@ let NavigationDiv = Glamorous.div({
 });
 
 let NavigationDivVert = Glamorous.div({
+    width: '100%',
+    paddingLeft: 16,
+    paddingRight: 16,
     position: 'absolute',
     display: 'flex',
     flexDirection: 'column',
@@ -104,25 +107,11 @@ let NavigationDivVert = Glamorous.div({
     flexShrink: 0,
     flexGrow: 1,
     backgroundColor: '#182642',
-    '> .item': {
-        display: 'flex',
-        color: '#ffffff',
-        fontSize: '14px',
-        fontWeight: 500,
-        height: 54,
-        opacity: 0.6,
-        marginLeft: 12,
-        marginRight: 12,
-        alignItems: 'center',
-        '&:hover': {
-            opacity: 1.0
-        }
-    },
-    '> .is-active': {
-        opacity: 1.0
-    },
     right: 0,
-    top: 54
+    top: 54,
+    '> .item': {
+        height: 54,
+    },
 });
 
 let AuthenticationDiv = Glamorous.div({
