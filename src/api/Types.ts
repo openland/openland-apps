@@ -1274,6 +1274,28 @@ export interface ProjectSFQuery {
   },
 };
 
+export interface SearchQueryVariables {
+  query: string,
+};
+
+export interface SearchQuery {
+  search:  {
+    __typename: "SearchResult",
+    parcels:  {
+      __typename: "ParcelSearchResult",
+      edges:  Array< {
+        __typename: "ParcelResult",
+        node:  {
+          __typename: "Parcel",
+          id: string,
+          title: string,
+        },
+      } >,
+      total: number,
+    },
+  },
+};
+
 export interface AreaShortFragment {
   __typename: "Area",
   id: string,

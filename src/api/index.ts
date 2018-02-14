@@ -10,6 +10,8 @@ import * as Permits from './queries/Permits';
 import * as Projects from './queries/Projects';
 import * as Account from './queries/Account';
 import * as Blocks from './queries/Blocks';
+import * as Search from './queries/Search';
+import { graphql } from 'react-apollo';
 
 //
 // Area
@@ -87,3 +89,17 @@ export interface Picture {
     url: string;
     retina: string;
 }
+
+//
+// Search
+//
+
+export const withSearch = graphql<Types.SearchQuery, { query: string }>(Search.SearchQuery, {
+    options: (props: { query: string }) => {
+        return {
+            variables: {
+                query: props.query
+            }
+        };
+    }
+});

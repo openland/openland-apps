@@ -19,9 +19,11 @@ export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal
         let elements = React.Children.toArray(this.props.children);
         let children: any[] = [];
         let isFirst = true;
+        let separator = 0;
         for (let el of elements) {
             if (!isFirst) {
-                children.push(<XHorizontalSpaceDiv />);
+                children.push(<XHorizontalSpaceDiv key={'_separator_' + separator} />);
+                separator++
             } else {
                 isFirst = false;
             }

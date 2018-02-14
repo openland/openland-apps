@@ -19,9 +19,11 @@ export class XVertical extends React.Component<{ separator?: 'large' | 'normal',
         let elements = React.Children.toArray(this.props.children);
         let children: any[] = [];
         let isFirst = true;
+        let separator = 0
         for (let el of elements) {
             if (!isFirst) {
-                children.push(<XVerticalSpaceDiv separator={this.props.separator} />);
+                children.push(<XVerticalSpaceDiv key={'_separator_' + separator} separator={this.props.separator} />);
+                separator++;
             } else {
                 isFirst = false;
             }
