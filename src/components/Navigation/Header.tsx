@@ -33,9 +33,8 @@ let HeaderContentDiv = Glamorous(XFixedWidthContainer)({
 
 let Logo = Glamorous.img<{ large?: boolean, noMarginLeft?: boolean }>((props) => ({
     width: props.large ? '100px' : '24px',
-    marginLeft: (props.noMarginLeft ? '0' : (props.large ? '0' : '16px')),
     marginRight: 6,
-    marginBottom: 2
+    marginBottom: props.large ? 6 : 2
 }));
 
 let HeaderLogo = XStyled(XLink)({
