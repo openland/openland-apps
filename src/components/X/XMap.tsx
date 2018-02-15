@@ -47,11 +47,15 @@ interface XMapState {
     transitionInterpolator?: FlyToInterpolator;
 }
 
+type Subscriber = (box: { south: number, north: number, east: number, west: number, zoom: number }) => void;
+
 export class XMap extends React.Component<XMapProps, XMapState> {
     static childContextTypes = {
         mapViewport: PropTypes.shape({
             navigateTo: PropTypes.func.isRequired,
             navigateToBounds: PropTypes.func.isRequired,
+            subscribe: PropTypes.func.isRequired,
+            unsubscribe: PropTypes.func.isRequired
         }).isRequired
     };
 
@@ -59,6 +63,8 @@ export class XMap extends React.Component<XMapProps, XMapState> {
 
     private container: HTMLDivElement | null = null
     private childContexts: any;
+
+    private subscribers = new Set<Subscriber>();
 
     constructor(props: XMapProps) {
         super(props);
@@ -74,7 +80,9 @@ export class XMap extends React.Component<XMapProps, XMapState> {
         this.childContexts = {
             mapViewport: {
                 navigateTo: this.navigateTo,
-                navigateToBounds: this.navigateToBounds
+                navigateToBounds: this.navigateToBounds,
+                subscribe: this.subscribe,
+                unsubscribe: this.unsubscribe
             }
         }
     }
@@ -123,6 +131,14 @@ export class XMap extends React.Component<XMapProps, XMapState> {
 
     navigateToBounds = () => {
         // TODO: Implement
+    }
+
+    subscribe = (subscriber: Subscriber) => {
+        this.subscribers.add(subscriber);
+    }
+
+    unsubscribe = (subscriber: Subscriber) => {
+        this.subscribers.delete(subscriber);
     }
 
     getChildContext() {

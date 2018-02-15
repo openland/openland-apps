@@ -1,9 +1,13 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { canUseDOM } from '../../utils/environment';
 import Glamorous from 'glamorous';
+import * as ReactDOM from 'react-dom';
+
 let MapBox = canUseDOM ? import('mapbox-gl') : null;
 
 let Wrapper = Glamorous.div({
+    position: 'relative',
     width: '100%',
     height: '100%'
 })
@@ -11,55 +15,100 @@ let Wrapper = Glamorous.div({
 interface XMapLightProps {
     className?: string;
 
-    initLatitude?: number;
-    initLongitude?: number;
-    initZoom?: number;
+    focusPosition?: { latitude: number, longiutude: number, zoom: number };
 
-    mapStyle?: mapboxgl.Style | string
+    mapStyle?: string;
 }
 
 export class XMapLight extends React.Component<XMapLightProps> {
 
-    private ref: HTMLDivElement | null = null;
-    private map: any | null = null;
+    static childContext = {
+        mapSubscribe: PropTypes.func.isRequired,
+        mapUnsubscribe: PropTypes.func.isRequired
+    }
 
-    render() {
-        if (!canUseDOM) {
-            return (
-                <Wrapper className={this.props.className} />
-            )
-        } else {
-            return (
-                <Wrapper className={this.props.className} innerRef={this.handleRef} />
-            )
+    private map: mapboxgl.Map | null = null;
+    private _isMounted = true;
+    private childContext: any;
+
+    constructor(props: XMapLightProps) {
+        super(props);
+        this.childContext = {
+            mapSubscribe: this.subscribe,
+            mapUnsubscribe: this.unsubscribe
         }
     }
 
-    private handleRef = (v: HTMLDivElement | null) => {
-        if (v !== null) {
-            if (this.ref !== null) {
-                this.map!!.remove();
-                this.map = null;
-                this.ref = null;
+    getChildContext() {
+        return this.childContext;
+    }
+
+    subscribe = () => {
+        // 
+    }
+
+    unsubscribe = () => {
+        // 
+    }
+
+    render() {
+        return <Wrapper className={this.props.className} />;
+    }
+
+    componentDidMount() {
+
+        this._isMounted = true;
+        let domNode = ReactDOM.findDOMNode(this);
+        MapBox!!.then((map) => {
+            if (!this._isMounted) {
+                return
+            }
+            map.accessToken = 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw';
+            let initialLatitude = 37.75444398077139;
+            let initialLongutude = -122.43963811583545;
+            let initialZoom = 12;
+
+            if (this.props.focusPosition) {
+                initialLatitude = this.props.focusPosition.latitude;
+                initialLongutude = this.props.focusPosition.longiutude;
+                initialZoom = this.props.focusPosition.zoom;
             }
 
-            let latitude = this.props.initLatitude ? this.props.initLatitude : 37.75444398077139
-            let longitude = this.props.initLongitude ? this.props.initLongitude : -122.43963811583545
-            let zoom = this.props.initZoom ? this.props.initZoom : 12;
+            let mapComponent = new map.Map({
+                container: domNode,
+                center: [initialLongutude, initialLatitude],
+                zoom: initialZoom,
+                style: this.props.mapStyle
+            });
+            mapComponent.addControl(new map.NavigationControl(), 'bottom-right');
+            mapComponent.on('load', () => { this.configureMap(mapComponent); });
+            this.map = mapComponent;
+        })
+    }
 
-            this.ref = v;
+    configureMap(map: mapboxgl.Map) {
 
-            MapBox!!.then((v2) => {
-                v2.accessToken = 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw';
-                let mp = new v2.Map({
-                    container: this.ref!!,
-                    center: [longitude, latitude],
-                    zoom: zoom,
-                    style: this.props.mapStyle
-                });
-                mp.addControl(new v2.NavigationControl(), 'bottom-left');
-                this.map = mp;
-            })
+        //
+        // Zooming
+        //
+
+        let initialLatitude = 37.75444398077139;
+        let initialLongutude = -122.43963811583545;
+        let initialZoom = 12;
+
+        if (this.props.focusPosition) {
+            initialLatitude = this.props.focusPosition.latitude;
+            initialLongutude = this.props.focusPosition.longiutude;
+            initialZoom = this.props.focusPosition.zoom;
+        }
+        map.flyTo({ center: [initialLongutude, initialLatitude], zoom: initialZoom })
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+        if (this.map) {
+            this.map.remove();
+            this.map = null;
         }
     }
 }

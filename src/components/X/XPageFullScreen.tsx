@@ -3,21 +3,21 @@ import Glamorous from 'glamorous';
 
 interface XPageFullScreenProps {
     children: any,
-    behindHeader?: boolean
+    headerPadding?: boolean
 }
 
 export const XPageFullScreenContainer = Glamorous.div<XPageFullScreenProps>((props) => {
     return {
-        height: '100vh',
+        height: props.headerPadding === false ? '100vh' : 'calc(100vh - 54px)',
         width: '100%',
         position: 'relative',
-        marginTop: props.behindHeader ? '-54px' : undefined
+        marginTop: props.headerPadding === false ? '-54px' : undefined
     }
 })
 
-export function XPageFullScreen (props: XPageFullScreenProps) {
+export function XPageFullScreen(props: XPageFullScreenProps) {
     return (
-        <XPageFullScreenContainer behindHeader={props.behindHeader}>
+        <XPageFullScreenContainer headerPadding={props.headerPadding}>
             {props.children}
         </XPageFullScreenContainer>
     )

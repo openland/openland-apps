@@ -20,6 +20,12 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@mapbox/geo-viewport@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@mapbox/geo-viewport/-/geo-viewport-0.2.2.tgz#93206c044238c21a60fca7e9064c8ce63e8027b4"
+  dependencies:
+    "@mapbox/sphericalmercator" "~1.0.2"
+
 "@mapbox/geojson-area@0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@mapbox/geojson-area/-/geojson-area-0.2.2.tgz#18d7814aa36bf23fbbcc379f8e26a22927debf10"
@@ -41,6 +47,10 @@
 "@mapbox/shelf-pack@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@mapbox/shelf-pack/-/shelf-pack-3.1.0.tgz#1edea9c0bf6715b217171ba60646c201af520f6a"
+
+"@mapbox/sphericalmercator@~1.0.2":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@mapbox/sphericalmercator/-/sphericalmercator-1.0.5.tgz#70237b9774095ed1cfdbcea7a8fd1fc82b2691f2"
 
 "@mapbox/tiny-sdf@^1.1.0":
   version "1.1.0"
@@ -5760,9 +5770,9 @@ react-map-gl@^3.2.0:
     prop-types "^15.5.7"
     viewport-mercator-project "^5.0.0"
 
-react-mapbox-gl@^3.4.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/react-mapbox-gl/-/react-mapbox-gl-3.5.1.tgz#db84e6a5ca3fe92354689bf947bfed65682f104b"
+react-mapbox-gl@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-mapbox-gl/-/react-mapbox-gl-3.8.0.tgz#48f6325c9f085766ab97a9cbd6f55b3a9fd0d3f6"
   dependencies:
     "@turf/bbox" "4.7.3"
     "@turf/helpers" "4.7.3"
