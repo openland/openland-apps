@@ -9,6 +9,7 @@ import { XMap } from '../../../components/X/XMap';
 import { XLink } from '../../../components/X/XLink';
 import { XArea } from '../../../components/X/XArea';
 import { XMoney } from '../../../components/X/XMoney';
+import { formatAddresses } from '../../../utils/Addresses';
 
 export default withApp(withParcel((props) => {
 
@@ -16,7 +17,7 @@ export default withApp(withParcel((props) => {
         <AppContent>
             <XCard shadow="medium" separators={true}>
                 <XCard.Hint title="Public" />
-                <XCard.Header title={'Parcel #' + props.data.item.title}>
+                <XCard.Header title={'Parcel #' + props.data.item.title} description={formatAddresses(props.data.item.addresses)}>
                     <XButton>Edit</XButton>
                 </XCard.Header>
                 <XCard.PropertyList>
@@ -44,9 +45,6 @@ export default withApp(withParcel((props) => {
                         <XCard.Property title="Personal Property Value"><XMoney value={props.data.item.extrasPropertyValue} /></XCard.Property>
                     }
                 </XCard.PropertyList>
-                <XCard.Content>
-                    {props.data.item.addresses.map((v) => (<div key={v.streetId}>{v.streetNumber} {v.streetNumberSuffix} {v.streetName} {v.streetNameSuffix}</div>))}
-                </XCard.Content>
             </XCard>
             {props.data.item.geometry && (
                 <XCard shadow="medium">
