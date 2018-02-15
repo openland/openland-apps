@@ -76,7 +76,12 @@ export default withPage((props) => {
                         <XBullet title="bullet" alignSelf="flex-start" color="green" />
                         <XBullet title="bullet" alignSelf="flex-start" color="blue" />
                         <XBullet title="bullet" alignSelf="flex-start" color="yellow" />
-                        <XSwitcher title1="loles" title2="kekes" alignSelf="flex-start" />
+                        <XSwitcher alignSelf="flex-start">
+                            <XSwitcher.Item>first</XSwitcher.Item>
+                            <XSwitcher.Item>second</XSwitcher.Item>
+                            <XSwitcher.Item>third</XSwitcher.Item>
+                            <XSwitcher.Item>fourth</XSwitcher.Item>
+                        </XSwitcher>
                     </XVertical>
                 </XCard.Content>
             </XCard>
