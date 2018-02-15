@@ -136,6 +136,10 @@ export function XButton(props: XButtonProps & {children?: any}) {
             loading={props.loading}
             disabled={props.disabled}
             icon={props.icon}
+            href={props.href}
+            path={props.path}
+            query={props.query}
+            onClick={props.onClick}
         >
             {props.children}
             {props.icon && <XIcon icon={props.icon} />}
