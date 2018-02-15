@@ -221,7 +221,6 @@ export interface InternalStatsQuery {
 
 export interface BlocksConnectionQueryVariables {
   cursor?: string | null,
-  filter?: string | null,
   page?: number | null,
 };
 
@@ -277,7 +276,6 @@ export interface BlockQuery {
 
 export interface ParcelsConnectionQueryVariables {
   cursor?: string | null,
-  filter?: string | null,
   page?: number | null,
 };
 
@@ -298,6 +296,14 @@ export interface ParcelsConnectionQuery {
         extrasImprovementValue: number | null,
         extrasPropertyValue: number | null,
         extrasFixturesValue: number | null,
+        addresses:  Array< {
+          __typename: "StreetNumber",
+          streetId: string,
+          streetName: string,
+          streetNameSuffix: string | null,
+          streetNumber: number,
+          streetNumberSuffix: string | null,
+        } >,
         block:  {
           __typename: "Block",
           id: string,
@@ -336,6 +342,14 @@ export interface ParcelQuery {
     extrasImprovementValue: number | null,
     extrasPropertyValue: number | null,
     extrasFixturesValue: number | null,
+    addresses:  Array< {
+      __typename: "StreetNumber",
+      streetId: string,
+      streetName: string,
+      streetNameSuffix: string | null,
+      streetNumber: number,
+      streetNumberSuffix: string | null,
+    } >,
     block:  {
       __typename: "Block",
       id: string,
@@ -1315,6 +1329,14 @@ export interface ParcelFullFragment {
   extrasImprovementValue: number | null,
   extrasPropertyValue: number | null,
   extrasFixturesValue: number | null,
+  addresses:  Array< {
+    __typename: string,
+    streetId: string,
+    streetName: string,
+    streetNameSuffix: string | null,
+    streetNumber: number,
+    streetNumberSuffix: string | null,
+  } >,
   block:  {
     __typename: string,
     id: string,

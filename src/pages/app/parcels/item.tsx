@@ -44,6 +44,9 @@ export default withApp(withParcel((props) => {
                         <XCard.Property title="Personal Property Value"><XMoney value={props.data.item.extrasPropertyValue} /></XCard.Property>
                     }
                 </XCard.PropertyList>
+                <XCard.Content>
+                    {props.data.item.addresses.map((v) => (<div key={v.streetId}>{v.streetNumber} {v.streetNumberSuffix} {v.streetName} {v.streetNameSuffix}</div>))}
+                </XCard.Content>
             </XCard>
             {props.data.item.geometry && (
                 <XCard shadow="medium">
