@@ -9,7 +9,7 @@ import { XRow, XColumn } from './XGrid';
 import { XCardTable } from './XCardTable';
 import { XCardHeader } from './XCardHeader';
 import { XCardFooter } from './XCardFooter';
-import { XCardProperty, XCardPropertyList } from './XCardProperty';
+import { XCardProperty, XCardPropertyList, XCardPropertyColumns } from './XCardProperty';
 import { XCardGallery } from './XCardGallery';
 import { XCardMap } from './XCardMap';
 import { XSeparated } from './XSeparated';
@@ -218,6 +218,7 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
     static Table = XCardTable;
     static Property = XCardProperty;
     static PropertyList = XCardPropertyList;
+    static PropertyColumns = XCardPropertyColumns;
     static Gallery = XCardGallery;
     static GalleryItem = XCardGallery.Item;
     static Map = XCardMap;
