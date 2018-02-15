@@ -24,7 +24,7 @@ export function formatAddresses(addresses: {
     for (let addr of Array.from(streets.keys()).sort()) {
         let numbers = streets.get(addr)!!;
 
-        let formattedNumbers = numbers.numbers.map((v) => v.number + (v.suffix ? v.suffix : '')).join(', ');
+        let formattedNumbers = numbers.numbers.map((v) => v.number + (v.suffix ? v.suffix : '')).sort().join(', ');
 
         parts.push(formattedNumbers + ' ' + addr);
     }
