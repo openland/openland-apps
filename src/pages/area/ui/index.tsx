@@ -11,6 +11,7 @@ import { XVertical } from '../../../components/X/XVertical';
 import { XLinkExternal } from '../../../components/X/XLinkExternal';
 import { XView } from '../../../components/X/XView';
 import { XBullet } from '../../../components/X/XBullet';
+import { XSwitcher } from '../../../components/X/XSwitcher';
 import { Title, Text } from '../../../components/Incubator/XRowsExample';
 
 export default withPage((props) => {
@@ -75,6 +76,7 @@ export default withPage((props) => {
                         <XBullet title="bullet" alignSelf="flex-start" color="green" />
                         <XBullet title="bullet" alignSelf="flex-start" color="blue" />
                         <XBullet title="bullet" alignSelf="flex-start" color="yellow" />
+                        <XSwitcher title1="loles" title2="kekes" alignSelf="flex-start" />
                     </XVertical>
                 </XCard.Content>
             </XCard>
