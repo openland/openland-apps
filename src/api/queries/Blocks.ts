@@ -12,6 +12,11 @@ export const ParcelFull = gql`
       extrasImprovementValue
       extrasPropertyValue
       extrasFixturesValue
+      extrasStories
+      extrasUnits
+      extrasRooms
+      extrasBathrooms
+      extrasBedrooms
       addresses {
         streetId
         streetName

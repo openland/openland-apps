@@ -44,6 +44,22 @@ export default withApp(withParcel((props) => {
                     {props.data.item.extrasPropertyValue !== null &&
                         <XCard.Property title="Personal Property Value"><XMoney value={props.data.item.extrasPropertyValue} /></XCard.Property>
                     }
+
+                    {props.data.item.extrasStories !== null &&
+                        <XCard.Property title="Stories Count">{props.data.item.extrasStories}</XCard.Property>
+                    }
+                    {props.data.item.extrasUnits !== null &&
+                        <XCard.Property title="Units Count">{props.data.item.extrasUnits}</XCard.Property>
+                    }
+                    {props.data.item.extrasRooms !== null &&
+                        <XCard.Property title="Rooms Count">{props.data.item.extrasRooms}</XCard.Property>
+                    }
+                    {props.data.item.extrasBedrooms !== null &&
+                        <XCard.Property title="Bedrooms Count">{props.data.item.extrasBedrooms}</XCard.Property>
+                    }
+                    {props.data.item.extrasBathrooms !== null &&
+                        <XCard.Property title="Bathrooms Count">{props.data.item.extrasBathrooms}</XCard.Property>
+                    }
                 </XCard.PropertyList>
             </XCard>
             {props.data.item.geometry && (
