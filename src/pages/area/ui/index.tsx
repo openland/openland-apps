@@ -12,7 +12,6 @@ import { XLinkExternal } from '../../../components/X/XLinkExternal';
 import { XView } from '../../../components/X/XView';
 import { XBullet } from '../../../components/X/XBullet';
 import { XSwitcher } from '../../../components/X/XSwitcher';
-import { XSlider } from '../../../components/X/XSlider';
 import { Title, Text } from '../../../components/Incubator/XRowsExample';
 
 export default withPage((props) => {
@@ -83,7 +82,6 @@ export default withPage((props) => {
                             <XSwitcher.Item>third</XSwitcher.Item>
                             <XSwitcher.Item>fourth</XSwitcher.Item>
                         </XSwitcher>
-                        <XSlider/>
                     </XVertical>
                 </XCard.Content>
             </XCard>
