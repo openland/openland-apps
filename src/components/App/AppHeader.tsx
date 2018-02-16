@@ -20,7 +20,8 @@ const AvatarImg = Glamorous.img({
     marginRight: 16,
     width: '28px',
     height: '28px',
-    boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)'
+    boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
+    cursor: 'pointer'
 });
 
 let Avatar = withUserInfo<{ onClick?: any }>((props) => {
@@ -41,5 +42,6 @@ export let AppHeader = () => {
                     </XMenu>
                 </XPopover.Content>
             </XPopover>
-        </Header>)
+        </Header>
+    )
 }

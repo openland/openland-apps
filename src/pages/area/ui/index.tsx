@@ -77,7 +77,7 @@ export default withPage((props) => {
                         <XBullet title="bullet" alignSelf="flex-start" color="blue" />
                         <XBullet title="bullet" alignSelf="flex-start" color="yellow" />
                         <XSwitcher alignSelf="flex-start">
-                            <XSwitcher.Item>first</XSwitcher.Item>
+                            <XSwitcher.Item path="/sf/ui">first</XSwitcher.Item>
                             <XSwitcher.Item>second</XSwitcher.Item>
                             <XSwitcher.Item>third</XSwitcher.Item>
                             <XSwitcher.Item>fourth</XSwitcher.Item>
