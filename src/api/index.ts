@@ -80,6 +80,13 @@ export const withBlocks = graphqlRouted<Types.BlocksConnectionQuery>(Blocks.Bloc
 export const withBlock = graphqlRouted<Types.BlockQuery>(Blocks.BlockQuery, ['blockId']);
 export const withParcels = graphqlRouted<Types.ParcelsConnectionQuery>(Blocks.ParcelsConnection, ['page']);
 export const withParcel = graphqlRouted<Types.ParcelQuery>(Blocks.ParcelQuery, ['parcelId']);
+export const withParcelDirect = graphql<Types.ParcelQuery, { parcelId: string }>(Blocks.ParcelQuery, {
+    options: (props: { parcelId: string }) => ({
+        variables: {
+            parcelId: props.parcelId
+        }
+    })
+});
 
 //
 // Pictures

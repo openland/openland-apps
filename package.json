@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@mapbox/geo-viewport": "^0.2.2",
+		"@turf/turf": "^5.1.6",
 		"@types/auth0-js": "^8.11.0",
 		"@types/chart.js": "^2.7.3",
 		"@types/classnames": "^2.2.3",
@@ -108,6 +109,7 @@
 		"styled-jsx": "^2.2.3",
 		"tslint": "^5.8.0",
 		"tslint-react": "^3.2.0",
+		"turf": "^3.0.14",
 		"typescript": "2.6.2",
 		"uploadcare-widget": "^3.2.1",
 		"webpack-bundle-analyzer": "^2.9.1"

@@ -11,11 +11,12 @@ interface XMapControlsProps {
 
 const XMapControlsDiv = Glamorous.div<XMapControlsProps>((props) => ({
     position: 'absolute',
-    top: (props.topLeft || props.topRight) ? 16 : undefined,
-    left: (props.topLeft || props.bottomLeft) ? 16 : undefined,
-    bottom: (props.bottomLeft || props.BottomRight) ? 16 : undefined,
-    right: (props.topRight || props.BottomRight) ? 16 : undefined,
+    top: (props.topLeft || props.topRight) ? 32 : undefined,
+    left: (props.topLeft || props.bottomLeft) ? 32 : undefined,
+    bottom: (props.bottomLeft || props.BottomRight) ? 64 : undefined,
+    right: (props.topRight || props.BottomRight) ? 32 : undefined,
     opacity: .6,
+    zIndex: 1,
     '&:hover': {
         opacity: 1
     }
@@ -24,8 +25,8 @@ const XMapControlsDiv = Glamorous.div<XMapControlsProps>((props) => ({
 export class XMapControls extends React.Component<XMapControlsProps> {
     render() {
         return (
-            <XMapControlsDiv 
-                topLeft={this.props.topLeft} 
+            <XMapControlsDiv
+                topLeft={this.props.topLeft}
                 topRight={this.props.topRight}
                 bottomLeft={this.props.bottomLeft}
                 BottomRight={this.props.BottomRight}

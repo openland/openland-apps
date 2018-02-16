@@ -32,7 +32,8 @@ const ClassicalContainer = Glamorous.div({
 
 const MapContainer = Glamorous.div({
     alignSelf: 'stretch',
-    flexGrow: 1
+    flexGrow: 1,
+    minWidth: '1020px'
 })
 
 let Container = Glamorous.div({
@@ -54,7 +55,7 @@ export class AppContentMap extends React.Component {
                 <XHead title="Dashboard" />
 
                 <MapContainer>
-                    <XMapLight>
+                    <XMapLight mapStyle={'mapbox://styles/mapbox/light-v9'}>
                         {this.props.children}
                     </XMapLight>
                 </MapContainer>
