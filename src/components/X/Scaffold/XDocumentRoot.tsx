@@ -45,6 +45,8 @@ export let XDocumentAppRootFullScreen = Glamorous.div({
     width: '100vw',
     minHeight: '100vh',
 
+    minWidth: '1020px',
+
     marginLeft: 'auto',
     marginRight: 'auto'
 });
