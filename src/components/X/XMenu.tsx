@@ -34,8 +34,8 @@ const XMenuDiv = XStyled(XCard)({
 });
 
 const XMenuItem = XStyled(XLink)({
-    paddingLeft: '8px',
-    paddingRight: '8px',
+    paddingLeft: 8,
+    paddingRight: 8,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',

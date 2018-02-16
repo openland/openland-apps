@@ -13,6 +13,24 @@ let Header = Glamorous.div({
     justifyContent: 'space-between'
 })
 
+let UserInfoBox = Glamorous.div({
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 8,
+    paddingRight: 8,
+    fontSize: 16,
+    lineHeight: '24px',
+    fontWeight: 600,
+    color: '#525f7f',
+    borderBottom: '1px solid #E5EBF2',
+    '& > span': {
+        display: 'block',
+        fontSize: 12,
+        lineHeight: '16px',
+        fontWeight: 400,
+    }
+})
+
 const AvatarImg = Glamorous.img({
     overflow: 'hidden',
     borderRadius: '14px',
@@ -24,24 +42,30 @@ const AvatarImg = Glamorous.img({
     cursor: 'pointer'
 });
 
-let Avatar = withUserInfo<{ onClick?: any }>((props) => {
-    return (<AvatarImg src={props.user!!.picture} onClick={props.onClick} />)
+let Popover = withUserInfo<{ onClick?: any }>((props) => {
+    return (
+        <XPopover placement="bottom-end">
+                <XPopover.Target>
+                    <AvatarImg src={props.user!!.picture} onClick={props.onClick} />
+                </XPopover.Target>
+                <XPopover.Content>
+                    <XMenu>
+                        <UserInfoBox>
+                            {props.user!!.name}
+                            <span>Administrator</span>
+                        </UserInfoBox>
+                        <XMenu.Item path="/auth/logout">Log Out</XMenu.Item>
+                    </XMenu>
+                </XPopover.Content>
+            </XPopover>
+    )
 });
 
 export let AppHeader = () => {
     return (
         <Header>
             <AppSearch />
-            <XPopover placement="bottom-end">
-                <XPopover.Target>
-                    <Avatar />
-                </XPopover.Target>
-                <XPopover.Content>
-                    <XMenu>
-                        <XMenu.Item path="/auth/logout">Log Out</XMenu.Item>
-                    </XMenu>
-                </XPopover.Content>
-            </XPopover>
+            <Popover />
         </Header>
     )
 }
