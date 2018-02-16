@@ -164,9 +164,9 @@ let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium', loading?: 
         height: '20px',
         left: 'calc(50% - 10px)',
         top: 'calc(50% - 10px)',
-        backgroundImage: 'url(/static/X/loading.svg)',
+        backgroundImage: props.loading ? 'url(/static/X/loading.svg)' : undefined,
         backgroundSize: '20px',
-        animation: `${loading} 2s linear infinite`,
+        animation: props.loading ? `${loading} 2s linear infinite` : undefined,
         zIndex: 2
     }
 }));

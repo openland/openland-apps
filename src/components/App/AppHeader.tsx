@@ -20,25 +20,9 @@ const AvatarImg = Glamorous.img({
     marginRight: 16,
     width: '28px',
     height: '28px',
-    boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)'
+    boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
+    cursor: 'pointer'
 });
-
-let XMenuDiv = Glamorous(XMenu)({
-    backgroundColor: '#fff',
-    boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)'
-})
-
-let XMenuItem = Glamorous(XMenu.Item)({
-    width: 230,
-    height: 28,
-    fontSize: 14,
-    fontWeight: 'normal',
-    color: '#525f7f',
-    lineHeight: '28px',
-    '&:hover': {
-        color: '#525f7f'
-    }
-})
 
 let Avatar = withUserInfo<{ onClick?: any }>((props) => {
     return (<AvatarImg src={props.user!!.picture} onClick={props.onClick} />)
@@ -53,9 +37,9 @@ export let AppHeader = () => {
                     <Avatar />
                 </XPopover.Target>
                 <XPopover.Content>
-                    <XMenuDiv>
-                        <XMenuItem path="/auth/logout">Log Out</XMenuItem>
-                    </XMenuDiv>
+                    <XMenu>
+                        <XMenu.Item path="/auth/logout">Log Out</XMenu.Item>
+                    </XMenu>
                 </XPopover.Content>
             </XPopover>
         </Header>
