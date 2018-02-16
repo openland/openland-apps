@@ -4,13 +4,20 @@ import { XLink } from '../X/XLink';
 import XStyled from '../X/XStyled';
 import { XIcon } from '../X/XIcon';
 
-let Container = Glamorous.div({
+let Container = Glamorous.div<{ asOverlay?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     width: '240px',
-    alignSelf: 'stretch',
-    flexShrink: 0
-});
+    alignSelf: props.asOverlay ? 'flex-start' : 'stretch',
+    flexShrink: 0,
+    pointerEvents: 'auto',
+    backgroundColor: props.asOverlay ? 'rgb(245, 246, 248)' : undefined,
+    boxShadow: props.asOverlay ? '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)' : undefined,
+    paddingTop: props.asOverlay ? '4px' : '16px',
+    paddingBottom: props.asOverlay ? '4px' : '16px',
+    marginTop: props.asOverlay ? '12px' : undefined,
+    borderRadius: props.asOverlay ? '4px' : undefined
+}));
 
 let SidebarItemDiv = XStyled(XLink)({
     display: 'flex',
@@ -33,13 +40,12 @@ let SidebarItemDiv = XStyled(XLink)({
 let SidebarTitleDiv = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
-    marginTop: '16px',
     height: '32px',
-    marginBottom: '24px',
     paddingLeft: '32px',
     paddingRight: '32px',
     fontWeight: 600,
-    fontSize: '16px'
+    fontSize: '16px',
+    marginBottom: '24px'
 })
 
 let Icon = Glamorous.img({
@@ -67,12 +73,12 @@ export class AppSidebarItem extends React.Component<{ title: string, icon: strin
     }
 }
 
-export class AppSidebar extends React.Component {
+export class AppSidebar extends React.Component<{ asOverlay?: boolean }> {
     static Item = AppSidebarItem;
 
     render() {
         return (
-            <Container>
+            <Container asOverlay={this.props.asOverlay}>
                 <SidebarTitleDiv><Icon src="/static/img/areas/sf.jpg" /> San Francisco</SidebarTitleDiv>
                 {this.props.children}
             </Container>

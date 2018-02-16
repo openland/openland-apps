@@ -13,7 +13,7 @@ export const XMapLegendWrapper = Glamorous.div({
     padding: '10px'
 })
 
-export const XMapLegendCellWrap = Glamorous.div<{children: any}>({
+export const XMapLegendCellWrap = Glamorous.div<{ children: any }>({
     display: 'flex',
     alignItems: 'center',
     marginBottom: '5px',
@@ -23,7 +23,7 @@ export const XMapLegendCellWrap = Glamorous.div<{children: any}>({
     }
 })
 
-export const XMapLegendIndicator = Glamorous.div<{color: string}>((props) => {
+export const XMapLegendIndicator = Glamorous.div<{ color: string }>((props) => {
     return {
         width: '25px',
         height: '16px',
@@ -36,7 +36,7 @@ export const XMapLegendText = Glamorous.span({
     color: '#262626'
 })
 
-export function XMapLegendCell (props: { title: string; color: string }) {
+export function XMapLegendCell(props: { title: string; color: string }) {
     return (
         <XMapLegendCellWrap>
             <XMapLegendIndicator color={props.color} />
@@ -48,21 +48,21 @@ export function XMapLegendCell (props: { title: string; color: string }) {
 export default withPageFullScreen((props) => {
     return (
         <>
-        <XHead title={['Statecraft', 'San Francisco', 'Zoning']} />
-        <XPageFullScreen>
-            <XMapLight mapStyle="mapbox://styles/steve-kite/cjcsbw6zq00dg2squfjuum14i" />
-            <XMapControls topLeft={true}>
-                <XCard>
-                    <XMapLegendWrapper>
-                        <XMapLegendCell title={'Residential'} color={'hsl(336, 82%, 51%)'} />
-                        <XMapLegendCell title={'Mixed Use'} color={'rgb(241, 121, 215)'} />
-                        <XMapLegendCell title={'Industrial'} color={'hsl(36, 79%, 52%)'} />
-                        <XMapLegendCell title={'Commercial'} color={'hsl(220, 79%, 52%)'} />
-                        <XMapLegendCell title={'Public'} color={'hsl(112, 59%, 68%)'} />
-                    </XMapLegendWrapper>
-                </XCard>
-            </XMapControls>
-        </XPageFullScreen>
+            <XHead title={['Statecraft', 'San Francisco', 'Zoning']} />
+            <XPageFullScreen>
+                <XMapLight mapStyle="mapbox://styles/steve-kite/cjcsbw6zq00dg2squfjuum14i"/>
+                <XMapControls topLeft={true}>
+                    <XCard>
+                        <XMapLegendWrapper>
+                            <XMapLegendCell title={'Residential'} color={'hsl(336, 82%, 51%)'} />
+                            <XMapLegendCell title={'Mixed Use'} color={'rgb(241, 121, 215)'} />
+                            <XMapLegendCell title={'Industrial'} color={'hsl(36, 79%, 52%)'} />
+                            <XMapLegendCell title={'Commercial'} color={'hsl(220, 79%, 52%)'} />
+                            <XMapLegendCell title={'Public'} color={'hsl(112, 59%, 68%)'} />
+                        </XMapLegendWrapper>
+                    </XCard>
+                </XMapControls>
+            </XPageFullScreen>
         </>
     )
 });

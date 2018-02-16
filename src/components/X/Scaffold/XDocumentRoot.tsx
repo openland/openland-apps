@@ -32,3 +32,19 @@ export let XDocumentAppRoot = Glamorous.div({
     marginLeft: 'auto',
     marginRight: 'auto'
 });
+
+export let XDocumentAppRootFullScreen = Glamorous.div({
+    position: 'relative',
+    background: '#F5F6F8',
+    color: '#182642',
+
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'stretch',
+
+    width: '100vw',
+    minHeight: '100vh',
+
+    marginLeft: 'auto',
+    marginRight: 'auto'
+});

@@ -120,3 +120,16 @@ export const ParcelQuery = gql`
     }
     ${ParcelFull}
 `;
+
+export const ParcelsTileOverlay = gql`
+    query ParcelsTileOverlay($box: GeoBox!) {
+        tiles: parcelsOverlay(box: $box, limit: 50) {
+            id
+            title
+            extrasArea
+            extrasZoning
+            extrasSupervisorDistrict
+            geometry
+        }
+    }
+`;
