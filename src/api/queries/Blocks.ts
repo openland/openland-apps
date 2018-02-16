@@ -123,7 +123,7 @@ export const ParcelQuery = gql`
 
 export const ParcelsTileOverlay = gql`
     query ParcelsTileOverlay($box: GeoBox!) {
-        tiles: parcelsOverlay(box: $box, limit: 50) {
+        tiles: parcelsOverlay(box: $box, limit: 300) {
             id
             title
             extrasArea

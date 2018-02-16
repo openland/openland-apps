@@ -15,7 +15,9 @@ class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, {
         mapUnsubscribe: PropTypes.func.isRequired
     }
 
+    private isInited = false;
     private isLoading = false;
+    private map: mapboxgl.Map | null = null;
     private pendingBox: { south: number, north: number, east: number, west: number } | null = null;
 
     constructor(props: { client: ApolloClient<any> }) {
@@ -24,7 +26,23 @@ class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, {
         this.state = { elements: Immutable.List() }
     }
 
-    listener: XMapSubscriber = (src) => {
+    listener: XMapSubscriber = (src, map) => {
+        if (!this.isInited) {
+            this.map = map;
+            this.isInited = true;
+
+            map.addSource('parcels', { type: 'geojson', data: { 'type': 'FeatureCollection', features: [] } });
+            map.addLayer({
+                'id': 'parcels-view',
+                'type': 'fill',
+                'source': 'parcels',
+                'layout': {},
+                'paint': {
+                    'fill-color': '#088',
+                    'fill-opacity': 0.8
+                }
+            });
+        }
         this.pendingBox = src;
         this.tryInvokeLoader();
     }
@@ -67,6 +85,9 @@ class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, {
                 () => {
                     this.isLoading = false;
                     this.tryInvokeLoader();
+                    let features = this.state.elements.map((v) => ({ type: 'Feature', 'geometry': { type: 'MultiPolygon', coordinates: (JSON.parse(v!!.geometry as any) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]) } }));
+
+                    (this.map!!.getSource('parcels') as any).setData({ 'type': 'FeatureCollection', features: features });
                 });
         }
     }

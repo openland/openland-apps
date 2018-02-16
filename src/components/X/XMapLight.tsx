@@ -20,7 +20,7 @@ interface XMapLightProps {
     mapStyle?: string;
 }
 
-export type XMapSubscriber = (bbox: { south: number, north: number, east: number, west: number, zoom: number }) => void;
+export type XMapSubscriber = (bbox: { south: number, north: number, east: number, west: number, zoom: number }, map: mapboxgl.Map) => void;
 
 export class XMapLight extends React.Component<XMapLightProps> {
 
@@ -54,7 +54,7 @@ export class XMapLight extends React.Component<XMapLightProps> {
             let zoom = this.map.getZoom();
             let bounds = this.map.getBounds();
             let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
-            subscriber(state);
+            subscriber(state, this.map);
         }
     }
 
@@ -103,7 +103,7 @@ export class XMapLight extends React.Component<XMapLightProps> {
             let bounds = this.map.getBounds();
             let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
             for (let s of this.subscribers) {
-                s(state)
+                s(state, this.map)
             }
         }
     }
@@ -135,7 +135,7 @@ export class XMapLight extends React.Component<XMapLightProps> {
             let bounds = map.getBounds();
             let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
             for (let s of this.subscribers) {
-                s(state)
+                s(state, map)
             }
         }
 
