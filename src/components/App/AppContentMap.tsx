@@ -54,7 +54,7 @@ export class AppContentMap extends React.Component {
                 <XHead title="Dashboard" />
 
                 <MapContainer>
-                    <XMapLight>
+                    <XMapLight mapStyle={'mapbox://styles/mapbox/light-v9'}>
                         {this.props.children}
                     </XMapLight>
                 </MapContainer>

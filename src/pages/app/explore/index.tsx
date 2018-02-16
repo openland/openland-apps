@@ -8,6 +8,7 @@ import * as Queries from '../../../api/queries/Blocks';
 import * as Types from '../../../api/Types';
 import * as Immutable from 'immutable';
 import { XMapSubscriber } from '../../../components/X/XMapLight';
+import * as Turf from '@turf/turf';
 
 class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, { elements: Immutable.Map<string, { title: string, geometry: any }> }> {
     static contextTypes = {
@@ -39,10 +40,57 @@ class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, {
                 'source': 'parcels',
                 'layout': {},
                 'paint': {
-                    'fill-color': '#088',
+                    'fill-color': '#4428e0',
                     'fill-opacity': 0.8
                 }
             });
+            map.addLayer({
+                'id': 'parcels-borders',
+                'type': 'line',
+                'source': 'parcels',
+                'layout': {},
+                'paint': {
+                    'line-color': '#4428e0',
+                    'line-width': 1,
+                    'line-opacity': 1
+                }
+            });
+            map.addLayer({
+                'id': 'parcels-view-hover',
+                'type': 'fill',
+                'source': 'parcels',
+                'layout': {},
+                'paint': {
+                    'fill-color': '#088',
+                    'fill-opacity': 1
+                },
+                'filter': ['==', 'name', '']
+            });
+
+            // When the user moves their mouse over the states-fill layer, we'll update the filter in
+            // the state-fills-hover layer to only show the matching state, thus making a hover effect.
+            map.on('mousemove', 'parcels-view', function (e: any) {
+                map.setFilter('parcels-view-hover', ['==', 'parcelId', e.features[0].properties.parcelId]);
+            });
+
+            // Reset the state-fills-hover layer's filter when the mouse leaves the layer.
+            map.on('mouseleave', 'parcels-view', function () {
+                map.setFilter('parcels-view-hover', ['==', 'parcelId', '']);
+            });
+
+            map.on('click', 'parcels-view', function (e: any) {
+                // let parcelId = e.features[0].properties.parcelId;
+                // let points: number[][] = e.features[0].geometry.coordinates[0];
+                let center = Turf.bbox(e.features[0]);
+                // console.warn(points);
+                map.fitBounds([[center[0], center[1]], [center[2], center[3]]], {
+                    padding: 100,
+                    maxZoom: 18,
+                    duration: 300
+                });
+                // map.flyTo({ center: center.geometry!!.coordinates });
+                // console.warn(e);
+            })
         }
         this.pendingBox = src;
         this.tryInvokeLoader();
@@ -89,7 +137,13 @@ class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, {
                 () => {
                     this.isLoading = false;
                     this.tryInvokeLoader();
-                    let features = this.state.elements.map((v) => ({ type: 'Feature', 'geometry': { type: 'MultiPolygon', coordinates: v!!.geometry } })).toArray();
+                    let features = this.state.elements.map((v, k) => ({
+                        type: 'Feature',
+                        'geometry': { type: 'MultiPolygon', coordinates: v!!.geometry },
+                        properties: {
+                            parcelId: k
+                        }
+                    })).toArray();
                     (this.map!!.getSource('parcels') as any).setData({ 'type': 'FeatureCollection', features: features });
                 });
         }
