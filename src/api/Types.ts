@@ -1,6 +1,13 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export interface GeoBox {
+  east: number,
+  north: number,
+  west: number,
+  south: number,
+};
+
 export enum PermitStatus {
   FILING = "FILING",
   FILED = "FILED",
@@ -367,6 +374,22 @@ export interface ParcelQuery {
       extrasArea: number | null,
     },
   },
+};
+
+export interface ParcelsTileOverlayQueryVariables {
+  box: GeoBox,
+};
+
+export interface ParcelsTileOverlayQuery {
+  tiles:  Array< {
+    __typename: "Parcel",
+    id: string,
+    title: string,
+    extrasArea: number | null,
+    extrasZoning: Array< string > | null,
+    extrasSupervisorDistrict: string | null,
+    geometry: string | null,
+  } > | null,
 };
 
 export interface OrganizationsQuery {

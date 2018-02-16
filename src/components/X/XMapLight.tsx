@@ -20,15 +20,19 @@ interface XMapLightProps {
     mapStyle?: string;
 }
 
+export type XMapSubscriber = (bbox: { south: number, north: number, east: number, west: number, zoom: number }, map: mapboxgl.Map) => void;
+
 export class XMapLight extends React.Component<XMapLightProps> {
 
-    static childContext = {
+    static childContextTypes = {
         mapSubscribe: PropTypes.func.isRequired,
         mapUnsubscribe: PropTypes.func.isRequired
     }
 
     private map: mapboxgl.Map | null = null;
+    private subscribers = new Set<XMapSubscriber>();
     private _isMounted = true;
+    private _isLoaded = false;
     private childContext: any;
 
     constructor(props: XMapLightProps) {
@@ -43,16 +47,23 @@ export class XMapLight extends React.Component<XMapLightProps> {
         return this.childContext;
     }
 
-    subscribe = () => {
-        // 
+    subscribe = (subscriber: XMapSubscriber) => {
+        console.warn('subscribe');
+        this.subscribers.add(subscriber);
+        if (this._isLoaded && this.map) {
+            let zoom = this.map.getZoom();
+            let bounds = this.map.getBounds();
+            let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
+            subscriber(state, this.map);
+        }
     }
 
-    unsubscribe = () => {
-        // 
+    unsubscribe = (subscriber: XMapSubscriber) => {
+        this.subscribers.delete(subscriber);
     }
 
     render() {
-        return <Wrapper className={this.props.className} />;
+        return <Wrapper className={this.props.className}>{this.props.children}</Wrapper>;
     }
 
     componentDidMount() {
@@ -78,12 +89,23 @@ export class XMapLight extends React.Component<XMapLightProps> {
                 container: domNode,
                 center: [initialLongutude, initialLatitude],
                 zoom: initialZoom,
-                style: this.props.mapStyle
+                style: this.props.mapStyle || 'mapbox://styles/mapbox/streets-v9'
             });
             mapComponent.addControl(new map.NavigationControl(), 'bottom-right');
             mapComponent.on('load', () => { this.configureMap(mapComponent); });
             this.map = mapComponent;
         })
+    }
+
+    mapZoomHandler = () => {
+        if (this.map && this._isLoaded && this._isMounted && this.subscribers.size > 0) {
+            let zoom = this.map.getZoom();
+            let bounds = this.map.getBounds();
+            let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
+            for (let s of this.subscribers) {
+                s(state, this.map)
+            }
+        }
     }
 
     configureMap(map: mapboxgl.Map) {
@@ -92,16 +114,37 @@ export class XMapLight extends React.Component<XMapLightProps> {
         // Zooming
         //
 
-        let initialLatitude = 37.75444398077139;
-        let initialLongutude = -122.43963811583545;
-        let initialZoom = 12;
+        // let initialLatitude = 37.75444398077139;
+        // let initialLongutude = -122.43963811583545;
+        // let initialZoom = 12;
 
-        if (this.props.focusPosition) {
-            initialLatitude = this.props.focusPosition.latitude;
-            initialLongutude = this.props.focusPosition.longiutude;
-            initialZoom = this.props.focusPosition.zoom;
+        // if (this.props.focusPosition) {
+        //     initialLatitude = this.props.focusPosition.latitude;
+        //     initialLongutude = this.props.focusPosition.longiutude;
+        //     initialZoom = this.props.focusPosition.zoom;
+        // }
+        // map.flyTo({ center: [initialLongutude, initialLatitude], zoom: initialZoom });
+
+        //
+        // Subscribers
+        //
+
+        this._isLoaded = true;
+        if (this.subscribers.size > 0) {
+            let zoom = map.getZoom();
+            let bounds = map.getBounds();
+            let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
+            for (let s of this.subscribers) {
+                s(state, map)
+            }
         }
-        map.flyTo({ center: [initialLongutude, initialLatitude], zoom: initialZoom })
+
+        //
+        // Listen for updates
+        //
+
+        map.on('dragend', this.mapZoomHandler);
+        map.on('zoomend', this.mapZoomHandler);
     }
 
     componentWillUnmount() {
