@@ -22,6 +22,7 @@ let UserInfoBox = Glamorous.div({
     lineHeight: '24px',
     fontWeight: 600,
     color: '#525f7f',
+    borderBottom: '1px solid #E5EBF2',
     '& > span': {
         display: 'block',
         fontSize: 12,
