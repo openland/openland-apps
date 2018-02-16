@@ -16,6 +16,8 @@ import Glamorous from 'glamorous';
 import { XLink } from '../../../components/X/XLink';
 import { XArea } from '../../../components/X/XArea';
 import { XMoney } from '../../../components/X/XMoney';
+import { XModal } from '../../../components/X/XModal';
+import { XDialog } from '../../../components/X/XDialog';
 
 class GraphQLTileSource extends React.Component<{
     client: ApolloClient<any>,
@@ -216,6 +218,14 @@ let ParcelViewer = withParcelDirect((props) => {
                 <XCard.Loader loading={props.data!!.loading}>
                     {props.data && props.data!!.item && <>
                         <XCard.Header title={'Parcel #' + props.data.item!!.title}>
+                            <XModal>
+                                <XModal.Target>
+                                    <XButton icon="streetview">Street View</XButton>
+                                </XModal.Target>
+                                <XModal.Content title="Street View">
+                                    {}
+                                </XModal.Content>
+                            </XModal>
                             <XButton style="dark" path={'/app/parcels/' + props.data.item!!.id}>View</XButton>
                         </XCard.Header>
                         <XCard.PropertyColumns>
