@@ -100,7 +100,10 @@ export default withPage((props) => {
             </XCard>
             <XCard separators={true}>
                 <XCard.Hint title="test data"/>
-                <XCard.Header title="Loader block title"/>
+                <XCard.Header title="Loader block title">
+                    <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
+                    <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
+                </XCard.Header>
                 <XCard.Loader loading={true} >
                     <XCard.FormList>
                         <XCard.FormCell 

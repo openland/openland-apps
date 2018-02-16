@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XHorizontal } from './XHorizontal'
 
 export const XCardTitle = Glamorous.div({
     display: 'flex',
@@ -32,7 +33,9 @@ export function XCardHeader(props: { children?: any, title?: string | null, desc
         <XCardHeaderDiv>
             <XCardTitle>
                 {props.title}
-                {props.children}
+                <XHorizontal separator="normal">
+                    {props.children}
+                </XHorizontal>
             </XCardTitle>
             <XCardDescription>
                 {props.description}
