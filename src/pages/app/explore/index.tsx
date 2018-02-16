@@ -17,6 +17,7 @@ import { XLink } from '../../../components/X/XLink';
 import { XArea } from '../../../components/X/XArea';
 import { XMoney } from '../../../components/X/XMoney';
 import { XModal } from '../../../components/X/XModal';
+import { XCardStreetView } from '../../../components/X/XCardStreetView';
 
 class GraphQLTileSource extends React.Component<{
     client: ApolloClient<any>,
@@ -210,6 +211,11 @@ let Container = Glamorous.div({
     width: '800px'
 })
 
+function loadCenter(src: string) {
+    let center = Turf.center({ type: 'MultiPolygon', coordinates: (JSON.parse(src) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]) })
+    return { latitude: center.geometry!!.coordinates[1], longitude: center.geometry!!.coordinates[0] }
+}
+
 let ParcelViewer = withParcelDirect((props) => {
     return (
         <Container>
@@ -222,7 +228,7 @@ let ParcelViewer = withParcelDirect((props) => {
                                     <XButton icon="streetview">Street View</XButton>
                                 </XModal.Target>
                                 <XModal.Content title="Street View">
-                                    {}
+                                    <XCardStreetView location={loadCenter(props.data.item!!.geometry!!)} />
                                 </XModal.Content>
                             </XModal>
                             <XButton style="dark" path={'/app/parcels/' + props.data.item!!.id}>View</XButton>
