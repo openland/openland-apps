@@ -9,7 +9,7 @@ import * as Types from '../../../api/Types';
 import * as Immutable from 'immutable';
 import { XMapSubscriber } from '../../../components/X/XMapLight';
 
-class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, { elements: Immutable.List<{ id: string, title: string, geometry: any }> }> {
+class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, { elements: Immutable.Map<string, { title: string, geometry: any }> }> {
     static contextTypes = {
         mapSubscribe: PropTypes.func.isRequired,
         mapUnsubscribe: PropTypes.func.isRequired
@@ -17,13 +17,14 @@ class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, {
 
     private isInited = false;
     private isLoading = false;
+    private _isMounted = false;
     private map: mapboxgl.Map | null = null;
     private pendingBox: { south: number, north: number, east: number, west: number } | null = null;
 
     constructor(props: { client: ApolloClient<any> }) {
         super(props);
 
-        this.state = { elements: Immutable.List() }
+        this.state = { elements: Immutable.Map() }
     }
 
     listener: XMapSubscriber = (src, map) => {
@@ -56,9 +57,9 @@ class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, {
             this.isLoading = true;
             this.pendingBox = null;
 
-            let response: ApolloQueryResult<Types.ParcelsTileOverlayQuery>;
+            let response: ApolloQueryResult<Types.ParcelsTileOverlayQuery> | null = null;
             console.warn('Querying...')
-            while (true) {
+            while (this._isMounted) {
                 try {
                     response = await this.props.client.query<Types.ParcelsTileOverlayQuery>({
                         query: Queries.ParcelsTileOverlay,
@@ -71,13 +72,16 @@ class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, {
                 }
                 break;
             }
+            if (!response) {
+                return;
+            }
             console.warn('Completed')
             this.setState(
                 (src) => {
                     let res = src.elements;
-                    for (let s of response.data.tiles!!) {
-                        if (!res.find((r) => r!!.id === s.id)) {
-                            res = res.push({ id: s.id, title: s.title, geometry: s.geometry })
+                    for (let s of response!!.data.tiles!!) {
+                        if (!res.has(s.id)) {
+                            res = res.set(s.id, { title: s.title, geometry: (JSON.parse(s.geometry as any) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]) });
                         }
                     }
                     return { elements: res };
@@ -85,8 +89,7 @@ class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, {
                 () => {
                     this.isLoading = false;
                     this.tryInvokeLoader();
-                    let features = this.state.elements.map((v) => ({ type: 'Feature', 'geometry': { type: 'MultiPolygon', coordinates: (JSON.parse(v!!.geometry as any) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]) } }));
-
+                    let features = this.state.elements.map((v) => ({ type: 'Feature', 'geometry': { type: 'MultiPolygon', coordinates: v!!.geometry } })).toArray();
                     (this.map!!.getSource('parcels') as any).setData({ 'type': 'FeatureCollection', features: features });
                 });
         }
@@ -98,10 +101,12 @@ class GraphQLTileSource extends React.Component<{ client: ApolloClient<any> }, {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         this.context.mapSubscribe(this.listener);
     }
 
     componentWillUnmount() {
+        this._isMounted = false;
         this.context.mapUnsubscribe(this.listener);
     }
 }

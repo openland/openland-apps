@@ -6,8 +6,8 @@ let routes = Routes();
 // App Root
 //
 
-routes.add('/app', '/app/index');
-routes.add('/app/', '/app/index');
+routes.add('/app', '/app/explore/index');
+routes.add('/app/', '/app/explore/index');
 
 //
 // Blocks
@@ -40,8 +40,8 @@ routes.add('/app/projects/:projectId/', '/app/projects/view');
 // Zoning
 //
 
-routes.add('/app/zoning/', '/app/zoning/index');
-routes.add('/app/zoning', '/app/zoning/index');
+// routes.add('/app/zoning/', '/app/zoning/index');
+// routes.add('/app/zoning', '/app/zoning/index');
 
 // Old
 

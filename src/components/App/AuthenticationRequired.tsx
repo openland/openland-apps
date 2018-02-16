@@ -18,11 +18,11 @@ export const AuthenticationRequired = withUserInfo((props) => {
             <>
                 <XDocumentAppRoot>
                     <XView css={{ flexGrow: 1 }} alignItems="center" justifyContent="center">
-                        <XCard>
+                        <XCard shadow="medium">
                             <XCard.Content>
                                 <XVertical>
                                     Authentication Required!
-                        <XButton path="/auth/login">Log In</XButton>
+                                    <XButton path="/auth/login">Log In</XButton>
                                 </XVertical>
                             </XCard.Content>
                         </XCard>
