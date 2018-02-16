@@ -43,7 +43,7 @@ const XModalContainer = Glamorous.div({
     pointerEvents: 'auto'
 })
 
-export class XModal extends React.Component<{}, { isOpen: boolean }> {
+export class XModal extends React.Component<{ closeOnClick?: boolean }, { isOpen: boolean }> {
     static Target = XModalTarget;
     static Content = XModalContent;
 
@@ -104,6 +104,7 @@ export class XModal extends React.Component<{}, { isOpen: boolean }> {
                     isOpen={this.state.isOpen}
                     onRequestClose={this.handleClose}
                     ariaHideApp={false}
+                    shouldCloseOnOverlayClick={this.props.closeOnClick !== undefined ? this.props.closeOnClick : true}
                     style={{
                         overlay: {
                             zIndex: 10,

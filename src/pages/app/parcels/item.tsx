@@ -10,6 +10,7 @@ import { XLink } from '../../../components/X/XLink';
 import { XArea } from '../../../components/X/XArea';
 import { XMoney } from '../../../components/X/XMoney';
 import { formatAddresses } from '../../../utils/Addresses';
+import { AStreetViewModal } from '../../../components/App/AStreetViewModal';
 
 export default withApp(withParcel((props) => {
 
@@ -18,6 +19,7 @@ export default withApp(withParcel((props) => {
             <XCard shadow="medium" separators={true}>
                 <XCard.Hint title="Public" />
                 <XCard.Header title={'Parcel #' + props.data.item.title} description={formatAddresses(props.data.item.addresses)}>
+                    {props.data.item.geometry && <AStreetViewModal geometry={props.data.item.geometry} />}
                     <XButton>Edit</XButton>
                 </XCard.Header>
                 <XCard.PropertyColumns>
