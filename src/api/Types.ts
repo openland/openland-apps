@@ -308,6 +308,7 @@ export interface ParcelsConnectionQuery {
         extrasRooms: number | null,
         extrasBathrooms: number | null,
         extrasBedrooms: number | null,
+        extrasYear: number | null,
         addresses:  Array< {
           __typename: "StreetNumber",
           streetId: string,
@@ -359,6 +360,7 @@ export interface ParcelQuery {
     extrasRooms: number | null,
     extrasBathrooms: number | null,
     extrasBedrooms: number | null,
+    extrasYear: number | null,
     addresses:  Array< {
       __typename: "StreetNumber",
       streetId: string,
@@ -385,9 +387,6 @@ export interface ParcelsTileOverlayQuery {
     __typename: "Parcel",
     id: string,
     title: string,
-    extrasArea: number | null,
-    extrasZoning: Array< string > | null,
-    extrasSupervisorDistrict: string | null,
     geometry: string | null,
   } > | null,
 };
@@ -1367,6 +1366,7 @@ export interface ParcelFullFragment {
   extrasRooms: number | null,
   extrasBathrooms: number | null,
   extrasBedrooms: number | null,
+  extrasYear: number | null,
   addresses:  Array< {
     __typename: string,
     streetId: string,

@@ -49,6 +49,9 @@ export default withApp(withParcel((props) => {
                         }
                     </XCard.PropertyList>
                     <XCard.PropertyList>
+                        {props.data.item!!.extrasYear !== null &&
+                            <XCard.Property title="Year Built">{props.data.item!!.extrasYear}</XCard.Property>
+                        }
                         {props.data.item.extrasStories !== null &&
                             <XCard.Property title="Stories Count">{props.data.item.extrasStories}</XCard.Property>
                         }
