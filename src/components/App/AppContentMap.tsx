@@ -14,7 +14,8 @@ const ClassicalWrapper = Glamorous.div({
     right: 0,
     top: 0,
     bottom: 0,
-    pointerEvents: 'none'
+    pointerEvents: 'none',
+    zIndex: 1,
 });
 const ClassicalContainer = Glamorous.div({
     display: 'flex',
@@ -45,7 +46,7 @@ let Container = Glamorous.div({
     overflow: 'hidden',
     paddingLeft: '32px',
     paddingRight: '32px',
-    paddingBottom: '32px',
+    paddingBottom: '32px'
 })
 
 export class AppContentMap extends React.Component {

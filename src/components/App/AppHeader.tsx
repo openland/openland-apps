@@ -10,7 +10,8 @@ let Header = Glamorous.div({
     flexDirection: 'row',
     height: '32px',
     marginTop: '16px',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    pointerEvents: 'auto'
 })
 
 let UserInfoBox = Glamorous.div({
