@@ -25,9 +25,12 @@ export class XStreetView extends React.Component<{ className?: string, location:
                 if (google) {
                     const streetView = new google.maps.StreetViewService();
                     const dest = { lat: this.props.location.latitude, lng: this.props.location.longitude };
-                    streetView.getPanoramaByLocation(
-                        dest,
-                        50,
+                    streetView.getPanorama(
+                        {
+                            location: dest,
+                            radius: 50,
+                            source: google.maps.StreetViewSource.OUTDOOR
+                        },
                         (data, status) => {
                             if (status === google.maps.StreetViewStatus.OK) {
                                 if (!this._isMounted) {
