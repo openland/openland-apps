@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as glamor from 'glamor'
+import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from './XLink';
 import { XIcon } from './XIcon'
 import XStyled from './XStyled';
@@ -148,4 +149,47 @@ export function XButton(props: XButtonProps & { children?: any }) {
             {props.children && (<span>{props.children}</span>)}
         </XButtonComponent>
     )
+}
+
+const heartBurst = glamor.keyframes({
+    'from': { backgroundPosition: 'left' },
+    'to': { backgroundPosition: 'right' }
+})
+
+let XLikeButton = Glamorous.div<{ active: boolean }>((props) => ({
+    cursor: 'pointer',
+    height: 50,
+    width: 50,
+    backgroundImage: 'url(/static/X/likeButtonAnimation.png)',
+    backgroundPosition: props.active ? 'right' : 'left',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '2900%',
+    '&:hover': {
+        backgroundPosition: props.active ? 'right' : 'left',
+    },
+    animation: props.active ? `${heartBurst} .8s steps(28)` : undefined
+}))
+
+export class XButtonLike extends React.Component<any, any> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            active: false
+        }
+
+        this.likeHandler = this.likeHandler.bind(this)
+    }
+
+    likeHandler() {
+        this.setState({
+            active: !this.state.active
+        })
+    }
+
+    render() {
+        return (
+            <XLikeButton active={this.state.active} onClick={this.likeHandler} />
+        )
+    }
 }

@@ -5,7 +5,7 @@ import { XGrid } from '../../../components/X/XGrid';
 import { XCell } from '../../../components/X/XGrid';
 import { XPageContent } from '../../../components/X/XPageContent';
 import { XCard } from '../../../components/X/XCard';
-import { XButton } from '../../../components/X/XButton';
+import { XButton, XButtonLike } from '../../../components/X/XButton';
 import { XTitle } from '../../../components/X/XTitle';
 import { XVertical } from '../../../components/X/XVertical';
 import { XLinkExternal } from '../../../components/X/XLinkExternal';
@@ -61,6 +61,7 @@ export default withPage((props) => {
                 <XCard.Content>
                     <XTitle>Default Button</XTitle>
                     <XVertical>
+                        <XButtonLike />
                         <XButton alignSelf="flex-start">Default</XButton>
                         <XButton alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton>
 
