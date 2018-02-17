@@ -7,12 +7,12 @@ import { XLink } from './XLink';
 const menuShifting = glamor.keyframes({
     '0%': { 
         opacity: 0,
-        transformOrigin: '100% 100%',
+        transformOrigin: '100% 0%',
         transform: 'scale(0, 0)'
     },
     '100%': {
         opacity: 1, 
-        transformOrigin: '50% 100%',
+        transformOrigin: '100% 0%',
         transform: 'scale(1, 1)' 
     }
 })
