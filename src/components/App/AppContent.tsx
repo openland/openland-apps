@@ -13,7 +13,7 @@ let Container = Glamorous.div({
     flexGrow: 1,
     flexShrink: 1,
     overflow: 'hidden',
-    paddingLeft: '32px',
+    paddingLeft: '16px',
     paddingRight: '32px',
     paddingBottom: '32px',
 })
