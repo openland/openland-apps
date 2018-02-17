@@ -165,7 +165,7 @@ let XLikeButton = Glamorous.div<{ active: boolean }>((props) => ({
     backgroundRepeat: 'no-repeat',
     backgroundSize: '2900%',
     '&:hover': {
-        backgroundPosition: props.active ? 'right' : 'left',
+        backgroundPosition: 'right',
     },
     animation: props.active ? `${heartBurst} .8s steps(28)` : undefined
 }))
