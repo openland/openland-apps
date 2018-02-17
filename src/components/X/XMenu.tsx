@@ -1,13 +1,31 @@
 import * as React from 'react';
+import * as glamor from 'glamor';
 import XStyled from './XStyled';
 import { XCard } from './XCard';
 import { XLink } from './XLink';
+
+const menuShifting = glamor.keyframes({
+    '0%': { 
+        opacity: 0,
+        transformOrigin: '100% 100%',
+        transform: 'scale(0, 0)'
+    },
+    '100%': {
+        opacity: 1, 
+        transformOrigin: '50% 100%',
+        transform: 'scale(1, 1)' 
+    }
+})
 
 const XMenuDiv = XStyled(XCard)({
     marginTop: 13,
     position: 'relative',
     overflow: 'visible',
     border: 'none',
+    animationDuration: '.3s',
+    animationName: menuShifting,
+    animationFillMode: 'both',
+    animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
     boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
     '&::before, &::after': {
         content: `''`,
@@ -20,13 +38,13 @@ const XMenuDiv = XStyled(XCard)({
         bottom: 'auto',
     },
     '&::before': {
-        top: -19,
+        top: -18,
         right: 5,
         border: '8px solid transparent',
         borderBottom: '10px solid #E6E9EC'
     },
     '&::after': {
-        top: -16,
+        top: -15,
         right: 6,
         border: '7px solid transparent',
         borderBottom: '9px solid #fff'
