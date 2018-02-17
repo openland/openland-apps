@@ -51,7 +51,7 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
         display: props.icon ? 'flex' : undefined,
         alignItems: 'center',
         textDecoration: 'none',
-        textAlign: props.icon ? 'left' : 'center',
+        textAlign: props.icon ? 'right' : 'center',
         cursor: (props.loading || props.disabled) ? 'inherit' : 'pointer',
         userSelect: 'none',
         whiteSpace: 'nowrap',
@@ -121,7 +121,7 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
         '& > i': {
             fontSize: props.size === 'large' ? '15px' : '13px',
             lineHeight: '20px',
-            marginLeft: 3
+            marginRight: 3
         }
     }
 });
@@ -141,8 +141,8 @@ export function XButton(props: XButtonProps & { children?: any }) {
             query={props.query}
             onClick={props.onClick}
         >
-            {props.children}
             {props.icon && <XIcon icon={props.icon} />}
+            {props.children}
         </XButtonComponent>
     )
 }
