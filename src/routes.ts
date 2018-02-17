@@ -37,13 +37,15 @@ routes.add('/app/projects/:projectId', '/app/projects/view');
 routes.add('/app/projects/:projectId/', '/app/projects/view');
 
 //
-// Zoning
+// UI
 //
 
-// routes.add('/app/zoning/', '/app/zoning/index');
-// routes.add('/app/zoning', '/app/zoning/index');
+routes.add('/app/ui', '/app/ui/showcase');
+routes.add('/app/ui/', '/app/ui/showcase');
 
+//
 // Old
+//
 
 routes.add('/:areaId', '/area/index');
 routes.add('/:areaId/', '/area/index');
@@ -67,8 +69,8 @@ routes.add('/:areaId/zoning/', '/area/zoning/map');
 routes.add('/:areaId/stats', '/area/stats/stats');
 routes.add('/:areaId/stats/', '/area/stats/stats');
 
-routes.add('/:areaId/ui', '/area/ui/index');
-routes.add('/:areaId/ui/', '/area/ui/index');
+// routes.add('/:areaId/ui', '/area/ui/index');
+// routes.add('/:areaId/ui/', '/area/ui/index');
 
 // Compatibility
 routes.add('/', '/compat/root');
