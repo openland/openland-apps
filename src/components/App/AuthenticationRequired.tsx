@@ -5,8 +5,10 @@ import { XView } from '../X/XView';
 import { XButton } from '../X/XButton';
 import { XVertical } from '../X/XVertical';
 import { XDocumentAppRoot } from '../X/Scaffold/XDocumentRoot';
+import { withRouter } from '../../utils/withRouter';
 
-export const AuthenticationRequired = withUserInfo((props) => {
+export const AuthenticationRequired = withRouter<{}>(withUserInfo((props) => {
+
     if (props.isLoggedIn) {
         return (
             <>
@@ -22,7 +24,7 @@ export const AuthenticationRequired = withUserInfo((props) => {
                             <XCard.Content>
                                 <XVertical>
                                     Authentication Required!
-                                    <XButton path="/auth/login">Log In</XButton>
+                                    <XButton path={'/auth/login?r=' + encodeURIComponent(props.router.pathname)}>Log In</XButton>
                                 </XVertical>
                             </XCard.Content>
                         </XCard>
@@ -31,4 +33,4 @@ export const AuthenticationRequired = withUserInfo((props) => {
             </>
         );
     }
-})
+}))

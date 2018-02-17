@@ -35,7 +35,7 @@ export class UserInfoProvider extends React.Component<{
             area: this.props.area !== null && this.props.area !== undefined ? this.props.area : null,
             isLoggedIn: this.props.user !== undefined && this.props.user !== null,
             doLogin: () => {
-                this.props.router.push('/auth/login');
+                this.props.router.push('/auth/login?r=' + encodeURIComponent(this.props.router.pathname));
             },
             doLogout: () => {
                 this.props.router.push('/auth/logout');

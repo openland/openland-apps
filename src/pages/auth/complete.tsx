@@ -37,9 +37,11 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
         });
         if (uploaded.ok) {
             Cookie.set('statecraft-key', auth.idToken, { expires: auth.expiresIn / (24 * 60.0 * 60.0) });
+            let path = localStorage.getItem('redirect_path') || '/';
+            console.warn(path);
             createHistory({
                 forceRefresh: true
-            }).replace('/');
+            }).replace(path);
         } else {
             throw 'Error';
         }
