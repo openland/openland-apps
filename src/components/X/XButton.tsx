@@ -119,9 +119,12 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
             animation: `${loading} 2s linear infinite`
         },
         '& > i': {
+            opacity: props.loading ? 0 : 1,
             fontSize: props.size === 'large' ? '15px' : '13px',
             lineHeight: '20px',
-            marginRight: 3
+        },
+        '& > span': {
+            marginLeft: props.icon ? 3 : 0
         }
     }
 });
@@ -142,7 +145,7 @@ export function XButton(props: XButtonProps & { children?: any }) {
             onClick={props.onClick}
         >
             {props.icon && <XIcon icon={props.icon} />}
-            {props.children}
+            {props.children && (<span>{props.children}</span>)}
         </XButtonComponent>
     )
 }

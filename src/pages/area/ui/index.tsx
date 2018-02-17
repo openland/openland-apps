@@ -65,6 +65,7 @@ export default withPage((props) => {
                         <XButton alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton>
 
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
+                        <XButton alignSelf="flex-start" icon="close" />
 
                         <XButton alignSelf="flex-start" style="dark" size="large">Large</XButton>
                         <XButton alignSelf="flex-start" style="dark" size="large" bounce={true} disabled={true}>Bounce</XButton>
