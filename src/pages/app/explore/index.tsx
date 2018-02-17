@@ -4,7 +4,7 @@ import { withApp } from '../../../components/App/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
 import ApolloClient, { ApolloQueryResult } from 'apollo-client';
 import { withApollo } from 'react-apollo';
-import * as Queries from '../../../api/queries/Blocks';
+import * as Queries from '../../../api/queries/Parcels';
 import * as Types from '../../../api/Types';
 import * as Immutable from 'immutable';
 import { XMapSubscriber } from '../../../components/X/XMapLight';
@@ -138,7 +138,8 @@ class GraphQLTileSource extends React.Component<{
                     response = await this.props.client.query<Types.ParcelsTileOverlayQuery>({
                         query: Queries.ParcelsTileOverlay,
                         variables: {
-                            box: { south: box.south, north: box.north, east: box.east, west: box.west }
+                            box: { south: box.south, north: box.north, east: box.east, west: box.west },
+                            // query: '{"$and": [{"stories": {"gt": 1, "lte": 2}},{"zone": "NC-3"}]}'
                         }
                     });
                 } catch {
@@ -225,6 +226,9 @@ let ParcelViewer = withParcelDirect((props) => {
                                 <XCard.Property title="Block"><XLink path={'/app/blocks/' + props.data.item!!.block.id}>{props.data.item!!.block.title}</XLink></XCard.Property>
                                 {props.data.item!!.extrasArea &&
                                     <XCard.Property title="Parcel Area"><XArea area={props.data.item!!.extrasArea!!} /></XCard.Property>
+                                }
+                                {props.data.item!!.extrasNeighborhood &&
+                                    <XCard.Property title="Neighborhood">{props.data.item!!.extrasNeighborhood}</XCard.Property>
                                 }
                                 {props.data.item!!.extrasSupervisorDistrict &&
                                     <XCard.Property title="Supervisor District">{props.data.item!!.extrasSupervisorDistrict}</XCard.Property>

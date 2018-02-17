@@ -28,6 +28,9 @@ export default withApp(withParcel((props) => {
                         {props.data.item.extrasArea &&
                             <XCard.Property title="Parcel Area"><XArea area={props.data.item.extrasArea} /></XCard.Property>
                         }
+                        {props.data.item!!.extrasNeighborhood &&
+                            <XCard.Property title="Neighborhood">{props.data.item!!.extrasNeighborhood}</XCard.Property>
+                        }
                         {props.data.item.extrasSupervisorDistrict &&
                             <XCard.Property title="Supervisor District">{props.data.item.extrasSupervisorDistrict}</XCard.Property>
                         }

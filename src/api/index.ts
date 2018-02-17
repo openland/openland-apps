@@ -9,7 +9,7 @@ import * as Organizations from './queries/Organizations';
 import * as Permits from './queries/Permits';
 import * as Projects from './queries/Projects';
 import * as Account from './queries/Account';
-import * as Blocks from './queries/Blocks';
+import * as Parcels from './queries/Parcels';
 import * as Search from './queries/Search';
 import { graphql } from 'react-apollo';
 
@@ -76,11 +76,11 @@ export const withSFBuildingProject = graphqlRouted<Types.ProjectSFQuery>(Project
 // Blocks
 //
 
-export const withBlocks = graphqlRouted<Types.BlocksConnectionQuery>(Blocks.BlocksConnection, ['page']);
-export const withBlock = graphqlRouted<Types.BlockQuery>(Blocks.BlockQuery, ['blockId']);
-export const withParcels = graphqlRouted<Types.ParcelsConnectionQuery>(Blocks.ParcelsConnection, ['page']);
-export const withParcel = graphqlRouted<Types.ParcelQuery>(Blocks.ParcelQuery, ['parcelId']);
-export const withParcelDirect = graphql<Types.ParcelQuery, { parcelId: string }>(Blocks.ParcelQuery, {
+export const withBlocks = graphqlRouted<Types.BlocksConnectionQuery>(Parcels.BlocksConnection, ['page']);
+export const withBlock = graphqlRouted<Types.BlockQuery>(Parcels.BlockQuery, ['blockId']);
+export const withParcels = graphqlRouted<Types.ParcelsConnectionQuery>(Parcels.ParcelsConnection, ['page']);
+export const withParcel = graphqlRouted<Types.ParcelQuery>(Parcels.ParcelQuery, ['parcelId']);
+export const withParcelDirect = graphql<Types.ParcelQuery, { parcelId: string }>(Parcels.ParcelQuery, {
     options: (props: { parcelId: string }) => ({
         variables: {
             parcelId: props.parcelId

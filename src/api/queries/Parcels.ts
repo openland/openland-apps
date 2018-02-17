@@ -18,6 +18,7 @@ export const ParcelFull = gql`
       extrasBathrooms
       extrasBedrooms
       extrasYear
+      extrasNeighborhood
       addresses {
         streetId
         streetName
@@ -123,8 +124,8 @@ export const ParcelQuery = gql`
 `;
 
 export const ParcelsTileOverlay = gql`
-    query ParcelsTileOverlay($box: GeoBox!) {
-        tiles: parcelsOverlay(box: $box, limit: 500, query: "{\\"$and\\": [{\\"stories\\": {\\"gt\\": 1, \\"lte\\": 2}},{\\"zone\\": \\"NC-3\\"}]}") {
+    query ParcelsTileOverlay($box: GeoBox!, $query: String) {
+        tiles: parcelsOverlay(box: $box, limit: 500, query: $query) {
             id
             title
             geometry

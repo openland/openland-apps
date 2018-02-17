@@ -226,171 +226,6 @@ export interface InternalStatsQuery {
   },
 };
 
-export interface BlocksConnectionQueryVariables {
-  cursor?: string | null,
-  page?: number | null,
-};
-
-export interface BlocksConnectionQuery {
-  items:  {
-    __typename: "BlockConnection",
-    edges:  Array< {
-      __typename: "BlockEdge",
-      node:  {
-        __typename: "Block",
-        id: string,
-        title: string,
-        extrasArea: number | null,
-        extrasSupervisorDistrict: string | null,
-        extrasZoning: Array< string > | null,
-      },
-      cursor: string,
-    } >,
-    pageInfo:  {
-      __typename: "PageInfo",
-      hasNextPage: boolean,
-      hasPreviousPage: boolean,
-      itemsCount: number,
-      currentPage: number,
-      pagesCount: number,
-      openEnded: boolean,
-    },
-  },
-};
-
-export interface BlockQueryVariables {
-  blockId: string,
-};
-
-export interface BlockQuery {
-  item:  {
-    __typename: "Block",
-    id: string,
-    title: string,
-    extrasArea: number | null,
-    extrasZoning: Array< string > | null,
-    extrasSupervisorDistrict: string | null,
-    geometry: string | null,
-    parcels:  Array< {
-      __typename: "Parcel",
-      id: string,
-      title: string,
-      geometry: string | null,
-      extrasZoning: Array< string > | null,
-    } >,
-  },
-};
-
-export interface ParcelsConnectionQueryVariables {
-  cursor?: string | null,
-  page?: number | null,
-};
-
-export interface ParcelsConnectionQuery {
-  items:  {
-    __typename: "ParcelConnection",
-    edges:  Array< {
-      __typename: "ParcelEdge",
-      node:  {
-        __typename: "Parcel",
-        id: string,
-        title: string,
-        geometry: string | null,
-        extrasArea: number | null,
-        extrasSupervisorDistrict: string | null,
-        extrasZoning: Array< string > | null,
-        extrasLandValue: number | null,
-        extrasImprovementValue: number | null,
-        extrasPropertyValue: number | null,
-        extrasFixturesValue: number | null,
-        extrasStories: number | null,
-        extrasUnits: number | null,
-        extrasRooms: number | null,
-        extrasBathrooms: number | null,
-        extrasBedrooms: number | null,
-        extrasYear: number | null,
-        addresses:  Array< {
-          __typename: "StreetNumber",
-          streetId: string,
-          streetName: string,
-          streetNameSuffix: string | null,
-          streetNumber: number,
-          streetNumberSuffix: string | null,
-        } >,
-        block:  {
-          __typename: "Block",
-          id: string,
-          title: string,
-          extrasArea: number | null,
-        },
-      },
-      cursor: string,
-    } >,
-    pageInfo:  {
-      __typename: "PageInfo",
-      hasNextPage: boolean,
-      hasPreviousPage: boolean,
-      itemsCount: number,
-      currentPage: number,
-      pagesCount: number,
-      openEnded: boolean,
-    },
-  },
-};
-
-export interface ParcelQueryVariables {
-  parcelId: string,
-};
-
-export interface ParcelQuery {
-  item:  {
-    __typename: "Parcel",
-    id: string,
-    title: string,
-    geometry: string | null,
-    extrasArea: number | null,
-    extrasSupervisorDistrict: string | null,
-    extrasZoning: Array< string > | null,
-    extrasLandValue: number | null,
-    extrasImprovementValue: number | null,
-    extrasPropertyValue: number | null,
-    extrasFixturesValue: number | null,
-    extrasStories: number | null,
-    extrasUnits: number | null,
-    extrasRooms: number | null,
-    extrasBathrooms: number | null,
-    extrasBedrooms: number | null,
-    extrasYear: number | null,
-    addresses:  Array< {
-      __typename: "StreetNumber",
-      streetId: string,
-      streetName: string,
-      streetNameSuffix: string | null,
-      streetNumber: number,
-      streetNumberSuffix: string | null,
-    } >,
-    block:  {
-      __typename: "Block",
-      id: string,
-      title: string,
-      extrasArea: number | null,
-    },
-  },
-};
-
-export interface ParcelsTileOverlayQueryVariables {
-  box: GeoBox,
-};
-
-export interface ParcelsTileOverlayQuery {
-  tiles:  Array< {
-    __typename: "Parcel",
-    id: string,
-    title: string,
-    geometry: string | null,
-  } > | null,
-};
-
 export interface OrganizationsQuery {
   organizations:  Array< {
     __typename: "Organization",
@@ -755,6 +590,174 @@ export interface OrganizationAlterMutation {
       } >,
     } >,
   },
+};
+
+export interface BlocksConnectionQueryVariables {
+  cursor?: string | null,
+  page?: number | null,
+};
+
+export interface BlocksConnectionQuery {
+  items:  {
+    __typename: "BlockConnection",
+    edges:  Array< {
+      __typename: "BlockEdge",
+      node:  {
+        __typename: "Block",
+        id: string,
+        title: string,
+        extrasArea: number | null,
+        extrasSupervisorDistrict: string | null,
+        extrasZoning: Array< string > | null,
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+  },
+};
+
+export interface BlockQueryVariables {
+  blockId: string,
+};
+
+export interface BlockQuery {
+  item:  {
+    __typename: "Block",
+    id: string,
+    title: string,
+    extrasArea: number | null,
+    extrasZoning: Array< string > | null,
+    extrasSupervisorDistrict: string | null,
+    geometry: string | null,
+    parcels:  Array< {
+      __typename: "Parcel",
+      id: string,
+      title: string,
+      geometry: string | null,
+      extrasZoning: Array< string > | null,
+    } >,
+  },
+};
+
+export interface ParcelsConnectionQueryVariables {
+  cursor?: string | null,
+  page?: number | null,
+};
+
+export interface ParcelsConnectionQuery {
+  items:  {
+    __typename: "ParcelConnection",
+    edges:  Array< {
+      __typename: "ParcelEdge",
+      node:  {
+        __typename: "Parcel",
+        id: string,
+        title: string,
+        geometry: string | null,
+        extrasArea: number | null,
+        extrasSupervisorDistrict: string | null,
+        extrasZoning: Array< string > | null,
+        extrasLandValue: number | null,
+        extrasImprovementValue: number | null,
+        extrasPropertyValue: number | null,
+        extrasFixturesValue: number | null,
+        extrasStories: number | null,
+        extrasUnits: number | null,
+        extrasRooms: number | null,
+        extrasBathrooms: number | null,
+        extrasBedrooms: number | null,
+        extrasYear: number | null,
+        extrasNeighborhood: string | null,
+        addresses:  Array< {
+          __typename: "StreetNumber",
+          streetId: string,
+          streetName: string,
+          streetNameSuffix: string | null,
+          streetNumber: number,
+          streetNumberSuffix: string | null,
+        } >,
+        block:  {
+          __typename: "Block",
+          id: string,
+          title: string,
+          extrasArea: number | null,
+        },
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+  },
+};
+
+export interface ParcelQueryVariables {
+  parcelId: string,
+};
+
+export interface ParcelQuery {
+  item:  {
+    __typename: "Parcel",
+    id: string,
+    title: string,
+    geometry: string | null,
+    extrasArea: number | null,
+    extrasSupervisorDistrict: string | null,
+    extrasZoning: Array< string > | null,
+    extrasLandValue: number | null,
+    extrasImprovementValue: number | null,
+    extrasPropertyValue: number | null,
+    extrasFixturesValue: number | null,
+    extrasStories: number | null,
+    extrasUnits: number | null,
+    extrasRooms: number | null,
+    extrasBathrooms: number | null,
+    extrasBedrooms: number | null,
+    extrasYear: number | null,
+    extrasNeighborhood: string | null,
+    addresses:  Array< {
+      __typename: "StreetNumber",
+      streetId: string,
+      streetName: string,
+      streetNameSuffix: string | null,
+      streetNumber: number,
+      streetNumberSuffix: string | null,
+    } >,
+    block:  {
+      __typename: "Block",
+      id: string,
+      title: string,
+      extrasArea: number | null,
+    },
+  },
+};
+
+export interface ParcelsTileOverlayQueryVariables {
+  box: GeoBox,
+  query?: string | null,
+};
+
+export interface ParcelsTileOverlayQuery {
+  tiles:  Array< {
+    __typename: "Parcel",
+    id: string,
+    title: string,
+    geometry: string | null,
+  } > | null,
 };
 
 export interface PermitQueryVariables {
@@ -1349,66 +1352,6 @@ export interface AreaShortFragment {
   writeAccess: boolean,
 };
 
-export interface ParcelFullFragment {
-  __typename: "Parcel",
-  id: string,
-  title: string,
-  geometry: string | null,
-  extrasArea: number | null,
-  extrasSupervisorDistrict: string | null,
-  extrasZoning: Array< string > | null,
-  extrasLandValue: number | null,
-  extrasImprovementValue: number | null,
-  extrasPropertyValue: number | null,
-  extrasFixturesValue: number | null,
-  extrasStories: number | null,
-  extrasUnits: number | null,
-  extrasRooms: number | null,
-  extrasBathrooms: number | null,
-  extrasBedrooms: number | null,
-  extrasYear: number | null,
-  addresses:  Array< {
-    __typename: string,
-    streetId: string,
-    streetName: string,
-    streetNameSuffix: string | null,
-    streetNumber: number,
-    streetNumberSuffix: string | null,
-  } >,
-  block:  {
-    __typename: string,
-    id: string,
-    title: string,
-    extrasArea: number | null,
-  },
-};
-
-export interface BlockShortFragment {
-  __typename: "Block",
-  id: string,
-  title: string,
-  extrasArea: number | null,
-  extrasSupervisorDistrict: string | null,
-  extrasZoning: Array< string > | null,
-};
-
-export interface BlockFullFragment {
-  __typename: "Block",
-  id: string,
-  title: string,
-  extrasArea: number | null,
-  extrasZoning: Array< string > | null,
-  extrasSupervisorDistrict: string | null,
-  geometry: string | null,
-  parcels:  Array< {
-    __typename: string,
-    id: string,
-    title: string,
-    geometry: string | null,
-    extrasZoning: Array< string > | null,
-  } >,
-};
-
 export interface ChartFullFragment {
   __typename: "Chart",
   labels: Array< string >,
@@ -1584,6 +1527,67 @@ export interface OrganizationFullFragment {
         retina: string,
       } | null,
     } >,
+  } >,
+};
+
+export interface ParcelFullFragment {
+  __typename: "Parcel",
+  id: string,
+  title: string,
+  geometry: string | null,
+  extrasArea: number | null,
+  extrasSupervisorDistrict: string | null,
+  extrasZoning: Array< string > | null,
+  extrasLandValue: number | null,
+  extrasImprovementValue: number | null,
+  extrasPropertyValue: number | null,
+  extrasFixturesValue: number | null,
+  extrasStories: number | null,
+  extrasUnits: number | null,
+  extrasRooms: number | null,
+  extrasBathrooms: number | null,
+  extrasBedrooms: number | null,
+  extrasYear: number | null,
+  extrasNeighborhood: string | null,
+  addresses:  Array< {
+    __typename: string,
+    streetId: string,
+    streetName: string,
+    streetNameSuffix: string | null,
+    streetNumber: number,
+    streetNumberSuffix: string | null,
+  } >,
+  block:  {
+    __typename: string,
+    id: string,
+    title: string,
+    extrasArea: number | null,
+  },
+};
+
+export interface BlockShortFragment {
+  __typename: "Block",
+  id: string,
+  title: string,
+  extrasArea: number | null,
+  extrasSupervisorDistrict: string | null,
+  extrasZoning: Array< string > | null,
+};
+
+export interface BlockFullFragment {
+  __typename: "Block",
+  id: string,
+  title: string,
+  extrasArea: number | null,
+  extrasZoning: Array< string > | null,
+  extrasSupervisorDistrict: string | null,
+  geometry: string | null,
+  parcels:  Array< {
+    __typename: string,
+    id: string,
+    title: string,
+    geometry: string | null,
+    extrasZoning: Array< string > | null,
   } >,
 };
 
