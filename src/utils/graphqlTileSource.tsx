@@ -55,8 +55,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
             }
             if (this.pendingBox) {
                 // Save Parameters
-                let box = this.pendingBox; // query: '{"$and": [{"stories": {"gt": 1, "lte": 2}},{"zone": "NC-3"}]}'
-                let query: string | undefined = undefined;
+                let box = this.pendingBox;
 
                 // Update Internal State
                 this.isLoading = true;
@@ -65,12 +64,6 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                     stopProgress(this.loadingId);
                 }
                 this.loadingId = startProgress();
-
-                // const TileWidth = 0.005;
-                // const TileHeight = 0.005;
-
-                // const TileWidthLarge = 0.04;
-                // const TileHeightLarge = 0.04;
 
                 let zoomFactor = ((this.props.minZoom || 0) - 12) / 4;
                 if (zoomFactor < 0) {
