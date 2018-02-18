@@ -1,23 +1,27 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { XMapSubscriber } from './XMapLight';
+import { XMapSubscriber, DataSources } from './XMapLight';
 import * as Turf from '@turf/turf';
 
 interface XMapLayerStyle {
 
     fillColor?: string;
     fillOpacity?: number;
-
     borderColor?: string;
     borderOpacity?: number;
     borderWidth?: number;
 
     hoverFillColor?: string;
     hoverFillOpacity?: number;
-
     hoverBorderColor?: string;
     hoverBorderOpacity?: number;
     hoverBorderWidth?: number;
+
+    selectedFillColor?: string;
+    selectedFillOpacity?: number;
+    selectedBorderColor?: string;
+    selectedBorderOpacity?: number;
+    selectedBorderWidth?: number;
 }
 
 interface XMapLayerProps {
@@ -47,6 +51,7 @@ export class XMapLayer extends React.Component<XMapLayerProps> {
     private isInited = false;
     private _isMounted = false;
     private map: mapboxgl.Map | null = null;
+    private datasources: DataSources | null = null;
 
     private layer: string;
 
@@ -66,9 +71,10 @@ export class XMapLayer extends React.Component<XMapLayerProps> {
         this.sourceSelected = props.source + '-selected';
     }
 
-    listener: XMapSubscriber = (src, map) => {
+    listener: XMapSubscriber = (src, map, datasources) => {
         if (!this.isInited && this._isMounted) {
             this.map = map;
+            this.datasources = datasources;
             this.isInited = true;
 
             this.initMap();
@@ -85,7 +91,16 @@ export class XMapLayer extends React.Component<XMapLayerProps> {
         //
 
         this.map.addSource(this.sourceHover, { type: 'geojson', data: { 'type': 'FeatureCollection', features: [] } });
-        this.map.addSource(this.sourceSelected, { type: 'geojson', data: { 'type': 'FeatureCollection', features: [] } });
+        if (this.props.selectedId !== undefined) {
+            let element = this.datasources!!.findGeoJSONElement(this.source, this.props.selectedId);
+            if (element) {
+                this.map.addSource(this.sourceSelected, { type: 'geojson', data: { 'type': 'FeatureCollection', features: [element] } });
+            } else {
+                this.map.addSource(this.sourceSelected, { type: 'geojson', data: { 'type': 'FeatureCollection', features: [] } });
+            }
+        } else {
+            this.map.addSource(this.sourceSelected, { type: 'geojson', data: { 'type': 'FeatureCollection', features: [] } });
+        }
 
         //
         // Fill Layer
@@ -175,6 +190,48 @@ export class XMapLayer extends React.Component<XMapLayerProps> {
         });
 
         //
+        // Selected Fill
+        //
+
+        let selectedFillColor = this.props.style && this.props.style.hoverFillColor !== undefined ? this.props.style.hoverFillColor : '#088';
+        let selectedFillOpacity = this.props.style && this.props.style.hoverFillOpacity !== undefined ? this.props.style.hoverFillOpacity : 1;
+
+        this.map.addLayer({
+            'id': this.layer + '-fill-selected',
+            'type': 'fill',
+            'source': this.sourceSelected,
+            'minzoom': minZoom,
+            'maxzoom': this.props.maxFillZoom !== undefined ? this.props.maxFillZoom : maxZoom,
+            'layout': {},
+            'paint': {
+                'fill-color': selectedFillColor,
+                'fill-opacity': selectedFillOpacity
+            }
+        });
+
+        //
+        // Selected Border
+        //
+
+        let selectedBorderColor = this.props.style && this.props.style.selectedBorderColor !== undefined ? this.props.style.selectedBorderColor : '#088';
+        let selectedBorderOpacity = this.props.style && this.props.style.selectedBorderOpacity !== undefined ? this.props.style.selectedBorderOpacity : 0.8;
+        let selectedBorderWidth = this.props.style && this.props.style.selectedBorderWidth !== undefined ? this.props.style.selectedBorderWidth : 1;
+
+        this.map.addLayer({
+            'id': this.layer + '-borders-selected',
+            'type': 'line',
+            'source': this.sourceSelected,
+            'minzoom': minZoom,
+            'maxzoom': maxZoom,
+            'layout': {},
+            'paint': {
+                'line-color': selectedBorderColor,
+                'line-width': selectedBorderOpacity,
+                'line-opacity': selectedBorderWidth
+            }
+        });
+
+        //
         // Handling Hover
         //
 
@@ -183,13 +240,17 @@ export class XMapLayer extends React.Component<XMapLayerProps> {
                 let id = e.features[0].properties.id;
                 if (this.focusedId !== id) {
                     this.focusedId = id;
-                    let source = this.map!!.getSource(this.sourceHover);
-                    if (source.type === 'geojson') {
-                        source.setData({ 'type': 'FeatureCollection', features: e.features });
+                    let element = this.datasources!!.findGeoJSONElement(this.source, id);
+                    if (element) {
+                        let source = this.map!!.getSource(this.sourceHover);
+                        if (source.type === 'geojson') {
+                            source.setData({ 'type': 'FeatureCollection', features: [element] });
+                        }
                     }
                 }
             }
         });
+
         this.map.on('mouseleave', this.layer + '-fill', () => {
             if (this._isMounted) {
                 if (this.focusedId !== undefined) {
@@ -201,6 +262,10 @@ export class XMapLayer extends React.Component<XMapLayerProps> {
                 }
             }
         });
+
+        //
+        // Click Handling
+        //
 
         this.map.on('click', this.layer + '-fill', (e: any) => {
             let id = e.features[0].properties.id;
@@ -219,7 +284,6 @@ export class XMapLayer extends React.Component<XMapLayerProps> {
             }
             if (this.props.onClick) { this.props.onClick(id); }
         })
-        // map.setFilter('parcels-view-selected', ['==', 'parcelId', this.props.selected]);
     }
 
     render() {
@@ -227,9 +291,19 @@ export class XMapLayer extends React.Component<XMapLayerProps> {
     }
 
     componentWillReceiveProps(nextProps: XMapLayerProps) {
-        // if (this.props.selected !== nextProps.selected && this.isInited && this._isMounted) {
-        //     this.map!!.setFilter('parcels-view-selected', ['==', 'parcelId', nextProps.selected]);
-        // }
+        if (this.props.selectedId !== nextProps.selectedId && this.isInited && this._isMounted) {
+            if (nextProps.selectedId !== undefined) {
+                let element = this.datasources!!.findGeoJSONElement(this.source, nextProps.selectedId);
+                let source = this.map!!.getSource(this.sourceSelected);
+                if (source.type === 'geojson') {
+                    if (element) {
+                        source.setData({ 'type': 'FeatureCollection', features: [element] });
+                    } else {
+                        source.setData({ 'type': 'FeatureCollection', features: [] });
+                    }
+                }
+            }
+        }
     }
 
     componentDidMount() {

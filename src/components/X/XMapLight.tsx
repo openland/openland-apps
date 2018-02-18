@@ -20,8 +20,9 @@ interface XMapLightProps {
     mapStyle?: string;
 }
 
-interface DataSources {
+export interface DataSources {
     addGeoJSONSource: (source: string, data: any) => void;
+    updateGeoJSONSource: (source: string, data: any) => void;
     removeGeoJsonSource: (source: string) => void;
     findGeoJSONElement: (source: string, id: string) => any | undefined
 }
@@ -44,15 +45,36 @@ export class XMapLight extends React.Component<XMapLightProps> {
     private allSources = new Map<string, Map<string, any>>();
 
     private sources: DataSources = {
-        addGeoJSONSource: (source: string, data: Map<string, any>) => {
+        addGeoJSONSource: (source: string, data: any) => {
             if (this.allSources.has(source)) {
-                throw Error('Source ' + source + ' already exists!');
+                throw Error('Source ' + source + ' already exist!');
             }
-            this.allSources.set(source, data);
+            let elements = new Map<string, any>();
+            if (data.features) {
+                for (let src of data.features) {
+                    if (src.properties && src.properties.id) {
+                        elements.set(src.properties.id as string, src);
+                    }
+                }
+            }
+            this.allSources.set(source, elements);
+        },
+        updateGeoJSONSource: (source: string, data: any) => {
+            if (!this.allSources.has(source)) {
+                throw Error('Source ' + source + ' does not exist!');
+            }
+            let elements = this.allSources.get(source)!!;
+            if (data.features) {
+                for (let src of data.features) {
+                    if (src.properties && src.properties.id) {
+                        elements.set(src.properties.id as string, src);
+                    }
+                }
+            }
         },
         removeGeoJsonSource: (source: string) => {
             if (!this.allSources.has(source)) {
-                throw Error('Source ' + source + ' does not exists!');
+                throw Error('Source ' + source + ' does not exist!');
             }
             this.allSources.delete(source);
         },
