@@ -12,6 +12,7 @@ import * as Account from './queries/Account';
 import * as Parcels from './queries/Parcels';
 import * as Search from './queries/Search';
 import { graphql } from 'react-apollo';
+import { graphQLTileSource } from '../utils/graphqlTileSource';
 
 //
 // Area
@@ -87,6 +88,8 @@ export const withParcelDirect = graphql<Types.ParcelQuery, { parcelId: string }>
         }
     })
 });
+
+export const ParcelTileSource = graphQLTileSource<Types.ParcelsTileOverlayQuery>(Parcels.ParcelsTileOverlay);
 
 //
 // Pictures
