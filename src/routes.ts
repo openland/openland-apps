@@ -8,6 +8,8 @@ let routes = Routes();
 
 routes.add('/app', '/app/explore/index');
 routes.add('/app/', '/app/explore/index');
+routes.add('/app/underdeveloped', '/app/explore/underdeveloped');
+routes.add('/app/underdeveloped/', '/app/explore/underdeveloped');
 
 //
 // Blocks

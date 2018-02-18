@@ -1,12 +1,11 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-// import { XVertical } from '../X/XVertical';
-// import { AppHeader } from './AppHeader';
 import { XDocumentAppRootFullScreen } from '../X/Scaffold/XDocumentRoot';
 import { AppSidebar } from './AppSidebar';
 import { XHead } from '../X/XHead';
 import { XMapLight } from '../X/XMapLight';
 import { AppHeader } from './AppHeader';
+import { AppNavigation } from './AppNavigation';
 
 const ClassicalWrapper = Glamorous.div({
     position: 'absolute',
@@ -64,10 +63,7 @@ export class AppContentMap extends React.Component {
                 <ClassicalWrapper>
                     <ClassicalContainer>
                         <AppSidebar asOverlay={true}>
-                            <AppSidebar.Item path="/app" title="Explore" icon="explore" />
-                            <AppSidebar.Item path="/app/projects" title="Projects" icon="folder" activateForSubpaths={true} />
-                            <AppSidebar.Item path="/app/parcels" title="Parcels" icon="layers" activateForSubpaths={true} />
-                            <AppSidebar.Item path="/app/blocks" title="Blocks" icon="layers" activateForSubpaths={true} />
+                            <AppNavigation />
                         </AppSidebar>
                         <Container>
                             <AppHeader />
