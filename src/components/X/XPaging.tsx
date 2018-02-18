@@ -1,10 +1,14 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { Menu, Icon } from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
 import { XLink } from './XLink';
+import { XIcon } from './XIcon';
 
 export const MenuItem = Glamorous(Menu.Item)({
     color: '#6638F0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     fontSize: '15px',
     fontWeight: 'normal',
     margin: '0 20px',
@@ -65,7 +69,7 @@ export function XPaging(props: XPagingProps ) {
     if (props.currentPage > 1) {
         elements.push(
             <MenuItem key="page_prev" as={XLink} query={{ field: 'page', value: props.currentPage - 1 }} icon={true}>
-                <Icon name="chevron left" />
+                <XIcon icon="keyboard_arrow_left" />
             </MenuItem>
         );
     }
@@ -126,7 +130,7 @@ export function XPaging(props: XPagingProps ) {
     if (props.currentPage < props.totalPages - 1) {
         elements.push(
             <MenuItem key="page_next" as={XLink} query={{ field: 'page', value: props.currentPage + 1 }} icon={true}>
-                <Icon name="chevron right" />
+                <XIcon icon="keyboard_arrow_right" />
             </MenuItem>
         );
     }
