@@ -4,6 +4,7 @@ import { DocumentNode } from 'graphql';
 import { XMapSubscriber } from '../components/X/XMapLight';
 import ApolloClient, { ApolloQueryResult } from 'apollo-client';
 import { backoff } from './timer';
+import { startProgress, stopProgress } from './routing';
 
 interface GraphQLTileSourceProps {
     layer: string;
@@ -26,6 +27,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
 
         private isInited = false;
         private isLoading = false;
+        private loadingId?: number;
         private _isMounted = false;
         private client: ApolloClient<{}> | null = null;
         private map: mapboxgl.Map | null = null;
@@ -67,6 +69,10 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 // Update Internal State
                 this.isLoading = true;
                 this.pendingBox = null;
+                if (this.loadingId) {
+                    stopProgress(this.loadingId);
+                }
+                this.loadingId = startProgress();
 
                 // const TileWidth = 0.005;
                 // const TileHeight = 0.005;
@@ -162,6 +168,9 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 //
 
                 this.isLoading = false;
+                if (this.loadingId) {
+                    stopProgress(this.loadingId);
+                }
                 this.tryInvokeLoader();
                 if (wasUpdated) {
                     this.refreshState();
@@ -192,6 +201,9 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 } catch (_) {
                     // Ignore
                 }
+            }
+            if (this.loadingId) {
+                stopProgress(this.loadingId);
             }
         }
     }

@@ -50,6 +50,23 @@ function hideProgress() {
     NProgress.done();
 }
 
+let nextId: number = 1;
+const activeProgresses = new Set<number>();
+
+export function startProgress(src?: number): number {
+    let id = src || nextId++;
+    activeProgresses.add(id);
+    showProgress();
+    return id;
+}
+
+export function stopProgress(src: number) {
+    activeProgresses.delete(src);
+    if (activeProgresses.size === 0) {
+        hideProgress();
+    }
+}
+
 Router.onRouteChangeStart = (url) => {
 
     // Hotfix Current Url
@@ -64,7 +81,7 @@ Router.onRouteChangeStart = (url) => {
     console.log(`Naviating to: ${previousUrl} -> ${currentUrl}`);
     // tslint:enable
 
-    showProgress();
+    startProgress(0);
 };
 
 Router.onRouteChangeComplete = () => {
@@ -72,7 +89,7 @@ Router.onRouteChangeComplete = () => {
     console.log(`Naviating Complete`);
     // tslint:enable
 
-    hideProgress();
+    stopProgress(0);
 
     trackPage();
 };
@@ -82,7 +99,7 @@ Router.onRouteChangeError = () => {
     console.log(`Naviating Errored`);
     // tslint:enable
 
-    hideProgress();
+    stopProgress(0);
 };
 
 export function resolveActionPath(props: {
