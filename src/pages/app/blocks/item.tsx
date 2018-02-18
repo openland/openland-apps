@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { withApp } from '../../../components/App/withApp';
 import { XCard } from '../../../components/X/XCard';
-import { withBlock } from '../../../api/index';
+import { withBlock, ParcelTileSource, BlockTileSource } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { convertMapPatch, findCenter } from '../../../utils/map';
 import { XMap } from '../../../components/X/XMap';
 import { XArea } from '../../../components/X/XArea';
+import { XMapLayer } from '../../../components/X/XMapLayer';
 
 export default withApp(withBlock((props) => {
     return (
@@ -38,9 +39,22 @@ export default withApp(withBlock((props) => {
             {props.data.item.parcels.length > 0 && props.data.item.geometry && (
                 <XCard shadow="medium" separators={true}>
                     <XCard.Map location={findCenter(convertMapPatch(props.data.item.geometry))}>
-                        <XMap.Overlay
-                            id={'some'}
-                            records={props.data.item.parcels.filter((v) => v.geometry).map((v) => ({ id: v.id, geometry: v.geometry!! }))}
+                        <ParcelTileSource layer="parcels" minZoom={16} />
+                        <BlockTileSource layer="blocks" minZoom={12} />
+                        <XMapLayer
+                            source="parcels"
+                            layer="parcels"
+                            minZoom={16}
+                            flyOnClick={true}
+                        />
+                        <XMapLayer
+                            source="blocks"
+                            layer="blocks"
+                            minZoom={12}
+                            maxZoom={16}
+                            flyOnClick={true}
+                            selectedId={props.data.item.id}
+                            onClick={(v) => props.router.push('/app/blocks/' + v)}
                         />
                     </XCard.Map>
                 </XCard>

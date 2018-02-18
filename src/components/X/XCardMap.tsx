@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XMap } from './XMap';
+import { XMapLight } from './XMapLight';
 
 let XCardMapDiv = Glamorous.div({
     height: '360px',
@@ -9,15 +9,12 @@ let XCardMapDiv = Glamorous.div({
 export function XCardMap(props: { location: { latitude: number, longitude: number }, children?: any }) {
     return (
         <XCardMapDiv>
-            <XMap
+            <XMapLight
                 mapStyle="mapbox://styles/mapbox/streets-v9"
-                initZoom={16}
-                initLatitude={props.location.latitude}
-                initLongitude={props.location.longitude}
-                allowRotation={false}
+                focusPosition={{ zoom: 16, latitude: props.location.latitude, longiutude: props.location.longitude }}
             >
                 {props.children}
-            </XMap>
+            </XMapLight>
         </XCardMapDiv>
     );
 }

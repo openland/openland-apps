@@ -1,19 +1,18 @@
 import * as React from 'react';
 import { withApp } from '../../../components/App/withApp';
 import { XCard } from '../../../components/X/XCard';
-import { withParcel } from '../../../api/index';
+import { withParcel, ParcelTileSource, BlockTileSource } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { convertMapPatch, findCenter } from '../../../utils/map';
-import { XMap } from '../../../components/X/XMap';
 import { XLink } from '../../../components/X/XLink';
 import { XArea } from '../../../components/X/XArea';
 import { XMoney } from '../../../components/X/XMoney';
 import { formatAddresses } from '../../../utils/Addresses';
 import { AStreetViewModal } from '../../../components/App/AStreetViewModal';
+import { XMapLayer } from '../../../components/X/XMapLayer';
 
 export default withApp(withParcel((props) => {
-
     return (
         <AppContent>
             <XCard shadow="medium" separators={true}>
@@ -76,9 +75,22 @@ export default withApp(withParcel((props) => {
             {props.data.item.geometry && (
                 <XCard shadow="medium">
                     <XCard.Map location={findCenter(convertMapPatch(props.data.item.geometry))}>
-                        <XMap.Overlay
-                            id={'some'}
-                            records={[{ id: 'parcel', geometry: props.data.item.geometry }]}
+                        <ParcelTileSource layer="parcels" minZoom={16} />
+                        <BlockTileSource layer="blocks" minZoom={12} />
+                        <XMapLayer
+                            source="parcels"
+                            layer="parcels"
+                            minZoom={16}
+                            flyOnClick={true}
+                            selectedId={props.data.item.id}
+                            onClick={(v) => props.router.push('/app/parcels/' + v)}
+                        />
+                        <XMapLayer
+                            source="blocks"
+                            layer="blocks"
+                            minZoom={12}
+                            maxZoom={16}
+                            flyOnClick={true}
                         />
                     </XCard.Map>
                 </XCard>
