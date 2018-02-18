@@ -17,7 +17,7 @@ class ParcelCollection extends React.Component<{}, { selected?: string }> {
             <>
                 <ParcelTileSource layer="parcels" minZoom={16} />
                 <BlockTileSource layer="blocks" minZoom={12} />
-                <ParcelTileSource layer="parcels-found" query={query} />
+                <ParcelTileSource layer="parcels-found" query={query} minZoom={16} />
                 <XMapLayer
                     source="parcels"
                     layer="parcels"
