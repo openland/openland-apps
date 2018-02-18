@@ -11,6 +11,7 @@ import { XView } from '../../../components/X/XView';
 import { XBullet } from '../../../components/X/XBullet';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XSlider } from '../../../components/X/XSlider';
+import { XSelect } from '../../../components/X/XSelect';
 import { Title, Text } from '../../../components/Incubator/XRowsExample';
 import { withApp } from '../../../components/App/withApp';
 import { AppContent } from '../../../components/App/AppContent';
@@ -73,6 +74,14 @@ export default withApp((props) => {
                             <XButton alignSelf="flex-start" loading={true} />
                             <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
                             <XLinkExternal path="https://goo.gl/urJT1F" />
+                            <XSelect 
+                                name="form-field-name"
+                                value={'value'}
+                                options={[
+                                    { value: 'one', label: 'One' },
+                                    { value: 'two', label: 'Two' },
+                                ]}
+                            />
                             <XBullet title="bullet" alignSelf="flex-start" />
                             <XBullet title="bullet" alignSelf="flex-start" color="red" />
                             <XBullet title="bullet" alignSelf="flex-start" color="green" />
@@ -110,6 +119,7 @@ export default withApp((props) => {
                     <XCard.Hint title="test data" />
                     <XCard.Header 
                         title="Loader block title" 
+                        ellipcise={true}
                         description={`
                         $ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"
                         $ ./node_modules/typescript/bin/tsc --watch
