@@ -23,8 +23,7 @@ let XHintDiv = Glamorous.div({
     alignItems: 'flex-start',
     position: 'absolute',
     left: 0,
-    top: 0,
-    zIndex: 1
+    top: 0
 })
 
 export function XCardHint(props: { title: string }) {
