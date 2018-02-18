@@ -10,6 +10,7 @@ import { XMapSource } from '../components/X/XMapSource';
 interface GraphQLTileSourceProps {
     layer: string;
     minZoom?: number;
+    query?: any;
 }
 
 const TileWidth = 0.005;
@@ -104,7 +105,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                                             west: (x1 + i) * currentTileHeight,
                                             east: (x1 + i + 1) * currentTileHeight
                                         },
-                                        query: query
+                                        query: this.props.query ? JSON.stringify(this.props.query) : undefined
                                     }
                                 })
                             );
@@ -138,7 +139,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 //
                 // Apply
                 //
-                
+
                 let wasUpdated = false;
                 for (let s of loadedElements) {
                     if (!this.allElements.has(s.id)) {
