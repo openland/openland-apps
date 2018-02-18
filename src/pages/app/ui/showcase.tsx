@@ -108,7 +108,18 @@ export default withApp((props) => {
                 </XCard>
                 <XCard separators={true}>
                     <XCard.Hint title="test data" />
-                    <XCard.Header title="Loader block title">
+                    <XCard.Header 
+                        title="Loader block title" 
+                        description={`
+                        $ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"
+                        $ ./node_modules/typescript/bin/tsc --watch
+                        $ yarn cpx "./src/static/**/*" ./build/dist/static/ --watch
+                        $ yarn less-watch-compiler --minified false src/less build/dist/static/css style.less
+                        $ node ./build/dist/server.js
+                        $ /Users/max_volkov/Desktop/statecraft-web/node_modules/.bin/less-watch-compiler --minified false src/less build/dist/static/css style.less
+                        $ /Users/max_volkov/Desktop/statecraft-web/node_modules/.bin/cpx './src/static/**/*' ./build/dist/static/ --watch
+                        `}
+                    >
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
                     </XCard.Header>

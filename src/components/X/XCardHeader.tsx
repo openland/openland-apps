@@ -12,12 +12,15 @@ export const XCardTitle = Glamorous.div({
     color: '#32325d'
 })
 
-export const XCardDescription = Glamorous.div({
+export const XCardDescription = Glamorous.div<{ellipcise?: boolean}>((props) => ({
     color: '#525f7f',
     fontSize: '14px',
     lineHeight: '1.6',
-    fontWeight: 400
-})
+    fontWeight: 400,
+    overflow: props.ellipcise ? 'hidden' : undefined,
+    whiteSpace: props.ellipcise ? 'nowrap' : undefined,
+    textOverflow: props.ellipcise ? 'ellipsis' : undefined,
+}))
 
 let XCardHeaderDiv = Glamorous.div({
     paddingLeft: 24,
@@ -28,7 +31,7 @@ let XCardHeaderDiv = Glamorous.div({
     flexDirection: 'column'
 })
 
-export function XCardHeader(props: { children?: any, title?: string | null, description?: string | null }) {
+export function XCardHeader(props: { children?: any, title?: string | null, description?: string | null, ellipcise?: boolean }) {
     return (
         <XCardHeaderDiv>
             <XCardTitle>
@@ -37,7 +40,7 @@ export function XCardHeader(props: { children?: any, title?: string | null, desc
                     {props.children}
                 </XHorizontal>
             </XCardTitle>
-            <XCardDescription>
+            <XCardDescription ellipcise={props.ellipcise}>
                 {props.description}
             </XCardDescription>
         </XCardHeaderDiv>
