@@ -14,8 +14,8 @@ interface GraphQLTileSourceProps {
 const TileWidth = 0.005;
 const TileHeight = 0.005;
 
-const TileWidthLarge = 0.08;
-const TileHeightLarge = 0.08;
+const TileWidthLarge = 0.04;
+const TileHeightLarge = 0.04;
 
 export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometry: string | null }> | null }>(QueryDocument: DocumentNode) {
     return class GraphQLTileSource extends React.Component<GraphQLTileSourceProps> {

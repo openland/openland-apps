@@ -125,7 +125,7 @@ export const ParcelQuery = gql`
 
 export const ParcelsTileOverlay = gql`
     query ParcelsTileOverlay($box: GeoBox!, $query: String) {
-        tiles: parcelsOverlay(box: $box, limit: 1000, query: $query) {
+        tiles: parcelsOverlay(box: $box, limit: 5000, query: $query) {
             id
             geometry
         }
@@ -134,7 +134,7 @@ export const ParcelsTileOverlay = gql`
 
 export const BlocksTileOverlay = gql`
     query BlocksTileOverlay($box: GeoBox!, $query: String) {
-        tiles: blocksOverlay(box: $box, limit: 1000, query: $query) {
+        tiles: blocksOverlay(box: $box, limit: 5000, query: $query) {
             id
             geometry
         }

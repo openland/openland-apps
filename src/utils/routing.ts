@@ -54,7 +54,7 @@ let nextId: number = 1;
 const activeProgresses = new Set<number>();
 
 export function startProgress(src?: number): number {
-    let id = src || nextId++;
+    let id = src !== undefined ? src : nextId++;
     activeProgresses.add(id);
     showProgress();
     return id;
