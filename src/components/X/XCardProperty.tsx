@@ -12,6 +12,7 @@ let XCardFieldTitle = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     width: '200px',
+    flexShrink: 0,
     lineHeight: 1.6,
     paddingTop: '2px',
     paddingBottom: '2px',

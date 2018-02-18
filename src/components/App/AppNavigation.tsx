@@ -8,7 +8,10 @@ export function AppNavigation(props: {}) {
                 <AppSidebar.Item path="/app" title="Explore" icon="explore" />
                 <AppSidebar.Item path="/app/underdeveloped" title="Underdeveloped" />
             </AppSidebar.Group>
-            <AppSidebar.Item path="/app/parcels" title="Parcels" icon="layers" activateForSubpaths={true} />
+            <AppSidebar.Group paths={['/app/parcels', '/app/viewed']}>
+                <AppSidebar.Item path="/app/parcels" title="Parcels" icon="layers" activateForSubpaths={true} />
+                <AppSidebar.Item path="/app/viewed" title="Visited" />
+            </AppSidebar.Group>
             <AppSidebar.Item path="/app/projects" title="Projects" icon="folder" activateForSubpaths={true} />
             <AppSidebar.Item path="/app/blocks" title="Blocks" icon="layers" activateForSubpaths={true} />
         </>
