@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { DocumentNode } from 'graphql';
 import { XMapSubscriber } from '../components/X/XMapLight';
-import ApolloClient from 'apollo-client';
-import * as Immutable from 'immutable';
+import ApolloClient, { ApolloQueryResult } from 'apollo-client';
 import { backoff } from './timer';
 
 interface GraphQLTileSourceProps {
@@ -14,8 +13,11 @@ interface GraphQLTileSourceProps {
 const TileWidth = 0.005;
 const TileHeight = 0.005;
 
+const TileWidthLarge = 0.08;
+const TileHeightLarge = 0.08;
+
 export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometry: string | null }> | null }>(QueryDocument: DocumentNode) {
-    return class GraphQLTileSource extends React.Component<GraphQLTileSourceProps, { elements: Immutable.Map<string, { key: string, geometry: any }> }> {
+    return class GraphQLTileSource extends React.Component<GraphQLTileSourceProps> {
         static contextTypes = {
             mapSubscribe: PropTypes.func.isRequired,
             mapUnsubscribe: PropTypes.func.isRequired,
@@ -29,15 +31,14 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
         private map: mapboxgl.Map | null = null;
         private pendingBox: { south: number, north: number, east: number, west: number } | null = null;
         private loaded = new Set<string>();
+        private allElements = new Map<string, { key: string, geometry: any }>();
+        private allFeatures: any[] = [];
 
         constructor(props: GraphQLTileSourceProps, context: any) {
             super(props, context);
-
-            this.state = { elements: Immutable.Map() }
         }
 
         listener: XMapSubscriber = (src, map) => {
-            console.warn('listener:call')
             if (!this.isInited) {
                 this.map = map;
                 this.isInited = true;
@@ -51,14 +52,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
         }
 
         refreshState = () => {
-            let features = this.state.elements.map((v, k) => ({
-                type: 'Feature',
-                'geometry': { type: 'MultiPolygon', coordinates: v!!.geometry },
-                properties: {
-                    parcelId: k
-                }
-            })).toArray();
-            (this.map!!.getSource(this.props.layer) as any).setData({ 'type': 'FeatureCollection', features: features });
+            (this.map!!.getSource(this.props.layer) as any).setData({ 'type': 'FeatureCollection', features: this.allFeatures });
         }
 
         tryInvokeLoader = async () => {
@@ -74,30 +68,44 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 this.isLoading = true;
                 this.pendingBox = null;
 
-                let x1 = Math.ceil(box.west / TileWidth) - 1;
-                let y1 = Math.ceil(box.south / TileHeight) - 1;
-                let x2 = Math.floor(box.east / TileWidth) + 1;
-                let y2 = Math.floor(box.north / TileHeight) + 1;
+                // const TileWidth = 0.005;
+                // const TileHeight = 0.005;
+
+                // const TileWidthLarge = 0.04;
+                // const TileHeightLarge = 0.04;
+
+                let zoomFactor = ((this.props.minZoom || 0) - 12) / 4;
+                if (zoomFactor < 0) {
+                    zoomFactor = 0;
+                } else if (zoomFactor > 1) {
+                    zoomFactor = 1;
+                }
+
+                let currentTileWidth = this.props.minZoom ? ((1 - zoomFactor) * TileWidthLarge + (zoomFactor) * TileWidth) : TileWidthLarge;
+                let currentTileHeight = this.props.minZoom ? ((1 - zoomFactor) * TileHeightLarge + (zoomFactor) * TileHeight) : TileHeightLarge;
+
+                let x1 = Math.ceil(box.west / currentTileWidth) - 1;
+                let y1 = Math.ceil(box.south / currentTileHeight) - 1;
+                let x2 = Math.floor(box.east / currentTileWidth) + 1;
+                let y2 = Math.floor(box.north / currentTileHeight) + 1;
                 let xStride = x2 - x1;
                 let yStride = y2 - y1;
 
                 // Loading Tile Patch
-                let elements: any[] = [];
+                let elements: Promise<ApolloQueryResult<T>>[] = [];
                 for (let i = 0; i < xStride; i++) {
                     for (let j = 0; j < yStride; j++) {
-                        // east + i * TileWidth
-                        console.warn('Querying...');
                         let key = (x1 + i) + '-' + (y1 + j);
                         if (!this.loaded.has(key)) {
-                            let response = await backoff(async () =>
+                            let response = backoff(async () =>
                                 this.client!!.query<T>({
                                     query: QueryDocument,
                                     variables: {
                                         box: {
-                                            south: (y1 + j) * TileWidth,
-                                            north: (y1 + j + 1) * TileWidth,
-                                            west: (x1 + i) * TileHeight,
-                                            east: (x1 + i + 1) * TileHeight
+                                            south: (y1 + j) * currentTileWidth,
+                                            north: (y1 + j + 1) * currentTileWidth,
+                                            west: (x1 + i) * currentTileHeight,
+                                            east: (x1 + i + 1) * currentTileHeight
                                         },
                                         query: query
                                     }
@@ -105,17 +113,24 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                             );
 
                             this.loaded.add(key);
-
-                            // Stop if component is not mounted
-                            if (!this._isMounted) {
-                                return;
-                            }
-
-                            for (let tile of response.data!!.tiles!!) {
-                                elements.push(tile);
-                            }
+                            elements.push(response);
                         }
                     }
+                }
+
+                //
+                // Handling updated
+                //
+
+                let loadedElements: any[] = []
+                for (let e of elements) {
+                    let es = await e;
+                    if (es.data && es.data.tiles) {
+                        for (let tile of es.data.tiles) {
+                            loadedElements.push(tile);
+                        }
+                    }
+
                 }
 
                 // Stop if component is not mounted
@@ -123,22 +138,34 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                     return;
                 }
 
-                // Updating loaded tiles
-                this.setState(
-                    (src) => {
-                        let res = src.elements;
-                        for (let s of elements) {
-                            if (!res.has(s.id)) {
-                                res = res.set(s.id, { key: s.id, geometry: (JSON.parse(s.geometry as any) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]) });
+                //
+                // Apply
+                //
+                let wasUpdated = false;
+                for (let s of loadedElements) {
+                    if (!this.allElements.has(s.id)) {
+                        let geometry = (JSON.parse(s.geometry as any) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]);
+                        this.allElements.set(s.id, { key: s.id, geometry: geometry });
+                        this.allFeatures.push({
+                            type: 'Feature',
+                            'geometry': { type: 'MultiPolygon', coordinates: geometry },
+                            properties: {
+                                'parcelId': s.id
                             }
-                        }
-                        return { elements: res };
-                    },
-                    () => {
-                        this.isLoading = false;
-                        this.tryInvokeLoader();
-                        this.refreshState();
-                    });
+                        });
+                        wasUpdated = true;
+                    }
+                }
+
+                //
+                // Complete Loading
+                //
+
+                this.isLoading = false;
+                this.tryInvokeLoader();
+                if (wasUpdated) {
+                    this.refreshState();
+                }
             }
         }
 
@@ -159,6 +186,13 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
         componentWillUnmount() {
             this._isMounted = false;
             this.context.mapUnsubscribe(this.listener);
+            if (this.map) {
+                try {
+                    this.map.removeSource(this.props.layer);
+                } catch (_) {
+                    // Ignore
+                }
+            }
         }
     }
 }

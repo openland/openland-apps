@@ -131,3 +131,12 @@ export const ParcelsTileOverlay = gql`
         }
     }
 `;
+
+export const BlocksTileOverlay = gql`
+    query BlocksTileOverlay($box: GeoBox!, $query: String) {
+        tiles: blocksOverlay(box: $box, limit: 1000, query: $query) {
+            id
+            geometry
+        }
+    }
+`;

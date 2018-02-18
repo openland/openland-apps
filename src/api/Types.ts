@@ -759,6 +759,19 @@ export interface ParcelsTileOverlayQuery {
   } > | null,
 };
 
+export interface BlocksTileOverlayQueryVariables {
+  box: GeoBox,
+  query?: string | null,
+};
+
+export interface BlocksTileOverlayQuery {
+  tiles:  Array< {
+    __typename: "Block",
+    id: string,
+    geometry: string | null,
+  } > | null,
+};
+
 export interface PermitQueryVariables {
   permitId: string,
 };

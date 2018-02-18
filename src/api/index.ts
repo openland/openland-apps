@@ -90,6 +90,7 @@ export const withParcelDirect = graphql<Types.ParcelQuery, { parcelId: string }>
 });
 
 export const ParcelTileSource = graphQLTileSource<Types.ParcelsTileOverlayQuery>(Parcels.ParcelsTileOverlay);
+export const BlockTileSource = graphQLTileSource<Types.BlocksTileOverlayQuery>(Parcels.BlocksTileOverlay);
 
 //
 // Pictures
