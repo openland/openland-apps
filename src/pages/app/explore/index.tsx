@@ -213,7 +213,7 @@ class ParcelCollection extends React.Component<{}, { selected?: string }> {
     render() {
         return (
             <>
-                <ParcelTileSource layer="parcels" />
+                <ParcelTileSource layer="parcels" minZoom={15} />
                 <GraphQLTileSource onClick={(v: string) => this.setState({ selected: v })} selected={this.state.selected} />
                 {this.state.selected && <ParcelViewer parcelId={this.state.selected} />}
             </>

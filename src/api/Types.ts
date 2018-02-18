@@ -755,7 +755,6 @@ export interface ParcelsTileOverlayQuery {
   tiles:  Array< {
     __typename: "Parcel",
     id: string,
-    title: string,
     geometry: string | null,
   } > | null,
 };
