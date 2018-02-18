@@ -6,6 +6,7 @@ import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { XArea } from '../../../components/X/XArea';
 import { XMoney } from '../../../components/X/XMoney';
+import { XSwitcher } from '../../../components/X/XSwitcher';
 
 export default withApp(withParcels((props) => {
 
@@ -13,7 +14,11 @@ export default withApp(withParcels((props) => {
         <AppContent>
             <XCard shadow="medium" separators={true}>
                 <XCard.Header title="Parcels">
-                    <XButton query={{ field: 'sort', value: 'LAND_DESC' }}>Land Value Descending</XButton>
+                    <XSwitcher>
+                        <XSwitcher.Item query={{ field: 'sort' }}>Land Value</XSwitcher.Item>
+                        <XSwitcher.Item query={{ field: 'sort', value: 'IMPROVEMENT_DESC' }}>Improvement Value</XSwitcher.Item>
+                    </XSwitcher>
+                    {/* <XButton query={{ field: 'sort', value: 'LAND_DESC' }}>Land Value Descending</XButton> */}
                 </XCard.Header>
                 <XCard.Table>
                     <XCard.Table.Header>

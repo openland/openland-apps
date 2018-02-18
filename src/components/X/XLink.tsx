@@ -42,6 +42,21 @@ const LinkRender = withRouter<XLinkProps>((props) => {
                 <a className={className}>{props.children}</a>
             </LinkNext>
         );
+    } else if (props.query) {
+        let path = resolveActionPath(props);
+        let isActive = props.router.queryString && props.router.queryString[props.query.field] === props.query.value;
+        if (isActive) {
+            if (className) {
+                className += ' is-active';
+            } else {
+                className = 'is-active';
+            }
+        }
+        return (
+            <LinkNext route={path} onClick={props.onClick}>
+                <a className={className}>{props.children}</a>
+            </LinkNext>
+        );
     } else if (props.anchor) {
         return (
             <a href={props.anchor} className={className} onClick={props.onClick}>{props.children}</a>
@@ -59,27 +74,18 @@ const LinkRender = withRouter<XLinkProps>((props) => {
 
 export const XLink = withRouter<XLinkProps & { children?: any }>(withUserInfo((props) => {
     if (props.writeAccess !== true || (props.area && props.area.writeAccess)) {
-        if (props.path || props.query) {
-            return (
-                <LinkRender
-                    path={resolveActionPath(props)}
-                    className={props.className}
-                    children={props.children}
-                    activateForSubpaths={props.activateForSubpaths}
-                    onClick={props.onClick}
-                />
-            );
-        } else {
-            return (
-                <LinkRender
-                    href={props.href}
-                    anchor={props.anchor}
-                    className={props.className}
-                    children={props.children}
-                    onClick={props.onClick}
-                />
-            );
-        }
+        return (
+            <LinkRender
+                href={props.href}
+                anchor={props.anchor}
+                query={props.query}
+                path={props.path}
+                className={props.className}
+                children={props.children}
+                activateForSubpaths={props.activateForSubpaths}
+                onClick={props.onClick}
+            />
+        );
     } else {
         return null;
     }
