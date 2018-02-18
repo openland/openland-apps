@@ -5,6 +5,7 @@ import { AppHeader } from './AppHeader';
 import { XDocumentAppRoot } from '../X/Scaffold/XDocumentRoot';
 import { AppSidebar } from './AppSidebar';
 import { XHead } from '../X/XHead';
+import { AppNavigation } from './AppNavigation';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -24,10 +25,7 @@ export class AppContent extends React.Component {
             <XDocumentAppRoot>
                 <XHead title="Dashboard" />
                 <AppSidebar>
-                    <AppSidebar.Item path="/app" title="Explore" icon="explore" />
-                    <AppSidebar.Item path="/app/projects" title="Projects" icon="folder" activateForSubpaths={true} />
-                    <AppSidebar.Item path="/app/parcels" title="Parcels" icon="layers" activateForSubpaths={true} />
-                    <AppSidebar.Item path="/app/blocks" title="Blocks" icon="layers" activateForSubpaths={true} />
+                    <AppNavigation />
                 </AppSidebar>
                 <Container>
                     <XVertical>
