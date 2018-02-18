@@ -11,7 +11,8 @@ let Header = Glamorous.div({
     height: '32px',
     marginTop: '16px',
     justifyContent: 'space-between',
-    pointerEvents: 'auto'
+    pointerEvents: 'auto',
+    zIndex: 2
 })
 
 let UserInfoBox = Glamorous.div({
