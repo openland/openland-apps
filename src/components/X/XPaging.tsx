@@ -1,35 +1,47 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { Menu } from 'semantic-ui-react';
+import XStyled from './XStyled'
 import { XLink } from './XLink';
 import { XIcon } from './XIcon';
 
-export const MenuItem = Glamorous(Menu.Item)({
-    color: '#6638F0',
+interface MenuItemProps {
+    active?: boolean,
+    disabled?: boolean,
+    icon?: boolean,
+    query?: { field: string, value?: string } | null 
+}
+
+export const MenuItem = XStyled<MenuItemProps>(XLink)((props) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    color: props.active ? '#fff' : '#6638F0',
+    width: props.icon ? 40 : (props.active ? 40 : 'auto'),
+    height: props.icon ? 40 : (props.active ? 40 : 'auto'),
+    backgroundColor: props.active ? '#553ed6' : undefined,
     fontSize: '15px',
-    fontWeight: 'normal',
-    margin: '0 20px',
+    lineHeight: props.active ? '40px' : undefined,
+    fontWeight: props.active ? 500 : 'normal',
+    textAlign: props.active ? 'center' : undefined,
+    margin: props.active ? '0 10px' : '0 20px',
     boxSizing: 'border-box',
-    '&.active': {
-        fontWeight: 500,
-        margin: '0 10px',
-        color: '#fff',
-        width: '40px',
-        height: '40px',
-        borderRadius: '25px',
-        backgroundColor: '#553ed6',
-        textAlign: 'center',
-        lineHeight: '40px'
+    borderRadius: '25px',
+    border: props.icon ? 'solid 1px #553ed6' : undefined,
+    cursor: props.disabled ? 'default' : 'pointer',
+    '&:hover': {
+        color: props.disabled ? '#fff' : undefined
     },
     '&.icon': {
         width: '40px',
-        height: '40px',
-        borderRadius: '25px',
-        border: 'solid 1px #553ed6',
+        height: '40px'
     }
+}))
+
+export const MenuSpread = Glamorous.span({
+    display: 'block',
+    fontSize: '15px',
+    color: '#6638F0',
+    margin: '0 20px'
 })
 
 interface XPagingProps {
@@ -39,37 +51,40 @@ interface XPagingProps {
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center' | undefined;
 }
 
-export const PaginationWrapper = Glamorous(Menu)((props) => {
-    return {
-        display: 'flex',
-        flexShrink: 0,
-        alignItems: 'center',
-        alignSelf: props.alignSelf
-    }
-})
+interface PaginationWrapperProps {
+    alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center' | undefined;
+}
 
-function XPageItem(props: { toPage: number, currentPage: number }) {
+export const PaginationWrapper = Glamorous.div<PaginationWrapperProps>((props) => ({
+    display: 'flex',
+    flexShrink: 0,
+    alignItems: 'center',
+    alignSelf: props.alignSelf
+}))
+
+function XPageItem(props: { toPage: number, currentPage: number, disabled?: boolean }) {
     if (props.toPage > 0) {
         return (
             <MenuItem
-                as={XLink}
                 query={{ field: 'page', value: props.toPage.toString() }}
-                active={props.currentPage === props.toPage}>
+                active={props.currentPage === props.toPage}
+                disabled={props.currentPage === props.toPage}
+            >
                 {props.toPage}
             </MenuItem>
         );
     } else {
-        return <MenuItem as={XLink} query={{ field: 'page' }} active={props.currentPage === props.toPage}>1</MenuItem>;
+        return <MenuItem query={{ field: 'page' }} disabled={props.currentPage === props.toPage} active={props.currentPage === props.toPage}>1</MenuItem>;
     }
 }
 
-export function XPaging(props: XPagingProps ) {
+export function XPaging(props: XPagingProps) {
 
     let elements = new Array<any>();
     if (props.currentPage > 1) {
         elements.push(
-            <MenuItem key="page_prev" as={XLink} query={{ field: 'page', value: props.currentPage - 1 }} icon={true}>
-                <XIcon icon="keyboard_arrow_left" />
+            <MenuItem key="page_prev" icon={true} query={{ field: 'page', value: (props.currentPage - 1).toString() }}>
+                <XIcon icon="keyboard_arrow_left" className="icon" />
             </MenuItem>
         );
     }
@@ -91,33 +106,39 @@ export function XPaging(props: XPagingProps ) {
                 );
             }
             elements.push(
-                <MenuItem key={'spread'} disabled={true}>...</MenuItem>
+                <MenuSpread key={'spread'}>...</MenuSpread>
             );
 
         } else if (props.totalPages - props.currentPage < 3) {
             elements.push(
-                <MenuItem key={'spread'} disabled={true}>...</MenuItem>
+                <MenuSpread key={'spread'}>...</MenuSpread>
             );
             if (!props.openEnded) {
                 for (let i = 2; i < 5; i++) {
                     elements.push(
-                        <XPageItem key={'page_' + (props.totalPages - 5 + i)} toPage={props.totalPages - 5 + i}
-                            currentPage={props.currentPage} />
+                        <XPageItem 
+                            key={'page_' + (props.totalPages - 5 + i)} 
+                            toPage={props.totalPages - 5 + i}
+                            currentPage={props.currentPage}
+                        />
                     );
                 }
             }
         } else {
             elements.push(
-                <MenuItem disabled={true}>...</MenuItem>
+                <MenuSpread>...</MenuSpread>
             );
             for (let i = 0; i < 3; i++) {
                 elements.push(
-                    <XPageItem key={'page_' + (props.currentPage - 1 + i)} toPage={props.currentPage - 1 + i}
-                        currentPage={props.currentPage} />
+                    <XPageItem 
+                        key={'page_' + (props.currentPage - 1 + i)} 
+                        toPage={props.currentPage - 1 + i}
+                        currentPage={props.currentPage} 
+                    />
                 );
             }
             elements.push(
-                <MenuItem key={'spread'} disabled={true}>...</MenuItem>
+                <MenuSpread key={'spread'}>...</MenuSpread>
             );
         }
         if (!props.openEnded) {
@@ -129,7 +150,7 @@ export function XPaging(props: XPagingProps ) {
 
     if (props.currentPage < props.totalPages - 1) {
         elements.push(
-            <MenuItem key="page_next" as={XLink} query={{ field: 'page', value: props.currentPage + 1 }} icon={true}>
+            <MenuItem key="page_next" icon={true} query={{ field: 'page', value: (props.currentPage + 1).toString() }}>
                 <XIcon icon="keyboard_arrow_right" />
             </MenuItem>
         );
