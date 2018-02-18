@@ -5,6 +5,7 @@ import { XMapSubscriber } from '../components/X/XMapLight';
 import ApolloClient, { ApolloQueryResult } from 'apollo-client';
 import { backoff } from './timer';
 import { startProgress, stopProgress } from './routing';
+import { XMapSource } from '../components/X/XMapSource';
 
 interface GraphQLTileSourceProps {
     layer: string;
@@ -18,19 +19,17 @@ const TileWidthLarge = 0.04;
 const TileHeightLarge = 0.04;
 
 export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometry: string | null }> | null }>(QueryDocument: DocumentNode) {
-    return class GraphQLTileSource extends React.Component<GraphQLTileSourceProps> {
+    return class GraphQLTileSource extends React.Component<GraphQLTileSourceProps, { data?: any }> {
         static contextTypes = {
             mapSubscribe: PropTypes.func.isRequired,
             mapUnsubscribe: PropTypes.func.isRequired,
             client: PropTypes.object.isRequired,
         }
 
-        private isInited = false;
         private isLoading = false;
         private loadingId?: number;
         private _isMounted = false;
         private client: ApolloClient<{}> | null = null;
-        private map: mapboxgl.Map | null = null;
         private pendingBox: { south: number, north: number, east: number, west: number } | null = null;
         private loaded = new Set<string>();
         private allElements = new Map<string, { key: string, geometry: any }>();
@@ -38,23 +37,15 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
 
         constructor(props: GraphQLTileSourceProps, context: any) {
             super(props, context);
+            this.state = {};
         }
 
         listener: XMapSubscriber = (src, map) => {
-            if (!this.isInited) {
-                this.map = map;
-                this.isInited = true;
-                map.addSource(this.props.layer, { type: 'geojson', data: { 'type': 'FeatureCollection', features: [] } });
-            }
             if ((this.props.minZoom !== undefined) && (src.zoom < this.props.minZoom)) {
                 return;
             }
             this.pendingBox = src;
             this.tryInvokeLoader();
-        }
-
-        refreshState = () => {
-            (this.map!!.getSource(this.props.layer) as any).setData({ 'type': 'FeatureCollection', features: this.allFeatures });
         }
 
         tryInvokeLoader = async () => {
@@ -147,6 +138,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 //
                 // Apply
                 //
+                
                 let wasUpdated = false;
                 for (let s of loadedElements) {
                     if (!this.allElements.has(s.id)) {
@@ -156,7 +148,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                             type: 'Feature',
                             'geometry': { type: 'MultiPolygon', coordinates: geometry },
                             properties: {
-                                'parcelId': s.id
+                                'id': s.id
                             }
                         });
                         wasUpdated = true;
@@ -172,8 +164,9 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                     stopProgress(this.loadingId);
                 }
                 this.tryInvokeLoader();
+
                 if (wasUpdated) {
-                    this.refreshState();
+                    this.setState({ data: { 'type': 'FeatureCollection', features: [...this.allFeatures] } })
                 }
             }
         }
@@ -183,7 +176,9 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
         //
 
         render() {
-            return null;
+            return (
+                <XMapSource id={this.props.layer} data={this.state.data} />
+            );
         }
 
         componentDidMount() {
@@ -195,13 +190,6 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
         componentWillUnmount() {
             this._isMounted = false;
             this.context.mapUnsubscribe(this.listener);
-            if (this.map) {
-                try {
-                    this.map.removeSource(this.props.layer);
-                } catch (_) {
-                    // Ignore
-                }
-            }
             if (this.loadingId) {
                 stopProgress(this.loadingId);
             }

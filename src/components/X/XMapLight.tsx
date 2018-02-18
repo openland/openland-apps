@@ -20,7 +20,13 @@ interface XMapLightProps {
     mapStyle?: string;
 }
 
-export type XMapSubscriber = (bbox: { south: number, north: number, east: number, west: number, zoom: number }, map: mapboxgl.Map) => void;
+interface DataSources {
+    addGeoJSONSource: (source: string, data: any) => void;
+    removeGeoJsonSource: (source: string) => void;
+    findGeoJSONElement: (source: string, id: string) => any | undefined
+}
+
+export type XMapSubscriber = (bbox: { south: number, north: number, east: number, west: number, zoom: number }, map: mapboxgl.Map, sources: DataSources) => void;
 
 export class XMapLight extends React.Component<XMapLightProps> {
 
@@ -34,6 +40,31 @@ export class XMapLight extends React.Component<XMapLightProps> {
     private _isMounted = true;
     private _isLoaded = false;
     private childContext: any;
+
+    private allSources = new Map<string, Map<string, any>>();
+
+    private sources: DataSources = {
+        addGeoJSONSource: (source: string, data: Map<string, any>) => {
+            if (this.allSources.has(source)) {
+                throw Error('Source ' + source + ' already exists!');
+            }
+            this.allSources.set(source, data);
+        },
+        removeGeoJsonSource: (source: string) => {
+            if (!this.allSources.has(source)) {
+                throw Error('Source ' + source + ' does not exists!');
+            }
+            this.allSources.delete(source);
+        },
+        findGeoJSONElement: (source: string, id: string) => {
+            let src = this.allSources.get(source);
+            if (src) {
+                return src.get(id);
+            } else {
+                return undefined;
+            }
+        }
+    }
 
     constructor(props: XMapLightProps) {
         super(props);
@@ -54,7 +85,7 @@ export class XMapLight extends React.Component<XMapLightProps> {
             let zoom = this.map.getZoom();
             let bounds = this.map.getBounds();
             let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
-            subscriber(state, this.map);
+            subscriber(state, this.map, this.sources);
         }
     }
 
@@ -103,7 +134,7 @@ export class XMapLight extends React.Component<XMapLightProps> {
             let bounds = this.map.getBounds();
             let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
             for (let s of this.subscribers) {
-                s(state, this.map)
+                s(state, this.map, this.sources)
             }
         }
     }
@@ -135,7 +166,7 @@ export class XMapLight extends React.Component<XMapLightProps> {
             let bounds = map.getBounds();
             let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
             for (let s of this.subscribers) {
-                s(state, map)
+                s(state, map, this.sources)
             }
         }
 

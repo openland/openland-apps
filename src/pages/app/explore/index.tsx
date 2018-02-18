@@ -1,9 +1,6 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { withApp } from '../../../components/App/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
-import { XMapSubscriber } from '../../../components/X/XMapLight';
-import * as Turf from '@turf/turf';
 import { XCard } from '../../../components/X/XCard';
 import { withParcelDirect, ParcelTileSource, BlockTileSource } from '../../../api';
 import { XButton } from '../../../components/X/XButton';
@@ -12,155 +9,7 @@ import { XLink } from '../../../components/X/XLink';
 import { XArea } from '../../../components/X/XArea';
 import { XMoney } from '../../../components/X/XMoney';
 import { AStreetViewModal } from '../../../components/App/AStreetViewModal';
-
-class GraphQLTileSource extends React.Component<{ onClick: (parcelId: string) => void, selected?: string }> {
-    static contextTypes = {
-        mapSubscribe: PropTypes.func.isRequired,
-        mapUnsubscribe: PropTypes.func.isRequired
-    }
-
-    private isInited = false;
-    // private _isMounted = false;
-    // private map: mapboxgl.Map | null = null;
-
-    constructor(props: { onClick: (parcelId: string) => void, selected?: string }) {
-        super(props);
-    }
-
-    listener: XMapSubscriber = (src, map) => {
-        if (!this.isInited) {
-            // this.map = map;
-            this.isInited = true;
-
-            map.addSource('parsels-hover', { type: 'geojson', data: { 'type': 'FeatureCollection', features: [] } });
-            // map.addSource('parcels', {
-            //     type: 'vector',
-            //     url: 'mapbox://steve-kite.cjctj2irl0k5z2wvtz46ld417-3yj6u'
-            // });
-
-            // map.addSource('parsels', {
-            //     url: 'steve-kite.cjctj2irl0k5z2wvtz46ld417-3yj6u'
-            // })
-
-            map.addLayer({
-                'id': 'parcels-view',
-                'type': 'fill',
-                'source': 'parcels',
-                'minzoom': 16,
-                // 'source-layer': 'US_Lots',
-                'layout': {},
-                'paint': {
-                    'fill-color': '#4428e0',
-                    'fill-opacity': 0.01
-                }
-            });
-
-            map.addLayer({
-                'id': 'blocks-view',
-                'type': 'fill',
-                'source': 'blocks',
-                'minzoom': 12,
-                // 'maxzoom': 16,
-                // 'source-layer': 'US_Lots',
-                'layout': {},
-                'paint': {
-                    'fill-color': '#4428e0',
-                    'fill-opacity': 0.8
-                }
-            });
-
-            map.addLayer({
-                'id': 'parcels-borders',
-                'type': 'line',
-                'source': 'parcels',
-                // 'source-layer': 'US_Lots',
-                'layout': {},
-                'minzoom': 16,
-                'paint': {
-                    'line-color': '#4428e0',
-                    'line-width': 1,
-                    'line-opacity': 1
-                }
-            });
-            map.addLayer({
-                'id': 'parcels-view-hover',
-                'type': 'fill',
-                'source': 'parsels-hover',
-                'layout': {},
-                'paint': {
-                    'fill-color': '#088',
-                    'fill-opacity': 1
-                }
-            });
-
-            // map.addLayer({
-            //     'id': 'parcels-view-selected',
-            //     'type': 'fill',
-            //     'source': 'parcels',
-            //     'layout': {},
-            //     'paint': {
-            //         'fill-color': '#ff0000',
-            //         'fill-opacity': 1
-            //     }
-            // });
-
-            // When the user moves their mouse over the states-fill layer, we'll update the filter in
-            // the state-fills-hover layer to only show the matching state, thus making a hover effect.
-            map.on('mousemove', 'parcels-view', function (e: any) {
-                let source = map.getSource('parsels-hover');
-                if (source.type === 'geojson') {
-                    source.setData({ 'type': 'FeatureCollection', features: e.features })
-                }
-                // map.setFilter('parcels-view-hover', ['==', 'parcelId', e.features[0].properties.parcelId]);
-            });
-
-            // Reset the state-fills-hover layer's filter when the mouse leaves the layer.
-            map.on('mouseleave', 'parcels-view', function () {
-                let source = map.getSource('parsels-hover');
-                if (source.type === 'geojson') {
-                    source.setData({ 'type': 'FeatureCollection', features: [] })
-                }
-                // map.setFilter('parcels-view-hover', ['==', 'parcelId', '']);
-            });
-
-            map.on('click', 'parcels-view', (e: any) => {
-                let center = Turf.bbox(e.features[0]);
-                map.fitBounds([[center[0], center[1]], [center[2], center[3]]], {
-                    padding: {
-                        left: 100,
-                        right: 100,
-                        top: 100,
-                        bottom: 400
-                    },
-                    maxZoom: 18,
-                    duration: 300
-                });
-                this.props.onClick(e.features[0].properties.parcelId);
-            })
-            // map.setFilter('parcels-view-selected', ['==', 'parcelId', this.props.selected]);
-        }
-    }
-
-    render() {
-        return null;
-    }
-
-    componentWillReceiveProps(nextProps: { selected?: string }) {
-        // if (this.props.selected !== nextProps.selected && this.isInited && this._isMounted) {
-        //     this.map!!.setFilter('parcels-view-selected', ['==', 'parcelId', nextProps.selected]);
-        // }
-    }
-
-    componentDidMount() {
-        // this._isMounted = true;
-        this.context.mapSubscribe(this.listener);
-    }
-
-    componentWillUnmount() {
-        // this._isMounted = false;
-        this.context.mapUnsubscribe(this.listener);
-    }
-}
+import { XMapLayer } from '../../../components/X/XMapLayer';
 
 let Container = Glamorous.div({
     position: 'absolute',
@@ -249,8 +98,22 @@ class ParcelCollection extends React.Component<{}, { selected?: string }> {
         return (
             <>
                 <ParcelTileSource layer="parcels" minZoom={16} />
-                <BlockTileSource layer="blocks" minZoom={12}/>
-                <GraphQLTileSource onClick={(v: string) => this.setState({ selected: v })} selected={this.state.selected} />
+                <BlockTileSource layer="blocks" minZoom={12} />
+                <XMapLayer
+                    source="parcels"
+                    layer="parcels"
+                    minZoom={16}
+                    flyOnClick={true}
+                    onClick={(v) => this.setState({ selected: v })}
+                    selectedId={this.state.selected}
+                />
+                <XMapLayer
+                    source="blocks"
+                    layer="blocks"
+                    minZoom={12}
+                    maxZoom={16}
+                    flyOnClick={true}
+                />
                 {this.state.selected && <ParcelViewer parcelId={this.state.selected} />}
             </>
         )
