@@ -150,6 +150,20 @@ export class XMapLight extends React.Component<XMapLightProps> {
         })
     }
 
+    componentWillReceiveProps(nextProps: XMapLightProps) {
+        if (this.map && nextProps.focusPosition !== undefined) {
+            if (!this.props.focusPosition ||
+                (this.props.focusPosition.latitude !== nextProps.focusPosition.latitude) ||
+                (this.props.focusPosition.longiutude !== nextProps.focusPosition.longiutude) ||
+                (this.props.focusPosition.zoom !== nextProps.focusPosition.zoom)) {
+                this.map!!.flyTo({
+                    center: [nextProps.focusPosition.longiutude, nextProps.focusPosition.latitude],
+                    zoom: nextProps.focusPosition.zoom
+                })
+            }
+        }
+    }
+
     mapZoomHandler = () => {
         if (this.map && this._isLoaded && this._isMounted && this.subscribers.size > 0) {
             let zoom = this.map.getZoom();

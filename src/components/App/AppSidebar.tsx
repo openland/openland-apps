@@ -3,6 +3,7 @@ import Glamorous from 'glamorous';
 import { XLink } from '../X/XLink';
 import XStyled from '../X/XStyled';
 import { XIcon } from '../X/XIcon';
+import { withRouter } from '../../utils/withRouter';
 
 let Container = Glamorous.div<{ asOverlay?: boolean }>((props) => ({
     display: 'flex',
@@ -21,6 +22,16 @@ let Container = Glamorous.div<{ asOverlay?: boolean }>((props) => ({
     borderRadius: props.asOverlay ? '4px' : undefined
 }));
 
+let SidebarContainer = Glamorous.div<{ count: number }>((props) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    alignSelf: 'stretch',
+    height: props.count * 32,
+    overflow: 'hidden',
+    transition: 'height 0.3s ease-out'
+}));
+
 let SidebarItemDiv = XStyled(XLink)({
     display: 'flex',
     flexDirection: 'row',
@@ -31,6 +42,7 @@ let SidebarItemDiv = XStyled(XLink)({
     paddingLeft: '8px',
     paddingRight: '8px',
     alignItems: 'center',
+    flexShrink: 0,
 
     fontWeight: 500,
 
@@ -64,19 +76,38 @@ let ItemIcon = Glamorous(XIcon)({
     fontSize: '18px'
 })
 
-export class AppSidebarItem extends React.Component<{ title: string, icon: string, path: string, activateForSubpaths?: boolean }> {
+let ItemPaddingIcon = Glamorous.div({
+    marginLeft: '8px',
+    width: '32px',
+    fontSize: '18px'
+})
+
+export class AppSidebarItem extends React.Component<{ title: string, icon?: string, path: string, activateForSubpaths?: boolean }> {
     render() {
         return (
             <SidebarItemDiv path={this.props.path} activateForSubpaths={this.props.activateForSubpaths}>
-                <ItemIcon icon={this.props.icon} />
+                {this.props.icon && <ItemIcon icon={this.props.icon} />}
+                {!this.props.icon && <ItemPaddingIcon />}
                 {this.props.title}
             </SidebarItemDiv>
         )
     }
 }
 
+export const AppSidebarGroup = withRouter<{ paths: string[] }>((props) => {
+    let size = React.Children.count(props.children);
+    let isActive = props.paths.indexOf(props.router.pathname!!) >= 0;
+    let shownHeight = isActive ? size : 1;
+    return (
+        <SidebarContainer count={shownHeight}>
+            {props.children}
+        </SidebarContainer>
+    );
+});
+
 export class AppSidebar extends React.Component<{ asOverlay?: boolean }> {
     static Item = AppSidebarItem;
+    static Group = AppSidebarGroup;
 
     render() {
         return (
