@@ -23,7 +23,7 @@ const XSwitcherWrapper = Glamorous.div<{ alignSelf?: 'stretch' | 'flex-start' | 
 const XSwitcherItem = XStyled(XLink)({
     fontSize: 14,
     lineHeight: 1.6,
-    fontWeight: 500,
+    fontWeight: 200,
     color: '#6b7c93',
     cursor: 'pointer',
     marginRight: 8,
@@ -31,7 +31,8 @@ const XSwitcherItem = XStyled(XLink)({
         marginRight: 0
     },
     '&.is-active': {
-        color: '#6772e5'
+        color: '#6772e5',
+        fontWeight: 500,
     }
 })
 

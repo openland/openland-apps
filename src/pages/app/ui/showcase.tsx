@@ -12,6 +12,7 @@ import { XBullet } from '../../../components/X/XBullet';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XSlider } from '../../../components/X/XSlider';
 import { XSelect } from '../../../components/X/XSelect';
+import { XForm } from '../../../components/X/XForm2';
 import { Title, Text } from '../../../components/Incubator/XRowsExample';
 import { withApp } from '../../../components/App/withApp';
 import { AppContent } from '../../../components/App/AppContent';
@@ -88,7 +89,7 @@ export default withApp((props) => {
                             <XBullet title="bullet" alignSelf="flex-start" color="blue" />
                             <XBullet title="bullet" alignSelf="flex-start" color="yellow" />
                             <XSwitcher alignSelf="flex-start">
-                                <XSwitcher.Item path="/sf/ui">first</XSwitcher.Item>
+                                <XSwitcher.Item path="/app/ui">first</XSwitcher.Item>
                                 <XSwitcher.Item>second</XSwitcher.Item>
                                 <XSwitcher.Item>third</XSwitcher.Item>
                                 <XSwitcher.Item>fourth</XSwitcher.Item>
@@ -114,6 +115,25 @@ export default withApp((props) => {
                     <XCard.Warning title="Warning example with hint and button element">
                         <XButton alignSelf="flex-start">Default</XButton>
                     </XCard.Warning>
+                </XCard>
+                <XCard>
+                    <XForm>
+                        <XForm.Header title="x-form title" />
+                        <XForm.Field title="x-form-field container test">
+                            <XForm.Input placeholder="loles"/>
+                            <XForm.Select options={[{title: 'qwe1', value: 'qwe1'}, {title: 'qwe2', value: 'qwe2'}, {title: 'qwe3', value: 'qwe3'}]} />
+                        </XForm.Field>
+                        <XForm.Field title="x-form-field container test" description="If you use your SSN for tax purposes, you can enter that here. Don't have one yet? Apply online. (Sadly, the website has opening hours. Really.)">
+                            <XForm.Input placeholder="loles" />
+                        </XForm.Field>
+                    </XForm>
+                    <XForm>
+                        <XForm.Header title="x-form title" description={`$ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"`} />
+                        <XForm.Field title="x-form-field container test" description="description text" novalid={true}>
+                            <XForm.Textarea placeholder="loles" novalid={true} />
+                            <XForm.Input placeholder="loles" novalid={true} />
+                        </XForm.Field>
+                    </XForm>
                 </XCard>
                 <XCard separators={true}>
                     <XCard.Hint title="test data" />
