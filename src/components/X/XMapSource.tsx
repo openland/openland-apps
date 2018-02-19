@@ -70,8 +70,10 @@ export class XMapSource extends React.PureComponent<XMapSourceProps> {
         this.context.mapUnsubscribe(this.listener);
         if (this.map) {
             try {
+                console.warn(this.map.getStyle());
                 this.map.removeSource(this.props.id);
-            } catch (_) {
+            } catch (e) {
+                console.warn(e);
                 // Ignore
             }
             this.datasources.removeGeoJsonSource(this.props.id);

@@ -11,6 +11,7 @@ interface GraphQLTileSourceProps {
     layer: string;
     minZoom?: number;
     query?: any;
+    skip?: boolean;
 }
 
 const TileWidth = 0.005;
@@ -31,10 +32,12 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
         private loadingId?: number;
         private _isMounted = false;
         private client: ApolloClient<{}> | null = null;
-        private pendingBox: { south: number, north: number, east: number, west: number } | null = null;
+        private pendingBox: { south: number, north: number, east: number, west: number, zoom: number } | null = null;
+        private latestBox: { south: number, north: number, east: number, west: number, zoom: number } | null = null;
         private loaded = new Set<string>();
         private allElements = new Map<string, { key: string, geometry: any }>();
         private allFeatures: any[] = [];
+        private generation = 0;
 
         constructor(props: GraphQLTileSourceProps, context: any) {
             super(props, context);
@@ -42,20 +45,25 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
         }
 
         listener: XMapSubscriber = (src, map) => {
-            if ((this.props.minZoom !== undefined) && (src.zoom < this.props.minZoom)) {
+            this.latestBox = src;
+            if ((this.props.minZoom !== undefined) && (src.zoom < this.props.minZoom) || this.props.skip) {
                 return;
             }
             this.pendingBox = src;
-            this.tryInvokeLoader();
+            if (this.props.skip) {
+                return;
+            }
+            this.tryInvokeLoader(this.props);
         }
 
-        tryInvokeLoader = async () => {
+        tryInvokeLoader = async (props: GraphQLTileSourceProps) => {
             if (this.isLoading) {
                 return
             }
             if (this.pendingBox) {
                 // Save Parameters
                 let box = this.pendingBox;
+                let currentGeneration = this.generation;
 
                 // Update Internal State
                 this.isLoading = true;
@@ -98,7 +106,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                                             west: (x1 + i) * currentTileHeight,
                                             east: (x1 + i + 1) * currentTileHeight
                                         },
-                                        query: this.props.query ? JSON.stringify(this.props.query) : undefined
+                                        query: props.query ? JSON.stringify(props.query) : undefined
                                     }
                                 })
                             );
@@ -113,6 +121,10 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 // Handling updated
                 //
 
+                if (currentGeneration !== this.generation) {
+                    return;
+                }
+
                 let loadedElements: any[] = []
                 for (let e of elements) {
                     let es = await e;
@@ -125,7 +137,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 }
 
                 // Stop if component is not mounted
-                if (!this._isMounted) {
+                if (currentGeneration !== this.generation) {
                     return;
                 }
 
@@ -170,7 +182,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 if (this.loadingId) {
                     stopProgress(this.loadingId);
                 }
-                this.tryInvokeLoader();
+                this.tryInvokeLoader(this.props);
 
                 if (wasUpdated) {
                     this.setState({ data: { 'type': 'FeatureCollection', features: [...this.allFeatures] } })
@@ -188,6 +200,31 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
             );
         }
 
+        componentWillReceiveProps(nextProps: GraphQLTileSourceProps) {
+            if (nextProps.query !== this.props.query) {
+                this.isLoading = false;
+                this.loaded.clear();
+                this.allElements.clear();
+                this.allFeatures = [];
+                this.generation = this.generation + 1;
+                if (this.loadingId) {
+                    stopProgress(this.loadingId);
+                }
+
+                this.setState({ data: { 'type': 'FeatureCollection', features: [...this.allFeatures] } })
+
+                if (this.latestBox) {
+                    if ((nextProps.minZoom !== undefined) && (this.latestBox.zoom < nextProps.minZoom) || nextProps.skip) {
+                        return;
+                    }
+                    this.pendingBox = this.latestBox;
+                }
+
+                this.tryInvokeLoader(nextProps);
+            }
+            //
+        }
+
         componentDidMount() {
             this._isMounted = true;
             this.client = this.context.client as ApolloClient<{}>;
@@ -196,6 +233,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
 
         componentWillUnmount() {
             this._isMounted = false;
+            this.generation = this.generation + 1;
             this.context.mapUnsubscribe(this.listener);
             if (this.loadingId) {
                 stopProgress(this.loadingId);

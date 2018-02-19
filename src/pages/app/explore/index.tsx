@@ -8,7 +8,9 @@ import { XSlider } from '../../../components/X/XSlider';
 import { XSelect } from '../../../components/X/XSelect';
 import { XVertical } from '../../../components/X/XVertical';
 import { ParcelCard } from '../../../components/ParcelCard';
-import { ParcelTileSource, BlockTileSource } from '../../../api';
+import { ParcelTileSource, BlockTileSource, ParcelPointSource } from '../../../api';
+import { XButton } from '../../../components/X/XButton';
+import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 
 const FilterContainer = Glamorous(XCard)({
     position: 'absolute',
@@ -16,20 +18,36 @@ const FilterContainer = Glamorous(XCard)({
     right: 30,
     zIndex: 1,
     width: 208,
-    padding: 8,
+    padding: 16,
     pointerEvents: 'auto',
-    backgroundColor: 'rgb(245, 246, 248)',
-    '& > div > div > span': {
-        display: 'block',
-        marginBottom: 3
-    }
+    // backgroundColor: 'rgb(245, 246, 248)',
+    // '& > div > div > span': {
+    //     display: 'block',
+    //     marginBottom: 3
+    // }
 })
 
-class ParcelCollection extends React.Component<{}, { selected?: string }> {
+const AllZones = ['NC-1', 'NC-3']
+
+class ParcelCollection extends React.Component<{}, { selected?: string, zones?: any, query?: any }> {
     constructor(props: {}) {
         super(props);
-        this.state = {};
+        this.state = { zones: [] };
     }
+
+    handleZonesChange = (src: any) => {
+        this.setState({ zones: src });
+    }
+
+    handleUpdate = (e: any) => {
+        e.preventDefault();
+        if (this.state.zones) {
+            this.setState({ query: { 'zone': this.state.zones.value } })
+        } else {
+            this.setState({ query: undefined })
+        }
+    }
+
     render() {
         return (
             <>
@@ -54,19 +72,21 @@ class ParcelCollection extends React.Component<{}, { selected?: string }> {
                         borderOpacity: 0.3
                     }}
                 />
+
+                <ParcelPointSource layer="parcels-found" query={this.state.query} minZoom={12} skip={this.state.query === undefined} />
+                <XMapPointLayer source="parcels-found" layer="parcels-found" />
+
                 {this.state.selected && <ParcelCard parcelId={this.state.selected} />}
                 <FilterContainer>
                     <XVertical>
                         <div>
                             <span>Zoning</span>
                             <div>
-                                <XSelect 
+                                <XSelect
                                     name="form-field-name"
-                                    value={'value'}
-                                    options={[
-                                        { value: 'one', label: 'One' },
-                                        { value: 'two', label: 'Two' },
-                                    ]}
+                                    value={this.state.zones}
+                                    options={AllZones.map((v) => ({ value: v, label: v }))}
+                                    onChange={this.handleZonesChange}
                                 />
                             </div>
                         </div>
@@ -76,6 +96,7 @@ class ParcelCollection extends React.Component<{}, { selected?: string }> {
                                 <XSlider.Slider />
                             </XSlider>
                         </div>
+                        <XButton onClick={this.handleUpdate}>Apply</XButton>
                     </XVertical>
                 </FilterContainer>
             </>
