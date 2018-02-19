@@ -19,7 +19,7 @@ const TileHeight = 0.005;
 const TileWidthLarge = 0.04;
 const TileHeightLarge = 0.04;
 
-export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometry: string | null }> | null }>(QueryDocument: DocumentNode) {
+export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometry?: string | null, center?: { latitude: number, longitude: number } | null }> | null }>(QueryDocument: DocumentNode, cluster?: boolean) {
     return class GraphQLTileSource extends React.Component<GraphQLTileSourceProps, { data?: any }> {
         static contextTypes = {
             mapSubscribe: PropTypes.func.isRequired,
@@ -136,15 +136,28 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 let wasUpdated = false;
                 for (let s of loadedElements) {
                     if (!this.allElements.has(s.id)) {
-                        let geometry = (JSON.parse(s.geometry as any) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]);
-                        this.allElements.set(s.id, { key: s.id, geometry: geometry });
-                        this.allFeatures.push({
-                            type: 'Feature',
-                            'geometry': { type: 'MultiPolygon', coordinates: geometry },
-                            properties: {
-                                'id': s.id
-                            }
-                        });
+                        if (s.geometry) {
+                            let geometry = (JSON.parse(s.geometry as any) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]);
+                            this.allElements.set(s.id, { key: s.id, geometry: geometry });
+                            this.allFeatures.push({
+                                type: 'Feature',
+                                'geometry': { type: 'MultiPolygon', coordinates: geometry },
+                                properties: {
+                                    'id': s.id
+                                }
+                            });
+                        } else if (s.center) {
+                            let latitude = s.center.latitude as number;
+                            let longitude = s.center.longitude as number;
+                            this.allElements.set(s.id, { key: s.id, geometry: { latitude: latitude, longitude: longitude } });
+                            this.allFeatures.push({
+                                type: 'Feature',
+                                'geometry': { type: 'Point', coordinates: [longitude, latitude] },
+                                properties: {
+                                    'id': s.id
+                                }
+                            });
+                        }
                         wasUpdated = true;
                     }
                 }
@@ -171,7 +184,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
 
         render() {
             return (
-                <XMapSource id={this.props.layer} data={this.state.data} />
+                <XMapSource id={this.props.layer} data={this.state.data} cluster={cluster} />
             );
         }
 

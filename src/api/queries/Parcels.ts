@@ -132,6 +132,18 @@ export const ParcelsTileOverlay = gql`
     }
 `;
 
+export const ParcelsPointOverlay = gql`
+    query ParcelsPointOverlay($box: GeoBox!, $query: String) {
+        tiles: parcelsOverlay(box: $box, limit: 5000, query: $query) {
+            id
+            center {
+                latitude
+                longitude
+            }
+        }
+    }
+`;
+
 export const BlocksTileOverlay = gql`
     query BlocksTileOverlay($box: GeoBox!, $query: String) {
         tiles: blocksOverlay(box: $box, limit: 5000, query: $query) {

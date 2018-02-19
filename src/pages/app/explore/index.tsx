@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../../components/App/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
-import { XMapLayer } from '../../../components/X/XMapLayer';
+import { XMapSelectableLayer } from '../../../components/X/XMapSelectableLayer';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelTileSource, BlockTileSource } from '../../../api';
 
@@ -15,7 +15,7 @@ class ParcelCollection extends React.Component<{}, { selected?: string }> {
             <>
                 <ParcelTileSource layer="parcels" minZoom={16} />
                 <BlockTileSource layer="blocks" minZoom={12} />
-                <XMapLayer
+                <XMapSelectableLayer
                     source="parcels"
                     layer="parcels"
                     minZoom={16}
@@ -23,7 +23,7 @@ class ParcelCollection extends React.Component<{}, { selected?: string }> {
                     onClick={(v) => this.setState({ selected: v })}
                     selectedId={this.state.selected}
                 />
-                <XMapLayer
+                <XMapSelectableLayer
                     source="blocks"
                     layer="blocks"
                     minZoom={12}

@@ -3702,6 +3702,18 @@
               "deprecationReason": null
             },
             {
+              "name": "center",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Geo",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "block",
               "description": "",
               "args": [],

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { withApp } from '../../../components/App/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
-import { XMapLayer } from '../../../components/X/XMapLayer';
+import { XMapSelectableLayer } from '../../../components/X/XMapSelectableLayer';
 import { ParcelCard } from '../../../components/ParcelCard';
-import { ParcelTileSource, BlockTileSource } from '../../../api';
+import { ParcelTileSource, BlockTileSource, ParcelPointSource } from '../../../api';
+import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 
 let query = { '$and': [{ 'stories': { 'gt': 1, 'lte': 2 } }, { 'zone': 'NC-3' }] };
 
@@ -17,8 +18,8 @@ class ParcelCollection extends React.Component<{}, { selected?: string }> {
             <>
                 <ParcelTileSource layer="parcels" minZoom={16} />
                 <BlockTileSource layer="blocks" minZoom={12} />
-                <ParcelTileSource layer="parcels-found" query={query} minZoom={16} />
-                <XMapLayer
+                <ParcelPointSource layer="parcels-found" query={query} minZoom={12} />
+                <XMapSelectableLayer
                     source="parcels"
                     layer="parcels"
                     minZoom={16}
@@ -26,7 +27,8 @@ class ParcelCollection extends React.Component<{}, { selected?: string }> {
                     onClick={(v) => this.setState({ selected: v })}
                     selectedId={this.state.selected}
                 />
-                <XMapLayer
+                <XMapPointLayer source="parcels-found" layer="parcels-found" />
+                {/* <XMapSelectableLayer
                     source="parcels-found"
                     layer="parcels-found"
                     flyOnClick={true}
@@ -36,8 +38,8 @@ class ParcelCollection extends React.Component<{}, { selected?: string }> {
                         borderColor: '#ff0000',
                         borderOpacity: 1
                     }}
-                />
-                <XMapLayer
+                /> */}
+                <XMapSelectableLayer
                     source="blocks"
                     layer="blocks"
                     minZoom={12}

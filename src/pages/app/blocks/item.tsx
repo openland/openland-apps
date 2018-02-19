@@ -5,9 +5,8 @@ import { withBlock, ParcelTileSource, BlockTileSource } from '../../../api/index
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { convertMapPatch, findCenter } from '../../../utils/map';
-import { XMap } from '../../../components/X/XMap';
 import { XArea } from '../../../components/X/XArea';
-import { XMapLayer } from '../../../components/X/XMapLayer';
+import { XMapSelectableLayer } from '../../../components/X/XMapSelectableLayer';
 
 export default withApp(withBlock((props) => {
     return (
@@ -28,26 +27,19 @@ export default withApp(withBlock((props) => {
                     }
                 </XCard.PropertyList>
             </XCard>
-            {props.data.item.parcels.length === 0 && props.data.item.geometry && (
-                <XCard shadow="medium" separators={true}>
-                    <XCard.Map location={findCenter(convertMapPatch(props.data.item.geometry))}>
-                        <XMap.Overlay id={'some'} records={[{ id: props.data.item.id, geometry: props.data.item.geometry }]} />
-                    </XCard.Map>
-                </XCard>
-            )}
 
             {props.data.item.parcels.length > 0 && props.data.item.geometry && (
                 <XCard shadow="medium" separators={true}>
                     <XCard.Map location={findCenter(convertMapPatch(props.data.item.geometry))}>
                         <ParcelTileSource layer="parcels" minZoom={16} />
                         <BlockTileSource layer="blocks" minZoom={12} />
-                        <XMapLayer
+                        <XMapSelectableLayer
                             source="parcels"
                             layer="parcels"
                             minZoom={16}
                             flyOnClick={true}
                         />
-                        <XMapLayer
+                        <XMapSelectableLayer
                             source="blocks"
                             layer="blocks"
                             minZoom={12}

@@ -10,7 +10,7 @@ import { XArea } from '../../../components/X/XArea';
 import { XMoney } from '../../../components/X/XMoney';
 import { formatAddresses } from '../../../utils/Addresses';
 import { AStreetViewModal } from '../../../components/App/AStreetViewModal';
-import { XMapLayer } from '../../../components/X/XMapLayer';
+import { XMapSelectableLayer } from '../../../components/X/XMapSelectableLayer';
 
 export default withApp(withParcel((props) => {
     return (
@@ -77,7 +77,7 @@ export default withApp(withParcel((props) => {
                     <XCard.Map location={findCenter(convertMapPatch(props.data.item.geometry))}>
                         <ParcelTileSource layer="parcels" minZoom={16} />
                         <BlockTileSource layer="blocks" minZoom={12} />
-                        <XMapLayer
+                        <XMapSelectableLayer
                             source="parcels"
                             layer="parcels"
                             minZoom={16}
@@ -85,7 +85,7 @@ export default withApp(withParcel((props) => {
                             selectedId={props.data.item.id}
                             onClick={(v) => props.router.push('/app/parcels/' + v)}
                         />
-                        <XMapLayer
+                        <XMapSelectableLayer
                             source="blocks"
                             layer="blocks"
                             minZoom={12}

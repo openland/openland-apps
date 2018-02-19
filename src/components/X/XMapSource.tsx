@@ -5,9 +5,10 @@ import { XMapSubscriber, DataSources } from './XMapLight';
 export interface XMapSourceProps {
     id: string;
     data?: any;
+    cluster?: boolean;
 }
 
-export class XMapSource extends React.PureComponent<{ id: string, data?: any }> {
+export class XMapSource extends React.PureComponent<XMapSourceProps> {
     static contextTypes = {
         mapSubscribe: PropTypes.func.isRequired,
         mapUnsubscribe: PropTypes.func.isRequired,
@@ -23,7 +24,13 @@ export class XMapSource extends React.PureComponent<{ id: string, data?: any }> 
             this.isInited = true;
             let dt = this.props.data !== undefined ? this.props.data : { 'type': 'FeatureCollection', features: [] };
             datasources.addGeoJSONSource(this.props.id, dt);
-            map.addSource(this.props.id, { type: 'geojson', data: dt });
+            map.addSource(this.props.id, {
+                type: 'geojson',
+                data: dt,
+                cluster: this.props.cluster || false,
+                clusterMaxZoom: 14,
+                clusterRadius: 50
+            });
         }
     }
 
@@ -34,7 +41,13 @@ export class XMapSource extends React.PureComponent<{ id: string, data?: any }> 
                 this.map.removeSource(this.props.id);
                 this.datasources.removeGeoJsonSource(this.props.id);
                 this.datasources.addGeoJSONSource(this.props.id, dt);
-                this.map.addSource(nextProps.id, { type: 'geojson', data: dt });
+                this.map.addSource(nextProps.id, {
+                    type: 'geojson',
+                    data: dt,
+                    cluster: this.props.cluster || false,
+                    clusterMaxZoom: 14,
+                    clusterRadius: 50
+                });
             } else {
                 let source = this.map.getSource(this.props.id)
                 if (source.type === 'geojson') {

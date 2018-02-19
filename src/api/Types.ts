@@ -759,6 +759,23 @@ export interface ParcelsTileOverlayQuery {
   } > | null,
 };
 
+export interface ParcelsPointOverlayQueryVariables {
+  box: GeoBox,
+  query?: string | null,
+};
+
+export interface ParcelsPointOverlayQuery {
+  tiles:  Array< {
+    __typename: "Parcel",
+    id: string,
+    center:  {
+      __typename: "Geo",
+      latitude: number,
+      longitude: number,
+    } | null,
+  } > | null,
+};
+
 export interface BlocksTileOverlayQueryVariables {
   box: GeoBox,
   query?: string | null,

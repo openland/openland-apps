@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { XMapSubscriber, DataSources } from './XMapLight';
 import * as Turf from '@turf/turf';
 
-interface XMapLayerStyle {
+interface XMapSelectableLayerStyle {
 
     fillColor?: string;
     fillOpacity?: number;
@@ -24,11 +24,11 @@ interface XMapLayerStyle {
     selectedBorderWidth?: number;
 }
 
-interface XMapLayerProps {
+interface XMapSelectableLayerProps {
     source: string;
     layer: string;
 
-    style?: XMapLayerStyle;
+    style?: XMapSelectableLayerStyle;
 
     minZoom?: number;
     maxZoom?: number;
@@ -42,7 +42,7 @@ interface XMapLayerProps {
     selectedId?: string;
 }
 
-export class XMapLayer extends React.Component<XMapLayerProps> {
+export class XMapSelectableLayer extends React.Component<XMapSelectableLayerProps> {
     static contextTypes = {
         mapSubscribe: PropTypes.func.isRequired,
         mapUnsubscribe: PropTypes.func.isRequired
@@ -61,7 +61,7 @@ export class XMapLayer extends React.Component<XMapLayerProps> {
 
     private focusedId?: string;
 
-    constructor(props: XMapLayerProps) {
+    constructor(props: XMapSelectableLayerProps) {
         super(props);
         this.layer = props.layer;
         this.source = props.source;
@@ -290,7 +290,7 @@ export class XMapLayer extends React.Component<XMapLayerProps> {
         return null;
     }
 
-    componentWillReceiveProps(nextProps: XMapLayerProps) {
+    componentWillReceiveProps(nextProps: XMapSelectableLayerProps) {
         if (this.props.selectedId !== nextProps.selectedId && this.isInited && this._isMounted) {
             if (nextProps.selectedId !== undefined) {
                 let element = this.datasources!!.findGeoJSONElement(this.source, nextProps.selectedId);
@@ -312,7 +312,7 @@ export class XMapLayer extends React.Component<XMapLayerProps> {
     }
 
     componentWillUnmount() {
-        this._isMounted = true;
+        this._isMounted = false;
         this.context.mapUnsubscribe(this.listener);
         if (this.map) {
             try {
