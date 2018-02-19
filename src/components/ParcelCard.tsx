@@ -1,8 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink } from './X/XLink';
-import { XArea } from './X/XArea';
-import { XMoney } from './X/XMoney';
 import { AStreetViewModal } from './App/AStreetViewModal';
 import { XCard } from './X/XCard';
 import { withParcelDirect } from '../api';
