@@ -142,7 +142,6 @@ let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium', loading?: 
             ? '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)'
             : undefined,
     color: '#262626',
-    overflow: 'hidden',
     borderRadius: 4,
     position: 'relative',
     '&::before': {
