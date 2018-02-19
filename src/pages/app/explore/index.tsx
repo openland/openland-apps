@@ -29,22 +29,35 @@ const FilterContainer = Glamorous(XCard)({
 
 const AllZones = ['NC-1', 'NC-3']
 
-class ParcelCollection extends React.Component<{}, { selected?: string, zones?: any, query?: any }> {
+class ParcelCollection extends React.Component<{}, { selected?: string, zones?: any, stories?: any, query?: any }> {
     constructor(props: {}) {
         super(props);
-        this.state = { zones: [] };
+        this.state = {};
     }
 
     handleZonesChange = (src: any) => {
         this.setState({ zones: src });
     }
 
+    handleStoriesChange = (src: any) => {
+        this.setState({ stories: src });
+    }
+
     handleUpdate = (e: any) => {
         e.preventDefault();
-        if (this.state.zones) {
-            this.setState({ query: { 'zone': this.state.zones.value } })
+        if ((this.state.zones && this.state.zones.value) || (this.state.stories && this.state.stories.value)) {
+            let clauses: any[] = [];
+            if (this.state.zones && this.state.zones.value) {
+                clauses.push({ 'zone': this.state.zones.value })
+            }
+            if (this.state.stories && this.state.stories.value) {
+                clauses.push({ 'stories': this.state.stories.value })
+            }
+            let query = { '$and': clauses };
+            console.warn(query);
+            this.setState({ query: query });
         } else {
-            this.setState({ query: undefined })
+            this.setState({ query: undefined });
         }
     }
 
@@ -83,7 +96,7 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                             <span>Zoning</span>
                             <div>
                                 <XSelect
-                                    name="form-field-name"
+                                    name="zoning-field"
                                     value={this.state.zones}
                                     options={AllZones.map((v) => ({ value: v, label: v }))}
                                     onChange={this.handleZonesChange}
@@ -91,11 +104,27 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                             </div>
                         </div>
                         <div>
+                            <span>Stories</span>
+                            <div>
+                                <XSelect
+                                    name="address-field"
+                                    value={this.state.stories}
+                                    options={[
+                                        { value: '0', label: 'no stories' },
+                                        { value: '1', label: '1 story' },
+                                        { value: '2', label: '2 stories' },
+                                        { value: '3', label: '3 stories' },
+                                        { value: '4', label: '4 stories' }]}
+                                    onChange={this.handleStoriesChange}
+                                />
+                            </div>
+                        </div>
+                        {/* <div>
                             <span>Area</span>
                             <XSlider>
-                                <XSlider.Slider />
+                                <XSlider.Range />
                             </XSlider>
-                        </div>
+                        </div> */}
                         <XButton onClick={this.handleUpdate}>Apply</XButton>
                     </XVertical>
                 </FilterContainer>
