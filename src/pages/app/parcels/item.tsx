@@ -54,14 +54,14 @@ export default withApp(withParcel((props) => {
                         {props.data.item!!.extrasYear !== null &&
                             <XCard.Property title="Year Built">{props.data.item!!.extrasYear}</XCard.Property>
                         }
-                        {props.data.item.extrasStories !== null &&
-                            <XCard.Property title="Stories Count">{props.data.item.extrasStories}</XCard.Property>
+                        {props.data.item!!.extrasUnits !== null &&
+                            <XCard.Property title="Buildings Count">{props.data.item!!.extrasUnits}</XCard.Property>
                         }
-                        {props.data.item.extrasUnits !== null &&
-                            <XCard.Property title="Units Count">{props.data.item.extrasUnits}</XCard.Property>
+                        {props.data.item!!.extrasStories !== null &&
+                            <XCard.Property title="Stories Count">{props.data.item!!.extrasStories}</XCard.Property>
                         }
-                        {props.data.item.extrasRooms !== null &&
-                            <XCard.Property title="Rooms Count">{props.data.item.extrasRooms}</XCard.Property>
+                        {props.data.item!!.extrasRooms !== null &&
+                            <XCard.Property title="Units Count">{props.data.item!!.extrasRooms}</XCard.Property>
                         }
                         {props.data.item.extrasBedrooms !== null &&
                             <XCard.Property title="Bedrooms Count">{props.data.item.extrasBedrooms}</XCard.Property>
