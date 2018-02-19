@@ -30,7 +30,6 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
 
         private isLoading = false;
         private loadingId?: number;
-        private _isMounted = false;
         private client: ApolloClient<{}> | null = null;
         private pendingBox: { south: number, north: number, east: number, west: number, zoom: number } | null = null;
         private latestBox: { south: number, north: number, east: number, west: number, zoom: number } | null = null;
@@ -226,13 +225,11 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
         }
 
         componentDidMount() {
-            this._isMounted = true;
             this.client = this.context.client as ApolloClient<{}>;
             this.context.mapSubscribe(this.listener);
         }
 
         componentWillUnmount() {
-            this._isMounted = false;
             this.generation = this.generation + 1;
             this.context.mapUnsubscribe(this.listener);
             if (this.loadingId) {
