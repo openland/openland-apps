@@ -4,7 +4,6 @@ import { withApp } from '../../../components/App/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
 import { XMapSelectableLayer } from '../../../components/X/XMapSelectableLayer';
 import { XCard } from '../../../components/X/XCard';
-import { XSlider } from '../../../components/X/XSlider';
 import { XSelect } from '../../../components/X/XSelect';
 import { XVertical } from '../../../components/X/XVertical';
 import { ParcelCard } from '../../../components/ParcelCard';
