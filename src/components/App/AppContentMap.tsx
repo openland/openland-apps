@@ -3,9 +3,6 @@ import Glamorous from 'glamorous';
 import { XDocumentAppRootFullScreen } from '../X/Scaffold/XDocumentRoot';
 import { AppSidebar } from './AppSidebar';
 import { XHead } from '../X/XHead';
-import { XSlider } from '../X/XSlider';
-import { XSelect } from '../X/XSelect';
-import { XVertical } from '../X/XVertical';
 import { XMapLight } from '../X/XMapLight';
 import { AppHeader } from './AppHeader';
 import { AppNavigation } from './AppNavigation';
@@ -39,22 +36,6 @@ const MapContainer = Glamorous.div({
     minWidth: '1020px'
 })
 
-const FilterContainer = Glamorous.div({
-    display: 'flex',
-    alignSelf: 'flex-end',
-    flexDirection: 'column',
-    width: 208,
-    padding: 8,
-    pointerEvents: 'auto',
-    backgroundColor: 'rgb(245, 246, 248)',
-    boxShadow: '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)',
-    borderRadius: 4,
-    '& > div > div > span': {
-        display: 'block',
-        marginBottom: 3
-    }
-})
-
 let Container = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
@@ -85,32 +66,7 @@ export class AppContentMap extends React.Component {
                             <AppNavigation />
                         </AppSidebar>
                         <Container>
-                            <XVertical>
-                                <AppHeader />
-                                <FilterContainer>
-                                    <XVertical>
-                                        <div>
-                                        <span>Zoning</span>
-                                            <div>
-                                                <XSelect 
-                                                    name="form-field-name"
-                                                    value={'value'}
-                                                    options={[
-                                                        { value: 'one', label: 'One' },
-                                                        { value: 'two', label: 'Two' },
-                                                    ]}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span>Area</span>
-                                            <XSlider>
-                                                <XSlider.Slider />
-                                            </XSlider>
-                                        </div>
-                                    </XVertical>
-                                </FilterContainer>
-                            </XVertical>
+                            <AppHeader />
                         </Container>
                     </ClassicalContainer>
                 </ClassicalWrapper>

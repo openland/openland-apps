@@ -1,9 +1,32 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { withApp } from '../../../components/App/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
 import { XMapSelectableLayer } from '../../../components/X/XMapSelectableLayer';
+import { XSlider } from '../../../components/X/XSlider';
+import { XSelect } from '../../../components/X/XSelect';
+import { XVertical } from '../../../components/X/XVertical';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelTileSource, BlockTileSource } from '../../../api';
+
+const FilterContainer = Glamorous.div({
+    position: 'absolute',
+    top: 60,
+    right: 30,
+    zIndex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    width: 208,
+    padding: 8,
+    pointerEvents: 'auto',
+    backgroundColor: 'rgb(245, 246, 248)',
+    boxShadow: '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)',
+    borderRadius: 4,
+    '& > div > div > span': {
+        display: 'block',
+        marginBottom: 3
+    }
+})
 
 class ParcelCollection extends React.Component<{}, { selected?: string }> {
     constructor(props: {}) {
@@ -35,6 +58,29 @@ class ParcelCollection extends React.Component<{}, { selected?: string }> {
                     }}
                 />
                 {this.state.selected && <ParcelCard parcelId={this.state.selected} />}
+                <FilterContainer>
+                    <XVertical>
+                        <div>
+                            <span>Zoning</span>
+                            <div>
+                                <XSelect 
+                                    name="form-field-name"
+                                    value={'value'}
+                                    options={[
+                                        { value: 'one', label: 'One' },
+                                        { value: 'two', label: 'Two' },
+                                    ]}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <span>Area</span>
+                            <XSlider>
+                                <XSlider.Slider />
+                            </XSlider>
+                        </div>
+                    </XVertical>
+                </FilterContainer>
             </>
         )
     }

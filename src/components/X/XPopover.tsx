@@ -142,7 +142,7 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
 
         let targetClone = React.cloneElement(target as any, { handler: this.handler as any });
         let children = (
-            <div ref={this.handlePortal}>
+            <div ref={this.handlePortal} style={{zIndex: 2}}>
                 {content}
             </div>
         );
