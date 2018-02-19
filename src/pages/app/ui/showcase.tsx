@@ -10,7 +10,7 @@ import { XLinkExternal } from '../../../components/X/XLinkExternal';
 import { XView } from '../../../components/X/XView';
 import { XBullet } from '../../../components/X/XBullet';
 import { XSwitcher } from '../../../components/X/XSwitcher';
-import { XSlider } from '../../../components/X/XSlider';
+import { XSlider, XRange } from '../../../components/X/XSlider';
 import { XSelect } from '../../../components/X/XSelect';
 import { XForm } from '../../../components/X/XForm2';
 import { Title, Text } from '../../../components/Incubator/XRowsExample';
@@ -94,12 +94,8 @@ export default withApp((props) => {
                                 <XSwitcher.Item>third</XSwitcher.Item>
                                 <XSwitcher.Item>fourth</XSwitcher.Item>
                             </XSwitcher>
-                            <XSlider>
-                                <XSlider.Slider />
-                            </XSlider>
-                            <XSlider>
-                                <XSlider.Range />
-                            </XSlider>
+                            <XSlider dots step={5} defaultValue={100} />
+                            <XRange dots step={5} defaultValue={[20, 40]} />
                         </XVertical>
                     </XCard.Content>
                 </XCard>
