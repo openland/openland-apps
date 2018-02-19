@@ -1,7 +1,7 @@
 import { MutationFunc } from 'react-apollo';
 import { graphqlRouted } from '../utils/graphqlRouted';
 import { graphqlMutation } from '../utils/graphqlMutation';
-import { graphqlCompose3 } from '../utils/graphqlCompose';
+import { graphqlCompose3, graphqlCompose2 } from '../utils/graphqlCompose';
 import * as Types from './Types';
 import * as Area from './queries/Area';
 import * as AreaStats from './queries/AreaStats';
@@ -92,6 +92,9 @@ export const withParcelDirect = graphql<Types.ParcelQuery, { parcelId: string }>
 export const ParcelTileSource = graphQLTileSource<Types.ParcelsTileOverlayQuery>(Parcels.ParcelsTileOverlay);
 export const ParcelPointSource = graphQLTileSource<Types.ParcelsPointOverlayQuery>(Parcels.ParcelsPointOverlay, true);
 export const BlockTileSource = graphQLTileSource<Types.BlocksTileOverlayQuery>(Parcels.BlocksTileOverlay);
+
+const ParcelMetadataAlter = graphqlMutation<{ parcelAlterMetadata: MutationFunc<Types.ParcelAlterMutationVariables> }>(Parcels.ParcelAlter, { name: 'parcelAlterMetadata', params: ['parcelId'] });
+export const withParcelMetadataForm = graphqlCompose2(withParcel, ParcelMetadataAlter);
 
 //
 // Pictures

@@ -1,0 +1,30 @@
+import * as React from 'react';
+import { withApp } from '../../../components/App/withApp';
+import { XCard } from '../../../components/X/XCard';
+import { withParcelMetadataForm } from '../../../api/index';
+import { AppContent } from '../../../components/App/AppContent';
+import { XButton } from '../../../components/X/XButton';
+import { XForm } from '../../../components/X/XForm';
+
+export default withApp(withParcelMetadataForm((props) => {
+    return (
+        <AppContent>
+            <XCard shadow="medium" separators={true}>
+                <XCard.Header title={'Update Parcel #' + props.data.item.title} />
+                <XForm
+                    defaultValues={props.data.item.metadata}
+                    submitMutation={props.parcelAlterMetadata}
+                    completePath={'/app/parcels/' + props.data.item.id}
+                >
+                    <XForm.Field title="Description">
+                        <XForm.Text field="description" />
+                    </XForm.Field>
+                    <XForm.Footer>
+                        <XForm.Submit style="dark">Save</XForm.Submit>
+                        <XButton path={'/app/parcels/' + props.data.item.id}>Cancel</XButton>
+                    </XForm.Footer>
+                </XForm>
+            </XCard>
+        </AppContent>
+    );
+}));

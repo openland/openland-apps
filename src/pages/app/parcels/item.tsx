@@ -19,7 +19,7 @@ export default withApp(withParcel((props) => {
                 <XCard.Hint title="Public" />
                 <XCard.Header title={'Parcel #' + props.data.item.title} description={formatAddresses(props.data.item.addresses)}>
                     {props.data.item.geometry && <AStreetViewModal geometry={props.data.item.geometry} />}
-                    <XButton>Edit</XButton>
+                    <XButton path={'/app/parcels/' + props.data.item.id + '/edit'}>Edit</XButton>
                 </XCard.Header>
                 <XCard.PropertyColumns>
                     <XCard.PropertyList>
@@ -68,6 +68,9 @@ export default withApp(withParcel((props) => {
                         }
                         {props.data.item.extrasBathrooms !== null &&
                             <XCard.Property title="Bathrooms Count">{props.data.item.extrasBathrooms}</XCard.Property>
+                        }
+                        {props.data.item.metadata.description !== null &&
+                            <XCard.Property title="Description">{props.data.item.metadata.description}</XCard.Property>
                         }
                     </XCard.PropertyList>
                 </XCard.PropertyColumns>

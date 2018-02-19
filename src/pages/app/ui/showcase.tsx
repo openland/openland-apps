@@ -12,7 +12,7 @@ import { XBullet } from '../../../components/X/XBullet';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XSlider } from '../../../components/X/XSlider';
 import { XSelect } from '../../../components/X/XSelect';
-import { XForm } from '../../../components/X/XForm2';
+import { XForm } from '../../../components/X/XForm';
 import { Title, Text } from '../../../components/Incubator/XRowsExample';
 import { withApp } from '../../../components/App/withApp';
 import { AppContent } from '../../../components/App/AppContent';

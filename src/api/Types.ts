@@ -8,6 +8,10 @@ export interface GeoBox {
   south: number,
 };
 
+export interface ParcelMetadataInput {
+  description?: string | null,
+};
+
 export enum PermitStatus {
   FILING = "FILING",
   FILED = "FILED",
@@ -690,6 +694,10 @@ export interface ParcelsConnectionQuery {
           title: string,
           extrasArea: number | null,
         },
+        metadata:  {
+          __typename: "ParcelMetadata",
+          description: string | null,
+        },
       },
       cursor: string,
     } >,
@@ -743,6 +751,10 @@ export interface ParcelQuery {
       title: string,
       extrasArea: number | null,
     },
+    metadata:  {
+      __typename: "ParcelMetadata",
+      description: string | null,
+    },
   },
 };
 
@@ -787,6 +799,22 @@ export interface BlocksTileOverlayQuery {
     id: string,
     geometry: string | null,
   } > | null,
+};
+
+export interface ParcelAlterMutationVariables {
+  parcelId: string,
+  data: ParcelMetadataInput,
+};
+
+export interface ParcelAlterMutation {
+  parcelAlterMetadata:  {
+    __typename: "Parcel",
+    id: string,
+    metadata:  {
+      __typename: "ParcelMetadata",
+      description: string | null,
+    },
+  },
 };
 
 export interface PermitQueryVariables {
@@ -1591,6 +1619,10 @@ export interface ParcelFullFragment {
     id: string,
     title: string,
     extrasArea: number | null,
+  },
+  metadata:  {
+    __typename: string,
+    description: string | null,
   },
 };
 

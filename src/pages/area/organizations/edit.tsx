@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withOrganizationAlter } from '../../../api';
 import { withLoader } from '../../../components/Base/withLoader';
-import { XForm, XFormField, XFormFieldCheck, XFormImage, XFormSubmit } from '../../../components/X/XForm';
+import { XForm, XFormField, XFormFieldCheck, XFormImage, XFormSubmit } from '../../../components/X/XForm3';
 import { XButton2 } from '../../../components/X/XButton2';
 import { XHead } from '../../../components/X/XHead';
 import { Links } from '../../../Links';

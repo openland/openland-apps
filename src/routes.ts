@@ -28,6 +28,8 @@ routes.add('/app/parcels', '/app/parcels/list');
 routes.add('/app/parcels/', '/app/parcels/list');
 routes.add('/app/parcels/:parcelId', '/app/parcels/item');
 routes.add('/app/parcels/:parcelId/', '/app/parcels/item');
+routes.add('/app/parcels/:parcelId/edit', '/app/parcels/edit');
+routes.add('/app/parcels/:parcelId/edit/', '/app/parcels/edit');
 
 //
 // Projects

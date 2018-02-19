@@ -31,6 +31,9 @@ export const ParcelFull = gql`
         title
         extrasArea
       }
+      metadata {
+        description
+      }
   }
 `
 
@@ -149,6 +152,17 @@ export const BlocksTileOverlay = gql`
         tiles: blocksOverlay(box: $box, limit: 5000, query: $query) {
             id
             geometry
+        }
+    }
+`;
+
+export const ParcelAlter = gql`
+    mutation ParcelAlter($parcelId: ID!, $data: ParcelMetadataInput!) {
+        parcelAlterMetadata(id: $parcelId, data: $data) {
+            id
+            metadata {
+                description
+            }
         }
     }
 `;
