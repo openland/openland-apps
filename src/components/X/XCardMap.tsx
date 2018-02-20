@@ -6,12 +6,12 @@ let XCardMapDiv = Glamorous.div({
     height: '360px',
 })
 
-export function XCardMap(props: { location: { latitude: number, longitude: number }, children?: any }) {
+export function XCardMap(props: { focusLocation: { latitude: number, longitude: number, zoom: number }, children?: any }) {
     return (
         <XCardMapDiv>
             <XMap
                 mapStyle="mapbox://styles/mapbox/streets-v9"
-                focusPosition={{ zoom: 16, latitude: props.location.latitude, longiutude: props.location.longitude }}
+                focusPosition={{ zoom: props.focusLocation.zoom, latitude: props.focusLocation.latitude, longiutude: props.focusLocation.longitude }}
             >
                 {props.children}
             </XMap>

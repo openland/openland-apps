@@ -30,7 +30,7 @@ export default withApp(withBlock((props) => {
 
             {props.data.item.parcels.length > 0 && props.data.item.geometry && (
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Map location={findCenter(convertMapPatch(props.data.item.geometry))}>
+                    <XCard.Map focusLocation={{ ...findCenter(convertMapPatch(props.data.item.geometry)), zoom: 16 }}>
                         <ParcelTileSource layer="parcels" minZoom={16} />
                         <BlockTileSource layer="blocks" minZoom={12} />
                         <XMapPolygonLayer

@@ -7,7 +7,7 @@ import { XButton } from '../../../components/X/XButton';
 import { XLinkExternal } from '../../../components/X/XLinkExternal';
 
 export default withApp(withSFBuildingProject((props) => {
-    
+
     return (
         <AppContent>
             <XCard shadow="medium" separators={true}>
@@ -29,7 +29,13 @@ export default withApp(withSFBuildingProject((props) => {
 
             {props.data.project.preview && (
                 <XCard shadow="medium">
-                    {props.data.project.extrasLocation && (<XCard.Map location={props.data.project.extrasLocation!!} />)}
+                    {props.data.project.extrasLocation && (<XCard.Map
+                        focusLocation={{
+                            latitude: props.data.project.extrasLocation!!.latitude,
+                            longitude: props.data.project.extrasLocation!!.longitude,
+                            zoom: 16
+                        }} />
+                    )}
                     <XCard.Gallery>
                         <XCard.GalleryItem srcUrl={props.data.project.preview.url} />
                     </XCard.Gallery>

@@ -81,6 +81,12 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                     flyOnClick={true}
                     onClick={(v) => this.setState({ selected: v })}
                     selectedId={this.state.selected}
+                    flyToPadding={{
+                        left: 100,
+                        right: 100,
+                        top: 100,
+                        bottom: 400
+                    }}
                 />
                 <XMapPolygonLayer
                     source="blocks"

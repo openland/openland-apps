@@ -101,7 +101,6 @@ export class XMap extends React.Component<XMapLightProps> {
     }
 
     subscribe = (subscriber: XMapSubscriber) => {
-        console.warn('subscribe');
         this.subscribers.add(subscriber);
         if (this._isLoaded && this.map) {
             let zoom = this.map.getZoom();
@@ -120,7 +119,6 @@ export class XMap extends React.Component<XMapLightProps> {
     }
 
     componentDidMount() {
-
         this._isMounted = true;
         let domNode = ReactDOM.findDOMNode(this);
         MapBox!!.then((map) => {
@@ -176,21 +174,6 @@ export class XMap extends React.Component<XMapLightProps> {
     }
 
     configureMap(map: mapboxgl.Map) {
-
-        //
-        // Zooming
-        //
-
-        // let initialLatitude = 37.75444398077139;
-        // let initialLongutude = -122.43963811583545;
-        // let initialZoom = 12;
-
-        // if (this.props.focusPosition) {
-        //     initialLatitude = this.props.focusPosition.latitude;
-        //     initialLongutude = this.props.focusPosition.longiutude;
-        //     initialZoom = this.props.focusPosition.zoom;
-        // }
-        // map.flyTo({ center: [initialLongutude, initialLatitude], zoom: initialZoom });
 
         //
         // Subscribers

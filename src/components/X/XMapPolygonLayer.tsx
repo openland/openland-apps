@@ -38,6 +38,13 @@ interface XMapPolygonLayerProps {
     allowClick?: boolean;
 
     flyOnClick?: boolean;
+    flyToPadding?: {
+        top: number;
+        bottom: number;
+        left: number;
+        right: number;
+    }
+    
     onClick?: (id: string) => void;
     selectedId?: string;
 }
@@ -267,13 +274,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 if (element) {
                     let center = Turf.bbox(element);
                     this.map!!.fitBounds([[center[0], center[1]], [center[2], center[3]]], {
-                        padding: {
-                            left: 100,
-                            right: 100,
-                            top: 100,
-                            bottom: 400
-                        },
-                        maxZoom: 18,
+                        padding: this.props.flyToPadding || 0,
                         duration: 300
                     });
                 }

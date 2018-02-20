@@ -29,7 +29,7 @@ export class AppContent extends React.Component {
                 </AppSidebar>
                 <Container>
                     <XVertical>
-                        <AppHeader />
+                        <AppHeader key="header" />
                         {this.props.children}
                     </XVertical>
                 </Container>
