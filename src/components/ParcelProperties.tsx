@@ -47,7 +47,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     <XCard.Property title="Stories Count">{props.item.extrasStories}</XCard.Property>
                 }
                 {props.item.extrasRooms !== null &&
-                    <XCard.Property title="Units Count">{props.item.extrasRooms}</XCard.Property>
+                    <XCard.Property title="Rooms Count">{props.item.extrasRooms}</XCard.Property>
                 }
                 {props.item.extrasBedrooms !== null &&
                     <XCard.Property title="Bedrooms Count">{props.item.extrasBedrooms}</XCard.Property>
