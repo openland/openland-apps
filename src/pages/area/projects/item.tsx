@@ -6,7 +6,6 @@ import { ListPermits } from '../../../components/ListPermits';
 import { XLink } from '../../../components/X/XLink';
 import { XHead } from '../../../components/X/XHead';
 import { XCard } from '../../../components/X/XCard';
-import { Links } from '../../../Links';
 import { withBuildingProject } from '../../../api';
 import { XTitle } from '../../../components/X/XTitle';
 import { XSection } from '../../../components/X/XSection';
@@ -65,11 +64,11 @@ export default withPage(withBuildingProject(withLoader((props) => {
                                     {/*<div className="x-project--counter"><span>Rent</span>Building type</div>*/}
                                 </div>
 
-                                <XLink
+                                {/* <XLink
                                     path={Links.area('sf').project(props.data.project.slug).edit}
                                     className="x-project--btn" writeAccess={true}
                                 ><span><i className="icon-edit" />Edit profile</span>
-                                </XLink>
+                                </XLink> */}
                             </div>
                         </XCard>
                     </XSection>

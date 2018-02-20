@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink } from '../X/XLink';
-import XStyled from '../X/XStyled';
+import { XLink, XLinkProps } from '../X/XLink';
 import { XIcon } from '../X/XIcon';
 import { withRouter } from '../../utils/withRouter';
 
@@ -32,7 +31,7 @@ let SidebarContainer = Glamorous.div<{ count: number }>((props) => ({
     transition: 'height 0.3s ease-out'
 }));
 
-let SidebarItemDiv = XStyled(XLink)({
+let SidebarItemDiv = Glamorous<{ disabled?: boolean } & XLinkProps>(XLink)((props) => ({
     display: 'flex',
     flexDirection: 'row',
     alignSelf: 'stretch',
@@ -46,10 +45,13 @@ let SidebarItemDiv = XStyled(XLink)({
 
     fontWeight: 500,
 
+    opacity: props.disabled ? 0.7 : 1,
+    pointerEvents: props.disabled ? 'none' : 'auto',
+
     '.is-active': {
         color: '#4428e0'
     }
-});
+}));
 
 let SidebarTitleDiv = Glamorous.div({
     display: 'flex',
@@ -82,10 +84,10 @@ let ItemPaddingIcon = Glamorous.div({
     fontSize: '18px'
 })
 
-export class AppSidebarItem extends React.Component<{ title: string, icon?: string, path: string, activateForSubpaths?: boolean }> {
+export class AppSidebarItem extends React.Component<{ title: string, icon?: string, path?: string, activateForSubpaths?: boolean, disabled?: boolean }> {
     render() {
         return (
-            <SidebarItemDiv path={this.props.path} activateForSubpaths={this.props.activateForSubpaths}>
+            <SidebarItemDiv path={this.props.path} activateForSubpaths={this.props.activateForSubpaths} disabled={this.props.disabled}>
                 {this.props.icon && <ItemIcon icon={this.props.icon} />}
                 {!this.props.icon && <ItemPaddingIcon />}
                 {this.props.title}

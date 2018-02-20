@@ -72,7 +72,6 @@ export class XItem extends React.Component<XLinkProps> {
                 query={this.props.query}
                 href={this.props.href}
                 anchor={this.props.anchor}
-                writeAccess={this.props.writeAccess}
             >
                 {this.props.children}
             </XItemDiv>

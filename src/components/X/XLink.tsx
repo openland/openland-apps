@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Link as LinkNext } from '../../routes';
-import { withUserInfo } from '../Base/UserInfo';
 import { withRouter } from '../../utils/withRouter';
 import { resolveActionPath } from '../../utils/routing';
 
@@ -10,9 +9,6 @@ export interface XLinkProps {
     anchor?: string | null;
     query?: { field: string, value?: string } | null;
     className?: string | null;
-    // theme?: object | null;
-    // {className?: string; theme?: object}
-    writeAccess?: boolean | null;
     activateForSubpaths?: boolean | null;
     onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
@@ -72,21 +68,18 @@ const LinkRender = withRouter<XLinkProps>((props) => {
     }
 });
 
-export const XLink = withRouter<XLinkProps & { children?: any }>(withUserInfo((props) => {
-    if (props.writeAccess !== true || (props.area && props.area.writeAccess)) {
-        return (
-            <LinkRender
-                href={props.href}
-                anchor={props.anchor}
-                query={props.query}
-                path={props.path}
-                className={props.className}
-                children={props.children}
-                activateForSubpaths={props.activateForSubpaths}
-                onClick={props.onClick}
-            />
-        );
-    } else {
-        return null;
-    }
-}));
+export const XLink = (props: XLinkProps & { children?: any }) => {
+    return (
+        <LinkRender
+            href={props.href}
+            anchor={props.anchor}
+            query={props.query}
+            path={props.path}
+            className={props.className}
+            activateForSubpaths={props.activateForSubpaths}
+            onClick={props.onClick}
+        >
+            {props.children}
+        </LinkRender>
+    );
+};

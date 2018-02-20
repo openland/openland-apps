@@ -4,16 +4,15 @@ import { AppSidebar } from './AppSidebar';
 export function AppNavigation(props: {}) {
     return (
         <>
-            <AppSidebar.Group paths={['/app', '/app/underdeveloped']}>
-                <AppSidebar.Item path="/app" title="Explore" icon="explore" />
-                <AppSidebar.Item path="/app/underdeveloped" title="Underdeveloped" />
-            </AppSidebar.Group>
-            <AppSidebar.Group paths={['/app/parcels', '/app/viewed']}>
-                <AppSidebar.Item path="/app/parcels" title="Parcels" icon="layers" activateForSubpaths={true} />
-                <AppSidebar.Item path="/app/viewed" title="Visited" />
-            </AppSidebar.Group>
-            <AppSidebar.Item path="/app/projects" title="Projects" icon="folder" activateForSubpaths={true} />
-            <AppSidebar.Item path="/app/blocks" title="Blocks" icon="layers" activateForSubpaths={true} />
+            <AppSidebar.Item path="/app" title="Explore" icon="explore" />
+            <AppSidebar.Item path="/app/parcels" title="Targets" icon="layers" activateForSubpaths={true} />
+            <AppSidebar.Item title="Search Inquiries" icon="location_searching" />
+            
+            <AppSidebar.Item title="Owners" icon="lock" disabled={true} />
+            <AppSidebar.Item title="Organizations" icon="lock" disabled={true} />
+            <AppSidebar.Item title="Entitlements" icon="lock" disabled={true} />
+            <AppSidebar.Item title="Permits" icon="lock" disabled={true} />
+            <AppSidebar.Item title="Messages" icon="lock" disabled={true} />
         </>
     );
 }
