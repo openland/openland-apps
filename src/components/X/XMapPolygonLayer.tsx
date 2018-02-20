@@ -44,7 +44,7 @@ interface XMapPolygonLayerProps {
         left: number;
         right: number;
     }
-    
+
     onClick?: (id: string) => void;
     selectedId?: string;
 }
@@ -236,7 +236,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         //
 
         this.map.on('mousemove', this.layer + '-fill', (e: any) => {
-            if (this._isMounted) {
+            if (this._isMounted && (this.props.allowHover || (this.props.allowHover || this.props.onClick || this.props.flyOnClick))) {
                 let id = e.features[0].properties.id;
                 if (this.focusedId !== id) {
                     this.focusedId = id;
@@ -252,7 +252,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         });
 
         this.map.on('mouseleave', this.layer + '-fill', () => {
-            if (this._isMounted) {
+            if (this._isMounted && (this.props.allowHover || (this.props.allowHover || this.props.onClick || this.props.flyOnClick))) {
                 if (this.focusedId !== undefined) {
                     this.focusedId = undefined;
                     let source = this.map!!.getSource(this.sourceHover);
@@ -279,7 +279,9 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                     });
                 }
             }
-            if (this.props.onClick) { this.props.onClick(id); }
+            if (this.props.onClick && this.props.allowClick !== false) {
+                this.props.onClick(id);
+            }
         })
     }
 

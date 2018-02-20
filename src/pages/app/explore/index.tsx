@@ -93,10 +93,15 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                     layer="blocks"
                     minZoom={12}
                     maxZoom={16}
-                    flyOnClick={true}
                     style={{
                         fillOpacity: 0.1,
                         borderOpacity: 0.3
+                    }}
+                    flyToPadding={{
+                        left: 100,
+                        right: 100,
+                        top: 100,
+                        bottom: 400
                     }}
                 />
 
