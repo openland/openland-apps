@@ -28,7 +28,7 @@ const FilterContainer = Glamorous(XCard)({
 
 const AllZones = ['NC-1', 'NC-3']
 
-class ParcelCollection extends React.Component<{}, { selected?: string, zones?: any, stories?: any, query?: any }> {
+class ParcelCollection extends React.Component<{}, { selected?: string, zones?: any, stories?: any, currentUse?: any, query?: any }> {
     constructor(props: {}) {
         super(props);
         this.state = {};
@@ -38,19 +38,26 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
         this.setState({ zones: src });
     }
 
+    handleCurrentUseChange = (src: any) => {
+        this.setState({ currentUse: src });
+    }
+
     handleStoriesChange = (src: any) => {
         this.setState({ stories: src });
     }
 
     handleUpdate = (e: any) => {
         e.preventDefault();
-        if ((this.state.zones && this.state.zones.value) || (this.state.stories && this.state.stories.value)) {
+        if ((this.state.zones && this.state.zones.value) || (this.state.stories && this.state.stories.value) || (this.state.currentUse && this.state.currentUse.value)) {
             let clauses: any[] = [];
             if (this.state.zones && this.state.zones.value) {
                 clauses.push({ 'zone': this.state.zones.value })
             }
             if (this.state.stories && this.state.stories.value) {
                 clauses.push({ 'stories': this.state.stories.value })
+            }
+            if (this.state.currentUse && this.state.currentUse.value) {
+                clauses.push({ 'currentUse': this.state.currentUse.value })
             }
             let query = { '$and': clauses };
             console.warn(query);
@@ -115,6 +122,17 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                                         { value: '3', label: '3 stories' },
                                         { value: '4', label: '4 stories' }]}
                                     onChange={this.handleStoriesChange}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <span>Current Use</span>
+                            <div>
+                                <XSelect
+                                    name="current-field"
+                                    value={this.state.currentUse}
+                                    options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
+                                    onChange={this.handleCurrentUseChange}
                                 />
                             </div>
                         </div>
