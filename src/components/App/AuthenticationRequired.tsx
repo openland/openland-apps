@@ -6,12 +6,14 @@ import { XButton } from '../X/XButton';
 import { XVertical } from '../X/XVertical';
 import { XDocumentAppRoot } from '../X/Scaffold/XDocumentRoot';
 import { withRouter } from '../../utils/withRouter';
+import { XHead } from '../X/XHead';
 
 export const AuthenticationRequired = withRouter<{}>(withUserInfo((props) => {
 
     if (props.isLoggedIn) {
         return (
             <>
+                <XHead title={['Statecraft', 'Authentication Required']} />
                 {props.children}
             </>
         );

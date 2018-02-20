@@ -52,7 +52,7 @@ export class AppContentMap extends React.Component {
     render() {
         return (
             <XDocumentAppRootFullScreen>
-                <XHead title="Dashboard" />
+                <XHead title={['Statecraft', 'App']} />
 
                 <MapContainer>
                     <XMapLight mapStyle={'mapbox://styles/mapbox/light-v9'}>

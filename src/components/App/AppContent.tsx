@@ -23,7 +23,7 @@ export class AppContent extends React.Component {
     render() {
         return (
             <XDocumentAppRoot>
-                <XHead title="Dashboard" />
+                <XHead title={['Statecraft', 'App']} />
                 <AppSidebar>
                     <AppNavigation />
                 </AppSidebar>

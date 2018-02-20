@@ -10,6 +10,7 @@ import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelTileSource, BlockTileSource, ParcelPointSource } from '../../../api';
 import { XButton } from '../../../components/X/XButton';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
+import { XHead } from '../../../components/X/XHead';
 
 const FilterContainer = Glamorous(XCard)({
     position: 'absolute',
@@ -70,6 +71,7 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
     render() {
         return (
             <>
+                <XHead title={['Statecraft', 'Explore']} />
                 <ParcelTileSource layer="parcels" minZoom={16} />
                 <BlockTileSource layer="blocks" minZoom={12} />
                 <XMapSelectableLayer

@@ -270,17 +270,20 @@ export class XMapSelectableLayer extends React.Component<XMapSelectableLayerProp
         this.map.on('click', this.layer + '-fill', (e: any) => {
             let id = e.features[0].properties.id;
             if (this.props.flyOnClick) {
-                let center = Turf.bbox(e.features[0]);
-                this.map!!.fitBounds([[center[0], center[1]], [center[2], center[3]]], {
-                    padding: {
-                        left: 100,
-                        right: 100,
-                        top: 100,
-                        bottom: 400
-                    },
-                    maxZoom: 18,
-                    duration: 300
-                });
+                let element = this.datasources!!.findGeoJSONElement(this.source, id);
+                if (element) {
+                    let center = Turf.bbox(element);
+                    this.map!!.fitBounds([[center[0], center[1]], [center[2], center[3]]], {
+                        padding: {
+                            left: 100,
+                            right: 100,
+                            top: 100,
+                            bottom: 400
+                        },
+                        maxZoom: 18,
+                        duration: 300
+                    });
+                }
             }
             if (this.props.onClick) { this.props.onClick(id); }
         })
