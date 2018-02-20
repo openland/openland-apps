@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { DocumentNode } from 'graphql';
-import { XMapSubscriber } from '../components/X/XMapLight';
+import { XMapSubscriber } from '../components/X/XMap';
 import ApolloClient, { ApolloQueryResult } from 'apollo-client';
 import { backoff } from './timer';
 import { startProgress, stopProgress } from './routing';

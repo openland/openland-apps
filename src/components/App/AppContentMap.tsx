@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { XDocumentAppRootFullScreen } from '../X/Scaffold/XDocumentRoot';
 import { AppSidebar } from './AppSidebar';
 import { XHead } from '../X/XHead';
-import { XMapLight } from '../X/XMapLight';
+import { XMap } from '../X/XMap';
 import { AppHeader } from './AppHeader';
 import { AppNavigation } from './AppNavigation';
 
@@ -55,9 +55,9 @@ export class AppContentMap extends React.Component {
                 <XHead title={['Statecraft', 'App']} />
 
                 <MapContainer>
-                    <XMapLight mapStyle={'mapbox://styles/mapbox/light-v9'}>
+                    <XMap mapStyle={'mapbox://styles/mapbox/light-v9'}>
                         {this.props.children}
-                    </XMapLight>
+                    </XMap>
                 </MapContainer>
 
                 <ClassicalWrapper>

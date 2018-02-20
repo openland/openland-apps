@@ -6,7 +6,7 @@ import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { convertMapPatch, findCenter } from '../../../utils/map';
 import { XArea } from '../../../components/X/XArea';
-import { XMapSelectableLayer } from '../../../components/X/XMapSelectableLayer';
+import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 
 export default withApp(withBlock((props) => {
     return (
@@ -33,13 +33,13 @@ export default withApp(withBlock((props) => {
                     <XCard.Map location={findCenter(convertMapPatch(props.data.item.geometry))}>
                         <ParcelTileSource layer="parcels" minZoom={16} />
                         <BlockTileSource layer="blocks" minZoom={12} />
-                        <XMapSelectableLayer
+                        <XMapPolygonLayer
                             source="parcels"
                             layer="parcels"
                             minZoom={16}
                             flyOnClick={true}
                         />
-                        <XMapSelectableLayer
+                        <XMapPolygonLayer
                             source="blocks"
                             layer="blocks"
                             minZoom={12}

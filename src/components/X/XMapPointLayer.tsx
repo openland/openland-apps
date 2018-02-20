@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { XMapSubscriber } from './XMapLight';
+import { XMapSubscriber } from './XMap';
 
 interface XMapPointLayerProps {
     layer: string;

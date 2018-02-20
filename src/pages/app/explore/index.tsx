@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/App/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
-import { XMapSelectableLayer } from '../../../components/X/XMapSelectableLayer';
+import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { XCard } from '../../../components/X/XCard';
 import { XSelect } from '../../../components/X/XSelect';
 import { XVertical } from '../../../components/X/XVertical';
@@ -74,7 +74,7 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                 <XHead title={['Statecraft', 'Explore']} />
                 <ParcelTileSource layer="parcels" minZoom={16} />
                 <BlockTileSource layer="blocks" minZoom={12} />
-                <XMapSelectableLayer
+                <XMapPolygonLayer
                     source="parcels"
                     layer="parcels"
                     minZoom={16}
@@ -82,7 +82,7 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                     onClick={(v) => this.setState({ selected: v })}
                     selectedId={this.state.selected}
                 />
-                <XMapSelectableLayer
+                <XMapPolygonLayer
                     source="blocks"
                     layer="blocks"
                     minZoom={12}

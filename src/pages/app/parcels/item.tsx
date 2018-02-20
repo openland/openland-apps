@@ -7,7 +7,7 @@ import { XButton } from '../../../components/X/XButton';
 import { convertMapPatch, findCenter } from '../../../utils/map';
 import { formatAddresses } from '../../../utils/Addresses';
 import { AStreetViewModal } from '../../../components/App/AStreetViewModal';
-import { XMapSelectableLayer } from '../../../components/X/XMapSelectableLayer';
+import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { ParcelProperties } from '../../../components/ParcelProperties';
 
 export default withApp(withParcel((props) => {
@@ -26,7 +26,7 @@ export default withApp(withParcel((props) => {
                     <XCard.Map location={findCenter(convertMapPatch(props.data.item.geometry))}>
                         <ParcelTileSource layer="parcels" minZoom={16} />
                         <BlockTileSource layer="blocks" minZoom={12} />
-                        <XMapSelectableLayer
+                        <XMapPolygonLayer
                             source="parcels"
                             layer="parcels"
                             minZoom={16}
@@ -34,7 +34,7 @@ export default withApp(withParcel((props) => {
                             selectedId={props.data.item.id}
                             onClick={(v) => props.router.push('/app/parcels/' + v)}
                         />
-                        <XMapSelectableLayer
+                        <XMapPolygonLayer
                             source="blocks"
                             layer="blocks"
                             minZoom={12}

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { XMapSubscriber, DataSources } from './XMapLight';
+import { XMapSubscriber, DataSources } from './XMap';
 import * as Turf from '@turf/turf';
 
-interface XMapSelectableLayerStyle {
+interface XMapPolygonLayerStyle {
 
     fillColor?: string;
     fillOpacity?: number;
@@ -24,11 +24,11 @@ interface XMapSelectableLayerStyle {
     selectedBorderWidth?: number;
 }
 
-interface XMapSelectableLayerProps {
+interface XMapPolygonLayerProps {
     source: string;
     layer: string;
 
-    style?: XMapSelectableLayerStyle;
+    style?: XMapPolygonLayerStyle;
 
     minZoom?: number;
     maxZoom?: number;
@@ -42,7 +42,7 @@ interface XMapSelectableLayerProps {
     selectedId?: string;
 }
 
-export class XMapSelectableLayer extends React.Component<XMapSelectableLayerProps> {
+export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
     static contextTypes = {
         mapSubscribe: PropTypes.func.isRequired,
         mapUnsubscribe: PropTypes.func.isRequired
@@ -61,7 +61,7 @@ export class XMapSelectableLayer extends React.Component<XMapSelectableLayerProp
 
     private focusedId?: string;
 
-    constructor(props: XMapSelectableLayerProps) {
+    constructor(props: XMapPolygonLayerProps) {
         super(props);
         this.layer = props.layer;
         this.source = props.source;
@@ -293,7 +293,7 @@ export class XMapSelectableLayer extends React.Component<XMapSelectableLayerProp
         return null;
     }
 
-    componentWillReceiveProps(nextProps: XMapSelectableLayerProps) {
+    componentWillReceiveProps(nextProps: XMapPolygonLayerProps) {
         if (this.props.selectedId !== nextProps.selectedId && this.isInited && this._isMounted) {
             if (nextProps.selectedId !== undefined) {
                 let element = this.datasources!!.findGeoJSONElement(this.source, nextProps.selectedId);

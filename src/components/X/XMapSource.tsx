@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { XMapSubscriber, DataSources } from './XMapLight';
+import { XMapSubscriber, DataSources } from './XMap';
 
 export interface XMapSourceProps {
     id: string;
