@@ -19,6 +19,12 @@ export default withApp(withParcelMetadataForm((props) => {
                     <XForm.Field title="Description">
                         <XForm.Text field="description" />
                     </XForm.Field>
+                    <XForm.Field title="Is Available to buy?">
+                        <XForm.Boolean field="available" />
+                    </XForm.Field>
+                    <XForm.Field title="Current Use">
+                        <XForm.Select field="currentUse" options={[{ title: 'Parking', value: 'PARKING' }, { title: 'Public Storage', value: 'STORAGE' }]} />
+                    </XForm.Field>
                     <XForm.Footer>
                         <XForm.Submit style="dark">Save</XForm.Submit>
                         <XButton path={'/app/parcels/' + props.data.item.id}>Cancel</XButton>

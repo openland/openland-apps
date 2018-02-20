@@ -173,9 +173,9 @@ export const XFormSelectStyle = Glamorous.select({
     }
 })
 
-export function XFormSelect(props: { options: any[] }) {
+export function XFormSelect(props: { options: any[], value?: string | string[] | number, onChange?: (value: any) => void }) {
     return (
-        <XFormSelectStyle>
+        <XFormSelectStyle value={props.value} onChange={props.onChange}>
             {props.options.map((item) => (
                 <option value={item.value}>{item.title}</option>
             ))}
@@ -240,7 +240,7 @@ interface XFormTextFieldProps {
     placeholder?: string;
 }
 
-export class XFormTextField extends React.Component<{ field: string, placeholder?: string }, { value: string }> {
+export class XFormTextField extends React.Component<XFormTextFieldProps, { value: string }> {
     static contextTypes = {
         xForm: PropTypes.object.isRequired
     }
@@ -271,6 +271,111 @@ export class XFormTextField extends React.Component<{ field: string, placeholder
     }
 }
 
+interface XFormBooleanFieldProps {
+    field: string;
+}
+
+export class XFormBooleanField extends React.Component<XFormBooleanFieldProps, { value: boolean | null }> {
+    static contextTypes = {
+        xForm: PropTypes.object.isRequired
+    }
+
+    constructor(props: XFormBooleanFieldProps, context: any) {
+        super(props, context);
+        let xForm = this.context.xForm as XFormController;
+        let existing = xForm.readValue(this.props.field);
+        if (typeof existing === 'string') {
+            if (existing === 'true') {
+                this.state = { value: true };
+            } else if (existing === 'false') {
+                this.state = { value: false };
+            } else {
+                this.state = { value: null };
+            }
+        } else if (typeof existing === 'boolean') {
+            this.state = { value: existing };
+        } else {
+            this.state = { value: null };
+        }
+    }
+
+    handleChange = (src: any) => {
+        let xForm = this.context.xForm as XFormController;
+        let val = src.target.value as string;
+        let cval = null;
+        if (val === 'true') {
+            cval = true;
+        } else if (val === 'false') {
+            cval = false;
+        }
+        this.setState({ value: cval });
+        xForm.writeValue(this.props.field, cval);
+    }
+    render() {
+        let value = 'null';
+        if (this.state.value === true) {
+            value = 'true'
+        } else if (this.state.value === false) {
+            value = 'false';
+        }
+        return (
+            <XFormSelect
+                options={[{ title: 'Unknown', value: 'null' }, { title: 'Yes', value: 'true' }, { title: 'No', value: 'false' }]}
+                value={value}
+                onChange={this.handleChange}
+            />
+        )
+    }
+}
+
+interface XFormSelectFieldProps {
+    field: string;
+    options: { value: string, title: string }[];
+}
+
+export class XFormSelectField extends React.Component<XFormSelectFieldProps, { value: string | null }> {
+    static contextTypes = {
+        xForm: PropTypes.object.isRequired
+    }
+
+    constructor(props: XFormSelectFieldProps, context: any) {
+        super(props, context);
+        let xForm = this.context.xForm as XFormController;
+        let existing = xForm.readValue(this.props.field);
+        if (typeof existing === 'string') {
+            this.state = { value: null };
+            for (let opt of this.props.options) {
+                if (opt.value === existing) {
+                    this.state = { value: opt.value };
+                    break
+                }
+            }
+        } else {
+            this.state = { value: null };
+        }
+    }
+
+    handleChange = (src: any) => {
+        let xForm = this.context.xForm as XFormController;
+        let val = src.target.value as string;
+        let cval = null;
+        if (val !== 'unknown') {
+            cval = val;
+        }
+        this.setState({ value: cval });
+        xForm.writeValue(this.props.field, cval);
+    }
+    render() {
+        return (
+            <XFormSelect
+                options={[{ title: 'Unknown', value: 'unknown' }, ...this.props.options]}
+                value={this.state.value || 'unknown'}
+                onChange={this.handleChange}
+            />
+        )
+    }
+}
+
 interface XFormSubmitProps {
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
     style?: 'normal' | 'dark' | 'important';
@@ -295,12 +400,16 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
 
     static Header = XFormHeader;
     static Footer = XCard.Footer;
+
     static Field = XFormField;
-    static Input = XFormInputStyle;
-    static Textarea = XFormTextAreaStyle;
-    static Select = XFormSelect;
+    static Boolean = XFormBooleanField;
+    static Select = XFormSelectField;
     static Text = XFormTextField;
     static Submit = XFormSubmit;
+
+    static RawInput = XFormInputStyle;
+    static RawTextarea = XFormTextAreaStyle;
+    static RawSelect = XFormSelect;
 
     static childContextTypes = {
         xForm: PropTypes.object.isRequired

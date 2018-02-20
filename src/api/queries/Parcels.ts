@@ -33,6 +33,8 @@ export const ParcelFull = gql`
       }
       metadata {
         description
+        available
+        currentUse
       }
   }
 `
@@ -162,6 +164,8 @@ export const ParcelAlter = gql`
             id
             metadata {
                 description
+                available
+                currentUse
             }
         }
     }

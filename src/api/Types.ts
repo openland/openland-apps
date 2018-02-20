@@ -1,6 +1,12 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export enum ParcelUse {
+  PARKING = "PARKING",
+  STORAGE = "STORAGE",
+}
+
+
 export interface GeoBox {
   east: number,
   north: number,
@@ -10,6 +16,8 @@ export interface GeoBox {
 
 export interface ParcelMetadataInput {
   description?: string | null,
+  currentUse?: ParcelUse | null,
+  available?: boolean | null,
 };
 
 export enum PermitStatus {
@@ -697,6 +705,8 @@ export interface ParcelsConnectionQuery {
         metadata:  {
           __typename: "ParcelMetadata",
           description: string | null,
+          available: boolean | null,
+          currentUse: ParcelUse | null,
         },
       },
       cursor: string,
@@ -754,6 +764,8 @@ export interface ParcelQuery {
     metadata:  {
       __typename: "ParcelMetadata",
       description: string | null,
+      available: boolean | null,
+      currentUse: ParcelUse | null,
     },
   },
 };
@@ -813,6 +825,8 @@ export interface ParcelAlterMutation {
     metadata:  {
       __typename: "ParcelMetadata",
       description: string | null,
+      available: boolean | null,
+      currentUse: ParcelUse | null,
     },
   },
 };
@@ -1623,6 +1637,8 @@ export interface ParcelFullFragment {
   metadata:  {
     __typename: string,
     description: string | null,
+    available: boolean | null,
+    currentUse: ParcelUse | null,
   },
 };
 

@@ -3967,11 +3967,58 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "currentUse",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "ParcelUse",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "available",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
           "interfaces": [],
           "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "ParcelUse",
+          "description": "",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "PARKING",
+              "description": "",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "STORAGE",
+              "description": "",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
           "possibleTypes": null
         },
         {
@@ -6031,6 +6078,26 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "currentUse",
+              "description": "",
+              "type": {
+                "kind": "ENUM",
+                "name": "ParcelUse",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "available",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "defaultValue": null

@@ -116,18 +116,18 @@ export default withApp((props) => {
                     <XForm>
                         <XForm.Header title="x-form title" />
                         <XForm.Field title="x-form-field container test">
-                            <XForm.Input placeholder="loles"/>
-                            <XForm.Select options={[{title: 'qwe1', value: 'qwe1'}, {title: 'qwe2', value: 'qwe2'}, {title: 'qwe3', value: 'qwe3'}]} />
+                            <XForm.RawInput placeholder="loles"/>
+                            <XForm.RawSelect options={[{title: 'qwe1', value: 'qwe1'}, {title: 'qwe2', value: 'qwe2'}, {title: 'qwe3', value: 'qwe3'}]} />
                         </XForm.Field>
                         <XForm.Field title="x-form-field container test" description="If you use your SSN for tax purposes, you can enter that here. Don't have one yet? Apply online. (Sadly, the website has opening hours. Really.)">
-                            <XForm.Input placeholder="loles" />
+                            <XForm.RawInput placeholder="loles" />
                         </XForm.Field>
                     </XForm>
                     <XForm>
                         <XForm.Header title="x-form title" description={`$ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"`} />
                         <XForm.Field title="x-form-field container test" description="description text" novalid={true}>
-                            <XForm.Textarea placeholder="loles" novalid={true} />
-                            <XForm.Input placeholder="loles" novalid={true} />
+                            <XForm.RawTextarea placeholder="loles" novalid={true} />
+                            <XForm.RawInput placeholder="loles" novalid={true} />
                         </XForm.Field>
                     </XForm>
                 </XCard>
