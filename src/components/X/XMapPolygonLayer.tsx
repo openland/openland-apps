@@ -274,7 +274,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 if (element) {
                     let center = Turf.bbox(element);
                     this.map!!.fitBounds([[center[0], center[1]], [center[2], center[3]]], {
-                        padding: this.props.flyToPadding || 0,
+                        padding: this.props.flyToPadding !== undefined ? this.props.flyToPadding : 0,
                         duration: 300
                     });
                 }

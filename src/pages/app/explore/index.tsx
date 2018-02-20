@@ -82,8 +82,8 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                     onClick={(v) => this.setState({ selected: v })}
                     selectedId={this.state.selected}
                     flyToPadding={{
-                        left: 100,
-                        right: 100,
+                        left: 140,
+                        right: 140,
                         top: 100,
                         bottom: 400
                     }}
@@ -98,8 +98,8 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                         borderOpacity: 0.3
                     }}
                     flyToPadding={{
-                        left: 100,
-                        right: 100,
+                        left: 140,
+                        right: 140,
                         top: 100,
                         bottom: 400
                     }}
