@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XLink } from '../X/XLink';
 import XStyled from '../X/XStyled';
-import { XWriteAcces } from '../X/XWriteAccess';
 
 const NavigationLink = XStyled(XLink)({
     display: 'flex',
