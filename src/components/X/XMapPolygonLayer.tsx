@@ -57,7 +57,6 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
 
     private source: string;
     private sourceHover: string;
-    private sourceSelected: string;
 
     private focusedId?: string;
 
@@ -68,7 +67,6 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
 
         // TODO: Randomize
         this.sourceHover = props.source + '-hover';
-        this.sourceSelected = props.source + '-selected';
     }
 
     listener: XMapSubscriber = (src, map, datasources) => {
@@ -87,20 +85,10 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         }
 
         //
-        // Hovered and Selected Sources
+        // Hovered Sources
         //
 
         this.map.addSource(this.sourceHover, { type: 'geojson', data: { 'type': 'FeatureCollection', features: [] } });
-        if (this.props.selectedId !== undefined) {
-            let element = this.datasources!!.findGeoJSONElement(this.source, this.props.selectedId);
-            if (element) {
-                this.map.addSource(this.sourceSelected, { type: 'geojson', data: { 'type': 'FeatureCollection', features: [element] } });
-            } else {
-                this.map.addSource(this.sourceSelected, { type: 'geojson', data: { 'type': 'FeatureCollection', features: [] } });
-            }
-        } else {
-            this.map.addSource(this.sourceSelected, { type: 'geojson', data: { 'type': 'FeatureCollection', features: [] } });
-        }
 
         //
         // Fill Layer
@@ -108,6 +96,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
 
         let maxZoom = this.props.maxZoom !== undefined ? this.props.maxZoom : 22;
         let minZoom = this.props.minZoom !== undefined ? this.props.minZoom : 0;
+        let selected = this.props.selectedId || '';
 
         let fillColor = this.props.style && this.props.style.fillColor !== undefined ? this.props.style.fillColor : '#4428e0';
         let fillOpacity = this.props.style && this.props.style.fillOpacity !== undefined ? this.props.style.fillOpacity : 0.1;
@@ -122,7 +111,8 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
             'paint': {
                 'fill-color': fillColor,
                 'fill-opacity': fillOpacity
-            }
+            },
+            'filter': ['!=', 'id', selected]
         });
 
         //
@@ -144,7 +134,8 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 'line-color': borderColor,
                 'line-width': borderWidth,
                 'line-opacity': borderOpacity
-            }
+            },
+            'filter': ['!=', 'id', selected]
         });
 
         //
@@ -199,14 +190,15 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         this.map.addLayer({
             'id': this.layer + '-fill-selected',
             'type': 'fill',
-            'source': this.sourceSelected,
+            'source': this.source,
             'minzoom': minZoom,
             'maxzoom': this.props.maxFillZoom !== undefined ? this.props.maxFillZoom : maxZoom,
             'layout': {},
             'paint': {
                 'fill-color': selectedFillColor,
                 'fill-opacity': selectedFillOpacity
-            }
+            },
+            'filter': ['==', 'id', selected]
         });
 
         //
@@ -220,7 +212,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         this.map.addLayer({
             'id': this.layer + '-borders-selected',
             'type': 'line',
-            'source': this.sourceSelected,
+            'source': this.source,
             'minzoom': minZoom,
             'maxzoom': maxZoom,
             'layout': {},
@@ -228,7 +220,8 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 'line-color': selectedBorderColor,
                 'line-width': selectedBorderOpacity,
                 'line-opacity': selectedBorderWidth
-            }
+            },
+            'filter': ['==', 'id', selected]
         });
 
         //
@@ -296,15 +289,11 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
     componentWillReceiveProps(nextProps: XMapPolygonLayerProps) {
         if (this.props.selectedId !== nextProps.selectedId && this.isInited && this._isMounted) {
             if (nextProps.selectedId !== undefined) {
-                let element = this.datasources!!.findGeoJSONElement(this.source, nextProps.selectedId);
-                let source = this.map!!.getSource(this.sourceSelected);
-                if (source.type === 'geojson') {
-                    if (element) {
-                        source.setData({ 'type': 'FeatureCollection', features: [element] });
-                    } else {
-                        source.setData({ 'type': 'FeatureCollection', features: [] });
-                    }
-                }
+                let selected = nextProps.selectedId || '';
+                this.map!!.setFilter(this.layer + '-fill', ['!=', 'id', selected]);
+                this.map!!.setFilter(this.layer + '-borders', ['!=', 'id', selected]);
+                this.map!!.setFilter(this.layer + '-fill-selected', ['==', 'id', selected]);
+                this.map!!.setFilter(this.layer + '-borders-selected', ['==', 'id', selected]);
             }
         }
     }
@@ -326,7 +315,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 this.map.removeLayer(this.layer + '-fill-selected');
                 this.map.removeLayer(this.layer + '-borders-selected');
                 this.map.removeSource(this.sourceHover);
-                this.map.removeSource(this.sourceSelected);
+                // this.map.removeSource(this.sourceSelected);
             } catch {
                 // Just Ignore
             }
