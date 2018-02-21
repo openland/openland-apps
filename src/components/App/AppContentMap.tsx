@@ -36,12 +36,32 @@ let Container = Glamorous.div({
     paddingBottom: '32px'
 });
 
-export class AppContentMap extends React.Component {
+export class XAppBarItem extends React.Component {
+    static defaultProps = {
+        _isAppBarItem: true
+    }
     render() {
+        return (
+            <>
+                {this.props.children}
+            </>
+        )
+    }
+}
+
+export class AppContentMap extends React.Component {
+    static Item = XAppBarItem;
+
+    render() {
+        let childArray = React.Children.toArray(this.props.children);
+        let menus = childArray
+            .filter((v) => React.isValidElement(v) && (v.props as any)._isAppBarItem === true);
+        let content = childArray
+            .filter((v) => !React.isValidElement(v) || !(v.props as any)._isAppBarItem);
         return (
             <XDocumentAppRoot>
                 <MapContainer key="container">
-                    {this.props.children}
+                    {content}
                 </MapContainer>
 
                 <ClassicalWrapper key="controls">
@@ -50,7 +70,9 @@ export class AppContentMap extends React.Component {
                     </AppSidebar>
 
                     <Container>
-                        <AppHeader />
+                        <AppHeader>
+                            {menus}
+                        </AppHeader>
                     </Container>
                 </ClassicalWrapper>
             </XDocumentAppRoot>

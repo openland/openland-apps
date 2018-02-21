@@ -11,8 +11,16 @@ let Header = Glamorous.div({
     height: '32px',
     marginTop: '16px',
     marginBottom: '8px',
-    justifyContent: 'space-between',
     pointerEvents: 'auto'
+})
+
+let MenuElements = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    height: '32px',
+    marginLeft: '16px',
+    marginRight: '16px',
+    flexGrow: 1
 })
 
 let UserInfoBox = Glamorous.div({
@@ -44,7 +52,7 @@ const AvatarImg = Glamorous.img({
     cursor: 'pointer'
 });
 
-let Popover = withUserInfo<{ onClick?: any }>((props) => {
+let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
     return (
         <XPopover placement="bottom-end">
             <XPopover.Target>
@@ -63,11 +71,14 @@ let Popover = withUserInfo<{ onClick?: any }>((props) => {
     )
 });
 
-export let AppHeader = () => {
+export let AppHeader = (props: { children?: any }) => {
     return (
         <Header>
             <AppSearch />
-            <Popover />
+            <MenuElements>
+                {props.children}
+            </MenuElements>
+            <UserProfile />
         </Header>
     )
 }
