@@ -49,7 +49,7 @@ let backgroundPressedColors = {
 export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
     let style = props.style !== undefined && props.style !== 'normal' ? props.style : 'normal'
     return {
-        display: props.icon ? 'flex' : undefined,
+        display: 'flex',
         alignItems: 'center',
         textDecoration: 'none',
         textAlign: props.icon ? 'right' : 'center',

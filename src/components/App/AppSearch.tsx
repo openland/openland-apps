@@ -1,10 +1,28 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import * as glamor from 'glamor'
 import { withSearch } from '../../api';
 import { XCard } from '../X/XCard';
+import { XIcon } from '../X/XIcon';
+
+const loading = glamor.keyframes({
+    '0%': { transform: `rotate(0deg) scaleX(-1)` },
+    '100%': { transform: `rotate(360deg) scaleX(-1)` }
+})
 import { XArea } from '../X/XArea';
 
-const Container = Glamorous.div({
+let LoadingIcon = Glamorous(XIcon)<{loading?: boolean}>((props) => ({
+    display: props.loading ? 'block' : 'none',
+    position: 'absolute',
+    top: 'calc(50% - 10px)',
+    right: 10,
+    width: '20px',
+    fontSize: '20px',
+    color: '#6b7c93',
+    animation: `${loading} 1s linear infinite`,
+}))
+
+const Container = Glamorous.div<{noResult?: boolean}>(props => ({
     display: 'flex',
     flexDirection: 'row',
     boxShadow: '0 0 0 1px rgba(49,49,93,.03), 0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
@@ -14,15 +32,22 @@ const Container = Glamorous.div({
     width: '340px',
     position: 'relative',
     lineHeight: '32px',
-    zIndex: 1
-})
+    zIndex: 1,
+    '&::after': {
+        content: props.noResult ? 'No results' : undefined,
+        fontWeight: 400,
+        fontSize: '14px',
+        lineHeight: '32px',
+        color: '#8898aa',
+    }
+}))
 
 const SearchInput = Glamorous.input({
     border: 'none',
     paddingLeft: '8px',
     paddingRight: '8px',
     height: '100%',
-    width: '100%',
+    width: '80%',
     fontWeight: 400,
     fontSize: '14px',
     backgroundColor: 'transparent',
@@ -165,6 +190,8 @@ export class AppSearch extends React.Component<{}, { value: string, focused: boo
                     onBlur={this.onBlur}
                 />
                 {this.state.value.trim().length > 0 && this.state.focused && <SearchResults query={this.state.value} />}
+                <LoadingIcon icon="cached" />
+                {this.state.focused && <SearchResults query={this.state.value} />}
             </Container>
         )
     }
