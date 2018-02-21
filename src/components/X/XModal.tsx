@@ -26,7 +26,7 @@ export class XModalContent extends React.Component<{ title: string }> {
     render() {
         return (
             <XDialog>
-                <XCard.Header title="Street View">
+                <XCard.Header text="Street View">
                     <XButton onClick={(this.props as any).handler}>Close</XButton>
                 </XCard.Header>
                 {this.props.children}

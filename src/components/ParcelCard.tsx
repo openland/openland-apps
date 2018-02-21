@@ -24,7 +24,7 @@ export const ParcelCard = withParcelDirect((props) => {
                 <XCard.Loader loading={props.data!!.loading}>
                     {props.data && props.data!!.item &&
                         <>
-                            <XCard.Header title={'Parcel #' + props.data.item!!.title}>
+                            <XCard.Header text={'Parcel #' + props.data.item!!.title}>
                                 <AStreetViewModal geometry={props.data.item!!.geometry!!} />
                                 <XButton style="dark" path={'/app/parcels/' + props.data.item!!.id}>View</XButton>
                             </XCard.Header>

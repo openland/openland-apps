@@ -12,7 +12,7 @@ export default withApp(withSFBuildingProject((props) => {
         <AppContent>
             <XCard shadow="medium" separators={true}>
                 <XCard.Header
-                    title={props.data.project.name}
+                    text={props.data.project.name}
                     description={props.data.project.description}
                 >
                     <XButton>Edit</XButton>
@@ -44,7 +44,7 @@ export default withApp(withSFBuildingProject((props) => {
 
             {props.data.project.developers.length > 0 && (
                 <XCard shadow="medium">
-                    <XCard.Header title="Developers" />
+                    <XCard.Header text="Developers" />
                     <XCard.Table>
                         <XCard.Table.Header>
                             <XCard.Table.Cell>Organization Name</XCard.Table.Cell>
@@ -62,7 +62,7 @@ export default withApp(withSFBuildingProject((props) => {
 
             {props.data.project.constructors.length > 0 && (
                 <XCard shadow="medium">
-                    <XCard.Header title="Contractors" />
+                    <XCard.Header text="Contractors" />
                     <XCard.Table>
                         <XCard.Table.Header>
                             <XCard.Table.Cell>Organization Name</XCard.Table.Cell>
