@@ -13,7 +13,7 @@ export default withApp(withParcels((props) => {
     return (
         <AppContent>
             <XCard shadow="medium" separators={true}>
-                <XCard.Header title="Parcels">
+                <XCard.Header text="Parcels">
                     <XSwitcher>
                         <XSwitcher.Item query={{ field: 'sort' }}>Land Value</XSwitcher.Item>
                         <XSwitcher.Item query={{ field: 'sort', value: 'IMPROVEMENT_DESC' }}>Improvement Value</XSwitcher.Item>

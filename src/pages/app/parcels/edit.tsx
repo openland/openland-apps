@@ -10,7 +10,7 @@ export default withApp(withParcelMetadataForm((props) => {
     return (
         <AppContent>
             <XCard shadow="medium" separators={true}>
-                <XCard.Header title={'Update Parcel #' + props.data.item.title} />
+                <XCard.Header text={'Update Parcel #' + props.data.item.title} />
                 <XForm
                     defaultValues={props.data.item.metadata}
                     submitMutation={props.parcelAlterMetadata}

@@ -9,7 +9,7 @@ export default withApp(withSFBuildingProjects((props) => {
     return (
         <AppContent>
             <XCard shadow="medium">
-                <XCard.Header title="Building Projects">
+                <XCard.Header text="Building Projects">
                     <XButton>Add New</XButton>
                 </XCard.Header>
                 <XCard.Table>

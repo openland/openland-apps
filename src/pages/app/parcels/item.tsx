@@ -18,7 +18,7 @@ export default withApp(withParcel((props) => {
             <AppContent>
                 <XCard shadow="medium" separators={true}>
                     <XCard.Hint title="Public" />
-                    <XCard.Header title={'Parcel #' + props.data.item.title} description={formatAddresses(props.data.item.addresses)}>
+                    <XCard.Header text={'Parcel #' + props.data.item.title} description={formatAddresses(props.data.item.addresses)}>
                         {props.data.item.geometry && <AStreetViewModal geometry={props.data.item.geometry} />}
                         <XButton path={'/app/parcels/' + props.data.item.id + '/edit'}>Edit</XButton>
                     </XCard.Header>

@@ -9,7 +9,7 @@ export default withApp(withBlocks((props) => {
     return (
         <AppContent>
             <XCard shadow="medium" separators={true}>
-                <XCard.Header title="Blocks">
+                <XCard.Header text="Blocks">
                     <XButton>Add New</XButton>
                 </XCard.Header>
                 <XCard.Table>

@@ -12,7 +12,7 @@ export default withApp(withBlock((props) => {
     return (
         <AppContent>
             <XCard shadow="medium" separators={true}>
-                <XCard.Header title={'Block #' + props.data.item.title}>
+                <XCard.Header text={'Block #' + props.data.item.title}>
                     <XButton>Edit</XButton>
                 </XCard.Header>
                 <XCard.PropertyList>

@@ -134,7 +134,7 @@ export default withApp((props) => {
                 <XCard separators={true}>
                     <XCard.Hint title="test data" />
                     <XCard.Header 
-                        title="Loader block title" 
+                        text="Loader block title" 
                         ellipcise={true}
                         description={`
                         $ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"
@@ -146,6 +146,9 @@ export default withApp((props) => {
                         $ /Users/max_volkov/Desktop/statecraft-web/node_modules/.bin/cpx './src/static/**/*' ./build/dist/static/ --watch
                         `}
                     >
+                        <XCard.Header.Target>
+                            <XButtonLike />
+                        </XCard.Header.Target>
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
                     </XCard.Header>
