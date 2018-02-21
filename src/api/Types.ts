@@ -1409,6 +1409,13 @@ export interface SearchQuery {
           __typename: "Parcel",
           id: string,
           title: string,
+          extrasArea: number | null,
+          extrasNeighborhood: string | null,
+          metadata:  {
+            __typename: "ParcelMetadata",
+            available: boolean | null,
+            currentUse: ParcelUse | null,
+          },
         },
         score: number,
         highlight:  Array< {

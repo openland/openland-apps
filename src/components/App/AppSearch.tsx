@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withSearch } from '../../api';
 import { XCard } from '../X/XCard';
+import { XArea } from '../X/XArea';
 
 const Container = Glamorous.div({
     display: 'flex',
@@ -37,22 +38,19 @@ const ResultsContainer = Glamorous(XCard)({
     position: 'absolute',
     top: '34px',
     left: 0,
-    right: 0
+    right: 0,
 })
 
 let HighlightedWrapper = Glamorous.span({
     '> em': {
-        color: '#ff0000'
+        color: '#3297d3',
+        fontWeight: 600,
+        fontStyle: 'normal'
     }
-})
-
-let HighlighterSpan = Glamorous.span({
-    paddingLeft: 8
 })
 
 const Highlighted = (props: { text?: string, field: string, highlight: { key: string, match: string }[] }) => {
     let existing = props.highlight.find((k) => k.key === props.field);
-    console.warn(props.highlight);
     if (existing) {
         return <HighlightedWrapper dangerouslySetInnerHTML={{ __html: existing.match }} />
     } else {
@@ -64,6 +62,47 @@ const Highlighted = (props: { text?: string, field: string, highlight: { key: st
     }
 }
 
+// const ResultHeader = Glamorous.div({
+//     display: 'flex',
+//     flexDirection: 'row',
+//     color: '#3297d3',
+//     fontSize: 12,
+//     fontWeight: 700
+// })
+
+const ResultTilte = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+})
+
+const ResultTilteMain = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    fontSize: 13,
+    flexGrow: 1
+})
+
+const ResultTilteHint = Glamorous.div({
+    fontSize: 13,
+    opacity: 0.7
+})
+
+const ResultBody = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    fontSize: 13
+});
+
+const ResultBodyMain = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    opacity: 0.7,
+    marginRight: '8px',
+    width: 100
+})
+
+//
+
 let SearchResults = withSearch((props) => {
     if (props.data && props.data.search && props.data.search.parcels.edges.length > 0) {
         return (
@@ -71,8 +110,23 @@ let SearchResults = withSearch((props) => {
                 <XCard.List>
                     {props.data.search.parcels.edges.map((v) => (
                         <XCard.ListItem key={v.node.id} path={'/app/parcels/' + v.node.id}>
-                            Parcel #<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} />
-                            {v.highlight.find((k) => k.key === 'address') && <HighlighterSpan><Highlighted field={'address'} highlight={v.highlight} /></HighlighterSpan>}
+                            {/* <ResultHeader>PARCEL</ResultHeader> */}
+                            <ResultTilte>
+                                <ResultTilteMain>Parcel #<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} /></ResultTilteMain>
+                                <ResultTilteHint>{v.node.extrasArea && <XArea area={v.node.extrasArea} />}</ResultTilteHint>
+                            </ResultTilte>
+                            {!v.highlight.find((k) => k.key === 'address') && (
+                                <ResultBody>
+                                    <ResultBodyMain>Neighborhood</ResultBodyMain>
+                                    {v.node.extrasNeighborhood}
+                                </ResultBody>
+                            )}
+                            {v.highlight.find((k) => k.key === 'address') && (
+                                <ResultBody>
+                                    <ResultBodyMain>Address</ResultBodyMain>
+                                    <Highlighted field={'address'} highlight={v.highlight} />
+                                </ResultBody>
+                            )}
                         </XCard.ListItem>
                     ))}
                 </XCard.List>
@@ -110,8 +164,7 @@ export class AppSearch extends React.Component<{}, { value: string, focused: boo
                     onFocus={this.onFocus}
                     onBlur={this.onBlur}
                 />
-
-                {this.state.focused && <SearchResults query={this.state.value} />}
+                {this.state.value.trim().length > 0 && this.state.focused && <SearchResults query={this.state.value} />}
             </Container>
         )
     }
