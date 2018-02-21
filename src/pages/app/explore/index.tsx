@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { withApp } from '../../../components/App/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
-import { XCard } from '../../../components/X/XCard';
 import { XSelect } from '../../../components/X/XSelect';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelTileSource, BlockTileSource, ParcelPointSource } from '../../../api';
@@ -11,29 +10,12 @@ import { XButton } from '../../../components/X/XButton';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XMap } from '../../../components/X/XMap';
 import { XHead } from '../../../components/X/XHead';
-import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XPopover } from '../../../components/X/XPopover';
 import { XMenu } from '../../../components/X/XMenu';
 import { XVertical } from '../../../components/X/XVertical';
 
 const FilterSelector = Glamorous(XSelect)({
     width: '140px'
-})
-
-const FilterContainer = Glamorous(XCard)({
-    display: 'flex',
-    flexDirection: 'row',
-    position: 'absolute',
-    top: 60,
-    left: 264,
-    zIndex: 1,
-    padding: 16,
-    pointerEvents: 'auto',
-    // backgroundColor: 'rgb(245, 246, 248)',
-    // '& > div > div > span': {
-    //     display: 'block',
-    //     marginBottom: 3
-    // }
 })
 
 const AllZones = ['NC-1', 'NC-3']
