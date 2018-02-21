@@ -33,10 +33,19 @@ routes.add('/app/parcels/:parcelId/edit/', '/app/parcels/edit');
 // Projects
 //
 
-routes.add('/app/projects/', '/app/projects/list');
 routes.add('/app/projects', '/app/projects/list');
+routes.add('/app/projects/', '/app/projects/list');
 routes.add('/app/projects/:projectId', '/app/projects/view');
 routes.add('/app/projects/:projectId/', '/app/projects/view');
+
+//
+// Extras
+//
+
+routes.add('/app/favorites', '/app/favorites/index')
+routes.add('/app/favorites/', '/app/favorites/index')
+routes.add('/app/inquiries', '/app/inquiries/index')
+routes.add('/app/inquiries/', '/app/inquiries/index')
 
 //
 // UI

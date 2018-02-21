@@ -6,15 +6,19 @@ import { Router } from '../../routes';
 const XCardWrapper = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'stretch'
+    alignItems: 'stretch',
+    '> :not(:last-child)': {
+        borderBottom: '1px solid #f6f9fc'
+    }
 })
 
 const XCardItemWrapper = Glamorous.div({
     display: 'flex',
-    flexDirection: 'row',
-    height: '32px',
-    paddingLeft: 8,
-    paddingRight: 8,
+    flexDirection: 'column',
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 16,
+    paddingRight: 16,
     alignItems: 'stretch',
     cursor: 'pointer',
     '&:hover': {

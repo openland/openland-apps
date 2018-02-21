@@ -5,19 +5,28 @@ import { AppContentMap } from '../../../components/App/AppContentMap';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { XCard } from '../../../components/X/XCard';
 import { XSelect } from '../../../components/X/XSelect';
-import { XVertical } from '../../../components/X/XVertical';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelTileSource, BlockTileSource, ParcelPointSource } from '../../../api';
 import { XButton } from '../../../components/X/XButton';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
+import { XMap } from '../../../components/X/XMap';
 import { XHead } from '../../../components/X/XHead';
+import { XHorizontal } from '../../../components/X/XHorizontal';
+import { XPopover } from '../../../components/X/XPopover';
+import { XMenu } from '../../../components/X/XMenu';
+import { XVertical } from '../../../components/X/XVertical';
+
+const FilterSelector = Glamorous(XSelect)({
+    width: '140px'
+})
 
 const FilterContainer = Glamorous(XCard)({
+    display: 'flex',
+    flexDirection: 'row',
     position: 'absolute',
     top: 60,
-    right: 30,
+    left: 264,
     zIndex: 1,
-    width: 208,
     padding: 16,
     pointerEvents: 'auto',
     // backgroundColor: 'rgb(245, 246, 248)',
@@ -61,112 +70,102 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                 clauses.push({ 'currentUse': this.state.currentUse.value })
             }
             let query = { '$and': clauses };
-            console.warn(query);
             this.setState({ query: query });
         } else {
             this.setState({ query: undefined });
         }
     }
 
+    // mapbox://styles/mapbox/light-v9
+    // mapbox://styles/steve-kite/cjcsbw6zq00dg2squfjuum14i
+
     render() {
         return (
-            <>
-                <XHead title={['Statecraft', 'Explore']} />
-                <ParcelTileSource layer="parcels" minZoom={16} />
-                <BlockTileSource layer="blocks" minZoom={12} />
-                <XMapPolygonLayer
-                    source="parcels"
-                    layer="parcels"
-                    minZoom={16}
-                    flyOnClick={true}
-                    onClick={(v) => this.setState({ selected: v })}
-                    selectedId={this.state.selected}
-                    flyToPadding={{
-                        left: 140,
-                        right: 140,
-                        top: 100,
-                        bottom: 400
-                    }}
-                />
-                <XMapPolygonLayer
-                    source="blocks"
-                    layer="blocks"
-                    minZoom={12}
-                    maxZoom={16}
-                    style={{
-                        fillOpacity: 0.1,
-                        borderOpacity: 0.3
-                    }}
-                    flyToPadding={{
-                        left: 140,
-                        right: 140,
-                        top: 100,
-                        bottom: 400
-                    }}
-                />
+            <AppContentMap>
+                <AppContentMap.Item>
+                    <XPopover placement="bottom-end">
+                        <XPopover.Target>
+                            <XButton>Filter</XButton>
+                        </XPopover.Target>
+                        <XPopover.Content>
+                            <XMenu>
+                                <XVertical>
+                                    <FilterSelector
+                                        name="zoning-field"
+                                        value={this.state.zones}
+                                        options={AllZones.map((v) => ({ value: v, label: v }))}
+                                        onChange={this.handleZonesChange}
+                                        placeholder="Zoning"
+                                    />
+                                    <FilterSelector
+                                        name="address-field"
+                                        value={this.state.stories}
+                                        options={[
+                                            { value: '0', label: 'no stories' },
+                                            { value: '1', label: '1 story' },
+                                            { value: '2', label: '2 stories' },
+                                            { value: '3', label: '3 stories' },
+                                            { value: '4', label: '4 stories' }]}
+                                        onChange={this.handleStoriesChange}
+                                        placeholder="Stories"
+                                    />
+                                    <FilterSelector
+                                        name="current-field"
+                                        value={this.state.currentUse}
+                                        options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
+                                        onChange={this.handleCurrentUseChange}
+                                        placeholder="Current Use"
+                                    />
+                                    <XButton onClick={this.handleUpdate} alignSelf="center">Apply</XButton>
+                                </XVertical>
+                            </XMenu>
+                        </XPopover.Content>
+                    </XPopover>
+                    {/* <XButton>Filter</XButton> */}
+                </AppContentMap.Item>
+                <XMap mapStyle={'mapbox://styles/mapbox/light-v9'}>
+                    <ParcelTileSource layer="parcels" minZoom={16} />
+                    <BlockTileSource layer="blocks" minZoom={12} />
+                    <XMapPolygonLayer
+                        source="parcels"
+                        layer="parcels"
+                        minZoom={16}
+                        flyOnClick={true}
+                        onClick={(v) => this.setState({ selected: v })}
+                        selectedId={this.state.selected}
+                        flyToPadding={{
+                            left: 140,
+                            right: 140,
+                            top: 100,
+                            bottom: 400
+                        }}
+                        flyToMaxZoom={18}
+                    />
+                    <XMapPolygonLayer
+                        source="blocks"
+                        layer="blocks"
+                        minZoom={12}
+                        maxZoom={16}
+                        style={{
+                            fillOpacity: 0.1,
+                            borderOpacity: 0.3
+                        }}
+                    />
+                    <ParcelPointSource layer="parcels-found" query={this.state.query} minZoom={12} skip={this.state.query === undefined} />
+                    <XMapPointLayer source="parcels-found" layer="parcels-found" />
 
-                <ParcelPointSource layer="parcels-found" query={this.state.query} minZoom={12} skip={this.state.query === undefined} />
-                <XMapPointLayer source="parcels-found" layer="parcels-found" />
-
-                {this.state.selected && <ParcelCard parcelId={this.state.selected} />}
-                <FilterContainer>
-                    <XVertical>
-                        <div>
-                            <span>Zoning</span>
-                            <div>
-                                <XSelect
-                                    name="zoning-field"
-                                    value={this.state.zones}
-                                    options={AllZones.map((v) => ({ value: v, label: v }))}
-                                    onChange={this.handleZonesChange}
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <span>Stories</span>
-                            <div>
-                                <XSelect
-                                    name="address-field"
-                                    value={this.state.stories}
-                                    options={[
-                                        { value: '0', label: 'no stories' },
-                                        { value: '1', label: '1 story' },
-                                        { value: '2', label: '2 stories' },
-                                        { value: '3', label: '3 stories' },
-                                        { value: '4', label: '4 stories' }]}
-                                    onChange={this.handleStoriesChange}
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <span>Current Use</span>
-                            <div>
-                                <XSelect
-                                    name="current-field"
-                                    value={this.state.currentUse}
-                                    options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
-                                    onChange={this.handleCurrentUseChange}
-                                />
-                            </div>
-                        </div>
-                        {/* <div>
-                            <span>Area</span>
-                            <XSlider>
-                                <XSlider.Range />
-                            </XSlider>
-                        </div> */}
-                        <XButton onClick={this.handleUpdate}>Apply</XButton>
-                    </XVertical>
-                </FilterContainer>
-            </>
+                    {this.state.selected && <ParcelCard parcelId={this.state.selected} />}
+                </XMap>
+            </AppContentMap>
         )
     }
 }
 
 export default withApp((props) => {
     return (
-        <AppContentMap>
+        <>
+            <XHead title={['Statecraft', 'Explore']} />
             <ParcelCollection />
-        </AppContentMap>
+        </>
     )
-})
+});

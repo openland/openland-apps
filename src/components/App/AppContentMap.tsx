@@ -1,13 +1,14 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XDocumentAppRootFullScreen } from '../X/Scaffold/XDocumentRoot';
+import { XDocumentAppRoot } from '../X/Scaffold/XDocumentRoot';
 import { AppSidebar } from './AppSidebar';
-import { XHead } from '../X/XHead';
-import { XMap } from '../X/XMap';
 import { AppHeader } from './AppHeader';
 import { AppNavigation } from './AppNavigation';
 
 const ClassicalWrapper = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'stretch',
     position: 'absolute',
     left: 0,
     right: 0,
@@ -16,25 +17,12 @@ const ClassicalWrapper = Glamorous.div({
     pointerEvents: 'none',
     zIndex: 1,
 });
-const ClassicalContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-
-    minWidth: '1020px',
-    maxWidth: '1400px',
-    minHeight: '100vh',
-
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    pointerEvents: 'none'
-})
 
 const MapContainer = Glamorous.div({
     alignSelf: 'stretch',
     flexGrow: 1,
     minWidth: '1020px'
-})
+});
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -46,31 +34,48 @@ let Container = Glamorous.div({
     paddingLeft: '16px',
     paddingRight: '32px',
     paddingBottom: '32px'
-})
+});
 
-export class AppContentMap extends React.Component {
+export class XAppBarItem extends React.Component {
+    static defaultProps = {
+        _isAppBarItem: true
+    }
     render() {
         return (
-            <XDocumentAppRootFullScreen>
-                <XHead title={['Statecraft', 'App']} />
+            <>
+                {this.props.children}
+            </>
+        )
+    }
+}
 
-                <MapContainer>
-                    <XMap mapStyle={'mapbox://styles/mapbox/light-v9'}>
-                        {this.props.children}
-                    </XMap>
+export class AppContentMap extends React.Component {
+    static Item = XAppBarItem;
+
+    render() {
+        let childArray = React.Children.toArray(this.props.children);
+        let menus = childArray
+            .filter((v) => React.isValidElement(v) && (v.props as any)._isAppBarItem === true);
+        let content = childArray
+            .filter((v) => !React.isValidElement(v) || !(v.props as any)._isAppBarItem);
+        return (
+            <XDocumentAppRoot>
+                <MapContainer key="container">
+                    {content}
                 </MapContainer>
 
-                <ClassicalWrapper>
-                    <ClassicalContainer>
-                        <AppSidebar asOverlay={true}>
-                            <AppNavigation />
-                        </AppSidebar>
-                        <Container>
-                            <AppHeader />
-                        </Container>
-                    </ClassicalContainer>
+                <ClassicalWrapper key="controls">
+                    <AppSidebar asOverlay={true}>
+                        <AppNavigation />
+                    </AppSidebar>
+
+                    <Container>
+                        <AppHeader>
+                            {menus}
+                        </AppHeader>
+                    </Container>
                 </ClassicalWrapper>
-            </XDocumentAppRootFullScreen>
+            </XDocumentAppRoot>
         );
     }
 }

@@ -11,6 +11,7 @@ export interface XLinkProps {
     className?: string | null;
     activateForSubpaths?: boolean | null;
     onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+    clickOnDown?: boolean;
 }
 
 function normalizePath(src: string): string {

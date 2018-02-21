@@ -13,13 +13,13 @@ export const AuthenticationRequired = withRouter<{}>(withUserInfo((props) => {
     if (props.isLoggedIn) {
         return (
             <>
-                <XHead title={['Statecraft', 'Authentication Required']} />
                 {props.children}
             </>
         );
     } else {
         return (
             <>
+                <XHead title={['Statecraft', 'Authentication Required']} />
                 <XDocumentAppRoot>
                     <XView css={{ flexGrow: 1 }} alignItems="center" justifyContent="center">
                         <XCard shadow="medium">

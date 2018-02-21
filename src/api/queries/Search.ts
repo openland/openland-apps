@@ -8,6 +8,17 @@ export const SearchQuery = gql`
                     node {
                         id
                         title
+                        extrasArea
+                        extrasNeighborhood
+                        metadata {
+                            available
+                            currentUse
+                        }
+                    }
+                    score
+                    highlight {
+                        key
+                        match
                     }
                 }
                 total

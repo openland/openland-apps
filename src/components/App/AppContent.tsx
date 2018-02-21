@@ -4,7 +4,6 @@ import { XVertical } from '../X/XVertical';
 import { AppHeader } from './AppHeader';
 import { XDocumentAppRoot } from '../X/Scaffold/XDocumentRoot';
 import { AppSidebar } from './AppSidebar';
-import { XHead } from '../X/XHead';
 import { AppNavigation } from './AppNavigation';
 
 let Container = Glamorous.div({
@@ -17,13 +16,12 @@ let Container = Glamorous.div({
     paddingLeft: '16px',
     paddingRight: '32px',
     paddingBottom: '32px',
-})
+});
 
 export class AppContent extends React.Component {
     render() {
         return (
             <XDocumentAppRoot>
-                <XHead title={['Statecraft', 'App']} />
                 <AppSidebar>
                     <AppNavigation />
                 </AppSidebar>

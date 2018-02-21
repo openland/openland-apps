@@ -10,8 +10,17 @@ let Header = Glamorous.div({
     flexDirection: 'row',
     height: '32px',
     marginTop: '16px',
-    justifyContent: 'space-between',
+    marginBottom: '8px',
     pointerEvents: 'auto'
+})
+
+let MenuElements = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    height: '32px',
+    marginLeft: '16px',
+    marginRight: '16px',
+    flexGrow: 1
 })
 
 let UserInfoBox = Glamorous.div({
@@ -43,30 +52,33 @@ const AvatarImg = Glamorous.img({
     cursor: 'pointer'
 });
 
-let Popover = withUserInfo<{ onClick?: any }>((props) => {
+let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
     return (
         <XPopover placement="bottom-end">
-                <XPopover.Target>
-                    <AvatarImg src={props.user!!.picture} onClick={props.onClick} />
-                </XPopover.Target>
-                <XPopover.Content>
-                    <XMenu>
-                        <UserInfoBox>
-                            {props.user!!.name}
-                            <span>Administrator</span>
-                        </UserInfoBox>
-                        <XMenu.Item path="/auth/logout">Log Out</XMenu.Item>
-                    </XMenu>
-                </XPopover.Content>
-            </XPopover>
+            <XPopover.Target>
+                <AvatarImg src={props.user!!.picture} onClick={props.onClick} />
+            </XPopover.Target>
+            <XPopover.Content>
+                <XMenu>
+                    <UserInfoBox>
+                        {props.user!!.name}
+                        <span>Administrator</span>
+                    </UserInfoBox>
+                    <XMenu.Item path="/auth/logout">Log Out</XMenu.Item>
+                </XMenu>
+            </XPopover.Content>
+        </XPopover>
     )
 });
 
-export let AppHeader = () => {
+export let AppHeader = (props: { children?: any }) => {
     return (
         <Header>
             <AppSearch />
-            <Popover />
+            <MenuElements>
+                {props.children}
+            </MenuElements>
+            <UserProfile />
         </Header>
     )
 }

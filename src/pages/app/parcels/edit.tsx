@@ -5,32 +5,36 @@ import { withParcelMetadataForm } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { XForm } from '../../../components/X/XForm';
+import { XHead } from '../../../components/X/XHead';
 
 export default withApp(withParcelMetadataForm((props) => {
     return (
-        <AppContent>
-            <XCard shadow="medium" separators={true}>
-                <XCard.Header text={'Update Parcel #' + props.data.item.title} />
-                <XForm
-                    defaultValues={props.data.item.metadata}
-                    submitMutation={props.parcelAlterMetadata}
-                    completePath={'/app/parcels/' + props.data.item.id}
-                >
-                    <XForm.Field title="Description">
-                        <XForm.Text field="description" />
-                    </XForm.Field>
-                    <XForm.Field title="Is Available to buy?">
-                        <XForm.Boolean field="available" />
-                    </XForm.Field>
-                    <XForm.Field title="Current Use">
-                        <XForm.Select field="currentUse" options={[{ title: 'Parking', value: 'PARKING' }, { title: 'Public Storage', value: 'STORAGE' }]} />
-                    </XForm.Field>
-                    <XForm.Footer>
-                        <XForm.Submit style="dark">Save</XForm.Submit>
-                        <XButton path={'/app/parcels/' + props.data.item.id}>Cancel</XButton>
-                    </XForm.Footer>
-                </XForm>
-            </XCard>
-        </AppContent>
+        <>
+            <XHead title={['Statecraft', 'Edit Parcel #' + props.data.item.title]} />
+            <AppContent>
+                <XCard shadow="medium" separators={true}>
+                    <XCard.Header text={'Update Parcel #' + props.data.item.title} />
+                    <XForm
+                        defaultValues={props.data.item.metadata}
+                        submitMutation={props.parcelAlterMetadata}
+                        completePath={'/app/parcels/' + props.data.item.id}
+                    >
+                        <XForm.Field title="Description">
+                            <XForm.Text field="description" />
+                        </XForm.Field>
+                        <XForm.Field title="Is Available to buy?">
+                            <XForm.Boolean field="available" />
+                        </XForm.Field>
+                        <XForm.Field title="Current Use">
+                            <XForm.Select field="currentUse" options={[{ title: 'Parking', value: 'PARKING' }, { title: 'Public Storage', value: 'STORAGE' }]} />
+                        </XForm.Field>
+                        <XForm.Footer>
+                            <XForm.Submit style="dark">Save</XForm.Submit>
+                            <XButton path={'/app/parcels/' + props.data.item.id}>Cancel</XButton>
+                        </XForm.Footer>
+                    </XForm>
+                </XCard>
+            </AppContent>
+        </>
     );
 }));
