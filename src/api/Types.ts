@@ -1410,6 +1410,12 @@ export interface SearchQuery {
           id: string,
           title: string,
         },
+        score: number,
+        highlight:  Array< {
+          __typename: "SearchHighlight",
+          key: string,
+          match: string,
+        } >,
       } >,
       total: number,
     },

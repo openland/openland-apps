@@ -9,6 +9,11 @@ export const SearchQuery = gql`
                         id
                         title
                     }
+                    score
+                    highlight {
+                        key
+                        match
+                    }
                 }
                 total
             }

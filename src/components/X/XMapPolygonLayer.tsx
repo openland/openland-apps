@@ -44,6 +44,7 @@ interface XMapPolygonLayerProps {
         left: number;
         right: number;
     }
+    flyToMaxZoom?: number;
 
     onClick?: (id: string) => void;
     selectedId?: string;
@@ -275,6 +276,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                     let center = Turf.bbox(element);
                     this.map!!.fitBounds([[center[0], center[1]], [center[2], center[3]]], {
                         padding: this.props.flyToPadding !== undefined ? this.props.flyToPadding : 0,
+                        maxZoom: this.props.flyToMaxZoom,
                         duration: 300
                     });
                 }

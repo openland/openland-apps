@@ -40,13 +40,40 @@ const ResultsContainer = Glamorous(XCard)({
     right: 0
 })
 
+let HighlightedWrapper = Glamorous.span({
+    '> em': {
+        color: '#ff0000'
+    }
+})
+
+let HighlighterSpan = Glamorous.span({
+    paddingLeft: 8
+})
+
+const Highlighted = (props: { text?: string, field: string, highlight: { key: string, match: string }[] }) => {
+    let existing = props.highlight.find((k) => k.key === props.field);
+    console.warn(props.highlight);
+    if (existing) {
+        return <HighlightedWrapper dangerouslySetInnerHTML={{ __html: existing.match }} />
+    } else {
+        if (props.text) {
+            return <>{props.text}</>;
+        } else {
+            return null;
+        }
+    }
+}
+
 let SearchResults = withSearch((props) => {
     if (props.data && props.data.search && props.data.search.parcels.edges.length > 0) {
         return (
             <ResultsContainer shadow="medium">
                 <XCard.List>
                     {props.data.search.parcels.edges.map((v) => (
-                        <XCard.ListItem key={v.node.id} path={'/app/parcels/' + v.node.id}>Parcel #{v.node.title}</XCard.ListItem>
+                        <XCard.ListItem key={v.node.id} path={'/app/parcels/' + v.node.id}>
+                            Parcel #<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} />
+                            {v.highlight.find((k) => k.key === 'address') && <HighlighterSpan><Highlighted field={'address'} highlight={v.highlight} /></HighlighterSpan>}
+                        </XCard.ListItem>
                     ))}
                 </XCard.List>
             </ResultsContainer>

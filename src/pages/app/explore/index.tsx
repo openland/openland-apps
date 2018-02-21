@@ -10,6 +10,7 @@ import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelTileSource, BlockTileSource, ParcelPointSource } from '../../../api';
 import { XButton } from '../../../components/X/XButton';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
+import { XMap } from '../../../components/X/XMap';
 import { XHead } from '../../../components/X/XHead';
 
 const FilterContainer = Glamorous(XCard)({
@@ -61,16 +62,18 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                 clauses.push({ 'currentUse': this.state.currentUse.value })
             }
             let query = { '$and': clauses };
-            console.warn(query);
             this.setState({ query: query });
         } else {
             this.setState({ query: undefined });
         }
     }
 
+    // mapbox://styles/mapbox/light-v9
+    // mapbox://styles/steve-kite/cjcsbw6zq00dg2squfjuum14i
+
     render() {
         return (
-            <>
+            <XMap mapStyle={'mapbox://styles/mapbox/light-v9'}>
                 <XHead title={['Statecraft', 'Explore']} />
                 <ParcelTileSource layer="parcels" minZoom={16} />
                 <BlockTileSource layer="blocks" minZoom={12} />
@@ -87,6 +90,7 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                         top: 100,
                         bottom: 400
                     }}
+                    flyToMaxZoom={18}
                 />
                 <XMapPolygonLayer
                     source="blocks"
@@ -96,12 +100,6 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                     style={{
                         fillOpacity: 0.1,
                         borderOpacity: 0.3
-                    }}
-                    flyToPadding={{
-                        left: 140,
-                        right: 140,
-                        top: 100,
-                        bottom: 400
                     }}
                 />
 
@@ -158,7 +156,7 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                         <XButton onClick={this.handleUpdate}>Apply</XButton>
                     </XVertical>
                 </FilterContainer>
-            </>
+            </XMap>
         )
     }
 }
@@ -169,4 +167,4 @@ export default withApp((props) => {
             <ParcelCollection />
         </AppContentMap>
     )
-})
+});
