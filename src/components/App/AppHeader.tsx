@@ -10,6 +10,7 @@ let Header = Glamorous.div({
     flexDirection: 'row',
     height: '32px',
     marginTop: '16px',
+    marginBottom: '8px',
     justifyContent: 'space-between',
     pointerEvents: 'auto'
 })
@@ -46,19 +47,19 @@ const AvatarImg = Glamorous.img({
 let Popover = withUserInfo<{ onClick?: any }>((props) => {
     return (
         <XPopover placement="bottom-end">
-                <XPopover.Target>
-                    <AvatarImg src={props.user!!.picture} onClick={props.onClick} />
-                </XPopover.Target>
-                <XPopover.Content>
-                    <XMenu>
-                        <UserInfoBox>
-                            {props.user!!.name}
-                            <span>Administrator</span>
-                        </UserInfoBox>
-                        <XMenu.Item path="/auth/logout">Log Out</XMenu.Item>
-                    </XMenu>
-                </XPopover.Content>
-            </XPopover>
+            <XPopover.Target>
+                <AvatarImg src={props.user!!.picture} onClick={props.onClick} />
+            </XPopover.Target>
+            <XPopover.Content>
+                <XMenu>
+                    <UserInfoBox>
+                        {props.user!!.name}
+                        <span>Administrator</span>
+                    </UserInfoBox>
+                    <XMenu.Item path="/auth/logout">Log Out</XMenu.Item>
+                </XMenu>
+            </XPopover.Content>
+        </XPopover>
     )
 });
 

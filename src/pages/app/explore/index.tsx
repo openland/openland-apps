@@ -74,7 +74,6 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
     render() {
         return (
             <XMap mapStyle={'mapbox://styles/mapbox/light-v9'}>
-                <XHead title={['Statecraft', 'Explore']} />
                 <ParcelTileSource layer="parcels" minZoom={16} />
                 <BlockTileSource layer="blocks" minZoom={12} />
                 <XMapPolygonLayer
@@ -163,8 +162,11 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
 
 export default withApp((props) => {
     return (
-        <AppContentMap>
-            <ParcelCollection />
-        </AppContentMap>
+        <>
+            <XHead title={['Statecraft', 'Explore']} />
+            <AppContentMap>
+                <ParcelCollection />
+            </AppContentMap>
+        </>
     )
 });

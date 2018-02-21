@@ -1,12 +1,14 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XDocumentAppRootFullScreen } from '../X/Scaffold/XDocumentRoot';
+import { XDocumentAppRoot } from '../X/Scaffold/XDocumentRoot';
 import { AppSidebar } from './AppSidebar';
-import { XHead } from '../X/XHead';
 import { AppHeader } from './AppHeader';
 import { AppNavigation } from './AppNavigation';
 
 const ClassicalWrapper = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'stretch',
     position: 'absolute',
     left: 0,
     right: 0,
@@ -15,19 +17,6 @@ const ClassicalWrapper = Glamorous.div({
     pointerEvents: 'none',
     zIndex: 1,
 });
-const ClassicalContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-
-    minWidth: '1020px',
-    maxWidth: '1400px',
-    minHeight: '100vh',
-
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    pointerEvents: 'none'
-})
 
 const MapContainer = Glamorous.div({
     alignSelf: 'stretch',
@@ -50,24 +39,21 @@ let Container = Glamorous.div({
 export class AppContentMap extends React.Component {
     render() {
         return (
-            <XDocumentAppRootFullScreen>
-                <XHead title={['Statecraft', 'App']} />
-
+            <XDocumentAppRoot>
                 <MapContainer>
                     {this.props.children}
                 </MapContainer>
 
                 <ClassicalWrapper>
-                    <ClassicalContainer>
-                        <AppSidebar asOverlay={true}>
-                            <AppNavigation />
-                        </AppSidebar>
-                        <Container>
-                            <AppHeader />
-                        </Container>
-                    </ClassicalContainer>
+                    <AppSidebar asOverlay={true}>
+                        <AppNavigation />
+                    </AppSidebar>
+
+                    <Container>
+                        <AppHeader />
+                    </Container>
                 </ClassicalWrapper>
-            </XDocumentAppRootFullScreen>
+            </XDocumentAppRoot>
         );
     }
 }
