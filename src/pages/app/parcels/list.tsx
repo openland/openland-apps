@@ -7,11 +7,12 @@ import { XButton } from '../../../components/X/XButton';
 import { XArea } from '../../../components/X/XArea';
 import { XMoney } from '../../../components/X/XMoney';
 import { XSwitcher } from '../../../components/X/XSwitcher';
+import { XHead } from '../../../components/X/XHead';
 
 export default withApp(withParcels((props) => {
-
     return (
         <AppContent>
+            <XHead title={['Statecraft', 'Database']} />
             <XCard shadow="medium" separators={true}>
                 <XCard.Header text="Parcels">
                     <XSwitcher>

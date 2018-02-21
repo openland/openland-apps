@@ -5,10 +5,12 @@ import { withParcelMetadataForm } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { XForm } from '../../../components/X/XForm';
+import { XHead } from '../../../components/X/XHead';
 
 export default withApp(withParcelMetadataForm((props) => {
     return (
         <AppContent>
+            <XHead title={['Statecraft', 'Edit Parcel #' + props.data.item.title]} />
             <XCard shadow="medium" separators={true}>
                 <XCard.Header text={'Update Parcel #' + props.data.item.title} />
                 <XForm
