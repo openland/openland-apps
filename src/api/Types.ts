@@ -728,6 +728,54 @@ export interface ParcelsConnectionQuery {
   },
 };
 
+export interface ParcelsFavoritesQuery {
+  items:  Array< {
+    __typename: "Parcel",
+    id: string,
+    title: string,
+    geometry: string | null,
+    extrasArea: number | null,
+    extrasSupervisorDistrict: string | null,
+    extrasZoning: Array< string > | null,
+    extrasLandValue: number | null,
+    extrasImprovementValue: number | null,
+    extrasPropertyValue: number | null,
+    extrasFixturesValue: number | null,
+    extrasStories: number | null,
+    extrasUnits: number | null,
+    extrasRooms: number | null,
+    extrasBathrooms: number | null,
+    extrasBedrooms: number | null,
+    extrasYear: number | null,
+    extrasNeighborhood: string | null,
+    addresses:  Array< {
+      __typename: "StreetNumber",
+      streetId: string,
+      streetName: string,
+      streetNameSuffix: string | null,
+      streetNumber: number,
+      streetNumberSuffix: string | null,
+    } >,
+    block:  {
+      __typename: "Block",
+      id: string,
+      title: string,
+      extrasArea: number | null,
+    },
+    metadata:  {
+      __typename: "ParcelMetadata",
+      description: string | null,
+      available: boolean | null,
+      currentUse: ParcelUse | null,
+    },
+    likes:  {
+      __typename: "Likes",
+      liked: boolean,
+      count: number | null,
+    },
+  } >,
+};
+
 export interface ParcelQueryVariables {
   parcelId: string,
 };

@@ -123,6 +123,15 @@ export const ParcelsConnection = gql`
     ${ParcelFull}
 `;
 
+export const ParcelsFavorites = gql`
+    query ParcelsFavorites {
+        items: parcelFavorites {
+            ...ParcelFull
+        }
+    }
+    ${ParcelFull}
+`;
+
 export const ParcelQuery = gql`
     query Parcel($parcelId: ID!) {
         item: parcel(id: $parcelId) {

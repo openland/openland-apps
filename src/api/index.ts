@@ -82,6 +82,8 @@ export const withBlock = graphqlRouted<Types.BlockQuery>(Parcels.BlockQuery, ['b
 export const withParcels = graphqlRouted<Types.ParcelsConnectionQuery>(Parcels.ParcelsConnection, ['page']);
 export const withParcel = graphqlRouted<Types.ParcelQuery>(Parcels.ParcelQuery, ['parcelId']);
 
+export const withParcelsFavorites = graphqlRouted<Types.ParcelsFavoritesQuery>(Parcels.ParcelsFavorites);
+
 // export const withParcelLikeMutations = graphqlCompose2(withParcelLikes, withParcelUnlikes);
 export const withParcelLikes = graphql<{ doLike: MutationFunc<{}> }, { parcelId: string }>(Parcels.ParcelLike, {
     name: 'doLike',
@@ -90,6 +92,7 @@ export const withParcelLikes = graphql<{ doLike: MutationFunc<{}> }, { parcelId:
             variables: {
                 parcelId: props.parcelId
             },
+            refetchQueries: [{ query: Parcels.ParcelsFavorites }]
         };
     }
 });
@@ -100,6 +103,7 @@ export const withParcelUnlikes = graphql<{ doUnlike: MutationFunc<{}> }, { parce
             variables: {
                 parcelId: props.parcelId
             },
+            refetchQueries: [{ query: Parcels.ParcelsFavorites }]
         };
     }
 });
