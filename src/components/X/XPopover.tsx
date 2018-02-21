@@ -24,7 +24,7 @@ export class XPopoverContent extends React.Component {
     render() {
         return (
             <>
-            {this.props.children}
+                {this.props.children}
             </>
         )
     }
@@ -107,8 +107,8 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
     }
 
     handleClick = (e: MouseEvent) => {
-        let isInTarget = this.state.target && (this.state.target as Node).contains(e.target as Node);
-        let isInPortal = this.state.portal && (this.state.portal as Node).contains(e.target as Node);
+        let isInTarget = this.state.target !== undefined && this.state.target !== null && (this.state.target as Node).contains(e.target as Node);
+        let isInPortal = this.state.portal !== undefined && this.state.target !== null && (this.state.portal as Node).contains(e.target as Node);
         if (!isInTarget && !isInPortal && this.state.popper) {
             this.setState((src) => {
                 if (src.popper) {
@@ -142,25 +142,25 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
 
         let targetClone = React.cloneElement(target as any, { handler: this.handler as any });
         let children = (
-            <div ref={this.handlePortal} style={{zIndex: 2}}>
+            <div ref={this.handlePortal} style={{ zIndex: 2 }}>
                 {content}
             </div>
         );
 
         return (
             <>
-            {targetClone}
-            {canUseDOM && this.state.target && ReactDOM.createPortal(children, document.body)}
+                {targetClone}
+                {canUseDOM && this.state.target && ReactDOM.createPortal(children, document.body)}
             </>
         );
     }
 
     componentDidMount() {
-        document.addEventListener('mousedown', this.handleClick);
+        document.addEventListener('mousedown', this.handleClick, true);
     }
 
     componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleClick);
+        document.removeEventListener('mousedown', this.handleClick, true);
         if (this.state.popper) {
             this.state.popper.destroy();
         }
