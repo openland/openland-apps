@@ -11,7 +11,7 @@ const loading = glamor.keyframes({
 })
 import { XArea } from '../X/XArea';
 
-let LoadingIcon = Glamorous(XIcon)<{loading?: boolean}>((props) => ({
+let LoadingIcon = Glamorous(XIcon)<{ loading?: boolean }>((props) => ({
     display: props.loading ? 'block' : 'none',
     position: 'absolute',
     top: 'calc(50% - 10px)',
@@ -22,7 +22,7 @@ let LoadingIcon = Glamorous(XIcon)<{loading?: boolean}>((props) => ({
     animation: `${loading} 1s linear infinite`,
 }))
 
-const Container = Glamorous.div<{noResult?: boolean}>(props => ({
+const Container = Glamorous.div<{ noResult?: boolean }>(props => ({
     display: 'flex',
     flexDirection: 'row',
     boxShadow: '0 0 0 1px rgba(49,49,93,.03), 0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
@@ -189,9 +189,10 @@ export class AppSearch extends React.Component<{}, { value: string, focused: boo
                     onFocus={this.onFocus}
                     onBlur={this.onBlur}
                 />
-                {this.state.value.trim().length > 0 && this.state.focused && <SearchResults query={this.state.value} />}
                 <LoadingIcon icon="cached" />
-                {this.state.focused && <SearchResults query={this.state.value} />}
+                {this.state.value.trim().length > 0 && this.state.focused &&
+                    <SearchResults query={this.state.value} />
+                }
             </Container>
         )
     }
