@@ -22,7 +22,7 @@ const MapContainer = Glamorous.div({
     alignSelf: 'stretch',
     flexGrow: 1,
     minWidth: '1020px'
-})
+});
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -34,17 +34,17 @@ let Container = Glamorous.div({
     paddingLeft: '16px',
     paddingRight: '32px',
     paddingBottom: '32px'
-})
+});
 
 export class AppContentMap extends React.Component {
     render() {
         return (
             <XDocumentAppRoot>
-                <MapContainer>
+                <MapContainer key="container">
                     {this.props.children}
                 </MapContainer>
 
-                <ClassicalWrapper>
+                <ClassicalWrapper key="controls">
                     <AppSidebar asOverlay={true}>
                         <AppNavigation />
                     </AppSidebar>
