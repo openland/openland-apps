@@ -8,6 +8,7 @@ export class XPopoverTarget extends React.Component<{ handler?: (target: any) =>
         _isPopoverTarget: true
     }
     handler = (e: React.SyntheticEvent<any>) => {
+        e.preventDefault();
         this.props.handler!!(e.target);
     }
     render() {
