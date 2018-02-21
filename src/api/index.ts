@@ -81,13 +81,39 @@ export const withBlocks = graphqlRouted<Types.BlocksConnectionQuery>(Parcels.Blo
 export const withBlock = graphqlRouted<Types.BlockQuery>(Parcels.BlockQuery, ['blockId']);
 export const withParcels = graphqlRouted<Types.ParcelsConnectionQuery>(Parcels.ParcelsConnection, ['page']);
 export const withParcel = graphqlRouted<Types.ParcelQuery>(Parcels.ParcelQuery, ['parcelId']);
-export const withParcelDirect = graphql<Types.ParcelQuery, { parcelId: string }>(Parcels.ParcelQuery, {
+
+// export const withParcelLikeMutations = graphqlCompose2(withParcelLikes, withParcelUnlikes);
+export const withParcelLikes = graphql<{ doLike: MutationFunc<{}> }, { parcelId: string }>(Parcels.ParcelLike, {
+    name: 'doLike',
+    options: (props: { parcelId: string }) => {
+        return {
+            variables: {
+                parcelId: props.parcelId
+            },
+        };
+    }
+});
+export const withParcelUnlikes = graphql<{ doUnlike: MutationFunc<{}> }, { parcelId: string }>(Parcels.ParcelUnlike, {
+    name: 'doUnlike',
+    options: (props: { parcelId: string }) => {
+        return {
+            variables: {
+                parcelId: props.parcelId
+            },
+        };
+    }
+});
+
+export const withParcelDirect2 = graphql<Types.ParcelQuery, { parcelId: string }>(Parcels.ParcelQuery, {
     options: (props: { parcelId: string }) => ({
         variables: {
             parcelId: props.parcelId
         }
     })
 });
+export const withParcelDirect = graphqlCompose3(withParcelDirect2, withParcelLikes, withParcelUnlikes)
+// export const withParcelLikes = graphqlMutation<{ doLike: MutationFunc<{}> }>(Parcels.ParcelLike, { name: 'doLike' });
+// export const withParcelUnlikes = graphqlMutation<{ doUnlike: MutationFunc<{}> }>(Parcels.ParcelUnlike, { name: 'doUnlike' });
 
 export const ParcelTileSource = graphQLTileSource<Types.ParcelsTileOverlayQuery>(Parcels.ParcelsTileOverlay);
 export const ParcelPointSource = graphQLTileSource<Types.ParcelsPointOverlayQuery>(Parcels.ParcelsPointOverlay, true);

@@ -170,26 +170,16 @@ let XLikeButton = Glamorous.div<{ active: boolean }>((props) => ({
     animation: props.active ? `${heartBurst} .8s steps(28)` : undefined
 }))
 
-export class XButtonLike extends React.Component<any, any> {
-    constructor(props: any) {
-        super(props);
-
-        this.state = {
-            active: false
+export class XButtonLike extends React.Component<{ onChange?: (value: boolean) => void, value?: boolean }> {
+    handler = (e: any) => {
+        e.preventDefault();
+        if (this.props.onChange) {
+            this.props.onChange(!(this.props.value || false))
         }
-
-        this.likeHandler = this.likeHandler.bind(this)
     }
-
-    likeHandler() {
-        this.setState({
-            active: !this.state.active
-        })
-    }
-
     render() {
         return (
-            <XLikeButton active={this.state.active} onClick={this.likeHandler} />
+            <XLikeButton active={this.props.value || false} onClick={this.handler} />
         )
     }
 }

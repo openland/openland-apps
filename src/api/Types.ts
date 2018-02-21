@@ -708,6 +708,11 @@ export interface ParcelsConnectionQuery {
           available: boolean | null,
           currentUse: ParcelUse | null,
         },
+        likes:  {
+          __typename: "Likes",
+          liked: boolean,
+          count: number | null,
+        },
       },
       cursor: string,
     } >,
@@ -766,6 +771,11 @@ export interface ParcelQuery {
       description: string | null,
       available: boolean | null,
       currentUse: ParcelUse | null,
+    },
+    likes:  {
+      __typename: "Likes",
+      liked: boolean,
+      count: number | null,
     },
   },
 };
@@ -827,6 +837,38 @@ export interface ParcelAlterMutation {
       description: string | null,
       available: boolean | null,
       currentUse: ParcelUse | null,
+    },
+  },
+};
+
+export interface ParcelLikeMutationVariables {
+  parcelId: string,
+};
+
+export interface ParcelLikeMutation {
+  likeParcel:  {
+    __typename: "Parcel",
+    id: string,
+    likes:  {
+      __typename: "Likes",
+      liked: boolean,
+      count: number | null,
+    },
+  },
+};
+
+export interface ParcelUnlikeMutationVariables {
+  parcelId: string,
+};
+
+export interface ParcelUnlikeMutation {
+  unlikeParcel:  {
+    __typename: "Parcel",
+    id: string,
+    likes:  {
+      __typename: "Likes",
+      liked: boolean,
+      count: number | null,
     },
   },
 };
@@ -1652,6 +1694,11 @@ export interface ParcelFullFragment {
     description: string | null,
     available: boolean | null,
     currentUse: ParcelUse | null,
+  },
+  likes:  {
+    __typename: string,
+    liked: boolean,
+    count: number | null,
   },
 };
 

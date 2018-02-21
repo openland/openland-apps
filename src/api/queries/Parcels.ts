@@ -36,6 +36,10 @@ export const ParcelFull = gql`
         available
         currentUse
       }
+      likes {
+          liked
+          count
+      }
   }
 `
 
@@ -170,3 +174,27 @@ export const ParcelAlter = gql`
         }
     }
 `;
+
+export const ParcelLike = gql`
+    mutation ParcelLike($parcelId: ID!) {
+        likeParcel(id: $parcelId) {
+            id
+            likes {
+                liked
+                count
+            }
+        }
+    }
+`;
+
+export const ParcelUnlike = gql`
+    mutation ParcelUnlike($parcelId: ID!) {
+        unlikeParcel(id: $parcelId) {
+            id
+            likes {
+                liked
+                count
+            }
+        }
+    }
+`

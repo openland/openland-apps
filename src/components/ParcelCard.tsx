@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { AStreetViewModal } from './App/AStreetViewModal';
 import { XCard } from './X/XCard';
 import { withParcelDirect } from '../api';
-import { XButton } from './X/XButton';
+import { XButton, XButtonLike } from './X/XButton';
 import { ParcelProperties } from './ParcelProperties';
 
 let Container = Glamorous.div({
@@ -25,6 +25,17 @@ export const ParcelCard = withParcelDirect((props) => {
                     {props.data && props.data!!.item &&
                         <>
                             <XCard.Header text={'Parcel #' + props.data.item!!.title}>
+                                <XCard.Header.Target>
+                                    <XButtonLike value={props.data!!.item!!.likes.liked}
+                                        onChange={(v) => {
+                                            if (v) {
+                                                (props as any).doLike();
+                                            } else {
+                                                (props as any).doUnlike();
+                                            }
+                                        }}
+                                    />
+                                </XCard.Header.Target>
                                 <AStreetViewModal geometry={props.data.item!!.geometry!!} />
                                 <XButton style="dark" path={'/app/parcels/' + props.data.item!!.id}>View</XButton>
                             </XCard.Header>
@@ -34,4 +45,4 @@ export const ParcelCard = withParcelDirect((props) => {
             </XCard>
         </Container>
     )
-});
+}) as React.ComponentClass<{ parcelId: string }>;
