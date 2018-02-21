@@ -25,12 +25,12 @@ export let XDocumentAppRoot = Glamorous.div({
     flexDirection: 'row',
     alignItems: 'stretch',
 
-    minWidth: '1020px',
-    maxWidth: '1400px',
+    // minWidth: '1020px',
+    // maxWidth: '1400px',
     minHeight: '100vh',
 
-    marginLeft: 'auto',
-    marginRight: 'auto'
+    // marginLeft: 'auto',
+    // marginRight: 'auto'
 });
 
 export let XDocumentAppRootFullScreen = Glamorous.div({
