@@ -61,9 +61,9 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                 {props.item.metadata.currentUse !== null &&
                     <XCard.Property title="Current Use">{props.item.metadata.currentUse}</XCard.Property>
                 }
-                {props.item.metadata.available !== null &&
+                {/* {props.item.metadata.available !== null &&
                     <XCard.Property title="Listed">{props.item.metadata.available.toString()}</XCard.Property>
-                }
+                } */}
             </XCard.PropertyList>
         </XCard.PropertyColumns>
     )

@@ -5,6 +5,7 @@ import { XCard } from './X/XCard';
 import { withParcelDirect } from '../api';
 import { XButton, XButtonLike } from './X/XButton';
 import { ParcelProperties } from './ParcelProperties';
+import { formatAddresses } from '../utils/Addresses';
 
 let Container = Glamorous.div({
     position: 'absolute',
@@ -24,7 +25,12 @@ export const ParcelCard = withParcelDirect((props) => {
                 <XCard.Loader loading={props.data!!.loading}>
                     {props.data && props.data!!.item &&
                         <>
-                            <XCard.Header text={'Parcel #' + props.data.item!!.title}>
+                            <XCard.Header
+                                text={'Parcel #' + props.data.item!!.title}
+                                description={formatAddresses(props.data.item!!.addresses)}
+                                bullet={props.data.item!!.metadata.available ? 'ON SALE' : undefined}
+                                truncateDescription={true}
+                            >
                                 <XCard.Header.Target>
                                     <XButtonLike value={props.data!!.item!!.likes.liked}
                                         onChange={(v) => {

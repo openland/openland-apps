@@ -83,11 +83,11 @@ export default withApp((props) => {
                                     { value: 'two', label: 'Two' },
                                 ]}
                             />
-                            <XBullet title="bullet" alignSelf="flex-start" />
-                            <XBullet title="bullet" alignSelf="flex-start" color="red" />
-                            <XBullet title="bullet" alignSelf="flex-start" color="green" />
-                            <XBullet title="bullet" alignSelf="flex-start" color="blue" />
-                            <XBullet title="bullet" alignSelf="flex-start" color="yellow" />
+                            <XBullet alignSelf="flex-start">bullet</XBullet>
+                            <XBullet alignSelf="flex-start" color="red">bullet</XBullet>
+                            <XBullet alignSelf="flex-start" color="green">bullet</XBullet>
+                            <XBullet alignSelf="flex-start" color="blue">bullet</XBullet>
+                            <XBullet alignSelf="flex-start" color="yellow">bullet</XBullet>
                             <XSwitcher alignSelf="flex-start">
                                 <XSwitcher.Item path="/app/ui">first</XSwitcher.Item>
                                 <XSwitcher.Item>second</XSwitcher.Item>
@@ -135,7 +135,7 @@ export default withApp((props) => {
                     <XCard.Hint title="test data" />
                     <XCard.Header 
                         text="Loader block title" 
-                        ellipcise={true}
+                        truncateDescription={true}
                         description={`
                         $ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"
                         $ ./node_modules/typescript/bin/tsc --watch

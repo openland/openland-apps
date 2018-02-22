@@ -18,7 +18,12 @@ export default withApp(withParcel((props) => {
             <AppContent>
                 <XCard shadow="medium" separators={true}>
                     <XCard.Hint title="Public" />
-                    <XCard.Header text={'Parcel #' + props.data.item.title} description={formatAddresses(props.data.item.addresses)}>
+                    <XCard.Header
+                        text={'Parcel #' + props.data.item.title}
+                        description={formatAddresses(props.data.item.addresses)}
+                        bullet={props.data.item.metadata.available ? 'ON SALE' : undefined}
+                        truncateDescription={true}
+                    >
                         <XCard.Header.Target>
                             <XButtonLike value={props.data!!.item!!.likes.liked}
                                 onChange={(v) => {

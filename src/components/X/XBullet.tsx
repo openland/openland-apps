@@ -44,14 +44,10 @@ let XBulletDiv = Glamorous.div<XBulletProps>((props) => ({
     borderRadius: '20px'
 }));
 
-interface XBulletProps {
-
-}
-
-export function XBullet(props: XBulletProps & { title: string }) {
+export function XBullet(props: XBulletProps & { children?: any }) {
     return (
         <XBulletDiv color={props.color} alignSelf={props.alignSelf}>
-            <span>{props.title}</span>
+            <span>{props.children}</span>
         </XBulletDiv>
     )
 }

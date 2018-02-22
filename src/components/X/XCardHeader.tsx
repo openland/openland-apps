@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from './XHorizontal'
+import { XBullet } from './XBullet';
 
 export const XCardTitle = Glamorous.div({
     display: 'flex',
@@ -12,7 +13,7 @@ export const XCardTitle = Glamorous.div({
     color: '#32325d'
 })
 
-export const XCardDescription = Glamorous.div<{ellipcise?: boolean}>((props) => ({
+export const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
     color: '#525f7f',
     fontSize: '14px',
     lineHeight: '1.6',
@@ -37,13 +38,14 @@ let XCardHeaderDiv = Glamorous.div({
 
 interface XCardHeaderProps {
     children?: any,
-    text?: string | null, 
-    description?: string | null, 
-    ellipcise?: boolean,
-    filter?: string
+    text?: string | null,
+    description?: string | null,
+    truncateDescription?: boolean,
+    filter?: string,
+    bullet?: string
 }
 
-export class HeaderTargetElement extends React.Component<({children: any})> {
+export class HeaderTargetElement extends React.Component<({ children: any })> {
     static defaultProps = {
         _isTargetElement: true
     }
@@ -62,46 +64,27 @@ export class XCardHeader extends React.Component<XCardHeaderProps> {
     render() {
         let target: any[] = []
         let content: any[] = []
-
-        if (React.Children.count(this.props.children) > 0) {
-
-            let thisChildArr = React.Children.toArray(this.props.children)
-            
-            thisChildArr.forEach((i: any) => {
-                if (React.isValidElement(i) && (i.props as any)._isTargetElement === true) {
-                    target.push(i)
-                } else if (React.isValidElement(i) && (i.props as any)._isTargetElement !== true) {
-                    content.push(i)
-                }
-            })
+        for (let i of React.Children.toArray(this.props.children)) {
+            if (React.isValidElement(i) && (i.props as any)._isTargetElement === true) {
+                target.push(i)
+            } else {
+                content.push(i)
+            }
         }
 
         return (
             <XCardHeaderDiv>
                 <XCardTitle>
-                    {(target.length === 0)
-                        ? (this.props.text)
-                        : (
-                            <TargetDivStyle>
-                                {target.map((item: any) => (
-                                    item
-                                ))}
-                                {this.props.text}
-                            </TargetDivStyle>
-                        )
-                    }
-                    {(content.length !== 0)
-                        ?  (
-                        <XHorizontal separator="normal">
-                            {content.map((item: any) => (
-                                    item
-                            ))}
-                        </XHorizontal>
-                        )
-                        : null
-                    }
+                    <TargetDivStyle>
+                        {target}
+                        {this.props.text}
+                        {this.props.bullet && <XBullet color="green">{this.props.bullet}</XBullet>}
+                    </TargetDivStyle>
+                    <XHorizontal separator="normal">
+                        {content}
+                    </XHorizontal>
                 </XCardTitle>
-                <XCardDescription ellipcise={this.props.ellipcise}>
+                <XCardDescription ellipcise={this.props.truncateDescription}>
                     {this.props.description}
                 </XCardDescription>
             </XCardHeaderDiv>

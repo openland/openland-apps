@@ -18,153 +18,153 @@ export default withPage((props) => {
 
     return (
         <>
-        <XHead title="San Francisco Housing Analytics" />
-        <XPageContent>
-            <XCard>
-                <XCard.Content>
-                    <XGrid
-                        layouts={{
-                            templateAreas: [
-                                ['sidebar', 'header', 'header'],
-                                ['sidebar', 'footer', 'footer']
-                            ],
-                            'xs': {
+            <XHead title="San Francisco Housing Analytics" />
+            <XPageContent>
+                <XCard>
+                    <XCard.Content>
+                        <XGrid
+                            layouts={{
                                 templateAreas: [
-                                    ['header', 'sidebar'],
-                                    ['header', 'sidebar'],
-                                    ['footer', 'sidebar']
+                                    ['sidebar', 'header', 'header'],
+                                    ['sidebar', 'footer', 'footer']
                                 ],
-                            },
-                            'sm': {
-                                templateAreas: [
-                                    ['sidebar', 'sidebar'],
-                                    ['header', 'header'],
-                                    ['footer', 'footer']
-                                ],
-                            }
-                        }}
-                    >
-                        <XCell area="sidebar">
-                            Sidebar
+                                'xs': {
+                                    templateAreas: [
+                                        ['header', 'sidebar'],
+                                        ['header', 'sidebar'],
+                                        ['footer', 'sidebar']
+                                    ],
+                                },
+                                'sm': {
+                                    templateAreas: [
+                                        ['sidebar', 'sidebar'],
+                                        ['header', 'header'],
+                                        ['footer', 'footer']
+                                    ],
+                                }
+                            }}
+                        >
+                            <XCell area="sidebar">
+                                Sidebar
                         </XCell>
-                        <XCell area="header">
-                            Header
+                            <XCell area="header">
+                                Header
                         </XCell>
-                        <XCell area="footer">
-                            Footer
+                            <XCell area="footer">
+                                Footer
                         </XCell>
-                    </XGrid>
-                </XCard.Content>
-            </XCard>
-            <XCard>
-                <XCard.Content>
-                    <XTitle>Default Button</XTitle>
-                    <XVertical>
-                        <XButtonLike />
+                        </XGrid>
+                    </XCard.Content>
+                </XCard>
+                <XCard>
+                    <XCard.Content>
+                        <XTitle>Default Button</XTitle>
+                        <XVertical>
+                            <XButtonLike />
+                            <XButton alignSelf="flex-start">Default</XButton>
+                            <XButton alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton>
+
+                            <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
+                            <XButton alignSelf="flex-start" icon="close" />
+
+                            <XButton alignSelf="flex-start" style="dark" size="large">Large</XButton>
+                            <XButton alignSelf="flex-start" style="dark" size="large" bounce={true} disabled={true}>Bounce</XButton>
+                            <XButton alignSelf="flex-start" style="important">Important</XButton>
+                            <XButton alignSelf="flex-start" loading={true} />
+                            <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
+                            <XLinkExternal path="https://goo.gl/urJT1F" />
+                            <XBullet alignSelf="flex-start">bullet</XBullet>
+                            <XBullet alignSelf="flex-start" color="red">bullet</XBullet>
+                            <XBullet alignSelf="flex-start" color="green">bullet</XBullet>
+                            <XBullet alignSelf="flex-start" color="blue">bullet</XBullet>
+                            <XBullet alignSelf="flex-start" color="yellow">bullet</XBullet>
+                            <XSwitcher alignSelf="flex-start">
+                                <XSwitcher.Item path="/sf/ui">first</XSwitcher.Item>
+                                <XSwitcher.Item>second</XSwitcher.Item>
+                                <XSwitcher.Item>third</XSwitcher.Item>
+                                <XSwitcher.Item>fourth</XSwitcher.Item>
+                            </XSwitcher>
+                        </XVertical>
+                    </XCard.Content>
+                </XCard>
+                <XCard shadow="medium">
+                    <XCard.Footer text="footer">
+                        <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                        <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                    </XCard.Footer>
+                    <XCard.Hint title="test data" />
+                </XCard>
+                <XCard>
+                    <XCard.Hint title="test data" />
+                    <XCard.Warning title="Warning example with hint and button element">
                         <XButton alignSelf="flex-start">Default</XButton>
-                        <XButton alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton>
-
+                    </XCard.Warning>
+                </XCard>
+                <XCard separators={true}>
+                    <XCard.Hint title="test data" />
+                    <XCard.Header text="Loader block title">
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
-                        <XButton alignSelf="flex-start" icon="close" />
-
-                        <XButton alignSelf="flex-start" style="dark" size="large">Large</XButton>
-                        <XButton alignSelf="flex-start" style="dark" size="large" bounce={true} disabled={true}>Bounce</XButton>
-                        <XButton alignSelf="flex-start" style="important">Important</XButton>
-                        <XButton alignSelf="flex-start" loading={true} />
-                        <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
-                        <XLinkExternal path="https://goo.gl/urJT1F" />
-                        <XBullet title="bullet" alignSelf="flex-start" />
-                        <XBullet title="bullet" alignSelf="flex-start" color="red" />
-                        <XBullet title="bullet" alignSelf="flex-start" color="green" />
-                        <XBullet title="bullet" alignSelf="flex-start" color="blue" />
-                        <XBullet title="bullet" alignSelf="flex-start" color="yellow" />
-                        <XSwitcher alignSelf="flex-start">
-                            <XSwitcher.Item path="/sf/ui">first</XSwitcher.Item>
-                            <XSwitcher.Item>second</XSwitcher.Item>
-                            <XSwitcher.Item>third</XSwitcher.Item>
-                            <XSwitcher.Item>fourth</XSwitcher.Item>
-                        </XSwitcher>
-                    </XVertical>
-                </XCard.Content>
-            </XCard>
-            <XCard shadow="medium">
-                <XCard.Footer text="footer">
-                    <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                    <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                </XCard.Footer>
-                <XCard.Hint title="test data"/>
-            </XCard>
-            <XCard>
-                <XCard.Hint title="test data"/>
-                <XCard.Warning title="Warning example with hint and button element">
-                    <XButton alignSelf="flex-start">Default</XButton>
-                </XCard.Warning>
-            </XCard>
-            <XCard separators={true}>
-                <XCard.Hint title="test data"/>
-                <XCard.Header text="Loader block title">
-                    <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
-                    <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
-                </XCard.Header>
-                <XCard.Loader loading={true} >
+                        <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
+                    </XCard.Header>
+                    <XCard.Loader loading={true} >
+                        <XCard.FormList>
+                            <XCard.FormCell
+                                title="XForm example"
+                                placeholder="Placeholder"
+                                description="Form description"
+                            />
+                        </XCard.FormList>
+                        <XCard.Warning title="Warning example with hint and button element">
+                            <XButton alignSelf="flex-start">Default</XButton>
+                        </XCard.Warning>
+                    </XCard.Loader>
+                </XCard>
+                <XCard shadow="medium" loading={true}>
+                    <XCard.Footer text="footer">
+                        <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                        <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                    </XCard.Footer>
+                </XCard>
+                <XCard>
                     <XCard.FormList>
-                        <XCard.FormCell 
+                        <XCard.FormCell
                             title="XForm example"
                             placeholder="Placeholder"
                             description="Form description"
                         />
                     </XCard.FormList>
-                    <XCard.Warning title="Warning example with hint and button element">
-                        <XButton alignSelf="flex-start">Default</XButton>
-                    </XCard.Warning>
-                </XCard.Loader>
-            </XCard>
-            <XCard shadow="medium" loading={true}>
-                <XCard.Footer text="footer">
-                    <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                    <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                </XCard.Footer>
-            </XCard>
-            <XCard>
-                <XCard.FormList>
-                    <XCard.FormCell 
-                        title="XForm example"
-                        placeholder="Placeholder"
-                        description="Form description"
-                    />
-                </XCard.FormList>
-            </XCard>
-            <XCard>
-                <XCard.Content>
-                    <XView>
-                        <Title>Example title</Title>
+                </XCard>
+                <XCard>
+                    <XCard.Content>
                         <XView>
-                            <Text>Example text</Text>
-                            <a style={{color: '#6638F0'}}>example description column child components</a>
-                        </XView>
-                    </XView>
-                    <XView>
-                        <XView justifyContent="space-between" direction="row" alignItems="center">
-                            <Title>Example title with button</Title>
-                            <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                            <Title>Example title</Title>
+                            <XView>
+                                <Text>Example text</Text>
+                                <a style={{ color: '#6638F0' }}>example description column child components</a>
+                            </XView>
                         </XView>
                         <XView>
-                            <Text>
-                                Example text
-                                <a style={{color: '#6638F0'}}>example description inline child components</a>
-                            </Text>
+                            <XView justifyContent="space-between" direction="row" alignItems="center">
+                                <Title>Example title with button</Title>
+                                <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                            </XView>
+                            <XView>
+                                <Text>
+                                    Example text
+                                <a style={{ color: '#6638F0' }}>example description inline child components</a>
+                                </Text>
+                            </XView>
                         </XView>
-                    </XView>
-                    <XView justifyContent="space-between" direction="row">
-                        <Text>Footer example with two buttons</Text>
-                        <XView justifyContent="space-between" direction="row" childWhiteSpace={true}>
-                            <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                            <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                        <XView justifyContent="space-between" direction="row">
+                            <Text>Footer example with two buttons</Text>
+                            <XView justifyContent="space-between" direction="row" childWhiteSpace={true}>
+                                <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                                <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                            </XView>
                         </XView>
-                    </XView>
-                </XCard.Content>
-            </XCard>
-        </XPageContent>
+                    </XCard.Content>
+                </XCard>
+            </XPageContent>
         </>
     );
 });
