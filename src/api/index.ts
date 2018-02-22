@@ -80,7 +80,7 @@ export const withSFBuildingProject = graphqlRouted<Types.ProjectSFQuery>(Project
 export const withBlocks = graphqlRouted<Types.BlocksConnectionQuery>(Parcels.BlocksConnection, ['page']);
 export const withBlock = graphqlRouted<Types.BlockQuery>(Parcels.BlockQuery, ['blockId']);
 export const withParcels = graphqlRouted<Types.ParcelsConnectionQuery>(Parcels.ParcelsConnection, ['page']);
-export const withParcel = graphqlRouted<Types.ParcelQuery>(Parcels.ParcelQuery, ['parcelId']);
+export const withParcelRaw = graphqlRouted<Types.ParcelQuery>(Parcels.ParcelQuery, ['parcelId']);
 
 export const withParcelsFavorites = graphqlRouted<Types.ParcelsFavoritesQuery>(Parcels.ParcelsFavorites);
 
@@ -108,6 +108,17 @@ export const withParcelUnlikes = graphql<{ doUnlike: MutationFunc<{}> }, { parce
     }
 });
 
+export const withParcelLikesRouted = graphqlMutation<{ doLike: MutationFunc<{}> }>(Parcels.ParcelLike, {
+    name: 'doLike',
+    params: ['parcelId'],
+    refetchQueries: [Parcels.ParcelsFavorites]
+});
+export const withParcelUnlikesRouted = graphqlMutation<{ doUnlike: MutationFunc<{}> }>(Parcels.ParcelUnlike, {
+    name: 'doUnlike',
+    params: ['parcelId'],
+    refetchQueries: [Parcels.ParcelsFavorites]
+});
+
 export const withParcelDirect2 = graphql<Types.ParcelQuery, { parcelId: string }>(Parcels.ParcelQuery, {
     options: (props: { parcelId: string }) => ({
         variables: {
@@ -124,7 +135,8 @@ export const ParcelPointSource = graphQLTileSource<Types.ParcelsPointOverlayQuer
 export const BlockTileSource = graphQLTileSource<Types.BlocksTileOverlayQuery>(Parcels.BlocksTileOverlay);
 
 const ParcelMetadataAlter = graphqlMutation<{ parcelAlterMetadata: MutationFunc<Types.ParcelAlterMutationVariables> }>(Parcels.ParcelAlter, { name: 'parcelAlterMetadata', params: ['parcelId'] });
-export const withParcelMetadataForm = graphqlCompose2(withParcel, ParcelMetadataAlter);
+export const withParcelMetadataForm = graphqlCompose2(withParcelRaw, ParcelMetadataAlter);
+export const withParcel = graphqlCompose3(withParcelRaw, withParcelLikesRouted, withParcelUnlikesRouted);
 
 //
 // Pictures
