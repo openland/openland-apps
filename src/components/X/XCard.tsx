@@ -17,6 +17,7 @@ import { XCardFormList, XCardFormCell } from './XCardForm';
 import { XCardHint } from './XCardHint';
 import { XCardWarning } from './XCardWarning';
 import { XCardLoader } from './XCardLoader';
+import { XCardEmpty } from './XCardEmpty';
 import { XCardList, XCardListItem } from './XCardList';
 //
 // Basic Row
@@ -213,6 +214,7 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
     static Title = XCardTitle;
     static Button = XCardButton;
     static ExternalLink = XCardExternalLink;
+    static Empty = XCardEmpty;
     static Content = XCardDivContent;
     static Table = XCardTable;
     static Property = XCardProperty;
