@@ -99,6 +99,16 @@ export default withApp((props) => {
                         </XVertical>
                     </XCard.Content>
                 </XCard>
+                <XCard separators={true}>
+                    <XCard.Header 
+                        text="Loader block title" 
+                        truncateDescription={true}
+                        description="qweqweqweqwe"
+                    />
+                    <XCard.Empty icon="remove_shopping_cart" text="empty text">
+                        <XLinkExternal path="https://goo.gl/urJT1F" />
+                    </XCard.Empty>
+                </XCard>
                 <XCard shadow="medium">
                     <XCard.Footer text="footer">
                         <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
