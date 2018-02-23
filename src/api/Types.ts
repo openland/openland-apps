@@ -688,6 +688,7 @@ export interface ParcelsConnectionQuery {
         extrasBedrooms: number | null,
         extrasYear: number | null,
         extrasNeighborhood: string | null,
+        extrasMetroDistance: number | null,
         addresses:  Array< {
           __typename: "StreetNumber",
           streetId: string,
@@ -748,6 +749,7 @@ export interface ParcelsFavoritesQuery {
     extrasBedrooms: number | null,
     extrasYear: number | null,
     extrasNeighborhood: string | null,
+    extrasMetroDistance: number | null,
     addresses:  Array< {
       __typename: "StreetNumber",
       streetId: string,
@@ -800,6 +802,7 @@ export interface ParcelQuery {
     extrasBedrooms: number | null,
     extrasYear: number | null,
     extrasNeighborhood: string | null,
+    extrasMetroDistance: number | null,
     addresses:  Array< {
       __typename: "StreetNumber",
       streetId: string,
@@ -1723,6 +1726,7 @@ export interface ParcelFullFragment {
   extrasBedrooms: number | null,
   extrasYear: number | null,
   extrasNeighborhood: string | null,
+  extrasMetroDistance: number | null,
   addresses:  Array< {
     __typename: string,
     streetId: string,
