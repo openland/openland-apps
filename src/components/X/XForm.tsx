@@ -71,13 +71,10 @@ export const XFormFieldDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: '#f6f9fc',
-    paddingTop: 0,
+    paddingTop: 20,
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom: 20,
-    '&:first-child': {
-        paddingTop: 20
-    }
+    paddingBottom: 20
 })
 
 export const XFormFieldTitle = Glamorous.div<{ novalid?: boolean }>((props) => ({

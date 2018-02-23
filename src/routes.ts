@@ -55,6 +55,13 @@ routes.add('/app/ui', '/app/ui/showcase');
 routes.add('/app/ui/', '/app/ui/showcase');
 
 //
+// Settings
+//
+
+routes.add('/app/settings', '/app/settings/index');
+routes.add('/app/settings/', '/app/settings/index');
+
+//
 // Old
 //
 
