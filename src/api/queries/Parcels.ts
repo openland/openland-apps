@@ -20,6 +20,11 @@ export const ParcelFull = gql`
       extrasYear
       extrasNeighborhood
       extrasMetroDistance
+      extrasMetroStation
+      extrasTrainDistance
+      extrasTrainStation
+      extrasTrainLocalDistance
+      extrasTrainLocalStation
       addresses {
         streetId
         streetName

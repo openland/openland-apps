@@ -62,7 +62,13 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     <XCard.Property title="Current Use">{props.item.metadata.currentUse}</XCard.Property>
                 }
                 {props.item.extrasMetroDistance !== null &&
-                    <XCard.Property title="Distance to Metro">{props.item.extrasMetroDistance}</XCard.Property>
+                    <XCard.Property title="Nearest Muni Metro">{props.item.extrasMetroDistance} ({props.item.extrasMetroStation})</XCard.Property>
+                }
+                {props.item.extrasTrainLocalDistance !== null &&
+                    <XCard.Property title="Nearest BART">{props.item.extrasTrainLocalDistance} ({props.item.extrasTrainLocalStation})</XCard.Property>
+                }
+                {props.item.extrasTrainDistance !== null &&
+                    <XCard.Property title="Nearest Caltrain">{props.item.extrasTrainDistance} ({props.item.extrasTrainStation})</XCard.Property>
                 }
                 {/* {props.item.metadata.available !== null &&
                     <XCard.Property title="Listed">{props.item.metadata.available.toString()}</XCard.Property>
