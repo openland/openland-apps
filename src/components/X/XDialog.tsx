@@ -38,7 +38,7 @@ export const XDialogFullScreenContainerHeader = Glamorous.div({
     fontSize: '32px',
     fontWeight: 800,
     justifyContent: 'space-between'
-})
+});
 
 export function XDialog(props: { style?: 'full-screen' | 'normal', title: string, onClose?: () => void, children: any }) {
     if (props.style === 'full-screen') {
@@ -48,7 +48,7 @@ export function XDialog(props: { style?: 'full-screen' | 'normal', title: string
                     <XDialogFullScreenContainerHeader>
                         <span>{props.title}</span>
                         <div>
-                            <XButton onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }}>Close</XButton>
+                            <XButton borderless={true} size="large" icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
                         </div>
                     </XDialogFullScreenContainerHeader>
                     {props.children}
@@ -59,7 +59,7 @@ export function XDialog(props: { style?: 'full-screen' | 'normal', title: string
         return (
             <XDialogContainer shadow="medium">
                 <XCard.Header text={props.title}>
-                    <XButton onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }}>Close</XButton>
+                    <XButton borderless={true} icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
                 </XCard.Header>
                 {props.children}
             </XDialogContainer>

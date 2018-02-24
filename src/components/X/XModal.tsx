@@ -2,8 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as ReactModal from 'react-modal';
 import { XDialog } from './XDialog';
-import { XCard } from './XCard';
-import { XButton } from './XButton';
 
 export class XModalTarget extends React.Component<{ handler?: (target: any) => void }> {
     static defaultProps = {
@@ -32,10 +30,6 @@ export class XModalContent extends React.Component {
     }
 }
 
-const XModalHeader = Glamorous.div({
-
-})
-
 const XModalContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
@@ -43,7 +37,7 @@ const XModalContainer = Glamorous.div({
     justifyContent: 'center',
     pointerEvents: 'auto',
     alignSelf: 'stretch'
-})
+});
 
 export class XModal extends React.Component<{ title: string, fullScreen?: boolean, closeOnClick?: boolean }, { isOpen: boolean }> {
     static Target = XModalTarget;
