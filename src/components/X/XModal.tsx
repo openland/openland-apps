@@ -8,6 +8,9 @@ export class XModalTarget extends React.Component<{ handler?: (target: any) => v
         _isModalTarget: true
     }
     handler = (e: React.SyntheticEvent<any>) => {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
         this.props.handler!!(e.target);
     }
     render() {
@@ -48,11 +51,14 @@ export class XModal extends React.Component<{ title: string, fullScreen?: boolea
         this.state = { isOpen: false };
     }
 
-    handler = () => {
+    handler = (src?: any) => {
         this.setState({ isOpen: true })
     }
 
-    handleClose = () => {
+    handleClose = (src?: any) => {
+        if (src && src.preventDefault) {
+            src.preventDefault();
+        }
         this.setState({ isOpen: false });
     }
 
