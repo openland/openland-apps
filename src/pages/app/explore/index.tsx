@@ -157,6 +157,14 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
     // mapbox://styles/steve-kite/cjcsbw6zq00dg2squfjuum14i
 
     render() {
+
+        let mapStyle = this.props.router.query!!.mode === 'full'
+            ? 'mapbox://styles/mapbox/streets-v9'
+            : (this.props.router.query!!.mode === 'satellite' ?
+                'mapbox://styles/mapbox/satellite-v9'
+                : 'mapbox://styles/mapbox/light-v9'
+            )
+
         return (
             <AppContentMap>
                 <AppContentMap.Item>
@@ -202,7 +210,7 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
                 </AppContentMap.Item>
                 <XMapContainer>
                     <XMapContainer2>
-                        <XMap key={this.props.router.query!!.mode || 'map'} mapStyle={this.props.router.query!!.mode === 'full' ? 'mapbox://styles/mapbox/streets-v9' : 'mapbox://styles/mapbox/light-v9'}>
+                        <XMap key={this.props.router.query!!.mode || 'map'} mapStyle={mapStyle}>
                             <ParcelTileSource layer="parcels" minZoom={16} />
                             <BlockTileSource layer="blocks" minZoom={12} />
                             <XMapPolygonLayer
@@ -238,6 +246,7 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
                             <XSwitcher>
                                 <XSwitcher.Item query={{ field: 'mode' }}>Light</XSwitcher.Item>
                                 <XSwitcher.Item query={{ field: 'mode', value: 'full' }}>Full</XSwitcher.Item>
+                                <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
                             </XSwitcher>
                         </MapSwitcher>
                     </XMapContainer2>
