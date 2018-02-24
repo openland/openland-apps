@@ -40,13 +40,22 @@ export const ParcelCard = withParcelDirect((props) => {
                 {props.data && props.data!!.item &&
                     <Scrollable>
                         <XCard.Header
-                            text={'Parcel #' + props.data.item!!.title}
-                            description={formatAddresses(props.data.item!!.addresses)}
-                            bullet={props.data.item!!.metadata.available ? 'ON SALE' : undefined}
-                            truncateDescription={true}
+                            text={'Parcel Info'}
+                            // description={formatAddresses(props.data.item!!.addresses)}
+                            // bullet={props.data.item!!.metadata.available ? 'ON SALE' : undefined}
+                            // truncateDescription={true}
                         >
                             <XButton query={{ field: 'selectedParcel' }} icon="clear" />
                         </XCard.Header>
+                        {props.data!!.item!!.geometry && (
+                            <XCard.Content>
+                                <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} />
+                            </XCard.Content>
+                        )}
+                        <XCard.Content>
+                            <div>{'Parcel #' + props.data.item!!.title}</div>
+                            <div>{formatAddresses(props.data.item!!.addresses)}</div>
+                        </XCard.Content>
                         <XCard.Content>
                             <XHorizontal>
                                 <XButton path={'/app/parcels/' + props.data.item!!.id}>Details</XButton>
@@ -137,11 +146,6 @@ export const ParcelCard = withParcelDirect((props) => {
                                 <XCard.Property title="Nearest Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</XCard.Property>
                             }
                         </XCard.PropertyList>
-                        {props.data!!.item!!.geometry && (
-                            <XCard.Content>
-                                <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} />
-                            </XCard.Content>
-                        )}
                     </Scrollable>}
             </LoaderWrapper>
         </Container>
