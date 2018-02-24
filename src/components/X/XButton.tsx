@@ -57,6 +57,12 @@ let fontSize = {
     'large': '15px'
 }
 
+let iconSize = {
+    'normal': '15px',
+    'medium': '18px',
+    'large': '20px'
+}
+
 let paddings = {
     'normal': '6px 14px',
     'medium': '10px 18px',
@@ -144,7 +150,7 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
         },
         '& > i': {
             opacity: props.loading ? 0 : 1,
-            fontSize: props.borderless ? 20 : (props.accent ? 18 : (props.size === 'large' ? '15px' : '13px')),
+            fontSize: iconSize[size],
             lineHeight: '20px'
         },
         '& > span': {

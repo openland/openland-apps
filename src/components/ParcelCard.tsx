@@ -40,7 +40,7 @@ export const ParcelCard = withParcelDirect((props) => {
                 {props.data && props.data!!.item &&
                     <Scrollable>
                         <XCard.Header text={'Parcel Info'}>
-                            <XButton borderless={true} query={{ field: 'selectedParcel' }} icon="clear" />
+                            <XButton borderless={true} size="large" query={{ field: 'selectedParcel' }} icon="clear" />
                         </XCard.Header>
                         {props.data!!.item!!.geometry && (
                             <XCard.Content>
