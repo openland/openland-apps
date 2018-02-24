@@ -60,6 +60,7 @@ export const ParcelCard = withParcelDirect((props) => {
                             <XHorizontal>
                                 <XButton path={'/app/parcels/' + props.data.item!!.id}>Details</XButton>
                                 <XButton
+                                    accept={true}
                                     icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
                                     onClick={(e) => {
                                         e.preventDefault();
