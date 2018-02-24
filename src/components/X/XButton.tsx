@@ -16,7 +16,7 @@ interface XButtonProps extends XLinkProps {
     loading?: boolean;
     disabled?: boolean;
     icon?: string,
-    accept?: boolean,
+    accent?: boolean,
     borderless?: boolean
 }
 
@@ -88,10 +88,10 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
         flexBasis: props.flexBasis,
         padding: props.borderless ? undefined : paddings[size],
 
-        color: props.accept ? '#4428e0' : (props.loading ? 'transparent' : textColors[style]),
-        backgroundColor: props.accept ? '#fff' : backgroundColors[style],
+        color: props.accent ? '#4428e0' : (props.loading ? 'transparent' : textColors[style]),
+        backgroundColor: props.accent ? '#fff' : backgroundColors[style],
 
-        border: props.borderless ? undefined : (props.accept ? '1px solid #4428e0' : undefined),
+        border: props.borderless ? undefined : (props.accent ? '1px solid #4428e0' : undefined),
         borderRadius: '4px',
 
         boxShadow: props.borderless ? undefined : ('0 0 0 1px rgba(50,50,93,.1), 0 2px 5px 0 rgba(50,50,93,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent'),
@@ -105,7 +105,7 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
 
         '&:hover': {
             transform: props.bounce ? 'translateY(-1px)' : undefined,
-            color: props.accept ? '#4428e0' : (props.loading ? 'transparent' : textHoveredColors[style]),
+            color: props.accent ? '#4428e0' : (props.loading ? 'transparent' : textHoveredColors[style]),
             backgroundColor: (props.loading || props.disabled) ? backgroundColors[style] : backgroundHoveredColors[style],
             boxShadow: props.borderless ? undefined : (((props.loading || props.disabled) ? undefined
                 : ((props.size === 'large')
@@ -144,11 +144,11 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
         },
         '& > i': {
             opacity: props.loading ? 0 : 1,
-            fontSize: props.borderless ? 20 : (props.accept ? 18 : (props.size === 'large' ? '15px' : '13px')),
+            fontSize: props.borderless ? 20 : (props.accent ? 18 : (props.size === 'large' ? '15px' : '13px')),
             lineHeight: '20px'
         },
         '& > span': {
-            marginLeft: props.icon ? (props.accept ? 7 : 3) : 0
+            marginLeft: props.icon ? (props.accent ? 7 : 3) : 0
         }
     }
 });
@@ -167,7 +167,7 @@ export function XButton(props: XButtonProps & { children?: any }) {
             path={props.path}
             query={props.query}
             onClick={props.onClick}
-            accept={props.accept}
+            accent={props.accent}
             flexGrow={props.flexGrow}
             flexShrink={props.flexShrink}
             flexBasis={props.flexBasis}
