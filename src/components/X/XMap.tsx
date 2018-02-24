@@ -118,6 +118,12 @@ export class XMap extends React.Component<XMapLightProps> {
         return <Wrapper className={this.props.className}>{this.props.children}</Wrapper>;
     }
 
+    componentDidUpdate() {
+        if (this._isLoaded && this._isMounted && this.map) {
+            this.map.resize();
+        }
+    }
+
     componentDidMount() {
         this._isMounted = true;
         let domNode = ReactDOM.findDOMNode(this);
