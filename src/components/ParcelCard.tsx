@@ -9,6 +9,7 @@ import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { XDistance } from './X/XDistance';
 import { AStreetViewModalPreview } from './App/AStreetViewModal';
+import { AStreetViewModal } from './App/AStreetViewModal';
 import { XHorizontal } from './X/XHorizontal';
 
 let Container = Glamorous.div({
@@ -33,6 +34,15 @@ let Scrollable = Glamorous.div({
     overflowY: 'auto'
 });
 
+let StreetViewDiv = Glamorous.div({
+    position: 'relative',
+    '& > a': {
+        position: 'absolute',
+        top: 8,
+        right: 8
+    }
+})
+
 export const ParcelCard = withParcelDirect((props) => {
     return (
         <Container>
@@ -44,7 +54,10 @@ export const ParcelCard = withParcelDirect((props) => {
                         </XCard.Header>
                         {props.data!!.item!!.geometry && (
                             <XCard.Content>
-                                <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} />
+                                <StreetViewDiv>
+                                    <AStreetViewModal geometry={props.data!!.item!!.geometry!!} />
+                                    <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} />
+                                </StreetViewDiv>
                             </XCard.Content>
                         )}
                         <XCard.Content>
