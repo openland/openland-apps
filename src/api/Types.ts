@@ -939,6 +939,14 @@ export interface ParcelUnlikeMutation {
   },
 };
 
+export interface ParcelsStatsQueryVariables {
+  query?: string | null,
+};
+
+export interface ParcelsStatsQuery {
+  parcelsStats: number,
+};
+
 export interface PermitQueryVariables {
   permitId: string,
 };

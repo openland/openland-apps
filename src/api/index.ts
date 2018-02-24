@@ -138,6 +138,14 @@ const ParcelMetadataAlter = graphqlMutation<{ parcelAlterMetadata: MutationFunc<
 export const withParcelMetadataForm = graphqlCompose2(withParcelRaw, ParcelMetadataAlter);
 export const withParcel = graphqlCompose3(withParcelRaw, withParcelLikesRouted, withParcelUnlikesRouted);
 
+export const withParcelStats = graphql<Types.ParcelsStatsQuery, { query?: string }>(Parcels.ParcelsStats, {
+    options: (props: { query?: string }) => ({
+        variables: {
+            query: props.query
+        }
+    })
+});
+
 //
 // Pictures
 //

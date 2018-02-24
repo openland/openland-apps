@@ -5,7 +5,7 @@ import { AppContentMap } from '../../../components/App/AppContentMap';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { XSelect } from '../../../components/X/XSelect';
 import { ParcelCard } from '../../../components/ParcelCard';
-import { ParcelTileSource, BlockTileSource, ParcelPointSource } from '../../../api';
+import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats } from '../../../api';
 import { XButton } from '../../../components/X/XButton';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XMap } from '../../../components/X/XMap';
@@ -15,6 +15,7 @@ import { XMenu } from '../../../components/X/XMenu';
 import { XVertical } from '../../../components/X/XVertical';
 import { RouterState, withRouter } from '../../../utils/withRouter';
 import { XSwitcher } from '../../../components/X/XSwitcher';
+import { XCard } from '../../../components/X/XCard';
 // import { XHorizontal } from '../../../components/X/XHorizontal';
 
 const XMapContainer = Glamorous.div({
@@ -22,7 +23,7 @@ const XMapContainer = Glamorous.div({
     flexDirection: 'row',
     alignItems: 'stretch',
     height: '100vh'
-})
+});
 
 const XMapContainer2 = Glamorous.div({
     position: 'relative',
@@ -32,7 +33,7 @@ const XMapContainer2 = Glamorous.div({
     height: '100vh'
     // alignItems: 'stretch',
     // height: '100%'
-})
+});
 
 const MapSwitcher = Glamorous.div({
     position: 'absolute',
@@ -41,11 +42,54 @@ const MapSwitcher = Glamorous.div({
 
     display: 'flex',
     flexDirection: 'row'
-})
+});
 
 const FilterSelector = Glamorous(XSelect)({
     width: '140px'
-})
+});
+
+const FilterContainer = Glamorous(XCard)({
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: '#5968e2',
+    width: '362px',
+    height: '78px',
+    pointerEvents: 'auto'
+});
+
+const FilterHeader = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+    paddingLeft: 16,
+    paddingRight: 16,
+    justifyContent: 'center'
+});
+
+const FilterHeaderTitle = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    color: '#f5f6f8',
+    fontSize: '20px',
+    fontWeight: 600
+});
+
+const FilterHeaderSubtitle = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    color: '#f5f6f8',
+    fontSize: '14px',
+    fontWeight: 500,
+    opacity: 0.7,
+});
+
+const FilterActions = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    paddingLeft: 16,
+    paddingRight: 16,
+    justifyContent: 'center'
+});
 
 let AllZones = ['P',
     'RH-1(D)',
@@ -115,6 +159,10 @@ let AllZones = ['P',
     'PM-R'
 ];
 
+const FilterComponent = withParcelStats((props) => {
+    return <FilterHeaderTitle>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</FilterHeaderTitle>
+})
+
 class ParcelCollection extends React.Component<{ router: RouterState }, { zones?: any, stories?: any, currentUse?: any, query?: any }> {
     constructor(props: { router: RouterState }) {
         super(props);
@@ -171,45 +219,52 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
         return (
             <AppContentMap>
                 <AppContentMap.Item>
-                    <XPopover placement="bottom-end">
-                        <XPopover.Target>
-                            <XButton>Filter</XButton>
-                        </XPopover.Target>
-                        <XPopover.Content>
-                            <XMenu>
-                                <XVertical>
-                                    <FilterSelector
-                                        name="zoning-field"
-                                        value={this.state.zones}
-                                        options={AllZones.map((v) => ({ value: v, label: v }))}
-                                        onChange={this.handleZonesChange}
-                                        placeholder="Zoning"
-                                    />
-                                    <FilterSelector
-                                        name="address-field"
-                                        value={this.state.stories}
-                                        options={[
-                                            { value: '0', label: 'no stories' },
-                                            { value: '1', label: '1 story' },
-                                            { value: '2', label: '2 stories' },
-                                            { value: '3', label: '3 stories' },
-                                            { value: '4', label: '4 stories' }]}
-                                        onChange={this.handleStoriesChange}
-                                        placeholder="Stories"
-                                    />
-                                    <FilterSelector
-                                        name="current-field"
-                                        value={this.state.currentUse}
-                                        options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
-                                        onChange={this.handleCurrentUseChange}
-                                        placeholder="Current Use"
-                                    />
-                                    <XButton onClick={this.handleUpdate} alignSelf="center">Apply</XButton>
-                                </XVertical>
-                            </XMenu>
-                        </XPopover.Content>
-                    </XPopover>
-                    {/* <XButton>Filter</XButton> */}
+                    <FilterContainer shadow="medium">
+                        <FilterHeader>
+                            <FilterComponent query={this.state.query && JSON.stringify(this.state.query)} />
+                            <FilterHeaderSubtitle>San Francisco</FilterHeaderSubtitle>
+                        </FilterHeader>
+                        <FilterActions>
+                            <XPopover placement="bottom-end">
+                                <XPopover.Target>
+                                    <XButton bounce={true}>Filter</XButton>
+                                </XPopover.Target>
+                                <XPopover.Content>
+                                    <XMenu>
+                                        <XVertical>
+                                            <FilterSelector
+                                                name="zoning-field"
+                                                value={this.state.zones}
+                                                options={AllZones.map((v) => ({ value: v, label: v }))}
+                                                onChange={this.handleZonesChange}
+                                                placeholder="Zoning"
+                                            />
+                                            <FilterSelector
+                                                name="address-field"
+                                                value={this.state.stories}
+                                                options={[
+                                                    { value: '0', label: 'no stories' },
+                                                    { value: '1', label: '1 story' },
+                                                    { value: '2', label: '2 stories' },
+                                                    { value: '3', label: '3 stories' },
+                                                    { value: '4', label: '4 stories' }]}
+                                                onChange={this.handleStoriesChange}
+                                                placeholder="Stories"
+                                            />
+                                            <FilterSelector
+                                                name="current-field"
+                                                value={this.state.currentUse}
+                                                options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
+                                                onChange={this.handleCurrentUseChange}
+                                                placeholder="Current Use"
+                                            />
+                                            <XButton onClick={this.handleUpdate} alignSelf="center">Apply</XButton>
+                                        </XVertical>
+                                    </XMenu>
+                                </XPopover.Content>
+                            </XPopover>
+                        </FilterActions>
+                    </FilterContainer>
                 </AppContentMap.Item>
                 <XMapContainer>
                     <XMapContainer2>

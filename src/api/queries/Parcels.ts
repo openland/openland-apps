@@ -212,4 +212,10 @@ export const ParcelUnlike = gql`
             }
         }
     }
-`
+`;
+
+export const ParcelsStats = gql`
+    query ParcelsStats($query: String) {
+        parcelsStats(query: $query)
+    }
+`;
