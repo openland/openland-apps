@@ -32,6 +32,10 @@ export class XModalContent extends React.Component {
     }
 }
 
+const XModalHeader = Glamorous.div({
+
+})
+
 const XModalContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
@@ -50,11 +54,11 @@ export class XModal extends React.Component<{ title: string, fullScreen?: boolea
         this.state = { isOpen: false };
     }
 
-    handler = (target: any) => {
+    handler = () => {
         this.setState({ isOpen: true })
     }
 
-    handleClose = (target: any) => {
+    handleClose = () => {
         this.setState({ isOpen: false });
     }
 
@@ -120,15 +124,17 @@ export class XModal extends React.Component<{ title: string, fullScreen?: boolea
                             right: 0,
                             top: 0,
                             bottom: 0,
-                            padding: 0
+                            padding: 0,
+                            borderRadius: 0
                         }
                     }}
                 >
                     <XModalContainer>
-                        <XDialog style={this.props.fullScreen ? 'full-screen' : 'normal'}>
-                            <XCard.Header text={this.props.title}>
-                                <XButton onClick={this.handleClose}>Close</XButton>
-                            </XCard.Header>
+                        <XDialog
+                            style={this.props.fullScreen ? 'full-screen' : 'normal'}
+                            title={this.props.title}
+                            onClose={this.handleClose}
+                        >
                             {contentClone}
                         </XDialog>
                     </XModalContainer>
