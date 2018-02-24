@@ -39,12 +39,7 @@ export const ParcelCard = withParcelDirect((props) => {
             <LoaderWrapper loading={props.data!!.loading}>
                 {props.data && props.data!!.item &&
                     <Scrollable>
-                        <XCard.Header
-                            text={'Parcel Info'}
-                            // description={formatAddresses(props.data.item!!.addresses)}
-                            // bullet={props.data.item!!.metadata.available ? 'ON SALE' : undefined}
-                            // truncateDescription={true}
-                        >
+                        <XCard.Header text={'Parcel Info'}>
                             <XButton query={{ field: 'selectedParcel' }} icon="clear" />
                         </XCard.Header>
                         {props.data!!.item!!.geometry && (
@@ -58,7 +53,14 @@ export const ParcelCard = withParcelDirect((props) => {
                         </XCard.Content>
                         <XCard.Content>
                             <XHorizontal>
-                                <XButton path={'/app/parcels/' + props.data.item!!.id}>Details</XButton>
+                                <XButton
+                                    path={'/app/parcels/' + props.data.item!!.id}
+                                    size="medium"
+                                    flexGrow={1}
+                                    flexBasis={0}
+                                >
+                                    Details
+                                </XButton>
                                 <XButton
                                     accept={true}
                                     icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
@@ -70,6 +72,9 @@ export const ParcelCard = withParcelDirect((props) => {
                                             (props as any).doLike();
                                         }
                                     }}
+                                    size="medium"
+                                    flexGrow={1}
+                                    flexBasis={0}
                                 >
                                     Favorite
                                 </XButton>

@@ -10,15 +10,6 @@ routes.add('/app', '/app/explore/index');
 routes.add('/app/', '/app/explore/index');
 
 //
-// Blocks
-//
-
-routes.add('/app/blocks', '/app/blocks/list');
-routes.add('/app/blocks/', '/app/blocks/list');
-routes.add('/app/blocks/:blockId', '/app/blocks/item');
-routes.add('/app/blocks/:blockId/', '/app/blocks/item');
-
-//
 // Parcels
 //
 

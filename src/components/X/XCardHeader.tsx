@@ -7,14 +7,15 @@ export const XCardTitle = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    fontSize: '22px',
+    fontSize: '20px',
     lineHeight: '1.6',
-    fontWeight: 500,
-    color: '#32325d'
+    fontWeight: 600,
+    color: '#182642'
 })
 
 export const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
-    color: '#525f7f',
+    opacity: 0.7,
+    color: '#182642',
     fontSize: '14px',
     lineHeight: '1.6',
     fontWeight: 400,
@@ -30,8 +31,8 @@ export const TargetDivStyle = Glamorous(XHorizontal)({
 let XCardHeaderDiv = Glamorous.div({
     paddingLeft: 24,
     paddingRight: 24,
-    paddingTop: 12,
-    paddingBottom: 12,
+    paddingTop: 16,
+    paddingBottom: 16,
     display: 'flex',
     flexDirection: 'column'
 })
