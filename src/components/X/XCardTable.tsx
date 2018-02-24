@@ -12,7 +12,7 @@ let TableHeader = Glamorous.table({
     borderCollapse: 'collapse',
 
     '> thead': {
-        backgroundColor: '#f6f9fc',
+        backgroundColor: '#EBEDF7',
         color: '#525f7f',
         
         '> tr': {
@@ -28,7 +28,7 @@ let TableHeader = Glamorous.table({
         }
     },
     '> tbody': {
-        color: '#525f7f',
+        color: '#182642',
         '> tr': {
             cursor: 'pointer',
             borderBottom: '1px solid #e6ebf1',
