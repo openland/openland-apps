@@ -16,6 +16,7 @@ import { XVertical } from '../../../components/X/XVertical';
 import { RouterState, withRouter } from '../../../utils/withRouter';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XCard } from '../../../components/X/XCard';
+import { XModal } from '../../../components/X/XModal';
 // import { XHorizontal } from '../../../components/X/XHorizontal';
 
 const XMapContainer = Glamorous.div({
@@ -227,7 +228,41 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
                             <FilterHeaderSubtitle>San Francisco</FilterHeaderSubtitle>
                         </FilterHeader>
                         <FilterActions>
-                            <XPopover placement="bottom-end">
+                            <XModal title="Parcels filter" fullScreen={true}>
+                                <XModal.Target>
+                                    <XButton bounce={true}>Filter</XButton>
+                                </XModal.Target>
+                                <XModal.Content>
+                                    <FilterSelector
+                                        name="zoning-field"
+                                        value={this.state.zones}
+                                        options={AllZones.map((v) => ({ value: v, label: v }))}
+                                        onChange={this.handleZonesChange}
+                                        placeholder="Zoning"
+                                    />
+                                    <FilterSelector
+                                        name="address-field"
+                                        value={this.state.stories}
+                                        options={[
+                                            { value: '0', label: 'no stories' },
+                                            { value: '1', label: '1 story' },
+                                            { value: '2', label: '2 stories' },
+                                            { value: '3', label: '3 stories' },
+                                            { value: '4', label: '4 stories' }]}
+                                        onChange={this.handleStoriesChange}
+                                        placeholder="Stories"
+                                    />
+                                    <FilterSelector
+                                        name="current-field"
+                                        value={this.state.currentUse}
+                                        options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
+                                        onChange={this.handleCurrentUseChange}
+                                        placeholder="Current Use"
+                                    />
+                                    <XButton onClick={this.handleUpdate} alignSelf="center">Apply</XButton>
+                                </XModal.Content>
+                            </XModal>
+                            {/* <XPopover placement="bottom-end">
                                 <XPopover.Target>
                                     <XButton bounce={true}>Filter</XButton>
                                 </XPopover.Target>
@@ -264,7 +299,7 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
                                         </XVertical>
                                     </XMenu>
                                 </XPopover.Content>
-                            </XPopover>
+                            </XPopover> */}
                         </FilterActions>
                     </FilterContainer>
                 </AppContentMap.Item>

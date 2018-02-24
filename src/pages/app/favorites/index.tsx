@@ -16,11 +16,11 @@ export default withApp(withParcelsFavorites((props) => {
             <AppContent>
                 <XCard shadow="medium">
                     <XCard.Header text="Favorites" description={props.data.items.length + ' parcels'}>
-                        <XModal>
+                        <XModal title="Export to CSV">
                             <XModal.Target>
                                 <XButton>Export to CSV</XButton>
                             </XModal.Target>
-                            <XModal.Content title="Export to CSV">
+                            <XModal.Content>
                                 <XButton>Download</XButton>
                             </XModal.Content>
                         </XModal>

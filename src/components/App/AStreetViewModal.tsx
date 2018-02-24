@@ -13,11 +13,11 @@ function loadCenter(src: string) {
 
 export function AStreetViewModal(props: { geometry: string }) {
     return (
-        <XModal closeOnClick={false}>
+        <XModal title="Street View" closeOnClick={false}>
             <XModal.Target>
                 <XButton icon="streetview">Street View</XButton>
             </XModal.Target>
-            <XModal.Content title="Street View">
+            <XModal.Content>
                 <XCardStreetViewFullScreen location={loadCenter(props.geometry)} />
             </XModal.Content>
         </XModal>

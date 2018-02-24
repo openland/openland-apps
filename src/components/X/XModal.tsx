@@ -19,18 +19,15 @@ export class XModalTarget extends React.Component<{ handler?: (target: any) => v
     }
 }
 
-export class XModalContent extends React.Component<{ title: string }> {
+export class XModalContent extends React.Component {
     static defaultProps = {
         _isModalContent: true
     }
     render() {
         return (
-            <XDialog>
-                <XCard.Header text={this.props.title}>
-                    <XButton onClick={(this.props as any).handler}>Close</XButton>
-                </XCard.Header>
+            <>
                 {this.props.children}
-            </XDialog>
+            </>
         )
     }
 }
@@ -40,14 +37,15 @@ const XModalContainer = Glamorous.div({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    pointerEvents: 'auto'
+    pointerEvents: 'auto',
+    alignSelf: 'stretch'
 })
 
-export class XModal extends React.Component<{ closeOnClick?: boolean }, { isOpen: boolean }> {
+export class XModal extends React.Component<{ title: string, fullScreen?: boolean, closeOnClick?: boolean }, { isOpen: boolean }> {
     static Target = XModalTarget;
     static Content = XModalContent;
 
-    constructor(props: {}) {
+    constructor(props: { title: string }) {
         super(props);
         this.state = { isOpen: false };
     }
@@ -117,16 +115,22 @@ export class XModal extends React.Component<{ closeOnClick?: boolean }, { isOpen
                             justifyContent: 'center',
                             background: 'none',
                             border: 'none',
-                            top: 64,
-                            left: 64,
-                            right: 64,
-                            bottom: 64,
-                            pointerEvents: 'none'
+                            pointerEvents: 'none',
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            padding: 0
                         }
                     }}
                 >
                     <XModalContainer>
-                        {contentClone}
+                        <XDialog style={this.props.fullScreen ? 'full-screen' : 'normal'}>
+                            <XCard.Header text={this.props.title}>
+                                <XButton onClick={this.handleClose}>Close</XButton>
+                            </XCard.Header>
+                            {contentClone}
+                        </XDialog>
                     </XModalContainer>
                 </ReactModal>
             </>
