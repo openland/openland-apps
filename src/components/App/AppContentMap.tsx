@@ -33,7 +33,7 @@ let Container = Glamorous.div({
     overflow: 'hidden',
     paddingLeft: '16px',
     paddingRight: '32px',
-    paddingTop: '24px',
+    paddingTop: '16px',
     paddingBottom: '32px'
 });
 

@@ -17,6 +17,7 @@ const XSwitcherWrapper = Glamorous.div<{ alignSelf?: 'stretch' | 'flex-start' | 
     paddingBottom: 2,
     borderRadius: 4,
     boxSizing: 'border-box',
+    backgroundColor: '#ffffff',
     boxShadow: '0 0 0 1px rgba(50, 50, 93, .1), 0 2px 5px 0 rgba(50, 50, 93, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent'
 }))
 
@@ -32,7 +33,7 @@ const XSwitcherItem = XStyled(XLink)({
     },
     '&.is-active': {
         color: '#6772e5',
-        fontWeight: 500,
+        fontWeight: 600,
     }
 })
 

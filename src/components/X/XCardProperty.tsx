@@ -30,8 +30,8 @@ let XCardFieldValue = Glamorous.div({
 let XCardPropertyListDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    paddingTop: '16px',
-    paddingBottom: '16px'
+    paddingTop: '12px',
+    paddingBottom: '12px'
 })
 
 let XCardPropertyColumsDiv = Glamorous.div({

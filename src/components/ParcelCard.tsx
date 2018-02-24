@@ -126,7 +126,7 @@ export const ParcelCard = withParcelDirect((props) => {
                                     }
                                 </XCard.PropertyList>
                             )}
-                        <XCard.PropertyList title="Transport">
+                        <XCard.PropertyList title="Transit">
                             {props.data.item!!.extrasMetroDistance !== null &&
                                 <XCard.Property title="Nearest Muni Metro"><XDistance value={props.data.item!!.extrasMetroDistance!!} /> ({props.data.item!!.extrasMetroStation})</XCard.Property>
                             }
