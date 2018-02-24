@@ -14,6 +14,7 @@ import { XPopover } from '../../../components/X/XPopover';
 import { XMenu } from '../../../components/X/XMenu';
 import { XVertical } from '../../../components/X/XVertical';
 import { RouterState, withRouter } from '../../../utils/withRouter';
+import { XSwitcher } from '../../../components/X/XSwitcher';
 // import { XHorizontal } from '../../../components/X/XHorizontal';
 
 const XMapContainer = Glamorous.div({
@@ -24,12 +25,22 @@ const XMapContainer = Glamorous.div({
 })
 
 const XMapContainer2 = Glamorous.div({
+    position: 'relative',
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: 0,
     height: '100vh'
     // alignItems: 'stretch',
     // height: '100%'
+})
+
+const MapSwitcher = Glamorous.div({
+    position: 'absolute',
+    top: 16,
+    right: 16,
+
+    display: 'flex',
+    flexDirection: 'row'
 })
 
 const FilterSelector = Glamorous(XSelect)({
@@ -191,7 +202,7 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
                 </AppContentMap.Item>
                 <XMapContainer>
                     <XMapContainer2>
-                        <XMap mapStyle={'mapbox://styles/mapbox/light-v9'}>
+                        <XMap key={this.props.router.query!!.mode || 'map'} mapStyle={this.props.router.query!!.mode === 'full' ? 'mapbox://styles/mapbox/streets-v9' : 'mapbox://styles/mapbox/light-v9'}>
                             <ParcelTileSource layer="parcels" minZoom={16} />
                             <BlockTileSource layer="blocks" minZoom={12} />
                             <XMapPolygonLayer
@@ -200,7 +211,7 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
                                 minZoom={16}
                                 flyOnClick={true}
 
-                                onClick={(v) => this.props.router.push('/app?selectedParcel=' + v)}
+                                onClick={(v) => this.props.router.pushQuery('selectedParcel', v)}
                                 selectedId={this.props.router.query!!.selectedParcel}
                                 flyToPadding={{
                                     left: 140,
@@ -223,6 +234,12 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
                             <ParcelPointSource layer="parcels-found" query={this.state.query} minZoom={12} skip={this.state.query === undefined} />
                             <XMapPointLayer source="parcels-found" layer="parcels-found" />
                         </XMap>
+                        <MapSwitcher>
+                            <XSwitcher>
+                                <XSwitcher.Item query={{ field: 'mode' }}>Light</XSwitcher.Item>
+                                <XSwitcher.Item query={{ field: 'mode', value: 'full' }}>Full</XSwitcher.Item>
+                            </XSwitcher>
+                        </MapSwitcher>
                     </XMapContainer2>
                     {this.props.router.query!!.selectedParcel && <ParcelCard parcelId={this.props.router.query!!.selectedParcel} />}
                 </XMapContainer>

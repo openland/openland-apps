@@ -165,6 +165,10 @@ export class XMap extends React.Component<XMapLightProps> {
                     zoom: nextProps.focusPosition.zoom
                 })
             }
+
+            if (this.props.mapStyle !== nextProps.mapStyle) {
+                this.map.setStyle(nextProps.mapStyle || 'mapbox://styles/mapbox/streets-v9');
+            }
         }
     }
 
