@@ -3,6 +3,8 @@ import * as Turf from '@turf/turf';
 import { XModal } from '../X/XModal';
 import { XButton } from '../X/XButton';
 import { XCardStreetViewFullScreen } from '../X/XCardStreetView';
+import { XStreetViewPreview } from '../X/XStreetViewPreview';
+import Glamorous from 'glamorous';
 
 function loadCenter(src: string) {
     let center = Turf.center({ type: 'MultiPolygon', coordinates: (JSON.parse(src) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]) })
@@ -20,4 +22,15 @@ export function AStreetViewModal(props: { geometry: string }) {
             </XModal.Content>
         </XModal>
     );
+}
+
+const StyledStreetViewPreview = Glamorous(XStreetViewPreview)({
+    height: '200px',
+    width: '393px'
+})
+
+export function AStreetViewModalPreview(props: { geometry: string }) {
+    return (
+        <StyledStreetViewPreview location={loadCenter(props.geometry)} width={393} height={200} />
+    )
 }

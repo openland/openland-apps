@@ -161,6 +161,8 @@ let XLikeButton = Glamorous.div<{ active: boolean }>((props) => ({
     cursor: 'pointer',
     height: 50,
     width: 50,
+    marginLeft: -16,
+    marginRight: -16,
     backgroundImage: 'url(/static/X/likeButtonAnimation.png)',
     backgroundPosition: props.active ? 'right' : 'left',
     backgroundRepeat: 'no-repeat',

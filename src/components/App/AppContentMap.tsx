@@ -3,6 +3,7 @@ import Glamorous from 'glamorous';
 import { XDocumentAppRoot } from '../X/Scaffold/XDocumentRoot';
 import { AppSidebar } from './AppSidebar';
 import { AppNavigation } from './AppNavigation';
+import { XHorizontal } from '../X/XHorizontal';
 
 const ClassicalWrapper = Glamorous.div({
     display: 'flex',
@@ -70,7 +71,9 @@ export class AppContentMap extends React.Component {
                     </AppSidebar>
 
                     <Container>
-                        {menus}
+                        <XHorizontal>
+                            {menus}
+                        </XHorizontal>
                     </Container>
                 </ClassicalWrapper>
             </XDocumentAppRoot>

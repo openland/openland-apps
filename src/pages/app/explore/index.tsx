@@ -13,6 +13,24 @@ import { XHead } from '../../../components/X/XHead';
 import { XPopover } from '../../../components/X/XPopover';
 import { XMenu } from '../../../components/X/XMenu';
 import { XVertical } from '../../../components/X/XVertical';
+import { RouterState, withRouter } from '../../../utils/withRouter';
+// import { XHorizontal } from '../../../components/X/XHorizontal';
+
+const XMapContainer = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    height: '100vh'
+})
+
+const XMapContainer2 = Glamorous.div({
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
+    height: '100vh'
+    // alignItems: 'stretch',
+    // height: '100%'
+})
 
 const FilterSelector = Glamorous(XSelect)({
     width: '140px'
@@ -24,70 +42,70 @@ let AllZones = ['P',
     'RH-1(S)',
     'RH-2',
     'RH-3',
-    'RM-1', 
-     'RM-2', 
-     'RM-3', 
-     'RM-4', 
-     'RC-3', 
-     'RC-4', 
-     'RTO', 
-     'RTO-M',
-     'RH DTR',
-     'SB-DTR',
-     'TB DTR',
-     'NC-1', 
-     'NC-2', 
-     'NC-3', 
-     'NC-S', 
-     'NCD', 
-     'SPD', 
-     'RED', 
-     'RED-MX',
-     'RSD', 
-     'SLR', 
-     'SLI', 
-     'SALI', 
-     'SSO', 
-     'MUG', 
-     'WMUG', 
-     'MUO', 
-     'WMUO', 
-     'MUR', 
-     'UMU', 
-     'RCD', 
-     'C-2', 
-     'C-3-S',
-     'C-3-R',
-     'C-3-G',
-     'C-3-O',
-     'C-3-O(S)',
-     'MB-OS',
-     'MB-O', 
-     'MB-RA',
-     'HP-RA',
-     'NCT-1',
-     'NCT-2',
-     'NCT-3',
-     'NCT', 
-     'M-1', 
-     'M-2', 
-     'PDR-1-B',
-     'PDR-1-D',
-     'PDR-1-G',
-     'PDR-2',
-     'CRNC', 
-     'CVR', 
-     'CCB', 
-     'PM-MU1',
-     'PM-MU2',
-     'PM-S', 
-     'PM-CF',
-     'PM-OS',
-     'PM-R'
+    'RM-1',
+    'RM-2',
+    'RM-3',
+    'RM-4',
+    'RC-3',
+    'RC-4',
+    'RTO',
+    'RTO-M',
+    'RH DTR',
+    'SB-DTR',
+    'TB DTR',
+    'NC-1',
+    'NC-2',
+    'NC-3',
+    'NC-S',
+    'NCD',
+    'SPD',
+    'RED',
+    'RED-MX',
+    'RSD',
+    'SLR',
+    'SLI',
+    'SALI',
+    'SSO',
+    'MUG',
+    'WMUG',
+    'MUO',
+    'WMUO',
+    'MUR',
+    'UMU',
+    'RCD',
+    'C-2',
+    'C-3-S',
+    'C-3-R',
+    'C-3-G',
+    'C-3-O',
+    'C-3-O(S)',
+    'MB-OS',
+    'MB-O',
+    'MB-RA',
+    'HP-RA',
+    'NCT-1',
+    'NCT-2',
+    'NCT-3',
+    'NCT',
+    'M-1',
+    'M-2',
+    'PDR-1-B',
+    'PDR-1-D',
+    'PDR-1-G',
+    'PDR-2',
+    'CRNC',
+    'CVR',
+    'CCB',
+    'PM-MU1',
+    'PM-MU2',
+    'PM-S',
+    'PM-CF',
+    'PM-OS',
+    'PM-R'
 ];
 
-class ParcelCollection extends React.Component<{}, { selected?: string, zones?: any, stories?: any, currentUse?: any, query?: any }> {
-    constructor(props: {}) {
+class ParcelCollection extends React.Component<{ router: RouterState }, { zones?: any, stories?: any, currentUse?: any, query?: any }> {
+    constructor(props: { router: RouterState }) {
         super(props);
         this.state = {};
     }
@@ -171,49 +189,53 @@ class ParcelCollection extends React.Component<{}, { selected?: string, zones?: 
                     </XPopover>
                     {/* <XButton>Filter</XButton> */}
                 </AppContentMap.Item>
-                <XMap mapStyle={'mapbox://styles/mapbox/light-v9'}>
-                    <ParcelTileSource layer="parcels" minZoom={16} />
-                    <BlockTileSource layer="blocks" minZoom={12} />
-                    <XMapPolygonLayer
-                        source="parcels"
-                        layer="parcels"
-                        minZoom={16}
-                        flyOnClick={true}
-                        onClick={(v) => this.setState({ selected: v })}
-                        selectedId={this.state.selected}
-                        flyToPadding={{
-                            left: 140,
-                            right: 140,
-                            top: 100,
-                            bottom: 400
-                        }}
-                        flyToMaxZoom={18}
-                    />
-                    <XMapPolygonLayer
-                        source="blocks"
-                        layer="blocks"
-                        minZoom={12}
-                        maxZoom={16}
-                        style={{
-                            fillOpacity: 0.1,
-                            borderOpacity: 0.3
-                        }}
-                    />
-                    <ParcelPointSource layer="parcels-found" query={this.state.query} minZoom={12} skip={this.state.query === undefined} />
-                    <XMapPointLayer source="parcels-found" layer="parcels-found" />
+                <XMapContainer>
+                    <XMapContainer2>
+                        <XMap mapStyle={'mapbox://styles/mapbox/light-v9'}>
+                            <ParcelTileSource layer="parcels" minZoom={16} />
+                            <BlockTileSource layer="blocks" minZoom={12} />
+                            <XMapPolygonLayer
+                                source="parcels"
+                                layer="parcels"
+                                minZoom={16}
+                                flyOnClick={true}
 
-                    {this.state.selected && <ParcelCard parcelId={this.state.selected} />}
-                </XMap>
+                                onClick={(v) => this.props.router.push('/app?selectedParcel=' + v)}
+                                selectedId={this.props.router.query!!.selectedParcel}
+                                flyToPadding={{
+                                    left: 140,
+                                    right: 140,
+                                    top: 100,
+                                    bottom: 400
+                                }}
+                                flyToMaxZoom={18}
+                            />
+                            <XMapPolygonLayer
+                                source="blocks"
+                                layer="blocks"
+                                minZoom={12}
+                                maxZoom={16}
+                                style={{
+                                    fillOpacity: 0.1,
+                                    borderOpacity: 0.3
+                                }}
+                            />
+                            <ParcelPointSource layer="parcels-found" query={this.state.query} minZoom={12} skip={this.state.query === undefined} />
+                            <XMapPointLayer source="parcels-found" layer="parcels-found" />
+                        </XMap>
+                    </XMapContainer2>
+                    {this.props.router.query!!.selectedParcel && <ParcelCard parcelId={this.props.router.query!!.selectedParcel} />}
+                </XMapContainer>
             </AppContentMap>
         )
     }
 }
 
-export default withApp((props) => {
+export default withApp(withRouter((props) => {
     return (
         <>
             <XHead title={['Statecraft', 'Explore']} />
-            <ParcelCollection />
+            <ParcelCollection router={props.router} />
         </>
     )
-});
+}));
