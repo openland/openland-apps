@@ -88,7 +88,9 @@ const FilterActions = Glamorous.div({
     flexDirection: 'column',
     paddingLeft: 16,
     paddingRight: 16,
-    justifyContent: 'center'
+    paddingTop: 16,
+    paddingBottom: 16,
+    justifyContent: 'flex-start'
 });
 
 let AllZones = ['P',
