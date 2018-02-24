@@ -250,7 +250,7 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
                                 <XSwitcher.Item query={{ field: 'mode' }}>Light</XSwitcher.Item>
                                 <XSwitcher.Item query={{ field: 'mode', value: 'full' }}>Full</XSwitcher.Item>
                                 <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
-                                <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>Zoning (Beta)</XSwitcher.Item>
+                                <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>Zoning</XSwitcher.Item>
                             </XSwitcher>
                         </MapSwitcher>
                     </XMapContainer2>
