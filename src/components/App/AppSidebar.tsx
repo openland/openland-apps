@@ -3,6 +3,8 @@ import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from '../X/XLink';
 import { XIcon } from '../X/XIcon';
 import { withRouter } from '../../utils/withRouter';
+import { withUserInfo } from '../Base/UserInfo';
+import { AppSearch } from './AppSearch';
 
 let Container = Glamorous.div<{ asOverlay?: boolean }>((props) => ({
     display: 'flex',
@@ -82,7 +84,47 @@ let ItemPaddingIcon = Glamorous.div({
     marginLeft: '8px',
     width: '32px',
     fontSize: '18px'
+});
+
+const AvatarImg = Glamorous.img({
+    overflow: 'hidden',
+    borderRadius: '14px',
+    marginLeft: 16,
+    marginRight: 8,
+    width: '24px',
+    height: '24px',
+    boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
+    // cursor: 'pointer'
+});
+
+// let UserInfoBox = Glamorous.div({
+//     paddingTop: 8,
+//     paddingBottom: 8,
+//     paddingLeft: 8,
+//     paddingRight: 8,
+//     fontSize: 16,
+//     lineHeight: '24px',
+//     fontWeight: 600,
+//     color: '#525f7f',
+//     borderBottom: '1px solid #E5EBF2',
+//     '& > span': {
+//         display: 'block',
+//         fontSize: 12,
+//         lineHeight: '16px',
+//         fontWeight: 400,
+//     }
+// });
+
+let UserInfoDiv = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: '24px',
+    alignItems: 'center'
 })
+
+let UserProfile = withUserInfo((props) => {
+    return (<UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv>);
+});
 
 export class AppSidebarItem extends React.Component<{ title: string, icon?: string, path?: string, activateForSubpaths?: boolean, disabled?: boolean }> {
     render() {
@@ -112,10 +154,12 @@ export class AppSidebar extends React.Component<{ asOverlay?: boolean }> {
     static Group = AppSidebarGroup;
 
     render() {
+
         return (
             <Container asOverlay={this.props.asOverlay}>
-                <SidebarTitleDiv><Icon src="/static/img/areas/sf.jpg" /> San Francisco</SidebarTitleDiv>
+                <SidebarTitleDiv><Icon src="/static/img/areas/sf.jpg" /> <AppSearch /></SidebarTitleDiv>
                 {this.props.children}
+                <UserProfile />
             </Container>
         )
     }

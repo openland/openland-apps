@@ -74,7 +74,7 @@ export function XCardPropertyColumns(props: { children: any }) {
 export function XCardPropertyList(props: { children: any, title?: string }) {
     return (
         <XCardPropertyListDiv>
-            <XCardPropertyTitle>{props.title}</XCardPropertyTitle>
+            {props.title && <XCardPropertyTitle>{props.title}</XCardPropertyTitle>}
             {props.children}
         </XCardPropertyListDiv>
     )

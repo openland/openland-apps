@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from '../X/XVertical';
-import { AppHeader } from './AppHeader';
 import { XDocumentAppRoot } from '../X/Scaffold/XDocumentRoot';
 import { AppSidebar } from './AppSidebar';
 import { AppNavigation } from './AppNavigation';
@@ -15,6 +14,7 @@ let Container = Glamorous.div({
     overflow: 'hidden',
     paddingLeft: '16px',
     paddingRight: '32px',
+    paddingTop: '24px',
     paddingBottom: '32px',
 });
 
@@ -27,7 +27,6 @@ export class AppContent extends React.Component {
                 </AppSidebar>
                 <Container>
                     <XVertical>
-                        <AppHeader key="header" />
                         {this.props.children}
                     </XVertical>
                 </Container>

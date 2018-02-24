@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XDocumentAppRoot } from '../X/Scaffold/XDocumentRoot';
 import { AppSidebar } from './AppSidebar';
-import { AppHeader } from './AppHeader';
 import { AppNavigation } from './AppNavigation';
 
 const ClassicalWrapper = Glamorous.div({
@@ -33,6 +32,7 @@ let Container = Glamorous.div({
     overflow: 'hidden',
     paddingLeft: '16px',
     paddingRight: '32px',
+    paddingTop: '24px',
     paddingBottom: '32px'
 });
 
@@ -70,9 +70,7 @@ export class AppContentMap extends React.Component {
                     </AppSidebar>
 
                     <Container>
-                        <AppHeader>
-                            {menus}
-                        </AppHeader>
+                        {menus}
                     </Container>
                 </ClassicalWrapper>
             </XDocumentAppRoot>
