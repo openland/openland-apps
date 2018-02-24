@@ -126,10 +126,10 @@ let UserProfile = withUserInfo((props) => {
     return (<UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv>);
 });
 
-export class AppSidebarItem extends React.Component<{ title: string, icon?: string, path?: string, activateForSubpaths?: boolean, disabled?: boolean }> {
+export class AppSidebarItem extends React.Component<{ title: string, icon?: string, href?: string, path?: string, activateForSubpaths?: boolean, disabled?: boolean }> {
     render() {
         return (
-            <SidebarItemDiv path={this.props.path} activateForSubpaths={this.props.activateForSubpaths} disabled={this.props.disabled}>
+            <SidebarItemDiv path={this.props.path} href={this.props.href} activateForSubpaths={this.props.activateForSubpaths} disabled={this.props.disabled}>
                 {this.props.icon && <ItemIcon icon={this.props.icon} />}
                 {!this.props.icon && <ItemPaddingIcon />}
                 {this.props.title}

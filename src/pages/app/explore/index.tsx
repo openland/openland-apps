@@ -162,8 +162,11 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
             ? 'mapbox://styles/mapbox/streets-v9'
             : (this.props.router.query!!.mode === 'satellite' ?
                 'mapbox://styles/mapbox/satellite-v9'
-                : 'mapbox://styles/mapbox/light-v9'
-            )
+                : (this.props.router.query!!.mode === 'zoning' ?
+                    'mapbox://styles/steve-kite/cje15jkmr3bvt2so3mu8nvsk6'
+                    : 'mapbox://styles/mapbox/light-v9'
+                )
+            );
 
         return (
             <AppContentMap>
@@ -247,6 +250,7 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { zones?
                                 <XSwitcher.Item query={{ field: 'mode' }}>Light</XSwitcher.Item>
                                 <XSwitcher.Item query={{ field: 'mode', value: 'full' }}>Full</XSwitcher.Item>
                                 <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
+                                <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>Zoning (Beta)</XSwitcher.Item>
                             </XSwitcher>
                         </MapSwitcher>
                     </XMapContainer2>

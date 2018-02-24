@@ -11,7 +11,7 @@ export function AppNavigation(props: {}) {
         <>
             <AppSidebar.Item path="/app" title="Explore" icon="explore" />
             <AppSidebar.Item path="/app/parcels" title="Parcels" icon="layers" activateForSubpaths={true} />
-            <AppSidebar.Item title="Insights" icon="lock" disabled={true} />
+            <AppSidebar.Item href="https://statecraft.one/sf" title="Insights" icon="show_chart" />
             <AppSidebar.Item title="Owners" icon="lock" disabled={true} />
             <Div />
             <AppSidebar.Item path="/app/favorites" title="Favorites" icon="favorite" />
