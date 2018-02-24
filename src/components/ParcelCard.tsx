@@ -62,7 +62,7 @@ export const ParcelCard = withParcelDirect((props) => {
                                     Details
                                 </XButton>
                                 <XButton
-                                    accept={true}
+                                    accent={true}
                                     icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
                                     onClick={(e) => {
                                         e.preventDefault();
