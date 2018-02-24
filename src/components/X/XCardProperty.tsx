@@ -47,6 +47,20 @@ let XCardPropertyColumnsContainerDiv = Glamorous.div({
     flexGrow: 1
 })
 
+let XCardPropertyTitle = Glamorous.div({
+    fontSize: '14px',
+    fontWeight: 'bold',
+    fontStyle: 'normal',
+    fontStretch: 'normal',
+    lineHeight: 'normal',
+    letterSpacing: 'normal',
+    paddingLeft: 24,
+    paddingRight: 24,
+    textAlign: 'left',
+    color: '#262626',
+    marginBottom: 8
+})
+
 export function XCardPropertyColumns(props: { children: any }) {
     return (
         <XCardPropertyColumsDiv>
@@ -57,8 +71,13 @@ export function XCardPropertyColumns(props: { children: any }) {
     )
 }
 
-export function XCardPropertyList(props: { children: any }) {
-    return <XCardPropertyListDiv>{props.children}</XCardPropertyListDiv>
+export function XCardPropertyList(props: { children: any, title?: string }) {
+    return (
+        <XCardPropertyListDiv>
+            <XCardPropertyTitle>{props.title}</XCardPropertyTitle>
+            {props.children}
+        </XCardPropertyListDiv>
+    )
 }
 
 export function XCardProperty(props: { title: string, children: any }) {

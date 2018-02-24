@@ -8,7 +8,7 @@ import { XMoney } from './X/XMoney';
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
     return (
         <XCard.PropertyColumns>
-            <XCard.PropertyList>
+            <XCard.PropertyList title="Parcel details">
                 <XCard.Property title="Block"><XLink path={'/app/blocks/' + props.item.block.id}>{props.item.block.title}</XLink></XCard.Property>
                 {props.item.extrasArea &&
                     <XCard.Property title="Parcel Area"><XArea area={props.item.extrasArea!!} /></XCard.Property>
