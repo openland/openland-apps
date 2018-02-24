@@ -15,7 +15,9 @@ interface XButtonProps extends XLinkProps {
     bounce?: boolean;
     loading?: boolean;
     disabled?: boolean;
-    icon?: string
+    icon?: string,
+    accept?: boolean,
+    borderless?: boolean
 }
 
 const loading = glamor.keyframes({
@@ -84,46 +86,47 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
         flexGrow: props.flexGrow,
         flexShrink: props.flexShrink,
         flexBasis: props.flexBasis,
-        padding: paddings[size],
+        padding: props.borderless ? undefined : paddings[size],
 
-        color: props.loading ? 'transparent' : textColors[style],
-        backgroundColor: backgroundColors[style],
+        color: props.accept ? '#4428e0' : (props.loading ? 'transparent' : textColors[style]),
+        backgroundColor: props.accept ? '#fff' : backgroundColors[style],
 
+        border: props.borderless ? undefined : (props.accept ? '1px solid #4428e0' : undefined),
         borderRadius: '4px',
 
-        boxShadow: '0 0 0 1px rgba(50,50,93,.1), 0 2px 5px 0 rgba(50,50,93,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent',
+        boxShadow: props.borderless ? undefined : ('0 0 0 1px rgba(50,50,93,.1), 0 2px 5px 0 rgba(50,50,93,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent'),
         transition: 'box-shadow .08s ease-in,color .08s ease-in,all .15s ease',
 
         fontSize: fontSize[size],
         lineHeight: '20px',
-        fontWeight: 500,
+        fontWeight: 600,
 
         alignSelf: props.alignSelf,
 
         '&:hover': {
             transform: props.bounce ? 'translateY(-1px)' : undefined,
-            color: props.loading ? 'transparent' : textHoveredColors[style],
+            color: props.accept ? '#4428e0' : (props.loading ? 'transparent' : textHoveredColors[style]),
             backgroundColor: (props.loading || props.disabled) ? backgroundColors[style] : backgroundHoveredColors[style],
-            boxShadow: ((props.loading || props.disabled) ? undefined
+            boxShadow: props.borderless ? undefined : (((props.loading || props.disabled) ? undefined
                 : ((props.size === 'large')
                     ? '0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08)'
                     : '0 0 0 1px rgba(50,50,93,.1), 0 2px 5px 0 rgba(50,50,93,.1), 0 3px 9px 0 rgba(50,50,93,.08), 0 1px 1.5px 0 rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.08)'
                 )
-            )
+            ))
         },
         '&:active': {
             transform: props.bounce ? 'translateY(1px)' : undefined,
             color: props.loading ? 'transparent' : textHoveredColors[style],
             backgroundColor: (props.loading || props.disabled) ? backgroundColors[style] : backgroundPressedColors[style],
-            boxShadow: ((props.loading || props.disabled) ? undefined
+            boxShadow: props.borderless ? undefined : (((props.loading || props.disabled) ? undefined
                 : ((props.size === 'large')
                     ? '0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08)'
                     : '0 0 0 1px rgba(50,50,93,.08), 0 2px 5px 0 rgba(50,50,93,.06), 0 1px 1.5px 0 rgba(0,0,0,.05), 0 1px 2px 0 rgba(0,0,0,.06), 0 0 0 0 transparent'
                 )
-            )
+            ))
         },
         '&:focus': {
-            boxShadow: (props.loading || props.disabled)
+            boxShadow: (props.loading || props.disabled || props.borderless)
                 ? undefined
                 : '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         },
@@ -141,11 +144,11 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
         },
         '& > i': {
             opacity: props.loading ? 0 : 1,
-            fontSize: props.size === 'large' ? '15px' : '13px',
-            lineHeight: '20px',
+            fontSize: props.borderless ? 20 : (props.accept ? 18 : (props.size === 'large' ? '15px' : '13px')),
+            lineHeight: '20px'
         },
         '& > span': {
-            marginLeft: props.icon ? 3 : 0
+            marginLeft: props.icon ? (props.accept ? 7 : 3) : 0
         }
     }
 });
@@ -164,9 +167,11 @@ export function XButton(props: XButtonProps & { children?: any }) {
             path={props.path}
             query={props.query}
             onClick={props.onClick}
+            accept={props.accept}
             flexGrow={props.flexGrow}
             flexShrink={props.flexShrink}
             flexBasis={props.flexBasis}
+            borderless={props.borderless}
         >
             {props.icon && <XIcon icon={props.icon} />}
             {props.children && (<span>{props.children}</span>)}
