@@ -128,6 +128,9 @@ export const ParcelCard = withParcelDirect((props) => {
                             {props.data.item!!.extrasZoning && props.data.item!!.extrasZoning!!.length > 0 &&
                                 <PropertyCell title="Zoning">{props.data.item!!.extrasZoning!!.join()}</PropertyCell>
                             }
+                            {props.data.item!!.extrasLandUse !== null &&
+                                <PropertyCell title="Land Use">{props.data.item!!.extrasLandUse}</PropertyCell>
+                            }
 
                             {props.data.item!!.extrasLandValue !== null &&
                                 <PropertyCell title="Land Value"><XMoney value={props.data.item!!.extrasLandValue!!} /></PropertyCell>
@@ -149,10 +152,18 @@ export const ParcelCard = withParcelDirect((props) => {
                             || props.data.item!!.extrasBedrooms !== null
                             || props.data.item!!.extrasBathrooms !== null
                             || props.data.item!!.extrasBathrooms !== null
-                            || props.data.item!!.metadata.currentUse !== null) && (
+                            || props.data.item!!.metadata.currentUse !== null
+                            || props.data.item!!.extrasSalesDate !== null
+                            || props.data.item!!.extrasSalesPriorDate !== null) && (
                                 <XCard.PropertyList title="Current Building">
                                     {props.data.item!!.metadata.currentUse !== null &&
                                         <PropertyCell title="Current Use">{props.data.item!!.metadata.currentUse}</PropertyCell>
+                                    }
+                                    {props.data.item!!.extrasSalesDate !== null &&
+                                        <PropertyCell title="Sale Date">{props.data.item!!.extrasSalesDate}</PropertyCell>
+                                    }
+                                    {props.data.item!!.extrasSalesPriorDate !== null &&
+                                        <PropertyCell title="Prior Sale Date">{props.data.item!!.extrasSalesPriorDate}</PropertyCell>
                                     }
                                     {props.data.item!!.extrasYear !== null &&
                                         <PropertyCell title="Year Built">{props.data.item!!.extrasYear}</PropertyCell>

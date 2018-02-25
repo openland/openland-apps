@@ -23,6 +23,9 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     {props.item.extrasZoning && props.item.extrasZoning!!.length > 0 &&
                         <XCard.Property title="Zoning">{props.item.extrasZoning!!.join()}</XCard.Property>
                     }
+                    {props.item!!.extrasLandUse !== null &&
+                        <XCard.Property title="Land Use">{props.item!!.extrasLandUse}</XCard.Property>
+                    }
 
                     {props.item.extrasLandValue !== null &&
                         <XCard.Property title="Land Value"><XMoney value={props.item.extrasLandValue!!} /></XCard.Property>
@@ -48,6 +51,12 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         <XCard.PropertyList title="Current Building">
                             {props.item!!.metadata.currentUse !== null &&
                                 <XCard.Property title="Current Use">{props.item!!.metadata.currentUse}</XCard.Property>
+                            }
+                            {props.item!!.extrasSalesDate !== null &&
+                                <XCard.Property title="Sale Date">{props.item!!.extrasSalesDate}</XCard.Property>
+                            }
+                            {props.item!!.extrasSalesPriorDate !== null &&
+                                <XCard.Property title="Prior Sale Date">{props.item!!.extrasSalesPriorDate}</XCard.Property>
                             }
                             {props.item!!.extrasYear !== null &&
                                 <XCard.Property title="Year Built">{props.item!!.extrasYear}</XCard.Property>

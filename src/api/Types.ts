@@ -661,6 +661,7 @@ export interface BlockQuery {
 
 export interface ParcelsConnectionQueryVariables {
   cursor?: string | null,
+  query?: string | null,
   page?: number | null,
 };
 
@@ -694,6 +695,13 @@ export interface ParcelsConnectionQuery {
         extrasTrainStation: string | null,
         extrasTrainLocalDistance: number | null,
         extrasTrainLocalStation: string | null,
+        extrasNearestTransitDistance: number | null,
+        extrasNearestTransitType: string | null,
+        extrasNearestTransitStation: string | null,
+        extrasLandUse: string | null,
+        extrasSalesDate: string | null,
+        extrasSalesPriorDate: string | null,
+        extrasRecordationDate: string | null,
         addresses:  Array< {
           __typename: "StreetNumber",
           streetId: string,
@@ -760,6 +768,13 @@ export interface ParcelsFavoritesQuery {
     extrasTrainStation: string | null,
     extrasTrainLocalDistance: number | null,
     extrasTrainLocalStation: string | null,
+    extrasNearestTransitDistance: number | null,
+    extrasNearestTransitType: string | null,
+    extrasNearestTransitStation: string | null,
+    extrasLandUse: string | null,
+    extrasSalesDate: string | null,
+    extrasSalesPriorDate: string | null,
+    extrasRecordationDate: string | null,
     addresses:  Array< {
       __typename: "StreetNumber",
       streetId: string,
@@ -818,6 +833,13 @@ export interface ParcelQuery {
     extrasTrainStation: string | null,
     extrasTrainLocalDistance: number | null,
     extrasTrainLocalStation: string | null,
+    extrasNearestTransitDistance: number | null,
+    extrasNearestTransitType: string | null,
+    extrasNearestTransitStation: string | null,
+    extrasLandUse: string | null,
+    extrasSalesDate: string | null,
+    extrasSalesPriorDate: string | null,
+    extrasRecordationDate: string | null,
     addresses:  Array< {
       __typename: "StreetNumber",
       streetId: string,
@@ -1755,6 +1777,13 @@ export interface ParcelFullFragment {
   extrasTrainStation: string | null,
   extrasTrainLocalDistance: number | null,
   extrasTrainLocalStation: string | null,
+  extrasNearestTransitDistance: number | null,
+  extrasNearestTransitType: string | null,
+  extrasNearestTransitStation: string | null,
+  extrasLandUse: string | null,
+  extrasSalesDate: string | null,
+  extrasSalesPriorDate: string | null,
+  extrasRecordationDate: string | null,
   addresses:  Array< {
     __typename: string,
     streetId: string,
