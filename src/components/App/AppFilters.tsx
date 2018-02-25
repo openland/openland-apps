@@ -130,7 +130,7 @@ export class AppFilters extends React.Component<{ onChange: (query?: any) => voi
         return (
             <XModal title="Parcels filter" fullScreen={true} ref={this.handleInstance}>
                 <XModal.Target>
-                    <XButton bounce={true}>Filter</XButton>
+                    <XButton bounce={true}>Filters</XButton>
                 </XModal.Target>
                 <XModal.Content>
                     <FilterSelector
