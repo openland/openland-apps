@@ -56,6 +56,7 @@ let TableHeader = Glamorous.table({
             color: '#182642',
 
             '> a': {
+                minHeight: 'auto !important',
                 padding: '0 !important',
                 background: 'transparent',
                 justifyContent: 'flex-end'
@@ -64,12 +65,16 @@ let TableHeader = Glamorous.table({
     }
 });
 
+let XCardTableTD = Glamorous.td<{width?: number}>((props) => ({
+    width: props.width ? props.width : undefined
+}))
+
 export function XCardTableHeader(props: { children: any }) {
     return (<thead><tr>{props.children}</tr></thead>);
 }
 
-export function XCardTableCell(props: { children: any }) {
-    return (<td><div>{props.children}</div></td>);
+export function XCardTableCell(props: { children: any, width?: number }) {
+    return (<XCardTableTD width={props.width}><div>{props.children}</div></XCardTableTD>);
 }
 
 export class XCardTable extends React.Component {
