@@ -57,6 +57,14 @@ export const ParcelCard = withParcelDirect((props) => {
                         <XCard.Header text={'Parcel #' + props.data.item!!.title} description={formatAddresses(props.data.item!!.addresses)}>
                             <XButton borderless={true} size="large" query={{ field: 'selectedParcel' }} icon="clear" />
                         </XCard.Header>
+                        {props.data!!.item!!.geometry && (
+                            <XCard.Content>
+                                <StreetViewDiv>
+                                    <AStreetViewModal geometry={props.data!!.item!!.geometry!!} />
+                                    <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={273} height={144} />
+                                </StreetViewDiv>
+                            </XCard.Content>
+                        )}
                         <XCard.Content>
                             <XHorizontal>
                                 <XButton
@@ -195,14 +203,6 @@ export const ParcelCard = withParcelDirect((props) => {
                                 <PropertyCell title="Nearest Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</PropertyCell>
                             }
                         </XCard.PropertyList>
-                        {props.data!!.item!!.geometry && (
-                            <XCard.Content>
-                                <StreetViewDiv>
-                                    <AStreetViewModal geometry={props.data!!.item!!.geometry!!} />
-                                    <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={273} height={144} />
-                                </StreetViewDiv>
-                            </XCard.Content>
-                        )}
                     </Scrollable>}
             </LoaderWrapper>
         </Container>

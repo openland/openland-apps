@@ -85,7 +85,7 @@ const FilterActions = Glamorous.div({
 });
 
 const FilterComponent = withParcelStats((props) => {
-    return <FilterHeaderTitle>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</FilterHeaderTitle>
+    return <FilterHeaderSubtitle>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</FilterHeaderSubtitle>
 })
 
 class ParcelCollection extends React.Component<{ router: RouterState }, { query?: any }> {
@@ -115,8 +115,8 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { query?
                 <AppContentMap.Item>
                     <FilterContainer shadow="medium">
                         <FilterHeader>
+                            <FilterHeaderTitle>San Francisco</FilterHeaderTitle>
                             <FilterComponent query={this.state.query && JSON.stringify(this.state.query)} />
-                            <FilterHeaderSubtitle>San Francisco</FilterHeaderSubtitle>
                         </FilterHeader>
                         <FilterActions>
                             <AppFilters onChange={this.handleUpdate}/>
