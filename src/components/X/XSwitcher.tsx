@@ -5,20 +5,39 @@ import { XLink } from './XLink';
 
 interface XSwitcherProps {
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center',
-    children: any
+    children: any,
+    fieldStyle?: boolean
 }
 
-const XSwitcherWrapper = Glamorous.div<{ alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center' }>((props) => ({
+const XSwitcherWrapper = Glamorous.div<XSwitcherProps>((props) => ({
     display: 'flex',
     alignSelf: props.alignSelf,
-    paddingTop: 3,
-    paddingLeft: 9,
-    paddingRight: 9,
-    paddingBottom: 2,
+    paddingTop: props.fieldStyle ? 0 : 3,
+    paddingLeft: props.fieldStyle ? 0 : 9,
+    paddingRight: props.fieldStyle ? 0 : 9,
+    paddingBottom: props.fieldStyle ? 0 : 2,
     borderRadius: 4,
+    overflow: 'hidden',
     boxSizing: 'border-box',
     backgroundColor: '#ffffff',
-    boxShadow: '0 0 0 1px rgba(50, 50, 93, .1), 0 2px 5px 0 rgba(50, 50, 93, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent'
+    boxShadow: '0 0 0 1px rgba(50, 50, 93, .1), 0 2px 5px 0 rgba(50, 50, 93, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent',
+    '& > a': {
+        paddingLeft: 14,
+        paddingRight: 14,
+        height: 32,
+        fontWeight: 'normal !important',
+        fontStyle: 'normal !important',
+        fontStretch: 'normal !important',
+        lineHeight: '2.29 !important',
+        letterSpacing: 'normal !important',
+        textAlign: 'center !important',
+        margin: '0 !important',
+        color: props.fieldStyle ? '#182642 !important' : undefined,
+        '&.is-active': {
+            color: props.fieldStyle ? '#fff !important' : undefined,
+            backgroundColor: props.fieldStyle ? '#4428e0 !important' : undefined,
+        }
+    }
 }))
 
 const XSwitcherItem = XStyled(XLink)({
@@ -43,7 +62,7 @@ export class XSwitcher extends React.Component<XSwitcherProps> {
 
     render() {
         return (
-            <XSwitcherWrapper alignSelf={this.props.alignSelf}>
+            <XSwitcherWrapper alignSelf={this.props.alignSelf} fieldStyle={this.props.fieldStyle}>
                 {this.props.children}
             </XSwitcherWrapper>
         )

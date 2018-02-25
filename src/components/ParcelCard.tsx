@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCard } from './X/XCard';
+import { XCardProperty } from './X/XCardProperty';
 import { withParcelDirect } from '../api';
 import { XButton } from './X/XButton';
 import { formatAddresses } from '../utils/Addresses';
@@ -18,7 +19,7 @@ let Container = Glamorous.div({
     alignItems: 'stretch',
     zIndex: 1,
 
-    width: '416px',
+    width: 305,
 
     backgroundColor: '#ffffff',
     boxShadow: '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)'
@@ -43,6 +44,10 @@ let StreetViewDiv = Glamorous.div({
     }
 })
 
+let PropertyCell = Glamorous(XCardProperty)({
+    width: 150
+})
+
 export const ParcelCard = withParcelDirect((props) => {
     return (
         <Container>
@@ -56,7 +61,7 @@ export const ParcelCard = withParcelDirect((props) => {
                             <XCard.Content>
                                 <StreetViewDiv>
                                     <AStreetViewModal geometry={props.data!!.item!!.geometry!!} />
-                                    <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} />
+                                    <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={273} height={144} />
                                 </StreetViewDiv>
                             </XCard.Content>
                         )}
@@ -95,31 +100,31 @@ export const ParcelCard = withParcelDirect((props) => {
                         </XCard.Content>
 
                         <XCard.PropertyList title="Parcel details">
-                            <XCard.Property title="Block"><XLink path={'/app/blocks/' + props.data.item!!.block.id}>{props.data.item!!.block.title}</XLink></XCard.Property>
+                            <PropertyCell title="Block"><XLink path={'/app/blocks/' + props.data.item!!.block.id}>{props.data.item!!.block.title}</XLink></PropertyCell>
                             {props.data.item!!.extrasArea &&
-                                <XCard.Property title="Parcel Area"><XArea area={props.data.item!!.extrasArea!!} /></XCard.Property>
+                                <PropertyCell title="Parcel Area"><XArea area={props.data.item!!.extrasArea!!} /></PropertyCell>
                             }
                             {props.data.item!!.extrasNeighborhood &&
-                                <XCard.Property title="Neighborhood">{props.data.item!!.extrasNeighborhood}</XCard.Property>
+                                <PropertyCell title="Neighborhood">{props.data.item!!.extrasNeighborhood}</PropertyCell>
                             }
                             {props.data.item!!.extrasSupervisorDistrict &&
-                                <XCard.Property title="Supervisor District">{props.data.item!!.extrasSupervisorDistrict}</XCard.Property>
+                                <PropertyCell title="Supervisor District">{props.data.item!!.extrasSupervisorDistrict}</PropertyCell>
                             }
                             {props.data.item!!.extrasZoning && props.data.item!!.extrasZoning!!.length > 0 &&
-                                <XCard.Property title="Zoning">{props.data.item!!.extrasZoning!!.join()}</XCard.Property>
+                                <PropertyCell title="Zoning">{props.data.item!!.extrasZoning!!.join()}</PropertyCell>
                             }
 
                             {props.data.item!!.extrasLandValue !== null &&
-                                <XCard.Property title="Land Value"><XMoney value={props.data.item!!.extrasLandValue!!} /></XCard.Property>
+                                <PropertyCell title="Land Value"><XMoney value={props.data.item!!.extrasLandValue!!} /></PropertyCell>
                             }
                             {props.data.item!!.extrasImprovementValue !== null &&
-                                <XCard.Property title="Improvement Value"><XMoney value={props.data.item!!.extrasImprovementValue!!} /></XCard.Property>
+                                <PropertyCell title="Improvement Value"><XMoney value={props.data.item!!.extrasImprovementValue!!} /></PropertyCell>
                             }
                             {props.data.item!!.extrasFixturesValue !== null &&
-                                <XCard.Property title="Fixtures Value"><XMoney value={props.data.item!!.extrasFixturesValue!!} /></XCard.Property>
+                                <PropertyCell title="Fixtures Value"><XMoney value={props.data.item!!.extrasFixturesValue!!} /></PropertyCell>
                             }
                             {props.data.item!!.extrasPropertyValue !== null &&
-                                <XCard.Property title="Personal Property Value"><XMoney value={props.data.item!!.extrasPropertyValue!!} /></XCard.Property>
+                                <PropertyCell title="Personal Property Value"><XMoney value={props.data.item!!.extrasPropertyValue!!} /></PropertyCell>
                             }
                         </XCard.PropertyList>
                         {(props.data.item!!.extrasYear !== null
@@ -132,37 +137,37 @@ export const ParcelCard = withParcelDirect((props) => {
                             || props.data.item!!.metadata.currentUse !== null) && (
                                 <XCard.PropertyList title="Current Building">
                                     {props.data.item!!.metadata.currentUse !== null &&
-                                        <XCard.Property title="Current Use">{props.data.item!!.metadata.currentUse}</XCard.Property>
+                                        <PropertyCell title="Current Use">{props.data.item!!.metadata.currentUse}</PropertyCell>
                                     }
                                     {props.data.item!!.extrasYear !== null &&
-                                        <XCard.Property title="Year Built">{props.data.item!!.extrasYear}</XCard.Property>
+                                        <PropertyCell title="Year Built">{props.data.item!!.extrasYear}</PropertyCell>
                                     }
                                     {props.data.item!!.extrasUnits !== null &&
-                                        <XCard.Property title="Buildings Count">{props.data.item!!.extrasUnits}</XCard.Property>
+                                        <PropertyCell title="Buildings Count">{props.data.item!!.extrasUnits}</PropertyCell>
                                     }
                                     {props.data.item!!.extrasStories !== null &&
-                                        <XCard.Property title="Stories Count">{props.data.item!!.extrasStories}</XCard.Property>
+                                        <PropertyCell title="Stories Count">{props.data.item!!.extrasStories}</PropertyCell>
                                     }
                                     {props.data.item!!.extrasRooms !== null &&
-                                        <XCard.Property title="Rooms Count">{props.data.item!!.extrasRooms}</XCard.Property>
+                                        <PropertyCell title="Rooms Count">{props.data.item!!.extrasRooms}</PropertyCell>
                                     }
                                     {props.data.item!!.extrasBedrooms !== null &&
-                                        <XCard.Property title="Bedrooms Count">{props.data.item!!.extrasBedrooms}</XCard.Property>
+                                        <PropertyCell title="Bedrooms Count">{props.data.item!!.extrasBedrooms}</PropertyCell>
                                     }
                                     {props.data.item!!.extrasBathrooms !== null &&
-                                        <XCard.Property title="Bathrooms Count">{props.data.item!!.extrasBathrooms}</XCard.Property>
+                                        <PropertyCell title="Bathrooms Count">{props.data.item!!.extrasBathrooms}</PropertyCell>
                                     }
                                 </XCard.PropertyList>
                             )}
                         <XCard.PropertyList title="Transit">
                             {props.data.item!!.extrasMetroDistance !== null &&
-                                <XCard.Property title="Nearest Muni Metro"><XDistance value={props.data.item!!.extrasMetroDistance!!} /> ({props.data.item!!.extrasMetroStation})</XCard.Property>
+                                <PropertyCell title="Nearest Muni Metro"><XDistance value={props.data.item!!.extrasMetroDistance!!} /> ({props.data.item!!.extrasMetroStation})</PropertyCell>
                             }
                             {props.data.item!!.extrasTrainLocalDistance !== null &&
-                                <XCard.Property title="Nearest BART"><XDistance value={props.data.item!!.extrasTrainLocalDistance!!} /> ({props.data.item!!.extrasTrainLocalStation})</XCard.Property>
+                                <PropertyCell title="Nearest BART"><XDistance value={props.data.item!!.extrasTrainLocalDistance!!} /> ({props.data.item!!.extrasTrainLocalStation})</PropertyCell>
                             }
                             {props.data.item!!.extrasTrainDistance !== null &&
-                                <XCard.Property title="Nearest Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</XCard.Property>
+                                <PropertyCell title="Nearest Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</PropertyCell>
                             }
                         </XCard.PropertyList>
                     </Scrollable>}

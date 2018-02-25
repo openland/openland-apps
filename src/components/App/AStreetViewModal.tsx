@@ -24,13 +24,13 @@ export function AStreetViewModal(props: { geometry: string }) {
     );
 }
 
-const StyledStreetViewPreview = Glamorous(XStreetViewPreview)({
-    height: '200px',
-    width: '368px'
-})
+const StyledStreetViewPreview = Glamorous(XStreetViewPreview)<{width: number, height: number}>((props) => ({
+    height: props.height,
+    width: props.width
+}))
 
-export function AStreetViewModalPreview(props: { geometry: string }) {
+export function AStreetViewModalPreview(props: { geometry: string, width: number, height: number }) {
     return (
-        <StyledStreetViewPreview location={loadCenter(props.geometry)} width={368} height={200} />
+        <StyledStreetViewPreview location={loadCenter(props.geometry)} width={props.width} height={props.height} />
     )
 }

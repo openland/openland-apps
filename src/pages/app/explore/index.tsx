@@ -151,7 +151,7 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { query?
                             <XMapPointLayer source="parcels-found" layer="parcels-found" />
                         </XMap>
                         <MapSwitcher>
-                            <XSwitcher>
+                            <XSwitcher fieldStyle={true}>
                                 <XSwitcher.Item query={{ field: 'mode' }}>Light</XSwitcher.Item>
                                 <XSwitcher.Item query={{ field: 'mode', value: 'full' }}>Full</XSwitcher.Item>
                                 <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
