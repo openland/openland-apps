@@ -115,7 +115,7 @@ export const ParcelCard = withParcelDirect((props) => {
                         </XCard.Content>
 
                         <XCard.PropertyList title="Parcel details">
-                            <PropertyCell title="Block"><XLink path={'/app/blocks/' + props.data.item!!.block.id}>{props.data.item!!.block.title}</XLink></PropertyCell>
+                            <PropertyCell title="Block">{props.data.item!!.block.title}</PropertyCell>
                             {props.data.item!!.extrasArea &&
                                 <PropertyCell title="Parcel Area"><XArea area={props.data.item!!.extrasArea!!} /></PropertyCell>
                             }
