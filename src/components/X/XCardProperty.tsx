@@ -4,20 +4,20 @@ import Glamorous from 'glamorous';
 let XCardFieldContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    paddingLeft: '24px',
-    paddingRight: '24px',
+    paddingLeft: 16,
+    paddingRight: 16,
 });
 
-let XCardFieldTitle = Glamorous.div({
+let XCardFieldTitle = Glamorous.div<{width?: number}>((props) => ({
     display: 'flex',
     flexDirection: 'row',
-    width: '200px',
+    width: props.width ? props.width : 200,
     flexShrink: 0,
     lineHeight: 1.6,
     paddingTop: '2px',
     paddingBottom: '2px',
     opacity: 0.7
-})
+}))
 
 let XCardFieldValue = Glamorous.div({
     display: 'flex',
@@ -54,8 +54,8 @@ let XCardPropertyTitle = Glamorous.div({
     fontStretch: 'normal',
     lineHeight: 'normal',
     letterSpacing: 'normal',
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingLeft: 16,
+    paddingRight: 16,
     textAlign: 'left',
     color: '#262626',
     marginBottom: 8
@@ -80,10 +80,10 @@ export function XCardPropertyList(props: { children: any, title?: string }) {
     )
 }
 
-export function XCardProperty(props: { title: string, children: any }) {
+export function XCardProperty(props: { title: string, children: any, width?: number }) {
     return (
         <XCardFieldContainer>
-            <XCardFieldTitle>{props.title}</XCardFieldTitle>
+            <XCardFieldTitle width={props.width}>{props.title}</XCardFieldTitle>
             {React.Children.count(props.children) > 0 && <XCardFieldValue>{props.children}</XCardFieldValue>}
         </XCardFieldContainer>
     )

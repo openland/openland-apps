@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCard } from './X/XCard';
-import { XCardProperty } from './X/XCardProperty';
 import { withParcelDirect } from '../api';
 import { XButton } from './X/XButton';
 import { formatAddresses } from '../utils/Addresses';
@@ -44,9 +43,11 @@ let StreetViewDiv = Glamorous.div({
     }
 })
 
-let PropertyCell = Glamorous(XCardProperty)({
-    width: 150
-})
+function PropertyCell(props: { title: string, children: any }) {
+    return (
+        <XCard.Property {...props} width={150}>{props.children}</XCard.Property>
+    )
+}
 
 export const ParcelCard = withParcelDirect((props) => {
     return (
@@ -54,21 +55,9 @@ export const ParcelCard = withParcelDirect((props) => {
             <LoaderWrapper loading={props.data!!.loading}>
                 {props.data && props.data!!.item &&
                     <Scrollable>
-                        <XCard.Header text={'Parcel Info'}>
+                        <XCard.Header text={'Parcel #' + props.data.item!!.title} description={formatAddresses(props.data.item!!.addresses)}>
                             <XButton borderless={true} size="large" query={{ field: 'selectedParcel' }} icon="clear" />
                         </XCard.Header>
-                        {props.data!!.item!!.geometry && (
-                            <XCard.Content>
-                                <StreetViewDiv>
-                                    <AStreetViewModal geometry={props.data!!.item!!.geometry!!} />
-                                    <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={273} height={144} />
-                                </StreetViewDiv>
-                            </XCard.Content>
-                        )}
-                        <XCard.Content>
-                            <div>{'Parcel #' + props.data.item!!.title}</div>
-                            <div>{formatAddresses(props.data.item!!.addresses)}</div>
-                        </XCard.Content>
                         <XCard.Content>
                             <XHorizontal>
                                 <XButton
@@ -170,6 +159,14 @@ export const ParcelCard = withParcelDirect((props) => {
                                 <PropertyCell title="Nearest Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</PropertyCell>
                             }
                         </XCard.PropertyList>
+                        {props.data!!.item!!.geometry && (
+                            <XCard.Content>
+                                <StreetViewDiv>
+                                    <AStreetViewModal geometry={props.data!!.item!!.geometry!!} />
+                                    <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={273} height={144} />
+                                </StreetViewDiv>
+                            </XCard.Content>
+                        )}
                     </Scrollable>}
             </LoaderWrapper>
         </Container>

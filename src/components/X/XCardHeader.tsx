@@ -29,8 +29,8 @@ export const TargetDivStyle = Glamorous(XHorizontal)({
 })
 
 let XCardHeaderDiv = Glamorous.div({
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingLeft: 16,
+    paddingRight: 16,
     paddingTop: 16,
     paddingBottom: 16,
     display: 'flex',

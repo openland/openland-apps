@@ -193,8 +193,8 @@ let XCardDivIcon = Glamorous.div({
 let XCardDivContent = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingLeft: 16,
+    paddingRight: 16,
     paddingTop: 12,
     paddingBottom: 12
 })
