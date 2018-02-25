@@ -4,7 +4,6 @@ import { XCard } from './X/XCard';
 import { withParcelDirect } from '../api';
 import { XButton } from './X/XButton';
 import { formatAddresses } from '../utils/Addresses';
-import { XLink } from './X/XLink';
 import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { XDistance } from './X/XDistance';

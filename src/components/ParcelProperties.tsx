@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Types from '../api/Types';
 import { XCard } from './X/XCard';
-import { XLink } from './X/XLink';
 import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 
