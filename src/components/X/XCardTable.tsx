@@ -14,6 +14,10 @@ let TableHeader = Glamorous.table({
         backgroundColor: '#EBECF8',
         color: '#525f7f',
 
+        '> tr > td:last-child > div': {
+            textAlign: 'right'
+        },
+
         '> tr > td > div': {
             paddingTop: 10,
             paddingBottom: 10,
@@ -34,6 +38,10 @@ let TableHeader = Glamorous.table({
             borderBottom: '1px solid #F5F6F8',
             '&:hover': {
                 backgroundColor: '#f6f9fc'
+            },
+
+            '> td:last-child > div': {
+                textAlign: 'right'
             }
         },
         '> tr > td > div': {
@@ -45,7 +53,13 @@ let TableHeader = Glamorous.table({
             fontWeight: 600,
             lineHeight: 'normal',
             textAlign: 'left',
-            color: '#182642'
+            color: '#182642',
+
+            '> a': {
+                padding: '0 !important',
+                background: 'transparent',
+                justifyContent: 'flex-end'
+            }
         }
     }
 });
