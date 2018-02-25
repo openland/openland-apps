@@ -15,7 +15,7 @@ let Container = Glamorous.div({
     paddingLeft: '16px',
     paddingRight: '32px',
     paddingTop: '24px',
-    paddingBottom: '32px',
+    paddingBottom: '128px',
 });
 
 export class AppContent extends React.Component {
