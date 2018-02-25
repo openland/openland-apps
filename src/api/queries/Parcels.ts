@@ -108,8 +108,8 @@ export const BlockQuery = gql`
 `;
 
 export const ParcelsConnection = gql`
-    query ParcelsConnection($cursor: String,$page: Int) {
-        items: parcelsConnection(state: "CA", county: "San Francisco", city: "San Francisco", first: 50, after: $cursor, page: $page) {
+    query ParcelsConnection($cursor: String, $query: String, $page: Int) {
+        items: parcelsConnection(state: "CA", county: "San Francisco", city: "San Francisco", first: 50, after: $cursor, page: $page, query: $query) {
             edges {
                 node {
                     ...ParcelFull
