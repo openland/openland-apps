@@ -7,8 +7,8 @@ export const XCardTitle = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    fontSize: '20px',
-    lineHeight: '1.6',
+    fontSize: 20,
+    lineHeight: 1.6,
     fontWeight: 600,
     color: '#182642'
 })
@@ -17,8 +17,8 @@ export const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) =
     opacity: 0.7,
     color: '#182642',
     fontSize: '14px',
-    lineHeight: '1.6',
-    fontWeight: 400,
+    lineHeight: 'normal',
+    fontWeight: 'normal',
     overflow: props.ellipcise ? 'hidden' : undefined,
     whiteSpace: props.ellipcise ? 'nowrap' : undefined,
     textOverflow: props.ellipcise ? 'ellipsis' : undefined,

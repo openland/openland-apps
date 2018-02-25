@@ -6,6 +6,10 @@ let XCardFieldContainer = Glamorous.div({
     flexDirection: 'row',
     paddingLeft: 16,
     paddingRight: 16,
+    marginBottom: 8,
+    '&:last-child': {
+        marginBottom: 0
+    }
 });
 
 let XCardFieldTitle = Glamorous.div<{width?: number}>((props) => ({
@@ -13,18 +17,23 @@ let XCardFieldTitle = Glamorous.div<{width?: number}>((props) => ({
     flexDirection: 'row',
     width: props.width ? props.width : 200,
     flexShrink: 0,
-    lineHeight: 1.6,
-    paddingTop: '2px',
-    paddingBottom: '2px',
-    opacity: 0.7
+    opacity: 0.7,
+    fontSize: 14,
+    fontWeight: 'normal',
+    lineHeight: 1.71,
+    textAlign: 'left',
+    color: '#525f7f'
 }))
 
 let XCardFieldValue = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    lineHeight: 1.6,
-    paddingTop: '2px',
-    paddingBottom: '2px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    fontSize: 14,
+    fontWeight: 'normal',
+    lineHeight: 1.71,
+    textAlign: 'left',
+    color: '#182642'
 })
 
 let XCardPropertyListDiv = Glamorous.div({
@@ -50,10 +59,7 @@ let XCardPropertyColumnsContainerDiv = Glamorous.div({
 let XCardPropertyTitle = Glamorous.div({
     fontSize: '14px',
     fontWeight: 'bold',
-    fontStyle: 'normal',
-    fontStretch: 'normal',
     lineHeight: 'normal',
-    letterSpacing: 'normal',
     paddingLeft: 16,
     paddingRight: 16,
     textAlign: 'left',

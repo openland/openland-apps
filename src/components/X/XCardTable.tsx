@@ -5,42 +5,47 @@ let TableHeader = Glamorous.table({
 
     width: '100%', // alignSelf: 'stretch' is not working here for some reason
 
-    fontSize: '13px',
     fontWeight: 600,
     lineHeight: '20px',
 
     borderCollapse: 'collapse',
 
     '> thead': {
-        backgroundColor: '#EBEDF7',
+        backgroundColor: '#EBECF8',
         color: '#525f7f',
-        
-        '> tr': {
-            borderBottom: '1px solid #e6ebf1',
-            borderTop: '1px solid #e6ebf1',
-        },
 
         '> tr > td > div': {
-            paddingTop: '8px',
-            paddingBottom: '8px',
-            paddingLeft: '16px',
-            paddingRight: '16px',
+            paddingTop: 10,
+            paddingBottom: 10,
+            paddingLeft: 16,
+            paddingRight: 16,
+
+            fontSize: 13,
+            fontWeight: 'normal',
+            lineHeight: 'normal',
+            textAlign: 'left',
+            color: '#525f7f'
         }
     },
     '> tbody': {
         color: '#182642',
         '> tr': {
             cursor: 'pointer',
-            borderBottom: '1px solid #e6ebf1',
+            borderBottom: '1px solid #F5F6F8',
             '&:hover': {
                 backgroundColor: '#f6f9fc'
             }
         },
         '> tr > td > div': {
-            paddingTop: '8px',
-            paddingBottom: '8px',
-            paddingLeft: '16px',
-            paddingRight: '16px',
+            paddingTop: 9,
+            paddingBottom: 9,
+            paddingLeft: 16,
+            paddingRight: 16,
+            fontSize: 13,
+            fontWeight: 600,
+            lineHeight: 'normal',
+            textAlign: 'left',
+            color: '#182642'
         }
     }
 });
