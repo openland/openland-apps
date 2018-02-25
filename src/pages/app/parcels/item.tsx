@@ -17,7 +17,7 @@ export default withApp(withParcel((props) => {
             <XHead title={['Statecraft', 'Parcel #' + props.data.item.title]} />
             <AppContent>
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Hint title="Public" />
+                    {/* <XCard.Hint title="Public" /> */}
                     <XCard.Header
                         text={'Parcel #' + props.data.item.title}
                         description={formatAddresses(props.data.item.addresses)}
@@ -35,8 +35,8 @@ export default withApp(withParcel((props) => {
                                 }}
                             />
                         </XCard.Header.Target>
-                        {props.data.item.geometry && <AStreetViewModal geometry={props.data.item.geometry} />}
                         <XButton path={'/app/parcels/' + props.data.item.id + '/edit'}>Edit</XButton>
+                        {props.data.item.geometry && <AStreetViewModal geometry={props.data.item.geometry} />}
                     </XCard.Header>
                     <ParcelProperties item={props.data.item} />
                 </XCard>
