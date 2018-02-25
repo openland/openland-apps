@@ -63,7 +63,8 @@ const ResultsContainer = Glamorous(XCard)({
     position: 'absolute',
     top: '34px',
     left: 0,
-    right: 0,
+    // right: 0,
+    width: '400px'
 })
 
 let HighlightedWrapper = Glamorous.span({
