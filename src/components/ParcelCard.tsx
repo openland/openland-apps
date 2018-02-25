@@ -192,15 +192,15 @@ export const ParcelCard = withParcelDirect((props) => {
                                     }
                                 </XCard.PropertyList>
                             )}
-                        <XCard.PropertyList title="Transit">
+                        <XCard.PropertyList title="Nearby Transit">
                             {props.data.item!!.extrasMetroDistance !== null &&
-                                <PropertyCell title="Nearest Muni Metro"><XDistance value={props.data.item!!.extrasMetroDistance!!} /> ({props.data.item!!.extrasMetroStation})</PropertyCell>
+                                <PropertyCell title="Muni Metro"><XDistance value={props.data.item!!.extrasMetroDistance!!} /> ({props.data.item!!.extrasMetroStation})</PropertyCell>
                             }
                             {props.data.item!!.extrasTrainLocalDistance !== null &&
-                                <PropertyCell title="Nearest BART"><XDistance value={props.data.item!!.extrasTrainLocalDistance!!} /> ({props.data.item!!.extrasTrainLocalStation})</PropertyCell>
+                                <PropertyCell title="BART"><XDistance value={props.data.item!!.extrasTrainLocalDistance!!} /> ({props.data.item!!.extrasTrainLocalStation})</PropertyCell>
                             }
                             {props.data.item!!.extrasTrainDistance !== null &&
-                                <PropertyCell title="Nearest Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</PropertyCell>
+                                <PropertyCell title="Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</PropertyCell>
                             }
                         </XCard.PropertyList>
                     </Scrollable>}
