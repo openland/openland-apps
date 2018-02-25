@@ -41,8 +41,12 @@ export default withApp(withParcels((props) => {
                         </XCard.Table>
                     </XCard.Loader>
                     <XCard.Footer text={props.data.items.pageInfo.itemsCount + ' items'}>
-                        <XButton query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }}>Prev</XButton>
-                        <XButton query={{ field: 'page', value: (props.data.items.pageInfo.currentPage + 1).toString() }}>Next</XButton>
+                        {props.data.items.pageInfo.currentPage > 1 && (
+                            <XButton query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }}>Prev</XButton>
+                        )}
+                        {(props.data.items.pageInfo.currentPage < props.data.items.pageInfo.pagesCount - 1) && (
+                            <XButton query={{ field: 'page', value: (props.data.items.pageInfo.currentPage + 1).toString() }}>Next</XButton>
+                        )}
                     </XCard.Footer>
                 </XCard>
             </AppContent>
