@@ -36,6 +36,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
             ]
         });
         if (uploaded.ok) {
+            console.warn(auth.expiresIn);
             Cookie.set('statecraft-key', auth.idToken, { expires: auth.expiresIn / (24 * 60.0 * 60.0) });
             let path = localStorage.getItem('redirect_path') || '/';
             console.warn(path);
@@ -60,7 +61,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
             domain: 'statecraft.auth0.com',
             clientID: 'na0Pvis7KTzZWtzcIFT8MzIxtdpiLZc3',
             redirectUri: window.location.origin + '/auth/complete',
-            audience: 'https://statecraft.auth0.com/userinfo',
+            audience: 'https://statecraft.production', // 'https://statecraft.auth0.com/userinfo',
             responseType: 'token id_token',
             scope: 'openid profile email'
         });
