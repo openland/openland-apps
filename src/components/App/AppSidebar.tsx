@@ -67,11 +67,12 @@ let SidebarTitleDiv = Glamorous.div({
 })
 
 let Icon = Glamorous.img({
-    borderRadius: '50%',
+    // borderRadius: '50%',
     height: '24px',
     width: '24px',
     marginRight: '8px',
-    boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)'
+    // boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
+    flexShrink: 0
 })
 
 let ItemIcon = Glamorous(XIcon)({
@@ -157,7 +158,7 @@ export class AppSidebar extends React.Component<{ asOverlay?: boolean }> {
 
         return (
             <Container asOverlay={this.props.asOverlay}>
-                <SidebarTitleDiv><Icon src="/static/img/areas/sf.jpg" /> <AppSearch /></SidebarTitleDiv>
+                <SidebarTitleDiv><Icon src="/static/favicon-96.png" /> <AppSearch /></SidebarTitleDiv>
                 {this.props.children}
                 <UserProfile />
             </Container>
