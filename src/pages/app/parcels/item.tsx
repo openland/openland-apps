@@ -17,7 +17,6 @@ export default withApp(withParcel((props) => {
             <XHead title={['Statecraft', 'Parcel #' + props.data.item.title]} />
             <AppContent>
                 <XCard shadow="medium" separators={true}>
-                    {/* <XCard.Hint title="Public" /> */}
                     <XCard.Header
                         text={'Parcel #' + props.data.item.title}
                         description={formatAddresses(props.data.item.addresses)}
@@ -28,9 +27,35 @@ export default withApp(withParcel((props) => {
                             <XButtonLike value={props.data!!.item!!.likes.liked}
                                 onChange={(v) => {
                                     if (v) {
-                                        (props as any).doLike();
+                                        (props as any).doLike({
+                                            optimisticResponse: {
+                                                __typename: 'Mutation',
+                                                likeParcel: {
+                                                    __typename: 'Parcel',
+                                                    id: props.data!!.item!!.id,
+                                                    likes: {
+                                                        __typename: 'Likes',
+                                                        liked: true,
+                                                        count: props.data!!.item!!.likes!!.count!! + 1
+                                                    }
+                                                },
+                                            }
+                                        });
                                     } else {
-                                        (props as any).doUnlike();
+                                        (props as any).doUnlike({
+                                            optimisticResponse: {
+                                                __typename: 'Mutation',
+                                                unlikeParcel: {
+                                                    __typename: 'Parcel',
+                                                    id: props.data!!.item!!.id,
+                                                    likes: {
+                                                        __typename: 'Likes',
+                                                        liked: false,
+                                                        count: Math.max(0, props.data!!.item!!.likes!!.count!! - 1)
+                                                    }
+                                                },
+                                            }
+                                        });
                                     }
                                 }}
                             />

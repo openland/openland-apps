@@ -74,9 +74,35 @@ export const ParcelCard = withParcelDirect((props) => {
                                     onClick={(e) => {
                                         e.preventDefault();
                                         if (props.data!!.item!!.likes.liked) {
-                                            (props as any).doUnlike();
+                                            (props as any).doUnlike({
+                                                optimisticResponse: {
+                                                    __typename: 'Mutation',
+                                                    unlikeParcel: {
+                                                        __typename: 'Parcel',
+                                                        id: props.data!!.item!!.id,
+                                                        likes: {
+                                                            __typename: 'Likes',
+                                                            liked: false,
+                                                            count: Math.max(0, props.data!!.item!!.likes!!.count!! - 1)
+                                                        }
+                                                    },
+                                                }
+                                            });
                                         } else {
-                                            (props as any).doLike();
+                                            (props as any).doLike({
+                                                optimisticResponse: {
+                                                    __typename: 'Mutation',
+                                                    likeParcel: {
+                                                        __typename: 'Parcel',
+                                                        id: props.data!!.item!!.id,
+                                                        likes: {
+                                                            __typename: 'Likes',
+                                                            liked: true,
+                                                            count: props.data!!.item!!.likes!!.count!! + 1
+                                                        }
+                                                    },
+                                                }
+                                            });
                                         }
                                     }}
                                     size="medium"
