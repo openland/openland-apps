@@ -104,7 +104,7 @@ export default withApp(withParcel((props) => {
                     </Wrapper>
                     <Wrapper shadow="medium">
                         {props.data.item.geometry && (
-                            <StreetView location={findCenter(convertMapPatch(props.data.item.geometry))} />
+                            <StreetView key={props.data.item.id} location={findCenter(convertMapPatch(props.data.item.geometry))} />
                         )}
                     </Wrapper>
                 </XHorizontal>
