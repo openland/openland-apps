@@ -61,7 +61,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
             domain: 'statecraft.auth0.com',
             clientID: 'na0Pvis7KTzZWtzcIFT8MzIxtdpiLZc3',
             redirectUri: window.location.origin + '/auth/complete',
-            audience: 'https://statecraft.production', // 'https://statecraft.auth0.com/userinfo',
+            audience: 'https://statecraft.auth0.com/userinfo',
             responseType: 'token id_token',
             scope: 'openid profile email'
         });
