@@ -76,7 +76,7 @@ const FilterSelector = Glamorous(XSelect)({
     width: '140px'
 });
 
-export class AppFilters extends React.Component<{ onChange: (query?: any) => void }, { zones?: any, stories?: any, currentUse?: any }> {
+export class AppFilters extends React.Component<{ isActive?: boolean, onChange: (query?: any) => void }, { zones?: any, stories?: any, currentUse?: any }> {
 
     private modal: XModal | null = null;
 
@@ -130,7 +130,7 @@ export class AppFilters extends React.Component<{ onChange: (query?: any) => voi
         return (
             <XModal title="Parcels filter" fullScreen={true} ref={this.handleInstance}>
                 <XModal.Target>
-                    <XButton bounce={true}>Filters</XButton>
+                    <XButton bounce={true} style={this.props.isActive ? 'dark' : 'normal'}>Filters</XButton>
                 </XModal.Target>
                 <XModal.Content>
                     <FilterSelector

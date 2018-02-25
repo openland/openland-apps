@@ -6,7 +6,6 @@ import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { XArea } from '../../../components/X/XArea';
 import { XMoney } from '../../../components/X/XMoney';
-// import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XHead } from '../../../components/X/XHead';
 import { AppFilters } from '../../../components/App/AppFilters';
 
@@ -17,12 +16,7 @@ export default withApp(withParcels((props) => {
             <AppContent>
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text={props.data.items.pageInfo.itemsCount + ' parcels found'} description="San Francisco">
-                        {/* <XSwitcher>
-                            <XSwitcher.Item query={{ field: 'sort' }}>Land Value</XSwitcher.Item>
-                            <XSwitcher.Item query={{ field: 'sort', value: 'IMPROVEMENT_DESC' }}>Improvement Value</XSwitcher.Item>
-                        </XSwitcher> */}
-                        {/* <XButton query={{ field: 'sort', value: 'LAND_DESC' }}>Land Value Descending</XButton> */}
-                        <AppFilters onChange={(v) => props.router.pushQuery('query', v ? JSON.stringify(v) : undefined)} />
+                        <AppFilters isActive={true} onChange={(v) => props.router.pushQuery('query', v ? JSON.stringify(v) : undefined)} />
                     </XCard.Header>
                     <XCard.Loader loading={props.data.loading || false}>
                         <XCard.Table>
