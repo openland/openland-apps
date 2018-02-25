@@ -76,7 +76,7 @@ const FilterSelector = Glamorous(XSelect)({
     width: '140px'
 });
 
-export class AppFilters extends React.Component<{ isActive?: boolean, onChange: (query?: any) => void }, { zones?: any, stories?: any, currentUse?: any }> {
+export class AppFilters extends React.Component<{ isActive?: boolean, onChange: (query?: any) => void }, { zones?: any, stories?: any, currentUse?: any, onSale?: any }> {
 
     private modal: XModal | null = null;
 
@@ -97,24 +97,32 @@ export class AppFilters extends React.Component<{ isActive?: boolean, onChange: 
         this.setState({ stories: src });
     }
 
+    handleOnSaleChange = (src: any) => {
+        this.setState({ onSale: src });
+    }
+
     handleUpdate = (e: any) => {
         e.preventDefault();
-        if ((this.state.zones && this.state.zones.value) || (this.state.stories && this.state.stories.value) || (this.state.currentUse && this.state.currentUse.value)) {
-            let clauses: any[] = [];
-            if (this.state.zones && this.state.zones.value) {
-                clauses.push({ 'zone': this.state.zones.value })
-            }
-            if (this.state.stories && this.state.stories.value) {
-                clauses.push({ 'stories': this.state.stories.value })
-            }
-            if (this.state.currentUse && this.state.currentUse.value) {
-                clauses.push({ 'currentUse': this.state.currentUse.value })
-            }
+        let clauses: any[] = [];
+        if (this.state.zones && this.state.zones.value) {
+            clauses.push({ 'zone': this.state.zones.value })
+        }
+        if (this.state.stories && this.state.stories.value) {
+            clauses.push({ 'stories': this.state.stories.value })
+        }
+        if (this.state.currentUse && this.state.currentUse.value) {
+            clauses.push({ 'currentUse': this.state.currentUse.value })
+        }
+        if (this.state.onSale && this.state.onSale.value) {
+            clauses.push({ 'onSale': this.state.onSale.value })
+        }
+        if (clauses.length > 0) {
             let query = { '$and': clauses };
             this.props.onChange(query);
         } else {
             this.props.onChange(undefined);
         }
+
         if (this.modal) {
             this.modal!!.handleClose();
         }
@@ -158,6 +166,13 @@ export class AppFilters extends React.Component<{ isActive?: boolean, onChange: 
                         options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
                         onChange={this.handleCurrentUseChange}
                         placeholder="Current Use"
+                    />
+                    <FilterSelector
+                        name="on-sale-field"
+                        value={this.state.onSale}
+                        options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
+                        onChange={this.handleOnSaleChange}
+                        placeholder="On Sale"
                     />
                     <XButton onClick={this.handleUpdate} alignSelf="center">Apply</XButton>
                 </XModal.Content>
