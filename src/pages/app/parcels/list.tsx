@@ -37,7 +37,7 @@ export default withApp(withParcels((props) => {
                                         <XCard.Table.Cell>{v.node.extrasSupervisorDistrict}</XCard.Table.Cell>
                                         <XCard.Table.Cell>{v.node.extrasLandValue && <XMoney value={v.node.extrasLandValue} />}</XCard.Table.Cell>
                                         <XCard.Table.Cell>{v.node.extrasImprovementValue && <XMoney value={v.node.extrasImprovementValue} />}</XCard.Table.Cell>
-                                        <XCard.Table.Cell>{v.node.extrasZoning}</XCard.Table.Cell>
+                                        <XCard.Table.Cell>{v.node.extrasZoning && v.node.extrasZoning.join()}</XCard.Table.Cell>
                                         <XCard.Table.Cell>
                                             <XButton
                                                 size="large"

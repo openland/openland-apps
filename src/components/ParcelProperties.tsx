@@ -3,6 +3,7 @@ import * as Types from '../api/Types';
 import { XCard } from './X/XCard';
 import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
+import { XZoningCode } from './X/XZoningCode';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
     return (
@@ -20,7 +21,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         <XCard.Property title="Supervisor District">{props.item.extrasSupervisorDistrict}</XCard.Property>
                     }
                     {props.item.extrasZoning && props.item.extrasZoning!!.length > 0 &&
-                        <XCard.Property title="Zoning">{props.item.extrasZoning!!.join()}</XCard.Property>
+                        <XCard.Property title="Zoning"><XZoningCode codes={props.item!!.extrasZoning!!} /></XCard.Property>
                     }
                     {props.item!!.extrasLandUse !== null &&
                         <XCard.Property title="Land Use">{props.item!!.extrasLandUse}</XCard.Property>

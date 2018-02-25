@@ -17,25 +17,33 @@ export const ExternalLinkDiv = XStyled(XLink)({
 })
 
 export const ExternalLinkIcon = Glamorous(XIcon)({
-    marginLeft: 3,
-    fontSize: 14,
+    marginLeft: 2,
+    marginBottom: 1,
+    fontSize: '14px',
 })
 
-export function XLinkExternal(props: { path: string }) {
-    let url: string | null | RegExpMatchArray = props.path
+export function XLinkExternal(props: { href: string, content?: string }) {
 
-    if (url.search(/^https?\:\/\//) !== -1) {
-        url = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)
-    } else {
-        url = url.match(/^([^\/?#]+)(?:[\/?#]|$)/i)
+    let content = props.content;
+    if (!content) {
+        let domain: string | null | RegExpMatchArray = props.href
+
+        if (domain.search(/^https?\:\/\//) !== -1) {
+            domain = domain.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)
+        } else {
+            domain = domain.match(/^([^\/?#]+)(?:[\/?#]|$)/i)
+        }
+        if (!domain) {
+            // Fallback
+            content = props.href;
+        } else {
+            content = domain[1];
+        }
     }
 
     return (
-        <ExternalLinkDiv href={props.path}>
-            <span>{
-                !url ? props.path : url[1]
-            }</span>
-            <ExternalLinkIcon icon="launch" />
+        <ExternalLinkDiv href={props.href}>
+            {content}<ExternalLinkIcon icon="launch" />
         </ExternalLinkDiv>
     )
 }
