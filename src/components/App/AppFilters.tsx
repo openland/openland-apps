@@ -4,7 +4,6 @@ import { XButton } from '../X/XButton';
 import { XModal } from '../X/XModal';
 import { XSelect } from '../X/XSelect';
 import { XIcon } from '../X/XIcon';
-import { placeholder } from 'glamor';
 
 let AllZones = ['P',
     'RH-1(D)',
