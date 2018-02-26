@@ -110,33 +110,35 @@ export default withApp(withParcel((props) => {
                         )}
                     </Wrapper>
                 </XHorizontal>
-                <XCard shadow="medium">
-                    <XCard.Header text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} />
-                    <XCard.Table>
-                        <XCard.Table.Header>
-                            <XCard.Table.Cell>Created</XCard.Table.Cell>
-                            <XCard.Table.Cell>Permit ID</XCard.Table.Cell>
-                            <XCard.Table.Cell>Permit Type</XCard.Table.Cell>
-                            <XCard.Table.Cell>Status</XCard.Table.Cell>
-                            <XCard.Table.Cell>Description</XCard.Table.Cell>
-                        </XCard.Table.Header>
-                        <tbody>
-                            {props.data.item.permits.map((v) => (
-                                <tr key={v.id} onClick={() => window.open(v.governmentalUrl!!, '_blank')}>
-                                    <XCard.Table.Cell>{v.createdAt && <XDate date={v.createdAt} />}</XCard.Table.Cell>
-                                    <XCard.Table.Cell>{v.id}</XCard.Table.Cell>
-                                    <XCard.Table.Cell>{v.type && <PermitType type={v.type!!} />}</XCard.Table.Cell>
-                                    <XCard.Table.Cell>{v.status}
-                                        {v.statusUpdatedAt && ' ('}
-                                        {v.statusUpdatedAt && <XDate date={v.statusUpdatedAt} />}
-                                        {v.statusUpdatedAt && ')'}
-                                    </XCard.Table.Cell>
-                                    <XCard.Table.Cell>{v.description}</XCard.Table.Cell>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </XCard.Table>
-                </XCard>
+                {props.data.item.permits.length > 7 && (
+                    <XCard shadow="medium">
+                        <XCard.Header text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} />
+                        <XCard.Table>
+                            <XCard.Table.Header>
+                                <XCard.Table.Cell>Created</XCard.Table.Cell>
+                                <XCard.Table.Cell>Permit ID</XCard.Table.Cell>
+                                <XCard.Table.Cell>Permit Type</XCard.Table.Cell>
+                                <XCard.Table.Cell>Status</XCard.Table.Cell>
+                                <XCard.Table.Cell>Description</XCard.Table.Cell>
+                            </XCard.Table.Header>
+                            <tbody>
+                                {props.data.item.permits.map((v) => (
+                                    <tr key={v.id} onClick={() => window.open(v.governmentalUrl!!, '_blank')}>
+                                        <XCard.Table.Cell>{v.createdAt && <XDate date={v.createdAt} />}</XCard.Table.Cell>
+                                        <XCard.Table.Cell>{v.id}</XCard.Table.Cell>
+                                        <XCard.Table.Cell>{v.type && <PermitType type={v.type!!} />}</XCard.Table.Cell>
+                                        <XCard.Table.Cell>{v.status}
+                                            {v.statusUpdatedAt && ' ('}
+                                            {v.statusUpdatedAt && <XDate date={v.statusUpdatedAt} />}
+                                            {v.statusUpdatedAt && ')'}
+                                        </XCard.Table.Cell>
+                                        <XCard.Table.Cell>{v.description}</XCard.Table.Cell>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </XCard.Table>
+                    </XCard>
+                )}
             </AppContent>
         </>
     )
