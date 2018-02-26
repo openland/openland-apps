@@ -14,7 +14,7 @@ export default withApp(withParcels((props) => {
             <XHead title={['Statecraft', 'Database']} />
             <AppContent>
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header text={props.data.items.pageInfo.itemsCount + ' parcels found'} description="San Francisco">
+                    <XCard.Header text="San Francisco" description={props.data.items.pageInfo.itemsCount + ' parcels found'}>
                         <AppFilters isActive={true} onChange={(v) => props.router.pushQuery('query', v ? JSON.stringify(v) : undefined)} />
                     </XCard.Header>
                     <XCard.Loader loading={props.data.loading || false}>
