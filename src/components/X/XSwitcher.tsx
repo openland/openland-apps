@@ -24,11 +24,11 @@ const XSwitcherWrapper = Glamorous.div<XSwitcherProps>((props) => ({
     '& > a': {
         paddingLeft: 14,
         paddingRight: 14,
-        height: 32,
+        height: props.fieldStyle ? 32 : undefined,
         fontWeight: 'normal !important',
         fontStyle: 'normal !important',
         fontStretch: 'normal !important',
-        lineHeight: '2.29 !important',
+        lineHeight: props.fieldStyle ? '2.29 !important' : undefined,
         letterSpacing: 'normal !important',
         textAlign: 'center !important',
         margin: '0 !important',
