@@ -42,7 +42,7 @@ const XModalContainer = Glamorous.div({
     alignSelf: 'stretch'
 });
 
-export class XModal extends React.Component<{ title: string, fullScreen?: boolean, closeOnClick?: boolean }, { isOpen: boolean }> {
+export class XModal extends React.Component<{ title: string, fullScreen?: boolean, closeOnClick?: boolean, width?: number }, { isOpen: boolean }> {
     static Target = XModalTarget;
     static Content = XModalContent;
 
@@ -134,6 +134,7 @@ export class XModal extends React.Component<{ title: string, fullScreen?: boolea
                             style={this.props.fullScreen ? 'full-screen' : 'normal'}
                             title={this.props.title}
                             onClose={this.handleClose}
+                            width={this.props.width}
                         >
                             {contentClone}
                         </XDialog>

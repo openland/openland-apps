@@ -3,6 +3,8 @@ import Glamorous from 'glamorous';
 import { XButton } from '../X/XButton';
 import { XModal } from '../X/XModal';
 import { XSelect } from '../X/XSelect';
+import { XIcon } from '../X/XIcon';
+import { placeholder } from 'glamor';
 
 let AllZones = ['P',
     'RH-1(D)',
@@ -72,9 +74,95 @@ let AllZones = ['P',
     'PM-R'
 ];
 
+const FilterCellDiv = Glamorous.div({
+    marginBottom: 32
+})
+
+const FilterCellTitle = Glamorous.div({
+    marginBottom: 8,
+    fontSize: 14,
+    fontWeight: 'bold',
+    lineHeight: 1.71,
+    textAlign: 'left',
+    color: '#182642',
+})
+
 const FilterSelector = Glamorous(XSelect)({
-    width: '140px'
+    width: '100%'
 });
+
+function FilterCell(props: { title?: string, children: any }) {
+    return (
+        <FilterCellDiv>
+            {props.title && <FilterCellTitle>{props.title}</FilterCellTitle>}
+            {props.children}
+        </FilterCellDiv>
+    )
+}
+
+const FilterCheckboxDiv = Glamorous.div<{active: boolean}>((props) => ({
+    width: '45%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    float: 'left',
+    '> input': {
+        display: 'none'
+    },
+    '> label': {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        fontSize: 14,
+        fontWeight: 'normal',
+        lineHeight: 1.71,
+        color: props.active ? '#4428e0' : '#525f7f',
+        cursor: 'pointer',
+        '> i': {
+            width: 14,
+            height: 14,
+            borderRadius: 2,
+            color: '#fff',
+            backgroundColor: props.active ? '#4428e0' : '#fff',
+            border: '1px solid rgba(82, 95, 127, 0.2)',
+            fontSize: 13,
+            lineHeight: '12px',
+            marginRight: 8
+        },
+    }
+}))
+
+class FilterCeckbox extends React.Component<{ label: string }, {isChecked: boolean}> {
+    constructor(props: {label: string }) {
+        super(props)
+
+        this.state = {
+            isChecked: false
+        }
+
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    handleChange() {
+        this.setState({ 
+            isChecked: !this.state.isChecked 
+        })
+    }
+
+    render() {
+        const id = `toggle_${Math.random().toString().replace(/0\./, '')}`
+
+        return (
+            <FilterCheckboxDiv active={this.state.isChecked}>
+                <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
+                <label htmlFor={id}>
+                    <XIcon icon={this.state.isChecked ? 'done' : ''} />
+                    <span>{this.props.label}</span>
+                </label>
+            </FilterCheckboxDiv>
+        )
+    }
+}
 
 export class AppFilters extends React.Component<{ isActive?: boolean, onChange: (query?: any) => void }, { zones?: any, stories?: any, currentUse?: any, onSale?: any }> {
 
@@ -136,44 +224,58 @@ export class AppFilters extends React.Component<{ isActive?: boolean, onChange: 
 
     render() {
         return (
-            <XModal title="Parcels filter" fullScreen={true} ref={this.handleInstance}>
+            <XModal title="Parcels filter" fullScreen={true} ref={this.handleInstance} width={320}>
                 <XModal.Target>
                     <XButton bounce={true} style={this.props.isActive ? 'dark' : 'normal'}>Filters</XButton>
                 </XModal.Target>
                 <XModal.Content>
-                    <FilterSelector
-                        name="zoning-field"
-                        value={this.state.zones}
-                        options={AllZones.map((v) => ({ value: v, label: v }))}
-                        onChange={this.handleZonesChange}
-                        placeholder="Zoning"
-                    />
-                    <FilterSelector
-                        name="address-field"
-                        value={this.state.stories}
-                        options={[
-                            { value: '0', label: 'no stories' },
-                            { value: '1', label: '1 story' },
-                            { value: '2', label: '2 stories' },
-                            { value: '3', label: '3 stories' },
-                            { value: '4', label: '4 stories' }]}
-                        onChange={this.handleStoriesChange}
-                        placeholder="Stories"
-                    />
-                    <FilterSelector
-                        name="current-field"
-                        value={this.state.currentUse}
-                        options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
-                        onChange={this.handleCurrentUseChange}
-                        placeholder="Current Use"
-                    />
-                    <FilterSelector
-                        name="on-sale-field"
-                        value={this.state.onSale}
-                        options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
-                        onChange={this.handleOnSaleChange}
-                        placeholder="On Sale"
-                    />
+                    <FilterCell title="Zoning field">
+                        <FilterSelector
+                            name="zoning-field"
+                            value={this.state.zones}
+                            options={AllZones.map((v) => ({ value: v, label: v }))}
+                            onChange={this.handleZonesChange}
+                            placeholder="Zoning"
+                        />
+                    </FilterCell>
+                    <FilterCell title="Address field">
+                        <FilterSelector
+                            name="address-field"
+                            value={this.state.stories}
+                            options={[
+                                { value: '0', label: 'no stories' },
+                                { value: '1', label: '1 story' },
+                                { value: '2', label: '2 stories' },
+                                { value: '3', label: '3 stories' },
+                                { value: '4', label: '4 stories' }]}
+                            onChange={this.handleStoriesChange}
+                            placeholder="Stories"
+                        />
+                    </FilterCell>
+                    <FilterCell title="Current field">
+                        <FilterSelector
+                            name="current-field"
+                            value={this.state.currentUse}
+                            options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
+                            onChange={this.handleCurrentUseChange}
+                            placeholder="Current Use"
+                        />
+                    </FilterCell>
+                    <FilterCell title="Sale field">
+                        <FilterSelector
+                            name="on-sale-field"
+                            value={this.state.onSale}
+                            options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
+                            onChange={this.handleOnSaleChange}
+                            placeholder="On Sale"
+                        />
+                    </FilterCell>
+                    <FilterCell title="Collections">
+                        <FilterCeckbox label="Single story" />
+                        <FilterCeckbox label="Stories count" />
+                        <FilterCeckbox label="Parcel area" />
+                        <FilterCeckbox label="Buildings count" />
+                    </FilterCell>
                     <XButton onClick={this.handleUpdate} alignSelf="center">Apply</XButton>
                 </XModal.Content>
             </XModal>

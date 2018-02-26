@@ -22,29 +22,31 @@ export const XDialogFullScreenContainer = Glamorous.div({
     overflowY: 'auto'
 });
 
-export const XDialogFullScreenContainerInner = Glamorous.div({
+export const XDialogFullScreenContainerInner = Glamorous.div<{width?: number}>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    width: '960px',
+    width: props.width ? props.width : '960px',
     paddingTop: '88px'
-});
+}));
 
 export const XDialogFullScreenContainerHeader = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    height: '64px',
+    alignItems: 'center',
+    // height: '64px',
     color: '#182642',
     fontSize: '32px',
     fontWeight: 800,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginBottom: 24
 });
 
-export function XDialog(props: { style?: 'full-screen' | 'normal', title: string, onClose?: () => void, children: any }) {
+export function XDialog(props: { style?: 'full-screen' | 'normal', title: string, onClose?: () => void, children: any, width?: number }) {
     if (props.style === 'full-screen') {
         return (
             <XDialogFullScreenContainer>
-                <XDialogFullScreenContainerInner>
+                <XDialogFullScreenContainerInner width={props.width}>
                     <XDialogFullScreenContainerHeader>
                         <span>{props.title}</span>
                         <div>
