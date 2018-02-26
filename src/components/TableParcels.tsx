@@ -12,22 +12,22 @@ export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[] }>((
             <XCard.Table.Header>
                 <XCard.Table.Cell>Parcel ID</XCard.Table.Cell>
                 <XCard.Table.Cell>Area</XCard.Table.Cell>
-                <XCard.Table.Cell>Supervisor District</XCard.Table.Cell>
+                <XCard.Table.Cell>Address</XCard.Table.Cell>
                 <XCard.Table.Cell>Land Value</XCard.Table.Cell>
                 <XCard.Table.Cell>Improvement Value</XCard.Table.Cell>
                 <XCard.Table.Cell>Zoning</XCard.Table.Cell>
-                <XCard.Table.Cell>Favorites</XCard.Table.Cell>
+                <XCard.Table.Cell textAlign="right">Favorites</XCard.Table.Cell>
             </XCard.Table.Header>
             <tbody>
                 {props.items.map((v) => (
                     <tr key={v.id} onClick={() => props.router.push('/app/parcels/' + v.id)}>
                         <XCard.Table.Cell>{v.title}</XCard.Table.Cell>
                         <XCard.Table.Cell>{v.extrasArea && <XArea area={v.extrasArea} />}</XCard.Table.Cell>
-                        <XCard.Table.Cell>{v.extrasSupervisorDistrict}</XCard.Table.Cell>
+                        <XCard.Table.Cell>{`${v.addresses[0].streetName} ${v.addresses[0].streetNameSuffix}`}</XCard.Table.Cell>
                         <XCard.Table.Cell>{v.extrasLandValue && <XMoney value={v.extrasLandValue} />}</XCard.Table.Cell>
                         <XCard.Table.Cell>{v.extrasImprovementValue && <XMoney value={v.extrasImprovementValue} />}</XCard.Table.Cell>
                         <XCard.Table.Cell>{v.extrasZoning && v.extrasZoning.join()}</XCard.Table.Cell>
-                        <XCard.Table.Cell>
+                        <XCard.Table.Cell textAlign="right">
                             <XButton
                                 size="large"
                                 borderless={true}
