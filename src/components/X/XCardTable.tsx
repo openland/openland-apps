@@ -40,7 +40,7 @@ let TableHeader = Glamorous.table({
 
 let XCardTableTD = Glamorous.td<{width?: number, textAlign?: 'left' | 'right'}>((props) => ({
     width: props.width ? props.width : undefined,
-    verticalAlign: 'bottom',
+    verticalAlign: 'middle',
     textAlign: props.textAlign,
 }))
 
