@@ -361,7 +361,9 @@ export const XSelectDiv = Glamorous(Select)({
     }
 })
 
-export function XSelect(props: ReactSelectProps) {
+export type XSelectProps = ReactSelectProps;
+
+export function XSelect(props: XSelectProps) {
     return (
         <XSelectDiv {...props} />
     )

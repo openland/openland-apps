@@ -16,6 +16,7 @@ export function AppNavigation(props: {}) {
             <Div />
             <AppSidebar.Item path="/app/favorites" title="Favorites" icon="favorite" />
             <AppSidebar.Item title="Due Dilligence" icon="lock" disabled={true} />
+            <AppSidebar.Item title="Notifications" icon="lock" disabled={true} />
             <AppSidebar.Item title="Support" icon="lock" disabled={true} />
         </>
     );
