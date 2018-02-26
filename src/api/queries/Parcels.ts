@@ -56,6 +56,68 @@ export const ParcelFull = gql`
           liked
           count
       }
+      permits {
+          id
+          createdAt
+          status
+          statusUpdatedAt
+          type
+          typeWood
+          description
+          approvalTime
+          proposedUnits
+          existingUnits
+          governmentalUrl
+      }
+  }
+`
+
+export const ParcelShort = gql`
+  fragment ParcelShort on Parcel {
+      id
+      title
+      geometry
+      extrasArea
+      extrasSupervisorDistrict
+      extrasZoning
+      extrasLandValue
+      extrasImprovementValue
+      extrasPropertyValue
+      extrasFixturesValue
+      extrasStories
+      extrasUnits
+      extrasRooms
+      extrasBathrooms
+      extrasBedrooms
+      extrasYear
+      extrasNeighborhood
+      extrasMetroDistance
+      extrasMetroStation
+      extrasTrainDistance
+      extrasTrainStation
+      extrasTrainLocalDistance
+      extrasTrainLocalStation
+
+      extrasNearestTransitDistance
+      extrasNearestTransitType
+      extrasNearestTransitStation
+
+      extrasLandUse
+      extrasSalesDate
+      extrasSalesPriorDate
+      extrasRecordationDate
+
+      addresses {
+        streetId
+        streetName
+        streetNameSuffix
+        streetNumber
+        streetNumberSuffix
+      }
+      likes {
+          liked
+          count
+      }
   }
 `
 
@@ -122,7 +184,7 @@ export const ParcelsConnection = gql`
         items: parcelsConnection(state: "CA", county: "San Francisco", city: "San Francisco", first: 50, after: $cursor, page: $page, query: $query) {
             edges {
                 node {
-                    ...ParcelFull
+                    ...ParcelShort
                 }
                 cursor
             }
@@ -136,16 +198,16 @@ export const ParcelsConnection = gql`
             }
         }
     }
-    ${ParcelFull}
+    ${ParcelShort}
 `;
 
 export const ParcelsFavorites = gql`
     query ParcelsFavorites {
         items: parcelFavorites {
-            ...ParcelFull
+            ...ParcelShort
         }
     }
-    ${ParcelFull}
+    ${ParcelShort}
 `;
 
 export const ParcelQuery = gql`

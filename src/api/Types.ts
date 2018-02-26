@@ -7,19 +7,6 @@ export enum ParcelUse {
 }
 
 
-export interface GeoBox {
-  east: number,
-  north: number,
-  west: number,
-  south: number,
-};
-
-export interface ParcelMetadataInput {
-  description?: string | null,
-  currentUse?: ParcelUse | null,
-  available?: boolean | null,
-};
-
 export enum PermitStatus {
   FILING = "FILING",
   FILED = "FILED",
@@ -53,6 +40,19 @@ export enum PermitType {
   GRADE_QUARRY_FILL_EXCAVATE = "GRADE_QUARRY_FILL_EXCAVATE",
 }
 
+
+export interface GeoBox {
+  east: number,
+  north: number,
+  west: number,
+  south: number,
+};
+
+export interface ParcelMetadataInput {
+  description?: string | null,
+  currentUse?: ParcelUse | null,
+  available?: boolean | null,
+};
 
 export enum PermitSorting {
   STATUS_CHANGE_TIME = "STATUS_CHANGE_TIME",
@@ -710,18 +710,6 @@ export interface ParcelsConnectionQuery {
           streetNumber: number,
           streetNumberSuffix: string | null,
         } >,
-        block:  {
-          __typename: "Block",
-          id: string,
-          title: string,
-          extrasArea: number | null,
-        },
-        metadata:  {
-          __typename: "ParcelMetadata",
-          description: string | null,
-          available: boolean | null,
-          currentUse: ParcelUse | null,
-        },
         likes:  {
           __typename: "Likes",
           liked: boolean,
@@ -783,18 +771,6 @@ export interface ParcelsFavoritesQuery {
       streetNumber: number,
       streetNumberSuffix: string | null,
     } >,
-    block:  {
-      __typename: "Block",
-      id: string,
-      title: string,
-      extrasArea: number | null,
-    },
-    metadata:  {
-      __typename: "ParcelMetadata",
-      description: string | null,
-      available: boolean | null,
-      currentUse: ParcelUse | null,
-    },
     likes:  {
       __typename: "Likes",
       liked: boolean,
@@ -865,6 +841,20 @@ export interface ParcelQuery {
       liked: boolean,
       count: number | null,
     },
+    permits:  Array< {
+      __typename: "Permit",
+      id: string,
+      createdAt: string | null,
+      status: PermitStatus | null,
+      statusUpdatedAt: string | null,
+      type: PermitType | null,
+      typeWood: boolean | null,
+      description: string | null,
+      approvalTime: number | null,
+      proposedUnits: number | null,
+      existingUnits: number | null,
+      governmentalUrl: string,
+    } >,
   },
 };
 
@@ -1031,6 +1021,7 @@ export interface PermitQuery {
       approvalTime: number | null,
       proposedUnits: number | null,
       existingUnits: number | null,
+      governmentalUrl: string,
       streetNumbers:  Array< {
         __typename: "StreetNumber",
         streetId: string,
@@ -1071,6 +1062,7 @@ export interface PermitsConnectionQuery {
         approvalTime: number | null,
         proposedUnits: number | null,
         existingUnits: number | null,
+        governmentalUrl: string,
         streetNumbers:  Array< {
           __typename: "StreetNumber",
           streetId: string,
@@ -1247,6 +1239,7 @@ export interface ProjectQuery {
       approvalTime: number | null,
       proposedUnits: number | null,
       existingUnits: number | null,
+      governmentalUrl: string,
       streetNumbers:  Array< {
         __typename: "StreetNumber",
         streetId: string,
@@ -1520,6 +1513,7 @@ export interface ProjectSFQuery {
       approvalTime: number | null,
       proposedUnits: number | null,
       existingUnits: number | null,
+      governmentalUrl: string,
       streetNumbers:  Array< {
         __typename: "StreetNumber",
         streetId: string,
@@ -1809,6 +1803,67 @@ export interface ParcelFullFragment {
     liked: boolean,
     count: number | null,
   },
+  permits:  Array< {
+    __typename: string,
+    id: string,
+    createdAt: string | null,
+    status: PermitStatus | null,
+    statusUpdatedAt: string | null,
+    type: PermitType | null,
+    typeWood: boolean | null,
+    description: string | null,
+    approvalTime: number | null,
+    proposedUnits: number | null,
+    existingUnits: number | null,
+    governmentalUrl: string,
+  } >,
+};
+
+export interface ParcelShortFragment {
+  __typename: "Parcel",
+  id: string,
+  title: string,
+  geometry: string | null,
+  extrasArea: number | null,
+  extrasSupervisorDistrict: string | null,
+  extrasZoning: Array< string > | null,
+  extrasLandValue: number | null,
+  extrasImprovementValue: number | null,
+  extrasPropertyValue: number | null,
+  extrasFixturesValue: number | null,
+  extrasStories: number | null,
+  extrasUnits: number | null,
+  extrasRooms: number | null,
+  extrasBathrooms: number | null,
+  extrasBedrooms: number | null,
+  extrasYear: number | null,
+  extrasNeighborhood: string | null,
+  extrasMetroDistance: number | null,
+  extrasMetroStation: string | null,
+  extrasTrainDistance: number | null,
+  extrasTrainStation: string | null,
+  extrasTrainLocalDistance: number | null,
+  extrasTrainLocalStation: string | null,
+  extrasNearestTransitDistance: number | null,
+  extrasNearestTransitType: string | null,
+  extrasNearestTransitStation: string | null,
+  extrasLandUse: string | null,
+  extrasSalesDate: string | null,
+  extrasSalesPriorDate: string | null,
+  extrasRecordationDate: string | null,
+  addresses:  Array< {
+    __typename: string,
+    streetId: string,
+    streetName: string,
+    streetNameSuffix: string | null,
+    streetNumber: number,
+    streetNumberSuffix: string | null,
+  } >,
+  likes:  {
+    __typename: string,
+    liked: boolean,
+    count: number | null,
+  },
 };
 
 export interface BlockShortFragment {
@@ -1849,6 +1904,7 @@ export interface PermitShortFragment {
   approvalTime: number | null,
   proposedUnits: number | null,
   existingUnits: number | null,
+  governmentalUrl: string,
   streetNumbers:  Array< {
     __typename: string,
     streetId: string,
@@ -1916,6 +1972,7 @@ export interface PermitFullFragment {
     approvalTime: number | null,
     proposedUnits: number | null,
     existingUnits: number | null,
+    governmentalUrl: string,
     streetNumbers:  Array< {
       __typename: string,
       streetId: string,
@@ -2108,6 +2165,7 @@ export interface ProjectFullFragment {
     approvalTime: number | null,
     proposedUnits: number | null,
     existingUnits: number | null,
+    governmentalUrl: string,
     streetNumbers:  Array< {
       __typename: string,
       streetId: string,

@@ -12,6 +12,7 @@ export const PermitShort = gql`
         approvalTime
         proposedUnits
         existingUnits
+        governmentalUrl
         streetNumbers {
             streetId
             streetName

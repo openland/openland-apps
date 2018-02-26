@@ -6,7 +6,7 @@ import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { withRouter } from '../utils/withRouter';
 
-export const TableParcels = withRouter<{ items: Types.ParcelFullFragment[] }>((props) => {
+export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[] }>((props) => {
     return (
         <XCard.Table>
             <XCard.Table.Header>
