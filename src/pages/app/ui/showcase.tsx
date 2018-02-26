@@ -74,7 +74,7 @@ export default withApp((props) => {
                             <XButton alignSelf="flex-start" style="important">Important</XButton>
                             <XButton alignSelf="flex-start" loading={true} />
                             <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
-                            <XLinkExternal path="https://goo.gl/urJT1F" />
+                            <XLinkExternal href="https://goo.gl/urJT1F" />
                             <XSelect 
                                 name="form-field-name"
                                 value={'value'}
@@ -106,7 +106,7 @@ export default withApp((props) => {
                         description="qweqweqweqwe"
                     />
                     <XCard.Empty icon="remove_shopping_cart" text="empty text">
-                        <XLinkExternal path="https://goo.gl/urJT1F" />
+                        <XLinkExternal href="https://goo.gl/urJT1F" />
                     </XCard.Empty>
                 </XCard>
                 <XCard shadow="medium">

@@ -4,10 +4,9 @@ import { XCard } from '../../../components/X/XCard';
 import { withParcels } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
-import { XArea } from '../../../components/X/XArea';
-import { XMoney } from '../../../components/X/XMoney';
 import { XHead } from '../../../components/X/XHead';
 import { AppFilters } from '../../../components/App/AppFilters';
+import { TableParcels } from '../../../components/TableParcels';
 
 export default withApp(withParcels((props) => {
     return (
@@ -19,36 +18,7 @@ export default withApp(withParcels((props) => {
                         <AppFilters isActive={true} onChange={(v) => props.router.pushQuery('query', v ? JSON.stringify(v) : undefined)} />
                     </XCard.Header>
                     <XCard.Loader loading={props.data.loading || false}>
-                        <XCard.Table>
-                            <XCard.Table.Header>
-                                <XCard.Table.Cell>Parcel ID</XCard.Table.Cell>
-                                <XCard.Table.Cell>Area</XCard.Table.Cell>
-                                <XCard.Table.Cell>Supervisor District</XCard.Table.Cell>
-                                <XCard.Table.Cell>Land Value</XCard.Table.Cell>
-                                <XCard.Table.Cell>Improvement Value</XCard.Table.Cell>
-                                <XCard.Table.Cell>Zoning</XCard.Table.Cell>
-                                <XCard.Table.Cell>Favorites</XCard.Table.Cell>
-                            </XCard.Table.Header>
-                            <tbody>
-                                {props.data.items.edges.map((v) => (
-                                    <tr key={v.node.id} onClick={() => props.router.push('/app/parcels/' + v.node.id)}>
-                                        <XCard.Table.Cell>{v.node.title}</XCard.Table.Cell>
-                                        <XCard.Table.Cell>{v.node.extrasArea && <XArea area={v.node.extrasArea} />}</XCard.Table.Cell>
-                                        <XCard.Table.Cell>{v.node.extrasSupervisorDistrict}</XCard.Table.Cell>
-                                        <XCard.Table.Cell>{v.node.extrasLandValue && <XMoney value={v.node.extrasLandValue} />}</XCard.Table.Cell>
-                                        <XCard.Table.Cell>{v.node.extrasImprovementValue && <XMoney value={v.node.extrasImprovementValue} />}</XCard.Table.Cell>
-                                        <XCard.Table.Cell>{v.node.extrasZoning}</XCard.Table.Cell>
-                                        <XCard.Table.Cell>
-                                            <XButton
-                                                size="large"
-                                                borderless={true}
-                                                icon={v.node.likes.liked ? 'favorite' : 'favorite_border'}
-                                            />
-                                        </XCard.Table.Cell>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </XCard.Table>
+                        <TableParcels items={props.data.items.edges.map((v) => v.node)} />
                     </XCard.Loader>
                     <XCard.Footer text={props.data.items.pageInfo.itemsCount + ' items'}>
                         {props.data.items.pageInfo.currentPage > 1 && (

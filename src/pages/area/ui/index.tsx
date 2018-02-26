@@ -72,7 +72,7 @@ export default withPage((props) => {
                             <XButton alignSelf="flex-start" style="important">Important</XButton>
                             <XButton alignSelf="flex-start" loading={true} />
                             <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
-                            <XLinkExternal path="https://goo.gl/urJT1F" />
+                            <XLinkExternal href="https://goo.gl/urJT1F" />
                             <XBullet alignSelf="flex-start">bullet</XBullet>
                             <XBullet alignSelf="flex-start" color="red">bullet</XBullet>
                             <XBullet alignSelf="flex-start" color="green">bullet</XBullet>
