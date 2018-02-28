@@ -210,6 +210,12 @@ export const ParcelsFavorites = gql`
     ${ParcelShort}
 `;
 
+export const ParcelsFavoritesCount = gql`
+    query ParcelsFavoritesCount {
+        parcelFavoritesCount
+    }
+`;
+
 export const ParcelQuery = gql`
     query Parcel($parcelId: ID!) {
         item: parcel(id: $parcelId) {

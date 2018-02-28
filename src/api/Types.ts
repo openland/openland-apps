@@ -779,6 +779,10 @@ export interface ParcelsFavoritesQuery {
   } >,
 };
 
+export interface ParcelsFavoritesCountQuery {
+  parcelFavoritesCount: number,
+};
+
 export interface ParcelQueryVariables {
   parcelId: string,
 };

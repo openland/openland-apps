@@ -83,6 +83,7 @@ export const withParcels = graphqlRouted<Types.ParcelsConnectionQuery>(Parcels.P
 export const withParcelRaw = graphqlRouted<Types.ParcelQuery>(Parcels.ParcelQuery, ['parcelId']);
 
 export const withParcelsFavorites = graphqlRouted<Types.ParcelsFavoritesQuery>(Parcels.ParcelsFavorites);
+export const withParcelsFavroutesCount = graphqlRouted<Types.ParcelsFavoritesCountQuery>(Parcels.ParcelsFavoritesCount);
 
 // export const withParcelLikeMutations = graphqlCompose2(withParcelLikes, withParcelUnlikes);
 export const withParcelLikes = graphql<{ doLike: MutationFunc<{}> }, { parcelId: string }>(Parcels.ParcelLike, {
