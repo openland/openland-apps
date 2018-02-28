@@ -58,7 +58,7 @@ const XMenuItem = XStyled(XLink)({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     borderRadius: 4,
-    width: 230,
+    width: 200,
     height: 28,
     fontSize: 14,
     fontWeight: 'normal',

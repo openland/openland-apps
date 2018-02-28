@@ -2,6 +2,8 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from '../X/XLink';
 import { XIcon } from '../X/XIcon';
+import { XPopover } from '../X/XPopover';
+import { XMenu } from '../X/XMenu';
 import { withRouter } from '../../utils/withRouter';
 import { withUserInfo } from '../Base/UserInfo';
 import { AppSearch } from './AppSearch';
@@ -95,36 +97,29 @@ const AvatarImg = Glamorous.img({
     width: '24px',
     height: '24px',
     boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
-    // cursor: 'pointer'
 });
-
-// let UserInfoBox = Glamorous.div({
-//     paddingTop: 8,
-//     paddingBottom: 8,
-//     paddingLeft: 8,
-//     paddingRight: 8,
-//     fontSize: 16,
-//     lineHeight: '24px',
-//     fontWeight: 600,
-//     color: '#525f7f',
-//     borderBottom: '1px solid #E5EBF2',
-//     '& > span': {
-//         display: 'block',
-//         fontSize: 12,
-//         lineHeight: '16px',
-//         fontWeight: 400,
-//     }
-// });
 
 let UserInfoDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     marginTop: '24px',
-    alignItems: 'center'
+    alignItems: 'center',
+    cursor: 'pointer'
 })
 
-let UserProfile = withUserInfo((props) => {
-    return (<UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv>);
+let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
+    return (
+        <XPopover placement="bottom-end">
+            <XPopover.Target>
+                <UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv>
+            </XPopover.Target>
+            <XPopover.Content>
+                <XMenu>
+                    <XMenu.Item path="/auth/logout">Log Out</XMenu.Item>
+                </XMenu>
+            </XPopover.Content>
+        </XPopover>
+    )
 });
 
 export class AppSidebarItem extends React.Component<{ title: string, icon?: string, href?: string, path?: string, activateForSubpaths?: boolean, disabled?: boolean }> {
