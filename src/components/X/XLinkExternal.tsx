@@ -18,7 +18,7 @@ export const ExternalLinkDiv = XStyled(XLink)({
 
 export const ExternalLinkIcon = Glamorous(XIcon)({
     marginLeft: 2,
-    marginBottom: 1,
+    marginTop: 1,
     fontSize: '14px',
 })
 
