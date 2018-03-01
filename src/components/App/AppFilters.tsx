@@ -82,6 +82,19 @@ let AllZones = ['P',
     'PM-R'
 ];
 
+const ApplyButtonDiv = Glamorous.div({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    height: 48,
+    backgroundColor: '#fff',
+    boxShadow: '0 0 0 1px #e6ebf1'
+})
+
 const FilterCellDiv = Glamorous.div({
     marginBottom: 32
 })
@@ -195,6 +208,53 @@ function FilterCell(props: { title?: string, children: any }) {
 //             </FilterCheckboxDiv>
 //         )
 //     }
+// }
+
+// const RangeInput = Glamorous.input({
+//     minWidth: 98,
+//     height: 40,
+//     boxSizing: 'border-box',
+//     border: '1px solid rgba(24, 38, 66, 0.2)',
+//     borderRadius: 4,
+//     color: '#525f7f',
+//     backgroundColor: '#fff',
+//     fontSize: 14,
+//     lineHeight: 1.71,
+//     paddingTop: 8,
+//     paddingLeft: 12,
+//     paddingRight: 12,
+//     paddingBottom: 8,
+//     outline: 'none',
+//     '&:focus': {
+//         outline: 'none'
+//     },
+//     '&::placeholder': {
+//         color: '#182642'
+//     }
+// })
+
+// const FilterRangeDiv = Glamorous.div({
+//     display: 'flex',
+//     alignItems: 'center',
+//     fontSize: 14,
+//     fontWeight: 'normal',
+//     lineHeight: 1.71,
+//     color: '#182642'
+// })
+
+// interface FilterRangeProps {
+//     placeholderFrom?: string,
+//     placeholderTo?: string
+// }
+
+// function FilterRange(props: FilterRangeProps) {
+//     return (
+//         <FilterRangeDiv>
+//             <RangeInput placeholder={props.placeholderFrom} />
+//             <p style={{display: 'block', marginLeft: 12, marginRight: 12}}> - </p>
+//             <RangeInput placeholder={props.placeholderTo} />
+//         </FilterRangeDiv>
+//     )
 // }
 
 class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (query?: any) => void, router: RouterState }> {
@@ -315,7 +375,10 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
                         <FilterCeckbox label="Parcel area" />
                         <FilterCeckbox label="Buildings count" />
                     </FilterCell> */}
-                    <XButton style="dark" size="medium" bounce={true} onClick={this.handleUpdate} alignSelf="flex-end">Apply</XButton>
+                    {/* <FilterRange placeholderFrom="$1000"/> */}
+                    <ApplyButtonDiv>
+                        <XButton style="dark" size="medium" bounce={true} onClick={this.handleUpdate}>Apply</XButton>
+                    </ApplyButtonDiv>
                 </XModal.Content>
             </XModal>
         );

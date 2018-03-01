@@ -19,15 +19,17 @@ export const XDialogFullScreenContainer = Glamorous.div({
     width: '100%',
     height: '100vh',
     backgroundColor: '#ffffff',
-    overflowY: 'auto'
+    overflowY: 'auto',
+    position: 'relative'
 });
 
 export const XDialogFullScreenContainerInner = Glamorous.div<{width?: number}>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    width: props.width ? props.width : '960px',
-    paddingTop: '88px'
+    width: props.width ? props.width : 960,
+    paddingTop: 88,
+    paddingBottom: 70
 }));
 
 export const XDialogFullScreenContainerHeader = Glamorous.div({
