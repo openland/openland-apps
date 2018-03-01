@@ -150,8 +150,8 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         // Hover Fill
         //
 
-        let hoverFillColor = this.props.style && this.props.style.hoverFillColor !== undefined ? this.props.style.hoverFillColor : '#088';
-        let hoverFillOpacity = this.props.style && this.props.style.hoverFillOpacity !== undefined ? this.props.style.hoverFillOpacity : 1;
+        let hoverFillColor = this.props.style && this.props.style.hoverFillColor !== undefined ? this.props.style.hoverFillColor : '#5967e2';
+        let hoverFillOpacity = this.props.style && this.props.style.hoverFillOpacity !== undefined ? this.props.style.hoverFillOpacity : 0.7;
 
         this.map.addLayer({
             'id': this.layer + '-fill-hover',
@@ -170,7 +170,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         // Hover Border
         //
 
-        let hoverBorderColor = this.props.style && this.props.style.hoverBorderColor !== undefined ? this.props.style.hoverBorderColor : '#088';
+        let hoverBorderColor = this.props.style && this.props.style.hoverBorderColor !== undefined ? this.props.style.hoverBorderColor : '#4428e1';
         let hoverBorderOpacity = this.props.style && this.props.style.hoverBorderOpacity !== undefined ? this.props.style.hoverBorderOpacity : 0.8;
         let hoverBorderWidth = this.props.style && this.props.style.hoverBorderWidth !== undefined ? this.props.style.hoverBorderWidth : 1;
 
@@ -192,7 +192,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         // Selected Fill
         //
 
-        let selectedFillColor = this.props.style && this.props.style.hoverFillColor !== undefined ? this.props.style.hoverFillColor : '#088';
+        let selectedFillColor = this.props.style && this.props.style.hoverFillColor !== undefined ? this.props.style.hoverFillColor : '#4428e1';
         let selectedFillOpacity = this.props.style && this.props.style.hoverFillOpacity !== undefined ? this.props.style.hoverFillOpacity : 1;
 
         this.map.addLayer({
@@ -213,7 +213,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         // Selected Border
         //
 
-        let selectedBorderColor = this.props.style && this.props.style.selectedBorderColor !== undefined ? this.props.style.selectedBorderColor : '#088';
+        let selectedBorderColor = this.props.style && this.props.style.selectedBorderColor !== undefined ? this.props.style.selectedBorderColor : '#4428e1';
         let selectedBorderOpacity = this.props.style && this.props.style.selectedBorderOpacity !== undefined ? this.props.style.selectedBorderOpacity : 0.8;
         let selectedBorderWidth = this.props.style && this.props.style.selectedBorderWidth !== undefined ? this.props.style.selectedBorderWidth : 1;
 
