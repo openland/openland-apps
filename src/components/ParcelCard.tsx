@@ -58,6 +58,7 @@ export const ParcelCard = withParcelDirect((props) => {
                         <XCard.Header 
                             text={'Parcel #' + props.data.item!!.title} 
                             description={formatAddresses(props.data.item!!.addresses)}
+                            truncateDescription={true}
                             bullet={props.data!!.item!!.metadata.available ? 'ON SALE' : undefined}
                         >
                             <XButton borderless={true} size="large" query={{ field: 'selectedParcel' }} icon="clear" />
