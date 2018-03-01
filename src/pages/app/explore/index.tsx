@@ -25,9 +25,13 @@ const XMapContainer2 = Glamorous.div({
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: 0,
-    height: '100vh'
+    height: '100vh',
     // alignItems: 'stretch',
     // height: '100%'
+    '& .mapboxgl-ctrl-top-right': {
+        top: '70px !important',
+        right: '6px !important'
+    }
 });
 
 const MapSwitcher = Glamorous.div({

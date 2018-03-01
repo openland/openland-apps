@@ -148,7 +148,7 @@ export class XMap extends React.Component<XMapLightProps> {
                 zoom: initialZoom,
                 style: this.props.mapStyle || 'mapbox://styles/mapbox/streets-v9'
             });
-            mapComponent.addControl(new map.NavigationControl(), 'bottom-left');
+            mapComponent.addControl(new map.NavigationControl());
             mapComponent.on('load', () => { this.configureMap(mapComponent); });
             this.map = mapComponent;
         })
