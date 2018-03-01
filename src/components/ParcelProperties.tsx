@@ -5,6 +5,24 @@ import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { XZoningCode } from './X/XZoningCode';
 
+export function LandsUseDelimiter(props: { lands?: string[] | null }) {
+    let components: any[] = [];
+    let isFirst = true;
+    for (let itm of props.lands!!) {
+        if (isFirst) {
+            isFirst = false;
+        } else {
+            components.push(',\u00A0');
+        }
+        if (itm) {
+            components.push(<span>{itm}</span>);
+        } else {
+            components.push(itm);
+        }
+    }
+    return <>{components}</>
+}
+
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
     return (
         <>
@@ -24,9 +42,8 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         <XCard.Property title="Zoning"><XZoningCode codes={props.item!!.extrasZoning!!} /></XCard.Property>
                     }
                     {props.item!!.extrasLandUse !== null &&
-                        <XCard.Property title="Land Use">{props.item!!.extrasLandUse}</XCard.Property>
+                        <XCard.Property title="Land Use"><LandsUseDelimiter lands={props.item!!.extrasLandUse}/></XCard.Property>
                     }
-
                     {props.item.extrasLandValue !== null &&
                         <XCard.Property title="Land Value"><XMoney value={props.item.extrasLandValue!!} /></XCard.Property>
                     }

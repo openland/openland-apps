@@ -81,7 +81,7 @@ export function XZoningCode(props: { codes: string[] }) {
         if (isFirst) {
             isFirst = false;
         } else {
-            components.push(<pre>,</pre>);
+            components.push(',\u00A0');
         }
         if (Links[itm]) {
             components.push(<XLinkExternal key={'zoning_' + itm} href={Links[itm]} content={itm} />);
