@@ -22,7 +22,7 @@ export const XCardEmptyContent = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     color: '#6b7c93',
-    fontSize: '13px',
+    fontSize: 14,
     lineHeight: '1.6',
     whiteSpace: 'pre',
     '& *::before': {

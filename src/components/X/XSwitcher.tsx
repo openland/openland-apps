@@ -33,9 +33,16 @@ const XSwitcherWrapper = Glamorous.div<XSwitcherProps>((props) => ({
         textAlign: 'center !important',
         margin: '0 !important',
         color: props.fieldStyle ? '#182642 !important' : undefined,
+        '&:hover': {
+            backgroundColor: props.fieldStyle ? '#F5F6F8' : undefined
+        },
         '&.is-active': {
             color: props.fieldStyle ? '#fff !important' : undefined,
             backgroundColor: props.fieldStyle ? '#4428e0 !important' : undefined,
+
+            '&:hover': {
+                backgroundColor: props.fieldStyle ? '#4428e0 !important' : undefined,
+            }
         }
     }
 }))

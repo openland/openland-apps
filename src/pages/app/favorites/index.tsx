@@ -44,14 +44,23 @@ export default withApp(withParcelsFavorites((props) => {
             <AppContent>
                 <XCard shadow="medium">
                     <XCard.Header text="Favorites" description={props.data.items.length + ' parcels'}>
+                    {
+                        (props.data.items.length === 0)
+                        ? undefined
+                        :
                         <XButton
                             style="dark"
                             onClick={(e) => { e.preventDefault(); exportCSV(props.data.items) }}
                         >
                             Export to CSV
                         </XButton>
+                    }
                     </XCard.Header>
-                    <TableParcels items={props.data.items} />
+                    {
+                        (props.data.items.length === 0) 
+                        ? <XCard.Empty icon="info_outline" text="add at least one parcel to your favorites" />
+                        : <TableParcels items={props.data.items} />
+                    }
                 </XCard>
             </AppContent>
         </>
