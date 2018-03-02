@@ -1,13 +1,23 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/App/withApp';
 import { AppContent } from '../../../components/App/AppContent';
 import { XCard } from '../../../components/X/XCard';
+import { XLink } from '../../../components/X/XLink';
 import { withParcelsFavorites } from '../../../api';
 import { TableParcels } from '../../../components/TableParcels';
 import * as Types from '../../../api/Types';
 import { XButton } from '../../../components/X/XButton';
 import * as FileSaver from 'file-saver';
+
+let Link = Glamorous(XLink)({
+    textDecoration: 'underline',
+    marginLeft: 5,
+    '&::before': {
+        content: 'none'
+    }
+})
 
 function escapeRecord(src?: string | number | null) {
     if (src !== undefined && src !== null) {
@@ -42,26 +52,31 @@ export default withApp(withParcelsFavorites((props) => {
         <>
             <XHead title={['Statecraft', 'Favorites']} />
             <AppContent>
-                <XCard shadow="medium">
-                    <XCard.Header text="Favorites" description={props.data.items.length + ' parcels'}>
-                    {
-                        (props.data.items.length === 0)
-                        ? undefined
-                        :
-                        <XButton
-                            style="dark"
-                            onClick={(e) => { e.preventDefault(); exportCSV(props.data.items) }}
-                        >
-                            Export to CSV
-                        </XButton>
-                    }
-                    </XCard.Header>
-                    {
-                        (props.data.items.length === 0) 
-                        ? <XCard.Empty icon="info_outline" text="add at least one parcel to your favorites" />
-                        : <TableParcels items={props.data.items} />
-                    }
-                </XCard>
+                {
+                    (props.data.items.length === 0)
+                        ? (
+                            <XCard shadow="medium">
+                                <XCard.Empty icon="favorite_border" text="You can add find your first parcel at">
+                                    <Link path="/app/explore">
+                                        Explore Page
+                                    </Link>
+                                </XCard.Empty>
+                            </XCard>
+                        )
+                        : (
+                            <XCard shadow="medium">
+                                <XCard.Header text="Favorites" description={props.data.items.length + ' parcels'}>
+                                    <XButton
+                                        style="dark"
+                                        onClick={(e) => { e.preventDefault(); exportCSV(props.data.items) }}
+                                    >
+                                        Export to CSV
+                                    </XButton>
+                                </XCard.Header>
+                                <TableParcels items={props.data.items} />
+                            </XCard>
+                        )
+                }
             </AppContent>
         </>
     )
