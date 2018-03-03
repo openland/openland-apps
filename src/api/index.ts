@@ -93,7 +93,7 @@ export const withParcelLikes = graphql<{ doLike: MutationFunc<{}> }, { parcelId:
             variables: {
                 parcelId: props.parcelId
             },
-            refetchQueries: [{ query: Parcels.ParcelsFavorites }]
+            refetchQueries: [{ query: Parcels.ParcelsFavorites }, {query: Parcels.ParcelsFavoritesCount}]
         };
     }
 });
@@ -104,7 +104,7 @@ export const withParcelUnlikes = graphql<{ doUnlike: MutationFunc<{}> }, { parce
             variables: {
                 parcelId: props.parcelId
             },
-            refetchQueries: [{ query: Parcels.ParcelsFavorites }]
+            refetchQueries: [{ query: Parcels.ParcelsFavorites }, {query: Parcels.ParcelsFavoritesCount}]
         };
     }
 });
@@ -112,12 +112,12 @@ export const withParcelUnlikes = graphql<{ doUnlike: MutationFunc<{}> }, { parce
 export const withParcelLikesRouted = graphqlMutation<{ doLike: MutationFunc<{}> }>(Parcels.ParcelLike, {
     name: 'doLike',
     params: ['parcelId'],
-    refetchQueries: [Parcels.ParcelsFavorites]
+    refetchQueries: [Parcels.ParcelsFavorites, Parcels.ParcelsFavoritesCount]
 });
 export const withParcelUnlikesRouted = graphqlMutation<{ doUnlike: MutationFunc<{}> }>(Parcels.ParcelUnlike, {
     name: 'doUnlike',
     params: ['parcelId'],
-    refetchQueries: [Parcels.ParcelsFavorites]
+    refetchQueries: [Parcels.ParcelsFavorites, Parcels.ParcelsFavoritesCount]
 });
 
 export const withParcelDirect2 = graphql<Types.ParcelQuery, { parcelId: string }>(Parcels.ParcelQuery, {

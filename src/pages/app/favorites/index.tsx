@@ -12,11 +12,7 @@ import { XButton } from '../../../components/X/XButton';
 import * as FileSaver from 'file-saver';
 
 let Link = Glamorous(XLink)({
-    textDecoration: 'underline',
-    marginLeft: 5,
-    '&::before': {
-        content: 'none'
-    }
+    color: '#3297d3',
 })
 
 function escapeRecord(src?: string | number | null) {
@@ -56,9 +52,9 @@ export default withApp(withParcelsFavorites((props) => {
                     (props.data.items.length === 0)
                         ? (
                             <XCard shadow="medium">
-                                <XCard.Empty icon="favorite_border" text="You can add find your first parcel at">
+                                <XCard.Empty icon="favorite_border" text="You can find your first parcel at">
                                     <Link path="/app/explore">
-                                        Explore Page
+                                        Explore page
                                     </Link>
                                 </XCard.Empty>
                             </XCard>
