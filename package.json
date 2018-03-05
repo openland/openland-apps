@@ -122,7 +122,7 @@
 		"dev:local": "nodemon src/server.ts",
 		"build": "next build src",
 		"analyze": "cross-env ANALYZE=1 next build src",
-		"start": "NODE_ENV=production ts-node --compilerOptions '{\"module\":\"commonjs\"}' src/server.ts ",
+		"start": "NODE_ENV=production yarn ts-node --compilerOptions '{\"module\":\"commonjs\"}' src/server.ts ",
 		"promote": "kubectl set image deployment/statecraft-web statecraft-web=`kubectl get deployment statecraft-web-staging -o=jsonpath='{$.spec.template.spec.containers[:1].image}'` && kubectl rollout status deployments statecraft-web",
 		"schema": "yarn schema:download && yarn schema:generate",
 		"schema:local": "yarn schema:download:local && yarn schema:generate",
