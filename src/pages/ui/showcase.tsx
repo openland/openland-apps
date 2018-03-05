@@ -20,7 +20,7 @@ import { AppContent } from '../../components/App/AppContent';
 export default withApp((props) => {
     return (
         <>
-            <XHead title={['OpenLand', 'UI Framework']} />
+            <XHead title={['UI Framework']} />
             <AppContent>
                 <XCard>
                     <XCard.Content>

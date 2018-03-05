@@ -4,11 +4,11 @@ import { formatPageTitle } from '../../utils/strings';
 import { withRouter } from '../../utils/withRouter';
 export const XHead = withRouter<{ title: string | string[], imgCloud?: string | null, imgUrl?: string | null }>((props) => {
 
-    let parts = ['OpenLand'];
+    let parts = ['Openland'];
     if (typeof (props.title) === 'string') {
-        parts = ['OpenLand', props.title];
+        parts = ['Openland', props.title];
     } else {
-        parts = ['OpenLand', ...props.title];
+        parts = ['Openland', ...props.title];
     }
     let title = formatPageTitle(...parts)
 
@@ -24,7 +24,7 @@ export const XHead = withRouter<{ title: string | string[], imgCloud?: string | 
             <title key="page_title">{title}</title>
             <meta key="og_title" property="og:title" content={title} />
             <meta key="og_url" property="og:url" content={props.router.href} />
-            <meta key="og_description" property="og:description" content="All-in-one solution for Land Acquisition" />
+            <meta key="og_description" property="og:description" content="All-in-one solution for land acquisition" />
             <meta key="og_img" property="og:image" content={img} />
         </Head>
     );
