@@ -54,7 +54,7 @@ export default withApp(withParcelsFavorites((props) => {
                         ? (
                             <XCard shadow="medium">
                                 <XCard.Empty icon="favorite_border" text="You can find your first parcel at">
-                                    <Link path="/explore">
+                                    <Link path="/">
                                         Explore page
                                     </Link>
                                 </XCard.Empty>

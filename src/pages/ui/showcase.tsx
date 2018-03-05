@@ -108,7 +108,7 @@ export default withApp((props) => {
                         <XLinkExternal href="https://goo.gl/urJT1F" />
                     </XCard.Empty>
                 </XCard>
-                <XCard shadow="medium">
+                <XCard shadow="medium" href="vk.com" bounce={true}>
                     <XCard.Footer text="footer">
                         <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
                         <XButton alignSelf="flex-start" style="dark">Bordered</XButton>

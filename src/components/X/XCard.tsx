@@ -115,7 +115,7 @@ export class XCardExternalLink extends React.Component<{ href: string }> {
     }
 }
 
-let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium', loading?: boolean }>((props) => ({
+let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium', loading?: boolean, bounce?: boolean; }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     background: '#ffffff',
@@ -128,6 +128,10 @@ let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium', loading?: 
     color: '#262626',
     borderRadius: 4,
     position: 'relative',
+    transitionDuration: props.bounce ? '.15s' : undefined,
+    '&:hover': {
+        transform: props.bounce ? 'translateY(-2px)' : undefined
+    },
     '&::before': {
         content: props.loading ? `''` : undefined,
         display: 'block',
@@ -168,7 +172,17 @@ let XCardSeparator = Glamorous.div({
     backgroundColor: '#e6ebf1'
 })
 
-export class XCard extends React.Component<{ className?: string, shadow?: 'none' | 'normal' | 'medium', separators?: boolean, loading?: boolean }> {
+interface XCardProps {
+    className?: string, 
+    shadow?: 'none' | 'normal' | 'medium', 
+    separators?: boolean, 
+    loading?: boolean,
+    path?: string | null;
+    href?: string | null;
+    bounce?: boolean;
+}
+
+export class XCard extends React.Component<XCardProps> {
 
     static Header = XCardHeader;
     static Footer = XCardFooter;
@@ -196,9 +210,17 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
 
     render() {
         return (
-            <XCardDiv className={this.props.className} shadow={this.props.shadow} loading={this.props.loading}>
-                {this.props.separators && <XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>}
-                {!this.props.separators && this.props.children}
+            <XCardDiv className={this.props.className} shadow={this.props.shadow} loading={this.props.loading} bounce={this.props.bounce}>
+                {(this.props.path || this.props.href) ? (
+                    <XLink path={this.props.path} href={this.props.href}>
+                        {this.props.separators && <XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>}
+                        {!this.props.separators && this.props.children}
+                    </XLink>
+                ) : (
+                    (this.props.separators) 
+                    ? (<XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>)
+                    : (<>{this.props.children}</>)
+                )}
             </XCardDiv>
         );
     }
