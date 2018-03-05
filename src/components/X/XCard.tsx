@@ -1,10 +1,8 @@
 import * as React from 'react';
-import * as classnames from 'classnames';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor'
-import { hasChildren, filterChildren, CSSUtils } from './utils';
+import { CSSUtils } from './utils';
 import { XLink } from './XLink';
-import { XCloudImage } from './XCloudImage';
 import { XRow, XColumn } from './XGrid';
 import { XCardTable } from './XCardTable';
 import { XCardHeader } from './XCardHeader';
@@ -19,6 +17,7 @@ import { XCardWarning } from './XCardWarning';
 import { XCardLoader } from './XCardLoader';
 import { XCardEmpty } from './XCardEmpty';
 import { XCardList, XCardListItem } from './XCardList';
+
 //
 // Basic Row
 //
@@ -57,22 +56,6 @@ export class XCardRow extends React.Component<{ verticalize?: boolean }> {
 export const XCardColumn = Glamorous(XColumn)({
     height: 82,
 });
-
-export class XCardPhoto extends React.Component<{ path?: string, src?: string | null }> {
-    static defaultProps = {
-        _xCardPhoto: true
-    };
-
-    render() {
-        return (
-            // <div className={classnames('x-card-s-photo')}>
-            <XLink path={this.props.path} className={classnames({ 'no-photo': !this.props.src })}>
-                {this.props.src && <XCloudImage src={this.props.src} maxWidth={140} maxHeight={140} />}
-            </XLink>
-            // </div>
-        );
-    }
-}
 
 export class XCardTitle extends React.Component<{ title: string, subtitle?: string | null, path?: string | null, preview?: string | null }> {
     render() {
@@ -171,25 +154,6 @@ let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium', loading?: 
     }
 }));
 
-let XCardDivIconized = Glamorous(XCardDiv)({
-    flexDirection: 'row',
-    [CSSUtils.forXS]: {
-        flexDirection: 'column',
-    }
-});
-
-let XCardDivIcon = Glamorous.div({
-    width: 168,
-    maxHeight: 164,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexShrink: 0,
-    [CSSUtils.forXS]: {
-        width: '100%'
-    }
-});
-
 let XCardDivContent = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
@@ -210,7 +174,6 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
     static Footer = XCardFooter;
     static Row = XCardRow;
     static Col = XCardColumn;
-    static Photo = XCardPhoto;
     static Title = XCardTitle;
     static Button = XCardButton;
     static ExternalLink = XCardExternalLink;
@@ -232,23 +195,11 @@ export class XCard extends React.Component<{ className?: string, shadow?: 'none'
     static ListItem = XCardListItem;
 
     render() {
-        let photoComponent = hasChildren('_xCardPhoto', this.props.children);
-        let otherChildren = filterChildren('_xCardPhoto', this.props.children);
-        let Wrapper = photoComponent !== null ? XCardDivIconized : XCardDiv;
         return (
-            <Wrapper className={this.props.className} shadow={this.props.shadow} loading={this.props.loading}>
-                {/* <div className={classnames('x-card-s', { 'horizontal': photoComponent !== null })}> */}
-                {photoComponent !== null && (<XCardDivIcon>{photoComponent}</XCardDivIcon>)}
-                {photoComponent !== null && (
-                    <div className="x-card-s-content">
-                        {this.props.separators && <XSeparated separator={XCardSeparator}>{otherChildren}</XSeparated>}
-                        {!this.props.separators && otherChildren}
-                    </div>
-                )}
-                {photoComponent === null && this.props.separators && <XSeparated separator={XCardSeparator}>{otherChildren}</XSeparated>}
-                {photoComponent === null && !this.props.separators && otherChildren}
-                {/* </div> */}
-            </Wrapper>
+            <XCardDiv className={this.props.className} shadow={this.props.shadow} loading={this.props.loading}>
+                {this.props.separators && <XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>}
+                {!this.props.separators && this.props.children}
+            </XCardDiv>
         );
     }
 }
