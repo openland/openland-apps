@@ -12,7 +12,7 @@ import { TableParcels } from '../../../components/TableParcels';
 export default withApp(withParcels((props) => {
     return (
         <>
-            <XHead title={['Statecraft', 'Database']} />
+            <XHead title={['Parcels']} />
             <AppContent>
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="San Francisco" description={props.data.items.pageInfo.itemsCount + ' parcels found'}>

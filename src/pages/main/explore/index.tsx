@@ -174,7 +174,7 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { query?
 export default withApp(withRouter((props) => {
     return (
         <>
-            <XHead title={['Statecraft', 'Explore']} />
+            <XHead title={['Explore']} />
             <ParcelCollection router={props.router} />
         </>
     )

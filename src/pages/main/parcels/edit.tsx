@@ -11,7 +11,7 @@ import { XHead } from '../../../components/X/XHead';
 export default withApp(withParcelMetadataForm((props) => {
     return (
         <>
-            <XHead title={['Statecraft', 'Edit Parcel #' + props.data.item.title]} />
+            <XHead title={['Edit Parcel #' + props.data.item.title]} />
             <AppContent>
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text={'Update Parcel #' + props.data.item.title} />

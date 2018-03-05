@@ -4,12 +4,13 @@ import { formatPageTitle } from '../../utils/strings';
 import { withRouter } from '../../utils/withRouter';
 export const XHead = withRouter<{ title: string | string[], imgCloud?: string | null, imgUrl?: string | null }>((props) => {
 
-    let title = '';
+    let parts = ['OpenLand'];
     if (typeof (props.title) === 'string') {
-        title = props.title;
+        parts = ['OpenLand', props.title];
     } else {
-        title = formatPageTitle(...props.title)
+        parts = ['OpenLand', ...props.title];
     }
+    let title = formatPageTitle(...parts)
 
     let img = 'https://statecraft.one/static/img/x-pipeline--list.png';
     if (props.imgUrl) {
@@ -23,7 +24,7 @@ export const XHead = withRouter<{ title: string | string[], imgCloud?: string | 
             <title key="page_title">{title}</title>
             <meta key="og_title" property="og:title" content={title} />
             <meta key="og_url" property="og:url" content={props.router.href} />
-            <meta key="og_description" property="og:description" content="An initiative to create the most accurate, transparent, and collaborative assessment of housing production in the city." />
+            <meta key="og_description" property="og:description" content="All-in-one solution for Land Acquisition" />
             <meta key="og_img" property="og:image" content={img} />
         </Head>
     );

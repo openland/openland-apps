@@ -8,7 +8,7 @@ import { XCard } from '../../../components/X/XCard';
 export default withApp((props) => {
     return (
         <>
-            <XHead title={['Statecraft', 'Search Inquiries']} />
+            <XHead title={['Search Inquiries']} />
             <AppContent>
                 <XCard shadow="medium">
                     <XCard.Content>
