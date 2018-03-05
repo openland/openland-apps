@@ -1,6 +1,8 @@
+import '../../globals';
 import * as React from 'react';
 import createHistory from 'history/createBrowserHistory';
 import * as Cookie from 'js-cookie';
+import { withData } from '../../utils/withData';
 
 class LogoutHandler extends React.Component<{}, {}> {
 
@@ -20,4 +22,4 @@ class LogoutHandler extends React.Component<{}, {}> {
     }
 }
 
-export default LogoutHandler;
+export default withData(LogoutHandler);

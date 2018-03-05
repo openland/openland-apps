@@ -1,3 +1,4 @@
+import '../../../globals';
 import * as React from 'react';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/App/withApp';

@@ -1,9 +1,11 @@
+import '../../globals';
 import * as React from 'react';
 import * as Cookie from 'js-cookie';
 import Error from 'next/error';
 import * as auth0 from 'auth0-js';
 import createHistory from 'history/createBrowserHistory';
 import { API_AUTH_ENDPOINT } from '../../utils/endpoint';
+import { withData } from '../../utils/withData';
 
 interface AuthResult {
     expiresIn: number;
@@ -77,4 +79,4 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
     }
 }
 
-export default AuthenticationHandler;
+export default withData(AuthenticationHandler)

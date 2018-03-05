@@ -1,3 +1,4 @@
+import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';

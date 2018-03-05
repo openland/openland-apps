@@ -1,6 +1,8 @@
+import '../../globals';
 import * as React from 'react';
 import * as auth0 from 'auth0-js';
 import * as qs from 'query-string';
+import { withData } from '../../utils/withData';
 
 class LoginStarter extends React.Component<{}, { error: boolean }> {
 
@@ -32,4 +34,4 @@ class LoginStarter extends React.Component<{}, { error: boolean }> {
     }
 }
 
-export default LoginStarter;
+export default withData(LoginStarter);
