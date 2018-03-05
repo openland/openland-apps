@@ -17,80 +17,80 @@ export const XSelectDiv = Glamorous(Select)({
         backgroundColor: 'rgb(68, 40, 224) !important',
         color: '#fff !important'
     },
-    '.Select': {
+    '&.Select': {
         position: 'relative'
     },
-    '.Select input::-webkit-contacts-auto-fill-button, .Select input::-webkit-credentials-auto-fill-button': {
+    '&.Select input::-webkit-contacts-auto-fill-button, &.Select input::-webkit-credentials-auto-fill-button': {
         display: 'none !important'
     },
-    '.Select input::-ms-clear, .Select input::-ms-reveal': {
+    '&.Select input::-ms-clear, &.Select input::-ms-reveal': {
         display: 'none !important'
     },
-    '.Select, .Select div, .Select input, .Select span': {
+    '&.Select, &.Select div, &.Select input, &.Select span': {
         boxSizing: 'border-box'
     },
-    '.Select.is-disabled .Select-arrow-zone': {
+    '&.Select.is-disabled .Select-arrow-zone': {
         cursor: 'default',
         pointerEvents: 'none',
         opacity: .35
     },
-    '.Select.is-disabled > .Select-control': {
+    '&.Select.is-disabled > .Select-control': {
         backgroundColor: '#f9f9f9'
     },
-    '.Select.is-disabled > .Select-control:hover': {
+    '&.Select.is-disabled > .Select-control:hover': {
         boxShadow: 'none'
     },
-    '.Select.is-open > .Select-control': {
+    '&.Select.is-open > .Select-control': {
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
         background: '#fff',
         borderColor: '#b3b3b3 #ccc #d9d9d9'
     },
-    '.Select.is-open > .Select-control .Select-arrow': {
+    '&.Select.is-open > .Select-control .Select-arrow': {
         top: -2,
         borderColor: 'transparent transparent #999',
         borderWidth: '0 5px 5px'
     },
-    '.Select.is-searchable.is-focused:not(.is-open) > .Select-control, .Select.is-searchable.is-open > .Select-control': {
+    '&.Select.is-searchable.is-focused:not(.is-open) > .Select-control, &.Select.is-searchable.is-open > .Select-control': {
         cursor: 'text'
     },
-    '.Select.is-focused > .Select-control': {
+    '&.Select.is-focused > .Select-control': {
         background: '#fff'
     },
-    '.Select.is-focused:not(.is-open) > .Select-control': {
+    '&.Select.is-focused:not(.is-open) > .Select-control': {
         borderColor: '#007eff',
         boxShadow: 'inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 0 3px rgba(0, 126, 255, .1)',
         background: '#fff'
     },
-    '.Select.has-value.is-clearable.Select--single > .Select-control .Select-value': {
+    '&.Select.has-value.is-clearable.Select--single > .Select-control .Select-value': {
         paddingRight: 42
     },
-    '.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label, .Select.has-value.Select--single > .Select-control .Select-value .Select-value-label': {
+    '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label': {
         color: '#333'
     },
-    '.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label, .Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label': {
+    '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label': {
         cursor: 'pointer',
         textDecoration: 'none'
     },
-    '.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus, .Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:hover, .Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus, .Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label:hover': {
+    '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus, &.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:hover, &.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus, &.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label:hover': {
         color: '#007eff',
         outline: 'none',
         textDecoration: 'underline'
     },
-    '.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus, .Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus': {
+    '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus, &.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus': {
         background: '#fff'
     },
-    '.Select.has-value.is-pseudo-focused .Select-input': {
+    '&.Select.has-value.is-pseudo-focused .Select-input': {
         opacity: 0
     },
-    '.Select.is-open .Select-arrow, .Select .Select-arrow-zone:hover > .Select-arrow': {
+    '&.Select.is-open .Select-arrow, &.Select .Select-arrow-zone:hover > .Select-arrow': {
         borderTopColor: '#666'
     },
-    '.Select.Select--rtl': {
+    '&.Select.Select--rtl': {
         direction: 'rtl',
         textAlign: 'right'
     },
-    '.Select-control': {
+    '& .Select-control': {
         backgroundColor: '#fff',
         borderColor: '#d9d9d9 #ccc #b3b3b3',
         borderRadius: 4,
@@ -106,14 +106,14 @@ export const XSelectDiv = Glamorous(Select)({
         position: 'relative',
         width: '100%'
     },
-    '.Select-control:hover': {
+    '& .Select-control:hover': {
         boxShadow: '0 1px 0 rgba(0, 0, 0, .06)'
     },
-    '.Select-control .Select-input:focus': {
+    '& .Select-control .Select-input:focus': {
         outline: 'none',
         background: '#fff'
     },
-    '.Select--single > .Select-control .Select-value, .Select-placeholder': {
+    '&.Select--single > .Select-control .Select-value, .Select-placeholder': {
         bottom: 0,
         color: '#aaa',
         left: 0,
@@ -128,13 +128,13 @@ export const XSelectDiv = Glamorous(Select)({
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap'
     },
-    '.Select-input': {
+    '& .Select-input': {
         height: 34,
         paddingLeft: 10,
         paddingRight: 10,
         verticalAlign: 'middle'
     },
-    '.Select-input > input': {
+    '& .Select-input > input': {
         width: '100%',
         background: 'none transparent',
         border: '0 none',
@@ -149,26 +149,26 @@ export const XSelectDiv = Glamorous(Select)({
         padding: '8px 0 12px',
         WebkitAppearance: 'none'
     },
-    '.is-focused .Select-input > input': {
+    '&.is-focused .Select-input > input': {
         cursor: 'text'
     },
-    '.has-value.is-pseudo-focused .Select-input': {
+    '&.has-value.is-pseudo-focused .Select-input': {
         opacity: 0
     },
-    '.Select-control:not(.is-searchable) > .Select-input': {
+    '& .Select-control:not(.is-searchable) > .Select-input': {
         outline: 'none'
     },
-    '.Select-loading-zone': {
+    '& .Select-loading-zone': {
         cursor: 'pointer',
         display: 'table-cell',
         textAlign: 'center'
     },
-    '.Select-loading, .Select-loading-zone': {
+    '& .Select-loading, .Select-loading-zone': {
         position: 'relative',
         verticalAlign: 'middle',
         width: 16
     },
-    '.Select-loading': {
+    '& .Select-loading': {
         animation: `${SelectAnimationSpin} .4s infinite linear`,
         height: 16,
         boxSizing: 'border-box',
@@ -177,7 +177,7 @@ export const XSelectDiv = Glamorous(Select)({
         borderRightColor: '#333',
         display: 'inline-block'
     },
-    '.Select-clear-zone': {
+    '& .Select-clear-zone': {
         animation: `${SelectAnimationFadeIn} .2s`,
         color: '#999',
         cursor: 'pointer',
@@ -187,18 +187,18 @@ export const XSelectDiv = Glamorous(Select)({
         verticalAlign: 'middle',
         width: 17
     },
-    '.Select-clear-zone:hover': {
+    '& .Select-clear-zone:hover': {
         color: '#d0021b'
     },
-    '.Select-clear': {
+    '& .Select-clear': {
         display: 'inline-block',
         fontSize: '18px',
         lineHeight: 1
     },
-    '.Select--multi .Select-clear-zone': {
+    '&.Select--multi .Select-clear-zone': {
         width: 17
     },
-    '.Select-arrow-zone': {
+    '& .Select-arrow-zone': {
         cursor: 'pointer',
         display: 'table-cell',
         position: 'relative',
@@ -207,11 +207,11 @@ export const XSelectDiv = Glamorous(Select)({
         width: 25,
         paddingRight: 5
     },
-    '.Select--rtl .Select-arrow-zone': {
+    '&.Select--rtl .Select-arrow-zone': {
         paddingRight: 0,
         paddingLeft: 5
     },
-    '.Select-arrow': {
+    '& .Select-arrow': {
         borderColor: '#999 transparent transparent',
         borderStyle: 'solid',
         borderWidth: '5px 5px 2.5px',
@@ -220,13 +220,13 @@ export const XSelectDiv = Glamorous(Select)({
         width: 0,
         position: 'relative'
     },
-    '.Select-control > :last-child': {
+    '& .Select-control > :last-child': {
         paddingRight: 5
     },
-    '.Select--multi .Select-multi-value-wrapper': {
+    '&.Select--multi .Select-multi-value-wrapper': {
         display: 'inline-block'
     },
-    '.Select .Select-aria-only': {
+    '&.Select .Select-aria-only': {
         position: 'absolute',
         display: 'inline-block',
         height: 1,
@@ -236,7 +236,7 @@ export const XSelectDiv = Glamorous(Select)({
         overflow: 'hidden',
         float: 'left'
     },
-    '.Select-menu-outer': {
+    '& .Select-menu-outer': {
         borderBottomRightRadius: 4,
         borderBottomLeftRadius: 4,
         backgroundColor: '#fff',
@@ -252,11 +252,11 @@ export const XSelectDiv = Glamorous(Select)({
         zIndex: 1,
         WebkitOverflowScrolling: 'touch'
     },
-    '.Select-menu': {
+    '& .Select-menu': {
         maxHeight: 198,
         overflowY: 'auto'
     },
-    '.Select-option': {
+    '& .Select-option': {
         boxSizing: 'border-box',
         backgroundColor: '#fff',
         color: '#666',
@@ -264,42 +264,42 @@ export const XSelectDiv = Glamorous(Select)({
         display: 'block',
         padding: '8px 10px'
     },
-    '.Select-option:last-child': {
+    '& .Select-option:last-child': {
         borderBottomRightRadius: 4,
         borderBottomLeftRadius: 4
     },
-    '.Select-option.is-selected': {
+    '& .Select-option.is-selected': {
         backgroundColor: '#f5faff',
         color: '#333'
     },
-    '.Select-option.is-focused': {
+    '& .Select-option.is-focused': {
         backgroundColor: '#ebf5ff',
         color: '#333'
     },
-    '.Select-option.is-disabled': {
+    '& .Select-option.is-disabled': {
         color: '#ccc',
         cursor: 'default'
     },
-    '.Select-noresults': {
+    '& .Select-noresults': {
         boxSizing: 'border-box',
         color: '#999',
         cursor: 'default',
         display: 'block',
         padding: '8px 10px'
     },
-    '.Select--multi .Select-input': {
+    '&.Select--multi .Select-input': {
         verticalAlign: 'middle',
         marginLeft: 10,
         padding: 0
     },
-    '.Select--multi.Select--rtl .Select-input': {
+    '&.Select--multi.Select--rtl .Select-input': {
         marginLeft: 0,
         marginRight: 10
     },
-    '.Select--multi.has-value .Select-input': {
+    '&.Select--multi.has-value .Select-input': {
         marginLeft: 5
     },
-    '.Select--multi .Select-value': {
+    '&.Select--multi .Select-value': {
         backgroundColor: '#ebf5ff',
         borderRadius: 2,
         border: '1px solid #c2e0ff',
@@ -311,56 +311,56 @@ export const XSelectDiv = Glamorous(Select)({
         marginTop: 5,
         verticalAlign: 'top'
     },
-    '.Select--multi .Select-value-icon, .Select--multi .Select-value-label': {
+    '&.Select--multi .Select-value-icon, &.Select--multi .Select-value-label': {
         display: 'inline-block',
         verticalAlign: 'middle'
     },
-    '.Select--multi .Select-value-label': {
+    '&.Select--multi .Select-value-label': {
         borderBottomRightRadius: 2,
         borderTopRightRadius: 2,
         cursor: 'default',
         padding: '2px 5px'
     },
-    '.Select--multi a.Select-value-label': {
+    '&.Select--multi a.Select-value-label': {
         color: '#007eff',
         cursor: 'pointer',
         textDecoration: 'none'
     },
-    '.Select--multi a.Select-value-label:hover': {
+    '&.Select--multi a.Select-value-label:hover': {
         textDecoration: 'underline'
     },
-    '.Select--multi .Select-value-icon': {
+    '&.Select--multi .Select-value-icon': {
         cursor: 'pointer',
         borderBottomLeftRadius: 2,
         borderTopLeftRadius: 2,
         borderRight: '1px solid #c2e0ff',
         padding: '1px 5px 3px'
     },
-    '.Select--multi .Select-value-icon:focus, .Select--multi .Select-value-icon:hover': {
+    '&.Select--multi .Select-value-icon:focus, &.Select--multi .Select-value-icon:hover': {
         backgroundColor: '#d8eafd',
         color: '#0071e6'
     },
-    '.Select--multi .Select-value-icon:active': {
+    '&.Select--multi .Select-value-icon:active': {
         backgroundColor: '#c2e0ff',
     },
-    '.Select--multi.Select--rtl .Select-value': {
+    '&.Select--multi.Select--rtl .Select-value': {
         marginLeft: 0,
         marginRight: 5
     },
-    '.Select--multi.Select--rtl .Select-value-icon': {
+    '&.Select--multi.Select--rtl .Select-value-icon': {
         borderRight: 'none',
         borderLeft: '1px solid #c2e0ff',
     },
-    '.Select--multi.is-disabled .Select-value': {
+    '&.Select--multi.is-disabled .Select-value': {
         backgroundColor: '#fcfcfc',
         border: '1px solid #e3e3e3',
         color: '#333'
     },
-    '.Select--multi.is-disabled .Select-value-icon': {
+    '&.Select--multi.is-disabled .Select-value-icon': {
         cursor: 'not-allowed',
         borderRight: '1px solid #e3e3e3'
     },
-    '.Select--multi.is-disabled .Select-value-icon:active, .Select--multi.is-disabled .Select-value-icon:focus, .Select--multi.is-disabled .Select-value-icon:hover': {
+    '&.Select--multi.is-disabled .Select-value-icon:active, &.Select--multi.is-disabled .Select-value-icon:focus, &.Select--multi.is-disabled .Select-value-icon:hover': {
         backgroundColor: '#fcfcfc'
     }
 })
