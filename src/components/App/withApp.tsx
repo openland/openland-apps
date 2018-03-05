@@ -10,7 +10,7 @@ export function withApp(WrappedComponent: React.ComponentType<{}>) {
         return (
             <UserInfoProvider user={props.data.me} router={props.router}>
                 <AuthenticationRequired>
-                    <XHead title={['Statecraft', 'App']} />
+                    <XHead title={['OpenLand', 'App']} />
                     <WrappedComponent />
                 </AuthenticationRequired>
             </UserInfoProvider>

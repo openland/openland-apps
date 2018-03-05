@@ -19,7 +19,7 @@ import { AppContent } from '../../components/App/AppContent';
 export default withApp((props) => {
     return (
         <>
-            <XHead title="San Francisco Housing Analytics" />
+            <XHead title={['OpenLand', 'UI Framework']} />
             <AppContent>
                 <XCard>
                     <XCard.Content>
@@ -74,7 +74,7 @@ export default withApp((props) => {
                             <XButton alignSelf="flex-start" loading={true} />
                             <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
                             <XLinkExternal href="https://goo.gl/urJT1F" />
-                            <XSelect 
+                            <XSelect
                                 name="form-field-name"
                                 value={'value'}
                                 options={[
@@ -99,8 +99,8 @@ export default withApp((props) => {
                     </XCard.Content>
                 </XCard>
                 <XCard separators={true}>
-                    <XCard.Header 
-                        text="Loader block title" 
+                    <XCard.Header
+                        text="Loader block title"
                         truncateDescription={true}
                         description="qweqweqweqwe"
                     />
@@ -125,8 +125,8 @@ export default withApp((props) => {
                     <XForm>
                         <XForm.Header title="x-form title" />
                         <XForm.Field title="x-form-field container test">
-                            <XForm.RawInput placeholder="loles"/>
-                            <XForm.RawSelect options={[{title: 'qwe1', value: 'qwe1'}, {title: 'qwe2', value: 'qwe2'}, {title: 'qwe3', value: 'qwe3'}]} />
+                            <XForm.RawInput placeholder="loles" />
+                            <XForm.RawSelect options={[{ title: 'qwe1', value: 'qwe1' }, { title: 'qwe2', value: 'qwe2' }, { title: 'qwe3', value: 'qwe3' }]} />
                         </XForm.Field>
                         <XForm.Field title="x-form-field container test" description="If you use your SSN for tax purposes, you can enter that here. Don't have one yet? Apply online. (Sadly, the website has opening hours. Really.)">
                             <XForm.RawInput placeholder="loles" />
@@ -142,8 +142,8 @@ export default withApp((props) => {
                 </XCard>
                 <XCard separators={true}>
                     <XCard.Hint title="test data" />
-                    <XCard.Header 
-                        text="Loader block title" 
+                    <XCard.Header
+                        text="Loader block title"
                         truncateDescription={true}
                         description={`
                         $ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"

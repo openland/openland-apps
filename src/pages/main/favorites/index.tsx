@@ -47,7 +47,7 @@ function exportCSV(items: Types.ParcelShortFragment[]) {
 export default withApp(withParcelsFavorites((props) => {
     return (
         <>
-            <XHead title={['Statecraft', 'Favorites']} />
+            <XHead title={['Favorites']} />
             <AppContent>
                 {
                     (props.data.items.length === 0)

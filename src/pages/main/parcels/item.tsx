@@ -29,7 +29,7 @@ const StreetView = Glamorous(XStreetView)({
 export default withApp(withParcel((props) => {
     return (
         <>
-            <XHead title={['Statecraft', 'Parcel #' + props.data.item.title]} />
+            <XHead title={['Parcel #' + props.data.item.title]} />
             <AppContent>
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header
