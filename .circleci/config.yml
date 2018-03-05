@@ -26,9 +26,9 @@ jobs:
     machine: true
     steps:
       - attach_workspace:
-          at: ./dist
+          at: ./build
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - run: docker build -t statecraft/statecraft-web:v${CIRCLE_BUILD_NUM} -t statecraft/statecraft-web:git-${CIRCLE_SHA1} ./dist/.
+      - run: docker build -t statecraft/statecraft-web:v${CIRCLE_BUILD_NUM} -t statecraft/statecraft-web:git-${CIRCLE_SHA1} ./build/.
       - run: docker push statecraft/statecraft-web:v${CIRCLE_BUILD_NUM}
       - run: docker push statecraft/statecraft-web:git-${CIRCLE_SHA1}
   staging:

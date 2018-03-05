@@ -7,6 +7,7 @@ const {
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 
 const config = {
+    useFileSystemPublicRoutes: false,
     webpack(config, options) {
         if (ANALYZE) {
             config.plugins.push(new BundleAnalyzerPlugin({
@@ -15,10 +16,12 @@ const config = {
                 openAnalyzer: true
             }))
         }
+        if (options.dev) {
+            config.devtool = 'cheap-module-eval-source-map'
+        }
         config.module.noParse = /(mapbox-gl)\.js$/
         return config;
     },
-    useFileSystemPublicRoutes: false,
     typescriptLoaderOptions: {
         transpileOnly: true
     },
@@ -30,4 +33,6 @@ const config = {
 // module.exports = withTypescript({}, config);
 
 const withTypescript = require('@zeit/next-typescript')
-module.exports = withBundleAnalyzer(withTypescript(config));
+module.exports = { ...withBundleAnalyzer(withTypescript(config)),
+    useFileSystemPublicRoutes: false
+};

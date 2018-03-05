@@ -4,7 +4,7 @@ import { withApp } from '../../components/App/withApp';
 import { XCard } from '../../components/X/XCard';
 import { AppContent } from '../../components/App/AppContent';
 
-export default withApp((props) => {
+const Page = withApp((props) => {
     return (
         <AppContent>
             <XCard shadow="medium">
@@ -15,3 +15,6 @@ export default withApp((props) => {
         </AppContent>
     );
 });
+Page.displayName = 'PageRoot';
+
+export default Page;
