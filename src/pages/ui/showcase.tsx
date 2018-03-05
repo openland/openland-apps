@@ -1,22 +1,22 @@
 import '../../../globals';
 import * as React from 'react';
-import { XHead } from '../../../components/X/XHead';
-import { XGrid } from '../../../components/X/XGrid';
-import { XCell } from '../../../components/X/XGrid';
-import { XCard } from '../../../components/X/XCard';
-import { XButton, XButtonLike } from '../../../components/X/XButton';
-import { XTitle } from '../../../components/X/XTitle';
-import { XVertical } from '../../../components/X/XVertical';
-import { XLinkExternal } from '../../../components/X/XLinkExternal';
-import { XView } from '../../../components/X/XView';
-import { XBullet } from '../../../components/X/XBullet';
-import { XSwitcher } from '../../../components/X/XSwitcher';
-import { XSlider, XRange } from '../../../components/X/XSlider';
-import { XSelect } from '../../../components/X/XSelect';
-import { XForm } from '../../../components/X/XForm';
-import { Title, Text } from '../../../components/Incubator/XRowsExample';
-import { withApp } from '../../../components/App/withApp';
-import { AppContent } from '../../../components/App/AppContent';
+import { XHead } from '../../components/X/XHead';
+import { XGrid } from '../../components/X/XGrid';
+import { XCell } from '../../components/X/XGrid';
+import { XCard } from '../../components/X/XCard';
+import { XButton, XButtonLike } from '../../components/X/XButton';
+import { XTitle } from '../../components/X/XTitle';
+import { XVertical } from '../../components/X/XVertical';
+import { XLinkExternal } from '../../components/X/XLinkExternal';
+import { XView } from '../../components/X/XView';
+import { XBullet } from '../../components/X/XBullet';
+import { XSwitcher } from '../../components/X/XSwitcher';
+import { XSlider, XRange } from '../../components/X/XSlider';
+import { XSelect } from '../../components/X/XSelect';
+import { XForm } from '../../components/X/XForm';
+import { Title, Text } from '../../components/Incubator/XRowsExample';
+import { withApp } from '../../components/App/withApp';
+import { AppContent } from '../../components/App/AppContent';
 
 export default withApp((props) => {
     return (
