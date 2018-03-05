@@ -58,6 +58,13 @@ mixpanel.init("1d672b3dfac9cafe15c17e91b7a1b352");`}}>{}</script>}
                             font-size: 14px;
                             line-height: 20px;
                             font-family: Nunito Sans, arial, sans-serif;
+                            -webkit-text-size-adjust: 100%;
+                            -webkit-font-smoothing: antialiased;
+                            -moz-font-smoothing: antialiased;
+                            -ms-font-smoothing: antialiased;
+                            -o-font-smoothing: antialiased;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
                         }
                         body, body * {
                             margin:0;
@@ -68,7 +75,7 @@ mixpanel.init("1d672b3dfac9cafe15c17e91b7a1b352");`}}>{}</script>}
                             vertical-align:baseline;
                             background:transparent;
                             text-decoration: none;
-                            box-sizing: border-box
+                            box-sizing: border-box;
                         }
                         a {
                             color: inherit;
@@ -76,7 +83,11 @@ mixpanel.init("1d672b3dfac9cafe15c17e91b7a1b352");`}}>{}</script>}
                         }
                         a:hover {
                             color: #6B50FF;
-                        }`}
+                        }
+                        sub, sup { font-size:75%; line-height:0; position:relative; }
+                        sup { top:-0.5em; }
+                        sub { bottom:-0.25em; }
+                        `}
                     </style>
                 </Head>
                 <body>
