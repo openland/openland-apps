@@ -135,7 +135,7 @@ let SearchResults = withSearch((props) => {
             <ResultsContainer shadow="medium">
                 <XCard.List>
                     {props.data.search.parcels.edges.map((v) => (
-                        <XCard.ListItem key={v.node.id} path={'/app/parcels/' + v.node.id}>
+                        <XCard.ListItem key={v.node.id} path={'/parcels/' + v.node.id}>
                             {/* <ResultHeader>PARCEL</ResultHeader> */}
                             <ResultTilte>
                                 <ResultTilteMain>Parcel #<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} /></ResultTilteMain>

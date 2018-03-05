@@ -29,7 +29,6 @@ export default class StateDocument extends Document {
                     <link rel="shortcut icon" href="/static/favicon.ico" />
                     <link rel="icon" href="/static/favicon-32.png" sizes="32x32" />
                     <link rel="stylesheet" type="text/css" href="/static/loader.css" />
-                    <link rel="stylesheet" type="text/css" href="/static/css/style.min.css?9" />
                     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />

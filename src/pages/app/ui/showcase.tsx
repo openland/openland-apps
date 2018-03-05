@@ -89,7 +89,7 @@ export default withApp((props) => {
                             <XBullet alignSelf="flex-start" color="blue">bullet</XBullet>
                             <XBullet alignSelf="flex-start" color="yellow">bullet</XBullet>
                             <XSwitcher alignSelf="flex-start">
-                                <XSwitcher.Item path="/app/ui">first</XSwitcher.Item>
+                                <XSwitcher.Item path="/ui">first</XSwitcher.Item>
                                 <XSwitcher.Item>second</XSwitcher.Item>
                                 <XSwitcher.Item>third</XSwitcher.Item>
                                 <XSwitcher.Item>fourth</XSwitcher.Item>

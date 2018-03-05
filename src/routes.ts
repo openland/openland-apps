@@ -6,85 +6,50 @@ let routes = Routes();
 // App Root
 //
 
-routes.add('/app', '/app/explore/index');
-routes.add('/app/', '/app/explore/index');
+routes.add('/', '/app/explore/index');
 
 //
 // Parcels
 //
 
-routes.add('/app/parcels', '/app/parcels/list');
-routes.add('/app/parcels/', '/app/parcels/list');
-routes.add('/app/parcels/:parcelId', '/app/parcels/item');
-routes.add('/app/parcels/:parcelId/', '/app/parcels/item');
-routes.add('/app/parcels/:parcelId/edit', '/app/parcels/edit');
-routes.add('/app/parcels/:parcelId/edit/', '/app/parcels/edit');
+routes.add('/parcels', '/app/parcels/list');
+routes.add('/parcels/', '/app/parcels/list');
+routes.add('/parcels/:parcelId', '/app/parcels/item');
+routes.add('/parcels/:parcelId/', '/app/parcels/item');
+routes.add('/parcels/:parcelId/edit', '/app/parcels/edit');
+routes.add('/parcels/:parcelId/edit/', '/app/parcels/edit');
 
 //
 // Projects
 //
 
-routes.add('/app/projects', '/app/projects/list');
-routes.add('/app/projects/', '/app/projects/list');
-routes.add('/app/projects/:projectId', '/app/projects/view');
-routes.add('/app/projects/:projectId/', '/app/projects/view');
+routes.add('/projects', '/app/projects/list');
+routes.add('/projects/', '/app/projects/list');
+routes.add('/projects/:projectId', '/app/projects/view');
+routes.add('/projects/:projectId/', '/app/projects/view');
 
 //
 // Extras
 //
 
-routes.add('/app/favorites', '/app/favorites/index')
-routes.add('/app/favorites/', '/app/favorites/index')
-routes.add('/app/inquiries', '/app/inquiries/index')
-routes.add('/app/inquiries/', '/app/inquiries/index')
+routes.add('/favorites', '/app/favorites/index')
+routes.add('/favorites/', '/app/favorites/index')
+routes.add('/inquiries', '/app/inquiries/index')
+routes.add('/inquiries/', '/app/inquiries/index')
 
 //
 // UI
 //
 
-routes.add('/app/ui', '/app/ui/showcase');
-routes.add('/app/ui/', '/app/ui/showcase');
+routes.add('/ui', '/app/ui/showcase');
+routes.add('/ui/', '/app/ui/showcase');
 
 //
 // Settings
 //
 
-routes.add('/app/settings', '/app/settings/index');
-routes.add('/app/settings/', '/app/settings/index');
-
-//
-// Old
-//
-
-routes.add('/:areaId', '/area/index');
-routes.add('/:areaId/', '/area/index');
-
-routes.add('/:areaId/permits', '/area/permits/list');
-routes.add('/:areaId/permits/', '/area/permits/list');
-routes.add('/:areaId/permits/:permitId', '/area/permits/item');
-
-routes.add('/:areaId/organizations', '/area/organizations/list');
-routes.add('/:areaId/organizations/', '/area/organizations/list');
-routes.add('/:areaId/organizations/:orgId', '/area/organizations/item');
-routes.add('/:areaId/organizations/:orgId/edit', '/area/organizations/edit');
-
-routes.add('/:areaId/projects', '/area/projects/list');
-routes.add('/:areaId/projects/', '/area/projects/list');
-routes.add('/:areaId/projects/:projectId', '/area/projects/item');
-
-routes.add('/:areaId/zoning', '/area/zoning/map');
-routes.add('/:areaId/zoning/', '/area/zoning/map');
-
-routes.add('/:areaId/stats', '/area/stats/stats');
-routes.add('/:areaId/stats/', '/area/stats/stats');
-
-// routes.add('/:areaId/ui', '/area/ui/index');
-// routes.add('/:areaId/ui/', '/area/ui/index');
-
-// Compatibility
-routes.add('/', '/compat/root');
-routes.add('index', '/compat/root');
-routes.add('/pipeline', '/compat/pipeline');
+routes.add('/settings', '/app/settings/index');
+routes.add('/settings/', '/app/settings/index');
 
 // Technical pages
 routes.add('auth/login');

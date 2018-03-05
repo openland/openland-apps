@@ -20,7 +20,7 @@ export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[] }>((
             </XCard.Table.Header>
             <tbody>
                 {props.items.map((v) => (
-                    <tr key={v.id} onClick={() => props.router.push('/app/parcels/' + v.id)}>
+                    <tr key={v.id} onClick={() => props.router.push('/parcels/' + v.id)}>
                         <XCard.Table.Cell>{v.title}</XCard.Table.Cell>
                         <XCard.Table.Cell>{v.extrasArea && <XArea area={v.extrasArea} />}</XCard.Table.Cell>
                         <XCard.Table.Cell>{v.addresses.length > 0 && `${v.addresses[0].streetName} ${v.addresses[0].streetNameSuffix}`}</XCard.Table.Cell>

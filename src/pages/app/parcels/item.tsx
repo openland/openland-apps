@@ -37,7 +37,7 @@ export default withApp(withParcel((props) => {
                         bullet={props.data.item.metadata.available ? 'ON SALE' : undefined}
                         truncateDescription={true}
                     >
-                        <XButton path={'/app/parcels/' + props.data.item.id + '/edit'}>Edit</XButton>
+                        <XButton path={'/parcels/' + props.data.item.id + '/edit'}>Edit</XButton>
                         <XButton disabled={true} icon="lock">Owner</XButton>
                         {/* {props.data.item.geometry && <AStreetViewModal geometry={props.data.item.geometry} />} */}
                         <XButton
@@ -94,7 +94,7 @@ export default withApp(withParcel((props) => {
                                     layer="parcels"
                                     minZoom={16}
                                     selectedId={props.data.item.id}
-                                    onClick={(v) => props.router.push('/app/parcels/' + v)}
+                                    onClick={(v) => props.router.push('/parcels/' + v)}
                                 />
                                 <XMapPolygonLayer
                                     source="blocks"

@@ -22,7 +22,7 @@ export default withApp(withSFBuildingProjects((props) => {
                     </XCard.Table.Header>
                     <tbody>
                         {props.data.items.edges.map((v) => (
-                            <tr key={v.node.id} onClick={() => props.router.push('/app/projects/' + v.node.slug)}>
+                            <tr key={v.node.id} onClick={() => props.router.push('/projects/' + v.node.slug)}>
                                 <XCard.Table.Cell>{v.node.name}</XCard.Table.Cell>
                                 <XCard.Table.Cell>{v.node.proposedUnits!! - v.node.existingUnits!!}</XCard.Table.Cell>
                                 <XCard.Table.Cell>{v.node.extrasYearEnd}</XCard.Table.Cell>

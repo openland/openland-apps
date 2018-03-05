@@ -17,7 +17,7 @@
       // "es2015.symbol.wellknown",
       "esnext.asynciterable"
     ],
-    "sourceMap": false,
+    "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
@@ -42,7 +42,9 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts"
+    "src/setupTests.ts",
+    "src/static",
+    "src/less",
   ],
   "files": [
     "./src/typings.d.ts"

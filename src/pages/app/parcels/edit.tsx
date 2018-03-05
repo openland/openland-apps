@@ -17,7 +17,7 @@ export default withApp(withParcelMetadataForm((props) => {
                     <XForm
                         defaultValues={props.data.item.metadata}
                         submitMutation={props.parcelAlterMetadata}
-                        completePath={'/app/parcels/' + props.data.item.id}
+                        completePath={'/parcels/' + props.data.item.id}
                     >
                         <XForm.Field title="Description">
                             <XForm.Text field="description" />
@@ -30,7 +30,7 @@ export default withApp(withParcelMetadataForm((props) => {
                         </XForm.Field>
                         <XForm.Footer>
                             <XForm.Submit style="dark">Save</XForm.Submit>
-                            <XButton path={'/app/parcels/' + props.data.item.id}>Cancel</XButton>
+                            <XButton path={'/parcels/' + props.data.item.id}>Cancel</XButton>
                         </XForm.Footer>
                     </XForm>
                 </XCard>

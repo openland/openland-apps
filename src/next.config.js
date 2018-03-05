@@ -17,6 +17,7 @@ const config = {
         config.module.noParse = /(mapbox-gl)\.js$/
         return config;
     },
+    useFileSystemPublicRoutes: false,
     typescriptLoaderOptions: {
         transpileOnly: true
     }

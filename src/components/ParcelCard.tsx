@@ -74,7 +74,7 @@ export const ParcelCard = withParcelDirect((props) => {
                         <XCard.Content>
                             <XHorizontal>
                                 <XButton
-                                    path={'/app/parcels/' + props.data.item!!.id}
+                                    path={'/parcels/' + props.data.item!!.id}
                                     size="medium"
                                     flexGrow={1}
                                     flexBasis={0}
