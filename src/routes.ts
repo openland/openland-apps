@@ -6,50 +6,50 @@ let routes = Routes();
 // App Root
 //
 
-routes.add('/', '/app/explore/index');
+routes.add('/', '/main/explore/index');
 
 //
 // Parcels
 //
 
-routes.add('/parcels', '/app/parcels/list');
-routes.add('/parcels/', '/app/parcels/list');
-routes.add('/parcels/:parcelId', '/app/parcels/item');
-routes.add('/parcels/:parcelId/', '/app/parcels/item');
-routes.add('/parcels/:parcelId/edit', '/app/parcels/edit');
-routes.add('/parcels/:parcelId/edit/', '/app/parcels/edit');
+routes.add('/parcels', '/main/parcels/list');
+routes.add('/parcels/', '/main/parcels/list');
+routes.add('/parcels/:parcelId', '/main/parcels/item');
+routes.add('/parcels/:parcelId/', '/main/parcels/item');
+routes.add('/parcels/:parcelId/edit', '/main/parcels/edit');
+routes.add('/parcels/:parcelId/edit/', '/main/parcels/edit');
 
 //
 // Projects
 //
 
-routes.add('/projects', '/app/projects/list');
-routes.add('/projects/', '/app/projects/list');
-routes.add('/projects/:projectId', '/app/projects/view');
-routes.add('/projects/:projectId/', '/app/projects/view');
+routes.add('/projects', '/main/projects/list');
+routes.add('/projects/', '/main/projects/list');
+routes.add('/projects/:projectId', '/main/projects/view');
+routes.add('/projects/:projectId/', '/main/projects/view');
 
 //
 // Extras
 //
 
-routes.add('/favorites', '/app/favorites/index')
-routes.add('/favorites/', '/app/favorites/index')
-routes.add('/inquiries', '/app/inquiries/index')
-routes.add('/inquiries/', '/app/inquiries/index')
+routes.add('/favorites', '/main/favorites/index')
+routes.add('/favorites/', '/main/favorites/index')
+routes.add('/inquiries', '/main/inquiries/index')
+routes.add('/inquiries/', '/main/inquiries/index')
 
 //
 // UI
 //
 
-routes.add('/ui', '/app/ui/showcase');
-routes.add('/ui/', '/app/ui/showcase');
+routes.add('/ui', '/ui/showcase');
+routes.add('/ui/', '/ui/showcase');
 
 //
 // Settings
 //
 
-routes.add('/settings', '/app/settings/index');
-routes.add('/settings/', '/app/settings/index');
+routes.add('/settings', '/main/settings/index');
+routes.add('/settings/', '/main/settings/index');
 
 // Technical pages
 routes.add('auth/login');

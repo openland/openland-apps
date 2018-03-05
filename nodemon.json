@@ -1,5 +1,5 @@
 {
-  "watch": ["src/server.ts", "src/routes.ts"],
+  "watch": ["src/server.ts", "src/routes.ts", "src/pages/_document.tsx", "src/pages/_error.tsx"],
   "execMap": {
     "ts": "ts-node --compilerOptions '{\"module\":\"commonjs\"}'"
   }
