@@ -252,44 +252,113 @@ interface FilterRangeProps {
     placeholderTo?: string
 }
 
-const FilterRange = withRouter<FilterRangeProps>((props) => {
+class FilterRangeBase extends React.Component<FilterRangeProps & { router: RouterState }, { from: string, fromValue?: number, to: string, toValue?: number }> {
+    constructor(props: FilterRangeProps & { router: RouterState }) {
+        super(props);
 
-    let area: { gte?: number, lte?: number } = (props.router.query!!.area) ? JSON.parse(props.router.query!!.area) : { gte: null, lte: null }
-
-    let handleChange = (val: object) => {
-        props.router.pushQuery('area', JSON.stringify(val));
+        let fromCurrent = undefined;
+        let fromCurrentValue = undefined;
+        let toCurrent = undefined;
+        let toCurrentValue = undefined;
+        if (props.router.query && props.router.query.area) {
+            let parsed = JSON.parse(props.router.query.area) as { gte?: number, lte?: number };
+            if (parsed.gte !== undefined) {
+                fromCurrentValue = parsed.gte;
+                fromCurrent = parsed.gte.toString()
+            }
+            if (parsed.lte !== undefined) {
+                toCurrentValue = parsed.lte;
+                toCurrent = parsed.lte.toString()
+            }
+        }
+        this.state = {
+            from: fromCurrent || '',
+            fromValue: fromCurrentValue,
+            to: toCurrent || '',
+            toValue: toCurrentValue
+        };
     }
 
-    return (
-        <FilterRangeDiv>
-            <RangeInput
-                type="number"
-                placeholder={props.placeholderFrom}
-                onChange={(e: any) => {
-                    console.warn(e);
+    handleChangeFrom = (e: any) => {
+        let value = e.target.value as string;
+        if (value === '') {
+            this.setState({ from: '', fromValue: undefined });
+            this.updateRouter();
+            return;
+        }
+        if (value.indexOf('.') >= 0) {
+            return;
+        }
+        let nvalue = parseInt(value, 10);
+        if (Number.isNaN(nvalue)) {
+            return;
+        }
+        this.setState({ from: value, fromValue: nvalue });
+        this.updateRouter();
+    }
+    handleChangeTo = (e: any) => {
+        let value = e.target.value as string;
+        if (value === '') {
+            this.setState({ to: '', toValue: undefined });
+            this.updateRouter();
+            return;
+        }
+        if (value.indexOf('.') >= 0) {
+            return;
+        }
+        let nvalue = parseInt(value, 10);
+        if (Number.isNaN(nvalue)) {
+            return;
+        }
+        this.setState({ to: value, toValue: nvalue });
+        this.updateRouter();
+    }
 
-                    let value = e.target.value
-                    area.gte = parseInt(value, 10)
-                    handleChange(area);
-                }}
-                value={area.gte === null ? '' : area.gte}
-            />
-            <FilterRangeSeparator> - </FilterRangeSeparator>
-            <RangeInput
-                type="number"
-                placeholder={props.placeholderTo}
-                onChange={(e: any) => {
-                    console.warn(e);
+    updateRouter = () => {
+        setTimeout(
+            () => {
+                if (this.state.fromValue === undefined && this.state.toValue === undefined) {
+                    this.props.router.pushQuery('area');
+                } else {
+                    this.props.router.pushQuery('area', JSON.stringify({
+                        gte: this.state.fromValue,
+                        lte: this.state.toValue
+                    }));
+                }
+            },
+            100);
+    }
 
-                    let value = e.target.value
-                    area.lte = parseInt(value, 10)
-                    handleChange(area);
-                }}
-                value={area.lte === null ? '' : area.lte}
-            />
-        </FilterRangeDiv>
-    )
-})
+    render() {
+        // let area: { gte?: string, lte?: string } = (this.props.router.query!!.area) ? JSON.parse(this.props.router.query!!.area) : { gte: null, lte: null }
+
+        // let handleChange = (val: object) => {
+        //     this.props.router.pushQuery('area', JSON.stringify(val));
+        // }
+
+        return (
+            <FilterRangeDiv>
+                <RangeInput
+                    type="text"
+                    pattern="[0-9]*"
+                    placeholder={this.props.placeholderFrom}
+                    onChange={this.handleChangeFrom}
+                    value={this.state.from}
+                />
+                <FilterRangeSeparator> - </FilterRangeSeparator>
+                <RangeInput
+                    type="text"
+                    pattern="[0-9]*"
+                    placeholder={this.props.placeholderTo}
+                    onChange={this.handleChangeTo}
+                    value={this.state.to}
+                />
+            </FilterRangeDiv>
+        )
+    }
+}
+
+const FilterRange = withRouter<FilterRangeProps>(FilterRangeBase);
 
 class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (query?: any) => void, router: RouterState }> {
 
