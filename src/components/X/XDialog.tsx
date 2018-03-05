@@ -24,7 +24,7 @@ export const XDialogFullScreenContainer = Glamorous.div({
 });
 
 export const XDialogFullScreenContainerInner = Glamorous.div<{width?: number}>((props) => ({
-    display: 'flex',
+    display: 'block',
     flexDirection: 'column',
     alignItems: 'stretch',
     width: props.width ? props.width : 960,

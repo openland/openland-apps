@@ -96,6 +96,7 @@ const ApplyButtonDiv = Glamorous.div({
 })
 
 const FilterCellDiv = Glamorous.div({
+    width: '100%',
     marginBottom: 32
 })
 
@@ -210,52 +211,93 @@ function FilterCell(props: { title?: string, children: any }) {
 //     }
 // }
 
-// const RangeInput = Glamorous.input({
-//     minWidth: 98,
-//     height: 40,
-//     boxSizing: 'border-box',
-//     border: '1px solid rgba(24, 38, 66, 0.2)',
-//     borderRadius: 4,
-//     color: '#525f7f',
-//     backgroundColor: '#fff',
-//     fontSize: 14,
-//     lineHeight: 1.71,
-//     paddingTop: 8,
-//     paddingLeft: 12,
-//     paddingRight: 12,
-//     paddingBottom: 8,
-//     outline: 'none',
-//     '&:focus': {
-//         outline: 'none'
-//     },
-//     '&::placeholder': {
-//         color: '#182642'
-//     }
-// })
+const RangeInput = Glamorous.input({
+    minWidth: 98,
+    height: 40,
+    boxSizing: 'border-box',
+    border: '1px solid rgba(24, 38, 66, 0.2)',
+    borderRadius: 4,
+    color: '#525f7f',
+    backgroundColor: '#fff',
+    fontSize: 14,
+    lineHeight: 1.71,
+    paddingTop: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingBottom: 8,
+    outline: 'none',
+    '&:focus': {
+        outline: 'none'
+    },
+    '&::placeholder': {
+        color: '#182642'
+    }
+})
 
-// const FilterRangeDiv = Glamorous.div({
-//     display: 'flex',
-//     alignItems: 'center',
-//     fontSize: 14,
-//     fontWeight: 'normal',
-//     lineHeight: 1.71,
-//     color: '#182642'
-// })
+const FilterRangeDiv = Glamorous.div({
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: 14,
+    fontWeight: 'normal',
+    lineHeight: 1.71,
+    color: '#182642'
+})
 
-// interface FilterRangeProps {
-//     placeholderFrom?: string,
-//     placeholderTo?: string
-// }
+const FilterRangeSeparator = Glamorous.p({
+    display: 'block',
+    marginLeft: 12,
+    marginRight: 12
+})
 
-// function FilterRange(props: FilterRangeProps) {
-//     return (
-//         <FilterRangeDiv>
-//             <RangeInput placeholder={props.placeholderFrom} />
-//             <p style={{display: 'block', marginLeft: 12, marginRight: 12}}> - </p>
-//             <RangeInput placeholder={props.placeholderTo} />
-//         </FilterRangeDiv>
-//     )
-// }
+interface FilterRangeProps {
+    placeholderFrom?: string,
+    placeholderTo?: string
+}
+
+const FilterRange = withRouter<FilterRangeProps & { fieldName: string }>((props) => {
+    let { fieldName } = props
+
+    let area: { gte?: number, lte?: number } = (props.router.query!![fieldName]) ? JSON.parse(props.router.query!![fieldName]) : {}
+
+    let handleChange = (val: object) => {
+        props.router.pushQuery('area', JSON.stringify(val));
+    }
+
+    return (
+        <FilterRangeDiv>
+            <RangeInput
+                type="number"
+                placeholder={props.placeholderFrom}
+                onChange={(e: any) => {
+                    console.warn(e);
+                    try {
+                        area.gte = parseInt(e.target.value, 10);
+                        handleChange(area);
+                    } catch (e) {
+                        /*NaN*/
+                    }
+                }}
+                value={area.gte}
+            />
+            <FilterRangeSeparator> - </FilterRangeSeparator>
+            <RangeInput
+                type="number"
+                placeholder={props.placeholderTo}
+                onChange={(e: any) => {
+                    console.warn(e);
+                    try {
+                        area.lte = parseInt(e.target.value, 10);
+                        handleChange(area);
+                    } catch (e) {
+                        /*NaN*/
+                    }
+                }}
+                value={area.lte}
+            />
+        </FilterRangeDiv>
+    )
+})
 
 class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (query?: any) => void, router: RouterState }> {
 
@@ -289,6 +331,11 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
                     lt: parseInt(JSON.parse(this.props.router.query!!.filterTransit), 10)
                 }
             });
+        }
+        if (this.props.router.query!!.area) {
+            clauses.push({
+                'area': JSON.parse(this.props.router.query!!.area)
+            })
         }
         if (clauses.length > 0) {
             let query = { '$and': clauses };
@@ -375,7 +422,9 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
                         <FilterCeckbox label="Parcel area" />
                         <FilterCeckbox label="Buildings count" />
                     </FilterCell> */}
-                    {/* <FilterRange placeholderFrom="$1000"/> */}
+                    <FilterCell title="Area">
+                        <FilterRange placeholderFrom="1000 ft" placeholderTo="1000000 ft" fieldName="area" />
+                    </FilterCell>
                     <ApplyButtonDiv>
                         <XButton style="dark" size="medium" bounce={true} onClick={this.handleUpdate}>Apply</XButton>
                     </ApplyButtonDiv>
