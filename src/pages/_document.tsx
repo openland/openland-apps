@@ -30,11 +30,11 @@ export default class StateDocument extends Document {
                     <link rel="icon" href="/static/favicon-32.png" sizes="32x32" />
                     <link rel="stylesheet" type="text/css" href="/static/loader.css" />
                     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
-                    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+                    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
 
                     <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
-                    
+
                     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js" />
 
                     {isProduction && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}
@@ -50,6 +50,14 @@ for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElemen
 mixpanel.init("1d672b3dfac9cafe15c17e91b7a1b352");`}}>{}</script>}
                     {isProduction && <script type="text/javascript" dangerouslySetInnerHTML={{ __html: `window.intercomSettings = { app_id: "n7hi8wya" };` }}>{}</script>}
                     {isProduction && <script dangerouslySetInnerHTML={{ __html: `(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/n7hi8wya';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()` }}>{}</script>}
+                    <style>
+                        {`body {
+                            margin:0;
+                            padding:0;
+                            border:0;
+                            outline:0;
+                        }`}
+                    </style>
                 </Head>
                 <body>
                     {isProduction && <noscript><div><img src="https://mc.yandex.ru/watch/47431468" style={{ position: 'absolute', left: '-9999px' }} alt="" /></div></noscript>}
