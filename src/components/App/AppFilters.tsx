@@ -272,7 +272,7 @@ const FilterRange = withRouter<FilterRangeProps>((props) => {
                     area.gte = parseInt(value, 10)
                     handleChange(area);
                 }}
-                value={area.gte === null ? '' : area.gte}
+                value={area.gte === null ? '' : area.gte!!.toString()}
             />
             <FilterRangeSeparator> - </FilterRangeSeparator>
             <RangeInput
@@ -285,7 +285,7 @@ const FilterRange = withRouter<FilterRangeProps>((props) => {
                     area.lte = parseInt(value, 10)
                     handleChange(area);
                 }}
-                value={area.lte === null ? '' : area.lte}
+                value={area.lte === null ? '' : area.lte!!.toString()}
             />
         </FilterRangeDiv>
     )
