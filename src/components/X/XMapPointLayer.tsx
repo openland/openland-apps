@@ -104,7 +104,7 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
                 this.map.removeLayer(this.layer);
                 this.map.removeLayer(this.layer + '-cluster');
                 this.map.removeLayer(this.layer + '-cluster-count');
-            } catch {
+            } catch (e) {
                 // Just Ignore
             }
         }

@@ -41,6 +41,10 @@ declare module 'mixpanel-browser' {
     export function track(event: string): void;
 }
 
+declare module 'isomorphic-unfetch' {
+    export default function (input: RequestInfo, init?: RequestInit): Promise<Response>
+}
+
 declare module 'deck.gl' {
     interface DeckGLProps {
         latitude: number;

@@ -17,16 +17,7 @@ export class UserInfoProvider extends React.Component<{
     };
 
     render() {
-        var children: any = false;
-        React.Children.forEach(this.props.children, (ch) => {
-            if (ch) {
-                if (children) {
-                    throw 'Only one child possible!';
-                }
-                children = ch;
-            }
-        });
-        return children;
+        return <>{this.props.children}</>;
     }
 
     getChildContext() {

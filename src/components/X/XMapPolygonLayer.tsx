@@ -321,7 +321,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 this.map.removeLayer(this.layer + '-borders-selected');
                 this.map.removeSource(this.sourceHover);
                 // this.map.removeSource(this.sourceSelected);
-            } catch {
+            } catch (e) {
                 // Just Ignore
             }
         }

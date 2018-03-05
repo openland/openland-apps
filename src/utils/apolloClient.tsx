@@ -3,7 +3,6 @@ import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { canUseDOM } from './environment';
 import { API_ENDPOINT } from './endpoint';
-import 'isomorphic-fetch';
 
 let cachedClient: ApolloClient<NormalizedCacheObject> | undefined = undefined;
 
@@ -19,7 +18,8 @@ const buildClient = (initialState?: any, token?: string) => {
     return new ApolloClient({
         link: new HttpLink({
             uri: API_ENDPOINT,
-            headers: headers
+            headers: headers,
+            fetch: require('isomorphic-unfetch'),
         }),
         cache: cache,
         ssrMode: canUseDOM,

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { ApolloProvider, getDataFromTree } from 'react-apollo';
+import { ApolloProvider } from 'react-apollo';
+import getDataFromTree from './getDataFromTree';
 import { ApolloClient } from 'apollo-client';
 import Head from 'next/head';
 import { canUseDOM } from './environment';
@@ -69,6 +70,7 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                         ,
                         { router: { query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath } });
                 } catch (error) {
+                    console.warn('Error during prefetch!');
                     console.warn(error);
                     // Prevent Apollo Client GraphQL errors from crashing SSR.
                     // Handle them in components via the data.error prop:
@@ -107,6 +109,7 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                         ,
                         { router: { query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath } });
                 } catch (error) {
+                    console.warn('Error during prefetch!');
                     console.warn(error);
                     // Prevent Apollo Client GraphQL errors from crashing SSR.
                     // Handle them in components via the data.error prop:
@@ -141,7 +144,7 @@ export const withData = (ComposedComponent: React.ComponentType) => {
             return (
                 <ApolloProvider client={this.apollo}>
                     <HostNameProvider hostName={this.props.host} protocol={this.props.protocol}>
-                        <ComposedComponent {...this.props} />
+                        <ComposedComponent />
                     </HostNameProvider>
                 </ApolloProvider>
             );

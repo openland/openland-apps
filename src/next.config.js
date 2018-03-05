@@ -1,8 +1,12 @@
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const { ANALYZE } = process.env
+const {
+    BundleAnalyzerPlugin
+} = require('webpack-bundle-analyzer')
+const {
+    ANALYZE
+} = process.env
 
-module.exports = {
-    webpack: function (config) {
+const config = {
+    webpack(config, options) {
         if (ANALYZE) {
             config.plugins.push(new BundleAnalyzerPlugin({
                 analyzerMode: 'server',
@@ -10,10 +14,16 @@ module.exports = {
                 openAnalyzer: true
             }))
         }
-
         config.module.noParse = /(mapbox-gl)\.js$/
-
         return config;
     },
-    useFileSystemPublicRoutes: false
-}
+    typescriptLoaderOptions: {
+        transpileOnly: true
+    }
+};
+
+// const withTypescript = require('next-awesome-typescript');
+// module.exports = withTypescript({}, config);
+
+const withTypescript = require('@zeit/next-typescript')
+module.exports = withTypescript(config);

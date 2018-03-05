@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
 import { withRouter, RouterState } from './withRouter';
 import { GraphQLRoutedComponentProps } from './graphql';
-import { prepareParams } from './utils';
+import { prepareParams, getComponentDisplayName } from './utils';
 
 export function graphqlRouted<TResult>(document: DocumentNode, params: ({ key: string, default?: string } | string)[] = []) {
   return function (component: React.ComponentType<GraphQLRoutedComponentProps<TResult>>): React.ComponentType<{}> {
@@ -17,6 +17,8 @@ export function graphqlRouted<TResult>(document: DocumentNode, params: ({ key: s
       }
     });
 
-    return withRouter(qlWrapper(component));
+    let res = withRouter(qlWrapper(component));
+    res.displayName = `withQuery(${getComponentDisplayName(component)})`;
+    return res;
   };
 }

@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "outDir": "build/dist",
-    "module": "commonjs",
-    "target": "es2015",
+    "target": "esnext",
+    "module": "esnext",
     "lib": [
       "es5",
       "es6",
@@ -18,7 +17,7 @@
       // "es2015.symbol.wellknown",
       "esnext.asynciterable"
     ],
-    "sourceMap": true,
+    "sourceMap": false,
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
@@ -30,7 +29,11 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "allowSyntheticDefaultImports": false
+    "allowSyntheticDefaultImports": false,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "outDir": "lib/"
   },
   "exclude": [
     "node_modules",

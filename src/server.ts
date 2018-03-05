@@ -36,8 +36,6 @@ async function start() {
         server.use(redirectToHTTPS());
     }
 
-    server.use('/loaderio-23ea4600e6ea952918b82dfd9352d8d7/', (req, res) => res.send('loaderio-23ea4600e6ea952918b82dfd9352d8d7'));
-
     //
     // Configuration for WebApp
     // TODO: Remove this endpoint
@@ -71,7 +69,7 @@ async function start() {
     // Favicon support endpoint
     //
 
-    server.get('/favicon.ico', (req, res) => res.sendfile(__dirname + '/static/favicon.ico'));
+    server.get('/favicon.ico', (req, res) => res.sendFile(__dirname + '/static/favicon.ico'));
 
     //
     // Main Handler
