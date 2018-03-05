@@ -8,13 +8,11 @@ import { XButton, XButtonLike } from '../../components/X/XButton';
 import { XTitle } from '../../components/X/XTitle';
 import { XVertical } from '../../components/X/XVertical';
 import { XLinkExternal } from '../../components/X/XLinkExternal';
-import { XView } from '../../components/X/XView';
 import { XBullet } from '../../components/X/XBullet';
 import { XSwitcher } from '../../components/X/XSwitcher';
 import { XSlider, XRange } from '../../components/X/XSlider';
 import { XSelect } from '../../components/X/XSelect';
 import { XForm } from '../../components/X/XForm';
-import { Title, Text } from '../../components/Incubator/XRowsExample';
 import { withApp } from '../../components/App/withApp';
 import { AppContent } from '../../components/App/AppContent';
 
@@ -190,36 +188,6 @@ export default withApp((props) => {
                             description="Form description"
                         />
                     </XCard.FormList>
-                </XCard>
-                <XCard>
-                    <XCard.Content>
-                        <XView>
-                            <Title>Example title</Title>
-                            <XView>
-                                <Text>Example text</Text>
-                                <a style={{ color: '#6638F0' }}>example description column child components</a>
-                            </XView>
-                        </XView>
-                        <XView>
-                            <XView justifyContent="space-between" direction="row" alignItems="center">
-                                <Title>Example title with button</Title>
-                                <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                            </XView>
-                            <XView>
-                                <Text>
-                                    Example text
-                                <a style={{ color: '#6638F0' }}>example description inline child components</a>
-                                </Text>
-                            </XView>
-                        </XView>
-                        <XView justifyContent="space-between" direction="row">
-                            <Text>Footer example with two buttons</Text>
-                            <XView justifyContent="space-between" direction="row" childWhiteSpace={true}>
-                                <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                                <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                            </XView>
-                        </XView>
-                    </XCard.Content>
                 </XCard>
             </AppContent>
         </>
