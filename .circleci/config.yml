@@ -16,10 +16,10 @@ jobs:
       - run: yarn build
       - run: yarn install --production --ignore-scripts --prefer-offline
       - persist_to_workspace:
-          root: /src
+          root: /build
           paths:
             - './node_modules'
-            - './build'
+            - './src'
             - './package.json'
             - './Dockerfile'
   docker:
