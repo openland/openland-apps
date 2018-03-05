@@ -1,4 +1,4 @@
-import '../../../globals';
+import '../../globals';
 import * as React from 'react';
 import { XHead } from '../../components/X/XHead';
 import { XGrid } from '../../components/X/XGrid';
