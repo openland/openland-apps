@@ -314,6 +314,21 @@ class FilterRangeBase extends React.Component<FilterRangeProps & { router: Route
         this.updateRouter();
     }
 
+    handleBlurTo = () => {
+        if (this.state.toValue !== undefined && this.state.fromValue !== undefined) {
+            if (this.state.toValue < this.state.fromValue) {
+                this.setState({ to: this.state.fromValue.toString(), toValue: this.state.fromValue });
+            }
+        }
+    }
+    handleBlurFrom = () => {
+        if (this.state.fromValue !== undefined && this.state.toValue !== undefined) {
+            if (this.state.toValue < this.state.fromValue) {
+                this.setState({ from: this.state.toValue.toString(), fromValue: this.state.toValue });
+            }
+        }
+    }
+
     updateRouter = () => {
         setTimeout(
             () => {
@@ -330,12 +345,6 @@ class FilterRangeBase extends React.Component<FilterRangeProps & { router: Route
     }
 
     render() {
-        // let area: { gte?: string, lte?: string } = (this.props.router.query!!.area) ? JSON.parse(this.props.router.query!!.area) : { gte: null, lte: null }
-
-        // let handleChange = (val: object) => {
-        //     this.props.router.pushQuery('area', JSON.stringify(val));
-        // }
-
         return (
             <FilterRangeDiv>
                 <RangeInput
@@ -344,6 +353,7 @@ class FilterRangeBase extends React.Component<FilterRangeProps & { router: Route
                     placeholder={this.props.placeholderFrom}
                     onChange={this.handleChangeFrom}
                     value={this.state.from}
+                    onBlur={this.handleBlurFrom}
                 />
                 <FilterRangeSeparator> - </FilterRangeSeparator>
                 <RangeInput
@@ -352,6 +362,7 @@ class FilterRangeBase extends React.Component<FilterRangeProps & { router: Route
                     placeholder={this.props.placeholderTo}
                     onChange={this.handleChangeTo}
                     value={this.state.to}
+                    onBlur={this.handleBlurTo}
                 />
             </FilterRangeDiv>
         )
