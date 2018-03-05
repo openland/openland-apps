@@ -13,6 +13,7 @@ import { XSwitcher } from '../../components/X/XSwitcher';
 import { XSlider, XRange } from '../../components/X/XSlider';
 import { XSelect } from '../../components/X/XSelect';
 import { XForm } from '../../components/X/XForm';
+import { XCardLink } from '../../components/Incubator/XCardLink';
 import { withApp } from '../../components/App/withApp';
 import { AppContent } from '../../components/App/AppContent';
 
@@ -98,6 +99,7 @@ export default withApp((props) => {
                         </XVertical>
                     </XCard.Content>
                 </XCard>
+                <XCardLink href="https://goo.gl/urJT1F" title="GET /_next/webpack/c14ba59cb321053a0d76" text="DONE  Compiled successfully in 892ms" icon="beach_access" />
                 <XCard separators={true}>
                     <XCard.Header
                         text="Loader block title"

@@ -115,7 +115,13 @@ export class XCardExternalLink extends React.Component<{ href: string }> {
     }
 }
 
-let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium', loading?: boolean, bounce?: boolean; }>((props) => ({
+interface XCardDivProps {
+    shadow?: 'none' | 'normal' | 'medium' | 'large', 
+    loading?: boolean, 
+    bounce?: boolean
+}
+
+let XCardDiv = Glamorous.div<XCardDivProps>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     background: '#ffffff',
@@ -124,7 +130,9 @@ let XCardDiv = Glamorous.div<{ shadow?: 'none' | 'normal' | 'medium', loading?: 
         ? '0 2px 15px rgba(84,96,103,.25)'
         : props.shadow === 'medium'
             ? '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)'
-            : undefined,
+            : props.shadow === 'large'
+                ? '0 18px 35px rgba(50, 50, 93, .1), 0 8px 15px rgba(0, 0, 0, .07)'
+                : undefined,
     color: '#262626',
     borderRadius: 4,
     position: 'relative',
@@ -174,7 +182,7 @@ let XCardSeparator = Glamorous.div({
 
 interface XCardProps {
     className?: string, 
-    shadow?: 'none' | 'normal' | 'medium', 
+    shadow?: 'none' | 'normal' | 'medium' | 'large', 
     separators?: boolean, 
     loading?: boolean,
     path?: string | null;
