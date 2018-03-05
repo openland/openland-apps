@@ -4,6 +4,7 @@ const {
 const {
     ANALYZE
 } = process.env
+const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 
 const config = {
     webpack(config, options) {
@@ -20,11 +21,13 @@ const config = {
     useFileSystemPublicRoutes: false,
     typescriptLoaderOptions: {
         transpileOnly: true
-    }
+    },
+    analyzeServer: ["server", "both"].includes(process.env.BUNDLE_ANALYZE),
+    analyzeBrowser: ["browser", "both"].includes(process.env.BUNDLE_ANALYZE)
 };
 
 // const withTypescript = require('next-awesome-typescript');
 // module.exports = withTypescript({}, config);
 
 const withTypescript = require('@zeit/next-typescript')
-module.exports = withTypescript(config);
+module.exports = withBundleAnalyzer(withTypescript(config));
