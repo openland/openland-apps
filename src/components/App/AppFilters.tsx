@@ -254,7 +254,7 @@ interface FilterRangeProps {
 
 const FilterRange = withRouter<FilterRangeProps>((props) => {
 
-    let area: { gte?: number | string, lte?: number | string } = (props.router.query!!.area) ? JSON.parse(props.router.query!!.area) : { gte: '', lte: '' }
+    let area: { gte?: number, lte?: number } = (props.router.query!!.area) ? JSON.parse(props.router.query!!.area) : { gte: null, lte: null }
 
     let handleChange = (val: object) => {
         props.router.pushQuery('area', JSON.stringify(val));
@@ -267,10 +267,12 @@ const FilterRange = withRouter<FilterRangeProps>((props) => {
                 placeholder={props.placeholderFrom}
                 onChange={(e: any) => {
                     console.warn(e);
-                    area.gte = parseInt(e.target.value, 10) || '';
+
+                    let value = e.target.value
+                    area.gte = parseInt(value, 10)
                     handleChange(area);
                 }}
-                value={area.gte || ''}
+                value={area.gte === null ? '' : area.gte}
             />
             <FilterRangeSeparator> - </FilterRangeSeparator>
             <RangeInput
@@ -278,10 +280,12 @@ const FilterRange = withRouter<FilterRangeProps>((props) => {
                 placeholder={props.placeholderTo}
                 onChange={(e: any) => {
                     console.warn(e);
-                    area.lte = parseInt(e.target.value, 10) || '';
+
+                    let value = e.target.value
+                    area.lte = parseInt(value, 10)
                     handleChange(area);
                 }}
-                value={area.lte || ''}
+                value={area.lte === null ? '' : area.lte}
             />
         </FilterRangeDiv>
     )
