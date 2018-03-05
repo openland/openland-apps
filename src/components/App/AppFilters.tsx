@@ -228,9 +228,6 @@ const RangeInput = Glamorous.input({
     outline: 'none',
     '&:focus': {
         outline: 'none'
-    },
-    '&::placeholder': {
-        color: '#182642'
     }
 })
 
@@ -255,10 +252,9 @@ interface FilterRangeProps {
     placeholderTo?: string
 }
 
-const FilterRange = withRouter<FilterRangeProps & { fieldName: string }>((props) => {
-    let { fieldName } = props
+const FilterRange = withRouter<FilterRangeProps>((props) => {
 
-    let area: { gte?: number, lte?: number } = (props.router.query!![fieldName]) ? JSON.parse(props.router.query!![fieldName]) : {}
+    let area: { gte?: number | string, lte?: number | string } = (props.router.query!!.area) ? JSON.parse(props.router.query!!.area) : { gte: '', lte: '' }
 
     let handleChange = (val: object) => {
         props.router.pushQuery('area', JSON.stringify(val));
@@ -271,14 +267,10 @@ const FilterRange = withRouter<FilterRangeProps & { fieldName: string }>((props)
                 placeholder={props.placeholderFrom}
                 onChange={(e: any) => {
                     console.warn(e);
-                    try {
-                        area.gte = parseInt(e.target.value, 10);
-                        handleChange(area);
-                    } catch (e) {
-                        /*NaN*/
-                    }
+                    area.gte = parseInt(e.target.value, 10) || '';
+                    handleChange(area);
                 }}
-                value={area.gte}
+                value={area.gte || ''}
             />
             <FilterRangeSeparator> - </FilterRangeSeparator>
             <RangeInput
@@ -286,14 +278,10 @@ const FilterRange = withRouter<FilterRangeProps & { fieldName: string }>((props)
                 placeholder={props.placeholderTo}
                 onChange={(e: any) => {
                     console.warn(e);
-                    try {
-                        area.lte = parseInt(e.target.value, 10);
-                        handleChange(area);
-                    } catch (e) {
-                        /*NaN*/
-                    }
+                    area.lte = parseInt(e.target.value, 10) || '';
+                    handleChange(area);
                 }}
-                value={area.lte}
+                value={area.lte || ''}
             />
         </FilterRangeDiv>
     )
@@ -423,7 +411,7 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
                         <FilterCeckbox label="Buildings count" />
                     </FilterCell> */}
                     <FilterCell title="Area">
-                        <FilterRange placeholderFrom="1000 ft" placeholderTo="1000000 ft" fieldName="area" />
+                        <FilterRange placeholderFrom="1000 ft" placeholderTo="1000000 ft" />
                     </FilterCell>
                     <ApplyButtonDiv>
                         <XButton style="dark" size="medium" bounce={true} onClick={this.handleUpdate}>Apply</XButton>
