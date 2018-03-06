@@ -15,6 +15,7 @@ import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XStreetView } from '../../../components/X/XStreetView';
 import { PermitType } from '../../../components/PermitType';
 import { XDate } from '../../../components/X/XDate';
+import { XWithRole } from '../../../components/X/XWithRole';
 
 const Wrapper = Glamorous(XCard)({
     flexGrow: 1,
@@ -38,7 +39,9 @@ export default withApp('viewer', withParcel((props) => {
                         bullet={props.data.item.metadata.available ? 'ON SALE' : undefined}
                         truncateDescription={true}
                     >
-                        <XButton path={'/parcels/' + props.data.item.id + '/edit'}>Edit</XButton>
+                        <XWithRole role="super-admin">
+                            <XButton path={'/parcels/' + props.data.item.id + '/edit'}>Edit</XButton>
+                        </XWithRole>
                         <XButton disabled={true} icon="lock">Owner</XButton>
                         {/* {props.data.item.geometry && <AStreetViewModal geometry={props.data.item.geometry} />} */}
                         <XButton
