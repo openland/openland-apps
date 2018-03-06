@@ -124,7 +124,7 @@
 		"build": "next build src",
 		"analyze": "BUNDLE_ANALYZE=both next build src",
 		"start": "NODE_ENV=production ./node_modules/.bin/ts-node --compilerOptions '{\"module\":\"commonjs\"}' src/server.ts ",
-		"promote": "kubectl set image deployment/statecraft-web statecraft-web=`kubectl get deployment statecraft-web-staging -o=jsonpath='{$.spec.template.spec.containers[:1].image}'` && kubectl rollout status deployments statecraft-web",
+		"promote": "kubectl set image deployment/openland-web app=`kubectl get deployment openland-web-next -o=jsonpath='{$.spec.template.spec.containers[:1].image}'` && kubectl rollout status deployments openland-web",
 		"schema": "yarn schema:download && yarn schema:generate",
 		"schema:local": "yarn schema:download:local && yarn schema:generate",
 		"schema:download": "yarn apollo-codegen introspect-schema https://api.statecrafthq.com/api --output schema.json",

@@ -67,15 +67,18 @@ mixpanel.init("1d672b3dfac9cafe15c17e91b7a1b352");`}}>{}</script>}
                             -moz-box-sizing: border-box;
                         }
                         body, body * {
-                            margin:0;
-                            padding:0;
-                            border:0;
-                            outline:0;
-                            font-size:100%;
-                            vertical-align:baseline;
-                            background:transparent;
+                            margin: 0;
+                            padding: 0;
+                            border: 0;
+                            outline: 0;
+                            font-size: 100%;
+                            vertical-align: baseline;
+                            background: transparent;
                             text-decoration: none;
                             box-sizing: border-box;
+                        }
+                        body {
+                            background: #F5F6F8;
                         }
                         a {
                             color: inherit;
