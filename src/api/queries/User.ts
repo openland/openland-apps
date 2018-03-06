@@ -14,7 +14,7 @@ export const UserShort = gql`
 export const UsersQuery = gql`
     query UsersQuery($query: String!) {
         items: users(query: $query) {
-            value: id
+            id
             title: name
             subtitle: email
         }
