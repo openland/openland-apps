@@ -89,7 +89,7 @@ export const XFormFieldTitle = Glamorous.div<{ novalid?: boolean }>((props) => (
 export const XFormFieldChildren = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
     flex: '0 0 55%',
     maxWidth: 340
 })
@@ -214,6 +214,7 @@ interface XFormProps {
     //
 
     submitMutation?: MutationFunc<{}>;
+    mutationDirect?: boolean;
     onSubmit?: (values: any) => void;
 
     //
@@ -449,7 +450,11 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
         }
         if (this.props.submitMutation) {
             this.setState({ loading: true, error: undefined });
-            this.props.submitMutation({ variables: { data: vals } })
+            let destVars: any = { data: vals };
+            if (this.props.mutationDirect === true) {
+                destVars = vals;
+            }
+            this.props.submitMutation({ variables: destVars })
                 .then((v) => {
                     if (this.props.completePath) {
                         Router.pushRoute(this.props.completePath);

@@ -96,7 +96,7 @@ export const withParcelLikes = graphql<{ doLike: MutationFunc<{}> }, { parcelId:
             variables: {
                 parcelId: props.parcelId
             },
-            refetchQueries: [{ query: Parcels.ParcelsFavorites }, {query: Parcels.ParcelsFavoritesCount}]
+            refetchQueries: [{ query: Parcels.ParcelsFavorites }, { query: Parcels.ParcelsFavoritesCount }]
         };
     }
 });
@@ -107,7 +107,7 @@ export const withParcelUnlikes = graphql<{ doUnlike: MutationFunc<{}> }, { parce
             variables: {
                 parcelId: props.parcelId
             },
-            refetchQueries: [{ query: Parcels.ParcelsFavorites }, {query: Parcels.ParcelsFavoritesCount}]
+            refetchQueries: [{ query: Parcels.ParcelsFavorites }, { query: Parcels.ParcelsFavoritesCount }]
         };
     }
 });
@@ -179,3 +179,5 @@ export const withSearch = graphql<Types.SearchQuery, { query: string }>(Search.S
 
 export const withSuperAdmins = graphqlRouted<Types.SuperAdminsQuery>(Permissions.SuperAdminsQuery);
 export const UserSelect = graphqlSelect(User.UsersQuery);
+export const withSuperAdminAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Permissions.SuperAdminAdd, { name: 'add', refetchQueries: [Permissions.SuperAdminsQuery] });
+export const withSuperAdminRemove = graphqlMutation<{ remove: MutationFunc<{}> }>(Permissions.SuperAdminRemove, { name: 'remove', refetchQueries: [Permissions.SuperAdminsQuery] });

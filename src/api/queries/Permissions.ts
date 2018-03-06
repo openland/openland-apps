@@ -17,3 +17,15 @@ export const SuperAdminsQuery = gql`
     }
     ${UserShort}
 `;
+
+export const SuperAdminAdd = gql`
+    mutation SuperAdminAdd($userId: ID!) {
+        superAdminAdd(userId: $userId)
+    }
+`
+
+export const SuperAdminRemove = gql`
+    mutation SuperAdminRemove($userId: ID!) {
+        superAdminRemove(userId: $userId)
+    }
+`

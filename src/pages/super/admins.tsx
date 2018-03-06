@@ -1,11 +1,37 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { withSuperAdmins, UserSelect } from '../../api';
+import { withSuperAdmins, UserSelect, withSuperAdminAdd, withSuperAdminRemove } from '../../api';
 import { AppContent } from '../../components/App/AppContent';
 import { XCard } from '../../components/X/XCard';
 import { XButton } from '../../components/X/XButton';
 import { XModal } from '../../components/X/XModal';
 import { XForm } from '../../components/X/XForm';
+
+const AddSuperAdminForm = withSuperAdminAdd((props) => {
+    return (
+        <XForm submitMutation={props.add} mutationDirect={true}>
+            <XForm.Field title="User">
+                <XForm.Select field="userId" component={UserSelect} />
+            </XForm.Field>
+            <XCard.Footer>
+                <XForm.Submit style="dark">Add</XForm.Submit>
+            </XCard.Footer>
+        </XForm>
+    );
+});
+
+const RemoveSuperAdminForm = withSuperAdminRemove((props) => {
+    return (
+        <XForm submitMutation={props.remove} mutationDirect={true}>
+            <XForm.Field title="User">
+                <XForm.Select field="userId" component={UserSelect} />
+            </XForm.Field>
+            <XCard.Footer>
+                <XForm.Submit style="dark">Remove</XForm.Submit>
+            </XCard.Footer>
+        </XForm>
+    );
+});
 
 export default withApp('super-admin', withSuperAdmins((props) => {
     return (
@@ -17,14 +43,15 @@ export default withApp('super-admin', withSuperAdmins((props) => {
                             <XButton>Add New</XButton>
                         </XModal.Target>
                         <XModal.Content>
-                            <XForm>
-                                <XForm.Field title="User">
-                                    <XForm.Select field="user" component={UserSelect} />
-                                </XForm.Field>
-                                <XCard.Footer>
-                                    <XForm.Submit style="dark">Add</XForm.Submit>
-                                </XCard.Footer>
-                            </XForm>
+                            <AddSuperAdminForm />
+                        </XModal.Content>
+                    </XModal>
+                    <XModal fullScreen={false} title="Removing Super Admin">
+                        <XModal.Target>
+                            <XButton>Remove Exising</XButton>
+                        </XModal.Target>
+                        <XModal.Content>
+                            <RemoveSuperAdminForm />
                         </XModal.Content>
                     </XModal>
                 </XCard.Header>
