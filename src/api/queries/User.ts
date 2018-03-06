@@ -7,6 +7,7 @@ export const UserShort = gql`
         firstName
         lastName
         picture
+        email
     }
 `;
 
@@ -14,7 +15,8 @@ export const UsersQuery = gql`
     query UsersQuery($query: String!) {
         items: users(query: $query) {
             value: id
-            label: name
+            title: name
+            subtitle: email
         }
     }
 `

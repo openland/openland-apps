@@ -72,6 +72,7 @@ export interface AccountQuery {
     firstName: string,
     lastName: string,
     picture: string,
+    email: string,
   } | null,
   permissions:  {
     __typename: "Permissions",
@@ -97,6 +98,7 @@ export interface AreaQuery {
     firstName: string,
     lastName: string,
     picture: string,
+    email: string,
   } | null,
 };
 
@@ -982,7 +984,24 @@ export interface SuperAdminsQuery {
     firstName: string,
     lastName: string,
     picture: string,
+    email: string,
   } >,
+};
+
+export interface SuperAdminAddMutationVariables {
+  userId: string,
+};
+
+export interface SuperAdminAddMutation {
+  superAdminAdd: string,
+};
+
+export interface SuperAdminRemoveMutationVariables {
+  userId: string,
+};
+
+export interface SuperAdminRemoveMutation {
+  superAdminRemove: string,
 };
 
 export interface PermitQueryVariables {
@@ -1585,6 +1604,18 @@ export interface SearchQuery {
       total: number,
     },
   },
+};
+
+export interface UsersQueryQueryVariables {
+  query: string,
+};
+
+export interface UsersQueryQuery {
+  items:  Array< {
+    __typename: "User",
+    value: string,
+    label: string,
+  } >,
 };
 
 export interface AreaShortFragment {
@@ -2210,4 +2241,5 @@ export interface UserShortFragment {
   firstName: string,
   lastName: string,
   picture: string,
+  email: string,
 };

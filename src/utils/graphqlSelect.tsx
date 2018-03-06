@@ -12,14 +12,15 @@ export function graphqlSelect(document: DocumentNode) {
         loadOptions = async (input: string) => {
             let client: ApolloClient<{}> = this.context.client;
             let res = await client.query({ query: document, variables: { query: input } })
-            let items = (res.data as any).items
+            let items = (res.data as any).items as [{ id: string, title: string, subtitle?: string | null }]
+            let opts = items.map((v) => ({ value: v.id, label: v.subtitle ? v.title + ' (' + v.subtitle + ')' : v.title }))
             return {
-                options: items
+                options: opts
             }
         }
 
         render() {
-            return <XSelectAsync {...this.props} loadOptions={this.loadOptions} />;
+            return <XSelectAsync {...this.props} loadOptions={this.loadOptions} filterOptions={(options) => options} />;
         }
     }
 }
