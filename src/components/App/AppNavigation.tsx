@@ -2,6 +2,7 @@ import * as React from 'react';
 import { AppSidebar } from './AppSidebar';
 import Glamorous from 'glamorous';
 import { withParcelsFavroutesCount } from '../../api';
+import { XWithRole } from '../X/XWithRole';
 
 const Div = Glamorous.div({
     height: '16px'
@@ -19,6 +20,12 @@ export const AppNavigation = withParcelsFavroutesCount((props) => {
             <AppSidebar.Item title="Due Dilligence" icon="lock" disabled={true} />
             <AppSidebar.Item title="Notifications" icon="lock" disabled={true} />
             <AppSidebar.Item title="Support" icon="lock" disabled={true} />
+
+            <XWithRole role="super-admin">
+                <Div />
+                <AppSidebar.Item path="/super/admins" title="Super Admins" icon="domain" />
+                <AppSidebar.Item path="/super/debug" title="Debug" icon="memory" />
+            </XWithRole>
         </>
     );
 });

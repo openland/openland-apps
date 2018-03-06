@@ -1,14 +1,14 @@
 import '../../../globals';
 import * as React from 'react';
 import { XHead } from '../../../components/X/XHead';
-import { withApp } from '../../../components/App/withApp';
+import { withApp } from '../../../components/withApp';
 import { withUserInfo } from '../../../components/Base/UserInfo';
 import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { XForm } from '../../../components/X/XForm';
 import { AppContent } from '../../../components/App/AppContent';
 
-export default withApp(withUserInfo((props) => {
+export default withApp('viewer', withUserInfo((props) => {
     return (
         <AppContent>
             <XHead title="Settings" />

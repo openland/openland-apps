@@ -2,7 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
-import { withApp } from '../../../components/App/withApp';
+import { withApp } from '../../../components/withApp';
 import { AppContent } from '../../../components/App/AppContent';
 import { XCard } from '../../../components/X/XCard';
 import { XLink } from '../../../components/X/XLink';
@@ -44,7 +44,7 @@ function exportCSV(items: Types.ParcelShortFragment[]) {
     FileSaver.saveAs(contents, 'favorites.csv');
 }
 
-export default withApp(withParcelsFavorites((props) => {
+export default withApp('viewer', withParcelsFavorites((props) => {
     return (
         <>
             <XHead title={['Favorites']} />

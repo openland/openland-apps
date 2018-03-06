@@ -1,12 +1,12 @@
 import '../../../globals';
 import * as React from 'react';
-import { withApp } from '../../../components/App/withApp';
+import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withSFBuildingProjects } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 
-export default withApp(withSFBuildingProjects((props) => {
+export default withApp('viewer', withSFBuildingProjects((props) => {
     return (
         <AppContent>
             <XCard shadow="medium">

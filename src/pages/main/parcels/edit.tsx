@@ -1,6 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
-import { withApp } from '../../../components/App/withApp';
+import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withParcelMetadataForm } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
@@ -8,7 +8,7 @@ import { XButton } from '../../../components/X/XButton';
 import { XForm } from '../../../components/X/XForm';
 import { XHead } from '../../../components/X/XHead';
 
-export default withApp(withParcelMetadataForm((props) => {
+export default withApp('viewer', withParcelMetadataForm((props) => {
     return (
         <>
             <XHead title={['Edit Parcel #' + props.data.item.title]} />

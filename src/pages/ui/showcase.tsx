@@ -14,10 +14,10 @@ import { XSlider, XRange } from '../../components/X/XSlider';
 import { XSelect } from '../../components/X/XSelect';
 import { XForm } from '../../components/X/XForm';
 import { XCardLink } from '../../components/Incubator/XCardLink';
-import { withApp } from '../../components/App/withApp';
+import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
 
-export default withApp((props) => {
+export default withApp('viewer', (props) => {
     return (
         <>
             <XHead title={['UI Framework']} />

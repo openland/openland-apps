@@ -4,6 +4,9 @@ import { UserShort } from './User';
 export const AccountQuery = gql`
     query Account {
         me { ...UserShort }
+        permissions {
+            roles
+        }
     }
     ${UserShort}
 `;

@@ -1,7 +1,7 @@
 import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withApp } from '../../../components/App/withApp';
+import { withApp } from '../../../components/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { ParcelCard } from '../../../components/ParcelCard';
@@ -124,7 +124,7 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { query?
                             <FilterComponent query={this.state.query && JSON.stringify(this.state.query)} />
                         </FilterHeader>
                         <FilterActions>
-                            <AppFilters onChange={this.handleUpdate}/>
+                            <AppFilters onChange={this.handleUpdate} />
                         </FilterActions>
                     </FilterContainer>
                 </AppContentMap.Item>
@@ -171,7 +171,7 @@ class ParcelCollection extends React.Component<{ router: RouterState }, { query?
     }
 }
 
-export default withApp(withRouter((props) => {
+export default withApp('viewer', withRouter((props) => {
     return (
         <>
             <XHead title={['Explore']} />

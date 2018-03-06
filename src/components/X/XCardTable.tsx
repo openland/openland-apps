@@ -64,6 +64,10 @@ export function XCardTableHeader(props: { children: any }) {
     return (<thead><tr>{props.children}</tr></thead>);
 }
 
+export function XCardTableBody(props: { children: any }) {
+    return (<tbody>{props.children}</tbody>);
+}
+
 export function XCardTableCell(props: { children: any, width?: number, textAlign?: 'left' | 'right' }) {
     return (
             <XCardTableTD width={props.width} textAlign={props.textAlign}>
@@ -75,6 +79,7 @@ export function XCardTableCell(props: { children: any, width?: number, textAlign
 export class XCardTable extends React.Component {
     static Header = XCardTableHeader;
     static Cell = XCardTableCell;
+    static Body = XCardTableBody;
 
     render() {
         return (

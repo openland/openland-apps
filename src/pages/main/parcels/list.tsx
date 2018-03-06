@@ -1,6 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
-import { withApp } from '../../../components/App/withApp';
+import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withParcels } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
@@ -9,7 +9,7 @@ import { XHead } from '../../../components/X/XHead';
 import { AppFilters } from '../../../components/App/AppFilters';
 import { TableParcels } from '../../../components/TableParcels';
 
-export default withApp(withParcels((props) => {
+export default withApp('viewer',withParcels((props) => {
     return (
         <>
             <XHead title={['Parcels']} />

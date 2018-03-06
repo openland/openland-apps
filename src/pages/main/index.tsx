@@ -1,10 +1,10 @@
 import '../../globals';
 import * as React from 'react';
-import { withApp } from '../../components/App/withApp';
+import { withApp } from '../../components/withApp';
 import { XCard } from '../../components/X/XCard';
 import { AppContent } from '../../components/App/AppContent';
 
-const Page = withApp((props) => {
+const Page = withApp('viewer', (props) => {
     return (
         <AppContent>
             <XCard shadow="medium">

@@ -1,7 +1,7 @@
 import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withApp } from '../../../components/App/withApp';
+import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withParcel, ParcelTileSource, BlockTileSource } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
@@ -26,7 +26,7 @@ const StreetView = Glamorous(XStreetView)({
     width: '100%'
 })
 
-export default withApp(withParcel((props) => {
+export default withApp('viewer', withParcel((props) => {
     return (
         <>
             <XHead title={['Parcel #' + props.data.item.title]} />

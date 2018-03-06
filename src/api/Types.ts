@@ -73,6 +73,10 @@ export interface AccountQuery {
     lastName: string,
     picture: string,
   } | null,
+  permissions:  {
+    __typename: "Permissions",
+    roles: Array< string >,
+  },
 };
 
 export interface AreaQueryVariables {
@@ -961,6 +965,24 @@ export interface ParcelsStatsQueryVariables {
 
 export interface ParcelsStatsQuery {
   parcelsStats: number,
+};
+
+export interface PermissionsQuery {
+  permissions:  {
+    __typename: "Permissions",
+    roles: Array< string >,
+  },
+};
+
+export interface SuperAdminsQuery {
+  superAdmins:  Array< {
+    __typename: "User",
+    id: string,
+    name: string,
+    firstName: string,
+    lastName: string,
+    picture: string,
+  } >,
 };
 
 export interface PermitQueryVariables {

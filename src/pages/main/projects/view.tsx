@@ -1,13 +1,13 @@
 import '../../../globals';
 import * as React from 'react';
-import { withApp } from '../../../components/App/withApp';
+import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withSFBuildingProject } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { XLinkExternal } from '../../../components/X/XLinkExternal';
 
-export default withApp(withSFBuildingProject((props) => {
+export default withApp('viewer', withSFBuildingProject((props) => {
 
     return (
         <AppContent>

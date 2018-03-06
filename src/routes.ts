@@ -51,6 +51,16 @@ routes.add('/ui/', '/ui/showcase');
 routes.add('/settings', '/main/settings/index');
 routes.add('/settings/', '/main/settings/index');
 
+//
+// Debug
+//
+
+routes.add('/super/debug', '/super/debug');
+routes.add('/super/debug/', '/super/debug');
+
+routes.add('/super/admins', '/super/admins');
+routes.add('/super/admins/', '/super/admins');
+
 // Technical pages
 routes.add('auth/login');
 routes.add('auth/logout');
