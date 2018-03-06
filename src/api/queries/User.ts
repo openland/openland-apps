@@ -9,3 +9,12 @@ export const UserShort = gql`
         picture
     }
 `;
+
+export const UsersQuery = gql`
+    query UsersQuery($query: String!) {
+        items: users(query: $query) {
+            value: id
+            label: name
+        }
+    }
+`

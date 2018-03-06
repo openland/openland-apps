@@ -174,10 +174,10 @@ export const XFormSelectStyle = Glamorous.select({
     }
 })
 
-export function XFormSelect(props: { options: any[], value?: string | string[] | number, onChange?: (value: any) => void }) {
+export function XFormSelect(props: { options?: any[], value?: string | string[] | number, onChange?: (value: any) => void }) {
     return (
         <XFormSelectStyle value={props.value} onChange={props.onChange}>
-            {props.options.map((item) => (
+            {props.options && props.options.map((item) => (
                 <option value={item.value}>{item.title}</option>
             ))}
         </XFormSelectStyle>
@@ -331,7 +331,8 @@ export class XFormBooleanField extends React.Component<XFormBooleanFieldProps, {
 
 interface XFormSelectFieldProps {
     field: string;
-    options: { value: string, title: string }[];
+    options?: { value: string, title: string }[];
+    component?: any;
 }
 
 export class XFormSelectField extends React.Component<XFormSelectFieldProps, { value: string | null }> {
@@ -345,10 +346,12 @@ export class XFormSelectField extends React.Component<XFormSelectFieldProps, { v
         let existing = xForm.readValue(this.props.field);
         if (typeof existing === 'string') {
             this.state = { value: null };
-            for (let opt of this.props.options) {
-                if (opt.value === existing) {
-                    this.state = { value: opt.value };
-                    break
+            if (this.props.options) {
+                for (let opt of this.props.options) {
+                    if (opt.value === existing) {
+                        this.state = { value: opt.value };
+                        break
+                    }
                 }
             }
         } else {
@@ -358,7 +361,7 @@ export class XFormSelectField extends React.Component<XFormSelectFieldProps, { v
 
     handleChange = (src: any) => {
         let xForm = this.context.xForm as XFormController;
-        let val = src.target.value as string;
+        let val = src ? (src.target ? (src.target.value as string) : src.value as string) : 'unknown';
         let cval = null;
         if (val !== 'unknown') {
             cval = val;
@@ -367,9 +370,14 @@ export class XFormSelectField extends React.Component<XFormSelectFieldProps, { v
         xForm.writeValue(this.props.field, cval);
     }
     render() {
+        let options = undefined;
+        if (this.props.options) {
+            options = [{ title: 'Unknown', value: 'unknown' }, ...this.props.options];
+        }
+        let Component = this.props.component ? this.props.component : XFormSelect;
         return (
-            <XFormSelect
-                options={[{ title: 'Unknown', value: 'unknown' }, ...this.props.options]}
+            <Component
+                options={options}
                 value={this.state.value || 'unknown'}
                 onChange={this.handleChange}
             />

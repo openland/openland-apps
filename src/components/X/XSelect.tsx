@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
-import Select, { ReactSelectProps } from 'react-select';
+import Select, { Async, ReactSelectProps, ReactAsyncSelectProps } from 'react-select';
 
 const SelectAnimationFadeIn = glamor.keyframes({
     '0%': { opacity: 0 },
@@ -12,7 +12,7 @@ const SelectAnimationSpin = glamor.keyframes({
     'to': { transform: 'rotate(1turn)' }
 })
 
-export const XSelectDiv = Glamorous(Select)({
+const Styles = {
     '& .Select-menu > .Select-option.is-focused': {
         backgroundColor: 'rgb(68, 40, 224) !important',
         color: '#fff !important'
@@ -363,12 +363,22 @@ export const XSelectDiv = Glamorous(Select)({
     '&.Select--multi.is-disabled .Select-value-icon:active, &.Select--multi.is-disabled .Select-value-icon:focus, &.Select--multi.is-disabled .Select-value-icon:hover': {
         backgroundColor: '#fcfcfc'
     }
-})
+};
+
+const StyledAsync = Glamorous(Async)(Styles) as React.ComponentType<ReactAsyncSelectProps>; // Some Weird typing problems
+const StyledSelect = Glamorous(Select)(Styles);
 
 export type XSelectProps = ReactSelectProps;
+export type XSelectAsyncProps = ReactAsyncSelectProps;
 
 export function XSelect(props: XSelectProps) {
     return (
-        <XSelectDiv {...props} />
+        <StyledSelect {...props} />
     )
+};
+
+export function XSelectAsync(props: XSelectAsyncProps) {
+    return (
+        <StyledAsync {...props} />
+    );
 }

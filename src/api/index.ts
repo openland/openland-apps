@@ -14,6 +14,8 @@ import * as Search from './queries/Search';
 import * as Permissions from './queries/Permissions';
 import { graphql } from 'react-apollo';
 import { graphQLTileSource } from '../utils/graphqlTileSource';
+import { graphqlSelect } from '../utils/graphqlSelect';
+import * as User from './queries/User';
 
 //
 // Area
@@ -175,4 +177,5 @@ export const withSearch = graphql<Types.SearchQuery, { query: string }>(Search.S
 // Admin
 //
 
-export const withSuperAdmins = graphqlRouted<Types.SuperAdminsQuery>(Permissions.SuperAdminsQuery)
+export const withSuperAdmins = graphqlRouted<Types.SuperAdminsQuery>(Permissions.SuperAdminsQuery);
+export const UserSelect = graphqlSelect(User.UsersQuery);
