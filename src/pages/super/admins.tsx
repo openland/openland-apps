@@ -57,10 +57,10 @@ export default withApp('super-admin', withSuperAdmins((props) => {
                 </XCard.Header>
                 <XCard.Table>
                     <XCard.Table.Header>
-                        <XCard.Table.Cell>
+                        <XCard.Table.Cell width={100}>
                             First Name
                         </XCard.Table.Cell>
-                        <XCard.Table.Cell>
+                        <XCard.Table.Cell width={100}>
                             Last Name
                         </XCard.Table.Cell>
                         <XCard.Table.Cell>
@@ -70,8 +70,8 @@ export default withApp('super-admin', withSuperAdmins((props) => {
                     <XCard.Table.Body>
                         {props.data.superAdmins.map((v) => (
                             <tr key={v.id}>
-                                <XCard.Table.Cell>{v.firstName}</XCard.Table.Cell>
-                                <XCard.Table.Cell>{v.lastName}</XCard.Table.Cell>
+                                <XCard.Table.Cell width={100}>{v.firstName}</XCard.Table.Cell>
+                                <XCard.Table.Cell width={100}>{v.lastName}</XCard.Table.Cell>
                                 <XCard.Table.Cell>{v.email}</XCard.Table.Cell>
                             </tr>
                         ))}
