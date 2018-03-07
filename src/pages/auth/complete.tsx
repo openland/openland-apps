@@ -61,7 +61,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
     private async retreiveAuthentication() {
         let auth = new auth0.WebAuth({
             domain: 'statecraft.auth0.com',
-            clientID: 'na0Pvis7KTzZWtzcIFT8MzIxtdpiLZc3',
+            clientID: 'v3R2Rr6D4LzzcWKHf91jwKJyDnEm4L96',
             redirectUri: window.location.origin + '/auth/complete',
             audience: 'https://statecraft.auth0.com/userinfo',
             responseType: 'token id_token',
