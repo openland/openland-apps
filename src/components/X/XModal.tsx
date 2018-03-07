@@ -1,7 +1,18 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import * as glamor from 'glamor'
 import * as ReactModal from 'react-modal';
 import { XDialog } from './XDialog';
+
+const showAnimation = glamor.keyframes({
+    '0%': { backgroundColor: 'transparent', opacity: 0 },
+    '100%': { backgroundColor: 'rgba(0,0,0,0.75)', opacity: 1 }
+})
+
+const hideAnimation = glamor.keyframes({
+    '0%': { backgroundColor: 'rgba(0,0,0,0.75)', opacity: 1 },
+    '100%': { backgroundColor: 'transparent', opacity: 0 }
+})
 
 export class XModalTarget extends React.Component<{ handler?: (target: any) => void }> {
     static defaultProps = {
@@ -42,24 +53,28 @@ const XModalContainer = Glamorous.div({
     alignSelf: 'stretch'
 });
 
-export class XModal extends React.Component<{ title: string, fullScreen?: boolean, closeOnClick?: boolean, width?: number }, { isOpen: boolean }> {
+export class XModal extends React.Component<{ title: string, fullScreen?: boolean, closeOnClick?: boolean, width?: number }, { isOpen: boolean, hide: boolean }> {
     static Target = XModalTarget;
     static Content = XModalContent;
 
     constructor(props: { title: string }) {
         super(props);
-        this.state = { isOpen: false };
+        this.state = { 
+            isOpen: false,
+            hide: false
+         };
     }
 
     handler = (src?: any) => {
-        this.setState({ isOpen: true })
+        this.setState({ isOpen: true, hide: false })
     }
 
     handleClose = (src?: any) => {
         if (src && src.preventDefault) {
             src.preventDefault();
         }
-        this.setState({ isOpen: false });
+        this.setState({hide: true})
+        setTimeout(() => {this.setState({ isOpen: false })}, 500)
     }
 
     // handleClick = (e: MouseEvent) => {
@@ -109,10 +124,12 @@ export class XModal extends React.Component<{ title: string, fullScreen?: boolea
                     shouldCloseOnOverlayClick={this.props.closeOnClick !== undefined ? this.props.closeOnClick : true}
                     style={{
                         overlay: {
+                            animation: `${this.state.hide ? hideAnimation : showAnimation} 0.5s ease-in-out`,
                             zIndex: 10,
                             backgroundColor: 'rgba(0,0,0,0.75)'
                         },
                         content: {
+                            position: 'absolute',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
