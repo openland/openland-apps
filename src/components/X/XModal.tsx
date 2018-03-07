@@ -74,7 +74,7 @@ export class XModal extends React.Component<{ title: string, fullScreen?: boolea
             src.preventDefault();
         }
         this.setState({hide: true})
-        setTimeout(() => {this.setState({ isOpen: false })}, 500)
+        setTimeout(() => {this.setState({ isOpen: false })}, 300)
     }
 
     // handleClick = (e: MouseEvent) => {
@@ -124,7 +124,9 @@ export class XModal extends React.Component<{ title: string, fullScreen?: boolea
                     shouldCloseOnOverlayClick={this.props.closeOnClick !== undefined ? this.props.closeOnClick : true}
                     style={{
                         overlay: {
-                            animation: `${this.state.hide ? hideAnimation : showAnimation} 0.5s ease-in-out`,
+                            animationName: `${this.state.hide ? hideAnimation : showAnimation}`,
+                            animationTimingFunction: `${this.state.hide ? 'cubic-bezier(0.25, 0.8, 0.25, 1)' : 'cubic-bezier(0.55, 0, 0.55, 0.2)'}`,
+                            animationDuration: '0.3s',
                             zIndex: 10,
                             backgroundColor: 'rgba(0,0,0,0.75)'
                         },

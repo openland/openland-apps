@@ -80,6 +80,12 @@ mixpanel.init("1d672b3dfac9cafe15c17e91b7a1b352");`}}>{}</script>}
                         body {
                             background: #F5F6F8;
                         }
+                        input, textarea, button {
+                            font-family: Nunito Sans, arial, sans-serif;
+                        }
+                        input, select { 
+                            vertical-align:middle; 
+                        }
                         a {
                             color: inherit;
                             text-decoration: none;

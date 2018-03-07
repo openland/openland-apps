@@ -54,6 +54,9 @@ let SidebarItemDiv = Glamorous<{ disabled?: boolean } & XLinkProps>(XLink)((prop
 
     '.is-active': {
         color: '#4428e0'
+    },
+    '> i': {
+        marginTop: -2
     }
 }));
 

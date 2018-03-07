@@ -9,7 +9,7 @@ import { XHead } from '../../../components/X/XHead';
 import { AppFilters } from '../../../components/App/AppFilters';
 import { TableParcels } from '../../../components/TableParcels';
 
-export default withApp('viewer',withParcels((props) => {
+export default withApp('viewer', withParcels((props) => {
     return (
         <>
             <XHead title={['Parcels']} />
