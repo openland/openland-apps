@@ -23,6 +23,8 @@ export const AppNavigation = withParcelsFavroutesCount((props) => {
 
             <XWithRole role="super-admin">
                 <Div />
+                <AppSidebar.Item path="/team" title="Team" icon="group" />
+                <Div />
                 <AppSidebar.Item path="/super/admins" title="Super Admins" icon="domain" />
                 <AppSidebar.Item path="/super/debug" title="Debug" icon="memory" />
             </XWithRole>
