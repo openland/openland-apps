@@ -264,11 +264,11 @@ class FilterRangeBase extends React.Component<FilterRangeProps & { router: Route
             let parsed = JSON.parse(props.router.query.area) as { gte?: number, lte?: number };
             if (parsed.gte !== undefined) {
                 fromCurrentValue = parsed.gte;
-                fromCurrent = (parsed.gte / 0.3048).toString()
+                fromCurrent = parsed.gte.toString()
             }
             if (parsed.lte !== undefined) {
                 toCurrentValue = parsed.lte;
-                toCurrent = (parsed.lte / 0.3048).toString()
+                toCurrent = parsed.lte.toString()
             }
         }
         this.state = {
@@ -336,8 +336,8 @@ class FilterRangeBase extends React.Component<FilterRangeProps & { router: Route
                     this.props.router.pushQuery('area');
                 } else {
                     this.props.router.pushQuery('area', JSON.stringify({
-                        gte: (this.state.fromValue!! * 0.3048),
-                        lte: (this.state.toValue!! * 0.3048)
+                        gte: this.state.fromValue,
+                        lte: this.state.toValue
                     }));
                 }
             },
@@ -405,8 +405,11 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
             });
         }
         if (this.props.router.query!!.area) {
+            let area = JSON.parse(this.props.router.query!!.area)
+            area.gte = (area.gte * 0.3048);
+            area.lte = (area.lte * 0.3048);
             clauses.push({
-                'area': JSON.parse(this.props.router.query!!.area)
+                'area': area
             })
         }
         if (clauses.length > 0) {
