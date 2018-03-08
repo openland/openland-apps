@@ -116,8 +116,8 @@ export class XCardExternalLink extends React.Component<{ href: string }> {
 }
 
 interface XCardDivProps {
-    shadow?: 'none' | 'normal' | 'medium' | 'large', 
-    loading?: boolean, 
+    shadow?: 'none' | 'normal' | 'medium' | 'large',
+    loading?: boolean,
     bounce?: boolean
 }
 
@@ -125,7 +125,7 @@ let XCardDiv = Glamorous.div<XCardDivProps>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     background: '#ffffff',
-    border: (props.shadow === 'none' || props.shadow === undefined) ? '1px solid rgba(38,38,38,0.08)' : undefined,
+    border: (props.shadow === 'none' || props.shadow === undefined) ? '1px solid rgba(38,38,38,0.08)' : (props.shadow === 'medium' ? '1px solid #efecec' : undefined),
     boxShadow: props.shadow === 'normal'
         ? '0 2px 15px rgba(84,96,103,.25)'
         : props.shadow === 'medium'
@@ -181,9 +181,9 @@ let XCardSeparator = Glamorous.div({
 })
 
 interface XCardProps {
-    className?: string, 
-    shadow?: 'none' | 'normal' | 'medium' | 'large', 
-    separators?: boolean, 
+    className?: string,
+    shadow?: 'none' | 'normal' | 'medium' | 'large',
+    separators?: boolean,
     loading?: boolean,
     path?: string | null;
     href?: string | null;
@@ -225,10 +225,10 @@ export class XCard extends React.Component<XCardProps> {
                         {!this.props.separators && this.props.children}
                     </XLink>
                 ) : (
-                    (this.props.separators) 
-                    ? (<XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>)
-                    : (<>{this.props.children}</>)
-                )}
+                        (this.props.separators)
+                            ? (<XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>)
+                            : (<>{this.props.children}</>)
+                    )}
             </XCardDiv>
         );
     }
