@@ -11,7 +11,7 @@ class LogoutHandler extends React.Component<{}, {}> {
     }
 
     componentDidMount() {
-        Cookie.remove('statecraft-key');
+        Cookie.remove('x-openland-token');
         createHistory({
             forceRefresh: true
         }).replace('/');

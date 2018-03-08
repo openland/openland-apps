@@ -37,16 +37,8 @@ async function start() {
     }
 
     //
-    // Configuration for WebApp
-    // TODO: Remove this endpoint
+    // API Proxy
     //
-    server.use('/authenticate', proxy({
-        changeOrigin: true,
-        target: endpoint,
-        pathRewrite: function (path: string) {
-            return '/auth';
-        }
-    }));
     server.use('/graphql', proxy({
         changeOrigin: true,
         target: endpoint,
@@ -56,9 +48,20 @@ async function start() {
     }));
 
     //
+    // Auth API Proxy
+    //
+    server.use('/authenticate', proxy({
+        changeOrigin: true,
+        target: endpoint,
+        pathRewrite: function (path: string) {
+            return '/v2/auth';
+        }
+    }));
+
+    //
     // GraphiQL Sandbox
     //
-    server.use('/sandbox', graphiqlExpress({ endpointURL: endpoint + '/api' }));
+    server.use('/sandbox', graphiqlExpress({ endpointURL: '/graphql' }));
 
     //
     // Health
