@@ -34,12 +34,14 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
             method: 'POST',
             headers: [
                 ['authorization', 'Bearer ' + auth.idToken],
-                ['access-token', auth.accessToken]
+                ['x-openland-access-token', auth.accessToken]
             ]
         });
         if (uploaded.ok) {
+            let body = (await uploaded.json()) as { ok: boolean, token: string }
             console.warn(auth.expiresIn);
-            Cookie.set('statecraft-key', auth.idToken, { expires: auth.expiresIn / (24 * 60.0 * 60.0) });
+            Cookie.remove('statecraft-key');
+            Cookie.set('x-openland-token', body.token);
             let path = localStorage.getItem('redirect_path') || '/';
             console.warn(path);
             createHistory({
@@ -60,7 +62,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
 
     private async retreiveAuthentication() {
         let auth = new auth0.WebAuth({
-            domain: 'statecraft.auth0.com',
+            domain: 'auth.openland.com',
             clientID: 'v3R2Rr6D4LzzcWKHf91jwKJyDnEm4L96',
             redirectUri: window.location.origin + '/auth/complete',
             audience: 'https://statecraft.auth0.com/userinfo',
