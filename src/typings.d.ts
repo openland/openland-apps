@@ -193,3 +193,7 @@ declare namespace UploadCare {
 declare module 'uploadcare-widget' {
     export = UploadCare;
 }
+
+declare module '@typeform/embed' {
+    function makeWidget(element: any, url: string, options: any): void;
+}

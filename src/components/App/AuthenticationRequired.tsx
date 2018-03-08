@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { withUserInfo } from '../Base/UserInfo';
 import { XCard } from '../X/XCard';
 import { XButton } from '../X/XButton';
-import { XVertical } from '../X/XVertical';
 import { withRouter } from '../../utils/withRouter';
 import { XHead } from '../X/XHead';
 import { XLink } from '../X/XLink';
@@ -62,7 +61,7 @@ let Footer = Glamorous.div({
     opacity: 0.4,
     fontSize: '14px',
     fontWeight: 600
-})
+});
 
 export const AuthenticationRequired = withRouter<{}>(withUserInfo((props) => {
 
@@ -87,7 +86,7 @@ export const AuthenticationRequired = withRouter<{}>(withUserInfo((props) => {
                         </XCard.Content>
                     </Container>
                     <Footer>
-                        Data Makes Perfect LLC, CA 90102, 2017-2018
+                        Data Makes Perfect LLC, CA 94102, 2017-2018
                     </Footer>
                 </ErrorDiv>
             </>

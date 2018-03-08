@@ -7,6 +7,7 @@ let routes = Routes();
 //
 
 routes.add('/', '/main/explore/index');
+routes.add('/signup', '/signup');
 
 //
 // Parcels
