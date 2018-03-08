@@ -264,11 +264,11 @@ class FilterRangeBase extends React.Component<FilterRangeProps & { router: Route
             let parsed = JSON.parse(props.router.query.area) as { gte?: number, lte?: number };
             if (parsed.gte !== undefined) {
                 fromCurrentValue = parsed.gte;
-                fromCurrent = parsed.gte.toString()
+                fromCurrent = (parsed.gte / 0.3048).toString()
             }
             if (parsed.lte !== undefined) {
                 toCurrentValue = parsed.lte;
-                toCurrent = parsed.lte.toString()
+                toCurrent = (parsed.lte / 0.3048).toString()
             }
         }
         this.state = {
@@ -336,8 +336,8 @@ class FilterRangeBase extends React.Component<FilterRangeProps & { router: Route
                     this.props.router.pushQuery('area');
                 } else {
                     this.props.router.pushQuery('area', JSON.stringify({
-                        gte: this.state.fromValue,
-                        lte: this.state.toValue
+                        gte: (this.state.fromValue!! * 0.3048),
+                        lte: (this.state.toValue!! * 0.3048)
                     }));
                 }
             },
