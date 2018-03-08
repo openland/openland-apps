@@ -97,7 +97,18 @@ export default withApp('viewer', (props) => {
                             </XSwitcher>
                             <XSlider dots step={5} defaultValue={100} />
                             <XRange dots step={5} defaultValue={[20, 40]} />
-                            <XDropdown title="select users" options={[{ title: 'qwe1', value: 'qwe1' }, { title: 'qwe2', value: 'qwe2' }, { title: 'qwe3', value: 'qwe3' }, { title: 'qwe1', value: 'qwe1' }, { title: 'qwe2', value: 'qwe2' }, { title: 'qwe3', value: 'qwe3' }, { title: 'qwe1', value: 'qwe1' }, { title: 'qwe2', value: 'qwe2' }, { title: 'qwe3', value: 'qwe3' }]}/>
+                            <XDropdown title="select users" options={[{ title: 'qwe1', value: 'qwe1' }, { title: 'qwe2', value: 'qwe2' }, { title: 'qwe3', value: 'qwe3' }, { title: 'qwe1', value: 'qwe1' }, { title: 'qwe2', value: 'qwe2' }, { title: 'qwe3', value: 'qwe3' }, { title: 'qwe1', value: 'qwe1' }, { title: 'qwe2', value: 'qwe2' }, { title: 'qwe3', value: 'qwe3' }]} />
+                            <XDropdown title="with children">
+                                <XCard>
+                                    <XCard.FormList>
+                                        <XCard.FormCell
+                                            title="XForm example"
+                                            placeholder="Placeholder"
+                                            description="Form description"
+                                        />
+                                    </XCard.FormList>
+                                </XCard>
+                            </XDropdown>
                         </XVertical>
                     </XCard.Content>
                 </XCard>
