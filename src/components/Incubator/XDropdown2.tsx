@@ -43,25 +43,31 @@ const XDropdownButton = Glamorous.button<{ isOpen: boolean }>((props) => ({
     }
 }))
 
-const XDropdownMenu = Glamorous.div<{ isOpen: boolean, buttonStyle?: boolean }>((props) => ({
+interface XDropdownMenuProps {
+    isOpen: boolean, 
+    aligment?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+}
+
+const XDropdownMenu = Glamorous.div<XDropdownMenuProps>((props) => ({
     display: props.isOpen ? 'block' : 'none',
     position: 'absolute',
     overflow: 'scroll',
     maxHeight: 250,
-    top: '110%',
-    left: 0,
+    top: props.aligment ? ((props.aligment === 'bottom-left' || props.aligment === 'bottom-right') ? '110%' : undefined) : '110%',
+    bottom: props.aligment ? ((props.aligment === 'top-left' || props.aligment === 'top-right') ? '110%' : undefined) : undefined,
+    left: props.aligment ? ((props.aligment === 'top-left' || props.aligment === 'bottom-left') ? 0 : undefined) : 0,
+    right: props.aligment ? ((props.aligment === 'top-right' || props.aligment === 'bottom-right') ? 0 : undefined) : undefined,
     width: 'auto',
-    border: props.buttonStyle ? '1px solid rgba(34, 36, 38, .15)' : '1px solid #6B50FF',
-    borderTop: 'none',
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
+    border: '1px solid rgba(34, 36, 38, .15)',
+    borderRadius: 5,
     backgroundColor: '#fff'
 }))
 
 interface XDropdownProps {
     title: string,
     children: any,
-    icon?: string
+    icon?: string,
+    aligment?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 }
 
 export class XDropdown extends React.Component<XDropdownProps, { isOpen: boolean }> {
@@ -87,7 +93,7 @@ export class XDropdown extends React.Component<XDropdownProps, { isOpen: boolean
 
     render() {
         let { isOpen } = this.state
-        let { title, children, icon } = this.props
+        let { title, children, icon, aligment } = this.props
         return (
             <ClickOutside onClickOutside={this.handleClose}>
                 <XDropdownWrapper isOpen={isOpen}>
@@ -95,7 +101,7 @@ export class XDropdown extends React.Component<XDropdownProps, { isOpen: boolean
                         {title}
                         <XIcon icon={`${icon ? icon : isOpen ? 'arrow_drop_up' : 'arrow_drop_down'}`} />
                     </XDropdownButton>
-                    <XDropdownMenu isOpen={isOpen} buttonStyle={true}>
+                    <XDropdownMenu isOpen={isOpen} aligment={aligment}>
                         {children}
                     </XDropdownMenu>
                 </XDropdownWrapper>
