@@ -28,7 +28,7 @@ export class UserInfoProvider extends React.Component<{
         return {
             user: this.props.user !== null && this.props.user !== undefined ? this.props.user : null,
             area: this.props.area !== null && this.props.area !== undefined ? this.props.area : null,
-            organization: this.props.account !== null && this.props.account !== undefined ? this.props.account : null,
+            account: this.props.account !== null && this.props.account !== undefined ? this.props.account : null,
             roles: this.props.roles,
             isLoggedIn: this.props.user !== undefined && this.props.user !== null,
             doLogin: () => {
@@ -55,7 +55,7 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
     static contextTypes = {
         user: PropTypes.object,
         area: PropTypes.object,
-        organization: PropTypes.object,
+        account: PropTypes.object,
         roles: PropTypes.arrayOf(PropTypes.string),
         isLoggedIn: PropTypes.bool.isRequired,
         doLogin: PropTypes.func.isRequired,
