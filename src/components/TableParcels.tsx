@@ -15,18 +15,18 @@ export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[] }>((
                 <XCard.Table.Cell justifyContent="flex-end">Area</XCard.Table.Cell>
                 <XCard.Table.Cell justifyContent="flex-end">Land Value</XCard.Table.Cell>
                 <XCard.Table.Cell justifyContent="flex-end">Improvement Value</XCard.Table.Cell>
-                <XCard.Table.Cell>Zoning</XCard.Table.Cell>
+                <XCard.Table.Cell justifyContent="flex-end">Zoning</XCard.Table.Cell>
                 <XCard.Table.Cell justifyContent="flex-end">Favorites</XCard.Table.Cell>
             </XCard.Table.Header>
-            <tbody>
+            <XCard.Table.Body>
                 {props.items.map((v) => (
-                    <tr key={v.id} onClick={() => props.router.push('/parcels/' + v.id)}>
+                    <XCard.Table.Row key={v.id} path={'/parcels/' + v.id}>
                         <XCard.Table.Cell>{v.title}</XCard.Table.Cell>
                         <XCard.Table.Cell>{v.addresses.length > 0 && `${v.addresses[0].streetNumber} ${v.addresses[0].streetName} ${v.addresses[0].streetNameSuffix}`}</XCard.Table.Cell>
                         <XCard.Table.Cell justifyContent="flex-end">{v.extrasArea && <XArea area={v.extrasArea} />}</XCard.Table.Cell>
                         <XCard.Table.Cell justifyContent="flex-end">{v.extrasLandValue && <XMoney value={v.extrasLandValue} />}</XCard.Table.Cell>
                         <XCard.Table.Cell justifyContent="flex-end">{v.extrasImprovementValue && <XMoney value={v.extrasImprovementValue} />}</XCard.Table.Cell>
-                        <XCard.Table.Cell>{v.extrasZoning && v.extrasZoning.join()}</XCard.Table.Cell>
+                        <XCard.Table.Cell justifyContent="flex-end">{v.extrasZoning && v.extrasZoning.join()}</XCard.Table.Cell>
                         <XCard.Table.Cell justifyContent="flex-end">
                             <XButton
                                 size="large"
@@ -34,9 +34,9 @@ export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[] }>((
                                 icon={v.likes.liked ? 'favorite' : 'favorite_border'}
                             />
                         </XCard.Table.Cell>
-                    </tr>
+                    </XCard.Table.Row>
                 ))}
-            </tbody>
+            </XCard.Table.Body>
         </XCard.Table>
     )
 });
