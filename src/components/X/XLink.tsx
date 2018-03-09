@@ -21,7 +21,7 @@ function normalizePath(src: string): string {
     return src.endsWith('/') ? src.substring(0, src.length - 1) : src;
 }
 
-const LinkRender = withRouter<XLinkProps>((props) => {
+export const XLink = withRouter<XLinkProps>((props) => {
     var className = props.className ? props.className : undefined;
 
     if (props.path) {
@@ -34,8 +34,11 @@ const LinkRender = withRouter<XLinkProps>((props) => {
                 className = 'is-active';
             }
         }
+        if (props.onClick) {
+            throw Error('Unable to use onClick for routed links');
+        }
         return (
-            <LinkNext route={props.path} onClick={props.onClick}>
+            <LinkNext route={props.path}>
                 <a className={className}>{props.children}</a>
             </LinkNext>
         );
@@ -49,8 +52,11 @@ const LinkRender = withRouter<XLinkProps>((props) => {
                 className = 'is-active';
             }
         }
+        if (props.onClick) {
+            throw Error('Unable to use onClick for routed links');
+        }
         return (
-            <LinkNext route={path} onClick={props.onClick}>
+            <LinkNext route={path}>
                 <a className={className}>{props.children}</a>
             </LinkNext>
         );
@@ -68,19 +74,3 @@ const LinkRender = withRouter<XLinkProps>((props) => {
         );
     }
 });
-
-export const XLink = (props: XLinkProps & { children?: any }) => {
-    return (
-        <LinkRender
-            href={props.href}
-            anchor={props.anchor}
-            query={props.query}
-            path={props.path}
-            className={props.className}
-            activateForSubpaths={props.activateForSubpaths}
-            onClick={props.onClick}
-        >
-            {props.children}
-        </LinkRender>
-    );
-};
