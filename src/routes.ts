@@ -10,6 +10,8 @@ routes.add('/', '/main/explore/index');
 routes.add('/signup', '/signup');
 routes.add('/signin', '/signin');
 routes.add('/activation', '/activation');
+routes.add('/need_info', '/need_info');
+routes.add('/deactivated', '/deactivated');
 
 //
 // Parcels

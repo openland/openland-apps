@@ -11,14 +11,16 @@ export default withAppBase(withUserInfo((props) => {
 
     // Do not edit without reason!
     if (props.isLoggedIn) {
-        if (props.isBlocked) {
-            return <RedirectComponent path="/deactivated" />;
-        } else if (!props.isCompleted) {
-            if (props.isActivated) {
-                return <RedirectComponent path="/need_info" />;
+        if (!props.isBlocked) {
+            if (!props.isCompleted) {
+                if (props.isActivated) {
+                    return <RedirectComponent path="/need_info" />;
+                } else {
+                    return <RedirectComponent path="/activation" />;
+                }
+            } else {
+                return <RedirectComponent path="/" />;
             }
-        } else {
-            return <RedirectComponent path="/" />;
         }
     } else {
         return <RedirectComponent path="/signin" />;
@@ -26,11 +28,11 @@ export default withAppBase(withUserInfo((props) => {
 
     return (
         <>
-            <XHead title="Activation needed" titleSocial="Openland - land acquisition platfom" />
+            <XHead title="Blocked" titleSocial="Openland - land acquisition platfom" />
             <MessagePage>
                 <MessagePageContent
-                    title="Activation needed"
-                    message="We are working on your account and will notify when it became active"
+                    title="Your account is not active"
+                    message="Your account is no longer active"
                 />
             </MessagePage>
         </>

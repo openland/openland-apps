@@ -14,8 +14,8 @@ export default withAppBase(withUserInfo((props) => {
         if (props.isBlocked) {
             return <RedirectComponent path="/deactivated" />;
         } else if (!props.isCompleted) {
-            if (props.isActivated) {
-                return <RedirectComponent path="/need_info" />;
+            if (!props.isActivated) {
+                return <RedirectComponent path="/activation" />;
             }
         } else {
             return <RedirectComponent path="/" />;
@@ -26,11 +26,11 @@ export default withAppBase(withUserInfo((props) => {
 
     return (
         <>
-            <XHead title="Activation needed" titleSocial="Openland - land acquisition platfom" />
+            <XHead title="Need Info" titleSocial="Openland - land acquisition platfom" />
             <MessagePage>
                 <MessagePageContent
-                    title="Activation needed"
-                    message="We are working on your account and will notify when it became active"
+                    title="We need more info"
+                    message="To continue working with system we need more information from you"
                 />
             </MessagePage>
         </>

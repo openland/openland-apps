@@ -74,15 +74,23 @@ export interface AccountQuery {
     picture: string,
     email: string,
   } | null,
-  permissions:  {
-    __typename: "Permissions",
-    roles: Array< string >,
-  },
   myAccount:  {
     __typename: "MyAccount",
     id: string,
     title: string,
   } | null,
+  myProfile:  {
+    __typename: "MyProfile",
+    isLoggedIn: boolean,
+    isProfileCreated: boolean,
+    isAccountActivated: boolean,
+    isCompleted: boolean,
+    isBlocked: boolean,
+  },
+  permissions:  {
+    __typename: "Permissions",
+    roles: Array< string >,
+  },
 };
 
 export interface AreaQueryVariables {
@@ -1622,6 +1630,21 @@ export interface UsersQueryQuery {
     title: string,
     subtitle: string,
   } >,
+};
+
+export interface MyProfileFullFragment {
+  __typename: "MyProfile",
+  isLoggedIn: boolean,
+  isProfileCreated: boolean,
+  isAccountActivated: boolean,
+  isCompleted: boolean,
+  isBlocked: boolean,
+};
+
+export interface AccountShortFragment {
+  __typename: "MyAccount",
+  id: string,
+  title: string,
 };
 
 export interface AreaShortFragment {
