@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withUserInfo } from '../Base/UserInfo';
+import { withUserInfo } from '../UserInfo';
 export const XWithRole = withUserInfo<{ role: string | string[] }>((props) => {
     let hasRole = false;
     if (Array.isArray(props.role)) {

@@ -5,7 +5,7 @@ import { XIcon } from '../X/XIcon';
 import { XPopover } from '../X/XPopover';
 import { XMenu } from '../X/XMenu';
 import { withRouter } from '../../utils/withRouter';
-import { withUserInfo } from '../Base/UserInfo';
+import { withUserInfo } from '../UserInfo';
 import { AppSearch } from './AppSearch';
 
 let Container = Glamorous.div<{ asOverlay?: boolean }>((props) => ({

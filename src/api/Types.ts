@@ -78,6 +78,11 @@ export interface AccountQuery {
     __typename: "Permissions",
     roles: Array< string >,
   },
+  myAccount:  {
+    __typename: "MyAccount",
+    id: string,
+    title: string,
+  } | null,
 };
 
 export interface AreaQueryVariables {
@@ -1613,8 +1618,9 @@ export interface UsersQueryQueryVariables {
 export interface UsersQueryQuery {
   items:  Array< {
     __typename: "User",
-    value: string,
-    label: string,
+    id: string,
+    title: string,
+    subtitle: string,
   } >,
 };
 
