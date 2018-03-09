@@ -38,13 +38,14 @@ let TableHeader = Glamorous.table({
     }
 });
 
-let XCardTableTD = Glamorous.td<{width?: number, textAlign?: 'left' | 'right'}>((props) => ({
+let XCardTableTD = Glamorous.td<{width?: number}>((props) => ({
     width: props.width ? props.width : undefined,
-    verticalAlign: 'middle',
-    textAlign: props.textAlign,
+    verticalAlign: 'middle'
 }))
 
-let XCardTableTDDiv = Glamorous.div({
+let XCardTableTDDiv = Glamorous.div<{justifyContent?: 'flex-start' | 'flex-end'}>((props) => ({
+    display: 'flex',
+    justifyContent: props.justifyContent,
     paddingLeft: 16,
     paddingRight: 16,
 
@@ -58,7 +59,7 @@ let XCardTableTDDiv = Glamorous.div({
         background: 'transparent',
         justifyContent: 'flex-end'
     }
-})
+}))
 
 export function XCardTableHeader(props: { children: any }) {
     return (<thead><tr>{props.children}</tr></thead>);
@@ -68,10 +69,10 @@ export function XCardTableBody(props: { children: any }) {
     return (<tbody>{props.children}</tbody>);
 }
 
-export function XCardTableCell(props: { children: any, width?: number, textAlign?: 'left' | 'right' }) {
+export function XCardTableCell(props: { children: any, width?: number, justifyContent?: 'flex-start' | 'flex-end'}) {
     return (
-            <XCardTableTD width={props.width} textAlign={props.textAlign}>
-                <XCardTableTDDiv>{props.children}</XCardTableTDDiv>
+            <XCardTableTD width={props.width}>
+                <XCardTableTDDiv justifyContent={props.justifyContent}>{props.children}</XCardTableTDDiv>
             </XCardTableTD>
     );
 }
