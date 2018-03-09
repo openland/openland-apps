@@ -13,7 +13,7 @@ import { XSwitcher } from '../../components/X/XSwitcher';
 import { XSlider, XRange } from '../../components/X/XSlider';
 import { XSelect } from '../../components/X/XSelect';
 import { XForm } from '../../components/X/XForm';
-import { XDropdown } from '../../components/Incubator/XDropdown'
+import { XDropdown } from '../../components/Incubator/XDropdown2'
 import { XCardLink } from '../../components/Incubator/XCardLink';
 import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
@@ -97,7 +97,6 @@ export default withApp('viewer', (props) => {
                             </XSwitcher>
                             <XSlider dots step={5} defaultValue={100} />
                             <XRange dots step={5} defaultValue={[20, 40]} />
-                            <XDropdown title="select users" options={[{ title: 'qwe1', value: 'qwe1' }, { title: 'qwe2', value: 'qwe2' }, { title: 'qwe3', value: 'qwe3' }, { title: 'qwe1', value: 'qwe1' }, { title: 'qwe2', value: 'qwe2' }, { title: 'qwe3', value: 'qwe3' }, { title: 'qwe1', value: 'qwe1' }, { title: 'qwe2', value: 'qwe2' }, { title: 'qwe3', value: 'qwe3' }]} />
                             <XDropdown title="with children">
                                 <XCard>
                                     <XCard.FormList>
