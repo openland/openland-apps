@@ -40,7 +40,7 @@ export function MessagePage(props: { children?: any }) {
             <Container shadow="medium">
                 {props.children}
             </Container>
-            <Footer />
+            <Footer>Data Makes Perfect, Inc; CA 94102, 2017-2018</Footer>
         </ErrorDiv>
     );
 }
