@@ -71,6 +71,8 @@ routes.add('/super/debug', '/super/debug');
 routes.add('/super/debug/', '/super/debug');
 routes.add('/super/admins', '/super/admins');
 routes.add('/super/admins/', '/super/admins');
+routes.add('/super/orgs', '/super/orgs');
+routes.add('/super/orgs/', '/super/orgs');
 
 //
 // Authentication

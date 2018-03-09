@@ -54,6 +54,13 @@ export interface ParcelMetadataInput {
   available?: boolean | null,
 };
 
+export enum SuperAccountState {
+  PENDING = "PENDING",
+  ACTIVATED = "ACTIVATED",
+  DEACTIVATED = "DEACTIVATED",
+}
+
+
 export enum PermitSorting {
   STATUS_CHANGE_TIME = "STATUS_CHANGE_TIME",
   CREATE_TIME = "CREATE_TIME",
@@ -998,6 +1005,15 @@ export interface SuperAdminsQuery {
     lastName: string,
     picture: string,
     email: string,
+  } >,
+};
+
+export interface SuperAccountsQuery {
+  superAccounts:  Array< {
+    __typename: "SuperAccount",
+    id: string,
+    title: string,
+    state: SuperAccountState,
   } >,
 };
 

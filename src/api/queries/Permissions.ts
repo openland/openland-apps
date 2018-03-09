@@ -18,6 +18,16 @@ export const SuperAdminsQuery = gql`
     ${UserShort}
 `;
 
+export const SuperAccountsQuery = gql`
+    query SuperAccounts {
+        superAccounts {
+            id
+            title
+            state
+        }
+    }
+`;
+
 export const SuperAdminAdd = gql`
     mutation SuperAdminAdd($userId: ID!) {
         superAdminAdd(userId: $userId)

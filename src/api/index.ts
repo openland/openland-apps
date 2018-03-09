@@ -181,3 +181,4 @@ export const withSuperAdmins = graphqlRouted<Types.SuperAdminsQuery>(Permissions
 export const UserSelect = graphqlSelect(User.UsersQuery);
 export const withSuperAdminAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Permissions.SuperAdminAdd, { name: 'add', refetchQueries: [Permissions.SuperAdminsQuery] });
 export const withSuperAdminRemove = graphqlMutation<{ remove: MutationFunc<{}> }>(Permissions.SuperAdminRemove, { name: 'remove', refetchQueries: [Permissions.SuperAdminsQuery] });
+export const withSuperAccounts = graphqlRouted<Types.SuperAccountsQuery>(Permissions.SuperAccountsQuery);
