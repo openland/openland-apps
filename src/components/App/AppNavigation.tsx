@@ -25,9 +25,9 @@ export const AppNavigation = withParcelsFavroutesCount((props) => {
                 <Div />
                 <AppSidebar.Item path="/team" title="Team" icon="group" />
                 <Div />
-                <AppSidebar.Item path="/super/admins" title="Super Admins" icon="domain" />
-                <AppSidebar.Item path="/super/orgs" title="Organizations" icon="recent_actors" />
-                <AppSidebar.Item path="/super/debug" title="Debug" icon="memory" />
+                <AppSidebar.Item path="/super/admins" title="Super Admins" icon="domain" activateForSubpaths={true} />
+                <AppSidebar.Item path="/super/orgs" title="Organizations" icon="recent_actors" activateForSubpaths={true} />
+                <AppSidebar.Item path="/super/debug" title="Debug" icon="memory" activateForSubpaths={true} />
             </XWithRole>
         </>
     );
