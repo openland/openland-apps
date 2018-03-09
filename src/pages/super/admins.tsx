@@ -5,7 +5,7 @@ import { withSuperAdmins, UserSelect, withSuperAdminAdd, withSuperAdminRemove } 
 import { AppContent } from '../../components/App/AppContent';
 import { XCard } from '../../components/X/XCard';
 import { XButton } from '../../components/X/XButton';
-import { XModal } from '../../components/X/XModal';
+import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XForm } from '../../components/X/XForm';
 
 const AddSuperAdminForm = withSuperAdminAdd((props) => {
@@ -39,22 +39,22 @@ export default withApp('super-admin', withSuperAdmins((props) => {
         <AppContent>
             <XCard shadow="medium">
                 <XCard.Header text="Super Admins" description={props.data.superAdmins.length + ' total'}>
-                    <XModal fullScreen={false} title="Adding New Super Admin">
-                        <XModal.Target>
+                    <XModalTargeted fullScreen={false} title="Adding New Super Admin">
+                        <XModalTargeted.Target>
                             <XButton>Add New</XButton>
-                        </XModal.Target>
-                        <XModal.Content>
+                        </XModalTargeted.Target>
+                        <XModalTargeted.Content>
                             <AddSuperAdminForm />
-                        </XModal.Content>
-                    </XModal>
-                    <XModal fullScreen={false} title="Removing Super Admin">
-                        <XModal.Target>
+                        </XModalTargeted.Content>
+                    </XModalTargeted>
+                    <XModalTargeted fullScreen={false} title="Removing Super Admin">
+                        <XModalTargeted.Target>
                             <XButton>Remove Exising</XButton>
-                        </XModal.Target>
-                        <XModal.Content>
+                        </XModalTargeted.Target>
+                        <XModalTargeted.Content>
                             <RemoveSuperAdminForm />
-                        </XModal.Content>
-                    </XModal>
+                        </XModalTargeted.Content>
+                    </XModalTargeted>
                 </XCard.Header>
                 <XCard.Table>
                     <XCard.Table.Header>

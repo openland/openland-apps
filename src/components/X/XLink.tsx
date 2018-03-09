@@ -8,7 +8,7 @@ export interface XLinkProps {
     href?: string | null;
     anchor?: string | null;
     query?: { field: string, value?: string } | null;
-    className?: string | null;
+    className?: string;
     activateForSubpaths?: boolean | null;
     onClick?: React.MouseEventHandler<HTMLAnchorElement>;
     clickOnDown?: boolean;

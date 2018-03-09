@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { XIcon } from './XIcon';
-import XStyled from './XStyled';
 import Glamorous from 'glamorous';
 import { XLink } from './XLink';
 
-export const ExternalLinkDiv = XStyled(XLink)({
+export const ExternalLinkDiv = Glamorous(XLink)({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

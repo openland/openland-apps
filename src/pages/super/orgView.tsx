@@ -7,7 +7,7 @@ import { withSuperAccount, withSuperAccountActivate, withSuperAccountSuspend, wi
 import { XButtonMutation } from '../../components/X/XButtonMutation';
 import { XForm } from '../../components/X/XForm';
 import { XButton } from '../../components/X/XButton';
-import { XModal } from '../../components/X/XModal';
+import { XModalTargeted } from '../../components/X/XModalTargeted';
 
 const ActivateButton = withSuperAccountActivate((props) => <XButtonMutation style="important" mutation={props.activate}>Activate</XButtonMutation>);
 const SuspendButton = withSuperAccountSuspend((props) => <XButtonMutation style="dark" mutation={props.suspend}>Suspend</XButtonMutation>);
@@ -31,14 +31,14 @@ export default withApp('super-admin', withSuperAccount((props) => {
         <AppContent>
             <XCard shadow="medium">
                 <XCard.Header text={props.data.superAccount.title} description={'Current State: ' + props.data.superAccount.state}>
-                    <XModal fullScreen={false} title="Adding New Super Admin">
-                        <XModal.Target>
+                    <XModalTargeted fullScreen={false} title="Adding New Super Admin">
+                        <XModalTargeted.Target>
                             <XButton>Add Member</XButton>
-                        </XModal.Target>
-                        <XModal.Content>
+                        </XModalTargeted.Target>
+                        <XModalTargeted.Content>
                             <AddAddMemberForm />
-                        </XModal.Content>
-                    </XModal>
+                        </XModalTargeted.Content>
+                    </XModalTargeted>
                     {props.data.superAccount.state !== 'ACTIVATED' && <ActivateButton />}
                     {props.data.superAccount.state === 'ACTIVATED' && <SuspendButton />}
                 </XCard.Header>

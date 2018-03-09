@@ -11,21 +11,15 @@ export class XButtonMutation extends React.Component<XButtonStyleProps & { mutat
 
     handleClick = async (e: any) => {
         e.preventDefault();
-        console.warn('Clicked');
         if (this.state.loading) {
-            console.warn('Already loading');
             return;
         }
-        console.warn('Starting');
         this.setState({ loading: true });
         try {
             await this.props.mutation({ variables: this.props.variables });
-            // await this.props.mutation({});
         } catch (e) {
-            console.warn(e);
             // Ignore
         } finally {
-            console.warn('Completed');
             this.setState({ loading: false });
         }
     }

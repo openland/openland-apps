@@ -8,7 +8,8 @@ export const XDialogContainer = Glamorous(XCard)({
     marginLeft: 64,
     marginRight: 64,
     marginTop: 64,
-    marginBottom: 64
+    marginBottom: 64,
+    pointerEvents: 'auto'
 });
 
 export const XDialogFullScreenContainer = Glamorous.div({
@@ -20,7 +21,8 @@ export const XDialogFullScreenContainer = Glamorous.div({
     height: '100vh',
     backgroundColor: '#ffffff',
     overflowY: 'auto',
-    position: 'relative'
+    position: 'relative',
+    pointerEvents: 'auto',
 });
 
 export const XDialogFullScreenContainerInner = Glamorous.div<{width?: number}>((props) => ({
@@ -58,7 +60,7 @@ export function XDialog(props: { style?: 'full-screen' | 'normal', title: string
                     {props.children}
                 </XDialogFullScreenContainerInner>
             </XDialogFullScreenContainer>
-        )
+        );
     } else {
         return (
             <XDialogContainer shadow="medium">

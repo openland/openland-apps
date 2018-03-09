@@ -1,15 +1,11 @@
 import * as React from 'react';
-import * as glamor from 'glamor';
 import Glamorous from 'glamorous';
+import * as glamor from 'glamor';
 import { XLink, XLinkProps } from './XLink';
 import { XIcon } from './XIcon';
-import XStyled from './XStyled';
+import { withLayout, XLayoutProps } from './withLayout';
 
-export interface XButtonStyleProps {
-    alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
-    flexGrow?: number;
-    flexShrink?: number;
-    flexBasis?: number;
+export interface XButtonStyleProps extends XLayoutProps {
     style?: 'normal' | 'dark' | 'important';
     size?: 'large' | 'medium' | 'normal';
     bounce?: boolean;
@@ -21,7 +17,7 @@ export interface XButtonStyleProps {
 }
 
 export interface XButtonProps extends XLinkProps, XButtonStyleProps {
-
+    
 }
 
 const loading = glamor.keyframes({
@@ -77,7 +73,7 @@ let paddings = {
     'large': '16px 20px'
 };
 
-export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
+export const XButtonComponent = withLayout(Glamorous<XButtonProps>(XLink)((props) => {
     let style = props.style !== undefined && props.style !== 'normal' ? props.style : 'normal';
     let size = props.size !== undefined && props.size !== 'normal' ? props.size : 'normal';
     return {
@@ -97,9 +93,6 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
         opacity: props.disabled ? 0.8 : 1,
         pointerEvents: (props.loading || props.disabled) ? 'none' : 'auto',
 
-        flexGrow: props.flexGrow,
-        flexShrink: props.flexShrink,
-        flexBasis: props.flexBasis,
         padding: props.borderless ? undefined : paddings[size],
 
         color: props.accent ? '#4428e0' : (props.loading ? 'transparent' : textColors[style]),
@@ -114,8 +107,6 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
         fontSize: fontSize[size],
         lineHeight: '20px',
         fontWeight: 600,
-
-        alignSelf: props.alignSelf,
 
         '&:hover': {
             transform: props.bounce ? 'translateY(-1px)' : undefined,
@@ -165,65 +156,14 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
             marginLeft: props.icon ? (props.accent ? 7 : 3) : 0
         }
     };
-});
-
-export function XButton(props: XButtonProps & { children?: any }) {
-    return (
-        <XButtonComponent
-            alignSelf={props.alignSelf}
-            style={props.style}
-            size={props.size}
-            bounce={props.bounce}
-            loading={props.loading}
-            disabled={props.disabled}
-            icon={props.icon}
-            href={props.href}
-            path={props.path}
-            query={props.query}
-            onClick={props.onClick}
-            accent={props.accent}
-            flexGrow={props.flexGrow}
-            flexShrink={props.flexShrink}
-            flexBasis={props.flexBasis}
-            borderless={props.borderless}
-        >
-            {props.icon && <XIcon icon={props.icon} />}
-            {props.children && (<span>{props.children}</span>)}
-        </XButtonComponent>
-    );
-}
-
-const heartBurst = glamor.keyframes({
-    'from': { backgroundPosition: 'left' },
-    'to': { backgroundPosition: 'right' }
-});
-
-let XLikeButton = Glamorous.div<{ active: boolean }>((props) => ({
-    cursor: 'pointer',
-    height: 50,
-    width: 50,
-    marginLeft: -16,
-    marginRight: -16,
-    backgroundImage: 'url(/static/X/likeButtonAnimation.png)',
-    backgroundPosition: props.active ? 'right' : 'left',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: '2900%',
-    '&:hover': {
-        backgroundPosition: 'right',
-    },
-    animation: props.active ? `${heartBurst} .8s steps(28)` : undefined
 }));
 
-export class XButtonLike extends React.Component<{ onChange?: (value: boolean) => void, value?: boolean }> {
-    handler = (e: any) => {
-        e.preventDefault();
-        if (this.props.onChange) {
-            this.props.onChange(!(this.props.value || false));
-        }
-    }
-    render() {
-        return (
-            <XLikeButton active={this.props.value || false} onClick={this.handler} />
-        );
-    }
+export function XButton(props: XButtonProps & { children?: any }) {
+    let { icon, children, ...other } = props;
+    return (
+        <XButtonComponent {...other}>
+            {icon && <XIcon icon={icon} />}
+            {children && (<span>{children}</span>)}
+        </XButtonComponent>
+    );
 }
