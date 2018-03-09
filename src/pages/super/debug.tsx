@@ -1,3 +1,4 @@
+import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { withUserInfo } from '../../components/UserInfo';
@@ -37,5 +38,5 @@ export default withApp('super-admin', withUserInfo((props) => {
                 </XCard.Content>
             </XCard>
         </AppContent>
-    )
+    );
 }));

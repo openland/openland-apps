@@ -1031,6 +1031,9 @@ export interface SuperAccountQuery {
       __typename: "User",
       id: string,
       name: string,
+      firstName: string,
+      lastName: string,
+      picture: string,
       email: string,
     } >,
   },
@@ -1057,6 +1060,27 @@ export interface SuperAccountSuspendMutation {
     __typename: "SuperAccount",
     id: string,
     state: SuperAccountState,
+  },
+};
+
+export interface SuperAccountMemberAddMutationVariables {
+  accountId: string,
+  userId: string,
+};
+
+export interface SuperAccountMemberAddMutation {
+  superAccountMemberAdd:  {
+    __typename: "SuperAccount",
+    id: string,
+    members:  Array< {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string,
+      picture: string,
+      email: string,
+    } >,
   },
 };
 

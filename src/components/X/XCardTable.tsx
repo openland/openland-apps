@@ -26,7 +26,7 @@ let TableHeader = Glamorous.table({
 let XCardTableTD = Glamorous.td<{ width?: number }>((props) => ({
     width: props.width ? props.width : undefined,
     verticalAlign: 'middle'
-}))
+}));
 
 let XCardTableTDDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end' | 'center' }>((props) => ({
     display: 'flex',
@@ -44,7 +44,7 @@ let XCardTableTDDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end'
         background: 'transparent',
         justifyContent: 'flex-end'
     }
-}))
+}));
 
 export function XCardTableHeader(props: { children: any }) {
     return (<thead><tr>{props.children}</tr></thead>);
@@ -54,7 +54,7 @@ export function XCardTableBody(props: { children: any }) {
     return (<tbody>{props.children}</tbody>);
 }
 
-const XCardTableBodyRowStyle = Glamorous.tr<{noHover?: boolean}>((props) => ({
+const XCardTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
     position: 'relative',
     '> a': {
         position: 'absolute',
@@ -76,14 +76,14 @@ const XCardTableBodyRowStyle = Glamorous.tr<{noHover?: boolean}>((props) => ({
         fontWeight: 600,
         color: '#182642',
     }
-}))
+}));
 
 interface XCardTableRowProps {
-    children: any, 
-    onClick?: (e?: any) => void, 
-    path?: string, 
-    href?: string, 
-    noHover?: boolean
+    children: any;
+    onClick?: (e?: any) => void;
+    path?: string;
+    href?: string;
+    noHover?: boolean;
 }
 
 export function XCardTableRow(props: XCardTableRowProps) {
@@ -96,9 +96,9 @@ export function XCardTableRow(props: XCardTableRowProps) {
 }
 
 interface XCardTableCellProps {
-    children: any,
-    width?: number,
-    justifyContent?: 'flex-start' | 'flex-end' | 'center'
+    children: any;
+    width?: number;
+    justifyContent?: 'flex-start' | 'flex-end' | 'center';
 }
 
 export function XCardTableCell(props: XCardTableCellProps) {
@@ -120,6 +120,6 @@ export class XCardTable extends React.Component {
             <TableHeader>
                 {this.props.children}
             </TableHeader>
-        )
+        );
     }
 }

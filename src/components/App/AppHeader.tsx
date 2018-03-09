@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withUserInfo } from '../Base/UserInfo';
+import { withUserInfo } from '../UserInfo';
 import { XPopover } from '../X/XPopover';
 import { XMenu } from '../X/XMenu';
 import { AppSearch } from './AppSearch';
@@ -12,7 +12,7 @@ let Header = Glamorous.div({
     marginTop: '16px',
     marginBottom: '8px',
     pointerEvents: 'auto'
-})
+});
 
 let MenuElements = Glamorous.div({
     display: 'flex',
@@ -21,7 +21,7 @@ let MenuElements = Glamorous.div({
     marginLeft: '16px',
     marginRight: '16px',
     flexGrow: 1
-})
+});
 
 let UserInfoBox = Glamorous.div({
     paddingTop: 8,
@@ -39,7 +39,7 @@ let UserInfoBox = Glamorous.div({
         lineHeight: '16px',
         fontWeight: 400,
     }
-})
+});
 
 const AvatarImg = Glamorous.img({
     overflow: 'hidden',
@@ -68,7 +68,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
                 </XMenu>
             </XPopover.Content>
         </XPopover>
-    )
+    );
 });
 
 export let AppHeader = (props: { children?: any }) => {
@@ -80,5 +80,5 @@ export let AppHeader = (props: { children?: any }) => {
             </MenuElements>
             <UserProfile />
         </Header>
-    )
-}
+    );
+};

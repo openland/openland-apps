@@ -35,12 +35,11 @@ export const SuperAccountQuery = gql`
             title
             state
             members {
-                id
-                name
-                email
+                ...UserShort
             }
         }
     }
+    ${UserShort}
 `;
 
 export const SuperAccountActivate = gql`
@@ -59,6 +58,18 @@ export const SuperAccountSuspend = gql`
             state
         }
     }
+`;
+
+export const SuperAccountMemberAdd = gql`
+    mutation SuperAccountMemberAdd($accountId: ID!, $userId: ID!) {
+        superAccountMemberAdd(id: $accountId, userId: $userId) {
+            id
+            members {
+                ...UserShort
+            }
+        }
+    }
+    ${UserShort}
 `;
 
 export const SuperAdminAdd = gql`
