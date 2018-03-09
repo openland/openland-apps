@@ -7,6 +7,10 @@ export const AccountQuery = gql`
         permissions {
             roles
         }
+        myAccount {
+            id
+            title
+        }
     }
     ${UserShort}
 `;

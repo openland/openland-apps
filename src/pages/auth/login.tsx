@@ -19,7 +19,7 @@ class LoginStarter extends React.Component<{}, { error: boolean }> {
             localStorage.removeItem('redirect_path');
         }
         let auth = new auth0.WebAuth({
-            domain: 'statecraft.auth0.com',
+            domain: 'auth.openland.com',
             clientID: 'v3R2Rr6D4LzzcWKHf91jwKJyDnEm4L96',
             redirectUri: window.location.origin + '/auth/complete',
             audience: 'https://statecraft.auth0.com/userinfo',

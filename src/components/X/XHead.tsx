@@ -2,8 +2,8 @@ import * as React from 'react';
 import Head from 'next/head';
 import { formatPageTitle } from '../../utils/strings';
 import { withRouter } from '../../utils/withRouter';
-export const XHead = withRouter<{ title: string | string[], imgCloud?: string | null, imgUrl?: string | null }>((props) => {
 
+export const XHead = withRouter<{ title: string | string[], titleSocial?: string | null, imgCloud?: string | null, imgUrl?: string | null }>((props) => {
     let parts = ['Openland'];
     if (typeof (props.title) === 'string') {
         parts = ['Openland', props.title];
@@ -22,7 +22,7 @@ export const XHead = withRouter<{ title: string | string[], imgCloud?: string | 
     return (
         <Head>
             <title key="page_title">{title}</title>
-            <meta key="og_title" property="og:title" content={title} />
+            <meta key="og_title" property="og:title" content={props.titleSocial ? props.titleSocial : title} />
             <meta key="og_url" property="og:url" content={props.router.href} />
             <meta key="og_description" property="og:description" content="All-in-one solution for land acquisition" />
             <meta key="og_img" property="og:image" content={img} />

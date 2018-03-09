@@ -4,8 +4,8 @@ type Align = 'center' | 'start' | 'end' | 'stretch' | 'baseline';
 type Direction = 'column' | 'row';
 type Justify = 'center' | 'start' | 'end' | 'space-between';
 
-type ForAlignConvertFunc = 'center' | 'flex-start' | 'flex-end' | 'baseline' | 'stretch' | undefined 
-type ForJustifyConvertFunc = 'center' | 'flex-start' | 'flex-end' | 'space-between' | undefined 
+type ForAlignConvertFunc = 'center' | 'flex-start' | 'flex-end' | 'baseline' | 'stretch' | undefined
+type ForJustifyConvertFunc = 'center' | 'flex-start' | 'flex-end' | 'space-between' | undefined
 
 interface XViewProps {
     alignSelf?: Align | null;
@@ -13,6 +13,8 @@ interface XViewProps {
     justifyContent?: Justify | null;
     direction?: Direction | null;
     childWhiteSpace?: boolean;
+    grow?: number | null;
+    shrink?: number | null;
 }
 
 function convertAlign(own: boolean, align?: Align | null): ForAlignConvertFunc {
@@ -69,6 +71,8 @@ export const XView = Glamorous.div<XViewProps>((props) => {
         alignSelf: convertAlign(true, props.alignSelf),
         justifyContent: convertJustify(props.justifyContent),
         flexDirection: props.direction ? props.direction : 'column',
+        flexGrow: props.grow !== null && props.grow !== undefined ? props.grow : undefined,
+        flexShrink: props.shrink !== null && props.shrink !== undefined ? props.shrink : undefined,
         '> *': {
             margin: props.childWhiteSpace ? '0 7px' : undefined,
             '&:last-child': {

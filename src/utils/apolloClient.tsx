@@ -9,7 +9,7 @@ let cachedClient: ApolloClient<NormalizedCacheObject> | undefined = undefined;
 const buildClient = (initialState?: any, token?: string) => {
     var headers: any = {};
     if (token) {
-        headers.authorization = 'Bearer ' + token;
+        headers['x-openland-token'] = token;
     }
     var cache = new InMemoryCache();
     if (initialState) {

@@ -7,6 +7,7 @@ let routes = Routes();
 //
 
 routes.add('/', '/main/explore/index');
+routes.add('/signup', '/signup');
 
 //
 // Parcels
@@ -32,10 +33,10 @@ routes.add('/projects/:projectId/', '/main/projects/view');
 // Extras
 //
 
-routes.add('/favorites', '/main/favorites/index')
-routes.add('/favorites/', '/main/favorites/index')
-routes.add('/inquiries', '/main/inquiries/index')
-routes.add('/inquiries/', '/main/inquiries/index')
+routes.add('/favorites', '/main/favorites/index');
+routes.add('/favorites/', '/main/favorites/index');
+routes.add('/inquiries', '/main/inquiries/index');
+routes.add('/inquiries/', '/main/inquiries/index');
 
 //
 // UI
@@ -52,16 +53,25 @@ routes.add('/settings', '/main/settings/index');
 routes.add('/settings/', '/main/settings/index');
 
 //
-// Debug
+// Team
+//
+
+routes.add('/team', '/team/index');
+routes.add('/team/', '/team/index');
+
+//
+// Super
 //
 
 routes.add('/super/debug', '/super/debug');
 routes.add('/super/debug/', '/super/debug');
-
 routes.add('/super/admins', '/super/admins');
 routes.add('/super/admins/', '/super/admins');
 
-// Technical pages
+//
+// Authentication
+//
+
 routes.add('auth/login');
 routes.add('auth/logout');
 routes.add('auth/complete');
