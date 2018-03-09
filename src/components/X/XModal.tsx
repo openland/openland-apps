@@ -23,13 +23,13 @@ const XModalContainer = Glamorous.div({
     alignSelf: 'stretch'
 });
 
-interface XModalProps {
-    // State
+export interface XModalProps extends XModalStyleProps {
     isOpen: boolean;
     closeOnClick?: boolean;
     onClosed: () => void;
+}
 
-    // Style
+export interface XModalStyleProps {
     title: string;
     style?: 'full-screen' | 'normal';
     width?: number; // DEPRECATED!

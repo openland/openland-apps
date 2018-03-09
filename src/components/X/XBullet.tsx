@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 
 interface XBulletProps {
-    color?: 'red' | 'green' | 'blue' | 'yellow',
+    color?: 'red' | 'green' | 'blue' | 'yellow';
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
 }
 
@@ -23,7 +23,7 @@ let style = {
         'color': '#e39f48',
         'boxShadow': 'inset 0 0 0 1px rgba(227, 159, 72, .2)'
     }
-}
+};
 
 let XBulletDiv = Glamorous.div<XBulletProps>((props) => ({
     display: 'flex',
@@ -49,5 +49,5 @@ export function XBullet(props: XBulletProps & { children?: any }) {
         <XBulletDiv color={props.color} alignSelf={props.alignSelf}>
             <span>{props.children}</span>
         </XBulletDiv>
-    )
+    );
 }
