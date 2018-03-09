@@ -1,7 +1,10 @@
+import '../globals';
 import * as React from 'react';
-// import * as Typeform from '@typeform/embed';
 import Glamorous from 'glamorous';
 import { XHead } from '../components/X/XHead';
+import { withData } from '../utils/withData';
+import { RedirectComponent } from '../components/routing/RedirectComponent';
+import { withAccountQuery } from '../api';
 
 const TypeformDiv = Glamorous.div({
     position: 'absolute',
@@ -39,11 +42,19 @@ class TypeformEmbedded extends React.Component<{ url: string }> {
     }
 }
 
-export default () => {
-    return (
-        <RootDiv>
-            <XHead title="Sign Up" />
-            <TypeformEmbedded url="https://openlandapp.typeform.com/to/RoMP5U" />
-        </RootDiv>
-    );
-}
+export default withData(withAccountQuery((props) => {
+    if (props.data.me !== null) {
+        if (props.data.myAccount !== null) {
+            return <RedirectComponent path="/" />;
+        } else {
+            return <RedirectComponent path="/activation" />;
+        }
+    } else {
+        return (
+            <RootDiv>
+                <XHead title="Sign Up" />
+                <TypeformEmbedded url="https://openlandapp.typeform.com/to/RoMP5U" />
+            </RootDiv>
+        );
+    }
+}));

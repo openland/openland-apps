@@ -16,6 +16,7 @@ export class UserInfoProvider extends React.Component<{
         account: PropTypes.object,
         roles: PropTypes.arrayOf(PropTypes.string),
         isLoggedIn: PropTypes.bool.isRequired,
+        isActivated: PropTypes.bool.isRequired,
         doLogin: PropTypes.func.isRequired,
         doLogout: PropTypes.func.isRequired
     };
@@ -31,6 +32,7 @@ export class UserInfoProvider extends React.Component<{
             account: this.props.account !== null && this.props.account !== undefined ? this.props.account : null,
             roles: this.props.roles,
             isLoggedIn: this.props.user !== undefined && this.props.user !== null,
+            isActivated: this.props.account !== undefined && this.props.account !== null,
             doLogin: () => {
                 this.props.router.push('/auth/login?r=' + encodeURIComponent(this.props.router.pathname));
             },
@@ -47,6 +49,7 @@ export interface UserInfoComponentProps {
     account: { id: string, title: string } | null;
     roles: string[];
     isLoggedIn: boolean;
+    isActivated: boolean;
     doLogin: () => void;
     doLogout: () => void;
 }
@@ -58,6 +61,7 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
         account: PropTypes.object,
         roles: PropTypes.arrayOf(PropTypes.string),
         isLoggedIn: PropTypes.bool.isRequired,
+        isActivated: PropTypes.bool.isRequired,
         doLogin: PropTypes.func.isRequired,
         doLogout: PropTypes.func.isRequired
     };
@@ -68,6 +72,7 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
         var account = this.context.account as { id: string, title: string } | null;
         var roles = this.context.roles as string[];
         var isLoggedIn = this.context.isLoggedIn as boolean;
+        var isActivated = this.context.isActivated as boolean;
         var doLogin = this.context.doLogin as () => void;
         var doLogout = this.context.doLogout as () => void;
         var Wrapped = this.props.render;
@@ -78,6 +83,7 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
                 roles={roles}
                 account={account}
                 isLoggedIn={isLoggedIn}
+                isActivated={isActivated}
                 doLogin={doLogin}
                 doLogout={doLogout}
                 {...this.props}

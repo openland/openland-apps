@@ -8,6 +8,8 @@ let routes = Routes();
 
 routes.add('/', '/main/explore/index');
 routes.add('/signup', '/signup');
+routes.add('/signin', '/signin');
+routes.add('/activation', '/activation');
 
 //
 // Parcels
