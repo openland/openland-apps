@@ -19,6 +19,6 @@ export function withAppBase(WrappedComponent: React.ComponentType<{}>) {
                     <WrappedComponent />
                 </UserInfoProvider>
             </>
-        )
+        );
     }));
 }

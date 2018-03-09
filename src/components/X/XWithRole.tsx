@@ -13,7 +13,7 @@ export const XWithRole = withUserInfo<{ role: string | string[] }>((props) => {
         hasRole = props.roles.indexOf(props.role) >= 0;
     }
     if (hasRole) {
-        return <>{props.children}</>
+        return <>{props.children}</>;
     } else {
         return null;
     }

@@ -12,7 +12,7 @@ export default withAppBase(withUserInfo((props) => {
     // Do not edit without reason!
     if (props.isLoggedIn) {
         if (props.isBlocked) {
-            return <RedirectComponent path="/deactivated" />;
+            return <RedirectComponent path="/suspended" />;
         } else if (!props.isCompleted) {
             if (props.isActivated) {
                 return <RedirectComponent path="/need_info" />;
@@ -30,8 +30,9 @@ export default withAppBase(withUserInfo((props) => {
             <MessagePage>
                 <MessagePageContent
                     title="Activation needed"
-                    message="We are working on your account and will notify when it became active"
-                />
+                >
+                    We are working on your account and will notify when it will became active.
+                </MessagePageContent>
             </MessagePage>
         </>
     );

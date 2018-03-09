@@ -57,7 +57,7 @@ export interface ParcelMetadataInput {
 export enum SuperAccountState {
   PENDING = "PENDING",
   ACTIVATED = "ACTIVATED",
-  DEACTIVATED = "DEACTIVATED",
+  SUSPENDED = "SUSPENDED",
 }
 
 
@@ -1015,6 +1015,49 @@ export interface SuperAccountsQuery {
     title: string,
     state: SuperAccountState,
   } >,
+};
+
+export interface SuperAccountQueryVariables {
+  accountId: string,
+};
+
+export interface SuperAccountQuery {
+  superAccount:  {
+    __typename: "SuperAccount",
+    id: string,
+    title: string,
+    state: SuperAccountState,
+    members:  Array< {
+      __typename: "User",
+      id: string,
+      name: string,
+      email: string,
+    } >,
+  },
+};
+
+export interface SuperAccountActivateMutationVariables {
+  accountId: string,
+};
+
+export interface SuperAccountActivateMutation {
+  superAccountActivate:  {
+    __typename: "SuperAccount",
+    id: string,
+    state: SuperAccountState,
+  },
+};
+
+export interface SuperAccountSuspendMutationVariables {
+  accountId: string,
+};
+
+export interface SuperAccountSuspendMutation {
+  superAccountSuspend:  {
+    __typename: "SuperAccount",
+    id: string,
+    state: SuperAccountState,
+  },
 };
 
 export interface SuperAdminAddMutationVariables {

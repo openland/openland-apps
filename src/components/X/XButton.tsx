@@ -1,11 +1,11 @@
 import * as React from 'react';
-import * as glamor from 'glamor'
+import * as glamor from 'glamor';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from './XLink';
-import { XIcon } from './XIcon'
+import { XIcon } from './XIcon';
 import XStyled from './XStyled';
 
-interface XButtonProps extends XLinkProps {
+export interface XButtonStyleProps {
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
     flexGrow?: number;
     flexShrink?: number;
@@ -15,63 +15,71 @@ interface XButtonProps extends XLinkProps {
     bounce?: boolean;
     loading?: boolean;
     disabled?: boolean;
-    icon?: string,
-    accent?: boolean,
-    borderless?: boolean
+    icon?: string;
+    accent?: boolean;
+    borderless?: boolean;
+}
+
+export interface XButtonProps extends XLinkProps, XButtonStyleProps {
+
 }
 
 const loading = glamor.keyframes({
     '0%': { transform: `rotate(0deg)` },
     '100%': { transform: `rotate(360deg)` }
-})
+});
 
 let textColors = {
     'normal': '#525f7f',
     'dark': '#ffffff',
     'important': '#ffffff'
-}
+};
+
 let textHoveredColors = {
     'normal': '#32325d',
     'dark': '#ffffff',
     'important': '#ffffff'
-}
+};
+
 let backgroundColors = {
     'normal': '#ffffff',
     'dark': '#6B50FF',
     'important': '#3ecf8e'
-}
+};
+
 let backgroundHoveredColors = {
     'normal': undefined,
     'dark': '#8571f3',
     'important': undefined
-}
+};
+
 let backgroundPressedColors = {
     'normal': undefined,
     'dark': '#5032f3',
     'important': undefined
-}
+};
 
 let fontSize = {
     'normal': '13px',
     'medium': '14px',
     'large': '15px'
-}
+};
 
 let iconSize = {
     'normal': '15px',
     'medium': '18px',
     'large': '20px'
-}
+};
 
 let paddings = {
     'normal': '6px 14px',
     'medium': '10px 18px',
     'large': '16px 20px'
-}
+};
 
 export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
-    let style = props.style !== undefined && props.style !== 'normal' ? props.style : 'normal'
-    let size = props.size !== undefined && props.size !== 'normal' ? props.size : 'normal'
+    let style = props.style !== undefined && props.style !== 'normal' ? props.style : 'normal';
+    let size = props.size !== undefined && props.size !== 'normal' ? props.size : 'normal';
     return {
         display: 'flex',
         justifyContent: 'center',
@@ -156,7 +164,7 @@ export const XButtonComponent = XStyled<XButtonProps>(XLink)((props) => {
         '& > span': {
             marginLeft: props.icon ? (props.accent ? 7 : 3) : 0
         }
-    }
+    };
 });
 
 export function XButton(props: XButtonProps & { children?: any }) {
@@ -182,13 +190,13 @@ export function XButton(props: XButtonProps & { children?: any }) {
             {props.icon && <XIcon icon={props.icon} />}
             {props.children && (<span>{props.children}</span>)}
         </XButtonComponent>
-    )
+    );
 }
 
 const heartBurst = glamor.keyframes({
     'from': { backgroundPosition: 'left' },
     'to': { backgroundPosition: 'right' }
-})
+});
 
 let XLikeButton = Glamorous.div<{ active: boolean }>((props) => ({
     cursor: 'pointer',
@@ -204,18 +212,18 @@ let XLikeButton = Glamorous.div<{ active: boolean }>((props) => ({
         backgroundPosition: 'right',
     },
     animation: props.active ? `${heartBurst} .8s steps(28)` : undefined
-}))
+}));
 
 export class XButtonLike extends React.Component<{ onChange?: (value: boolean) => void, value?: boolean }> {
     handler = (e: any) => {
         e.preventDefault();
         if (this.props.onChange) {
-            this.props.onChange(!(this.props.value || false))
+            this.props.onChange(!(this.props.value || false));
         }
     }
     render() {
         return (
             <XLikeButton active={this.props.value || false} onClick={this.handler} />
-        )
+        );
     }
 }

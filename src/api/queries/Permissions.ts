@@ -28,14 +28,47 @@ export const SuperAccountsQuery = gql`
     }
 `;
 
+export const SuperAccountQuery = gql`
+    query SuperAccount($accountId: ID!) {
+        superAccount(id: $accountId) {
+            id
+            title
+            state
+            members {
+                id
+                name
+                email
+            }
+        }
+    }
+`;
+
+export const SuperAccountActivate = gql`
+    mutation SuperAccountActivate($accountId: ID!) {
+        superAccountActivate(id: $accountId) {
+            id
+            state
+        }
+    }
+`;
+
+export const SuperAccountSuspend = gql`
+    mutation SuperAccountSuspend($accountId: ID!) {
+        superAccountSuspend(id: $accountId) {
+            id
+            state
+        }
+    }
+`;
+
 export const SuperAdminAdd = gql`
     mutation SuperAdminAdd($userId: ID!) {
         superAdminAdd(userId: $userId)
     }
-`
+`;
 
 export const SuperAdminRemove = gql`
     mutation SuperAdminRemove($userId: ID!) {
         superAdminRemove(userId: $userId)
     }
-`
+`;

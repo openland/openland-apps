@@ -6,7 +6,7 @@ import { XWithRole } from '../X/XWithRole';
 
 const Div = Glamorous.div({
     height: '16px'
-})
+});
 
 export const AppNavigation = withParcelsFavroutesCount((props) => {
     return (

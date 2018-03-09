@@ -130,7 +130,7 @@ export const withParcelDirect2 = graphql<Types.ParcelQuery, { parcelId: string }
         }
     })
 });
-export const withParcelDirect = graphqlCompose3(withParcelDirect2, withParcelLikes, withParcelUnlikes)
+export const withParcelDirect = graphqlCompose3(withParcelDirect2, withParcelLikes, withParcelUnlikes);
 // export const withParcelLikes = graphqlMutation<{ doLike: MutationFunc<{}> }>(Parcels.ParcelLike, { name: 'doLike' });
 // export const withParcelUnlikes = graphqlMutation<{ doUnlike: MutationFunc<{}> }>(Parcels.ParcelUnlike, { name: 'doUnlike' });
 
@@ -182,3 +182,7 @@ export const UserSelect = graphqlSelect(User.UsersQuery);
 export const withSuperAdminAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Permissions.SuperAdminAdd, { name: 'add', refetchQueries: [Permissions.SuperAdminsQuery] });
 export const withSuperAdminRemove = graphqlMutation<{ remove: MutationFunc<{}> }>(Permissions.SuperAdminRemove, { name: 'remove', refetchQueries: [Permissions.SuperAdminsQuery] });
 export const withSuperAccounts = graphqlRouted<Types.SuperAccountsQuery>(Permissions.SuperAccountsQuery);
+export const withSuperAccount = graphqlRouted<Types.SuperAccountQuery>(Permissions.SuperAccountQuery, ['accountId']);
+
+export const withSuperAccountActivate = graphqlMutation<{ activate: MutationFunc<{}> }>(Permissions.SuperAccountActivate, { name: 'activate', params: ['accountId'] });
+export const withSuperAccountSuspend = graphqlMutation<{ suspend: MutationFunc<{}> }>(Permissions.SuperAccountSuspend, { name: 'suspend', params: ['accountId'] });

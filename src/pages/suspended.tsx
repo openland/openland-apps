@@ -1,6 +1,7 @@
 import '../globals';
 import * as React from 'react';
 import { XHead } from '../components/X/XHead';
+import { XLink } from '../components/X/XLink';
 import { MessagePage } from '../components/MessagePage';
 import { MessagePageContent } from '../components/MessagePageContent';
 import { RedirectComponent } from '../components/routing/RedirectComponent';
@@ -31,9 +32,10 @@ export default withAppBase(withUserInfo((props) => {
             <XHead title="Blocked" titleSocial="Openland - land acquisition platfom" />
             <MessagePage>
                 <MessagePageContent
-                    title="Your account is not active"
-                    message="Your account is no longer active"
-                />
+                    title="Account suspended"
+                >
+                    This account has been suspended. Please, contact <XLink href="mailto:support@openland.com">support</XLink> to restore access to your account.
+                </MessagePageContent>
             </MessagePage>
         </>
     );

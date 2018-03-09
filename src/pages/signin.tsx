@@ -40,7 +40,7 @@ export default withAppBase(withRouter(withUserInfo((props) => {
     // Do not edit without reason!
     if (props.isLoggedIn) {
         if (props.isBlocked) {
-            return <RedirectComponent path="/deactivated" />;
+            return <RedirectComponent path="/suspended" />;
         } else if (props.isCompleted) {
             return <RedirectComponent path="/" />;
         } else if (!props.isActivated) {

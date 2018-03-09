@@ -12,7 +12,7 @@ export default withAppBase(withUserInfo((props) => {
     // Do not edit without reason!
     if (props.isLoggedIn) {
         if (props.isBlocked) {
-            return <RedirectComponent path="/deactivated" />;
+            return <RedirectComponent path="/suspended" />;
         } else if (!props.isCompleted) {
             if (!props.isActivated) {
                 return <RedirectComponent path="/activation" />;
@@ -30,8 +30,9 @@ export default withAppBase(withUserInfo((props) => {
             <MessagePage>
                 <MessagePageContent
                     title="We need more info"
-                    message="To continue working with system we need more information from you"
-                />
+                >
+                    To continue working with system we need more information from you
+                </MessagePageContent>
             </MessagePage>
         </>
     );

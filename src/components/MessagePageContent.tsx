@@ -18,11 +18,11 @@ let Message = Glamorous(XCard.Content)({
     alignContent: 'center'
 });
 
-export function MessagePageContent(props: { title: string, message: string }) {
+export function MessagePageContent(props: { title: string, children?: any }) {
     return (
         <>
             <Title>{props.title}</Title>
-            <Message>{props.message}</Message>
+            <Message>{props.children}</Message>
         </>
     );
 }

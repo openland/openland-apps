@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XIcon } from './XIcon'
+import { XIcon } from './XIcon';
 
 export const XCardEmptyDiv = Glamorous.div({
     display: 'flex',
@@ -8,7 +8,7 @@ export const XCardEmptyDiv = Glamorous.div({
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 564,
-})
+});
 
 export const XCardEmptyIcon = Glamorous(XIcon)({
     width: 128,
@@ -16,7 +16,7 @@ export const XCardEmptyIcon = Glamorous(XIcon)({
     fontSize: 128,
     color: '#919FAC',
     marginBottom: 16
-})
+});
 
 export const XCardEmptyContent = Glamorous.div({
     display: 'flex',
@@ -28,12 +28,12 @@ export const XCardEmptyContent = Glamorous.div({
     '& *::before': {
         content: ' '
     }
-})
+});
 
 interface XCardEmptyProps {
-    children?: any,
-    icon: string,
-    text: string
+    children?: any;
+    icon: string;
+    text: string;
 }
 
 export function XCardEmpty(props: XCardEmptyProps) {
@@ -45,5 +45,5 @@ export function XCardEmpty(props: XCardEmptyProps) {
                 {props.children}
             </XCardEmptyContent>
         </XCardEmptyDiv>
-    )
+    );
 }

@@ -6,16 +6,24 @@ import { RedirectComponent } from './routing/RedirectComponent';
 
 export function withApp(role: string, WrappedComponent: React.ComponentType<{}>) {
     return withAppBase(withUserInfo((props) => {
-        if (props.isLoggedIn && props.isActivated) {
-            return (
-                <XWithRole role={role}>
-                    <WrappedComponent />
-                </XWithRole>
-            );
-        } else if (!props.isLoggedIn) {
-            return (<RedirectComponent path="/signin" />)
+        if (props.isLoggedIn) {
+            if (props.isBlocked) {
+                return (<RedirectComponent path="/suspended" />);
+            } else if (!props.isCompleted) {
+                if (props.isActivated) {
+                    return (<RedirectComponent path="/need_info" />);
+                } else {
+                    return (<RedirectComponent path="/activation" />);
+                }
+            } else {
+                return (
+                    <XWithRole role={role}>
+                        <WrappedComponent />
+                    </XWithRole>
+                );
+            }
         } else {
-            return (<RedirectComponent path="/activation" />)
+            return (<RedirectComponent path="/signin" />);
         }
     }));
-};
+}
