@@ -1,23 +1,23 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import * as glamor from 'glamor'
+import * as glamor from 'glamor';
 import * as ReactModal from 'react-modal';
 import { XDialog } from './XDialog';
 
 const showAnimation = glamor.keyframes({
     '0%': { backgroundColor: 'transparent', opacity: 0 },
     '100%': { backgroundColor: 'rgba(0,0,0,0.75)', opacity: 1 }
-})
+});
 
 const hideAnimation = glamor.keyframes({
     '0%': { backgroundColor: 'rgba(0,0,0,0.75)', opacity: 1 },
     '100%': { backgroundColor: 'transparent', opacity: 0 }
-})
+});
 
 export class XModalTarget extends React.Component<{ handler?: (target: any) => void }> {
     static defaultProps = {
         _isModalTarget: true
-    }
+    };
     handler = (e: React.SyntheticEvent<any>) => {
         if (e.preventDefault) {
             e.preventDefault();
@@ -34,13 +34,13 @@ export class XModalTarget extends React.Component<{ handler?: (target: any) => v
 export class XModalContent extends React.Component {
     static defaultProps = {
         _isModalContent: true
-    }
+    };
     render() {
         return (
             <>
                 {this.props.children}
             </>
-        )
+        );
     }
 }
 
@@ -59,22 +59,22 @@ export class XModal extends React.Component<{ title: string, fullScreen?: boolea
 
     constructor(props: { title: string }) {
         super(props);
-        this.state = { 
+        this.state = {
             isOpen: false,
             hide: false
-         };
+        };
     }
 
     handler = (src?: any) => {
-        this.setState({ isOpen: true, hide: false })
+        this.setState({ isOpen: true, hide: false });
     }
 
     handleClose = (src?: any) => {
         if (src && src.preventDefault) {
             src.preventDefault();
         }
-        this.setState({hide: true})
-        setTimeout(() => {this.setState({ isOpen: false })}, 300)
+        this.setState({ hide: true });
+        setTimeout(() => { this.setState({ isOpen: false }); }, 300);
     }
 
     // handleClick = (e: MouseEvent) => {
@@ -160,7 +160,7 @@ export class XModal extends React.Component<{ title: string, fullScreen?: boolea
                     </XModalContainer>
                 </ReactModal>
             </>
-        )
+        );
         // let children = (
         //     <>
         //         {content}

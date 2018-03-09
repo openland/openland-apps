@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Glamorous from 'glamorous';
-import { XVertical } from './XVertical'
+import { XVertical } from './XVertical';
 import { MutationFunc } from 'react-apollo';
 import { XButton } from './XButton';
 import { XCard } from './XCard';
@@ -22,7 +22,7 @@ let InputsStyle = {
     paddingRight: 7,
     paddingBottom: 2,
     outline: 'none',
-}
+};
 
 export const XFormDiv = Glamorous.div({
     position: 'relative',
@@ -32,21 +32,21 @@ export const XFormDiv = Glamorous.div({
     '&:last-child': {
         marginBottom: 0
     }
-})
+});
 
 export const XFormTitle = Glamorous.div({
     fontSize: '16px',
     lineHeight: '24px',
     fontWeight: 500,
     color: '#32325d'
-})
+});
 
 export const XFormDescription = Glamorous.div({
     fontSize: '14px',
     lineHeight: '20px',
     fontWeight: 400,
     color: '#525f7f'
-})
+});
 
 export const XFormHeaderDiv = Glamorous.div({
     position: 'relative',
@@ -65,7 +65,7 @@ export const XFormHeaderDiv = Glamorous.div({
         height: 1,
         backgroundColor: '#e6ebf1'
     }
-})
+});
 
 export const XFormFieldDiv = Glamorous.div({
     display: 'flex',
@@ -75,7 +75,7 @@ export const XFormFieldDiv = Glamorous.div({
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 20
-})
+});
 
 export const XFormFieldTitle = Glamorous.div<{ novalid?: boolean }>((props) => ({
     textAlign: 'right',
@@ -84,7 +84,7 @@ export const XFormFieldTitle = Glamorous.div<{ novalid?: boolean }>((props) => (
     lineHeight: 1.6,
     paddingRight: 10,
     paddingTop: 3
-}))
+}));
 
 export const XFormFieldChildren = Glamorous.div({
     display: 'flex',
@@ -92,7 +92,7 @@ export const XFormFieldChildren = Glamorous.div({
     alignItems: 'stretch',
     flex: '0 0 55%',
     maxWidth: 340
-})
+});
 
 export const XFormFieldDescription = Glamorous.div<{ novalid?: boolean }>((props) => ({
     marginTop: 5,
@@ -100,7 +100,7 @@ export const XFormFieldDescription = Glamorous.div<{ novalid?: boolean }>((props
     fontWeight: 400,
     fontSize: '13px',
     lineHeight: 1.6
-}))
+}));
 
 export const XFormInputStyle = Glamorous.input<{ placeholder?: string, novalid?: boolean }>((props) => ({
     height: 28,
@@ -123,7 +123,7 @@ export const XFormInputStyle = Glamorous.input<{ placeholder?: string, novalid?:
     '&::placeholder': {
         color: props.novalid ? '#e25950' : '#8898aa'
     }
-}))
+}));
 
 export const XFormTextAreaStyle = Glamorous.textarea<{ placeholder?: string, novalid?: boolean }>((props) => ({
     width: '100%',
@@ -146,7 +146,7 @@ export const XFormTextAreaStyle = Glamorous.textarea<{ placeholder?: string, nov
     '&::placeholder': {
         color: props.novalid ? '#e25950' : '#8898aa'
     }
-}))
+}));
 
 export const XFormSelectStyle = Glamorous.select({
     height: 28,
@@ -172,7 +172,7 @@ export const XFormSelectStyle = Glamorous.select({
     '&:focus': {
         boxShadow: InputsStyle.boxShadowOnFocus
     }
-})
+});
 
 export function XFormSelect(props: { options?: any[], value?: string | string[] | number, onChange?: (value: any) => void }) {
     return (
@@ -181,7 +181,7 @@ export function XFormSelect(props: { options?: any[], value?: string | string[] 
                 <option value={item.value}>{item.title}</option>
             ))}
         </XFormSelectStyle>
-    )
+    );
 }
 
 export function XFormHeader(props: { title?: string, description?: string }) {
@@ -190,7 +190,7 @@ export function XFormHeader(props: { title?: string, description?: string }) {
             <XFormTitle>{props.title}</XFormTitle>
             {props.description && <XFormDescription>{props.description}</XFormDescription>}
         </XFormHeaderDiv>
-    )
+    );
 }
 
 export function XFormField(props: { title: string, children: any, description?: string, novalid?: boolean }) {
@@ -204,7 +204,7 @@ export function XFormField(props: { title: string, children: any, description?: 
                 {props.description && <XFormFieldDescription novalid={props.novalid}>{props.description}</XFormFieldDescription>}
             </XFormFieldChildren>
         </XFormFieldDiv>
-    )
+    );
 }
 
 interface XFormProps {
@@ -245,7 +245,7 @@ interface XFormTextFieldProps {
 export class XFormTextField extends React.Component<XFormTextFieldProps, { value: string }> {
     static contextTypes = {
         xForm: PropTypes.object.isRequired
-    }
+    };
 
     constructor(props: XFormTextFieldProps, context: any) {
         super(props, context);
@@ -269,7 +269,7 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
     render() {
         return (
             <XFormInputStyle placeholder={this.props.placeholder} onChange={this.handleChange} value={this.state.value} />
-        )
+        );
     }
 }
 
@@ -280,7 +280,7 @@ interface XFormBooleanFieldProps {
 export class XFormBooleanField extends React.Component<XFormBooleanFieldProps, { value: boolean | null }> {
     static contextTypes = {
         xForm: PropTypes.object.isRequired
-    }
+    };
 
     constructor(props: XFormBooleanFieldProps, context: any) {
         super(props, context);
@@ -316,7 +316,7 @@ export class XFormBooleanField extends React.Component<XFormBooleanFieldProps, {
     render() {
         let value = 'null';
         if (this.state.value === true) {
-            value = 'true'
+            value = 'true';
         } else if (this.state.value === false) {
             value = 'false';
         }
@@ -326,7 +326,7 @@ export class XFormBooleanField extends React.Component<XFormBooleanFieldProps, {
                 value={value}
                 onChange={this.handleChange}
             />
-        )
+        );
     }
 }
 
@@ -339,7 +339,7 @@ interface XFormSelectFieldProps {
 export class XFormSelectField extends React.Component<XFormSelectFieldProps, { value: string | null }> {
     static contextTypes = {
         xForm: PropTypes.object.isRequired
-    }
+    };
 
     constructor(props: XFormSelectFieldProps, context: any) {
         super(props, context);
@@ -351,7 +351,7 @@ export class XFormSelectField extends React.Component<XFormSelectFieldProps, { v
                 for (let opt of this.props.options) {
                     if (opt.value === existing) {
                         this.state = { value: opt.value };
-                        break
+                        break;
                     }
                 }
             }
@@ -382,7 +382,7 @@ export class XFormSelectField extends React.Component<XFormSelectFieldProps, { v
                 value={this.state.value || 'unknown'}
                 onChange={this.handleChange}
             />
-        )
+        );
     }
 }
 
@@ -399,10 +399,10 @@ interface XFormSubmitProps {
 export class XFormSubmit extends React.Component<XFormSubmitProps> {
     static contextTypes = {
         xForm: PropTypes.object.isRequired
-    }
+    };
 
     render() {
-        return <XButton {...this.props} onClick={this.context.xForm.submitForm} />
+        return <XButton {...this.props} onClick={this.context.xForm.submitForm} />;
     }
 }
 
@@ -423,7 +423,7 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
 
     static childContextTypes = {
         xForm: PropTypes.object.isRequired
-    }
+    };
 
     //
     // Internal State
@@ -468,7 +468,7 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
                 })
                 .catch((v) => {
                     this.setState({ loading: false, error: v.toString() });
-                })
+                });
         }
     }
 
@@ -485,7 +485,7 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
     getChildContext() {
         return {
             xForm: this
-        }
+        };
     }
 
     render() {
@@ -497,6 +497,6 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
                     {this.props.children}
                 </XCard.Loader>
             </>
-        )
+        );
     }
 }
