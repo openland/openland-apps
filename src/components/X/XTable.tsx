@@ -23,13 +23,26 @@ let TableHeader = Glamorous.table({
     }
 });
 
+const XTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
+    cursor: 'pointer',
+    borderBottom: '1px solid #F5F6F8',
+    '&:hover': {
+        backgroundColor: props.noHover ? undefined : '#f6f9fc'
+    }
+}));
+
 let XTableTD = Glamorous.td<{ width?: number }>((props) => ({
     width: props.width ? props.width : undefined,
+    maxWidth: 0,
     verticalAlign: 'middle'
 }));
 
 let XTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' }>((props) => ({
     display: 'block',
+    verticalAlign: 'middle',
+    height: 39,
+    width: '100%',
+    alignItems: 'center',
     textAlign: props.textAlign,
     paddingLeft: 16,
     paddingRight: 16,
@@ -39,6 +52,9 @@ let XTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' }>((props) => ({
     color: '#182642',
     fontSize: 13,
     lineHeight: 'normal',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
 
     '> i': {
         fontSize: 20,
@@ -55,13 +71,18 @@ let XTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' }>((props) => ({
 
 const XTableTDDivAsLink = Glamorous(XLink)<{ textAlign?: 'left' | 'right' }>((props) => ({
     display: 'block',
+    verticalAlign: 'middle',
+    height: 39,
+    width: '100%',
+    alignItems: 'center',
     textAlign: props.textAlign,
     fontWeight: 600,
     color: '#182642',
     fontSize: 13,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     lineHeight: 'normal',
-    width: '100%',
-    height: '100%',
     paddingTop: 9,
     paddingBottom: 9,
     paddingLeft: 16,
@@ -83,15 +104,6 @@ export function XTableBody(props: { children: any }) {
     return (<tbody>{props.children}</tbody>);
 }
 
-const XTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
-    position: 'relative',
-    cursor: 'pointer',
-    borderBottom: '1px solid #F5F6F8',
-    '&:hover': {
-        backgroundColor: props.noHover ? undefined : '#f6f9fc'
-    }
-}));
-
 interface XTableRowProps {
     onClick?: (e?: any) => void;
     path?: string;
@@ -102,17 +114,17 @@ interface XTableRowProps {
 export class XTableRow extends React.Component<XTableRowProps> {
     render() {
         let content: any[] = [];
-        React.Children.map(this.props.children, (child: React.ReactElement<XTableCellProps>) => {
-            if (React.isValidElement(child) && (child.props as any)._isTableCellElement === true && (this.props.path!! || this.props.href!!)) {
-                let element = React.cloneElement(child as any, {
+        for (let i of React.Children.toArray(this.props.children)) {
+            if (React.isValidElement(i) && (this.props.path!! || this.props.href!!)) {
+                let element = React.cloneElement(i as any, {
                     path: this.props.path,
                     href: this.props.href
                 });
                 content.push(element);
             } else {
-                content.push(child);
+                content.push(i);
             }
-        });
+        }
         return (
             <XTableBodyRowStyle onClick={this.props.onClick} noHover={this.props.noHover}>
                 {content}
@@ -129,19 +141,14 @@ interface XTableCellProps {
     href?: string;
 }
 
-export class XTableCell extends React.Component<XTableCellProps> {
-    static defaultProps = {
-        _isTableCellElement: true
-    };
-    render() {
-        return (
-            <XTableTD width={this.props.width}>
-                {(this.props.path || this.props.href)
-                    ? (<XTableTDDivAsLink path={this.props.path} href={this.props.href} textAlign={this.props.textAlign}>{this.props.children}</XTableTDDivAsLink>)
-                    : (<XTableTDDiv textAlign={this.props.textAlign}>{this.props.children}</XTableTDDiv>)}
-            </XTableTD>
-        );
-    }
+export function XTableCell (props: XTableCellProps) {
+    return (
+        <XTableTD width={props.width}>
+            {(props.path || props.href)
+                ? (<XTableTDDivAsLink path={props.path} href={props.href} textAlign={props.textAlign}>{props.children}</XTableTDDivAsLink>)
+                : (<XTableTDDiv textAlign={props.textAlign}>{props.children}</XTableTDDiv>)}
+        </XTableTD>
+    );
 }
 
 export class XTable extends React.Component {
