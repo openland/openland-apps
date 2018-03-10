@@ -1,7 +1,7 @@
 import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
 import { GraphQLRoutedComponentProps, NotNullableDataProps } from './graphql';
-import { withRouter, RouterState } from './withRouter';
+import { withRouter, RouterState } from '../components/withRouter';
 import { prepareParams } from './utils';
 
 export interface ListQueryResponse<T, E> {

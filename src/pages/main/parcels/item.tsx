@@ -25,7 +25,7 @@ const Wrapper = Glamorous(XCard)({
 const StreetView = Glamorous(XStreetView)({
     height: '360px',
     width: '100%'
-})
+});
 
 export default withApp('viewer', withParcel((props) => {
     return (
@@ -145,5 +145,5 @@ export default withApp('viewer', withParcel((props) => {
                 )}
             </AppContent>
         </>
-    )
+    );
 }));

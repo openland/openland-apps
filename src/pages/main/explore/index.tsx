@@ -9,7 +9,7 @@ import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats }
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XMap } from '../../../components/X/XMap';
 import { XHead } from '../../../components/X/XHead';
-import { RouterState, withRouter } from '../../../utils/withRouter';
+import { RouterState, withRouter } from '../../../components/withRouter';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XCard } from '../../../components/X/XCard';
 import { AppFilters } from '../../../components/App/AppFilters';

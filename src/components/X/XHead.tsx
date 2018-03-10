@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { formatPageTitle } from '../../utils/strings';
-import { withRouter } from '../../utils/withRouter';
+import { withRouter } from '../withRouter';
 
 export const XHead = withRouter<{ title: string | string[], titleSocial?: string | null, imgCloud?: string | null, imgUrl?: string | null }>((props) => {
     let parts = ['Openland'];

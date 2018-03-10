@@ -7,7 +7,7 @@ import { MessagePage } from '../components/MessagePage';
 import { XCard } from '../components/X/XCard';
 import { XButton } from '../components/X/XButton';
 import { RedirectComponent } from '../components/routing/RedirectComponent';
-import { withRouter } from '../utils/withRouter';
+import { withRouter } from '../components/withRouter';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import * as Types from '../api/Types';
-import { withRouter, RouterState } from '../utils/withRouter';
+import { withRouter, RouterState } from './withRouter';
 
 export class UserInfoProvider extends React.Component<{
     user?: Types.UserShortFragment | null,

@@ -17,5 +17,5 @@ export default withApp('viewer', (props) => {
                 </XCard>
             </AppContent>
         </>
-    )
+    );
 });

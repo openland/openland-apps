@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
-import { withRouter, RouterState } from './withRouter';
+import { withRouter, RouterState } from '../components/withRouter';
 import { GraphQLRoutedComponentProps } from './graphql';
 import { prepareParams, getComponentDisplayName } from './utils';
 

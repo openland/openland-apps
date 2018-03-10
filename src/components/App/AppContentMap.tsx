@@ -40,13 +40,13 @@ let Container = Glamorous.div({
 export class XAppBarItem extends React.Component {
     static defaultProps = {
         _isAppBarItem: true
-    }
+    };
     render() {
         return (
             <>
                 {this.props.children}
             </>
-        )
+        );
     }
 }
 

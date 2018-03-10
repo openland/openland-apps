@@ -1,15 +1,15 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import * as glamor from 'glamor'
+import * as glamor from 'glamor';
 import { withSearch } from '../../api';
 import { XCard } from '../X/XCard';
 import { XIcon } from '../X/XIcon';
+import { XArea } from '../X/XArea';
 
 const loading = glamor.keyframes({
     '0%': { transform: `rotate(0deg) scaleX(-1)` },
     '100%': { transform: `rotate(360deg) scaleX(-1)` }
-})
-import { XArea } from '../X/XArea';
+});
 
 let LoadingIcon = Glamorous(XIcon)<{ loading?: boolean }>((props) => ({
     display: props.loading ? 'block' : 'none',
@@ -20,7 +20,7 @@ let LoadingIcon = Glamorous(XIcon)<{ loading?: boolean }>((props) => ({
     fontSize: '20px',
     color: '#6b7c93',
     animation: `${loading} 1s linear infinite`,
-}))
+}));
 
 const Container = Glamorous.div<{ noResult?: boolean }>(props => ({
     display: 'flex',
@@ -40,7 +40,7 @@ const Container = Glamorous.div<{ noResult?: boolean }>(props => ({
         lineHeight: '32px',
         color: '#8898aa',
     }
-}))
+}));
 
 const SearchInput = Glamorous.input({
     border: 'none',
@@ -57,7 +57,7 @@ const SearchInput = Glamorous.input({
     '&:focus': {
         '::placeholder': { color: 'rgba(135, 113, 253, 0.7)' }
     }
-})
+});
 
 const ResultsContainer = Glamorous(XCard)({
     position: 'absolute',
@@ -65,7 +65,7 @@ const ResultsContainer = Glamorous(XCard)({
     left: 0,
     // right: 0,
     width: '400px'
-})
+});
 
 let HighlightedWrapper = Glamorous.span({
     '> em': {
@@ -73,12 +73,12 @@ let HighlightedWrapper = Glamorous.span({
         fontWeight: 600,
         fontStyle: 'normal'
     }
-})
+});
 
 const Highlighted = (props: { text?: string, field: string, highlight: { key: string, match: string }[] }) => {
     let existing = props.highlight.find((k) => k.key === props.field);
     if (existing) {
-        return <HighlightedWrapper dangerouslySetInnerHTML={{ __html: existing.match }} />
+        return <HighlightedWrapper dangerouslySetInnerHTML={{ __html: existing.match }} />;
     } else {
         if (props.text) {
             return <>{props.text}</>;
@@ -86,7 +86,7 @@ const Highlighted = (props: { text?: string, field: string, highlight: { key: st
             return null;
         }
     }
-}
+};
 
 // const ResultHeader = Glamorous.div({
 //     display: 'flex',
@@ -99,19 +99,19 @@ const Highlighted = (props: { text?: string, field: string, highlight: { key: st
 const ResultTilte = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-})
+});
 
 const ResultTilteMain = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     fontSize: 13,
     flexGrow: 1
-})
+});
 
 const ResultTilteHint = Glamorous.div({
     fontSize: 13,
     opacity: 0.7
-})
+});
 
 const ResultBody = Glamorous.div({
     display: 'flex',
@@ -125,7 +125,7 @@ const ResultBodyMain = Glamorous.div({
     opacity: 0.7,
     marginRight: '8px',
     width: 100
-})
+});
 
 //
 
@@ -170,7 +170,7 @@ export class AppSearch extends React.Component<{}, { value: string, focused: boo
     }
 
     onChange = (e: any) => {
-        this.setState({ value: e.target.value })
+        this.setState({ value: e.target.value });
     }
 
     onFocus = () => {
@@ -195,6 +195,6 @@ export class AppSearch extends React.Component<{}, { value: string, focused: boo
                     <SearchResults query={this.state.value} />
                 }
             </Container>
-        )
+        );
     }
 }

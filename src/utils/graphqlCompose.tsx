@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import { QueryProps, ChildProps } from 'react-apollo';
-import { withRouter, RouterState } from './withRouter';
+import { withRouter, RouterState } from '../components/withRouter';
 
 function compose(funcs: Function[]) {
     const length = funcs ? funcs.length : 0;
