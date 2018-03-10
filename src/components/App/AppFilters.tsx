@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XButton } from '../X/XButton';
-import { XModal } from '../X/XModal';
+import { XModalTargeted } from '../X/XModalTargeted';
 import { XSelect, XSelectProps } from '../X/XSelect';
 // import { XIcon } from '../X/XIcon';
 import { withRouter, RouterState } from '../../utils/withRouter';
@@ -12,7 +12,7 @@ let AllLandUse = [
     'Commercial',
     'Industrial',
     'Public',
-]
+];
 
 let AllZones = ['P',
     'RH-1(D)',
@@ -93,12 +93,12 @@ const ApplyButtonDiv = Glamorous.div({
     height: 48,
     backgroundColor: '#fff',
     boxShadow: '0 0 0 1px #e6ebf1'
-})
+});
 
 const FilterCellDiv = Glamorous.div({
     width: '100%',
     marginBottom: 32
-})
+});
 
 const FilterCellTitle = Glamorous.div({
     marginBottom: 8,
@@ -107,7 +107,7 @@ const FilterCellTitle = Glamorous.div({
     lineHeight: 1.71,
     textAlign: 'left',
     color: '#182642',
-})
+});
 
 const FilterSelector = Glamorous(XSelect)({
     width: '100%'
@@ -144,7 +144,7 @@ function FilterCell(props: { title?: string, children: any }) {
             {props.title && <FilterCellTitle>{props.title}</FilterCellTitle>}
             {props.children}
         </FilterCellDiv>
-    )
+    );
 }
 
 // const FilterCheckboxDiv = Glamorous.div<{ active: boolean }>((props) => ({
@@ -229,7 +229,7 @@ const RangeInput = Glamorous.input({
     '&:focus': {
         outline: 'none'
     }
-})
+});
 
 const FilterRangeDiv = Glamorous.div({
     width: '100%',
@@ -239,17 +239,17 @@ const FilterRangeDiv = Glamorous.div({
     fontWeight: 'normal',
     lineHeight: 1.71,
     color: '#182642'
-})
+});
 
 const FilterRangeSeparator = Glamorous.p({
     display: 'block',
     marginLeft: 12,
     marginRight: 12
-})
+});
 
 interface FilterRangeProps {
-    placeholderFrom?: string,
-    placeholderTo?: string
+    placeholderFrom?: string;
+    placeholderTo?: string;
 }
 
 class FilterRangeBase extends React.Component<FilterRangeProps & { router: RouterState }, { from: string, fromValue?: number, to: string, toValue?: number }> {
@@ -264,11 +264,11 @@ class FilterRangeBase extends React.Component<FilterRangeProps & { router: Route
             let parsed = JSON.parse(props.router.query.area) as { gte?: number, lte?: number };
             if (parsed.gte !== undefined) {
                 fromCurrentValue = parsed.gte;
-                fromCurrent = parsed.gte.toString()
+                fromCurrent = parsed.gte.toString();
             }
             if (parsed.lte !== undefined) {
                 toCurrentValue = parsed.lte;
-                toCurrent = parsed.lte.toString()
+                toCurrent = parsed.lte.toString();
             }
         }
         this.state = {
@@ -365,7 +365,7 @@ class FilterRangeBase extends React.Component<FilterRangeProps & { router: Route
                     onBlur={this.handleBlurTo}
                 />
             </FilterRangeDiv>
-        )
+        );
     }
 }
 
@@ -373,7 +373,7 @@ const FilterRange = withRouter<FilterRangeProps>(FilterRangeBase);
 
 class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (query?: any) => void, router: RouterState }> {
 
-    private modal: XModal | null = null;
+    private modal: XModalTargeted | null = null;
 
     constructor(props: { onChange: (query?: any) => void, router: RouterState }) {
         super(props);
@@ -405,12 +405,12 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
             });
         }
         if (this.props.router.query!!.area) {
-            let area = JSON.parse(this.props.router.query!!.area)
+            let area = JSON.parse(this.props.router.query!!.area);
             area.gte = (area.gte * 0.3048);
             area.lte = (area.lte * 0.3048);
             clauses.push({
                 'area': area
-            })
+            });
         }
         if (clauses.length > 0) {
             let query = { '$and': clauses };
@@ -424,7 +424,7 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
         }
     }
 
-    handleInstance = (e: XModal | null) => {
+    handleInstance = (e: XModalTargeted | null) => {
         if (e) {
             this.modal = e;
         }
@@ -432,11 +432,11 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
 
     render() {
         return (
-            <XModal title="Parcel filters" fullScreen={true} ref={this.handleInstance} width={320}>
-                <XModal.Target>
+            <XModalTargeted title="Parcel filters" fullScreen={true} ref={this.handleInstance} width={320}>
+                <XModalTargeted.Target>
                     <XButton bounce={true} style={this.props.isActive ? 'dark' : 'normal'}>Filters</XButton>
-                </XModal.Target>
-                <XModal.Content>
+                </XModalTargeted.Target>
+                <XModalTargeted.Content>
                     <FilterCell title="Zoning">
                         <RoutedSelector
                             fieldName="filterZoning"
@@ -503,8 +503,8 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
                     <ApplyButtonDiv>
                         <XButton style="dark" size="medium" bounce={true} onClick={this.handleUpdate}>Apply</XButton>
                     </ApplyButtonDiv>
-                </XModal.Content>
-            </XModal>
+                </XModalTargeted.Content>
+            </XModalTargeted>
         );
     }
 }

@@ -54,6 +54,13 @@ export interface ParcelMetadataInput {
   available?: boolean | null,
 };
 
+export enum SuperAccountState {
+  PENDING = "PENDING",
+  ACTIVATED = "ACTIVATED",
+  SUSPENDED = "SUSPENDED",
+}
+
+
 export enum PermitSorting {
   STATUS_CHANGE_TIME = "STATUS_CHANGE_TIME",
   CREATE_TIME = "CREATE_TIME",
@@ -74,15 +81,23 @@ export interface AccountQuery {
     picture: string,
     email: string,
   } | null,
-  permissions:  {
-    __typename: "Permissions",
-    roles: Array< string >,
-  },
   myAccount:  {
     __typename: "MyAccount",
     id: string,
     title: string,
   } | null,
+  myProfile:  {
+    __typename: "MyProfile",
+    isLoggedIn: boolean,
+    isProfileCreated: boolean,
+    isAccountActivated: boolean,
+    isCompleted: boolean,
+    isBlocked: boolean,
+  },
+  permissions:  {
+    __typename: "Permissions",
+    roles: Array< string >,
+  },
 };
 
 export interface AreaQueryVariables {
@@ -993,6 +1008,82 @@ export interface SuperAdminsQuery {
   } >,
 };
 
+export interface SuperAccountsQuery {
+  superAccounts:  Array< {
+    __typename: "SuperAccount",
+    id: string,
+    title: string,
+    state: SuperAccountState,
+  } >,
+};
+
+export interface SuperAccountQueryVariables {
+  accountId: string,
+};
+
+export interface SuperAccountQuery {
+  superAccount:  {
+    __typename: "SuperAccount",
+    id: string,
+    title: string,
+    state: SuperAccountState,
+    members:  Array< {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string,
+      picture: string,
+      email: string,
+    } >,
+  },
+};
+
+export interface SuperAccountActivateMutationVariables {
+  accountId: string,
+};
+
+export interface SuperAccountActivateMutation {
+  superAccountActivate:  {
+    __typename: "SuperAccount",
+    id: string,
+    state: SuperAccountState,
+  },
+};
+
+export interface SuperAccountSuspendMutationVariables {
+  accountId: string,
+};
+
+export interface SuperAccountSuspendMutation {
+  superAccountSuspend:  {
+    __typename: "SuperAccount",
+    id: string,
+    state: SuperAccountState,
+  },
+};
+
+export interface SuperAccountMemberAddMutationVariables {
+  accountId: string,
+  userId: string,
+};
+
+export interface SuperAccountMemberAddMutation {
+  superAccountMemberAdd:  {
+    __typename: "SuperAccount",
+    id: string,
+    members:  Array< {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string,
+      picture: string,
+      email: string,
+    } >,
+  },
+};
+
 export interface SuperAdminAddMutationVariables {
   userId: string,
 };
@@ -1622,6 +1713,21 @@ export interface UsersQueryQuery {
     title: string,
     subtitle: string,
   } >,
+};
+
+export interface MyProfileFullFragment {
+  __typename: "MyProfile",
+  isLoggedIn: boolean,
+  isProfileCreated: boolean,
+  isAccountActivated: boolean,
+  isCompleted: boolean,
+  isBlocked: boolean,
+};
+
+export interface AccountShortFragment {
+  __typename: "MyAccount",
+  id: string,
+  title: string,
 };
 
 export interface AreaShortFragment {

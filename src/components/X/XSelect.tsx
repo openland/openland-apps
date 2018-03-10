@@ -6,11 +6,11 @@ import Select, { Async, ReactSelectProps, ReactAsyncSelectProps } from 'react-se
 const SelectAnimationFadeIn = glamor.keyframes({
     '0%': { opacity: 0 },
     'to': { opacity: 1 }
-})
+});
 
 const SelectAnimationSpin = glamor.keyframes({
     'to': { transform: 'rotate(1turn)' }
-})
+});
 
 const Styles = {
     '& .Select-menu > .Select-option.is-focused': {
@@ -374,8 +374,8 @@ export type XSelectAsyncProps = ReactAsyncSelectProps;
 export function XSelect(props: XSelectProps) {
     return (
         <StyledSelect {...props} />
-    )
-};
+    );
+}
 
 export function XSelectAsync(props: XSelectAsyncProps) {
     return (

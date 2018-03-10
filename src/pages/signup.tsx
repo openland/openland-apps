@@ -1,7 +1,10 @@
+import '../globals';
 import * as React from 'react';
-// import * as Typeform from '@typeform/embed';
 import Glamorous from 'glamorous';
 import { XHead } from '../components/X/XHead';
+import { RedirectComponent } from '../components/routing/RedirectComponent';
+import { withAppBase } from '../components/withAppBase';
+import { withUserInfo } from '../components/UserInfo';
 
 const TypeformDiv = Glamorous.div({
     position: 'absolute',
@@ -30,7 +33,7 @@ class TypeformEmbedded extends React.Component<{ url: string }> {
     componentDidMount() {
         import('@typeform/embed')
             .then((Typeform: any) => {
-                Typeform.makeWidget(this.destDiv!!, this.props.url, {})
+                Typeform.makeWidget(this.destDiv!!, this.props.url, {});
             });
     }
 
@@ -39,11 +42,25 @@ class TypeformEmbedded extends React.Component<{ url: string }> {
     }
 }
 
-export default () => {
+export default withAppBase(withUserInfo((props) => {
+    
+    // Do not edit without reason!
+    if (props.isLoggedIn) {
+        if (props.isBlocked) {
+            return <RedirectComponent path="/suspended" />;
+        } else if (props.isCompleted) {
+            return <RedirectComponent path="/" />;
+        } else if (!props.isActivated) {
+            return <RedirectComponent path="/activation" />;
+        } else {
+            return <RedirectComponent path="/need_info" />;
+        }
+    }
+
     return (
         <RootDiv>
             <XHead title="Sign Up" />
             <TypeformEmbedded url="https://openlandapp.typeform.com/to/RoMP5U" />
         </RootDiv>
     );
-}
+}));

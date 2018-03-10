@@ -26,7 +26,7 @@ let TableHeader = Glamorous.table({
 let XCardTableTD = Glamorous.td<{ width?: number }>((props) => ({
     width: props.width ? props.width : undefined,
     verticalAlign: 'middle'
-}))
+}));
 
 let XCardTableTDDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end' | 'center' }>((props) => ({
     display: 'flex',
@@ -51,7 +51,7 @@ let XCardTableTDDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end'
         background: 'transparent',
         justifyContent: 'flex-end'
     }
-}))
+}));
 
 const XCardTableTDDivAsLink = Glamorous(XLink)<{ justifyContent?: 'flex-start' | 'flex-end' | 'center' }>((props) => ({
     display: 'flex',
@@ -73,7 +73,7 @@ const XCardTableTDDivAsLink = Glamorous(XLink)<{ justifyContent?: 'flex-start' |
     '&:hover': {
         color: 'inherit'
     }
-}))
+}));
 
 export function XCardTableHeader(props: { children: any }) {
     return (<thead><tr>{props.children}</tr></thead>);
@@ -90,29 +90,29 @@ const XCardTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
     '&:hover': {
         backgroundColor: props.noHover ? undefined : '#f6f9fc'
     }
-}))
+}));
 
 interface XCardTableRowProps {
-    onClick?: (e?: any) => void,
-    path?: string,
-    href?: string,
-    noHover?: boolean
+    onClick?: (e?: any) => void;
+    path?: string;
+    href?: string;
+    noHover?: boolean;
 }
 
 export class XCardTableRow extends React.Component<XCardTableRowProps> {
     render() {
-        let content: any[] = []
+        let content: any[] = [];
         React.Children.map(this.props.children, (child: React.ReactElement<XCardTableCellProps>) => {
             if (React.isValidElement(child) && (child.props as any)._isTableCellElement === true && (this.props.path!! || this.props.href!!)) {
                 let element = React.cloneElement(child as any, {
                     path: this.props.path,
                     href: this.props.href
-                })
-                content.push(element)
+                });
+                content.push(element);
             } else {
-                content.push(child)
+                content.push(child);
             }
-        })
+        });
         return (
             <XCardTableBodyRowStyle onClick={this.props.onClick} noHover={this.props.noHover}>
                 {content}
@@ -122,17 +122,17 @@ export class XCardTableRow extends React.Component<XCardTableRowProps> {
 }
 
 interface XCardTableCellProps {
-    children: any,
-    width?: number,
-    justifyContent?: 'flex-start' | 'flex-end' | 'center',
-    path?: string,
-    href?: string
+    children: any;
+    width?: number;
+    justifyContent?: 'flex-start' | 'flex-end' | 'center';
+    path?: string;
+    href?: string;
 }
 
 export class XCardTableCell extends React.Component<XCardTableCellProps> {
     static defaultProps = {
         _isTableCellElement: true
-    }
+    };
     render() {
         return (
             <XCardTableTD width={this.props.width}>
@@ -140,7 +140,7 @@ export class XCardTableCell extends React.Component<XCardTableCellProps> {
                     ? (<XCardTableTDDivAsLink path={this.props.path} href={this.props.href} justifyContent={this.props.justifyContent}>{this.props.children}</XCardTableTDDivAsLink>)
                     : (<XCardTableTDDiv justifyContent={this.props.justifyContent}>{this.props.children}</XCardTableTDDiv>)}
             </XCardTableTD>
-        )
+        );
     }
 }
 
@@ -155,6 +155,6 @@ export class XCardTable extends React.Component {
             <TableHeader>
                 {this.props.children}
             </TableHeader>
-        )
+        );
     }
 }

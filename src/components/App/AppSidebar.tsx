@@ -69,7 +69,7 @@ let SidebarTitleDiv = Glamorous.div({
     fontWeight: 600,
     fontSize: '16px',
     marginBottom: '16px'
-})
+});
 
 let Icon = Glamorous.img({
     // borderRadius: '50%',
@@ -78,13 +78,13 @@ let Icon = Glamorous.img({
     marginRight: '8px',
     // boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
     flexShrink: 0
-})
+});
 
 let ItemIcon = Glamorous(XIcon)({
     marginLeft: '8px',
     width: '32px',
     fontSize: '18px'
-})
+});
 
 let ItemPaddingIcon = Glamorous.div({
     marginLeft: '8px',
@@ -108,7 +108,7 @@ let UserInfoDiv = Glamorous.div({
     marginTop: '24px',
     alignItems: 'center',
     cursor: 'pointer'
-})
+});
 
 let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
     return (
@@ -122,7 +122,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
                 </XMenu>
             </XPopover.Content>
         </XPopover>
-    )
+    );
 });
 
 export class AppSidebarItem extends React.Component<{ title: string, icon?: string, href?: string, path?: string, activateForSubpaths?: boolean, disabled?: boolean }> {
@@ -133,7 +133,7 @@ export class AppSidebarItem extends React.Component<{ title: string, icon?: stri
                 {!this.props.icon && <ItemPaddingIcon />}
                 {this.props.title}
             </SidebarItemDiv>
-        )
+        );
     }
 }
 
@@ -160,6 +160,6 @@ export class AppSidebar extends React.Component<{ asOverlay?: boolean }> {
                 {this.props.children}
                 <UserProfile />
             </Container>
-        )
+        );
     }
 }

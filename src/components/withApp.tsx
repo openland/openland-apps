@@ -1,22 +1,29 @@
 import * as React from 'react';
-import { withData } from './../utils/withData';
-import { withAccountQuery } from './../api';
-import { UserInfoProvider } from './UserInfo';
-import { AuthenticationRequired } from './AuthenticationRequired';
-import { XHead } from './X/XHead';
 import { XWithRole } from './X/XWithRole';
+import { withAppBase } from './withAppBase';
+import { withUserInfo } from './UserInfo';
+import { RedirectComponent } from './routing/RedirectComponent';
 
 export function withApp(role: string, WrappedComponent: React.ComponentType<{}>) {
-    return withData(withAccountQuery((props) => {
-        return (
-            <UserInfoProvider user={props.data.me} router={props.router} roles={props.data.permissions.roles} account={props.data.myAccount}>
-                <AuthenticationRequired>
+    return withAppBase(withUserInfo((props) => {
+        if (props.isLoggedIn) {
+            if (props.isBlocked) {
+                return (<RedirectComponent path="/suspended" />);
+            } else if (!props.isCompleted) {
+                if (props.isActivated) {
+                    return (<RedirectComponent path="/need_info" />);
+                } else {
+                    return (<RedirectComponent path="/activation" />);
+                }
+            } else {
+                return (
                     <XWithRole role={role}>
-                        <XHead title={['Openland', 'App']} />
                         <WrappedComponent />
                     </XWithRole>
-                </AuthenticationRequired>
-            </UserInfoProvider>
-        );
+                );
+            }
+        } else {
+            return (<RedirectComponent path="/signin" />);
+        }
     }));
-};
+}

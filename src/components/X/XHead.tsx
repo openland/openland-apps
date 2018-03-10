@@ -10,7 +10,7 @@ export const XHead = withRouter<{ title: string | string[], titleSocial?: string
     } else {
         parts = ['Openland', ...props.title];
     }
-    let title = formatPageTitle(...parts)
+    let title = formatPageTitle(...parts);
 
     let img = 'https://statecraft.one/static/img/x-pipeline--list.png';
     if (props.imgUrl) {

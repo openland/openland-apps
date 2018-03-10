@@ -4,7 +4,8 @@ import { XHead } from '../../components/X/XHead';
 import { XGrid } from '../../components/X/XGrid';
 import { XCell } from '../../components/X/XGrid';
 import { XCard } from '../../components/X/XCard';
-import { XButton, XButtonLike } from '../../components/X/XButton';
+import { XButton } from '../../components/X/XButton';
+import { XButtonLike } from '../../components/X/XButtonLike';
 import { XTitle } from '../../components/X/XTitle';
 import { XVertical } from '../../components/X/XVertical';
 import { XLinkExternal } from '../../components/X/XLinkExternal';
@@ -13,7 +14,7 @@ import { XSwitcher } from '../../components/X/XSwitcher';
 import { XSlider, XRange } from '../../components/X/XSlider';
 import { XSelect } from '../../components/X/XSelect';
 import { XForm } from '../../components/X/XForm';
-import { XDropdown } from '../../components/Incubator/XDropdown2'
+import { XDropdown } from '../../components/Incubator/XDropdown2';
 import { XCardLink } from '../../components/Incubator/XCardLink';
 import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';

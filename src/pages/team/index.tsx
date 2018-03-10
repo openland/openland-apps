@@ -7,5 +7,5 @@ export default withApp('super-admin', () => {
         <AppContent>
             {}
         </AppContent>
-    )
+    );
 });

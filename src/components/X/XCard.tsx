@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import * as glamor from 'glamor'
+import * as glamor from 'glamor';
 import { CSSUtils } from './utils';
 import { XLink } from './XLink';
 import { XRow, XColumn } from './XGrid';
@@ -25,7 +25,7 @@ import { XCardList, XCardListItem } from './XCardList';
 const loading = glamor.keyframes({
     '0%': { transform: `rotate(0deg)` },
     '100%': { transform: `rotate(360deg)` }
-})
+});
 
 export const XCardRowDiv = Glamorous(XRow)({
     height: 82,
@@ -71,7 +71,7 @@ export class XCardTitle extends React.Component<{ title: string, subtitle?: stri
                         {this.props.subtitle && <div className="subtitle">{this.props.subtitle}</div>}
                     </div>
                 </div>
-            )
+            );
         } else {
             return (
                 <div className="x-card-s-title">
@@ -79,7 +79,7 @@ export class XCardTitle extends React.Component<{ title: string, subtitle?: stri
                     {!this.props.path && (<div className="title">{this.props.title}</div>)}
                     {this.props.subtitle && <div className="subtitle">{this.props.subtitle}</div>}
                 </div>
-            )
+            );
         }
     }
 }
@@ -95,13 +95,14 @@ export class XCardTitleLarge extends React.Component<{ title: string, subtitle?:
         );
     }
 }
+
 export class XCardButton extends React.Component<{ title: string, path: string }> {
     render() {
         return (
             <XLink className="x-card-s-button" path={this.props.path}>
                 <span>{this.props.title}</span>
             </XLink>
-        )
+        );
     }
 }
 
@@ -116,9 +117,9 @@ export class XCardExternalLink extends React.Component<{ href: string }> {
 }
 
 interface XCardDivProps {
-    shadow?: 'none' | 'normal' | 'medium' | 'large',
-    loading?: boolean,
-    bounce?: boolean
+    shadow?: 'none' | 'normal' | 'medium' | 'large';
+    loading?: boolean;
+    bounce?: boolean;
 }
 
 let XCardDiv = Glamorous.div<XCardDivProps>((props) => ({
@@ -173,18 +174,18 @@ let XCardDivContent = Glamorous.div({
     paddingRight: 16,
     paddingTop: 12,
     paddingBottom: 12
-})
+});
 
 let XCardSeparator = Glamorous.div({
     height: 1,
     backgroundColor: '#e6ebf1'
-})
+});
 
 interface XCardProps {
-    className?: string,
-    shadow?: 'none' | 'normal' | 'medium' | 'large',
-    separators?: boolean,
-    loading?: boolean,
+    className?: string;
+    shadow?: 'none' | 'normal' | 'medium' | 'large';
+    separators?: boolean;
+    loading?: boolean;
     path?: string | null;
     href?: string | null;
     bounce?: boolean;

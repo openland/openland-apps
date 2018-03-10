@@ -1,6 +1,6 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
-import XStyled from './XStyled';
 import { XCard } from './XCard';
 import { XLink } from './XLink';
 
@@ -15,9 +15,9 @@ const menuShifting = glamor.keyframes({
         transformOrigin: '100% 0%',
         transform: 'scale(1, 1)' 
     }
-})
+});
 
-const XMenuDiv = XStyled(XCard)({
+const XMenuDiv = Glamorous(XCard)({
     marginTop: 13,
     position: 'relative',
     overflow: 'visible',
@@ -51,7 +51,7 @@ const XMenuDiv = XStyled(XCard)({
     }
 });
 
-const XMenuItem = XStyled(XLink)({
+const XMenuItem = Glamorous(XLink)({
     paddingLeft: 8,
     paddingRight: 8,
     textOverflow: 'ellipsis',
@@ -79,6 +79,6 @@ export class XMenu extends React.Component {
             <XMenuDiv>
                 {this.props.children}
             </XMenuDiv>
-        )
+        );
     }
 }

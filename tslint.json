@@ -76,7 +76,7 @@
     ],
     "radix": true,
     "semicolon": [
-      false,
+      true,
       "always"
     ],
     "switch-default": true,

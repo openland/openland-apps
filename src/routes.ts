@@ -8,6 +8,10 @@ let routes = Routes();
 
 routes.add('/', '/main/explore/index');
 routes.add('/signup', '/signup');
+routes.add('/signin', '/signin');
+routes.add('/activation', '/activation');
+routes.add('/need_info', '/need_info');
+routes.add('/deactivated', '/deactivated');
 
 //
 // Parcels
@@ -67,6 +71,10 @@ routes.add('/super/debug', '/super/debug');
 routes.add('/super/debug/', '/super/debug');
 routes.add('/super/admins', '/super/admins');
 routes.add('/super/admins/', '/super/admins');
+routes.add('/super/orgs', '/super/orgs');
+routes.add('/super/orgs/', '/super/orgs');
+routes.add('/super/orgs/:accountId', '/super/orgView');
+routes.add('/super/orgs/:accountId/', '/super/orgView');
 
 //
 // Authentication

@@ -6,7 +6,8 @@ import { withRouter, RouterState } from '../utils/withRouter';
 export class UserInfoProvider extends React.Component<{
     user?: Types.UserShortFragment | null,
     area?: Types.AreaShortFragment | null,
-    account?: { id: string, title: string } | null,
+    account?: Types.AccountShortFragment | null,
+    profile: Types.MyProfileFullFragment,
     roles: string[],
     router: RouterState
 }> implements React.ChildContextProvider<{}> {
@@ -16,8 +17,10 @@ export class UserInfoProvider extends React.Component<{
         account: PropTypes.object,
         roles: PropTypes.arrayOf(PropTypes.string),
         isLoggedIn: PropTypes.bool.isRequired,
-        doLogin: PropTypes.func.isRequired,
-        doLogout: PropTypes.func.isRequired
+        isActivated: PropTypes.bool.isRequired,
+        isProfileCreated: PropTypes.bool.isRequired,
+        isCompleted: PropTypes.bool.isRequired,
+        isBlocked: PropTypes.bool.isRequired,
     };
 
     render() {
@@ -25,18 +28,18 @@ export class UserInfoProvider extends React.Component<{
     }
 
     getChildContext() {
+        let hasUser = this.props.user !== null && this.props.user !== undefined;
+        let hasAccount = this.props.account !== null && this.props.account !== undefined;
         return {
-            user: this.props.user !== null && this.props.user !== undefined ? this.props.user : null,
+            user: hasUser ? this.props.user : null,
             area: this.props.area !== null && this.props.area !== undefined ? this.props.area : null,
-            account: this.props.account !== null && this.props.account !== undefined ? this.props.account : null,
+            account: hasAccount ? this.props.account : null,
             roles: this.props.roles,
-            isLoggedIn: this.props.user !== undefined && this.props.user !== null,
-            doLogin: () => {
-                this.props.router.push('/auth/login?r=' + encodeURIComponent(this.props.router.pathname));
-            },
-            doLogout: () => {
-                this.props.router.push('/auth/logout');
-            }
+            isLoggedIn: this.props.profile.isLoggedIn && hasUser,
+            isProfileCreated: this.props.profile.isProfileCreated && hasUser,
+            isActivated: this.props.profile.isAccountActivated && hasAccount && hasUser,
+            isCompleted: this.props.profile.isCompleted && hasAccount && hasUser,
+            isBlocked: this.props.profile.isBlocked,
         };
     }
 }
@@ -44,11 +47,13 @@ export class UserInfoProvider extends React.Component<{
 export interface UserInfoComponentProps {
     user: Types.UserShortFragment | null;
     area: Types.AreaShortFragment | null;
-    account: { id: string, title: string } | null;
+    account: Types.AccountShortFragment | null;
     roles: string[];
     isLoggedIn: boolean;
-    doLogin: () => void;
-    doLogout: () => void;
+    isActivated: boolean;
+    isProfileCreated: boolean;
+    isCompleted: boolean;
+    isBlocked: boolean;
 }
 
 class UserInfoReceiver extends React.Component<{ render: React.ComponentType<UserInfoComponentProps> }> {
@@ -58,18 +63,22 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
         account: PropTypes.object,
         roles: PropTypes.arrayOf(PropTypes.string),
         isLoggedIn: PropTypes.bool.isRequired,
-        doLogin: PropTypes.func.isRequired,
-        doLogout: PropTypes.func.isRequired
+        isActivated: PropTypes.bool.isRequired,
+        isProfileCreated: PropTypes.bool.isRequired,
+        isCompleted: PropTypes.bool.isRequired,
+        isBlocked: PropTypes.bool.isRequired,
     };
 
     render() {
         var user = this.context.user as Types.UserShortFragment | null;
         var area = this.context.area as Types.AreaShortFragment | null;
-        var account = this.context.account as { id: string, title: string } | null;
+        var account = this.context.account as Types.AccountShortFragment | null;
         var roles = this.context.roles as string[];
         var isLoggedIn = this.context.isLoggedIn as boolean;
-        var doLogin = this.context.doLogin as () => void;
-        var doLogout = this.context.doLogout as () => void;
+        var isActivated = this.context.isActivated as boolean;
+        var isProfileCreated = this.context.isProfileCreated as boolean;
+        var isCompleted = this.context.isCompleted as boolean;
+        var isBlocked = this.context.isBlocked as boolean;
         var Wrapped = this.props.render;
         return (
             <Wrapped
@@ -78,8 +87,10 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
                 roles={roles}
                 account={account}
                 isLoggedIn={isLoggedIn}
-                doLogin={doLogin}
-                doLogout={doLogout}
+                isActivated={isActivated}
+                isProfileCreated={isProfileCreated}
+                isCompleted={isCompleted}
+                isBlocked={isBlocked}
                 {...this.props}
             />
         );

@@ -12,6 +12,7 @@ import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { HostNameProvider } from './HostNameProvider';
 import { getComponentDisplayName } from './utils';
 import { trackPage } from '../utils/analytics';
+import { RootErrorBoundary } from '../components/RootErrorBoundary';
 
 export const withData = (ComposedComponent: React.ComponentType) => {
     return class WithData extends React.Component<{
@@ -142,11 +143,13 @@ export const withData = (ComposedComponent: React.ComponentType) => {
 
         render() {
             return (
-                <ApolloProvider client={this.apollo}>
-                    <HostNameProvider hostName={this.props.host} protocol={this.props.protocol}>
-                        <ComposedComponent />
-                    </HostNameProvider>
-                </ApolloProvider>
+                <RootErrorBoundary>
+                    <ApolloProvider client={this.apollo}>
+                        <HostNameProvider hostName={this.props.host} protocol={this.props.protocol}>
+                            <ComposedComponent />
+                        </HostNameProvider>
+                    </ApolloProvider>
+                </RootErrorBoundary>
             );
         }
     };

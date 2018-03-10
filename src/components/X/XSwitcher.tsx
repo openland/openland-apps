@@ -1,12 +1,11 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import XStyled from './XStyled';
 import { XLink } from './XLink';
 
 interface XSwitcherProps {
-    alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center',
-    children: any,
-    fieldStyle?: boolean
+    alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
+    children: any;
+    fieldStyle?: boolean;
 }
 
 const XSwitcherWrapper = Glamorous.div<XSwitcherProps>((props) => ({
@@ -45,9 +44,9 @@ const XSwitcherWrapper = Glamorous.div<XSwitcherProps>((props) => ({
             }
         }
     }
-}))
+}));
 
-const XSwitcherItem = XStyled(XLink)({
+const XSwitcherItem = Glamorous(XLink)({
     fontSize: 14,
     lineHeight: 1.6,
     fontWeight: 200,
@@ -61,17 +60,17 @@ const XSwitcherItem = XStyled(XLink)({
         color: '#6772e5',
         fontWeight: 600,
     }
-})
+});
 
 export class XSwitcher extends React.Component<XSwitcherProps> {
 
-    static Item = XSwitcherItem
+    static Item = XSwitcherItem;
 
     render() {
         return (
             <XSwitcherWrapper alignSelf={this.props.alignSelf} fieldStyle={this.props.fieldStyle}>
                 {this.props.children}
             </XSwitcherWrapper>
-        )
+        );
     }
 }
