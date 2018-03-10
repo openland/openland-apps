@@ -15,9 +15,9 @@ export const AppNavigation = withParcelsFavroutesCount((props) => {
             <AppSidebar.Item path="/parcels" title="Parcels" icon="layers" activateForSubpaths={true} />
             <AppSidebar.Item href="https://statecraft.one/sf" title="Insights" icon="show_chart" />
             <AppSidebar.Item title="Owners" icon="lock" disabled={true} />
+            <AppSidebar.Item title="Deals" icon="lock" disabled={true} />
             <Div />
             <AppSidebar.Item path="/favorites" title={props.data.parcelFavoritesCount ? `Favorites (${props.data.parcelFavoritesCount})` : 'Favorites'} icon="favorite" />
-            <AppSidebar.Item title="Due Dilligence" icon="lock" disabled={true} />
             <AppSidebar.Item title="Notifications" icon="lock" disabled={true} />
             <AppSidebar.Item title="Support" icon="lock" disabled={true} />
 
