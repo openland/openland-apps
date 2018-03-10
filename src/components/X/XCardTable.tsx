@@ -33,16 +33,45 @@ let XCardTableTDDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end'
     justifyContent: props.justifyContent,
     paddingLeft: 16,
     paddingRight: 16,
-
+    paddingTop: 9,
+    paddingBottom: 9,
+    fontWeight: 600,
+    color: '#182642',
     fontSize: 13,
-    fontWeight: 'normal',
     lineHeight: 'normal',
+
+    '> i': {
+        fontSize: 20,
+        color: 'rgb(82, 95, 127)'
+    },
 
     '> a': {
         minHeight: 'auto !important',
         padding: '0 !important',
         background: 'transparent',
         justifyContent: 'flex-end'
+    }
+}))
+
+const XCardTableTDDivAsLink = Glamorous(XLink)<{ justifyContent?: 'flex-start' | 'flex-end' | 'center' }>((props) => ({
+    display: 'flex',
+    justifyContent: props.justifyContent,
+    fontWeight: 600,
+    color: '#182642',
+    fontSize: 13,
+    lineHeight: 'normal',
+    width: '100%',
+    height: '100%',
+    paddingTop: 9,
+    paddingBottom: 9,
+    paddingLeft: 16,
+    paddingRight: 16,
+    '> i': {
+        fontSize: 20,
+        color: 'rgb(82, 95, 127)'
+    },
+    '&:hover': {
+        color: 'inherit'
     }
 }))
 
@@ -54,59 +83,65 @@ export function XCardTableBody(props: { children: any }) {
     return (<tbody>{props.children}</tbody>);
 }
 
-const XCardTableBodyRowStyle = Glamorous.tr<{noHover?: boolean}>((props) => ({
+const XCardTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
     position: 'relative',
-    '> a': {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%'
-    },
     cursor: 'pointer',
     borderBottom: '1px solid #F5F6F8',
-
     '&:hover': {
         backgroundColor: props.noHover ? undefined : '#f6f9fc'
-    },
-
-    '> td > div': {
-        paddingTop: 9,
-        paddingBottom: 9,
-        fontWeight: 600,
-        color: '#182642',
     }
 }))
 
 interface XCardTableRowProps {
-    children: any, 
-    onClick?: (e?: any) => void, 
-    path?: string, 
-    href?: string, 
+    onClick?: (e?: any) => void,
+    path?: string,
+    href?: string,
     noHover?: boolean
 }
 
-export function XCardTableRow(props: XCardTableRowProps) {
-    return (
-        <XCardTableBodyRowStyle onClick={props.onClick} noHover={props.noHover}>
-            {props.children}
-            {(props.path || props.href) && <XLink path={props.path} href={props.href} />}
-        </XCardTableBodyRowStyle>
-    );
+export class XCardTableRow extends React.Component<XCardTableRowProps> {
+    render() {
+        let content: any[] = []
+        React.Children.map(this.props.children, (child: React.ReactElement<XCardTableCellProps>) => {
+            if (React.isValidElement(child) && (child.props as any)._isTableCellElement === true && (this.props.path!! || this.props.href!!)) {
+                let element = React.cloneElement(child as any, {
+                    path: this.props.path,
+                    href: this.props.href
+                })
+                content.push(element)
+            } else {
+                content.push(child)
+            }
+        })
+        return (
+            <XCardTableBodyRowStyle onClick={this.props.onClick} noHover={this.props.noHover}>
+                {content}
+            </XCardTableBodyRowStyle>
+        );
+    }
 }
 
 interface XCardTableCellProps {
     children: any,
     width?: number,
-    justifyContent?: 'flex-start' | 'flex-end' | 'center'
+    justifyContent?: 'flex-start' | 'flex-end' | 'center',
+    path?: string,
+    href?: string
 }
 
-export function XCardTableCell(props: XCardTableCellProps) {
-    return (
-        <XCardTableTD width={props.width}>
-            <XCardTableTDDiv justifyContent={props.justifyContent}>{props.children}</XCardTableTDDiv>
-        </XCardTableTD>
-    );
+export class XCardTableCell extends React.Component<XCardTableCellProps> {
+    static defaultProps = {
+        _isTableCellElement: true
+    }
+    render() {
+        return (
+            <XCardTableTD width={this.props.width}>
+                {(this.props.path || this.props.href)
+                    ? (<XCardTableTDDivAsLink path={this.props.path} href={this.props.href} justifyContent={this.props.justifyContent}>{this.props.children}</XCardTableTDDivAsLink>)
+                    : (<XCardTableTDDiv justifyContent={this.props.justifyContent}>{this.props.children}</XCardTableTDDiv>)}
+            </XCardTableTD>
+        )
+    }
 }
 
 export class XCardTable extends React.Component {

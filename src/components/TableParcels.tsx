@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Types from '../api/Types';
-import { XButton } from './X/XButton';
+import { XIcon } from './X/XIcon';
 import { XCard } from './X/XCard';
 import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
@@ -28,9 +28,7 @@ export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[] }>((
                         <XCard.Table.Cell justifyContent="flex-end">{v.extrasImprovementValue && <XMoney value={v.extrasImprovementValue} />}</XCard.Table.Cell>
                         <XCard.Table.Cell justifyContent="flex-end">{v.extrasZoning && v.extrasZoning.join()}</XCard.Table.Cell>
                         <XCard.Table.Cell justifyContent="flex-end">
-                            <XButton
-                                size="large"
-                                borderless={true}
+                            <XIcon
                                 icon={v.likes.liked ? 'favorite' : 'favorite_border'}
                             />
                         </XCard.Table.Cell>
