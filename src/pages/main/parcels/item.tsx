@@ -132,12 +132,10 @@ export default withApp('viewer', withParcel((props) => {
                                         <XCard.Table.Cell>{v.id}</XCard.Table.Cell>
                                         <XCard.Table.Cell>{v.type && <PermitType type={v.type!!} />}</XCard.Table.Cell>
                                         <XCard.Table.Cell>
-                                            <span>
                                                 {v.status}
                                                 {v.statusUpdatedAt && ' ('}
                                                 {v.statusUpdatedAt && <XDate date={v.statusUpdatedAt} />}
                                                 {v.statusUpdatedAt && ')'}
-                                            </span>
                                         </XCard.Table.Cell>
                                         <XCard.Table.Cell>{v.description}</XCard.Table.Cell>
                                     </XCard.Table.Row>
