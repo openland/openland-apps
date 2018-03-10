@@ -3,6 +3,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
+import { XTable } from '../../../components/X/XTable';
 import { withParcel, ParcelTileSource, BlockTileSource } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
@@ -117,31 +118,31 @@ export default withApp('viewer', withParcel((props) => {
                 {props.data.item.permits.length > 7 && (
                     <XCard shadow="medium">
                         <XCard.Header text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} />
-                        <XCard.Table>
-                            <XCard.Table.Header>
-                                <XCard.Table.Cell>Created</XCard.Table.Cell>
-                                <XCard.Table.Cell>Permit ID</XCard.Table.Cell>
-                                <XCard.Table.Cell>Permit Type</XCard.Table.Cell>
-                                <XCard.Table.Cell>Status</XCard.Table.Cell>
-                                <XCard.Table.Cell>Description</XCard.Table.Cell>
-                            </XCard.Table.Header>
-                            <XCard.Table.Body>
+                        <XTable>
+                            <XTable.Header>
+                                <XTable.Cell>Created</XTable.Cell>
+                                <XTable.Cell>Permit ID</XTable.Cell>
+                                <XTable.Cell>Permit Type</XTable.Cell>
+                                <XTable.Cell>Status</XTable.Cell>
+                                <XTable.Cell>Description</XTable.Cell>
+                            </XTable.Header>
+                            <XTable.Body>
                                 {props.data.item.permits.map((v) => (
-                                    <XCard.Table.Row key={v.id} href={v.governmentalUrl!!}>
-                                        <XCard.Table.Cell>{v.createdAt && <XDate date={v.createdAt} />}</XCard.Table.Cell>
-                                        <XCard.Table.Cell>{v.id}</XCard.Table.Cell>
-                                        <XCard.Table.Cell>{v.type && <PermitType type={v.type!!} />}</XCard.Table.Cell>
-                                        <XCard.Table.Cell>
+                                    <XTable.Row key={v.id} href={v.governmentalUrl!!}>
+                                        <XTable.Cell>{v.createdAt && <XDate date={v.createdAt} />}</XTable.Cell>
+                                        <XTable.Cell>{v.id}</XTable.Cell>
+                                        <XTable.Cell>{v.type && <PermitType type={v.type!!} />}</XTable.Cell>
+                                        <XTable.Cell>
                                                 {v.status}
                                                 {v.statusUpdatedAt && ' ('}
                                                 {v.statusUpdatedAt && <XDate date={v.statusUpdatedAt} />}
                                                 {v.statusUpdatedAt && ')'}
-                                        </XCard.Table.Cell>
-                                        <XCard.Table.Cell>{v.description}</XCard.Table.Cell>
-                                    </XCard.Table.Row>
+                                        </XTable.Cell>
+                                        <XTable.Cell>{v.description}</XTable.Cell>
+                                    </XTable.Row>
                                 ))}
-                            </XCard.Table.Body>
-                        </XCard.Table>
+                            </XTable.Body>
+                        </XTable>
                     </XCard>
                 )}
             </AppContent>

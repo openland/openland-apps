@@ -2,6 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
+import { XTable } from '../../../components/X/XTable';
 import { withSFBuildingProject } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
@@ -46,36 +47,36 @@ export default withApp('viewer', withSFBuildingProject((props) => {
             {props.data.project.developers.length > 0 && (
                 <XCard shadow="medium">
                     <XCard.Header text="Developers" />
-                    <XCard.Table>
-                        <XCard.Table.Header>
-                            <XCard.Table.Cell>Organization Name</XCard.Table.Cell>
-                        </XCard.Table.Header>
-                        <tbody>
+                    <XTable>
+                        <XTable.Header>
+                            <XTable.Cell>Organization Name</XTable.Cell>
+                        </XTable.Header>
+                        <XTable.Body>
                             {props.data.project.developers.map((d) => (
-                                <tr key={d.id}>
-                                    <XCard.Table.Cell>{d.title}</XCard.Table.Cell>
-                                </tr>
+                                <XTable.Row key={d.id}>
+                                    <XTable.Cell>{d.title}</XTable.Cell>
+                                </XTable.Row>
                             ))}
-                        </tbody>
-                    </XCard.Table>
+                        </XTable.Body>
+                    </XTable>
                 </XCard>
             )}
 
             {props.data.project.constructors.length > 0 && (
                 <XCard shadow="medium">
                     <XCard.Header text="Contractors" />
-                    <XCard.Table>
-                        <XCard.Table.Header>
-                            <XCard.Table.Cell>Organization Name</XCard.Table.Cell>
-                        </XCard.Table.Header>
+                    <XTable>
+                        <XTable.Header>
+                            <XTable.Cell>Organization Name</XTable.Cell>
+                        </XTable.Header>
                         <tbody>
                             {props.data.project.constructors.map((d) => (
                                 <tr key={d.id}>
-                                    <XCard.Table.Cell>{d.title}</XCard.Table.Cell>
+                                    <XTable.Cell>{d.title}</XTable.Cell>
                                 </tr>
                             ))}
                         </tbody>
-                    </XCard.Table>
+                    </XTable>
                 </XCard>
             )}
         </AppContent>

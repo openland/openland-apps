@@ -9,5 +9,5 @@ export function XMoney(props: { value: number }) {
         <>
             {formatter.format(props.value)}
         </>
-    )
+    );
 }
