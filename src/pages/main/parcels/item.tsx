@@ -120,10 +120,10 @@ export default withApp('viewer', withParcel((props) => {
                         <XCard.Header text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} />
                         <XTable>
                             <XTable.Header>
-                                <XTable.Cell>Created</XTable.Cell>
-                                <XTable.Cell>Permit ID</XTable.Cell>
-                                <XTable.Cell>Permit Type</XTable.Cell>
-                                <XTable.Cell>Status</XTable.Cell>
+                                <XTable.Cell width={120}>Created</XTable.Cell>
+                                <XTable.Cell width={150}>Permit ID</XTable.Cell>
+                                <XTable.Cell width={120}>Permit Type</XTable.Cell>
+                                <XTable.Cell width={170}>Status</XTable.Cell>
                                 <XTable.Cell>Description</XTable.Cell>
                             </XTable.Header>
                             <XTable.Body>
