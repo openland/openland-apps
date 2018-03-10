@@ -1,17 +1,16 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import XStyled from './XStyled'
 import { XLink } from './XLink';
 import { XIcon } from './XIcon';
 
 interface MenuItemProps {
-    active?: boolean,
-    disabled?: boolean,
-    icon?: boolean,
-    query?: { field: string, value?: string } | null 
+    active?: boolean;
+    disabled?: boolean;
+    icon?: boolean;
+    query?: { field: string, value?: string } | null;
 }
 
-export const MenuItem = XStyled<MenuItemProps>(XLink)((props) => ({
+export const MenuItem = Glamorous<MenuItemProps>(XLink)((props) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -35,19 +34,19 @@ export const MenuItem = XStyled<MenuItemProps>(XLink)((props) => ({
         width: '40px',
         height: '40px'
     }
-}))
+}));
 
 export const MenuSpread = Glamorous.span({
     display: 'block',
     fontSize: '15px',
     color: '#6638F0',
     margin: '0 20px'
-})
+});
 
 interface XPagingProps {
-    totalPages: number,
-    currentPage: number,
-    openEnded: boolean,
+    totalPages: number;
+    currentPage: number;
+    openEnded: boolean;
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center' | undefined;
 }
 
@@ -60,7 +59,7 @@ export const PaginationWrapper = Glamorous.div<PaginationWrapperProps>((props) =
     flexShrink: 0,
     alignItems: 'center',
     alignSelf: props.alignSelf
-}))
+}));
 
 function XPageItem(props: { toPage: number, currentPage: number, disabled?: boolean }) {
     if (props.toPage > 0) {

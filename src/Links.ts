@@ -17,12 +17,12 @@ export const Links = {
                 view: `/${areaId}/projects/${projectId}`,
                 edit: `/${areaId}/projects/${projectId}/edit`
             })
-        }
+        };
     },
     login: '/login'
-}
+};
 
 export const ExternalLinks = {
     corporateSite: 'https://statecrafthq.com',
     corporateEmail: 'hello@statecraft.one'
-}
+};

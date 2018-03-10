@@ -72,7 +72,7 @@ let CoverImage = Glamorous.img({
         width: '100%',
         height: '250px'
     }
-})
+});
 
 export function XPageCover(props: { src?: string, children?: any }) {
     return (
@@ -82,5 +82,5 @@ export function XPageCover(props: { src?: string, children?: any }) {
             </CoverDiv>
             {props.children}
         </PageRootDiv>
-    )
+    );
 }

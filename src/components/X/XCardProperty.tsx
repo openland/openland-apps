@@ -23,7 +23,7 @@ let XCardFieldTitle = Glamorous.div<{width?: number}>((props) => ({
     lineHeight: 1.71,
     textAlign: 'left',
     color: '#525f7f'
-}))
+}));
 
 let XCardFieldValue = Glamorous.div({
     overflow: 'hidden',
@@ -34,14 +34,14 @@ let XCardFieldValue = Glamorous.div({
     lineHeight: 1.71,
     textAlign: 'left',
     color: '#182642'
-})
+});
 
 let XCardPropertyListDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     paddingTop: '12px',
     paddingBottom: '12px'
-})
+});
 
 let XCardPropertyColumsDiv = Glamorous.div({
     display: 'flex',
@@ -54,7 +54,7 @@ let XCardPropertyColumnsContainerDiv = Glamorous.div({
     alignItems: 'stretch',
     flexBasis: 0,
     flexGrow: 1
-})
+});
 
 let XCardPropertyTitle = Glamorous.div({
     fontSize: '14px',
@@ -65,7 +65,7 @@ let XCardPropertyTitle = Glamorous.div({
     textAlign: 'left',
     color: '#262626',
     marginBottom: 8
-})
+});
 
 export function XCardPropertyColumns(props: { children: any }) {
     return (
@@ -74,7 +74,7 @@ export function XCardPropertyColumns(props: { children: any }) {
                 <XCardPropertyColumnsContainerDiv key={'chilren_' + i}>{v}</XCardPropertyColumnsContainerDiv>
             ))}
         </XCardPropertyColumsDiv>
-    )
+    );
 }
 
 export function XCardPropertyList(props: { children: any, title?: string }) {
@@ -83,7 +83,7 @@ export function XCardPropertyList(props: { children: any, title?: string }) {
             {props.title && <XCardPropertyTitle>{props.title}</XCardPropertyTitle>}
             {props.children}
         </XCardPropertyListDiv>
-    )
+    );
 }
 
 export function XCardProperty(props: { title: string, children: any, width?: number }) {
@@ -92,5 +92,5 @@ export function XCardProperty(props: { title: string, children: any, width?: num
             <XCardFieldTitle width={props.width}>{props.title}</XCardFieldTitle>
             {React.Children.count(props.children) > 0 && <XCardFieldValue>{props.children}</XCardFieldValue>}
         </XCardFieldContainer>
-    )
+    );
 }

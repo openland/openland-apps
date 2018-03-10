@@ -20,7 +20,7 @@ export class XStreetView extends React.Component<{ className?: string, location:
             (GoogleMapsLoader as any).KEY = 'AIzaSyCSTFJaDPunRulhGV17tg_CUmosCZ0ks_8';
             GoogleMapsLoader.load((google) => {
                 if (!this._isMounted) {
-                    return
+                    return;
                 }
                 if (google) {
                     const streetView = new google.maps.StreetViewService();
@@ -37,7 +37,7 @@ export class XStreetView extends React.Component<{ className?: string, location:
                                     return;
                                 }
                                 let node = ReactDOM.findDOMNode(this);
-                                const panorama = new google.maps.StreetViewPanorama(node);
+                                const panorama = new google.maps.StreetViewPanorama(node, { scrollwheel: false });
                                 panorama.setPano(data!!.location!!.pano!!);
                                 const heading = google.maps.geometry.spherical
                                     .computeHeading(data!!.location!!.latLng!!, new google.maps.LatLng(dest.lat, dest.lng));
@@ -50,7 +50,7 @@ export class XStreetView extends React.Component<{ className?: string, location:
                         });
                 }
             });
-        })
+        });
     }
 
     componentWillUnmount() {

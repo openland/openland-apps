@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHorizontal } from './XHorizontal'
+import { XHorizontal } from './XHorizontal';
 
 export const XCardText = Glamorous.div({
     display: 'flex',
@@ -12,7 +12,7 @@ export const XCardText = Glamorous.div({
     '& *::before': {
         content: ' '
     }
-})
+});
 
 let XCardFooterDiv = Glamorous.div({
     minHeight: 50,
@@ -23,7 +23,7 @@ let XCardFooterDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between'
-})
+});
 
 export function XCardFooter(props: { children?: any, text?: string | null }) {
     return (
@@ -35,5 +35,5 @@ export function XCardFooter(props: { children?: any, text?: string | null }) {
                 {props.children}
             </XHorizontal>
         </XCardFooterDiv>
-    )
+    );
 }

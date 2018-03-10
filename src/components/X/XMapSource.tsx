@@ -12,7 +12,7 @@ export class XMapSource extends React.PureComponent<XMapSourceProps> {
     static contextTypes = {
         mapSubscribe: PropTypes.func.isRequired,
         mapUnsubscribe: PropTypes.func.isRequired,
-    }
+    };
     private isInited = false;
     private map: mapboxgl.Map;
     private datasources: DataSources;
@@ -49,7 +49,7 @@ export class XMapSource extends React.PureComponent<XMapSourceProps> {
                     clusterRadius: 50
                 });
             } else {
-                let source = this.map.getSource(this.props.id)
+                let source = this.map.getSource(this.props.id);
                 if (source.type === 'geojson') {
                     this.datasources.updateGeoJSONSource(this.props.id, dt);
                     source.setData(dt);

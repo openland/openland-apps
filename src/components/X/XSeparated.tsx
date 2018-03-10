@@ -5,7 +5,7 @@ export function XSeparated(props: { children: any, separator: React.ComponentTyp
     let child = React.Children.toArray(props.children);
     var childs = new Array<any>();
     var isFirst = true;
-    let sep = 0
+    let sep = 0;
     for (let c of child) {
         if (isFirst) {
             isFirst = false;

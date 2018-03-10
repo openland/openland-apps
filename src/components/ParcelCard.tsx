@@ -26,7 +26,7 @@ let Container = Glamorous.div({
 
 let LoaderWrapper = Glamorous(XCard.Loader)({
     flexGrow: 1
-})
+});
 
 let Scrollable = Glamorous.div({
     width: '100%',
@@ -41,12 +41,12 @@ let StreetViewDiv = Glamorous.div({
         top: 8,
         right: 8
     }
-})
+});
 
 function PropertyCell(props: { title: string, children: any }) {
     return (
         <XCard.Property {...props} width={150}>{props.children}</XCard.Property>
-    )
+    );
 }
 
 export const ParcelCard = withParcelDirect((props) => {
@@ -212,5 +212,5 @@ export const ParcelCard = withParcelDirect((props) => {
                     </Scrollable>}
             </LoaderWrapper>
         </Container>
-    )
+    );
 }) as React.ComponentClass<{ parcelId: string, onClose?: () => void }>;

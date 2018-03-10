@@ -10,7 +10,7 @@ const XCardWrapper = Glamorous.div({
     '> :not(:last-child)': {
         borderBottom: '1px solid #f6f9fc'
     }
-})
+});
 
 const XCardItemWrapper = Glamorous.div({
     display: 'flex',
@@ -24,7 +24,7 @@ const XCardItemWrapper = Glamorous.div({
     '&:hover': {
         backgroundColor: '#f6f9fc'
     }
-})
+});
 
 export function XCardList(props: { children: any }) {
     return (<XCardWrapper>{props.children}</XCardWrapper>);
@@ -48,6 +48,6 @@ export class XCardListItem extends React.Component<{ path?: string }> {
             >
                 {this.props.children}
             </XCardItemWrapper>
-        )
+        );
     }
 }

@@ -18,12 +18,14 @@ export const AppNavigation = withParcelsFavroutesCount((props) => {
             <AppSidebar.Item title="Deals" icon="lock" disabled={true} />
             <Div />
             <AppSidebar.Item path="/favorites" title={props.data.parcelFavoritesCount ? `Favorites (${props.data.parcelFavoritesCount})` : 'Favorites'} icon="favorite" />
-            <AppSidebar.Item title="Notifications" icon="lock" disabled={true} />
-            <AppSidebar.Item title="Support" icon="lock" disabled={true} />
+            
+            <XWithRole role="super-admin">
+                <AppSidebar.Item path="/projects" title="Projects" icon="work" />
+                <AppSidebar.Item path="/team" title="People" icon="group" />
+                <AppSidebar.Item path="/settings" title="Settings" icon="settings" />
+            </XWithRole>
 
             <XWithRole role="super-admin">
-                <Div />
-                <AppSidebar.Item path="/team" title="Team" icon="group" />
                 <Div />
                 <AppSidebar.Item path="/super/admins" title="Super Admins" icon="domain" activateForSubpaths={true} />
                 <AppSidebar.Item path="/super/orgs" title="Organizations" icon="recent_actors" activateForSubpaths={true} />

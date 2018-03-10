@@ -18,7 +18,7 @@ let XFormInput = Glamorous.input<{placeholder?: string}>({
     wordBreak: 'keep-all',
     transition: 'all .08s ease-in',
     border: 'none'
-})
+});
 
 let XFormContainer = Glamorous.div({
     display: 'flex',
@@ -35,31 +35,31 @@ let XFormFieldTitle = Glamorous.div({
     fontSize: '14px',
     lineHeight: '1.6',
     fontWeight: 400
-})
+});
 
 let XFormFieldDescription = Glamorous.div({
     color: '#6b7c93',
     fontWeight: 400,
     fontSize: '13px',
     lineHeight: 1.6
-})
+});
 
 let XFormFieldValue = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     paddingTop: '2px',
     paddingBottom: '2px',
-})
+});
 
 let XFormPropertyListDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     paddingTop: '16px',
     paddingBottom: '16px'
-})
+});
 
 export function XCardFormList(props: { children: any }) {
-    return <XFormPropertyListDiv>{props.children}</XFormPropertyListDiv>
+    return <XFormPropertyListDiv>{props.children}</XFormPropertyListDiv>;
 }
 
 export function XCardFormCell(props: { title: string, placeholder?: string, description?: string }) {
@@ -71,5 +71,5 @@ export function XCardFormCell(props: { title: string, placeholder?: string, desc
                 {props.description && <XFormFieldDescription>{props.description}</XFormFieldDescription>}
             </XFormFieldValue>
         </XFormContainer>
-    )
+    );
 }

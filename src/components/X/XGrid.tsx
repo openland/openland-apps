@@ -27,7 +27,7 @@ export let XCell = Glamorous.div<{ area: string }>((props) => ({
 }));
 
 interface XGridLayout {
-    gap?: number,
+    gap?: number;
     templateColumns?: string;
     templateRows?: string;
     templateAreas?: string[][];
@@ -35,7 +35,7 @@ interface XGridLayout {
 interface XGridProps {
     layouts: XGridLayout & {
         [K in XMediaSizes]?: XGridLayout
-    }
+    };
     children?: any;
 }
 
@@ -46,9 +46,9 @@ function convertLayout(src?: XGridLayout) {
             gridTemplateColumns: src.templateColumns,
             gridTemplateRows: src.templateRows,
             gridTemplateAreas: src.templateAreas ? src.templateAreas.map((v) => '"' + v.join(' ') + '"').join(' ') : undefined,
-        }
+        };
     } else {
-        return {}
+        return {};
     }
 }
 

@@ -1,16 +1,15 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import * as Types from '../api/Types';
-import { withRouter, RouterState } from './withRouter';
+import { withRouter, XWithRouter } from './withRouter';
 
 export class UserInfoProvider extends React.Component<{
     user?: Types.UserShortFragment | null,
     area?: Types.AreaShortFragment | null,
     account?: Types.AccountShortFragment | null,
     profile: Types.MyProfileFullFragment,
-    roles: string[],
-    router: RouterState
-}> implements React.ChildContextProvider<{}> {
+    roles: string[]
+} & XWithRouter> implements React.ChildContextProvider<{}> {
     static childContextTypes = {
         user: PropTypes.object,
         area: PropTypes.object,

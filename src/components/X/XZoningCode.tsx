@@ -66,12 +66,12 @@ const Links = {
     'NCT-3': 'http://library.amlegal.com/nxt/gateway.dll/California/planning/article7neighborhoodcommercialdistricts?#JD_752',
     'HP-RA': 'http://www.sfocii.org/index.aspx?page=57',
     'MB-RA': 'http://www.sfocii.org/index.aspx?page=61',
-}
+};
 
 const Container = Glamorous.div({
     display: 'flex',
     flexDirection: 'row'
-})
+});
 
 export function XZoningCode(props: { codes: string[] }) {
     let items = [...new Set(props.codes)].sort();
@@ -89,5 +89,5 @@ export function XZoningCode(props: { codes: string[] }) {
             components.push(itm);
         }
     }
-    return <Container>{components}</Container>
+    return <Container>{components}</Container>;
 }

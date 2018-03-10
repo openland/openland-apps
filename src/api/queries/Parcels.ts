@@ -70,7 +70,7 @@ export const ParcelFull = gql`
           governmentalUrl
       }
   }
-`
+`;
 
 export const ParcelShort = gql`
   fragment ParcelShort on Parcel {
@@ -119,7 +119,7 @@ export const ParcelShort = gql`
           count
       }
   }
-`
+`;
 
 export const BlockShort = gql`
    fragment BlockShort on Block {

@@ -75,13 +75,13 @@ export function getClientStorage(): SharedStorage {
     if (canUseDOM) {
         return new SharedClientStorage();
     } else {
-        throw Error('You can\'t use Client Storage on the server side')
+        throw Error('You can\'t use Client Storage on the server side');
     }
 }
 
 export function getServerStorage(ctx: any): SharedStorage {
     if (canUseDOM) {
-        throw Error('You can\'t use Server Storage on the client side')
+        throw Error('You can\'t use Server Storage on the client side');
     } else {
         return new SharedServerStorage(ctx);
     }

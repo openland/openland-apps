@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withRouter } from '../../utils/withRouter';
+import { withRouter } from '../withRouter';
 import { XModalStyleProps, XModal } from './XModal';
 
 export const XModalRouted = withRouter<{ query: string } & XModalStyleProps>((props) => {

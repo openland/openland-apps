@@ -38,7 +38,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
             ]
         });
         if (uploaded.ok) {
-            let body = (await uploaded.json()) as { ok: boolean, token: string }
+            let body = (await uploaded.json()) as { ok: boolean, token: string };
             console.warn(auth.expiresIn);
             Cookie.remove('statecraft-key');
             Cookie.set('x-openland-token', body.token);
@@ -81,4 +81,4 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
     }
 }
 
-export default withData(AuthenticationHandler)
+export default withData(AuthenticationHandler);

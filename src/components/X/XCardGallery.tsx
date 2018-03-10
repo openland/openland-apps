@@ -17,7 +17,7 @@ const XCardGalleryInnerDiv = Glamorous.div({
     flexDirection: 'row',
     paddingLeft: '8px',
     paddingRight: '8px'
-})
+});
 
 const XCardGalleryItemImg = Glamorous(XCloudImage)({
     height: '204px',

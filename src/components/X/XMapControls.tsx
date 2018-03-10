@@ -2,11 +2,11 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 
 interface XMapControlsProps {
-    children?: any,
-    topLeft?: boolean,
-    topRight?: boolean,
-    bottomLeft?: boolean,
-    BottomRight?: boolean,
+    children?: any;
+    topLeft?: boolean;
+    topRight?: boolean;
+    bottomLeft?: boolean;
+    BottomRight?: boolean;
 }
 
 const XMapControlsDiv = Glamorous.div<XMapControlsProps>((props) => ({
@@ -20,7 +20,7 @@ const XMapControlsDiv = Glamorous.div<XMapControlsProps>((props) => ({
     '&:hover': {
         opacity: 1
     }
-}))
+}));
 
 export class XMapControls extends React.Component<XMapControlsProps> {
     render() {
@@ -33,6 +33,6 @@ export class XMapControls extends React.Component<XMapControlsProps> {
             >
                 {this.props.children}
             </XMapControlsDiv>
-        )
+        );
     }
 }

@@ -43,7 +43,7 @@ interface XMapPolygonLayerProps {
         bottom: number;
         left: number;
         right: number;
-    }
+    };
     flyToMaxZoom?: number;
 
     onClick?: (id: string) => void;
@@ -54,7 +54,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
     static contextTypes = {
         mapSubscribe: PropTypes.func.isRequired,
         mapUnsubscribe: PropTypes.func.isRequired
-    }
+    };
 
     private isInited = false;
     private _isMounted = false;
@@ -284,7 +284,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
             if (this.props.onClick && this.props.allowClick !== false) {
                 this.props.onClick(id);
             }
-        })
+        });
     }
 
     render() {

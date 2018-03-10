@@ -25,4 +25,4 @@ export class XList extends React.Component {
             </XListDiv>
         );
     }
-};
+}

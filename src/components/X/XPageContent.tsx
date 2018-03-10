@@ -37,5 +37,5 @@ export function XPageContent(props: { children?: any, mode?: 'normal' | 'thin' }
                 {props.children}
             </XVertical>
         </Wrapper>
-    )
+    );
 }

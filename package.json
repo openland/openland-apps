@@ -117,11 +117,14 @@
 		"next-awesome-typescript": "^0.2.0",
 		"nodemon": "^1.17.1",
 		"tslint": "^5.8.0",
-		"tslint-react": "^3.2.0"
+		"tslint-react": "^3.5.1"
 	},
 	"scripts": {
 		"dev": "API_ENDPOINT=\"https://api.statecrafthq.com\" nodemon src/server.ts",
 		"dev:local": "nodemon src/server.ts",
+		"lint": "NODE_ENV=production ./node_modules/.bin/tslint --project . --config ./tslint.json",
+		"compile": "NODE_ENV=production ./node_modules/.bin/tsc",
+		"test": "yarn lint && yarn compile",
 		"build": "NODE_ENV=production next build src",
 		"analyze": "BUNDLE_ANALYZE=both next build src",
 		"start": "NODE_ENV=production ./node_modules/.bin/ts-node --compilerOptions '{\"module\":\"commonjs\"}' src/server.ts ",

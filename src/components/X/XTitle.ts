@@ -8,4 +8,4 @@ export let XTitle = Glamorous.div({
     fontSize: 16,
     lineHeight: '20px',
     fontWeight: 500
-})
+});

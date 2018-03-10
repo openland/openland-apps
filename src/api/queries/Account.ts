@@ -16,7 +16,7 @@ export const AccountShort = gql`
         id
         title
     }
-`
+`;
 
 export const AccountQuery = gql`
     query Account {

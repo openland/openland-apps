@@ -11,7 +11,7 @@ export const XHintText = Glamorous.div({
     padding: '2px 8px',
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5
-})
+});
 
 let XHintDiv = Glamorous.div({
     height: 1,
@@ -24,12 +24,12 @@ let XHintDiv = Glamorous.div({
     position: 'absolute',
     left: 0,
     top: 0
-})
+});
 
 export function XCardHint(props: { title: string }) {
     return (
         <XHintDiv>
             <XHintText>{props.title}</XHintText>
         </XHintDiv>
-    )
+    );
 }

@@ -11,7 +11,7 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
     static contextTypes = {
         mapSubscribe: PropTypes.func.isRequired,
         mapUnsubscribe: PropTypes.func.isRequired
-    }
+    };
 
     private isInited = false;
     private _isMounted = false;

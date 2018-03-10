@@ -3,11 +3,10 @@ import Glamorous from 'glamorous';
 import { XRow } from './XGrid';
 import { Layout } from './_Layout';
 import { XVertical } from './XVertical';
-import { withRouter, RouterState } from '../../utils/withRouter';
+import { withRouter, XWithRouter } from '../withRouter';
 import { XLink } from './XLink';
 import { XDesktopContainer } from './XDesktopContainer';
 import { XMobileContainer } from './XMobileContainer';
-import XStyled from './XStyled';
 
 let FixedContainer = Glamorous.div({
     zIndex: 100,
@@ -24,7 +23,7 @@ let FixedContainer = Glamorous.div({
 
 let OverlayContent = Glamorous(FixedContainer)({
     backgroundColor: '#F5F6F8',
-})
+});
 
 let OverlayButton = Glamorous(FixedContainer)({
     justifyContent: 'flex-end',
@@ -40,9 +39,9 @@ let ScrollableContent = Glamorous(XVertical)({
     paddingLeft: 16,
     paddingRight: 16,
     overflow: 'auto'
-})
+});
 
-let MainButton = XStyled(XLink)({
+let MainButton = Glamorous(XLink)({
     display: 'flex',
 
     color: '#ffffff!important',
@@ -64,7 +63,7 @@ let MainButton = XStyled(XLink)({
     pointerEvents: 'auto'
 });
 
-let CloseButton = XStyled(XLink)({
+let CloseButton = Glamorous(XLink)({
     textDecoration: 'none',
     // color: @text-sf
     zIndex: 10,
@@ -76,21 +75,21 @@ let CloseButton = XStyled(XLink)({
     'i': {
         fontSize: '16px'
     }
-})
+});
 
 let MobileContainer = Glamorous(XMobileContainer)({
     flexDirection: 'column',
     alignItems: 'stretch',
-})
+});
 
 let DesktopContainer = Glamorous(XDesktopContainer)({
     flexDirection: 'column',
     alignItems: 'stretch',
     flexBasis: '25%',
     marginRight: 16,
-})
+});
 
-let SaveButton = XStyled(XLink)({
+let SaveButton = Glamorous(XLink)({
     textAlign: 'center',
     border: 'none',
     backgroundColor: '#6B50FF',
@@ -115,7 +114,7 @@ let SaveButton = XStyled(XLink)({
     //     .display (block);
     //     .font (16px);
     // }
-})
+});
 
 let ContentDiv = Glamorous(XVertical)({
     flexBasis: '75%',
@@ -152,8 +151,8 @@ let RootDiv = Glamorous(XRow)({
     // }
 });
 
-class XLayoutColumnWithMenuMenuBase extends React.Component<{ buttonTitle: string, actionTitle?: string, router: RouterState }> {
-    constructor(props: { buttonTitle: string, router: RouterState }) {
+class XLayoutColumnWithMenuMenuBase extends React.Component<{ buttonTitle: string, actionTitle?: string } & XWithRouter> {
+    constructor(props: { buttonTitle: string } & XWithRouter) {
         super(props);
     }
 
@@ -183,7 +182,7 @@ class XLayoutColumnWithMenuMenuBase extends React.Component<{ buttonTitle: strin
                 </XVertical>
             </DesktopContainer>
             </>
-        )
+        );
     }
 }
 
@@ -195,7 +194,7 @@ export class XLayoutColumnWithMenuContent extends React.Component {
             <ContentDiv>
                 {this.props.children}
             </ContentDiv>
-        )
+        );
     }
 }
 
@@ -209,6 +208,6 @@ export class XLayoutColumnWithMenu extends React.Component {
             <RootDiv>
                 {this.props.children}
             </RootDiv>
-        )
+        );
     }
 }

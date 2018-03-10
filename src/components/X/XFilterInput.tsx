@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { withRouter, RouterState } from '../../utils/withRouter';
+import { withRouter, XWithRouter } from '../withRouter';
 import * as qs from 'query-string';
 import { ChangeEvent } from 'react';
 
-type XFilterInputFieldProps = { searchKey: string, placeholder?: string, className?: string, router: RouterState };
+type XFilterInputFieldProps = { searchKey: string, placeholder?: string, className?: string } & XWithRouter;
 
 class XFilterInputField extends React.Component<XFilterInputFieldProps, { value: string }> {
 
@@ -16,7 +16,7 @@ class XFilterInputField extends React.Component<XFilterInputFieldProps, { value:
         if (s[this.props.searchKey]) {
             value = s[this.props.searchKey];
         }
-        this.state = { value: value }
+        this.state = { value: value };
     }
 
     resetTimeout() {
@@ -27,7 +27,7 @@ class XFilterInputField extends React.Component<XFilterInputFieldProps, { value:
     }
 
     handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        this.setState({ value: e.target.value })
+        this.setState({ value: e.target.value });
 
         let s2 = JSON.parse(JSON.stringify(this.props.router.query!!));
         if (e.target.value === '') {
@@ -37,10 +37,10 @@ class XFilterInputField extends React.Component<XFilterInputFieldProps, { value:
         }
         let q = qs.stringify(s2);
 
-        let path = q !== '' ? this.props.router.pathname + '?' + q : this.props.router.pathname;
+        let path = q !== '' ? this.props.router.path + '?' + q : this.props.router.path;
 
-        this.resetTimeout()
-        this.timeout = window.setTimeout(() => { this.props.router.replace(path); }, 20)
+        this.resetTimeout();
+        this.timeout = window.setTimeout(() => { this.props.router.replace(path); }, 20);
     }
 
     render() {
@@ -56,7 +56,7 @@ class XFilterInputField extends React.Component<XFilterInputFieldProps, { value:
     }
 
     componentWillUnmount() {
-        this.resetTimeout()
+        this.resetTimeout();
     }
 }
 

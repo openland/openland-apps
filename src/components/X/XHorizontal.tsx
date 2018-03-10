@@ -5,7 +5,7 @@ export let XHorizontalDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'stretch'
-})
+});
 
 export let XHorizontalSpaceDiv = Glamorous.div<{ separator?: 'large' | 'normal' }>((props) => ({
     width: props.separator === 'large' ? 32 : 16,
@@ -23,7 +23,7 @@ export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal
         for (let el of elements) {
             if (!isFirst) {
                 children.push(<XHorizontalSpaceDiv key={'_separator_' + separator} />);
-                separator++
+                separator++;
             } else {
                 isFirst = false;
             }
@@ -33,6 +33,6 @@ export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal
             <XHorizontalDiv className={this.props.className}>
                 {children}
             </XHorizontalDiv>
-        )
+        );
     }
 }

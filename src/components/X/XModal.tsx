@@ -23,16 +23,16 @@ const XModalContainer = Glamorous.div({
     alignSelf: 'stretch'
 });
 
-export interface XModalProps extends XModalStyleProps {
-    isOpen: boolean;
-    closeOnClick?: boolean;
-    onClosed: () => void;
-}
-
 export interface XModalStyleProps {
     title: string;
     style?: 'full-screen' | 'normal';
     width?: number; // DEPRECATED!
+}
+
+export interface XModalProps extends XModalStyleProps {
+    isOpen: boolean;
+    closeOnClick?: boolean;
+    onClosed: () => void;
 }
 
 export class XModal extends React.Component<XModalProps, { isHiding: boolean }> {

@@ -118,5 +118,8 @@
       "check-typecast"
     ],
     "jsx-boolean-value": false
+  },
+  "jsRules": {
+    "no-empty": true
   }
 }

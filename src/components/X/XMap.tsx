@@ -10,31 +10,30 @@ let Wrapper = Glamorous.div({
     position: 'relative',
     width: '100%',
     height: '100%'
-})
+});
 
-interface XMapLightProps {
-    className?: string;
-
-    focusPosition?: { latitude: number, longiutude: number, zoom: number };
-
+interface XMapProps {
+    scrollZoom?: boolean;
     mapStyle?: string;
+    focusPosition?: { latitude: number, longiutude: number, zoom: number };
+    className?: string;
 }
 
 export interface DataSources {
     addGeoJSONSource: (source: string, data: any) => void;
     updateGeoJSONSource: (source: string, data: any) => void;
     removeGeoJsonSource: (source: string) => void;
-    findGeoJSONElement: (source: string, id: string) => any | undefined
+    findGeoJSONElement: (source: string, id: string) => any | undefined;
 }
 
 export type XMapSubscriber = (bbox: { south: number, north: number, east: number, west: number, zoom: number }, map: mapboxgl.Map, sources: DataSources) => void;
 
-export class XMap extends React.Component<XMapLightProps> {
+export class XMap extends React.Component<XMapProps> {
 
     static childContextTypes = {
         mapSubscribe: PropTypes.func.isRequired,
         mapUnsubscribe: PropTypes.func.isRequired
-    }
+    };
 
     private map: mapboxgl.Map | null = null;
     private subscribers = new Set<XMapSubscriber>();
@@ -86,14 +85,14 @@ export class XMap extends React.Component<XMapLightProps> {
                 return undefined;
             }
         }
-    }
+    };
 
-    constructor(props: XMapLightProps) {
+    constructor(props: XMapProps) {
         super(props);
         this.childContext = {
             mapSubscribe: this.subscribe,
             mapUnsubscribe: this.unsubscribe
-        }
+        };
     }
 
     getChildContext() {
@@ -129,7 +128,7 @@ export class XMap extends React.Component<XMapLightProps> {
         let domNode = ReactDOM.findDOMNode(this);
         MapBox!!.then((map) => {
             if (!this._isMounted) {
-                return
+                return;
             }
             map.accessToken = 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw';
             let initialLatitude = 37.75444398077139;
@@ -146,15 +145,16 @@ export class XMap extends React.Component<XMapLightProps> {
                 container: domNode,
                 center: [initialLongutude, initialLatitude],
                 zoom: initialZoom,
-                style: this.props.mapStyle || 'mapbox://styles/mapbox/streets-v9'
+                style: this.props.mapStyle || 'mapbox://styles/mapbox/streets-v9',
+                scrollZoom: this.props.scrollZoom !== undefined ? this.props.scrollZoom : true
             });
             mapComponent.addControl(new map.NavigationControl());
             mapComponent.on('load', () => { this.configureMap(mapComponent); });
             this.map = mapComponent;
-        })
+        });
     }
 
-    componentWillReceiveProps(nextProps: XMapLightProps) {
+    componentWillReceiveProps(nextProps: XMapProps) {
         if (this.map && nextProps.focusPosition !== undefined) {
             if (!this.props.focusPosition ||
                 (this.props.focusPosition.latitude !== nextProps.focusPosition.latitude) ||
@@ -163,7 +163,7 @@ export class XMap extends React.Component<XMapLightProps> {
                 this.map!!.flyTo({
                     center: [nextProps.focusPosition.longiutude, nextProps.focusPosition.latitude],
                     zoom: nextProps.focusPosition.zoom
-                })
+                });
             }
 
             if (this.props.mapStyle !== nextProps.mapStyle) {
@@ -178,7 +178,7 @@ export class XMap extends React.Component<XMapLightProps> {
             let bounds = this.map.getBounds();
             let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
             for (let s of this.subscribers) {
-                s(state, this.map, this.sources)
+                s(state, this.map, this.sources);
             }
         }
     }
@@ -195,7 +195,7 @@ export class XMap extends React.Component<XMapLightProps> {
             let bounds = map.getBounds();
             let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
             for (let s of this.subscribers) {
-                s(state, map, this.sources)
+                s(state, map, this.sources);
             }
         }
 

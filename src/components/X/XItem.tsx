@@ -3,15 +3,14 @@ import Glamorous from 'glamorous';
 import * as React from 'react';
 import { XLink, XLinkProps } from './XLink';
 import { XCloudImage } from './XCloudImage';
-import XStyled from './XStyled';
 
-let XItemDiv = XStyled(XLink)({
+let XItemDiv = Glamorous(XLink)({
     display: 'flex',
     flexDirection: 'row',
     overflow: 'hidden',
     alignSelf: 'stretch',
     height: '80px'
-})
+});
 
 let XItemImage = Glamorous(XCloudImage)({
     border: '1px solid rgba(38,38,38,0.08)',
@@ -22,6 +21,7 @@ let XItemImage = Glamorous(XCloudImage)({
     flexShrink: 0,
     flexGrow: 0
 });
+
 XItemImage.defaultProps = {
     width: 80,
     height: 80,

@@ -18,7 +18,7 @@ const XCardLinkDiv = Glamorous(XCard)({
             color: '#182642'
         }
     }
-})
+});
 
 const IconDiv = Glamorous.div({
     position: 'absolute',
@@ -28,12 +28,12 @@ const IconDiv = Glamorous.div({
     '> i': {
         fontSize: 130
     }
-})
+});
 
 const ContentDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-})
+});
 
 const Title = Glamorous.div({
     display: 'flex',
@@ -45,7 +45,7 @@ const Title = Glamorous.div({
     '> i': {
         marginLeft: 5
     }
-})
+});
 
 const Text = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
     opacity: 0.7,
@@ -53,14 +53,14 @@ const Text = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
     fontSize: '14px',
     lineHeight: 'normal',
     fontWeight: 'normal',
-}))
+}));
 
 interface XCardLinkProps {
-    title: string,
-    text: string,
-    path?: string | null,
-    href?: string | null,
-    icon: string
+    title: string;
+    text: string;
+    path?: string | null;
+    href?: string | null;
+    icon: string;
 }
 
 export function XCardLink(props: XCardLinkProps) {
@@ -77,5 +77,5 @@ export function XCardLink(props: XCardLinkProps) {
                 <Text>{props.text}</Text>
             </ContentDiv>
         </XCardLinkDiv>
-    )
+    );
 }

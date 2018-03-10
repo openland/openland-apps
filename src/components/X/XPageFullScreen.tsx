@@ -2,8 +2,8 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 
 interface XPageFullScreenProps {
-    children: any,
-    headerPadding?: boolean
+    children: any;
+    headerPadding?: boolean;
 }
 
 export const XPageFullScreenContainer = Glamorous.div<XPageFullScreenProps>((props) => {
@@ -12,13 +12,13 @@ export const XPageFullScreenContainer = Glamorous.div<XPageFullScreenProps>((pro
         width: '100%',
         position: 'relative',
         marginTop: props.headerPadding === false ? '-54px' : undefined
-    }
-})
+    };
+});
 
 export function XPageFullScreen(props: XPageFullScreenProps) {
     return (
         <XPageFullScreenContainer headerPadding={props.headerPadding}>
             {props.children}
         </XPageFullScreenContainer>
-    )
+    );
 }

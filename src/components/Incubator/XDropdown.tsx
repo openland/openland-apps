@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XIcon } from '../X/XIcon';
-import ClickOutside from './ClickOutside'
+import ClickOutside from './ClickOutside';
 
 const XDropdownWrapper = Glamorous.div<{ isOpen: boolean, buttonStyle?: boolean }>((props) => ({
     position: 'relative',
@@ -26,12 +26,12 @@ const XDropdownWrapper = Glamorous.div<{ isOpen: boolean, buttonStyle?: boolean 
         backgroundColor: props.buttonStyle ? '#e6ebf1' : undefined,
         backgroundImage: props.buttonStyle ? 'linear-gradient(-180deg, #f0f3f6 0%, #e6ebf1 90%)' : undefined
     }
-}))
+}));
 
 const XDropdownText = Glamorous.div<{ selected?: boolean, buttonStyle?: boolean }>((props) => ({
     fontSize: 14,
     color: props.buttonStyle ? '#24292e' : props.selected ? 'color: rgba(0, 0, 0, .87)' : 'rgba(191, 191, 191, .87)',
-}))
+}));
 
 const XDropdownMenu = Glamorous.div<{ isOpen: boolean, buttonStyle?: boolean }>((props) => ({
     display: props.isOpen ? 'block' : 'none',
@@ -46,7 +46,7 @@ const XDropdownMenu = Glamorous.div<{ isOpen: boolean, buttonStyle?: boolean }>(
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
     backgroundColor: '#fff'
-}))
+}));
 
 const XDropDownOption = Glamorous.div<{ isSelect?: boolean }>((props) => ({
     cursor: 'pointer',
@@ -63,54 +63,54 @@ const XDropDownOption = Glamorous.div<{ isSelect?: boolean }>((props) => ({
     '&:hover': {
         backgroundColor: 'rgba(0, 0, 0, .03)'
     }
-}))
+}));
 
 interface XDropdownProps {
-    title: string,
-    options?: any[],
-    children?: any,
-    icon?: string
+    title: string;
+    options?: any[];
+    children?: any;
+    icon?: string;
 }
 
 export class XDropdown extends React.Component<XDropdownProps, { isOpen: boolean, selected: boolean, value?: any }> {
     constructor(props: XDropdownProps) {
-        super(props)
+        super(props);
 
         this.state = {
             isOpen: false,
             selected: false,
             value: {}
-        }
+        };
     }
 
     handler = (e: any) => {
         this.setState({
             isOpen: !this.state.isOpen
-        })
+        });
     }
 
     handleClose = (e: any) => {
         this.setState({
             isOpen: false
-        })
+        });
     }
 
     handleSelect = (item: any, key: number) => {
         let selectValue = {
             title: item.title,
             key: key
-        }
+        };
 
         this.setState({
             isOpen: !this.state.isOpen,
             value: selectValue,
             selected: true
-        })
+        });
     }
 
     render() {
-        let { isOpen, selected, value } = this.state
-        let { title, options, children, icon } = this.props
+        let { isOpen, selected, value } = this.state;
+        let { title, options, children, icon } = this.props;
         return (
             <ClickOutside onClickOutside={this.handleClose}>
                 {options && (
@@ -138,6 +138,6 @@ export class XDropdown extends React.Component<XDropdownProps, { isOpen: boolean
                     </XDropdownWrapper>
                 )}
             </ClickOutside>
-        )
+        );
     }
 }

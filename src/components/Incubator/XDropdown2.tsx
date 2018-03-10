@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XIcon } from '../X/XIcon';
-import ClickOutside from './ClickOutside'
+import ClickOutside from './ClickOutside';
 
 const XDropdownWrapper = Glamorous.div<{isOpen?: boolean}>((props) => ({
     position: 'relative',
     zIndex: props.isOpen ? 5 : undefined
-}))
+}));
 
 const XDropdownButton = Glamorous.button<{ isOpen: boolean }>((props) => ({
 
@@ -41,11 +41,11 @@ const XDropdownButton = Glamorous.button<{ isOpen: boolean }>((props) => ({
         backgroundPosition: props.isOpen ? '-.5em' : undefined,
         borderColor: props.isOpen ? 'rgba(27, 31, 35, 0.35)' : undefined
     }
-}))
+}));
 
 interface XDropdownMenuProps {
-    isOpen: boolean, 
-    aligment?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+    isOpen: boolean;
+    aligment?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 }
 
 const XDropdownMenu = Glamorous.div<XDropdownMenuProps>((props) => ({
@@ -61,39 +61,39 @@ const XDropdownMenu = Glamorous.div<XDropdownMenuProps>((props) => ({
     border: '1px solid rgba(34, 36, 38, .15)',
     borderRadius: 5,
     backgroundColor: '#fff'
-}))
+}));
 
 interface XDropdownProps {
-    title: string,
-    children: any,
-    icon?: string,
-    aligment?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+    title: string;
+    children: any;
+    icon?: string;
+    aligment?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 }
 
 export class XDropdown extends React.Component<XDropdownProps, { isOpen: boolean }> {
     constructor(props: XDropdownProps) {
-        super(props)
+        super(props);
 
         this.state = {
             isOpen: false
-        }
+        };
     }
 
     handler = (e: any) => {
         this.setState({
             isOpen: !this.state.isOpen
-        })
+        });
     }
 
     handleClose = (e: any) => {
         this.setState({
             isOpen: false
-        })
+        });
     }
 
     render() {
-        let { isOpen } = this.state
-        let { title, children, icon, aligment } = this.props
+        let { isOpen } = this.state;
+        let { title, children, icon, aligment } = this.props;
         return (
             <ClickOutside onClickOutside={this.handleClose}>
                 <XDropdownWrapper isOpen={isOpen}>
@@ -106,6 +106,6 @@ export class XDropdown extends React.Component<XDropdownProps, { isOpen: boolean
                     </XDropdownMenu>
                 </XDropdownWrapper>
             </ClickOutside>
-        )
+        );
     }
 }

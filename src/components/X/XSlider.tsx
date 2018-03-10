@@ -13,7 +13,7 @@ const rcSliderTooltipZoomDownIn = glamor.keyframes({
         transformOrigin: '50% 100%',
         transform: 'scale(1, 1)' 
     }
-})
+});
 
 const rcSliderTooltipZoomDownOut = glamor.keyframes({
     '0%': { 
@@ -25,7 +25,7 @@ const rcSliderTooltipZoomDownOut = glamor.keyframes({
         transformOrigin: '50% 100%',
         transform: 'scale(0, 0)' 
     }
-})
+});
 
 let SliderComponent = Glamorous(Slider)({
     '&.rc-slider': {
@@ -230,7 +230,7 @@ let SliderComponent = Glamorous(Slider)({
         borderColor: 'transparent',
         borderStyle: 'solid'
     }
-})
+});
 
 let RangeComponent = Glamorous(Range)({
     '&.rc-slider': {
@@ -435,16 +435,16 @@ let RangeComponent = Glamorous(Range)({
         borderColor: 'transparent',
         borderStyle: 'solid'
     }
-})
+});
 
 export function XSlider (props: SliderProps) {
     return (
         <SliderComponent {...props} />
-    )
+    );
 }
 
 export function XRange (props: RangeProps) {
     return (
         <RangeComponent {...props} />
-    )
+    );
 }

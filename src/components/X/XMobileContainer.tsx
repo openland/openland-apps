@@ -7,4 +7,4 @@ export let XMobileContainer = Glamorous(XVertical)({
     [Layout.SMMinus]: {
         display: 'flex',
     }
-})
+});

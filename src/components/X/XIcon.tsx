@@ -6,5 +6,5 @@ export function XIcon(props: { className?: string, icon: string }) {
         <i className={classnames('material-icons', props.className)}>
             {props.icon}
         </i>
-    )
+    );
 }

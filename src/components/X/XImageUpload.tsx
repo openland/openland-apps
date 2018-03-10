@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { XButton2 } from './XButton2';
+import { XButton } from './XButton';
 import { XCloudImage } from './XCloudImage';
 import * as UploadCare from 'uploadcare-widget';
 
 export interface XImageUploadProps {
     uuid?: string | null;
-    onChanged?: (uuid: string | null) => void
+    onChanged?: (uuid: string | null) => void;
 }
 
 export class XImageUpload extends React.Component<XImageUploadProps, { isLoading: boolean, uuid: string | null }> {
@@ -46,7 +46,7 @@ export class XImageUpload extends React.Component<XImageUploadProps, { isLoading
                 console.warn(f);
             });
         });
-    };
+    }
 
     doClear = () => {
         if (this.isControlled) {
@@ -57,17 +57,17 @@ export class XImageUpload extends React.Component<XImageUploadProps, { isLoading
         if (this.props.onChanged) {
             this.props.onChanged(null);
         }
-    };
+    }
 
     render() {
         let uuid = this.isControlled ? this.props.uuid : this.state.uuid;
         return (
             <div style={{paddingBottom: 8}}>
                 <div>
-                    <XButton2 onClick={this.doUpload} loading={this.state.isLoading} positive={true}>
+                    <XButton onClick={this.doUpload} loading={this.state.isLoading} style="dark">
                         Upload Logo
-                    </XButton2>
-                    {uuid && <XButton2 onClick={this.doClear} negative={true}>Remove Logo</XButton2>}
+                    </XButton>
+                    {uuid && <XButton onClick={this.doClear}>Remove Logo</XButton>}
                 </div>
                 {uuid && (
                     <div style={{marginTop: 8, width: 200, height: 200}}>

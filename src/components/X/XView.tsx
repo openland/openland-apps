@@ -4,8 +4,8 @@ type Align = 'center' | 'start' | 'end' | 'stretch' | 'baseline';
 type Direction = 'column' | 'row';
 type Justify = 'center' | 'start' | 'end' | 'space-between';
 
-type ForAlignConvertFunc = 'center' | 'flex-start' | 'flex-end' | 'baseline' | 'stretch' | undefined
-type ForJustifyConvertFunc = 'center' | 'flex-start' | 'flex-end' | 'space-between' | undefined
+type ForAlignConvertFunc = 'center' | 'flex-start' | 'flex-end' | 'baseline' | 'stretch' | undefined;
+type ForJustifyConvertFunc = 'center' | 'flex-start' | 'flex-end' | 'space-between' | undefined;
 
 interface XViewProps {
     alignSelf?: Align | null;
@@ -36,7 +36,7 @@ function convertAlign(own: boolean, align?: Align | null): ForAlignConvertFunc {
         }
         default: {
             if (own) {
-                return undefined
+                return undefined;
             } else {
                 return 'stretch';
             }
@@ -59,7 +59,7 @@ function convertJustify(justify?: Justify | null): ForJustifyConvertFunc {
             return 'space-between';
         }
         default: {
-            return undefined
+            return undefined;
         }
     }
 }
@@ -79,5 +79,5 @@ export const XView = Glamorous.div<XViewProps>((props) => {
                 marginRight: '0 !important'
             }
         }
-    }
-})
+    };
+});

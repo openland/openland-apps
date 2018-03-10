@@ -6,7 +6,7 @@ import Popper from 'popper.js';
 export class XPopoverTarget extends React.Component<{ handler?: (target: any) => void }> {
     static defaultProps = {
         _isPopoverTarget: true
-    }
+    };
     handler = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
         this.props.handler!!(e.target);
@@ -21,13 +21,13 @@ export class XPopoverTarget extends React.Component<{ handler?: (target: any) =>
 export class XPopoverContent extends React.Component {
     static defaultProps = {
         _isPopoverContent: true
-    }
+    };
     render() {
         return (
             <>
                 {this.props.children}
             </>
-        )
+        );
     }
 }
 
@@ -44,7 +44,7 @@ export type XPopoverPlacement =
     'right-start' |
     'right-end' |
     'left-start' |
-    'left-end'
+    'left-end';
 
 export class XPopover extends React.Component<{ placement?: XPopoverPlacement }, {
     target: any | null, portal: any | null, popper: Popper | null
@@ -66,7 +66,7 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
                 return {
                     target: null,
                     popper: null
-                }
+                };
             } else {
                 let popper = null;
                 if (src.portal) {
@@ -77,7 +77,7 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
                 return {
                     target: target,
                     popper: popper
-                }
+                };
             }
         });
     }
@@ -94,7 +94,7 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
                 return {
                     portal: e,
                     popper: popper
-                }
+                };
             } else {
                 if (src.popper) {
                     src.popper.destroy();
@@ -102,9 +102,9 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
                 return {
                     portal: null,
                     popper: null
-                }
+                };
             }
-        })
+        });
     }
 
     handleClick = (e: MouseEvent) => {
@@ -118,8 +118,8 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
                 return {
                     popper: null,
                     target: null
-                }
-            })
+                };
+            });
         }
     }
 

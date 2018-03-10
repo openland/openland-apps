@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import * as glamor from 'glamor'
-import { XIcon } from './XIcon'
+import * as glamor from 'glamor';
+import { XIcon } from './XIcon';
 
 const loading = glamor.keyframes({
     '0%': { transform: `rotate(0deg) scaleX(-1)` },
     '100%': { transform: `rotate(360deg) scaleX(-1)` }
-})
+});
 
 let ItemIcon = Glamorous(XIcon)<{ loading?: boolean }>((props) => ({
     display: props.loading ? 'block' : 'none',
@@ -17,20 +17,20 @@ let ItemIcon = Glamorous(XIcon)<{ loading?: boolean }>((props) => ({
     fontSize: '25px',
     color: '#6b7c93',
     animation: `${loading} 1s linear infinite`,
-}))
+}));
 
 let HidenComponents = Glamorous.div<{ loading?: boolean }>((props) => ({
     opacity: props.loading ? 0 : 1,
     '& *': {
         cursor: props.loading ? 'default' : undefined
     }
-}))
+}));
 
 let XCardLoaderDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     position: 'relative'
-})
+});
 
 export function XCardLoader(props: { children?: any, loading?: boolean, className?: string }) {
     return (
@@ -40,5 +40,5 @@ export function XCardLoader(props: { children?: any, loading?: boolean, classNam
                 {props.children}
             </HidenComponents>
         </XCardLoaderDiv>
-    )
+    );
 }

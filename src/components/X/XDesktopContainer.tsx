@@ -7,4 +7,4 @@ export let XDesktopContainer = Glamorous.div({
     [Layout.SMMinus]: {
         display: 'none',
     }
-})
+});
