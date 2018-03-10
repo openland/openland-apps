@@ -18,8 +18,10 @@ import { XDropdown } from '../../components/Incubator/XDropdown2';
 import { XCardLink } from '../../components/Incubator/XCardLink';
 import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
+import { StateSelect } from '../../api';
 
 export default withApp('viewer', (props) => {
+
     return (
         <>
             <XHead title={['UI Framework']} />
@@ -64,6 +66,7 @@ export default withApp('viewer', (props) => {
                     <XCard.Content>
                         <XTitle>Default Button</XTitle>
                         <XVertical>
+                            <StateSelect />
                             <XButtonLike />
                             <XButton alignSelf="flex-start">Default</XButton>
                             <XButton alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton>

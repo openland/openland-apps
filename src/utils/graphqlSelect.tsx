@@ -4,14 +4,18 @@ import { DocumentNode } from 'graphql';
 import { XSelectAsync, XSelectAsyncProps } from '../components/X/XSelect';
 import { ApolloClient } from 'apollo-client';
 
-export function graphqlSelect(document: DocumentNode) {
-    return class XSelectGraphQL extends React.Component<Partial<XSelectAsyncProps>> {
+export function graphqlSelect<V = {}>(document: DocumentNode) {
+    return class XSelectGraphQL extends React.Component<Partial<XSelectAsyncProps> & { variables?: V }> {
         static contextTypes = {
             client: PropTypes.object.isRequired,
         };
         loadOptions = async (input: string) => {
             let client: ApolloClient<{}> = this.context.client;
-            let res = await client.query({ query: document, variables: { query: input } });
+            let vars = { query: input };
+            if (this.props.variables) {
+                vars = { query: input, ...(this.props.variables as any) };
+            }
+            let res = await client.query({ query: document, variables: vars });
             let items = (res.data as any).items as [{ id: string, title: string, subtitle?: string | null }];
             let opts = items.map((v) => ({ value: v.id, label: v.subtitle ? v.title + ' (' + v.subtitle + ')' : v.title }));
             return {

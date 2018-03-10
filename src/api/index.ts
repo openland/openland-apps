@@ -12,6 +12,7 @@ import * as Account from './queries/Account';
 import * as Parcels from './queries/Parcels';
 import * as Search from './queries/Search';
 import * as Permissions from './queries/Permissions';
+import * as Addressing from './queries/Addressing';
 import { graphql } from 'react-apollo';
 import { graphQLTileSource } from '../utils/graphqlTileSource';
 import { graphqlSelect } from '../utils/graphqlSelect';
@@ -187,3 +188,10 @@ export const withSuperAccount = graphqlRouted<Types.SuperAccountQuery>(Permissio
 export const withSuperAccountActivate = graphqlMutation<{ activate: MutationFunc<{}> }>(Permissions.SuperAccountActivate, { name: 'activate', params: ['accountId'] });
 export const withSuperAccountSuspend = graphqlMutation<{ suspend: MutationFunc<{}> }>(Permissions.SuperAccountSuspend, { name: 'suspend', params: ['accountId'] });
 export const withSuperAccountAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Permissions.SuperAccountMemberAdd, { name: 'add', params: ['accountId'] });
+
+//
+// Addressing
+//
+
+export const StateSelect = graphqlSelect(Addressing.StateQuery);
+export const CountySelect = graphqlSelect<{ stateId: string }>(Addressing.CountyQuery);

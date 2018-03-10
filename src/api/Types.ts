@@ -100,6 +100,27 @@ export interface AccountQuery {
   },
 };
 
+export interface StateQueryQuery {
+  items:  Array< {
+    __typename: "State",
+    id: string,
+    title: string,
+    subtitle: string,
+  } >,
+};
+
+export interface CountyQueryQueryVariables {
+  stateId: string,
+};
+
+export interface CountyQueryQuery {
+  items:  Array< {
+    __typename: "County",
+    id: string,
+    title: string,
+  } >,
+};
+
 export interface AreaQueryVariables {
   areaId: string,
 };
