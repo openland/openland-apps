@@ -38,61 +38,66 @@ let XTableTD = Glamorous.td<{ width?: number }>((props) => ({
 }));
 
 let XTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' }>((props) => ({
-    display: 'block',
-    verticalAlign: 'middle',
+    display: 'flex',
+    alignContent: 'center',
     height: 39,
     width: '100%',
     alignItems: 'center',
-    textAlign: props.textAlign,
     paddingLeft: 16,
     paddingRight: 16,
-    paddingTop: 9,
+    paddingTop: 12,
     paddingBottom: 9,
     fontWeight: 600,
     color: '#182642',
     fontSize: 13,
     lineHeight: 'normal',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-
-    '> i': {
-        fontSize: 20,
-        color: 'rgb(82, 95, 127)'
-    },
 
     '> a': {
         minHeight: 'auto !important',
         padding: '0 !important',
         background: 'transparent',
         justifyContent: 'flex-end'
+    },
+    '> div': {
+        width: '100%',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        textAlign: props.textAlign,
+        '> i': {
+            fontSize: 20,
+            color: 'rgb(82, 95, 127)'
+        }
     }
 }));
 
 const XTableTDDivAsLink = Glamorous(XLink)<{ textAlign?: 'left' | 'right' }>((props) => ({
-    display: 'block',
-    verticalAlign: 'middle',
+    display: 'flex',
+    alignContent: 'center',
     height: 39,
     width: '100%',
     alignItems: 'center',
-    textAlign: props.textAlign,
     fontWeight: 600,
     color: '#182642',
     fontSize: 13,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
     lineHeight: 'normal',
-    paddingTop: 9,
+    paddingTop: 12,
     paddingBottom: 9,
     paddingLeft: 16,
     paddingRight: 16,
-    '> i': {
-        fontSize: 20,
-        color: 'rgb(82, 95, 127)'
-    },
     '&:hover': {
         color: 'inherit'
+    },
+    '> div': {
+        width: '100%',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        textAlign: props.textAlign,
+        '> i': {
+            fontSize: 20,
+            color: 'rgb(82, 95, 127)'
+        }
     }
 }));
 
@@ -141,12 +146,12 @@ interface XTableCellProps {
     href?: string;
 }
 
-export function XTableCell (props: XTableCellProps) {
+export function XTableCell(props: XTableCellProps) {
     return (
         <XTableTD width={props.width}>
             {(props.path || props.href)
-                ? (<XTableTDDivAsLink path={props.path} href={props.href} textAlign={props.textAlign}>{props.children}</XTableTDDivAsLink>)
-                : (<XTableTDDiv textAlign={props.textAlign}>{props.children}</XTableTDDiv>)}
+                ? (<XTableTDDivAsLink path={props.path} href={props.href} textAlign={props.textAlign}><div>{props.children}</div></XTableTDDivAsLink>)
+                : (<XTableTDDiv textAlign={props.textAlign}><div>{props.children}</div></XTableTDDiv>)}
         </XTableTD>
     );
 }
