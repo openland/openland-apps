@@ -125,21 +125,24 @@ export default withApp('viewer', withParcel((props) => {
                                 <XCard.Table.Cell>Status</XCard.Table.Cell>
                                 <XCard.Table.Cell>Description</XCard.Table.Cell>
                             </XCard.Table.Header>
-                            <tbody>
+                            <XCard.Table.Body>
                                 {props.data.item.permits.map((v) => (
-                                    <tr key={v.id} onClick={() => window.open(v.governmentalUrl!!, '_blank')}>
+                                    <XCard.Table.Row key={v.id} href={v.governmentalUrl!!}>
                                         <XCard.Table.Cell>{v.createdAt && <XDate date={v.createdAt} />}</XCard.Table.Cell>
                                         <XCard.Table.Cell>{v.id}</XCard.Table.Cell>
                                         <XCard.Table.Cell>{v.type && <PermitType type={v.type!!} />}</XCard.Table.Cell>
-                                        <XCard.Table.Cell>{v.status}
-                                            {v.statusUpdatedAt && ' ('}
-                                            {v.statusUpdatedAt && <XDate date={v.statusUpdatedAt} />}
-                                            {v.statusUpdatedAt && ')'}
+                                        <XCard.Table.Cell>
+                                            <span>
+                                                {v.status}
+                                                {v.statusUpdatedAt && ' ('}
+                                                {v.statusUpdatedAt && <XDate date={v.statusUpdatedAt} />}
+                                                {v.statusUpdatedAt && ')'}
+                                            </span>
                                         </XCard.Table.Cell>
                                         <XCard.Table.Cell>{v.description}</XCard.Table.Cell>
-                                    </tr>
+                                    </XCard.Table.Row>
                                 ))}
-                            </tbody>
+                            </XCard.Table.Body>
                         </XCard.Table>
                     </XCard>
                 )}

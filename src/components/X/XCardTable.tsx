@@ -28,9 +28,9 @@ let XCardTableTD = Glamorous.td<{ width?: number }>((props) => ({
     verticalAlign: 'middle'
 }));
 
-let XCardTableTDDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end' | 'center' }>((props) => ({
-    display: 'flex',
-    justifyContent: props.justifyContent,
+let XCardTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' }>((props) => ({
+    display: 'block',
+    textAlign: props.textAlign,
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 9,
@@ -53,9 +53,9 @@ let XCardTableTDDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end'
     }
 }));
 
-const XCardTableTDDivAsLink = Glamorous(XLink)<{ justifyContent?: 'flex-start' | 'flex-end' | 'center' }>((props) => ({
-    display: 'flex',
-    justifyContent: props.justifyContent,
+const XCardTableTDDivAsLink = Glamorous(XLink)<{ textAlign?: 'left' | 'right' }>((props) => ({
+    display: 'block',
+    textAlign: props.textAlign,
     fontWeight: 600,
     color: '#182642',
     fontSize: 13,
@@ -124,7 +124,7 @@ export class XCardTableRow extends React.Component<XCardTableRowProps> {
 interface XCardTableCellProps {
     children: any;
     width?: number;
-    justifyContent?: 'flex-start' | 'flex-end' | 'center';
+    textAlign?: 'left' | 'right';
     path?: string;
     href?: string;
 }
@@ -137,8 +137,8 @@ export class XCardTableCell extends React.Component<XCardTableCellProps> {
         return (
             <XCardTableTD width={this.props.width}>
                 {(this.props.path || this.props.href)
-                    ? (<XCardTableTDDivAsLink path={this.props.path} href={this.props.href} justifyContent={this.props.justifyContent}>{this.props.children}</XCardTableTDDivAsLink>)
-                    : (<XCardTableTDDiv justifyContent={this.props.justifyContent}>{this.props.children}</XCardTableTDDiv>)}
+                    ? (<XCardTableTDDivAsLink path={this.props.path} href={this.props.href} textAlign={this.props.textAlign}>{this.props.children}</XCardTableTDDivAsLink>)
+                    : (<XCardTableTDDiv textAlign={this.props.textAlign}>{this.props.children}</XCardTableTDDiv>)}
             </XCardTableTD>
         );
     }
