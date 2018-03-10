@@ -77,7 +77,7 @@ export class XModalTargeted extends React.Component<{ title: string, fullScreen?
         return (
             <>
                 {targetClone}
-                <XModal title={this.props.title} isOpen={this.state.isOpen} onClosed={this.handleClose} style={this.props.fullScreen ? 'full-screen' : 'normal'}>
+                <XModal title={this.props.title} isOpen={this.state.isOpen} onClosed={this.handleClose} style={this.props.fullScreen ? 'full-screen' : 'normal'} width={this.props.width}>
                     {contentClone}
                 </XModal>
             </>

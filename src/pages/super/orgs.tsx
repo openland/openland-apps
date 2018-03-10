@@ -4,6 +4,7 @@ import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
 import { withSuperAccounts } from '../../api';
 import { XCard } from '../../components/X/XCard';
+import { XTable } from '../../components/X/XTable';
 import { XButton } from '../../components/X/XButton';
 
 export default withApp('super-admin', withSuperAccounts((props) => {
@@ -11,26 +12,26 @@ export default withApp('super-admin', withSuperAccounts((props) => {
         <AppContent>
             <XCard shadow="medium">
                 <XCard.Header text="Accounts" description={props.data.superAccounts.length + ' total'} />
-                <XCard.Table>
-                    <XCard.Table.Header>
-                        <XCard.Table.Cell>Title</XCard.Table.Cell>
-                        <XCard.Table.Cell>State</XCard.Table.Cell>
-                        <XCard.Table.Cell>{}</XCard.Table.Cell>
-                    </XCard.Table.Header>
-                    <XCard.Table.Body>
+                <XTable>
+                    <XTable.Header>
+                        <XTable.Cell>Title</XTable.Cell>
+                        <XTable.Cell>State</XTable.Cell>
+                        <XTable.Cell>{}</XTable.Cell>
+                    </XTable.Header>
+                    <XTable.Body>
                         {props.data.superAccounts.map((v) => (
-                            <tr key={v.id}>
-                                <XCard.Table.Cell>{v.title}</XCard.Table.Cell>
-                                <XCard.Table.Cell>{v.state}</XCard.Table.Cell>
-                                <XCard.Table.Cell>
+                            <XTable.Row key={v.id}>
+                                <XTable.Cell>{v.title}</XTable.Cell>
+                                <XTable.Cell>{v.state}</XTable.Cell>
+                                <XTable.Cell>
                                     <div>
                                         <XButton path={'/super/orgs/' + v.id}>View</XButton>
                                     </div>
-                                </XCard.Table.Cell>
-                            </tr>
+                                </XTable.Cell>
+                            </XTable.Row>
                         ))}
-                    </XCard.Table.Body>
-                </XCard.Table>
+                    </XTable.Body>
+                </XTable>
             </XCard>
         </AppContent>
     );

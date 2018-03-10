@@ -5,6 +5,7 @@ import { withUserInfo } from '../../components/UserInfo';
 import { AppContent } from '../../components/App/AppContent';
 import { XHead } from '../../components/X/XHead';
 import { XCard } from '../../components/X/XCard';
+import { XTable } from '../../components/X/XTable';
 
 export default withApp('super-admin', withUserInfo((props) => {
     return (
@@ -12,20 +13,20 @@ export default withApp('super-admin', withUserInfo((props) => {
             <XHead title="Debugging" />
             <XCard shadow="medium">
                 <XCard.Header text="Your roles" />
-                <XCard.Table>
-                    <XCard.Table.Header>
-                        <XCard.Table.Cell>Permission Name</XCard.Table.Cell>
-                        <XCard.Table.Cell>Description</XCard.Table.Cell>
-                    </XCard.Table.Header>
-                    <XCard.Table.Body>
+                <XTable>
+                    <XTable.Header>
+                        <XTable.Cell>Permission Name</XTable.Cell>
+                        <XTable.Cell>Description</XTable.Cell>
+                    </XTable.Header>
+                    <XTable.Body>
                         {props.roles.map((v) => (
-                            <tr>
-                                <XCard.Table.Cell>{v}</XCard.Table.Cell>
-                                <XCard.Table.Cell>{}</XCard.Table.Cell>
-                            </tr>
+                            <XTable.Row>
+                                <XTable.Cell>{v}</XTable.Cell>
+                                <XTable.Cell>{}</XTable.Cell>
+                            </XTable.Row>
                         ))}
-                    </XCard.Table.Body>
-                </XCard.Table>
+                    </XTable.Body>
+                </XTable>
             </XCard>
             <XCard shadow="medium">
                 <XCard.Header text="Your Organization" />

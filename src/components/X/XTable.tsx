@@ -23,12 +23,12 @@ let TableHeader = Glamorous.table({
     }
 });
 
-let XCardTableTD = Glamorous.td<{ width?: number }>((props) => ({
+let XTableTD = Glamorous.td<{ width?: number }>((props) => ({
     width: props.width ? props.width : undefined,
     verticalAlign: 'middle'
 }));
 
-let XCardTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' }>((props) => ({
+let XTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' }>((props) => ({
     display: 'block',
     textAlign: props.textAlign,
     paddingLeft: 16,
@@ -53,7 +53,7 @@ let XCardTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' }>((props) =>
     }
 }));
 
-const XCardTableTDDivAsLink = Glamorous(XLink)<{ textAlign?: 'left' | 'right' }>((props) => ({
+const XTableTDDivAsLink = Glamorous(XLink)<{ textAlign?: 'left' | 'right' }>((props) => ({
     display: 'block',
     textAlign: props.textAlign,
     fontWeight: 600,
@@ -75,15 +75,15 @@ const XCardTableTDDivAsLink = Glamorous(XLink)<{ textAlign?: 'left' | 'right' }>
     }
 }));
 
-export function XCardTableHeader(props: { children: any }) {
+export function XTableHeader(props: { children: any }) {
     return (<thead><tr>{props.children}</tr></thead>);
 }
 
-export function XCardTableBody(props: { children: any }) {
+export function XTableBody(props: { children: any }) {
     return (<tbody>{props.children}</tbody>);
 }
 
-const XCardTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
+const XTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
     position: 'relative',
     cursor: 'pointer',
     borderBottom: '1px solid #F5F6F8',
@@ -92,17 +92,17 @@ const XCardTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
     }
 }));
 
-interface XCardTableRowProps {
+interface XTableRowProps {
     onClick?: (e?: any) => void;
     path?: string;
     href?: string;
     noHover?: boolean;
 }
 
-export class XCardTableRow extends React.Component<XCardTableRowProps> {
+export class XTableRow extends React.Component<XTableRowProps> {
     render() {
         let content: any[] = [];
-        React.Children.map(this.props.children, (child: React.ReactElement<XCardTableCellProps>) => {
+        React.Children.map(this.props.children, (child: React.ReactElement<XTableCellProps>) => {
             if (React.isValidElement(child) && (child.props as any)._isTableCellElement === true && (this.props.path!! || this.props.href!!)) {
                 let element = React.cloneElement(child as any, {
                     path: this.props.path,
@@ -114,14 +114,14 @@ export class XCardTableRow extends React.Component<XCardTableRowProps> {
             }
         });
         return (
-            <XCardTableBodyRowStyle onClick={this.props.onClick} noHover={this.props.noHover}>
+            <XTableBodyRowStyle onClick={this.props.onClick} noHover={this.props.noHover}>
                 {content}
-            </XCardTableBodyRowStyle>
+            </XTableBodyRowStyle>
         );
     }
 }
 
-interface XCardTableCellProps {
+interface XTableCellProps {
     children: any;
     width?: number;
     textAlign?: 'left' | 'right';
@@ -129,26 +129,26 @@ interface XCardTableCellProps {
     href?: string;
 }
 
-export class XCardTableCell extends React.Component<XCardTableCellProps> {
+export class XTableCell extends React.Component<XTableCellProps> {
     static defaultProps = {
         _isTableCellElement: true
     };
     render() {
         return (
-            <XCardTableTD width={this.props.width}>
+            <XTableTD width={this.props.width}>
                 {(this.props.path || this.props.href)
-                    ? (<XCardTableTDDivAsLink path={this.props.path} href={this.props.href} textAlign={this.props.textAlign}>{this.props.children}</XCardTableTDDivAsLink>)
-                    : (<XCardTableTDDiv textAlign={this.props.textAlign}>{this.props.children}</XCardTableTDDiv>)}
-            </XCardTableTD>
+                    ? (<XTableTDDivAsLink path={this.props.path} href={this.props.href} textAlign={this.props.textAlign}>{this.props.children}</XTableTDDivAsLink>)
+                    : (<XTableTDDiv textAlign={this.props.textAlign}>{this.props.children}</XTableTDDiv>)}
+            </XTableTD>
         );
     }
 }
 
-export class XCardTable extends React.Component {
-    static Header = XCardTableHeader;
-    static Body = XCardTableBody;
-    static Row = XCardTableRow;
-    static Cell = XCardTableCell;
+export class XTable extends React.Component {
+    static Header = XTableHeader;
+    static Body = XTableBody;
+    static Row = XTableRow;
+    static Cell = XTableCell;
 
     render() {
         return (

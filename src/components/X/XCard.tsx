@@ -4,7 +4,6 @@ import * as glamor from 'glamor';
 import { CSSUtils } from './utils';
 import { XLink } from './XLink';
 import { XRow, XColumn } from './XGrid';
-import { XCardTable } from './XCardTable';
 import { XCardHeader } from './XCardHeader';
 import { XCardFooter } from './XCardFooter';
 import { XCardProperty, XCardPropertyList, XCardPropertyColumns } from './XCardProperty';
@@ -202,7 +201,6 @@ export class XCard extends React.Component<XCardProps> {
     static ExternalLink = XCardExternalLink;
     static Empty = XCardEmpty;
     static Content = XCardDivContent;
-    static Table = XCardTable;
     static Property = XCardProperty;
     static PropertyList = XCardPropertyList;
     static PropertyColumns = XCardPropertyColumns;

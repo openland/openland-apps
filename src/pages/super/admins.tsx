@@ -4,6 +4,7 @@ import { withApp } from '../../components/withApp';
 import { withSuperAdmins, UserSelect, withSuperAdminAdd, withSuperAdminRemove } from '../../api';
 import { AppContent } from '../../components/App/AppContent';
 import { XCard } from '../../components/X/XCard';
+import { XTable } from '../../components/X/XTable';
 import { XButton } from '../../components/X/XButton';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XForm } from '../../components/X/XForm';
@@ -56,28 +57,28 @@ export default withApp('super-admin', withSuperAdmins((props) => {
                         </XModalTargeted.Content>
                     </XModalTargeted>
                 </XCard.Header>
-                <XCard.Table>
-                    <XCard.Table.Header>
-                        <XCard.Table.Cell width={100}>
+                <XTable>
+                    <XTable.Header>
+                        <XTable.Cell width={100}>
                             First Name
-                        </XCard.Table.Cell>
-                        <XCard.Table.Cell width={100}>
+                        </XTable.Cell>
+                        <XTable.Cell width={100}>
                             Last Name
-                        </XCard.Table.Cell>
-                        <XCard.Table.Cell>
+                        </XTable.Cell>
+                        <XTable.Cell>
                             Email
-                        </XCard.Table.Cell>
-                    </XCard.Table.Header>
-                    <XCard.Table.Body>
+                        </XTable.Cell>
+                    </XTable.Header>
+                    <XTable.Body>
                         {props.data.superAdmins.map((v) => (
-                            <tr key={v.id}>
-                                <XCard.Table.Cell width={100}>{v.firstName}</XCard.Table.Cell>
-                                <XCard.Table.Cell width={100}>{v.lastName}</XCard.Table.Cell>
-                                <XCard.Table.Cell>{v.email}</XCard.Table.Cell>
-                            </tr>
+                            <XTable.Row key={v.id}>
+                                <XTable.Cell width={100}>{v.firstName}</XTable.Cell>
+                                <XTable.Cell width={100}>{v.lastName}</XTable.Cell>
+                                <XTable.Cell>{v.email}</XTable.Cell>
+                            </XTable.Row>
                         ))}
-                    </XCard.Table.Body>
-                </XCard.Table>
+                    </XTable.Body>
+                </XTable>
 
             </XCard>
         </AppContent>

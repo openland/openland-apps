@@ -3,6 +3,7 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
 import { XCard } from '../../components/X/XCard';
+import { XTable } from '../../components/X/XTable';
 import { withSuperAccount, withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountAdd, UserSelect } from '../../api';
 import { XButtonMutation } from '../../components/X/XButtonMutation';
 import { XForm } from '../../components/X/XForm';
@@ -46,21 +47,21 @@ export default withApp('super-admin', withSuperAccount((props) => {
 
             <XCard shadow="medium">
                 <XCard.Header text="Members" description={props.data.superAccount.members.length + ' total'} />
-                <XCard.Table>
-                    <XCard.Table.Header>
-                        <XCard.Table.Cell>Name</XCard.Table.Cell>
-                        <XCard.Table.Cell>Email</XCard.Table.Cell>
-                        <XCard.Table.Cell>{}</XCard.Table.Cell>
-                    </XCard.Table.Header>
-                    <XCard.Table.Body>
+                <XTable>
+                    <XTable.Header>
+                        <XTable.Cell>Name</XTable.Cell>
+                        <XTable.Cell>Email</XTable.Cell>
+                        <XTable.Cell>{}</XTable.Cell>
+                    </XTable.Header>
+                    <XTable.Body>
                         {props.data.superAccount.members.map((v) => (
-                            <tr key={v.id}>
-                                <XCard.Table.Cell>{v.name}</XCard.Table.Cell>
-                                <XCard.Table.Cell>{v.email}</XCard.Table.Cell>
-                            </tr>
+                            <XTable.Row key={v.id}>
+                                <XTable.Cell>{v.name}</XTable.Cell>
+                                <XTable.Cell>{v.email}</XTable.Cell>
+                            </XTable.Row>
                         ))}
-                    </XCard.Table.Body>
-                </XCard.Table>
+                    </XTable.Body>
+                </XTable>
             </XCard>
         </AppContent>
     );
