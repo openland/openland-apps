@@ -13,6 +13,7 @@ import { HostNameProvider } from './HostNameProvider';
 import { getComponentDisplayName } from './utils';
 import { trackPage } from '../utils/analytics';
 import { RootErrorBoundary } from '../components/RootErrorBoundary';
+import { XRouterProvider } from '../components/routing/XRouter';
 
 export const withData = (ComposedComponent: React.ComponentType) => {
     return class WithData extends React.Component<{
@@ -65,7 +66,9 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                     await getDataFromTree(
                         <ApolloProvider client={apollo}>
                             <HostNameProvider hostName={host} protocol={protocol}>
-                                <ComposedComponent />
+                                <XRouterProvider>
+                                    <ComposedComponent />
+                                </XRouterProvider>
                             </HostNameProvider>
                         </ApolloProvider>
                         ,
@@ -104,7 +107,9 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                     await getDataFromTree(
                         <ApolloProvider client={apollo}>
                             <HostNameProvider hostName={host} protocol={protocol}>
-                                <ComposedComponent />
+                                <XRouterProvider>
+                                    <ComposedComponent />
+                                </XRouterProvider>
                             </HostNameProvider>
                         </ApolloProvider>
                         ,
@@ -146,7 +151,9 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                 <RootErrorBoundary>
                     <ApolloProvider client={this.apollo}>
                         <HostNameProvider hostName={this.props.host} protocol={this.props.protocol}>
-                            <ComposedComponent />
+                            <XRouterProvider>
+                                <ComposedComponent />
+                            </XRouterProvider>
                         </HostNameProvider>
                     </ApolloProvider>
                 </RootErrorBoundary>

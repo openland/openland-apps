@@ -3,8 +3,7 @@ import Glamorous from 'glamorous';
 import { XButton } from '../X/XButton';
 import { XModalTargeted } from '../X/XModalTargeted';
 import { XSelect, XSelectProps } from '../X/XSelect';
-// import { XIcon } from '../X/XIcon';
-import { withRouter, RouterState } from '../withRouter';
+import { withRouter, XWithRouter } from '../withRouter';
 
 let AllLandUse = [
     'Residental',
@@ -252,8 +251,8 @@ interface FilterRangeProps {
     placeholderTo?: string;
 }
 
-class FilterRangeBase extends React.Component<FilterRangeProps & { router: RouterState }, { from: string, fromValue?: number, to: string, toValue?: number }> {
-    constructor(props: FilterRangeProps & { router: RouterState }) {
+class FilterRangeBase extends React.Component<FilterRangeProps & XWithRouter, { from: string, fromValue?: number, to: string, toValue?: number }> {
+    constructor(props: FilterRangeProps & XWithRouter) {
         super(props);
 
         let fromCurrent = undefined;
@@ -371,11 +370,11 @@ class FilterRangeBase extends React.Component<FilterRangeProps & { router: Route
 
 const FilterRange = withRouter<FilterRangeProps>(FilterRangeBase);
 
-class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (query?: any) => void, router: RouterState }> {
+class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (query?: any) => void } & XWithRouter> {
 
     private modal: XModalTargeted | null = null;
 
-    constructor(props: { onChange: (query?: any) => void, router: RouterState }) {
+    constructor(props: { onChange: (query?: any) => void } & XWithRouter) {
         super(props);
     }
 

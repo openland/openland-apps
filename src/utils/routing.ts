@@ -1,6 +1,6 @@
 import Router from 'next/router';
 import * as NProgress from 'nprogress';
-import { RouterState } from './withRouter';
+import { XWithRouter } from '../components/withRouter';
 import * as qs from 'query-string';
 import { trackPage } from './analytics';
 
@@ -103,15 +103,14 @@ Router.onRouteChangeError = () => {
 };
 
 export function resolveActionPath(props: {
-    path?: string,
-    query?: { field: string, value?: string },
-    router: RouterState
-}) {
+    path?: string | null,
+    query?: { field: string, value?: string } | null
+} & XWithRouter) {
     var destPath: string;
     if (props.path) {
         destPath = props.path;
     } else if (props.query) {
-        let s = JSON.parse(JSON.stringify(props.router.queryString!!));
+        let s = JSON.parse(JSON.stringify(props.router.query));
         if (props.query.value) {
             s[props.query.field] = props.query.value;
         } else {
@@ -119,7 +118,7 @@ export function resolveActionPath(props: {
         }
         let q = qs.stringify(s);
 
-        var path = props.router.asPath!!;
+        var path = props.router.path;
         if (path.indexOf('?') >= 0) {
             path = path.split('?', 2)[0];
         }

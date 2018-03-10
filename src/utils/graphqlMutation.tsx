@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
-import { withRouter, RouterState } from '../components/withRouter';
+import { withRouter, XWithRouter } from '../components/withRouter';
 import { GraphQLRoutedComponentProps } from './graphql';
 import { prepareParams } from './utils';
 
@@ -13,12 +13,12 @@ export interface MutationParams {
 
 export function graphqlMutation<TResult>(document: DocumentNode, params: MutationParams) {
     return function (component: React.ComponentType<GraphQLRoutedComponentProps<{}> & TResult>): React.ComponentType<{}> {
-        let qlWrapper = graphql<{}, { router: RouterState }, GraphQLRoutedComponentProps<{}> & TResult>(document, {
+        let qlWrapper = graphql<{}, XWithRouter, GraphQLRoutedComponentProps<{}> & TResult>(document, {
             name: params.name,
-            options: (props: { router: RouterState }) => {
+            options: (props: XWithRouter) => {
                 return {
                     variables: {
-                        ...prepareParams(params.params ? params.params : [], props.router.query)
+                        ...prepareParams(params.params ? params.params : [], props.router.routeQuery)
                     },
                     refetchQueries: params.refetchQueries ? params.refetchQueries.map((p: any) => ({query: p})) : []
                 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import { QueryProps, ChildProps } from 'react-apollo';
-import { withRouter, RouterState } from '../components/withRouter';
+import { withRouter, XWithRouter } from '../components/withRouter';
 
 function compose(funcs: Function[]) {
     const length = funcs ? funcs.length : 0;
@@ -21,7 +21,7 @@ function compose(funcs: Function[]) {
 }
 
 function graphqlComposeImpl<TResult>(...funcs: Function[]) {
-    return function (component: React.ComponentType<{ router: RouterState } & TResult>) {
+    return function (component: React.ComponentType<XWithRouter & TResult>) {
         return withRouter(compose(funcs.reverse())(component));
     };
 }

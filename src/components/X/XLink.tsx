@@ -25,7 +25,7 @@ export const XLink = withRouter<XLinkProps>((props) => {
     var className = props.className ? props.className : undefined;
 
     if (props.path) {
-        let ncurrent = normalizePath(props.router.asPath!!);
+        let ncurrent = normalizePath(props.router.path);
         let ntarget = normalizePath(props.path);
         if (ncurrent === ntarget || (ncurrent.startsWith(ntarget + '/') && props.activateForSubpaths)) {
             if (className) {
@@ -44,7 +44,7 @@ export const XLink = withRouter<XLinkProps>((props) => {
         );
     } else if (props.query) {
         let path = resolveActionPath(props);
-        let isActive = props.router.queryString && props.router.queryString[props.query.field] === props.query.value;
+        let isActive = props.router.query[props.query.field] === props.query.value;
         if (isActive) {
             if (className) {
                 className += ' is-active';

@@ -50,7 +50,7 @@ export default withAppBase(withRouter(withUserInfo((props) => {
         }
     }
 
-    let redirect = props.router.queryString ? (props.router.queryString.r ? props.router.queryString.r : null) : null;
+    let redirect = props.router.query ? (props.router.query.r ? props.router.query.r : null) : null;
     let url = redirect ? '/auth/login?r=' + encodeURIComponent(redirect) : '/auth/login';
     return (
         <>

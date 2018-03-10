@@ -139,7 +139,7 @@ export class AppSidebarItem extends React.Component<{ title: string, icon?: stri
 
 export const AppSidebarGroup = withRouter<{ paths: string[] }>((props) => {
     let size = React.Children.count(props.children);
-    let isActive = props.paths.indexOf(props.router.pathname!!) >= 0;
+    let isActive = props.paths.indexOf(props.router.path) >= 0;
     let shownHeight = isActive ? size : 1;
     return (
         <SidebarContainer count={shownHeight}>

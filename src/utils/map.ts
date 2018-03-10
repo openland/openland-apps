@@ -6,7 +6,7 @@ export interface MapViewport {
     bounds?: {
         sw: { latitude: number, longitude: number };
         ne: { latitude: number, longitude: number };
-    }
+    };
     zoom?: number;
     pitch?: number;
     bearing?: number;

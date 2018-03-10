@@ -9,7 +9,7 @@ import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats }
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XMap } from '../../../components/X/XMap';
 import { XHead } from '../../../components/X/XHead';
-import { RouterState, withRouter } from '../../../components/withRouter';
+import { XWithRouter, withRouter } from '../../../components/withRouter';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XCard } from '../../../components/X/XCard';
 import { AppFilters } from '../../../components/App/AppFilters';
@@ -93,8 +93,8 @@ const FilterComponent = withParcelStats((props) => {
     return <FilterHeaderSubtitle>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</FilterHeaderSubtitle>;
 });
 
-class ParcelCollection extends React.Component<{ router: RouterState }, { query?: any }> {
-    constructor(props: { router: RouterState }) {
+class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
+    constructor(props: XWithRouter) {
         super(props);
         this.state = {};
     }

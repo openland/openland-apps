@@ -1,7 +1,7 @@
 import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
 import { GraphQLRoutedComponentProps, NotNullableDataProps } from './graphql';
-import { withRouter, RouterState } from '../components/withRouter';
+import { withRouter, XWithRouter } from '../components/withRouter';
 import { prepareParams } from './utils';
 
 export interface ListQueryResponse<T, E> {
@@ -48,11 +48,11 @@ export function graphqlList<TResult, TExtras = {}>(document: DocumentNode, confi
         params = config.params;
     }
     return function (component: React.ComponentType<GraphQLListComponentProps<TResult, TExtras>>): React.ComponentType<{}> {
-        let qlWrapper = graphql<ListQueryResponse<TResult, TExtras>, { router: RouterState }, GraphQLListComponentProps<TResult, TExtras>>(document, {
-            options: (props: { router: RouterState }) => {
+        let qlWrapper = graphql<ListQueryResponse<TResult, TExtras>, XWithRouter, GraphQLListComponentProps<TResult, TExtras>>(document, {
+            options: (props: XWithRouter) => {
                 return {
                     variables: {
-                        ...prepareParams(params, props.router.query)
+                        ...prepareParams(params, props.router.routeQuery)
                     },
                     notifyOnNetworkStatusChange: true
                 };
@@ -67,7 +67,7 @@ export function graphqlList<TResult, TExtras = {}>(document: DocumentNode, confi
                             props.data!!.fetchMore({
                                 query: document,
                                 variables: {
-                                    ...prepareParams(params, props.ownProps.router.query),
+                                    ...prepareParams(params, props.ownProps.router.routeQuery),
                                     cursor: props.data!!.items.edges.slice(-1)[0].cursor,
                                 },
                                 updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -95,11 +95,11 @@ export function graphqlList<TResult, TExtras = {}>(document: DocumentNode, confi
 
 export function graphqlListPaged<TResult, TExtras = {}>(document: DocumentNode, params: string[] = []) {
     return function (component: React.ComponentType<GraphQLListComponentPagedProps<TResult, TExtras>>): React.ComponentType<{}> {
-        let qlWrapper = graphql<ListPagedQueryResponse<TResult, TExtras>, { router: RouterState }, GraphQLListComponentPagedProps<TResult, TExtras>>(document, {
-            options: (props: { router: RouterState }) => {
+        let qlWrapper = graphql<ListPagedQueryResponse<TResult, TExtras>, XWithRouter, GraphQLListComponentPagedProps<TResult, TExtras>>(document, {
+            options: (props: XWithRouter) => {
                 return {
                     variables: {
-                        ...prepareParams(params, props.router.query)
+                        ...prepareParams(params, props.router.routeQuery)
                     },
                 };
             },

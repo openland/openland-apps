@@ -26,7 +26,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
             mapSubscribe: PropTypes.func.isRequired,
             mapUnsubscribe: PropTypes.func.isRequired,
             client: PropTypes.object.isRequired,
-        }
+        };
 
         private isLoading = false;
         private loadingId?: number;
@@ -57,7 +57,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
 
         tryInvokeLoader = async (props: GraphQLTileSourceProps) => {
             if (this.isLoading) {
-                return
+                return;
             }
             if (this.pendingBox) {
                 // Save Parameters
@@ -124,7 +124,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                     return;
                 }
 
-                let loadedElements: any[] = []
+                let loadedElements: any[] = [];
                 for (let e of elements) {
                     let es = await e;
                     if (es.data && es.data.tiles) {
@@ -184,7 +184,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 this.tryInvokeLoader(this.props);
 
                 if (wasUpdated) {
-                    this.setState({ data: { 'type': 'FeatureCollection', features: [...this.allFeatures] } })
+                    this.setState({ data: { 'type': 'FeatureCollection', features: [...this.allFeatures] } });
                 }
             }
         }
@@ -210,7 +210,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                     stopProgress(this.loadingId);
                 }
 
-                this.setState({ data: { 'type': 'FeatureCollection', features: [...this.allFeatures] } })
+                this.setState({ data: { 'type': 'FeatureCollection', features: [...this.allFeatures] } });
 
                 if (this.latestBox) {
                     if ((nextProps.minZoom !== undefined) && (this.latestBox.zoom < nextProps.minZoom) || nextProps.skip) {
@@ -236,5 +236,5 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 stopProgress(this.loadingId);
             }
         }
-    }
+    };
 }
