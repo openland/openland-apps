@@ -6,16 +6,16 @@ let isProduction = process.env.APP_PRODUCTION === 'true';
 
 export default class StateDocument extends Document {
     static async getInitialProps(props: { renderPage: () => { html: string } }) {
-        const page = props.renderPage()
-        const styles = renderStaticOptimized(() => page.html)
-        return { ...page, ...styles }
+        const page = props.renderPage();
+        const styles = renderStaticOptimized(() => page.html);
+        return { ...page, ...styles };
     }
 
     constructor(props: DocumentProps) {
         super(props);
-        const { __NEXT_DATA__, ids } = props
+        const { __NEXT_DATA__, ids } = props;
         if (ids) {
-            __NEXT_DATA__.ids = this.props.ids
+            __NEXT_DATA__.ids = this.props.ids;
         }
     }
 

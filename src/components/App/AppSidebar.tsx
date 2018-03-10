@@ -4,7 +4,7 @@ import { XLink, XLinkProps } from '../X/XLink';
 import { XIcon } from '../X/XIcon';
 import { XPopover } from '../X/XPopover';
 import { XMenu } from '../X/XMenu';
-import { withRouter } from '../../utils/withRouter';
+import { withRouter } from '../withRouter';
 import { withUserInfo } from '../UserInfo';
 import { AppSearch } from './AppSearch';
 

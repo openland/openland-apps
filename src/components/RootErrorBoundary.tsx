@@ -20,8 +20,8 @@ export class RootErrorBoundary extends React.Component<{}, { isError: boolean }>
                         Unexpected error
                     </XCard.Content>
                 </MessagePage>
-            )
+            );
         }
         return <>{this.props.children}</>;
     }
-};
+}

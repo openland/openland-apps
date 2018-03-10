@@ -90,5 +90,5 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                 }
             </XCard.PropertyList>
         </>
-    )
+    );
 }

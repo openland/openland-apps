@@ -14,7 +14,7 @@ import * as FileSaver from 'file-saver';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
-})
+});
 
 function escapeRecord(src?: string | number | null) {
     if (src !== undefined && src !== null) {
@@ -35,7 +35,7 @@ function exportCSV(items: Types.ParcelShortFragment[]) {
             v.addresses.map((s) => s.streetNumber + ' ' + s.streetName + ' ' + s.streetNameSuffix).join(),
             v.extrasLandValue,
             v.extrasImprovementValue
-        ])
+        ]);
 
     let header = 'Parcel ID,Address,Land Value,Improvement Value';
     let escaped = rows.map((v) => v.map((r) => escapeRecord(r)).join()).join('\n');
@@ -65,7 +65,7 @@ export default withApp('viewer', withParcelsFavorites((props) => {
                                 <XCard.Header text="Favorites" description={props.data.items.length + ' parcels'}>
                                     <XButton
                                         style="dark"
-                                        onClick={(e) => { e.preventDefault(); exportCSV(props.data.items) }}
+                                        onClick={(e) => { e.preventDefault(); exportCSV(props.data.items); }}
                                     >
                                         Export to CSV
                                     </XButton>
@@ -76,5 +76,5 @@ export default withApp('viewer', withParcelsFavorites((props) => {
                 }
             </AppContent>
         </>
-    )
+    );
 }));

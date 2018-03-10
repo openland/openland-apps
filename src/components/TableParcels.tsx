@@ -4,7 +4,7 @@ import { XIcon } from './X/XIcon';
 import { XCard } from './X/XCard';
 import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
-import { withRouter } from '../utils/withRouter';
+import { withRouter } from './withRouter';
 
 export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[] }>((props) => {
     return (
@@ -36,5 +36,5 @@ export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[] }>((
                 ))}
             </XCard.Table.Body>
         </XCard.Table>
-    )
+    );
 });

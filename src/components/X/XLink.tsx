@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link as LinkNext } from '../../routes';
-import { withRouter } from '../../utils/withRouter';
+import { withRouter } from '../withRouter';
 import { resolveActionPath } from '../../utils/routing';
 
 export interface XLinkProps {
