@@ -149,7 +149,7 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string }>
             this.setState({
                 class: ''
             });
-        }, 150);
+        },         150);
     }
 
     render() {
