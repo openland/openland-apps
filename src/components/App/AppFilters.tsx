@@ -482,11 +482,11 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
                             placeholder="On Sale"
                         />
                     </FilterCell>
-                    <FilterCell title="Is Ok For Tower">
+                    <FilterCell title="Tower opportunity">
                         <RoutedSelector
                             fieldName="isOkForTower"
-                            options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
-                            placeholder="Is Ok For Tower?"
+                            options={[{ value: 'true', label: 'Yes (105+ height, 0-2 stories now)' }, { value: 'false', label: 'No' }]}
+                            placeholder="Tower opportunity"
                         />
                     </FilterCell>
                     <FilterCell title="Nearest Transit">
