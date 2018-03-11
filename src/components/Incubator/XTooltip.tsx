@@ -36,6 +36,10 @@ const XTooltipDiv = Glamorous.div({
         animationFillMode: 'forwards',
     },
 
+    '& .popper.static': {
+        display: 'block'
+    },
+
     '& .popper.hide': {
         display: 'block',
         animationName: `${hideAnimation}`,
@@ -142,23 +146,25 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string }>
     }
 
     mouseOut() {
-        this.setState({
-            class: 'hide'
-        });
+        setTimeout(() => {
+            this.setState({
+                class: 'hide'
+            });
+        },         200);
         setTimeout(() => {
             this.setState({
                 class: ''
             });
-        },         150);
+        },         500);
     }
 
     render() {
         return (
             <Manager>
-                <XTooltipDiv onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()} >
+                <XTooltipDiv>
                     <Target
                         componentFactory={(targetProps) => (
-                            <TargetContent {...targetProps} style={{}}>
+                            <TargetContent {...targetProps} style={{}} onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()}>
                                 <XIcon icon={this.props.icon} />
                             </TargetContent>
                         )}
