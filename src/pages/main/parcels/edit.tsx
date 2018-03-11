@@ -26,6 +26,9 @@ export default withApp('super-admin', withParcelMetadataForm((props) => {
                         <XForm.Field title="Is Available to buy?">
                             <XForm.Boolean field="available" />
                         </XForm.Field>
+                        <XForm.Field title="Is Of For Tower?">
+                            <XForm.Boolean field="isOkForTower" />
+                        </XForm.Field>
                         <XForm.Field title="Current Use">
                             <XForm.Select field="currentUse" options={[{ title: 'Parking', value: 'PARKING' }, { title: 'Public Storage', value: 'STORAGE' }]} />
                         </XForm.Field>

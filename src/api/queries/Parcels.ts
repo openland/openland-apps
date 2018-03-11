@@ -51,6 +51,7 @@ export const ParcelFull = gql`
         description
         available
         currentUse
+        isOkForTower
       }
       likes {
           liked
@@ -263,6 +264,7 @@ export const ParcelAlter = gql`
                 description
                 available
                 currentUse
+                isOkForTower
             }
         }
     }
