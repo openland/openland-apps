@@ -15,6 +15,16 @@ const AddSuperAdminForm = withSuperAdminAdd((props) => {
             <XForm.Field title="User">
                 <XForm.Select field="userId" component={UserSelect} />
             </XForm.Field>
+            <XForm.Field title="Role">
+                <XForm.Select
+                    field="role"
+                    options={[
+                        { title: 'Editor', value: 'EDITOR' },
+                        { title: 'Super Admin', value: 'SUPER_ADMIN' },
+                        { title: 'Software Developer', value: 'SOFTWARE_DEVELOPER' }
+                    ]}
+                />
+            </XForm.Field>
             <XCard.Footer>
                 <XForm.Submit style="dark">Add</XForm.Submit>
             </XCard.Footer>
@@ -68,13 +78,17 @@ export default withApp('super-admin', withSuperAdmins((props) => {
                         <XTable.Cell>
                             Email
                         </XTable.Cell>
+                        <XTable.Cell>
+                            Role
+                        </XTable.Cell>
                     </XTable.Header>
                     <XTable.Body>
                         {props.data.superAdmins.map((v) => (
-                            <XTable.Row key={v.id}>
-                                <XTable.Cell width={100}>{v.firstName}</XTable.Cell>
-                                <XTable.Cell width={100}>{v.lastName}</XTable.Cell>
-                                <XTable.Cell>{v.email}</XTable.Cell>
+                            <XTable.Row key={v.user.id}>
+                                <XTable.Cell width={100}>{v.user.firstName}</XTable.Cell>
+                                <XTable.Cell width={100}>{v.user.lastName}</XTable.Cell>
+                                <XTable.Cell>{v.user.email}</XTable.Cell>
+                                <XTable.Cell>{v.role}</XTable.Cell>
                             </XTable.Row>
                         ))}
                     </XTable.Body>

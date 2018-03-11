@@ -19,8 +19,10 @@ import { XCardLink } from '../../components/Incubator/XCardLink';
 import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
 import { XTooltip } from '../../components/Incubator/XTooltip';
+import { StateSelect } from '../../api';
 
 export default withApp('viewer', (props) => {
+
     return (
         <>
             <XHead title={['UI Framework']} />
@@ -65,6 +67,7 @@ export default withApp('viewer', (props) => {
                     <XCard.Content>
                         <XTitle>Default Button</XTitle>
                         <XVertical>
+                            <StateSelect />
                             <XButtonLike />
                             <XTooltip title="qwe qwe qw e qw eq we q we  wq e qw e  qw e qw e qw e qw" icon="error" />
                             <XButton alignSelf="flex-start">Default</XButton>

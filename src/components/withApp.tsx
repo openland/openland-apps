@@ -4,7 +4,7 @@ import { withAppBase } from './withAppBase';
 import { withUserInfo } from './UserInfo';
 import { RedirectComponent } from './routing/RedirectComponent';
 
-export function withApp(role: string, WrappedComponent: React.ComponentType<{}>) {
+export function withApp(role: string | string[], WrappedComponent: React.ComponentType<{}>) {
     return withAppBase(withUserInfo((props) => {
         if (props.isLoggedIn) {
             if (props.isBlocked) {

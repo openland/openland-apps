@@ -52,7 +52,15 @@ export interface ParcelMetadataInput {
   description?: string | null,
   currentUse?: ParcelUse | null,
   available?: boolean | null,
+  isOkForTower?: boolean | null,
 };
+
+export enum SuperAdminRole {
+  SUPER_ADMIN = "SUPER_ADMIN",
+  SOFTWARE_DEVELOPER = "SOFTWARE_DEVELOPER",
+  EDITOR = "EDITOR",
+}
+
 
 export enum SuperAccountState {
   PENDING = "PENDING",
@@ -98,6 +106,27 @@ export interface AccountQuery {
     __typename: "Permissions",
     roles: Array< string >,
   },
+};
+
+export interface StateQueryQuery {
+  items:  Array< {
+    __typename: "State",
+    id: string,
+    title: string,
+    subtitle: string,
+  } >,
+};
+
+export interface CountyQueryQueryVariables {
+  stateId: string,
+};
+
+export interface CountyQueryQuery {
+  items:  Array< {
+    __typename: "County",
+    id: string,
+    title: string,
+  } >,
 };
 
 export interface AreaQueryVariables {
@@ -865,6 +894,7 @@ export interface ParcelQuery {
       description: string | null,
       available: boolean | null,
       currentUse: ParcelUse | null,
+      isOkForTower: boolean | null,
     },
     likes:  {
       __typename: "Likes",
@@ -945,6 +975,7 @@ export interface ParcelAlterMutation {
       description: string | null,
       available: boolean | null,
       currentUse: ParcelUse | null,
+      isOkForTower: boolean | null,
     },
   },
 };
@@ -998,13 +1029,17 @@ export interface PermissionsQuery {
 
 export interface SuperAdminsQuery {
   superAdmins:  Array< {
-    __typename: "User",
-    id: string,
-    name: string,
-    firstName: string,
-    lastName: string,
-    picture: string,
-    email: string,
+    __typename: "SuperAdmin",
+    role: SuperAdminRole,
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string,
+      picture: string,
+      email: string,
+    },
   } >,
 };
 
@@ -1086,6 +1121,7 @@ export interface SuperAccountMemberAddMutation {
 
 export interface SuperAdminAddMutationVariables {
   userId: string,
+  role: SuperAdminRole,
 };
 
 export interface SuperAdminAddMutation {
@@ -1966,6 +2002,7 @@ export interface ParcelFullFragment {
     description: string | null,
     available: boolean | null,
     currentUse: ParcelUse | null,
+    isOkForTower: boolean | null,
   },
   likes:  {
     __typename: string,

@@ -393,6 +393,9 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
         if (this.props.router.query!!.filterCurrentUse) {
             clauses.push({ 'currentUse': JSON.parse(this.props.router.query!!.filterCurrentUse) });
         }
+        if (this.props.router.query!!.isOkForTower) {
+            clauses.push({ 'isOkForTower': JSON.parse(this.props.router.query!!.isOkForTower) });
+        }
         if (this.props.router.query!!.filterOnSale) {
             clauses.push({ 'onSale': JSON.parse(this.props.router.query!!.filterOnSale) });
         }
@@ -462,6 +465,7 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
                                 { value: '3', label: '3 stories' },
                                 { value: '4', label: '4 stories' }]}
                             placeholder="Stories"
+                            multi={true}
                         />
                     </FilterCell>
                     <FilterCell title="Current Use">
@@ -476,6 +480,13 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
                             fieldName="filterOnSale"
                             options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
                             placeholder="On Sale"
+                        />
+                    </FilterCell>
+                    <FilterCell title="Tower opportunity">
+                        <RoutedSelector
+                            fieldName="isOkForTower"
+                            options={[{ value: 'true', label: 'Yes (105+ height, 0-2 stories now)' }, { value: 'false', label: 'No' }]}
+                            placeholder="Tower opportunity"
                         />
                     </FilterCell>
                     <FilterCell title="Nearest Transit">

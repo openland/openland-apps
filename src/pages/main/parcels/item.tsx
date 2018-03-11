@@ -40,7 +40,7 @@ export default withApp('viewer', withParcel((props) => {
                         bullet={props.data.item.metadata.available ? 'ON SALE' : undefined}
                         truncateDescription={true}
                     >
-                        <XWithRole role="super-admin">
+                        <XWithRole role={['super-admin', 'editor']}>
                             <XButton path={'/parcels/' + props.data.item.id + '/edit'}>Edit</XButton>
                         </XWithRole>
                         <XButton disabled={true} icon="lock">Owner</XButton>
@@ -133,10 +133,10 @@ export default withApp('viewer', withParcel((props) => {
                                         <XTable.Cell>{v.id}</XTable.Cell>
                                         <XTable.Cell>{v.type && <PermitType type={v.type!!} />}</XTable.Cell>
                                         <XTable.Cell>
-                                                {v.status}
-                                                {v.statusUpdatedAt && ' ('}
-                                                {v.statusUpdatedAt && <XDate date={v.statusUpdatedAt} />}
-                                                {v.statusUpdatedAt && ')'}
+                                            {v.status}
+                                            {v.statusUpdatedAt && ' ('}
+                                            {v.statusUpdatedAt && <XDate date={v.statusUpdatedAt} />}
+                                            {v.statusUpdatedAt && ')'}
                                         </XTable.Cell>
                                         <XTable.Cell>{v.description}</XTable.Cell>
                                     </XTable.Row>
