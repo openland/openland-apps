@@ -7,7 +7,7 @@ import { XHead } from '../../components/X/XHead';
 import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';
 
-export default withApp('super-admin', withUserInfo((props) => {
+export default withApp(['super-admin', 'software-developer'], withUserInfo((props) => {
     return (
         <AppContent>
             <XHead title="Debugging" />
@@ -33,7 +33,7 @@ export default withApp('super-admin', withUserInfo((props) => {
                 <XCard.Content>
                     {props.account && (
                         <>
-                        <div>{props.account.title}</div>
+                            <div>{props.account.title}</div>
                         </>
                     )}
                 </XCard.Content>
