@@ -12,7 +12,10 @@ export const PermissionsQuery = gql`
 export const SuperAdminsQuery = gql`
     query SuperAdmins {
         superAdmins {
-            ...UserShort
+            role
+            user {
+                ...UserShort
+            }
         }
     }
     ${UserShort}
@@ -73,8 +76,8 @@ export const SuperAccountMemberAdd = gql`
 `;
 
 export const SuperAdminAdd = gql`
-    mutation SuperAdminAdd($userId: ID!) {
-        superAdminAdd(userId: $userId)
+    mutation SuperAdminAdd($userId: ID!, $role: SuperAdminRole!) {
+        superAdminAdd(userId: $userId, role: $role)
     }
 `;
 
