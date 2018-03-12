@@ -112,13 +112,13 @@ let UserInfoDiv = Glamorous.div({
 
 let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
     return (
-        <XPopover placement="bottom-end">
+        <XPopover placement="bottom-start">
             <XPopover.Target>
                 <UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv>
             </XPopover.Target>
             <XPopover.Content>
                 <XMenu>
-                    <XMenu.Item path="/auth/logout">Log Out</XMenu.Item>
+                    <XMenu.Item path="/auth/logout">Sign Out</XMenu.Item>
                 </XMenu>
             </XPopover.Content>
         </XPopover>

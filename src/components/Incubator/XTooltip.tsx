@@ -6,13 +6,19 @@ import { XIcon } from '../X/XIcon';
 import { Manager, Target, Popper, Arrow } from './Popper';
 
 const showAnimation = glamor.keyframes({
-    '0%': { opacity: 0 },
-    '100%': { opacity: 1 }
+    '0%': { 
+        opacity: 0,
+        transform: 'rotateX(90deg)',
+    },
+    '100%': {
+        opacity: 1, 
+        transform: 'rotateX(0deg)',
+    }
 });
 
 const hideAnimation = glamor.keyframes({
-    '0%': { opacity: 1 },
-    '100%': { opacity: 0 }
+    '0%': { opacity: 1, display: 'block' },
+    '100%': { opacity: 0, display: 'none' }
 });
 
 const XTooltipDiv = Glamorous.div({
@@ -20,52 +26,52 @@ const XTooltipDiv = Glamorous.div({
     position: 'relative',
     alignItems: 'center',
 
-    '& .popper': {
-        display: 'none',
-        background: '#F5F6F8',
-        width: 150,
-        borderRadius: 5,
-        boxShadow: '0 0 25px rgba(0, 0, 0, 0.3)',
-        padding: 10,
-        color: '#182642',
+    '& .popper, & .popper.hide': {
+        display: 'none'
+    },
+
+    '& .popper > .popper-content': {
+        padding: 20,
+        background: '#fff',
+        width: 200,
+        borderRadius: 4,
+        boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
+        color: '#525f7f',
         fontSize: 14,
         lineHeight: 'normal',
-        fontWeight: 'normal',
-        zIndex: 5,
-        animationDuration: '0.2s',
+        fontWeight: '400',
+        animationDuration: '0.11s',
         animationFillMode: 'forwards',
-    },
-
-    '& .popper.static': {
-        display: 'block'
-    },
-
-    '& .popper.hide': {
-        display: 'block',
         animationName: `${hideAnimation}`,
         animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
     },
 
     '& .popper.show': {
         display: 'block',
-        animationName: `${showAnimation}`,
-        animationTimingFunction: 'cubic-bezier(0.55, 0, 0.55, 0.2)'
+        zIndex: 5,
+
+        '> .popper-content': {
+            animationDuration: '0.3s',
+            animationFillMode: 'forwards',
+            animationName: `${showAnimation}`,
+            animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
+        }
     },
 
     '& .popper .popper__arrow': {
         width: 0,
         height: 0,
         borderStyle: 'solid',
-        position: 'absolute',
+        position: 'absolute'
     },
 
     '& .popper[data-placement^="top"]': {
-        marginBottom: 5
+        marginBottom: 10
     },
 
     '& .popper[data-placement^="top"] .popper__arrow': {
         borderWidth: '5px 5px 0 5px',
-        borderColor: '#F5F6F8 transparent transparent transparent',
+        borderColor: '#fff transparent transparent transparent',
         bottom: -5,
         left: 'calc(50% - 5px)',
         marginTop: 0,
@@ -73,12 +79,12 @@ const XTooltipDiv = Glamorous.div({
     },
 
     '& .popper[data-placement^="bottom"]': {
-        marginTop: 5
+        marginTop: 10
     },
 
     '& .popper[data-placement^="bottom"] .popper__arrow': {
         borderWidth: '0 5px 5px 5px',
-        borderColor: 'transparent transparent #F5F6F8 transparent',
+        borderColor: 'transparent transparent #fff transparent',
         top: -5,
         left: 'calc(50% - 5px)',
         marginTop: 0,
@@ -86,12 +92,12 @@ const XTooltipDiv = Glamorous.div({
     },
 
     '& .popper[data-placement^="right"]': {
-        marginLeft: 5
+        marginLeft: 10
     },
 
     '& .popper[data-placement^="right"] .popper__arrow': {
         borderWidth: '5px 5px 5px 0',
-        borderColor: 'transparent #F5F6F8 transparent transparent',
+        borderColor: 'transparent #fff transparent transparent',
         left: -5,
         top: 'calc(50% - 5px)',
         marginLeft: 0,
@@ -99,12 +105,12 @@ const XTooltipDiv = Glamorous.div({
     },
 
     '& .popper[data-placement^="left"]': {
-        marginRight: 5
+        marginRight: 10
     },
 
     '& .popper[data-placement^="left"] .popper__arrow': {
         borderWidth: '5px 0 5px 5px',
-        borderColor: 'transparent transparent transparent #F5F6F8',
+        borderColor: 'transparent transparent transparent #fff',
         right: -5,
         top: 'calc(50% - 5px)',
         marginLeft: 0,
@@ -119,15 +125,15 @@ const XTooltipDiv = Glamorous.div({
 const TargetContent = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
-    color: '#525f7f;',
+    cursor: 'default',
+    color: '#A7B8C4',
     '> i': {
-        fontSize: 20
+        fontSize: 18
     }
 });
 
 interface XTooltipProps {
     title: string;
-    icon: string;
 }
 
 export class XTooltip extends React.Component<XTooltipProps, { class?: string }> {
@@ -135,7 +141,7 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string }>
         super(props);
 
         this.state = {
-            class: ''
+            class: 'hide'
         };
     }
 
@@ -146,16 +152,9 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string }>
     }
 
     mouseOut() {
-        setTimeout(() => {
-            this.setState({
-                class: 'hide'
-            });
-        },         200);
-        setTimeout(() => {
-            this.setState({
-                class: ''
-            });
-        },         500);
+        this.setState({
+            class: ''
+        });
     }
 
     render() {
@@ -165,7 +164,7 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string }>
                     <Target
                         componentFactory={(targetProps) => (
                             <TargetContent {...targetProps} style={{}} onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()}>
-                                <XIcon icon={this.props.icon} />
+                                <XIcon icon="error" />
                             </TargetContent>
                         )}
                     />
@@ -173,12 +172,14 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string }>
                         placement="top"
                         componentFactory={(popperProps) => (
                             <div {...popperProps} className={classnames('popper', this.state.class)}>
-                                <>{this.props.title}</>
-                                <Arrow
-                                    componentFactory={(arrowProps) => (
-                                        <div {...arrowProps} className="popper__arrow" />
-                                    )}
-                                />
+                                <div className="popper-content">
+                                    <>{this.props.title}</>
+                                    <Arrow
+                                        componentFactory={(arrowProps) => (
+                                            <div {...arrowProps} className="popper__arrow" />
+                                        )}
+                                    />
+                                </div>
                             </div>
                         )}
                     />
