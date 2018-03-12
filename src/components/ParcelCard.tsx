@@ -55,8 +55,8 @@ export const ParcelCard = withParcelDirect((props) => {
             <LoaderWrapper loading={props.data!!.loading}>
                 {props.data && props.data!!.item &&
                     <Scrollable>
-                        <XCard.Header 
-                            text={'Parcel #' + props.data.item!!.title} 
+                        <XCard.Header
+                            text={'Parcel #' + props.data.item!!.title}
                             description={formatAddresses(props.data.item!!.addresses)}
                             truncateDescription={true}
                             bullet={props.data!!.item!!.metadata.available ? 'ON SALE' : undefined}
@@ -128,7 +128,9 @@ export const ParcelCard = withParcelDirect((props) => {
                         </XCard.Content>
 
                         <XCard.PropertyList title="Parcel details">
-                            <PropertyCell title="Block">{props.data.item!!.block.title}</PropertyCell>
+                            {props.data.item!!.block &&
+                                <PropertyCell title="Block">{props.data.item!!.block!!.title}</PropertyCell>
+                            }
                             {props.data.item!!.extrasArea &&
                                 <PropertyCell title="Parcel Area"><XArea area={props.data.item!!.extrasArea!!} /></PropertyCell>
                             }
