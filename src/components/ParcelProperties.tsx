@@ -10,7 +10,9 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
         <>
             <XCard.PropertyColumns>
                 <XCard.PropertyList title="Parcel details">
-                    <XCard.Property title="Block">{props.item.block.title}</XCard.Property>
+                    {props.item.block &&
+                        <XCard.Property title="Block">{props.item.block.title}</XCard.Property>
+                    }
                     {props.item.extrasArea &&
                         <XCard.Property title="Parcel Area"><XArea area={props.item.extrasArea!!} /></XCard.Property>
                     }

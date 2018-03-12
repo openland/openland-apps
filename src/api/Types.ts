@@ -888,7 +888,7 @@ export interface ParcelQuery {
       id: string,
       title: string,
       extrasArea: number | null,
-    },
+    } | null,
     metadata:  {
       __typename: "ParcelMetadata",
       description: string | null,
@@ -1996,7 +1996,7 @@ export interface ParcelFullFragment {
     id: string,
     title: string,
     extrasArea: number | null,
-  },
+  } | null,
   metadata:  {
     __typename: string,
     description: string | null,
