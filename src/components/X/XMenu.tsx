@@ -19,6 +19,7 @@ const menuShifting = glamor.keyframes({
 
 const XMenuDiv = Glamorous(XCard)({
     marginTop: 13,
+    marginLeft: 15,
     position: 'relative',
     overflow: 'visible',
     border: 'none',
@@ -34,18 +35,18 @@ const XMenuDiv = Glamorous(XCard)({
         height: 0,
         background: 'transparent',
         position: 'absolute',
-        left: 'auto',
+        right: 'auto',
         bottom: 'auto',
     },
     '&::before': {
         top: -18,
-        right: 5,
+        left: 5,
         border: '8px solid transparent',
         borderBottom: '10px solid #E6E9EC'
     },
     '&::after': {
         top: -15,
-        right: 6,
+        left: 6,
         border: '7px solid transparent',
         borderBottom: '9px solid #fff'
     }
@@ -58,7 +59,7 @@ const XMenuItem = Glamorous(XLink)({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     borderRadius: 4,
-    width: 200,
+    width: 100,
     height: 28,
     fontSize: 14,
     fontWeight: 'normal',

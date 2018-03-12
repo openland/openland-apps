@@ -18,6 +18,7 @@ import { XDropdown } from '../../components/Incubator/XDropdown2';
 import { XCardLink } from '../../components/Incubator/XCardLink';
 import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
+import { XTooltip } from '../../components/Incubator/XTooltip';
 import { StateSelect } from '../../api';
 
 export default withApp('viewer', (props) => {
@@ -68,6 +69,7 @@ export default withApp('viewer', (props) => {
                         <XVertical>
                             <StateSelect />
                             <XButtonLike />
+                            <XTooltip title="qwe qwe qw e qw eq we q we  wq e qw e  qw e qw e qw e qw" />
                             <XButton alignSelf="flex-start">Default</XButton>
                             <XButton alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton>
 
@@ -175,6 +177,7 @@ export default withApp('viewer', (props) => {
                     >
                         <XCard.Header.Target>
                             <XButtonLike />
+                            <XTooltip title="qwe qwe qw e qw eq we q we  wq e qw e  qw e qw e qw e qw" />
                         </XCard.Header.Target>
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>

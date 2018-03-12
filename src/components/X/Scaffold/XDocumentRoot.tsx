@@ -27,5 +27,6 @@ export let XDocumentAppRoot = Glamorous.div({
     alignItems: 'stretch',
 
     minWidth: '1020px',
+    maxWidth: '100%',
     minHeight: '100vh',
 });
