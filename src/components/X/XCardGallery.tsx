@@ -22,7 +22,8 @@ const XCardGalleryInnerDiv = Glamorous.div({
 const XCardGalleryItemImg = Glamorous(XCloudImage)({
     height: '204px',
     width: '204px',
-    margin: ' 16px'
+    margin: ' 16px',
+    objectFit: 'cover'
 });
 
 export class XCardGallery extends React.Component {
