@@ -6,12 +6,12 @@ import { XIcon } from '../X/XIcon';
 import { Manager, Target, Popper, Arrow } from './Popper';
 
 const showAnimation = glamor.keyframes({
-    '0%': { 
+    '0%': {
         opacity: 0,
         transform: 'rotateX(90deg)',
     },
     '100%': {
-        opacity: 1, 
+        opacity: 1,
         transform: 'rotateX(0deg)',
     }
 });
@@ -26,24 +26,31 @@ const XTooltipDiv = Glamorous.div({
     position: 'relative',
     alignItems: 'center',
 
-    '& .popper, & .popper.hide': {
-        display: 'none'
+    '& .popper': {
+        display: 'none',
+
+        '> .popper-content': {
+            padding: 20,
+            background: '#fff',
+            width: 200,
+            borderRadius: 4,
+            boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
+            color: '#525f7f',
+            fontSize: 14,
+            lineHeight: 'normal',
+            fontWeight: '400',
+        }
     },
 
-    '& .popper > .popper-content': {
-        padding: 20,
-        background: '#fff',
-        width: 200,
-        borderRadius: 4,
-        boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
-        color: '#525f7f',
-        fontSize: 14,
-        lineHeight: 'normal',
-        fontWeight: '400',
-        animationDuration: '0.11s',
-        animationFillMode: 'forwards',
-        animationName: `${hideAnimation}`,
-        animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+    '& .popper.hide': {
+        display: 'none',
+        
+        '> .popper-content': {
+            animationDuration: '0.11s',
+            animationFillMode: 'forwards',
+            animationName: `${hideAnimation}`,
+            animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+        }
     },
 
     '& .popper.show': {
@@ -56,6 +63,11 @@ const XTooltipDiv = Glamorous.div({
             animationName: `${showAnimation}`,
             animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
         }
+    },
+
+    '& .popper.static': {
+        display: 'block',
+        zIndex: 5,
     },
 
     '& .popper .popper__arrow': {
@@ -136,25 +148,47 @@ interface XTooltipProps {
     title: string;
 }
 
-export class XTooltip extends React.Component<XTooltipProps, { class?: string }> {
+export class XTooltip extends React.Component<XTooltipProps, { class?: string, modalHover?: boolean }> {
     constructor(props: any) {
         super(props);
 
         this.state = {
-            class: 'hide'
+            class: 'hide',
+            modalHover: false
         };
+    }
+
+    modalOver() {
+        this.setState({
+            class: 'static',
+            modalHover: true
+        });
+    }
+
+    modalOut() {
+        this.setState({
+            class: 'hide',
+            modalHover: false
+        });
     }
 
     mouseOver() {
         this.setState({
-            class: 'show'
+            class: 'show',
+            modalHover: false
         });
     }
 
     mouseOut() {
-        this.setState({
-            class: ''
-        });
+        setTimeout(() => {
+            if (this.state.modalHover === true) {
+                return;
+            } else {
+                this.setState({
+                    class: 'hide'
+                });
+            }
+        },         400);
     }
 
     render() {
@@ -171,7 +205,7 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string }>
                     <Popper
                         placement="top"
                         componentFactory={(popperProps) => (
-                            <div {...popperProps} className={classnames('popper', this.state.class)}>
+                            <div {...popperProps} className={classnames('popper', this.state.class)} onMouseOver={() => this.modalOver()} onMouseOut={() => this.modalOut()}>
                                 <div className="popper-content">
                                     <>{this.props.title}</>
                                     <Arrow

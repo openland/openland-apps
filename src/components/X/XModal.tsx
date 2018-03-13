@@ -14,6 +14,17 @@ const hideAnimation = glamor.keyframes({
     '100%': { backgroundColor: 'transparent', opacity: 0 }
 });
 
+const contentAnimation = glamor.keyframes({
+    '0%': {
+        opacity: 0,
+        transform: 'rotateX(90deg)',
+    },
+    '100%': {
+        opacity: 1,
+        transform: 'rotateX(0deg)',
+    }
+});
+
 const XModalContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
@@ -48,7 +59,7 @@ export class XModal extends React.Component<XModalProps, { isHiding: boolean }> 
         }
         this.props.onClosed();
         this.setState({ isHiding: true });
-        setTimeout(() => { this.setState({ isHiding: false }); }, 300);
+        setTimeout(() => { this.setState({ isHiding: false }); }, 250);
     }
 
     render() {
@@ -68,7 +79,7 @@ export class XModal extends React.Component<XModalProps, { isHiding: boolean }> 
                     overlay: {
                         animationName: `${this.state.isHiding ? hideAnimation : showAnimation}`,
                         animationTimingFunction: `${this.state.isHiding ? 'cubic-bezier(0.25, 0.8, 0.25, 1)' : 'cubic-bezier(0.55, 0, 0.55, 0.2)'}`,
-                        animationDuration: '0.3s',
+                        animationDuration: '0.2s',
                         animationFillMode: 'forwards',
                         zIndex: 10,
                         backgroundColor: 'rgba(0,0,0,0.75)'
@@ -87,7 +98,11 @@ export class XModal extends React.Component<XModalProps, { isHiding: boolean }> 
                         top: 0,
                         bottom: 0,
                         padding: 0,
-                        borderRadius: 0
+                        borderRadius: 0,
+                        animationDuration: '0.4s',
+                        animationFillMode: 'forwards',
+                        animationName: `${contentAnimation}`,
+                        animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
                     }
                 }}
             >
