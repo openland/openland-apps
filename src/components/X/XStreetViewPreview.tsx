@@ -2,7 +2,8 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 
 const Image = Glamorous.img({
-    borderRadius: '4px'
+    borderRadius: '4px',
+    objectFit: 'cover'
 });
 
 export function XStreetViewPreview(props: { location: { latitude: number, longitude: number }, width: number, height: number, className?: string }) {
