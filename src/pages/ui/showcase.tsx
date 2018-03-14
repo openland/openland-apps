@@ -19,6 +19,7 @@ import { XCardLink } from '../../components/Incubator/XCardLink';
 import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
 import { XTooltip } from '../../components/Incubator/XTooltip';
+import { XConfirm } from '../../components/Incubator/XConfirm';
 import { StateSelect } from '../../api';
 
 export default withApp('viewer', (props) => {
@@ -69,6 +70,9 @@ export default withApp('viewer', (props) => {
                         <XVertical>
                             <StateSelect />
                             <XButtonLike />
+                            <XConfirm onConfirm={() => { console.warn('confirm function'); }}>
+                                <XButton onClick={(e) => { e.preventDefault(); }}>Confirm button</XButton>
+                            </XConfirm>
                             <XTooltip title="qwe qwe qw e qw eq we q we  wq e qw e  qw e qw e qw e qw" />
                             <XButton alignSelf="flex-start">Default</XButton>
                             <XButton alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton>

@@ -2,8 +2,9 @@ import * as React from 'react';
 import * as classnames from 'classnames';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
-import { XIcon } from '../X/XIcon';
+import ClickOutside from './ClickOutside';
 import { Manager, Target, Popper, Arrow } from './Popper';
+import { XButton } from '../X/XButton';
 
 const showAnimation = glamor.keyframes({
     '0%': {
@@ -21,18 +22,17 @@ const hideAnimation = glamor.keyframes({
     '100%': { opacity: 0, display: 'none' }
 });
 
-const XTooltipDiv = Glamorous.div({
+const ConfirmWrapper = Glamorous.div({
     display: 'flex',
-    position: 'relative',
-    alignItems: 'center',
+    alignSelf: 'flex-start',
 
     '& .popper': {
         display: 'none',
 
         '> .popper-content': {
-            padding: 20,
+            padding: 10,
             background: '#fff',
-            width: 200,
+            width: 170,
             borderRadius: 4,
             boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
             color: '#525f7f',
@@ -44,7 +44,7 @@ const XTooltipDiv = Glamorous.div({
 
     '& .popper.hide': {
         display: 'none',
-        
+
         '> .popper-content': {
             animationDuration: '0.11s',
             animationFillMode: 'forwards',
@@ -134,91 +134,82 @@ const XTooltipDiv = Glamorous.div({
     }
 });
 
-const TargetContent = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'default',
-    color: '#A7B8C4',
-    '> i': {
-        fontSize: 18
-    }
-});
-
-interface XTooltipProps {
-    title: string;
+interface ConfirmPopoverProps {
+    children: any;
+    onConfirm: Function;
 }
 
-export class XTooltip extends React.Component<XTooltipProps, { class?: string, modalHover?: boolean }> {
+export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: string }> {
     constructor(props: any) {
         super(props);
 
         this.state = {
-            class: 'hide',
-            modalHover: false
+            class: 'hide'
         };
     }
 
-    modalOver() {
-        this.setState({
-            class: 'static',
-            modalHover: true
-        });
-    }
-
-    modalOut() {
-        this.setState({
-            class: 'hide',
-            modalHover: false
-        });
-    }
-
-    mouseOver() {
+    handleShow() {
         this.setState({
             class: 'show',
-            modalHover: false
         });
     }
 
-    mouseOut() {
-        setTimeout(() => {
-            if (this.state.modalHover === true) {
-                return;
-            } else {
-                this.setState({
-                    class: 'hide'
-                });
-            }
-        },         400);
+    handleHide() {
+        this.setState({
+            class: 'hide'
+        });
+    }
+
+    handleClose = (e: any) => {
+        this.setState({
+            class: 'hide'
+        });
     }
 
     render() {
         return (
-            <Manager>
-                <XTooltipDiv>
-                    <Target
-                        componentFactory={(targetProps) => (
-                            <TargetContent {...targetProps} style={{}} onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()}>
-                                <XIcon icon="error" />
-                            </TargetContent>
-                        )}
-                    />
-                    <Popper
-                        placement="top"
-                        componentFactory={(popperProps) => (
-                            <div {...popperProps} className={classnames('popper', this.state.class)} onMouseOver={() => this.modalOver()} onMouseOut={() => this.modalOut()}>
-                                <div className="popper-content">
-                                    <>{this.props.title}</>
-                                    <Arrow
-                                        componentFactory={(arrowProps) => (
-                                            <div {...arrowProps} className="popper__arrow" />
-                                        )}
-                                    />
+            <ClickOutside onClickOutside={this.handleClose}>
+                <Manager>
+                    <ConfirmWrapper>
+                        <Target
+                            componentFactory={(targetProps) => (
+                                <div {...targetProps} style={{ display: 'flex' }} onClick={() => this.handleShow()}>
+                                    {this.props.children}
                                 </div>
-                            </div>
-                        )}
-                    />
-                </XTooltipDiv>
-            </Manager>
+                            )}
+                        />
+                        <Popper
+                            placement="top"
+                            componentFactory={(popperProps) => (
+                                <div {...popperProps} className={classnames('popper', this.state.class)}>
+                                    <div className="popper-content">
+                                        <div>
+                                            <div style={{marginBottom: 6}}>Confirm action</div>
+                                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                                                <XButton onClick={(e) => {
+                                                    e.preventDefault();
+                                                    this.handleHide();
+                                                }}>Cancel</XButton>
+                                                <div style={{width: 8}} />
+                                                <XButton style="important" onClick={(e) => {
+                                                    e.preventDefault();
+                                                    this.props.onConfirm();
+                                                    this.handleHide();
+                                                }}>Confirm</XButton>
+                                            </div>
+                                        </div>
+                                        <Arrow
+                                            componentFactory={(arrowProps) => (
+                                                <div {...arrowProps} className="popper__arrow" />
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                        />
+                    </ConfirmWrapper>
+                </Manager>
+            </ClickOutside>
         );
     }
 }
