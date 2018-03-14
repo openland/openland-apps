@@ -156,6 +156,11 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string, m
             class: 'hide',
             modalHover: false
         };
+
+        this.modalOver = this.modalOver.bind(this);
+        this.modalOut = this.modalOut.bind(this);
+        this.mouseOver = this.mouseOver.bind(this);
+        this.mouseOut = this.mouseOut.bind(this);
     }
 
     modalOver() {
@@ -188,7 +193,7 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string, m
                     class: 'hide'
                 });
             }
-        },         400);
+        },         250);
     }
 
     render() {
@@ -197,7 +202,7 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string, m
                 <XTooltipDiv>
                     <Target
                         componentFactory={(targetProps) => (
-                            <TargetContent {...targetProps} style={{}} onMouseOver={() => this.mouseOver()} onMouseOut={() => this.mouseOut()}>
+                            <TargetContent {...targetProps} style={{}} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>
                                 <XIcon icon="error" />
                             </TargetContent>
                         )}
@@ -205,7 +210,7 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string, m
                     <Popper
                         placement="top"
                         componentFactory={(popperProps) => (
-                            <div {...popperProps} className={classnames('popper', this.state.class)} onMouseOver={() => this.modalOver()} onMouseOut={() => this.modalOut()}>
+                            <div {...popperProps} className={classnames('popper', this.state.class)} onMouseOver={this.modalOver} onMouseOut={this.modalOut}>
                                 <div className="popper-content">
                                     <>{this.props.title}</>
                                     <Arrow

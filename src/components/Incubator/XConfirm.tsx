@@ -146,6 +146,8 @@ export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: str
         this.state = {
             class: 'hide'
         };
+
+        this.handleShow = this.handleShow.bind(this);
     }
 
     handleShow() {
@@ -173,7 +175,7 @@ export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: str
                     <ConfirmWrapper>
                         <Target
                             componentFactory={(targetProps) => (
-                                <div {...targetProps} style={{ display: 'flex' }} onClick={() => this.handleShow()}>
+                                <div {...targetProps} style={{ display: 'flex' }} onClick={this.handleShow}>
                                     {this.props.children}
                                 </div>
                             )}
