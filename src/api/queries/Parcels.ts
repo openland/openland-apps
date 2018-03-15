@@ -35,6 +35,9 @@ export const ParcelFull = gql`
       extrasSalesPriorDate
       extrasRecordationDate
 
+      extrasOwnerName
+      extrasAddress
+
       addresses {
         streetId
         streetName
@@ -107,6 +110,9 @@ export const ParcelShort = gql`
       extrasSalesDate
       extrasSalesPriorDate
       extrasRecordationDate
+
+      extrasOwnerName
+      extrasAddress
 
       addresses {
         streetId

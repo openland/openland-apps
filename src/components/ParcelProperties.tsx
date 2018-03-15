@@ -10,6 +10,9 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
         <>
             <XCard.PropertyColumns>
                 <XCard.PropertyList title="Parcel details">
+                    {props.item.extrasOwnerName &&
+                        <XCard.Property title="Owner Name">{props.item.extrasOwnerName}</XCard.Property>
+                    }
                     {props.item.block &&
                         <XCard.Property title="Block">{props.item.block.title}</XCard.Property>
                     }
@@ -80,17 +83,22 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         </XCard.PropertyList>
                     )}
             </XCard.PropertyColumns>
-            <XCard.PropertyList title="Nearby Transit">
-                {props.item.extrasMetroDistance !== null &&
-                    <XCard.Property title="Muni Metro">{props.item.extrasMetroDistance} ({props.item.extrasMetroStation})</XCard.Property>
-                }
-                {props.item.extrasTrainLocalDistance !== null &&
-                    <XCard.Property title="BART">{props.item.extrasTrainLocalDistance} ({props.item.extrasTrainLocalStation})</XCard.Property>
-                }
-                {props.item.extrasTrainDistance !== null &&
-                    <XCard.Property title="Caltrain">{props.item.extrasTrainDistance} ({props.item.extrasTrainStation})</XCard.Property>
-                }
-            </XCard.PropertyList>
+            {(props.item.extrasMetroDistance !== null
+                || props.item.extrasTrainLocalDistance !== null
+                || props.item.extrasTrainDistance !== null)
+                && (
+                    <XCard.PropertyList title="Nearby Transit">
+                        {props.item.extrasMetroDistance !== null &&
+                            <XCard.Property title="Muni Metro">{props.item.extrasMetroDistance} ({props.item.extrasMetroStation})</XCard.Property>
+                        }
+                        {props.item.extrasTrainLocalDistance !== null &&
+                            <XCard.Property title="BART">{props.item.extrasTrainLocalDistance} ({props.item.extrasTrainLocalStation})</XCard.Property>
+                        }
+                        {props.item.extrasTrainDistance !== null &&
+                            <XCard.Property title="Caltrain">{props.item.extrasTrainDistance} ({props.item.extrasTrainStation})</XCard.Property>
+                        }
+                    </XCard.PropertyList>
+                )}
         </>
     );
 }

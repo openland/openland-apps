@@ -36,7 +36,7 @@ export default withApp('viewer', withParcel((props) => {
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header
                         text={'Parcel #' + props.data.item.title}
-                        description={formatAddresses(props.data.item.addresses)}
+                        description={formatAddresses(props.data.item.addresses, props.data.item.extrasAddress)}
                         bullet={props.data.item.metadata.available ? 'ON SALE' : undefined}
                         truncateDescription={true}
                     >
