@@ -151,7 +151,7 @@ export class Popper extends React.Component<PopperProps, PopperState> {
     }
 }
 
-const showAnimation = glamor.keyframes({
+const showAnimationTop = glamor.keyframes({
     '0%': {
         opacity: 0,
         transform: 'scale(0)',
@@ -164,7 +164,20 @@ const showAnimation = glamor.keyframes({
     }
 });
 
-const hideAnimation = glamor.keyframes({
+const showAnimationBottom = glamor.keyframes({
+    '0%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% calc(-10% + 11px)'
+    },
+    '100%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% calc(-10% + 11px)'
+    }
+});
+
+const hideAnimationTop = glamor.keyframes({
     '0%': {
         opacity: 1,
         transform: 'scale(1)',
@@ -174,6 +187,19 @@ const hideAnimation = glamor.keyframes({
         opacity: 0,
         transform: 'scale(0)',
         transformOrigin: '50% calc(100% + 11px)'
+    }
+});
+
+const hideAnimationBottom = glamor.keyframes({
+    '0%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% calc(-10% + 11px)'
+    },
+    '100%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% calc(-10% + 11px)'
     }
 });
 
@@ -202,7 +228,7 @@ const PopperDiv = Glamorous.div({
         '> .popper-content': {
             animationDuration: '0.2s',
             animationFillMode: 'forwards',
-            animationName: `${hideAnimation}`,
+            animationName: `${hideAnimationTop}`,
             animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
         }
     },
@@ -213,7 +239,7 @@ const PopperDiv = Glamorous.div({
         '> .popper-content': {
             animationDuration: '0.2s',
             animationFillMode: 'forwards',
-            animationName: `${showAnimation}`,
+            animationName: `${showAnimationTop}`,
             animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
         }
     },
@@ -243,7 +269,13 @@ const PopperDiv = Glamorous.div({
     },
 
     '& .popper[data-placement^="bottom"]': {
-        marginTop: 10
+        marginTop: 10,
+        '&.show > .popper-content': {
+            animationName: `${showAnimationBottom} !important`,
+        },
+        '&.hide > .popper-content': {
+            animationName: `${hideAnimationBottom} !important`
+        }
     },
 
     '& .popper[data-placement^="bottom"] .popper__arrow': {

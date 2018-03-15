@@ -9,14 +9,14 @@ const CityTitle = Glamorous.div<{inverted?: boolean}>((props) => ({
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'row',
-    color: props.inverted ? 'RGBA(245, 246, 248, 0.7)' : '#182642',
+    color: props.inverted ? '#f5f6f8' : '#182642',
     fontSize: '20px',
     lineHeight: '18px',
     fontWeight: 600,
-    borderBottom: props.inverted ? '1px dashed RGBA(245, 246, 248, 0.5)' : '1px dashed RGBA(24, 38, 66, 0.7)',
+    borderBottom: props.inverted ? '1px dashed RGBA(245, 246, 248, 0.8)' : '1px dashed RGBA(24, 38, 66, 0.7)',
     '&:hover': {
-        color: props.inverted ? '#f5f6f8' : '#6B50FF',
-        borderBottom: props.inverted ? '1px dashed RGBA(245, 246, 248, 0.8)' : '1px dashed RGBA(107, 80, 255, 0.8)',
+        color: props.inverted ? 'RGBA(245, 246, 248, 0.7)' : '#6B50FF',
+        borderBottom: props.inverted ? '1px dashed RGBA(245, 246, 248, 0.5)' : '1px dashed RGBA(107, 80, 255, 0.8)',
     }
 }));
 
@@ -60,22 +60,22 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { class?:
     }
 
     handleShow() {
-        this.setState({
-            class: 'show',
-            popper: true
-        });
-    }
-
-    handleHide() {
-        this.setState({
-            class: 'hide',
-        });
-        setTimeout(() => {
+        if (this.state.popper === true) {
             this.setState({
                 class: 'hide',
-                popper: false
             });
-        },         200);
+            setTimeout(() => {
+                this.setState({
+                    class: '',
+                    popper: false
+                });
+            },         200);
+        } else {
+            this.setState({
+                class: 'show',
+                popper: true
+            });   
+        }
     }
 
     handleClose = (e: any) => {
