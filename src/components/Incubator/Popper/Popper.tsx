@@ -185,7 +185,8 @@ const PopperDiv = Glamorous.div({
         '> .popper-content': {
             padding: 10,
             background: '#fff',
-            width: 200,
+            minWidth: 150,
+            maxWidth: 200,
             borderRadius: 4,
             boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
             color: '#525f7f',
@@ -320,12 +321,12 @@ export class Poppover extends React.Component<PopperDivProps> {
                         <div {...popperProps} className={classnames('popper', this.props.class)} onMouseOver={() => this.props.onMouseover ? this.props.onMouseover() : undefined}>
                             <div className="popper-content" onMouseOver={() => this.props.onMouseover ? this.props.onMouseover() : undefined} onMouseOut={() => this.props.onMouseout ? this.props.onMouseout() : undefined}>
                                 {this.props.children}
-                            </div>
-                            <Arrow
+                                <Arrow
                                 componentFactory={(arrowProps) => (
                                     <div {...arrowProps} className="popper__arrow" onMouseOver={() => this.props.onMouseover ? this.props.onMouseover() : undefined} />
                                 )}
                             />
+                            </div>
                         </div>
                     )}
                 />

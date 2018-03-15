@@ -71,7 +71,7 @@ export default withApp('viewer', (props) => {
                         <XVertical>
                             <StateSelect />
                             <XButtonLike />
-                            <CitySelector title="San Francisco" dark={true}>
+                            <CitySelector title="San Francisco">
                                 <CitySelector.Popper>
                                     <button>lol</button>
                                 </CitySelector.Popper>
@@ -173,7 +173,6 @@ export default withApp('viewer', (props) => {
                 <XCard separators={true}>
                     <XCard.Hint title="test data" />
                     <XCard.Header
-                        text="Loader block title"
                         truncateDescription={true}
                         description={`
                         $ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"
@@ -186,7 +185,11 @@ export default withApp('viewer', (props) => {
                         `}
                     >
                         <XCard.Header.Target>
-                            <XButtonLike />
+                            <CitySelector title="San Francisco">
+                                <CitySelector.Popper>
+                                    <button>lol</button>
+                                </CitySelector.Popper>
+                            </CitySelector>
                         </XCard.Header.Target>
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
