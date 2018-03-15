@@ -70,10 +70,10 @@ export default withApp('viewer', (props) => {
                         <XVertical>
                             <StateSelect />
                             <XButtonLike />
+                            <XTooltip title={` $ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch"`} />
                             <XConfirm onConfirm={() => { console.warn('confirm function'); }}>
                                 <XButton onClick={(e) => { e.preventDefault(); }}>Confirm button</XButton>
                             </XConfirm>
-                            <XTooltip title="qwe qwe qw e qw eq we q we  wq e qw e  qw e qw e qw e qw" />
                             <XButton alignSelf="flex-start">Default</XButton>
                             <XButton alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton>
 
@@ -181,7 +181,6 @@ export default withApp('viewer', (props) => {
                     >
                         <XCard.Header.Target>
                             <XButtonLike />
-                            <XTooltip title="qwe qwe qw e qw eq we q we  wq e qw e  qw e qw e qw e qw" />
                         </XCard.Header.Target>
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
                         <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>

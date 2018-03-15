@@ -1,19 +1,23 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as classnames from 'classnames';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import ClickOutside from './ClickOutside';
+import { canUseDOM } from '../../utils/environment';
 import { Manager, Target, Popper, Arrow } from './Popper';
 import { XButton } from '../X/XButton';
 
 const showAnimation = glamor.keyframes({
     '0%': {
         opacity: 0,
-        transform: 'rotateX(90deg)',
+        transform: 'scale(0)',
+        transformOrigin: '50% calc(100% + 11px)'
     },
     '100%': {
         opacity: 1,
-        transform: 'rotateX(0deg)',
+        transform: 'scale(1)',
+        transformOrigin: '50% calc(100% + 11px)'
     }
 });
 
@@ -22,12 +26,10 @@ const hideAnimation = glamor.keyframes({
     '100%': { opacity: 0, display: 'none' }
 });
 
-const ConfirmWrapper = Glamorous.div({
-    display: 'flex',
-    alignSelf: 'flex-start',
-
+const PopperDiv = Glamorous.div({
     '& .popper': {
         display: 'none',
+        zIndex: 5,
 
         '> .popper-content': {
             padding: 10,
@@ -55,10 +57,9 @@ const ConfirmWrapper = Glamorous.div({
 
     '& .popper.show': {
         display: 'block',
-        zIndex: 5,
 
         '> .popper-content': {
-            animationDuration: '0.3s',
+            animationDuration: '0.2s',
             animationFillMode: 'forwards',
             animationName: `${showAnimation}`,
             animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
@@ -67,7 +68,6 @@ const ConfirmWrapper = Glamorous.div({
 
     '& .popper.static': {
         display: 'block',
-        zIndex: 5,
     },
 
     '& .popper .popper__arrow': {
@@ -134,17 +134,23 @@ const ConfirmWrapper = Glamorous.div({
     }
 });
 
+const ConfirmWrapper = Glamorous.div({
+    display: 'flex',
+    alignSelf: 'flex-start'
+});
+
 interface ConfirmPopoverProps {
     children: any;
     onConfirm: Function;
 }
 
-export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: string }> {
+export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: string, popper?: boolean }> {
     constructor(props: any) {
         super(props);
 
         this.state = {
-            class: 'hide'
+            class: 'hide',
+            popper: false
         };
 
         this.handleShow = this.handleShow.bind(this);
@@ -153,22 +159,60 @@ export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: str
     handleShow() {
         this.setState({
             class: 'show',
+            popper: true
         });
     }
 
     handleHide() {
         this.setState({
-            class: 'hide'
+            class: 'hide',
+            popper: false
         });
     }
 
     handleClose = (e: any) => {
         this.setState({
-            class: 'hide'
+            class: 'hide',
+            popper: false
         });
     }
 
     render() {
+
+        let popover = (
+            <PopperDiv>
+                <Popper
+                    placement="top"
+                    componentFactory={(popperProps) => (
+                        <div {...popperProps} className={classnames('popper', this.state.class)}>
+                            <div className="popper-content">
+                                <div>
+                                    <div style={{ marginBottom: 6 }}>Confirm action</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <XButton onClick={(e) => {
+                                            e.preventDefault();
+                                            this.handleHide();
+                                        }}>Cancel</XButton>
+                                        <div style={{ width: 8 }} />
+                                        <XButton style="important" onClick={(e) => {
+                                            e.preventDefault();
+                                            this.props.onConfirm();
+                                            this.handleHide();
+                                        }}>Confirm</XButton>
+                                    </div>
+                                </div>
+                                <Arrow
+                                    componentFactory={(arrowProps) => (
+                                        <div {...arrowProps} className="popper__arrow" />
+                                    )}
+                                />
+                            </div>
+                        </div>
+                    )}
+                />
+            </PopperDiv>
+        );
+
         return (
             <ClickOutside onClickOutside={this.handleClose}>
                 <Manager>
@@ -180,35 +224,7 @@ export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: str
                                 </div>
                             )}
                         />
-                        <Popper
-                            placement="top"
-                            componentFactory={(popperProps) => (
-                                <div {...popperProps} className={classnames('popper', this.state.class)}>
-                                    <div className="popper-content">
-                                        <div>
-                                            <div style={{marginBottom: 6}}>Confirm action</div>
-                                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                                                <XButton onClick={(e) => {
-                                                    e.preventDefault();
-                                                    this.handleHide();
-                                                }}>Cancel</XButton>
-                                                <div style={{width: 8}} />
-                                                <XButton style="important" onClick={(e) => {
-                                                    e.preventDefault();
-                                                    this.props.onConfirm();
-                                                    this.handleHide();
-                                                }}>Confirm</XButton>
-                                            </div>
-                                        </div>
-                                        <Arrow
-                                            componentFactory={(arrowProps) => (
-                                                <div {...arrowProps} className="popper__arrow" />
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-                            )}
-                        />
+                        {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popover, document.body)}
                     </ConfirmWrapper>
                 </Manager>
             </ClickOutside>
