@@ -13,6 +13,9 @@ import { XWithRouter, withRouter } from '../../../components/withRouter';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XCard } from '../../../components/X/XCard';
 import { AppFilters } from '../../../components/App/AppFilters';
+import { CitySelector } from '../../../components/Incubator/CitySelector';
+import { XButton } from '../../../components/X/XButton';
+import { XHorizontal } from '../../../components/X/XHorizontal';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -115,12 +118,27 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                 )
             );
 
+        let city = this.props.router.routeQuery.city || 'sf';
+        let cityName = city === 'sf' ? 'San Francisco' : 'New York';
+        let focus = city === 'sf'
+            ? { latitude: 37.75444398077139, longitude: -122.43963811583545, zoom: 12 }
+            : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
+
         return (
             <AppContentMap>
                 <AppContentMap.Item>
                     <FilterContainer shadow="medium">
                         <FilterHeader>
-                            <FilterHeaderTitle>San Francisco</FilterHeaderTitle>
+                            <FilterHeaderTitle>
+                                <CitySelector title={cityName} inverted={true}>
+                                    <CitySelector.Popper>
+                                        <XHorizontal>
+                                            <XButton query={{ field: 'city', value: 'sf' }}>San Francisco</XButton>
+                                            <XButton query={{ field: 'city', value: 'nyc' }}>New York</XButton>
+                                        </XHorizontal>
+                                    </CitySelector.Popper>
+                                </CitySelector>
+                            </FilterHeaderTitle>
                             <FilterComponent query={this.state.query && JSON.stringify(this.state.query)} />
                         </FilterHeader>
                         <FilterActions>
@@ -130,7 +148,7 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                 </AppContentMap.Item>
                 <XMapContainer>
                     <XMapContainer2>
-                        <XMap key={this.props.router.query!!.mode || 'map'} mapStyle={mapStyle}>
+                        <XMap key={this.props.router.query!!.mode || 'map'} mapStyle={mapStyle} focusPosition={focus}>
                             <ParcelTileSource layer="parcels" minZoom={16} />
                             <BlockTileSource layer="blocks" minZoom={12} />
                             <XMapPolygonLayer

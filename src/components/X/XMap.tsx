@@ -15,7 +15,7 @@ let Wrapper = Glamorous.div({
 interface XMapProps {
     scrollZoom?: boolean;
     mapStyle?: string;
-    focusPosition?: { latitude: number, longiutude: number, zoom: number };
+    focusPosition?: { latitude: number, longitude: number, zoom: number };
     className?: string;
 }
 
@@ -132,18 +132,18 @@ export class XMap extends React.Component<XMapProps> {
             }
             map.accessToken = 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw';
             let initialLatitude = 37.75444398077139;
-            let initialLongutude = -122.43963811583545;
+            let initialLongitude = -122.43963811583545;
             let initialZoom = 12;
 
             if (this.props.focusPosition) {
                 initialLatitude = this.props.focusPosition.latitude;
-                initialLongutude = this.props.focusPosition.longiutude;
+                initialLongitude = this.props.focusPosition.longitude;
                 initialZoom = this.props.focusPosition.zoom;
             }
 
             let mapComponent = new map.Map({
                 container: domNode,
-                center: [initialLongutude, initialLatitude],
+                center: [initialLongitude, initialLatitude],
                 zoom: initialZoom,
                 style: this.props.mapStyle || 'mapbox://styles/mapbox/streets-v9',
                 scrollZoom: this.props.scrollZoom !== undefined ? this.props.scrollZoom : true
@@ -158,11 +158,12 @@ export class XMap extends React.Component<XMapProps> {
         if (this.map && nextProps.focusPosition !== undefined) {
             if (!this.props.focusPosition ||
                 (this.props.focusPosition.latitude !== nextProps.focusPosition.latitude) ||
-                (this.props.focusPosition.longiutude !== nextProps.focusPosition.longiutude) ||
+                (this.props.focusPosition.longitude !== nextProps.focusPosition.longitude) ||
                 (this.props.focusPosition.zoom !== nextProps.focusPosition.zoom)) {
                 this.map!!.flyTo({
-                    center: [nextProps.focusPosition.longiutude, nextProps.focusPosition.latitude],
-                    zoom: nextProps.focusPosition.zoom
+                    center: [nextProps.focusPosition.longitude, nextProps.focusPosition.latitude],
+                    zoom: nextProps.focusPosition.zoom,
+                    // duration: 1000
                 });
             }
 
