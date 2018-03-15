@@ -11,7 +11,7 @@ export function XCardMap(props: { focusLocation: { latitude: number, longitude: 
         <XCardMapDiv>
             <XMap
                 mapStyle="mapbox://styles/mapbox/light-v9"
-                focusPosition={{ zoom: props.focusLocation.zoom, latitude: props.focusLocation.latitude, longiutude: props.focusLocation.longitude }}
+                focusPosition={{ zoom: props.focusLocation.zoom, latitude: props.focusLocation.latitude, longitude: props.focusLocation.longitude }}
                 scrollZoom={false}
             >
                 {props.children}

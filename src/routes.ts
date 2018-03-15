@@ -25,6 +25,20 @@ routes.add('/parcels/:parcelId/edit', '/main/parcels/edit');
 routes.add('/parcels/:parcelId/edit/', '/main/parcels/edit');
 
 //
+// Portfolio
+//
+
+routes.add('/portfolio', '/main/portfolio/index');
+routes.add('/portfolio/', '/main/portfolio/index');
+
+//
+// People
+//
+
+routes.add('/people', '/main/people/index');
+routes.add('/people/', '/main/people/index');
+
+//
 // Projects
 //
 
