@@ -1,9 +1,18 @@
-export function formatAddresses(addresses: {
-    streetName: string,
-    streetNameSuffix: string | null,
-    streetNumber: number,
-    streetNumberSuffix: string | null
-}[]) {
+export function formatAddresses(
+    addresses: {
+        streetName: string,
+        streetNameSuffix: string | null,
+        streetNumber: number,
+        streetNumberSuffix: string | null
+    }[],
+    extras?: string | null) {
+    if (addresses.length === 0) {
+        if (extras) {
+            return extras;
+        } else {
+            return '';
+        }
+    }
     let streets = new Map<string, { numbers: { number: number, suffix: string | null }[] }>();
 
     // Grouping By street name

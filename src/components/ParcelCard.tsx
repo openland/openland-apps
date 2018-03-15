@@ -57,7 +57,7 @@ export const ParcelCard = withParcelDirect((props) => {
                     <Scrollable>
                         <XCard.Header
                             text={'Parcel #' + props.data.item!!.title}
-                            description={formatAddresses(props.data.item!!.addresses)}
+                            description={formatAddresses(props.data.item!!.addresses, props.data.item!!.extrasAddress)}
                             truncateDescription={true}
                             bullet={props.data!!.item!!.metadata.available ? 'ON SALE' : undefined}
                         >
@@ -128,6 +128,9 @@ export const ParcelCard = withParcelDirect((props) => {
                         </XCard.Content>
 
                         <XCard.PropertyList title="Parcel details">
+                            {props.data.item!!.extrasOwnerName &&
+                                <XCard.Property title="Owner Name">{props.data.item!!.extrasOwnerName}</XCard.Property>
+                            }
                             {props.data.item!!.block &&
                                 <PropertyCell title="Block">{props.data.item!!.block!!.title}</PropertyCell>
                             }
@@ -200,17 +203,22 @@ export const ParcelCard = withParcelDirect((props) => {
                                     }
                                 </XCard.PropertyList>
                             )}
-                        <XCard.PropertyList title="Nearby Transit">
-                            {props.data.item!!.extrasMetroDistance !== null &&
-                                <PropertyCell title="Muni Metro"><XDistance value={props.data.item!!.extrasMetroDistance!!} /> ({props.data.item!!.extrasMetroStation})</PropertyCell>
-                            }
-                            {props.data.item!!.extrasTrainLocalDistance !== null &&
-                                <PropertyCell title="BART"><XDistance value={props.data.item!!.extrasTrainLocalDistance!!} /> ({props.data.item!!.extrasTrainLocalStation})</PropertyCell>
-                            }
-                            {props.data.item!!.extrasTrainDistance !== null &&
-                                <PropertyCell title="Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</PropertyCell>
-                            }
-                        </XCard.PropertyList>
+                        {(props.data.item!!.extrasMetroDistance !== null
+                            || props.data.item!!.extrasTrainLocalDistance !== null
+                            || props.data.item!!.extrasTrainDistance !== null)
+                            && (
+                                <XCard.PropertyList title="Nearby Transit">
+                                    {props.data.item!!.extrasMetroDistance !== null &&
+                                        <PropertyCell title="Muni Metro"><XDistance value={props.data.item!!.extrasMetroDistance!!} /> ({props.data.item!!.extrasMetroStation})</PropertyCell>
+                                    }
+                                    {props.data.item!!.extrasTrainLocalDistance !== null &&
+                                        <PropertyCell title="BART"><XDistance value={props.data.item!!.extrasTrainLocalDistance!!} /> ({props.data.item!!.extrasTrainLocalStation})</PropertyCell>
+                                    }
+                                    {props.data.item!!.extrasTrainDistance !== null &&
+                                        <PropertyCell title="Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</PropertyCell>
+                                    }
+                                </XCard.PropertyList>
+                            )}
                     </Scrollable>}
             </LoaderWrapper>
         </Container>
