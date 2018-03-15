@@ -1104,6 +1104,17 @@ export interface SuperAccountSuspendMutation {
   },
 };
 
+export interface SuperAccountAddMutationVariables {
+  title: string,
+};
+
+export interface SuperAccountAddMutation {
+  superAccountAdd:  {
+    __typename: "SuperAccount",
+    id: string,
+  },
+};
+
 export interface SuperAccountMemberAddMutationVariables {
   accountId: string,
   userId: string,
