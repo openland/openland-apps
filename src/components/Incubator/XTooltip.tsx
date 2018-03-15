@@ -1,33 +1,42 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as classnames from 'classnames';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
+import { canUseDOM } from '../../utils/environment';
 import { XIcon } from '../X/XIcon';
 import { Manager, Target, Popper, Arrow } from './Popper';
 
 const showAnimation = glamor.keyframes({
     '0%': {
         opacity: 0,
-        transform: 'rotateX(90deg)',
+        transform: 'scale(0)',
+        transformOrigin: '50% calc(100% + 11px)'
     },
     '100%': {
         opacity: 1,
-        transform: 'rotateX(0deg)',
+        transform: 'scale(1)',
+        transformOrigin: '50% calc(100% + 11px)'
     }
 });
 
 const hideAnimation = glamor.keyframes({
-    '0%': { opacity: 1, display: 'block' },
-    '100%': { opacity: 0, display: 'none' }
+    '0%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% calc(100% + 11px)'
+    },
+    '100%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% calc(100% + 11px)'
+    }
 });
 
-const XTooltipDiv = Glamorous.div({
-    display: 'flex',
-    position: 'relative',
-    alignItems: 'center',
-
+const PopperDiv = Glamorous.div({
     '& .popper': {
         display: 'none',
+        zIndex: 5,
 
         '> .popper-content': {
             padding: 20,
@@ -43,10 +52,10 @@ const XTooltipDiv = Glamorous.div({
     },
 
     '& .popper.hide': {
-        display: 'none',
-        
+        display: 'block',
+
         '> .popper-content': {
-            animationDuration: '0.11s',
+            animationDuration: '0.2s',
             animationFillMode: 'forwards',
             animationName: `${hideAnimation}`,
             animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
@@ -55,10 +64,9 @@ const XTooltipDiv = Glamorous.div({
 
     '& .popper.show': {
         display: 'block',
-        zIndex: 5,
 
         '> .popper-content': {
-            animationDuration: '0.3s',
+            animationDuration: '0.2s',
             animationFillMode: 'forwards',
             animationName: `${showAnimation}`,
             animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
@@ -67,7 +75,6 @@ const XTooltipDiv = Glamorous.div({
 
     '& .popper.static': {
         display: 'block',
-        zIndex: 5,
     },
 
     '& .popper .popper__arrow': {
@@ -134,6 +141,11 @@ const XTooltipDiv = Glamorous.div({
     }
 });
 
+const XTooltipDiv = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center'
+});
+
 const TargetContent = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
@@ -148,13 +160,14 @@ interface XTooltipProps {
     title: string;
 }
 
-export class XTooltip extends React.Component<XTooltipProps, { class?: string, modalHover?: boolean }> {
+export class XTooltip extends React.Component<XTooltipProps, { class?: string, modalHover?: boolean, popper?: boolean }> {
     constructor(props: any) {
         super(props);
 
         this.state = {
             class: 'hide',
-            modalHover: false
+            modalHover: false,
+            popper: false
         };
 
         this.modalOver = this.modalOver.bind(this);
@@ -166,21 +179,28 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string, m
     modalOver() {
         this.setState({
             class: 'static',
-            modalHover: true
+            modalHover: true,
+            popper: true
         });
     }
 
     modalOut() {
         this.setState({
-            class: 'hide',
-            modalHover: false
+            class: 'hide'
         });
+
+        setTimeout(() => {
+            this.setState({
+                popper: false
+            });
+        },         200);
     }
 
     mouseOver() {
         this.setState({
             class: 'show',
-            modalHover: false
+            modalHover: false,
+            popper: true
         });
     }
 
@@ -190,38 +210,54 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string, m
                 return;
             } else {
                 this.setState({
-                    class: 'hide'
+                    class: 'hide',
+                    modalHover: false
                 });
+                setTimeout(() => {
+                    this.setState({
+                        popper: false
+                    });
+                },         200);
             }
-        },         250);
+        },         100);
     }
 
     render() {
+        let popover = (
+            <PopperDiv>
+                <Popper
+                    placement="top"
+                    componentFactory={(popperProps) => (
+                        <div {...popperProps} className={classnames('popper', this.state.class)} onMouseOver={this.modalOver}>
+                            <div className="popper-content" onMouseOver={this.modalOver} onMouseOut={this.modalOut}>
+                                {this.props.title}
+                            </div>
+                            <Arrow
+                                    componentFactory={(arrowProps) => (
+                                        <div {...arrowProps} className="popper__arrow" onMouseOver={this.modalOver} />
+                                    )}
+                                />
+                        </div>
+                    )}
+                />
+            </PopperDiv>
+        );
         return (
             <Manager>
                 <XTooltipDiv>
                     <Target
                         componentFactory={(targetProps) => (
-                            <TargetContent {...targetProps} style={{}} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>
+                            <TargetContent
+                                {...targetProps}
+                                style={{}}
+                                onMouseOver={this.mouseOver}
+                                onMouseOut={this.mouseOut}
+                            >
                                 <XIcon icon="error" />
                             </TargetContent>
                         )}
                     />
-                    <Popper
-                        placement="top"
-                        componentFactory={(popperProps) => (
-                            <div {...popperProps} className={classnames('popper', this.state.class)} onMouseOver={this.modalOver} onMouseOut={this.modalOut}>
-                                <div className="popper-content">
-                                    <>{this.props.title}</>
-                                    <Arrow
-                                        componentFactory={(arrowProps) => (
-                                            <div {...arrowProps} className="popper__arrow" />
-                                        )}
-                                    />
-                                </div>
-                            </div>
-                        )}
-                    />
+                    {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popover, document.body)}
                 </XTooltipDiv>
             </Manager>
         );
