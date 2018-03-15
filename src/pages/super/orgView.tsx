@@ -4,7 +4,7 @@ import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
 import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';
-import { withSuperAccount, withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountAdd, UserSelect } from '../../api';
+import { withSuperAccount, withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountMemberAdd, UserSelect } from '../../api';
 import { XButtonMutation } from '../../components/X/XButtonMutation';
 import { XForm } from '../../components/X/XForm';
 import { XButton } from '../../components/X/XButton';
@@ -13,7 +13,7 @@ import { XModalTargeted } from '../../components/X/XModalTargeted';
 const ActivateButton = withSuperAccountActivate((props) => <XButtonMutation style="important" mutation={props.activate}>Activate</XButtonMutation>);
 const SuspendButton = withSuperAccountSuspend((props) => <XButtonMutation style="dark" mutation={props.suspend}>Suspend</XButtonMutation>);
 
-const AddAddMemberForm = withSuperAccountAdd((props) => {
+const AddAddMemberForm = withSuperAccountMemberAdd((props) => {
     return (
         <XForm submitMutation={props.add} mutationDirect={true}>
             <XForm.Field title="User">

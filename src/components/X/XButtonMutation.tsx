@@ -16,9 +16,13 @@ export class XButtonMutation extends React.Component<XButtonStyleProps & { mutat
         }
         this.setState({ loading: true });
         try {
-            await this.props.mutation({ variables: this.props.variables });
+            if (this.props.variables) {
+                await this.props.mutation({ variables: this.props.variables });
+            } else {
+                await this.props.mutation({});
+            }
         } catch (e) {
-            // Ignore
+            console.warn(e);
         } finally {
             this.setState({ loading: false });
         }

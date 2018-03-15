@@ -182,12 +182,14 @@ export const withSuperAdmins = graphqlRouted<Types.SuperAdminsQuery>(Permissions
 export const UserSelect = graphqlSelect(User.UsersQuery);
 export const withSuperAdminAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Permissions.SuperAdminAdd, { name: 'add', refetchQueries: [Permissions.SuperAdminsQuery] });
 export const withSuperAdminRemove = graphqlMutation<{ remove: MutationFunc<{}> }>(Permissions.SuperAdminRemove, { name: 'remove', refetchQueries: [Permissions.SuperAdminsQuery] });
+
 export const withSuperAccounts = graphqlRouted<Types.SuperAccountsQuery>(Permissions.SuperAccountsQuery);
 export const withSuperAccount = graphqlRouted<Types.SuperAccountQuery>(Permissions.SuperAccountQuery, ['accountId']);
+export const withSuperAccountAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Permissions.SuperAccountAdd, { name: 'add', refetchQueries: [Permissions.SuperAccountsQuery] });
 
 export const withSuperAccountActivate = graphqlMutation<{ activate: MutationFunc<{}> }>(Permissions.SuperAccountActivate, { name: 'activate', params: ['accountId'] });
 export const withSuperAccountSuspend = graphqlMutation<{ suspend: MutationFunc<{}> }>(Permissions.SuperAccountSuspend, { name: 'suspend', params: ['accountId'] });
-export const withSuperAccountAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Permissions.SuperAccountMemberAdd, { name: 'add', params: ['accountId'] });
+export const withSuperAccountMemberAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Permissions.SuperAccountMemberAdd, { name: 'add', params: ['accountId'] });
 
 //
 // Addressing
