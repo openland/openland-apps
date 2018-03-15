@@ -17,11 +17,13 @@ const hideAnimation = glamor.keyframes({
 const contentAnimation = glamor.keyframes({
     '0%': {
         opacity: 0,
-        transform: 'rotateX(90deg)',
+        transform: 'translateY(100%)',
+        transformOrigin: '50% 100%'
     },
     '100%': {
         opacity: 1,
-        transform: 'rotateX(0deg)',
+        transform: 'translateY(0)',
+        transformOrigin: '50% 100%'
     }
 });
 
@@ -99,10 +101,10 @@ export class XModal extends React.Component<XModalProps, { isHiding: boolean }> 
                         bottom: 0,
                         padding: 0,
                         borderRadius: 0,
-                        animationDuration: '0.4s',
+                        animationDuration: '0.2s',
                         animationFillMode: 'forwards',
                         animationName: `${contentAnimation}`,
-                        animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+                        animationTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
                     }
                 }}
             >

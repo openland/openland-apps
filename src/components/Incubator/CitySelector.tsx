@@ -4,7 +4,28 @@ import Glamorous from 'glamorous';
 import ClickOutside from './ClickOutside';
 import { canUseDOM } from '../../utils/environment';
 import { Manager, Target, Poppover } from './Popper';
-import { XButton } from '../X/XButton';
+
+const CityTitle = Glamorous.div<{dark?: boolean}>((props) => ({
+    cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'row',
+    color: props.dark ? '#182642' : '#f5f6f8',
+    fontSize: '20px',
+    fontWeight: 600
+}));
+
+export class PopperElement extends React.Component<({ children: any })> {
+    static defaultProps = {
+        _isPopperElement: true
+    };
+    render() {
+        return (
+            <>
+                {this.props.children}
+            </>
+        );
+    }
+}
 
 const ConfirmWrapper = Glamorous.div({
     display: 'flex',
@@ -13,10 +34,14 @@ const ConfirmWrapper = Glamorous.div({
 
 interface ConfirmPopoverProps {
     children: any;
-    onConfirm: Function;
+    onConfirm?: Function;
+    title?: string;
+    dark?: boolean;
 }
 
-export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: string, popper?: boolean }> {
+export class CitySelector extends React.Component<ConfirmPopoverProps, { class?: string, popper?: boolean }> {
+    static Popper = PopperElement;
+
     constructor(props: any) {
         super(props);
 
@@ -61,21 +86,16 @@ export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: str
 
     render() {
 
+        let popper: any[] = [];
+        for (let i of React.Children.toArray(this.props.children)) {
+            if (React.isValidElement(i) && (i.props as any)._isPopperElement === true) {
+                popper.push(i);
+            }
+        }
+
         let popover = (
             <Poppover placement="top" class={this.state.class}>
-                    <div style={{ marginBottom: 6 }}>Confirm action</div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <XButton onClick={(e) => {
-                            e.preventDefault();
-                            this.handleHide();
-                        }}>Cancel</XButton>
-                        <div style={{ width: 8 }} />
-                        <XButton style="important" onClick={(e) => {
-                            e.preventDefault();
-                            this.props.onConfirm();
-                            this.handleHide();
-                        }}>Confirm</XButton>
-                    </div>
+                    {popper}
             </Poppover>
         );
 
@@ -85,9 +105,9 @@ export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: str
                     <ConfirmWrapper>
                         <Target
                             componentFactory={(targetProps) => (
-                                <div {...targetProps} style={{ display: 'flex' }} onClick={this.handleShow}>
-                                    {this.props.children}
-                                </div>
+                                <CityTitle {...targetProps} onClick={this.handleShow} dark={this.props.dark}>
+                                    {this.props.title}
+                                </CityTitle>
                             )}
                         />
                         {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popover, document.body)}

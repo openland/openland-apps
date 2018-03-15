@@ -20,6 +20,7 @@ import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
 import { XTooltip } from '../../components/Incubator/XTooltip';
 import { XConfirm } from '../../components/Incubator/XConfirm';
+import { CitySelector } from '../../components/Incubator/CitySelector';
 import { StateSelect } from '../../api';
 
 export default withApp('viewer', (props) => {
@@ -70,6 +71,11 @@ export default withApp('viewer', (props) => {
                         <XVertical>
                             <StateSelect />
                             <XButtonLike />
+                            <CitySelector title="San Francisco" dark={true}>
+                                <CitySelector.Popper>
+                                    <button>lol</button>
+                                </CitySelector.Popper>
+                            </CitySelector>
                             <XTooltip title={` $ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch"`} />
                             <XConfirm onConfirm={() => { console.warn('confirm function'); }}>
                                 <XButton onClick={(e) => { e.preventDefault(); }}>Confirm button</XButton>

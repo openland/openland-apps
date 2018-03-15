@@ -129,7 +129,7 @@ export const ParcelCard = withParcelDirect((props) => {
 
                         <XCard.PropertyList title="Parcel details">
                             {props.data.item!!.extrasOwnerName &&
-                                <XCard.Property title="Owner Name">{props.data.item!!.extrasOwnerName}</XCard.Property>
+                                <PropertyCell title="Owner Name">{props.data.item!!.extrasOwnerName}</PropertyCell>
                             }
                             {props.data.item!!.block &&
                                 <PropertyCell title="Block">{props.data.item!!.block!!.title}</PropertyCell>

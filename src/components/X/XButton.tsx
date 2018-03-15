@@ -161,7 +161,7 @@ export const XButtonComponent = withLayout(Glamorous<XButtonProps>(XLink)((props
 export function XButton(props: XButtonProps & { children?: any }) {
     let { icon, children, ...other } = props;
     return (
-        <XButtonComponent {...other}>
+        <XButtonComponent {...other} icon={icon}>
             {icon && <XIcon icon={icon} />}
             {children && (<span>{children}</span>)}
         </XButtonComponent>
