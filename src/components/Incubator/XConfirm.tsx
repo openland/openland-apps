@@ -22,8 +22,16 @@ const showAnimation = glamor.keyframes({
 });
 
 const hideAnimation = glamor.keyframes({
-    '0%': { opacity: 1, display: 'block' },
-    '100%': { opacity: 0, display: 'none' }
+    '0%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% calc(100% + 11px)'
+    },
+    '100%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% calc(100% + 11px)'
+    }
 });
 
 const PopperDiv = Glamorous.div({
@@ -45,10 +53,10 @@ const PopperDiv = Glamorous.div({
     },
 
     '& .popper.hide': {
-        display: 'none',
+        display: 'block',
 
         '> .popper-content': {
-            animationDuration: '0.11s',
+            animationDuration: '0.2s',
             animationFillMode: 'forwards',
             animationName: `${hideAnimation}`,
             animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
@@ -166,15 +174,25 @@ export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: str
     handleHide() {
         this.setState({
             class: 'hide',
-            popper: false
         });
+        setTimeout(() => {
+            this.setState({
+                class: 'hide',
+                popper: false
+            });
+        },         200);
     }
 
     handleClose = (e: any) => {
         this.setState({
             class: 'hide',
-            popper: false
         });
+        setTimeout(() => {
+            this.setState({
+                class: 'hide',
+                popper: false
+            });
+        },         200);
     }
 
     render() {
@@ -201,12 +219,12 @@ export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: str
                                         }}>Confirm</XButton>
                                     </div>
                                 </div>
-                                <Arrow
+                            </div>
+                            <Arrow
                                     componentFactory={(arrowProps) => (
                                         <div {...arrowProps} className="popper__arrow" />
                                     )}
                                 />
-                            </div>
                         </div>
                     )}
                 />
