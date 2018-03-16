@@ -71,7 +71,7 @@ export default withApp('viewer', withDeals((props) => {
                         </XTable.Header>
                         <XTable.Body>
                             {props.data.deals!!.map((d) => (
-                                <XTable.Row key={d.id}>
+                                <XTable.Row key={d.id} path={'/portfolio/' + d.id}>
                                     <XTable.Cell>
                                         {d.title}
                                     </XTable.Cell>
@@ -95,7 +95,7 @@ export default withApp('viewer', withDeals((props) => {
                 )}
                 {props.data.deals!!.length === 0 && (
                     <XCard.Empty icon="work" text="You can add new project">
-                        <Link query={{ field: 'add', value: 'true' }} > here</Link>
+                        <Link query={{ field: 'add', value: 'true' }} >here</Link>
                     </XCard.Empty>
                 )}
             </XCard>

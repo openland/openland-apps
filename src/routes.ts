@@ -30,6 +30,8 @@ routes.add('/parcels/:parcelId/edit/', '/main/parcels/edit');
 
 routes.add('/portfolio', '/main/portfolio/index');
 routes.add('/portfolio/', '/main/portfolio/index');
+routes.add('/portfolio/:dealId', '/main/portfolio/view');
+routes.add('/portfolio/:dealId/', '/main/portfolio/view');
 
 //
 // People

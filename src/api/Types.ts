@@ -322,6 +322,23 @@ export interface AllDealsQuery {
   } >,
 };
 
+export interface DealQueryVariables {
+  dealId: string,
+};
+
+export interface DealQuery {
+  deal:  {
+    __typename: "Deal",
+    id: string,
+    title: string,
+    location: string | null,
+    address: string | null,
+    status: DealStatus | null,
+    statusDescription: string | null,
+    statusDate: string | null,
+  },
+};
+
 export interface AddDealMutationVariables {
   data: DealInput,
 };
