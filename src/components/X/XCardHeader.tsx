@@ -44,6 +44,7 @@ interface XCardHeaderProps {
     truncateDescription?: boolean;
     filter?: string;
     bullet?: string | null;
+    bulletColor?: 'red' | 'blue' | 'green' | 'yellow';
 }
 
 export class HeaderTargetElement extends React.Component<({ children: any })> {
@@ -79,7 +80,7 @@ export class XCardHeader extends React.Component<XCardHeaderProps> {
                     <TargetDivStyle>
                         {target}
                         {this.props.text}
-                        {this.props.bullet && <XBullet color="green">{this.props.bullet}</XBullet>}
+                        {this.props.bullet && <XBullet color={this.props.bulletColor || 'green'}>{this.props.bullet}</XBullet>}
                     </TargetDivStyle>
                     <XHorizontal separator="normal">
                         {content}

@@ -28,6 +28,26 @@ const RemoveButton = withDealRemove((props) => {
 });
 
 export default withApp('viewer', withDeal((props) => {
+
+    let bulletText: string | undefined;
+    let bulletColor: 'red' | 'yellow' | 'blue' | 'green' | undefined;
+    if (props.data.deal.status === 'CLOSED') {
+        bulletText = 'Closed';
+        bulletColor = 'green';
+    }
+    if (props.data.deal.status === 'ACTIVE') {
+        if (props.data.deal.statusDescription) {
+            bulletText = props.data.deal.statusDescription;
+        } else {
+            bulletText = 'Active';
+        }
+        bulletColor = 'blue';
+    }
+    if (props.data.deal.status === 'ON_HOLD') {
+        bulletText = 'Adjourned';
+        bulletColor = 'yellow';
+    }
+
     return (
         <>
             <XHead title={props.data.deal.title} />
@@ -36,7 +56,7 @@ export default withApp('viewer', withDeal((props) => {
             </XModalRouted>
             <AppContent>
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header text={props.data.deal.title} description="Deal" bullet={props.data.deal.status}>
+                    <XCard.Header text={props.data.deal.title} description="Deal" bullet={bulletText} bulletColor={bulletColor}>
                         <XWithRole role="super-admin">
                             <RemoveButton />
                         </XWithRole>
