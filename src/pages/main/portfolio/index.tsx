@@ -22,6 +22,28 @@ const DealsForm = withDealAdd((props) => {
             <XForm.Field title="Deal Name">
                 <XForm.Text field="title" />
             </XForm.Field>
+            <XForm.Field title="Location">
+                <XForm.Text field="location" placeholder="ex: Brooklyn" />
+            </XForm.Field>
+            <XForm.Field title="Address">
+                <XForm.Text field="address" placeholder="100 California St" />
+            </XForm.Field>
+            <XForm.Field title="Status">
+                <XForm.Select
+                    field="status"
+                    options={[
+                        { value: 'ACTIVE', title: 'Active' },
+                        { value: 'CLOSED', title: 'Closed' },
+                        { value: 'ON_HOLD', title: 'On Hold' },
+                    ]}
+                />
+            </XForm.Field>
+            <XForm.Field title="Status Description">
+                <XForm.Text field="statusDescription" placeholder="ex: Waiting for titles" />
+            </XForm.Field>
+            <XForm.Field title="Status Date">
+                <XForm.Text field="statusDate" placeholder="Date of status change" />
+            </XForm.Field>
             <XCard.Footer>
                 <XForm.Submit style="dark">Add</XForm.Submit>
             </XCard.Footer>
@@ -42,7 +64,10 @@ export default withApp('viewer', withDeals((props) => {
                     <XTable>
                         <XTable.Header>
                             <XTable.Cell>Title</XTable.Cell>
-                            <XTable.Cell>Something</XTable.Cell>
+                            <XTable.Cell>Location</XTable.Cell>
+                            <XTable.Cell>Address</XTable.Cell>
+                            <XTable.Cell>Status</XTable.Cell>
+                            <XTable.Cell>Status Date</XTable.Cell>
                         </XTable.Header>
                         <XTable.Body>
                             {props.data.deals!!.map((d) => (
@@ -51,7 +76,16 @@ export default withApp('viewer', withDeals((props) => {
                                         {d.title}
                                     </XTable.Cell>
                                     <XTable.Cell>
-                                        {}
+                                        {d.location}
+                                    </XTable.Cell>
+                                    <XTable.Cell>
+                                        {d.address}
+                                    </XTable.Cell>
+                                    <XTable.Cell>
+                                        {d.status}{d.statusDescription && ` (${d.statusDescription})`}
+                                    </XTable.Cell>
+                                    <XTable.Cell>
+                                        {d.statusDate}
                                     </XTable.Cell>
                                 </XTable.Row>
                             ))}

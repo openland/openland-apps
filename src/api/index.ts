@@ -204,4 +204,4 @@ export const CountySelect = graphqlSelect<{ stateId: string }>(Addressing.County
 //
 
 export const withDeals = graphqlRouted<Types.AllDealsQuery>(Deals.AllDealsQuery);
-export const withDealAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Deals.AddDealMitation, { name: 'add' });
+export const withDealAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Deals.AddDealMitation, { name: 'add', refetchQueries: [Deals.AllDealsQuery] });

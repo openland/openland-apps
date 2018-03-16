@@ -5,6 +5,11 @@ export const AllDealsQuery = gql`
         deals {
             id
             title
+            location
+            address
+            status
+            statusDescription
+            statusDate
         }
     }
 `;
@@ -14,6 +19,11 @@ export const AddDealMitation = gql`
         dealAdd(input: $data) {
             id
             title
+            location
+            address
+            status
+            statusDescription
+            statusDate
         }
     }
 `;

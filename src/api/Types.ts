@@ -1,8 +1,20 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export enum DealStatus {
+  ACTIVE = "ACTIVE",
+  CLOSED = "CLOSED",
+  ON_HOLD = "ON_HOLD",
+}
+
+
 export interface DealInput {
-  title: string,
+  title?: string | null,
+  status?: DealStatus | null,
+  statusDescription?: string | null,
+  statusDate?: string | null,
+  location?: string | null,
+  address?: string | null,
 };
 
 export enum ParcelUse {
@@ -302,6 +314,11 @@ export interface AllDealsQuery {
     __typename: "Deal",
     id: string,
     title: string,
+    location: string | null,
+    address: string | null,
+    status: DealStatus | null,
+    statusDescription: string | null,
+    statusDate: string | null,
   } >,
 };
 
@@ -314,6 +331,11 @@ export interface AddDealMutation {
     __typename: "Deal",
     id: string,
     title: string,
+    location: string | null,
+    address: string | null,
+    status: DealStatus | null,
+    statusDescription: string | null,
+    statusDate: string | null,
   },
 };
 
