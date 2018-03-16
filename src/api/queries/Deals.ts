@@ -33,6 +33,11 @@ export const DealQuery = gql`
             extrasLotShape
             extrasLotSize
             extrasTaxBill
+
+            parcel {
+                id
+                title
+            }
         }
     }
 `;
@@ -56,6 +61,11 @@ export const AddDealMitation = gql`
             extrasLotShape
             extrasLotSize
             extrasTaxBill
+
+            parcel {
+                id
+                title
+            }
         }
     }
 `;
@@ -79,6 +89,11 @@ export const AlterDealMitation = gql`
             extrasLotShape
             extrasLotSize
             extrasTaxBill
+
+            parcel {
+                id
+                title
+            }
         }
     }
 `;

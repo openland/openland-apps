@@ -23,6 +23,7 @@ export interface DealInput {
   extrasLotShape?: string | null,
   extrasLotSize?: string | null,
   extrasTaxBill?: number | null,
+  parcelId?: string | null,
 };
 
 export enum ParcelUse {
@@ -352,6 +353,11 @@ export interface DealQuery {
     extrasLotShape: string | null,
     extrasLotSize: string | null,
     extrasTaxBill: number | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+      title: string,
+    } | null,
   },
 };
 
@@ -377,6 +383,11 @@ export interface AddDealMutation {
     extrasLotShape: string | null,
     extrasLotSize: string | null,
     extrasTaxBill: number | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+      title: string,
+    } | null,
   },
 };
 
@@ -403,6 +414,11 @@ export interface AlterDealMutation {
     extrasLotShape: string | null,
     extrasLotSize: string | null,
     extrasTaxBill: number | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+      title: string,
+    } | null,
   },
 };
 
@@ -1137,6 +1153,18 @@ export interface ParcelsStatsQueryVariables {
 
 export interface ParcelsStatsQuery {
   parcelsStats: number,
+};
+
+export interface ParcelsSearchQueryQueryVariables {
+  query: string,
+};
+
+export interface ParcelsSearchQueryQuery {
+  items:  Array< {
+    __typename: "Parcel",
+    id: string,
+    title: string,
+  } >,
 };
 
 export interface PermissionsQuery {

@@ -47,6 +47,11 @@ export default withApp('viewer', withDeal((props) => {
                     </XCard.PropertyList>
                 </XCard.PropertyColumns>
             </XCard>
+            {props.data.deal.parcel && (
+                <XCard shadow="medium" separators={true}>
+                    <XCard.Header text={'Parcel #' + props.data.deal.parcel.title} />
+                </XCard>
+            )}
         </AppContent>
     );
 }));

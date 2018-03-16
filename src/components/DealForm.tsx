@@ -2,6 +2,7 @@ import * as React from 'react';
 import { MutationFunc } from 'react-apollo';
 import { XForm } from './X/XForm';
 import { XCard } from './X/XCard';
+import { ParcelSelect } from '../api';
 
 export function DealForm(props: { mutation: MutationFunc<{}>, defaultValues?: { [key: string]: any; } }) {
 
@@ -9,31 +10,24 @@ export function DealForm(props: { mutation: MutationFunc<{}>, defaultValues?: { 
     let fields = ['title', 'address', 'location', 'status', 'statusDate', 'statusDescription',
         'price', 'extrasArea', 'extrasCompany', 'extrasAttorney', 'extrasReferee', 'extrasLotShape',
         'extrasLotSize', 'extrasTaxBill'];
+
     if (props.defaultValues) {
         for (let k in props.defaultValues) {
             if (fields.indexOf(k) >= 0) {
                 defs[k] = props.defaultValues[k];
             }
         }
+        if (props.defaultValues.parcel) {
+            defs.parcelId = props.defaultValues.parcel.id;
+        }
     }
-
-    // price?: number | null;
-
-    // extrasArea?: number | null;
-    // extrasCompany?: string | null;
-    // extrasAttorney?: string | null;
-    // extrasReferee?: string | null;
-
-    // extrasLotShape: string | null;
-    // extrasLotSize: string | null;
-    // extrasTaxBill: number | null;
 
     return (
         <XForm submitMutation={props.mutation} defaultValues={defs}>
             <XForm.Field title="Deal Name">
                 <XForm.Text field="title" />
             </XForm.Field>
-            
+
             <XForm.Field title="Price">
                 <XForm.Text field="price" />
             </XForm.Field>
@@ -43,7 +37,9 @@ export function DealForm(props: { mutation: MutationFunc<{}>, defaultValues?: { 
             <XForm.Field title="Tax Bill">
                 <XForm.Text field="extrasTaxBill" />
             </XForm.Field>
-
+            <XForm.Field title="Parcel">
+                <XForm.Select field="parcelId" component={ParcelSelect} />
+            </XForm.Field>
             <XForm.Field title="Location">
                 <XForm.Text field="location" placeholder="ex: Brooklyn" />
             </XForm.Field>

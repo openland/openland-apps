@@ -305,3 +305,12 @@ export const ParcelsStats = gql`
         parcelsStats(query: $query)
     }
 `;
+
+export const ParcelsSearchQuery = gql`
+    query ParcelsSearchQuery($query: String!) {
+        items: searchParcels(query: $query) {
+            id
+            title
+        }
+    }
+`;
