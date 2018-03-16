@@ -422,6 +422,14 @@ export interface AlterDealMutation {
   },
 };
 
+export interface RemoveDealMutationVariables {
+  dealId: string,
+};
+
+export interface RemoveDealMutation {
+  dealRemove: string,
+};
+
 export interface OrganizationsQuery {
   organizations:  Array< {
     __typename: "Organization",

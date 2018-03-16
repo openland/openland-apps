@@ -97,3 +97,9 @@ export const AlterDealMitation = gql`
         }
     }
 `;
+
+export const RemoveDealMutation = gql`
+    mutation RemoveDeal($dealId: ID!) {
+        dealRemove(id: $dealId)
+    }
+`;

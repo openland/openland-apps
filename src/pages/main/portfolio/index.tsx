@@ -26,7 +26,9 @@ export default withApp('viewer', withDeals((props) => {
                 <XModalRouted title="Add New project" query="add">
                     <DealsForm />
                 </XModalRouted>
-                <XCard.Header text="Portfolio"><XButton query={{ field: 'add', value: 'true' }}>Add</XButton></XCard.Header>
+                <XCard.Header text="Portfolio">
+                    <XButton query={{ field: 'add', value: 'true' }}>Add</XButton>
+                </XCard.Header>
                 {props.data.deals!!.length > 0 && (
                     <XTable>
                         <XTable.Header>
