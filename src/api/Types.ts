@@ -366,6 +366,8 @@ export interface DealQuery {
       id: string,
       title: string,
       geometry: string | null,
+      extrasZoning: Array< string > | null,
+      extrasLandValue: number | null,
     } | null,
   },
 };

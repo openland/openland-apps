@@ -14,6 +14,7 @@ import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { XLink } from '../../../components/X/XLink';
 import { XArea } from '../../../components/X/XArea';
+import { XZoningCode } from '../../../components/X/XZoningCode';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -53,6 +54,7 @@ export default withApp('viewer', withDeal((props) => {
                         </XCard.PropertyList>
                         <XCard.PropertyList title="Parcel">
                             {props.data.deal.parcel && (<XCard.Property title="Parcel ID"><XLink path={'/parcels/' + props.data.deal.parcel.id}>{props.data.deal.parcel.title}</XLink></XCard.Property>)}
+                            {props.data.deal.parcel && props.data.deal.parcel.extrasZoning && (<XCard.Property title="Zoning"><XZoningCode codes={props.data.deal.parcel.extrasZoning} /></XCard.Property>)}
                             {props.data.deal.location && (<XCard.Property title="Location">{props.data.deal.location}</XCard.Property>)}
                             {props.data.deal.address && (<XCard.Property title="Address">{props.data.deal.address}</XCard.Property>)}
                             {props.data.deal.extrasArea && (<XCard.Property title="Area"><XArea area={props.data.deal.extrasArea} convert={false} /></XCard.Property>)}

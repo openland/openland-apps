@@ -47,6 +47,8 @@ export const DealQuery = gql`
                 id
                 title
                 geometry
+                extrasZoning
+                extrasLandValue
             }
         }
     }
