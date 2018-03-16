@@ -34,7 +34,7 @@ export default withApp('viewer', withDeals((props) => {
                         <XTable.Header>
                             <XTable.Cell>Title</XTable.Cell>
                             <XTable.Cell>Location</XTable.Cell>
-                            <XTable.Cell>Address</XTable.Cell>
+                            <XTable.Cell>Parcel</XTable.Cell>
                             <XTable.Cell>Status</XTable.Cell>
                             <XTable.Cell>Status Date</XTable.Cell>
                         </XTable.Header>

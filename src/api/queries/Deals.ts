@@ -37,6 +37,7 @@ export const DealQuery = gql`
             parcel {
                 id
                 title
+                geometry
             }
         }
     }
@@ -65,6 +66,7 @@ export const AddDealMitation = gql`
             parcel {
                 id
                 title
+                geometry
             }
         }
     }
@@ -93,6 +95,7 @@ export const AlterDealMitation = gql`
             parcel {
                 id
                 title
+                geometry
             }
         }
     }

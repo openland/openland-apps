@@ -357,6 +357,7 @@ export interface DealQuery {
       __typename: "Parcel",
       id: string,
       title: string,
+      geometry: string | null,
     } | null,
   },
 };
@@ -387,6 +388,7 @@ export interface AddDealMutation {
       __typename: "Parcel",
       id: string,
       title: string,
+      geometry: string | null,
     } | null,
   },
 };
@@ -418,6 +420,7 @@ export interface AlterDealMutation {
       __typename: "Parcel",
       id: string,
       title: string,
+      geometry: string | null,
     } | null,
   },
 };
