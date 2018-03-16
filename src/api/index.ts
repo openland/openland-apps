@@ -13,6 +13,7 @@ import * as Parcels from './queries/Parcels';
 import * as Search from './queries/Search';
 import * as Permissions from './queries/Permissions';
 import * as Addressing from './queries/Addressing';
+import * as Deals from './queries/Deals';
 import { graphql } from 'react-apollo';
 import { graphQLTileSource } from '../utils/graphqlTileSource';
 import { graphqlSelect } from '../utils/graphqlSelect';
@@ -197,3 +198,10 @@ export const withSuperAccountMemberAdd = graphqlMutation<{ add: MutationFunc<{}>
 
 export const StateSelect = graphqlSelect(Addressing.StateQuery);
 export const CountySelect = graphqlSelect<{ stateId: string }>(Addressing.CountyQuery);
+
+//
+// Deals
+//
+
+export const withDeals = graphqlRouted<Types.AllDealsQuery>(Deals.AllDealsQuery);
+export const withDealAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Deals.AddDealMitation, { name: 'add' });

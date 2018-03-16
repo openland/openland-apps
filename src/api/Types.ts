@@ -1,6 +1,10 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export interface DealInput {
+  title: string,
+};
+
 export enum ParcelUse {
   PARKING = "PARKING",
   STORAGE = "STORAGE",
@@ -290,6 +294,26 @@ export interface InternalStatsQuery {
       label: string,
       values: Array< number >,
     } >,
+  },
+};
+
+export interface AllDealsQuery {
+  deals:  Array< {
+    __typename: "Deal",
+    id: string,
+    title: string,
+  } >,
+};
+
+export interface AddDealMutationVariables {
+  data: DealInput,
+};
+
+export interface AddDealMutation {
+  dealAdd:  {
+    __typename: "Deal",
+    id: string,
+    title: string,
   },
 };
 
