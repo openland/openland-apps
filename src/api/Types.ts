@@ -356,6 +356,24 @@ export interface AddDealMutation {
   },
 };
 
+export interface AlterDealMutationVariables {
+  dealId: string,
+  data: DealInput,
+};
+
+export interface AlterDealMutation {
+  dealAlter:  {
+    __typename: "Deal",
+    id: string,
+    title: string,
+    location: string | null,
+    address: string | null,
+    status: DealStatus | null,
+    statusDescription: string | null,
+    statusDate: string | null,
+  },
+};
+
 export interface OrganizationsQuery {
   organizations:  Array< {
     __typename: "Organization",

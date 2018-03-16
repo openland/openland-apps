@@ -10,46 +10,13 @@ import { withDeals, withDealAdd } from '../../../api';
 import { XLink } from '../../../components/X/XLink';
 import { XTable } from '../../../components/X/XTable';
 import { XModalRouted } from '../../../components/X/XModalRouted';
-import { XForm } from '../../../components/X/XForm';
+import { DealForm } from '../../../components/DealForm';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
 });
 
-const DealsForm = withDealAdd((props) => {
-    return (
-        <XForm submitMutation={props.add}>
-            <XForm.Field title="Deal Name">
-                <XForm.Text field="title" />
-            </XForm.Field>
-            <XForm.Field title="Location">
-                <XForm.Text field="location" placeholder="ex: Brooklyn" />
-            </XForm.Field>
-            <XForm.Field title="Address">
-                <XForm.Text field="address" placeholder="100 California St" />
-            </XForm.Field>
-            <XForm.Field title="Status">
-                <XForm.Select
-                    field="status"
-                    options={[
-                        { value: 'ACTIVE', title: 'Active' },
-                        { value: 'CLOSED', title: 'Closed' },
-                        { value: 'ON_HOLD', title: 'On Hold' },
-                    ]}
-                />
-            </XForm.Field>
-            <XForm.Field title="Status Description">
-                <XForm.Text field="statusDescription" placeholder="ex: Waiting for titles" />
-            </XForm.Field>
-            <XForm.Field title="Status Date">
-                <XForm.Text field="statusDate" placeholder="Date of status change" />
-            </XForm.Field>
-            <XCard.Footer>
-                <XForm.Submit style="dark">Add</XForm.Submit>
-            </XCard.Footer>
-        </XForm>
-    );
-});
+const DealsForm = withDealAdd((props) => <DealForm mutation={props.add} />);
 
 export default withApp('viewer', withDeals((props) => {
     return (

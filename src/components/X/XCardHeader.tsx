@@ -43,7 +43,7 @@ interface XCardHeaderProps {
     description?: string | null;
     truncateDescription?: boolean;
     filter?: string;
-    bullet?: string;
+    bullet?: string | null;
 }
 
 export class HeaderTargetElement extends React.Component<({ children: any })> {

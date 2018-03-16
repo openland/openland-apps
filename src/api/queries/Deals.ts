@@ -41,3 +41,17 @@ export const AddDealMitation = gql`
         }
     }
 `;
+
+export const AlterDealMitation = gql`
+    mutation AlterDeal($dealId: ID!, $data: DealInput!) {
+        dealAlter(id: $dealId, input: $data) {
+            id
+            title
+            location
+            address
+            status
+            statusDescription
+            statusDate
+        }
+    }
+`;
