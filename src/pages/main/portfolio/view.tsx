@@ -8,6 +8,7 @@ import { XButton } from '../../../components/X/XButton';
 import { DealForm } from '../../../components/DealForm';
 import { XHead } from '../../../components/X/XHead';
 import { XModalRouted } from '../../../components/X/XModalRouted';
+import { XMoney } from '../../../components/X/XMoney';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -17,6 +18,7 @@ const DealsForm = withDealAlterCombined((props) => (
 ));
 
 export default withApp('viewer', withDeal((props) => {
+
     return (
         <AppContent>
             <XHead title="Portfolio" />
@@ -29,8 +31,19 @@ export default withApp('viewer', withDeal((props) => {
                 </XCard.Header>
                 <XCard.PropertyColumns>
                     <XCard.PropertyList title="Deal Info">
+                        {props.data.deal.price && (<XCard.Property title="Price"><XMoney value={props.data.deal.price} /></XCard.Property>)}
+                        {props.data.deal.price && props.data.deal.extrasArea && (<XCard.Property title="Price $/Sq ft"><XMoney value={props.data.deal.price / props.data.deal.extrasArea} /></XCard.Property>)}
+                        {props.data.deal.extrasCompany && (<XCard.Property title="Company">{props.data.deal.extrasCompany}</XCard.Property>)}
+                        {props.data.deal.extrasAttorney && (<XCard.Property title="Seller's Attorney">{props.data.deal.extrasAttorney}</XCard.Property>)}
+                        {props.data.deal.extrasReferee && (<XCard.Property title="Refereee">{props.data.deal.extrasReferee}</XCard.Property>)}
+                    </XCard.PropertyList>
+                    <XCard.PropertyList title="Parcel">
                         {props.data.deal.location && (<XCard.Property title="Location">{props.data.deal.location}</XCard.Property>)}
                         {props.data.deal.address && (<XCard.Property title="Address">{props.data.deal.address}</XCard.Property>)}
+                        {props.data.deal.extrasLotShape && (<XCard.Property title="Lot Shape">{props.data.deal.extrasLotShape}</XCard.Property>)}
+                        {props.data.deal.extrasLotSize && (<XCard.Property title="Lot Size">{props.data.deal.extrasLotSize}</XCard.Property>)}
+                        {props.data.deal.extrasTaxBill && (<XCard.Property title="Last Tax Bill"><XMoney value={props.data.deal.extrasTaxBill} /></XCard.Property>)}
+                        {props.data.deal.extrasTaxBill && props.data.deal.extrasArea && (<XCard.Property title="Tax/Sq. Ft."><XMoney value={props.data.deal.extrasTaxBill / props.data.deal.extrasArea} /></XCard.Property>)}
                     </XCard.PropertyList>
                 </XCard.PropertyColumns>
             </XCard>

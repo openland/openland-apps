@@ -15,6 +15,14 @@ export interface DealInput {
   statusDate?: string | null,
   location?: string | null,
   address?: string | null,
+  price?: number | null,
+  extrasArea?: number | null,
+  extrasCompany?: string | null,
+  extrasAttorney?: string | null,
+  extrasReferee?: string | null,
+  extrasLotShape?: string | null,
+  extrasLotSize?: string | null,
+  extrasTaxBill?: number | null,
 };
 
 export enum ParcelUse {
@@ -336,6 +344,14 @@ export interface DealQuery {
     status: DealStatus | null,
     statusDescription: string | null,
     statusDate: string | null,
+    price: number | null,
+    extrasArea: number | null,
+    extrasCompany: string | null,
+    extrasAttorney: string | null,
+    extrasReferee: string | null,
+    extrasLotShape: string | null,
+    extrasLotSize: string | null,
+    extrasTaxBill: number | null,
   },
 };
 
@@ -353,6 +369,14 @@ export interface AddDealMutation {
     status: DealStatus | null,
     statusDescription: string | null,
     statusDate: string | null,
+    price: number | null,
+    extrasArea: number | null,
+    extrasCompany: string | null,
+    extrasAttorney: string | null,
+    extrasReferee: string | null,
+    extrasLotShape: string | null,
+    extrasLotSize: string | null,
+    extrasTaxBill: number | null,
   },
 };
 
@@ -371,6 +395,14 @@ export interface AlterDealMutation {
     status: DealStatus | null,
     statusDescription: string | null,
     statusDate: string | null,
+    price: number | null,
+    extrasArea: number | null,
+    extrasCompany: string | null,
+    extrasAttorney: string | null,
+    extrasReferee: string | null,
+    extrasLotShape: string | null,
+    extrasLotSize: string | null,
+    extrasTaxBill: number | null,
   },
 };
 

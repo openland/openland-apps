@@ -24,6 +24,15 @@ export const DealQuery = gql`
             status
             statusDescription
             statusDate
+
+            price
+            extrasArea
+            extrasCompany
+            extrasAttorney
+            extrasReferee
+            extrasLotShape
+            extrasLotSize
+            extrasTaxBill
         }
     }
 `;
@@ -38,6 +47,15 @@ export const AddDealMitation = gql`
             status
             statusDescription
             statusDate
+
+            price
+            extrasArea
+            extrasCompany
+            extrasAttorney
+            extrasReferee
+            extrasLotShape
+            extrasLotSize
+            extrasTaxBill
         }
     }
 `;
@@ -52,6 +70,15 @@ export const AlterDealMitation = gql`
             status
             statusDescription
             statusDate
+
+            price
+            extrasArea
+            extrasCompany
+            extrasAttorney
+            extrasReferee
+            extrasLotShape
+            extrasLotSize
+            extrasTaxBill
         }
     }
 `;
