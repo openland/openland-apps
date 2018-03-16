@@ -65,7 +65,7 @@ export default withApp('viewer', withDeals((props) => {
                                             {d.status === 'CLOSED' && <XBullet color="green">Closed</XBullet>}
                                             {d.status === 'ACTIVE' && <XBullet color="blue">{d.statusDescription}</XBullet>}
                                             {d.status === 'ACTIVE' && !d.statusDescription && <XBullet color="blue">Active</XBullet>}
-                                            {d.status === 'ON_HOLD' && <XBullet color="yellow">Holded</XBullet>}
+                                            {d.status === 'ON_HOLD' && <XBullet color="yellow">Adjourned</XBullet>}
                                         </XTable.Cell>
                                     </XTable.Row>
                                 ))}
