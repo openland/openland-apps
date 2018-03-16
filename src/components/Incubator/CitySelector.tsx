@@ -5,7 +5,7 @@ import ClickOutside from './ClickOutside';
 import { canUseDOM } from '../../utils/environment';
 import { Manager, Target, Poppover } from './Popper';
 
-const CityTitle = Glamorous.div<{inverted?: boolean}>((props) => ({
+const CityTitle = Glamorous.div<{ inverted?: boolean }>((props) => ({
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'row',
@@ -74,7 +74,7 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { class?:
             this.setState({
                 class: 'show',
                 popper: true
-            });   
+            });
         }
     }
 
@@ -100,26 +100,26 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { class?:
         }
 
         let popover = (
-            <Poppover placement="top" class={this.state.class}>
+            <ClickOutside onClickOutside={this.handleClose}>
+                <Poppover placement="top" class={this.state.class}>
                     {popper}
-            </Poppover>
+                </Poppover>
+            </ClickOutside>
         );
 
         return (
-            <ClickOutside onClickOutside={this.handleClose}>
-                <Manager>
-                    <ConfirmWrapper>
-                        <Target
-                            componentFactory={(targetProps) => (
-                                <CityTitle {...targetProps} onClick={this.handleShow} inverted={this.props.inverted}>
-                                    {this.props.title}
-                                </CityTitle>
-                            )}
-                        />
-                        {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popover, document.body)}
-                    </ConfirmWrapper>
-                </Manager>
-            </ClickOutside>
+            <Manager>
+                <ConfirmWrapper>
+                    <Target
+                        componentFactory={(targetProps) => (
+                            <CityTitle {...targetProps} onClick={this.handleShow} inverted={this.props.inverted}>
+                                {this.props.title}
+                            </CityTitle>
+                        )}
+                    />
+                    {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popover, document.body)}
+                </ConfirmWrapper>
+            </Manager>
         );
     }
 }
