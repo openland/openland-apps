@@ -328,6 +328,14 @@ export interface AllDealsQuery {
     status: DealStatus | null,
     statusDescription: string | null,
     statusDate: string | null,
+    price: number | null,
+    extrasArea: number | null,
+    extrasCompany: string | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+      title: string,
+    } | null,
   } >,
 };
 

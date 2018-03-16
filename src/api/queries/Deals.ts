@@ -10,6 +10,15 @@ export const AllDealsQuery = gql`
             status
             statusDescription
             statusDate
+
+            price
+            extrasArea
+            extrasCompany
+
+            parcel {
+                id
+                title
+            }
         }
     }
 `;
