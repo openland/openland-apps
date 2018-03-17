@@ -206,3 +206,7 @@ export const CountySelect = graphqlSelect<{ stateId: string }>(Addressing.County
 export const withDeals = graphqlRouted<Types.AllDealsQuery>(Deals.AllDealsQuery);
 export const withDeal = graphqlRouted<Types.DealQuery>(Deals.DealQuery, ['dealId']);
 export const withDealAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Deals.AddDealMitation, { name: 'add', refetchQueries: [Deals.AllDealsQuery] });
+export const withDealRemove = graphqlMutation<{ remove: MutationFunc<{}> }>(Deals.RemoveDealMutation, { name: 'remove', params: ['dealId'], refetchQueries: [Deals.AllDealsQuery] });
+export const withDealAlter = graphqlMutation<{ alter: MutationFunc<{}> }>(Deals.AlterDealMitation, { name: 'alter', params: ['dealId'] });
+export const withDealAlterCombined = graphqlCompose2(withDealAlter, withDeal);
+export const ParcelSelect = graphqlSelect(Parcels.ParcelsSearchQuery);

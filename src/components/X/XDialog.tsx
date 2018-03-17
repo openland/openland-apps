@@ -9,7 +9,8 @@ export const XDialogContainer = Glamorous(XCard)({
     marginRight: 64,
     marginTop: 64,
     marginBottom: 64,
-    pointerEvents: 'auto'
+    pointerEvents: 'auto',
+    overflowY: 'auto'
 });
 
 export const XDialogFullScreenContainer = Glamorous.div({
@@ -25,7 +26,7 @@ export const XDialogFullScreenContainer = Glamorous.div({
     pointerEvents: 'auto',
 });
 
-export const XDialogFullScreenContainerInner = Glamorous.div<{width?: number}>((props) => ({
+export const XDialogFullScreenContainerInner = Glamorous.div<{ width?: number }>((props) => ({
     display: 'block',
     flexDirection: 'column',
     alignItems: 'stretch',

@@ -15,6 +15,15 @@ export interface DealInput {
   statusDate?: string | null,
   location?: string | null,
   address?: string | null,
+  price?: number | null,
+  extrasArea?: number | null,
+  extrasCompany?: string | null,
+  extrasAttorney?: string | null,
+  extrasReferee?: string | null,
+  extrasLotShape?: string | null,
+  extrasLotSize?: string | null,
+  extrasTaxBill?: number | null,
+  parcelId?: string | null,
 };
 
 export enum ParcelUse {
@@ -319,6 +328,14 @@ export interface AllDealsQuery {
     status: DealStatus | null,
     statusDescription: string | null,
     statusDate: string | null,
+    price: number | null,
+    extrasArea: number | null,
+    extrasCompany: string | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+      title: string,
+    } | null,
   } >,
 };
 
@@ -336,6 +353,22 @@ export interface DealQuery {
     status: DealStatus | null,
     statusDescription: string | null,
     statusDate: string | null,
+    price: number | null,
+    extrasArea: number | null,
+    extrasCompany: string | null,
+    extrasAttorney: string | null,
+    extrasReferee: string | null,
+    extrasLotShape: string | null,
+    extrasLotSize: string | null,
+    extrasTaxBill: number | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+      title: string,
+      geometry: string | null,
+      extrasZoning: Array< string > | null,
+      extrasLandValue: number | null,
+    } | null,
   },
 };
 
@@ -353,7 +386,61 @@ export interface AddDealMutation {
     status: DealStatus | null,
     statusDescription: string | null,
     statusDate: string | null,
+    price: number | null,
+    extrasArea: number | null,
+    extrasCompany: string | null,
+    extrasAttorney: string | null,
+    extrasReferee: string | null,
+    extrasLotShape: string | null,
+    extrasLotSize: string | null,
+    extrasTaxBill: number | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+      title: string,
+      geometry: string | null,
+    } | null,
   },
+};
+
+export interface AlterDealMutationVariables {
+  dealId: string,
+  data: DealInput,
+};
+
+export interface AlterDealMutation {
+  dealAlter:  {
+    __typename: "Deal",
+    id: string,
+    title: string,
+    location: string | null,
+    address: string | null,
+    status: DealStatus | null,
+    statusDescription: string | null,
+    statusDate: string | null,
+    price: number | null,
+    extrasArea: number | null,
+    extrasCompany: string | null,
+    extrasAttorney: string | null,
+    extrasReferee: string | null,
+    extrasLotShape: string | null,
+    extrasLotSize: string | null,
+    extrasTaxBill: number | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+      title: string,
+      geometry: string | null,
+    } | null,
+  },
+};
+
+export interface RemoveDealMutationVariables {
+  dealId: string,
+};
+
+export interface RemoveDealMutation {
+  dealRemove: string,
 };
 
 export interface OrganizationsQuery {
@@ -1087,6 +1174,18 @@ export interface ParcelsStatsQueryVariables {
 
 export interface ParcelsStatsQuery {
   parcelsStats: number,
+};
+
+export interface ParcelsSearchQueryQueryVariables {
+  query: string,
+};
+
+export interface ParcelsSearchQueryQuery {
+  items:  Array< {
+    __typename: "Parcel",
+    id: string,
+    title: string,
+  } >,
 };
 
 export interface PermissionsQuery {
