@@ -362,13 +362,23 @@ export class XFormSelectField extends React.Component<XFormSelectFieldProps, { v
 
     handleChange = (src: any) => {
         let xForm = this.context.xForm as XFormController;
-        let val = src ? (src.target ? (src.target.value as string) : src.value as string) : 'unknown';
-        let cval = null;
-        if (val !== 'unknown') {
-            cval = val;
+        if (this.props.component) {
+            let val = src ? src.value as string : 'unknown';
+            let cval = null;
+            if (val !== 'unknown') {
+                cval = val;
+            }
+            this.setState({ value: src });
+            xForm.writeValue(this.props.field, cval);
+        } else {
+            let val = src ? (src.target ? (src.target.value as string) : src.value as string) : 'unknown';
+            let cval = null;
+            if (val !== 'unknown') {
+                cval = val;
+            }
+            this.setState({ value: cval });
+            xForm.writeValue(this.props.field, cval);
         }
-        this.setState({ value: cval });
-        xForm.writeValue(this.props.field, cval);
     }
     render() {
         let options = undefined;
