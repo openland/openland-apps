@@ -148,9 +148,11 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                                 state={stateName}
                             />
                         </FilterHeader>
-                        <FilterActions>
-                            <AppFilters onChange={this.handleUpdate} />
-                        </FilterActions>
+                        {city === 'sf' && (
+                            <FilterActions>
+                                <AppFilters onChange={this.handleUpdate} />
+                            </FilterActions>
+                        )}
                     </FilterContainer>
                 </AppContentMap.Item>
                 <XMapContainer>
