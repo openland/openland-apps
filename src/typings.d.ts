@@ -106,12 +106,14 @@ declare module 'next-routes' {
         // tslint:disable-next-line:unified-signatures
         add(obj: { name?: string, page?: string, pattern?: string }): Routes;
 
+        findAndGetUrls(nameOrUrl?: string, params?: any): { route: any, urls: { as: string, href: string } };
+
         getRequestHandler(app: any): any;
 
         Link: React.ComponentClass<{ route: string, onClick?: React.MouseEventHandler<HTMLAnchorElement> }>;
         Router: {
-            pushRoute(route: string): void;
-            replaceRoute(route: string): void;
+            pushRoute(route: string): Promise<any>;
+            replaceRoute(route: string): Promise<any>;
         };
     }
 

@@ -1,6 +1,6 @@
-import * as Routes from 'next-routes';
+import * as NRoutes from 'next-routes';
 
-let routes = Routes();
+let routes = NRoutes();
 
 //
 // App Root
@@ -106,3 +106,4 @@ export function getRequestHandler(src: any): any {
 
 export const Link = routes.Link;
 export const Router = routes.Router;
+export const Routes = routes;

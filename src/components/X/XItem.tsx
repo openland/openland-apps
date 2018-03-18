@@ -71,7 +71,6 @@ export class XItem extends React.Component<XLinkProps> {
                 path={this.props.path}
                 query={this.props.query}
                 href={this.props.href}
-                anchor={this.props.anchor}
             >
                 {this.props.children}
             </XItemDiv>

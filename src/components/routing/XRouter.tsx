@@ -81,14 +81,21 @@ export class XRouterProvider extends React.Component {
         return res;
     }
 
+    scrollToTop = () => {
+        window.scrollTo(0, 0);
+        document.body.focus();
+    }
+
     push = (path: string) => {
-        Router.pushRoute(path);
+        Router.pushRoute(path)
+            .then(this.scrollToTop);
     }
     pushQuery = (field: string, value?: string) => {
         Router.pushRoute(this.xRouterState.path + '?' + qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value })));
     }
     replace = (path: string) => {
-        Router.replaceRoute(path);
+        Router.replaceRoute(path)
+            .then(this.scrollToTop);
     }
     replaceQuery = (field: string, value?: string) => {
         Router.replaceRoute(this.xRouterState.path + '?' + qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value })));

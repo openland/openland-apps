@@ -135,8 +135,8 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                                 <CitySelector title={cityName} inverted={true}>
                                     <CitySelector.Popper>
                                         <XHorizontal>
-                                            <XButton query={{ field: 'city', value: 'sf' }}>San Francisco</XButton>
-                                            <XButton query={{ field: 'city', value: 'nyc' }}>New York</XButton>
+                                            <XButton query={{ field: 'city', value: 'sf' }} style={city !== 'sf' ? 'normal' : 'dark'} autoClose={true} >San Francisco</XButton>
+                                            <XButton query={{ field: 'city', value: 'nyc' }} style={city === 'sf' ? 'normal' : 'dark'} autoClose={true}>New York</XButton>
                                         </XHorizontal>
                                     </CitySelector.Popper>
                                 </CitySelector>

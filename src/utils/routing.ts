@@ -1,6 +1,6 @@
 import Router from 'next/router';
 import * as NProgress from 'nprogress';
-import { XWithRouter } from '../components/withRouter';
+import { XWithRouter, XRouter } from '../components/withRouter';
 import * as qs from 'query-string';
 import { trackPage } from './analytics';
 
@@ -102,15 +102,17 @@ Router.onRouteChangeError = () => {
     stopProgress(0);
 };
 
-export function resolveActionPath(props: {
-    path?: string | null,
-    query?: { field: string, value?: string } | null
-} & XWithRouter) {
+export function resolveActionPath(
+    props: {
+        path?: string | null,
+        query?: { field: string, value?: string } | null
+    },
+    router: XRouter) {
     var destPath: string;
     if (props.path) {
         destPath = props.path;
     } else if (props.query) {
-        let s = JSON.parse(JSON.stringify(props.router.query));
+        let s = JSON.parse(JSON.stringify(router.query));
         if (props.query.value) {
             s[props.query.field] = props.query.value;
         } else {
@@ -118,7 +120,7 @@ export function resolveActionPath(props: {
         }
         let q = qs.stringify(s);
 
-        var path = props.router.path;
+        var path = router.path;
         if (path.indexOf('?') >= 0) {
             path = path.split('?', 2)[0];
         }
