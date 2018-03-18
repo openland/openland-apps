@@ -301,8 +301,8 @@ export const ParcelUnlike = gql`
 `;
 
 export const ParcelsStats = gql`
-    query ParcelsStats($query: String) {
-        parcelsStats(query: $query)
+    query ParcelsStats($query: String, $state: String!, $county: String!, $city: String!) {
+        parcelsStats(query: $query, state: $state, county: $county, city: $city)
     }
 `;
 

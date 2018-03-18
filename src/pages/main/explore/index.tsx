@@ -120,6 +120,8 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
 
         let city = this.props.router.routeQuery.city || 'sf';
         let cityName = city === 'sf' ? 'San Francisco' : 'New York';
+        let countyName = city === 'sf' ? 'San Francisco' : 'New York';
+        let stateName = city === 'sf' ? 'CA' : 'NY';
         let focus = city === 'sf'
             ? { latitude: 37.75444398077139, longitude: -122.43963811583545, zoom: 12 }
             : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
@@ -139,7 +141,12 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                                     </CitySelector.Popper>
                                 </CitySelector>
                             </FilterHeaderTitle>
-                            <FilterComponent query={this.state.query && JSON.stringify(this.state.query)} />
+                            <FilterComponent
+                                query={this.state.query && JSON.stringify(this.state.query)}
+                                city={cityName}
+                                county={countyName}
+                                state={stateName}
+                            />
                         </FilterHeader>
                         <FilterActions>
                             <AppFilters onChange={this.handleUpdate} />
