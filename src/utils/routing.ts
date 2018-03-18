@@ -1,6 +1,6 @@
 import Router from 'next/router';
 import * as NProgress from 'nprogress';
-import { XWithRouter, XRouter } from '../components/withRouter';
+import { XRouter } from '../components/withRouter';
 import * as qs from 'query-string';
 import { trackPage } from './analytics';
 
