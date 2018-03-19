@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as moment from 'moment';
-import * as ReactDates from 'react-dates';
 import { DateRangePicker, SingleDatePicker } from 'react-dates';
 import Glamorous from 'glamorous';
 import 'react-dates/initialize';
