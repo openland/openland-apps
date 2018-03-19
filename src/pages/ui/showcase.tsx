@@ -71,13 +71,10 @@ export default withApp('viewer', (props) => {
                         <XTitle>Default Button</XTitle>
                         <XVertical>
                             <XDate>
-                                <XDate.Single
-                                    id="qweqwsadsad"
-                                    date={null}
-                                    onDateChange={(date) => ('')}
-                                    focused={true}
-                                    onFocusChange={() => ('')}
-                                />
+                                <XDate.Single/>
+                            </XDate>
+                            <XDate>
+                                <XDate.Range/>
                             </XDate>
                             <StateSelect />
                             <XButtonLike />
