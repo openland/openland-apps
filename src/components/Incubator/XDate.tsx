@@ -39,7 +39,7 @@ const XDateContainer = Glamorous.div({
   '& .SingleDatePickerInput__withBorder': {
     // border: '1px solid #dbdbdb'
 
-    overflow: 'hidden',
+    // overflow: 'hidden',
     borderRadius: 4,
     border: '1px solid #CCCCCC'
   },
@@ -578,6 +578,8 @@ const XDateContainer = Glamorous.div({
     overflowY: 'scroll'
   },
   '& .DateInput': {
+    borderRadius: 4,
+
     margin: 0,
     padding: 0,
     background: '#fff',
@@ -600,7 +602,7 @@ const XDateContainer = Glamorous.div({
     borderRadius: 4,
     // boxShadow: '0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08)',
     color: '#525f7f',
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     placeholderColor: '#8898aa',
     fontSize: '14px',
     lineHeight: 1.6,
@@ -685,7 +687,7 @@ const XDateContainer = Glamorous.div({
   '& .DateRangePickerInput__withBorder': {
     // border: '1px solid #cacccd'
 
-    overflow: 'hidden',
+    // overflow: 'hidden',
     borderRadius: 4,
     border: '1px solid #CCCCCC'
   },
@@ -823,20 +825,18 @@ const XDateContainer = Glamorous.div({
 });
 
 interface DateRangePickerProps {
-  autoFocus?: boolean;
-  autoFocusEndDate?: boolean;
-  initialStartDate?: moment.MomentInputObject;
-  initialEndDate?: moment.MomentInputObject;
+  initialStartDate?: any;
+  initialEndDate?: any;
 }
 
-export class XDateRangePicker extends React.Component<DateRangePickerProps, {focusedInput: any, startDate: any, endDate: any}> {
+export class XDateRangePicker extends React.Component<DateRangePickerProps, { focusedInput: any, startDate: any, endDate: any }> {
   constructor(props: DateRangePickerProps) {
     super(props);
 
     this.state = {
       focusedInput: null,
-      startDate: props.initialStartDate,
-      endDate: props.initialEndDate,
+      startDate: props.initialStartDate === undefined ? null : props.initialStartDate,
+      endDate: props.initialEndDate === undefined ? null : props.initialEndDate,
     };
 
     this.onDatesChange = this.onDatesChange.bind(this);
@@ -845,6 +845,16 @@ export class XDateRangePicker extends React.Component<DateRangePickerProps, {foc
 
   onDatesChange({ startDate, endDate }: any) {
     this.setState({ startDate, endDate });
+
+    let momentStartDate = moment(startDate).format('YYYY-MM-DD');
+    let momentEndDate = moment(endDate).format('YYYY-MM-DD');
+
+    let date = {
+      startDate: momentStartDate,
+      endDate: momentEndDate
+    };
+
+    console.warn('date - ', date);
   }
 
   onFocusChange(focusedInput: any) {
@@ -852,41 +862,41 @@ export class XDateRangePicker extends React.Component<DateRangePickerProps, {foc
   }
 
   render() {
-
     const { focusedInput, startDate, endDate } = this.state;
 
     const props = omit(this.props, [
-      'autoFocus',
-      'autoFocusEndDate',
       'initialStartDate',
       'initialEndDate',
     ]);
 
     return (
-      <DateRangePicker
+      <XDateContainer>
+        <DateRangePicker
         {...props}
         hideKeyboardShortcutsPanel={true}
         onDatesChange={this.onDatesChange}
         onFocusChange={this.onFocusChange}
+        startDateId="startDate"
+        endDateId="endDate"
         focusedInput={focusedInput}
         startDate={startDate}
         endDate={endDate}
       />
+      </XDateContainer>
     );
   }
 }
 
 interface SingleDatePickerProps {
-  autoFocus?: boolean;
-  initialDate?: moment.MomentInputObject;
+  initialDate?: any;
 }
 
-export class XSingleDatePicker extends React.Component<SingleDatePickerProps, { focused: boolean, date: any }> {
+export class XDateSinglePicker extends React.Component<SingleDatePickerProps, { focused: boolean, date: any }> {
   constructor(props: SingleDatePickerProps) {
     super(props);
     this.state = {
-      focused: props.autoFocus ? props.autoFocus : false,
-      date: props.initialDate,
+      focused: false,
+      date: props.initialDate === undefined ? null : props.initialDate,
     };
 
     this.onDateChange = this.onDateChange.bind(this);
@@ -895,6 +905,8 @@ export class XSingleDatePicker extends React.Component<SingleDatePickerProps, { 
 
   onDateChange(date: any) {
     this.setState({ date });
+
+    console.warn('date - ', moment(date).format('YYYY-MM-DD'));
   }
 
   onFocusChange({ focused }: any) {
@@ -904,32 +916,20 @@ export class XSingleDatePicker extends React.Component<SingleDatePickerProps, { 
   render() {
     const { focused, date } = this.state;
     const props = omit(this.props, [
-      'autoFocus',
       'initialDate',
     ]);
 
     return (
-      <SingleDatePicker
-        {...props}
-        id="date_input"
-        hideKeyboardShortcutsPanel={true}
-        date={date}
-        focused={focused}
-        onDateChange={this.onDateChange}
-        onFocusChange={this.onFocusChange}
-      />
-    );
-  }
-}
-
-export class XDate extends React.Component<{ children: any }> {
-  static Single = XSingleDatePicker;
-  static Range = XDateRangePicker;
-
-  render() {
-    return (
       <XDateContainer>
-        {this.props.children}
+        <SingleDatePicker
+          {...props}
+          id="date_input"
+          hideKeyboardShortcutsPanel={true}
+          date={date}
+          focused={focused}
+          onDateChange={this.onDateChange}
+          onFocusChange={this.onFocusChange}
+        />
       </XDateContainer>
     );
   }

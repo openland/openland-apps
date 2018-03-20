@@ -6,6 +6,7 @@ import { MutationFunc } from 'react-apollo';
 import { XButton } from './XButton';
 import { XCard } from './XCard';
 import { Router } from '../../routes';
+import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
 
 let InputsStyle = {
     borderRadius: 4,
@@ -430,6 +431,9 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
     static RawInput = XFormInputStyle;
     static RawTextarea = XFormTextAreaStyle;
     static RawSelect = XFormSelect;
+
+    static DateSingle = XDateSinglePicker;
+    static DateRange = XDateRangePicker;
 
     static childContextTypes = {
         xForm: PropTypes.object.isRequired

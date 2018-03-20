@@ -21,7 +21,6 @@ import { AppContent } from '../../components/App/AppContent';
 import { XTooltip } from '../../components/Incubator/XTooltip';
 import { XConfirm } from '../../components/Incubator/XConfirm';
 import { CitySelector } from '../../components/Incubator/CitySelector';
-import { XDate } from '../../components/Incubator/XDate';
 import { StateSelect } from '../../api';
 
 export default withApp('viewer', (props) => {
@@ -70,12 +69,8 @@ export default withApp('viewer', (props) => {
                     <XCard.Content>
                         <XTitle>Default Button</XTitle>
                         <XVertical>
-                            <XDate>
-                                <XDate.Single/>
-                            </XDate>
-                            <XDate>
-                                <XDate.Range/>
-                            </XDate>
+                            <XForm.DateSingle />
+                            <XForm.DateRange />
                             <StateSelect />
                             <XButtonLike />
                             <CitySelector title="San Francisco">
