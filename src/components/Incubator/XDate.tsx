@@ -827,6 +827,7 @@ const XDateContainer = Glamorous.div({
 interface DateRangePickerProps {
   initialStartDate?: any;
   initialEndDate?: any;
+  onDateChange?: Function;
 }
 
 export class XDateRangePicker extends React.Component<DateRangePickerProps, { focusedInput: any, startDate: any, endDate: any }> {
@@ -854,7 +855,9 @@ export class XDateRangePicker extends React.Component<DateRangePickerProps, { fo
       endDate: momentEndDate
     };
 
-    console.warn('date - ', date);
+    if (this.props.onDateChange) {
+      this.props.onDateChange(date);
+    }
   }
 
   onFocusChange(focusedInput: any) {
@@ -889,6 +892,7 @@ export class XDateRangePicker extends React.Component<DateRangePickerProps, { fo
 
 interface SingleDatePickerProps {
   initialDate?: any;
+  onDateChange?: Function;
 }
 
 export class XDateSinglePicker extends React.Component<SingleDatePickerProps, { focused: boolean, date: any }> {
@@ -906,7 +910,9 @@ export class XDateSinglePicker extends React.Component<SingleDatePickerProps, { 
   onDateChange(date: any) {
     this.setState({ date });
 
-    console.warn('date - ', moment(date).format('YYYY-MM-DD'));
+    if (this.props.onDateChange) {
+      this.props.onDateChange(moment(date).format('YYYY-MM-DD'));
+    }
   }
 
   onFocusChange({ focused }: any) {
@@ -929,6 +935,7 @@ export class XDateSinglePicker extends React.Component<SingleDatePickerProps, { 
           focused={focused}
           onDateChange={this.onDateChange}
           onFocusChange={this.onFocusChange}
+          numberOfMonths={1}
         />
       </XDateContainer>
     );

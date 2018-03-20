@@ -69,7 +69,7 @@ export default withApp('viewer', (props) => {
                     <XCard.Content>
                         <XTitle>Default Button</XTitle>
                         <XVertical>
-                            <XForm.DateSingle />
+                            <XForm.DateSingle onDateChange={(date: any) => console.warn(date)}/>
                             <XForm.DateRange />
                             <StateSelect />
                             <XButtonLike />
