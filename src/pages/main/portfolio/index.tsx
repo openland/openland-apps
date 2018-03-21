@@ -56,7 +56,7 @@ export default withApp('viewer', withDeals((props) => {
                                             {d.location}
                                         </XTable.Cell>
                                         <XTable.Cell textAlign="right">
-                                            {d.extrasArea && <XArea area={d.extrasArea} convert={false}/>}
+                                            {d.parcel && d.parcel.extrasArea != null && <XArea area={d.parcel.extrasArea} />}
                                         </XTable.Cell>
                                         <XTable.Cell textAlign="right">
                                             {d.price && <XMoney value={d.price} />}

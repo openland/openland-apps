@@ -335,6 +335,7 @@ export interface AllDealsQuery {
       __typename: "Parcel",
       id: string,
       title: string,
+      extrasArea: number | null,
     } | null,
   } >,
 };
@@ -368,6 +369,7 @@ export interface DealQuery {
       geometry: string | null,
       extrasZoning: Array< string > | null,
       extrasLandValue: number | null,
+      extrasArea: number | null,
     } | null,
   },
 };
@@ -1170,6 +1172,9 @@ export interface ParcelUnlikeMutation {
 
 export interface ParcelsStatsQueryVariables {
   query?: string | null,
+  state: string,
+  county: string,
+  city: string,
 };
 
 export interface ParcelsStatsQuery {

@@ -18,6 +18,7 @@ export const AllDealsQuery = gql`
             parcel {
                 id
                 title
+                extrasArea
             }
         }
     }
@@ -49,6 +50,7 @@ export const DealQuery = gql`
                 geometry
                 extrasZoning
                 extrasLandValue
+                extrasArea
             }
         }
     }
