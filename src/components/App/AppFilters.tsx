@@ -212,21 +212,25 @@ function FilterCell(props: { title?: string, children: any }) {
 
 const RangeInput = Glamorous.input({
     minWidth: 98,
-    height: 40,
+    height: 28,
     boxSizing: 'border-box',
-    border: '1px solid rgba(24, 38, 66, 0.2)',
+    border: '1px solid #ccc',
     borderRadius: 4,
     color: '#525f7f',
     backgroundColor: '#fff',
-    fontSize: 14,
-    lineHeight: 1.71,
-    paddingTop: 8,
-    paddingLeft: 12,
-    paddingRight: 12,
-    paddingBottom: 8,
+    fontSize: '14px',
+    lineHeight: 1.6,
+    paddingTop: 4,
+    paddingLeft: 7,
+    paddingRight: 7,
+    paddingBottom: 2,
     outline: 'none',
     '&:focus': {
-        outline: 'none'
+        border: '1px solid transparent',
+        boxShadow: '0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08)'
+    },
+    '&::placeholder': {
+        color: '#8898aa'
     }
 });
 
