@@ -17,6 +17,7 @@ import { CitySelector } from '../../../components/Incubator/CitySelector';
 import { XButton } from '../../../components/X/XButton';
 import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XMapSource } from '../../../components/X/XMapSource';
+import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -113,9 +114,8 @@ const DealsSource = withDealsMap((props) => {
     }
     return null;
 });
-
-class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
-    constructor(props: XWithRouter) {
+class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { query?: any }> {
+    constructor(props: XWithRouter & UserInfoComponentProps) {
         super(props);
         this.state = {};
     }
@@ -136,7 +136,11 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                 )
             );
 
-        let city = this.props.router.routeQuery.city || 'sf';
+        let defaultCity = 'sf';
+        if (this.props.roles.find((v) => v === 'feature-city-nyc-force')) {
+            defaultCity = 'nyc';
+        }
+        let city = this.props.router.routeQuery.city || defaultCity;
         let cityName = city === 'sf' ? 'San Francisco' : 'New York';
         let countyName = city === 'sf' ? 'San Francisco' : 'New York';
         let stateName = city === 'sf' ? 'CA' : 'NY';
@@ -190,7 +194,7 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                                 minZoom={12}
                                 skip={this.state.query === undefined}
                             />
-                            <DealsSource/>
+                            <DealsSource />
 
                             <XMapPolygonLayer
                                 source="parcels"
@@ -243,11 +247,11 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
     }
 }
 
-export default withApp('viewer', withRouter((props) => {
+export default withApp('viewer', withRouter(withUserInfo((props) => {
     return (
         <>
             <XHead title={['Explore']} />
-            <ParcelCollection router={props.router} />
+            <ParcelCollection {...props} />
         </>
     );
-}));
+})));
