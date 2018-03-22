@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { ParcelCard } from '../../../components/ParcelCard';
-import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats } from '../../../api';
+import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats, withDealsMap } from '../../../api';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XMap } from '../../../components/X/XMap';
 import { XHead } from '../../../components/X/XHead';
@@ -16,6 +16,7 @@ import { AppFilters } from '../../../components/App/AppFilters';
 import { CitySelector } from '../../../components/Incubator/CitySelector';
 import { XButton } from '../../../components/X/XButton';
 import { XHorizontal } from '../../../components/X/XHorizontal';
+import { XMapSource } from '../../../components/X/XMapSource';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -96,6 +97,23 @@ const FilterComponent = withParcelStats((props) => {
     return <FilterHeaderSubtitle>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</FilterHeaderSubtitle>;
 });
 
+const DealsSource = withDealsMap((props) => {
+    if (props.data.deals) {
+        let features = props.data.deals
+            .filter((v) => v.parcel !== null)
+            .map((v) => ({
+                type: 'Feature',
+                'geometry': { type: 'Point', coordinates: [v.parcel!!.center!!.longitude, v.parcel!!.center!!.latitude] },
+                properties: {
+                    'id': v.id
+                }
+            }));
+        let result = { 'type': 'FeatureCollection', features: features };
+        return <XMapSource id="deals" data={result} />;
+    }
+    return null;
+});
+
 class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
     constructor(props: XWithRouter) {
         super(props);
@@ -158,8 +176,22 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                 <XMapContainer>
                     <XMapContainer2>
                         <XMap key={this.props.router.query!!.mode || 'map'} mapStyle={mapStyle} focusPosition={focus}>
-                            <ParcelTileSource layer="parcels" minZoom={16} />
-                            <BlockTileSource layer="blocks" minZoom={12} />
+                            <ParcelTileSource
+                                layer="parcels"
+                                minZoom={16}
+                            />
+                            <BlockTileSource
+                                layer="blocks"
+                                minZoom={12}
+                            />
+                            <ParcelPointSource
+                                layer="parcels-found"
+                                query={this.state.query}
+                                minZoom={12}
+                                skip={this.state.query === undefined}
+                            />
+                            <DealsSource/>
+
                             <XMapPolygonLayer
                                 source="parcels"
                                 layer="parcels"
@@ -182,8 +214,16 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                                 flyToMaxZoom={18}
                                 flyToPadding={{ left: 64, top: 64, bottom: 64, right: 64 }}
                             />
-                            <ParcelPointSource layer="parcels-found" query={this.state.query} minZoom={12} skip={this.state.query === undefined} />
-                            <XMapPointLayer source="parcels-found" layer="parcels-found" onClick={(v) => this.props.router.pushQuery('selectedParcel', v)} />
+                            <XMapPointLayer
+                                source="parcels-found"
+                                layer="parcels-found"
+                                onClick={(v) => this.props.router.pushQuery('selectedParcel', v)}
+                            />
+
+                            <XMapPointLayer
+                                source="deals"
+                                layer="deals"
+                            />
                         </XMap>
                         <MapSwitcher>
                             <XSwitcher fieldStyle={true}>

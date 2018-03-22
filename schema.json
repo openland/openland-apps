@@ -8081,6 +8081,16 @@
                 "name": "ExtrasInput",
                 "ofType": null
               }
+            },
+            {
+              "defaultValue": null,
+              "description": "",
+              "name": "retired",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             }
           ],
           "interfaces": null,

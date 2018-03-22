@@ -340,6 +340,24 @@ export interface AllDealsQuery {
   } >,
 };
 
+export interface AllDealsMapQuery {
+  deals:  Array< {
+    __typename: "Deal",
+    id: string,
+    status: DealStatus | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+      title: string,
+      center:  {
+        __typename: "Geo",
+        latitude: number,
+        longitude: number,
+      } | null,
+    } | null,
+  } >,
+};
+
 export interface DealQueryVariables {
   dealId: string,
 };

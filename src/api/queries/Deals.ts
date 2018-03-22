@@ -24,6 +24,23 @@ export const AllDealsQuery = gql`
     }
 `;
 
+export const AllDealsMapQuery = gql`
+    query AllDealsMap {
+        deals {
+            id
+            status
+            parcel {
+                id
+                title
+                center { 
+                    latitude
+                    longitude
+                }
+            }
+        }
+    }
+`;
+
 export const DealQuery = gql`
     query Deal($dealId: ID!) {
         deal(id: $dealId) {
