@@ -88,6 +88,18 @@ export const SuperAccountMemberAdd = gql`
     ${UserShort}
 `;
 
+export const SuperAccountMemberRemove = gql`
+    mutation SuperAccountMemberRemove($accountId: ID!, $userId: ID!) {
+        superAccountMemberRemove(id: $accountId, userId: $userId) {
+            id
+            members {
+                ...UserShort
+            }
+        }
+    }
+    ${UserShort}
+`;
+
 export const SuperAdminAdd = gql`
     mutation SuperAdminAdd($userId: ID!, $role: SuperAdminRole!) {
         superAdminAdd(userId: $userId, role: $role)

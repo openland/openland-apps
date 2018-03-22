@@ -195,6 +195,7 @@ export const withSuperAccountAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Pe
 export const withSuperAccountActivate = graphqlMutation<{ activate: MutationFunc<{}> }>(Permissions.SuperAccountActivate, { name: 'activate', params: ['accountId'] });
 export const withSuperAccountSuspend = graphqlMutation<{ suspend: MutationFunc<{}> }>(Permissions.SuperAccountSuspend, { name: 'suspend', params: ['accountId'] });
 export const withSuperAccountMemberAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Permissions.SuperAccountMemberAdd, { name: 'add', params: ['accountId'] });
+export const withSuperAccountMemberRemove = graphqlMutation<{ remove: MutationFunc<{}> }>(Permissions.SuperAccountMemberRemove, { name: 'remove', params: ['accountId'] });
 
 export const withFeatureFlags = graphqlRouted<Types.FeatureFlagsQuery>(FeatureFlags.FeatureFlagsQuery);
 export const withFeatureFlagAdd = graphqlMutation<{ add: MutationFunc<{}> }>(FeatureFlags.FeatureFlagAdd, { name: 'add', refetchQueries: [FeatureFlags.FeatureFlagsQuery] });
