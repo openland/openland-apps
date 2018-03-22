@@ -220,6 +220,7 @@ export const ParcelsFavorites = gql`
 export const ParcelsFavoritesCount = gql`
     query ParcelsFavoritesCount {
         parcelFavoritesCount
+        dealsCount
     }
 `;
 

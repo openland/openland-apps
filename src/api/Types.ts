@@ -510,7 +510,7 @@ export interface FeatureFlagOrganizationRemoveMutationVariables {
 };
 
 export interface FeatureFlagOrganizationRemoveMutation {
-  superAccountFeatureAdd:  {
+  superAccountFeatureRemove:  {
     __typename: "SuperAccount",
     id: string,
     features:  Array< {
@@ -1069,6 +1069,7 @@ export interface ParcelsFavoritesQuery {
 
 export interface ParcelsFavoritesCountQuery {
   parcelFavoritesCount: number,
+  dealsCount: number,
 };
 
 export interface ParcelQueryVariables {
@@ -1372,6 +1373,27 @@ export interface SuperAccountMemberAddMutationVariables {
 
 export interface SuperAccountMemberAddMutation {
   superAccountMemberAdd:  {
+    __typename: "SuperAccount",
+    id: string,
+    members:  Array< {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string,
+      picture: string,
+      email: string,
+    } >,
+  },
+};
+
+export interface SuperAccountMemberRemoveMutationVariables {
+  accountId: string,
+  userId: string,
+};
+
+export interface SuperAccountMemberRemoveMutation {
+  superAccountMemberRemove:  {
     __typename: "SuperAccount",
     id: string,
     members:  Array< {
