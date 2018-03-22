@@ -5,6 +5,8 @@ import { XMapSubscriber } from './XMap';
 interface XMapPointLayerProps {
     layer: string;
     source: string;
+
+    onClick?: (id: string) => void;
 }
 
 export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
@@ -86,12 +88,32 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
             filter: ['!has', 'point_count']
         });
 
+        //
+        // Cluster clicking
+        //
+
         this.map.on('click', this.layer + '-cluster', (e: any) => {
             let feature = e.features[0];
             let longitude = feature.geometry.coordinates[0] as number;
             let latitude = feature.geometry.coordinates[1] as number;
             let zoom = Math.max(15, Math.round(this.map!!.getZoom() + 2));
             this.map!!.flyTo({ center: [longitude, latitude], zoom: zoom });
+        });
+
+        //
+        // Point Click
+        //
+
+        this.map.on('click', this.layer, (e: any) => {
+            let feature = e.features[0];
+            let id = feature.properties.id as string;
+            let longitude = feature.geometry.coordinates[0] as number;
+            let latitude = feature.geometry.coordinates[1] as number;
+            let zoom = 17;
+            this.map!!.flyTo({ center: [longitude, latitude], zoom: zoom });
+            if (this.props.onClick) {
+                this.props.onClick(id);
+            }
         });
     }
 

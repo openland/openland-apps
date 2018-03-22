@@ -183,7 +183,7 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                                 flyToPadding={{ left: 64, top: 64, bottom: 64, right: 64 }}
                             />
                             <ParcelPointSource layer="parcels-found" query={this.state.query} minZoom={12} skip={this.state.query === undefined} />
-                            <XMapPointLayer source="parcels-found" layer="parcels-found" />
+                            <XMapPointLayer source="parcels-found" layer="parcels-found" onClick={(v) => this.props.router.pushQuery('selectedParcel', v)} />
                         </XMap>
                         <MapSwitcher>
                             <XSwitcher fieldStyle={true}>
