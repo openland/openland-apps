@@ -18,6 +18,7 @@ import { graphql } from 'react-apollo';
 import { graphQLTileSource } from '../utils/graphqlTileSource';
 import { graphqlSelect } from '../utils/graphqlSelect';
 import * as User from './queries/User';
+import * as FeatureFlags from './queries/FeatureFlag';
 
 //
 // Area
@@ -194,6 +195,9 @@ export const withSuperAccountAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Pe
 export const withSuperAccountActivate = graphqlMutation<{ activate: MutationFunc<{}> }>(Permissions.SuperAccountActivate, { name: 'activate', params: ['accountId'] });
 export const withSuperAccountSuspend = graphqlMutation<{ suspend: MutationFunc<{}> }>(Permissions.SuperAccountSuspend, { name: 'suspend', params: ['accountId'] });
 export const withSuperAccountMemberAdd = graphqlMutation<{ add: MutationFunc<{}> }>(Permissions.SuperAccountMemberAdd, { name: 'add', params: ['accountId'] });
+
+export const withFeatureFlags = graphqlRouted<Types.FeatureFlagsQuery>(FeatureFlags.FeatureFlagsQuery);
+export const withFeatureFlagAdd = graphqlMutation<{ add: MutationFunc<{}> }>(FeatureFlags.FeatureFlagAdd, { name: 'add', refetchQueries: [FeatureFlags.FeatureFlagsQuery] });
 
 //
 // Addressing

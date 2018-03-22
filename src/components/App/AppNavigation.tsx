@@ -34,6 +34,7 @@ export const AppNavigation = withParcelsFavroutesCount((props) => {
             </XWithRole>
             <XWithRole role={['super-admin', 'software-developer']}>
                 <AppSidebar.Item path="/ui" title="UI" icon="color_lens" activateForSubpaths={true} />
+                <AppSidebar.Item path="/super/features" title="Features" icon="playlist_add_check" activateForSubpaths={true} />
                 <AppSidebar.Item path="/super/debug" title="Debug" icon="memory" activateForSubpaths={true} />
             </XWithRole>
         </>

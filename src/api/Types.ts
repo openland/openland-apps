@@ -463,6 +463,29 @@ export interface RemoveDealMutation {
   dealRemove: string,
 };
 
+export interface FeatureFlagsQuery {
+  featureFlags:  Array< {
+    __typename: "FeatureFlag",
+    id: string,
+    key: string,
+    title: string,
+  } >,
+};
+
+export interface FeatureFlagAddMutationVariables {
+  key: string,
+  title: string,
+};
+
+export interface FeatureFlagAddMutation {
+  featureFlagAdd:  {
+    __typename: "FeatureFlag",
+    id: string,
+    key: string,
+    title: string,
+  },
+};
+
 export interface OrganizationsQuery {
   organizations:  Array< {
     __typename: "Organization",
