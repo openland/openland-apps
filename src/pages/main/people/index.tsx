@@ -8,14 +8,16 @@ import { AppContent } from '../../../components/App/AppContent';
 
 export default withApp('viewer', () => {
     return (
-        <AppContent>
+        <>
             <XHead title="People" />
-            <XCard shadow="medium" separators={true}>
-                <XCard.Header text="People" description="Place for your all contacts"><XButton>Add</XButton></XCard.Header>
-                <XCard.Content>
-                    Yay!
+            <AppContent>
+                <XCard shadow="medium" separators={true}>
+                    <XCard.Header text="People" description="Place for your all contacts"><XButton>Add</XButton></XCard.Header>
+                    <XCard.Content>
+                        Yay!
                 </XCard.Content>
-            </XCard>
-        </AppContent>
+                </XCard>
+            </AppContent>
+        </>
     );
 });

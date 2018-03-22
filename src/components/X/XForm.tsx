@@ -51,17 +51,17 @@ export const XFormDescription = Glamorous.div({
 
 export const XFormHeaderDiv = Glamorous.div({
     position: 'relative',
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingLeft: 16,
+    paddingRight: 16,
     paddingTop: 20,
     paddingBottom: 20,
     backgroundColor: '#f6f9fc',
     '&::after': {
         content: `''`,
         bottom: -1,
-        left: 20,
+        left: 16,
         position: 'absolute',
-        right: 20,
+        right: 16,
         display: 'block',
         height: 1,
         backgroundColor: '#e6ebf1'
