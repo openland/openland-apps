@@ -178,6 +178,9 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                                     fillOpacity: 0.1,
                                     borderOpacity: 0.3
                                 }}
+                                flyOnClick={true}
+                                flyToMaxZoom={18}
+                                flyToPadding={{ left: 64, top: 64, bottom: 64, right: 64 }}
                             />
                             <ParcelPointSource layer="parcels-found" query={this.state.query} minZoom={12} skip={this.state.query === undefined} />
                             <XMapPointLayer source="parcels-found" layer="parcels-found" />

@@ -274,11 +274,14 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 let element = this.datasources!!.findGeoJSONElement(this.source, id);
                 if (element) {
                     let center = Turf.bbox(element);
-                    this.map!!.fitBounds([[center[0], center[1]], [center[2], center[3]]], {
-                        padding: this.props.flyToPadding !== undefined ? this.props.flyToPadding : 0,
-                        maxZoom: this.props.flyToMaxZoom,
-                        duration: 300
-                    });
+                    let params: any = { duration: 300 };
+                    if (this.props.flyToPadding !== undefined) {
+                        params.padding = this.props.flyToPadding;
+                    }
+                    if (this.props.flyToMaxZoom !== undefined) {
+                        params.maxZoom = this.props.flyToMaxZoom;
+                    }
+                    this.map!!.fitBounds([[center[0], center[1]], [center[2], center[3]]], params);
                 }
             }
             if (this.props.onClick && this.props.allowClick !== false) {
