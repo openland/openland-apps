@@ -90,7 +90,7 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
             let feature = e.features[0];
             let longitude = feature.geometry.coordinates[0] as number;
             let latitude = feature.geometry.coordinates[1] as number;
-            let zoom = 15;
+            let zoom = Math.max(15, Math.round(this.map!!.getZoom() + 2));
             this.map!!.flyTo({ center: [longitude, latitude], zoom: zoom });
         });
     }
