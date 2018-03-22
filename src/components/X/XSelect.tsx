@@ -66,7 +66,8 @@ const Styles = {
         paddingRight: 42
     },
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label': {
-        color: '#333'
+        color: '#525f7f',
+        fontWeight: 500
     },
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label': {
         cursor: 'pointer',
@@ -100,7 +101,7 @@ const Styles = {
         display: 'table',
         borderSpacing: 0,
         borderCollapse: 'separate',
-        height: 36,
+        height: 28,
         outline: 'none',
         overflow: 'hidden',
         position: 'relative',
@@ -115,9 +116,9 @@ const Styles = {
     },
     '&.Select--single > .Select-control .Select-value, .Select-placeholder': {
         bottom: 0,
-        color: '#aaa',
+        color: '#C1CAD2',
         left: 0,
-        lineHeight: '34px',
+        lineHeight: '30px',
         paddingLeft: 10,
         paddingRight: 10,
         position: 'absolute',
@@ -126,10 +127,11 @@ const Styles = {
         maxWidth: '100%',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap'
+        whiteSpace: 'nowrap',
+        fontWeight: 300
     },
     '& .Select-input': {
-        height: 34,
+        height: 28,
         paddingLeft: 10,
         paddingRight: 10,
         verticalAlign: 'middle'
@@ -308,7 +310,7 @@ const Styles = {
         fontSize: '.9em',
         lineHeight: 1.4,
         marginLeft: 5,
-        marginTop: 5,
+        marginTop: 2.5,
         verticalAlign: 'top'
     },
     '&.Select--multi .Select-value-icon, &.Select--multi .Select-value-label': {

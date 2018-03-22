@@ -118,7 +118,9 @@ const XDateContainer = Glamorous.div({
   '& .SingleDatePicker_picker': {
     zIndex: 1,
     backgroundColor: '#fff',
-    position: 'absolute'
+    position: 'absolute',
+
+    top: '50px !important'
   },
   '& .SingleDatePicker_picker__rtl': {
     direction: 'rtl'
@@ -320,32 +322,44 @@ const XDateContainer = Glamorous.div({
     color: '#565a5c'
   },
   '& .CalendarDay__selected_span': {
-    background: '#66e2da',
-    border: '1px solid #33dacd',
+    // background: '#66e2da',
+    background: '#7795f8',
+    // border: '1px solid #33dacd',
+    border: '1px solid rgba(103, 114, 229, .37)',
     color: '#fff'
   },
   '& .CalendarDay__selected_span:active, & .CalendarDay__selected_span:hover': {
-    background: '#33dacd',
-    border: '1px solid #33dacd',
+    // background: '#33dacd',
+    background: '#555abf',
+    // border: '1px solid #33dacd',
+    border: '1px solid rgba(103, 114, 229, .37)',
     color: '#fff'
   },
   '& .CalendarDay__last_in_range': {
     borderRight: '#00a699'
   },
   '& .CalendarDay__selected, & .CalendarDay__selected:active, & .CalendarDay__selected:hover': {
-    background: '#00a699',
-    border: '1px solid #00a699',
+    // background: '#00a699',
+    background: '#555abf',
+    // border: '1px solid #00a699',
+    border: '1px solid rgba(103, 114, 229, .37)',
     color: '#fff'
   },
   '& .CalendarDay__hovered_span, & .CalendarDay__hovered_span:hover': {
-    background: '#b2f1ec',
-    border: '1px solid #80e8e0',
-    color: '#007a87'
+    // background: '#b2f1ec',
+    background: '#7795f8',
+    // border: '1px solid #80e8e0',
+    border: '1px solid rgba(103, 114, 229, .37)',
+    // color: '#007a87'
+    color: '#fff'
   },
   '& .CalendarDay__hovered_span:active': {
-    background: '#80e8e0',
-    border: '1px solid #80e8e0',
-    color: '#007a87'
+    // background: '#80e8e0',
+    background: '#555abf',
+    // border: '1px solid #80e8e0',
+    border: '1px solid rgba(103, 114, 229, .37)',
+    // color: '#007a87'
+    color: '#fff'
   },
   '& .CalendarDay__blocked_calendar, & .CalendarDay__blocked_calendar:active, & .CalendarDay__blocked_calendar:hover': {
     background: '#cacccd',
@@ -366,7 +380,9 @@ const XDateContainer = Glamorous.div({
   },
   '& .CalendarMonth_table': {
     borderCollapse: 'collapse',
-    borderSpacing: 0
+    borderSpacing: 0,
+    
+    marginTop: 5
   },
   '& .CalendarMonth_caption': {
     color: '#565a5c',
@@ -638,15 +654,17 @@ const XDateContainer = Glamorous.div({
   '& .DateInput_input__readOnly': {
     userSelect: 'none'
   },
-  // '& .DateInput_input__focused': {
-  //   outline: 0,
-  //   background: '#fff',
-  //   border: 0,
-  //   borderTop: 0,
-  //   borderRight: 0,
-  //   borderBottom: '2px solid #008489',
-  //   borderLeft: 0
-  // },
+  '& .DateInput_input__focused': {
+    // outline: 0,
+    // background: '#fff',
+    // border: 0,
+    // borderTop: 0,
+    // borderRight: 0,
+    // borderBottom: '2px solid #008489',
+    // borderLeft: 0
+
+    boxShadow: '0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08)'
+  },
   '& .DateInput_input__disabled': {
     background: '#f2f2f2',
     fontStyle: 'italic'
@@ -668,7 +686,9 @@ const XDateContainer = Glamorous.div({
     width: 20,
     height: 10,
     left: 22,
-    zIndex: 2
+    zIndex: 2,
+
+    top: '39px !important'
   },
   '& .DateInput_fangShape': {
     fill: '#fff'
@@ -702,7 +722,9 @@ const XDateContainer = Glamorous.div({
   },
   '& .DateRangePickerInput_arrow': {
     display: 'inline-block',
-    verticalAlign: 'middle'
+    verticalAlign: 'middle',
+
+    margin: '0 10px'
   },
   '& .DateRangePickerInput_arrow_svg': {
     verticalAlign: 'middle',
@@ -777,7 +799,9 @@ const XDateContainer = Glamorous.div({
   '& .DateRangePicker_picker': {
     zIndex: 1,
     backgroundColor: '#fff',
-    position: 'absolute'
+    position: 'absolute',
+
+    top: '50px !important'
   },
   '& .DateRangePicker_picker__rtl': {
     direction: 'rtl'
