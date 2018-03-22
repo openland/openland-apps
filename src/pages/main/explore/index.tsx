@@ -105,7 +105,7 @@ const DealsSource = withDealsMap((props) => {
                 type: 'Feature',
                 'geometry': { type: 'Point', coordinates: [v.parcel!!.center!!.longitude, v.parcel!!.center!!.latitude] },
                 properties: {
-                    'id': v.id
+                    'id': v.parcel!!.id
                 }
             }));
         let result = { 'type': 'FeatureCollection', features: features };
@@ -223,6 +223,8 @@ class ParcelCollection extends React.Component<XWithRouter, { query?: any }> {
                             <XMapPointLayer
                                 source="deals"
                                 layer="deals"
+                                color="#24b47e"
+                                onClick={(v) => this.props.router.pushQuery('selectedParcel', v)}
                             />
                         </XMap>
                         <MapSwitcher>

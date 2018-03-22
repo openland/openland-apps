@@ -5,6 +5,7 @@ import { XMapSubscriber } from './XMap';
 interface XMapPointLayerProps {
     layer: string;
     source: string;
+    color?: string;
 
     onClick?: (id: string) => void;
 }
@@ -41,6 +42,8 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
             return;
         }
 
+        let color = this.props.color || '#007cbf';
+
         this.map.addLayer({
             'id': this.layer + '-cluster',
             'type': 'circle',
@@ -56,7 +59,7 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
                     750,
                     40
                 ],
-                'circle-color': '#007cbf'
+                'circle-color': color
             },
             filter: ['has', 'point_count']
         });
@@ -83,7 +86,7 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
                     'base': 1.75,
                     'stops': [[12, 4], [22, 40]]
                 },
-                'circle-color': '#007cbf'
+                'circle-color': color
             },
             filter: ['!has', 'point_count']
         });
