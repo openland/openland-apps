@@ -35,14 +35,14 @@ const XMapContainer2 = Glamorous.div({
     // alignItems: 'stretch',
     // height: '100%'
     '& .mapboxgl-ctrl-top-right': {
-        top: '70px !important',
+        top: '65px !important',
         right: '6px !important'
     }
 });
 
 const MapSwitcher = Glamorous.div({
     position: 'absolute',
-    top: 16,
+    top: 12,
     right: 16,
 
     display: 'flex',
@@ -151,7 +151,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         return (
             <AppContentMap>
                 <AppContentMap.Item>
-                    <FilterContainer shadow="medium">
+                    <FilterContainer shadow="medium" borderless={true}>
                         <FilterHeader>
                             <FilterHeaderTitle>
                                 <CitySelector title={cityName} inverted={true}>

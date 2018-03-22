@@ -9,35 +9,37 @@ import { XTable } from '../../components/X/XTable';
 
 export default withApp(['super-admin', 'software-developer'], withUserInfo((props) => {
     return (
-        <AppContent>
+        <>
             <XHead title="Debugging" />
-            <XCard shadow="medium">
-                <XCard.Header text="Your roles" />
-                <XTable>
-                    <XTable.Header>
-                        <XTable.Cell>Permission Name</XTable.Cell>
-                        <XTable.Cell>Description</XTable.Cell>
-                    </XTable.Header>
-                    <XTable.Body>
-                        {props.roles.map((v) => (
-                            <XTable.Row>
-                                <XTable.Cell>{v}</XTable.Cell>
-                                <XTable.Cell>{}</XTable.Cell>
-                            </XTable.Row>
-                        ))}
-                    </XTable.Body>
-                </XTable>
-            </XCard>
-            <XCard shadow="medium">
-                <XCard.Header text="Your Organization" />
-                <XCard.Content>
-                    {props.account && (
-                        <>
-                            <div>{props.account.title}</div>
-                        </>
-                    )}
-                </XCard.Content>
-            </XCard>
-        </AppContent>
+            <AppContent>
+                <XCard shadow="medium">
+                    <XCard.Header text="Your roles" />
+                    <XTable>
+                        <XTable.Header>
+                            <XTable.Cell>Permission Name</XTable.Cell>
+                            <XTable.Cell>Description</XTable.Cell>
+                        </XTable.Header>
+                        <XTable.Body>
+                            {props.roles.map((v) => (
+                                <XTable.Row>
+                                    <XTable.Cell>{v}</XTable.Cell>
+                                    <XTable.Cell>{}</XTable.Cell>
+                                </XTable.Row>
+                            ))}
+                        </XTable.Body>
+                    </XTable>
+                </XCard>
+                <XCard shadow="medium">
+                    <XCard.Header text="Your Organization" />
+                    <XCard.Content>
+                        {props.account && (
+                            <>
+                                <div>{props.account.title}</div>
+                            </>
+                        )}
+                    </XCard.Content>
+                </XCard>
+            </AppContent>
+        </>
     );
 }));

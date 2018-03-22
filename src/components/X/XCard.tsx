@@ -119,13 +119,14 @@ interface XCardDivProps {
     shadow?: 'none' | 'normal' | 'medium' | 'large';
     loading?: boolean;
     bounce?: boolean;
+    borderless?: boolean;
 }
 
 let XCardDiv = Glamorous.div<XCardDivProps>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     background: '#ffffff',
-    border: (props.shadow === 'none' || props.shadow === undefined) ? '1px solid rgba(38,38,38,0.08)' : (props.shadow === 'medium' ? '1px solid #efecec' : undefined),
+    border: props.borderless ? undefined : (props.shadow === 'none' || props.shadow === undefined) ? '1px solid rgba(38,38,38,0.08)' : (props.shadow === 'medium' ? '1px solid #efecec' : undefined),
     boxShadow: props.shadow === 'normal'
         ? '0 2px 15px rgba(84,96,103,.25)'
         : props.shadow === 'medium'
@@ -188,6 +189,7 @@ interface XCardProps {
     path?: string | null;
     href?: string | null;
     bounce?: boolean;
+    borderless?: boolean;
 }
 
 export class XCard extends React.Component<XCardProps> {
@@ -217,7 +219,7 @@ export class XCard extends React.Component<XCardProps> {
 
     render() {
         return (
-            <XCardDiv className={this.props.className} shadow={this.props.shadow} loading={this.props.loading} bounce={this.props.bounce}>
+            <XCardDiv className={this.props.className} shadow={this.props.shadow} loading={this.props.loading} bounce={this.props.bounce} borderless={this.props.borderless}>
                 {(this.props.path || this.props.href) ? (
                     <XLink path={this.props.path} href={this.props.href}>
                         {this.props.separators && <XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>}

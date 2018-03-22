@@ -21,7 +21,7 @@ let Container = Glamorous.div<{ asOverlay?: boolean }>((props) => ({
     paddingBottom: props.asOverlay ? '8px' : '16px',
     marginLeft: '24px',
     marginRight: '16px',
-    marginTop: props.asOverlay ? '16px' : undefined,
+    marginTop: props.asOverlay ? '12px' : undefined,
     borderRadius: props.asOverlay ? '4px' : undefined
 }));
 

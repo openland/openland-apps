@@ -24,7 +24,7 @@ let TableHeader = Glamorous.table({
 });
 
 const XTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
-    cursor: 'pointer',
+    cursor: props.noHover ? 'default' : 'pointer',
     borderBottom: '1px solid #F5F6F8',
     '&:hover': {
         backgroundColor: props.noHover ? undefined : '#f6f9fc'
