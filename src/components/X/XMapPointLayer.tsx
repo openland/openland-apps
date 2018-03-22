@@ -85,6 +85,14 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
             },
             filter: ['!has', 'point_count']
         });
+
+        this.map.on('click', this.layer + '-cluster', (e: any) => {
+            let feature = e.features[0];
+            let longitude = feature.geometry.coordinates[0] as number;
+            let latitude = feature.geometry.coordinates[1] as number;
+            let zoom = 15;
+            this.map!!.flyTo({ center: [longitude, latitude], zoom: zoom });
+        });
     }
 
     render() {
