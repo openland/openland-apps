@@ -40,6 +40,11 @@ export const SuperAccountQuery = gql`
             members {
                 ...UserShort
             }
+            features {
+                id
+                key
+                title
+            }
         }
     }
     ${UserShort}

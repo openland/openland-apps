@@ -198,6 +198,8 @@ export const withSuperAccountMemberAdd = graphqlMutation<{ add: MutationFunc<{}>
 
 export const withFeatureFlags = graphqlRouted<Types.FeatureFlagsQuery>(FeatureFlags.FeatureFlagsQuery);
 export const withFeatureFlagAdd = graphqlMutation<{ add: MutationFunc<{}> }>(FeatureFlags.FeatureFlagAdd, { name: 'add', refetchQueries: [FeatureFlags.FeatureFlagsQuery] });
+export const withSuperAccountFeatureAdd = graphqlCompose2(graphqlMutation<{ add: MutationFunc<{}> }>(FeatureFlags.FeatureFlagOrganizationAdd, { name: 'add', params: ['accountId'] }), withFeatureFlags);
+export const withSuperAccountFeatureRemove = graphqlCompose2(graphqlMutation<{ remove: MutationFunc<{}> }>(FeatureFlags.FeatureFlagOrganizationRemove, { name: 'remove', params: ['accountId'] }), withFeatureFlags);
 
 //
 // Addressing

@@ -28,34 +28,36 @@ const AddFeatureForm = withFeatureFlagAdd((props) => {
 
 export default withApp(['super-admin', 'software-developer'], withFeatureFlags((props) => {
     return (
-        <AppContent>
+        <>
             <XHead title="Feature flags" />
-            <XCard shadow="medium">
-                <XCard.Header text="Feature flags">
-                    <XModalTargeted fullScreen={false} title="Adding Feature">
-                        <XModalTargeted.Target>
-                            <XButton>Add Feature</XButton>
-                        </XModalTargeted.Target>
-                        <XModalTargeted.Content>
-                            <AddFeatureForm />
-                        </XModalTargeted.Content>
-                    </XModalTargeted>
-                </XCard.Header>
-                <XTable>
-                    <XTable.Header>
-                        <XTable.Cell>Key</XTable.Cell>
-                        <XTable.Cell>Title</XTable.Cell>
-                    </XTable.Header>
-                    <XTable.Body>
-                        {props.data.featureFlags.map((v) => (
-                            <XTable.Row>
-                                <XTable.Cell>{v.key}</XTable.Cell>
-                                <XTable.Cell>{v.title}</XTable.Cell>
-                            </XTable.Row>
-                        ))}
-                    </XTable.Body>
-                </XTable>
-            </XCard>
-        </AppContent>
+            <AppContent>
+                <XCard shadow="medium">
+                    <XCard.Header text="Feature flags">
+                        <XModalTargeted fullScreen={false} title="Adding Feature">
+                            <XModalTargeted.Target>
+                                <XButton>Add Feature</XButton>
+                            </XModalTargeted.Target>
+                            <XModalTargeted.Content>
+                                <AddFeatureForm />
+                            </XModalTargeted.Content>
+                        </XModalTargeted>
+                    </XCard.Header>
+                    <XTable>
+                        <XTable.Header>
+                            <XTable.Cell>Key</XTable.Cell>
+                            <XTable.Cell>Title</XTable.Cell>
+                        </XTable.Header>
+                        <XTable.Body>
+                            {props.data.featureFlags.map((v) => (
+                                <XTable.Row>
+                                    <XTable.Cell>{v.key}</XTable.Cell>
+                                    <XTable.Cell>{v.title}</XTable.Cell>
+                                </XTable.Row>
+                            ))}
+                        </XTable.Body>
+                    </XTable>
+                </XCard>
+            </AppContent>
+        </>
     );
 }));

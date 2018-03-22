@@ -486,6 +486,42 @@ export interface FeatureFlagAddMutation {
   },
 };
 
+export interface FeatureFlagOrganizationAddMutationVariables {
+  accountId: string,
+  featureId: string,
+};
+
+export interface FeatureFlagOrganizationAddMutation {
+  superAccountFeatureAdd:  {
+    __typename: "SuperAccount",
+    id: string,
+    features:  Array< {
+      __typename: "FeatureFlag",
+      id: string,
+      key: string,
+      title: string,
+    } >,
+  },
+};
+
+export interface FeatureFlagOrganizationRemoveMutationVariables {
+  accountId: string,
+  featureId: string,
+};
+
+export interface FeatureFlagOrganizationRemoveMutation {
+  superAccountFeatureAdd:  {
+    __typename: "SuperAccount",
+    id: string,
+    features:  Array< {
+      __typename: "FeatureFlag",
+      id: string,
+      key: string,
+      title: string,
+    } >,
+  },
+};
+
 export interface OrganizationsQuery {
   organizations:  Array< {
     __typename: "Organization",
@@ -1284,6 +1320,12 @@ export interface SuperAccountQuery {
       lastName: string,
       picture: string,
       email: string,
+    } >,
+    features:  Array< {
+      __typename: "FeatureFlag",
+      id: string,
+      key: string,
+      title: string,
     } >,
   },
 };

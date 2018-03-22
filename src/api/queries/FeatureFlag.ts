@@ -19,3 +19,29 @@ export const FeatureFlagAdd = gql`
         }
     }
 `;
+
+export const FeatureFlagOrganizationAdd = gql`
+    mutation FeatureFlagOrganizationAdd($accountId: ID!, $featureId: ID!) {
+        superAccountFeatureAdd(id: $accountId, featureId: $featureId) {
+            id
+            features {
+                id
+                key
+                title
+            }
+        }
+    }
+`;
+
+export const FeatureFlagOrganizationRemove = gql`
+    mutation FeatureFlagOrganizationRemove($accountId: ID!, $featureId: ID!) {
+        superAccountFeatureRemove(id: $accountId, featureId: $featureId) {
+            id
+            features {
+                id
+                key
+                title
+            }
+        }
+    }
+`;
