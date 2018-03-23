@@ -70,7 +70,7 @@ export default withApp('viewer', (props) => {
                         <XTitle>Default Button</XTitle>
                         <XVertical>
                             <XForm.DateSingle onDateChange={(date: any) => console.warn(date)}/>
-                            <XForm.DateRange />
+                            <XForm.DateRange anyDate={true}/>
                             <StateSelect />
                             <XButtonLike />
                             <CitySelector title="San Francisco">
