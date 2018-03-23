@@ -8,40 +8,40 @@ import { omit } from 'lodash';
 
 const showAnimation = glamor.keyframes({
   '0%': {
-      opacity: 0,
-      transform: 'scale(0)',
-      transformOrigin: '50% calc(-10% + 11px)'
+    opacity: 0,
+    transform: 'scale(0)',
+    transformOrigin: '50% calc(-10% + 11px)'
   },
   '100%': {
-      opacity: 1,
-      transform: 'scale(1)',
-      transformOrigin: '50% calc(-10% + 11px)'
+    opacity: 1,
+    transform: 'scale(1)',
+    transformOrigin: '50% calc(-10% + 11px)'
   }
 });
 
 const hideAnimation = glamor.keyframes({
   '0%': {
-      opacity: 1,
-      transform: 'scale(1)',
-      transformOrigin: '50% calc(-10% + 11px)'
+    opacity: 1,
+    transform: 'scale(1)',
+    transformOrigin: '50% calc(-10% + 11px)'
   },
   '100%': {
-      opacity: 0,
-      transform: 'scale(0.5)',
-      transformOrigin: '50% calc(-10% + 11px)'
+    opacity: 0,
+    transform: 'scale(0.5)',
+    transformOrigin: '50% calc(-10% + 11px)'
   }
 });
 
 const hideAnimationArrow = glamor.keyframes({
   '0%': {
-      opacity: 1,
-      transform: 'scale(1)',
-      transformOrigin: '50% calc(-10% + 11px)'
+    opacity: 1,
+    transform: 'scale(1)',
+    transformOrigin: '50% calc(-10% + 11px)'
   },
   '100%': {
-      opacity: 0,
-      transform: 'scale(0)',
-      transformOrigin: '50% calc(-10% + 11px)'
+    opacity: 0,
+    transform: 'scale(0)',
+    transformOrigin: '50% calc(-10% + 11px)'
   }
 });
 
@@ -937,7 +937,7 @@ interface DateRangePickerProps {
   anyDate?: boolean;
 }
 
-export class XDateRangePicker extends React.Component<DateRangePickerProps, { focusedInput: any, startDate: any, endDate: any, isOpen: boolean }> {
+export class XDateRangePicker extends React.Component<DateRangePickerProps, { focusedInput: any, startDate: any, endDate: any }> {
   constructor(props: DateRangePickerProps) {
     super(props);
 
@@ -945,7 +945,6 @@ export class XDateRangePicker extends React.Component<DateRangePickerProps, { fo
       focusedInput: null,
       startDate: props.initialStartDate === undefined ? null : props.initialStartDate,
       endDate: props.initialEndDate === undefined ? null : props.initialEndDate,
-      isOpen: false
     };
 
     this.onDatesChange = this.onDatesChange.bind(this);
@@ -969,21 +968,11 @@ export class XDateRangePicker extends React.Component<DateRangePickerProps, { fo
   }
 
   onFocusChange(focusedInput: any) {
-    if (this.state.focusedInput !== null) {
-      this.setState({
-        isOpen: false
-      });
-      setTimeout(() => this.setState({ focusedInput }), 200);
-    } else {
-      this.setState({
-        isOpen: true
-      });
-      this.setState({ focusedInput });
-    }
+    this.setState({focusedInput});
   }
 
   render() {
-    const { focusedInput, startDate, endDate, isOpen } = this.state;
+    const { focusedInput, startDate, endDate } = this.state;
 
     const props = omit(this.props, [
       'initialStartDate',
@@ -991,7 +980,7 @@ export class XDateRangePicker extends React.Component<DateRangePickerProps, { fo
     ]);
 
     return (
-      <XDateContainer className={isOpen === true ? 'isOpen' : 'isClose'}>
+      <XDateContainer className="isOpen">
         <DateRangePicker
           {...props}
           hideKeyboardShortcutsPanel={true}
@@ -1044,9 +1033,9 @@ export class XDateSinglePicker extends React.Component<SingleDatePickerProps, { 
       setTimeout(() => this.setState({ focused }), 200);
     } else {
       this.setState({
-        isOpen: true
+        isOpen: true,
+        focused
       });
-      this.setState({ focused });
     }
   }
 
