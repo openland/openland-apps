@@ -6,6 +6,7 @@ import ApolloClient, { ApolloQueryResult } from 'apollo-client';
 import { backoff } from './timer';
 import { startProgress, stopProgress } from './routing';
 import { XMapSource } from '../components/X/XMapSource';
+import { parseGeometry } from './Serializers';
 
 interface GraphQLTileSourceProps {
     layer: string;
@@ -148,7 +149,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 for (let s of loadedElements) {
                     if (!this.allElements.has(s.id)) {
                         if (s.geometry) {
-                            let geometry = (JSON.parse(s.geometry as any) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]);
+                            let geometry = parseGeometry(s.geometry);
                             this.allElements.set(s.id, { key: s.id, geometry: geometry });
                             this.allFeatures.push({
                                 type: 'Feature',

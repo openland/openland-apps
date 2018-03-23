@@ -5,9 +5,10 @@ import { XButton } from '../X/XButton';
 import { XCardStreetViewFullScreen } from '../X/XCardStreetView';
 import { XStreetViewPreview } from '../X/XStreetViewPreview';
 import Glamorous from 'glamorous';
+import { parseGeometry } from '../../utils/Serializers';
 
 function loadCenter(src: string) {
-    let center = Turf.center({ type: 'MultiPolygon', coordinates: (JSON.parse(src) as number[][]).map((p) => [p.map((c) => [c[0], c[1]])]) });
+    let center = Turf.center({ type: 'MultiPolygon', coordinates: parseGeometry(src) });
     return { latitude: center.geometry!!.coordinates[1], longitude: center.geometry!!.coordinates[0] };
 }
 
@@ -24,7 +25,7 @@ export function AStreetViewModal(props: { geometry: string }) {
     );
 }
 
-const StyledStreetViewPreview = Glamorous(XStreetViewPreview)<{width: number, height: number}>((props) => ({
+const StyledStreetViewPreview = Glamorous(XStreetViewPreview)<{ width: number, height: number }>((props) => ({
     height: props.height,
     width: props.width
 }));
