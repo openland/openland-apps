@@ -21,8 +21,8 @@ let XWarningDiv = Glamorous.div({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#fdfaf6',
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingLeft: 16,
+    paddingRight: 16,
     paddingTop: 16,
     paddingBottom: 16,
 });
