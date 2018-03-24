@@ -1,7 +1,7 @@
 import * as ga from 'react-ga';
 import * as Mixpanel from 'mixpanel-browser';
-
 import { canUseDOM } from './environment';
+
 let shouldTrack = canUseDOM && process.env.NODE_ENV === 'production';
 if (shouldTrack) {
     ga.initialize('UA-99506931-3');
@@ -19,5 +19,10 @@ export function trackPage(page?: string) {
 export function trackProfile(id: string, firstName: string, lastName: string, email: string) {
     if (shouldTrack) {
         Mixpanel.identify(id);
+        Mixpanel.people.set({
+            '$email': email,
+            '$first_name': firstName,
+            '$last_name': lastName
+        });
     }
 }

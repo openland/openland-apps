@@ -40,6 +40,9 @@ declare module 'mixpanel-browser' {
     export function init(token: string): void;
     export function track(event: string, params?: { [key: string]: any }): void;
     export function identify(id: string): void;
+    export let people: {
+        set(keys: { [key: string]: any }): void;
+    }
 }
 
 declare module 'isomorphic-unfetch' {
