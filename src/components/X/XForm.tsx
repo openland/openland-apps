@@ -5,6 +5,7 @@ import { XVertical } from './XVertical';
 import { MutationFunc } from 'react-apollo';
 import { XButton } from './XButton';
 import { XCard } from './XCard';
+import { XInput } from './XInput';
 import { Router } from '../../routes';
 import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
 
@@ -101,29 +102,6 @@ export const XFormFieldDescription = Glamorous.div<{ novalid?: boolean }>((props
     fontWeight: 400,
     fontSize: '13px',
     lineHeight: 1.6
-}));
-
-export const XFormInputStyle = Glamorous.input<{ placeholder?: string, novalid?: boolean }>((props) => ({
-    height: 28,
-    boxSizing: 'border-box',
-    border: 'none',
-    borderRadius: 4,
-    boxShadow: props.novalid ? InputsStyle.boxShadovNovalid : InputsStyle.boxShadow,
-    color: props.novalid ? '#e25950' : '#525f7f',
-    backgroundColor: '#fff',
-    fontSize: '14px',
-    lineHeight: 1.6,
-    paddingTop: 4,
-    paddingLeft: 7,
-    paddingRight: 7,
-    paddingBottom: 2,
-    outline: 'none',
-    '&:focus': {
-        boxShadow: InputsStyle.boxShadowOnFocus
-    },
-    '&::placeholder': {
-        color: props.novalid ? '#e25950' : '#8898aa'
-    }
 }));
 
 export const XFormTextAreaStyle = Glamorous.textarea<{ placeholder?: string, novalid?: boolean }>((props) => ({
@@ -269,7 +247,7 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
     }
     render() {
         return (
-            <XFormInputStyle placeholder={this.props.placeholder} onChange={this.handleChange} value={this.state.value} />
+            <XInput placeholder={this.props.placeholder} onChange={this.handleChange} value={this.state.value} />
         );
     }
 }
@@ -428,7 +406,7 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
     static Text = XFormTextField;
     static Submit = XFormSubmit;
 
-    static RawInput = XFormInputStyle;
+    static RawInput = XInput;
     static RawTextarea = XFormTextAreaStyle;
     static RawSelect = XFormSelect;
 

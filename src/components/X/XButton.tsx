@@ -6,7 +6,7 @@ import { XIcon } from './XIcon';
 import { withLayout, XLayoutProps } from './withLayout';
 
 export interface XButtonStyleProps extends XLayoutProps {
-    style?: 'normal' | 'dark' | 'important';
+    style?: 'normal' | 'dark' | 'important' | 'google';
     size?: 'large' | 'medium' | 'normal';
     bounce?: boolean;
     loading?: boolean;
@@ -17,7 +17,7 @@ export interface XButtonStyleProps extends XLayoutProps {
 }
 
 export interface XButtonProps extends XLinkProps, XButtonStyleProps {
-    
+
 }
 
 const loading = glamor.keyframes({
@@ -28,31 +28,36 @@ const loading = glamor.keyframes({
 let textColors = {
     'normal': '#525f7f',
     'dark': '#ffffff',
-    'important': '#ffffff'
+    'important': '#ffffff',
+    'google': '#525f7f'
 };
 
 let textHoveredColors = {
     'normal': '#32325d',
     'dark': '#ffffff',
-    'important': '#ffffff'
+    'important': '#ffffff',
+    'google': '#32325d'
 };
 
 let backgroundColors = {
     'normal': '#ffffff',
     'dark': '#6B50FF',
-    'important': '#3ecf8e'
+    'important': '#3ecf8e',
+    'google': '#ffffff'
 };
 
 let backgroundHoveredColors = {
     'normal': undefined,
     'dark': '#8571f3',
-    'important': undefined
+    'important': undefined,
+    'google': undefined
 };
 
 let backgroundPressedColors = {
     'normal': undefined,
     'dark': '#5032f3',
-    'important': undefined
+    'important': undefined,
+    'google': undefined
 };
 
 let fontSize = {

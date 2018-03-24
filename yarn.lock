@@ -1098,9 +1098,15 @@
   version "2.0.47"
   resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.47.tgz#f49ba1dd1f189486beb6e1d070a850f6ab4bd521"
 
-"@types/auth0-js@^8.11.0":
+"@types/auth0-js@*", "@types/auth0-js@^8.11.0":
   version "8.11.2"
   resolved "https://registry.yarnpkg.com/@types/auth0-js/-/auth0-js-8.11.2.tgz#4890c662d40c41bea42d9e7b8490e9d88eac78c1"
+
+"@types/auth0-lock@^10.16.4":
+  version "10.16.4"
+  resolved "https://registry.yarnpkg.com/@types/auth0-lock/-/auth0-lock-10.16.4.tgz#0149e3296d5b27994dc0e012dab659ced4865cb9"
+  dependencies:
+    "@types/auth0-js" "*"
 
 "@types/body-parser@*":
   version "1.16.8"
@@ -1838,14 +1844,14 @@ atob@^2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.0.3.tgz#19c7a760473774468f20b2d2d03372ad7d4cbf5d"
 
-auth0-js@^8.12.0:
-  version "8.12.2"
-  resolved "https://registry.yarnpkg.com/auth0-js/-/auth0-js-8.12.2.tgz#ab46cd180f9500de3d68610f49432f674f9dc5cd"
+auth0-js@^9.4.1:
+  version "9.4.1"
+  resolved "https://registry.yarnpkg.com/auth0-js/-/auth0-js-9.4.1.tgz#a999c30c5566e4c5c7b3e53ed3bc82f4e4344541"
   dependencies:
     base64-js "^1.2.0"
-    idtoken-verifier "^1.1.0"
+    idtoken-verifier "^1.2.0"
     qs "^6.4.0"
-    superagent "^3.3.1"
+    superagent "^3.8.2"
     url-join "^1.1.0"
     winchan "^0.2.0"
 
@@ -4866,9 +4872,9 @@ iconv-lite@0.4.19, iconv-lite@~0.4.13:
   version "0.4.19"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
 
-idtoken-verifier@^1.1.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/idtoken-verifier/-/idtoken-verifier-1.1.1.tgz#bc6eb46e6a153bb2058aed1cac2c27ac6751b5e5"
+idtoken-verifier@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/idtoken-verifier/-/idtoken-verifier-1.2.0.tgz#4654f1f07ab7a803fc9b1b8b36057e2a87ad8b09"
   dependencies:
     base64-js "^1.2.0"
     crypto-js "^3.1.9-1"
@@ -7901,7 +7907,7 @@ subarg@^1.0.0:
   dependencies:
     minimist "^1.1.0"
 
-superagent@^3.3.1, superagent@^3.8.2:
+superagent@^3.8.2:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/superagent/-/superagent-3.8.2.tgz#e4a11b9d047f7d3efeb3bbe536d9ec0021d16403"
   dependencies:

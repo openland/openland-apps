@@ -2,10 +2,10 @@ import '../../globals';
 import * as React from 'react';
 import * as Cookie from 'js-cookie';
 import Error from 'next/error';
-import * as auth0 from 'auth0-js';
 import createHistory from 'history/createBrowserHistory';
 import { API_AUTH_ENDPOINT } from '../../utils/endpoint';
 import { withData } from '../../utils/withData';
+import { createAuth0Client } from '../../utils/Auth0Client';
 
 interface AuthResult {
     expiresIn: number;
@@ -22,8 +22,10 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
 
     componentDidMount() {
         this.completeAuth().then((v) => {
+            console.warn('complete:v');
             // Do nothing
         }).catch((e) => {
+            console.warn(e);
             this.setState({ error: true });
         });
     }
@@ -39,11 +41,9 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
         });
         if (uploaded.ok) {
             let body = (await uploaded.json()) as { ok: boolean, token: string };
-            console.warn(auth.expiresIn);
             Cookie.remove('statecraft-key');
             Cookie.set('x-openland-token', body.token);
             let path = localStorage.getItem('redirect_path') || '/';
-            console.warn(path);
             createHistory({
                 forceRefresh: true
             }).replace(path);
@@ -61,16 +61,8 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
     }
 
     private async retreiveAuthentication() {
-        let auth = new auth0.WebAuth({
-            domain: 'auth.openland.com',
-            clientID: 'v3R2Rr6D4LzzcWKHf91jwKJyDnEm4L96',
-            redirectUri: window.location.origin + '/auth/complete',
-            audience: 'https://statecraft.auth0.com/userinfo',
-            responseType: 'token id_token',
-            scope: 'openid profile email'
-        });
         return new Promise<AuthResult>((resolve, reject) => {
-            auth.parseHash((err, authResult: AuthResult) => {
+            createAuth0Client().parseHash((err, authResult: AuthResult) => {
                 if (err != null) {
                     reject(err);
                 } else {
