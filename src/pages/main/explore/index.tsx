@@ -18,6 +18,7 @@ import { XButton } from '../../../components/X/XButton';
 import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
+import { trackEvent } from '../../../utils/analytics';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -124,6 +125,11 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         this.setState({ query: e });
     }
 
+    handleClick = (id: string) => {
+        trackEvent('Explore Parcel', { id: id });
+        this.props.router.pushQuery('selectedParcel', id);
+    }
+
     render() {
 
         let mapStyle = this.props.router.query!!.mode === 'full'
@@ -201,7 +207,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 layer="parcels"
                                 minZoom={16}
                                 flyOnClick={true}
-                                onClick={(v) => this.props.router.pushQuery('selectedParcel', v)}
+                                onClick={this.handleClick}
                                 selectedId={this.props.router.query!!.selectedParcel}
                                 flyToMaxZoom={18}
                             />
@@ -221,14 +227,14 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                             <XMapPointLayer
                                 source="parcels-found"
                                 layer="parcels-found"
-                                onClick={(v) => this.props.router.pushQuery('selectedParcel', v)}
+                                onClick={this.handleClick}
                             />
 
                             <XMapPointLayer
                                 source="deals"
                                 layer="deals"
                                 color="#24b47e"
-                                onClick={(v) => this.props.router.pushQuery('selectedParcel', v)}
+                                onClick={this.handleClick}
                             />
                         </XMap>
                         <MapSwitcher>

@@ -11,6 +11,7 @@ import { AStreetViewModalPreview } from './App/AStreetViewModal';
 import { AStreetViewModal } from './App/AStreetViewModal';
 import { XHorizontal } from './X/XHorizontal';
 import { XZoningCode } from './X/XZoningCode';
+import { trackEvent } from '../utils/analytics';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -87,6 +88,7 @@ export const ParcelCard = withParcelDirect((props) => {
                                     onClick={(e) => {
                                         e.preventDefault();
                                         if (props.data!!.item!!.likes.liked) {
+                                            trackEvent('Unlike Parcel', { id: props.data!!.item!!.id });
                                             (props as any).doUnlike({
                                                 optimisticResponse: {
                                                     __typename: 'Mutation',
@@ -102,6 +104,7 @@ export const ParcelCard = withParcelDirect((props) => {
                                                 }
                                             });
                                         } else {
+                                            trackEvent('Like Parcel', { id: props.data!!.item!!.id });
                                             (props as any).doLike({
                                                 optimisticResponse: {
                                                     __typename: 'Mutation',

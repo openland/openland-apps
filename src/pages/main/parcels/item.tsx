@@ -13,6 +13,7 @@ import { PermitType } from '../../../components/PermitType';
 import { XDate } from '../../../components/X/XDate';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
+import { trackEvent } from '../../../utils/analytics';
 
 export default withApp('viewer', withParcel((props) => {
     return (
@@ -37,6 +38,7 @@ export default withApp('viewer', withParcel((props) => {
                             onClick={(e) => {
                                 e.preventDefault();
                                 if (props.data!!.item!!.likes.liked) {
+                                    trackEvent('Unlike Parcel', { id: props.data!!.item!!.id });
                                     (props as any).doUnlike({
                                         optimisticResponse: {
                                             __typename: 'Mutation',
@@ -52,6 +54,7 @@ export default withApp('viewer', withParcel((props) => {
                                         }
                                     });
                                 } else {
+                                    trackEvent('Like Parcel', { id: props.data!!.item!!.id });
                                     (props as any).doLike({
                                         optimisticResponse: {
                                             __typename: 'Mutation',
