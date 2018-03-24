@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import * as Types from '../api/Types';
 import { withRouter, XWithRouter } from './withRouter';
+import { trackProfile } from '../utils/analytics';
 
 export class UserInfoProvider extends React.Component<{
     user?: Types.UserShortFragment | null,
@@ -29,6 +30,10 @@ export class UserInfoProvider extends React.Component<{
     getChildContext() {
         let hasUser = this.props.user !== null && this.props.user !== undefined;
         let hasAccount = this.props.account !== null && this.props.account !== undefined;
+        // Where to put this?
+        if (this.props.user) {
+            trackProfile(this.props.user.id!!, this.props.user.firstName, this.props.user.lastName, this.props.user.email);
+        }
         return {
             user: hasUser ? this.props.user : null,
             area: this.props.area !== null && this.props.area !== undefined ? this.props.area : null,

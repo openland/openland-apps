@@ -15,3 +15,9 @@ export function trackPage(page?: string) {
         Mixpanel.track('Page Viewed', { page: p });
     }
 }
+
+export function trackProfile(id: string, firstName: string, lastName: string, email: string) {
+    if (shouldTrack) {
+        Mixpanel.identify(id);
+    }
+}
