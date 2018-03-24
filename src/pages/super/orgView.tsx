@@ -66,7 +66,7 @@ const RemoveFeature = withSuperAccountFeatureRemove(withLoader((props) => {
     );
 }));
 
-export default withApp('super-admin', withSuperAccount((props) => {
+export default withApp('Super Organization', 'super-admin', withSuperAccount((props) => {
 
     return (
         <AppContent>

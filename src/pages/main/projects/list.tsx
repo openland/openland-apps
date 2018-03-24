@@ -7,7 +7,7 @@ import { withSFBuildingProjects } from '../../../api/index';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 
-export default withApp('viewer', withSFBuildingProjects((props) => {
+export default withApp('Projects', 'viewer', withSFBuildingProjects((props) => {
     return (
         <AppContent>
             <XCard shadow="medium">

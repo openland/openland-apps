@@ -23,7 +23,7 @@ import { XConfirm } from '../../components/Incubator/XConfirm';
 import { CitySelector } from '../../components/Incubator/CitySelector';
 import { StateSelect } from '../../api';
 
-export default withApp('viewer', (props) => {
+export default withApp('UI Showcase', 'viewer', (props) => {
 
     return (
         <>
@@ -69,8 +69,8 @@ export default withApp('viewer', (props) => {
                     <XCard.Content>
                         <XTitle>Default Button</XTitle>
                         <XVertical>
-                            <XForm.DateSingle onDateChange={(date: any) => console.warn(date)}/>
-                            <XForm.DateRange anyDate={true}/>
+                            <XForm.DateSingle onDateChange={(date: any) => console.warn(date)} />
+                            <XForm.DateRange anyDate={true} />
                             <StateSelect />
                             <XButtonLike />
                             <CitySelector title="San Francisco">

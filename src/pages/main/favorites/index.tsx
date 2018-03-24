@@ -44,7 +44,7 @@ function exportCSV(items: Types.ParcelShortFragment[]) {
     FileSaver.saveAs(contents, 'favorites.csv');
 }
 
-export default withApp('viewer', withParcelsFavorites((props) => {
+export default withApp('Favorites', 'viewer', withParcelsFavorites((props) => {
     return (
         <>
             <XHead title={['Favorites']} />

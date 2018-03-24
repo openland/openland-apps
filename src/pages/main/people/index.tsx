@@ -6,7 +6,7 @@ import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { AppContent } from '../../../components/App/AppContent';
 
-export default withApp('viewer', () => {
+export default withApp('People', 'viewer', () => {
     return (
         <>
             <XHead title="People" />

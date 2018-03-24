@@ -15,7 +15,7 @@ import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { trackEvent } from '../../../utils/analytics';
 
-export default withApp('viewer', withParcel((props) => {
+export default withApp('Parcel', 'viewer', withParcel((props) => {
     return (
         <>
             <XHead title={['Parcel #' + props.data.item.title]} />

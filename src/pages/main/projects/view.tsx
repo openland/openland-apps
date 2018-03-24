@@ -8,7 +8,7 @@ import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { XLinkExternal } from '../../../components/X/XLinkExternal';
 
-export default withApp('viewer', withSFBuildingProject((props) => {
+export default withApp('Project', 'viewer', withSFBuildingProject((props) => {
 
     return (
         <AppContent>

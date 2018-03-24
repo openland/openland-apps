@@ -7,7 +7,7 @@ import { XHead } from '../../components/X/XHead';
 import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';
 
-export default withApp(['super-admin', 'software-developer'], withUserInfo((props) => {
+export default withApp('Super Debug', ['super-admin', 'software-developer'], withUserInfo((props) => {
     return (
         <>
             <XHead title="Debugging" />

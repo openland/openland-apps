@@ -45,7 +45,7 @@ const RemoveSuperAdminForm = withSuperAdminRemove((props) => {
     );
 });
 
-export default withApp('super-admin', withSuperAdmins((props) => {
+export default withApp('Super Admins', 'super-admin', withSuperAdmins((props) => {
     return (
         <AppContent>
             <XCard shadow="medium">

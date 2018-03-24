@@ -253,7 +253,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
     }
 }
 
-export default withApp('viewer', withRouter(withUserInfo((props) => {
+export default withApp('Explore', 'viewer', withRouter(withUserInfo((props) => {
     return (
         <>
             <XHead title={['Explore']} />

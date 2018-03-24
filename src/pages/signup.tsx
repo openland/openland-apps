@@ -5,6 +5,7 @@ import { XHead } from '../components/X/XHead';
 import { RedirectComponent } from '../components/routing/RedirectComponent';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
+import { XTrack } from '../components/X/XTrack';
 
 const TypeformDiv = Glamorous.div({
     position: 'absolute',
@@ -43,7 +44,7 @@ class TypeformEmbedded extends React.Component<{ url: string }> {
 }
 
 export default withAppBase(withUserInfo((props) => {
-    
+
     // Do not edit without reason!
     if (props.isLoggedIn) {
         if (props.isBlocked) {
@@ -60,7 +61,9 @@ export default withAppBase(withUserInfo((props) => {
     return (
         <RootDiv>
             <XHead title="Sign Up" />
-            <TypeformEmbedded url="https://openlandapp.typeform.com/to/RoMP5U" />
+            <XTrack event="View Signup">
+                <TypeformEmbedded url="https://openlandapp.typeform.com/to/RoMP5U" />
+            </XTrack>
         </RootDiv>
     );
 }));

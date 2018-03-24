@@ -7,6 +7,7 @@ import { MessagePageContent } from '../components/MessagePageContent';
 import { RedirectComponent } from '../components/routing/RedirectComponent';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
+import { XTrack } from '../components/X/XTrack';
 
 export default withAppBase(withUserInfo((props) => {
 
@@ -30,13 +31,15 @@ export default withAppBase(withUserInfo((props) => {
     return (
         <>
             <XHead title="Blocked" titleSocial="Openland - land acquisition platfom" />
-            <MessagePage>
-                <MessagePageContent
-                    title="Account suspended"
-                >
-                    This account has been suspended. Please, contact <XLink href="mailto:support@openland.com">support</XLink> to restore access to your account.
+            <XTrack event="View Suspended">
+                <MessagePage>
+                    <MessagePageContent
+                        title="Account suspended"
+                    >
+                        This account has been suspended. Please, contact <XLink href="mailto:support@openland.com">support</XLink> to restore access to your account.
                 </MessagePageContent>
-            </MessagePage>
+                </MessagePage>
+            </XTrack>
         </>
     );
 }));

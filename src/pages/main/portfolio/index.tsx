@@ -21,7 +21,7 @@ let Link = Glamorous(XLink)({
 
 const DealsForm = withDealAdd((props) => <DealForm mutation={props.add} />);
 
-export default withApp('viewer', withDeals((props) => {
+export default withApp('Portfolio', 'viewer', withDeals((props) => {
     return (
         <>
             <XHead title="Portfolio" />

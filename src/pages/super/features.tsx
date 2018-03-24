@@ -26,7 +26,7 @@ const AddFeatureForm = withFeatureFlagAdd((props) => {
     );
 });
 
-export default withApp(['super-admin', 'software-developer'], withFeatureFlags((props) => {
+export default withApp('Super Features', ['super-admin', 'software-developer'], withFeatureFlags((props) => {
     return (
         <>
             <XHead title="Feature flags" />

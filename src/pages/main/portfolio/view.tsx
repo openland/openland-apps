@@ -27,7 +27,7 @@ const RemoveButton = withDealRemove((props) => {
     return (<XButtonMutation mutation={props.remove}>Remove</XButtonMutation>);
 });
 
-export default withApp('viewer', withDeal((props) => {
+export default withApp('Deal', 'viewer', withDeal((props) => {
 
     let bulletText: string | undefined;
     let bulletColor: 'red' | 'yellow' | 'blue' | 'green' | undefined;

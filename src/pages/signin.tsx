@@ -13,6 +13,7 @@ import { withUserInfo } from '../components/UserInfo';
 import { createAuth0Client } from '../utils/Auth0Client';
 import { XHorizontal } from '../components/X/XHorizontal';
 import { XInput } from '../components/X/XInput';
+import { XTrack } from '../components/X/XTrack';
 
 let Signup = Glamorous.span({
     opacity: 0.7
@@ -203,7 +204,9 @@ export default withAppBase(withRouter(withUserInfo((props) => {
     return (
         <>
             <XHead title="Sign in" titleSocial="Openland - land acquisition platfom" />
-            <SignInComponent redirect={redirect} />
+            <XTrack event="View Signin">
+                <SignInComponent redirect={redirect} />
+            </XTrack>
         </>
     );
 })));

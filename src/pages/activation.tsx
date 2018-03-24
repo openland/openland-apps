@@ -6,6 +6,7 @@ import { MessagePageContent } from '../components/MessagePageContent';
 import { RedirectComponent } from '../components/routing/RedirectComponent';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
+import { XTrack } from '../components/X/XTrack';
 
 export default withAppBase(withUserInfo((props) => {
 
@@ -27,13 +28,15 @@ export default withAppBase(withUserInfo((props) => {
     return (
         <>
             <XHead title="Activation needed" titleSocial="Openland - land acquisition platfom" />
-            <MessagePage>
-                <MessagePageContent
-                    title="Activation needed"
-                >
-                    We are working on your account and will notify when it will became active.
+            <XTrack event="View Activation">
+                <MessagePage>
+                    <MessagePageContent
+                        title="Activation needed"
+                    >
+                        We are working on your account and will notify when it will became active.
                 </MessagePageContent>
-            </MessagePage>
+                </MessagePage>
+            </XTrack>
         </>
     );
 }));

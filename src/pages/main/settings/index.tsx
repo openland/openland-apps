@@ -8,7 +8,7 @@ import { XButton } from '../../../components/X/XButton';
 import { XForm } from '../../../components/X/XForm';
 import { AppContent } from '../../../components/App/AppContent';
 
-export default withApp('viewer', withUserInfo((props) => {
+export default withApp('Settings', 'viewer', withUserInfo((props) => {
     return (
         <>
             <XHead title="Settings" />

@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { AppContent } from '../../../components/App/AppContent';
 import { XCard } from '../../../components/X/XCard';
 
-export default withApp('viewer', (props) => {
+export default withApp('Inquiries', 'viewer', (props) => {
     return (
         <>
             <XHead title={['Search Inquiries']} />

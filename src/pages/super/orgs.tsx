@@ -22,7 +22,7 @@ const AddAccountForm = withSuperAccountAdd((props) => {
     );
 });
 
-export default withApp('super-admin', withSuperAccounts((props) => {
+export default withApp('Super Organizations', 'super-admin', withSuperAccounts((props) => {
     return (
         <AppContent>
             <XCard shadow="medium">

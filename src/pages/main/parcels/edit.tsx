@@ -8,7 +8,7 @@ import { XButton } from '../../../components/X/XButton';
 import { XForm } from '../../../components/X/XForm';
 import { XHead } from '../../../components/X/XHead';
 
-export default withApp(['super-admin', 'editor'], withParcelMetadataForm((props) => {
+export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetadataForm((props) => {
     return (
         <>
             <XHead title={['Edit Parcel #' + props.data.item.title]} />

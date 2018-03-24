@@ -4,7 +4,7 @@ import { withApp } from '../../components/withApp';
 import { XCard } from '../../components/X/XCard';
 import { AppContent } from '../../components/App/AppContent';
 
-const Page = withApp('viewer', (props) => {
+const Page = withApp('test', 'viewer', (props) => {
     return (
         <AppContent>
             <XCard shadow="medium">
