@@ -5,7 +5,7 @@ import { XCard } from './X/XCard';
 import { XStreetView } from './X/XStreetView';
 import { XMapPolygonLayer } from './X/XMapPolygonLayer';
 import { ParcelTileSource, BlockTileSource } from '../api/index';
-import { convertMapPatch, findCenter } from '../utils/map';
+import { findCenter } from '../utils/map';
 import { withRouter } from './withRouter';
 
 const Wrapper = Glamorous(XCard)({
@@ -22,7 +22,7 @@ export const ParcelMaps = withRouter<{ id: string, geometry: string }>((props) =
     return (
         <XHorizontal>
             <Wrapper shadow="medium">
-                <XCard.Map focusLocation={{ ...findCenter(convertMapPatch(props.geometry)), zoom: 18 }}>
+                <XCard.Map focusLocation={{ ...findCenter(props.geometry), zoom: 18 }}>
                     <ParcelTileSource layer="parcels" minZoom={16} />
                     <BlockTileSource layer="blocks" minZoom={12} />
                     <XMapPolygonLayer
@@ -41,7 +41,7 @@ export const ParcelMaps = withRouter<{ id: string, geometry: string }>((props) =
                 </XCard.Map>
             </Wrapper>
             <Wrapper shadow="medium">
-                <StreetView key={props.id} location={findCenter(convertMapPatch(props.geometry))} />
+                <StreetView key={props.id} location={findCenter(props.geometry)} />
             </Wrapper>
         </XHorizontal>);
 });
