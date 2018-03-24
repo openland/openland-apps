@@ -27,7 +27,8 @@ export function trackPage(page?: string) {
         ga.pageview(p);
 
         // Track in other analytical platforms
-        trackEvent('Page Viewed', { page: p });
+        // Replacing with application level event tracking
+        // trackEvent('Page Viewed', { page: p });
     }
 }
 
