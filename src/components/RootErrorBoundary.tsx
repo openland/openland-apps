@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { MessagePage } from './MessagePage';
 import { XCard } from './X/XCard';
+import { trackError } from '../utils/analytics';
 
 export class RootErrorBoundary extends React.Component<{}, { isError: boolean }> {
     constructor(props: {}) {
@@ -9,6 +10,7 @@ export class RootErrorBoundary extends React.Component<{}, { isError: boolean }>
     }
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+        trackError(error);
         this.setState({ isError: true });
     }
 

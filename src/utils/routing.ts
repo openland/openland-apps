@@ -2,7 +2,7 @@ import Router from 'next/router';
 import * as NProgress from 'nprogress';
 import { XRouter } from '../components/withRouter';
 import * as qs from 'query-string';
-import { trackPage } from './analytics';
+import { trackPage, trackError } from './analytics';
 
 NProgress.configure({ showSpinner: false, parent: '#progress_container' });
 
@@ -94,11 +94,11 @@ Router.onRouteChangeComplete = () => {
     trackPage();
 };
 
-Router.onRouteChangeError = () => {
+Router.onRouteChangeError = (error) => {
     // tslint:disable
     console.log(`Naviating Errored`);
     // tslint:enable
-
+    trackError(error);
     stopProgress(0);
 };
 
