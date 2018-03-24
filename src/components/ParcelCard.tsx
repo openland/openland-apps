@@ -12,6 +12,7 @@ import { AStreetViewModal } from './App/AStreetViewModal';
 import { XHorizontal } from './X/XHorizontal';
 import { XZoningCode } from './X/XZoningCode';
 import { trackEvent } from '../utils/analytics';
+import { OwnerTypeComponent } from './OwnerTypeComponent';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -131,6 +132,9 @@ export const ParcelCard = withParcelDirect((props) => {
                         </XCard.Content>
 
                         <XCard.PropertyList title="Parcel details">
+                            {props.data.item!!.extrasOwnerType &&
+                                <PropertyCell title="Owner Type"><OwnerTypeComponent type={props.data.item!!.extrasOwnerType!!}/></PropertyCell>
+                            }
                             {props.data.item!!.extrasOwnerName &&
                                 <PropertyCell title="Owner Name">{props.data.item!!.extrasOwnerName}</PropertyCell>
                             }

@@ -3749,6 +3749,18 @@
               "deprecationReason": null,
               "description": "",
               "isDeprecated": false,
+              "name": "extrasOwnerType",
+              "type": {
+                "kind": "ENUM",
+                "name": "OwnerTyoe",
+                "ofType": null
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
               "name": "metadata",
               "type": {
                 "kind": "NON_NULL",
@@ -3847,6 +3859,47 @@
           "interfaces": [],
           "kind": "OBJECT",
           "name": "Likes",
+          "possibleTypes": null
+        },
+        {
+          "description": "",
+          "enumValues": [
+            {
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "CITY"
+            },
+            {
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "MIXED"
+            },
+            {
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "PRIVATE"
+            },
+            {
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "OTHER"
+            },
+            {
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "EXCLUDED"
+            }
+          ],
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "kind": "ENUM",
+          "name": "OwnerTyoe",
           "possibleTypes": null
         },
         {

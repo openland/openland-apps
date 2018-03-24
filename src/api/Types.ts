@@ -26,6 +26,15 @@ export interface DealInput {
   parcelId?: string | null,
 };
 
+export enum OwnerTyoe {
+  CITY = "CITY",
+  MIXED = "MIXED",
+  PRIVATE = "PRIVATE",
+  OTHER = "OTHER",
+  EXCLUDED = "EXCLUDED",
+}
+
+
 export enum ParcelUse {
   PARKING = "PARKING",
   STORAGE = "STORAGE",
@@ -987,6 +996,7 @@ export interface ParcelsConnectionQuery {
         extrasSalesPriorDate: string | null,
         extrasRecordationDate: string | null,
         extrasOwnerName: string | null,
+        extrasOwnerType: OwnerTyoe | null,
         extrasAddress: string | null,
         addresses:  Array< {
           __typename: "StreetNumber",
@@ -1050,6 +1060,7 @@ export interface ParcelsFavoritesQuery {
     extrasSalesPriorDate: string | null,
     extrasRecordationDate: string | null,
     extrasOwnerName: string | null,
+    extrasOwnerType: OwnerTyoe | null,
     extrasAddress: string | null,
     addresses:  Array< {
       __typename: "StreetNumber",
@@ -1110,6 +1121,7 @@ export interface ParcelQuery {
     extrasSalesPriorDate: string | null,
     extrasRecordationDate: string | null,
     extrasOwnerName: string | null,
+    extrasOwnerType: OwnerTyoe | null,
     extrasAddress: string | null,
     addresses:  Array< {
       __typename: "StreetNumber",
@@ -2273,6 +2285,7 @@ export interface ParcelFullFragment {
   extrasSalesPriorDate: string | null,
   extrasRecordationDate: string | null,
   extrasOwnerName: string | null,
+  extrasOwnerType: OwnerTyoe | null,
   extrasAddress: string | null,
   addresses:  Array< {
     __typename: string,
@@ -2349,6 +2362,7 @@ export interface ParcelShortFragment {
   extrasSalesPriorDate: string | null,
   extrasRecordationDate: string | null,
   extrasOwnerName: string | null,
+  extrasOwnerType: OwnerTyoe | null,
   extrasAddress: string | null,
   addresses:  Array< {
     __typename: string,
