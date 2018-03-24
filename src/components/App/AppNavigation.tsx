@@ -12,14 +12,11 @@ export const AppNavigation = withParcelsFavroutesCount((props) => {
     return (
         <>
             <AppSidebar.Item path="/" title="Explore" icon="explore" />
-            <AppSidebar.Item path="/parcels" title="Parcels" icon="layers" activateForSubpaths={true} />
-            <AppSidebar.Item href="https://statecraft.one/sf" title="Insights" icon="show_chart" />
-            <Div />
-
             <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']}>
                 <AppSidebar.Item path="/portfolio" title={props.data.dealsCount ? `Portfolio (${props.data.dealsCount})` : 'Portfolio'} icon="work" activateForSubpaths={true} />
             </XWithRole>
             <AppSidebar.Item path="/favorites" title={props.data.parcelFavoritesCount ? `Favorites (${props.data.parcelFavoritesCount})` : 'Favorites'} icon="favorite" />
+            <AppSidebar.Item href="https://statecraft.one/sf" title="Insights" icon="show_chart" />
             <XWithRole role={['super-admin', 'software-developer']}>
                 <AppSidebar.Item path="/people" title="People" icon="group" activateForSubpaths={true} />
                 <AppSidebar.Item path="/settings" title="Settings" icon="settings" />

@@ -374,7 +374,13 @@ class FilterRangeBase extends React.Component<FilterRangeProps & XWithRouter, { 
 
 const FilterRange = withRouter<FilterRangeProps>(FilterRangeBase);
 
-class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (query?: any) => void } & XWithRouter> {
+interface AppFiltersProps {
+    isActive?: boolean;
+    onChange: (query?: any) => void;
+    city?: string;
+}
+
+class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
 
     private modal: XModalTargeted | null = null;
 
@@ -412,8 +418,8 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
         }
         if (this.props.router.query!!.area) {
             let area = JSON.parse(this.props.router.query!!.area);
-            area.gte = (area.gte * 0.3048);
-            area.lte = (area.lte * 0.3048);
+            area.gte = (area.gte * 0.092903);
+            area.lte = (area.lte * 0.092903);
             clauses.push({
                 'area': area
             });
@@ -443,74 +449,72 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
                     <XButton bounce={true} style={this.props.isActive ? 'dark' : 'normal'}>Filters</XButton>
                 </XModalTargeted.Target>
                 <XModalTargeted.Content>
-                    <FilterCell title="Zoning">
-                        <RoutedSelector
-                            fieldName="filterZoning"
-                            options={AllZones.map((v) => ({ value: v, label: v }))}
-                            placeholder="Zoning Code"
-                            multi={true}
-                        />
-                    </FilterCell>
-                    <FilterCell title="Land Use">
-                        <RoutedSelector
-                            fieldName="filterLandUse"
-                            options={AllLandUse.map((v) => ({ value: v, label: v }))}
-                            placeholder="Land Use"
-                            multi={true}
-                        />
-                    </FilterCell>
-                    <FilterCell title="Stories">
-                        <RoutedSelector
-                            fieldName="filterStories"
-                            options={[
-                                { value: '0', label: 'no stories' },
-                                { value: '1', label: '1 story' },
-                                { value: '2', label: '2 stories' },
-                                { value: '3', label: '3 stories' },
-                                { value: '4', label: '4 stories' }]}
-                            placeholder="Stories"
-                            multi={true}
-                        />
-                    </FilterCell>
-                    <FilterCell title="Current Use">
-                        <RoutedSelector
-                            fieldName="filterCurrentUse"
-                            options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
-                            placeholder="Current Use"
-                        />
-                    </FilterCell>
-                    <FilterCell title="On Sale">
-                        <RoutedSelector
-                            fieldName="filterOnSale"
-                            options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
-                            placeholder="On Sale"
-                        />
-                    </FilterCell>
-                    <FilterCell title="Tower opportunity">
-                        <RoutedSelector
-                            fieldName="isOkForTower"
-                            options={[{ value: 'true', label: 'Yes (105+ height, 0-2 stories now)' }, { value: 'false', label: 'No' }]}
-                            placeholder="Tower opportunity"
-                        />
-                    </FilterCell>
-                    <FilterCell title="Nearest Transit">
-                        <RoutedSelector
-                            fieldName="filterTransit"
-                            options={[
-                                { value: '60', label: '< 200 feet' },
-                                { value: '243', label: '< 800 feet' },
-                                { value: '457', label: '< 1500 feet' },
-                                { value: '1220', label: '< 4000 feet' },
-                                { value: '2430', label: '< 8000 feet' }]}
-                            placeholder="Distance"
-                        />
-                    </FilterCell>
-                    {/* <FilterCell title="Collections">
-                        <FilterCeckbox label="Single story" />
-                        <FilterCeckbox label="Stories count" />
-                        <FilterCeckbox label="Parcel area" />
-                        <FilterCeckbox label="Buildings count" />
-                    </FilterCell> */}
+                    {this.props.city === 'sf' && (
+                        <>
+                            <FilterCell title="Zoning">
+                                <RoutedSelector
+                                    fieldName="filterZoning"
+                                    options={AllZones.map((v) => ({ value: v, label: v }))}
+                                    placeholder="Zoning Code"
+                                    multi={true}
+                                />
+                            </FilterCell>
+                            <FilterCell title="Land Use">
+                                <RoutedSelector
+                                    fieldName="filterLandUse"
+                                    options={AllLandUse.map((v) => ({ value: v, label: v }))}
+                                    placeholder="Land Use"
+                                    multi={true}
+                                />
+                            </FilterCell>
+                            <FilterCell title="Stories">
+                                <RoutedSelector
+                                    fieldName="filterStories"
+                                    options={[
+                                        { value: '0', label: 'no stories' },
+                                        { value: '1', label: '1 story' },
+                                        { value: '2', label: '2 stories' },
+                                        { value: '3', label: '3 stories' },
+                                        { value: '4', label: '4 stories' }]}
+                                    placeholder="Stories"
+                                    multi={true}
+                                />
+                            </FilterCell>
+                            <FilterCell title="Current Use">
+                                <RoutedSelector
+                                    fieldName="filterCurrentUse"
+                                    options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
+                                    placeholder="Current Use"
+                                />
+                            </FilterCell>
+                            <FilterCell title="On Sale">
+                                <RoutedSelector
+                                    fieldName="filterOnSale"
+                                    options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
+                                    placeholder="On Sale"
+                                />
+                            </FilterCell>
+                            <FilterCell title="Tower opportunity">
+                                <RoutedSelector
+                                    fieldName="isOkForTower"
+                                    options={[{ value: 'true', label: 'Yes (105+ height, 0-2 stories now)' }, { value: 'false', label: 'No' }]}
+                                    placeholder="Tower opportunity"
+                                />
+                            </FilterCell>
+                            <FilterCell title="Nearest Transit">
+                                <RoutedSelector
+                                    fieldName="filterTransit"
+                                    options={[
+                                        { value: '60', label: '< 200 feet' },
+                                        { value: '243', label: '< 800 feet' },
+                                        { value: '457', label: '< 1500 feet' },
+                                        { value: '1220', label: '< 4000 feet' },
+                                        { value: '2430', label: '< 8000 feet' }]}
+                                    placeholder="Distance"
+                                />
+                            </FilterCell>
+                        </>
+                    )}
                     <FilterCell title="Area">
                         <FilterRange placeholderFrom="1000 ft" placeholderTo="1000000 ft" />
                     </FilterCell>
@@ -523,4 +527,4 @@ class AppFiltersImpl extends React.Component<{ isActive?: boolean, onChange: (qu
     }
 }
 
-export const AppFilters = withRouter<{ isActive?: boolean, onChange: (query?: any) => void }>(AppFiltersImpl);
+export const AppFilters = withRouter<AppFiltersProps>(AppFiltersImpl);

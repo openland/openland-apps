@@ -5,6 +5,7 @@ import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { XZoningCode } from './X/XZoningCode';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
+
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
     return (
         <>
