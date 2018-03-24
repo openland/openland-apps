@@ -35,6 +35,7 @@ export default class StateDocument extends Document {
 
                     <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
                     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js" />
+                    <script dangerouslySetInnerHTML={{ __html: 'window.isProduction=' + isProduction + ';' }} />
 
                     {/* Centry/Raven */}
                     {isProduction && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}

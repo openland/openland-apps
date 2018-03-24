@@ -2,7 +2,7 @@ import * as ga from 'react-ga';
 import * as Mixpanel from 'mixpanel-browser';
 import { canUseDOM } from './environment';
 
-let shouldTrack = canUseDOM && process.env.NODE_ENV === 'production' && process.env.APP_PRODUCTION === 'true';
+let shouldTrack = canUseDOM && (window as any).isProduction;
 if (shouldTrack) {
     ga.initialize('UA-99506931-3');
     Mixpanel.init('1cd91d607bef005d48954609f7ddd9a0');
