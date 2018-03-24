@@ -38,7 +38,7 @@ declare module 'react-map-gl' {
 
 declare module 'mixpanel-browser' {
     export function init(token: string): void;
-    export function track(event: string): void;
+    export function track(event: string, params?: { [key: string]: any }): void;
 }
 
 declare module 'isomorphic-unfetch' {
