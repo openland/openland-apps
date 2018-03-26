@@ -12,7 +12,7 @@ export const XHead = withRouter<{ title: string | string[], titleSocial?: string
     }
     let title = formatPageTitle(...parts);
 
-    let img = 'https://statecraft.one/static/img/x-pipeline--list.png';
+    let img = 'https://openland.com/img/og-2.png';
     if (props.imgUrl) {
         img = props.imgUrl;
     } else if (props.imgCloud) {
