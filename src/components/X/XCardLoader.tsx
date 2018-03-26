@@ -10,17 +10,19 @@ const loading = glamor.keyframes({
 
 const ItemIcon = Glamorous(XIcon)({
     display: 'block',
-    width: 24,
-    height: 24,
     fontSize: '25px',
     color: '#6b7c93',
-    lineHeight: '24px',
-    marginTop: -1,
-    marginRight: 1
+    lineHeight: 'normal',
+    verticalAlign: 'middle'
 });
 
 const LoadingDiv = Glamorous.div({
     position: 'absolute',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 25,
+    height: 25,
     top: 'calc(50% - 12.5px)',
     left: 'calc(50% - 12.5px)',
     animation: `${loading} 1s linear infinite`,
