@@ -3,7 +3,6 @@ import * as PopperJS from 'popper.js';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import * as classnames from 'classnames';
-import { Arrow } from './index';
 
 export interface PopperChildProps {
     style: any;
@@ -248,7 +247,9 @@ const PopperDiv = Glamorous.div({
         display: 'block',
     },
 
-    '& .popper .popper__arrow': {
+    '& .popper::after': {
+        display: 'block',
+        content: `''`,
         width: 0,
         height: 0,
         borderStyle: 'solid',
@@ -259,7 +260,7 @@ const PopperDiv = Glamorous.div({
         marginBottom: 10
     },
 
-    '& .popper[data-placement^="top"] .popper__arrow': {
+    '& .popper[data-placement^="top"]::after': {
         borderWidth: '5px 5px 0 5px',
         borderColor: '#fff transparent transparent transparent',
         bottom: -5,
@@ -278,7 +279,7 @@ const PopperDiv = Glamorous.div({
         }
     },
 
-    '& .popper[data-placement^="bottom"] .popper__arrow': {
+    '& .popper[data-placement^="bottom"]::after': {
         borderWidth: '0 5px 5px 5px',
         borderColor: 'transparent transparent #fff transparent',
         top: -5,
@@ -291,7 +292,7 @@ const PopperDiv = Glamorous.div({
         marginLeft: 10
     },
 
-    '& .popper[data-placement^="right"] .popper__arrow': {
+    '& .popper[data-placement^="right"]::after': {
         borderWidth: '5px 5px 5px 0',
         borderColor: 'transparent #fff transparent transparent',
         left: -5,
@@ -304,7 +305,7 @@ const PopperDiv = Glamorous.div({
         marginRight: 10
     },
 
-    '& .popper[data-placement^="left"] .popper__arrow': {
+    '& .popper[data-placement^="left"]::after': {
         borderWidth: '5px 0 5px 5px',
         borderColor: 'transparent transparent transparent #fff',
         right: -5,
@@ -353,11 +354,6 @@ export class Poppover extends React.Component<PopperDivProps> {
                         <div {...popperProps} className={classnames('popper', this.props.class)} onMouseOver={() => this.props.onMouseover ? this.props.onMouseover() : undefined}>
                             <div className="popper-content" onMouseOver={() => this.props.onMouseover ? this.props.onMouseover() : undefined} onMouseOut={() => this.props.onMouseout ? this.props.onMouseout() : undefined}>
                                 {this.props.children}
-                                <Arrow
-                                componentFactory={(arrowProps) => (
-                                    <div {...arrowProps} className="popper__arrow" onMouseOver={() => this.props.onMouseover ? this.props.onMouseover() : undefined} />
-                                )}
-                            />
                             </div>
                         </div>
                     )}
