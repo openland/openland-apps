@@ -26,6 +26,9 @@ let XCardFieldTitle = Glamorous.div<{width?: number}>((props) => ({
 }));
 
 let XCardFieldValue = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',

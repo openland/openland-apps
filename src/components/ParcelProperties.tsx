@@ -36,7 +36,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     }
                     <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                         {props.item!!.extrasAnalyzed !== true &&
-                            <XCard.Property title="Compatible buildings"><XView direction="row"><XTooltip title={`Openland systems detected that this parcel is too complex for automatical building placement.`} /> This parcel is too complex to analyze</XView></XCard.Property>
+                            <XCard.Property title="Compatible buildings"><XTooltip title={`Openland systems detected that this parcel is too complex for automatical building placement.`} /> This parcel is too complex to analyze</XCard.Property>
                         }
                         {props.item!!.extrasAnalyzed === true && props.item!!.extrasFitProjects &&
                             <XCard.Property title="Compatible buildings"><ProjectTypes types={props.item!!.extrasFitProjects!!} /></XCard.Property>

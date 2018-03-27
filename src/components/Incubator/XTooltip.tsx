@@ -5,10 +5,13 @@ import { canUseDOM } from '../../utils/environment';
 import { XIcon } from '../X/XIcon';
 import { Manager, Target, Poppover } from './Popper';
 
-const XTooltipDiv = Glamorous.div({
+const XTooltipDiv = Glamorous.div<{leftMargin?: boolean, margin?: boolean}>((props) => ({
     display: 'flex',
-    alignItems: 'center'
-});
+    alignItems: 'center',
+    marginRight: props.leftMargin ? undefined : 6,
+    marginLeft: props.leftMargin ? 6 : undefined,
+    margin: props.margin ? '0 6px' : undefined
+}));
 
 const TargetContent = Glamorous.div({
     display: 'flex',
@@ -22,6 +25,8 @@ const TargetContent = Glamorous.div({
 
 interface XTooltipProps {
     title: string;
+    leftMargin?: boolean;
+    margin?: boolean;
 }
 
 export class XTooltip extends React.Component<XTooltipProps, { class?: string, modalHover?: boolean, popper?: boolean }> {
@@ -94,7 +99,7 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string, m
         );
         return (
             <Manager>
-                <XTooltipDiv>
+                <XTooltipDiv leftMargin={this.props.leftMargin} margin={this.props.margin}>
                     <Target
                         componentFactory={(targetProps) => (
                             <TargetContent
