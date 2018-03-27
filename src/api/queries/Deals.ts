@@ -68,6 +68,10 @@ export const DealQuery = gql`
                 extrasZoning
                 extrasLandValue
                 extrasArea
+                extrasShapeType
+                extrasShapeSides
+                extrasFitProjects
+                extrasAnalyzed
             }
         }
     }

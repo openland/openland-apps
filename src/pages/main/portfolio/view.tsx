@@ -15,6 +15,10 @@ import { ParcelMaps } from '../../../components/ParcelMaps';
 import { XLink } from '../../../components/X/XLink';
 import { XArea } from '../../../components/X/XArea';
 import { XZoningCode } from '../../../components/X/XZoningCode';
+import { XDimensions } from '../../../components/X/XDimensions';
+import { XView } from '../../../components/X/XView';
+import { XTooltip } from '../../../components/Incubator/XTooltip';
+import { ProjectTypes } from '../../../components/ProjectTypes';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -80,8 +84,22 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                             {props.data.deal.location && (<XCard.Property title="Location">{props.data.deal.location}</XCard.Property>)}
                             {props.data.deal.address && (<XCard.Property title="Address">{props.data.deal.address}</XCard.Property>)}
                             {area != null && (<XCard.Property title="Area"><XArea area={area} /></XCard.Property>)}
-                            {props.data.deal.extrasLotShape && (<XCard.Property title="Lot Shape">{props.data.deal.extrasLotShape}</XCard.Property>)}
-                            {props.data.deal.extrasLotSize && (<XCard.Property title="Lot Size">{props.data.deal.extrasLotSize}</XCard.Property>)}
+                            {/* {props.data.deal.extrasLotShape && (<XCard.Property title="Lot Shape">{props.data.deal.extrasLotShape}</XCard.Property>)}
+                            {props.data.deal.extrasLotSize && (<XCard.Property title="Lot Size">{props.data.deal.extrasLotSize}</XCard.Property>)} */}
+                            {props.data.deal.parcel && props.data.deal.parcel.extrasShapeType &&
+                                <XCard.Property title="Parcel Shape">{props.data.deal.parcel.extrasShapeType}</XCard.Property>
+                            }
+                            {props.data.deal.parcel && props.data.deal.parcel!!.extrasShapeSides && props.data.deal.parcel!!.extrasShapeSides!!.length > 0 &&
+                                <XCard.Property title="Parcel Dimensions"> <XDimensions dimensions={props.data.deal.parcel!!.extrasShapeSides!!} /></XCard.Property>
+                            }
+                            <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
+                                {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed !== true &&
+                                    <XCard.Property title="Compatible buildings"><XView direction="row"><XTooltip title={`Openland systems detected that this parcel is too complex for automatical building placement.`} /> This parcel is too complex to analyze</XView></XCard.Property>
+                                }
+                                {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed === true && props.data.deal.parcel.extrasFitProjects &&
+                                    <XCard.Property title="Compatible buildings"><ProjectTypes types={props.data.deal.parcel.extrasFitProjects!!} /></XCard.Property>
+                                }
+                            </XWithRole>
                         </XCard.PropertyList>
                     </XCard.PropertyColumns>
                 </XCard>

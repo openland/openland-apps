@@ -13,6 +13,11 @@ import { XHorizontal } from './X/XHorizontal';
 import { XZoningCode } from './X/XZoningCode';
 import { trackEvent } from '../utils/analytics';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
+import { XTooltip } from './Incubator/XTooltip';
+import { XView } from './X/XView';
+import { XWithRole } from './X/XWithRole';
+import { XDimensions } from './X/XDimensions';
+import { ProjectTypes } from './ProjectTypes';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -133,7 +138,7 @@ export const ParcelCard = withParcelDirect((props) => {
 
                         <XCard.PropertyList title="Parcel details">
                             {props.data.item!!.extrasOwnerType &&
-                                <PropertyCell title="Owner Type"><OwnerTypeComponent type={props.data.item!!.extrasOwnerType!!}/></PropertyCell>
+                                <PropertyCell title="Owner Type"><OwnerTypeComponent type={props.data.item!!.extrasOwnerType!!} /></PropertyCell>
                             }
                             {props.data.item!!.extrasOwnerName &&
                                 <PropertyCell title="Owner Name">{props.data.item!!.extrasOwnerName}</PropertyCell>
@@ -144,6 +149,20 @@ export const ParcelCard = withParcelDirect((props) => {
                             {props.data.item!!.extrasArea &&
                                 <PropertyCell title="Parcel Area"><XArea area={props.data.item!!.extrasArea!!} /></PropertyCell>
                             }
+                            {props.data.item!!.extrasShapeType &&
+                                <PropertyCell title="Parcel Type">{props.data.item!!.extrasShapeType}</PropertyCell>
+                            }
+                            {props.data.item!!.extrasShapeSides && props.data.item!!.extrasShapeSides!!.length > 0 &&
+                                <PropertyCell title="Parcel Dimensions"> <XDimensions dimensions={props.data.item!!.extrasShapeSides!!} /></PropertyCell>
+                            }
+                            <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
+                                {props.data.item!!.extrasAnalyzed !== true &&
+                                    <PropertyCell title="Compatible buildings"><XView direction="row"><XTooltip title={`Openland systems detected that this parcel is too complex for automatical building placement.`} /> This parcel is too complex to analyze</XView></PropertyCell>
+                                }
+                                {props.data.item!!.extrasAnalyzed === true && props.data.item!!.extrasFitProjects &&
+                                    <PropertyCell title="Compatible buildings"><ProjectTypes types={props.data.item!!.extrasFitProjects!!} /></PropertyCell>
+                                }
+                            </XWithRole>
                             {props.data.item!!.extrasNeighborhood &&
                                 <PropertyCell title="Neighborhood">{props.data.item!!.extrasNeighborhood}</PropertyCell>
                             }

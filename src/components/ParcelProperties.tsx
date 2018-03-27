@@ -5,6 +5,11 @@ import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { XZoningCode } from './X/XZoningCode';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
+import { XTooltip } from './Incubator/XTooltip';
+import { XView } from './X/XView';
+import { XDimensions } from './X/XDimensions';
+import { XWithRole } from './X/XWithRole';
+import { ProjectTypes } from './ProjectTypes';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
     return (
@@ -23,6 +28,20 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     {props.item.extrasArea &&
                         <XCard.Property title="Parcel Area"><XArea area={props.item.extrasArea!!} /></XCard.Property>
                     }
+                    {props.item!!.extrasShapeType &&
+                        <XCard.Property title="Parcel Type">{props.item!!.extrasShapeType}</XCard.Property>
+                    }
+                    {props.item!!.extrasShapeSides && props.item!!.extrasShapeSides!!.length > 0 &&
+                        <XCard.Property title="Parcel Dimensions"> <XDimensions dimensions={props.item!!.extrasShapeSides!!} /></XCard.Property>
+                    }
+                    <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
+                        {props.item!!.extrasAnalyzed !== true &&
+                            <XCard.Property title="Compatible buildings"><XView direction="row"><XTooltip title={`Openland systems detected that this parcel is too complex for automatical building placement.`} /> This parcel is too complex to analyze</XView></XCard.Property>
+                        }
+                        {props.item!!.extrasAnalyzed === true && props.item!!.extrasFitProjects &&
+                            <XCard.Property title="Compatible buildings"><ProjectTypes types={props.item!!.extrasFitProjects!!} /></XCard.Property>
+                        }
+                    </XWithRole>
                     {props.item.extrasNeighborhood &&
                         <XCard.Property title="Neighborhood">{props.item.extrasNeighborhood}</XCard.Property>
                     }
