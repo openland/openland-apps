@@ -6,7 +6,6 @@ import { XMoney } from './X/XMoney';
 import { XZoningCode } from './X/XZoningCode';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { XTooltip } from './Incubator/XTooltip';
-import { XView } from './X/XView';
 import { XDimensions } from './X/XDimensions';
 import { XWithRole } from './X/XWithRole';
 import { ProjectTypes } from './ProjectTypes';
