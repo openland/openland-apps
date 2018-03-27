@@ -84,8 +84,6 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                             {props.data.deal.location && (<XCard.Property title="Location">{props.data.deal.location}</XCard.Property>)}
                             {props.data.deal.address && (<XCard.Property title="Address">{props.data.deal.address}</XCard.Property>)}
                             {area != null && (<XCard.Property title="Area"><XArea area={area} /></XCard.Property>)}
-                            {/* {props.data.deal.extrasLotShape && (<XCard.Property title="Lot Shape">{props.data.deal.extrasLotShape}</XCard.Property>)}
-                            {props.data.deal.extrasLotSize && (<XCard.Property title="Lot Size">{props.data.deal.extrasLotSize}</XCard.Property>)} */}
                             {props.data.deal.parcel && props.data.deal.parcel.extrasShapeType &&
                                 <XCard.Property title="Parcel Shape">{props.data.deal.parcel.extrasShapeType}</XCard.Property>
                             }
