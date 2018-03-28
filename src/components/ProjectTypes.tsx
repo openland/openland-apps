@@ -5,9 +5,9 @@ export function ProjectTypes(props: { types: string[] }) {
     let known: string[] = [];
     for (let k of props.types) {
         if (k === 'kassita-1') {
-            known.push('Kassita-1');
+            known.push('Elemynt-1');
         } else if (k === 'kassita-2') {
-            known.push('Kassita-2');
+            known.push('Elemynt-2');
         }
     }
     if (known.length === 0) {
