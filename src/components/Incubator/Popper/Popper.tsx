@@ -154,12 +154,12 @@ const showAnimationTop = glamor.keyframes({
     '0%': {
         opacity: 0,
         transform: 'scale(0)',
-        transformOrigin: '50% calc(100% + 11px)'
+        transformOrigin: '50% 60%'
     },
     '100%': {
         opacity: 1,
         transform: 'scale(1)',
-        transformOrigin: '50% calc(100% + 11px)'
+        transformOrigin: '50% 60%'
     }
 });
 
@@ -180,12 +180,12 @@ const hideAnimationTop = glamor.keyframes({
     '0%': {
         opacity: 1,
         transform: 'scale(1)',
-        transformOrigin: '50% calc(100% + 11px)'
+        transformOrigin: '50% 60%'
     },
     '100%': {
         opacity: 0,
         transform: 'scale(0)',
-        transformOrigin: '50% calc(100% + 11px)'
+        transformOrigin: '50% 60%'
     }
 });
 
@@ -247,7 +247,7 @@ const PopperDiv = Glamorous.div({
         display: 'block',
     },
 
-    '& .popper::after': {
+    '& .popper .popper-content::after': {
         display: 'block',
         content: `''`,
         width: 0,
@@ -260,7 +260,7 @@ const PopperDiv = Glamorous.div({
         marginBottom: 10
     },
 
-    '& .popper[data-placement^="top"]::after': {
+    '& .popper[data-placement^="top"] .popper-content::after': {
         borderWidth: '5px 5px 0 5px',
         borderColor: '#fff transparent transparent transparent',
         bottom: -5,
@@ -279,7 +279,7 @@ const PopperDiv = Glamorous.div({
         }
     },
 
-    '& .popper[data-placement^="bottom"]::after': {
+    '& .popper[data-placement^="bottom"] .popper-content::after': {
         borderWidth: '0 5px 5px 5px',
         borderColor: 'transparent transparent #fff transparent',
         top: -5,
@@ -292,7 +292,7 @@ const PopperDiv = Glamorous.div({
         marginLeft: 10
     },
 
-    '& .popper[data-placement^="right"]::after': {
+    '& .popper[data-placement^="right"] .popper-content::after': {
         borderWidth: '5px 5px 5px 0',
         borderColor: 'transparent #fff transparent transparent',
         left: -5,
@@ -305,7 +305,7 @@ const PopperDiv = Glamorous.div({
         marginRight: 10
     },
 
-    '& .popper[data-placement^="left"]::after': {
+    '& .popper[data-placement^="left"] .popper-content::after': {
         borderWidth: '5px 0 5px 5px',
         borderColor: 'transparent transparent transparent #fff',
         right: -5,

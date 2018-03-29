@@ -5,7 +5,7 @@ import { canUseDOM } from '../../utils/environment';
 import { XIcon } from '../X/XIcon';
 import { Manager, Target, Poppover } from './Popper';
 
-const XTooltipDiv = Glamorous.div<{leftMargin?: boolean, margin?: boolean, noMargin?: boolean}>((props) => ({
+const XTooltipDiv = Glamorous.div<{ leftMargin?: boolean, margin?: boolean, noMargin?: boolean }>((props) => ({
     display: 'flex',
     alignItems: 'center',
     marginRight: props.noMargin ? 0 : props.margin ? 6 : props.leftMargin ? undefined : 6,
@@ -29,25 +29,42 @@ interface XTooltipProps {
     noMargin?: boolean;
 }
 
-export class XTooltip extends React.Component<XTooltipProps, { class?: string, modalHover?: boolean, popper?: boolean }> {
+interface XTooltipState {
+    class?: string;
+    targetHover?: boolean;
+    modalHover?: boolean;
+    popper?: boolean;
+}
+
+export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
+    timeout: any;
+
     constructor(props: any) {
         super(props);
 
         this.state = {
             class: 'hide',
+            targetHover: false,
             modalHover: false,
             popper: false
         };
 
         this.modalOver = this.modalOver.bind(this);
         this.modalOut = this.modalOut.bind(this);
-        this.mouseOver = this.mouseOver.bind(this);
-        this.mouseOut = this.mouseOut.bind(this);
+        this.targetOver = this.targetOver.bind(this);
+        this.targetOut = this.targetOut.bind(this);
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.timeout);
     }
 
     modalOver() {
+        clearTimeout(this.timeout);
+
         this.setState({
             class: 'static',
+            targetHover: false,
             modalHover: true,
             popper: true
         });
@@ -58,44 +75,63 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string, m
             class: 'hide'
         });
 
-        setTimeout(() => {
-            this.setState({
-                popper: false
-            });
-        },         200);
-    }
-
-    mouseOver() {
-        this.setState({
-            class: 'show',
-            modalHover: false,
-            popper: true
-        });
-    }
-
-    mouseOut() {
-        setTimeout(() => {
-            if (this.state.modalHover === true) {
-                return;
+        this.timeout = setTimeout(() => {
+            if (this.state.targetHover === true) {
+                this.setState({
+                    class: 'static',
+                    targetHover: true,
+                    modalHover: false,
+                    popper: true
+                });
+                clearTimeout(this.timeout);
             } else {
                 this.setState({
                     class: 'hide',
                     modalHover: false
                 });
-                setTimeout(() => {
+                this.timeout = setTimeout(() => {
                     this.setState({
                         popper: false
                     });
-                },         200);
+                },                        200);
             }
-        },         100);
+        },                        200);
+    }
+
+    targetOver() {
+        this.setState({
+            class: 'show',
+            targetHover: true,
+            modalHover: false,
+            popper: true
+        });
+        clearTimeout(this.timeout);
+    }
+
+    targetOut() {
+        this.timeout = setTimeout(() => {
+            if (this.state.modalHover === true) {
+                return;
+            } else {
+                this.setState({
+                    class: 'hide',
+                    targetHover: false,
+                    modalHover: false
+                });
+                this.timeout = setTimeout(() => {
+                    this.setState({
+                        popper: false
+                    });
+                },                        200);
+            }
+        },                        100);
     }
 
     render() {
         let popover = (
-                <Poppover placement="top" onMouseover={this.modalOver} onMouseout={this.modalOut} class={this.state.class}>
-                    {this.props.title}
-                </Poppover>
+            <Poppover placement="top" onMouseover={this.modalOver} onMouseout={this.modalOut} class={this.state.class}>
+                {this.props.title}
+            </Poppover>
         );
         return (
             <Manager>
@@ -105,8 +141,8 @@ export class XTooltip extends React.Component<XTooltipProps, { class?: string, m
                             <TargetContent
                                 {...targetProps}
                                 style={{}}
-                                onMouseOver={this.mouseOver}
-                                onMouseOut={this.mouseOut}
+                                onMouseOver={this.targetOver}
+                                onMouseOut={this.targetOut}
                             >
                                 <XIcon icon="error" />
                             </TargetContent>
