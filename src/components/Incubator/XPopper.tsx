@@ -1,24 +1,84 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as PopperJS from 'popper.js';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import * as classnames from 'classnames';
 
-export interface PopperChildProps {
+export class Manager extends React.Component {
+    static childContextTypes = {
+        popperManager: () => {
+            return null;
+        },
+    };
+
+    private _targetNode: Element;
+
+    getChildContext() {
+        return {
+            popperManager: {
+                setTargetNode: this._setTargetNode,
+                getTargetNode: this._getTargetNode,
+            },
+        };
+    }
+
+    _setTargetNode = (node: React.ReactNode) => {
+        this._targetNode = ReactDOM.findDOMNode(node as any);
+    }
+
+    _getTargetNode = () => {
+        return this._targetNode;
+    }
+
+    render() {
+        return this.props.children;
+    }
+}
+
+interface TargetChildProps {
+    ref: React.Ref<any>;
+}
+
+interface TargetProps {
+    componentFactory: (props: TargetChildProps) => React.ReactNode;
+}
+
+class TargetClass extends React.Component<TargetProps> {
+    static contextTypes = {
+        popperManager: () => {
+            return null;
+        },
+    };
+
+    render() {
+        const { popperManager } = this.context;
+        const targetRef = (node: React.ReactNode) => {
+            if (popperManager != null) {
+                popperManager.setTargetNode(node);
+            }
+        };
+
+        const targetProps = { ref: targetRef };
+        return this.props.componentFactory(targetProps);
+    }
+}
+
+interface PopperChildProps {
     style: any;
     ref: (ref: React.ReactNode) => void;
     'data-placement': string | null;
 }
 
-export interface PopperProps extends Popper.PopperOptions {
+interface PopperProps extends Popper.PopperOptions {
     componentFactory: (popperProps: PopperChildProps) => React.ReactNode;
 }
 
-export interface PopperState {
+interface PopperState {
     data: Popper.Data | null;
 }
 
-export class Popper extends React.Component<PopperProps, PopperState> {
+class PopperClass extends React.Component<PopperProps, PopperState> {
     static contextTypes = {
         popperManager: () => {
             return null;
@@ -32,7 +92,7 @@ export class Popper extends React.Component<PopperProps, PopperState> {
     };
 
     private _popper: PopperJS.default;
-    private _arrowNode: React.ReactNode;
+    // private _arrowNode: React.ReactNode;
     private _node: Element;
     private _component: React.ReactNode;
 
@@ -48,15 +108,15 @@ export class Popper extends React.Component<PopperProps, PopperState> {
     getChildContext() {
         return {
             popper: {
-                setArrowNode: this._setArrowNode,
+                // setArrowNode: this._setArrowNode,
                 getArrowStyle: this._getArrowStyle,
             },
         };
     }
 
-    _setArrowNode = (node: React.ReactNode) => {
-        this._arrowNode = node;
-    }
+    // _setArrowNode = (node: React.ReactNode) => {
+    //     this._arrowNode = node;
+    // }
 
     _getArrowStyle = () => {
         if (!this.state.data || !this.state.data.offsets.arrow) {
@@ -108,9 +168,9 @@ export class Popper extends React.Component<PopperProps, PopperState> {
             modifiers: {
                 ...popperProps.modifiers,
                 applyStyle: { enabled: false },
-                arrow: {
-                    element: this._arrowNode as any,
-                },
+                // arrow: {
+                //     element: this._arrowNode as any,
+                // },
             },
             onUpdate: (data: Popper.Data) => {
                 this.setState({ data });
@@ -154,12 +214,12 @@ const showAnimationTop = glamor.keyframes({
     '0%': {
         opacity: 0,
         transform: 'scale(0)',
-        transformOrigin: '50% calc(100% + 11px)'
+        transformOrigin: '50% 60%'
     },
     '100%': {
         opacity: 1,
         transform: 'scale(1)',
-        transformOrigin: '50% calc(100% + 11px)'
+        transformOrigin: '50% 60%'
     }
 });
 
@@ -180,12 +240,12 @@ const hideAnimationTop = glamor.keyframes({
     '0%': {
         opacity: 1,
         transform: 'scale(1)',
-        transformOrigin: '50% calc(100% + 11px)'
+        transformOrigin: '50% 60%'
     },
     '100%': {
         opacity: 0,
         transform: 'scale(0)',
-        transformOrigin: '50% calc(100% + 11px)'
+        transformOrigin: '50% 60%'
     }
 });
 
@@ -247,7 +307,7 @@ const PopperDiv = Glamorous.div({
         display: 'block',
     },
 
-    '& .popper::after': {
+    '& .popper .popper-content::after': {
         display: 'block',
         content: `''`,
         width: 0,
@@ -260,7 +320,7 @@ const PopperDiv = Glamorous.div({
         marginBottom: 10
     },
 
-    '& .popper[data-placement^="top"]::after': {
+    '& .popper[data-placement^="top"] .popper-content::after': {
         borderWidth: '5px 5px 0 5px',
         borderColor: '#fff transparent transparent transparent',
         bottom: -5,
@@ -279,7 +339,7 @@ const PopperDiv = Glamorous.div({
         }
     },
 
-    '& .popper[data-placement^="bottom"]::after': {
+    '& .popper[data-placement^="bottom"] .popper-content::after': {
         borderWidth: '0 5px 5px 5px',
         borderColor: 'transparent transparent #fff transparent',
         top: -5,
@@ -292,7 +352,7 @@ const PopperDiv = Glamorous.div({
         marginLeft: 10
     },
 
-    '& .popper[data-placement^="right"]::after': {
+    '& .popper[data-placement^="right"] .popper-content::after': {
         borderWidth: '5px 5px 5px 0',
         borderColor: 'transparent #fff transparent transparent',
         left: -5,
@@ -305,7 +365,7 @@ const PopperDiv = Glamorous.div({
         marginRight: 10
     },
 
-    '& .popper[data-placement^="left"]::after': {
+    '& .popper[data-placement^="left"] .popper-content::after': {
         borderWidth: '5px 0 5px 5px',
         borderColor: 'transparent transparent transparent #fff',
         right: -5,
@@ -321,7 +381,7 @@ const PopperDiv = Glamorous.div({
 
 interface PopperDivProps {
     class?: string;
-    children?: any;
+    children: any;
     onMouseover?: Function;
     onMouseout?: Function;
     placement: 'auto-start'
@@ -341,24 +401,31 @@ interface PopperDivProps {
     | 'left-start';
 }
 
-export class Poppover extends React.Component<PopperDivProps> {
-    constructor(props: PopperDivProps) {
-        super(props);
-    }
-    render() {
-        return (
-            <PopperDiv>
-                <Popper
-                    placement={this.props.placement}
-                    componentFactory={(popperProps) => (
-                        <div {...popperProps} className={classnames('popper', this.props.class)} onMouseOver={() => this.props.onMouseover ? this.props.onMouseover() : undefined}>
-                            <div className="popper-content" onMouseOver={() => this.props.onMouseover ? this.props.onMouseover() : undefined} onMouseOut={() => this.props.onMouseout ? this.props.onMouseout() : undefined}>
-                                {this.props.children}
-                            </div>
+export function Popper(props: PopperDivProps) {
+    return (
+        <PopperDiv>
+            <PopperClass
+                placement={props.placement}
+                componentFactory={(popperProps) => (
+                    <div {...popperProps} className={classnames('popper', props.class)}>
+                        <div className="popper-content" onMouseOver={() => props.onMouseover ? props.onMouseover() : undefined} onMouseOut={() => props.onMouseout ? props.onMouseout() : undefined}>
+                            {props.children}
                         </div>
-                    )}
-                />
-            </PopperDiv>
-        );
-    }
+                    </div>
+                )}
+            />
+        </PopperDiv>
+    );
+}
+
+export function Target(props: { children: any }) {
+    return (
+        <TargetClass
+            componentFactory={(targetProps) => (
+                React.Children.map(props.children, child => (
+                    React.cloneElement(child as any, { ...targetProps })
+                ))
+            )}
+        />
+    );
 }
