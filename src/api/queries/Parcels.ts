@@ -5,6 +5,20 @@ export const ParcelFull = gql`
       id
       title
       geometry
+
+      compatibleBuildings {
+          key
+          title
+          width
+          height
+          center {
+              latitude
+              longitude
+          }
+          angle
+          shape
+      }
+
       extrasArea
       extrasSupervisorDistrict
       extrasZoning

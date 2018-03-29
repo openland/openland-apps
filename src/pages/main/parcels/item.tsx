@@ -14,8 +14,18 @@ import { XDate } from '../../../components/X/XDate';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { trackEvent } from '../../../utils/analytics';
+import { XHorizontal } from '../../../components/X/XHorizontal';
+import { XView } from '../../../components/X/XView';
+import { XDimensions } from '../../../components/X/XDimensions';
+import { XMapSource } from '../../../components/X/XMapSource';
+import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
+import { XVertical } from '../../../components/X/XVertical';
+import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
+import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
+import { XAngle } from '../../../components/X/XAngle';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
+    
     return (
         <>
             <XHead title={['Parcel #' + props.data.item.title]} />
@@ -80,7 +90,36 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                 {props.data.item.geometry && (
                     <ParcelMaps id={props.data.item.id} geometry={props.data.item.geometry} />
                 )}
-                {props.data.item.permits.length > 7 && (
+                {props.data.item.compatibleBuildings && props.data.item.compatibleBuildings.length > 0 && (
+                    <XVertical>
+                        {props.data.item.compatibleBuildings.map((v, i) => (
+                            <XCard key={v.key + '-' + i} shadow="medium">
+                                <XHorizontal>
+                                    <XView grow={1} basis={0}>
+                                        <XCard.PropertyList>
+                                            <XCard.Property title="Construction Type">{v.title}</XCard.Property>
+                                            {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
+                                            {v.angle && <XCard.Property title="Angle"><XAngle value={v.angle} /></XCard.Property>}
+                                        </XCard.PropertyList>
+                                    </XView>
+                                    <XView grow={1} basis={0}>
+                                        {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
+                                            <XMapSource id={'parcel'} data={sourceFromGeometry(props.data.item.geometry!!)} />
+                                            <XMapPolygonLayer source="parcel" layer="parcel" />
+
+                                            {v.center && <XMapSource id={'center'} data={sourceFromPoint(v.center!!.latitude, v.center!!.longitude)} />}
+                                            {v.center && <XMapPointLayer source="center" layer="center" />}
+
+                                            {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
+                                            {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
+                                        </XCard.Map>}
+                                    </XView>
+                                </XHorizontal>
+                            </XCard>
+                        ))}
+                    </XVertical>
+                )}
+                {props.data.item.permits.length > 0 && (
                     <XCard shadow="medium">
                         <XCard.Header text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} />
                         <XTable>

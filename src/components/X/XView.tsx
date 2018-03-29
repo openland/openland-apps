@@ -15,6 +15,7 @@ interface XViewProps {
     childWhiteSpace?: boolean;
     grow?: number | null;
     shrink?: number | null;
+    basis?: number | null;
 }
 
 function convertAlign(own: boolean, align?: Align | null): ForAlignConvertFunc {
@@ -73,6 +74,7 @@ export const XView = Glamorous.div<XViewProps>((props) => {
         flexDirection: props.direction ? props.direction : 'column',
         flexGrow: props.grow !== null && props.grow !== undefined ? props.grow : undefined,
         flexShrink: props.shrink !== null && props.shrink !== undefined ? props.shrink : undefined,
+        flexBasis: props.basis !== null && props.basis !== undefined ? props.basis : undefined,
         '> *': {
             margin: props.childWhiteSpace ? '0 7px' : undefined,
             '&:last-child': {
