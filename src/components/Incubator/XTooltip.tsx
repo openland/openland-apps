@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import { canUseDOM } from '../../utils/environment';
 import { XIcon } from '../X/XIcon';
-import { Manager, Target, Poppover } from './Popper';
+import { Manager, Target, Popper } from './XPopper';
 
 const XTooltipDiv = Glamorous.div<{ leftMargin?: boolean, margin?: boolean, noMargin?: boolean }>((props) => ({
     display: 'flex',
@@ -30,7 +30,7 @@ interface XTooltipProps {
 }
 
 interface XTooltipState {
-    class?: string;
+    class: string;
     targetHover?: boolean;
     modalHover?: boolean;
     popper?: boolean;
@@ -63,11 +63,19 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
         clearTimeout(this.timeout);
 
         this.setState({
-            class: 'static',
             targetHover: false,
             modalHover: true,
             popper: true
         });
+        if (this.state.class === 'hide') {
+            this.setState({
+                class: 'show'
+            });
+        } else {
+            this.setState({
+                class: 'static'
+            });
+        }
     }
 
     modalOut() {
@@ -77,13 +85,7 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
 
         this.timeout = setTimeout(() => {
             if (this.state.targetHover === true) {
-                this.setState({
-                    class: 'static',
-                    targetHover: true,
-                    modalHover: false,
-                    popper: true
-                });
-                clearTimeout(this.timeout);
+                return;
             } else {
                 this.setState({
                     class: 'hide',
@@ -93,9 +95,9 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
                     this.setState({
                         popper: false
                     });
-                },                        200);
+                },                        100);
             }
-        },                        200);
+        },                        100);
     }
 
     targetOver() {
@@ -122,32 +124,28 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
                     this.setState({
                         popper: false
                     });
-                },                        200);
+                },                        100);
             }
         },                        100);
     }
 
     render() {
         let popover = (
-            <Poppover placement="top" onMouseover={this.modalOver} onMouseout={this.modalOut} class={this.state.class}>
+            <Popper placement="top" class={this.state.class} onMouseover={this.modalOver} onMouseout={this.modalOut}>
                 {this.props.title}
-            </Poppover>
+            </Popper>
         );
         return (
             <Manager>
                 <XTooltipDiv leftMargin={this.props.leftMargin} margin={this.props.margin} noMargin={this.props.noMargin}>
-                    <Target
-                        componentFactory={(targetProps) => (
+                    <Target>
                             <TargetContent
-                                {...targetProps}
-                                style={{}}
                                 onMouseOver={this.targetOver}
                                 onMouseOut={this.targetOut}
                             >
                                 <XIcon icon="error" />
                             </TargetContent>
-                        )}
-                    />
+                    </Target>
                     {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popover, document.body)}
                 </XTooltipDiv>
             </Manager>

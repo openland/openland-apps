@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import ClickOutside from './ClickOutside';
 import { canUseDOM } from '../../utils/environment';
-import { Manager, Target, Poppover } from './Popper';
+import { Manager, Target, Popper } from './XPopper';
 import { XCloser } from '../X/XCloser';
 
 const CityTitle = Glamorous.div<{ inverted?: boolean }>((props) => ({
@@ -106,9 +106,9 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { class?:
 
         let popover = (
             <ClickOutside onClickOutside={this.handleClose}>
-                <Poppover placement="top" class={this.state.class}>
+                <Popper placement="top" class={this.state.class}>
                     {popper}
-                </Poppover>
+                </Popper>
             </ClickOutside>
         );
 
@@ -116,13 +116,11 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { class?:
             <XCloser handler={this.handleClose}>
                 <Manager>
                     <ConfirmWrapper>
-                        <Target
-                            componentFactory={(targetProps) => (
-                                <CityTitle {...targetProps} onClick={this.handleShow} inverted={this.props.inverted}>
-                                    {this.props.title}
-                                </CityTitle>
-                            )}
-                        />
+                        <Target>
+                            <CityTitle onClick={this.handleShow} inverted={this.props.inverted}>
+                                {this.props.title}
+                            </CityTitle>
+                        </Target>
                         {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popover, document.body)}
                     </ConfirmWrapper>
                 </Manager>
