@@ -20,7 +20,7 @@ jobs:
           root: /build
           paths:
             - './node_modules'
-            - './src'
+            - './packages'
             - './package.json'
             - './Dockerfile'
   docker:
