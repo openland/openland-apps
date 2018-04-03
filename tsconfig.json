@@ -6,22 +6,13 @@
       "es5",
       "es6",
       "dom",
-      // "es2015.core",
-      // "es2015.collection",
-      // "es2015.generator",
-      // "es2015.iterable",
-      // "es2015.promise",
-      // "es2015.proxy",
-      // "es2015.reflect",
-      // "es2015.symbol",
-      // "es2015.symbol.wellknown",
       "esnext.asynciterable"
     ],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
+    "rootDir": "packages",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -33,7 +24,11 @@
     "typeRoots": [
       "./node_modules/@types"
     ],
-    "outDir": "lib/"
+    "outDir": "lib/",
+    "baseUrl": ".",
+    "paths": {
+      "openland-api": ["packages/openland-api"]
+    }
   },
   "exclude": [
     "node_modules",
@@ -44,12 +39,13 @@
     "jest",
     "packages/openland-web/src/setupTests.ts",
     "packages/openland-web/src/static",
-    "packages/openland-web/src/less",
+    "packages/openland-web/src/less"
   ],
   "files": [
     "./packages/openland-web/typings.d.ts"
   ],
   "include": [
-    "./packages/openland-web/src/"
+    "./packages/openland-web",
+    "./packages/openland-api"
   ]
 }

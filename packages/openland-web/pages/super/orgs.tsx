@@ -2,7 +2,7 @@ import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
-import { withSuperAccounts, withSuperAccountAdd } from '../../api';
+import { withSuperAccounts, withSuperAccountAdd } from '../../api/';
 import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';
 import { XButton } from '../../components/X/XButton';

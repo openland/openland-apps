@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { ParcelCard } from '../../../components/ParcelCard';
-import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats, withDealsMap } from '../../../api';
+import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XMap } from '../../../components/X/XMap';
 import { XHead } from '../../../components/X/XHead';

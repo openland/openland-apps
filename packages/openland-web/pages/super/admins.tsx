@@ -1,7 +1,7 @@
 import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { withSuperAdmins, UserSelect, withSuperAdminAdd, withSuperAdminRemove } from '../../api';
+import { withSuperAdmins, UserSelect, withSuperAdminAdd, withSuperAdminRemove } from '../../api/';
 import { AppContent } from '../../components/App/AppContent';
 import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';

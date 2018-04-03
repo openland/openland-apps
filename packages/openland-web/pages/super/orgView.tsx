@@ -4,7 +4,11 @@ import { withApp } from '../../components/withApp';
 import { AppContent } from '../../components/App/AppContent';
 import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';
-import { withSuperAccount, withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountMemberAdd, UserSelect, withSuperAccountFeatureAdd, withSuperAccountFeatureRemove, withSuperAccountMemberRemove } from '../../api';
+import {
+    withSuperAccount, withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountMemberAdd,
+    UserSelect, withSuperAccountFeatureAdd, withSuperAccountFeatureRemove,
+    withSuperAccountMemberRemove
+} from '../../api/';
 import { XButtonMutation } from '../../components/X/XButtonMutation';
 import { XForm } from '../../components/X/XForm';
 import { XButton } from '../../components/X/XButton';

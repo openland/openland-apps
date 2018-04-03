@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import * as Types from '../api/Types';
+import Types from 'openland-api';
 import { withRouter, XWithRouter } from './withRouter';
 import { trackProfile } from '../utils/analytics';
 

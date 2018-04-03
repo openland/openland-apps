@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Types from '../api/Types';
+import Types from 'openland-api';
 
 export function OwnerTypeComponent(props: { type: Types.OwnerType }) {
     return (

@@ -5,7 +5,7 @@ import { AppContent } from '../../components/App/AppContent';
 import { XHead } from '../../components/X/XHead';
 import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';
-import { withFeatureFlags, withFeatureFlagAdd } from '../../api';
+import { withFeatureFlags, withFeatureFlagAdd } from '../../api/';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XButton } from '../../components/X/XButton';
 import { XForm } from '../../components/X/XForm';

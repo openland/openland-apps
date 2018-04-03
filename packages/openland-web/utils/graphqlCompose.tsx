@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import { QueryProps, ChildProps } from 'react-apollo';
 import { withRouter, XWithRouter } from '../components/withRouter';
 
 function compose(funcs: Function[]) {

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { XTable } from '../../../components/X/XTable';
-import { withParcel } from '../../../api/index';
+import { withParcel } from '../../../api/';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { formatAddresses } from '../../../utils/Addresses';

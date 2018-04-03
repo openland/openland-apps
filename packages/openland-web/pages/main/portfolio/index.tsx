@@ -6,7 +6,7 @@ import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { AppContent } from '../../../components/App/AppContent';
-import { withDeals, withDealAdd } from '../../../api';
+import { withDeals, withDealAdd } from '../../../api/';
 import { XLink } from '../../../components/X/XLink';
 import { XTable } from '../../../components/X/XTable';
 import { XModalRouted } from '../../../components/X/XModalRouted';

@@ -2,7 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { AppContent } from '../../../components/App/AppContent';
-import { withDeal, withDealAlterCombined, withDealRemove } from '../../../api';
+import { withDeal, withDealAlterCombined, withDealRemove } from '../../../api/';
 import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { DealForm } from '../../../components/DealForm';

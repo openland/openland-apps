@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
-import { withSearch } from '../../api';
+import { withSearch } from '../../api/';
 import { XCard } from '../X/XCard';
 import { XIcon } from '../X/XIcon';
 import { XArea } from '../X/XArea';

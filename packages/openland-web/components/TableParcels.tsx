@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Types from '../api/Types';
+import Types from 'openland-api';
 import { XIcon } from './X/XIcon';
 import { XTable } from './X/XTable';
 import { XArea } from './X/XArea';

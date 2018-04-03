@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AppSidebar } from './AppSidebar';
 import Glamorous from 'glamorous';
-import { withParcelsFavroutesCount } from '../../api';
+import { withParcelsFavroutesCount } from '../../api/';
 import { XWithRole } from '../X/XWithRole';
 
 const Div = Glamorous.div({

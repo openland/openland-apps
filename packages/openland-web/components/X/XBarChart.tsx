@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Types from '../../api/Types';
+import Types from 'openland-api';
 import { ResponsiveContainer, BarChart, CartesianGrid, Bar, Tooltip, XAxis, YAxis } from 'recharts';
 import { canUseDOM } from '../../utils/environment';
 

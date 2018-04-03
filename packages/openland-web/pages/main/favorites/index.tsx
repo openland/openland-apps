@@ -6,9 +6,9 @@ import { withApp } from '../../../components/withApp';
 import { AppContent } from '../../../components/App/AppContent';
 import { XCard } from '../../../components/X/XCard';
 import { XLink } from '../../../components/X/XLink';
-import { withParcelsFavorites } from '../../../api';
+import { withParcelsFavorites } from '../../../api/';
 import { TableParcels } from '../../../components/TableParcels';
-import * as Types from '../../../api/Types';
+import Types from 'openland-api';
 import { XButton } from '../../../components/X/XButton';
 import * as FileSaver from 'file-saver';
 

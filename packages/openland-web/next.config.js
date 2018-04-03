@@ -1,38 +1,75 @@
-const {
-    BundleAnalyzerPlugin
-} = require('webpack-bundle-analyzer')
-const {
-    ANALYZE
-} = process.env
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
+const path = require('path');
 
 const config = {
-    useFileSystemPublicRoutes: false,
     webpack(config, options) {
-        if (ANALYZE) {
-            config.plugins.push(new BundleAnalyzerPlugin({
-                analyzerMode: 'server',
-                analyzerPort: 8888,
-                openAnalyzer: true
-            }))
-        }
+
+        // Enable development sourcemaps
         if (options.dev) {
             config.devtool = 'cheap-module-eval-source-map'
         }
+
+        // Merge paths
+        const tsConfig = require("../../tsconfig.json");
+        const alias = {};
+        for (let key of Object.keys(tsConfig.compilerOptions.paths)) {
+            alias[key.replace(/\/\*$/, "")] = path.resolve(__dirname + '../../../', tsConfig.compilerOptions.paths[key][0].replace(/[\/]\*$/, ""));
+        }
+        config.resolve.alias = Object.assign({}, config.resolve.alias, alias);
+
+        // Ignore large library from parsing
         config.module.noParse = /(mapbox-gl)\.js$/
+
+        // Typescript
+        const {
+            dir,
+            defaultLoaders,
+            dev,
+            isServer
+        } = options
+
+        // Enable resolving of ts
+        config.resolve.extensions.push('.ts', '.tsx')
+
+        // Hot loader
+        if (dev && !isServer) {
+            config.module.rules.push({
+                test: /\.(ts|tsx)$/,
+                loader: 'hot-self-accept-loader',
+                include: [path.join(dir, 'pages')],
+                options: {
+                    extensions: /\.(ts|tsx)$/
+                }
+            })
+        }
+
+        // Loader
+        config.module.rules.push({
+            test: /\.(ts|tsx)$/,
+            include: [path.resolve(dir + '../../../')],
+            exclude: /node_modules/,
+            use: [
+                defaultLoaders.babel,
+                {
+                    loader: 'ts-loader',
+                    options: {
+                        transpileOnly: true
+                    }
+                }
+            ]
+        })
+
         return config;
     },
-    typescriptLoaderOptions: {
-        transpileOnly: true
-    },
+    // typescriptLoaderOptions: {
+    //     transpileOnly: true,
+    //     context: path.resolve(__dirname + '../../../'),
+    //     configFile: path.resolve(__dirname + '../../../tsconfig.json')
+    //     // configFile: 'tsconfig.json'
+    // },
+    useFileSystemPublicRoutes: false,
     analyzeServer: ["server", "both"].includes(process.env.BUNDLE_ANALYZE),
     analyzeBrowser: ["browser", "both"].includes(process.env.BUNDLE_ANALYZE)
 };
 
-// const withTypescript = require('next-awesome-typescript');
-// module.exports = withTypescript({}, config);
-
-const withTypescript = require('@zeit/next-typescript')
-module.exports = { ...withBundleAnalyzer(withTypescript(config)),
-    useFileSystemPublicRoutes: false
-};
+module.exports = withBundleAnalyzer(config)
