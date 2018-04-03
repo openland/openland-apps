@@ -42,14 +42,14 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts",
-    "src/static",
-    "src/less",
+    "packages/openland-web/src/setupTests.ts",
+    "packages/openland-web/src/static",
+    "packages/openland-web/src/less",
   ],
   "files": [
-    "./src/typings.d.ts"
+    "./packages/openland-web/typings.d.ts"
   ],
   "include": [
-    "./src/"
+    "./packages/openland-web/src/"
   ]
 }
