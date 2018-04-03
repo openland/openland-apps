@@ -44,12 +44,12 @@ export default withApp('Super Organizations', 'super-admin', withSuperAccounts((
                     </XTable.Header>
                     <XTable.Body>
                         {props.data.superAccounts.map((v) => (
-                            <XTable.Row key={v.id}>
+                            <XTable.Row key={v.id} noHover={true}>
                                 <XTable.Cell>{v.title}</XTable.Cell>
                                 <XTable.Cell>{v.state}</XTable.Cell>
                                 <XTable.Cell>
-                                    <div>
-                                        <XButton path={'/super/orgs/' + v.id}>View</XButton>
+                                    <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                                        <XButton path={'/super/orgs/' + v.id} borderless={true}>View</XButton>
                                     </div>
                                 </XTable.Cell>
                             </XTable.Row>

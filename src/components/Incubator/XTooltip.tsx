@@ -139,12 +139,12 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
             <Manager>
                 <XTooltipDiv leftMargin={this.props.leftMargin} margin={this.props.margin} noMargin={this.props.noMargin}>
                     <Target>
-                            <TargetContent
-                                onMouseOver={this.targetOver}
-                                onMouseOut={this.targetOut}
-                            >
-                                <XIcon icon="error" />
-                            </TargetContent>
+                        <TargetContent
+                            onMouseOver={this.targetOver}
+                            onMouseOut={this.targetOut}
+                        >
+                            <XIcon icon="error" />
+                        </TargetContent>
                     </Target>
                     {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popover, document.body)}
                 </XTooltipDiv>
