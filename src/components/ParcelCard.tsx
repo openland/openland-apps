@@ -197,8 +197,12 @@ export const ParcelCard = withParcelDirect((props) => {
                             || props.data.item!!.extrasBathrooms !== null
                             || props.data.item!!.metadata.currentUse !== null
                             || props.data.item!!.extrasSalesDate !== null
-                            || props.data.item!!.extrasSalesPriorDate !== null) && (
+                            || props.data.item!!.extrasSalesPriorDate !== null
+                            || props.data.item!!.extrasVacant !== null) && (
                                 <XCard.PropertyList title="Current Building">
+                                    {props.data.item!!.extrasVacant !== null &&
+                                        <PropertyCell title="Vacant">{props.data.item!!.extrasVacant ? 'Yes' : 'No'}</PropertyCell>
+                                    }
                                     {props.data.item!!.metadata.currentUse !== null &&
                                         <PropertyCell title="Current Use">{props.data.item!!.metadata.currentUse}</PropertyCell>
                                     }

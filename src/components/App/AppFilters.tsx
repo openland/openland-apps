@@ -4,6 +4,7 @@ import { XButton } from '../X/XButton';
 import { XModalTargeted } from '../X/XModalTargeted';
 import { XSelect, XSelectProps } from '../X/XSelect';
 import { withRouter, XWithRouter } from '../withRouter';
+import { XWithRole } from '../X/XWithRole';
 
 let AllLandUse = [
     'Residental',
@@ -406,6 +407,12 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
         if (this.props.router.query!!.isOkForTower) {
             clauses.push({ 'isOkForTower': JSON.parse(this.props.router.query!!.isOkForTower) });
         }
+        if (this.props.router.query!!.isVacant) {
+            clauses.push({ 'isVacant': JSON.parse(this.props.router.query!!.isVacant) });
+        }
+        if (this.props.router.query!!.compatible) {
+            clauses.push({ 'compatibleBuildings': JSON.parse(this.props.router.query!!.compatible) });
+        }
         if (this.props.router.query!!.filterOnSale) {
             clauses.push({ 'onSale': JSON.parse(this.props.router.query!!.filterOnSale) });
         }
@@ -515,6 +522,22 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                             </FilterCell>
                         </>
                     )}
+                    <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
+                        <FilterCell title="Is Vacant">
+                            <RoutedSelector
+                                fieldName="isVacant"
+                                options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
+                                placeholder="Is Vacant"
+                            />
+                        </FilterCell>
+                        <FilterCell title="Compatible buildings">
+                            <RoutedSelector
+                                fieldName="compatible"
+                                options={[{ value: 'kasita-1', label: 'Elemynt-1' }, { value: 'kasita-2', label: 'Elemynt-2' }]}
+                                placeholder="Building type"
+                            />
+                        </FilterCell>
+                    </XWithRole>
                     <FilterCell title="Area">
                         <FilterRange placeholderFrom="1000 ft" placeholderTo="1000000 ft" />
                     </FilterCell>
