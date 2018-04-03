@@ -22,7 +22,8 @@ let XCardFooterDiv = Glamorous.div({
     paddingBottom: 16,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: '#fff'
 });
 
 export function XCardFooter(props: { children?: any, text?: string | null }) {

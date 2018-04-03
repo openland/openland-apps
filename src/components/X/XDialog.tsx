@@ -10,7 +10,10 @@ export const XDialogContainer = Glamorous(XCard)({
     marginTop: 64,
     marginBottom: 64,
     pointerEvents: 'auto',
-    overflowY: 'auto'
+    border: 'none',
+    boxShadow: 'none',
+    display: 'block',
+    // overflowY: 'auto'
 });
 
 export const XDialogFullScreenContainer = Glamorous.div({

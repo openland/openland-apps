@@ -29,8 +29,8 @@ const contentAnimation = glamor.keyframes({
 
 const XModalContainer = Glamorous.div({
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    // flexDirection: 'column',
+    // alignItems: 'center',
     justifyContent: 'center',
     pointerEvents: 'none',
     alignSelf: 'stretch'
@@ -88,10 +88,10 @@ export class XModal extends React.Component<XModalProps, { isHiding: boolean }> 
                     },
                     content: {
                         position: 'absolute',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        display: 'block',
+                        // flexDirection: 'column',
+                        // alignItems: 'center',
+                        // justifyContent: 'center',
                         background: 'none',
                         border: 'none',
                         pointerEvents: 'none',
