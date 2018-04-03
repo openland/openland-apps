@@ -99,7 +99,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                         <XCard.PropertyList>
                                             <XCard.Property title="Construction Type">{v.title}</XCard.Property>
                                             {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
-                                            {v.angle && <XCard.Property title="Angle"><XAngle value={v.angle} /></XCard.Property>}
+                                            {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
                                         </XCard.PropertyList>
                                     </XView>
                                     <XView grow={1} basis={0}>

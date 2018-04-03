@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom';
 export class XStreetView extends React.Component<{ className?: string, location: { latitude: number, longitude: number } }, { google?: GoogleMapsLoader.google | null }> {
 
     private _isMounted = true;
+    private pano: google.maps.StreetViewPanorama | null = null;
 
     constructor(props: { className?: string, location: { latitude: number, longitude: number } }) {
         super(props);
@@ -36,6 +37,7 @@ export class XStreetView extends React.Component<{ className?: string, location:
                                 if (!this._isMounted) {
                                     return;
                                 }
+                                console.warn('New Panorama');
                                 let node = ReactDOM.findDOMNode(this);
                                 const panorama = new google.maps.StreetViewPanorama(node, { scrollwheel: false });
                                 panorama.setPano(data!!.location!!.pano!!);
@@ -55,5 +57,8 @@ export class XStreetView extends React.Component<{ className?: string, location:
 
     componentWillUnmount() {
         this._isMounted = false;
+        if (this.pano) {
+            this.pano.setVisible(false);
+        }
     }
 }

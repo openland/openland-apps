@@ -73,8 +73,12 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     || props.item!!.extrasBedrooms !== null
                     || props.item!!.extrasBathrooms !== null
                     || props.item!!.extrasBathrooms !== null
-                    || props.item!!.metadata.currentUse !== null) && (
+                    || props.item!!.metadata.currentUse !== null
+                    || props.item!!.extrasVacant !== null) && (
                         <XCard.PropertyList title="Current Building">
+                            {props.item!!.extrasVacant !== null &&
+                                <XCard.Property title="Vacant">{props.item!!.extrasVacant ? 'Yes' : 'No'}</XCard.Property>
+                            }
                             {props.item!!.metadata.currentUse !== null &&
                                 <XCard.Property title="Current Use">{props.item!!.metadata.currentUse}</XCard.Property>
                             }

@@ -32,6 +32,7 @@ export const ParcelFull = gql`
       extrasBathrooms
       extrasBedrooms
       extrasYear
+      extrasVacant
       extrasNeighborhood
       extrasMetroDistance
       extrasMetroStation
@@ -114,6 +115,7 @@ export const ParcelShort = gql`
       extrasBathrooms
       extrasBedrooms
       extrasYear
+      extrasVacant
       extrasNeighborhood
       extrasMetroDistance
       extrasMetroStation
