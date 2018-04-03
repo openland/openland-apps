@@ -31,7 +31,7 @@ export class XModalContent extends React.Component {
     }
 }
 
-export class XModalTargeted extends React.Component<{ title: string, fullScreen?: boolean, closeOnClick?: boolean, width?: number }, { isOpen: boolean }> {
+export class XModalTargeted extends React.Component<{ title: string, fullScreen?: boolean, closeOnClick?: boolean, width?: number | string }, { isOpen: boolean }> {
     static Target = XModalTarget;
     static Content = XModalContent;
 

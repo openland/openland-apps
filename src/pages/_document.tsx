@@ -74,6 +74,9 @@ export default class StateDocument extends Document {
                         body {
                             background: #F5F6F8;
                         }
+                        body.ReactModal__Body--open {
+                            overflow: hidden;
+                        }
                         input, textarea, button {
                             font-family: Nunito Sans, arial, sans-serif;
                         }

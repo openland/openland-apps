@@ -10,7 +10,8 @@ export const XModalRouted = withRouter<{ query: string } & XModalStyleProps>((pr
         <XModal
             title={props.title}
             isOpen={props.router.query ? !!props.router.query[props.query] : false}
-            onClosed={closedHandler}>
+            onClosed={closedHandler}
+        >
             {props.children}
         </XModal>
     );

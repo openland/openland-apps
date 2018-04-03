@@ -14,7 +14,7 @@ function loadCenter(src: string) {
 
 export function AStreetViewModal(props: { geometry: string }) {
     return (
-        <XModalTargeted title="Street View" closeOnClick={false}>
+        <XModalTargeted title="Street View" closeOnClick={false} width="auto">
             <XModalTargeted.Target>
                 <XButton>Street View</XButton>
             </XModalTargeted.Target>

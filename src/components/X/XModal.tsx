@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import * as ReactModal from 'react-modal';
 import { XDialog } from './XDialog';
@@ -27,19 +26,10 @@ const contentAnimation = glamor.keyframes({
     }
 });
 
-const XModalContainer = Glamorous.div({
-    display: 'flex',
-    // flexDirection: 'column',
-    // alignItems: 'center',
-    justifyContent: 'center',
-    pointerEvents: 'none',
-    alignSelf: 'stretch'
-});
-
 export interface XModalStyleProps {
     title: string;
     style?: 'full-screen' | 'normal';
-    width?: number; // DEPRECATED!
+    width?: number | string; // DEPRECATED!
 }
 
 export interface XModalProps extends XModalStyleProps {
@@ -87,18 +77,21 @@ export class XModal extends React.Component<XModalProps, { isHiding: boolean }> 
                         backgroundColor: 'rgba(0,0,0,0.75)'
                     },
                     content: {
-                        position: 'absolute',
+                        minWidth: this.props.width ? undefined : 600,
+                        maxWidth: this.props.style === 'full-screen' ? undefined : this.props.width ? undefined : 728,
+                        width: this.props.style === 'full-screen' ? '100%' : this.props.width ? this.props.width : undefined,
                         display: 'block',
-                        // flexDirection: 'column',
-                        // alignItems: 'center',
-                        // justifyContent: 'center',
                         background: 'none',
                         border: 'none',
-                        pointerEvents: 'none',
                         left: 0,
                         right: 0,
                         top: 0,
                         bottom: 0,
+                        margin: 'auto',
+                        // paddingLeft: this.props.style === 'full-screen' ? undefined : 64,
+                        // paddingRight: this.props.style === 'full-screen' ? undefined : 64,
+                        // paddingTop: this.props.style === 'full-screen' ? undefined : 64,
+                        // paddingBottom: this.props.style === 'full-screen' ? undefined : 64,
                         padding: 0,
                         borderRadius: 0,
                         animationDuration: '0.2s',
@@ -108,16 +101,14 @@ export class XModal extends React.Component<XModalProps, { isHiding: boolean }> 
                     }
                 }}
             >
-                <XModalContainer>
-                    <XDialog
-                        style={this.props.style}
-                        title={this.props.title}
-                        onClose={this.handleClose}
-                        width={this.props.width}
-                    >
-                        {this.props.children}
-                    </XDialog>
-                </XModalContainer>
+                <XDialog
+                    style={this.props.style}
+                    title={this.props.title}
+                    onClose={this.handleClose}
+                    width={this.props.width}
+                >
+                    {this.props.children}
+                </XDialog>
             </ReactModal>
         );
     }

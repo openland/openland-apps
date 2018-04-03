@@ -6,6 +6,6 @@ export const XCardStreetView = Glamorous(XStreetView)({
 });
 
 export const XCardStreetViewFullScreen = Glamorous(XStreetView)({
-    height: 'calc(100vh - 128px)',
+    height: 'calc(100vh - 192px)',
     width: 'calc(100vw - 128px)',
 });

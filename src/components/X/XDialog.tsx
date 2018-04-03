@@ -3,18 +3,20 @@ import Glamorous from 'glamorous';
 import { XCard } from './XCard';
 import { XButton } from './XButton';
 
-export const XDialogContainer = Glamorous(XCard)({
-    minWidth: '600px',
+export const XDialogContainer = Glamorous(XCard)<{ width?: number | string }>((props) => ({
+    display: 'block',
+    minWidth: props.width ? undefined : 600,
+    maxWidth: props.width ? undefined : 600,
+    width: props.width ? props.width : undefined,
+    margin: 'auto',
     marginLeft: 64,
     marginRight: 64,
     marginTop: 64,
     marginBottom: 64,
     pointerEvents: 'auto',
     border: 'none',
-    boxShadow: 'none',
-    display: 'block',
-    // overflowY: 'auto'
-});
+    boxShadow: 'none'
+}));
 
 export const XDialogFullScreenContainer = Glamorous.div({
     display: 'flex',
@@ -23,13 +25,13 @@ export const XDialogFullScreenContainer = Glamorous.div({
     minWidth: '1020px',
     width: '100%',
     height: '100vh',
-    backgroundColor: '#ffffff',
-    overflowY: 'auto',
+    backgroundColor: '#fff',
+    overflowY: 'scroll',
     position: 'relative',
     pointerEvents: 'auto',
 });
 
-export const XDialogFullScreenContainerInner = Glamorous.div<{ width?: number }>((props) => ({
+export const XDialogFullScreenContainerInner = Glamorous.div<{ width?: number | string }>((props) => ({
     display: 'block',
     flexDirection: 'column',
     alignItems: 'stretch',
@@ -50,7 +52,7 @@ export const XDialogFullScreenContainerHeader = Glamorous.div({
     marginBottom: 24
 });
 
-export function XDialog(props: { style?: 'full-screen' | 'normal', title: string, onClose?: () => void, children: any, width?: number }) {
+export function XDialog(props: { style?: 'full-screen' | 'normal', title: string, onClose?: () => void, children: any, width?: number | string }) {
     if (props.style === 'full-screen') {
         return (
             <XDialogFullScreenContainer>
@@ -67,7 +69,7 @@ export function XDialog(props: { style?: 'full-screen' | 'normal', title: string
         );
     } else {
         return (
-            <XDialogContainer shadow="medium">
+            <XDialogContainer shadow="medium" width={props.width}>
                 <XCard.Header text={props.title}>
                     <XButton borderless={true} icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
                 </XCard.Header>
