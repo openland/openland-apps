@@ -22,3 +22,4 @@ yarn-error.log*
 .idea/workspace.xml
 src/.next
 lib
+packages/openland-web/.next

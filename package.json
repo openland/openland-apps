@@ -123,19 +123,19 @@
 		"tslint-react": "^3.5.1"
 	},
 	"scripts": {
-		"dev": "API_ENDPOINT=\"https://api.statecrafthq.com\" nodemon src/server.ts",
-		"dev:local": "nodemon src/server.ts",
+		"dev": "API_ENDPOINT=\"https://api.statecrafthq.com\" nodemon ./packages/openland-web/server.ts",
+		"dev:local": "nodemon ./packages/openland-web/server.ts",
 		"lint": "NODE_ENV=production ./node_modules/.bin/tslint --project . --config ./tslint.json",
 		"compile": "NODE_ENV=production ./node_modules/.bin/tsc",
 		"test": "yarn lint && yarn compile",
-		"build": "NODE_ENV=production next build src",
-		"analyze": "BUNDLE_ANALYZE=both next build src",
-		"start": "NODE_ENV=production ./node_modules/.bin/ts-node --compilerOptions '{\"module\":\"commonjs\"}' src/server.ts ",
-		"promote": "kubectl set image deployment/openland-web app=`kubectl get deployment openland-web-next -o=jsonpath='{$.spec.template.spec.containers[:1].image}'` && kubectl rollout status deployments openland-web",
+		"build": "NODE_ENV=production next build ./packages/openland-web",
+		"analyze": "BUNDLE_ANALYZE=both next build ./packages/openland-web",
+		"start": "NODE_ENV=production ./node_modules/.bin/ts-node --compilerOptions '{\"module\":\"commonjs\"}' packages/openland-web/server.ts ",
 		"schema": "yarn schema:download && yarn schema:generate",
 		"schema:local": "yarn schema:download:local && yarn schema:generate",
 		"schema:download": "yarn apollo-codegen introspect-schema https://api.statecrafthq.com/api --output schema.json",
 		"schema:download:local": "yarn apollo-codegen introspect-schema http://localhost:9000/api --output schema.json",
-		"schema:generate": "yarn apollo-codegen generate ./src/api/queries/*.ts --schema schema.json --target typescript --output ./src/api/Types.ts --addTypename --tag-name gql"
+		"schema:generate": "yarn apollo-codegen generate ./packages/openland-web/api/queries/*.ts --schema schema.json --target typescript --output ./packages/openland-web/api/Types.ts --addTypename --tag-name gql",
+		"promote": "kubectl set image deployment/openland-web app=`kubectl get deployment openland-web-next -o=jsonpath='{$.spec.template.spec.containers[:1].image}'` && kubectl rollout status deployments openland-web"
 	}
 }
