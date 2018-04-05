@@ -59,7 +59,7 @@ const hideAnimationBottom = glamor.keyframes({
 });
 
 const PopperPortal = Glamorous.div({
-    '& > div .popper-content': {
+    '& .popper-content': {
         display: 'none',
         zIndex: 2,
         padding: 10,
@@ -74,7 +74,7 @@ const PopperPortal = Glamorous.div({
         fontWeight: 400,
     },
 
-    '& > div  .popper-content.hide': {
+    '& .popper-content.hide': {
         display: 'block',
         animationDuration: '0.2s',
         animationFillMode: 'forwards',
@@ -82,7 +82,7 @@ const PopperPortal = Glamorous.div({
         animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
     },
 
-    '& > div  .popper-content.show': {
+    '& .popper-content.show': {
         display: 'block',
         animationDuration: '0.2s',
         animationFillMode: 'forwards',
@@ -90,11 +90,11 @@ const PopperPortal = Glamorous.div({
         animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
     },
 
-    '& > div  .popper-content.static': {
+    '& .popper-content.static': {
         display: 'block',
     },
 
-    '& > div  .popper-content::after': {
+    '& .popper-content::after': {
         display: 'block',
         content: `''`,
         width: 0,
@@ -103,11 +103,11 @@ const PopperPortal = Glamorous.div({
         position: 'absolute'
     },
 
-    '& > div[x-placement^="top"] .popper-content': {
+    '&[x-placement^="top"] .popper-content': {
         marginBottom: 10
     },
 
-    '& > div[x-placement^="top"] .popper-content::after': {
+    '&[x-placement^="top"] .popper-content::after': {
         borderWidth: '5px 5px 0 5px',
         borderColor: '#fff transparent transparent transparent',
         bottom: -5,
@@ -116,7 +116,7 @@ const PopperPortal = Glamorous.div({
         marginBottom: 0
     },
 
-    '& > div[x-placement^="bottom"] .popper-content': {
+    '&[x-placement^="bottom"] .popper-content': {
         marginTop: 10,
         boxShadow: '0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08), 0 0 0 1px rgba(136, 152, 170, .1)',
         '&.show': {
@@ -127,7 +127,7 @@ const PopperPortal = Glamorous.div({
         }
     },
 
-    '& > div[x-placement^="bottom"] .popper-content::after': {
+    '&[x-placement^="bottom"] .popper-content::after': {
         borderWidth: '0 5px 5px 5px',
         borderColor: 'transparent transparent #fff transparent',
         top: -5,
@@ -136,11 +136,11 @@ const PopperPortal = Glamorous.div({
         marginBottom: 0
     },
 
-    '& > div[x-placement^="right"] .popper-content': {
+    '&[x-placement^="right"] .popper-content': {
         marginLeft: 10
     },
 
-    '& > div[x-placement^="right"] .popper-content::after': {
+    '&[x-placement^="right"] .popper-content::after': {
         borderWidth: '5px 5px 5px 0',
         borderColor: 'transparent #fff transparent transparent',
         left: -5,
@@ -149,11 +149,11 @@ const PopperPortal = Glamorous.div({
         marginRight: 0
     },
 
-    '& > div[x-placement^="left"] .popper-content': {
+    '&[x-placement^="left"] .popper-content': {
         marginRight: 10
     },
 
-    '& > div[x-placement^="left"] .popper-content::after': {
+    '&[x-placement^="left"] .popper-content::after': {
         borderWidth: '5px 0 5px 5px',
         borderColor: 'transparent transparent transparent #fff',
         right: -5,
@@ -312,11 +312,9 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
 
         let targetClone = React.cloneElement(target as any, { handler: this.handler as any });
         let children = (
-            <PopperPortal>
-                <div ref={this.handlePortal}>
-                    <div className={classnames('popper-content', this.state.class)}>
-                        {content}
-                    </div>
+            <PopperPortal innerRef={this.handlePortal}>
+                <div className={classnames('popper-content', this.state.class)}>
+                    {content}
                 </div>
             </PopperPortal>
         );
