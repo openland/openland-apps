@@ -25,10 +25,11 @@
       "./node_modules/@types"
     ],
     "outDir": "lib/",
-    "baseUrl": ".",
+    "baseUrl": "packages",
     "paths": {
-      "openland-api": ["packages/openland-api"]
-    }
+      "openland-api": ["openland-api"]
+    },
+    "importHelpers": true
   },
   "exclude": [
     "node_modules",
