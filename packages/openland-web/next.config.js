@@ -13,7 +13,7 @@ const config = {
         const tsConfig = require("../../tsconfig.json");
         const alias = {};
         for (let key of Object.keys(tsConfig.compilerOptions.paths)) {
-            alias[key.replace(/\/\*$/, "")] = path.resolve(__dirname + '../../../', tsConfig.compilerOptions.paths[key][0].replace(/[\/]\*$/, ""));
+            alias[key.replace(/\/\*$/, "")] = path.resolve(__dirname + '../../', tsConfig.compilerOptions.paths[key][0].replace(/[\/]\*$/, ""));
         }
         config.resolve.alias = Object.assign({}, config.resolve.alias, alias);
 
