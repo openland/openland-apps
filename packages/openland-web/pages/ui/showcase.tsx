@@ -21,6 +21,7 @@ import { AppContent } from '../../components/App/AppContent';
 import { XTooltip } from '../../components/Incubator/XTooltip';
 import { XConfirm } from '../../components/Incubator/XConfirm';
 import { CitySelector } from '../../components/Incubator/CitySelector';
+import { XTabs } from '../../components/X/XTabs';
 import { StateSelect } from '../../api';
 
 export default withApp('UI Showcase', 'viewer', (props) => {
@@ -67,6 +68,14 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                 </XCard>
                 <XCard>
                     <XCard.Content>
+                        <XTabs options={[
+                            { title: 'wqerwqr', key: 0 },
+                            { title: 'tasdfsawo', key: 1 },
+                            { title: '1234', key: 2 },
+                            { title: 'bvcxdsc', key: 3 },
+                            { title: 'two', key: 4 }
+                        ]}
+                        />
                         <XTitle>Default Button</XTitle>
                         <XVertical>
                             <XForm.DateSingle onDateChange={(date: any) => console.warn(date)} />
