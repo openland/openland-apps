@@ -1,7 +1,167 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import Glamorous from 'glamorous';
+import * as glamor from 'glamor';
 import { canUseDOM } from '../../utils/environment';
 import Popper from 'popper.js';
+import * as classnames from 'classnames';
+
+const showAnimationTop = glamor.keyframes({
+    '0%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% 60%'
+    },
+    '100%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% 60%'
+    }
+});
+
+const showAnimationBottom = glamor.keyframes({
+    '0%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% calc(-10% + 11px)'
+    },
+    '100%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% calc(-10% + 11px)'
+    }
+});
+
+const hideAnimationTop = glamor.keyframes({
+    '0%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% 60%'
+    },
+    '100%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% 60%'
+    }
+});
+
+const hideAnimationBottom = glamor.keyframes({
+    '0%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% calc(-10% + 11px)'
+    },
+    '100%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% calc(-10% + 11px)'
+    }
+});
+
+const PopperPortal = Glamorous.div({
+    '& .popper-content': {
+        display: 'none',
+        zIndex: 2,
+        padding: 10,
+        background: '#fff',
+        minWidth: 150,
+        maxWidth: 200,
+        borderRadius: 4,
+        boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
+        color: '#525f7f',
+        fontSize: 14,
+        lineHeight: 'normal',
+        fontWeight: 400,
+    },
+
+    '& .popper-content.hide': {
+        display: 'block',
+        animationDuration: '0.2s',
+        animationFillMode: 'forwards',
+        animationName: `${hideAnimationTop}`,
+        animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+    },
+
+    '& .popper-content.show': {
+        display: 'block',
+        animationDuration: '0.2s',
+        animationFillMode: 'forwards',
+        animationName: `${showAnimationTop}`,
+        animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
+    },
+
+    '& .popper-content.static': {
+        display: 'block',
+    },
+
+    '& .popper-content::after': {
+        display: 'block',
+        content: `''`,
+        width: 0,
+        height: 0,
+        borderStyle: 'solid',
+        position: 'absolute'
+    },
+
+    '&[x-placement^="top"] .popper-content': {
+        marginBottom: 10
+    },
+
+    '&[x-placement^="top"] .popper-content::after': {
+        borderWidth: '5px 5px 0 5px',
+        borderColor: '#fff transparent transparent transparent',
+        bottom: -5,
+        left: 'calc(50% - 5px)',
+        marginTop: 0,
+        marginBottom: 0
+    },
+
+    '&[x-placement^="bottom"] .popper-content': {
+        marginTop: 10,
+        boxShadow: '0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08), 0 0 0 1px rgba(136, 152, 170, .1)',
+        '&.show': {
+            animationName: `${showAnimationBottom} !important`,
+        },
+        '&.hide': {
+            animationName: `${hideAnimationBottom} !important`
+        }
+    },
+
+    '&[x-placement^="bottom"] .popper-content::after': {
+        borderWidth: '0 5px 5px 5px',
+        borderColor: 'transparent transparent #fff transparent',
+        top: -5,
+        left: 'calc(50% - 5px)',
+        marginTop: 0,
+        marginBottom: 0
+    },
+
+    '&[x-placement^="right"] .popper-content': {
+        marginLeft: 10
+    },
+
+    '&[x-placement^="right"] .popper-content::after': {
+        borderWidth: '5px 5px 5px 0',
+        borderColor: 'transparent #fff transparent transparent',
+        left: -5,
+        top: 'calc(50% - 5px)',
+        marginLeft: 0,
+        marginRight: 0
+    },
+
+    '&[x-placement^="left"] .popper-content': {
+        marginRight: 10
+    },
+
+    '&[x-placement^="left"] .popper-content::after': {
+        borderWidth: '5px 0 5px 5px',
+        borderColor: 'transparent transparent transparent #fff',
+        right: -5,
+        top: 'calc(50% - 5px)',
+        marginLeft: 0,
+        marginRight: 0
+    }
+});
 
 export class XPopoverTarget extends React.Component<{ handler?: (target: any) => void }> {
     static defaultProps = {
@@ -47,14 +207,19 @@ export type XPopoverPlacement =
     'left-end';
 
 export class XPopover extends React.Component<{ placement?: XPopoverPlacement }, {
-    target: any | null, portal: any | null, popper: Popper | null
+    target: any | null, portal: any | null, popper: Popper | null, class?: string
 }> {
     static Target = XPopoverTarget;
     static Content = XPopoverContent;
 
     constructor(props: {}) {
         super(props);
-        this.state = { target: null, portal: null, popper: null };
+        this.state = {
+            target: null,
+            portal: null,
+            popper: null,
+            class: 'hide'
+        };
     }
 
     handler = (target: any) => {
@@ -65,7 +230,8 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
             if (src.target === target) {
                 return {
                     target: null,
-                    popper: null
+                    popper: null,
+                    class: 'hide',
                 };
             } else {
                 let popper = null;
@@ -76,7 +242,8 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
                 }
                 return {
                     target: target,
-                    popper: popper
+                    popper: popper,
+                    class: 'show'
                 };
             }
         });
@@ -93,7 +260,8 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
                 }
                 return {
                     portal: e,
-                    popper: popper
+                    popper: popper,
+                    class: 'show'
                 };
             } else {
                 if (src.popper) {
@@ -101,7 +269,8 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
                 }
                 return {
                     portal: null,
-                    popper: null
+                    popper: null,
+                    class: 'hide'
                 };
             }
         });
@@ -143,9 +312,11 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
 
         let targetClone = React.cloneElement(target as any, { handler: this.handler as any });
         let children = (
-            <div ref={this.handlePortal} style={{ zIndex: 2 }}>
-                {content}
-            </div>
+            <PopperPortal innerRef={this.handlePortal}>
+                <div className={classnames('popper-content', this.state.class)}>
+                    {content}
+                </div>
+            </PopperPortal>
         );
 
         return (
