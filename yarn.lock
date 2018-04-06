@@ -1740,12 +1740,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-native@^0.52.23":
-  version "0.52.23"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.52.23.tgz#0d0614588e41586d0fd947c916795d134b7b1dbf"
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-router-dom@^4.2.3":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-4.2.3.tgz#06e0b67ff536adc0681dffdbe592ae91fb85887d"
