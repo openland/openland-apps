@@ -11,6 +11,7 @@ const XTabsWrapper = Glamorous.div({
 
 const XTabsOption = Glamorous.div<{ isSelect?: boolean }>((props) => ({
     cursor: 'pointer',
+    userSelect: 'none',
     flexGrow: 1,
     fontSize: 14,
     fontWeight: 500,

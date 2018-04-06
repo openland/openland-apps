@@ -66,16 +66,16 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                         </XGrid>
                     </XCard.Content>
                 </XCard>
+                <XTabs options={[
+                    { title: 'wqerwqr', key: 0 },
+                    { title: 'tasdfsawo', key: 1 },
+                    { title: '1234', key: 2 },
+                    { title: 'bvcxdsc', key: 3 },
+                    { title: 'two', key: 4 }
+                ]}
+                />
                 <XCard>
                     <XCard.Content>
-                        <XTabs options={[
-                            { title: 'wqerwqr', key: 0 },
-                            { title: 'tasdfsawo', key: 1 },
-                            { title: '1234', key: 2 },
-                            { title: 'bvcxdsc', key: 3 },
-                            { title: 'two', key: 4 }
-                        ]}
-                        />
                         <XTitle>Default Button</XTitle>
                         <XVertical>
                             <XForm.DateSingle onDateChange={(date: any) => console.warn(date)} />
