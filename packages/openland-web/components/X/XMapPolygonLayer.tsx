@@ -183,8 +183,8 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
             'layout': {},
             'paint': {
                 'line-color': hoverBorderColor,
-                'line-width': hoverBorderOpacity,
-                'line-opacity': hoverBorderWidth
+                'line-width': hoverBorderWidth,
+                'line-opacity': hoverBorderOpacity
             }
         });
 
@@ -192,8 +192,8 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         // Selected Fill
         //
 
-        let selectedFillColor = this.props.style && this.props.style.hoverFillColor !== undefined ? this.props.style.hoverFillColor : '#4428e1';
-        let selectedFillOpacity = this.props.style && this.props.style.hoverFillOpacity !== undefined ? this.props.style.hoverFillOpacity : 1;
+        let selectedFillColor = this.props.style && this.props.style.selectedFillColor !== undefined ? this.props.style.selectedFillColor : '#4428e1';
+        let selectedFillOpacity = this.props.style && this.props.style.selectedFillOpacity !== undefined ? this.props.style.selectedFillOpacity : 1;
 
         this.map.addLayer({
             'id': this.layer + '-fill-selected',
@@ -223,11 +223,13 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
             'source': this.source,
             'minzoom': minZoom,
             'maxzoom': maxZoom,
-            'layout': {},
+            'layout': {
+                'line-join': 'round'
+            },
             'paint': {
                 'line-color': selectedBorderColor,
-                'line-width': selectedBorderOpacity,
-                'line-opacity': selectedBorderWidth
+                'line-width': selectedBorderWidth,
+                'line-opacity': selectedBorderOpacity
             },
             'filter': ['==', 'id', selected]
         });
@@ -302,6 +304,10 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 this.map!!.setFilter(this.layer + '-borders', ['!=', 'id', selected]);
                 this.map!!.setFilter(this.layer + '-fill-selected', ['==', 'id', selected]);
                 this.map!!.setFilter(this.layer + '-borders-selected', ['==', 'id', selected]);
+                let source = this.map!!.getSource(this.sourceHover);
+                if (source.type === 'geojson') {
+                    source.setData({ 'type': 'FeatureCollection', features: [] });
+                }
             }
         }
     }

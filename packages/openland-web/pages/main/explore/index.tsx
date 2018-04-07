@@ -148,6 +148,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
     handleMap = (e: XMapCameraLocation) => {
         sessionStorage.setItem('__explore_location', JSON.stringify(e));
+        this.knownCameraLocation = e;
     }
 
     render() {
@@ -229,6 +230,12 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                             <XMapPolygonLayer
                                 source="parcels"
                                 layer="parcels"
+                                style={{
+                                    selectedFillOpacity: 0,
+                                    selectedBorderColor: '#4428E1',
+                                    selectedBorderWidth: 8,
+                                    selectedBorderOpacity: 1
+                                }}
                                 minZoom={16}
                                 flyOnClick={true}
                                 onClick={this.handleClick}
@@ -242,7 +249,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 maxZoom={16}
                                 style={{
                                     fillOpacity: 0.1,
-                                    borderOpacity: 0.3
+                                    borderOpacity: 0.3,
                                 }}
                                 flyOnClick={true}
                                 flyToMaxZoom={18}

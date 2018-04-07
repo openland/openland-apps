@@ -17,6 +17,7 @@ import { XTooltip } from './Incubator/XTooltip';
 import { XWithRole } from './X/XWithRole';
 import { XDimensions } from './X/XDimensions';
 import { ProjectTypes } from './ProjectTypes';
+import { XNumber } from './X/XNumber';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -148,9 +149,9 @@ export const ParcelCard = withParcelDirect((props) => {
                             {props.data.item!!.extrasArea &&
                                 <PropertyCell title="Parcel Area"><XArea area={props.data.item!!.extrasArea!!} /></PropertyCell>
                             }
-                            {props.data.item!!.extrasShapeType &&
+                            {/* {props.data.item!!.extrasShapeType &&
                                 <PropertyCell title="Parcel Type">{props.data.item!!.extrasShapeType}</PropertyCell>
-                            }
+                            } */}
                             {props.data.item!!.extrasShapeSides && props.data.item!!.extrasShapeSides!!.length > 0 &&
                                 <PropertyCell title="Parcel Dimensions"> <XDimensions dimensions={props.data.item!!.extrasShapeSides!!} /></PropertyCell>
                             }
@@ -213,22 +214,22 @@ export const ParcelCard = withParcelDirect((props) => {
                                         <PropertyCell title="Prior Sale Date">{props.data.item!!.extrasSalesPriorDate}</PropertyCell>
                                     }
                                     {props.data.item!!.extrasYear !== null &&
-                                        <PropertyCell title="Year Built">{props.data.item!!.extrasYear}</PropertyCell>
+                                        <PropertyCell title="Year Built"><XNumber value={props.data.item!!.extrasYear}/></PropertyCell>
                                     }
                                     {props.data.item!!.extrasUnits !== null &&
-                                        <PropertyCell title="Buildings Count">{props.data.item!!.extrasUnits}</PropertyCell>
+                                        <PropertyCell title="Buildings Count"><XNumber value={props.data.item!!.extrasUnits} /></PropertyCell>
                                     }
                                     {props.data.item!!.extrasStories !== null &&
-                                        <PropertyCell title="Stories Count">{props.data.item!!.extrasStories}</PropertyCell>
+                                        <PropertyCell title="Stories Count"><XNumber value={props.data.item!!.extrasStories} /></PropertyCell>
                                     }
                                     {props.data.item!!.extrasRooms !== null &&
-                                        <PropertyCell title="Rooms Count">{props.data.item!!.extrasRooms}</PropertyCell>
+                                        <PropertyCell title="Rooms Count"><XNumber value={props.data.item!!.extrasRooms} /></PropertyCell>
                                     }
                                     {props.data.item!!.extrasBedrooms !== null &&
-                                        <PropertyCell title="Bedrooms Count">{props.data.item!!.extrasBedrooms}</PropertyCell>
+                                        <PropertyCell title="Bedrooms Count"><XNumber value={props.data.item!!.extrasBedrooms} /></PropertyCell>
                                     }
                                     {props.data.item!!.extrasBathrooms !== null &&
-                                        <PropertyCell title="Bathrooms Count">{props.data.item!!.extrasBathrooms}</PropertyCell>
+                                        <PropertyCell title="Bathrooms Count"><XNumber value={props.data.item!!.extrasBathrooms} /></PropertyCell>
                                     }
                                 </XCard.PropertyList>
                             )}

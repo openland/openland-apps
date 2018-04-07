@@ -30,6 +30,12 @@ export const ParcelMaps = withRouter<{ id: string, geometry: string }>((props) =
                         layer="parcels"
                         minZoom={16}
                         selectedId={props.id}
+                        style={{
+                            selectedFillOpacity: 0,
+                            selectedBorderColor: '#4428E1',
+                            selectedBorderWidth: 8,
+                            selectedBorderOpacity: 1
+                        }}
                         onClick={(v) => props.router.push('/parcels/' + v)}
                     />
                     <XMapPolygonLayer

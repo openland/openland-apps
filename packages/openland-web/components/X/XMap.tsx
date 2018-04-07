@@ -224,6 +224,8 @@ export class XMap extends React.Component<XMapProps> {
         map.on('dragend', this.mapZoomHandler);
         map.on('zoomend', this.mapZoomHandler);
         map.on('rotateend', this.mapZoomHandler);
+        map.on('flyend', this.mapZoomHandler);
+        map.on('moveend', this.mapZoomHandler);
 
         if (this.props.onCameraLocationChanged) {
             this.props.onCameraLocationChanged({ zoom: map.getZoom(), latitude: map.getCenter().lat, longitude: map.getCenter().lng });
