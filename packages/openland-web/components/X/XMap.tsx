@@ -12,11 +12,16 @@ let Wrapper = Glamorous.div({
     height: '100%'
 });
 
+export type XMapCameraLocation = { latitude: number, longitude: number, zoom: number };
+
 interface XMapProps {
     scrollZoom?: boolean;
     mapStyle?: string;
-    focusPosition?: { latitude: number, longitude: number, zoom: number };
+    focusPosition?: XMapCameraLocation;
     className?: string;
+
+    lastKnownCameraLocation?: XMapCameraLocation | null;
+    onCameraLocationChanged?: (e: XMapCameraLocation) => void;
 }
 
 export interface DataSources {
@@ -141,6 +146,12 @@ export class XMap extends React.Component<XMapProps> {
                 initialZoom = this.props.focusPosition.zoom;
             }
 
+            if (this.props.lastKnownCameraLocation) {
+                initialLatitude = this.props.lastKnownCameraLocation.latitude;
+                initialLongitude = this.props.lastKnownCameraLocation.longitude;
+                initialZoom = this.props.lastKnownCameraLocation.zoom;
+            }
+
             let mapComponent = new map.Map({
                 container: domNode,
                 center: [initialLongitude, initialLatitude],
@@ -174,12 +185,18 @@ export class XMap extends React.Component<XMapProps> {
     }
 
     mapZoomHandler = () => {
-        if (this.map && this._isLoaded && this._isMounted && this.subscribers.size > 0) {
-            let zoom = this.map.getZoom();
-            let bounds = this.map.getBounds();
-            let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
-            for (let s of this.subscribers) {
-                s(state, this.map, this.sources);
+        if (this.map && this._isLoaded && this._isMounted) {
+            if (this.subscribers.size > 0) {
+                let zoom = this.map.getZoom();
+                let bounds = this.map.getBounds();
+                let state = { south: bounds.getSouth(), north: bounds.getNorth(), east: bounds.getEast(), west: bounds.getWest(), zoom: zoom };
+                for (let s of this.subscribers) {
+                    s(state, this.map, this.sources);
+                }
+            }
+
+            if (this.props.onCameraLocationChanged) {
+                this.props.onCameraLocationChanged({ zoom: this.map.getZoom(), latitude: this.map.getCenter().lat, longitude: this.map.getCenter().lng });
             }
         }
     }
@@ -206,6 +223,11 @@ export class XMap extends React.Component<XMapProps> {
 
         map.on('dragend', this.mapZoomHandler);
         map.on('zoomend', this.mapZoomHandler);
+        map.on('rotateend', this.mapZoomHandler);
+
+        if (this.props.onCameraLocationChanged) {
+            this.props.onCameraLocationChanged({ zoom: map.getZoom(), latitude: map.getCenter().lat, longitude: map.getCenter().lng });
+        }
     }
 
     componentWillUnmount() {

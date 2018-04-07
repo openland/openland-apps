@@ -7,7 +7,7 @@ import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
-import { XMap } from '../../../components/X/XMap';
+import { XMap, XMapCameraLocation } from '../../../components/X/XMap';
 import { XHead } from '../../../components/X/XHead';
 import { XWithRouter, withRouter } from '../../../components/withRouter';
 import { XSwitcher } from '../../../components/X/XSwitcher';
@@ -19,6 +19,7 @@ import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { trackEvent } from '../../../utils/analytics';
+import { canUseDOM } from '../../../utils/environment';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -116,9 +117,19 @@ const DealsSource = withDealsMap((props) => {
     return null;
 });
 class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { query?: any }> {
+
+    knownCameraLocation?: XMapCameraLocation;
+
     constructor(props: XWithRouter & UserInfoComponentProps) {
         super(props);
         this.state = {};
+
+        if (canUseDOM) {
+            let k = sessionStorage.getItem('__explore_location');
+            if (k != null) {
+                this.knownCameraLocation = JSON.parse(k);
+            }
+        }
     }
 
     handleUpdate = (e?: any) => {
@@ -128,6 +139,10 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
     handleClick = (id: string) => {
         trackEvent('Explore Parcel', { id: id });
         this.props.router.pushQuery('selectedParcel', id);
+    }
+
+    handleMap = (e: XMapCameraLocation) => {
+        sessionStorage.setItem('__explore_location', JSON.stringify(e));
     }
 
     render() {
@@ -183,7 +198,13 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                 </AppContentMap.Item>
                 <XMapContainer>
                     <XMapContainer2>
-                        <XMap key={this.props.router.query!!.mode || 'map'} mapStyle={mapStyle} focusPosition={focus}>
+                        <XMap
+                            key={this.props.router.query!!.mode || 'map'}
+                            mapStyle={mapStyle}
+                            focusPosition={focus}
+                            lastKnownCameraLocation={this.knownCameraLocation}
+                            onCameraLocationChanged={this.handleMap}
+                        >
                             <ParcelTileSource
                                 layer="parcels"
                                 minZoom={16}
