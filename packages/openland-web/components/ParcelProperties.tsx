@@ -9,8 +9,11 @@ import { XTooltip } from './Incubator/XTooltip';
 import { XDimensions } from './X/XDimensions';
 import { XWithRole } from './X/XWithRole';
 import { ProjectTypes } from './ProjectTypes';
+import { XNumber } from './X/XNumber';
+import { XDistance } from './X/XDistance';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
+
     return (
         <>
             <XCard.PropertyColumns>
@@ -27,8 +30,14 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     {props.item.extrasArea &&
                         <XCard.Property title="Parcel Area"><XArea area={props.item.extrasArea!!} /></XCard.Property>
                     }
-                    {props.item!!.extrasShapeType &&
-                        <XCard.Property title="Parcel Type">{props.item!!.extrasShapeType}</XCard.Property>
+                    {props.item.extrasArea &&
+                        <XCard.Property title="Assesor Area"><XArea area={props.item.extrasAssessorArea!!} /><XTooltip title={`Our systems detected that this value is unreliable.`} /></XCard.Property>
+                    }
+                    {props.item.extrasAssessorDepth &&
+                        <XCard.Property title="Assesor Frontage"><XDistance value={props.item.extrasAssessorFront!!} /><XTooltip title={`Our systems detected that this value is unreliable.`} /></XCard.Property>
+                    }
+                    {props.item.extrasAssessorDepth &&
+                        <XCard.Property title="Assesor Depth"><XDistance value={props.item.extrasAssessorDepth!!} /><XTooltip title={`Our systems detected that this value is unreliable.`} /></XCard.Property>
                     }
                     {props.item!!.extrasShapeSides && props.item!!.extrasShapeSides!!.length > 0 &&
                         <XCard.Property title="Parcel Dimensions"> <XDimensions dimensions={props.item!!.extrasShapeSides!!} /></XCard.Property>
@@ -89,22 +98,22 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                                 <XCard.Property title="Prior Sale Date">{props.item!!.extrasSalesPriorDate}</XCard.Property>
                             }
                             {props.item!!.extrasYear !== null &&
-                                <XCard.Property title="Year Built">{props.item!!.extrasYear}</XCard.Property>
+                                <XCard.Property title="Year Built"><XNumber value={props.item!!.extrasYear} /></XCard.Property>
                             }
                             {props.item!!.extrasUnits !== null &&
-                                <XCard.Property title="Buildings Count">{props.item!!.extrasUnits}</XCard.Property>
+                                <XCard.Property title="Buildings Count"><XNumber value={props.item!!.extrasUnits} /></XCard.Property>
                             }
                             {props.item!!.extrasStories !== null &&
-                                <XCard.Property title="Stories Count">{props.item!!.extrasStories}</XCard.Property>
+                                <XCard.Property title="Stories Count"><XNumber value={props.item!!.extrasStories} /></XCard.Property>
                             }
                             {props.item!!.extrasRooms !== null &&
-                                <XCard.Property title="Rooms Count">{props.item!!.extrasRooms}</XCard.Property>
+                                <XCard.Property title="Rooms Count"><XNumber value={props.item!!.extrasRooms} /></XCard.Property>
                             }
                             {props.item!!.extrasBedrooms !== null &&
-                                <XCard.Property title="Bedrooms Count">{props.item!!.extrasBedrooms}</XCard.Property>
+                                <XCard.Property title="Bedrooms Count"><XNumber value={props.item!!.extrasBedrooms} /></XCard.Property>
                             }
                             {props.item!!.extrasBathrooms !== null &&
-                                <XCard.Property title="Bathrooms Count">{props.item!!.extrasBathrooms}</XCard.Property>
+                                <XCard.Property title="Bathrooms Count"><XNumber value={props.item!!.extrasBathrooms} /></XCard.Property>
                             }
                         </XCard.PropertyList>
                     )}

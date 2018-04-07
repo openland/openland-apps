@@ -138,7 +138,7 @@
 		"schema:local": "yarn schema:download:local && yarn schema:generate",
 		"schema:download": "yarn apollo-codegen introspect-schema https://api.statecrafthq.com/api --output schema.json",
 		"schema:download:local": "yarn apollo-codegen introspect-schema http://localhost:9000/api --output schema.json",
-		"schema:generate": "yarn apollo-codegen generate ./packages/openland-web/api/queries/*.ts --schema schema.json --target typescript --output ./packages/openland-web/api/Types.ts --addTypename --tag-name gql",
+		"schema:generate": "yarn apollo-codegen generate ./packages/openland-api/queries/*.ts --schema schema.json --target typescript --output ./packages/openland-api/Types.ts --addTypename --tag-name gql",
 		"promote": "kubectl set image deployment/openland-web app=`kubectl get deployment openland-web-next -o=jsonpath='{$.spec.template.spec.containers[:1].image}'` && kubectl rollout status deployments openland-web"
 	}
 }

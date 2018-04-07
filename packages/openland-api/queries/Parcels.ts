@@ -20,6 +20,9 @@ export const ParcelFull = gql`
       }
 
       extrasArea
+      extrasAssessorArea
+      extrasAssessorFront
+      extrasAssessorDepth
       extrasSupervisorDistrict
       extrasZoning
       extrasLandValue
@@ -102,6 +105,9 @@ export const ParcelShort = gql`
       id
       title
       geometry
+      extrasAssessorArea
+      extrasAssessorFront
+      extrasAssessorDepth
       extrasArea
       extrasSupervisorDistrict
       extrasZoning
