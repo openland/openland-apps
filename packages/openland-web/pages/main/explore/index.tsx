@@ -129,11 +129,16 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
             if (k != null) {
                 this.knownCameraLocation = JSON.parse(k);
             }
+            let q = sessionStorage.getItem('__explore_query');
+            if (q != null) {
+                this.state = { query: JSON.parse(q) };
+            }
         }
     }
 
     handleUpdate = (e?: any) => {
         this.setState({ query: e });
+        sessionStorage.setItem('__explore_query', JSON.stringify(e));
     }
 
     handleClick = (id: string) => {
