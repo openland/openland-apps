@@ -95,9 +95,15 @@ Router.onRouteChangeComplete = () => {
 };
 
 Router.onRouteChangeError = (error) => {
+    // Ignore if route canceled
+    if ('' + error === 'Error: Route Cancelled') {
+        return;
+    }
+
     // tslint:disable
     console.log(`Naviating Errored`);
     // tslint:enable
+
     trackError(error);
     stopProgress(0);
 };
