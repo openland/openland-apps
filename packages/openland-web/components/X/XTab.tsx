@@ -37,39 +37,39 @@ export const XTabItem = Glamorous(XLink)<{asArrow?: boolean}>((props) => ({
                 display: 'block',
                 position: 'absolute',
                 zIndex: 2,
-                right: -4,
-                top: -12,
-                border: '7px solid transparent',
-                borderBottom: '8px solid #6A63ED'
+                right: -3,
+                top: -11,
+                border: '5px solid transparent',
+                borderBottom: '9px solid #6A63ED'
             }
         },
         '&::after': {
-            right: -50,
+            right: -42,
             top: -4,
             border: '28px solid transparent',
-            borderLeft: '24px solid #fff',
+            borderLeft: '15px solid #fff',
         },
         '&::before': {
-            right: -51,
+            right: -43,
             top: -4,
             border: '28px solid transparent',
-            borderLeft: '24px solid #E8EDF4',
+            borderLeft: '15px solid #E5EBF2',
         }
     },
     '& > .top-shadow': {
         display: 'none'
     },
     '&::after': {
-        right: -50,
+        right: -42,
         top: -4,
         border: '28px solid transparent',
-        borderLeft: '24px solid #f6f9fc',
+        borderLeft: '15px solid #f6f9fc',
     },
     '&::before': {
-        right: -51,
+        right: -43,
         top: -4,
         border: '28px solid transparent',
-        borderLeft: '24px solid #E8EDF4',
+        borderLeft: '15px solid #E5EBF2',
     }
 }));
 

@@ -70,6 +70,10 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                 <XTab>
                     <XTab.Item path="/ui" asArrow={true}>Inbox</XTab.Item>
                     <XTab.Item asArrow={true}>Something</XTab.Item>
+                    <XTab.Item asArrow={true}>Something</XTab.Item>
+                    <XTab.Item asArrow={true}>Something</XTab.Item>
+                    <XTab.Item asArrow={true}>Something</XTab.Item>
+                    <XTab.Item asArrow={true}>Something</XTab.Item>
                     <XTab.Item>Other One</XTab.Item>
                 </XTab>
                 <XCard shadow="medium">
