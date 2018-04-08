@@ -34,6 +34,13 @@ routes.add('/portfolio/:dealId', '/main/portfolio/view');
 routes.add('/portfolio/:dealId/', '/main/portfolio/view');
 
 //
+// Candidates
+//
+
+routes.add('/candidates', '/main/candidates/index');
+routes.add('/candidates/', '/main/candidates/index');
+
+//
 // People
 //
 
