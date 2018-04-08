@@ -13,10 +13,10 @@ let Link = Glamorous(XLink)({
     color: '#3297d3',
 });
 
-export default withApp('Incoming opportunities', 'viewer', () => {
+export default withApp('Zoning Review', 'viewer', () => {
     return (
         <>
-            <XHead title="Incoming opportunities" />
+            <XHead title="Zoning Review" />
             <AppContent>
                 <XTab>
                     <XTab.Item path="/sourcing" asArrow={true}>Incoming</XTab.Item>
@@ -27,13 +27,12 @@ export default withApp('Incoming opportunities', 'viewer', () => {
                     <XTab.Item path="/sourcing/snoozed">Snoozed</XTab.Item>
                 </XTab>
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header text="Incoming opportunities">
-                        <XButton>Add</XButton>
+                    <XCard.Header text="Zoning Review">
                         <XButton style="dark">Start Review</XButton>
                     </XCard.Header>
-                    <XCard.Empty text="You can find your first parcel at" icon="sort">
-                        <Link path="/">
-                            Explore page
+                    <XCard.Empty text="Review your first parcel at " icon="sort">
+                        <Link path="/sourcing">
+                            Incoming page
                         </Link>
                     </XCard.Empty>
                 </XCard>

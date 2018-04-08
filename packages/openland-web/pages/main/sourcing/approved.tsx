@@ -1,22 +1,15 @@
 import '../../../globals';
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
-import { XButton } from '../../../components/X/XButton';
 import { AppContent } from '../../../components/App/AppContent';
 import { XTab } from '../../../components/X/XTab';
-import { XLink } from '../../../components/X/XLink';
 
-let Link = Glamorous(XLink)({
-    color: '#3297d3',
-});
-
-export default withApp('Incoming opportunities', 'viewer', () => {
+export default withApp('Approved opportunities', 'viewer', () => {
     return (
         <>
-            <XHead title="Incoming opportunities" />
+            <XHead title="Approved opportunities" />
             <AppContent>
                 <XTab>
                     <XTab.Item path="/sourcing" asArrow={true}>Incoming</XTab.Item>
@@ -27,15 +20,8 @@ export default withApp('Incoming opportunities', 'viewer', () => {
                     <XTab.Item path="/sourcing/snoozed">Snoozed</XTab.Item>
                 </XTab>
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header text="Incoming opportunities">
-                        <XButton>Add</XButton>
-                        <XButton style="dark">Start Review</XButton>
-                    </XCard.Header>
-                    <XCard.Empty text="You can find your first parcel at" icon="sort">
-                        <Link path="/">
-                            Explore page
-                        </Link>
-                    </XCard.Empty>
+                    <XCard.Header text="Approved opportinities" />
+                    <XCard.Empty text="Here will be approved opportunities" icon="sort" />
                 </XCard>
             </AppContent>
         </>

@@ -39,6 +39,16 @@ routes.add('/deals/:dealId/', '/main/deals/view');
 
 routes.add('/sourcing', '/main/sourcing/index');
 routes.add('/sourcing/', '/main/sourcing/index');
+routes.add('/sourcing/rejected', '/main/sourcing/rejected');
+routes.add('/sourcing/rejected/', '/main/sourcing/rejected');
+routes.add('/sourcing/approved', '/main/sourcing/approved');
+routes.add('/sourcing/approved/', '/main/sourcing/approved');
+routes.add('/sourcing/snoozed', '/main/sourcing/snoozed');
+routes.add('/sourcing/snoozed/', '/main/sourcing/snoozed');
+routes.add('/sourcing/zoning', '/main/sourcing/zoning');
+routes.add('/sourcing/zoning/', '/main/sourcing/zoning');
+routes.add('/sourcing/unit', '/main/sourcing/unit');
+routes.add('/sourcing/unit/', '/main/sourcing/unit');
 
 //
 // People
