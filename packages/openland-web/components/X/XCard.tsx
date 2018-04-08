@@ -120,11 +120,12 @@ interface XCardDivProps {
     loading?: boolean;
     bounce?: boolean;
     borderless?: boolean;
+    asRow?: boolean;
 }
 
 let XCardDiv = Glamorous.div<XCardDivProps>((props) => ({
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: props.asRow ? 'row' : 'column',
     background: '#ffffff',
     border: props.borderless ? undefined : (props.shadow === 'none' || props.shadow === undefined) ? '1px solid rgba(38,38,38,0.08)' : (props.shadow === 'medium' ? '1px solid #efecec' : undefined),
     boxShadow: props.shadow === 'normal'
@@ -190,6 +191,7 @@ interface XCardProps {
     href?: string | null;
     bounce?: boolean;
     borderless?: boolean;
+    asRow?: boolean;
 }
 
 export class XCard extends React.Component<XCardProps> {
@@ -218,15 +220,27 @@ export class XCard extends React.Component<XCardProps> {
     static ListItem = XCardListItem;
 
     render() {
+
+        const {
+            className,
+            shadow,
+            separators,
+            path,
+            href,
+            bounce,
+            borderless,
+            asRow
+        } = this.props;
+
         return (
-            <XCardDiv className={this.props.className} shadow={this.props.shadow} loading={this.props.loading} bounce={this.props.bounce} borderless={this.props.borderless}>
-                {(this.props.path || this.props.href) ? (
-                    <XLink path={this.props.path} href={this.props.href}>
-                        {this.props.separators && <XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>}
-                        {!this.props.separators && this.props.children}
+            <XCardDiv className={className} shadow={shadow} loading={this.props.loading} bounce={bounce} borderless={borderless} asRow={asRow}>
+                {(path || href) ? (
+                    <XLink path={path} href={href}>
+                        {separators && <XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>}
+                        {!separators && this.props.children}
                     </XLink>
                 ) : (
-                        (this.props.separators)
+                        (separators)
                             ? (<XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>)
                             : (<>{this.props.children}</>)
                     )}
