@@ -120,12 +120,11 @@ interface XCardDivProps {
     loading?: boolean;
     bounce?: boolean;
     borderless?: boolean;
-    asRow?: boolean;
 }
 
 let XCardDiv = Glamorous.div<XCardDivProps>((props) => ({
     display: 'flex',
-    flexDirection: props.asRow ? 'row' : 'column',
+    flexDirection: 'column',
     background: '#ffffff',
     border: props.borderless ? undefined : (props.shadow === 'none' || props.shadow === undefined) ? '1px solid rgba(38,38,38,0.08)' : (props.shadow === 'medium' ? '1px solid #efecec' : undefined),
     boxShadow: props.shadow === 'normal'
@@ -228,12 +227,11 @@ export class XCard extends React.Component<XCardProps> {
             path,
             href,
             bounce,
-            borderless,
-            asRow
+            borderless
         } = this.props;
 
         return (
-            <XCardDiv className={className} shadow={shadow} loading={this.props.loading} bounce={bounce} borderless={borderless} asRow={asRow}>
+            <XCardDiv className={className} shadow={shadow} loading={this.props.loading} bounce={bounce} borderless={borderless}>
                 {(path || href) ? (
                     <XLink path={path} href={href}>
                         {separators && <XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>}

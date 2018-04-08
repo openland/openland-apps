@@ -21,6 +21,7 @@ import { AppContent } from '../../components/App/AppContent';
 import { XTooltip } from '../../components/Incubator/XTooltip';
 import { XConfirm } from '../../components/Incubator/XConfirm';
 import { CitySelector } from '../../components/Incubator/CitySelector';
+import { ParcelShortList } from '../../components/Incubator/ParcelShortList';
 import { XTab } from '../../components/X/XTab';
 import { StateSelect } from '../../api';
 
@@ -71,6 +72,20 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                     <XTab.Item>Something</XTab.Item>
                     <XTab.Item>Other One</XTab.Item>
                 </XTab>
+                <XCard shadow="medium">
+                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <ParcelShortList>
+                        <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" path="/ui"/>
+                        <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
+                        <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
+                        <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
+                        <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
+                    </ParcelShortList>
+                    </div>
+                </XCard>
+                <XCard asRow={true}>
+                    <div>qwe</div>
+                </XCard>
                 <XCard>
                     <XCard.Content>
                         <XTitle>Default Button</XTitle>
