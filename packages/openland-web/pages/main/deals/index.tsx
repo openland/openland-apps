@@ -21,16 +21,16 @@ let Link = Glamorous(XLink)({
 
 const DealsForm = withDealAdd((props) => <DealForm mutation={props.add} />);
 
-export default withApp('Portfolio', 'viewer', withDeals((props) => {
+export default withApp('Deals', 'viewer', withDeals((props) => {
     return (
         <>
-            <XHead title="Portfolio" />
+            <XHead title="Deals" />
             <XModalRouted title="Add New project" query="add">
                 <DealsForm />
             </XModalRouted>
             <AppContent>
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header text="Portfolio">
+                    <XCard.Header text="Deals">
                         <XButton query={{ field: 'add', value: 'true' }}>Add</XButton>
                     </XCard.Header>
                     {props.data.deals!!.length > 0 && (
