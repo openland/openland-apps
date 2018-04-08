@@ -7,7 +7,7 @@ import { XArea } from './X/XArea';
 
 export const OpportunitiesTable = withSourcing((props) => {
     return (
-        <XCard.Loader loading={(props.data.loading || false) && props.data.alphaOpportunities.edges.length === 0}>
+        <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
             {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length !== 0 && (
                 <>
                     <XTable>
@@ -46,7 +46,7 @@ export const OpportunitiesTable = withSourcing((props) => {
                     </XCard.Footer>
                 </>
             )}
-            {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length === 0 && (
+            {(!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0) && (
                 <>
                     {props.children}
                 </>

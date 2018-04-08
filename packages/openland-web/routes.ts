@@ -50,6 +50,13 @@ routes.add('/sourcing/zoning/', '/main/sourcing/zoning');
 routes.add('/sourcing/unit', '/main/sourcing/unit');
 routes.add('/sourcing/unit/', '/main/sourcing/unit');
 
+routes.add('/sourcing/review', '/main/sourcing/review/initial');
+routes.add('/sourcing/review/', '/main/sourcing/review/initial');
+routes.add('/sourcing/zoning/review', '/main/sourcing/review/zoning');
+routes.add('/sourcing/zoning/review/', '/main/sourcing/review/zoning');
+routes.add('/sourcing/unit/review', '/main/sourcing/review/unit');
+routes.add('/sourcing/unit/review/', '/main/sourcing/review/unit');
+
 //
 // People
 //

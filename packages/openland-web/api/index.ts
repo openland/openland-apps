@@ -4,7 +4,7 @@ import { graphQLTileSource } from '../utils/graphqlTileSource';
 import { graphqlSelect } from '../utils/graphqlSelect';
 import { graphqlRouted } from '../utils/graphqlRouted';
 import { graphqlMutation } from '../utils/graphqlMutation';
-import { graphqlCompose3, graphqlCompose2 } from '../utils/graphqlCompose';
+import { graphqlCompose3, graphqlCompose2, graphqlCompose4 } from '../utils/graphqlCompose';
 import Types, { Queries } from 'openland-api';
 
 //
@@ -213,5 +213,12 @@ export const ParcelSelect = graphqlSelect(Queries.Parcels.ParcelsSearchQuery);
 // Sourcing
 //
 
-export const withSourcing = graphqlRouted<Types.SourcingQuery>(Queries.Sourcing.SourcingQuery, ['filter', 'cursor', 'page']);
+export const withSourcing = graphqlRouted<Types.SourcingQuery>(Queries.Sourcing.SourcingQuery, ['filter', 'cursor', 'page'], false, 'network-only');
 export const withAddOpportunity = graphqlMutation<{ add: MutationFunc<{}> }>(Queries.Sourcing.AddOpportunityMutation, { name: 'add' });
+
+export const withNextOpportunity = graphqlRouted<Types.NextOpportunityQuery>(Queries.Sourcing.NextOpportunityQuery, [], true, 'network-only');
+export const withApproveOpportunity = graphqlMutation<{ approve: MutationFunc<{}> }>(Queries.Sourcing.ApproveOpportunityMutation, { name: 'approve' });
+export const withRejectOpportunity = graphqlMutation<{ reject: MutationFunc<{}> }>(Queries.Sourcing.RejectOpportunityMutation, { name: 'reject' });
+export const withSnoozeOpportunity = graphqlMutation<{ snooze: MutationFunc<{}> }>(Queries.Sourcing.RejectOpportunityMutation, { name: 'snooze' });
+
+export const withOpportunity = graphqlCompose4(withNextOpportunity, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity);

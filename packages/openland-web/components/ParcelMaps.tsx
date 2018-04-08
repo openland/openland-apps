@@ -18,7 +18,7 @@ const StreetView = Glamorous(XStreetView)({
     width: '100%'
 });
 
-export const ParcelMaps = withRouter<{ id: string, geometry: string }>((props) => {
+export const ParcelMaps = withRouter<{ id: string, geometry: string, disableNavigation?: boolean }>((props) => {
     return (
         <XHorizontal>
             <Wrapper shadow="medium">
@@ -36,7 +36,10 @@ export const ParcelMaps = withRouter<{ id: string, geometry: string }>((props) =
                             selectedBorderWidth: 8,
                             selectedBorderOpacity: 1
                         }}
-                        onClick={(v) => props.router.push('/parcels/' + v)}
+                        flyOnClick={props.disableNavigation !== true}
+                        allowHover={props.disableNavigation !== true}
+                        allowClick={props.disableNavigation !== true}
+                        onClick={props.disableNavigation !== true ? (v) => props.router.push('/parcels/' + v) : undefined}
                     />
                     <XMapPolygonLayer
                         source="blocks"

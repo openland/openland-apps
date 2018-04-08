@@ -29,8 +29,7 @@ export default withApp('Incoming opportunities', 'viewer', () => {
                 </XTab>
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="Incoming opportunities">
-                        <XButton>Add</XButton>
-                        <XButton style="dark">Start Review</XButton>
+                        <XButton style="dark" path="/sourcing/review">Start Review</XButton>
                     </XCard.Header>
                     <OpportunitiesTable variables={{ state: 'INCOMING' }}>
                         <XCard.Empty text="You can find your first parcel at" icon="sort">

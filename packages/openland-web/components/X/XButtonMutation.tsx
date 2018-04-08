@@ -2,9 +2,15 @@ import * as React from 'react';
 import { MutationFunc } from 'react-apollo';
 import { XButtonStyleProps, XButton } from './XButton';
 
-export class XButtonMutation extends React.Component<XButtonStyleProps & { mutation: MutationFunc<{}>, variables?: any }, { loading: boolean }> {
+interface XButtonMutationProps extends XButtonStyleProps {
+    mutation: MutationFunc<{}>;
+    variables?: any;
+    onSuccess?: () => void;
+}
 
-    constructor(props: XButtonStyleProps & { mutation: MutationFunc<{}> }) {
+export class XButtonMutation extends React.Component<XButtonMutationProps, { loading: boolean }> {
+
+    constructor(props: XButtonMutationProps) {
         super(props);
         this.state = { loading: false };
     }
@@ -24,6 +30,9 @@ export class XButtonMutation extends React.Component<XButtonStyleProps & { mutat
         } catch (e) {
             console.warn(e);
         } finally {
+            if (this.props.onSuccess) {
+                this.props.onSuccess();
+            }
             this.setState({ loading: false });
         }
     }

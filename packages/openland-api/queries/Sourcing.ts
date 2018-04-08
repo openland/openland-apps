@@ -43,3 +43,33 @@ export const AddOpportunityMutation = gql`
         }
     }
 `;
+
+export const ApproveOpportunityMutation = gql`
+    mutation ApproveOpportunityMutation($opportunityId: ID!, $state: OpportunityState!) {
+        alphaApprove(opportunityId: $opportunityId, state: $state)
+    }
+`;
+export const RejectOpportunityMutation = gql`
+    mutation RejectOpportunityMutation($opportunityId: ID!, $state: OpportunityState!) {
+        alphaReject(opportunityId: $opportunityId, state: $state)
+    }
+`;
+export const SnoozeOpportunityMutation = gql`
+    mutation SnoozeOpportunityMutation($opportunityId: ID!, $state: OpportunityState!) {
+        alphaSnooze(opportunityId: $opportunityId, state: $state)
+    }
+`;
+
+export const NextOpportunityQuery = gql`
+    query NextOpportunity($state: OpportunityState!) {
+        alphaNextReviewOpportunity(state: $state) {
+            id
+            state
+            priority
+            parcel {
+                ...ParcelFull
+            }
+        }
+    }
+    ${ParcelFull}
+`;

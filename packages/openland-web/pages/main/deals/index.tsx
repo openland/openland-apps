@@ -45,7 +45,7 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
                             </XTable.Header>
                             <XTable.Body>
                                 {props.data.deals!!.map((d) => (
-                                    <XTable.Row key={d.id} path={'/portfolio/' + d.id}>
+                                    <XTable.Row key={d.id} path={'/deals/' + d.id}>
                                         <XTable.Cell textAlign="left">
                                             {d.parcel && d.parcel.title}
                                         </XTable.Cell>
