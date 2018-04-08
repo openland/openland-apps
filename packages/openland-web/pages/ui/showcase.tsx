@@ -21,7 +21,7 @@ import { AppContent } from '../../components/App/AppContent';
 import { XTooltip } from '../../components/Incubator/XTooltip';
 import { XConfirm } from '../../components/Incubator/XConfirm';
 import { CitySelector } from '../../components/Incubator/CitySelector';
-import { XTabs } from '../../components/X/XTabs';
+import { XTab } from '../../components/X/XTab';
 import { StateSelect } from '../../api';
 
 export default withApp('UI Showcase', 'viewer', (props) => {
@@ -66,14 +66,11 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                         </XGrid>
                     </XCard.Content>
                 </XCard>
-                <XTabs options={[
-                    { title: 'wqerwqr', key: 0 },
-                    { title: 'tasdfsawo', key: 1 },
-                    { title: '1234', key: 2 },
-                    { title: 'bvcxdsc', key: 3 },
-                    { title: 'two', key: 4 }
-                ]}
-                />
+                <XTab>
+                    <XTab.Item>Inbox</XTab.Item>
+                    <XTab.Item>Something</XTab.Item>
+                    <XTab.Item>Other One</XTab.Item>
+                </XTab>
                 <XCard>
                     <XCard.Content>
                         <XTitle>Default Button</XTitle>

@@ -13,6 +13,8 @@ export interface XLinkProps {
     onClick?: React.MouseEventHandler<HTMLAnchorElement>;
     clickOnDown?: boolean;
     autoClose?: boolean;
+    active?: boolean;
+    as?: React.ComponentType<XLinkRender>;
 }
 
 function normalizePath(src: string): string {
@@ -21,6 +23,40 @@ function normalizePath(src: string): string {
     }
     return src.endsWith('/') ? src.substring(0, src.length - 1) : src;
 }
+
+export interface XLinkRender {
+
+    // Style settings
+    className?: string;
+    active: boolean;
+
+    // Link settings
+    newTab: boolean;
+    href?: string;
+
+    // Handlers
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+}
+
+class XLinkAnchorRender extends React.Component<XLinkRender> {
+    render() {
+        let className = this.props.className ? this.props.className : undefined;
+        if (this.props.active) {
+            if (className) {
+                className += ' is-active';
+            } else {
+                className = 'is-active';
+            }
+        }
+        let target: string | undefined = undefined;
+        if (this.props.newTab) {
+            target = '_blank';
+        }
+        return (<a className={className} onClick={this.props.onClick} href={this.props.href} target={target}>{this.props.children}</a>);
+    }
+}
+
+// export class XLinkDefault 
 
 export class XLink extends XRouterReceiver<XLinkProps> {
 
@@ -34,6 +70,9 @@ export class XLink extends XRouterReceiver<XLinkProps> {
     }
 
     resolveIsActive() {
+        if (this.props.active !== undefined) {
+            return this.props.active;
+        }
         if (this.props.path) {
             let ncurrent = normalizePath(this.router.path);
             let ntarget = normalizePath(this.props.path);
@@ -92,9 +131,8 @@ export class XLink extends XRouterReceiver<XLinkProps> {
     }
 
     render() {
-        var className = this.props.className ? this.props.className : undefined;
         let href = '#';
-        let target: string | undefined = undefined;
+        let newTab = false;
         let isActive = this.resolveIsActive();
 
         // Resolving Url
@@ -105,20 +143,21 @@ export class XLink extends XRouterReceiver<XLinkProps> {
             href = Routes.findAndGetUrls(path).urls.as;
         } else if (this.props.href) {
             href = this.props.href;
-            target = '_blank';
+            newTab = true;
         }
 
-        // Resolving class
-        if (isActive) {
-            if (className) {
-                className += ' is-active';
-            } else {
-                className = 'is-active';
-            }
-        }
+        let Render: React.ComponentType<XLinkRender> = XLinkAnchorRender;
 
         return (
-            <a className={className} onClick={this.onClick} href={href} target={target}>{this.props.children}</a>
+            <Render
+                active={isActive}
+                className={this.props.className}
+                newTab={newTab}
+                href={href}
+                onClick={this.onClick}
+            >
+                {this.props.children}
+            </Render>
         );
     }
 }

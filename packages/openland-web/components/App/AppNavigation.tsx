@@ -13,6 +13,7 @@ export const AppNavigation = withParcelsFavroutesCount((props) => {
         <>
             <AppSidebar.Item path="/" title="Explore" icon="explore" />
             <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']}>
+                <AppSidebar.Item path="/candidates" title="Candidates" icon="sort" activateForSubpaths={true} />
                 <AppSidebar.Item path="/portfolio" title={props.data.dealsCount ? `Portfolio (${props.data.dealsCount})` : 'Portfolio'} icon="work" activateForSubpaths={true} />
             </XWithRole>
             <AppSidebar.Item path="/favorites" title={props.data.parcelFavoritesCount ? `Favorites (${props.data.parcelFavoritesCount})` : 'Favorites'} icon="favorite" />
