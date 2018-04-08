@@ -208,3 +208,9 @@ export const withDealRemove = graphqlMutation<{ remove: MutationFunc<{}> }>(Quer
 export const withDealAlter = graphqlMutation<{ alter: MutationFunc<{}> }>(Queries.Deals.AlterDealMitation, { name: 'alter', params: ['dealId'] });
 export const withDealAlterCombined = graphqlCompose2(withDealAlter, withDeal);
 export const ParcelSelect = graphqlSelect(Queries.Parcels.ParcelsSearchQuery);
+
+//
+// Sourcing
+//
+
+export const withSourcing = graphqlRouted<Types.SourcingQuery>(Queries.Sourcing.SourcingQuery, ['filter', 'cursor', 'page']);

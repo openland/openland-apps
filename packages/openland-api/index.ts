@@ -12,6 +12,7 @@ import * as Addressing from './queries/Addressing';
 import * as Deals from './queries/Deals';
 import * as User from './queries/User';
 import * as FeatureFlags from './queries/FeatureFlag';
+import * as Sourcing from './queries/Sourcing';
 
 export default ATypes;
 export let Queries = {
@@ -27,5 +28,6 @@ export let Queries = {
     Addressing,
     Deals,
     User,
-    FeatureFlags
+    FeatureFlags,
+    Sourcing
 };

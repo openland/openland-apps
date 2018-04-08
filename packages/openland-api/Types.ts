@@ -113,6 +113,23 @@ export enum PermitSorting {
 }
 
 
+export enum OpportunityState {
+  INCOMING = "INCOMING",
+  APPROVED_INITIAL = "APPROVED_INITIAL",
+  APPROVED_ZONING = "APPROVED_ZONING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+  SNOOZED = "SNOOZED",
+}
+
+
+export enum OpportunityPriority {
+  LOW = "LOW",
+  NORMAL = "NORMAL",
+  HIGH = "HIGH",
+}
+
+
 export interface AccountQuery {
   me:  {
     __typename: "User",
@@ -2077,6 +2094,129 @@ export interface SearchQuery {
         } >,
       } >,
       total: number,
+    },
+  },
+};
+
+export interface SourcingQuery {
+  alphaOpportunities:  {
+    __typename: "OpportunityConnection",
+    edges:  Array< {
+      __typename: "OpportunityEdge",
+      node:  {
+        __typename: "Opportunity",
+        id: string,
+        state: OpportunityState,
+        priority: OpportunityPriority,
+        parcel:  {
+          __typename: "Parcel",
+          id: string,
+          title: string,
+          geometry: string | null,
+          compatibleBuildings:  Array< {
+            __typename: "BuildingLocation",
+            key: string,
+            title: string,
+            width: number,
+            height: number,
+            center:  {
+              __typename: "Geo",
+              latitude: number,
+              longitude: number,
+            } | null,
+            angle: number | null,
+            shape: string | null,
+          } > | null,
+          extrasArea: number | null,
+          extrasAssessorArea: number | null,
+          extrasAssessorFront: number | null,
+          extrasAssessorDepth: number | null,
+          extrasSupervisorDistrict: string | null,
+          extrasZoning: Array< string > | null,
+          extrasLandValue: number | null,
+          extrasImprovementValue: number | null,
+          extrasPropertyValue: number | null,
+          extrasFixturesValue: number | null,
+          extrasStories: number | null,
+          extrasUnits: number | null,
+          extrasRooms: number | null,
+          extrasBathrooms: number | null,
+          extrasBedrooms: number | null,
+          extrasYear: number | null,
+          extrasVacant: boolean | null,
+          extrasNeighborhood: string | null,
+          extrasMetroDistance: number | null,
+          extrasMetroStation: string | null,
+          extrasTrainDistance: number | null,
+          extrasTrainStation: string | null,
+          extrasTrainLocalDistance: number | null,
+          extrasTrainLocalStation: string | null,
+          extrasNearestTransitDistance: number | null,
+          extrasNearestTransitType: string | null,
+          extrasNearestTransitStation: string | null,
+          extrasLandUse: Array< string > | null,
+          extrasSalesDate: string | null,
+          extrasSalesPriorDate: string | null,
+          extrasRecordationDate: string | null,
+          extrasOwnerName: string | null,
+          extrasOwnerType: OwnerType | null,
+          extrasAddress: string | null,
+          extrasShapeType: string | null,
+          extrasShapeSides: Array< number > | null,
+          extrasFitProjects: Array< string > | null,
+          extrasAnalyzed: boolean | null,
+          addresses:  Array< {
+            __typename: "StreetNumber",
+            streetId: string,
+            streetName: string,
+            streetNameSuffix: string | null,
+            streetNumber: number,
+            streetNumberSuffix: string | null,
+          } >,
+          block:  {
+            __typename: "Block",
+            id: string,
+            title: string,
+            extrasArea: number | null,
+          } | null,
+          metadata:  {
+            __typename: "ParcelMetadata",
+            description: string | null,
+            available: boolean | null,
+            currentUse: ParcelUse | null,
+            isOkForTower: boolean | null,
+          },
+          likes:  {
+            __typename: "Likes",
+            liked: boolean,
+            count: number | null,
+          },
+          permits:  Array< {
+            __typename: "Permit",
+            id: string,
+            createdAt: string | null,
+            status: PermitStatus | null,
+            statusUpdatedAt: string | null,
+            type: PermitType | null,
+            typeWood: boolean | null,
+            description: string | null,
+            approvalTime: number | null,
+            proposedUnits: number | null,
+            existingUnits: number | null,
+            governmentalUrl: string,
+          } >,
+        },
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
     },
   },
 };
