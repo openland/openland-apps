@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withUserInfo } from '../UserInfo';
-export const XWithRole = withUserInfo<{ role: string | string[] }>((props) => {
+export const XWithRole = withUserInfo<{ role: string | string[], negate?: boolean }>((props) => {
     let hasRole = false;
     if (Array.isArray(props.role)) {
         for (let r of props.role) {
@@ -12,9 +12,17 @@ export const XWithRole = withUserInfo<{ role: string | string[] }>((props) => {
     } else {
         hasRole = props.roles.indexOf(props.role) >= 0;
     }
-    if (hasRole) {
-        return <>{props.children}</>;
+    if (props.negate) {
+        if (!hasRole) {
+            return <>{props.children}</>;
+        } else {
+            return null;
+        }
     } else {
-        return null;
+        if (hasRole) {
+            return <>{props.children}</>;
+        } else {
+            return null;
+        }
     }
 });

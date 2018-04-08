@@ -6,12 +6,13 @@ import { GraphQLRoutedComponentProps } from './graphql';
 import { prepareParams, getComponentDisplayName } from './utils';
 
 export function graphqlRouted<TResult>(document: DocumentNode, params: ({ key: string, default?: string } | string)[] = []) {
-  return function (component: React.ComponentType<GraphQLRoutedComponentProps<TResult>>): React.ComponentType<{}> {
-    let qlWrapper = graphql<TResult, XWithRouter, GraphQLRoutedComponentProps<TResult>>(document, {
-      options: (props: XWithRouter) => {
+  return function (component: React.ComponentType<GraphQLRoutedComponentProps<TResult>>): React.ComponentType<{ variables?: any }> {
+    let qlWrapper = graphql<TResult, XWithRouter & { variables?: any }, GraphQLRoutedComponentProps<TResult>>(document, {
+      options: (props: XWithRouter & { variables?: any }) => {
         return {
           variables: {
-            ...prepareParams(params, props.router.routeQuery)
+            ...prepareParams(params, props.router.routeQuery),
+            ...props.variables
           }
         };
       }

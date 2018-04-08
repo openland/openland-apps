@@ -35,6 +35,23 @@ export enum OwnerType {
 }
 
 
+export enum OpportunityPriority {
+  LOW = "LOW",
+  NORMAL = "NORMAL",
+  HIGH = "HIGH",
+}
+
+
+export enum OpportunityState {
+  INCOMING = "INCOMING",
+  APPROVED_INITIAL = "APPROVED_INITIAL",
+  APPROVED_ZONING = "APPROVED_ZONING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+  SNOOZED = "SNOOZED",
+}
+
+
 export enum ParcelUse {
   PARKING = "PARKING",
   STORAGE = "STORAGE",
@@ -110,23 +127,6 @@ export enum PermitSorting {
   ISSUED_TIME = "ISSUED_TIME",
   APPROVAL_TIME_ASC = "APPROVAL_TIME_ASC",
   APPROVAL_TIME_DESC = "APPROVAL_TIME_DESC",
-}
-
-
-export enum OpportunityState {
-  INCOMING = "INCOMING",
-  APPROVED_INITIAL = "APPROVED_INITIAL",
-  APPROVED_ZONING = "APPROVED_ZONING",
-  APPROVED = "APPROVED",
-  REJECTED = "REJECTED",
-  SNOOZED = "SNOOZED",
-}
-
-
-export enum OpportunityPriority {
-  LOW = "LOW",
-  NORMAL = "NORMAL",
-  HIGH = "HIGH",
 }
 
 
@@ -1027,6 +1027,12 @@ export interface ParcelsConnectionQuery {
         extrasShapeSides: Array< number > | null,
         extrasFitProjects: Array< string > | null,
         extrasAnalyzed: boolean | null,
+        opportunity:  {
+          __typename: "Opportunity",
+          id: string,
+          priority: OpportunityPriority,
+          state: OpportunityState,
+        } | null,
         addresses:  Array< {
           __typename: "StreetNumber",
           streetId: string,
@@ -1099,6 +1105,12 @@ export interface ParcelsFavoritesQuery {
     extrasShapeSides: Array< number > | null,
     extrasFitProjects: Array< string > | null,
     extrasAnalyzed: boolean | null,
+    opportunity:  {
+      __typename: "Opportunity",
+      id: string,
+      priority: OpportunityPriority,
+      state: OpportunityState,
+    } | null,
     addresses:  Array< {
       __typename: "StreetNumber",
       streetId: string,
@@ -1182,6 +1194,12 @@ export interface ParcelQuery {
     extrasShapeSides: Array< number > | null,
     extrasFitProjects: Array< string > | null,
     extrasAnalyzed: boolean | null,
+    opportunity:  {
+      __typename: "Opportunity",
+      id: string,
+      priority: OpportunityPriority,
+      state: OpportunityState,
+    } | null,
     addresses:  Array< {
       __typename: "StreetNumber",
       streetId: string,
@@ -2098,6 +2116,12 @@ export interface SearchQuery {
   },
 };
 
+export interface SourcingQueryVariables {
+  state?: OpportunityState | null,
+  cursor?: string | null,
+  page?: number | null,
+};
+
 export interface SourcingQuery {
   alphaOpportunities:  {
     __typename: "OpportunityConnection",
@@ -2165,6 +2189,12 @@ export interface SourcingQuery {
           extrasShapeSides: Array< number > | null,
           extrasFitProjects: Array< string > | null,
           extrasAnalyzed: boolean | null,
+          opportunity:  {
+            __typename: "Opportunity",
+            id: string,
+            priority: OpportunityPriority,
+            state: OpportunityState,
+          } | null,
           addresses:  Array< {
             __typename: "StreetNumber",
             streetId: string,
@@ -2219,6 +2249,27 @@ export interface SourcingQuery {
       openEnded: boolean,
     },
   },
+};
+
+export interface AddOpportunityMutationMutationVariables {
+  parcelId: string,
+};
+
+export interface AddOpportunityMutationMutation {
+  aphaAddOpportunity:  {
+    __typename: "Opportunity",
+    id: string,
+    state: OpportunityState,
+    priority: OpportunityPriority,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+      opportunity:  {
+        __typename: "Opportunity",
+        id: string,
+      } | null,
+    },
+  } | null,
 };
 
 export interface UsersQueryQueryVariables {
@@ -2491,6 +2542,12 @@ export interface ParcelFullFragment {
   extrasShapeSides: Array< number > | null,
   extrasFitProjects: Array< string > | null,
   extrasAnalyzed: boolean | null,
+  opportunity:  {
+    __typename: string,
+    id: string,
+    priority: OpportunityPriority,
+    state: OpportunityState,
+  } | null,
   addresses:  Array< {
     __typename: string,
     streetId: string,
@@ -2576,6 +2633,12 @@ export interface ParcelShortFragment {
   extrasShapeSides: Array< number > | null,
   extrasFitProjects: Array< string > | null,
   extrasAnalyzed: boolean | null,
+  opportunity:  {
+    __typename: string,
+    id: string,
+    priority: OpportunityPriority,
+    state: OpportunityState,
+  } | null,
   addresses:  Array< {
     __typename: string,
     streetId: string,

@@ -18,6 +18,8 @@ import { XWithRole } from './X/XWithRole';
 import { XDimensions } from './X/XDimensions';
 import { ProjectTypes } from './ProjectTypes';
 import { XNumber } from './X/XNumber';
+import { XView } from './X/XView';
+import { OpportunityCreate } from './OpportunityCreate';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -59,7 +61,7 @@ function PropertyCell(props: { title: string, children: any }) {
 export const ParcelCard = withParcelDirect((props) => {
     return (
         <Container>
-            <LoaderWrapper loading={props.data!!.loading}>
+            <LoaderWrapper loading={!props.data || props.data!!.loading}>
                 {props.data && props.data!!.item &&
                     <Scrollable>
                         <XCard.Header
@@ -88,51 +90,80 @@ export const ParcelCard = withParcelDirect((props) => {
                                 >
                                     Details
                                 </XButton>
-                                <XButton
-                                    accent={true}
-                                    icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        if (props.data!!.item!!.likes.liked) {
-                                            trackEvent('Unlike Parcel', { id: props.data!!.item!!.id });
-                                            (props as any).doUnlike({
-                                                optimisticResponse: {
-                                                    __typename: 'Mutation',
-                                                    unlikeParcel: {
-                                                        __typename: 'Parcel',
-                                                        id: props.data!!.item!!.id,
-                                                        likes: {
-                                                            __typename: 'Likes',
-                                                            liked: false,
-                                                            count: Math.max(0, props.data!!.item!!.likes!!.count!! - 1)
+                                <XView grow={1} basis={0}>
+                                    <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']} negate={true}>
+                                        <XButton
+                                            accent={true}
+                                            icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                if (props.data!!.item!!.likes.liked) {
+                                                    trackEvent('Unlike Parcel', { id: props.data!!.item!!.id });
+                                                    (props as any).doUnlike({
+                                                        optimisticResponse: {
+                                                            __typename: 'Mutation',
+                                                            unlikeParcel: {
+                                                                __typename: 'Parcel',
+                                                                id: props.data!!.item!!.id,
+                                                                likes: {
+                                                                    __typename: 'Likes',
+                                                                    liked: false,
+                                                                    count: Math.max(0, props.data!!.item!!.likes!!.count!! - 1)
+                                                                }
+                                                            },
                                                         }
-                                                    },
-                                                }
-                                            });
-                                        } else {
-                                            trackEvent('Like Parcel', { id: props.data!!.item!!.id });
-                                            (props as any).doLike({
-                                                optimisticResponse: {
-                                                    __typename: 'Mutation',
-                                                    likeParcel: {
-                                                        __typename: 'Parcel',
-                                                        id: props.data!!.item!!.id,
-                                                        likes: {
-                                                            __typename: 'Likes',
-                                                            liked: true,
-                                                            count: props.data!!.item!!.likes!!.count!! + 1
+                                                    });
+                                                } else {
+                                                    trackEvent('Like Parcel', { id: props.data!!.item!!.id });
+                                                    (props as any).doLike({
+                                                        optimisticResponse: {
+                                                            __typename: 'Mutation',
+                                                            likeParcel: {
+                                                                __typename: 'Parcel',
+                                                                id: props.data!!.item!!.id,
+                                                                likes: {
+                                                                    __typename: 'Likes',
+                                                                    liked: true,
+                                                                    count: props.data!!.item!!.likes!!.count!! + 1
+                                                                }
+                                                            },
                                                         }
-                                                    },
+                                                    });
                                                 }
-                                            });
-                                        }
-                                    }}
-                                    size="medium"
-                                    flexGrow={1}
-                                    flexBasis={0}
-                                >
-                                    Favorite
-                                </XButton>
+                                            }}
+                                            size="medium"
+                                            flexGrow={1}
+                                            flexBasis={0}
+                                        >
+                                            Favorite
+                                    </XButton>
+                                    </XWithRole>
+                                    <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']}>
+                                        {!props.data!!.item!!.opportunity && (
+                                            <OpportunityCreate parcelId={props.data!!.item!!.id}>
+                                                <XButton
+                                                    size="medium"
+                                                    flexGrow={1}
+                                                    flexBasis={0}
+                                                    icon={'add'}
+                                                    accent={true}
+                                                >
+                                                    Opportunity
+                                            </XButton>
+                                            </OpportunityCreate>
+                                        )}
+                                        {props.data!!.item!!.opportunity && (
+                                            <XButton
+                                                size="medium"
+                                                flexGrow={1}
+                                                flexBasis={0}
+                                                style="dark"
+                                            >
+                                                Opportunity
+                                            </XButton>
+                                        )}
+                                    </XWithRole>
+                                </XView>
                             </XHorizontal>
                         </XCard.Content>
 
@@ -214,7 +245,7 @@ export const ParcelCard = withParcelDirect((props) => {
                                         <PropertyCell title="Prior Sale Date">{props.data.item!!.extrasSalesPriorDate}</PropertyCell>
                                     }
                                     {props.data.item!!.extrasYear !== null &&
-                                        <PropertyCell title="Year Built"><XNumber value={props.data.item!!.extrasYear}/></PropertyCell>
+                                        <PropertyCell title="Year Built"><XNumber value={props.data.item!!.extrasYear} /></PropertyCell>
                                     }
                                     {props.data.item!!.extrasUnits !== null &&
                                         <PropertyCell title="Buildings Count"><XNumber value={props.data.item!!.extrasUnits} /></PropertyCell>

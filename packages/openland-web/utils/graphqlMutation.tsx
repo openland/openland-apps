@@ -12,15 +12,16 @@ export interface MutationParams {
 }
 
 export function graphqlMutation<TResult>(document: DocumentNode, params: MutationParams) {
-    return function (component: React.ComponentType<GraphQLRoutedComponentProps<{}> & TResult>): React.ComponentType<{}> {
-        let qlWrapper = graphql<{}, XWithRouter, GraphQLRoutedComponentProps<{}> & TResult>(document, {
+    return function (component: React.ComponentType<GraphQLRoutedComponentProps<{}> & TResult>): React.ComponentType<{ variables?: any }> {
+        let qlWrapper = graphql<{}, XWithRouter & { variables?: any }, GraphQLRoutedComponentProps<{}> & TResult>(document, {
             name: params.name,
-            options: (props: XWithRouter) => {
+            options: (props: XWithRouter & { variables?: any }) => {
                 return {
                     variables: {
-                        ...prepareParams(params.params ? params.params : [], props.router.routeQuery)
+                        ...prepareParams(params.params ? params.params : [], props.router.routeQuery),
+                        ...props.variables
                     },
-                    refetchQueries: params.refetchQueries ? params.refetchQueries.map((p: any) => ({query: p})) : []
+                    refetchQueries: params.refetchQueries ? params.refetchQueries.map((p: any) => ({ query: p })) : []
                 };
             }
         });

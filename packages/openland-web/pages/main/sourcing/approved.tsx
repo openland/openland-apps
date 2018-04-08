@@ -5,6 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { AppContent } from '../../../components/App/AppContent';
 import { XTab } from '../../../components/X/XTab';
+import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 
 export default withApp('Approved opportunities', 'viewer', () => {
     return (
@@ -21,7 +22,9 @@ export default withApp('Approved opportunities', 'viewer', () => {
                 </XTab>
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="Approved opportinities" />
-                    <XCard.Empty text="Here will be approved opportunities" icon="sort" />
+                    <OpportunitiesTable variables={{ state: 'APPROVED' }}>
+                        <XCard.Empty text="Here will be approved opportunities" icon="sort" />
+                    </OpportunitiesTable>
                 </XCard>
             </AppContent>
         </>

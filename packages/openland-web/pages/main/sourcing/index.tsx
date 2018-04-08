@@ -7,15 +7,14 @@ import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { AppContent } from '../../../components/App/AppContent';
 import { XTab } from '../../../components/X/XTab';
+import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { XLink } from '../../../components/X/XLink';
-import { withSourcing } from '../../../api';
-import { XTable } from '../../../components/X/XTable';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
 });
 
-export default withApp('Incoming opportunities', 'viewer', withSourcing((props) => {
+export default withApp('Incoming opportunities', 'viewer', () => {
     return (
         <>
             <XHead title="Incoming opportunities" />
@@ -33,43 +32,13 @@ export default withApp('Incoming opportunities', 'viewer', withSourcing((props) 
                         <XButton>Add</XButton>
                         <XButton style="dark">Start Review</XButton>
                     </XCard.Header>
-                    <XCard.Loader loading={(props.data.loading || false) || props.data.alphaOpportunities.edges.length === 0}>
-                        {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length !== 0 && (
-                            <>
-                                <XTable>
-                                    <XTable.Header>
-                                        <XTable.Cell>Title</XTable.Cell>
-                                    </XTable.Header>
-                                    <XTable.Body>
-                                        {props.data.alphaOpportunities.edges.map((v) => (
-                                            <XTable.Row key={v.node.id}>
-                                                <XTable.Cell>
-                                                    {v.node.parcel.title}
-                                                </XTable.Cell>
-                                            </XTable.Row>
-                                        ))}
-                                    </XTable.Body>
-                                </XTable>
-                                <XCard.Footer text={props.data.alphaOpportunities.pageInfo.itemsCount + ' items'}>
-                                    {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
-                                        <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }}>Prev</XButton>
-                                    )}
-                                    {(props.data.alphaOpportunities.pageInfo.currentPage < props.data.alphaOpportunities.pageInfo.pagesCount - 1) && (
-                                        <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</XButton>
-                                    )}
-                                </XCard.Footer>
-                            </>
-                        )}
-                        {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length === 0 && (
-                            <XCard.Empty text="You can find your first parcel at" icon="sort">
-                                <Link path="/">
-                                    Explore page
-                                </Link>
-                            </XCard.Empty>
-                        )}
-                    </XCard.Loader>
+                    <OpportunitiesTable variables={{ state: 'INCOMING' }}>
+                        <XCard.Empty text="You can find your first parcel at" icon="sort">
+                            <Link path="/">Explore page</Link>
+                        </XCard.Empty>
+                    </OpportunitiesTable>
                 </XCard>
             </AppContent>
         </>
     );
-}));
+});

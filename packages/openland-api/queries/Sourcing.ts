@@ -2,8 +2,8 @@ import gql from 'graphql-tag';
 import { ParcelFull } from './Parcels';
 
 export const SourcingQuery = gql`
-    query Sourcing($cursor: String, $page: Int) {
-        alphaOpportunities(first: 50, after: $cursor, page: $page) {
+    query Sourcing($state: OpportunityState, $cursor: String, $page: Int) {
+        alphaOpportunities(state: $state, first: 50, after: $cursor, page: $page) {
             edges {
                 node {
                     id
@@ -26,4 +26,20 @@ export const SourcingQuery = gql`
         }
     }
     ${ParcelFull}
+`;
+
+export const AddOpportunityMutation = gql`
+    mutation AddOpportunityMutation($parcelId: ID!) {
+        aphaAddOpportunity(parcelId: $parcelId) {
+            id
+            state
+            priority
+            parcel {
+                id
+                opportunity {
+                    id
+                }
+            }
+        }
+    }
 `;

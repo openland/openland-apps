@@ -8,6 +8,7 @@ import { XButton } from '../../../components/X/XButton';
 import { AppContent } from '../../../components/App/AppContent';
 import { XTab } from '../../../components/X/XTab';
 import { XLink } from '../../../components/X/XLink';
+import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -30,11 +31,11 @@ export default withApp('Zoning Review', 'viewer', () => {
                     <XCard.Header text="Zoning Review">
                         <XButton style="dark">Start Review</XButton>
                     </XCard.Header>
-                    <XCard.Empty text="Review your first parcel at " icon="sort">
-                        <Link path="/sourcing">
-                            Incoming page
-                        </Link>
-                    </XCard.Empty>
+                    <OpportunitiesTable variables={{ state: 'APPROVED_INITIAL' }}>
+                        <XCard.Empty text="Review your first parcel at " icon="sort">
+                            <Link path="/sourcing">Incoming page</Link>
+                        </XCard.Empty>
+                    </OpportunitiesTable>
                 </XCard>
             </AppContent>
         </>

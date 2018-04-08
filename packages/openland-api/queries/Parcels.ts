@@ -62,6 +62,12 @@ export const ParcelFull = gql`
       extrasFitProjects
       extrasAnalyzed
 
+      opportunity {
+          id
+          priority
+          state
+      }
+
       addresses {
         streetId
         streetName
@@ -147,7 +153,11 @@ export const ParcelShort = gql`
       extrasShapeSides
       extrasFitProjects
       extrasAnalyzed
-
+      opportunity {
+          id
+          priority
+          state
+      }
       addresses {
         streetId
         streetName

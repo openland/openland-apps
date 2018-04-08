@@ -214,3 +214,4 @@ export const ParcelSelect = graphqlSelect(Queries.Parcels.ParcelsSearchQuery);
 //
 
 export const withSourcing = graphqlRouted<Types.SourcingQuery>(Queries.Sourcing.SourcingQuery, ['filter', 'cursor', 'page']);
+export const withAddOpportunity = graphqlMutation<{ add: MutationFunc<{}> }>(Queries.Sourcing.AddOpportunityMutation, { name: 'add' });
