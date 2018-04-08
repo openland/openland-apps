@@ -20,6 +20,7 @@ const ParcelItem = Glamorous(XLink)({
     paddingBottom: 16,
     textAlign: 'left',
     border: '1px solid #e6ebf1',
+    borderTop: 'none',
     position: 'relative',
     '&.is-active': {
         color: '#6772e5',
