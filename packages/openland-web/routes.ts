@@ -25,20 +25,20 @@ routes.add('/parcels/:parcelId/edit', '/main/parcels/edit');
 routes.add('/parcels/:parcelId/edit/', '/main/parcels/edit');
 
 //
-// Portfolio
+// Deals
 //
 
-routes.add('/portfolio', '/main/portfolio/index');
-routes.add('/portfolio/', '/main/portfolio/index');
-routes.add('/portfolio/:dealId', '/main/portfolio/view');
-routes.add('/portfolio/:dealId/', '/main/portfolio/view');
+routes.add('/deals', '/main/deals/index');
+routes.add('/deals/', '/main/deals/index');
+routes.add('/deals/:dealId', '/main/deals/view');
+routes.add('/deals/:dealId/', '/main/deals/view');
 
 //
-// Candidates
+// Sourcing
 //
 
-routes.add('/candidates', '/main/candidates/index');
-routes.add('/candidates/', '/main/candidates/index');
+routes.add('/sourcing', '/main/sourcing/index');
+routes.add('/sourcing/', '/main/sourcing/index');
 
 //
 // People
