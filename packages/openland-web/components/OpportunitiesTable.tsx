@@ -4,6 +4,7 @@ import { XCard } from './X/XCard';
 import { XTable } from './X/XTable';
 import { XButton } from './X/XButton';
 import { XArea } from './X/XArea';
+import { PriorityIndicator } from './PriorityIndicator';
 
 export const OpportunitiesTable = withSourcing((props) => {
     return (
@@ -12,10 +13,11 @@ export const OpportunitiesTable = withSourcing((props) => {
                 <>
                     <XTable>
                         <XTable.Header>
-                            <XTable.Cell>Parcel</XTable.Cell>
-                            <XTable.Cell width={200}>Location</XTable.Cell>
-                            <XTable.Cell textAlign="right">Area</XTable.Cell>
-                            <XTable.Cell>Priority</XTable.Cell>
+                            <XTable.Cell width={100}>Parcel</XTable.Cell>
+                            <XTable.Cell width={200}>City</XTable.Cell>
+                            <XTable.Cell>Address</XTable.Cell>
+                            <XTable.Cell width={100} textAlign="right">Area</XTable.Cell>
+                            <XTable.Cell width={100}>Priority</XTable.Cell>
                         </XTable.Header>
                         <XTable.Body>
                             {props.data.alphaOpportunities.edges.map((v) => (
@@ -24,13 +26,16 @@ export const OpportunitiesTable = withSourcing((props) => {
                                         {v.node.parcel.title}
                                     </XTable.Cell>
                                     <XTable.Cell>
+                                        {v.node.parcel.city.name}
+                                    </XTable.Cell>
+                                    <XTable.Cell>
                                         {v.node.parcel.extrasAddress}
                                     </XTable.Cell>
                                     <XTable.Cell textAlign="right">
-                                            {v.node.parcel && v.node.parcel.extrasArea != null && <XArea area={v.node.parcel.extrasArea} />}
-                                        </XTable.Cell>
+                                        {v.node.parcel && v.node.parcel.extrasArea != null && <XArea area={v.node.parcel.extrasArea} />}
+                                    </XTable.Cell>
                                     <XTable.Cell>
-                                        {v.node.priority}
+                                        <PriorityIndicator priority={v.node.priority} />
                                     </XTable.Cell>
                                 </XTable.Row>
                             ))}
