@@ -7,7 +7,7 @@ export const XTabItem = Glamorous(XLink)<{asArrow?: boolean}>((props) => ({
     userSelect: 'none',
     flexGrow: 1,
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: 700,
     color: '#525f7f',
     backgroundColor: '#f6f9fc',
     paddingTop: 16,
