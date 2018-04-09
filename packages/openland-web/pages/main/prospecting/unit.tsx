@@ -29,9 +29,9 @@ export default withApp('Unit placement', 'viewer', () => {
                 </XTab>
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="Unit placement">
-                        <XButton style="dark" path="/prospecting/unit/review">Start Review</XButton>
+                        <XButton style="dark" path="/prospecting/review?stage=unit">Start Review</XButton>
                     </XCard.Header>
-                    <OpportunitiesTable variables={{ state: 'APPROVED_ZONING' }}>
+                    <OpportunitiesTable variables={{ state: 'APPROVED_ZONING' }} stage="unit">
                         <XCard.Empty text="Review your first parcel at " icon="sort">
                             <Link path="/prospecting">Incoming page</Link>
                         </XCard.Empty>

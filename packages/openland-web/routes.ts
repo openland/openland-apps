@@ -49,16 +49,8 @@ routes.add('/prospecting/zoning', '/main/prospecting/zoning');
 routes.add('/prospecting/zoning/', '/main/prospecting/zoning');
 routes.add('/prospecting/unit', '/main/prospecting/unit');
 routes.add('/prospecting/unit/', '/main/prospecting/unit');
-
-routes.add('/prospecting/review', '/main/prospecting/review/initial');
-routes.add('/prospecting/review/', '/main/prospecting/review/initial');
-routes.add('/prospecting/zoning/review', '/main/prospecting/review/zoning');
-routes.add('/prospecting/zoning/review/', '/main/prospecting/review/zoning');
-routes.add('/prospecting/unit/review', '/main/prospecting/review/unit');
-routes.add('/prospecting/unit/review/', '/main/prospecting/review/unit');
-
-routes.add('/prospecting/:opportunityId', '/main/prospecting/view');
-routes.add('/prospecting/:opportunityId/', '/main/prospecting/view');
+routes.add('/prospecting/review', '/main/prospecting/review');
+routes.add('/prospecting/review/', '/main/prospecting/review');
 
 //
 // People

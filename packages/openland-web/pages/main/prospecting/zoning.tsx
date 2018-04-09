@@ -29,9 +29,9 @@ export default withApp('Zoning Review', 'viewer', () => {
                 </XTab>
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="Zoning Review">
-                        <XButton style="dark" path="/prospecting/zoning/review">Start Review</XButton>
+                        <XButton style="dark" path="/prospecting/review?stage=zoning">Start Review</XButton>
                     </XCard.Header>
-                    <OpportunitiesTable variables={{ state: 'APPROVED_INITIAL' }}>
+                    <OpportunitiesTable variables={{ state: 'APPROVED_INITIAL' }} stage="zoning">
                         <XCard.Empty text="Review your first parcel at " icon="sort">
                             <Link path="/prospecting">Incoming page</Link>
                         </XCard.Empty>

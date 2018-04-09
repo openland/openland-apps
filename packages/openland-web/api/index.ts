@@ -216,7 +216,7 @@ export const ParcelSelect = graphqlSelect(Queries.Parcels.ParcelsSearchQuery);
 export const withSourcing = graphqlRouted<Types.SourcingQuery>(Queries.Sourcing.SourcingQuery, ['filter', 'cursor', 'page'], false, 'network-only');
 export const withAddOpportunity = graphqlMutation<{ add: MutationFunc<{}> }>(Queries.Sourcing.AddOpportunityMutation, { name: 'add' });
 
-export const withNextOpportunity = graphqlRouted<Types.NextOpportunityQuery>(Queries.Sourcing.NextOpportunityQuery, [], true, 'network-only');
+export const withNextOpportunity = graphqlRouted<Types.NextOpportunityQuery>(Queries.Sourcing.NextOpportunityQuery, ['initialId'], true, 'network-only');
 export const withApproveOpportunity = graphqlMutation<{ approve: MutationFunc<{}> }>(Queries.Sourcing.ApproveOpportunityMutation, { name: 'approve' });
 export const withRejectOpportunity = graphqlMutation<{ reject: MutationFunc<{}> }>(Queries.Sourcing.RejectOpportunityMutation, { name: 'reject' });
 export const withSnoozeOpportunity = graphqlMutation<{ snooze: MutationFunc<{}> }>(Queries.Sourcing.SnoozeOpportunityMutation, { name: 'snooze' });

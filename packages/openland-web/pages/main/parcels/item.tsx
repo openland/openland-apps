@@ -45,6 +45,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                             <OpportunitiButton
                                 parcelId={props.data!!.item!!.id}
                                 opportunityId={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.id : undefined}
+                                opportunityState={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.state : undefined}
                             />
                         </XWithRole>
                         <XButton

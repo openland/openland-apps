@@ -7,6 +7,18 @@ import { XArea } from './X/XArea';
 import { PriorityIndicator } from './PriorityIndicator';
 
 export const OpportunitiesTable = withSourcing((props) => {
+    let stage = '';
+    if ((props as any).stage) {
+        stage = '&stage=' + (props as any).stage;
+    }
+    let useDirect = false;
+    if (props.data.variables.state === 'APPROVED') {
+        useDirect = true;
+    } else if (props.data.variables.state === 'REJECTED') {
+        useDirect = true;
+    } else if (props.data.variables.state === 'SNOOZED') {
+        useDirect = true;
+    }
     return (
         <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
             {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length !== 0 && (
@@ -21,7 +33,7 @@ export const OpportunitiesTable = withSourcing((props) => {
                         </XTable.Header>
                         <XTable.Body>
                             {props.data.alphaOpportunities.edges.map((v) => (
-                                <XTable.Row key={v.node.id} path={'/prospecting/' + v.node.id}>
+                                <XTable.Row key={v.node.id} path={useDirect ? '/parcels/' + v.node.parcel.id : ('/prospecting/review?initialId=' + v.node.id + stage)}>
                                     <XTable.Cell>
                                         {v.node.parcel.title}
                                     </XTable.Cell>
@@ -58,4 +70,4 @@ export const OpportunitiesTable = withSourcing((props) => {
             )}
         </XCard.Loader>
     );
-});
+}) as React.ComponentType<{ variables?: any, stage?: 'unit' | 'zoning' }>;
