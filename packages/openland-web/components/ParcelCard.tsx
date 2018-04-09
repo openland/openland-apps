@@ -15,6 +15,7 @@ import { trackEvent } from '../utils/analytics';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { XTooltip } from './Incubator/XTooltip';
 import { XWithRole } from './X/XWithRole';
+import { XIcon } from './X/XIcon';
 import { XDimensions } from './X/XDimensions';
 import { ProjectTypes } from './ProjectTypes';
 import { XNumber } from './X/XNumber';
@@ -188,7 +189,17 @@ export const ParcelCard = withParcelDirect((props) => {
                             }
                             <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                                 {props.data.item!!.extrasAnalyzed !== true &&
-                                    <PropertyCell title="Compatible buildings"><XTooltip noMargin={true} title={`Openland systems detected that this parcel is too complex for automatical building placement.`} /> This parcel is too complex to analyze</PropertyCell>
+                                    <PropertyCell title="Compatible buildings">
+                                        <XTooltip noMargin={true}>
+                                            <XTooltip.Target>
+                                                <XIcon icon="error" />
+                                            </XTooltip.Target>
+                                            <XTooltip.Content>
+                                                Openland systems detected that this parcel is too complex for automatical building placement.
+                                            </XTooltip.Content>
+                                        </XTooltip> 
+                                        This parcel is too complex to analyze
+                                    </PropertyCell>
                                 }
                                 {props.data.item!!.extrasAnalyzed === true && props.data.item!!.extrasFitProjects &&
                                     <PropertyCell title="Compatible buildings"><ProjectTypes types={props.data.item!!.extrasFitProjects!!} /></PropertyCell>

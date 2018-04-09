@@ -17,6 +17,7 @@ import { XArea } from '../../../components/X/XArea';
 import { XZoningCode } from '../../../components/X/XZoningCode';
 import { XDimensions } from '../../../components/X/XDimensions';
 import { XView } from '../../../components/X/XView';
+import { XIcon } from '../../../components/X/XIcon';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';
 
@@ -92,7 +93,19 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                             }
                             <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                                 {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed !== true &&
-                                    <XCard.Property title="Compatible buildings"><XView direction="row"><XTooltip title={`Openland systems detected that this parcel is too complex for automatical building placement.`} /> This parcel is too complex to analyze</XView></XCard.Property>
+                                    <XCard.Property title="Compatible buildings">
+                                        <XView direction="row">
+                                            <XTooltip noMargin={true}>
+                                                <XTooltip.Target>
+                                                    <XIcon icon="error" />
+                                                </XTooltip.Target>
+                                                <XTooltip.Content>
+                                                    Openland systems detected that this parcel is too complex for automatical building placement.
+                                                </XTooltip.Content>
+                                            </XTooltip>
+                                            This parcel is too complex to analyze
+                                        </XView>
+                                    </XCard.Property>
                                 }
                                 {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed === true && props.data.deal.parcel.extrasFitProjects &&
                                     <XCard.Property title="Compatible buildings"><ProjectTypes types={props.data.deal.parcel.extrasFitProjects!!} /></XCard.Property>
