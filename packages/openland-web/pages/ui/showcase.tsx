@@ -106,12 +106,13 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                             </CitySelector>
                             <XTooltip noMargin={true}>
                                 <XTooltip.Target>
-                                    <XIcon icon="error" />
+                                    <XIcon icon="arrow_left" />
                                 </XTooltip.Target>
                                 <XTooltip.Content>
                                     Openland systems detected that this parcel is too complex for automatical building placement.
                                 </XTooltip.Content>
                             </XTooltip>
+                            <XTooltip noMargin={true} title="Openland systems detected that this parcel is too complex for automatical building placement. 222222" />
                             <XConfirm onConfirm={() => { console.warn('confirm function'); }}>
                                 <XButton onClick={(e) => { e.preventDefault(); }}>Confirm button</XButton>
                             </XConfirm>

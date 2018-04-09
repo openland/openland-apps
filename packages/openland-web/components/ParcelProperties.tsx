@@ -7,7 +7,6 @@ import { XZoningCode } from './X/XZoningCode';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { XTooltip } from './Incubator/XTooltip';
 import { XDimensions } from './X/XDimensions';
-import { XIcon } from './X/XIcon';
 import { XWithRole } from './X/XWithRole';
 import { ProjectTypes } from './ProjectTypes';
 import { XNumber } from './X/XNumber';
@@ -33,38 +32,17 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     }
                     {props.item.extrasArea &&
                         <XCard.Property title="Assesor Area"><XArea area={props.item.extrasAssessorArea!!} />
-                            <XTooltip noMargin={true}>
-                                <XTooltip.Target>
-                                    <XIcon icon="error" />
-                                </XTooltip.Target>
-                                <XTooltip.Content>
-                                    Our systems detected that this value is unreliable.
-                                </XTooltip.Content>
-                            </XTooltip>
+                            <XTooltip noMargin={true} title="Our systems detected that this value is unreliable." />
                         </XCard.Property>
                     }
                     {props.item.extrasAssessorDepth &&
                         <XCard.Property title="Assesor Frontage"><XDistance value={props.item.extrasAssessorFront!!} />
-                            <XTooltip noMargin={true}>
-                                <XTooltip.Target>
-                                    <XIcon icon="error" />
-                                </XTooltip.Target>
-                                <XTooltip.Content>
-                                    Our systems detected that this value is unreliable.
-                                </XTooltip.Content>
-                            </XTooltip>
+                            <XTooltip noMargin={true} title="Our systems detected that this value is unreliable." />
                         </XCard.Property>
                     }
                     {props.item.extrasAssessorDepth &&
                         <XCard.Property title="Assesor Depth"><XDistance value={props.item.extrasAssessorDepth!!} />
-                            <XTooltip noMargin={true}>
-                                <XTooltip.Target>
-                                    <XIcon icon="error" />
-                                </XTooltip.Target>
-                                <XTooltip.Content>
-                                    Our systems detected that this value is unreliable.
-                                </XTooltip.Content>
-                            </XTooltip>
+                            <XTooltip noMargin={true} title="Our systems detected that this value is unreliable." />
                         </XCard.Property>
                     }
                     {props.item!!.extrasShapeSides && props.item!!.extrasShapeSides!!.length > 0 &&
@@ -73,14 +51,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                         {props.item!!.extrasAnalyzed !== true &&
                             <XCard.Property title="Compatible buildings">
-                                <XTooltip noMargin={true}>
-                                    <XTooltip.Target>
-                                        <XIcon icon="error" />
-                                    </XTooltip.Target>
-                                    <XTooltip.Content>
-                                        Openland systems detected that this parcel is too complex for automatical building placement.
-                                    </XTooltip.Content>
-                                </XTooltip>
+                                <XTooltip noMargin={true} title="Openland systems detected that this parcel is too complex for automatical building placement." />
                                 This parcel is too complex to analyze
                             </XCard.Property>
                         }

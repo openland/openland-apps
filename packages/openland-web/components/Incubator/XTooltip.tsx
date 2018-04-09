@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import { canUseDOM } from '../../utils/environment';
 import { Manager, Target, Popper } from './XPopper';
+import { XIcon } from '../X/XIcon';
 
 const XTooltipDiv = Glamorous.div<{ leftMargin?: boolean, margin?: boolean, noMargin?: boolean }>((props) => ({
     display: 'flex',
@@ -22,6 +23,7 @@ const TargetContent = Glamorous.div({
 });
 
 interface XTooltipProps {
+    title?: string;
     leftMargin?: boolean;
     margin?: boolean;
     noMargin?: boolean;
@@ -169,7 +171,7 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
 
         let popover = (
             <Popper placement="top" class={this.state.class} onMouseover={this.modalOver} onMouseout={this.modalOut}>
-                {content}
+                {content.length > 0 ? (content) : (this.props.title)}
             </Popper>
         );
         return (
@@ -180,7 +182,7 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
                             onMouseOver={this.targetOver}
                             onMouseOut={this.targetOut}
                         >
-                            {target}
+                            {target.length > 0 ? (target) : (<XIcon icon="error" />)}
                         </TargetContent>
                     </Target>
                     {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popover, document.body)}
