@@ -23,7 +23,7 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                 <ProspectingNavigation />
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="Incoming opportunities">
-                        <XButton style="dark" path="/prospecting/review">Start Review</XButton>
+                        <XButton style="dark" path="/prospecting/review">Begin Review</XButton>
                     </XCard.Header>
                     <OpportunitiesTable variables={{ state: 'INCOMING' }}>
                         <XCard.Empty text="You can find your first parcel at" icon="sort">

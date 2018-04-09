@@ -79,7 +79,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     </XCard.PropertyList>
                     {props.item!!.city.name === 'New York' && (props.item!!.extrasVacant === null || props.item!!.extrasVacant) && (
                         <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
-                            <XCard.PropertyList title="Analyzys">
+                            <XCard.PropertyList title="Analysis">
                                 {props.item!!.extrasAnalyzed !== true &&
                                     <XCard.Property title="Compatible buildings">
                                         <XTooltip title={Text.hint_too_complex} marginLeft={0} />

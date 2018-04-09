@@ -22,10 +22,10 @@ export default withApp('Unit placement', 'viewer', () => {
                 <ProspectingNavigation />
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="Unit placement">
-                        <XButton style="dark" path="/prospecting/review?stage=unit">Start Review</XButton>
+                        <XButton style="dark" path="/prospecting/review?stage=unit">Begin review</XButton>
                     </XCard.Header>
                     <OpportunitiesTable variables={{ state: 'APPROVED_ZONING' }} stage="unit">
-                        <XCard.Empty text="Review your first parcel at " icon="sort">
+                        <XCard.Empty text="There are no parcels for review" icon="sort">
                             <Link path="/prospecting">Incoming page</Link>
                         </XCard.Empty>
                     </OpportunitiesTable>
