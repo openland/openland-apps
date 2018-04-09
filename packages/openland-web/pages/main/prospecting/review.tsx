@@ -19,6 +19,7 @@ import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
 import { ProspectingNavigationReview } from '../../../components/ProspectingNavigation';
+import { trackEvent } from '../../../utils/analytics';
 
 const OpportunityInfo = withOpportunity((props) => {
     let approveText = 'Move to next stage';
@@ -40,21 +41,30 @@ const OpportunityInfo = withOpportunity((props) => {
                             <XButtonMutation
                                 variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                                 mutation={props.reject}
-                                onSuccess={() => props.data.refetch({ forceFetch: true })}
+                                onSuccess={() => {
+                                    trackEvent('Parcel Approved', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                    props.data.refetch({ forceFetch: true });
+                                }}
                             >
                                 Reject
                             </XButtonMutation>
                             <XButtonMutation
                                 variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                                 mutation={props.snooze}
-                                onSuccess={() => props.data.refetch({ forceFetch: true })}
+                                onSuccess={() => {
+                                    trackEvent('Parcel Snoozed', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                    props.data.refetch({ forceFetch: true });
+                                }}
                             >
                                 Snooze
                             </XButtonMutation>
                             <XButtonMutation
                                 variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                                 mutation={props.approve}
-                                onSuccess={() => props.data.refetch({ forceFetch: true })}
+                                onSuccess={() => { 
+                                    trackEvent('Parcel Rejected', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                    props.data.refetch({ forceFetch: true });
+                                }}
                                 style="dark"
                             >
                                 {approveText}
