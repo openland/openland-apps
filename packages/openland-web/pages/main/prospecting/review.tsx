@@ -10,7 +10,6 @@ import { ParcelMaps } from '../../../components/ParcelMaps';
 import { withOpportunity } from '../../../api';
 import { XButtonMutation } from '../../../components/X/XButtonMutation';
 import { AppContent } from '../../../components/App/AppContent';
-import { XTab } from '../../../components/X/XTab';
 import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { XView } from '../../../components/X/XView';
@@ -22,8 +21,6 @@ import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
 import { ProspectingNavigationReview } from '../../../components/ProspectingNavigation';
 
 const OpportunityInfo = withOpportunity((props) => {
-    // let state = props.data.variables.state;
-    // let title = 'Initial Review';
     let approveText = 'Move to next stage';
     if (props.data.variables.state === 'INCOMING') {
         approveText = 'Move to Zoning Review';
@@ -33,12 +30,6 @@ const OpportunityInfo = withOpportunity((props) => {
         approveText = 'Approve';
     }
 
-    // if (state === 'APPROVED_INITIAL') {
-    //     title = 'Zoning Reivew';
-    // }
-    // if (state === 'APPROVED_ZONING') {
-    //     title = 'Unit Placement';
-    // }
     return (
         <XVertical>
             <ProspectingNavigationReview/>
