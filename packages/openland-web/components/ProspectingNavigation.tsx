@@ -4,9 +4,9 @@ import { XTab } from './X/XTab';
 
 function convertNumber(value?: number) {
     if (value !== undefined && value > 0) {
-        if (value > 1000) {
-            return ' (' + Math.round(value / 1000) + 'k)';
-        }
+        // if (value > 1000) {
+        //     return ' (' + Math.round(value / 1000) + 'k)';
+        // }
         return ' (' + value.toString() + ')';
     } else {
         return '';
