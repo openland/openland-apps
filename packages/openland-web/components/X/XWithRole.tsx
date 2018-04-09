@@ -14,13 +14,21 @@ export const XWithRole = withUserInfo<{ role: string | string[], negate?: boolea
     }
     if (props.negate) {
         if (!hasRole) {
-            return <>{props.children}</>;
+            if (React.Children.count(props.children) > 0) {
+                return <>{props.children}</>;
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
     } else {
         if (hasRole) {
-            return <>{props.children}</>;
+            if (React.Children.count(props.children) > 0) {
+                return <>{props.children}</>;
+            } else {
+                return null;
+            }
         } else {
             return null;
         }

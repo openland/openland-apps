@@ -5,11 +5,14 @@ import { canUseDOM } from '../../utils/environment';
 import { Manager, Target, Popper } from './XPopper';
 import { XIcon } from '../X/XIcon';
 
-const XTooltipDiv = Glamorous.div<{ leftMargin?: boolean, margin?: boolean, noMargin?: boolean }>((props) => ({
+const XTooltipDiv = Glamorous.div<{ marginLeft?: number, marginRight?: number, margin?: number }>((props) => ({
     display: 'flex',
     alignItems: 'center',
-    marginRight: props.noMargin ? 0 : props.margin ? 6 : props.leftMargin ? undefined : 6,
-    marginLeft: props.noMargin ? 0 : props.margin ? 6 : props.leftMargin ? 6 : undefined,
+    margin: props.margin,
+    marginLeft: props.marginLeft !== undefined ? props.marginLeft : 4,
+    marginRight: props.marginRight !== undefined ? props.marginRight : 4
+    // marginRight: props.noMargin ? 0 : (props.margin ? 4 : (props.leftMargin ? undefined : 6)),
+    // marginLeft: props.noMargin ? 0 : (props.margin ? 4 : (props.leftMargin ? 6 : undefined)),
 }));
 
 const TargetContent = Glamorous.div({
@@ -24,9 +27,9 @@ const TargetContent = Glamorous.div({
 
 interface XTooltipProps {
     title?: string;
-    leftMargin?: boolean;
-    margin?: boolean;
-    noMargin?: boolean;
+    marginLeft?: number;
+    marginRight?: number;
+    margin?: number;
 }
 
 interface XTooltipState {
@@ -111,21 +114,25 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
             class: 'hide'
         });
 
-        this.timeout = setTimeout(() => {
-            if (this.state.targetHover === true) {
-                return;
-            } else {
-                this.setState({
-                    class: 'hide',
-                    modalHover: false
-                });
-                this.timeout = setTimeout(() => {
+        this.timeout = setTimeout(
+            () => {
+                if (this.state.targetHover === true) {
+                    return;
+                } else {
                     this.setState({
-                        popper: false
+                        class: 'hide',
+                        modalHover: false
                     });
-                },                        100);
-            }
-        },                        100);
+                    this.timeout = setTimeout(
+                        () => {
+                            this.setState({
+                                popper: false
+                            });
+                        },
+                        100);
+                }
+            },
+            100);
     }
 
     targetOver() {
@@ -139,22 +146,26 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
     }
 
     targetOut() {
-        this.timeout = setTimeout(() => {
-            if (this.state.modalHover === true) {
-                return;
-            } else {
-                this.setState({
-                    class: 'hide',
-                    targetHover: false,
-                    modalHover: false
-                });
-                this.timeout = setTimeout(() => {
+        this.timeout = setTimeout(
+            () => {
+                if (this.state.modalHover === true) {
+                    return;
+                } else {
                     this.setState({
-                        popper: false
+                        class: 'hide',
+                        targetHover: false,
+                        modalHover: false
                     });
-                },                        100);
-            }
-        },                        100);
+                    this.timeout = setTimeout(
+                        () => {
+                            this.setState({
+                                popper: false
+                            });
+                        },
+                        100);
+                }
+            },
+            100);
     }
 
     render() {
@@ -176,7 +187,7 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
         );
         return (
             <Manager>
-                <XTooltipDiv leftMargin={this.props.leftMargin} margin={this.props.margin} noMargin={this.props.noMargin}>
+                <XTooltipDiv marginLeft={this.props.marginLeft} margin={this.props.margin} marginRight={this.props.marginRight}>
                     <Target>
                         <TargetContent
                             onMouseOver={this.targetOver}

@@ -11,6 +11,7 @@ import { XWithRole } from './X/XWithRole';
 import { ProjectTypes } from './ProjectTypes';
 import { XNumber } from './X/XNumber';
 import { XDistance } from './X/XDistance';
+import { Text } from '../strings';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
 
@@ -19,7 +20,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
             <XCard.PropertyColumns>
                 <XCard.PropertyList title="Parcel details">
                     {props.item.extrasOwnerType &&
-                        <XCard.Property title="Owner Type"><OwnerTypeComponent type={props.item.extrasOwnerType!!} /></XCard.Property>
+                        <XCard.Property title="Ownership Type"><OwnerTypeComponent type={props.item.extrasOwnerType!!} /></XCard.Property>
                     }
                     {props.item.extrasOwnerName &&
                         <XCard.Property title="Owner Name">{props.item.extrasOwnerName}</XCard.Property>
@@ -28,31 +29,31 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         <XCard.Property title="Block">{props.item.block.title}</XCard.Property>
                     }
                     {props.item.extrasArea &&
-                        <XCard.Property title="Parcel Area"><XArea area={props.item.extrasArea!!} /></XCard.Property>
+                        <XCard.Property title="Area"><XArea area={props.item.extrasArea!!} /></XCard.Property>
+                    }
+                    {props.item!!.extrasShapeSides && props.item!!.extrasShapeSides!!.length > 0 &&
+                        <XCard.Property title="Dimensions"> <XDimensions dimensions={props.item!!.extrasShapeSides!!} /></XCard.Property>
                     }
                     {props.item.extrasArea &&
                         <XCard.Property title="Assesor Area"><XArea area={props.item.extrasAssessorArea!!} />
-                            <XTooltip noMargin={true} title="Our systems detected that this value is unreliable." />
+                            <XTooltip title={Text.hint_unrealiable_assesor} />
                         </XCard.Property>
                     }
                     {props.item.extrasAssessorDepth &&
                         <XCard.Property title="Assesor Frontage"><XDistance value={props.item.extrasAssessorFront!!} />
-                            <XTooltip noMargin={true} title="Our systems detected that this value is unreliable." />
+                            <XTooltip title={Text.hint_unrealiable_assesor} />
                         </XCard.Property>
                     }
                     {props.item.extrasAssessorDepth &&
                         <XCard.Property title="Assesor Depth"><XDistance value={props.item.extrasAssessorDepth!!} />
-                            <XTooltip noMargin={true} title="Our systems detected that this value is unreliable." />
+                            <XTooltip title={Text.hint_unrealiable_assesor} />
                         </XCard.Property>
-                    }
-                    {props.item!!.extrasShapeSides && props.item!!.extrasShapeSides!!.length > 0 &&
-                        <XCard.Property title="Parcel Dimensions"> <XDimensions dimensions={props.item!!.extrasShapeSides!!} /></XCard.Property>
                     }
                     <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                         {props.item!!.extrasAnalyzed !== true &&
                             <XCard.Property title="Compatible buildings">
-                                <XTooltip noMargin={true} title="Openland systems detected that this parcel is too complex for automatical building placement." />
-                                This parcel is too complex to analyze
+                                <XTooltip title={Text.hint_too_complex} marginLeft={0} />
+                                {Text.text_too_complex}
                             </XCard.Property>
                         }
                         {props.item!!.extrasAnalyzed === true && props.item!!.extrasFitProjects &&

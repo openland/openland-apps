@@ -15,7 +15,7 @@ let IconLow = Glamorous(XIcon)({
 
 export function PriorityIndicator(props: { priority: ATypes.OpportunityPriority }) {
     if (props.priority === ATypes.OpportunityPriority.HIGH) {
-        return <span><IconNormal icon="arrow_upward" /> Highest</span>;
+        return <span><IconNormal icon="arrow_upward" /> Medium</span>;
     } else if (props.priority === ATypes.OpportunityPriority.NORMAL) {
         return <span><IconNormal icon="arrow_upward" /> High</span>;
     } else if (props.priority === ATypes.OpportunityPriority.LOW) {
