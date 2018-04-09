@@ -37,17 +37,17 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                             <XCard.Property title="Dimensions"> <XDimensions dimensions={props.item!!.extrasShapeSides!!} /></XCard.Property>
                         }
                         {props.item.extrasArea &&
-                            <XCard.Property title="Assesor Area"><XArea area={props.item.extrasAssessorArea!!} />
+                            <XCard.Property title="City Registry Area"><XArea area={props.item.extrasAssessorArea!!} />
                                 <XTooltip title={Text.hint_unrealiable_assesor} />
                             </XCard.Property>
                         }
                         {props.item.extrasAssessorDepth &&
-                            <XCard.Property title="Assesor Frontage"><XDistance value={props.item.extrasAssessorFront!!} />
+                            <XCard.Property title="City Registry Frontage"><XDistance value={props.item.extrasAssessorFront!!} />
                                 <XTooltip title={Text.hint_unrealiable_assesor} />
                             </XCard.Property>
                         }
                         {props.item.extrasAssessorDepth &&
-                            <XCard.Property title="Assesor Depth"><XDistance value={props.item.extrasAssessorDepth!!} />
+                            <XCard.Property title="City Registry Depth"><XDistance value={props.item.extrasAssessorDepth!!} />
                                 <XTooltip title={Text.hint_unrealiable_assesor} />
                             </XCard.Property>
                         }
