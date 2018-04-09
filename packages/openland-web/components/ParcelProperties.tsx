@@ -37,17 +37,17 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                             <XCard.Property title="Dimensions"> <XDimensions dimensions={props.item!!.extrasShapeSides!!} /></XCard.Property>
                         }
                         {props.item.extrasArea &&
-                            <XCard.Property title="City Registry Area"><XArea area={props.item.extrasAssessorArea!!} />
+                            <XCard.Property title="City Register Area"><XArea area={props.item.extrasAssessorArea!!} />
                                 <XTooltip title={Text.hint_unrealiable_assesor} />
                             </XCard.Property>
                         }
                         {props.item.extrasAssessorDepth &&
-                            <XCard.Property title="City Registry Frontage"><XDistance value={props.item.extrasAssessorFront!!} />
+                            <XCard.Property title="City Register Frontage"><XDistance value={props.item.extrasAssessorFront!!} />
                                 <XTooltip title={Text.hint_unrealiable_assesor} />
                             </XCard.Property>
                         }
                         {props.item.extrasAssessorDepth &&
-                            <XCard.Property title="City Registry Depth"><XDistance value={props.item.extrasAssessorDepth!!} />
+                            <XCard.Property title="City Register Depth"><XDistance value={props.item.extrasAssessorDepth!!} />
                                 <XTooltip title={Text.hint_unrealiable_assesor} />
                             </XCard.Property>
                         }
@@ -79,7 +79,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     </XCard.PropertyList>
                     {props.item!!.city.name === 'New York' && (props.item!!.extrasVacant === null || props.item!!.extrasVacant) && (
                         <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
-                            <XCard.PropertyList title="Analyzis">
+                            <XCard.PropertyList title="Analyzys">
                                 {props.item!!.extrasAnalyzed !== true &&
                                     <XCard.Property title="Compatible buildings">
                                         <XTooltip title={Text.hint_too_complex} marginLeft={0} />
