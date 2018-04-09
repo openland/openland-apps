@@ -21,7 +21,7 @@ const TargetContent = Glamorous.div({
     cursor: 'default',
     color: '#A7B8C4',
     '> i': {
-        fontSize: 18
+        fontSize: 17
     }
 });
 
