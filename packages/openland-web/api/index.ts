@@ -222,3 +222,4 @@ export const withRejectOpportunity = graphqlMutation<{ reject: MutationFunc<{}> 
 export const withSnoozeOpportunity = graphqlMutation<{ snooze: MutationFunc<{}> }>(Queries.Sourcing.SnoozeOpportunityMutation, { name: 'snooze' });
 
 export const withOpportunity = graphqlCompose4(withNextOpportunity, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity);
+export const withOpportunityById = graphqlRouted<Types.OpportunityQuery>(Queries.Sourcing.OpportunityQuery, ['opportunityId']);

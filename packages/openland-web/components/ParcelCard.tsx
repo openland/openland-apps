@@ -145,10 +145,9 @@ export const ParcelCard = withParcelDirect((props) => {
                                                     size="medium"
                                                     flexGrow={1}
                                                     flexBasis={0}
-                                                    icon={'add'}
                                                     accent={true}
                                                 >
-                                                    Opportunity
+                                                    Add Opportunity
                                             </XButton>
                                             </OpportunityCreate>
                                         )}
@@ -158,8 +157,9 @@ export const ParcelCard = withParcelDirect((props) => {
                                                 flexGrow={1}
                                                 flexBasis={0}
                                                 style="dark"
+                                                path={'/sourcing/' + props.data!!.item!!.opportunity!!.id}
                                             >
-                                                Opportunity
+                                                View Opportunity
                                             </XButton>
                                         )}
                                     </XWithRole>

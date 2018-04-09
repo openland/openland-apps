@@ -57,6 +57,9 @@ routes.add('/sourcing/zoning/review/', '/main/sourcing/review/zoning');
 routes.add('/sourcing/unit/review', '/main/sourcing/review/unit');
 routes.add('/sourcing/unit/review/', '/main/sourcing/review/unit');
 
+routes.add('/sourcing/:opportunityId', '/main/sourcing/view');
+routes.add('/sourcing/:opportunityId/', '/main/sourcing/view');
+
 //
 // People
 //

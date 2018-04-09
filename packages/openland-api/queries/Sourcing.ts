@@ -28,6 +28,20 @@ export const SourcingQuery = gql`
     ${ParcelFull}
 `;
 
+export const OpportunityQuery = gql`
+    query Opportunity($opportunityId: ID!) {
+        alphaOpportunity(id: $opportunityId) {
+            id
+            state
+            priority
+            parcel {
+                ...ParcelFull
+            }
+        }
+    }
+    ${ParcelFull}
+`;
+
 export const AddOpportunityMutation = gql`
     mutation AddOpportunityMutation($parcelId: ID!) {
         aphaAddOpportunity(parcelId: $parcelId) {
