@@ -706,11 +706,11 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                                 multi={true}
                             />
                         </FilterCell>
-                        <FilterCell title="Is Vacant">
+                        <FilterCell title="Is vacant">
                             <RoutedSelector
                                 fieldName="isVacant"
                                 options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
-                                placeholder="Is Vacant"
+                                placeholder="Is vacant"
                             />
                         </FilterCell>
                         <FilterCell title="Compatible buildings">
