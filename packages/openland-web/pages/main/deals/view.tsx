@@ -19,6 +19,7 @@ import { XDimensions } from '../../../components/X/XDimensions';
 import { XView } from '../../../components/X/XView';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';
+import { Text } from '../../../strings';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -94,8 +95,8 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                                 {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed !== true &&
                                     <XCard.Property title="Compatible buildings">
                                         <XView direction="row">
-                                            <XTooltip noMargin={true} title="Openland systems detected that this parcel is too complex for automatical building placement." />
-                                            This parcel is too complex to analyze
+                                            <XTooltip marginLeft={0} title={Text.hint_too_complex} />
+                                            {Text.text_too_complex}
                                         </XView>
                                     </XCard.Property>
                                 }

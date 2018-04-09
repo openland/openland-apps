@@ -18,7 +18,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
     return (
         <>
             <XCard.PropertyColumns>
-                <XCard.PropertyList title="Parcel details">
+                <XCard.PropertyList title="Parcel Details">
                     {props.item.extrasOwnerType &&
                         <XCard.Property title="Ownership Type"><OwnerTypeComponent type={props.item.extrasOwnerType!!} /></XCard.Property>
                     }
