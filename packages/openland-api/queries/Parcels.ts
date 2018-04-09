@@ -19,6 +19,20 @@ export const ParcelFull = gql`
           shape
       }
 
+      city {
+          id
+          name
+          county {
+              id
+              name
+          }
+          state {
+              id
+              name
+              code
+          }
+      }
+
       extrasArea
       extrasAssessorArea
       extrasAssessorFront
