@@ -188,7 +188,10 @@ export const ParcelCard = withParcelDirect((props) => {
                             }
                             <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                                 {props.data.item!!.extrasAnalyzed !== true &&
-                                    <PropertyCell title="Compatible buildings"><XTooltip noMargin={true} title={`Openland systems detected that this parcel is too complex for automatical building placement.`} /> This parcel is too complex to analyze</PropertyCell>
+                                    <PropertyCell title="Compatible buildings">
+                                        <XTooltip noMargin={true} title="Openland systems detected that this parcel is too complex for automatical building placement." />
+                                        This parcel is too complex to analyze
+                                    </PropertyCell>
                                 }
                                 {props.data.item!!.extrasAnalyzed === true && props.data.item!!.extrasFitProjects &&
                                     <PropertyCell title="Compatible buildings"><ProjectTypes types={props.data.item!!.extrasFitProjects!!} /></PropertyCell>

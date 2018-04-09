@@ -31,20 +31,29 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         <XCard.Property title="Parcel Area"><XArea area={props.item.extrasArea!!} /></XCard.Property>
                     }
                     {props.item.extrasArea &&
-                        <XCard.Property title="Assesor Area"><XArea area={props.item.extrasAssessorArea!!} /><XTooltip title={`Our systems detected that this value is unreliable.`} /></XCard.Property>
+                        <XCard.Property title="Assesor Area"><XArea area={props.item.extrasAssessorArea!!} />
+                            <XTooltip noMargin={true} title="Our systems detected that this value is unreliable." />
+                        </XCard.Property>
                     }
                     {props.item.extrasAssessorDepth &&
-                        <XCard.Property title="Assesor Frontage"><XDistance value={props.item.extrasAssessorFront!!} /><XTooltip title={`Our systems detected that this value is unreliable.`} /></XCard.Property>
+                        <XCard.Property title="Assesor Frontage"><XDistance value={props.item.extrasAssessorFront!!} />
+                            <XTooltip noMargin={true} title="Our systems detected that this value is unreliable." />
+                        </XCard.Property>
                     }
                     {props.item.extrasAssessorDepth &&
-                        <XCard.Property title="Assesor Depth"><XDistance value={props.item.extrasAssessorDepth!!} /><XTooltip title={`Our systems detected that this value is unreliable.`} /></XCard.Property>
+                        <XCard.Property title="Assesor Depth"><XDistance value={props.item.extrasAssessorDepth!!} />
+                            <XTooltip noMargin={true} title="Our systems detected that this value is unreliable." />
+                        </XCard.Property>
                     }
                     {props.item!!.extrasShapeSides && props.item!!.extrasShapeSides!!.length > 0 &&
                         <XCard.Property title="Parcel Dimensions"> <XDimensions dimensions={props.item!!.extrasShapeSides!!} /></XCard.Property>
                     }
                     <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                         {props.item!!.extrasAnalyzed !== true &&
-                            <XCard.Property title="Compatible buildings"><XTooltip title={`Openland systems detected that this parcel is too complex for automatical building placement.`} /> This parcel is too complex to analyze</XCard.Property>
+                            <XCard.Property title="Compatible buildings">
+                                <XTooltip noMargin={true} title="Openland systems detected that this parcel is too complex for automatical building placement." />
+                                This parcel is too complex to analyze
+                            </XCard.Property>
                         }
                         {props.item!!.extrasAnalyzed === true && props.item!!.extrasFitProjects &&
                             <XCard.Property title="Compatible buildings"><ProjectTypes types={props.item!!.extrasFitProjects!!} /></XCard.Property>

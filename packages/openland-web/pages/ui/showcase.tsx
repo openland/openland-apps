@@ -23,6 +23,7 @@ import { XConfirm } from '../../components/Incubator/XConfirm';
 import { CitySelector } from '../../components/Incubator/CitySelector';
 import { ParcelShortList } from '../../components/Incubator/ParcelShortList';
 import { XTab } from '../../components/X/XTab';
+import { XIcon } from '../../components/X/XIcon';
 import { StateSelect } from '../../api';
 
 export default withApp('UI Showcase', 'viewer', (props) => {
@@ -77,14 +78,14 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                     <XTab.Item>Other One</XTab.Item>
                 </XTab>
                 <XCard shadow="medium">
-                    <div style={{display: 'flex', flexDirection: 'row'}}>
-                    <ParcelShortList>
-                        <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" path="/ui"/>
-                        <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
-                        <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
-                        <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
-                        <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
-                    </ParcelShortList>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <ParcelShortList>
+                            <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" path="/ui" />
+                            <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
+                            <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
+                            <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
+                            <ParcelShortList.Item title="Parcel #0859013" adress="Parcel Address" info="154,341ft², Parking lot, Residential" />
+                        </ParcelShortList>
                     </div>
                 </XCard>
                 <XCard asRow={true}>
@@ -103,7 +104,15 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                                     <button>lol</button>
                                 </CitySelector.Popper>
                             </CitySelector>
-                            <XTooltip title={` $ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch"`} />
+                            <XTooltip noMargin={true}>
+                                <XTooltip.Target>
+                                    <XIcon icon="arrow_left" />
+                                </XTooltip.Target>
+                                <XTooltip.Content>
+                                    Openland systems detected that this parcel is too complex for automatical building placement.
+                                </XTooltip.Content>
+                            </XTooltip>
+                            <XTooltip noMargin={true} title="Openland systems detected that this parcel is too complex for automatical building placement. 222222" />
                             <XConfirm onConfirm={() => { console.warn('confirm function'); }}>
                                 <XButton onClick={(e) => { e.preventDefault(); }}>Confirm button</XButton>
                             </XConfirm>

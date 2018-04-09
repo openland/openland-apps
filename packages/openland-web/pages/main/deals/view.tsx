@@ -92,7 +92,12 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                             }
                             <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                                 {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed !== true &&
-                                    <XCard.Property title="Compatible buildings"><XView direction="row"><XTooltip title={`Openland systems detected that this parcel is too complex for automatical building placement.`} /> This parcel is too complex to analyze</XView></XCard.Property>
+                                    <XCard.Property title="Compatible buildings">
+                                        <XView direction="row">
+                                            <XTooltip noMargin={true} title="Openland systems detected that this parcel is too complex for automatical building placement." />
+                                            This parcel is too complex to analyze
+                                        </XView>
+                                    </XCard.Property>
                                 }
                                 {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed === true && props.data.deal.parcel.extrasFitProjects &&
                                     <XCard.Property title="Compatible buildings"><ProjectTypes types={props.data.deal.parcel.extrasFitProjects!!} /></XCard.Property>
