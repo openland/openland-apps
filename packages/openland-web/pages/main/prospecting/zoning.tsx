@@ -6,9 +6,9 @@ import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { AppContent } from '../../../components/App/AppContent';
-import { XTab } from '../../../components/X/XTab';
 import { XLink } from '../../../components/X/XLink';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
+import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -19,14 +19,7 @@ export default withApp('Zoning Review', 'viewer', () => {
         <>
             <XHead title="Zoning Review" />
             <AppContent>
-                <XTab>
-                    <XTab.Item path="/prospecting" asArrow={true}>Incoming</XTab.Item>
-                    <XTab.Item path="/prospecting/zoning" asArrow={true}>Zoning Review</XTab.Item>
-                    <XTab.Item path="/prospecting/unit" asArrow={true}>Unit Placement</XTab.Item>
-                    <XTab.Item path="/prospecting/approved">Approved</XTab.Item>
-                    <XTab.Item path="/prospecting/rejected">Rejected</XTab.Item>
-                    <XTab.Item path="/prospecting/snoozed">Snoozed</XTab.Item>
-                </XTab>
+                <ProspectingNavigation />
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="Zoning Review">
                         <XButton style="dark" path="/prospecting/review?stage=zoning">Start Review</XButton>

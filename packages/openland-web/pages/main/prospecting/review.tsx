@@ -19,6 +19,7 @@ import { XDimensions } from '../../../components/X/XDimensions';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
+import { ProspectingNavigationReview } from '../../../components/ProspectingNavigation';
 
 const OpportunityInfo = withOpportunity((props) => {
     // let state = props.data.variables.state;
@@ -40,14 +41,7 @@ const OpportunityInfo = withOpportunity((props) => {
     // }
     return (
         <XVertical>
-            <XTab>
-                <XTab.Item query={{ field: 'stage' }} asArrow={true}>Incoming</XTab.Item>
-                <XTab.Item query={{ field: 'stage', value: 'zoning' }} asArrow={true}>Zoning Review</XTab.Item>
-                <XTab.Item query={{ field: 'stage', value: 'unit' }} asArrow={true}>Unit Placement</XTab.Item>
-                <XTab.Item path="/prospecting/approved">Approved</XTab.Item>
-                <XTab.Item path="/prospecting/rejected">Rejected</XTab.Item>
-                <XTab.Item path="/prospecting/snoozed">Snoozed</XTab.Item>
-            </XTab>
+            <ProspectingNavigationReview/>
             <XCard shadow="medium" separators={true}>
                 <XCard.Loader loading={props.data.loading || false}>
                     {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
