@@ -16,7 +16,7 @@ export default withApp('Snoozed opportunities', 'viewer', () => {
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="Snoozed opportinities" />
                     <OpportunitiesTable variables={{ state: 'SNOOZED' }}>
-                        <XCard.Empty text="Here will be snoozed opportunities" icon="sort" />
+                        <XCard.Empty text="No snoozed parcels" icon="sort" />
                     </OpportunitiesTable>
                 </XCard>
             </AppContent>

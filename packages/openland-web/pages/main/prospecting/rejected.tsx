@@ -16,7 +16,7 @@ export default withApp('Rejected opportunities', 'viewer', () => {
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="Rejected opportinities" />
                     <OpportunitiesTable variables={{ state: 'REJECTED' }}>
-                        <XCard.Empty text="Here will be rejected opportunities" icon="sort" />
+                        <XCard.Empty text="No rejected parcels" icon="sort" />
                     </OpportunitiesTable>
                 </XCard>
             </AppContent>
