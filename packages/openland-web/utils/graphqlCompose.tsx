@@ -29,15 +29,19 @@ export function graphqlCompose2<T1, T2>(src1: (src: React.ComponentType<T1>) => 
     return graphqlComposeImpl<T1 & T2>(src1, src2);
 }
 
-export function graphqlCompose3<T1, T2, T3>(src1: (src: React.ComponentType<T1>) => React.ComponentType<{}>,
-                                            src2: (src: React.ComponentType<T2>) => React.ComponentType<{}>,
-                                            src3: (src: React.ComponentType<T3>) => React.ComponentType<{}>) {
+export function graphqlCompose3<T1, T2, T3>(
+    src1: (src: React.ComponentType<T1>) => React.ComponentType<{}>,
+    src2: (src: React.ComponentType<T2>) => React.ComponentType<{}>,
+    src3: (src: React.ComponentType<T3>) => React.ComponentType<{}>
+) {
     return graphqlComposeImpl<T1 & T2 & T3>(src1, src2, src3);
 }
 
-export function graphqlCompose4<T1, T2, T3, T4>(src1: (src: React.ComponentType<T1>) => React.ComponentType<{}>,
-                                                src2: (src: React.ComponentType<T2>) => React.ComponentType<{}>,
-                                                src3: (src: React.ComponentType<T3>) => React.ComponentType<{}>,
-                                                src4: (src: React.ComponentType<T4>) => React.ComponentType<{}>) {
-    return graphqlComposeImpl<T1 & T2 & T3 & T4>(src1, src2, src3);
+export function graphqlCompose4<T1, T2, T3, T4>(
+    src1: (src: React.ComponentType<T1>) => React.ComponentType<{}>,
+    src2: (src: React.ComponentType<T2>) => React.ComponentType<{}>,
+    src3: (src: React.ComponentType<T3>) => React.ComponentType<{}>,
+    src4: (src: React.ComponentType<T4>) => React.ComponentType<{}>
+) {
+    return graphqlComposeImpl<T1 & T2 & T3 & T4>(src1, src2, src3, src4);
 }

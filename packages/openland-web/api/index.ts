@@ -219,6 +219,6 @@ export const withAddOpportunity = graphqlMutation<{ add: MutationFunc<{}> }>(Que
 export const withNextOpportunity = graphqlRouted<Types.NextOpportunityQuery>(Queries.Sourcing.NextOpportunityQuery, [], true, 'network-only');
 export const withApproveOpportunity = graphqlMutation<{ approve: MutationFunc<{}> }>(Queries.Sourcing.ApproveOpportunityMutation, { name: 'approve' });
 export const withRejectOpportunity = graphqlMutation<{ reject: MutationFunc<{}> }>(Queries.Sourcing.RejectOpportunityMutation, { name: 'reject' });
-export const withSnoozeOpportunity = graphqlMutation<{ snooze: MutationFunc<{}> }>(Queries.Sourcing.RejectOpportunityMutation, { name: 'snooze' });
+export const withSnoozeOpportunity = graphqlMutation<{ snooze: MutationFunc<{}> }>(Queries.Sourcing.SnoozeOpportunityMutation, { name: 'snooze' });
 
 export const withOpportunity = graphqlCompose4(withNextOpportunity, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity);
