@@ -6,25 +6,19 @@ import { withRouter } from '../../../components/withRouter';
 import { XVertical } from '../../../components/X/XVertical';
 import { XCard } from '../../../components/X/XCard';
 import { ParcelProperties } from '../../../components/ParcelProperties';
-import ATypes from 'openland-api';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { withOpportunity } from '../../../api';
 import { XButtonMutation } from '../../../components/X/XButtonMutation';
 import { AppContent } from '../../../components/App/AppContent';
 import { XTab } from '../../../components/X/XTab';
-
-const ParcelInfo = (props: { parcel: ATypes.ParcelFullFragment }) => {
-    return (
-        <XVertical>
-            <XCard shadow="medium">
-                <ParcelProperties item={props.parcel} />
-            </XCard>
-            {props.parcel.geometry && (
-                <ParcelMaps id={props.parcel.id} geometry={props.parcel.geometry} disableNavigation={true} />
-            )}
-        </XVertical>
-    );
-};
+import { XHorizontal } from '../../../components/X/XHorizontal';
+import { XMapSource } from '../../../components/X/XMapSource';
+import { XView } from '../../../components/X/XView';
+import { XAngle } from '../../../components/X/XAngle';
+import { XDimensions } from '../../../components/X/XDimensions';
+import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
+import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
+import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
 
 const OpportunityInfo = withOpportunity((props) => {
     // let state = props.data.variables.state;
@@ -34,9 +28,10 @@ const OpportunityInfo = withOpportunity((props) => {
         approveText = 'Move to Zoning Review';
     } else if (props.data.variables.state === 'APPROVED_INITIAL') {
         approveText = 'Move to Unit Placement';
-    }else if (props.data.variables.state === 'APPROVED_ZONING') {
+    } else if (props.data.variables.state === 'APPROVED_ZONING') {
         approveText = 'Approve';
     }
+
     // if (state === 'APPROVED_INITIAL') {
     //     title = 'Zoning Reivew';
     // }
@@ -53,9 +48,9 @@ const OpportunityInfo = withOpportunity((props) => {
                 <XTab.Item path="/prospecting/rejected">Rejected</XTab.Item>
                 <XTab.Item path="/prospecting/snoozed">Snoozed</XTab.Item>
             </XTab>
-            <XCard shadow="medium">
+            <XCard shadow="medium" separators={true}>
                 <XCard.Loader loading={props.data.loading || false}>
-                    {props.data.alphaNextReviewOpportunity && (
+                    {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
                         <XCard.Header text={'Parcel #' + props.data.alphaNextReviewOpportunity!!.parcel.title}>
                             <XButtonMutation
                                 variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
@@ -81,13 +76,45 @@ const OpportunityInfo = withOpportunity((props) => {
                             </XButtonMutation>
                         </XCard.Header>
                     )}
-                    {!props.data.alphaNextReviewOpportunity && (
+                    {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
+                        <ParcelProperties item={props.data.alphaNextReviewOpportunity.parcel} />
+                    )}
+                    {(!props.data.alphaNextReviewOpportunity || props.data.loading) && (
                         <XCard.Empty text="There are no parcels for review" icon="sort" />
                     )}
                 </XCard.Loader>
             </XCard>
-            {props.data.alphaNextReviewOpportunity && (
-                <ParcelInfo parcel={props.data.alphaNextReviewOpportunity.parcel} />
+            {props.data.alphaNextReviewOpportunity && (!props.data.loading) && props.data.alphaNextReviewOpportunity.parcel.compatibleBuildings && props.data.alphaNextReviewOpportunity.parcel.compatibleBuildings.length > 0 && (
+                <XVertical>
+                    {props.data.alphaNextReviewOpportunity.parcel.compatibleBuildings.map((v, i) => (
+                        <XCard key={v.key + '-' + i} shadow="medium">
+                            <XHorizontal>
+                                <XView grow={1} basis={0}>
+                                    <XCard.PropertyList>
+                                        <XCard.Property title="Construction Type">{v.title}</XCard.Property>
+                                        {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
+                                        {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
+                                    </XCard.PropertyList>
+                                </XView>
+                                <XView grow={1} basis={0}>
+                                    {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
+                                        <XMapSource id={'parcel'} data={sourceFromGeometry(props.data.alphaNextReviewOpportunity!!.parcel.geometry!!)} />
+                                        <XMapPolygonLayer source="parcel" layer="parcel" />
+
+                                        {v.center && <XMapSource id={'center'} data={sourceFromPoint(v.center!!.latitude, v.center!!.longitude)} />}
+                                        {v.center && <XMapPointLayer source="center" layer="center" />}
+
+                                        {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
+                                        {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
+                                    </XCard.Map>}
+                                </XView>
+                            </XHorizontal>
+                        </XCard>
+                    ))}
+                </XVertical>
+            )}
+            {props.data.alphaNextReviewOpportunity && (!props.data.loading) && props.data.alphaNextReviewOpportunity.parcel.geometry && (
+                <ParcelMaps id={props.data.alphaNextReviewOpportunity.parcel.id} geometry={props.data.alphaNextReviewOpportunity.parcel.geometry} disableNavigation={true} satellite={true} />
             )}
         </XVertical>
     );

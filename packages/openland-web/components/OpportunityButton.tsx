@@ -19,7 +19,7 @@ export const OpportunitiButton = (props: { parcelId: string, opportunityId?: str
         } else if (props.opportunityState === OpportunityState.SNOOZED) {
             return <XButton path={'/prospecting/snoozed'} style="dark" size="medium">Snoozed Parcel</XButton>;
         } else if (props.opportunityState === OpportunityState.INCOMING) {
-            return <XButton path={'/prospecting/review?initialId=' + props.opportunityId} style="dark" size="medium">Start Review</XButton>;
+            return <XButton path={'/prospecting/review?initialId=' + props.opportunityId} style="dark" size="medium">Begin Review</XButton>;
         } else if (props.opportunityState === OpportunityState.APPROVED_ZONING) {
             return <XButton path={'/prospecting/review?initialId=' + props.opportunityId + '?stage=unit'} style="dark" size="medium">Continue Review</XButton>;
         } else if (props.opportunityState === OpportunityState.APPROVED_INITIAL) {

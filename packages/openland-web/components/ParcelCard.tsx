@@ -166,17 +166,19 @@ export const ParcelCard = withParcelDirect((props) => {
                             {props.data.item!!.extrasShapeSides && props.data.item!!.extrasShapeSides!!.length > 0 &&
                                 <PropertyCell title="Dimensions"> <XDimensions dimensions={props.data.item!!.extrasShapeSides!!} /></PropertyCell>
                             }
-                            <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
-                                {props.data.item!!.extrasAnalyzed !== true &&
-                                    <PropertyCell title="Compatible buildings">
-                                        <XTooltip title={Text.hint_too_complex} marginLeft={0}/>
-                                        {Text.text_too_complex}
-                                    </PropertyCell>
-                                }
-                                {props.data.item!!.extrasAnalyzed === true && props.data.item!!.extrasFitProjects &&
-                                    <PropertyCell title="Compatible buildings"><ProjectTypes types={props.data.item!!.extrasFitProjects!!} /></PropertyCell>
-                                }
-                            </XWithRole>
+                            {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && (
+                                <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
+                                    {props.data.item!!.extrasAnalyzed !== true &&
+                                        <PropertyCell title="Compatible buildings">
+                                            <XTooltip title={Text.hint_too_complex} marginLeft={0} />
+                                            {Text.text_too_complex}
+                                        </PropertyCell>
+                                    }
+                                    {props.data.item!!.extrasAnalyzed === true && props.data.item!!.extrasFitProjects &&
+                                        <PropertyCell title="Compatible buildings"><ProjectTypes types={props.data.item!!.extrasFitProjects!!} /></PropertyCell>
+                                    }
+                                </XWithRole>
+                            )}
                             {props.data.item!!.extrasNeighborhood &&
                                 <PropertyCell title="Neighborhood">{props.data.item!!.extrasNeighborhood}</PropertyCell>
                             }

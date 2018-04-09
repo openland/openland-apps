@@ -25,8 +25,8 @@ export const OpportunitiesTable = withSourcing((props) => {
                 <>
                     <XTable>
                         <XTable.Header>
-                            <XTable.Cell width={150}>Parcel</XTable.Cell>
                             <XTable.Cell width={200}>City</XTable.Cell>
+                            <XTable.Cell width={150}>Parcel</XTable.Cell>
                             <XTable.Cell>Address</XTable.Cell>
                             <XTable.Cell width={100} textAlign="right">Area</XTable.Cell>
                             <XTable.Cell width={100}>Priority</XTable.Cell>
@@ -35,10 +35,10 @@ export const OpportunitiesTable = withSourcing((props) => {
                             {props.data.alphaOpportunities.edges.map((v) => (
                                 <XTable.Row key={v.node.id} path={useDirect ? '/parcels/' + v.node.parcel.id : ('/prospecting/review?initialId=' + v.node.id + stage)}>
                                     <XTable.Cell>
-                                        {v.node.parcel.title}
+                                        {v.node.parcel.city.name}
                                     </XTable.Cell>
                                     <XTable.Cell>
-                                        {v.node.parcel.city.name}
+                                        {v.node.parcel.title}
                                     </XTable.Cell>
                                     <XTable.Cell>
                                         {v.node.parcel.extrasAddress}
