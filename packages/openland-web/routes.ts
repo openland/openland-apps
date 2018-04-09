@@ -37,28 +37,28 @@ routes.add('/deals/:dealId/', '/main/deals/view');
 // Sourcing
 //
 
-routes.add('/sourcing', '/main/sourcing/index');
-routes.add('/sourcing/', '/main/sourcing/index');
-routes.add('/sourcing/rejected', '/main/sourcing/rejected');
-routes.add('/sourcing/rejected/', '/main/sourcing/rejected');
-routes.add('/sourcing/approved', '/main/sourcing/approved');
-routes.add('/sourcing/approved/', '/main/sourcing/approved');
-routes.add('/sourcing/snoozed', '/main/sourcing/snoozed');
-routes.add('/sourcing/snoozed/', '/main/sourcing/snoozed');
-routes.add('/sourcing/zoning', '/main/sourcing/zoning');
-routes.add('/sourcing/zoning/', '/main/sourcing/zoning');
-routes.add('/sourcing/unit', '/main/sourcing/unit');
-routes.add('/sourcing/unit/', '/main/sourcing/unit');
+routes.add('/prospecting', '/main/prospecting/index');
+routes.add('/prospecting/', '/main/prospecting/index');
+routes.add('/prospecting/rejected', '/main/prospecting/rejected');
+routes.add('/prospecting/rejected/', '/main/prospecting/rejected');
+routes.add('/prospecting/approved', '/main/prospecting/approved');
+routes.add('/prospecting/approved/', '/main/prospecting/approved');
+routes.add('/prospecting/snoozed', '/main/prospecting/snoozed');
+routes.add('/prospecting/snoozed/', '/main/prospecting/snoozed');
+routes.add('/prospecting/zoning', '/main/prospecting/zoning');
+routes.add('/prospecting/zoning/', '/main/prospecting/zoning');
+routes.add('/prospecting/unit', '/main/prospecting/unit');
+routes.add('/prospecting/unit/', '/main/prospecting/unit');
 
-routes.add('/sourcing/review', '/main/sourcing/review/initial');
-routes.add('/sourcing/review/', '/main/sourcing/review/initial');
-routes.add('/sourcing/zoning/review', '/main/sourcing/review/zoning');
-routes.add('/sourcing/zoning/review/', '/main/sourcing/review/zoning');
-routes.add('/sourcing/unit/review', '/main/sourcing/review/unit');
-routes.add('/sourcing/unit/review/', '/main/sourcing/review/unit');
+routes.add('/prospecting/review', '/main/prospecting/review/initial');
+routes.add('/prospecting/review/', '/main/prospecting/review/initial');
+routes.add('/prospecting/zoning/review', '/main/prospecting/review/zoning');
+routes.add('/prospecting/zoning/review/', '/main/prospecting/review/zoning');
+routes.add('/prospecting/unit/review', '/main/prospecting/review/unit');
+routes.add('/prospecting/unit/review/', '/main/prospecting/review/unit');
 
-routes.add('/sourcing/:opportunityId', '/main/sourcing/view');
-routes.add('/sourcing/:opportunityId/', '/main/sourcing/view');
+routes.add('/prospecting/:opportunityId', '/main/prospecting/view');
+routes.add('/prospecting/:opportunityId/', '/main/prospecting/view');
 
 //
 // People

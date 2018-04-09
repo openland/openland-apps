@@ -74,6 +74,12 @@ export const SnoozeOpportunityMutation = gql`
     }
 `;
 
+export const AddOpportunityFromSearchMutation = gql`
+    mutation alphaAddOpportunitiesFromSearch($query: String!) {
+        alphaAddOpportunitiesFromSearch(state: "NY", county: "New York", city: "New York", query: $query)
+    }
+`;
+
 export const NextOpportunityQuery = gql`
     query NextOpportunity($state: OpportunityState!) {
         alphaNextReviewOpportunity(state: $state) {
@@ -86,4 +92,15 @@ export const NextOpportunityQuery = gql`
         }
     }
     ${ParcelFull}
+`;
+
+export const OpportunityStatsQuery = gql`
+    query OpportunityStats {
+        incoming: alphaOpportunitiesCount(state: INCOMING)
+        approved_initial: alphaOpportunitiesCount(state: APPROVED_INITIAL)
+        approved_zoning: alphaOpportunitiesCount(state: APPROVED_ZONING)
+        approved: alphaOpportunitiesCount(state: APPROVED)
+        rejected: alphaOpportunitiesCount(state: REJECTED)
+        snoozed: alphaOpportunitiesCount(state: SNOOZED)
+    }
 `;

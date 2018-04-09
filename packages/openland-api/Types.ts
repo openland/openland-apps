@@ -2464,6 +2464,14 @@ export interface SnoozeOpportunityMutationMutation {
   alphaSnooze: string,
 };
 
+export interface alphaAddOpportunitiesFromSearchMutationVariables {
+  query: string,
+};
+
+export interface alphaAddOpportunitiesFromSearchMutation {
+  alphaAddOpportunitiesFromSearch: number,
+};
+
 export interface NextOpportunityQueryVariables {
   state: OpportunityState,
 };
@@ -2595,6 +2603,15 @@ export interface NextOpportunityQuery {
       } >,
     },
   } | null,
+};
+
+export interface OpportunityStatsQuery {
+  incoming: number,
+  approved_initial: number,
+  approved_zoning: number,
+  approved: number,
+  rejected: number,
+  snoozed: number,
 };
 
 export interface UsersQueryQueryVariables {

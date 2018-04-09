@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { AppContentMap } from '../../../components/App/AppContentMap';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { ParcelCard } from '../../../components/ParcelCard';
-import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
+import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats, withDealsMap, withAddFromSearchOpportunity } from '../../../api/';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XMap, XMapCameraLocation } from '../../../components/X/XMap';
 import { XHead } from '../../../components/X/XHead';
@@ -20,6 +20,8 @@ import { XMapSource } from '../../../components/X/XMapSource';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { trackEvent } from '../../../utils/analytics';
 import { canUseDOM } from '../../../utils/environment';
+import { XButtonMutation } from '../../../components/X/XButtonMutation';
+import { XWithRole } from '../../../components/X/XWithRole';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -55,7 +57,7 @@ const FilterContainer = Glamorous(XCard)({
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: '#5968e2',
-    width: '362px',
+    width: '422px',
     height: '78px',
     pointerEvents: 'auto'
 });
@@ -116,6 +118,8 @@ const DealsSource = withDealsMap((props) => {
     }
     return null;
 });
+
+const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Prospect All!</XButtonMutation>);
 class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { query?: any }> {
 
     knownCameraLocation?: XMapCameraLocation;
@@ -152,7 +156,6 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
     }
 
     render() {
-
         let mapStyle = this.props.router.query!!.mode === 'full'
             ? 'mapbox://styles/mapbox/streets-v9'
             : (this.props.router.query!!.mode === 'satellite' ?
@@ -198,7 +201,12 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                             />
                         </FilterHeader>
                         <FilterActions>
-                            <AppFilters onChange={this.handleUpdate} city={city} />
+                            <XHorizontal>
+                                <XWithRole role={['super-admin', 'software-developer']}>
+                                    {this.state.query && <AddOpportunitiesButton variables={{ query: JSON.stringify(this.state.query) }} />}
+                                </XWithRole>
+                                <AppFilters onChange={this.handleUpdate} city={city} />
+                            </XHorizontal>
                         </FilterActions>
                     </FilterContainer>
                 </AppContentMap.Item>
@@ -279,7 +287,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                     </XMapContainer2>
                     {this.props.router.query!!.selectedParcel && <ParcelCard parcelId={this.props.router.query!!.selectedParcel} />}
                 </XMapContainer>
-            </AppContentMap>
+            </AppContentMap >
         );
     }
 }

@@ -19,7 +19,7 @@ import { XDimensions } from './X/XDimensions';
 import { ProjectTypes } from './ProjectTypes';
 import { XNumber } from './X/XNumber';
 import { XView } from './X/XView';
-import { OpportunityCreate } from './OpportunityCreate';
+import { OpportunitiButton } from './OpportunityButton';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -139,29 +139,10 @@ export const ParcelCard = withParcelDirect((props) => {
                                     </XButton>
                                     </XWithRole>
                                     <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']}>
-                                        {!props.data!!.item!!.opportunity && (
-                                            <OpportunityCreate parcelId={props.data!!.item!!.id}>
-                                                <XButton
-                                                    size="medium"
-                                                    flexGrow={1}
-                                                    flexBasis={0}
-                                                    accent={true}
-                                                >
-                                                    Add Opportunity
-                                            </XButton>
-                                            </OpportunityCreate>
-                                        )}
-                                        {props.data!!.item!!.opportunity && (
-                                            <XButton
-                                                size="medium"
-                                                flexGrow={1}
-                                                flexBasis={0}
-                                                style="dark"
-                                                path={'/sourcing/' + props.data!!.item!!.opportunity!!.id}
-                                            >
-                                                View Opportunity
-                                            </XButton>
-                                        )}
+                                        <OpportunitiButton
+                                            parcelId={props.data!!.item!!.id}
+                                            opportunityId={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.id : undefined}
+                                        />
                                     </XWithRole>
                                 </XView>
                             </XHorizontal>

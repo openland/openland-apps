@@ -20,16 +20,16 @@ export default withApp('Incoming opportunities', 'viewer', () => {
             <XHead title="Incoming opportunities" />
             <AppContent>
                 <XTab>
-                    <XTab.Item path="/sourcing" asArrow={true}>Incoming</XTab.Item>
-                    <XTab.Item path="/sourcing/zoning" asArrow={true}>Zoning Review</XTab.Item>
-                    <XTab.Item path="/sourcing/unit" asArrow={true}>Unit Placement</XTab.Item>
-                    <XTab.Item path="/sourcing/approved">Approved</XTab.Item>
-                    <XTab.Item path="/sourcing/rejected">Rejected</XTab.Item>
-                    <XTab.Item path="/sourcing/snoozed">Snoozed</XTab.Item>
+                    <XTab.Item path="/prospecting" asArrow={true}>Incoming</XTab.Item>
+                    <XTab.Item path="/prospecting/zoning" asArrow={true}>Zoning Review</XTab.Item>
+                    <XTab.Item path="/prospecting/unit" asArrow={true}>Unit Placement</XTab.Item>
+                    <XTab.Item path="/prospecting/approved">Approved</XTab.Item>
+                    <XTab.Item path="/prospecting/rejected">Rejected</XTab.Item>
+                    <XTab.Item path="/prospecting/snoozed">Snoozed</XTab.Item>
                 </XTab>
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="Incoming opportunities">
-                        <XButton style="dark" path="/sourcing/review">Start Review</XButton>
+                        <XButton style="dark" path="/prospecting/review">Start Review</XButton>
                     </XCard.Header>
                     <OpportunitiesTable variables={{ state: 'INCOMING' }}>
                         <XCard.Empty text="You can find your first parcel at" icon="sort">

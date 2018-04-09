@@ -23,9 +23,10 @@ import { XVertical } from '../../../components/X/XVertical';
 import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XAngle } from '../../../components/X/XAngle';
+import { OpportunitiButton } from '../../../components/OpportunityButton';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
-    
+
     return (
         <>
             <XHead title={['Parcel #' + props.data.item.title]} />
@@ -40,8 +41,12 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                         <XWithRole role={['super-admin', 'editor']}>
                             <XButton path={'/parcels/' + props.data.item.id + '/edit'}>Edit</XButton>
                         </XWithRole>
-                        <XButton disabled={true} icon="lock">Owner</XButton>
-                        {/* {props.data.item.geometry && <AStreetViewModal geometry={props.data.item.geometry} />} */}
+                        <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']}>
+                            <OpportunitiButton
+                                parcelId={props.data!!.item!!.id}
+                                opportunityId={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.id : undefined}
+                            />
+                        </XWithRole>
                         <XButton
                             accent={true}
                             icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}

@@ -21,7 +21,7 @@ export const OpportunitiesTable = withSourcing((props) => {
                         </XTable.Header>
                         <XTable.Body>
                             {props.data.alphaOpportunities.edges.map((v) => (
-                                <XTable.Row key={v.node.id} path={'/sourcing/' + v.node.id}>
+                                <XTable.Row key={v.node.id} path={'/prospecting/' + v.node.id}>
                                     <XTable.Cell>
                                         {v.node.parcel.title}
                                     </XTable.Cell>
