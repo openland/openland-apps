@@ -36,7 +36,7 @@ const OpportunityInfo = withOpportunity((props) => {
             <XCard shadow="medium" separators={true}>
                 <XCard.Loader loading={props.data.loading || false}>
                     {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
-                        <XCard.Header text={'Parcel #' + props.data.alphaNextReviewOpportunity!!.parcel.title}>
+                        <XCard.Header text={'Parcel #' + props.data.alphaNextReviewOpportunity!!.parcel.title} description={props.data.alphaNextReviewOpportunity!!.parcel.extrasAddress}>
                             <XButtonMutation
                                 variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                                 mutation={props.reject}
@@ -79,7 +79,7 @@ const OpportunityInfo = withOpportunity((props) => {
                                         <XCard.Property title="Construction Type">{v.title}</XCard.Property>
                                         {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
                                         {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
-                                        {v.center && <XCard.Property title="Location">({v.center.latitude},{v.center.longitude})</XCard.Property>}
+                                        {v.center && <XCard.Property title="Location">{v.center.latitude},{v.center.longitude}</XCard.Property>}
                                     </XCard.PropertyList>
                                 </XView>
                                 <XView grow={1} basis={0}>
