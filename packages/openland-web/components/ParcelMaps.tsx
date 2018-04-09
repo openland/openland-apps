@@ -18,11 +18,11 @@ const StreetView = Glamorous(XStreetView)({
     width: '100%'
 });
 
-export const ParcelMaps = withRouter<{ id: string, geometry: string, disableNavigation?: boolean }>((props) => {
+export const ParcelMaps = withRouter<{ id: string, geometry: string, disableNavigation?: boolean, satellite?: boolean }>((props) => {
     return (
         <XHorizontal>
             <Wrapper shadow="medium">
-                <XCard.Map focusLocation={{ ...findCenter(props.geometry), zoom: 18 }}>
+                <XCard.Map focusLocation={{ ...findCenter(props.geometry), zoom: 18 }} satellite={props.satellite}>
                     <ParcelTileSource layer="parcels" minZoom={16} />
                     <BlockTileSource layer="blocks" minZoom={12} />
                     <XMapPolygonLayer
@@ -36,7 +36,6 @@ export const ParcelMaps = withRouter<{ id: string, geometry: string, disableNavi
                             selectedBorderWidth: 8,
                             selectedBorderOpacity: 1
                         }}
-                        flyOnClick={props.disableNavigation !== true}
                         allowHover={props.disableNavigation !== true}
                         allowClick={props.disableNavigation !== true}
                         onClick={props.disableNavigation !== true ? (v) => props.router.push('/parcels/' + v) : undefined}

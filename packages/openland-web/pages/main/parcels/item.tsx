@@ -45,6 +45,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                             <OpportunitiButton
                                 parcelId={props.data!!.item!!.id}
                                 opportunityId={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.id : undefined}
+                                opportunityState={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.state : undefined}
                             />
                         </XWithRole>
                         <XButton
@@ -95,7 +96,8 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                 {props.data.item.geometry && (
                     <ParcelMaps id={props.data.item.id} geometry={props.data.item.geometry} />
                 )}
-                {props.data.item.compatibleBuildings && props.data.item.compatibleBuildings.length > 0 && (
+
+                {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && props.data.item.compatibleBuildings && props.data.item.compatibleBuildings.length > 0 && (
                     <XVertical>
                         {props.data.item.compatibleBuildings.map((v, i) => (
                             <XCard key={v.key + '-' + i} shadow="medium">

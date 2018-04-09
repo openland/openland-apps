@@ -81,8 +81,8 @@ export const AddOpportunityFromSearchMutation = gql`
 `;
 
 export const NextOpportunityQuery = gql`
-    query NextOpportunity($state: OpportunityState!) {
-        alphaNextReviewOpportunity(state: $state) {
+    query NextOpportunity($state: OpportunityState!, $initialId: ID) {
+        alphaNextReviewOpportunity(state: $state, initialId: $initialId) {
             id
             state
             priority

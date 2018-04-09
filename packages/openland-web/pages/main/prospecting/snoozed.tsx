@@ -4,22 +4,15 @@ import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { AppContent } from '../../../components/App/AppContent';
-import { XTab } from '../../../components/X/XTab';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
+import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 
 export default withApp('Snoozed opportunities', 'viewer', () => {
     return (
         <>
             <XHead title="Snoozed opportunities" />
             <AppContent>
-                <XTab>
-                    <XTab.Item path="/prospecting" asArrow={true}>Incoming</XTab.Item>
-                    <XTab.Item path="/prospecting/zoning" asArrow={true}>Zoning Review</XTab.Item>
-                    <XTab.Item path="/prospecting/unit" asArrow={true}>Unit Placement</XTab.Item>
-                    <XTab.Item path="/prospecting/approved">Approved</XTab.Item>
-                    <XTab.Item path="/prospecting/rejected">Rejected</XTab.Item>
-                    <XTab.Item path="/prospecting/snoozed">Snoozed</XTab.Item>
-                </XTab>
+                <ProspectingNavigation />
                 <XCard shadow="medium" separators={true}>
                     <XCard.Header text="Snoozed opportinities" />
                     <OpportunitiesTable variables={{ state: 'SNOOZED' }}>

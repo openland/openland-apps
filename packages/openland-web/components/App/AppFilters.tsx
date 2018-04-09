@@ -572,12 +572,22 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
         if (this.props.router.query!!.isOkForTower) {
             clauses.push({ 'isOkForTower': JSON.parse(this.props.router.query!!.isOkForTower) });
         }
+        let isVacantSet: boolean | undefined = false;
         if (this.props.router.query!!.isVacant) {
-            clauses.push({ 'isVacant': JSON.parse(this.props.router.query!!.isVacant) });
+            if (JSON.parse(this.props.router.query!!.isVacant) === 'true') {
+                isVacantSet = true;
+            } else {
+                isVacantSet = false;
+            }
         }
         if (this.props.router.query!!.compatible) {
+            isVacantSet = true;
             clauses.push({ 'compatibleBuildings': JSON.parse(this.props.router.query!!.compatible) });
         }
+        if (isVacantSet !== undefined) {
+            clauses.push({ 'isVacant': isVacantSet.toString() });
+        }
+
         if (this.props.router.query!!.filterOnSale) {
             clauses.push({ 'onSale': JSON.parse(this.props.router.query!!.filterOnSale) });
         }
