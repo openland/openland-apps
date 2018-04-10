@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XCard } from './X/XCard';
 
 const SidebarContainer = Glamorous.div({
     display: 'flex',
@@ -8,23 +9,11 @@ const SidebarContainer = Glamorous.div({
     paddingRight: '8px'
 });
 
-const SidebarHeader = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    height: '56px',
-    fontSize: '20px',
-    paddingLeft: '16px',
-    paddingRight: '16px',
-    paddingTop: '8px',
-    paddingBottom: '8px',
-    alignItems: 'center'
-});
-
 export function Sidebar(props: { title: string, children: any }) {
     return (
         <SidebarContainer>
-            <SidebarHeader>{props.title}</SidebarHeader>
-            {}
+            <XCard.Header text={props.title} />
+            {props.children}
         </SidebarContainer>
     );
 }
