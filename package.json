@@ -125,6 +125,9 @@
 		"tslint": "^5.8.0",
 		"tslint-react": "^3.5.1"
 	},
+	"workspaces": [
+		"openland-mobile"
+	],
 	"scripts": {
 		"dev": "API_ENDPOINT=\"https://api.statecrafthq.com\" nodemon ./packages/openland-web/server.ts",
 		"dev:local": "nodemon ./packages/openland-web/server.ts",
