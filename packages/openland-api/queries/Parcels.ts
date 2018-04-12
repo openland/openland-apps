@@ -76,6 +76,10 @@ export const ParcelFull = gql`
       extrasFitProjects
       extrasAnalyzed
 
+      userData {
+          notes
+      }
+
       opportunity {
           id
           priority
@@ -182,6 +186,9 @@ export const ParcelShort = gql`
       likes {
           liked
           count
+      }
+      userData {
+          notes
       }
   }
 `;
@@ -370,6 +377,17 @@ export const ParcelsSearchQuery = gql`
         items: searchParcels(query: $query) {
             id
             title
+        }
+    }
+`;
+
+export const ParcelNotes = gql`
+    mutation ParcelNotes($parcelId: ID!, $notes: String!) {
+        alphaSetNote(parcelId: $parcelId, notes: $notes) {
+            id
+            userData {
+                notes
+            }
         }
     }
 `;

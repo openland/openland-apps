@@ -1046,6 +1046,10 @@ export interface ParcelsConnectionQuery {
           liked: boolean,
           count: number | null,
         },
+        userData:  {
+          __typename: "ParcelUserData",
+          notes: string | null,
+        } | null,
       },
       cursor: string,
     } >,
@@ -1124,6 +1128,10 @@ export interface ParcelsFavoritesQuery {
       liked: boolean,
       count: number | null,
     },
+    userData:  {
+      __typename: "ParcelUserData",
+      notes: string | null,
+    } | null,
   } >,
 };
 
@@ -1210,6 +1218,10 @@ export interface ParcelQuery {
     extrasShapeSides: Array< number > | null,
     extrasFitProjects: Array< string > | null,
     extrasAnalyzed: boolean | null,
+    userData:  {
+      __typename: "ParcelUserData",
+      notes: string | null,
+    } | null,
     opportunity:  {
       __typename: "Opportunity",
       id: string,
@@ -1374,6 +1386,22 @@ export interface ParcelsSearchQueryQuery {
     id: string,
     title: string,
   } >,
+};
+
+export interface ParcelNotesMutationVariables {
+  parcelId: string,
+  notes: string,
+};
+
+export interface ParcelNotesMutation {
+  alphaSetNote:  {
+    __typename: "Parcel",
+    id: string,
+    userData:  {
+      __typename: "ParcelUserData",
+      notes: string | null,
+    } | null,
+  },
 };
 
 export interface PermissionsQuery {
@@ -2221,6 +2249,10 @@ export interface SourcingQuery {
           extrasShapeSides: Array< number > | null,
           extrasFitProjects: Array< string > | null,
           extrasAnalyzed: boolean | null,
+          userData:  {
+            __typename: "ParcelUserData",
+            notes: string | null,
+          } | null,
           opportunity:  {
             __typename: "Opportunity",
             id: string,
@@ -2366,6 +2398,10 @@ export interface OpportunityQuery {
       extrasShapeSides: Array< number > | null,
       extrasFitProjects: Array< string > | null,
       extrasAnalyzed: boolean | null,
+      userData:  {
+        __typename: "ParcelUserData",
+        notes: string | null,
+      } | null,
       opportunity:  {
         __typename: "Opportunity",
         id: string,
@@ -2474,6 +2510,7 @@ export interface alphaAddOpportunitiesFromSearchMutation {
 
 export interface NextOpportunityQueryVariables {
   state: OpportunityState,
+  initialId?: string | null,
 };
 
 export interface NextOpportunityQuery {
@@ -2555,6 +2592,10 @@ export interface NextOpportunityQuery {
       extrasShapeSides: Array< number > | null,
       extrasFitProjects: Array< string > | null,
       extrasAnalyzed: boolean | null,
+      userData:  {
+        __typename: "ParcelUserData",
+        notes: string | null,
+      } | null,
       opportunity:  {
         __typename: "Opportunity",
         id: string,
@@ -2900,6 +2941,10 @@ export interface ParcelFullFragment {
   extrasShapeSides: Array< number > | null,
   extrasFitProjects: Array< string > | null,
   extrasAnalyzed: boolean | null,
+  userData:  {
+    __typename: string,
+    notes: string | null,
+  } | null,
   opportunity:  {
     __typename: string,
     id: string,
@@ -3010,6 +3055,10 @@ export interface ParcelShortFragment {
     liked: boolean,
     count: number | null,
   },
+  userData:  {
+    __typename: string,
+    notes: string | null,
+  } | null,
 };
 
 export interface BlockShortFragment {

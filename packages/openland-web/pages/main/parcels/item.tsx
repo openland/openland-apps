@@ -24,6 +24,7 @@ import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XAngle } from '../../../components/X/XAngle';
 import { OpportunitiButton } from '../../../components/OpportunityButton';
+import { XForm, XFormTextField } from '../../../components/X/XForm';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -93,10 +94,19 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                     </XCard.Header>
                     <ParcelProperties item={props.data.item} />
                 </XCard>
+                <XCard shadow="medium">
+                    <XForm defaultValues={{ notes: props.data.item.userData ? props.data.item.userData.notes : '' }} submitMutation={props.parcelNotes} mutationDirect={true}>
+                        <XCard.Content>
+                            <XFormTextField field="notes" placeholder="Notes" />
+                        </XCard.Content>
+                        <XForm.Footer>
+                            <XForm.Submit style="dark">Save</XForm.Submit>
+                        </XForm.Footer>
+                    </XForm>
+                </XCard>
                 {props.data.item.geometry && (
                     <ParcelMaps id={props.data.item.id} geometry={props.data.item.geometry} />
                 )}
-
                 {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && props.data.item.compatibleBuildings && props.data.item.compatibleBuildings.length > 0 && (
                     <XVertical>
                         {props.data.item.compatibleBuildings.map((v, i) => (

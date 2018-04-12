@@ -21,6 +21,7 @@ import { XNumber } from './X/XNumber';
 import { XView } from './X/XView';
 import { OpportunitiButton } from './OpportunityButton';
 import { Text } from '../strings';
+import { XIcon } from './X/XIcon';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -51,6 +52,23 @@ let StreetViewDiv = Glamorous.div({
         top: 8,
         right: 8
     }
+});
+
+let Notes = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: '#fdfaf6',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 16,
+    paddingBottom: 16
+});
+
+let ItemIcon = Glamorous(XIcon)({
+    marginRight: '10px',
+    width: '16px',
+    fontSize: '16px',
+    color: '#E8695F'
 });
 
 function PropertyCell(props: { title: string, children: any }) {
@@ -149,6 +167,15 @@ export const ParcelCard = withParcelDirect((props) => {
                                 </XView>
                             </XHorizontal>
                         </XCard.Content>
+
+                        {props.data.item!!.userData && props.data.item!!.userData!!.notes && (
+                            <Notes>
+                                <ItemIcon icon="edit"/>
+                                <div>
+                                    {props.data.item!!.userData!!.notes}
+                                </div>
+                            </Notes>
+                        )}
 
                         <XCard.PropertyList title="Parcel details">
                             {props.data.item!!.extrasOwnerType &&

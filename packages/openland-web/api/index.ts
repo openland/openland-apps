@@ -130,7 +130,8 @@ export const BlockTileSource = graphQLTileSource<Types.BlocksTileOverlayQuery>(Q
 
 const ParcelMetadataAlter = graphqlMutation<{ parcelAlterMetadata: MutationFunc<Types.ParcelAlterMutationVariables> }>(Queries.Parcels.ParcelAlter, { name: 'parcelAlterMetadata', params: ['parcelId'] });
 export const withParcelMetadataForm = graphqlCompose2(withParcelRaw, ParcelMetadataAlter);
-export const withParcel = graphqlCompose3(withParcelRaw, withParcelLikesRouted, withParcelUnlikesRouted);
+export const withParcelNotes = graphqlMutation<{ parcelNotes: MutationFunc<any> }>(Queries.Parcels.ParcelNotes, { name: 'parcelNotes', params: ['parcelId'] });
+export const withParcel = graphqlCompose4(withParcelRaw, withParcelLikesRouted, withParcelUnlikesRouted, withParcelNotes);
 
 export const withParcelStats = graphql<Types.ParcelsStatsQuery, { query?: string, state: string, county: string, city: string }>(Queries.Parcels.ParcelsStats, {
     options: (props: { query?: string, state: string, county: string, city: string }) => ({
