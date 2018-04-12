@@ -278,10 +278,9 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                         </XMap>
                         <MapSwitcher>
                             <XSwitcher fieldStyle={true}>
-                                <XSwitcher.Item query={{ field: 'mode' }}>Basic</XSwitcher.Item>
-                                <XSwitcher.Item query={{ field: 'mode', value: 'full' }}>Standart</XSwitcher.Item>
+                                <XSwitcher.Item query={{ field: 'mode' }}>Map</XSwitcher.Item>
                                 <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
-                                <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>Zoning</XSwitcher.Item>
+                                {city === 'sf' && <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>Zoning</XSwitcher.Item>}
                             </XSwitcher>
                         </MapSwitcher>
                     </XMapContainer2>
