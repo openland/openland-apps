@@ -20,6 +20,7 @@ import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
 import { ProspectingNavigationReview } from '../../../components/ProspectingNavigation';
 import { trackEvent } from '../../../utils/analytics';
+import { XForm, XFormTextField } from '../../../components/X/XForm';
 
 const OpportunityInfo = withOpportunity((props) => {
     let approveText = 'Move to next stage';
@@ -61,7 +62,7 @@ const OpportunityInfo = withOpportunity((props) => {
                             <XButtonMutation
                                 variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                                 mutation={props.approve}
-                                onSuccess={() => { 
+                                onSuccess={() => {
                                     trackEvent('Parcel Rejected', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
                                     props.data.refetch({ forceFetch: true });
                                 }}
@@ -74,11 +75,27 @@ const OpportunityInfo = withOpportunity((props) => {
                     {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
                         <ParcelProperties item={props.data.alphaNextReviewOpportunity.parcel} />
                     )}
-                    {(!props.data.alphaNextReviewOpportunity || props.data.loading) && (
-                        <XCard.Empty text="There are no parcels for review" icon="sort" />
-                    )}
                 </XCard.Loader>
             </XCard>
+            {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
+                <XCard shadow="medium">
+                    <XForm
+                        defaultValues={{ parcelId: props.data.alphaNextReviewOpportunity.parcel.id, notes: props.data.alphaNextReviewOpportunity.parcel.userData ? props.data.alphaNextReviewOpportunity.parcel.userData.notes : '' }}
+                        submitMutation={props.parcelNotes}
+                        mutationDirect={true}
+                    >
+                        <XCard.Content>
+                            <XFormTextField field="notes" placeholder="Notes" />
+                        </XCard.Content>
+                        <XForm.Footer>
+                            <XForm.Submit style="dark">Save</XForm.Submit>
+                        </XForm.Footer>
+                    </XForm>
+                </XCard>
+            )}
+            {(!props.data.alphaNextReviewOpportunity || props.data.loading) && (
+                <XCard.Empty text="There are no parcels for review" icon="sort" />
+            )}
             {props.data.alphaNextReviewOpportunity && (!props.data.loading) && props.data.alphaNextReviewOpportunity.parcel.compatibleBuildings && props.data.alphaNextReviewOpportunity.parcel.compatibleBuildings.length > 0 && (
                 <XVertical>
                     {props.data.alphaNextReviewOpportunity.parcel.compatibleBuildings.map((v, i) => (
