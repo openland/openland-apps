@@ -27,7 +27,22 @@ export default class StateDocument extends Document {
                     <meta name="format-detection" content="telephone=no" />
                     <meta name="theme-color" content="#000000" />
                     <link rel="shortcut icon" href="/static/favicon.ico" />
-                    <link rel="icon" href="/static/favicon-32.png" sizes="32x32" />
+
+                    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png" />
+                    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png" />
+                    <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96.png" />
+                    <link rel="icon" type="image/png" sizes="192x192" href="/static/android-icon-192.png" />
+
+                    <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-icon-57.png" />
+                    <link rel="apple-touch-icon" sizes="60x60" href="/static/apple-icon-60.png" />
+                    <link rel="apple-touch-icon" sizes="72x72" href="/static/apple-icon-72.png" />
+                    <link rel="apple-touch-icon" sizes="76x76" href="/static/apple-icon-76.png" />
+                    <link rel="apple-touch-icon" sizes="114x114" href="/static/apple-icon-114.png" />
+                    <link rel="apple-touch-icon" sizes="120x120" href="/static/apple-icon-120.png" />
+                    <link rel="apple-touch-icon" sizes="144x144" href="/static/apple-icon-144.png" />
+                    <link rel="apple-touch-icon" sizes="152x152" href="/static/apple-icon-152.png" />
+                    <link rel="apple-touch-icon" sizes="180" href="/static/apple-icon-180.png" />
+
                     <link rel="stylesheet" type="text/css" href="/static/loader.css" />
                     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
