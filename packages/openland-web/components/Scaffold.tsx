@@ -9,6 +9,9 @@ import { XIcon } from './X/XIcon';
 import { withUserInfo } from './UserInfo';
 import { XPopover } from './X/XPopover';
 import { XMenu } from './X/XMenu';
+import { withSearch } from '../api';
+import { XCard } from './X/XCard';
+import { XArea } from './X/XArea';
 
 //
 // Root
@@ -63,22 +66,22 @@ const NavigatorIcon = Glamorous(XIcon)({
     textAlign: 'center'
 });
 
-const NavigatorItem = Glamorous.div({
+const NavigatorItem = Glamorous(XLink)({
     display: 'flex',
     flexDirection: 'column',
     alignSelf: 'stretch',
     alignItems: 'center',
     paddingTop: '16px',
     paddingBottom: '16px',
-    flexShrink: 0
-});
-
-const NavigatorTitle = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    fontSize: '14px',
-    fontWeight: 700,
-    paddingTop: '4px'
+    flexShrink: 0,
+    color: '#000000',
+    cursor: 'pointer',
+    ':hover': {
+        color: '#522BFF',
+    },
+    '.is-active': {
+        color: '#522BFF'
+    }
 });
 
 const BottomNavigation = Glamorous.div({
@@ -131,6 +134,153 @@ const ContentView = Glamorous(XScrollView)({
     overflowY: 'scroll',
 });
 
+const SearchContainer = Glamorous.div<{ visible: boolean }>((props) => ({
+    position: 'fixed',
+    zIndex: 500,
+    transition: 'opacity 220ms',
+    left: 72,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    opacity: props.visible ? 1 : 0,
+    pointerEvents: props.visible ? 'initial' : 'none',
+    backgroundColor: 'rgba(9, 30, 66, 0.54)'
+}));
+
+const SearchContent = Glamorous.div<{ visible: boolean }>((props) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'fixed',
+    zIndex: 501,
+    transition: 'opacity 200ms',
+    left: 72,
+    top: 0,
+    bottom: 0,
+    width: '300px',
+    opacity: props.visible ? 1 : 0,
+    pointerEvents: props.visible ? 'initial' : 'none',
+    backgroundColor: '#FFFFFF',
+}));
+
+const SearchInput = Glamorous.input({
+    border: 'none',
+    marginTop: '24px',
+    paddingLeft: '24px',
+    paddingRight: '24px',
+    height: '48px',
+    width: '100%',
+    fontWeight: 600,
+    fontSize: '20px',
+    backgroundColor: 'transparent',
+    '::placeholder': {
+        color: 'rgb(24, 39, 66, 0.6)'
+    },
+    '&:focus': {
+        '::placeholder': { color: 'rgba(24, 39, 66, 0.3)' }
+    }
+});
+
+const ResultsContainer = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    paddingTop: '16px',
+    width: '100%'
+});
+
+let HighlightedWrapper = Glamorous.span({
+    '> em': {
+        color: '#3297d3',
+        fontWeight: 600,
+        fontStyle: 'normal'
+    }
+});
+
+const Highlighted = (props: { text?: string, field: string, highlight: { key: string, match: string }[] }) => {
+    let existing = props.highlight.find((k) => k.key === props.field);
+    if (existing) {
+        return <HighlightedWrapper dangerouslySetInnerHTML={{ __html: existing.match }} />;
+    } else {
+        if (props.text) {
+            return <>{props.text}</>;
+        } else {
+            return null;
+        }
+    }
+};
+
+// const ResultHeader = Glamorous.div({
+//     display: 'flex',
+//     flexDirection: 'row',
+//     color: '#3297d3',
+//     fontSize: 12,
+//     fontWeight: 700
+// })
+
+const ResultTilte = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+});
+
+const ResultTilteMain = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    fontSize: 13,
+    flexGrow: 1
+});
+
+const ResultTilteHint = Glamorous.div({
+    fontSize: 13,
+    opacity: 0.7
+});
+
+const ResultBody = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    fontSize: 13
+});
+
+const ResultBodyMain = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    opacity: 0.7,
+    marginRight: '8px',
+    width: 100
+});
+
+let SearchResults = withSearch((props) => {
+    if (props.data && props.data.search && props.data.search.parcels.edges.length > 0) {
+        return (
+            <ResultsContainer>
+                <XCard.List>
+                    {props.data.search.parcels.edges.map((v) => (
+                        <XCard.ListItem key={v.node.id} path={'/parcels/' + v.node.id}>
+                            <ResultTilte>
+                                <ResultTilteMain>Parcel #<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} /></ResultTilteMain>
+                                <ResultTilteHint>{v.node.extrasArea && <XArea area={v.node.extrasArea} />}</ResultTilteHint>
+                            </ResultTilte>
+                            {!v.highlight.find((k) => k.key === 'address') && (
+                                <ResultBody>
+                                    <ResultBodyMain>Neighborhood</ResultBodyMain>
+                                    {v.node.extrasNeighborhood}
+                                </ResultBody>
+                            )}
+                            {v.highlight.find((k) => k.key === 'address') && (
+                                <ResultBody>
+                                    <ResultBodyMain>Address</ResultBodyMain>
+                                    <Highlighted field={'address'} highlight={v.highlight} />
+                                </ResultBody>
+                            )}
+                        </XCard.ListItem>
+                    ))}
+                </XCard.List>
+            </ResultsContainer>
+        );
+    } else {
+        return null;
+    }
+});
+
 //
 // Menu
 //
@@ -140,6 +290,10 @@ const MenuView = Glamorous.div({
     flexDirection: 'column',
     backgroundColor: '#FAFAFC',
 });
+
+//
+// Implementation
+//
 
 class ScaffoldMenu extends React.Component {
     static defaultProps = {
@@ -173,9 +327,38 @@ class ScaffoldContent extends React.Component {
     }
 }
 
-export class Scaffold extends React.Component {
+export class Scaffold extends React.Component<{}, { search: boolean, searchText: string }> {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
+
+    searchRef: any | null = null;
+
+    constructor(props: {}) {
+        super(props);
+        this.state = { search: false, searchText: '' };
+    }
+
+    handleSearch = () => {
+        if (this.state.search) {
+            this.setState({ search: false });
+        } else {
+            this.setState({ search: true, searchText: '' });
+            if (this.searchRef) {
+                console.warn(this.searchRef);
+                this.searchRef.focus();
+            }
+        }
+    }
+
+    handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        if (this.state.search) {
+            this.setState({ searchText: (e.target as any).value as string });
+        }
+    }
+
+    handleSearchRef = (ref: any | null) => {
+        this.searchRef = ref;
+    }
 
     render() {
         let menu = findChild(this.props.children, '_isSidebarMenu');
@@ -183,27 +366,36 @@ export class Scaffold extends React.Component {
 
         return (
             <RootContainer>
+                <SearchContainer visible={this.state.search} onClick={this.handleSearch} />
+                <SearchContent visible={this.state.search}>
+                    <SearchInput
+                        placeholder="Search"
+                        onChange={this.handleSearchChange}
+                        innerRef={this.handleSearchRef}
+                        value={this.state.searchText}
+                    />
+                    {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults query={this.state.searchText} />)}
+                </SearchContent>
                 <NavigationContainer>
                     <XLink path="/">
                         <Logo picture={{ url: '/static/branding/logo_inverted_squared.png', retina: '/static/branding/logo_inverted_squared@2x.png' }} />
                     </XLink>
                     <NavigationDivider />
-                    <NavigatorItem>
+                    <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
+                        <NavigatorIcon icon={this.state.search ? 'close' : 'search'} />
+                    </NavigatorItem>
+                    <NavigatorItem path="/">
                         <NavigatorIcon icon="explore" />
-                        <NavigatorTitle>Explore</NavigatorTitle>
                     </NavigatorItem>
-                    <NavigatorItem>
+                    <NavigatorItem path="/prospecting">
                         <NavigatorIcon icon="sort" />
-                        <NavigatorTitle>Prospecting</NavigatorTitle>
                     </NavigatorItem>
-                    <NavigatorItem>
+                    <NavigatorItem path="/deals">
                         <NavigatorIcon icon="work" />
-                        <NavigatorTitle>Deals</NavigatorTitle>
                     </NavigatorItem>
                     <BottomNavigation>
                         <NavigatorItem>
                             <NavigatorIcon icon="playlist_add_check" />
-                            <NavigatorTitle>Features</NavigatorTitle>
                         </NavigatorItem>
                         <NavigatorItem>
                             <UserProfile />
