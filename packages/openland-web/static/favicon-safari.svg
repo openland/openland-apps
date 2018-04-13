@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>favicon-safari</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="favicon-safari" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Logo-Black" fill="#000000">
+            <polygon id="Mask" points="8 3.2 11.6363636 5.38181818 8 7.56363636 4.36363636 5.38181818"></polygon>
+            <polygon id="Mask" points="12.3636364 5.81818182 16 8 12.3636364 10.1818182 8.72727273 8"></polygon>
+            <polygon id="Mask" points="3.63636364 5.81818182 11.6363636 10.6181818 8 12.8 0 8"></polygon>
+        </g>
+    </g>
+</svg>
