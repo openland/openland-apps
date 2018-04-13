@@ -71,8 +71,14 @@ async function start() {
     //
     // Favicon support endpoint
     //
-
     server.get('/favicon.ico', (req, res) => res.sendFile(__dirname + '/static/favicon.ico'));
+
+    //
+    // Serving static directory
+    //
+    server.use('/static', express.static(__dirname + '/static', {
+        maxAge: '1h'
+    }));
 
     //
     // Main Handler
