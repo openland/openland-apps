@@ -6,7 +6,6 @@ import { XVertical } from './X/XVertical';
 import { XPicture } from './X/XPicture';
 import { XLink } from './X/XLink';
 import { XIcon } from './X/XIcon';
-import { XTooltip } from './Incubator/XTooltip';
 import { withUserInfo } from './UserInfo';
 import { XPopover } from './X/XPopover';
 import { XMenu } from './X/XMenu';
