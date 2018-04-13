@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>logo_inverted_squared</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="logo_inverted_squared" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="#522BFF" x="0" y="0" width="48" height="48" rx="14"></rect>
+        <g id="Logo-White" transform="translate(6.000000, 6.000000)" fill="#FFFFFF">
+            <polygon id="Mask" points="18 7.2 26.1818182 12.1090909 18 17.0181818 9.81818182 12.1090909"></polygon>
+            <polygon id="Mask" points="27.8181818 13.0909091 36 18 27.8181818 22.9090909 19.6363636 18"></polygon>
+            <polygon id="Mask" points="8.18181818 13.0909091 26.1818182 23.8909091 18 28.8 0 18"></polygon>
+        </g>
+    </g>
+</svg>

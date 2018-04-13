@@ -3,6 +3,13 @@ import Glamorous from 'glamorous';
 import { findChild } from './utils';
 import { XScrollView } from './X/XScrollView';
 import { XVertical } from './X/XVertical';
+import { XPicture } from './X/XPicture';
+import { XLink } from './X/XLink';
+import { XIcon } from './X/XIcon';
+import { XTooltip } from './Incubator/XTooltip';
+import { withUserInfo } from './UserInfo';
+import { XPopover } from './X/XPopover';
+import { XMenu } from './X/XMenu';
 
 //
 // Root
@@ -24,18 +31,18 @@ const NavigationContainer = Glamorous.div({
     flexDirection: 'column',
     height: '100vh',
     width: '72px',
-    paddingRight: '8px',
     paddingTop: '8px',
-    backgroundColor: '#E2E2E2',
+    backgroundColor: '#FAFAFC',
     flexShrink: 0,
-    borderRightColor: '#cecccc',
+    borderRightColor: 'rgba(0,0,0, 0.05)',
     borderRightStyle: 'solid',
-    borderRightWidth: '1px'
+    borderRightWidth: '1px',
+    alignItems: 'center'
 });
 
-const Logo = Glamorous.img({
-    height: '28px',
-    width: '28px',
+const Logo = Glamorous(XPicture)({
+    height: '48px',
+    width: '48px',
     marginTop: '12px',
     marginBottom: '12px',
     alignSelf: 'center',
@@ -48,7 +55,66 @@ const NavigationDivider = Glamorous.div({
     marginTop: '4px',
     marginBottom: '4px',
     alignSelf: 'center',
-    backgroundColor: '#cecccc'
+    backgroundColor: '#000000',
+    opacity: 0.05
+});
+
+const NavigatorIcon = Glamorous(XIcon)({
+    fontSize: '28px',
+    textAlign: 'center'
+});
+
+const NavigatorItem = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    paddingTop: '16px',
+    paddingBottom: '16px',
+    flexShrink: 0
+});
+
+const NavigatorTitle = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    fontSize: '14px',
+    fontWeight: 700,
+    paddingTop: '4px'
+});
+
+const BottomNavigation = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    flexGrow: 1,
+    flexShrink: 0
+});
+
+const AvatarImg = Glamorous.img({
+    overflow: 'hidden',
+    borderRadius: '14px',
+    marginLeft: 16,
+    marginRight: 8,
+    width: '36px',
+    height: '36px',
+    boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
+    cursor: 'pointer'
+});
+
+let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
+    return (
+        <XPopover placement="right">
+            <XPopover.Target>
+                <AvatarImg src={props.user!!.picture} />
+                {/* <UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv> */}
+            </XPopover.Target>
+            <XPopover.Content>
+                <XMenu>
+                    <XMenu.Item path="/auth/logout">Sign Out</XMenu.Item>
+                </XMenu>
+            </XPopover.Content>
+        </XPopover>
+    );
 });
 
 //
@@ -73,7 +139,7 @@ const ContentView = Glamorous(XScrollView)({
 const MenuView = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: '#E2E2E2',
+    backgroundColor: '#FAFAFC',
 });
 
 class ScaffoldMenu extends React.Component {
@@ -119,8 +185,31 @@ export class Scaffold extends React.Component {
         return (
             <RootContainer>
                 <NavigationContainer>
-                    <Logo src="/static/favicon-96.png" />
+                    <XLink path="/">
+                        <Logo picture={{ url: '/static/branding/logo_inverted_squared.png', retina: '/static/branding/logo_inverted_squared@2x.png' }} />
+                    </XLink>
                     <NavigationDivider />
+                    <NavigatorItem>
+                        <NavigatorIcon icon="explore" />
+                        <NavigatorTitle>Explore</NavigatorTitle>
+                    </NavigatorItem>
+                    <NavigatorItem>
+                        <NavigatorIcon icon="sort" />
+                        <NavigatorTitle>Prospecting</NavigatorTitle>
+                    </NavigatorItem>
+                    <NavigatorItem>
+                        <NavigatorIcon icon="work" />
+                        <NavigatorTitle>Deals</NavigatorTitle>
+                    </NavigatorItem>
+                    <BottomNavigation>
+                        <NavigatorItem>
+                            <NavigatorIcon icon="playlist_add_check" />
+                            <NavigatorTitle>Features</NavigatorTitle>
+                        </NavigatorItem>
+                        <NavigatorItem>
+                            <UserProfile />
+                        </NavigatorItem>
+                    </BottomNavigation>
                 </NavigationContainer>
                 {menu}
                 <ContentView>
