@@ -270,7 +270,6 @@ const PopperDiv = Glamorous.div({
         '> .popper-content': {
             padding: 10,
             background: '#fff',
-            minWidth: 150,
             maxWidth: 200,
             borderRadius: 4,
             boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
