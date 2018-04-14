@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from './XLink';
 
-export const XTabItem = Glamorous(XLink)<{asArrow?: boolean}>((props) => ({
+export const XTabItem = Glamorous(XLink)<{ asArrow?: boolean }>((props) => ({
     cursor: 'pointer',
     userSelect: 'none',
     flexGrow: 1,
@@ -81,22 +81,28 @@ class XTabItemDiv extends React.Component<XTabItemDivProps> {
     render() {
         return (
             <XTabItem {...this.props}>
-                <div className="top-shadow"/>
+                <div className="top-shadow" />
                 {this.props.children}
             </XTabItem>
         );
     }
 }
 
-const XTabsDiv = Glamorous.div({
+const XTabsDiv = Glamorous.div<{ inline?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
-    boxShadow: '0 7px 14px 0 rgba(50, 50, 93, .1), 0 3px 6px 0 rgba(0, 0, 0, .07)',
-    borderRadius: 4,
+    boxShadow: props.inline !== true ? '0 7px 14px 0 rgba(50, 50, 93, .1), 0 3px 6px 0 rgba(0, 0, 0, .07)' : undefined,
+    borderRadius: props.inline !== true ? 4 : 0,
+    borderBottomColor: props.inline ? '#E5EBF2' : undefined,
+    borderBottomStyle: props.inline ? 'solid' : undefined,
+    borderBottomWidth: props.inline ? '1px' : undefined,
+    borderTopColor: props.inline ? '#E5EBF2' : undefined,
+    borderTopStyle: props.inline ? 'solid' : undefined,
+    borderTopWidth: props.inline ? '1px' : undefined,
     overflow: 'hidden'
-});
+}));
 
-export class XTab extends React.Component {
+export class XTab extends React.Component<{ inline?: boolean }> {
 
     static Item = XTabItemDiv;
 
@@ -106,7 +112,7 @@ export class XTab extends React.Component {
 
     render() {
         return (
-            <XTabsDiv>
+            <XTabsDiv inline={this.props.inline}>
                 {this.props.children}
             </XTabsDiv>
         );

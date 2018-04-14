@@ -53,13 +53,6 @@ routes.add('/prospecting/review', '/main/prospecting/review');
 routes.add('/prospecting/review/', '/main/prospecting/review');
 
 //
-// People
-//
-
-routes.add('/people', '/main/people/index');
-routes.add('/people/', '/main/people/index');
-
-//
 // Projects
 //
 
@@ -83,20 +76,6 @@ routes.add('/inquiries/', '/main/inquiries/index');
 
 routes.add('/ui', '/ui/showcase');
 routes.add('/ui/', '/ui/showcase');
-
-//
-// Settings
-//
-
-routes.add('/settings', '/main/settings/index');
-routes.add('/settings/', '/main/settings/index');
-
-//
-// Team
-//
-
-routes.add('/team', '/team/index');
-routes.add('/team/', '/team/index');
 
 //
 // Super

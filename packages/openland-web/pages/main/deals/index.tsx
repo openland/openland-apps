@@ -5,7 +5,6 @@ import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
-import { AppContent } from '../../../components/App/AppContent';
 import { withDeals, withDealAdd } from '../../../api/';
 import { XLink } from '../../../components/X/XLink';
 import { XTable } from '../../../components/X/XTable';
@@ -15,6 +14,7 @@ import { XMoney } from '../../../components/X/XMoney';
 import { XBullet } from '../../../components/X/XBullet';
 import { XArea } from '../../../components/X/XArea';
 import { XHeader } from '../../../components/X/XHeader';
+import { Scaffold } from '../../../components/Scaffold';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -29,8 +29,8 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
             <XModalRouted title="Add New project" query="add">
                 <DealsForm />
             </XModalRouted>
-            <AppContent>
-                <XCard shadow="medium" separators={true}>
+            <Scaffold>
+                <Scaffold.Content>
                     <XHeader text="Deals">
                         <XButton query={{ field: 'add', value: 'true' }}>Add</XButton>
                     </XHeader>
@@ -79,8 +79,8 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
                             <Link query={{ field: 'add', value: 'true' }} >here</Link>
                         </XCard.Empty>
                     )}
-                </XCard>
-            </AppContent>
+                </Scaffold.Content>
+            </Scaffold>
         </>
     );
 }));

@@ -2,7 +2,6 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
-import { AppContentMap } from '../../../components/App/AppContentMap';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats, withDealsMap, withAddFromSearchOpportunity } from '../../../api/';
@@ -22,6 +21,7 @@ import { trackEvent } from '../../../utils/analytics';
 import { canUseDOM } from '../../../utils/environment';
 import { XButtonMutation } from '../../../components/X/XButtonMutation';
 import { XWithRole } from '../../../components/X/XWithRole';
+import { Scaffold } from '../../../components/Scaffold';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -59,7 +59,11 @@ const FilterContainer = Glamorous(XCard)({
     backgroundColor: '#5968e2',
     width: '422px',
     height: '78px',
-    pointerEvents: 'auto'
+    pointerEvents: 'auto',
+    position: 'absolute',
+    top: 16,
+    left: 16,
+    zIndex: 1
 });
 
 const FilterHeader = Glamorous.div({
@@ -179,8 +183,8 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
             : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
 
         return (
-            <AppContentMap>
-                <AppContentMap.Item>
+            <Scaffold>
+                <Scaffold.Content padding={false} bottomOffset={false}>
                     <FilterContainer shadow="medium" borderless={true}>
                         <FilterHeader>
                             <FilterHeaderTitle>
@@ -209,84 +213,85 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                             </XHorizontal>
                         </FilterActions>
                     </FilterContainer>
-                </AppContentMap.Item>
-                <XMapContainer>
-                    <XMapContainer2>
-                        <XMap
-                            key={this.props.router.query!!.mode || 'map'}
-                            mapStyle={mapStyle}
-                            focusPosition={focus}
-                            lastKnownCameraLocation={this.knownCameraLocation}
-                            onCameraLocationChanged={this.handleMap}
-                        >
-                            <ParcelTileSource
-                                layer="parcels"
-                                minZoom={16}
-                            />
-                            <BlockTileSource
-                                layer="blocks"
-                                minZoom={12}
-                            />
-                            <ParcelPointSource
-                                layer="parcels-found"
-                                query={this.state.query}
-                                minZoom={12}
-                                skip={this.state.query === undefined}
-                            />
-                            <DealsSource />
+                    {/* </AppContentMap.Item> */}
+                    <XMapContainer>
+                        <XMapContainer2>
+                            <XMap
+                                key={this.props.router.query!!.mode || 'map'}
+                                mapStyle={mapStyle}
+                                focusPosition={focus}
+                                lastKnownCameraLocation={this.knownCameraLocation}
+                                onCameraLocationChanged={this.handleMap}
+                            >
+                                <ParcelTileSource
+                                    layer="parcels"
+                                    minZoom={16}
+                                />
+                                <BlockTileSource
+                                    layer="blocks"
+                                    minZoom={12}
+                                />
+                                <ParcelPointSource
+                                    layer="parcels-found"
+                                    query={this.state.query}
+                                    minZoom={12}
+                                    skip={this.state.query === undefined}
+                                />
+                                <DealsSource />
 
-                            <XMapPolygonLayer
-                                source="parcels"
-                                layer="parcels"
-                                style={{
-                                    selectedFillOpacity: 0,
-                                    selectedBorderColor: '#4428E1',
-                                    selectedBorderWidth: 8,
-                                    selectedBorderOpacity: 1
-                                }}
-                                minZoom={16}
-                                flyOnClick={true}
-                                onClick={this.handleClick}
-                                selectedId={this.props.router.query!!.selectedParcel}
-                                flyToMaxZoom={18}
-                            />
-                            <XMapPolygonLayer
-                                source="blocks"
-                                layer="blocks"
-                                minZoom={12}
-                                maxZoom={16}
-                                style={{
-                                    fillOpacity: 0.1,
-                                    borderOpacity: 0.3,
-                                }}
-                                flyOnClick={true}
-                                flyToMaxZoom={18}
-                                flyToPadding={{ left: 64, top: 64, bottom: 64, right: 64 }}
-                            />
-                            <XMapPointLayer
-                                source="parcels-found"
-                                layer="parcels-found"
-                                onClick={this.handleClick}
-                            />
+                                <XMapPolygonLayer
+                                    source="parcels"
+                                    layer="parcels"
+                                    style={{
+                                        selectedFillOpacity: 0,
+                                        selectedBorderColor: '#4428E1',
+                                        selectedBorderWidth: 8,
+                                        selectedBorderOpacity: 1
+                                    }}
+                                    minZoom={16}
+                                    flyOnClick={true}
+                                    onClick={this.handleClick}
+                                    selectedId={this.props.router.query!!.selectedParcel}
+                                    flyToMaxZoom={18}
+                                />
+                                <XMapPolygonLayer
+                                    source="blocks"
+                                    layer="blocks"
+                                    minZoom={12}
+                                    maxZoom={16}
+                                    style={{
+                                        fillOpacity: 0.1,
+                                        borderOpacity: 0.3,
+                                    }}
+                                    flyOnClick={true}
+                                    flyToMaxZoom={18}
+                                    flyToPadding={{ left: 64, top: 64, bottom: 64, right: 64 }}
+                                />
+                                <XMapPointLayer
+                                    source="parcels-found"
+                                    layer="parcels-found"
+                                    onClick={this.handleClick}
+                                />
 
-                            <XMapPointLayer
-                                source="deals"
-                                layer="deals"
-                                color="#24b47e"
-                                onClick={this.handleClick}
-                            />
-                        </XMap>
-                        <MapSwitcher>
-                            <XSwitcher fieldStyle={true}>
-                                <XSwitcher.Item query={{ field: 'mode' }}>Map</XSwitcher.Item>
-                                <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
-                                {city === 'sf' && <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>Zoning</XSwitcher.Item>}
-                            </XSwitcher>
-                        </MapSwitcher>
-                    </XMapContainer2>
-                    {this.props.router.query!!.selectedParcel && <ParcelCard parcelId={this.props.router.query!!.selectedParcel} />}
-                </XMapContainer>
-            </AppContentMap >
+                                <XMapPointLayer
+                                    source="deals"
+                                    layer="deals"
+                                    color="#24b47e"
+                                    onClick={this.handleClick}
+                                />
+                            </XMap>
+                            <MapSwitcher>
+                                <XSwitcher fieldStyle={true}>
+                                    <XSwitcher.Item query={{ field: 'mode' }}>Map</XSwitcher.Item>
+                                    <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
+                                    {city === 'sf' && <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>Zoning</XSwitcher.Item>}
+                                </XSwitcher>
+                            </MapSwitcher>
+                        </XMapContainer2>
+                        {this.props.router.query!!.selectedParcel && <ParcelCard parcelId={this.props.router.query!!.selectedParcel} />}
+                    </XMapContainer>
+                </Scaffold.Content>
+            </Scaffold>
         );
     }
 }

@@ -16,7 +16,7 @@ function convertNumber(value?: number) {
 
 export const ProspectingNavigation = withProspectingStats((props) => {
     return (
-        <XTab>
+        <XTab inline={true}>
             <XTab.Item path="/prospecting" asArrow={true}>Incoming{convertNumber(props.data.incoming)}</XTab.Item>
             <XTab.Item path="/prospecting/zoning" asArrow={true}>Zoning Review{convertNumber(props.data.approved_initial)}</XTab.Item>
             <XTab.Item path="/prospecting/unit" asArrow={true}>Unit Placement{convertNumber(props.data.approved_zoning)}</XTab.Item>
@@ -29,7 +29,7 @@ export const ProspectingNavigation = withProspectingStats((props) => {
 
 export const ProspectingNavigationReview = withProspectingStats(withRouter((props) => {
     return (
-        <XTab>
+        <XTab inline={true}>
             {props.router.routeQuery.stage === undefined && <XTab.Item path="/prospecting" active={true} asArrow={true}>Incoming{convertNumber(props.data.incoming)}</XTab.Item>}
             {props.router.routeQuery.stage !== undefined && <XTab.Item query={{ field: 'stage' }} asArrow={true}>Incoming{convertNumber(props.data.incoming)}</XTab.Item>}
             {props.router.routeQuery.stage === 'zoning' && <XTab.Item path="/prospecting/zoning" active={true} asArrow={true}>Zoning Review{convertNumber(props.data.approved_initial)}</XTab.Item>}

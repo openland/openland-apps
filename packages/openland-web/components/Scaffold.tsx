@@ -12,6 +12,7 @@ import { XMenu } from './X/XMenu';
 import { withSearch } from '../api';
 import { XCard } from './X/XCard';
 import { XArea } from './X/XArea';
+import { XWithRole } from './X/XWithRole';
 
 //
 // Root
@@ -132,6 +133,7 @@ const ContentView = Glamorous(XScrollView)({
     borderRadius: '8px',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
     overflowY: 'scroll',
+    position: 'relative'
 });
 
 const SearchContainer = Glamorous.div<{ visible: boolean }>((props) => ({
@@ -311,7 +313,15 @@ class ScaffoldMenu extends React.Component {
     }
 }
 
-class ScaffoldContent extends React.Component {
+const PageDiv = Glamorous.div({
+    display: 'flex',
+    flexShrink: 0,
+    flexGrow: 0,
+    width: '64px',
+    height: '64px'
+});
+
+class ScaffoldContent extends React.Component<{ padding?: boolean, bottomOffset?: boolean }> {
     static defaultProps = {
         _isSidebarContent: true
     };
@@ -319,9 +329,18 @@ class ScaffoldContent extends React.Component {
         if (React.Children.count(this.props.children) === 0) {
             return null;
         }
+        if (this.props.padding === false) {
+            return (
+                <>
+                    {this.props.children}
+                    {this.props.bottomOffset !== false && <PageDiv />}
+                </>
+            );
+        }
         return (
             <XVertical>
                 {this.props.children}
+                {this.props.bottomOffset !== false && <PageDiv />}
             </XVertical>
         );
     }
@@ -344,7 +363,6 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
         } else {
             this.setState({ search: true, searchText: '' });
             if (this.searchRef) {
-                console.warn(this.searchRef);
                 this.searchRef.focus();
             }
         }
@@ -388,16 +406,26 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                     <NavigatorItem path="/">
                         <NavigatorIcon icon="explore" />
                     </NavigatorItem>
-                    <NavigatorItem path="/prospecting">
+                    <NavigatorItem path="/prospecting" activateForSubpaths={true}>
                         <NavigatorIcon icon="sort" />
                     </NavigatorItem>
-                    <NavigatorItem path="/deals">
+                    <NavigatorItem path="/deals" activateForSubpaths={true}>
                         <NavigatorIcon icon="work" />
                     </NavigatorItem>
+                    <NavigatorItem path="/favorites" activateForSubpaths={true}>
+                        <NavigatorIcon icon="favorite" />
+                    </NavigatorItem>
                     <BottomNavigation>
-                        <NavigatorItem>
-                            <NavigatorIcon icon="playlist_add_check" />
-                        </NavigatorItem>
+                        <XWithRole role="super-admin">
+                            <NavigatorItem path="/super/admins">
+                                <NavigatorIcon icon="fingerprint" />
+                            </NavigatorItem>
+                        </XWithRole>
+                        <XWithRole role={['super-admin', 'software-developer']}>
+                            <NavigatorItem path="/ui">
+                                <NavigatorIcon icon="memory" />
+                            </NavigatorItem>
+                        </XWithRole>
                         <NavigatorItem>
                             <UserProfile />
                         </NavigatorItem>

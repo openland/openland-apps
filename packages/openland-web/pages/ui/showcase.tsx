@@ -39,51 +39,50 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                     </Sidebar>
                 </Scaffold.Menu>
                 <Scaffold.Content>
-                    <XVertical>
-                        <XCard.Content>
-                            <XGrid
-                                layouts={{
+                    <XHeader text="Showcase"/>
+                    <XCard.Content>
+                        <XGrid
+                            layouts={{
+                                templateAreas: [
+                                    ['sidebar', 'header', 'header'],
+                                    ['sidebar', 'footer', 'footer']
+                                ],
+                                'xs': {
                                     templateAreas: [
-                                        ['sidebar', 'header', 'header'],
-                                        ['sidebar', 'footer', 'footer']
+                                        ['header', 'sidebar'],
+                                        ['header', 'sidebar'],
+                                        ['footer', 'sidebar']
                                     ],
-                                    'xs': {
-                                        templateAreas: [
-                                            ['header', 'sidebar'],
-                                            ['header', 'sidebar'],
-                                            ['footer', 'sidebar']
-                                        ],
-                                    },
-                                    'sm': {
-                                        templateAreas: [
-                                            ['sidebar', 'sidebar'],
-                                            ['header', 'header'],
-                                            ['footer', 'footer']
-                                        ],
-                                    }
-                                }}
-                            >
-                                <XCell area="sidebar">
-                                    Sidebar
+                                },
+                                'sm': {
+                                    templateAreas: [
+                                        ['sidebar', 'sidebar'],
+                                        ['header', 'header'],
+                                        ['footer', 'footer']
+                                    ],
+                                }
+                            }}
+                        >
+                            <XCell area="sidebar">
+                                Sidebar
                                 </XCell>
-                                <XCell area="header">
-                                    Header
+                            <XCell area="header">
+                                Header
                                 </XCell>
-                                <XCell area="footer">
-                                    Footer
+                            <XCell area="footer">
+                                Footer
                                 </XCell>
-                            </XGrid>
-                        </XCard.Content>
-                        <XTab>
-                            <XTab.Item path="/ui" asArrow={true}>Inbox</XTab.Item>
-                            <XTab.Item asArrow={true}>Something</XTab.Item>
-                            <XTab.Item asArrow={true}>Something</XTab.Item>
-                            <XTab.Item asArrow={true}>Something</XTab.Item>
-                            <XTab.Item asArrow={true}>Something</XTab.Item>
-                            <XTab.Item asArrow={true}>Something</XTab.Item>
-                            <XTab.Item>Other One</XTab.Item>
-                        </XTab>
-                    </XVertical>
+                        </XGrid>
+                    </XCard.Content>
+                    <XTab>
+                        <XTab.Item path="/ui" asArrow={true}>Inbox</XTab.Item>
+                        <XTab.Item asArrow={true}>Something</XTab.Item>
+                        <XTab.Item asArrow={true}>Something</XTab.Item>
+                        <XTab.Item asArrow={true}>Something</XTab.Item>
+                        <XTab.Item asArrow={true}>Something</XTab.Item>
+                        <XTab.Item asArrow={true}>Something</XTab.Item>
+                        <XTab.Item>Other One</XTab.Item>
+                    </XTab>
 
                     <XCard shadow="medium">
                         <div style={{ display: 'flex', flexDirection: 'row' }}>

@@ -418,6 +418,37 @@ export interface DealQuery {
       extrasShapeSides: Array< number > | null,
       extrasFitProjects: Array< string > | null,
       extrasAnalyzed: boolean | null,
+      extrasVacant: boolean | null,
+      compatibleBuildings:  Array< {
+        __typename: "BuildingLocation",
+        key: string,
+        title: string,
+        width: number,
+        height: number,
+        center:  {
+          __typename: "Geo",
+          latitude: number,
+          longitude: number,
+        } | null,
+        angle: number | null,
+        shape: string | null,
+      } > | null,
+      city:  {
+        __typename: "City",
+        id: string,
+        name: string,
+        county:  {
+          __typename: "County",
+          id: string,
+          name: string,
+        },
+        state:  {
+          __typename: "State",
+          id: string,
+          name: string,
+          code: string,
+        },
+      },
     } | null,
   },
 };

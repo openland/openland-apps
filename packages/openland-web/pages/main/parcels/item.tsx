@@ -4,7 +4,6 @@ import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { XTable } from '../../../components/X/XTable';
 import { withParcel } from '../../../api/';
-import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { formatAddresses } from '../../../utils/Addresses';
 import { ParcelProperties } from '../../../components/ParcelProperties';
@@ -19,21 +18,21 @@ import { XView } from '../../../components/X/XView';
 import { XDimensions } from '../../../components/X/XDimensions';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
-import { XVertical } from '../../../components/X/XVertical';
 import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XAngle } from '../../../components/X/XAngle';
 import { OpportunitiButton } from '../../../components/OpportunityButton';
 import { XForm, XFormTextField } from '../../../components/X/XForm';
 import { XHeader } from '../../../components/X/XHeader';
+import { Scaffold } from '../../../components/Scaffold';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
     return (
         <>
             <XHead title={['Parcel #' + props.data.item.title]} />
-            <AppContent>
-                <XCard shadow="medium" separators={true}>
+            <Scaffold>
+                <Scaffold.Content bottomOffset={true}>
                     <XHeader
                         text={'Parcel #' + props.data.item.title}
                         description={formatAddresses(props.data.item.addresses, props.data.item.extrasAddress)}
@@ -94,8 +93,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                         </XButton>
                     </XHeader>
                     <ParcelProperties item={props.data.item} />
-                </XCard>
-                <XCard shadow="medium">
+
                     <XForm defaultValues={{ notes: props.data.item.userData ? props.data.item.userData.notes : '' }} submitMutation={props.parcelNotes} mutationDirect={true}>
                         <XCard.Content>
                             <XFormTextField field="notes" placeholder="Notes" />
@@ -104,71 +102,67 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                             <XForm.Submit style="dark">Save</XForm.Submit>
                         </XForm.Footer>
                     </XForm>
-                </XCard>
-                {props.data.item.geometry && (
-                    <ParcelMaps id={props.data.item.id} geometry={props.data.item.geometry} />
-                )}
-                {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && props.data.item.compatibleBuildings && props.data.item.compatibleBuildings.length > 0 && (
-                    <XVertical>
-                        {props.data.item.compatibleBuildings.map((v, i) => (
-                            <XCard key={v.key + '-' + i} shadow="medium">
-                                <XHorizontal>
-                                    <XView grow={1} basis={0}>
-                                        <XCard.PropertyList>
-                                            <XCard.Property title="Construction Type">{v.title}</XCard.Property>
-                                            {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
-                                            {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
-                                            {v.center && <XCard.Property title="Location">{v.center.latitude},{v.center.longitude}</XCard.Property>}
-                                        </XCard.PropertyList>
-                                    </XView>
-                                    <XView grow={1} basis={0}>
-                                        {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
-                                            <XMapSource id={'parcel'} data={sourceFromGeometry(props.data.item.geometry!!)} />
-                                            <XMapPolygonLayer source="parcel" layer="parcel" />
+                    {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && props.data.item.compatibleBuildings && props.data.item.compatibleBuildings.map((v, i) => (
+                        // <XCard key={v.key + '-' + i} shadow="medium">
+                        <XHorizontal>
+                            <XView grow={1} basis={0}>
+                                <XCard.PropertyList>
+                                    <XCard.Property title="Construction Type">{v.title}</XCard.Property>
+                                    {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
+                                    {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
+                                    {v.center && <XCard.Property title="Location">{v.center.latitude},{v.center.longitude}</XCard.Property>}
+                                </XCard.PropertyList>
+                            </XView>
+                            <XView grow={1} basis={0}>
+                                {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
+                                    <XMapSource id={'parcel'} data={sourceFromGeometry(props.data.item.geometry!!)} />
+                                    <XMapPolygonLayer source="parcel" layer="parcel" />
 
-                                            {v.center && <XMapSource id={'center'} data={sourceFromPoint(v.center!!.latitude, v.center!!.longitude)} />}
-                                            {v.center && <XMapPointLayer source="center" layer="center" />}
+                                    {v.center && <XMapSource id={'center'} data={sourceFromPoint(v.center!!.latitude, v.center!!.longitude)} />}
+                                    {v.center && <XMapPointLayer source="center" layer="center" />}
 
-                                            {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
-                                            {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
-                                        </XCard.Map>}
-                                    </XView>
-                                </XHorizontal>
-                            </XCard>
-                        ))}
-                    </XVertical>
-                )}
-                {props.data.item.permits.length > 0 && (
-                    <XCard shadow="medium">
-                        <XHeader text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} />
-                        <XTable>
-                            <XTable.Header>
-                                <XTable.Cell width={120}>Created</XTable.Cell>
-                                <XTable.Cell width={150}>Permit ID</XTable.Cell>
-                                <XTable.Cell width={120}>Permit Type</XTable.Cell>
-                                <XTable.Cell width={170}>Status</XTable.Cell>
-                                <XTable.Cell>Description</XTable.Cell>
-                            </XTable.Header>
-                            <XTable.Body>
-                                {props.data.item.permits.map((v) => (
-                                    <XTable.Row key={v.id} href={v.governmentalUrl!!}>
-                                        <XTable.Cell>{v.createdAt && <XDate date={v.createdAt} />}</XTable.Cell>
-                                        <XTable.Cell>{v.id}</XTable.Cell>
-                                        <XTable.Cell>{v.type && <PermitType type={v.type!!} />}</XTable.Cell>
-                                        <XTable.Cell>
-                                            {v.status}
-                                            {v.statusUpdatedAt && ' ('}
-                                            {v.statusUpdatedAt && <XDate date={v.statusUpdatedAt} />}
-                                            {v.statusUpdatedAt && ')'}
-                                        </XTable.Cell>
-                                        <XTable.Cell>{v.description}</XTable.Cell>
-                                    </XTable.Row>
-                                ))}
-                            </XTable.Body>
-                        </XTable>
-                    </XCard>
-                )}
-            </AppContent>
+                                    {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
+                                    {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
+                                </XCard.Map>}
+                            </XView>
+                        </XHorizontal>
+                        // </XCard>
+                    ))}
+                    {props.data.item.geometry && (
+                        <ParcelMaps id={props.data.item.id} geometry={props.data.item.geometry} />
+                    )}
+                    {props.data.item.permits.length > 0 && (
+                        <>
+                            <XHeader text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} />
+                            <XTable>
+                                <XTable.Header>
+                                    <XTable.Cell width={120}>Created</XTable.Cell>
+                                    <XTable.Cell width={150}>Permit ID</XTable.Cell>
+                                    <XTable.Cell width={120}>Permit Type</XTable.Cell>
+                                    <XTable.Cell width={170}>Status</XTable.Cell>
+                                    <XTable.Cell>Description</XTable.Cell>
+                                </XTable.Header>
+                                <XTable.Body>
+                                    {props.data.item.permits.map((v) => (
+                                        <XTable.Row key={v.id} href={v.governmentalUrl!!}>
+                                            <XTable.Cell>{v.createdAt && <XDate date={v.createdAt} />}</XTable.Cell>
+                                            <XTable.Cell>{v.id}</XTable.Cell>
+                                            <XTable.Cell>{v.type && <PermitType type={v.type!!} />}</XTable.Cell>
+                                            <XTable.Cell>
+                                                {v.status}
+                                                {v.statusUpdatedAt && ' ('}
+                                                {v.statusUpdatedAt && <XDate date={v.statusUpdatedAt} />}
+                                                {v.statusUpdatedAt && ')'}
+                                            </XTable.Cell>
+                                            <XTable.Cell>{v.description}</XTable.Cell>
+                                        </XTable.Row>
+                                    ))}
+                                </XTable.Body>
+                            </XTable>
+                        </>
+                    )}
+                </Scaffold.Content>
+            </Scaffold>
         </>
     );
 }));

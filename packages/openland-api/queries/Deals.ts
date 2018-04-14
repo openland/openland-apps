@@ -72,6 +72,33 @@ export const DealQuery = gql`
                 extrasShapeSides
                 extrasFitProjects
                 extrasAnalyzed
+                extrasVacant
+                compatibleBuildings {
+                    key
+                    title
+                    width
+                    height
+                    center {
+                        latitude
+                        longitude
+                    }
+                    angle
+                    shape
+                }
+
+                city {
+                    id
+                    name
+                    county {
+                        id
+                        name
+                    }
+                    state {
+                        id
+                        name
+                        code
+                    }
+                }
             }
         }
     }

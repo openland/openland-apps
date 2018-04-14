@@ -3,7 +3,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
-import { AppContent } from '../../../components/App/AppContent';
 import { XCard } from '../../../components/X/XCard';
 import { XLink } from '../../../components/X/XLink';
 import { withParcelsFavorites } from '../../../api/';
@@ -12,6 +11,7 @@ import Types from 'openland-api';
 import { XButton } from '../../../components/X/XButton';
 import * as FileSaver from 'file-saver';
 import { XHeader } from '../../../components/X/XHeader';
+import { Scaffold } from '../../../components/Scaffold';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -49,33 +49,29 @@ export default withApp('Favorites', 'viewer', withParcelsFavorites((props) => {
     return (
         <>
             <XHead title={['Favorites']} />
-            <AppContent>
-                {
-                    (props.data.items.length === 0)
+            <Scaffold>
+                <Scaffold.Content>
+                    <XHeader text="Favorites" description={props.data.items.length === 0 ? 'No parcels' : props.data.items.length + ' parcels'}>
+                        <XButton
+                            style="dark"
+                            onClick={(e) => { e.preventDefault(); exportCSV(props.data.items); }}
+                        >
+                            Export to CSV
+                        </XButton>
+                    </XHeader>
+                    {(props.data.items.length === 0)
                         ? (
-                            <XCard shadow="medium">
-                                <XCard.Empty icon="favorite_border" text="You can find your first parcel at">
-                                    <Link path="/">
-                                        Explore page
+                            <XCard.Empty icon="favorite_border" text="You can find your first parcel at">
+                                <Link path="/">
+                                    Explore page
                                     </Link>
-                                </XCard.Empty>
-                            </XCard>
+                            </XCard.Empty>
                         )
                         : (
-                            <XCard shadow="medium">
-                                <XHeader text="Favorites" description={props.data.items.length + ' parcels'}>
-                                    <XButton
-                                        style="dark"
-                                        onClick={(e) => { e.preventDefault(); exportCSV(props.data.items); }}
-                                    >
-                                        Export to CSV
-                                    </XButton>
-                                </XHeader>
-                                <TableParcels items={props.data.items} />
-                            </XCard>
-                        )
-                }
-            </AppContent>
+                            <TableParcels items={props.data.items} />
+                        )}
+                </Scaffold.Content>
+            </Scaffold>
         </>
     );
 }));
