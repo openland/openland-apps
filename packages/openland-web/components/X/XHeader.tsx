@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { XHorizontal } from './XHorizontal';
 import { XBullet } from './XBullet';
 
-export const XCardTitle = Glamorous.div({
+const XCardTitle = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -13,7 +13,7 @@ export const XCardTitle = Glamorous.div({
     color: '#182642'
 });
 
-export const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
+const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
     opacity: 0.7,
     color: '#182642',
     fontSize: '14px',
@@ -24,7 +24,7 @@ export const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) =
     textOverflow: props.ellipcise ? 'ellipsis' : undefined,
 }));
 
-export const TargetDivStyle = Glamorous(XHorizontal)({
+const TargetDivStyle = Glamorous(XHorizontal)({
     alignItems: 'center'
 });
 
@@ -60,7 +60,7 @@ export class HeaderTargetElement extends React.Component<({ children: any })> {
     }
 }
 
-export class XCardHeader extends React.Component<XCardHeaderProps> {
+export class XHeader extends React.Component<XCardHeaderProps> {
     static Target = HeaderTargetElement;
 
     render() {

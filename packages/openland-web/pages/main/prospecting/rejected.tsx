@@ -6,6 +6,7 @@ import { XCard } from '../../../components/X/XCard';
 import { AppContent } from '../../../components/App/AppContent';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
+import { XHeader } from '../../../components/X/XHeader';
 
 export default withApp('Rejected opportunities', 'viewer', () => {
     return (
@@ -14,7 +15,7 @@ export default withApp('Rejected opportunities', 'viewer', () => {
             <AppContent>
                 <ProspectingNavigation />
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header text="Rejected opportinities" />
+                    <XHeader text="Rejected opportinities" />
                     <OpportunitiesTable variables={{ state: 'REJECTED' }}>
                         <XCard.Empty text="No rejected parcels" icon="sort" />
                     </OpportunitiesTable>

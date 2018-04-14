@@ -6,6 +6,7 @@ import { AppContent } from '../../components/App/AppContent';
 import { XHead } from '../../components/X/XHead';
 import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';
+import { XHeader } from '../../components/X/XHeader';
 
 export default withApp('Super Debug', ['super-admin', 'software-developer'], withUserInfo((props) => {
     return (
@@ -13,7 +14,7 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
             <XHead title="Debugging" />
             <AppContent>
                 <XCard shadow="medium">
-                    <XCard.Header text="Your roles" />
+                    <XHeader text="Your roles" />
                     <XTable>
                         <XTable.Header>
                             <XTable.Cell>Permission Name</XTable.Cell>
@@ -30,7 +31,7 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
                     </XTable>
                 </XCard>
                 <XCard shadow="medium">
-                    <XCard.Header text="Your Organization" />
+                    <XHeader text="Your Organization" />
                     <XCard.Content>
                         {props.account && (
                             <>

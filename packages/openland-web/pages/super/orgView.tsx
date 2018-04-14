@@ -14,6 +14,7 @@ import { XForm } from '../../components/X/XForm';
 import { XButton } from '../../components/X/XButton';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { withLoader } from '../../components/Incubator/withLoader';
+import { XHeader } from '../../components/X/XHeader';
 
 const ActivateButton = withSuperAccountActivate((props) => <XButtonMutation style="important" mutation={props.activate}>Activate</XButtonMutation>);
 const SuspendButton = withSuperAccountSuspend((props) => <XButtonMutation style="dark" mutation={props.suspend}>Suspend</XButtonMutation>);
@@ -75,7 +76,7 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
     return (
         <AppContent>
             <XCard shadow="medium">
-                <XCard.Header text={props.data.superAccount.title} description={'Current State: ' + props.data.superAccount.state}>
+                <XHeader text={props.data.superAccount.title} description={'Current State: ' + props.data.superAccount.state}>
                     <XModalTargeted fullScreen={false} title="Adding new member">
                         <XModalTargeted.Target>
                             <XButton>Add Member</XButton>
@@ -94,11 +95,11 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
                     </XModalTargeted>
                     {props.data.superAccount.state !== 'ACTIVATED' && <ActivateButton />}
                     {props.data.superAccount.state === 'ACTIVATED' && <SuspendButton />}
-                </XCard.Header>
+                </XHeader>
             </XCard>
 
             <XCard shadow="medium">
-                <XCard.Header text="Members" description={props.data.superAccount.members.length + ' total'} />
+                <XHeader text="Members" description={props.data.superAccount.members.length + ' total'} />
                 <XTable>
                     <XTable.Header>
                         <XTable.Cell>Name</XTable.Cell>
@@ -116,7 +117,7 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
             </XCard>
 
             <XCard shadow="medium">
-                <XCard.Header text="Features" description={props.data.superAccount.features.length + ' total'}>
+                <XHeader text="Features" description={props.data.superAccount.features.length + ' total'}>
                     <XModalTargeted fullScreen={false} title="Adding Feature">
                         <XModalTargeted.Target>
                             <XButton style="important">Add Feature</XButton>
@@ -133,7 +134,7 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
                             <RemoveFeature />
                         </XModalTargeted.Content>
                     </XModalTargeted>
-                </XCard.Header>
+                </XHeader>
                 <XTable>
                     <XTable.Header>
                         <XTable.Cell>Key</XTable.Cell>

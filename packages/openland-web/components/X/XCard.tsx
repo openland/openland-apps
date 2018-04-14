@@ -4,7 +4,6 @@ import * as glamor from 'glamor';
 import { CSSUtils } from './utils';
 import { XLink } from './XLink';
 import { XRow, XColumn } from './XGrid';
-import { XCardHeader } from './XCardHeader';
 import { XCardFooter } from './XCardFooter';
 import { XCardProperty, XCardPropertyList, XCardPropertyColumns } from './XCardProperty';
 import { XCardGallery } from './XCardGallery';
@@ -194,8 +193,6 @@ interface XCardProps {
 }
 
 export class XCard extends React.Component<XCardProps> {
-
-    static Header = XCardHeader;
     static Footer = XCardFooter;
     static Row = XCardRow;
     static Col = XCardColumn;

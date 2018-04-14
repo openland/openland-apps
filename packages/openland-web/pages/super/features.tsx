@@ -9,6 +9,7 @@ import { withFeatureFlags, withFeatureFlagAdd } from '../../api/';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XButton } from '../../components/X/XButton';
 import { XForm } from '../../components/X/XForm';
+import { XHeader } from '../../components/X/XHeader';
 
 const AddFeatureForm = withFeatureFlagAdd((props) => {
     return (
@@ -32,7 +33,7 @@ export default withApp('Super Features', ['super-admin', 'software-developer'], 
             <XHead title="Feature flags" />
             <AppContent>
                 <XCard shadow="medium">
-                    <XCard.Header text="Feature flags">
+                    <XHeader text="Feature flags">
                         <XModalTargeted fullScreen={false} title="Adding Feature">
                             <XModalTargeted.Target>
                                 <XButton>Add Feature</XButton>
@@ -41,7 +42,7 @@ export default withApp('Super Features', ['super-admin', 'software-developer'], 
                                 <AddFeatureForm />
                             </XModalTargeted.Content>
                         </XModalTargeted>
-                    </XCard.Header>
+                    </XHeader>
                     <XTable>
                         <XTable.Header>
                             <XTable.Cell>Key</XTable.Cell>

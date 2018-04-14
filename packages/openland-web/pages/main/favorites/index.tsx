@@ -11,6 +11,7 @@ import { TableParcels } from '../../../components/TableParcels';
 import Types from 'openland-api';
 import { XButton } from '../../../components/X/XButton';
 import * as FileSaver from 'file-saver';
+import { XHeader } from '../../../components/X/XHeader';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -62,14 +63,14 @@ export default withApp('Favorites', 'viewer', withParcelsFavorites((props) => {
                         )
                         : (
                             <XCard shadow="medium">
-                                <XCard.Header text="Favorites" description={props.data.items.length + ' parcels'}>
+                                <XHeader text="Favorites" description={props.data.items.length + ' parcels'}>
                                     <XButton
                                         style="dark"
                                         onClick={(e) => { e.preventDefault(); exportCSV(props.data.items); }}
                                     >
                                         Export to CSV
                                     </XButton>
-                                </XCard.Header>
+                                </XHeader>
                                 <TableParcels items={props.data.items} />
                             </XCard>
                         )

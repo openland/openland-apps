@@ -128,7 +128,7 @@ const ContentView = Glamorous(XScrollView)({
     flexDirection: 'column',
     backgroundColor: '#ffffff',
     flexGrow: 1,
-    marginLeft: '-8px',
+    // marginLeft: '-8px',
     borderRadius: '8px',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
     overflowY: 'scroll',
@@ -384,6 +384,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                     <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
                         <NavigatorIcon icon={this.state.search ? 'close' : 'search'} />
                     </NavigatorItem>
+                    <NavigationDivider />
                     <NavigatorItem path="/">
                         <NavigatorIcon icon="explore" />
                     </NavigatorItem>

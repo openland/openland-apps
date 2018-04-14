@@ -14,6 +14,7 @@ import { DealForm } from '../../../components/DealForm';
 import { XMoney } from '../../../components/X/XMoney';
 import { XBullet } from '../../../components/X/XBullet';
 import { XArea } from '../../../components/X/XArea';
+import { XHeader } from '../../../components/X/XHeader';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -30,9 +31,9 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
             </XModalRouted>
             <AppContent>
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header text="Deals">
+                    <XHeader text="Deals">
                         <XButton query={{ field: 'add', value: 'true' }}>Add</XButton>
-                    </XCard.Header>
+                    </XHeader>
                     {props.data.deals!!.length > 0 && (
                         <XTable>
                             <XTable.Header>

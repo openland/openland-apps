@@ -6,14 +6,15 @@ import { XTable } from '../../../components/X/XTable';
 import { withSFBuildingProjects } from '../../../api/';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
+import { XHeader } from '../../../components/X/XHeader';
 
 export default withApp('Projects', 'viewer', withSFBuildingProjects((props) => {
     return (
         <AppContent>
             <XCard shadow="medium">
-                <XCard.Header text="Building Projects">
+                <XHeader text="Building Projects">
                     <XButton>Add New</XButton>
-                </XCard.Header>
+                </XHeader>
                 <XTable>
                     <XTable.Header>
                         <XTable.Cell>Name</XTable.Cell>

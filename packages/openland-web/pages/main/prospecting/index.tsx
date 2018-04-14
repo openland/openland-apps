@@ -10,6 +10,7 @@ import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { XLink } from '../../../components/X/XLink';
 import { withProspectingStats } from '../../../api';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
+import { XHeader } from '../../../components/X/XHeader';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -22,9 +23,9 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
             <AppContent>
                 <ProspectingNavigation />
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header text="Incoming opportunities">
+                    <XHeader text="Incoming opportunities">
                         <XButton style="dark" path="/prospecting/review">Begin Review</XButton>
-                    </XCard.Header>
+                    </XHeader>
                     <OpportunitiesTable variables={{ state: 'INCOMING' }}>
                         <XCard.Empty text="You can find your first parcel at" icon="sort">
                             <Link path="/">Explore page</Link>

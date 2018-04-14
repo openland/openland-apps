@@ -8,6 +8,7 @@ import { XTable } from '../../components/X/XTable';
 import { XButton } from '../../components/X/XButton';
 import { XForm } from '../../components/X/XForm';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
+import { XHeader } from '../../components/X/XHeader';
 
 const AddAccountForm = withSuperAccountAdd((props) => {
     return (
@@ -26,7 +27,7 @@ export default withApp('Super Organizations', 'super-admin', withSuperAccounts((
     return (
         <AppContent>
             <XCard shadow="medium">
-                <XCard.Header text="Accounts" description={props.data.superAccounts.length + ' total'}>
+                <XHeader text="Accounts" description={props.data.superAccounts.length + ' total'}>
                     <XModalTargeted fullScreen={false} title="Adding Account">
                         <XModalTargeted.Target>
                             <XButton>Add account</XButton>
@@ -35,7 +36,7 @@ export default withApp('Super Organizations', 'super-admin', withSuperAccounts((
                             <AddAccountForm />
                         </XModalTargeted.Content>
                     </XModalTargeted>
-                </XCard.Header>
+                </XHeader>
                 <XTable>
                     <XTable.Header>
                         <XTable.Cell>Title</XTable.Cell>

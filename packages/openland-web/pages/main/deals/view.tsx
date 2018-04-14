@@ -20,6 +20,7 @@ import { XView } from '../../../components/X/XView';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';
 import { Text } from '../../../strings';
+import { XHeader } from '../../../components/X/XHeader';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -63,12 +64,12 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
             </XModalRouted>
             <AppContent>
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header text={props.data.deal.title} description="Deal" bullet={bulletText} bulletColor={bulletColor}>
+                    <XHeader text={props.data.deal.title} description="Deal" bullet={bulletText} bulletColor={bulletColor}>
                         <XWithRole role="super-admin">
                             <RemoveButton />
                         </XWithRole>
                         <XButton query={{ field: 'edit', value: 'true' }}>Edit</XButton>
-                    </XCard.Header>
+                    </XHeader>
                     <XCard.PropertyColumns>
                         <XCard.PropertyList title="Deal Info">
                             {props.data.deal.price && (<XCard.Property title="Price"><XMoney value={props.data.deal.price} /></XCard.Property>)}

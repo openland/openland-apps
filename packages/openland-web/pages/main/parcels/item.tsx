@@ -25,6 +25,7 @@ import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XAngle } from '../../../components/X/XAngle';
 import { OpportunitiButton } from '../../../components/OpportunityButton';
 import { XForm, XFormTextField } from '../../../components/X/XForm';
+import { XHeader } from '../../../components/X/XHeader';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -33,7 +34,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
             <XHead title={['Parcel #' + props.data.item.title]} />
             <AppContent>
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header
+                    <XHeader
                         text={'Parcel #' + props.data.item.title}
                         description={formatAddresses(props.data.item.addresses, props.data.item.extrasAddress)}
                         bullet={props.data.item.metadata.available ? 'ON SALE' : undefined}
@@ -91,7 +92,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                         >
                             Favorite
                         </XButton>
-                    </XCard.Header>
+                    </XHeader>
                     <ParcelProperties item={props.data.item} />
                 </XCard>
                 <XCard shadow="medium">
@@ -139,7 +140,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                 )}
                 {props.data.item.permits.length > 0 && (
                     <XCard shadow="medium">
-                        <XCard.Header text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} />
+                        <XHeader text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} />
                         <XTable>
                             <XTable.Header>
                                 <XTable.Cell width={120}>Created</XTable.Cell>

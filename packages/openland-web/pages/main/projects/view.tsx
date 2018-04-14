@@ -7,18 +7,19 @@ import { withSFBuildingProject } from '../../../api/';
 import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { XLinkExternal } from '../../../components/X/XLinkExternal';
+import { XHeader } from '../../../components/X/XHeader';
 
 export default withApp('Project', 'viewer', withSFBuildingProject((props) => {
 
     return (
         <AppContent>
             <XCard shadow="medium" separators={true}>
-                <XCard.Header
+                <XHeader
                     text={props.data.project.name}
                     description={props.data.project.description}
                 >
                     <XButton>Edit</XButton>
-                </XCard.Header>
+                </XHeader>
                 <XCard.PropertyList>
                     <XCard.Property title="Existing Units">{props.data.project.existingUnits}</XCard.Property>
                     <XCard.Property title="Proposed Units">{props.data.project.proposedUnits}</XCard.Property>
@@ -46,7 +47,7 @@ export default withApp('Project', 'viewer', withSFBuildingProject((props) => {
 
             {props.data.project.developers.length > 0 && (
                 <XCard shadow="medium">
-                    <XCard.Header text="Developers" />
+                    <XHeader text="Developers" />
                     <XTable>
                         <XTable.Header>
                             <XTable.Cell>Organization Name</XTable.Cell>
@@ -64,7 +65,7 @@ export default withApp('Project', 'viewer', withSFBuildingProject((props) => {
 
             {props.data.project.constructors.length > 0 && (
                 <XCard shadow="medium">
-                    <XCard.Header text="Contractors" />
+                    <XHeader text="Contractors" />
                     <XTable>
                         <XTable.Header>
                             <XTable.Cell>Organization Name</XTable.Cell>

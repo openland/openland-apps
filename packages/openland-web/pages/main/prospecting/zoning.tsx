@@ -7,6 +7,7 @@ import { XButton } from '../../../components/X/XButton';
 import { AppContent } from '../../../components/App/AppContent';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
+import { XHeader } from '../../../components/X/XHeader';
 
 export default withApp('Zoning Review', 'viewer', () => {
     return (
@@ -15,9 +16,9 @@ export default withApp('Zoning Review', 'viewer', () => {
             <AppContent>
                 <ProspectingNavigation />
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header text="Zoning Review">
+                    <XHeader text="Zoning Review">
                         <XButton style="dark" path="/prospecting/review?stage=zoning">Begin review</XButton>
-                    </XCard.Header>
+                    </XHeader>
                     <OpportunitiesTable variables={{ state: 'APPROVED_INITIAL' }} stage="zoning">
                         <XCard.Empty text="There are no parcels for review" icon="sort" />
                     </OpportunitiesTable>

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCard } from './X/XCard';
+import { XLink } from './X/XLink';
+import { XHeader } from './X/XHeader';
 
 const SidebarContainer = Glamorous.div({
     display: 'flex',
@@ -9,11 +11,31 @@ const SidebarContainer = Glamorous.div({
     paddingRight: '8px'
 });
 
-export function Sidebar(props: { title: string, children: any }) {
-    return (
-        <SidebarContainer>
-            <XCard.Header text={props.title} />
-            {props.children}
-        </SidebarContainer>
-    );
+export const SidebarItem = Glamorous(XLink)({
+    paddingLeft: '16px',
+    paddingRight: '16px',
+    fontSize: '16px',
+    fontWeight: 700,
+    '&.is-active': {
+        color: '#522BFF'
+    }
+});
+
+// export function SidebarItem(props: { title: string, path: string }) {
+//     return (
+
+//     )
+// }
+
+export class Sidebar extends React.Component<{ title: string }> {
+    static Item = SidebarItem;
+
+    render() {
+        return (
+            <SidebarContainer>
+                <XHeader text={this.props.title} />
+                {this.props.children}
+            </SidebarContainer>
+        );
+    }
 }

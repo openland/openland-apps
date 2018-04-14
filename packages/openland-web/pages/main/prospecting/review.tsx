@@ -21,6 +21,7 @@ import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
 import { ProspectingNavigationReview } from '../../../components/ProspectingNavigation';
 import { trackEvent } from '../../../utils/analytics';
 import { XForm, XFormTextField } from '../../../components/X/XForm';
+import { XHeader } from '../../../components/X/XHeader';
 
 const OpportunityInfo = withOpportunity((props) => {
     let approveText = 'Move to next stage';
@@ -38,7 +39,7 @@ const OpportunityInfo = withOpportunity((props) => {
             <XCard shadow="medium" separators={true}>
                 <XCard.Loader loading={props.data.loading || false}>
                     {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
-                        <XCard.Header text={'Parcel #' + props.data.alphaNextReviewOpportunity!!.parcel.title} description={props.data.alphaNextReviewOpportunity!!.parcel.extrasAddress}>
+                        <XHeader text={'Parcel #' + props.data.alphaNextReviewOpportunity!!.parcel.title} description={props.data.alphaNextReviewOpportunity!!.parcel.extrasAddress}>
                             <XButtonMutation
                                 variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                                 mutation={props.reject}
@@ -70,7 +71,7 @@ const OpportunityInfo = withOpportunity((props) => {
                             >
                                 {approveText}
                             </XButtonMutation>
-                        </XCard.Header>
+                        </XHeader>
                     )}
                     {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
                         <ParcelProperties item={props.data.alphaNextReviewOpportunity.parcel} />

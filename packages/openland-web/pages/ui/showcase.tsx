@@ -26,6 +26,7 @@ import { XIcon } from '../../components/X/XIcon';
 import { StateSelect } from '../../api';
 import { Scaffold } from '../../components/Scaffold';
 import { Sidebar } from '../../components/Sidebar';
+import { XHeader } from '../../components/X/XHeader';
 
 export default withApp('UI Showcase', 'viewer', (props) => {
     return (
@@ -34,11 +35,11 @@ export default withApp('UI Showcase', 'viewer', (props) => {
             <Scaffold>
                 <Scaffold.Menu>
                     <Sidebar title="Showcase">
-                        {}
+                        <Sidebar.Item path="/ui">Main</Sidebar.Item>
                     </Sidebar>
                 </Scaffold.Menu>
                 <Scaffold.Content>
-                    <XCard>
+                    <XVertical>
                         <XCard.Content>
                             <XGrid
                                 layouts={{
@@ -64,25 +65,26 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                             >
                                 <XCell area="sidebar">
                                     Sidebar
-                        </XCell>
+                                </XCell>
                                 <XCell area="header">
                                     Header
-                        </XCell>
+                                </XCell>
                                 <XCell area="footer">
                                     Footer
-                        </XCell>
+                                </XCell>
                             </XGrid>
                         </XCard.Content>
-                    </XCard>
-                    <XTab>
-                        <XTab.Item path="/ui" asArrow={true}>Inbox</XTab.Item>
-                        <XTab.Item asArrow={true}>Something</XTab.Item>
-                        <XTab.Item asArrow={true}>Something</XTab.Item>
-                        <XTab.Item asArrow={true}>Something</XTab.Item>
-                        <XTab.Item asArrow={true}>Something</XTab.Item>
-                        <XTab.Item asArrow={true}>Something</XTab.Item>
-                        <XTab.Item>Other One</XTab.Item>
-                    </XTab>
+                        <XTab>
+                            <XTab.Item path="/ui" asArrow={true}>Inbox</XTab.Item>
+                            <XTab.Item asArrow={true}>Something</XTab.Item>
+                            <XTab.Item asArrow={true}>Something</XTab.Item>
+                            <XTab.Item asArrow={true}>Something</XTab.Item>
+                            <XTab.Item asArrow={true}>Something</XTab.Item>
+                            <XTab.Item asArrow={true}>Something</XTab.Item>
+                            <XTab.Item>Other One</XTab.Item>
+                        </XTab>
+                    </XVertical>
+
                     <XCard shadow="medium">
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                             <ParcelShortList>
@@ -171,7 +173,7 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                     </XCard>
                     <XCardLink href="https://goo.gl/urJT1F" title="GET /_next/webpack/c14ba59cb321053a0d76" text="DONE  Compiled successfully in 892ms" icon="beach_access" />
                     <XCard separators={true}>
-                        <XCard.Header
+                        <XHeader
                             text="Loader block title"
                             truncateDescription={true}
                             description="qweqweqweqwe"
@@ -214,7 +216,7 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                     </XCard>
                     <XCard separators={true}>
                         <XCard.Hint title="test data" />
-                        <XCard.Header
+                        <XHeader
                             truncateDescription={true}
                             description={`
                         $ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"
@@ -226,16 +228,16 @@ export default withApp('UI Showcase', 'viewer', (props) => {
                         $ /Users/max_volkov/Desktop/statecraft-web/node_modules/.bin/cpx './src/static/**/*' ./build/dist/static/ --watch
                         `}
                         >
-                            <XCard.Header.Target>
+                            <XHeader.Target>
                                 <CitySelector title="San Francisco">
                                     <CitySelector.Popper>
                                         <button>lol</button>
                                     </CitySelector.Popper>
                                 </CitySelector>
-                            </XCard.Header.Target>
+                            </XHeader.Target>
                             <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
                             <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
-                        </XCard.Header>
+                        </XHeader>
                         <XCard.Loader loading={true} >
                             <XCard.FormList>
                                 <XCard.FormCell

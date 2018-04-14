@@ -8,6 +8,7 @@ import { XButton } from '../../../components/X/XButton';
 import { XHead } from '../../../components/X/XHead';
 import { AppFilters } from '../../../components/App/AppFilters';
 import { TableParcels } from '../../../components/TableParcels';
+import { XHeader } from '../../../components/X/XHeader';
 
 export default withApp('Parcels', 'viewer', withParcels((props) => {
     return (
@@ -15,9 +16,9 @@ export default withApp('Parcels', 'viewer', withParcels((props) => {
             <XHead title={['Parcels']} />
             <AppContent>
                 <XCard shadow="medium" separators={true}>
-                    <XCard.Header text="San Francisco" description={props.data.items.pageInfo.itemsCount + ' parcels found'}>
+                    <XHeader text="San Francisco" description={props.data.items.pageInfo.itemsCount + ' parcels found'}>
                         <AppFilters isActive={true} onChange={(v) => props.router.pushQuery('query', v ? JSON.stringify(v) : undefined)} />
-                    </XCard.Header>
+                    </XHeader>
                     <XCard.Loader loading={props.data.loading || false}>
                         <TableParcels items={props.data.items.edges.map((v) => v.node)} />
                     </XCard.Loader>

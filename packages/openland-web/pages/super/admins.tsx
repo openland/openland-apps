@@ -8,6 +8,7 @@ import { XTable } from '../../components/X/XTable';
 import { XButton } from '../../components/X/XButton';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XForm } from '../../components/X/XForm';
+import { XHeader } from '../../components/X/XHeader';
 
 const AddSuperAdminForm = withSuperAdminAdd((props) => {
     return (
@@ -49,7 +50,7 @@ export default withApp('Super Admins', 'super-admin', withSuperAdmins((props) =>
     return (
         <AppContent>
             <XCard shadow="medium">
-                <XCard.Header text="Super Admins" description={props.data.superAdmins.length + ' total'}>
+                <XHeader text="Super Admins" description={props.data.superAdmins.length + ' total'}>
                     <XModalTargeted fullScreen={false} title="Adding New Super Admin">
                         <XModalTargeted.Target>
                             <XButton>Add New</XButton>
@@ -66,7 +67,7 @@ export default withApp('Super Admins', 'super-admin', withSuperAdmins((props) =>
                             <RemoveSuperAdminForm />
                         </XModalTargeted.Content>
                     </XModalTargeted>
-                </XCard.Header>
+                </XHeader>
                 <XTable>
                     <XTable.Header>
                         <XTable.Cell width={100}>
