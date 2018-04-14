@@ -51,7 +51,9 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                                 <XTooltip title={Text.hint_unrealiable_assesor} />
                             </XCard.Property>
                         }
-
+                        {props.item!!.extrasBorough &&
+                            <XCard.Property title="Borough">{props.item!!.extrasBorough}</XCard.Property>
+                        }
                         {props.item.extrasNeighborhood &&
                             <XCard.Property title="Neighborhood">{props.item.extrasNeighborhood}</XCard.Property>
                         }
