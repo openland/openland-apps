@@ -17,6 +17,7 @@ const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
     opacity: 0.7,
     color: '#182642',
     fontSize: '14px',
+    maxWidth: '100%',
     lineHeight: 'normal',
     fontWeight: 'normal',
     overflow: props.ellipcise ? 'hidden' : undefined,

@@ -5,10 +5,12 @@ import { canUseDOM } from '../../utils/environment';
 import { Manager, Target, Popper } from './XPopper';
 import { XIcon } from '../X/XIcon';
 
-const XTooltipDiv = Glamorous.div<{ marginLeft?: number, marginRight?: number, margin?: number }>((props) => ({
+const XTooltipDiv = Glamorous.div<{ marginLeft?: number, marginRight?: number, margin?: number, centeredContent?: boolean }>((props) => ({
     display: 'flex',
     alignItems: 'center',
     margin: props.margin,
+    justifyContent: props.centeredContent ? 'center' : undefined,
+    // alignSelf: 'flex-start',
     marginLeft: props.marginLeft !== undefined ? props.marginLeft : 4,
     marginRight: props.marginRight !== undefined ? props.marginRight : 4
     // marginRight: props.noMargin ? 0 : (props.margin ? 4 : (props.leftMargin ? undefined : 6)),
@@ -30,6 +32,22 @@ interface XTooltipProps {
     marginLeft?: number;
     marginRight?: number;
     margin?: number;
+    centeredContent?: boolean;
+    placement?: 'auto-start'
+    | 'auto'
+    | 'auto-end'
+    | 'top-start'
+    | 'top'
+    | 'top-end'
+    | 'right-start'
+    | 'right'
+    | 'right-end'
+    | 'bottom-end'
+    | 'bottom'
+    | 'bottom-start'
+    | 'left-end'
+    | 'left'
+    | 'left-start';
 }
 
 interface XTooltipState {
@@ -181,13 +199,13 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
         }
 
         let popover = (
-            <Popper placement="top" class={this.state.class} onMouseover={this.modalOver} onMouseout={this.modalOut}>
+            <Popper placement={this.props.placement ? this.props.placement : 'top'} class={this.state.class} onMouseover={this.modalOver} onMouseout={this.modalOut}>
                 {content.length > 0 ? (content) : (this.props.title)}
             </Popper>
         );
         return (
             <Manager>
-                <XTooltipDiv marginLeft={this.props.marginLeft} margin={this.props.margin} marginRight={this.props.marginRight}>
+                <XTooltipDiv marginLeft={this.props.marginLeft} margin={this.props.margin} marginRight={this.props.marginRight} centeredContent={this.props.centeredContent}>
                     <Target>
                         <TargetContent
                             onMouseOver={this.targetOver}

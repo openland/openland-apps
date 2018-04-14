@@ -13,6 +13,7 @@ import { withSearch } from '../api';
 import { XCard } from './X/XCard';
 import { XArea } from './X/XArea';
 import { XWithRole } from './X/XWithRole';
+import { XTooltip } from './Incubator/XTooltip';
 
 //
 // Root
@@ -20,14 +21,22 @@ import { XWithRole } from './X/XWithRole';
 
 const RootContainer = Glamorous.div({
     display: 'flex',
-    flexDirection: 'row',
-    height: '100vh',
-    width: '100vw'
+    // flexDirection: 'row',
+    // height: '100vh',
+    // width: '100vw'
 });
 
 // 
 // Navigation
 //
+
+const NavigationWrapper = Glamorous.div<{ withMenu: boolean }>((props) => ({
+    display: 'block',
+    flexShrink: 0,
+    zIndex: 3,
+    width: props.withMenu ? 280 : 72,
+    order: 1
+}));
 
 const NavigationContainer = Glamorous.div({
     display: 'flex',
@@ -40,7 +49,11 @@ const NavigationContainer = Glamorous.div({
     borderRightColor: 'rgba(0,0,0, 0.05)',
     borderRightStyle: 'solid',
     borderRightWidth: '1px',
-    alignItems: 'center'
+    alignItems: 'center',
+
+    position: 'fixed',
+    top: 0,
+    left: 0,
 });
 
 const Logo = Glamorous(XPicture)({
@@ -124,17 +137,19 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
 // Content
 //
 
-const ContentView = Glamorous(XScrollView)({
+const ContentView = Glamorous(XScrollView)<{ withMenu: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#ffffff',
-    flexGrow: 1,
+    flex: 1,
+    order: 2,
+    maxWidth: props.withMenu ? 'calc(100% - 280px)' : 'calc(100% - 72px)',
     // marginLeft: '-8px',
-    borderRadius: '8px',
+    // borderRadius: '8px',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
-    overflowY: 'scroll',
+    // overflowY: 'scroll',
     position: 'relative'
-});
+}));
 
 const SearchContainer = Glamorous.div<{ visible: boolean }>((props) => ({
     position: 'fixed',
@@ -291,6 +306,10 @@ const MenuView = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#FAFAFC',
+    position: 'fixed',
+    top: 0,
+    left: 72,
+    height: '100vh'
 });
 
 //
@@ -384,55 +403,99 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
 
         return (
             <RootContainer>
-                <SearchContainer visible={this.state.search} onClick={this.handleSearch} />
-                <SearchContent visible={this.state.search}>
-                    <SearchInput
-                        placeholder="Search"
-                        onChange={this.handleSearchChange}
-                        innerRef={this.handleSearchRef}
-                        value={this.state.searchText}
-                    />
-                    {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults query={this.state.searchText} />)}
-                </SearchContent>
-                <NavigationContainer>
-                    <XLink path="/">
-                        <Logo picture={{ url: '/static/branding/logo_inverted_squared.png', retina: '/static/branding/logo_inverted_squared@2x.png' }} />
-                    </XLink>
-                    <NavigationDivider />
-                    <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
-                        <NavigatorIcon icon={this.state.search ? 'close' : 'search'} />
-                    </NavigatorItem>
-                    <NavigationDivider />
-                    <NavigatorItem path="/">
-                        <NavigatorIcon icon="explore" />
-                    </NavigatorItem>
-                    <NavigatorItem path="/prospecting" activateForSubpaths={true}>
-                        <NavigatorIcon icon="sort" />
-                    </NavigatorItem>
-                    <NavigatorItem path="/deals" activateForSubpaths={true}>
-                        <NavigatorIcon icon="work" />
-                    </NavigatorItem>
-                    <NavigatorItem path="/favorites" activateForSubpaths={true}>
-                        <NavigatorIcon icon="favorite" />
-                    </NavigatorItem>
-                    <BottomNavigation>
-                        <XWithRole role="super-admin">
-                            <NavigatorItem path="/super/admins">
-                                <NavigatorIcon icon="fingerprint" />
-                            </NavigatorItem>
-                        </XWithRole>
-                        <XWithRole role={['super-admin', 'software-developer']}>
-                            <NavigatorItem path="/ui">
-                                <NavigatorIcon icon="memory" />
-                            </NavigatorItem>
-                        </XWithRole>
-                        <NavigatorItem>
-                            <UserProfile />
+                <NavigationWrapper withMenu={menu ? true : false}>
+                    <SearchContainer visible={this.state.search} onClick={this.handleSearch} />
+                    <SearchContent visible={this.state.search}>
+                        <SearchInput
+                            placeholder="Search"
+                            onChange={this.handleSearchChange}
+                            innerRef={this.handleSearchRef}
+                            value={this.state.searchText}
+                        />
+                        {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults query={this.state.searchText} />)}
+                    </SearchContent>
+                    <NavigationContainer>
+                        <XLink path="/">
+                            <Logo picture={{ url: '/static/branding/logo_inverted_squared.png', retina: '/static/branding/logo_inverted_squared@2x.png' }} />
+                        </XLink>
+                        <NavigationDivider />
+                        <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
+                            <NavigatorIcon icon={this.state.search ? 'close' : 'search'} />
                         </NavigatorItem>
-                    </BottomNavigation>
-                </NavigationContainer>
-                {menu}
-                <ContentView>
+                        <NavigationDivider />
+                        <XTooltip placement="right">
+                            <XTooltip.Target>
+                                <NavigatorItem path="/">
+                                    <NavigatorIcon icon="explore" />
+                                </NavigatorItem>
+                            </XTooltip.Target>
+                            <XTooltip.Content>
+                                explore
+                        </XTooltip.Content>
+                        </XTooltip>
+                        <XTooltip placement="right">
+                            <XTooltip.Target>
+                                <NavigatorItem path="/prospecting" activateForSubpaths={true}>
+                                    <NavigatorIcon icon="sort" />
+                                </NavigatorItem>
+                            </XTooltip.Target>
+                            <XTooltip.Content>
+                                sort
+                            </XTooltip.Content>
+                        </XTooltip>
+                        <XTooltip placement="right">
+                            <XTooltip.Target>
+                                <NavigatorItem path="/deals" activateForSubpaths={true}>
+                                    <NavigatorIcon icon="work" />
+                                </NavigatorItem>
+                            </XTooltip.Target>
+                            <XTooltip.Content>
+                                work
+                            </XTooltip.Content>
+                        </XTooltip>
+                        <XTooltip placement="right">
+                            <XTooltip.Target>
+                                <NavigatorItem path="/favorites" activateForSubpaths={true}>
+                                    <NavigatorIcon icon="favorite" />
+                                </NavigatorItem>
+                            </XTooltip.Target>
+                            <XTooltip.Content>
+                                favorite
+                            </XTooltip.Content>
+                        </XTooltip>
+                        <BottomNavigation>
+                            <XWithRole role="super-admin">
+                                <XTooltip placement="right" centeredContent={true}>
+                                    <XTooltip.Target>
+                                        <NavigatorItem path="/super/admins">
+                                            <NavigatorIcon icon="fingerprint" />
+                                        </NavigatorItem>
+                                    </XTooltip.Target>
+                                    <XTooltip.Content>
+                                        admins
+                                    </XTooltip.Content>
+                                </XTooltip>
+                            </XWithRole>
+                            <XWithRole role={['super-admin', 'software-developer']}>
+                                <XTooltip placement="right" centeredContent={true}>
+                                    <XTooltip.Target>
+                                        <NavigatorItem path="/ui">
+                                            <NavigatorIcon icon="memory" />
+                                        </NavigatorItem>
+                                    </XTooltip.Target>
+                                    <XTooltip.Content>
+                                        ui
+                                    </XTooltip.Content>
+                                </XTooltip>
+                            </XWithRole>
+                            <NavigatorItem>
+                                <UserProfile />
+                            </NavigatorItem>
+                        </BottomNavigation>
+                    </NavigationContainer>
+                    {menu}
+                </NavigationWrapper>
+                <ContentView withMenu={menu ? true : false}>
                     {content}
                 </ContentView>
             </RootContainer>

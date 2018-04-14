@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 const ScrollView = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    overflowY: 'scroll'
+    // overflowY: 'scroll'
 });
 
 const ContainerInner = Glamorous.div({
