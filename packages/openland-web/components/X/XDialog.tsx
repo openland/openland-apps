@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCard } from './XCard';
 import { XButton } from './XButton';
+import { XHeader } from './XHeader';
 
 export const XDialogContainer = Glamorous(XCard)<{ width?: number | string }>((props) => ({
     display: 'block',
@@ -70,9 +71,9 @@ export function XDialog(props: { style?: 'full-screen' | 'normal', title: string
     } else {
         return (
             <XDialogContainer shadow="medium" width={props.width}>
-                <XCard.Header text={props.title}>
+                <XHeader text={props.title}>
                     <XButton borderless={true} icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
-                </XCard.Header>
+                </XHeader>
                 {props.children}
             </XDialogContainer>
         );

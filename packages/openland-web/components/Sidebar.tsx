@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XCard } from './X/XCard';
 import { XLink } from './X/XLink';
 import { XHeader } from './X/XHeader';
 

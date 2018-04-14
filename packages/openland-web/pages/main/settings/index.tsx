@@ -7,6 +7,7 @@ import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { XForm } from '../../../components/X/XForm';
 import { AppContent } from '../../../components/App/AppContent';
+import { XHeader } from '../../../components/X/XHeader';
 
 export default withApp('Settings', 'viewer', withUserInfo((props) => {
     return (
@@ -14,7 +15,7 @@ export default withApp('Settings', 'viewer', withUserInfo((props) => {
             <XHead title="Settings" />
             <AppContent>
                 <XCard>
-                    <XCard.Header text={props.user!!.name} description="settings panel" />
+                    <XHeader text={props.user!!.name} description="settings panel" />
                     <XForm>
                         <XForm.Header title="base settings" />
                         <XForm.Field title="Interests">

@@ -22,6 +22,7 @@ import { XView } from './X/XView';
 import { OpportunitiButton } from './OpportunityButton';
 import { Text } from '../strings';
 import { XIcon } from './X/XIcon';
+import { XHeader } from './X/XHeader';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -83,14 +84,14 @@ export const ParcelCard = withParcelDirect((props) => {
             <LoaderWrapper loading={!props.data || props.data!!.loading}>
                 {props.data && props.data!!.item &&
                     <Scrollable>
-                        <XCard.Header
+                        <XHeader
                             text={'Parcel #' + props.data.item!!.title}
                             description={formatAddresses(props.data.item!!.addresses, props.data.item!!.extrasAddress)}
                             truncateDescription={true}
                             bullet={props.data!!.item!!.metadata.available ? 'ON SALE' : undefined}
                         >
                             <XButton borderless={true} size="large" query={{ field: 'selectedParcel' }} icon="clear" />
-                        </XCard.Header>
+                        </XHeader>
                         {props.data!!.item!!.geometry && (
                             <XCard.Content>
                                 <StreetViewDiv>
