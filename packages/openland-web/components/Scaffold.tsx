@@ -33,7 +33,6 @@ const RootContainer = Glamorous.div({
 const NavigationWrapper = Glamorous.div<{ withMenu: boolean }>((props) => ({
     display: 'block',
     flexShrink: 0,
-    zIndex: 3,
     width: props.withMenu ? 280 : 72,
     order: 1
 }));
@@ -50,10 +49,13 @@ const NavigationContainer = Glamorous.div({
     borderRightStyle: 'solid',
     borderRightWidth: '1px',
     alignItems: 'center',
-
+    // overflowY: 'scroll',
     position: 'fixed',
     top: 0,
     left: 0,
+    '> div': {
+        flexShrink: 0
+    }
 });
 
 const Logo = Glamorous(XPicture)({
@@ -145,10 +147,13 @@ const ContentView = Glamorous(XScrollView)<{ withMenu: boolean }>((props) => ({
     order: 2,
     maxWidth: props.withMenu ? 'calc(100% - 280px)' : 'calc(100% - 72px)',
     // marginLeft: '-8px',
-    // borderRadius: '8px',
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+    overflow: 'hidden',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
     // overflowY: 'scroll',
-    position: 'relative'
+    position: 'relative',
+    zIndex: 1
 }));
 
 const SearchContainer = Glamorous.div<{ visible: boolean }>((props) => ({
@@ -430,7 +435,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                explore
+                                Explore
                         </XTooltip.Content>
                         </XTooltip>
                         <XTooltip placement="right">
@@ -440,7 +445,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                sort
+                                Sort
                             </XTooltip.Content>
                         </XTooltip>
                         <XTooltip placement="right">
@@ -450,7 +455,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                work
+                                Work
                             </XTooltip.Content>
                         </XTooltip>
                         <XTooltip placement="right">
@@ -460,7 +465,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                favorite
+                                Favorite
                             </XTooltip.Content>
                         </XTooltip>
                         <BottomNavigation>
@@ -472,7 +477,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                         </NavigatorItem>
                                     </XTooltip.Target>
                                     <XTooltip.Content>
-                                        admins
+                                        Admins
                                     </XTooltip.Content>
                                 </XTooltip>
                             </XWithRole>
@@ -484,7 +489,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                         </NavigatorItem>
                                     </XTooltip.Target>
                                     <XTooltip.Content>
-                                        ui
+                                        UI
                                     </XTooltip.Content>
                                 </XTooltip>
                             </XWithRole>
