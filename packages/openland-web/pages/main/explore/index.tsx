@@ -22,6 +22,7 @@ import { canUseDOM } from '../../../utils/environment';
 import { XButtonMutation } from '../../../components/X/XButtonMutation';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { Scaffold } from '../../../components/Scaffold';
+import XStyles from '../../../components/X/XStyles';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -78,9 +79,8 @@ const FilterHeader = Glamorous.div({
 const FilterHeaderTitle = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    color: '#f5f6f8',
-    fontSize: '20px',
-    fontWeight: 600
+    ...XStyles.text.h400,
+    color: '#f5f6f8'
 });
 
 const FilterHeaderSubtitle = Glamorous.div({

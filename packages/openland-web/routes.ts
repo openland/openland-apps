@@ -74,8 +74,12 @@ routes.add('/inquiries/', '/main/inquiries/index');
 // UI
 //
 
-routes.add('/ui', '/dev/ui/showcase');
-routes.add('/ui/', '/dev/ui/showcase');
+routes.add('/ui', '/dev/ui/index');
+routes.add('/ui/', '/dev/ui/index');
+routes.add('/ui/buttons', '/dev/ui/buttons');
+routes.add('/ui/buttons/', '/dev/ui/buttons');
+routes.add('/ui/typography', '/dev/ui/typography');
+routes.add('/ui/typography/', '/dev/ui/typography');
 
 //
 // Dev Tools

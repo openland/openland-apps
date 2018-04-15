@@ -45,7 +45,6 @@ export default class StateDocument extends Document {
                     <link rel="apple-touch-icon" sizes="180" href="/static/apple-icon-180.png" />
 
                     <link rel="stylesheet" type="text/css" href="/static/loader.css" />
-                    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700,800" />
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
 
@@ -67,7 +66,7 @@ export default class StateDocument extends Document {
                             font-variant: normal;
                             font-size: 14px;
                             line-height: 20px;
-                            font-family: Nunito Sans, arial, sans-serif;
+                            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
                             -webkit-text-size-adjust: 100%;
                             -webkit-font-smoothing: antialiased;
                             -moz-font-smoothing: antialiased;
@@ -94,7 +93,7 @@ export default class StateDocument extends Document {
                             overflow: hidden;
                         }
                         input, textarea, button {
-                            font-family: Nunito Sans, arial, sans-serif;
+                            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
                         }
                         input, select { 
                             vertical-align:middle; 

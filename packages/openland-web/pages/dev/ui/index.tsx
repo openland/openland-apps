@@ -112,17 +112,6 @@ export default withApp('UI Framework', 'viewer', (props) => {
                         <XConfirm onConfirm={() => { console.warn('confirm function'); }}>
                             <XButton onClick={(e) => { e.preventDefault(); }}>Confirm button</XButton>
                         </XConfirm>
-                        <XButton alignSelf="flex-start">Default</XButton>
-                        <XButton alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton>
-
-                        <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
-                        <XButton alignSelf="flex-start" icon="close" />
-
-                        <XButton alignSelf="flex-start" style="dark" size="large">Large</XButton>
-                        <XButton alignSelf="flex-start" style="dark" size="large" bounce={true} disabled={true}>Bounce</XButton>
-                        <XButton alignSelf="flex-start" style="important">Important</XButton>
-                        <XButton alignSelf="flex-start" loading={true} />
-                        <XButton alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton>
                         <XLinkExternal href="https://goo.gl/urJT1F" />
                         <XSelect
                             name="form-field-name"
