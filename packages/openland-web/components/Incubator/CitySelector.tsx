@@ -105,7 +105,7 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { class?:
 
         let popover = (
             <ClickOutside onClickOutside={this.handleClose}>
-                <Popper placement="top" class={this.state.class}>
+                <Popper placement="top" class={this.state.class} autoWidth={true}>
                     {popper}
                 </Popper>
             </ClickOutside>

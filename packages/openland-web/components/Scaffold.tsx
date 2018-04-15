@@ -147,12 +147,11 @@ const ContentView = Glamorous(XScrollView)<{ withMenu: boolean }>((props) => ({
     order: 2,
     maxWidth: props.withMenu ? 'calc(100% - 280px)' : 'calc(100% - 72px)',
     // marginLeft: '-8px',
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
+    // borderTopLeftRadius: 8,
+    // borderBottomLeftRadius: 8,
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
     // overflowY: 'scroll',
-    position: 'relative',
-    zIndex: 1
+    position: 'relative'
 }));
 
 const SearchContainer = Glamorous.div<{ visible: boolean }>((props) => ({
