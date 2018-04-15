@@ -30,8 +30,8 @@ export const OpportunitiesTable = withSourcing((props) => {
                             <XTable.Cell width={150}>Parcel</XTable.Cell>
                             <XTable.Cell>Address</XTable.Cell>
                             <XTable.Cell width={100} textAlign="right">Area</XTable.Cell>
-                            <XTable.Cell width={100} textAlign="left">Zoning</XTable.Cell>
-                            <XTable.Cell width={120}>Priority</XTable.Cell>
+                            <XTable.Cell width={90} textAlign="left">Zoning</XTable.Cell>
+                            <XTable.Cell width={90} textAlign="right">Priority</XTable.Cell>
                         </XTable.Header>
                         <XTable.Body>
                             {props.data.alphaOpportunities.edges.map((v) => (
@@ -54,7 +54,7 @@ export const OpportunitiesTable = withSourcing((props) => {
                                     <XTable.Cell textAlign="left">
                                         {v.node.parcel.extrasZoning}
                                     </XTable.Cell>
-                                    <XTable.Cell>
+                                    <XTable.Cell textAlign="right">
                                         <PriorityIndicator priority={v.node.priority} />
                                     </XTable.Cell>
                                 </XTable.Row>

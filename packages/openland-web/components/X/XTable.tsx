@@ -23,6 +23,18 @@ let TableHeader = Glamorous.table({
             ...XStyles.text.h400
         }
     },
+    '& tr > td:first-child > div': {
+        paddingLeft: XStyles.paddings.small
+    },
+    '& tr > td:last-child > div': {
+        paddingRight: XStyles.paddings.small
+    },
+    '& tr > td:first-child > a': {
+        paddingLeft: XStyles.paddings.small
+    },
+    '& tr > td:last-child > a': {
+        paddingRight: XStyles.paddings.small
+    },
     '> tbody': {
         color: '#182642'
     }
