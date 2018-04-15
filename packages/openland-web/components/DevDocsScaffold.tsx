@@ -22,6 +22,7 @@ export function DevDocsScaffold(props: { title: string, children?: any }) {
                     <Sidebar title="X Framework">
                         <Sidebar.Item path="/ui">Home</Sidebar.Item>
                         <Sidebar.Item path="/ui/typography">Typography</Sidebar.Item>
+                        <Sidebar.Item path="/ui/grid">Grid</Sidebar.Item>
                         <Sidebar.Item path="/ui/buttons">Buttons</Sidebar.Item>
                     </Sidebar>
                 </Scaffold.Menu>

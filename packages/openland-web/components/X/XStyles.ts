@@ -6,6 +6,10 @@ const color = {
 };
 
 const paddings = {
+    small: 4,
+    medium: 8,
+    large: 16,
+    xlarge: 24,
     content: {
         horizontal: 24,
         vertical: 24
@@ -42,7 +46,7 @@ const text = {
         fontWeight: 400,
         lineHeight: '20px',
         color: color.primary
-    } as CSSProperties,    
+    } as CSSProperties,
     h400: {
         fontSize: '14px',
         fontWeight: 500,

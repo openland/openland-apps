@@ -80,6 +80,8 @@ routes.add('/ui/buttons', '/dev/ui/buttons');
 routes.add('/ui/buttons/', '/dev/ui/buttons');
 routes.add('/ui/typography', '/dev/ui/typography');
 routes.add('/ui/typography/', '/dev/ui/typography');
+routes.add('/ui/grid', '/dev/ui/grid');
+routes.add('/ui/grid/', '/dev/ui/grid');
 
 //
 // Dev Tools
