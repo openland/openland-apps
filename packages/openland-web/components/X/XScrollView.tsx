@@ -4,13 +4,15 @@ import Glamorous from 'glamorous';
 const ScrollView = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    // overflowY: 'scroll'
+    overflow: 'auto'
 });
 
 const ContainerInner = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    flexShrink: 0
+    flexShrink: 0,
+    overflowY: 'scroll',
+    WebkitOverflowScrolling: 'touch'
 });
 
 export function XScrollView(props: { children: any, className?: string }) {

@@ -21,9 +21,9 @@ import { XTooltip } from './Incubator/XTooltip';
 
 const RootContainer = Glamorous.div({
     display: 'flex',
-    // flexDirection: 'row',
-    // height: '100vh',
-    // width: '100vw'
+    flexDirection: 'row',
+    height: '100vh',
+    width: '100vw'
 });
 
 // 
@@ -31,7 +31,7 @@ const RootContainer = Glamorous.div({
 //
 
 const NavigationWrapper = Glamorous.div<{ withMenu: boolean }>((props) => ({
-    display: 'block',
+    display: 'flex',
     flexShrink: 0,
     width: props.withMenu ? 280 : 72,
     order: 1
@@ -50,12 +50,12 @@ const NavigationContainer = Glamorous.div({
     borderRightWidth: '1px',
     alignItems: 'center',
     // overflowY: 'scroll',
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    '> div': {
-        flexShrink: 0
-    }
+    // position: 'fixed',
+    // top: 0,
+    // left: 0,
+    // '> div': {
+    //     flexShrink: 0
+    // }
 });
 
 const Logo = Glamorous(XPicture)({
@@ -149,7 +149,6 @@ const ContentView = Glamorous(XScrollView)<{ withMenu: boolean }>((props) => ({
     // marginLeft: '-8px',
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
-    overflow: 'hidden',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
     // overflowY: 'scroll',
     position: 'relative',
@@ -311,10 +310,10 @@ const MenuView = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#FAFAFC',
-    position: 'fixed',
-    top: 0,
-    left: 72,
-    height: '100vh'
+    // position: 'fixed',
+    // top: 0,
+    // left: 72,
+    // height: '100vh'
 });
 
 //

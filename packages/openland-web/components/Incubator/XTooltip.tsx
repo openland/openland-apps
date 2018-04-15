@@ -7,6 +7,7 @@ import { XIcon } from '../X/XIcon';
 
 const XTooltipDiv = Glamorous.div<{ marginLeft?: number, marginRight?: number, margin?: number, centeredContent?: boolean }>((props) => ({
     display: 'flex',
+    flexShrink: 0,
     alignItems: 'center',
     margin: props.margin,
     justifyContent: props.centeredContent ? 'center' : undefined,

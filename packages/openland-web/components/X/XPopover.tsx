@@ -59,9 +59,9 @@ const hideAnimationBottom = glamor.keyframes({
 });
 
 const PopperPortal = Glamorous.div({
+    zIndex: 5,
     '& .popper-content': {
         display: 'none',
-        zIndex: 2,
         padding: 10,
         background: '#fff',
         minWidth: 150,
