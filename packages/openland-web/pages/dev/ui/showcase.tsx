@@ -100,7 +100,7 @@ export default withApp('UI Framework', 'viewer', (props) => {
                                 <button>lol</button>
                             </CitySelector.Popper>
                         </CitySelector>
-                        <XTooltip marginLeft={0}>
+                        <XTooltip marginLeft={0} placement="left">
                             <XTooltip.Target>
                                 <XIcon icon="arrow_left" />
                             </XTooltip.Target>

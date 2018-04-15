@@ -168,6 +168,9 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
             modifiers: {
                 ...popperProps.modifiers,
                 applyStyle: { enabled: false },
+                preventOverflow: {
+                    boundariesElement: 'viewport'
+                }
                 // arrow: {
                 //     element: this._arrowNode as any,
                 // },
@@ -236,6 +239,32 @@ const showAnimationBottom = glamor.keyframes({
     }
 });
 
+const showAnimationRight = glamor.keyframes({
+    '0%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '60% 50%'
+    },
+    '100%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '60% 50%'
+    }
+});
+
+const showAnimationLeft = glamor.keyframes({
+    '0%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '40% 50%'
+    },
+    '100%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '40% 50%'
+    }
+});
+
 const hideAnimationTop = glamor.keyframes({
     '0%': {
         opacity: 1,
@@ -262,15 +291,45 @@ const hideAnimationBottom = glamor.keyframes({
     }
 });
 
-const PopperDiv = Glamorous.div({
+const hideAnimationRight = glamor.keyframes({
+    '0%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '60% 50%'
+    },
+    '100%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '60% 50%'
+    }
+});
+
+const hideAnimationLeft = glamor.keyframes({
+    '0%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '40% 50%'
+    },
+    '100%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '40% 50%'
+    }
+});
+
+const PopperDiv = Glamorous.div<{nonePointerEvents?: boolean, autoWidth?: boolean}>((props) => ({
+    '& .popper .popper-content *': {
+        pointerEvents: props.nonePointerEvents ? 'none' : undefined,
+        cursor: props.nonePointerEvents ? 'auto' : undefined
+    },
     '& .popper': {
         display: 'none',
-        zIndex: 5,
+        zIndex: 501,
 
         '> .popper-content': {
             padding: 10,
             background: '#fff',
-            maxWidth: 200,
+            maxWidth: props.autoWidth ? 'auto' : 200,
             borderRadius: 4,
             boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
             color: '#525f7f',
@@ -348,7 +407,13 @@ const PopperDiv = Glamorous.div({
     },
 
     '& .popper[data-placement^="right"]': {
-        marginLeft: 10
+        marginLeft: 10,
+        '&.show > .popper-content': {
+            animationName: `${showAnimationRight} !important`,
+        },
+        '&.hide > .popper-content': {
+            animationName: `${hideAnimationRight} !important`
+        }
     },
 
     '& .popper[data-placement^="right"] .popper-content::after': {
@@ -361,7 +426,13 @@ const PopperDiv = Glamorous.div({
     },
 
     '& .popper[data-placement^="left"]': {
-        marginRight: 10
+        marginRight: 10,
+        '&.show > .popper-content': {
+            animationName: `${showAnimationLeft} !important`,
+        },
+        '&.hide > .popper-content': {
+            animationName: `${hideAnimationLeft} !important`
+        }
     },
 
     '& .popper[data-placement^="left"] .popper-content::after': {
@@ -376,13 +447,15 @@ const PopperDiv = Glamorous.div({
     '& .popper[data-x-out-of-boundaries]': {
         display: 'none'
     }
-});
+}));
 
 interface PopperDivProps {
     class?: string;
     children: any;
     onMouseover?: Function;
     onMouseout?: Function;
+    nonePointerEvents?: boolean;
+    autoWidth?: boolean;
     placement: 'auto-start'
     | 'auto'
     | 'auto-end'
@@ -402,7 +475,7 @@ interface PopperDivProps {
 
 export function Popper(props: PopperDivProps) {
     return (
-        <PopperDiv>
+        <PopperDiv nonePointerEvents={props.nonePointerEvents} autoWidth={props.autoWidth}>
             <PopperClass
                 placement={props.placement}
                 componentFactory={(popperProps) => (

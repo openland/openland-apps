@@ -99,7 +99,8 @@ const XTabsDiv = Glamorous.div<{ inline?: boolean }>((props) => ({
     borderTopColor: props.inline ? '#E5EBF2' : undefined,
     borderTopStyle: props.inline ? 'solid' : undefined,
     borderTopWidth: props.inline ? '1px' : undefined,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    zIndex: 0
 }));
 
 export class XTab extends React.Component<{ inline?: boolean }> {

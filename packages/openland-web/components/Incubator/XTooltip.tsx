@@ -119,8 +119,15 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
         });
         if (this.state.class === 'hide') {
             this.setState({
-                class: 'show'
+                class: 'hide'
             });
+            this.timeout = setTimeout(
+                () => {
+                    this.setState({
+                        popper: false
+                    });
+                },
+                50);
         } else {
             this.setState({
                 class: 'static'
@@ -136,6 +143,9 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
         this.timeout = setTimeout(
             () => {
                 if (this.state.targetHover === true) {
+                    this.setState({
+                        class: 'static'
+                    });
                     return;
                 } else {
                     this.setState({
@@ -155,13 +165,13 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
     }
 
     targetOver() {
+        clearTimeout(this.timeout);
         this.setState({
             class: 'show',
             targetHover: true,
             modalHover: false,
             popper: true
         });
-        clearTimeout(this.timeout);
     }
 
     targetOut() {
@@ -200,7 +210,7 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
         }
 
         let popover = (
-            <Popper placement={this.props.placement ? this.props.placement : 'top'} class={this.state.class} onMouseover={this.modalOver} onMouseout={this.modalOut}>
+            <Popper placement={this.props.placement ? this.props.placement : 'top'} class={this.state.class} onMouseover={this.modalOver} onMouseout={this.modalOut} nonePointerEvents={true}>
                 {content.length > 0 ? (content) : (this.props.title)}
             </Popper>
         );
