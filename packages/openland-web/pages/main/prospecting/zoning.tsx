@@ -14,7 +14,7 @@ export default withApp('Zoning Review', 'viewer', () => {
         <>
             <XHead title="Zoning Review" />
             <Scaffold>
-                <Scaffold.Content bottomOffset={true}>
+                <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Zoning Review">
                         <XButton style="dark" path="/prospecting/review?stage=zoning">Begin review</XButton>

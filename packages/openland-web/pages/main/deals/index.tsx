@@ -42,7 +42,7 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
                                 <XTable.Cell width={200}>Location</XTable.Cell>
                                 <XTable.Cell textAlign="right">Area</XTable.Cell>
                                 <XTable.Cell textAlign="right">Price</XTable.Cell>
-                                <XTable.Cell width={150}>Status</XTable.Cell>
+                                <XTable.Cell textAlign="center" width={150}>Status</XTable.Cell>
                             </XTable.Header>
                             <XTable.Body>
                                 {props.data.deals!!.map((d) => (

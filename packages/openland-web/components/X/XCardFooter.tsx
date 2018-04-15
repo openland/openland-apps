@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from './XHorizontal';
+import XStyles from './XStyles';
 
 export const XCardText = Glamorous.div({
     display: 'flex',
@@ -9,17 +10,14 @@ export const XCardText = Glamorous.div({
     fontSize: '13px',
     lineHeight: '1.6',
     whiteSpace: 'pre',
-    '& *::before': {
-        content: ' '
-    }
 });
 
 let XCardFooterDiv = Glamorous.div({
     minHeight: 50,
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingLeft: XStyles.paddings.xlarge,
+    paddingRight: XStyles.paddings.xlarge,
+    paddingTop: XStyles.paddings.large,
+    paddingBottom: XStyles.paddings.large,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between'

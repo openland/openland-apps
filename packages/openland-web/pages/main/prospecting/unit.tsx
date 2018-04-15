@@ -14,7 +14,7 @@ export default withApp('Unit placement', 'viewer', () => {
         <>
             <XHead title="Unit placement" />
             <Scaffold>
-                <Scaffold.Content bottomOffset={true}>
+                <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Unit placement">
                         <XButton style="dark" path="/prospecting/review?stage=unit">Begin review</XButton>

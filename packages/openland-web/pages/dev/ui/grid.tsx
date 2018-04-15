@@ -4,8 +4,8 @@ import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { XVertical } from '../../../components/X/XVertical';
 import glamorous from 'glamorous';
 import XStyles from '../../../components/X/XStyles';
-import { XCard } from '../../../components/X/XCard';
 import { XTitle } from '../../../components/X/XTitle';
+import { XContent } from '../../../components/X/XContent';
 
 const Small = glamorous.div({
     width: XStyles.paddings.small,
@@ -34,7 +34,7 @@ const XLarge = glamorous.div({
 export default withApp('UI Framework - Typograpthy', 'viewer', (props) => {
     return (
         <DevDocsScaffold title="Typography">
-            <XCard.Content>
+            <XContent>
                 <XVertical>
                     <XTitle>XLarge</XTitle>
                     <div>24px, padding between content and side of a container</div>
@@ -49,7 +49,7 @@ export default withApp('UI Framework - Typograpthy', 'viewer', (props) => {
                     <div>4px, grid step, can be used to fine grained design improvements</div>
                     <Small />
                 </XVertical>
-            </XCard.Content>
+            </XContent>
         </DevDocsScaffold>
     );
 });

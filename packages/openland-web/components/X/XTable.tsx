@@ -4,18 +4,23 @@ import { XLink } from './XLink';
 import XStyles from './XStyles';
 
 let TableHeader = Glamorous.table({
-    width: '100%', // alignSelf: 'stretch' is not working here for some reason
+    width: 'calc(100% - ' + (XStyles.paddings.xlarge * 2) + 'px)',
     ...XStyles.text.h600,
     borderCollapse: 'collapse',
+    marginLeft: XStyles.paddings.xlarge,
+    marginRight: XStyles.paddings.xlarge,
 
     '> thead': {
-        backgroundColor: '#EBECF8',
+        backgroundColor: '#ffffff',
         color: '#525f7f',
+        borderBottomColor: '#d8d8da',
+        borderBottomWidth: '2px',
+        borderBottomStyle: 'solid',
 
         '> tr > td > div': {
-            paddingTop: 10,
-            paddingBottom: 10,
-            color: '#525f7f'
+            paddingTop: XStyles.paddings.medium,
+            paddingBottom: XStyles.paddings.medium,
+            ...XStyles.text.h400
         }
     },
     '> tbody': {
@@ -37,14 +42,14 @@ let XTableTD = Glamorous.td<{ width?: number }>((props) => ({
     verticalAlign: 'middle'
 }));
 
-let XTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' }>((props) => ({
+let XTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' | 'center' }>((props) => ({
     display: 'flex',
     alignContent: 'center',
     height: 39,
     width: '100%',
     alignItems: 'center',
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingLeft: XStyles.paddings.large,
+    paddingRight: XStyles.paddings.large,
     paddingTop: 12,
     paddingBottom: 9,
     ...XStyles.text.p,
@@ -69,7 +74,7 @@ let XTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' }>((props) => ({
     }
 }));
 
-const XTableTDDivAsLink = Glamorous(XLink)<{ textAlign?: 'left' | 'right' }>((props) => ({
+const XTableTDDivAsLink = Glamorous(XLink)<{ textAlign?: 'left' | 'right' | 'center' }>((props) => ({
     display: 'flex',
     alignContent: 'center',
     height: 39,
@@ -80,8 +85,8 @@ const XTableTDDivAsLink = Glamorous(XLink)<{ textAlign?: 'left' | 'right' }>((pr
     lineHeight: 'normal',
     paddingTop: 12,
     paddingBottom: 9,
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingLeft: XStyles.paddings.large,
+    paddingRight: XStyles.paddings.large,
     '&:hover': {
         color: 'inherit'
     },
@@ -138,7 +143,7 @@ export class XTableRow extends React.Component<XTableRowProps> {
 interface XTableCellProps {
     children: any;
     width?: number;
-    textAlign?: 'left' | 'right';
+    textAlign?: 'left' | 'right' | 'center';
     path?: string;
     href?: string;
 }

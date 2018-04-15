@@ -1,7 +1,5 @@
 import '../../../globals';
 import * as React from 'react';
-import { XGrid } from '../../../components/X/XGrid';
-import { XCell } from '../../../components/X/XGrid';
 import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { XButtonLike } from '../../../components/X/XButtonLike';
@@ -29,40 +27,6 @@ import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 export default withApp('UI Framework', 'viewer', (props) => {
     return (
         <DevDocsScaffold title="UI Framework">
-            <XCard.Content>
-                <XGrid
-                    layouts={{
-                        templateAreas: [
-                            ['sidebar', 'header', 'header'],
-                            ['sidebar', 'footer', 'footer']
-                        ],
-                        'xs': {
-                            templateAreas: [
-                                ['header', 'sidebar'],
-                                ['header', 'sidebar'],
-                                ['footer', 'sidebar']
-                            ],
-                        },
-                        'sm': {
-                            templateAreas: [
-                                ['sidebar', 'sidebar'],
-                                ['header', 'header'],
-                                ['footer', 'footer']
-                            ],
-                        }
-                    }}
-                >
-                    <XCell area="sidebar">
-                        Sidebar
-                                </XCell>
-                    <XCell area="header">
-                        Header
-                                </XCell>
-                    <XCell area="footer">
-                        Footer
-                                </XCell>
-                </XGrid>
-            </XCard.Content>
             <XTab>
                 <XTab.Item path="/ui" asArrow={true}>Inbox</XTab.Item>
                 <XTab.Item asArrow={true}>Something</XTab.Item>

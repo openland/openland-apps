@@ -21,7 +21,7 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
         <>
             <XHead title="Incoming opportunities" />
             <Scaffold>
-                <Scaffold.Content bottomOffset={true}>
+                <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Incoming opportunities">
                         <XButton style="dark" path="/prospecting/review">Begin Review</XButton>

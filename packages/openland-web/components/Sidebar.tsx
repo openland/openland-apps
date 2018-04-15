@@ -13,10 +13,10 @@ const SidebarContainer = Glamorous.div({
 const SidebarHeader = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingLeft: XStyles.paddings.large,
+    paddingRight: XStyles.paddings.large,
+    paddingTop: XStyles.paddings.large,
+    paddingBottom: XStyles.paddings.large,
 
     ...XStyles.text.h600
 });
@@ -24,8 +24,8 @@ const SidebarHeader = Glamorous.div({
 export const SidebarItem = Glamorous(XLink)({
     ...XStyles.text.m500,
     lineHeight: '32px',
-    paddingLeft: '16px',
-    paddingRight: '16px',
+    paddingLeft: XStyles.paddings.large,
+    paddingRight: XStyles.paddings.large,
     '&.is-active': {
         color: XStyles.color.accent
     }

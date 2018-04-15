@@ -13,7 +13,7 @@ export default withApp('Approved opportunities', 'viewer', () => {
         <>
             <XHead title="Approved opportunities" />
             <Scaffold>
-                <Scaffold.Content bottomOffset={true}>
+                <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Approved opportinities" />
                     <OpportunitiesTable variables={{ state: 'APPROVED' }}>

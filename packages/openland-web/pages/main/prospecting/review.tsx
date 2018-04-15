@@ -142,7 +142,7 @@ export default withApp('Initial Review', 'viewer', withRouter((props) => {
         <>
             <XHead title={title} />
             <Scaffold>
-                <Scaffold.Content bottomOffset={true}>
+                <Scaffold.Content bottomOffset={true} padding={false}>
                     <OpportunityInfo variables={{ state: state }} />
                 </Scaffold.Content>
             </Scaffold>

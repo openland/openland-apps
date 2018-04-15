@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
-import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
-import { XVertical } from '../../../components/X/XVertical';
 import glamorous from 'glamorous';
 import XStyles from '../../../components/X/XStyles';
-import { XCard } from '../../../components/X/XCard';
+import { withApp } from '../../../components/withApp';
+import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
+import { XContent } from '../../../components/X/XContent';
+import { XVertical } from '../../../components/X/XVertical';
 
 const H900 = glamorous.div({
     ...XStyles.text.h900
@@ -49,7 +49,7 @@ const M500 = glamorous.div({
 export default withApp('UI Framework - Typograpthy', 'viewer', (props) => {
     return (
         <DevDocsScaffold title="Typography">
-            <XCard.Content>
+            <XContent>
                 <XVertical>
                     <H900>Text h900</H900>
                     <div>For oversized screen titles. Use in moderation.</div>
@@ -72,7 +72,7 @@ export default withApp('UI Framework - Typograpthy', 'viewer', (props) => {
                     <H100>Text h100</H100>
                     <div>Low level headings.</div>
                 </XVertical>
-            </XCard.Content>
+            </XContent>
         </DevDocsScaffold>
     );
 });

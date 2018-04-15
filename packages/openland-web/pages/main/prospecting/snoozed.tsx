@@ -13,7 +13,7 @@ export default withApp('Snoozed opportunities', 'viewer', () => {
         <>
             <XHead title="Snoozed opportunities" />
             <Scaffold>
-                <Scaffold.Content bottomOffset={true}>
+                <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
 
                     <XHeader text="Snoozed opportinities" />

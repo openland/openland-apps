@@ -13,7 +13,7 @@ export default withApp('Rejected opportunities', 'viewer', () => {
         <>
             <XHead title="Rejected opportunities" />
             <Scaffold>
-                <Scaffold.Content bottomOffset={true}>
+                <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Rejected opportinities" />
                     <OpportunitiesTable variables={{ state: 'REJECTED' }}>
