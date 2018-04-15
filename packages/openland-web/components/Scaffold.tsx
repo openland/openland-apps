@@ -468,27 +468,25 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                             </XTooltip.Content>
                         </XTooltip>
                         <BottomNavigation>
-                            <XWithRole role="super-admin">
+                            <XWithRole role={['super-admin', 'software-developer']}>
                                 <XTooltip placement="right" centeredContent={true}>
                                     <XTooltip.Target>
-                                        <NavigatorItem path="/super/admins">
+                                        <NavigatorItem path="/super" activateForSubpaths={true}>
                                             <NavigatorIcon icon="fingerprint" />
                                         </NavigatorItem>
                                     </XTooltip.Target>
                                     <XTooltip.Content>
-                                        <strong>Adminnistration</strong>
+                                        <strong>DevTools</strong>
                                     </XTooltip.Content>
                                 </XTooltip>
-                            </XWithRole>
-                            <XWithRole role={['super-admin', 'software-developer']}>
                                 <XTooltip placement="right" centeredContent={true}>
                                     <XTooltip.Target>
-                                        <NavigatorItem path="/ui">
-                                            <NavigatorIcon icon="memory" />
+                                        <NavigatorItem path="/ui" activateForSubpaths={true}>
+                                            <NavigatorIcon icon="color_lens" />
                                         </NavigatorItem>
                                     </XTooltip.Target>
                                     <XTooltip.Content>
-                                        <strong>DevTools</strong>
+                                        <strong>X Framework</strong>
                                     </XTooltip.Content>
                                 </XTooltip>
                             </XWithRole>

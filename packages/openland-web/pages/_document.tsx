@@ -88,7 +88,7 @@ export default class StateDocument extends Document {
                             box-sizing: border-box;
                         }
                         body {
-                            background: #F5F6F8;
+                            background: #FAFAFC;
                         }
                         body.ReactModal__Body--open {
                             overflow: hidden;

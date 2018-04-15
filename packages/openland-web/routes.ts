@@ -74,23 +74,25 @@ routes.add('/inquiries/', '/main/inquiries/index');
 // UI
 //
 
-routes.add('/ui', '/ui/showcase');
-routes.add('/ui/', '/ui/showcase');
+routes.add('/ui', '/dev/ui/showcase');
+routes.add('/ui/', '/dev/ui/showcase');
 
 //
-// Super
+// Dev Tools
 //
 
-routes.add('/super/debug', '/super/debug');
-routes.add('/super/debug/', '/super/debug');
-routes.add('/super/admins', '/super/admins');
-routes.add('/super/admins/', '/super/admins');
-routes.add('/super/orgs', '/super/orgs');
-routes.add('/super/orgs/', '/super/orgs');
-routes.add('/super/orgs/:accountId', '/super/orgView');
-routes.add('/super/orgs/:accountId/', '/super/orgView');
-routes.add('/super/features', '/super/features');
-routes.add('/super/features/', '/super/features');
+routes.add('/super/debug', '/dev/debug');
+routes.add('/super/debug/', '/dev/debug');
+routes.add('/super/features', '/dev/features');
+routes.add('/super/features/', '/dev/features');
+
+routes.add('/super', '/dev/orgs');
+routes.add('/super/', '/dev/orgs');
+routes.add('/super/orgs/:accountId', '/dev/orgView');
+routes.add('/super/orgs/:accountId/', '/dev/orgView');
+
+routes.add('/super/admins', '/dev/admins');
+routes.add('/super/admins/', '/dev/admins');
 
 //
 // Authentication

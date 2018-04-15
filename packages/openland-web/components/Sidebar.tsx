@@ -15,6 +15,7 @@ export const SidebarItem = Glamorous(XLink)({
     paddingRight: '16px',
     fontSize: '16px',
     fontWeight: 700,
+    lineHeight: '32px',
     '&.is-active': {
         color: '#522BFF'
     }
