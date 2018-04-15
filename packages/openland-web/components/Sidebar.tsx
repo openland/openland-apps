@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from './X/XLink';
-import { XHeader } from './X/XHeader';
+import XStyles from './X/XStyles';
 
 const SidebarContainer = Glamorous.div({
     display: 'flex',
@@ -10,22 +10,26 @@ const SidebarContainer = Glamorous.div({
     paddingRight: '8px'
 });
 
-export const SidebarItem = Glamorous(XLink)({
-    paddingLeft: '16px',
-    paddingRight: '16px',
-    fontSize: '16px',
-    fontWeight: 700,
-    lineHeight: '32px',
-    '&.is-active': {
-        color: '#522BFF'
-    }
+const SidebarHeader = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 16,
+    paddingBottom: 16,
+
+    ...XStyles.text.h600
 });
 
-// export function SidebarItem(props: { title: string, path: string }) {
-//     return (
-
-//     )
-// }
+export const SidebarItem = Glamorous(XLink)({
+    ...XStyles.text.m500,
+    lineHeight: '32px',
+    paddingLeft: '16px',
+    paddingRight: '16px',
+    '&.is-active': {
+        color: XStyles.color.accent
+    }
+});
 
 export class Sidebar extends React.Component<{ title: string }> {
     static Item = SidebarItem;
@@ -33,7 +37,7 @@ export class Sidebar extends React.Component<{ title: string }> {
     render() {
         return (
             <SidebarContainer>
-                <XHeader text={this.props.title} />
+                <SidebarHeader>{this.props.title}</SidebarHeader>
                 {this.props.children}
             </SidebarContainer>
         );

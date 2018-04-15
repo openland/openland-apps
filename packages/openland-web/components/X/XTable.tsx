@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from './XLink';
+import XStyles from './XStyles';
 
 let TableHeader = Glamorous.table({
     width: '100%', // alignSelf: 'stretch' is not working here for some reason
-    fontWeight: 600,
-    lineHeight: '20px',
+    ...XStyles.text.h600,
     borderCollapse: 'collapse',
 
     '> thead': {
@@ -47,10 +47,8 @@ let XTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' }>((props) => ({
     paddingRight: 16,
     paddingTop: 12,
     paddingBottom: 9,
-    fontWeight: 600,
+    ...XStyles.text.p,
     color: '#182642',
-    fontSize: 13,
-    lineHeight: 'normal',
 
     '> a': {
         minHeight: 'auto !important',
@@ -77,9 +75,8 @@ const XTableTDDivAsLink = Glamorous(XLink)<{ textAlign?: 'left' | 'right' }>((pr
     height: 39,
     width: '100%',
     alignItems: 'center',
-    fontWeight: 600,
+    ...XStyles.text.p,
     color: '#182642',
-    fontSize: 13,
     lineHeight: 'normal',
     paddingTop: 12,
     paddingBottom: 9,

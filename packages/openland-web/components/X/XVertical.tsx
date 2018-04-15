@@ -20,14 +20,23 @@ export class XVertical extends React.Component<{ separator?: 'large' | 'normal',
         let children: any[] = [];
         let isFirst = true;
         let separator = 0;
+        let hadPadding = false;
         for (let el of elements) {
             if (!isFirst) {
-                children.push(<XVerticalSpaceDiv key={'_separator_' + separator} separator={this.props.separator} />);
-                separator++;
+                if (!hadPadding) {
+                    children.push(<XVerticalSpaceDiv key={'_separator_' + separator} separator={this.props.separator} />);
+                    separator++;
+                }
             } else {
                 isFirst = false;
             }
             children.push(el);
+            hadPadding = false;
+            if (React.isValidElement(el)) {
+                if ((el.props as any)._isVerticalPaddingIncluded) {
+                    hadPadding = true;
+                }
+            }
         }
         return (
             <XVerticalDiv className={this.props.className}>

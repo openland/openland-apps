@@ -2,15 +2,13 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from './XHorizontal';
 import { XBullet } from './XBullet';
+import XStyles from './XStyles';
 
 const XCardTitle = Glamorous.div({
+    ...XStyles.text.h700,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    fontSize: 20,
-    lineHeight: 1.6,
-    fontWeight: 600,
-    color: '#182642'
+    justifyContent: 'space-between'
 });
 
 const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
@@ -29,10 +27,10 @@ const TargetDivStyle = Glamorous(XHorizontal)({
 });
 
 let XCardHeaderDiv = Glamorous.div({
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingLeft: XStyles.paddings.content.horizontal,
+    paddingRight: XStyles.paddings.content.horizontal,
+    paddingTop: XStyles.paddings.content.vertical,
+    paddingBottom: XStyles.paddings.content.vertical,
     display: 'flex',
     flexDirection: 'column'
 });
@@ -61,6 +59,10 @@ export class HeaderTargetElement extends React.Component<({ children: any })> {
 }
 
 export class XHeader extends React.Component<XCardHeaderProps> {
+    static defaultProps = {
+        _isVerticalPaddingIncluded: true
+    };
+
     static Target = HeaderTargetElement;
 
     render() {
