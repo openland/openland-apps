@@ -210,6 +210,9 @@ export const ParcelCard = withParcelDirect((props) => {
                             {props.data.item!!.extrasNeighborhood &&
                                 <PropertyCell title="Neighborhood">{props.data.item!!.extrasNeighborhood}</PropertyCell>
                             }
+                            {props.data.item!!.extrasBorough &&
+                                <PropertyCell title="Borough">{props.data.item!!.extrasBorough}</PropertyCell>
+                            }
                             {props.data.item!!.extrasSupervisorDistrict &&
                                 <PropertyCell title="Supervisor District">{props.data.item!!.extrasSupervisorDistrict}</PropertyCell>
                             }

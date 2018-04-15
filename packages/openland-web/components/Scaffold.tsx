@@ -434,8 +434,8 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                Explore
-                        </XTooltip.Content>
+                                <strong>Explore</strong>
+                            </XTooltip.Content>
                         </XTooltip>
                         <XTooltip placement="right">
                             <XTooltip.Target>
@@ -444,7 +444,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                Sort
+                                <strong>Prospecting</strong>
                             </XTooltip.Content>
                         </XTooltip>
                         <XTooltip placement="right">
@@ -454,7 +454,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                Work
+                                <strong>Deals</strong>
                             </XTooltip.Content>
                         </XTooltip>
                         <XTooltip placement="right">
@@ -464,7 +464,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                Favorite
+                                <strong>Favorites</strong>
                             </XTooltip.Content>
                         </XTooltip>
                         <BottomNavigation>
@@ -476,7 +476,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                         </NavigatorItem>
                                     </XTooltip.Target>
                                     <XTooltip.Content>
-                                        Admins
+                                        <strong>Adminnistration</strong>
                                     </XTooltip.Content>
                                 </XTooltip>
                             </XWithRole>
@@ -488,7 +488,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                         </NavigatorItem>
                                     </XTooltip.Target>
                                     <XTooltip.Content>
-                                        UI
+                                        <strong>DevTools</strong>
                                     </XTooltip.Content>
                                 </XTooltip>
                             </XWithRole>

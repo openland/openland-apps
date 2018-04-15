@@ -26,6 +26,7 @@ export const OpportunitiesTable = withSourcing((props) => {
                     <XTable>
                         <XTable.Header>
                             <XTable.Cell width={100}>City</XTable.Cell>
+                            <XTable.Cell width={100}>Borough</XTable.Cell>
                             <XTable.Cell width={150}>Parcel</XTable.Cell>
                             <XTable.Cell>Address</XTable.Cell>
                             <XTable.Cell width={100} textAlign="right">Area</XTable.Cell>
@@ -37,6 +38,9 @@ export const OpportunitiesTable = withSourcing((props) => {
                                 <XTable.Row key={v.node.id} path={useDirect ? '/parcels/' + v.node.parcel.id : ('/prospecting/review?initialId=' + v.node.id + stage)}>
                                     <XTable.Cell>
                                         {v.node.parcel.city.name}
+                                    </XTable.Cell>
+                                    <XTable.Cell>
+                                        {v.node.parcel.extrasBorough}
                                     </XTable.Cell>
                                     <XTable.Cell>
                                         {v.node.parcel.title}
