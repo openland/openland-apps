@@ -24,13 +24,17 @@ export class XMapSource extends React.PureComponent<XMapSourceProps> {
             this.isInited = true;
             let dt = this.props.data !== undefined ? this.props.data : { 'type': 'FeatureCollection', features: [] };
             datasources.addGeoJSONSource(this.props.id, dt);
-            map.addSource(this.props.id, {
-                type: 'geojson',
-                data: dt,
-                cluster: this.props.cluster || false,
-                clusterMaxZoom: 14,
-                clusterRadius: 50
-            });
+            try {
+                map.addSource(this.props.id, {
+                    type: 'geojson',
+                    data: dt,
+                    cluster: this.props.cluster || false,
+                    clusterMaxZoom: 14,
+                    clusterRadius: 50
+                });
+            } catch (e) {
+                // Ignore
+            }
         }
     }
 
@@ -38,21 +42,29 @@ export class XMapSource extends React.PureComponent<XMapSourceProps> {
         if (this.isInited) {
             let dt = nextProps.data !== undefined ? nextProps.data : { 'type': 'FeatureCollection', features: [] };
             if (this.props.id !== nextProps.id) {
-                this.map.removeSource(this.props.id);
-                this.datasources.removeGeoJsonSource(this.props.id);
-                this.datasources.addGeoJSONSource(this.props.id, dt);
-                this.map.addSource(nextProps.id, {
-                    type: 'geojson',
-                    data: dt,
-                    cluster: this.props.cluster || false,
-                    clusterMaxZoom: 14,
-                    clusterRadius: 50
-                });
+                try {
+                    this.map.removeSource(this.props.id);
+                    this.datasources.removeGeoJsonSource(this.props.id);
+                    this.datasources.addGeoJSONSource(this.props.id, dt);
+                    this.map.addSource(nextProps.id, {
+                        type: 'geojson',
+                        data: dt,
+                        cluster: this.props.cluster || false,
+                        clusterMaxZoom: 14,
+                        clusterRadius: 50
+                    });
+                } catch (e) {
+                    // Ignore
+                }
             } else {
-                let source = this.map.getSource(this.props.id);
-                if (source.type === 'geojson') {
-                    this.datasources.updateGeoJSONSource(this.props.id, dt);
-                    source.setData(dt);
+                try {
+                    let source = this.map.getSource(this.props.id);
+                    if (source.type === 'geojson') {
+                        this.datasources.updateGeoJSONSource(this.props.id, dt);
+                        source.setData(dt);
+                    }
+                } catch (e) {
+                    // Ignore
                 }
             }
         }
