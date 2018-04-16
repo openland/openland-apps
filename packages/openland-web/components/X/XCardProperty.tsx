@@ -1,28 +1,31 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import XStyles from './XStyles';
 
 let XCardFieldContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingLeft: 24,
+    paddingRight: 24,
     marginBottom: 8,
     '&:last-child': {
         marginBottom: 0
     }
 });
 
-let XCardFieldTitle = Glamorous.div<{width?: number}>((props) => ({
+let XCardFieldTitle = Glamorous.div<{ width?: number }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     width: props.width ? props.width : 200,
     flexShrink: 0,
-    opacity: 0.7,
-    fontSize: 14,
-    fontWeight: 'normal',
-    lineHeight: 1.71,
+    ...XStyles.text.h400,
+    // opacity: 0.7,
+    // fontSize: 14,
+    // fontWeight: 'normal',
+    // lineHeight: 1.71,
+    lineHeight: '24px',
     textAlign: 'left',
-    color: '#525f7f'
+    // color: '#525f7f'
 }));
 
 let XCardFieldValue = Glamorous.div({
@@ -32,11 +35,13 @@ let XCardFieldValue = Glamorous.div({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    fontSize: 14,
-    fontWeight: 'normal',
-    lineHeight: 1.71,
+    ...XStyles.text.p,
+    // fontSize: 14,
+    // fontWeight: 'normal',
+    // lineHeight: 1.71,
+    lineHeight: '24px',
     textAlign: 'left',
-    color: '#182642'
+    // color: '#182642'
 });
 
 let XCardPropertyListDiv = Glamorous.div({
@@ -60,11 +65,9 @@ let XCardPropertyColumnsContainerDiv = Glamorous.div({
 });
 
 let XCardPropertyTitle = Glamorous.div({
-    fontSize: '14px',
-    fontWeight: 'bold',
-    lineHeight: 'normal',
-    paddingLeft: 16,
-    paddingRight: 16,
+    ...XStyles.text.h600,
+    paddingLeft: 24,
+    paddingRight: 24,
     textAlign: 'left',
     color: '#262626',
     marginBottom: 8

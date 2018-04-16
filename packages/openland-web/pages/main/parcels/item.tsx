@@ -22,9 +22,12 @@ import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XAngle } from '../../../components/X/XAngle';
 import { OpportunitiButton } from '../../../components/OpportunityButton';
-import { XForm, XFormTextField } from '../../../components/X/XForm';
+import { XForm } from '../../../components/X/XForm';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
+import { XContent } from '../../../components/X/XContent';
+import { XTitle } from '../../../components/X/XTitle';
+import { XVertical } from '../../../components/X/XVertical';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -93,43 +96,61 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                         </XButton>
                     </XHeader>
                     <ParcelProperties item={props.data.item} />
-
+                    <XContent>
+                        <XTitle>Notes</XTitle>
+                    </XContent>
                     <XForm defaultValues={{ notes: props.data.item.userData ? props.data.item.userData.notes : '' }} submitMutation={props.parcelNotes} mutationDirect={true}>
-                        <XCard.Content>
-                            <XFormTextField field="notes" placeholder="Notes" />
-                        </XCard.Content>
+                        <XContent>
+                            <XForm.TextArea field="notes" placeholder="Notes" />
+                        </XContent>
                         <XForm.Footer>
                             <XForm.Submit style="dark">Save</XForm.Submit>
                         </XForm.Footer>
                     </XForm>
-                    {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && props.data.item.compatibleBuildings && props.data.item.compatibleBuildings.map((v, i) => (
-                        // <XCard key={v.key + '-' + i} shadow="medium">
-                        <XHorizontal>
-                            <XView grow={1} basis={0}>
-                                <XCard.PropertyList>
-                                    <XCard.Property title="Construction Type">{v.title}</XCard.Property>
-                                    {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
-                                    {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
-                                    {v.center && <XCard.Property title="Location">{v.center.latitude},{v.center.longitude}</XCard.Property>}
-                                </XCard.PropertyList>
-                            </XView>
-                            <XView grow={1} basis={0}>
-                                {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
-                                    <XMapSource id={'parcel'} data={sourceFromGeometry(props.data.item.geometry!!)} />
-                                    <XMapPolygonLayer source="parcel" layer="parcel" />
+                    {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && props.data.item.compatibleBuildings && (props.data.item.compatibleBuildings.length > 0) && (
+                        <>
+                            <XContent>
+                                <XTitle>Compatible Constructions</XTitle>
+                            </XContent>
+                            <XVertical>
+                                {props.data.item.compatibleBuildings.map((v, i) => (
+                                    <XHorizontal key={v.key + '-' + i}>
+                                        <XView grow={1} basis={0}>
+                                            <XCard.PropertyList>
+                                                <XCard.Property title="Construction Type">{v.title}</XCard.Property>
+                                                {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
+                                                {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
+                                                {v.center && <XCard.Property title="Location">{v.center.latitude.toFixed(6)},{v.center.longitude.toFixed(6)}</XCard.Property>}
+                                            </XCard.PropertyList>
+                                        </XView>
+                                        <XView grow={1} basis={0}>
+                                            <XView css={{ paddingRight: 24 }}>
+                                                {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
+                                                    <XMapSource id={'parcel'} data={sourceFromGeometry(props.data.item.geometry!!)} />
+                                                    <XMapPolygonLayer source="parcel" layer="parcel" />
 
-                                    {v.center && <XMapSource id={'center'} data={sourceFromPoint(v.center!!.latitude, v.center!!.longitude)} />}
-                                    {v.center && <XMapPointLayer source="center" layer="center" />}
+                                                    {v.center && <XMapSource id={'center'} data={sourceFromPoint(v.center!!.latitude, v.center!!.longitude)} />}
+                                                    {v.center && <XMapPointLayer source="center" layer="center" />}
 
-                                    {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
-                                    {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
-                                </XCard.Map>}
-                            </XView>
-                        </XHorizontal>
-                        // </XCard>
-                    ))}
+                                                    {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
+                                                    {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
+                                                </XCard.Map>}
+                                            </XView>
+                                        </XView>
+                                    </XHorizontal>
+                                ))}
+                            </XVertical>
+                        </>
+                    )}
                     {props.data.item.geometry && (
-                        <ParcelMaps id={props.data.item.id} geometry={props.data.item.geometry} />
+                        <>
+                            <XContent>
+                                <XTitle>Location</XTitle>
+                            </XContent>
+                            <XContent>
+                                <ParcelMaps id={props.data.item.id} geometry={props.data.item.geometry} />
+                            </XContent>
+                        </>
                     )}
                     {props.data.item.permits.length > 0 && (
                         <>

@@ -252,6 +252,37 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
     }
 }
 
+export class XFormTextArea extends React.Component<XFormTextFieldProps, { value: string }> {
+    static contextTypes = {
+        xForm: PropTypes.object.isRequired
+    };
+
+    constructor(props: XFormTextFieldProps, context: any) {
+        super(props, context);
+        let xForm = this.context.xForm as XFormController;
+        let existing = xForm.readValue(this.props.field);
+        if (typeof existing === 'string') {
+            this.state = { value: existing };
+        } else if (existing) {
+            this.state = { value: existing.toString() };
+        } else {
+            this.state = { value: '' };
+        }
+    }
+
+    handleChange = (src: any) => {
+        let xForm = this.context.xForm as XFormController;
+        let val = src.target.value as string;
+        this.setState({ value: val });
+        xForm.writeValue(this.props.field, val);
+    }
+    render() {
+        return (
+            <XFormTextAreaStyle placeholder={this.props.placeholder} onChange={this.handleChange} value={this.state.value} />
+        );
+    }
+}
+
 interface XFormBooleanFieldProps {
     field: string;
 }
@@ -404,6 +435,7 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
     static Boolean = XFormBooleanField;
     static Select = XFormSelectField;
     static Text = XFormTextField;
+    static TextArea = XFormTextArea;
     static Submit = XFormSubmit;
 
     static RawInput = XInput;

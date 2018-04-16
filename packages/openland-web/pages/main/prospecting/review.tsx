@@ -19,9 +19,64 @@ import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
 import { ProspectingNavigationReview } from '../../../components/ProspectingNavigation';
 import { trackEvent } from '../../../utils/analytics';
-import { XForm, XFormTextField } from '../../../components/X/XForm';
+import { XForm } from '../../../components/X/XForm';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
+import ATypes from 'openland-api';
+import { XTitle } from '../../../components/X/XTitle';
+import { XContent } from '../../../components/X/XContent';
+
+const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment }) => {
+    return (
+        <XVertical>
+            {props.parcel.compatibleBuildings && props.parcel.compatibleBuildings.length > 0 && (
+                <>
+                    <XContent>
+                        <XTitle>Compatible Constructions</XTitle>
+                    </XContent>
+                    <XVertical>
+                        {props.parcel.compatibleBuildings.map((v, i) => (
+                            <XHorizontal key={v.key + '-' + i}>
+                                <XView grow={1} basis={0} css={{ minWidth: 0 }}>
+                                    <XCard.PropertyList>
+                                        <XCard.Property title="Construction Type">{v.title}</XCard.Property>
+                                        {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
+                                        {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
+                                        {v.center && <XCard.Property title="Location">{v.center.latitude.toFixed(6)},{v.center.longitude.toFixed(6)}</XCard.Property>}
+                                    </XCard.PropertyList>
+                                </XView>
+                                <XView grow={1} basis={0}>
+                                    <XView css={{ paddingRight: 24 }}>
+                                        {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
+                                            <XMapSource id={'parcel'} data={sourceFromGeometry(props.parcel.geometry!!)} />
+                                            <XMapPolygonLayer source="parcel" layer="parcel" />
+
+                                            {v.center && <XMapSource id={'center'} data={sourceFromPoint(v.center!!.latitude, v.center!!.longitude)} />}
+                                            {v.center && <XMapPointLayer source="center" layer="center" />}
+
+                                            {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
+                                            {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
+                                        </XCard.Map>}
+                                    </XView>
+                                </XView>
+                            </XHorizontal>
+                        ))}
+                    </XVertical>
+                </>
+            )}
+            {props.parcel.geometry && (
+                <>
+                    <XContent>
+                        <XTitle>Location</XTitle>
+                    </XContent>
+                    <XContent>
+                        <ParcelMaps id={props.parcel.id} geometry={props.parcel.geometry} disableNavigation={true} satellite={true} />
+                    </XContent>
+                </>
+            )}
+        </XVertical>
+    );
+};
 
 const OpportunityInfo = withOpportunity((props) => {
     let approveText = 'Move to next stage';
@@ -77,50 +132,31 @@ const OpportunityInfo = withOpportunity((props) => {
                 )}
             </XCard.Loader>
             {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
-                <XForm
-                    defaultValues={{ parcelId: props.data.alphaNextReviewOpportunity.parcel.id, notes: props.data.alphaNextReviewOpportunity.parcel.userData ? props.data.alphaNextReviewOpportunity.parcel.userData.notes : '' }}
-                    submitMutation={props.parcelNotes}
-                    mutationDirect={true}
-                >
-                    <XCard.Content>
-                        <XFormTextField field="notes" placeholder="Notes" />
-                    </XCard.Content>
-                    <XForm.Footer>
-                        <XForm.Submit style="dark">Save</XForm.Submit>
-                    </XForm.Footer>
-                </XForm>
+                <>
+                    <XContent>
+                        <XTitle>Notes</XTitle>
+                    </XContent>
+
+                    <XForm
+                        defaultValues={{ parcelId: props.data.alphaNextReviewOpportunity.parcel.id, notes: props.data.alphaNextReviewOpportunity.parcel.userData ? props.data.alphaNextReviewOpportunity.parcel.userData.notes : '' }}
+                        submitMutation={props.parcelNotes}
+                        mutationDirect={true}
+                    >
+                        <XContent>
+                            <XForm.TextArea field="notes" placeholder="Notes" />
+                        </XContent>
+                        <XForm.Footer>
+                            <XForm.Submit style="dark">Save</XForm.Submit>
+                        </XForm.Footer>
+                    </XForm>
+
+                </>
             )}
             {(!props.data.alphaNextReviewOpportunity && (!props.data.loading)) && (
                 <XCard.Empty text="There are no parcels for review" icon="sort" />
             )}
-            {props.data.alphaNextReviewOpportunity && (!props.data.loading) && props.data.alphaNextReviewOpportunity.parcel.compatibleBuildings && props.data.alphaNextReviewOpportunity.parcel.compatibleBuildings.map((v, i) => (
-                <XHorizontal key={v.key + '-' + i}>
-                    <XView grow={1} basis={0}>
-                        <XCard.PropertyList>
-                            <XCard.Property title="Construction Type">{v.title}</XCard.Property>
-                            {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
-                            {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
-                            {v.center && <XCard.Property title="Location">{v.center.latitude},{v.center.longitude}</XCard.Property>}
-                        </XCard.PropertyList>
-                    </XView>
-                    <XView grow={1} basis={0}>
-                        {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
-                            <XMapSource id={'parcel'} data={sourceFromGeometry(props.data.alphaNextReviewOpportunity!!.parcel.geometry!!)} />
-                            <XMapPolygonLayer source="parcel" layer="parcel" />
-
-                            {v.center && <XMapSource id={'center'} data={sourceFromPoint(v.center!!.latitude, v.center!!.longitude)} />}
-                            {v.center && <XMapPointLayer source="center" layer="center" />}
-
-                            {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
-                            {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
-                        </XCard.Map>}
-                    </XView>
-                </XHorizontal>
-            ))}
-            {props.data.alphaNextReviewOpportunity && (!props.data.loading) && props.data.alphaNextReviewOpportunity.parcel.geometry && (
-                <XCard.Content>
-                    <ParcelMaps id={props.data.alphaNextReviewOpportunity.parcel.id} geometry={props.data.alphaNextReviewOpportunity.parcel.geometry} disableNavigation={true} satellite={true} />
-                </XCard.Content>
+            {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
+                <OpportunityDescription parcel={props.data.alphaNextReviewOpportunity.parcel} />
             )}
         </XVertical>
     );

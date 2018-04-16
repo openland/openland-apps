@@ -5,6 +5,7 @@ import { XModalTargeted } from '../X/XModalTargeted';
 import { XSelect, XSelectProps } from '../X/XSelect';
 import { withRouter, XWithRouter } from '../withRouter';
 import { XWithRole } from '../X/XWithRole';
+import XStyles from '../X/XStyles';
 
 let AllLandUse = [
     'Residental',
@@ -267,9 +268,7 @@ const FilterCellDiv = Glamorous.div({
 
 const FilterCellTitle = Glamorous.div({
     marginBottom: 8,
-    fontSize: 14,
-    fontWeight: 'bold',
-    lineHeight: 1.71,
+    ...XStyles.text.h500,
     textAlign: 'left',
     color: '#182642',
 });

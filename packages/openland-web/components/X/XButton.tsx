@@ -178,7 +178,7 @@ export const XButtonComponent = withLayout(Glamorous<XButtonProps>(XLink)((props
 
         fontSize: fontSize[size],
         lineHeight: '20px',
-        fontWeight: 600,
+        fontWeight: 500,
 
         '&:hover': {
             transform: props.bounce ? 'translateY(-1px)' : undefined,

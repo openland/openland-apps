@@ -4,12 +4,12 @@ import { XHorizontal } from './XHorizontal';
 import { XBullet } from './XBullet';
 import XStyles from './XStyles';
 
-const XCardTitle = Glamorous.div({
-    ...XStyles.text.h700,
+const XCardTitle = Glamorous.div<{ appStyle?: 'default' | 'compact' }>((props) => ({
+    ...(props.appStyle === 'compact' ? XStyles.text.h600 : XStyles.text.h700),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'
-});
+}));
 
 const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
     opacity: 0.7,
@@ -26,16 +26,17 @@ const TargetDivStyle = Glamorous(XHorizontal)({
     alignItems: 'center'
 });
 
-let XCardHeaderDiv = Glamorous.div({
-    paddingLeft: XStyles.paddings.content.horizontal,
-    paddingRight: XStyles.paddings.content.horizontal,
-    paddingTop: XStyles.paddings.content.vertical,
-    paddingBottom: XStyles.paddings.content.vertical,
+let XCardHeaderDiv = Glamorous.div<{ appStyle?: 'default' | 'compact' }>((props) => ({
+    paddingLeft: props.appStyle === 'compact' ? XStyles.paddings.large : XStyles.paddings.xlarge,
+    paddingRight: props.appStyle === 'compact' ? XStyles.paddings.large : XStyles.paddings.xlarge,
+    paddingTop: XStyles.paddings.large,
+    paddingBottom: XStyles.paddings.large,
     display: 'flex',
     flexDirection: 'column'
-});
+}));
 
 interface XCardHeaderProps {
+    style?: 'default' | 'compact';
     children?: any;
     text?: string | null;
     description?: string | null;
@@ -77,8 +78,8 @@ export class XHeader extends React.Component<XCardHeaderProps> {
         }
 
         return (
-            <XCardHeaderDiv>
-                <XCardTitle>
+            <XCardHeaderDiv appStyle={this.props.style}>
+                <XCardTitle appStyle={this.props.style}>
                     <TargetDivStyle>
                         {target}
                         {this.props.text}

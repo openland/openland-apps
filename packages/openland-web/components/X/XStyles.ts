@@ -1,7 +1,16 @@
 import { CSSProperties } from 'glamorous';
 
+function neutral(alpha: number) {
+    return 'rgba(0, 0, 0, ' + alpha + ')';
+}
+
+function neutralLight(alpha: number) {
+    return 'rgba(255, 255, 255, ' + alpha + ')';
+}
+
 const color = {
-    primary: '#1e1467',
+    neutralDark: neutral(1.0),
+    neutralLight: neutralLight(1.0),
     accent: '#522BFF'
 };
 
@@ -21,70 +30,70 @@ const text = {
         fontSize: '35px',
         fontWeight: 500,
         lineHeight: '40px',
-        color: color.primary
+        color: neutral(1.0)
     } as CSSProperties,
     h800: {
         fontSize: '29px',
         fontWeight: 500,
         lineHeight: '32px',
-        color: color.primary
+        color: neutral(1.0)
     } as CSSProperties,
     h700: {
         fontSize: '24px',
         fontWeight: 400,
         lineHeight: '28px',
-        color: color.primary
+        color: neutral(1.0)
     } as CSSProperties,
     h600: {
         fontSize: '20px',
         fontWeight: 400,
         lineHeight: '24px',
-        color: color.primary
+        color: neutral(1.0)
     } as CSSProperties,
     h500: {
         fontSize: '16px',
         fontWeight: 400,
         lineHeight: '20px',
-        color: color.primary
+        color: neutral(1.0)
     } as CSSProperties,
     h400: {
         fontSize: '14px',
         fontWeight: 500,
         lineHeight: '20px',
-        color: color.primary
+        color: neutral(0.6)
     } as CSSProperties,
     h300: {
         fontSize: '12px',
         fontWeight: 500,
         lineHeight: '16px',
-        color: color.primary
+        color: neutral(1.0)
     } as CSSProperties,
     h200: {
         fontSize: '12px',
         fontWeight: 500,
         lineHeight: '16px',
-        color: color.primary
+        color: neutral(0.6)
     } as CSSProperties,
     h100: {
         fontSize: '12px',
         fontWeight: 600,
         lineHeight: '16px',
         textTransform: 'uppercase',
-        color: color.primary
+        color: neutral(0.6)
     } as CSSProperties,
 
     m500: {
         fontSize: '16px',
         fontWeight: 500,
         lineHeight: '20px',
-        color: color.primary
+        color: neutral(0.8)
     } as CSSProperties,
 
     p: {
         fontSize: '14px',
         fontWeight: 400,
         lineHeight: '18px',
-        color: color.primary
+        color: neutral(1.0)
     } as CSSProperties,
 };
 

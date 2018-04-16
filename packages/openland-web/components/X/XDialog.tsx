@@ -3,6 +3,7 @@ import Glamorous from 'glamorous';
 import { XCard } from './XCard';
 import { XButton } from './XButton';
 import { XHeader } from './XHeader';
+import XStyles from './XStyles';
 
 export const XDialogContainer = Glamorous(XCard)<{ width?: number | string }>((props) => ({
     display: 'block',
@@ -45,10 +46,7 @@ export const XDialogFullScreenContainerHeader = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    // height: '64px',
-    color: '#182642',
-    fontSize: '32px',
-    fontWeight: 800,
+    ...XStyles.text.h700,
     justifyContent: 'space-between',
     marginBottom: 24
 });

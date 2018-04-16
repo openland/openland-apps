@@ -27,6 +27,9 @@ import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
 import { XAngle } from '../../../components/X/XAngle';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XHorizontal } from '../../../components/X/XHorizontal';
+import { XContent } from '../../../components/X/XContent';
+import { XTitle } from '../../../components/X/XTitle';
+import { XVertical } from '../../../components/X/XVertical';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -114,34 +117,46 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                             </XWithRole>
                         </XCard.PropertyList>
                     </XCard.PropertyColumns>
-                    {props.data.deal.parcel && props.data.deal.parcel!!.city.name === 'New York' && (props.data.deal.parcel!!.extrasVacant === null || props.data.deal.parcel!!.extrasVacant) && props.data.deal.parcel!!.compatibleBuildings && props.data.deal!!.parcel!!.compatibleBuildings!!.map((v, i) => (
-                        <XHorizontal>
-                            <XView grow={1} basis={0}>
-                                <XCard.PropertyList>
-                                    <XCard.Property title="Construction Type">{v.title}</XCard.Property>
-                                    {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
-                                    {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
-                                    {v.center && <XCard.Property title="Location">{v.center.latitude},{v.center.longitude}</XCard.Property>}
-                                </XCard.PropertyList>
-                            </XView>
-                            <XView grow={1} basis={0}>
-                                {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
-                                    <XMapSource id={'parcel'} data={sourceFromGeometry(props.data.deal.parcel!!.geometry!!)} />
-                                    <XMapPolygonLayer source="parcel" layer="parcel" />
+                    {props.data.deal.parcel && props.data.deal.parcel!!.city.name === 'New York' && (props.data.deal.parcel!!.extrasVacant === null || props.data.deal.parcel!!.extrasVacant) && props.data.deal.parcel!!.compatibleBuildings && props.data.deal.parcel!!.compatibleBuildings!!.length > 0 && (
+                        <XVertical>
+                             <XContent>
+                                <XTitle>Compatible Constructions</XTitle>
+                            </XContent>
+                            {props.data.deal!!.parcel!!.compatibleBuildings!!.map((v, i) => (
+                                <XHorizontal>
+                                    <XView grow={1} basis={0}>
+                                        <XCard.PropertyList>
+                                            <XCard.Property title="Construction Type">{v.title}</XCard.Property>
+                                            {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
+                                            {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
+                                            {v.center && <XCard.Property title="Location">{v.center.latitude},{v.center.longitude}</XCard.Property>}
+                                        </XCard.PropertyList>
+                                    </XView>
+                                    <XView grow={1} basis={0}>
+                                        {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
+                                            <XMapSource id={'parcel'} data={sourceFromGeometry(props.data.deal.parcel!!.geometry!!)} />
+                                            <XMapPolygonLayer source="parcel" layer="parcel" />
 
-                                    {v.center && <XMapSource id={'center'} data={sourceFromPoint(v.center!!.latitude, v.center!!.longitude)} />}
-                                    {v.center && <XMapPointLayer source="center" layer="center" />}
+                                            {v.center && <XMapSource id={'center'} data={sourceFromPoint(v.center!!.latitude, v.center!!.longitude)} />}
+                                            {v.center && <XMapPointLayer source="center" layer="center" />}
 
-                                    {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
-                                    {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
-                                </XCard.Map>}
-                            </XView>
-                        </XHorizontal>
-                    ))}
+                                            {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
+                                            {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
+                                        </XCard.Map>}
+                                    </XView>
+                                </XHorizontal>
+                            ))}
+                        </XVertical>
+                    )}
                     {props.data.deal.parcel && props.data.deal.parcel.geometry && (
-                        <XCard.Content>
-                            <ParcelMaps id={props.data.deal.parcel.id} geometry={props.data.deal.parcel.geometry} />
-                        </XCard.Content>
+                        <>
+                            <XContent>
+                                <XTitle>Location</XTitle>
+                            </XContent>
+                            <XContent>
+                                <ParcelMaps id={props.data.deal.parcel.id} geometry={props.data.deal.parcel.geometry} />
+                            </XContent>
+                        </>
                     )}
                 </Scaffold.Content>
             </Scaffold>
