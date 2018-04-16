@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { findChild } from './utils';
-import { XScrollView } from './X/XScrollView';
+// import { XScrollView } from './X/XScrollView';
 import { XVertical } from './X/XVertical';
 import { XPicture } from './X/XPicture';
 import { XLink } from './X/XLink';
@@ -22,7 +22,7 @@ import { XTooltip } from './Incubator/XTooltip';
 const RootContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    height: '100vh',
+    // height: '100vh',
     width: '100vw'
 });
 
@@ -49,13 +49,10 @@ const NavigationContainer = Glamorous.div({
     borderRightStyle: 'solid',
     borderRightWidth: '1px',
     alignItems: 'center',
-    // overflowY: 'scroll',
-    // position: 'fixed',
-    // top: 0,
-    // left: 0,
-    // '> div': {
-    //     flexShrink: 0
-    // }
+    overflowY: 'scroll',
+    position: 'fixed',
+    top: 0,
+    left: 0
 });
 
 const Logo = Glamorous(XPicture)({
@@ -111,8 +108,8 @@ const BottomNavigation = Glamorous.div({
 const AvatarImg = Glamorous.img({
     overflow: 'hidden',
     borderRadius: '14px',
-    marginLeft: 16,
-    marginRight: 8,
+    // marginLeft: 16,
+    // marginRight: 8,
     width: '36px',
     height: '36px',
     boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
@@ -139,20 +136,55 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
 // Content
 //
 
-const ContentView = Glamorous(XScrollView)<{ withMenu: boolean }>((props) => ({
+const ContentView = Glamorous.div<{ withMenu: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: '#ffffff',
+    // borderTopLeftRadius: 8,
+    // borderBottomLeftRadius: 8,
+    // overflow: 'hidden',
+    // backgroundColor: '#ffffff',
     flex: 1,
     order: 2,
     maxWidth: props.withMenu ? 'calc(100% - 280px)' : 'calc(100% - 72px)',
     // marginLeft: '-8px',
     // borderTopLeftRadius: 8,
     // borderBottomLeftRadius: 8,
-    boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
+    // boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
     // overflowY: 'scroll',
-    position: 'relative'
+    position: 'relative',
+    zIndex: 0
 }));
+
+const SubstrateDiv = Glamorous.div<{ withMenu: boolean }>((props) => ({
+    position: 'fixed',
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+    top: 0,
+    left: props.withMenu ? 280 : 72,
+    width: props.withMenu ? 'calc(100% - 280px)' : 'calc(100% - 72px)',
+    height: '100vh',
+    backgroundColor: '#ffffff',
+    boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
+    zIndex: 0
+}));
+
+const ContentDiv = Glamorous.div({
+    // overflow: 'hidden',
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+    zIndex: 1
+});
+
+// const CornerDivStyle = {
+//     width: 4,
+//     height: 4,
+//     backgroundColor: '#FAFAFC'
+// };
+
+// const CornerLeftDiv = Glamorous.div({
+//     position: 'fixed',
+//     ...CornerDivStyle
+// });
 
 const SearchContainer = Glamorous.div<{ visible: boolean }>((props) => ({
     position: 'fixed',
@@ -309,10 +341,10 @@ const MenuView = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#FAFAFC',
-    // position: 'fixed',
-    // top: 0,
-    // left: 72,
-    // height: '100vh'
+    position: 'fixed',
+    top: 0,
+    left: 72,
+    height: '100vh'
 });
 
 //
@@ -497,7 +529,10 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                     {menu}
                 </NavigationWrapper>
                 <ContentView withMenu={menu ? true : false}>
-                    {content}
+                    <SubstrateDiv withMenu={menu ? true : false} />
+                    <ContentDiv>
+                        {content}
+                    </ContentDiv>
                 </ContentView>
             </RootContainer>
         );
