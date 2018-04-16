@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Types from 'openland-api';
-import { XCard, XCardExternalLink } from './X/XCard';
+import { XCard } from './X/XCard';
 import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { XZoningCode } from './X/XZoningCode';
