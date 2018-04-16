@@ -73,6 +73,14 @@ export const DealQuery = gql`
                 extrasFitProjects
                 extrasAnalyzed
                 extrasVacant
+                extrasAddress
+                addresses {
+                    streetId
+                    streetName
+                    streetNameSuffix
+                    streetNumber
+                    streetNumberSuffix
+                }
                 compatibleBuildings {
                     key
                     title

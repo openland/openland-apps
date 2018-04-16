@@ -419,6 +419,15 @@ export interface DealQuery {
       extrasFitProjects: Array< string > | null,
       extrasAnalyzed: boolean | null,
       extrasVacant: boolean | null,
+      extrasAddress: string | null,
+      addresses:  Array< {
+        __typename: "StreetNumber",
+        streetId: string,
+        streetName: string,
+        streetNameSuffix: string | null,
+        streetNumber: number,
+        streetNumberSuffix: string | null,
+      } >,
       compatibleBuildings:  Array< {
         __typename: "BuildingLocation",
         key: string,

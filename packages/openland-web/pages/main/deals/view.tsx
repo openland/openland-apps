@@ -30,6 +30,7 @@ import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XContent } from '../../../components/X/XContent';
 import { XTitle } from '../../../components/X/XTitle';
 import { XVertical } from '../../../components/X/XVertical';
+import { formatAddresses } from '../../../utils/Addresses';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -73,7 +74,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
             </XModalRouted>
             <Scaffold>
                 <Scaffold.Content>
-                    <XHeader text={props.data.deal.title} description="Deal" bullet={bulletText} bulletColor={bulletColor}>
+                    <XHeader text={props.data.deal.title} description={formatAddresses(props.data.deal.parcel!!.addresses, props.data.deal.parcel!!.extrasAddress)} bullet={bulletText} bulletColor={bulletColor}>
                         <XWithRole role="super-admin">
                             <RemoveButton />
                         </XWithRole>
