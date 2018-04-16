@@ -10,25 +10,25 @@ import { XContent } from '../../../components/X/XContent';
 const Small = glamorous.div({
     width: XStyles.paddings.small,
     height: XStyles.paddings.small,
-    backgroundColor: XStyles.color.primary
+    backgroundColor: '#522BFF'
 });
 
 const Medium = glamorous.div({
     width: XStyles.paddings.medium,
     height: XStyles.paddings.medium,
-    backgroundColor: XStyles.color.primary
+    backgroundColor: '#522BFF'
 });
 
 const Large = glamorous.div({
     width: XStyles.paddings.large,
     height: XStyles.paddings.large,
-    backgroundColor: XStyles.color.primary
+    backgroundColor: '#522BFF'
 });
 
 const XLarge = glamorous.div({
     width: XStyles.paddings.xlarge,
     height: XStyles.paddings.xlarge,
-    backgroundColor: XStyles.color.primary
+    backgroundColor: '#522BFF'
 });
 
 export default withApp('UI Framework - Typograpthy', 'viewer', (props) => {
