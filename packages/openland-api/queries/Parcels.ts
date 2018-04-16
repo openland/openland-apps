@@ -122,6 +122,10 @@ export const ParcelFull = gql`
           existingUnits
           governmentalUrl
       }
+      links {
+          title
+          url
+      }
   }
 `;
 

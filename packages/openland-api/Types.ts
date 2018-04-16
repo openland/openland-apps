@@ -1311,6 +1311,11 @@ export interface ParcelQuery {
       existingUnits: number | null,
       governmentalUrl: string,
     } >,
+    links:  Array< {
+      __typename: "Link",
+      title: string,
+      url: string,
+    } >,
   },
 };
 
@@ -2343,6 +2348,11 @@ export interface SourcingQuery {
             existingUnits: number | null,
             governmentalUrl: string,
           } >,
+          links:  Array< {
+            __typename: "Link",
+            title: string,
+            url: string,
+          } >,
         },
       },
       cursor: string,
@@ -2492,6 +2502,11 @@ export interface OpportunityQuery {
         proposedUnits: number | null,
         existingUnits: number | null,
         governmentalUrl: string,
+      } >,
+      links:  Array< {
+        __typename: "Link",
+        title: string,
+        url: string,
       } >,
     },
   } | null,
@@ -2687,6 +2702,11 @@ export interface NextOpportunityQuery {
         proposedUnits: number | null,
         existingUnits: number | null,
         governmentalUrl: string,
+      } >,
+      links:  Array< {
+        __typename: "Link",
+        title: string,
+        url: string,
       } >,
     },
   } | null,
@@ -3037,6 +3057,11 @@ export interface ParcelFullFragment {
     proposedUnits: number | null,
     existingUnits: number | null,
     governmentalUrl: string,
+  } >,
+  links:  Array< {
+    __typename: string,
+    title: string,
+    url: string,
   } >,
 };
 

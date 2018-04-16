@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Types from 'openland-api';
-import { XCard } from './X/XCard';
+import { XCard, XCardExternalLink } from './X/XCard';
 import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { XZoningCode } from './X/XZoningCode';
@@ -13,6 +13,7 @@ import { XNumber } from './X/XNumber';
 import { XDistance } from './X/XDistance';
 import { Text } from '../strings';
 import { XVertical } from './X/XVertical';
+import { XLinkExternal } from './X/XLinkExternal';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
 
@@ -155,6 +156,13 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         }
                     </XCard.PropertyList>
                 )}
+            {props.item.links.length > 0 && (
+                <XCard.PropertyList title="Links">
+                    {props.item.links.map((v, i) => (
+                        <XCard.Property title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XCard.Property>
+                    ))}
+                </XCard.PropertyList>
+            )}
         </>
     );
 }
