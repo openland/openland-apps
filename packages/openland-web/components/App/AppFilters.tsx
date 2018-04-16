@@ -571,7 +571,7 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
         if (this.props.router.query!!.isOkForTower) {
             clauses.push({ 'isOkForTower': JSON.parse(this.props.router.query!!.isOkForTower) });
         }
-        let isVacantSet: boolean | undefined = false;
+        let isVacantSet: boolean | undefined;
         if (this.props.router.query!!.isVacant) {
             if (JSON.parse(this.props.router.query!!.isVacant) === 'true') {
                 isVacantSet = true;
