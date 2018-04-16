@@ -74,7 +74,7 @@ let ItemIcon = Glamorous(XIcon)({
 
 function PropertyCell(props: { title: string, children: any }) {
     return (
-        <XCard.Property {...props} width={150}>{props.children}</XCard.Property>
+        <XCard.Property {...props} compact={true} width={150}>{props.children}</XCard.Property>
     );
 }
 
@@ -172,14 +172,14 @@ export const ParcelCard = withParcelDirect((props) => {
 
                         {props.data.item!!.userData && props.data.item!!.userData!!.notes && (
                             <Notes>
-                                <ItemIcon icon="edit"/>
+                                <ItemIcon icon="edit" />
                                 <div>
                                     {props.data.item!!.userData!!.notes}
                                 </div>
                             </Notes>
                         )}
 
-                        <XCard.PropertyList title="Parcel details">
+                        <XCard.PropertyList title="Parcel details" compact={true}>
                             {props.data.item!!.extrasOwnerType &&
                                 <PropertyCell title="Ownership Type"><OwnerTypeComponent type={props.data.item!!.extrasOwnerType!!} /></PropertyCell>
                             }
@@ -248,7 +248,7 @@ export const ParcelCard = withParcelDirect((props) => {
                             || props.data.item!!.extrasSalesDate !== null
                             || props.data.item!!.extrasSalesPriorDate !== null
                             || props.data.item!!.extrasVacant !== null) && (
-                                <XCard.PropertyList title="Current Building">
+                                <XCard.PropertyList title="Current Building" compact={true}>
                                     {props.data.item!!.extrasVacant !== null &&
                                         <PropertyCell title="Vacant">{props.data.item!!.extrasVacant ? 'Yes' : 'No'}</PropertyCell>
                                     }

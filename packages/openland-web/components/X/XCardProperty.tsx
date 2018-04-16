@@ -2,16 +2,16 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import XStyles from './XStyles';
 
-let XCardFieldContainer = Glamorous.div({
+let XCardFieldContainer = Glamorous.div<{ compact?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingLeft: props.compact ? 16 : 24,
+    paddingRight: props.compact ? 16 : 24,
     marginBottom: 8,
     '&:last-child': {
         marginBottom: 0
     }
-});
+}));
 
 let XCardFieldTitle = Glamorous.div<{ width?: number }>((props) => ({
     display: 'flex',
@@ -64,14 +64,14 @@ let XCardPropertyColumnsContainerDiv = Glamorous.div({
     flexGrow: 1
 });
 
-let XCardPropertyTitle = Glamorous.div({
+let XCardPropertyTitle = Glamorous.div<{ compact?: boolean }>((props) => ({
     ...XStyles.text.h600,
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingLeft: props.compact ? 16 : 24,
+    paddingRight: props.compact ? 16 : 24,
     textAlign: 'left',
     color: '#262626',
     marginBottom: 8
-});
+}));
 
 export function XCardPropertyColumns(props: { children: any }) {
     return (
@@ -83,18 +83,18 @@ export function XCardPropertyColumns(props: { children: any }) {
     );
 }
 
-export function XCardPropertyList(props: { children: any, title?: string }) {
+export function XCardPropertyList(props: { children: any, title?: string, compact?: boolean }) {
     return (
         <XCardPropertyListDiv>
-            {props.title && <XCardPropertyTitle>{props.title} </XCardPropertyTitle>}
+            {props.title && <XCardPropertyTitle compact={props.compact}>{props.title} </XCardPropertyTitle>}
             {props.children}
         </XCardPropertyListDiv>
     );
 }
 
-export function XCardProperty(props: { title: string, children: any, width?: number }) {
+export function XCardProperty(props: { title: string, children: any, width?: number, compact?: boolean }) {
     return (
-        <XCardFieldContainer>
+        <XCardFieldContainer compact={props.compact}>
             <XCardFieldTitle width={props.width}>{props.title}</XCardFieldTitle>
             {React.Children.count(props.children) > 0 && <XCardFieldValue>{props.children}</XCardFieldValue>}
         </XCardFieldContainer>
