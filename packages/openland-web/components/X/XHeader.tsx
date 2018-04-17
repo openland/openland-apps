@@ -6,6 +6,7 @@ import XStyles from './XStyles';
 
 const XCardTitle = Glamorous.div<{ appStyle?: 'default' | 'compact' }>((props) => ({
     ...(props.appStyle === 'compact' ? XStyles.text.h600 : XStyles.text.h700),
+    lineHeight: '32px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'

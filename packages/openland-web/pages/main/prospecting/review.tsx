@@ -96,7 +96,7 @@ const OpportunityInfo = withOpportunity((props) => {
                 {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
                     <XHeader
                         text={props.data.alphaNextReviewOpportunity!!.parcel.address || 'No address'}
-                        description={<ParcelNumber city={props.data.alphaNextReviewOpportunity!!.parcel.city.name} id={props.data.alphaNextReviewOpportunity!!.parcel.number}/>}
+                        description={<ParcelNumber city={props.data.alphaNextReviewOpportunity!!.parcel.city.name} id={props.data.alphaNextReviewOpportunity!!.parcel.number} />}
                     >
                         <XButtonMutation
                             variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
