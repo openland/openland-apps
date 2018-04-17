@@ -30,7 +30,7 @@ import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XContent } from '../../../components/X/XContent';
 import { XTitle } from '../../../components/X/XTitle';
 import { XVertical } from '../../../components/X/XVertical';
-import { formatAddresses } from '../../../utils/Addresses';
+import { ParcelNumber } from '../../../components/ParcelNumber';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -74,7 +74,11 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
             </XModalRouted>
             <Scaffold>
                 <Scaffold.Content>
-                    <XHeader text={props.data.deal.title} description={formatAddresses(props.data.deal.parcel!!.addresses, props.data.deal.parcel!!.extrasAddress)} bullet={bulletText} bulletColor={bulletColor}>
+                    <XHeader
+                        text={props.data.deal.title}
+                        description={<ParcelNumber city={props.data.deal.parcel!!.city.name} id={props.data.deal.parcel!!.number} />}
+                        bullet={bulletText} bulletColor={bulletColor}
+                    >
                         <XWithRole role="super-admin">
                             <RemoveButton />
                         </XWithRole>
@@ -92,7 +96,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                             {props.data.deal.extrasReferee && (<XCard.Property title="Refereee">{props.data.deal.extrasReferee}</XCard.Property>)}
                         </XCard.PropertyList>
                         <XCard.PropertyList title="Parcel">
-                            {props.data.deal.parcel && (<XCard.Property title="Parcel ID"><XLink path={'/parcels/' + props.data.deal.parcel.id}>{props.data.deal.parcel.title}</XLink></XCard.Property>)}
+                            {props.data.deal.parcel && (<XCard.Property title="Parcel ID"><XLink path={'/parcels/' + props.data.deal.parcel.id}>{props.data.deal.parcel.number.title}</XLink></XCard.Property>)}
                             {props.data.deal.parcel && props.data.deal.parcel.extrasZoning && (<XCard.Property title="Zoning"><XZoningCode codes={props.data.deal.parcel.extrasZoning} /></XCard.Property>)}
                             {props.data.deal.location && (<XCard.Property title="Location">{props.data.deal.location}</XCard.Property>)}
                             {props.data.deal.address && (<XCard.Property title="Address">{props.data.deal.address}</XCard.Property>)}
@@ -120,7 +124,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                     </XCard.PropertyColumns>
                     {props.data.deal.parcel && props.data.deal.parcel!!.city.name === 'New York' && (props.data.deal.parcel!!.extrasVacant === null || props.data.deal.parcel!!.extrasVacant) && props.data.deal.parcel!!.compatibleBuildings && props.data.deal.parcel!!.compatibleBuildings!!.length > 0 && (
                         <XVertical>
-                             <XContent>
+                            <XContent>
                                 <XTitle>Compatible Constructions</XTitle>
                             </XContent>
                             {props.data.deal!!.parcel!!.compatibleBuildings!!.map((v, i) => (

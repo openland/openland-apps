@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { ParcelFull } from './Parcels';
+import { ParcelFull, ParcelShort } from './Parcels';
 
 export const SourcingQuery = gql`
     query Sourcing($state: OpportunityState, $cursor: String, $page: Int) {
@@ -10,7 +10,7 @@ export const SourcingQuery = gql`
                     state
                     priority
                     parcel {
-                        ...ParcelFull
+                        ...ParcelShort
                     }
                 }
                 cursor
@@ -25,7 +25,7 @@ export const SourcingQuery = gql`
             }
         }
     }
-    ${ParcelFull}
+    ${ParcelShort}
 `;
 
 export const OpportunityQuery = gql`

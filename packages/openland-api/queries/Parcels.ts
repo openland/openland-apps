@@ -1,10 +1,25 @@
 import gql from 'graphql-tag';
 
+export const ParcelID = gql`
+  fragment ParcelID on ParcelNumber {
+      borough
+      boroughId
+      block
+      blockPadded
+      lot
+      lotPadded
+      title
+  }
+`;
+
 export const ParcelFull = gql`
   fragment ParcelFull on Parcel {
       id
-      title
+      number {
+          ...ParcelID
+      }
       geometry
+      address
 
       compatibleBuildings {
           key
@@ -70,7 +85,6 @@ export const ParcelFull = gql`
 
       extrasOwnerName
       extrasOwnerType
-      extrasAddress
 
       extrasShapeType
       extrasShapeSides
@@ -87,18 +101,6 @@ export const ParcelFull = gql`
           state
       }
 
-      addresses {
-        streetId
-        streetName
-        streetNameSuffix
-        streetNumber
-        streetNumberSuffix
-      }
-      block {
-        id
-        title
-        extrasArea
-      }
       metadata {
         description
         available
@@ -127,12 +129,16 @@ export const ParcelFull = gql`
           url
       }
   }
+  ${ParcelID}
 `;
 
 export const ParcelShort = gql`
   fragment ParcelShort on Parcel {
       id
-      title
+      number {
+          ...ParcelID
+      }
+      address
       geometry
       extrasAssessorArea
       extrasAssessorFront
@@ -169,34 +175,25 @@ export const ParcelShort = gql`
       extrasSalesPriorDate
       extrasRecordationDate
 
-      extrasOwnerName
-      extrasOwnerType
-      extrasAddress
-
       extrasShapeType
       extrasShapeSides
       extrasFitProjects
       extrasAnalyzed
-      opportunity {
+      city {
           id
-          priority
-          state
-      }
-      addresses {
-        streetId
-        streetName
-        streetNameSuffix
-        streetNumber
-        streetNumberSuffix
-      }
-      likes {
-          liked
-          count
-      }
-      userData {
-          notes
+          name
+          county {
+              id
+              name
+          }
+          state {
+              id
+              name
+              code
+          }
       }
   }
+  ${ParcelID}
 `;
 
 export const BlockShort = gql`

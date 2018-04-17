@@ -38,8 +38,8 @@ let XCardHeaderDiv = Glamorous.div<{ appStyle?: 'default' | 'compact' }>((props)
 interface XCardHeaderProps {
     style?: 'default' | 'compact';
     children?: any;
-    text?: string | null;
-    description?: string | null;
+    text?: string | React.ReactElement<any> | null;
+    description?: string | React.ReactElement<any> | null;
     truncateDescription?: boolean;
     filter?: string;
     bullet?: string | null;
@@ -78,6 +78,7 @@ export class XHeader extends React.Component<XCardHeaderProps> {
         }
 
         return (
+
             <XCardHeaderDiv appStyle={this.props.style}>
                 <XCardTitle appStyle={this.props.style}>
                     <TargetDivStyle>

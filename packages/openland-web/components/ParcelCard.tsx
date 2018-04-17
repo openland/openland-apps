@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { XCard } from './X/XCard';
 import { withParcelDirect } from '../api';
 import { XButton } from './X/XButton';
-import { formatAddresses } from '../utils/Addresses';
 import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { XDistance } from './X/XDistance';
@@ -23,6 +22,9 @@ import { OpportunitiButton } from './OpportunityButton';
 import { Text } from '../strings';
 import { XIcon } from './X/XIcon';
 import { XHeader } from './X/XHeader';
+import { ParcelNumber } from './ParcelNumber';
+
+let panelWidth = 324;
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -30,7 +32,7 @@ let Container = Glamorous.div({
     alignItems: 'stretch',
     zIndex: 1,
 
-    width: 305,
+    width: panelWidth,
 
     backgroundColor: '#ffffff',
     boxShadow: '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)'
@@ -85,8 +87,8 @@ export const ParcelCard = withParcelDirect((props) => {
                 {props.data && props.data!!.item &&
                     <Scrollable>
                         <XHeader
-                            text={'Parcel #' + props.data.item!!.title}
-                            description={formatAddresses(props.data.item!!.addresses, props.data.item!!.extrasAddress)}
+                            text={props.data.item!!.address || 'No address'}
+                            description={<ParcelNumber id={props.data.item!!.number} />}
                             truncateDescription={true}
                             bullet={props.data!!.item!!.metadata.available ? 'ON SALE' : undefined}
                             style="compact"
@@ -97,7 +99,7 @@ export const ParcelCard = withParcelDirect((props) => {
                             <XCard.Content>
                                 <StreetViewDiv>
                                     <AStreetViewModal geometry={props.data!!.item!!.geometry!!} />
-                                    <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={273} height={144} />
+                                    <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={panelWidth - 32} height={144} />
                                 </StreetViewDiv>
                             </XCard.Content>
                         )}
@@ -186,9 +188,6 @@ export const ParcelCard = withParcelDirect((props) => {
                             {props.data.item!!.extrasOwnerName &&
                                 <PropertyCell title="Owner Name">{props.data.item!!.extrasOwnerName}</PropertyCell>
                             }
-                            {props.data.item!!.block &&
-                                <PropertyCell title="Block">{props.data.item!!.block!!.title}</PropertyCell>
-                            }
                             {props.data.item!!.extrasArea &&
                                 <PropertyCell title="Area"><XArea area={props.data.item!!.extrasArea!!} /></PropertyCell>
                             }
@@ -210,9 +209,6 @@ export const ParcelCard = withParcelDirect((props) => {
                             )}
                             {props.data.item!!.extrasNeighborhood &&
                                 <PropertyCell title="Neighborhood">{props.data.item!!.extrasNeighborhood}</PropertyCell>
-                            }
-                            {props.data.item!!.extrasBorough &&
-                                <PropertyCell title="Borough">{props.data.item!!.extrasBorough}</PropertyCell>
                             }
                             {props.data.item!!.extrasSupervisorDistrict &&
                                 <PropertyCell title="Supervisor District">{props.data.item!!.extrasSupervisorDistrict}</PropertyCell>

@@ -63,8 +63,18 @@ export const DealQuery = gql`
 
             parcel {
                 id
-                title
+                number {
+                    borough
+                    boroughId
+                    block
+                    blockPadded
+                    lot
+                    lotPadded
+                    title
+                }
                 geometry
+                address
+
                 extrasZoning
                 extrasLandValue
                 extrasArea
@@ -73,14 +83,6 @@ export const DealQuery = gql`
                 extrasFitProjects
                 extrasAnalyzed
                 extrasVacant
-                extrasAddress
-                addresses {
-                    streetId
-                    streetName
-                    streetNameSuffix
-                    streetNumber
-                    streetNumberSuffix
-                }
                 compatibleBuildings {
                     key
                     title

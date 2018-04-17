@@ -25,6 +25,7 @@ import { Scaffold } from '../../../components/Scaffold';
 import ATypes from 'openland-api';
 import { XTitle } from '../../../components/X/XTitle';
 import { XContent } from '../../../components/X/XContent';
+import { ParcelNumber } from '../../../components/ParcelNumber';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment }) => {
     return (
@@ -93,7 +94,10 @@ const OpportunityInfo = withOpportunity((props) => {
             <ProspectingNavigationReview />
             <XCard.Loader loading={props.data.loading || false}>
                 {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
-                    <XHeader text={'Parcel #' + props.data.alphaNextReviewOpportunity!!.parcel.title} description={props.data.alphaNextReviewOpportunity!!.parcel.extrasAddress}>
+                    <XHeader
+                        text={props.data.alphaNextReviewOpportunity!!.parcel.address || 'No address'}
+                        description={<ParcelNumber city={props.data.alphaNextReviewOpportunity!!.parcel.city.name} id={props.data.alphaNextReviewOpportunity!!.parcel.number}/>}
+                    >
                         <XButtonMutation
                             variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                             mutation={props.reject}

@@ -5,6 +5,7 @@ import { XTable } from './X/XTable';
 import { XButton } from './X/XButton';
 import { XArea } from './X/XArea';
 import { PriorityIndicator } from './PriorityIndicator';
+import { ParcelNumber } from './ParcelNumber';
 
 export const OpportunitiesTable = withSourcing((props) => {
     let stage = '';
@@ -25,8 +26,7 @@ export const OpportunitiesTable = withSourcing((props) => {
                 <>
                     <XTable>
                         <XTable.Header>
-                            <XTable.Cell width={100}>City</XTable.Cell>
-                            <XTable.Cell width={120}>Borough</XTable.Cell>
+                            <XTable.Cell width={120}>City</XTable.Cell>
                             <XTable.Cell width={150}>Parcel</XTable.Cell>
                             <XTable.Cell>Address</XTable.Cell>
                             <XTable.Cell width={100} textAlign="right">Area</XTable.Cell>
@@ -40,13 +40,10 @@ export const OpportunitiesTable = withSourcing((props) => {
                                         {v.node.parcel.city.name}
                                     </XTable.Cell>
                                     <XTable.Cell>
-                                        {v.node.parcel.extrasBorough}
+                                        <ParcelNumber compact={true} id={v.node.parcel.number} />
                                     </XTable.Cell>
                                     <XTable.Cell>
-                                        {v.node.parcel.title}
-                                    </XTable.Cell>
-                                    <XTable.Cell>
-                                        {v.node.parcel.extrasAddress}
+                                        {v.node.parcel.address}
                                     </XTable.Cell>
                                     <XTable.Cell textAlign="right">
                                         {v.node.parcel && v.node.parcel.extrasArea != null && <XArea area={v.node.parcel.extrasArea} />}

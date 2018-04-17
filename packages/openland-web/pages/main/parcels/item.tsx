@@ -5,7 +5,6 @@ import { XCard } from '../../../components/X/XCard';
 import { XTable } from '../../../components/X/XTable';
 import { withParcel } from '../../../api/';
 import { XButton } from '../../../components/X/XButton';
-import { formatAddresses } from '../../../utils/Addresses';
 import { ParcelProperties } from '../../../components/ParcelProperties';
 import { XHead } from '../../../components/X/XHead';
 import { PermitType } from '../../../components/PermitType';
@@ -28,17 +27,18 @@ import { Scaffold } from '../../../components/Scaffold';
 import { XContent } from '../../../components/X/XContent';
 import { XTitle } from '../../../components/X/XTitle';
 import { XVertical } from '../../../components/X/XVertical';
+import { ParcelNumber } from '../../../components/ParcelNumber';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
     return (
         <>
-            <XHead title={['Parcel #' + props.data.item.title]} />
+            <XHead title={['Parcel #' + props.data.item.number.title]} />
             <Scaffold>
                 <Scaffold.Content bottomOffset={true}>
                     <XHeader
-                        text={'Parcel #' + props.data.item.title}
-                        description={formatAddresses(props.data.item.addresses, props.data.item.extrasAddress)}
+                        text={props.data.item.address || 'No address'}
+                        description={<ParcelNumber city={props.data.item.city.name} id={props.data.item.number} />}
                         bullet={props.data.item.metadata.available ? 'ON SALE' : undefined}
                         truncateDescription={true}
                     >

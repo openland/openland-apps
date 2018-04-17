@@ -360,7 +360,9 @@ export interface AllDealsQuery {
     parcel:  {
       __typename: "Parcel",
       id: string,
+      // Deprecated
       title: string,
+      // Deprecated geometry
       extrasArea: number | null,
     } | null,
   } >,
@@ -374,6 +376,7 @@ export interface AllDealsMapQuery {
     parcel:  {
       __typename: "Parcel",
       id: string,
+      // Deprecated
       title: string,
       center:  {
         __typename: "Geo",
@@ -409,25 +412,29 @@ export interface DealQuery {
     parcel:  {
       __typename: "Parcel",
       id: string,
-      title: string,
+      number:  {
+        __typename: "ParcelNumber",
+        borough: string | null,
+        boroughId: string | null,
+        block: string | null,
+        blockPadded: string | null,
+        lot: string | null,
+        lotPadded: string | null,
+        title: string,
+      },
+      // Geometry
       geometry: string | null,
+      address: string | null,
+      // Bunch of unsorted experimental data
       extrasZoning: Array< string > | null,
       extrasLandValue: number | null,
+      // Deprecated geometry
       extrasArea: number | null,
       extrasShapeType: string | null,
       extrasShapeSides: Array< number > | null,
       extrasFitProjects: Array< string > | null,
       extrasAnalyzed: boolean | null,
       extrasVacant: boolean | null,
-      extrasAddress: string | null,
-      addresses:  Array< {
-        __typename: "StreetNumber",
-        streetId: string,
-        streetName: string,
-        streetNameSuffix: string | null,
-        streetNumber: number,
-        streetNumberSuffix: string | null,
-      } >,
       compatibleBuildings:  Array< {
         __typename: "BuildingLocation",
         key: string,
@@ -442,6 +449,7 @@ export interface DealQuery {
         angle: number | null,
         shape: string | null,
       } > | null,
+      // Addresses
       city:  {
         __typename: "City",
         id: string,
@@ -487,7 +495,9 @@ export interface AddDealMutation {
     parcel:  {
       __typename: "Parcel",
       id: string,
+      // Deprecated
       title: string,
+      // Geometry
       geometry: string | null,
     } | null,
   },
@@ -519,7 +529,9 @@ export interface AlterDealMutation {
     parcel:  {
       __typename: "Parcel",
       id: string,
+      // Deprecated
       title: string,
+      // Geometry
       geometry: string | null,
     } | null,
   },
@@ -1006,8 +1018,11 @@ export interface BlockQuery {
     parcels:  Array< {
       __typename: "Parcel",
       id: string,
+      // Deprecated
       title: string,
+      // Geometry
       geometry: string | null,
+      // Bunch of unsorted experimental data
       extrasZoning: Array< string > | null,
     } >,
   },
@@ -1027,13 +1042,26 @@ export interface ParcelsConnectionQuery {
       node:  {
         __typename: "Parcel",
         id: string,
-        title: string,
+        number:  {
+          __typename: "ParcelNumber",
+          borough: string | null,
+          boroughId: string | null,
+          block: string | null,
+          blockPadded: string | null,
+          lot: string | null,
+          lotPadded: string | null,
+          title: string,
+        },
+        address: string | null,
+        // Geometry
         geometry: string | null,
         extrasAssessorArea: number | null,
         extrasAssessorFront: number | null,
         extrasAssessorDepth: number | null,
+        // Deprecated geometry
         extrasArea: number | null,
         extrasSupervisorDistrict: string | null,
+        // Bunch of unsorted experimental data
         extrasZoning: Array< string > | null,
         extrasLandValue: number | null,
         extrasImprovementValue: number | null,
@@ -1063,34 +1091,44 @@ export interface ParcelsConnectionQuery {
         extrasRecordationDate: string | null,
         extrasOwnerName: string | null,
         extrasOwnerType: OwnerType | null,
-        extrasAddress: string | null,
         extrasShapeType: string | null,
         extrasShapeSides: Array< number > | null,
         extrasFitProjects: Array< string > | null,
         extrasAnalyzed: boolean | null,
+        // Linked Data
         opportunity:  {
           __typename: "Opportunity",
           id: string,
           priority: OpportunityPriority,
           state: OpportunityState,
         } | null,
-        addresses:  Array< {
-          __typename: "StreetNumber",
-          streetId: string,
-          streetName: string,
-          streetNameSuffix: string | null,
-          streetNumber: number,
-          streetNumberSuffix: string | null,
-        } >,
         likes:  {
           __typename: "Likes",
           liked: boolean,
           count: number | null,
         },
+        // User Data
         userData:  {
           __typename: "ParcelUserData",
           notes: string | null,
         } | null,
+        // Addresses
+        city:  {
+          __typename: "City",
+          id: string,
+          name: string,
+          county:  {
+            __typename: "County",
+            id: string,
+            name: string,
+          },
+          state:  {
+            __typename: "State",
+            id: string,
+            name: string,
+            code: string,
+          },
+        },
       },
       cursor: string,
     } >,
@@ -1110,13 +1148,26 @@ export interface ParcelsFavoritesQuery {
   items:  Array< {
     __typename: "Parcel",
     id: string,
-    title: string,
+    number:  {
+      __typename: "ParcelNumber",
+      borough: string | null,
+      boroughId: string | null,
+      block: string | null,
+      blockPadded: string | null,
+      lot: string | null,
+      lotPadded: string | null,
+      title: string,
+    },
+    address: string | null,
+    // Geometry
     geometry: string | null,
     extrasAssessorArea: number | null,
     extrasAssessorFront: number | null,
     extrasAssessorDepth: number | null,
+    // Deprecated geometry
     extrasArea: number | null,
     extrasSupervisorDistrict: string | null,
+    // Bunch of unsorted experimental data
     extrasZoning: Array< string > | null,
     extrasLandValue: number | null,
     extrasImprovementValue: number | null,
@@ -1146,66 +1197,28 @@ export interface ParcelsFavoritesQuery {
     extrasRecordationDate: string | null,
     extrasOwnerName: string | null,
     extrasOwnerType: OwnerType | null,
-    extrasAddress: string | null,
     extrasShapeType: string | null,
     extrasShapeSides: Array< number > | null,
     extrasFitProjects: Array< string > | null,
     extrasAnalyzed: boolean | null,
+    // Linked Data
     opportunity:  {
       __typename: "Opportunity",
       id: string,
       priority: OpportunityPriority,
       state: OpportunityState,
     } | null,
-    addresses:  Array< {
-      __typename: "StreetNumber",
-      streetId: string,
-      streetName: string,
-      streetNameSuffix: string | null,
-      streetNumber: number,
-      streetNumberSuffix: string | null,
-    } >,
     likes:  {
       __typename: "Likes",
       liked: boolean,
       count: number | null,
     },
+    // User Data
     userData:  {
       __typename: "ParcelUserData",
       notes: string | null,
     } | null,
-  } >,
-};
-
-export interface ParcelsFavoritesCountQuery {
-  parcelFavoritesCount: number,
-  dealsCount: number,
-};
-
-export interface ParcelQueryVariables {
-  parcelId: string,
-};
-
-export interface ParcelQuery {
-  item:  {
-    __typename: "Parcel",
-    id: string,
-    title: string,
-    geometry: string | null,
-    compatibleBuildings:  Array< {
-      __typename: "BuildingLocation",
-      key: string,
-      title: string,
-      width: number,
-      height: number,
-      center:  {
-        __typename: "Geo",
-        latitude: number,
-        longitude: number,
-      } | null,
-      angle: number | null,
-      shape: string | null,
-    } > | null,
+    // Addresses
     city:  {
       __typename: "City",
       id: string,
@@ -1222,11 +1235,73 @@ export interface ParcelQuery {
         code: string,
       },
     },
+  } >,
+};
+
+export interface ParcelsFavoritesCountQuery {
+  parcelFavoritesCount: number,
+  dealsCount: number,
+};
+
+export interface ParcelQueryVariables {
+  parcelId: string,
+};
+
+export interface ParcelQuery {
+  item:  {
+    __typename: "Parcel",
+    id: string,
+    number:  {
+      __typename: "ParcelNumber",
+      borough: string | null,
+      boroughId: string | null,
+      block: string | null,
+      blockPadded: string | null,
+      lot: string | null,
+      lotPadded: string | null,
+      title: string,
+    },
+    // Geometry
+    geometry: string | null,
+    address: string | null,
+    compatibleBuildings:  Array< {
+      __typename: "BuildingLocation",
+      key: string,
+      title: string,
+      width: number,
+      height: number,
+      center:  {
+        __typename: "Geo",
+        latitude: number,
+        longitude: number,
+      } | null,
+      angle: number | null,
+      shape: string | null,
+    } > | null,
+    // Addresses
+    city:  {
+      __typename: "City",
+      id: string,
+      name: string,
+      county:  {
+        __typename: "County",
+        id: string,
+        name: string,
+      },
+      state:  {
+        __typename: "State",
+        id: string,
+        name: string,
+        code: string,
+      },
+    },
+    // Deprecated geometry
     extrasArea: number | null,
     extrasAssessorArea: number | null,
     extrasAssessorFront: number | null,
     extrasAssessorDepth: number | null,
     extrasSupervisorDistrict: string | null,
+    // Bunch of unsorted experimental data
     extrasZoning: Array< string > | null,
     extrasLandValue: number | null,
     extrasImprovementValue: number | null,
@@ -1256,34 +1331,21 @@ export interface ParcelQuery {
     extrasRecordationDate: string | null,
     extrasOwnerName: string | null,
     extrasOwnerType: OwnerType | null,
-    extrasAddress: string | null,
     extrasShapeType: string | null,
     extrasShapeSides: Array< number > | null,
     extrasFitProjects: Array< string > | null,
     extrasAnalyzed: boolean | null,
+    // User Data
     userData:  {
       __typename: "ParcelUserData",
       notes: string | null,
     } | null,
+    // Linked Data
     opportunity:  {
       __typename: "Opportunity",
       id: string,
       priority: OpportunityPriority,
       state: OpportunityState,
-    } | null,
-    addresses:  Array< {
-      __typename: "StreetNumber",
-      streetId: string,
-      streetName: string,
-      streetNameSuffix: string | null,
-      streetNumber: number,
-      streetNumberSuffix: string | null,
-    } >,
-    block:  {
-      __typename: "Block",
-      id: string,
-      title: string,
-      extrasArea: number | null,
     } | null,
     metadata:  {
       __typename: "ParcelMetadata",
@@ -1311,6 +1373,7 @@ export interface ParcelQuery {
       existingUnits: number | null,
       governmentalUrl: string,
     } >,
+    // Metadata
     links:  Array< {
       __typename: "Link",
       title: string,
@@ -1328,6 +1391,7 @@ export interface ParcelsTileOverlayQuery {
   tiles:  Array< {
     __typename: "Parcel",
     id: string,
+    // Geometry
     geometry: string | null,
   } > | null,
 };
@@ -1432,6 +1496,7 @@ export interface ParcelsSearchQueryQuery {
   items:  Array< {
     __typename: "Parcel",
     id: string,
+    // Deprecated
     title: string,
   } >,
 };
@@ -1445,6 +1510,7 @@ export interface ParcelNotesMutation {
   alphaSetNote:  {
     __typename: "Parcel",
     id: string,
+    // User Data
     userData:  {
       __typename: "ParcelUserData",
       notes: string | null,
@@ -2187,7 +2253,9 @@ export interface SearchQuery {
         node:  {
           __typename: "Parcel",
           id: string,
+          // Deprecated
           title: string,
+          // Deprecated geometry
           extrasArea: number | null,
           extrasNeighborhood: string | null,
           metadata:  {
@@ -2227,8 +2295,19 @@ export interface SourcingQuery {
         parcel:  {
           __typename: "Parcel",
           id: string,
-          title: string,
+          number:  {
+            __typename: "ParcelNumber",
+            borough: string | null,
+            boroughId: string | null,
+            block: string | null,
+            blockPadded: string | null,
+            lot: string | null,
+            lotPadded: string | null,
+            title: string,
+          },
+          // Geometry
           geometry: string | null,
+          address: string | null,
           compatibleBuildings:  Array< {
             __typename: "BuildingLocation",
             key: string,
@@ -2243,6 +2322,7 @@ export interface SourcingQuery {
             angle: number | null,
             shape: string | null,
           } > | null,
+          // Addresses
           city:  {
             __typename: "City",
             id: string,
@@ -2259,11 +2339,13 @@ export interface SourcingQuery {
               code: string,
             },
           },
+          // Deprecated geometry
           extrasArea: number | null,
           extrasAssessorArea: number | null,
           extrasAssessorFront: number | null,
           extrasAssessorDepth: number | null,
           extrasSupervisorDistrict: string | null,
+          // Bunch of unsorted experimental data
           extrasZoning: Array< string > | null,
           extrasLandValue: number | null,
           extrasImprovementValue: number | null,
@@ -2293,34 +2375,21 @@ export interface SourcingQuery {
           extrasRecordationDate: string | null,
           extrasOwnerName: string | null,
           extrasOwnerType: OwnerType | null,
-          extrasAddress: string | null,
           extrasShapeType: string | null,
           extrasShapeSides: Array< number > | null,
           extrasFitProjects: Array< string > | null,
           extrasAnalyzed: boolean | null,
+          // User Data
           userData:  {
             __typename: "ParcelUserData",
             notes: string | null,
           } | null,
+          // Linked Data
           opportunity:  {
             __typename: "Opportunity",
             id: string,
             priority: OpportunityPriority,
             state: OpportunityState,
-          } | null,
-          addresses:  Array< {
-            __typename: "StreetNumber",
-            streetId: string,
-            streetName: string,
-            streetNameSuffix: string | null,
-            streetNumber: number,
-            streetNumberSuffix: string | null,
-          } >,
-          block:  {
-            __typename: "Block",
-            id: string,
-            title: string,
-            extrasArea: number | null,
           } | null,
           metadata:  {
             __typename: "ParcelMetadata",
@@ -2348,6 +2417,7 @@ export interface SourcingQuery {
             existingUnits: number | null,
             governmentalUrl: string,
           } >,
+          // Metadata
           links:  Array< {
             __typename: "Link",
             title: string,
@@ -2382,8 +2452,19 @@ export interface OpportunityQuery {
     parcel:  {
       __typename: "Parcel",
       id: string,
-      title: string,
+      number:  {
+        __typename: "ParcelNumber",
+        borough: string | null,
+        boroughId: string | null,
+        block: string | null,
+        blockPadded: string | null,
+        lot: string | null,
+        lotPadded: string | null,
+        title: string,
+      },
+      // Geometry
       geometry: string | null,
+      address: string | null,
       compatibleBuildings:  Array< {
         __typename: "BuildingLocation",
         key: string,
@@ -2398,6 +2479,7 @@ export interface OpportunityQuery {
         angle: number | null,
         shape: string | null,
       } > | null,
+      // Addresses
       city:  {
         __typename: "City",
         id: string,
@@ -2414,11 +2496,13 @@ export interface OpportunityQuery {
           code: string,
         },
       },
+      // Deprecated geometry
       extrasArea: number | null,
       extrasAssessorArea: number | null,
       extrasAssessorFront: number | null,
       extrasAssessorDepth: number | null,
       extrasSupervisorDistrict: string | null,
+      // Bunch of unsorted experimental data
       extrasZoning: Array< string > | null,
       extrasLandValue: number | null,
       extrasImprovementValue: number | null,
@@ -2448,34 +2532,21 @@ export interface OpportunityQuery {
       extrasRecordationDate: string | null,
       extrasOwnerName: string | null,
       extrasOwnerType: OwnerType | null,
-      extrasAddress: string | null,
       extrasShapeType: string | null,
       extrasShapeSides: Array< number > | null,
       extrasFitProjects: Array< string > | null,
       extrasAnalyzed: boolean | null,
+      // User Data
       userData:  {
         __typename: "ParcelUserData",
         notes: string | null,
       } | null,
+      // Linked Data
       opportunity:  {
         __typename: "Opportunity",
         id: string,
         priority: OpportunityPriority,
         state: OpportunityState,
-      } | null,
-      addresses:  Array< {
-        __typename: "StreetNumber",
-        streetId: string,
-        streetName: string,
-        streetNameSuffix: string | null,
-        streetNumber: number,
-        streetNumberSuffix: string | null,
-      } >,
-      block:  {
-        __typename: "Block",
-        id: string,
-        title: string,
-        extrasArea: number | null,
       } | null,
       metadata:  {
         __typename: "ParcelMetadata",
@@ -2503,6 +2574,7 @@ export interface OpportunityQuery {
         existingUnits: number | null,
         governmentalUrl: string,
       } >,
+      // Metadata
       links:  Array< {
         __typename: "Link",
         title: string,
@@ -2525,6 +2597,7 @@ export interface AddOpportunityMutationMutation {
     parcel:  {
       __typename: "Parcel",
       id: string,
+      // Linked Data
       opportunity:  {
         __typename: "Opportunity",
         id: string,
@@ -2582,8 +2655,19 @@ export interface NextOpportunityQuery {
     parcel:  {
       __typename: "Parcel",
       id: string,
-      title: string,
+      number:  {
+        __typename: "ParcelNumber",
+        borough: string | null,
+        boroughId: string | null,
+        block: string | null,
+        blockPadded: string | null,
+        lot: string | null,
+        lotPadded: string | null,
+        title: string,
+      },
+      // Geometry
       geometry: string | null,
+      address: string | null,
       compatibleBuildings:  Array< {
         __typename: "BuildingLocation",
         key: string,
@@ -2598,6 +2682,7 @@ export interface NextOpportunityQuery {
         angle: number | null,
         shape: string | null,
       } > | null,
+      // Addresses
       city:  {
         __typename: "City",
         id: string,
@@ -2614,11 +2699,13 @@ export interface NextOpportunityQuery {
           code: string,
         },
       },
+      // Deprecated geometry
       extrasArea: number | null,
       extrasAssessorArea: number | null,
       extrasAssessorFront: number | null,
       extrasAssessorDepth: number | null,
       extrasSupervisorDistrict: string | null,
+      // Bunch of unsorted experimental data
       extrasZoning: Array< string > | null,
       extrasLandValue: number | null,
       extrasImprovementValue: number | null,
@@ -2648,34 +2735,21 @@ export interface NextOpportunityQuery {
       extrasRecordationDate: string | null,
       extrasOwnerName: string | null,
       extrasOwnerType: OwnerType | null,
-      extrasAddress: string | null,
       extrasShapeType: string | null,
       extrasShapeSides: Array< number > | null,
       extrasFitProjects: Array< string > | null,
       extrasAnalyzed: boolean | null,
+      // User Data
       userData:  {
         __typename: "ParcelUserData",
         notes: string | null,
       } | null,
+      // Linked Data
       opportunity:  {
         __typename: "Opportunity",
         id: string,
         priority: OpportunityPriority,
         state: OpportunityState,
-      } | null,
-      addresses:  Array< {
-        __typename: "StreetNumber",
-        streetId: string,
-        streetName: string,
-        streetNameSuffix: string | null,
-        streetNumber: number,
-        streetNumberSuffix: string | null,
-      } >,
-      block:  {
-        __typename: "Block",
-        id: string,
-        title: string,
-        extrasArea: number | null,
       } | null,
       metadata:  {
         __typename: "ParcelMetadata",
@@ -2703,6 +2777,7 @@ export interface NextOpportunityQuery {
         existingUnits: number | null,
         governmentalUrl: string,
       } >,
+      // Metadata
       links:  Array< {
         __typename: "Link",
         title: string,
@@ -2934,11 +3009,33 @@ export interface OrganizationFullFragment {
   } >,
 };
 
+export interface ParcelIDFragment {
+  __typename: "ParcelNumber",
+  borough: string | null,
+  boroughId: string | null,
+  block: string | null,
+  blockPadded: string | null,
+  lot: string | null,
+  lotPadded: string | null,
+  title: string,
+};
+
 export interface ParcelFullFragment {
   __typename: "Parcel",
   id: string,
-  title: string,
+  number:  {
+    __typename: string,
+    borough: string | null,
+    boroughId: string | null,
+    block: string | null,
+    blockPadded: string | null,
+    lot: string | null,
+    lotPadded: string | null,
+    title: string,
+  },
+  // Geometry
   geometry: string | null,
+  address: string | null,
   compatibleBuildings:  Array< {
     __typename: string,
     key: string,
@@ -2953,6 +3050,7 @@ export interface ParcelFullFragment {
     angle: number | null,
     shape: string | null,
   } > | null,
+  // Addresses
   city:  {
     __typename: string,
     id: string,
@@ -2969,11 +3067,13 @@ export interface ParcelFullFragment {
       code: string,
     },
   },
+  // Deprecated geometry
   extrasArea: number | null,
   extrasAssessorArea: number | null,
   extrasAssessorFront: number | null,
   extrasAssessorDepth: number | null,
   extrasSupervisorDistrict: string | null,
+  // Bunch of unsorted experimental data
   extrasZoning: Array< string > | null,
   extrasLandValue: number | null,
   extrasImprovementValue: number | null,
@@ -3003,34 +3103,21 @@ export interface ParcelFullFragment {
   extrasRecordationDate: string | null,
   extrasOwnerName: string | null,
   extrasOwnerType: OwnerType | null,
-  extrasAddress: string | null,
   extrasShapeType: string | null,
   extrasShapeSides: Array< number > | null,
   extrasFitProjects: Array< string > | null,
   extrasAnalyzed: boolean | null,
+  // User Data
   userData:  {
     __typename: string,
     notes: string | null,
   } | null,
+  // Linked Data
   opportunity:  {
     __typename: string,
     id: string,
     priority: OpportunityPriority,
     state: OpportunityState,
-  } | null,
-  addresses:  Array< {
-    __typename: string,
-    streetId: string,
-    streetName: string,
-    streetNameSuffix: string | null,
-    streetNumber: number,
-    streetNumberSuffix: string | null,
-  } >,
-  block:  {
-    __typename: string,
-    id: string,
-    title: string,
-    extrasArea: number | null,
   } | null,
   metadata:  {
     __typename: string,
@@ -3058,6 +3145,7 @@ export interface ParcelFullFragment {
     existingUnits: number | null,
     governmentalUrl: string,
   } >,
+  // Metadata
   links:  Array< {
     __typename: string,
     title: string,
@@ -3068,13 +3156,26 @@ export interface ParcelFullFragment {
 export interface ParcelShortFragment {
   __typename: "Parcel",
   id: string,
-  title: string,
+  number:  {
+    __typename: string,
+    borough: string | null,
+    boroughId: string | null,
+    block: string | null,
+    blockPadded: string | null,
+    lot: string | null,
+    lotPadded: string | null,
+    title: string,
+  },
+  address: string | null,
+  // Geometry
   geometry: string | null,
   extrasAssessorArea: number | null,
   extrasAssessorFront: number | null,
   extrasAssessorDepth: number | null,
+  // Deprecated geometry
   extrasArea: number | null,
   extrasSupervisorDistrict: string | null,
+  // Bunch of unsorted experimental data
   extrasZoning: Array< string > | null,
   extrasLandValue: number | null,
   extrasImprovementValue: number | null,
@@ -3104,34 +3205,44 @@ export interface ParcelShortFragment {
   extrasRecordationDate: string | null,
   extrasOwnerName: string | null,
   extrasOwnerType: OwnerType | null,
-  extrasAddress: string | null,
   extrasShapeType: string | null,
   extrasShapeSides: Array< number > | null,
   extrasFitProjects: Array< string > | null,
   extrasAnalyzed: boolean | null,
+  // Linked Data
   opportunity:  {
     __typename: string,
     id: string,
     priority: OpportunityPriority,
     state: OpportunityState,
   } | null,
-  addresses:  Array< {
-    __typename: string,
-    streetId: string,
-    streetName: string,
-    streetNameSuffix: string | null,
-    streetNumber: number,
-    streetNumberSuffix: string | null,
-  } >,
   likes:  {
     __typename: string,
     liked: boolean,
     count: number | null,
   },
+  // User Data
   userData:  {
     __typename: string,
     notes: string | null,
   } | null,
+  // Addresses
+  city:  {
+    __typename: string,
+    id: string,
+    name: string,
+    county:  {
+      __typename: string,
+      id: string,
+      name: string,
+    },
+    state:  {
+      __typename: string,
+      id: string,
+      name: string,
+      code: string,
+    },
+  },
 };
 
 export interface BlockShortFragment {
@@ -3154,8 +3265,11 @@ export interface BlockFullFragment {
   parcels:  Array< {
     __typename: string,
     id: string,
+    // Deprecated
     title: string,
+    // Geometry
     geometry: string | null,
+    // Bunch of unsorted experimental data
     extrasZoning: Array< string > | null,
   } >,
 };

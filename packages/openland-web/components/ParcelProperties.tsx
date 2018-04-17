@@ -22,12 +22,6 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
             <XCard.PropertyColumns>
                 <XVertical>
                     <XCard.PropertyList title="Parcel Details">
-                        {props.item.block &&
-                            <XCard.Property title="Block">{props.item.block.title}</XCard.Property>
-                        }
-                        {props.item!!.extrasBorough &&
-                            <XCard.Property title="Borough">{props.item!!.extrasBorough}</XCard.Property>
-                        }
                         {props.item.extrasNeighborhood &&
                             <XCard.Property title="Neighborhood">{props.item.extrasNeighborhood}</XCard.Property>
                         }
