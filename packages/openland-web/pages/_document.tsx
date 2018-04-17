@@ -26,14 +26,25 @@ export default class StateDocument extends Document {
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
                     <meta name="format-detection" content="telephone=no" />
                     <meta name="theme-color" content="#000000" />
-                    <link rel="shortcut icon" href="/static/favicon.ico" />
+                    <meta name="application-name" content="Openland" />
 
+                    <meta name="msapplication-TileColor" content="#6400FF" />
+                    <meta name="msapplication-TileImage" content="/static/branding/mstile-144x144.png" />
+                    <meta name="msapplication-square70x70logo" content="/static/branding/mstile-70x70.png" />
+                    <meta name="msapplication-square150x150logo" content="/static/branding/mstile-150x150.png" />
+                    <meta name="msapplication-wide310x150logo" content="/static/branding/mstile-310x150.png" />
+                    <meta name="msapplication-square310x310logo" content="/static/branding/mstile-310x310.png" />
+                    
+                    <link rel="shortcut icon" href="/static/favicon.ico" />
+                    <link rel="mask-icon" href="/static/favicon-safari.svg" color="#522BFF" />
+                    
                     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png" />
                     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png" />
                     <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96.png" />
+                    <link rel="icon" type="image/png" sizes="128x128" href="/static/branding/favicon-128.png" />
                     <link rel="icon" type="image/png" sizes="192x192" href="/static/android-icon-192.png" />
+                    <link rel="icon" type="image/png" sizes="196x196" href="/static/branding/favicon-196x196.png" />
 
-                    <link rel="mask-icon" href="/static/favicon-safari.svg" color="#522BFF" />
                     <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-icon-57.png" />
                     <link rel="apple-touch-icon" sizes="60x60" href="/static/apple-icon-60.png" />
                     <link rel="apple-touch-icon" sizes="72x72" href="/static/apple-icon-72.png" />
