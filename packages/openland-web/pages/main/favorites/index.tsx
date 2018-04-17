@@ -32,8 +32,8 @@ function escapeRecord(src?: string | number | null) {
 function exportCSV(items: Types.ParcelShortFragment[]) {
     let rows = items.map((v) =>
         [
-            v.title,
-            v.addresses.map((s) => s.streetNumber + ' ' + s.streetName + ' ' + s.streetNameSuffix).join(),
+            v.number.title,
+            v.address,
             v.extrasLandValue,
             v.extrasImprovementValue
         ]);

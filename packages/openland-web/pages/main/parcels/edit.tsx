@@ -12,10 +12,10 @@ import { XHeader } from '../../../components/X/XHeader';
 export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetadataForm((props) => {
     return (
         <>
-            <XHead title={['Edit Parcel #' + props.data.item.title]} />
+            <XHead title={['Edit Parcel #' + props.data.item.number.title]} />
             <AppContent>
                 <XCard shadow="medium" separators={true}>
-                    <XHeader text={'Update Parcel #' + props.data.item.title} />
+                    <XHeader text={'Update Parcel #' + props.data.item.number.title} />
                     <XForm
                         defaultValues={props.data.item.metadata}
                         submitMutation={props.parcelAlterMetadata}
