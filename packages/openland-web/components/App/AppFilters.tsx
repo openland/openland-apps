@@ -597,6 +597,19 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                 }
             });
         }
+        if (this.props.router.query!!.customQuery) {
+            let res = JSON.parse(this.props.router.query!!.customQuery) as string[];
+            for (let r of res) {
+                clauses.push({
+                    [r]: true
+                });
+            }
+        }
+        if (this.props.router.query!!.queryUrbyn2) {
+            clauses.push({
+                'customerUrbynQuery1': JSON.parse(this.props.router.query!!.queryUrbyn2)
+            });
+        }
         if (this.props.router.query!!.area) {
             let area = JSON.parse(this.props.router.query!!.area);
             area.gte = (area.gte * 0.092903);
@@ -717,6 +730,14 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                                 fieldName="compatible"
                                 options={[{ value: 'kasita-1', label: 'Elemynt-1' }, { value: 'kasita-2', label: 'Elemynt-2' }]}
                                 placeholder="Building type"
+                                multi={true}
+                            />
+                        </FilterCell>
+                        <FilterCell title="Custom Queries">
+                            <RoutedSelector
+                                fieldName="customQuery"
+                                options={[{ value: 'customerUrbynQuery1', label: 'Query-1' }, { value: 'customerUrbynQuery2', label: 'Query-2' }]}
+                                placeholder="Custom Queries"
                                 multi={true}
                             />
                         </FilterCell>
