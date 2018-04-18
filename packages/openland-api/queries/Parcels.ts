@@ -48,10 +48,16 @@ export const ParcelFull = gql`
           }
       }
 
-      extrasArea
-      extrasAssessorArea
-      extrasAssessorFront
-      extrasAssessorDepth
+      area {
+          value
+      }
+      depth {
+          value
+      }
+      front {
+          value
+      }
+
       extrasSupervisorDistrict
       extrasZoning
       extrasLandValue
@@ -138,13 +144,20 @@ export const ParcelShort = gql`
       number {
           ...ParcelID
       }
+
       address
       geometry
-      extrasAssessorArea
-      extrasAssessorFront
-      extrasAssessorDepth
-      extrasArea
-      extrasSupervisorDistrict
+
+      area {
+          value
+      }
+      depth {
+          value
+      }
+      front {
+          value
+      }
+
       extrasZoning
       extrasLandValue
       extrasImprovementValue

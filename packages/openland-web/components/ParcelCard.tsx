@@ -182,16 +182,22 @@ export const ParcelCard = withParcelDirect((props) => {
                         )}
 
                         <XCard.PropertyList title="Parcel details" compact={true}>
-                            {props.data.item!!.extrasOwnerType &&
+                            {props.data.item!!.extrasOwnerType && props.data.item!!.extrasOwnerType !== 'PRIVATE' &&
                                 <PropertyCell title="Ownership Type"><OwnerTypeComponent type={props.data.item!!.extrasOwnerType!!} /></PropertyCell>
                             }
                             {props.data.item!!.extrasOwnerName &&
                                 <PropertyCell title="Owner Name">{props.data.item!!.extrasOwnerName}</PropertyCell>
                             }
-                            {props.data.item!!.extrasArea &&
-                                <PropertyCell title="Area"><XArea area={props.data.item!!.extrasArea!!} /></PropertyCell>
+                            {props.data.item!!.area &&
+                                <PropertyCell title="Area"><XArea area={props.data.item!!.area!!.value} /></PropertyCell>
                             }
-                            {props.data.item!!.extrasShapeSides && props.data.item!!.extrasShapeSides!!.length > 0 &&
+                            {props.data.item!!.front &&
+                                <PropertyCell title="Frontage"><XDistance value={props.data.item!!.front!!.value} /></PropertyCell>
+                            }
+                            {props.data.item!!.depth &&
+                                <PropertyCell title="Depth"><XDistance value={props.data.item!!.depth!!.value} /></PropertyCell>
+                            }
+                            {props.data.item!!.extrasShapeSides && !props.data.item!!.front && !props.data.item!!.depth &&  props.data.item!!.extrasShapeSides!!.length > 0 &&
                                 <PropertyCell title="Dimensions"> <XDimensions dimensions={props.data.item!!.extrasShapeSides!!} /></PropertyCell>
                             }
                             {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && (

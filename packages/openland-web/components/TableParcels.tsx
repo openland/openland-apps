@@ -21,7 +21,7 @@ export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[] }>((
                         <XTable.Cell>{v.city.name}</XTable.Cell>
                         <XTable.Cell><ParcelNumber id={v.number} compact={true} /></XTable.Cell>
                         <XTable.Cell>{v.address}</XTable.Cell>
-                        <XTable.Cell textAlign="right">{v.extrasArea && <XArea area={v.extrasArea} />}</XTable.Cell>
+                        <XTable.Cell textAlign="right">{v.area && <XArea area={v.area.value} />}</XTable.Cell>
                         <XTable.Cell textAlign="right">{v.extrasZoning && v.extrasZoning.join()}</XTable.Cell>
                     </XTable.Row>
                 ))}

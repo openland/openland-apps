@@ -1055,12 +1055,18 @@ export interface ParcelsConnectionQuery {
         address: string | null,
         // Geometry
         geometry: string | null,
-        extrasAssessorArea: number | null,
-        extrasAssessorFront: number | null,
-        extrasAssessorDepth: number | null,
-        // Deprecated geometry
-        extrasArea: number | null,
-        extrasSupervisorDistrict: string | null,
+        area:  {
+          __typename: "DataFloat",
+          value: number,
+        } | null,
+        depth:  {
+          __typename: "DataFloat",
+          value: number,
+        } | null,
+        front:  {
+          __typename: "DataFloat",
+          value: number,
+        } | null,
         // Bunch of unsorted experimental data
         extrasZoning: Array< string > | null,
         extrasLandValue: number | null,
@@ -1089,29 +1095,10 @@ export interface ParcelsConnectionQuery {
         extrasSalesDate: string | null,
         extrasSalesPriorDate: string | null,
         extrasRecordationDate: string | null,
-        extrasOwnerName: string | null,
-        extrasOwnerType: OwnerType | null,
         extrasShapeType: string | null,
         extrasShapeSides: Array< number > | null,
         extrasFitProjects: Array< string > | null,
         extrasAnalyzed: boolean | null,
-        // Linked Data
-        opportunity:  {
-          __typename: "Opportunity",
-          id: string,
-          priority: OpportunityPriority,
-          state: OpportunityState,
-        } | null,
-        likes:  {
-          __typename: "Likes",
-          liked: boolean,
-          count: number | null,
-        },
-        // User Data
-        userData:  {
-          __typename: "ParcelUserData",
-          notes: string | null,
-        } | null,
         // Addresses
         city:  {
           __typename: "City",
@@ -1161,12 +1148,18 @@ export interface ParcelsFavoritesQuery {
     address: string | null,
     // Geometry
     geometry: string | null,
-    extrasAssessorArea: number | null,
-    extrasAssessorFront: number | null,
-    extrasAssessorDepth: number | null,
-    // Deprecated geometry
-    extrasArea: number | null,
-    extrasSupervisorDistrict: string | null,
+    area:  {
+      __typename: "DataFloat",
+      value: number,
+    } | null,
+    depth:  {
+      __typename: "DataFloat",
+      value: number,
+    } | null,
+    front:  {
+      __typename: "DataFloat",
+      value: number,
+    } | null,
     // Bunch of unsorted experimental data
     extrasZoning: Array< string > | null,
     extrasLandValue: number | null,
@@ -1195,29 +1188,10 @@ export interface ParcelsFavoritesQuery {
     extrasSalesDate: string | null,
     extrasSalesPriorDate: string | null,
     extrasRecordationDate: string | null,
-    extrasOwnerName: string | null,
-    extrasOwnerType: OwnerType | null,
     extrasShapeType: string | null,
     extrasShapeSides: Array< number > | null,
     extrasFitProjects: Array< string > | null,
     extrasAnalyzed: boolean | null,
-    // Linked Data
-    opportunity:  {
-      __typename: "Opportunity",
-      id: string,
-      priority: OpportunityPriority,
-      state: OpportunityState,
-    } | null,
-    likes:  {
-      __typename: "Likes",
-      liked: boolean,
-      count: number | null,
-    },
-    // User Data
-    userData:  {
-      __typename: "ParcelUserData",
-      notes: string | null,
-    } | null,
     // Addresses
     city:  {
       __typename: "City",
@@ -1295,11 +1269,18 @@ export interface ParcelQuery {
         code: string,
       },
     },
-    // Deprecated geometry
-    extrasArea: number | null,
-    extrasAssessorArea: number | null,
-    extrasAssessorFront: number | null,
-    extrasAssessorDepth: number | null,
+    area:  {
+      __typename: "DataFloat",
+      value: number,
+    } | null,
+    depth:  {
+      __typename: "DataFloat",
+      value: number,
+    } | null,
+    front:  {
+      __typename: "DataFloat",
+      value: number,
+    } | null,
     extrasSupervisorDistrict: string | null,
     // Bunch of unsorted experimental data
     extrasZoning: Array< string > | null,
@@ -2305,46 +2286,21 @@ export interface SourcingQuery {
             lotPadded: string | null,
             title: string,
           },
+          address: string | null,
           // Geometry
           geometry: string | null,
-          address: string | null,
-          compatibleBuildings:  Array< {
-            __typename: "BuildingLocation",
-            key: string,
-            title: string,
-            width: number,
-            height: number,
-            center:  {
-              __typename: "Geo",
-              latitude: number,
-              longitude: number,
-            } | null,
-            angle: number | null,
-            shape: string | null,
-          } > | null,
-          // Addresses
-          city:  {
-            __typename: "City",
-            id: string,
-            name: string,
-            county:  {
-              __typename: "County",
-              id: string,
-              name: string,
-            },
-            state:  {
-              __typename: "State",
-              id: string,
-              name: string,
-              code: string,
-            },
-          },
-          // Deprecated geometry
-          extrasArea: number | null,
-          extrasAssessorArea: number | null,
-          extrasAssessorFront: number | null,
-          extrasAssessorDepth: number | null,
-          extrasSupervisorDistrict: string | null,
+          area:  {
+            __typename: "DataFloat",
+            value: number,
+          } | null,
+          depth:  {
+            __typename: "DataFloat",
+            value: number,
+          } | null,
+          front:  {
+            __typename: "DataFloat",
+            value: number,
+          } | null,
           // Bunch of unsorted experimental data
           extrasZoning: Array< string > | null,
           extrasLandValue: number | null,
@@ -2373,56 +2329,27 @@ export interface SourcingQuery {
           extrasSalesDate: string | null,
           extrasSalesPriorDate: string | null,
           extrasRecordationDate: string | null,
-          extrasOwnerName: string | null,
-          extrasOwnerType: OwnerType | null,
           extrasShapeType: string | null,
           extrasShapeSides: Array< number > | null,
           extrasFitProjects: Array< string > | null,
           extrasAnalyzed: boolean | null,
-          // User Data
-          userData:  {
-            __typename: "ParcelUserData",
-            notes: string | null,
-          } | null,
-          // Linked Data
-          opportunity:  {
-            __typename: "Opportunity",
+          // Addresses
+          city:  {
+            __typename: "City",
             id: string,
-            priority: OpportunityPriority,
-            state: OpportunityState,
-          } | null,
-          metadata:  {
-            __typename: "ParcelMetadata",
-            description: string | null,
-            available: boolean | null,
-            currentUse: ParcelUse | null,
-            isOkForTower: boolean | null,
+            name: string,
+            county:  {
+              __typename: "County",
+              id: string,
+              name: string,
+            },
+            state:  {
+              __typename: "State",
+              id: string,
+              name: string,
+              code: string,
+            },
           },
-          likes:  {
-            __typename: "Likes",
-            liked: boolean,
-            count: number | null,
-          },
-          permits:  Array< {
-            __typename: "Permit",
-            id: string,
-            createdAt: string | null,
-            status: PermitStatus | null,
-            statusUpdatedAt: string | null,
-            type: PermitType | null,
-            typeWood: boolean | null,
-            description: string | null,
-            approvalTime: number | null,
-            proposedUnits: number | null,
-            existingUnits: number | null,
-            governmentalUrl: string,
-          } >,
-          // Metadata
-          links:  Array< {
-            __typename: "Link",
-            title: string,
-            url: string,
-          } >,
         },
       },
       cursor: string,
@@ -2496,11 +2423,18 @@ export interface OpportunityQuery {
           code: string,
         },
       },
-      // Deprecated geometry
-      extrasArea: number | null,
-      extrasAssessorArea: number | null,
-      extrasAssessorFront: number | null,
-      extrasAssessorDepth: number | null,
+      area:  {
+        __typename: "DataFloat",
+        value: number,
+      } | null,
+      depth:  {
+        __typename: "DataFloat",
+        value: number,
+      } | null,
+      front:  {
+        __typename: "DataFloat",
+        value: number,
+      } | null,
       extrasSupervisorDistrict: string | null,
       // Bunch of unsorted experimental data
       extrasZoning: Array< string > | null,
@@ -2699,11 +2633,18 @@ export interface NextOpportunityQuery {
           code: string,
         },
       },
-      // Deprecated geometry
-      extrasArea: number | null,
-      extrasAssessorArea: number | null,
-      extrasAssessorFront: number | null,
-      extrasAssessorDepth: number | null,
+      area:  {
+        __typename: "DataFloat",
+        value: number,
+      } | null,
+      depth:  {
+        __typename: "DataFloat",
+        value: number,
+      } | null,
+      front:  {
+        __typename: "DataFloat",
+        value: number,
+      } | null,
       extrasSupervisorDistrict: string | null,
       // Bunch of unsorted experimental data
       extrasZoning: Array< string > | null,
@@ -3067,11 +3008,18 @@ export interface ParcelFullFragment {
       code: string,
     },
   },
-  // Deprecated geometry
-  extrasArea: number | null,
-  extrasAssessorArea: number | null,
-  extrasAssessorFront: number | null,
-  extrasAssessorDepth: number | null,
+  area:  {
+    __typename: string,
+    value: number,
+  } | null,
+  depth:  {
+    __typename: string,
+    value: number,
+  } | null,
+  front:  {
+    __typename: string,
+    value: number,
+  } | null,
   extrasSupervisorDistrict: string | null,
   // Bunch of unsorted experimental data
   extrasZoning: Array< string > | null,
@@ -3169,12 +3117,18 @@ export interface ParcelShortFragment {
   address: string | null,
   // Geometry
   geometry: string | null,
-  extrasAssessorArea: number | null,
-  extrasAssessorFront: number | null,
-  extrasAssessorDepth: number | null,
-  // Deprecated geometry
-  extrasArea: number | null,
-  extrasSupervisorDistrict: string | null,
+  area:  {
+    __typename: string,
+    value: number,
+  } | null,
+  depth:  {
+    __typename: string,
+    value: number,
+  } | null,
+  front:  {
+    __typename: string,
+    value: number,
+  } | null,
   // Bunch of unsorted experimental data
   extrasZoning: Array< string > | null,
   extrasLandValue: number | null,
@@ -3203,29 +3157,10 @@ export interface ParcelShortFragment {
   extrasSalesDate: string | null,
   extrasSalesPriorDate: string | null,
   extrasRecordationDate: string | null,
-  extrasOwnerName: string | null,
-  extrasOwnerType: OwnerType | null,
   extrasShapeType: string | null,
   extrasShapeSides: Array< number > | null,
   extrasFitProjects: Array< string > | null,
   extrasAnalyzed: boolean | null,
-  // Linked Data
-  opportunity:  {
-    __typename: string,
-    id: string,
-    priority: OpportunityPriority,
-    state: OpportunityState,
-  } | null,
-  likes:  {
-    __typename: string,
-    liked: boolean,
-    count: number | null,
-  },
-  // User Data
-  userData:  {
-    __typename: string,
-    notes: string | null,
-  } | null,
   // Addresses
   city:  {
     __typename: string,

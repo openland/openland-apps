@@ -22,17 +22,29 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
             <XCard.PropertyColumns>
                 <XVertical>
                     <XCard.PropertyList title="Parcel Details">
+                        {props.item.extrasOwnerType && props.item.extrasOwnerType !== 'PRIVATE' &&
+                            <XCard.Property title="Ownership Type"><OwnerTypeComponent type={props.item.extrasOwnerType!!} /></XCard.Property>
+                        }
+                        {props.item.extrasOwnerName &&
+                            <XCard.Property title="Owner Name">{props.item.extrasOwnerName}</XCard.Property>
+                        }
+                        {props.item.area &&
+                            <XCard.Property title="Area"><XArea area={props.item.area!!.value} /></XCard.Property>
+                        }
+                        {props.item.front &&
+                            <XCard.Property title="Frontage"><XDistance value={props.item.front!!.value} /></XCard.Property>
+                        }
+                        {props.item.depth &&
+                            <XCard.Property title="Depth"><XDistance value={props.item.depth!!.value} /></XCard.Property>
+                        }
+                        {props.item!!.extrasShapeSides && !props.item.front && !props.item.depth && props.item!!.extrasShapeSides!!.length > 0 &&
+                            <XCard.Property title="Dimensions"> <XDimensions dimensions={props.item!!.extrasShapeSides!!} /></XCard.Property>
+                        }
                         {props.item.extrasNeighborhood &&
                             <XCard.Property title="Neighborhood">{props.item.extrasNeighborhood}</XCard.Property>
                         }
                         {props.item.extrasSupervisorDistrict &&
                             <XCard.Property title="Supervisor District">{props.item.extrasSupervisorDistrict}</XCard.Property>
-                        }
-                        {props.item.extrasArea &&
-                            <XCard.Property title="Area"><XArea area={props.item.extrasArea!!} /></XCard.Property>
-                        }
-                        {props.item!!.extrasShapeSides && props.item!!.extrasShapeSides!!.length > 0 &&
-                            <XCard.Property title="Dimensions"> <XDimensions dimensions={props.item!!.extrasShapeSides!!} /></XCard.Property>
                         }
                         {props.item.extrasZoning && props.item.extrasZoning!!.length > 0 &&
                             <XCard.Property title="Zoning"><XZoningCode codes={props.item!!.extrasZoning!!} /></XCard.Property>
@@ -52,13 +64,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         {props.item.extrasPropertyValue !== null &&
                             <XCard.Property title="Personal Property Value"><XMoney value={props.item.extrasPropertyValue!!} /></XCard.Property>
                         }
-                        {props.item.extrasOwnerType &&
-                            <XCard.Property title="Ownership Type"><OwnerTypeComponent type={props.item.extrasOwnerType!!} /></XCard.Property>
-                        }
-                        {props.item.extrasOwnerName &&
-                            <XCard.Property title="Owner Name">{props.item.extrasOwnerName}</XCard.Property>
-                        }
-                        {props.item.extrasArea &&
+                        {/* {props.item.extrasArea &&
                             <XCard.Property title="City Register Area"><XArea area={props.item.extrasAssessorArea!!} />
                                 <XTooltip title={Text.hint_unrealiable_assesor} />
                             </XCard.Property>
@@ -72,7 +78,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                             <XCard.Property title="City Register Depth"><XDistance value={props.item.extrasAssessorDepth!!} />
                                 <XTooltip title={Text.hint_unrealiable_assesor} />
                             </XCard.Property>
-                        }
+                        } */}
                     </XCard.PropertyList>
                     {props.item!!.city.name === 'New York' && (props.item!!.extrasVacant === null || props.item!!.extrasVacant) && (
                         <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>

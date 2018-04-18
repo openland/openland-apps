@@ -46,7 +46,7 @@ export const OpportunitiesTable = withSourcing((props) => {
                                         {v.node.parcel.address}
                                     </XTable.Cell>
                                     <XTable.Cell textAlign="right">
-                                        {v.node.parcel && v.node.parcel.extrasArea != null && <XArea area={v.node.parcel.extrasArea} />}
+                                        {v.node.parcel && v.node.parcel.area && <XArea area={v.node.parcel.area.value} />}
                                     </XTable.Cell>
                                     <XTable.Cell textAlign="left">
                                         {v.node.parcel.extrasZoning}
