@@ -22,8 +22,8 @@ import { XTooltip } from './Incubator/XTooltip';
 const RootContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    // height: '100vh',
-    width: '100vw'
+    width: '100vw',
+    minWidth: 800,
 });
 
 // 
@@ -50,9 +50,8 @@ const NavigationContainer = Glamorous.div({
     borderRightWidth: '1px',
     alignItems: 'center',
     overflowY: 'scroll',
-    position: 'fixed',
-    top: 0,
-    left: 0
+    position: 'sticky',
+    top: 0
 });
 
 const Logo = Glamorous(XPicture)({
@@ -142,54 +141,47 @@ const ContentView = Glamorous.div<{ withMenu: boolean }>((props) => ({
     minHeight: '100vh',
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
-    // overflow: 'hidden',
     backgroundColor: '#ffffff',
     flex: 1,
     order: 2,
     maxWidth: props.withMenu ? 'calc(100% - 280px)' : 'calc(100% - 72px)',
-    // marginLeft: '-8px',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
-    // overflowY: 'scroll',
     position: 'relative',
     zIndex: 0
 }));
 
-const ContentDiv = Glamorous.div({
-    overflow: 'hidden',
-    backgroundColor: '#ffffff',
-    minHeight: '100%',
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
-    zIndex: 1
+const SearchWrapper = Glamorous.div<{ visible: boolean }>((props) => ({
+    visibility: props.visible ? 'visible' : 'hidden',
+    zIndex: 500,
+    opacity: props.visible ? 1 : 0,
+    transition: 'all 220ms',
+}));
+
+const SearchWrapperSticky = Glamorous.div({
+    position: 'sticky',
+    top: 0
 });
 
-const SearchContainer = Glamorous.div<{ visible: boolean }>((props) => ({
-    position: 'fixed',
-    zIndex: 500,
-    transition: 'opacity 220ms',
+const SearchContainer = Glamorous.div({
+    position: 'absolute',
     left: 72,
-    right: 0,
     top: 0,
-    bottom: 0,
-    opacity: props.visible ? 1 : 0,
-    pointerEvents: props.visible ? 'initial' : 'none',
+    width: 'calc(100vw - 72px)',
+    height: '100vh',
     backgroundColor: 'rgba(9, 30, 66, 0.54)'
-}));
+});
 
-const SearchContent = Glamorous.div<{ visible: boolean }>((props) => ({
+const SearchContent = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    position: 'fixed',
-    zIndex: 501,
-    transition: 'opacity 200ms',
+    position: 'absolute',
+    zIndex: 1,
     left: 72,
     top: 0,
-    bottom: 0,
     width: '300px',
-    opacity: props.visible ? 1 : 0,
-    pointerEvents: props.visible ? 'initial' : 'none',
+    height: '100vh',
     backgroundColor: '#FFFFFF',
-}));
+});
 
 const SearchInput = Glamorous.input({
     border: 'none',
@@ -318,7 +310,7 @@ const MenuView = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#FAFAFC',
-    position: 'fixed',
+    position: 'sticky',
     top: 0,
     left: 72,
     height: '100vh'
@@ -416,16 +408,20 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
         return (
             <RootContainer>
                 <NavigationWrapper withMenu={menu ? true : false}>
-                    <SearchContainer visible={this.state.search} onClick={this.handleSearch} />
-                    <SearchContent visible={this.state.search}>
-                        <SearchInput
-                            placeholder="Search"
-                            onChange={this.handleSearchChange}
-                            innerRef={this.handleSearchRef}
-                            value={this.state.searchText}
-                        />
-                        {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults query={this.state.searchText} />)}
-                    </SearchContent>
+                    <SearchWrapper visible={this.state.search}>
+                        <SearchWrapperSticky>
+                            <SearchContainer onClick={this.handleSearch} />
+                            <SearchContent>
+                                <SearchInput
+                                    placeholder="Search"
+                                    onChange={this.handleSearchChange}
+                                    innerRef={this.handleSearchRef}
+                                    value={this.state.searchText}
+                                />
+                                {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults query={this.state.searchText} />)}
+                            </SearchContent>
+                        </SearchWrapperSticky>
+                    </SearchWrapper>
                     <NavigationContainer>
                         <XLink path="/">
                             <Logo picture={{ url: '/static/branding/logo_inverted_squared.png', retina: '/static/branding/logo_inverted_squared@2x.png' }} />
@@ -506,9 +502,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                     {menu}
                 </NavigationWrapper>
                 <ContentView withMenu={menu ? true : false}>
-                    <ContentDiv>
-                        {content}
-                    </ContentDiv>
+                    {content}
                 </ContentView>
             </RootContainer>
         );

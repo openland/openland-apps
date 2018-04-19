@@ -59,7 +59,7 @@ const hideAnimationBottom = glamor.keyframes({
 });
 
 const PopperPortal = Glamorous.div({
-    zIndex: 5,
+    zIndex: 501,
     '& .popper-content': {
         display: 'none',
         padding: 10,
@@ -237,7 +237,12 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
                 let popper = null;
                 if (src.portal) {
                     popper = new Popper(target, src.portal, {
-                        placement: this.props.placement || 'auto'
+                        placement: this.props.placement || 'auto',
+                        modifiers: {
+                            preventOverflow: {
+                                boundariesElement: 'viewport'
+                            }
+                        }
                     });
                 }
                 return {
@@ -255,7 +260,12 @@ export class XPopover extends React.Component<{ placement?: XPopoverPlacement },
                 let popper = null;
                 if (src.target) {
                     popper = new Popper(src.target, e, {
-                        placement: this.props.placement || 'auto'
+                        placement: this.props.placement || 'auto',
+                        modifiers: {
+                            preventOverflow: {
+                                boundariesElement: 'viewport'
+                            }
+                        }
                     });
                 }
                 return {
