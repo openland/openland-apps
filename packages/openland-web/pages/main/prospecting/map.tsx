@@ -8,7 +8,7 @@ import { ProspectingNavigationMap } from '../../../components/ProspectingNavigat
 import { XMap } from '../../../components/X/XMap';
 import { SourcingTileSource } from '../../../api';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
-import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
+// import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 
 class ProspectingMap extends React.Component<{}, {}> {
     render() {
