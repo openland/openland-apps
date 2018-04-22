@@ -1,7 +1,9 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import * as classnames from 'classnames';
 import { XLink } from './XLink';
 import XStyles from './XStyles';
+import { XIcon } from './XIcon';
 
 let TableHeader = Glamorous.table({
     width: 'calc(100% - ' + (XStyles.paddings.xlarge * 2) + 'px)',
@@ -35,9 +37,9 @@ let TableHeader = Glamorous.table({
     '& tr > td:last-child > a': {
         paddingRight: XStyles.paddings.small
     },
-    '> tbody': {
-        color: '#182642'
-    }
+    // '> tbody': {
+    //     color: '#182642'
+    // }
 });
 
 const XTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
@@ -54,7 +56,7 @@ let XTableTD = Glamorous.td<{ width?: number }>((props) => ({
     verticalAlign: 'middle'
 }));
 
-let XTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' | 'center' }>((props) => ({
+let XTableTDDiv = Glamorous.div({
     display: 'flex',
     alignContent: 'center',
     height: 39,
@@ -65,55 +67,33 @@ let XTableTDDiv = Glamorous.div<{ textAlign?: 'left' | 'right' | 'center' }>((pr
     paddingTop: 12,
     paddingBottom: 9,
     ...XStyles.text.p,
-    color: '#182642',
+    // color: '#182642',
 
     '> a': {
         minHeight: 'auto !important',
         padding: '0 !important',
         background: 'transparent',
         justifyContent: 'flex-end'
-    },
-    '> div': {
-        width: '100%',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        textAlign: props.textAlign,
-        '> i': {
-            fontSize: 20,
-            color: 'rgb(82, 95, 127)'
-        }
     }
-}));
+});
 
-const XTableTDDivAsLink = Glamorous(XLink)<{ textAlign?: 'left' | 'right' | 'center' }>((props) => ({
+const XTableTDDivAsLink = Glamorous(XLink)({
     display: 'flex',
     alignContent: 'center',
     height: 39,
     width: '100%',
     alignItems: 'center',
     ...XStyles.text.p,
-    color: '#182642',
-    lineHeight: 'normal',
+    // color: '#182642',
+    // lineHeight: 'normal',
     paddingTop: 12,
     paddingBottom: 9,
     paddingLeft: XStyles.paddings.large,
     paddingRight: XStyles.paddings.large,
     '&:hover': {
         color: 'inherit'
-    },
-    '> div': {
-        width: '100%',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        textAlign: props.textAlign,
-        '> i': {
-            fontSize: 20,
-            color: 'rgb(82, 95, 127)'
-        }
     }
-}));
+});
 
 export function XTableHeader(props: { children: any }) {
     return (<thead><tr>{props.children}</tr></thead>);
@@ -152,20 +132,86 @@ export class XTableRow extends React.Component<XTableRowProps> {
     }
 }
 
+type OrderBy = 'NO_SORT' | 'ASC' | 'DESC';
+
 interface XTableCellProps {
     children: any;
     width?: number;
     textAlign?: 'left' | 'right' | 'center';
     path?: string;
     href?: string;
+    orderBy?: OrderBy;
 }
+
+const orderTypes = {
+    'NO_SORT': 'code',
+    'DESC': 'keyboard_arrow_down',
+    'ASC': 'keyboard_arrow_up',
+};
+
+const contetnPosition = {
+    'left': 'flex-start',
+    'right': 'flex-end',
+    'center': 'center'
+};
+
+const TDChildrenDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end' | 'center' }>((props) => ({
+    display: 'flex',
+    justifyContent: props.justifyContent,
+    alignItems: 'center',
+    width: '100%',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    // textAlign: props.textAlign,
+    '> i': {
+        fontSize: 20,
+        color: 'rgb(82, 95, 127)'
+    },
+    '& > .order-icon': {
+        display: 'flex',
+        justifyContent: 'center',
+
+        '& > i': {
+            fontSize: 15,
+            marginTop: 4
+        },
+        '&.code': {
+            '& > i': {
+                marginTop: 4,
+                transform: 'rotate(90deg)'
+            }
+        }
+    }
+}));
+
+const TDChildren = (props: { children: any, orderBy?: OrderBy, textAlign?: 'left' | 'right' | 'center' }) => (
+    <TDChildrenDiv justifyContent={contetnPosition[props.textAlign || 'flex-start']}>
+        {props.children}
+        {props.orderBy && (
+            <div className={classnames(`order-icon ${orderTypes[props.orderBy]}`)}>
+                <XIcon icon={orderTypes[props.orderBy]} />
+            </div>
+        )}
+    </TDChildrenDiv>
+);
 
 export function XTableCell(props: XTableCellProps) {
     return (
         <XTableTD width={props.width}>
-            {(props.path || props.href)
-                ? (<XTableTDDivAsLink path={props.path} href={props.href} textAlign={props.textAlign}><div>{props.children}</div></XTableTDDivAsLink>)
-                : (<XTableTDDiv textAlign={props.textAlign}><div>{props.children}</div></XTableTDDiv>)}
+            {
+                (props.path || props.href) ?
+                    (
+                        <XTableTDDivAsLink path={props.path} href={props.href}>
+                            <TDChildren children={props.children} orderBy={props.orderBy} textAlign={props.textAlign} />
+                        </XTableTDDivAsLink>
+                    )
+                    : (
+                        <XTableTDDiv>
+                            <TDChildren children={props.children} orderBy={props.orderBy} textAlign={props.textAlign} />
+                        </XTableTDDiv>
+                    )
+            }
         </XTableTD>
     );
 }
