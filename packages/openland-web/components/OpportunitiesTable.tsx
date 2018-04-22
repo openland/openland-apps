@@ -22,9 +22,6 @@ export const OpportunitiesTable = withSourcing((props) => {
     } else if (props.data.variables.state === 'SNOOZED') {
         useDirect = true;
     }
-    // <XSwitcher.Item query={{ field: 'sort' }}>Last Added</XSwitcher.Item>
-    // <XSwitcher.Item query={{ field: 'sort', value: 'AREA_DESC' }}>Area Desc</XSwitcher.Item>
-    // <XSwitcher.Item query={{ field: 'sort', value: 'AREA_ASC' }}>Area Asc</XSwitcher.Item>
     let sVal = props.router.query.sort;
     let sort = props.router.query.sort ? '&sort=' + props.router.query.sort : '';
     return (
@@ -38,6 +35,7 @@ export const OpportunitiesTable = withSourcing((props) => {
                             <XTable.Cell>Address</XTable.Cell>
                             <XTable.Cell width={100} textAlign="right"
                                 orderBy={sVal === 'AREA_DESC' ? 'DESC' : sVal === 'AREA_ASC' ? 'ASC' : 'NO_SORT'}
+                                query={{ field: 'sort', value: (sVal === 'AREA_DESC' ? 'AREA_ASC' : sVal === 'AREA_ASC' ? undefined : 'AREA_DESC') }}
                             >
                                 Area
                             </XTable.Cell>

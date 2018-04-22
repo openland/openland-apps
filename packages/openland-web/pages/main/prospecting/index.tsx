@@ -11,9 +11,9 @@ import { withProspectingStats } from '../../../api';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
-import { XSwitcher } from '../../../components/X/XSwitcher';
 import { OpportunityState } from 'openland-api/Types';
 import * as qs from 'query-string';
+
 let Link = Glamorous(XLink)({
     color: '#3297d3',
 });
@@ -34,11 +34,6 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Incoming opportunities">
-                        <XSwitcher>
-                            <XSwitcher.Item query={{ field: 'sort' }} alignSelf="center">Last Added</XSwitcher.Item>
-                            <XSwitcher.Item query={{ field: 'sort', value: 'AREA_DESC' }} alignSelf="center">Area Desc</XSwitcher.Item>
-                            <XSwitcher.Item query={{ field: 'sort', value: 'AREA_ASC' }} alignSelf="center">Area Asc</XSwitcher.Item>
-                        </XSwitcher>
                         {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
                         {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
                         <XButton style="dark" path={'/prospecting/review?' + query}>Begin Review</XButton>
