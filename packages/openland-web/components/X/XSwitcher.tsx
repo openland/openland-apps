@@ -27,16 +27,16 @@ const XSwitcherWrapper = Glamorous.div<XSwitcherProps>((props) => ({
         fontWeight: 'normal !important',
         fontStyle: 'normal !important',
         fontStretch: 'normal !important',
-        lineHeight: props.fieldStyle ? '2.29 !important' : undefined,
+        lineHeight: props.fieldStyle ? '2.29 !important' : 1.6,
         letterSpacing: 'normal !important',
         textAlign: 'center !important',
         margin: '0 !important',
-        color: props.fieldStyle ? '#182642 !important' : undefined,
+        color: props.fieldStyle ? '#182642 !important' : '#6b7c93',
         '&:hover': {
             backgroundColor: props.fieldStyle ? '#F5F6F8' : undefined
         },
         '&.is-active': {
-            color: props.fieldStyle ? '#fff !important' : undefined,
+            color: props.fieldStyle ? '#fff !important' : '#6772e5',
             backgroundColor: props.fieldStyle ? '#4428e0 !important' : undefined,
 
             '&:hover': {
@@ -46,21 +46,19 @@ const XSwitcherWrapper = Glamorous.div<XSwitcherProps>((props) => ({
     }
 }));
 
-const XSwitcherItem = Glamorous(XLink)({
+const XSwitcherItem = Glamorous(XLink)<{ alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center' }>((props) => ({
     fontSize: 14,
-    lineHeight: 1.6,
     fontWeight: 200,
-    color: '#6b7c93',
     cursor: 'pointer',
     marginRight: 8,
+    alignSelf: props.alignSelf,
     '&:last-child': {
         marginRight: 0
     },
     '&.is-active': {
-        color: '#6772e5',
         fontWeight: 600,
     }
-});
+}));
 
 export class XSwitcher extends React.Component<XSwitcherProps> {
 
