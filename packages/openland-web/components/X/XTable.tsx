@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { CSSProperties } from 'glamorous';
 import * as classnames from 'classnames';
 import { XLink } from './XLink';
 import XStyles from './XStyles';
@@ -56,7 +57,7 @@ let XTableTD = Glamorous.td<{ width?: number }>((props) => ({
     verticalAlign: 'middle'
 }));
 
-let XTableTDDiv = Glamorous.div({
+const XTableTDDivStyles = {
     display: 'flex',
     alignContent: 'center',
     height: 39,
@@ -66,9 +67,11 @@ let XTableTDDiv = Glamorous.div({
     paddingRight: XStyles.paddings.large,
     paddingTop: 12,
     paddingBottom: 9,
-    ...XStyles.text.p,
-    // color: '#182642',
+    ...XStyles.text.p
+} as CSSProperties;
 
+let XTableTDDiv = Glamorous.div({
+    ...XTableTDDivStyles,
     '> a': {
         minHeight: 'auto !important',
         padding: '0 !important',
@@ -78,18 +81,7 @@ let XTableTDDiv = Glamorous.div({
 });
 
 const XTableTDDivAsLink = Glamorous(XLink)({
-    display: 'flex',
-    alignContent: 'center',
-    height: 39,
-    width: '100%',
-    alignItems: 'center',
-    ...XStyles.text.p,
-    // color: '#182642',
-    // lineHeight: 'normal',
-    paddingTop: 12,
-    paddingBottom: 9,
-    paddingLeft: XStyles.paddings.large,
-    paddingRight: XStyles.paddings.large,
+    ...XTableTDDivStyles,
     '&:hover': {
         color: 'inherit'
     }
@@ -140,6 +132,7 @@ interface XTableCellProps {
     textAlign?: 'left' | 'right' | 'center';
     path?: string;
     href?: string;
+    query?: { field: string, value?: string } | null;
     orderBy?: OrderBy;
 }
 
@@ -163,7 +156,6 @@ const TDChildrenDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end'
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    // textAlign: props.textAlign,
     '> i': {
         fontSize: 20,
         color: 'rgb(82, 95, 127)'
@@ -178,7 +170,6 @@ const TDChildrenDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end'
         },
         '&.code': {
             '& > i': {
-                marginTop: 4,
                 transform: 'rotate(90deg)'
             }
         }
@@ -200,9 +191,9 @@ export function XTableCell(props: XTableCellProps) {
     return (
         <XTableTD width={props.width}>
             {
-                (props.path || props.href) ?
+                (props.path || props.href || props.query) ?
                     (
-                        <XTableTDDivAsLink path={props.path} href={props.href}>
+                        <XTableTDDivAsLink path={props.path} href={props.href} query={props.query}>
                             <TDChildren children={props.children} orderBy={props.orderBy} textAlign={props.textAlign} />
                         </XTableTDDivAsLink>
                     )

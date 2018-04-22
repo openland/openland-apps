@@ -35,9 +35,9 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                     <ProspectingNavigation />
                     <XHeader text="Incoming opportunities">
                         <XSwitcher>
-                            <XSwitcher.Item query={{ field: 'sort' }}>Last Added</XSwitcher.Item>
-                            <XSwitcher.Item query={{ field: 'sort', value: 'AREA_DESC' }}>Area Desc</XSwitcher.Item>
-                            <XSwitcher.Item query={{ field: 'sort', value: 'AREA_ASC' }}>Area Asc</XSwitcher.Item>
+                            <XSwitcher.Item query={{ field: 'sort' }} alignSelf="center">Last Added</XSwitcher.Item>
+                            <XSwitcher.Item query={{ field: 'sort', value: 'AREA_DESC' }} alignSelf="center">Area Desc</XSwitcher.Item>
+                            <XSwitcher.Item query={{ field: 'sort', value: 'AREA_ASC' }} alignSelf="center">Area Asc</XSwitcher.Item>
                         </XSwitcher>
                         {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
                         {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
