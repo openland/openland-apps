@@ -7,6 +7,7 @@ import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
+import { OpportunityState } from 'openland-api/Types';
 
 export default withApp('Rejected opportunities', 'viewer', () => {
     return (
@@ -16,7 +17,7 @@ export default withApp('Rejected opportunities', 'viewer', () => {
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Rejected opportinities" />
-                    <OpportunitiesTable variables={{ state: 'REJECTED' }}>
+                    <OpportunitiesTable variables={{ state: OpportunityState.REJECTED }}>
                         <XCard.Empty text="No rejected parcels" icon="sort" />
                     </OpportunitiesTable>
                 </Scaffold.Content>

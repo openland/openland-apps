@@ -8,6 +8,7 @@ import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
+import { OpportunityState } from 'openland-api/Types';
 
 export default withApp('Unit placement', 'viewer', () => {
     return (
@@ -19,7 +20,7 @@ export default withApp('Unit placement', 'viewer', () => {
                     <XHeader text="Unit placement">
                         <XButton style="dark" path="/prospecting/review?stage=unit">Begin review</XButton>
                     </XHeader>
-                    <OpportunitiesTable variables={{ state: 'APPROVED_ZONING' }} stage="unit">
+                    <OpportunitiesTable variables={{ state: OpportunityState.APPROVED_ZONING }} stage="unit">
                         <XCard.Empty text="There are no parcels for review" icon="sort" />
                     </OpportunitiesTable>
                 </Scaffold.Content>
