@@ -51,6 +51,8 @@ routes.add('/prospecting/unit', '/main/prospecting/unit');
 routes.add('/prospecting/unit/', '/main/prospecting/unit');
 routes.add('/prospecting/review', '/main/prospecting/review');
 routes.add('/prospecting/review/', '/main/prospecting/review');
+routes.add('/prospecting/map', '/main/prospecting/map');
+routes.add('/prospecting/map/', '/main/prospecting/map');
 
 //
 // Projects

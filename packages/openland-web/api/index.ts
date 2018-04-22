@@ -215,10 +215,10 @@ export const ParcelSelect = graphqlSelect(Queries.Parcels.ParcelsSearchQuery);
 //
 
 export const withProspectingStats = graphqlRouted<Types.OpportunityStatsQuery>(Queries.Sourcing.OpportunityStatsQuery);
-export const withSourcing = graphqlRouted<Types.SourcingQuery>(Queries.Sourcing.SourcingQuery, ['filter', 'cursor', 'page'], false, 'network-only');
+export const withSourcing = graphqlRouted<Types.SourcingQuery>(Queries.Sourcing.SourcingQuery, ['filter', 'cursor', 'page', 'sort'], false, 'network-only');
 export const withAddOpportunity = graphqlMutation<{ add: MutationFunc<{}> }>(Queries.Sourcing.AddOpportunityMutation, { name: 'add', refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
 
-export const withNextOpportunity = graphqlRouted<Types.NextOpportunityQuery>(Queries.Sourcing.NextOpportunityQuery, ['initialId'], true, 'network-only');
+export const withNextOpportunity = graphqlRouted<Types.NextOpportunityQuery>(Queries.Sourcing.NextOpportunityQuery, ['initialId', 'sort'], true, 'network-only');
 export const withApproveOpportunity = graphqlMutation<{ approve: MutationFunc<{}> }>(Queries.Sourcing.ApproveOpportunityMutation, { name: 'approve', refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
 export const withRejectOpportunity = graphqlMutation<{ reject: MutationFunc<{}> }>(Queries.Sourcing.RejectOpportunityMutation, { name: 'reject', refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
 export const withSnoozeOpportunity = graphqlMutation<{ snooze: MutationFunc<{}> }>(Queries.Sourcing.SnoozeOpportunityMutation, { name: 'snooze', refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
@@ -227,3 +227,4 @@ export const withOpportunityByIdGet = graphqlRouted<Types.OpportunityQuery>(Quer
 export const withOpportunity = graphqlCompose5(withNextOpportunity, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity, withParcelNotes);
 export const withOpportunityById = graphqlCompose4(withOpportunityByIdGet, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity);
 export const withAddFromSearchOpportunity = graphqlMutation<{ addFromSearch: MutationFunc<{}> }>(Queries.Sourcing.AddOpportunityFromSearchMutation, { name: 'addFromSearch', refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
+export const SourcingTileSource = graphQLTileSource<Types.OpportunityTileOverlayQuery>(Queries.Sourcing.OpportunityTileOverlay);
