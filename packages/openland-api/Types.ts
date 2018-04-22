@@ -130,6 +130,13 @@ export enum PermitSorting {
 }
 
 
+export enum OpportunitySort {
+  DATE_ADDED_DESC = "DATE_ADDED_DESC",
+  AREA_ASC = "AREA_ASC",
+  AREA_DESC = "AREA_DESC",
+}
+
+
 export interface AccountQuery {
   me:  {
     __typename: "User",
@@ -2261,6 +2268,7 @@ export interface SourcingQueryVariables {
   state?: OpportunityState | null,
   cursor?: string | null,
   page?: number | null,
+  sort?: OpportunitySort | null,
 };
 
 export interface SourcingQuery {
@@ -2273,6 +2281,7 @@ export interface SourcingQuery {
         id: string,
         state: OpportunityState,
         priority: OpportunityPriority,
+        updatedAt: string,
         parcel:  {
           __typename: "Parcel",
           id: string,
@@ -2376,6 +2385,7 @@ export interface OpportunityQuery {
     id: string,
     state: OpportunityState,
     priority: OpportunityPriority,
+    updatedAt: string,
     parcel:  {
       __typename: "Parcel",
       id: string,
@@ -2528,6 +2538,7 @@ export interface AddOpportunityMutationMutation {
     id: string,
     state: OpportunityState,
     priority: OpportunityPriority,
+    updatedAt: string,
     parcel:  {
       __typename: "Parcel",
       id: string,
@@ -2578,6 +2589,7 @@ export interface alphaAddOpportunitiesFromSearchMutation {
 export interface NextOpportunityQueryVariables {
   state: OpportunityState,
   initialId?: string | null,
+  sort?: OpportunitySort | null,
 };
 
 export interface NextOpportunityQuery {
@@ -2586,6 +2598,7 @@ export interface NextOpportunityQuery {
     id: string,
     state: OpportunityState,
     priority: OpportunityPriority,
+    updatedAt: string,
     parcel:  {
       __typename: "Parcel",
       id: string,

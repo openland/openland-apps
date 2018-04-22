@@ -146,7 +146,11 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
     handleUpdate = (e?: any) => {
         this.setState({ query: e });
-        sessionStorage.setItem('__explore_query', JSON.stringify(e));
+        if (e) {
+            sessionStorage.setItem('__explore_query', JSON.stringify(e));
+        } else {
+            sessionStorage.removeItem('__explore_query');
+        }
     }
 
     handleClick = (id: string) => {
@@ -191,7 +195,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 <CitySelector title={cityName} inverted={true}>
                                     <CitySelector.Popper>
                                         <XHorizontal>
-                                            <XButton query={{ field: 'city', value: 'sf' }} style={city !== 'sf' ? 'normal' : 'dark'} autoClose={true} >San Francisco</XButton>
+                                            <XButton query={{ field: 'city', value: 'sf' }} style={city !== 'sf' ? 'normal' : 'dark'} autoClose={true}>San Francisco</XButton>
                                             <XButton query={{ field: 'city', value: 'nyc' }} style={city === 'sf' ? 'normal' : 'dark'} autoClose={true}>New York</XButton>
                                         </XHorizontal>
                                     </CitySelector.Popper>

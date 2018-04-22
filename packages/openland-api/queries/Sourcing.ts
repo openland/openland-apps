@@ -2,13 +2,14 @@ import gql from 'graphql-tag';
 import { ParcelFull, ParcelShort } from './Parcels';
 
 export const SourcingQuery = gql`
-    query Sourcing($state: OpportunityState, $cursor: String, $page: Int) {
-        alphaOpportunities(state: $state, first: 50, after: $cursor, page: $page) {
+    query Sourcing($state: OpportunityState, $cursor: String, $page: Int, $sort: OpportunitySort) {
+        alphaOpportunities(state: $state, first: 50, after: $cursor, page: $page, sort: $sort) {
             edges {
                 node {
                     id
                     state
                     priority
+                    updatedAt
                     parcel {
                         ...ParcelShort
                     }
@@ -34,6 +35,7 @@ export const OpportunityQuery = gql`
             id
             state
             priority
+            updatedAt
             parcel {
                 ...ParcelFull
             }
@@ -48,6 +50,7 @@ export const AddOpportunityMutation = gql`
             id
             state
             priority
+            updatedAt
             parcel {
                 id
                 opportunity {
@@ -81,11 +84,12 @@ export const AddOpportunityFromSearchMutation = gql`
 `;
 
 export const NextOpportunityQuery = gql`
-    query NextOpportunity($state: OpportunityState!, $initialId: ID) {
-        alphaNextReviewOpportunity(state: $state, initialId: $initialId) {
+    query NextOpportunity($state: OpportunityState!, $initialId: ID, $sort: OpportunitySort) {
+        alphaNextReviewOpportunity(state: $state, initialId: $initialId, sort: $sort) {
             id
             state
             priority
+            updatedAt
             parcel {
                 ...ParcelFull
             }

@@ -6,6 +6,7 @@ import { XButton } from './X/XButton';
 import { XArea } from './X/XArea';
 import { PriorityIndicator } from './PriorityIndicator';
 import { ParcelNumber } from './ParcelNumber';
+import { XDate } from './X/XDate';
 
 export const OpportunitiesTable = withSourcing((props) => {
     let stage = '';
@@ -20,6 +21,7 @@ export const OpportunitiesTable = withSourcing((props) => {
     } else if (props.data.variables.state === 'SNOOZED') {
         useDirect = true;
     }
+    let sort = props.router.query.sort ? '&sort=' + props.router.query.sort : '';
     return (
         <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
             {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length !== 0 && (
@@ -31,11 +33,12 @@ export const OpportunitiesTable = withSourcing((props) => {
                             <XTable.Cell>Address</XTable.Cell>
                             <XTable.Cell width={100} textAlign="right">Area</XTable.Cell>
                             <XTable.Cell width={90} textAlign="left">Zoning</XTable.Cell>
-                            <XTable.Cell width={90} textAlign="right">Priority</XTable.Cell>
+                            <XTable.Cell width={120} textAlign="right">Priority</XTable.Cell>
+                            <XTable.Cell width={140} textAlign="right">{}</XTable.Cell>
                         </XTable.Header>
                         <XTable.Body>
                             {props.data.alphaOpportunities.edges.map((v) => (
-                                <XTable.Row key={v.node.id} path={useDirect ? '/parcels/' + v.node.parcel.id : ('/prospecting/review?initialId=' + v.node.id + stage)}>
+                                <XTable.Row key={v.node.id} path={useDirect ? '/parcels/' + v.node.parcel.id : ('/prospecting/review?initialId=' + v.node.id + stage + sort)}>
                                     <XTable.Cell>
                                         {v.node.parcel.city.name}
                                     </XTable.Cell>
@@ -53,6 +56,9 @@ export const OpportunitiesTable = withSourcing((props) => {
                                     </XTable.Cell>
                                     <XTable.Cell textAlign="right">
                                         <PriorityIndicator priority={v.node.priority} />
+                                    </XTable.Cell>
+                                    <XTable.Cell textAlign="right">
+                                        <XDate format="humanize" date={v.node.updatedAt} />
                                     </XTable.Cell>
                                 </XTable.Row>
                             ))}

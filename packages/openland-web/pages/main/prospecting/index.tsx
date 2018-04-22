@@ -11,12 +11,14 @@ import { withProspectingStats } from '../../../api';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
+import { XSwitcher } from '../../../components/X/XSwitcher';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
 });
 
 export default withApp('Incoming opportunities', 'viewer', withProspectingStats((props) => {
+    let sort = props.router.query.sort ? '?sort=' + props.router.query.sort : '';
     return (
         <>
             <XHead title="Incoming opportunities" />
@@ -24,7 +26,12 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Incoming opportunities">
-                        <XButton style="dark" path="/prospecting/review">Begin Review</XButton>
+                        <XSwitcher>
+                            <XSwitcher.Item query={{ field: 'sort' }}>Last Added</XSwitcher.Item>
+                            <XSwitcher.Item query={{ field: 'sort', value: 'AREA_DESC' }}>Area Desc</XSwitcher.Item>
+                            <XSwitcher.Item query={{ field: 'sort', value: 'AREA_ASC' }}>Area Asc</XSwitcher.Item>
+                        </XSwitcher>
+                        <XButton style="dark" path={'/prospecting/review' + sort}>Begin Review</XButton>
                     </XHeader>
 
                     <OpportunitiesTable variables={{ state: 'INCOMING' }}>
