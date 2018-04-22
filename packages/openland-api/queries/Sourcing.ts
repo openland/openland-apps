@@ -44,6 +44,15 @@ export const OpportunityQuery = gql`
     ${ParcelFull}
 `;
 
+export const OpportunityTileOverlay = gql`
+    query OpportunityTileOverlay($box: GeoBox!) {
+        tiles: alphaOpportunityOverlay(box: $box, limit: 5000) {
+            id
+            center
+        }
+    }
+`;
+
 export const AddOpportunityMutation = gql`
     mutation AddOpportunityMutation($parcelId: ID!) {
         aphaAddOpportunity(parcelId: $parcelId) {

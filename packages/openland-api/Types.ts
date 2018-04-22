@@ -2528,6 +2528,18 @@ export interface OpportunityQuery {
   } | null,
 };
 
+export interface OpportunityTileOverlayQueryVariables {
+  box: GeoBox,
+};
+
+export interface OpportunityTileOverlayQuery {
+  tiles:  Array< {
+    __typename: "Opportunity",
+    id: string,
+    geometry: string | null,
+  } > | null,
+};
+
 export interface AddOpportunityMutationMutationVariables {
   parcelId: string,
 };

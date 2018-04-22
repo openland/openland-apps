@@ -227,3 +227,4 @@ export const withOpportunityByIdGet = graphqlRouted<Types.OpportunityQuery>(Quer
 export const withOpportunity = graphqlCompose5(withNextOpportunity, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity, withParcelNotes);
 export const withOpportunityById = graphqlCompose4(withOpportunityByIdGet, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity);
 export const withAddFromSearchOpportunity = graphqlMutation<{ addFromSearch: MutationFunc<{}> }>(Queries.Sourcing.AddOpportunityFromSearchMutation, { name: 'addFromSearch', refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
+export const SourcingTileSource = graphQLTileSource<Types.OpportunityTileOverlayQuery>(Queries.Sourcing.OpportunityTileOverlay);

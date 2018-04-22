@@ -44,3 +44,19 @@ export const ProspectingNavigationReview = withProspectingStats(withRouter((prop
         </XTab>
     );
 }));
+
+export const ProspectingNavigationMap = withProspectingStats(withRouter((props) => {
+    return (
+        <XTab inline={true}>
+            {props.router.routeQuery.stage === undefined && <XTab.Item path={'/prospecting'} active={true} asArrow={true}>Incoming{convertNumber(props.data.incoming)}</XTab.Item>}
+            {props.router.routeQuery.stage !== undefined && <XTab.Item query={{ field: 'stage' }} asArrow={true}>Incoming{convertNumber(props.data.incoming)}</XTab.Item>}
+            {props.router.routeQuery.stage === 'zoning' && <XTab.Item path={'/prospecting/zoning'} active={true} asArrow={true}>Zoning Review{convertNumber(props.data.approved_initial)}</XTab.Item>}
+            {props.router.routeQuery.stage !== 'zoning' && <XTab.Item query={{ field: 'stage', value: 'zoning' }} asArrow={true}>Zoning Review{convertNumber(props.data.approved_initial)}</XTab.Item>}
+            {props.router.routeQuery.stage === 'unit' && <XTab.Item path={'/prospecting/unit'} active={true} asArrow={true}>Unit Placement{convertNumber(props.data.approved_zoning)}</XTab.Item>}
+            {props.router.routeQuery.stage !== 'unit' && <XTab.Item query={{ field: 'stage', value: 'unit' }} asArrow={true}>Unit Placement{convertNumber(props.data.approved_zoning)}</XTab.Item>}
+            <XTab.Item path={'/prospecting/approved'}>Approved{convertNumber(props.data.approved)}</XTab.Item>
+            <XTab.Item path={'/prospecting/rejected'}>Rejected</XTab.Item>
+            <XTab.Item path={'/prospecting/snoozed'}>Snoozed</XTab.Item>
+        </XTab>
+    );
+}));
