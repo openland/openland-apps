@@ -2,8 +2,8 @@ import gql from 'graphql-tag';
 import { ParcelFull, ParcelShort } from './Parcels';
 
 export const SourcingQuery = gql`
-    query Sourcing($state: OpportunityState, $cursor: String, $page: Int, $sort: OpportunitySort) {
-        alphaOpportunities(state: $state, first: 50, after: $cursor, page: $page, sort: $sort) {
+    query Sourcing($state: OpportunityState, $cursor: String, $page: Int, $sort: OpportunitySort, $query: String) {
+        alphaOpportunities(state: $state, first: 50, after: $cursor, page: $page, sort: $sort, query: $query) {
             edges {
                 node {
                     id
@@ -48,7 +48,10 @@ export const OpportunityTileOverlay = gql`
     query OpportunityTileOverlay($box: GeoBox!) {
         tiles: alphaOpportunityOverlay(box: $box, limit: 5000) {
             id
-            center
+            center {
+                latitude
+                longitude
+            }
         }
     }
 `;
@@ -93,8 +96,8 @@ export const AddOpportunityFromSearchMutation = gql`
 `;
 
 export const NextOpportunityQuery = gql`
-    query NextOpportunity($state: OpportunityState!, $initialId: ID, $sort: OpportunitySort) {
-        alphaNextReviewOpportunity(state: $state, initialId: $initialId, sort: $sort) {
+    query NextOpportunity($state: OpportunityState!, $initialId: ID, $sort: OpportunitySort, $query: String) {
+        alphaNextReviewOpportunity(state: $state, initialId: $initialId, sort: $sort, query: $query) {
             id
             state
             priority

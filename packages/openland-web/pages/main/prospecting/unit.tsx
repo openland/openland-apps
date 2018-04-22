@@ -8,8 +8,15 @@ import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
+import { OpportunityState } from 'openland-api/Types';
+import { withRouter } from '../../../components/withRouter';
 
-export default withApp('Unit placement', 'viewer', () => {
+export default withApp('Unit placement', 'viewer', withRouter((props) => {
+    let hasPublic = props.router.query.public ? true : false;
+    let squery: string | null = null;
+    if (hasPublic) {
+        squery = '{"isPublic": true}';
+    }
     return (
         <>
             <XHead title="Unit placement" />
@@ -17,13 +24,15 @@ export default withApp('Unit placement', 'viewer', () => {
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Unit placement">
+                        {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
+                        {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
                         <XButton style="dark" path="/prospecting/review?stage=unit">Begin review</XButton>
                     </XHeader>
-                    <OpportunitiesTable variables={{ state: 'APPROVED_ZONING' }} stage="unit">
+                    <OpportunitiesTable variables={{ state: OpportunityState.APPROVED_ZONING, query: squery }} stage="unit">
                         <XCard.Empty text="There are no parcels for review" icon="sort" />
                     </OpportunitiesTable>
                 </Scaffold.Content>
             </Scaffold>
         </>
     );
-});
+}));

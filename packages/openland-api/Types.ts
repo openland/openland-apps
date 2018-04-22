@@ -2269,6 +2269,7 @@ export interface SourcingQueryVariables {
   cursor?: string | null,
   page?: number | null,
   sort?: OpportunitySort | null,
+  query?: string | null,
 };
 
 export interface SourcingQuery {
@@ -2536,7 +2537,11 @@ export interface OpportunityTileOverlayQuery {
   tiles:  Array< {
     __typename: "Opportunity",
     id: string,
-    geometry: string | null,
+    center:  {
+      __typename: "Geo",
+      latitude: number,
+      longitude: number,
+    } | null,
   } > | null,
 };
 
@@ -2602,6 +2607,7 @@ export interface NextOpportunityQueryVariables {
   state: OpportunityState,
   initialId?: string | null,
   sort?: OpportunitySort | null,
+  query?: string | null,
 };
 
 export interface NextOpportunityQuery {

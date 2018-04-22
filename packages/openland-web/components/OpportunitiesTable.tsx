@@ -7,6 +7,7 @@ import { XArea } from './X/XArea';
 import { PriorityIndicator } from './PriorityIndicator';
 import { ParcelNumber } from './ParcelNumber';
 import { XDate } from './X/XDate';
+import ATypes from 'openland-api';
 
 export const OpportunitiesTable = withSourcing((props) => {
     let stage = '';
@@ -21,6 +22,7 @@ export const OpportunitiesTable = withSourcing((props) => {
     } else if (props.data.variables.state === 'SNOOZED') {
         useDirect = true;
     }
+    let sVal = props.router.query.sort;
     let sort = props.router.query.sort ? '&sort=' + props.router.query.sort : '';
     return (
         <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
@@ -31,7 +33,12 @@ export const OpportunitiesTable = withSourcing((props) => {
                             <XTable.Cell width={120}>City</XTable.Cell>
                             <XTable.Cell width={150}>Parcel</XTable.Cell>
                             <XTable.Cell>Address</XTable.Cell>
-                            <XTable.Cell width={100} textAlign="right">Area</XTable.Cell>
+                            <XTable.Cell width={100} textAlign="right"
+                                orderBy={sVal === 'AREA_DESC' ? 'DESC' : sVal === 'AREA_ASC' ? 'ASC' : 'NO_SORT'}
+                                query={{ field: 'sort', value: (sVal === 'AREA_DESC' ? 'AREA_ASC' : sVal === 'AREA_ASC' ? undefined : 'AREA_DESC') }}
+                            >
+                                Area
+                            </XTable.Cell>
                             <XTable.Cell width={90} textAlign="left">Zoning</XTable.Cell>
                             <XTable.Cell width={120} textAlign="right">Priority</XTable.Cell>
                             <XTable.Cell width={140} textAlign="right">{}</XTable.Cell>
@@ -81,4 +88,4 @@ export const OpportunitiesTable = withSourcing((props) => {
             )}
         </XCard.Loader>
     );
-}) as React.ComponentType<{ variables?: any, stage?: 'unit' | 'zoning' }>;
+}) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' }>;
