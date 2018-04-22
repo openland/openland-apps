@@ -599,11 +599,15 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
         }
         if (this.props.router.query!!.customQuery) {
             let res = JSON.parse(this.props.router.query!!.customQuery) as string[];
+            let q: any[] = [];
             for (let r of res) {
-                clauses.push({
+                q.push({
                     [r]: true
                 });
             }
+            clauses.push({
+                '$or': q
+            });
         }
         if (this.props.router.query!!.queryUrbyn2) {
             clauses.push({
@@ -736,7 +740,9 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                         <FilterCell title="Custom Queries">
                             <RoutedSelector
                                 fieldName="customQuery"
-                                options={[{ value: 'customerUrbynQuery1', label: 'Query-1' }, { value: 'customerUrbynQuery2', label: 'Query-2' }]}
+                                options={[
+                                    { value: 'customerUrbynQuery1', label: 'Departments' },
+                                    { value: 'customerUrbynQuery2', label: 'City of New York' }]}
                                 placeholder="Custom Queries"
                                 multi={true}
                             />
