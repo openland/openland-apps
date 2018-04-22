@@ -136,12 +136,6 @@ interface XTableCellProps {
     orderBy?: OrderBy;
 }
 
-const orderTypes = {
-    'NO_SORT': 'code',
-    'DESC': 'keyboard_arrow_down',
-    'ASC': 'keyboard_arrow_up',
-};
-
 const contetnPosition = {
     'left': 'flex-start',
     'right': 'flex-end',
@@ -161,18 +155,39 @@ const TDChildrenDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end'
         color: 'rgb(82, 95, 127)'
     },
     '& > .order-icon': {
-        display: 'flex',
-        justifyContent: 'center',
-
+        position: 'relative',
+        marginLeft: -2,
+        userSelect: 'none',
         '& > i': {
-            fontSize: 15,
-            marginTop: 4
-        },
-        '&.code': {
-            '& > i': {
-                transform: 'rotate(90deg)'
+            fontSize: 22,
+            position: 'absolute',
+            left: 0,
+            '&.arrow-top': {
+                top: -14
+            },
+            '&.arrow-down': {
+                top: -7
             }
-        }
+        },
+        '&.NO_SORT > i': {
+            opacity: 0.5
+        },
+        '&.ASC': {
+            '& i.arrow-top': {
+                color: '#650FEA'
+            },
+            '& i.arrow-down': {
+                opacity: 0.5
+            }
+        },
+        '&.DESC': {
+            '& i.arrow-down': {
+                color: '#650FEA'
+            },
+            '& i.arrow-top': {
+                opacity: 0.5
+            }
+        },
     }
 }));
 
@@ -180,8 +195,9 @@ const TDChildren = (props: { children: any, orderBy?: OrderBy, textAlign?: 'left
     <TDChildrenDiv justifyContent={contetnPosition[props.textAlign || 'flex-start']}>
         {props.children}
         {props.orderBy && (
-            <div className={classnames(`order-icon ${orderTypes[props.orderBy]}`)}>
-                <XIcon icon={orderTypes[props.orderBy]} />
+            <div className={classnames(`order-icon ${props.orderBy}`)}>
+                <XIcon icon="arrow_drop_up" className="arrow-top" />
+                <XIcon icon="arrow_drop_down" className="arrow-down" />
             </div>
         )}
     </TDChildrenDiv>
