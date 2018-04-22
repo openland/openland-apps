@@ -172,14 +172,14 @@ const TDChildrenDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end'
             }
         },
         '&.NO_SORT > i': {
-            opacity: 0.5
+            opacity: 0.3
         },
         '&.ASC': {
             '& i.arrow-top': {
                 color: '#650FEA'
             },
             '& i.arrow-down': {
-                opacity: 0.5
+                opacity: 0.3
             }
         },
         '&.DESC': {
@@ -187,7 +187,7 @@ const TDChildrenDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end'
                 color: '#650FEA'
             },
             '& i.arrow-top': {
-                opacity: 0.5
+                opacity: 0.3
             }
         },
     }
