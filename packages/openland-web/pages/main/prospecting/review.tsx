@@ -178,6 +178,7 @@ export default withApp('Initial Review', 'viewer', withRouter((props) => {
             title = 'Unit Placement Review';
         }
     }
+    
     return (
         <>
             <XHead title={title} />
