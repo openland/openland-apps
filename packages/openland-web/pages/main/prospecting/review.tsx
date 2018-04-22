@@ -178,13 +178,18 @@ export default withApp('Initial Review', 'viewer', withRouter((props) => {
             title = 'Unit Placement Review';
         }
     }
-    
+    let hasPublic = props.router.query.public ? true : false;
+    let squery: string | null = null;
+    if (hasPublic) {
+        squery = '{"isPublic": true}';
+    }
+
     return (
         <>
             <XHead title={title} />
             <Scaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
-                    <OpportunityInfo variables={{ state: state }} />
+                    <OpportunityInfo variables={{ state: state, query: squery }} />
                 </Scaffold.Content>
             </Scaffold>
         </>
