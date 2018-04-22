@@ -155,6 +155,8 @@ const TDChildrenDiv = Glamorous.div<{ justifyContent?: 'flex-start' | 'flex-end'
         color: 'rgb(82, 95, 127)'
     },
     '& > .order-icon': {
+        display: 'block',
+        width: 18,
         position: 'relative',
         marginLeft: -2,
         userSelect: 'none',
