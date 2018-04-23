@@ -1,88 +1,59 @@
 import * as React from 'react';
 import { XCard } from '../X/XCard';
 
-var zoning = require('./../../static/data/zoning/zoning.json');
-var zoningMetrics = require('./../../static/data/zoning/metrics.json');
+import zoning from './zoning/zoning.json';
+import metrics from './zoning/metrics.json';
 
 export interface ZoneMetric {
-    id: string;
-    metric: string;
+    name: string;
     subtype: string | undefined;
     units: string | undefined;
+}
+class ZoneMetricValue {
+    value: string | number;
+    meta: ZoneMetric;
 }
 
 export class ZoneData {
     name: string;
-    data: {
-        value: string | number;
-        metric: ZoneMetric;
-    }[] = [];
+    data: ZoneMetricValue[] = [];
 
     constructor(zone: string) {
         this.name = zone;
+    }
+
+    pick(metricsToPick: string[], showEmpty?: boolean): ZoneMetricValue[] {
+        let res: ZoneMetricValue[] = [];
+
+        for (let nameToPick of metricsToPick) {
+            for (let metric of this.data) {
+                if (metric.meta.name === nameToPick && (showEmpty === undefined || showEmpty || (metric.value != null && metric.value !== '-'))) {
+                    res.push(metric);
+                }
+            }
+        }
+        return res;
     }
 }
 
 export function zoneData(zoneId: string): ZoneData | undefined {
     let res: ZoneData | undefined = undefined;
 
-    let zoneFields = extractObjectFields(zoning.zoning, 'zone', zoneId);
-
-    if (zoneFields) {
+    let zone = zoning.zoning[zoneId];
+    if (zone) {
         res = new ZoneData(zoneId);
-        for (let zoneField of zoneFields) {
-
-            let metric = findObject(zoningMetrics.metrics, 'id', zoneField.key);
+        for (let metricName of Object.keys(zone)) {
+            let metric = metrics.metrics[metricName];
             if (metric) {
                 res.data.push({
-                    value: zoneField.value,
-                    metric: metric,
+                    meta: metric,
+                    value: zone[metricName]
                 });
             }
-
         }
     }
 
     return res;
-}
-
-function extractObjectFields(from: any, keyField: string, key: string): { key: string; value: string }[] | undefined {
-    let res: { key: string; value: string }[] | undefined = undefined;
-    for (let entry of from) {
-        let match = false;
-        for (let k of Object.keys(entry)) {
-
-            if (!match && k === keyField && entry[k] === key) {
-
-                match = true;
-                res = [];
-            }
-
-            if (match && res) {
-                res.push(
-                    {
-                        key: k as string,
-                        value: entry[k] as string,
-                    }
-                );
-            }
-
-        }
-
-        if (match) {
-            break;
-        }
-    }
-
-    return res;
-}
-
-function findObject(from: any, keyField: string, key: string): any {
-    for (let entry of from) {
-        if (entry[keyField] === key) {
-            return entry;
-        }
-    }
 }
 
 export function XZoningMetrics(props: { codes: string[] }) {
@@ -92,17 +63,31 @@ export function XZoningMetrics(props: { codes: string[] }) {
     for (let itm of items) {
         let zone = zoneData(itm);
 
+        let toPick = ['Minimum Lot Width',
+            'Minimum Lot Area',
+            'Density Factor',
+            'Side Yard: Combined',
+            'Side Yard: Each',
+            'Minimum Rear Yard',
+            'Minimum Setback',
+            'Maximum Units',
+            'Minimum Unit Size',
+            'Maximum FAR',
+            'Maximum Lot Coverage',
+            'Minimum Parking',
+            'Height: Perimiter Wall',
+            'Height: Building',
+            'Height: Base (min-max)',
+            'Minimum Open Space'];
+
         components.push(
             zone && (
-                <XCard.PropertyList title={zone.name}>
-                    {
-                        zone.data.map((v, i) => (
-                            <XCard.Property key={v.metric.id + zone!!.name} title={v.metric.metric + (v.metric.subtype ? ' (' + v.metric.subtype + ')' : '')}>{v.value + (v.metric.units && v.value !== '-' ? ' ' + v.metric.units : '')}</XCard.Property>
-                        ))
-                    }
+                <XCard.PropertyList title={zone.name}>{
+                    zone.pick(toPick, false).map((v, i) => (
+                        <XCard.Property key={v.meta.name + v.meta.subtype + zone!!.name} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.value + (v.meta.units && v.value !== '-' ? ' ' + v.meta.units : '')}</XCard.Property>))}
                 </XCard.PropertyList>
             )
         );
     }
-    return components.length === 1 ? components[0] : <div>{components}</div>;
+    return components.length === 1 ? components[0] : <React.Fragment>{components}</React.Fragment>;
 }
