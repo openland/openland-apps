@@ -87,12 +87,20 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
         }
     }
     render() {
-        console.warn(this.props.query);
+        let mapStyle = this.props.router.query!!.mode === 'full'
+            ? 'mapbox://styles/mapbox/streets-v9'
+            : (this.props.router.query!!.mode === 'satellite' ?
+                'mapbox://styles/mapbox/satellite-v9'
+                : (this.props.router.query!!.mode === 'zoning' ?
+                    'mapbox://styles/steve-kite/cje15jkmr3bvt2so3mu8nvsk6'
+                    : 'mapbox://styles/mapbox/light-v9'
+                )
+            );
         return (
             <>
                 <MapContainer>
                     <XMap
-                        mapStyle="mapbox://styles/mapbox/light-v9"
+                        mapStyle={mapStyle}
                         focusPosition={{ latitude: 40.713919, longitude: -74.002332, zoom: 12 }}
                         lastKnownCameraLocation={this.knownCameraLocation}
                         onCameraLocationChanged={this.handleMap}

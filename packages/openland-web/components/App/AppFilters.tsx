@@ -740,11 +740,11 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                                 multi={true}
                             />
                         </FilterCell>
-                        <FilterCell title="Public owner">
+                        <FilterCell title="Publicly owned">
                             <RoutedSelector
                                 fieldName="publicOwner"
                                 options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
-                                placeholder="Public owner"
+                                placeholder="Publicly owned"
                             />
                         </FilterCell>
                         {/* <FilterCell title="Public owners">

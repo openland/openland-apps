@@ -89,8 +89,27 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                             <XCard.Map focusLocation={{ latitude: props.parcel.center!!.latitude, longitude: props.parcel.center!!.longitude, zoom: 18 }}>
                                 <XMapSource id={'parcel'} data={sourceFromGeometry(props.parcel.geometry!!)} />
                                 <XMapPolygonLayer source="parcel" layer="parcel" />
-                                {props.parcel.compatibleBuildings.filter((v) => v.shape).map((v, i) => (<XMapSource key={'source-shape-' + i} id={'shape-' + i} data={sourceFromGeometry(v.shape!!)} />))}
-                                {props.parcel.compatibleBuildings.filter((v) => v.shape).map((v, i) => (<XMapPolygonLayer key={'layer-shape-' + i} source={'shape-' + i} layer={'shape-' + i} />))}
+                                {props.parcel.compatibleBuildings.filter((v) => v.shape).map((v, i) => (
+                                    <XMapSource
+                                        key={'source-shape-' + i}
+                                        id={'shape-' + i}
+                                        data={sourceFromGeometry(v.shape!!)}
+                                    />
+                                ))}
+                                {props.parcel.compatibleBuildings.filter((v) => v.shape).map((v, i) => (
+                                    <XMapPolygonLayer
+                                        key={'layer-shape-' + i}
+                                        source={'shape-' + i}
+                                        layer={'shape-' + i}
+                                        style={{
+                                            borderColor: v.key === 'kassita-1' ? '#E88989' : '#2886E0',
+                                            borderWidth: 2,
+                                            fillOpacity: 0
+
+                                            // fillOpacity: 0.4
+                                        }}
+                                    />
+                                ))}
                             </XCard.Map>
                         </XView>
                     )}
