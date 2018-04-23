@@ -23,7 +23,7 @@ const Container = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     position: 'relative',
-    height: '100%',
+    height: 'calc(100% - 50px)',
     width: '100%',
     '& .mapboxgl-ctrl-top-right': {
         top: '65px !important',
