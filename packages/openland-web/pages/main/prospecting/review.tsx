@@ -180,7 +180,7 @@ const OpportunityInfo = withOpportunity((props) => {
                         description={<ParcelNumber city={props.data.alphaNextReviewOpportunity!!.parcel.city.name} id={props.data.alphaNextReviewOpportunity!!.parcel.number} />}
                         bullet={props.data.alphaNextReviewOpportunity!!.parcel.extrasOwnerPublic ? 'public' : undefined}
                     >
-                        {mapUrl && <XButton path={mapUrl} >View in map</XButton>}
+                        {mapUrl && <XButton path={mapUrl} >View on the map</XButton>}
                         <XButtonMutation
                             variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                             mutation={props.reject}
