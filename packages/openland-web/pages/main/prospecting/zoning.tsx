@@ -28,7 +28,7 @@ export default withApp('Zoning Review', 'viewer', withRouter((props) => {
                     <XHeader text="Zoning Review">
                         {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
                         {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
-                        <XButton path={'/prospecting/map?stage=unit' + queryMap}>Map View</XButton>
+                        <XButton path={'/prospecting/map?stage=zoning' + queryMap}>Map View</XButton>
                         <XButton style="dark" path={'/prospecting/review?stage=zoning' + queryMap}>Begin review</XButton>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.APPROVED_INITIAL, query: squery }} stage="zoning">
