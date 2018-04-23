@@ -157,17 +157,20 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         }
                     </XCard.PropertyList>
                 )}
-            {props.item.links.length > 0 && (
-                <XCard.PropertyList title="Links">
-                    {props.item.links.map((v, i) => (
-                        <XCard.Property title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XCard.Property>
-                    ))}
-                </XCard.PropertyList>
-            )}
+            <XCard.PropertyColumns>
+                {props.item.links.length > 0 && (
+                    <XCard.PropertyList title="Links">
+                        {props.item.links.map((v, i) => (
+                            <XCard.Property title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XCard.Property>
+                        ))}
+                    </XCard.PropertyList>
+                )}
 
-            {props.item.extrasZoning && props.item.extrasZoning!!.length > 0 &&
-                <XZoningMetrics codes={props.item!!.extrasZoning!!} />
-            }
+                {props.item.extrasZoning && props.item.extrasZoning!!.length > 0 &&
+                    <XZoningMetrics codes={props.item!!.extrasZoning!!} />
+                }
+
+            </XCard.PropertyColumns>
         </>
     );
 }

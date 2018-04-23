@@ -4,11 +4,11 @@ import { XCard } from '../X/XCard';
 var zoning = require('./../../static/data/zoning/zoning.json');
 var zoningMetrics = require('./../../static/data/zoning/metrics.json');
 
-export class ZoneMetric {
+export interface ZoneMetric {
     id: string;
     metric: string;
-    subtype: string;
-    units: string;
+    subtype: string | undefined;
+    units: string | undefined;
 }
 
 export class ZoneData {
@@ -32,18 +32,14 @@ export function zoneData(zoneId: string): ZoneData | undefined {
         res = new ZoneData(zoneId)
         for (let zoneField of zoneFields) {
 
-            let metricFields = extractObjectFields(zoningMetrics.metrics, "id", zoneField.key);
-
-            if (metricFields) {
-                let metric = new ZoneMetric();
-                for (let metricField of metricFields) {
-                    metric[metricField.key] = metricField.value
-                }
+            let metric = findObject(zoningMetrics.metrics, "id", zoneField.key);
+            if(metric){
                 res.data.push({
                     value: zoneField.value,
                     metric: metric,
                 })
             }
+           
         }
     }
 
@@ -82,6 +78,14 @@ function extractObjectFields(from: any, keyField: string, key: string): { key: s
     return res
 }
 
+function findObject(from: any, keyField: string, key:string):any{
+    for (let entry of from) {
+        if(entry[keyField] === key){
+            return entry;
+        }
+    }
+}
+
 export function XZoningMetrics(props: { codes: string[] }) {
     let items = [...new Set(props.codes)].sort();
     let components: any[] = [];
@@ -101,5 +105,5 @@ export function XZoningMetrics(props: { codes: string[] }) {
             )
         );
     }
-    return <div>{components}</div>;
+    return components.length === 1 ? components[0] : <div>{components}</div>;
 }
