@@ -1,0 +1,146 @@
+{
+    "metrics":[
+        {
+            "id": "metric1",
+            "metric": "Minimum Lot Width",
+            "subtype": "Detached",
+            "units": "Ft"
+        },
+        {
+            "id": "metric2",
+            "metric": "Minimum Lot Width",
+            "subtype": "Attached",
+            "units": "Ft"
+        },
+        {
+            "id": "metric3",
+            "metric": "Minimum Lot Area",
+            "subtype": "Detached",
+            "units": "Sq Ft"
+        },
+        {
+            "id": "metric4",
+            "metric": "Minimum Lot Area",
+            "subtype": "Attached",
+            "units": "Sq Ft"
+        },
+        {
+            "id": "metric5",
+            "metric": "Density Factor*",
+            "subtype": "Square Feet",
+            "units": "Sq Ft"
+        },
+        {
+            "id": "metric6",
+            "metric": "Side Yard: Combined*",
+            "subtype": "Detached",
+            "units": "Ft"
+        },
+        {
+            "id": "metric7",
+            "metric": "Side Yard: Combined*",
+            "subtype": "Semi-Detached",
+            "units": "Ft"
+        },
+        {
+            "id": "metric8",
+            "metric": "Side Yard: Each",
+            "subtype": "Detached",
+            "units": "Ft"
+        },
+        {
+            "id": "metric9",
+            "metric": "Minimum Rear Yard",
+            "subtype": "Feet",
+            "units": "Ft"
+        },
+        {
+            "id": "metric10",
+            "metric": "Minimum Setback",
+            "subtype": "Feet",
+            "units": "Ft"
+        },
+        {
+            "id": "metric11",
+            "metric": "Maximum Units"
+        },
+        {
+            "id": "metric12",
+            "metric": "Minimum Unit Size",
+            "subtype": "23-96(d)(1)(i)",
+            "units": "Sq Ft"
+        },
+        {
+            "id": "metric13",
+            "metric": "Maximum FAR",
+            "subtype": "Wide Street*",
+            "units": "x"
+        },
+        {
+            "id": "metric14",
+            "metric": "Maximum FAR",
+            "subtype": "Narrow Street",
+            "units": "x"
+        },
+        {
+            "id": "metric15",
+            "metric": "Maximum Lot Coverage",
+            "subtype": "Corner",
+            "units": "%"
+        },
+        {
+            "id": "metric16",
+            "metric": "Maximum Lot Coverage",
+            "subtype": "Interior",
+            "units": "%"
+        },
+        {
+            "id": "metric17",
+            "metric": "Minimum Parking",
+            "subtype": "Per Unit",
+            "units": "%"
+        },
+        {
+            "id": "metric18",
+            "metric": "Minimum Parking",
+            "subtype": "Per IRHU*",
+            "units": "%"
+        },
+        {
+            "id": "metric19",
+            "metric": "Height: Perimiter Wall",
+            "subtype": "Maximum",
+            "units": "Ft"
+        },
+        {
+            "id": "metric20",
+            "metric": "Height: Building",
+            "subtype": "Wide Street*",
+            "units": "Ft"
+        },
+        {
+            "id": "metric21",
+            "metric": "Height: Building",
+            "subtype": "Narrow Street",
+            "units": "Ft"
+        },
+        {
+            "id": "metric22",
+            "metric": "Height: Base* (min-max)",
+            "subtype": "Wide Street*",
+            "units": "Ft"
+        },
+        {
+            "id": "metric23",
+            "metric": "Height: Base* (min-max)",
+            "subtype": "Narrow Street",
+            "units": "Ft"
+        },
+        {
+            "id": "metric24",
+            "metric": "Minimum Open Space",
+            "subtype": "Ratio",
+            "units": "%"
+        }
+    ]
+}

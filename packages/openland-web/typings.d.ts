@@ -203,3 +203,8 @@ declare module 'uploadcare-widget' {
 declare module '@typeform/embed' {
     function makeWidget(element: any, url: string, options: any): void;
 }
+
+declare module "*.json" {
+    const value: any;
+    export default value;
+}

@@ -14,6 +14,7 @@ import { XDistance } from './X/XDistance';
 import { Text } from '../strings';
 import { XVertical } from './X/XVertical';
 import { XLinkExternal } from './X/XLinkExternal';
+import { XZoningMetrics } from './X/XZoningMetrics'
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
 
@@ -163,6 +164,10 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     ))}
                 </XCard.PropertyList>
             )}
+
+            {props.item.extrasZoning && props.item.extrasZoning!!.length > 0 &&
+                <XZoningMetrics codes={props.item!!.extrasZoning!!} />
+            }
         </>
     );
 }
