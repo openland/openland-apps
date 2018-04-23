@@ -42,11 +42,11 @@ let LoaderWrapper = Glamorous(XCard.Loader)({
     flexGrow: 1
 });
 
-let Scrollable = Glamorous.div({
+let Scrollable = Glamorous.div<{ compact: boolean }>((props) => ({
     width: '100%',
-    height: '100vh',
+    height: props.compact ? 'calc(100vh - 56px)' : '100vh',
     overflowY: 'auto'
-});
+}));
 
 let StreetViewDiv = Glamorous.div({
     position: 'relative',
@@ -85,7 +85,7 @@ export const ParcelCard = withParcelDirect((props) => {
         <Container>
             <LoaderWrapper loading={!props.data || props.data!!.loading}>
                 {props.data && props.data!!.item &&
-                    <Scrollable>
+                    <Scrollable compact={(props as any).compact || false}>
                         <XHeader
                             text={props.data.item!!.address || 'No address'}
                             description={<ParcelNumber id={props.data.item!!.number} />}
@@ -197,7 +197,7 @@ export const ParcelCard = withParcelDirect((props) => {
                             {props.data.item!!.depth &&
                                 <PropertyCell title="Depth"><XDistance value={props.data.item!!.depth!!.value} /></PropertyCell>
                             }
-                            {props.data.item!!.extrasShapeSides && !props.data.item!!.front && !props.data.item!!.depth &&  props.data.item!!.extrasShapeSides!!.length > 0 &&
+                            {props.data.item!!.extrasShapeSides && !props.data.item!!.front && !props.data.item!!.depth && props.data.item!!.extrasShapeSides!!.length > 0 &&
                                 <PropertyCell title="Dimensions"> <XDimensions dimensions={props.data.item!!.extrasShapeSides!!} /></PropertyCell>
                             }
                             {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && (
@@ -303,4 +303,4 @@ export const ParcelCard = withParcelDirect((props) => {
             </LoaderWrapper>
         </Container>
     );
-}) as React.ComponentClass<{ parcelId: string, onClose?: () => void }>;
+}) as React.ComponentClass<{ parcelId: string, compact?: boolean, onClose?: () => void }>;

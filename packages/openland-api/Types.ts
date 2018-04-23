@@ -2531,6 +2531,7 @@ export interface OpportunityQuery {
 
 export interface OpportunityTileOverlayQueryVariables {
   box: GeoBox,
+  query?: string | null,
 };
 
 export interface OpportunityTileOverlayQuery {
@@ -2542,6 +2543,10 @@ export interface OpportunityTileOverlayQuery {
       latitude: number,
       longitude: number,
     } | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+    },
   } > | null,
 };
 
