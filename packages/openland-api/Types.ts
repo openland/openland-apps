@@ -1244,6 +1244,11 @@ export interface ParcelQuery {
     },
     // Geometry
     geometry: string | null,
+    center:  {
+      __typename: "Geo",
+      latitude: number,
+      longitude: number,
+    } | null,
     address: string | null,
     compatibleBuildings:  Array< {
       __typename: "BuildingLocation",
@@ -2402,6 +2407,11 @@ export interface OpportunityQuery {
       },
       // Geometry
       geometry: string | null,
+      center:  {
+        __typename: "Geo",
+        latitude: number,
+        longitude: number,
+      } | null,
       address: string | null,
       compatibleBuildings:  Array< {
         __typename: "BuildingLocation",
@@ -2637,6 +2647,11 @@ export interface NextOpportunityQuery {
       },
       // Geometry
       geometry: string | null,
+      center:  {
+        __typename: "Geo",
+        latitude: number,
+        longitude: number,
+      } | null,
       address: string | null,
       compatibleBuildings:  Array< {
         __typename: "BuildingLocation",
@@ -3012,6 +3027,11 @@ export interface ParcelFullFragment {
   },
   // Geometry
   geometry: string | null,
+  center:  {
+    __typename: string,
+    latitude: number,
+    longitude: number,
+  } | null,
   address: string | null,
   compatibleBuildings:  Array< {
     __typename: string,

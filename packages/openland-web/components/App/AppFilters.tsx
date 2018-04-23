@@ -737,13 +737,14 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                                 multi={true}
                             />
                         </FilterCell>
-                        <FilterCell title="Custom Queries">
+                        <FilterCell title="Public owners">
                             <RoutedSelector
                                 fieldName="customQuery"
                                 options={[
                                     { value: 'customerUrbynQuery1', label: 'Departments' },
-                                    { value: 'customerUrbynQuery2', label: 'City of New York' }]}
-                                placeholder="Custom Queries"
+                                    { value: 'customerUrbynQuery2', label: 'City of New York' },
+                                    { value: 'customerUrbynQuery3', label: 'Abbreviations' }]}
+                                placeholder="Public owners"
                                 multi={true}
                             />
                         </FilterCell>

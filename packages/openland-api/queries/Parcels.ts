@@ -19,6 +19,10 @@ export const ParcelFull = gql`
           ...ParcelID
       }
       geometry
+      center {
+          latitude
+          longitude
+      }
       address
 
       compatibleBuildings {
