@@ -571,6 +571,9 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
         if (this.props.router.query!!.isOkForTower) {
             clauses.push({ 'isOkForTower': JSON.parse(this.props.router.query!!.isOkForTower) });
         }
+        if (this.props.router.query!!.publicOwner) {
+            clauses.push({ 'ownerPublic': JSON.parse(this.props.router.query!!.publicOwner) });
+        }
         let isVacantSet: boolean | undefined;
         if (this.props.router.query!!.isVacant) {
             if (JSON.parse(this.props.router.query!!.isVacant) === 'true') {
@@ -722,11 +725,11 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                                 multi={true}
                             />
                         </FilterCell>
-                        <FilterCell title="Is vacant">
+                        <FilterCell title="Vacant">
                             <RoutedSelector
                                 fieldName="isVacant"
                                 options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
-                                placeholder="Is vacant"
+                                placeholder="Vacant"
                             />
                         </FilterCell>
                         <FilterCell title="Compatible buildings">
@@ -737,7 +740,14 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                                 multi={true}
                             />
                         </FilterCell>
-                        <FilterCell title="Public owners">
+                        <FilterCell title="Public owner">
+                            <RoutedSelector
+                                fieldName="publicOwner"
+                                options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
+                                placeholder="Public owner"
+                            />
+                        </FilterCell>
+                        {/* <FilterCell title="Public owners">
                             <RoutedSelector
                                 fieldName="customQuery"
                                 options={[
@@ -747,7 +757,7 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                                 placeholder="Public owners"
                                 multi={true}
                             />
-                        </FilterCell>
+                        </FilterCell> */}
                     </XWithRole>
                     <FilterCell title="Area">
                         <FilterRange placeholderFrom="1000 ft" placeholderTo="1000000 ft" />
