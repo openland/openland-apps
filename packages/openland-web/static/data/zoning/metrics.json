@@ -4,61 +4,61 @@
             "id": "metric1",
             "metric": "Minimum Lot Width",
             "subtype": "Detached",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric2",
             "metric": "Minimum Lot Width",
             "subtype": "Attached",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric3",
             "metric": "Minimum Lot Area",
             "subtype": "Detached",
-            "units": "Sq Ft"
+            "units": "sq ft"
         },
         {
             "id": "metric4",
             "metric": "Minimum Lot Area",
             "subtype": "Attached",
-            "units": "Sq Ft"
+            "units": "sq ft"
         },
         {
             "id": "metric5",
             "metric": "Density Factor*",
             "subtype": "Square Feet",
-            "units": "Sq Ft"
+            "units": "sq ft"
         },
         {
             "id": "metric6",
             "metric": "Side Yard: Combined*",
             "subtype": "Detached",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric7",
             "metric": "Side Yard: Combined*",
             "subtype": "Semi-Detached",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric8",
             "metric": "Side Yard: Each",
             "subtype": "Detached",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric9",
             "metric": "Minimum Rear Yard",
             "subtype": "Feet",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric10",
             "metric": "Minimum Setback",
             "subtype": "Feet",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric11",
@@ -68,7 +68,7 @@
             "id": "metric12",
             "metric": "Minimum Unit Size",
             "subtype": "23-96(d)(1)(i)",
-            "units": "Sq Ft"
+            "units": "sq ft"
         },
         {
             "id": "metric13",
@@ -110,31 +110,31 @@
             "id": "metric19",
             "metric": "Height: Perimiter Wall",
             "subtype": "Maximum",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric20",
             "metric": "Height: Building",
             "subtype": "Wide Street*",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric21",
             "metric": "Height: Building",
             "subtype": "Narrow Street",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric22",
             "metric": "Height: Base* (min-max)",
             "subtype": "Wide Street*",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric23",
             "metric": "Height: Base* (min-max)",
             "subtype": "Narrow Street",
-            "units": "Ft"
+            "units": "ft"
         },
         {
             "id": "metric24",

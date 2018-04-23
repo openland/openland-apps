@@ -26,29 +26,28 @@ export class ZoneData {
 export function zoneData(zoneId: string): ZoneData | undefined {
     let res: ZoneData | undefined = undefined;
 
-    let zoneFields = extractObjectFields(zoning.zoning, "zone", zoneId);
+    let zoneFields = extractObjectFields(zoning.zoning, 'zone', zoneId);
 
     if (zoneFields) {
-        res = new ZoneData(zoneId)
+        res = new ZoneData(zoneId);
         for (let zoneField of zoneFields) {
 
-            let metric = findObject(zoningMetrics.metrics, "id", zoneField.key);
-            if(metric){
+            let metric = findObject(zoningMetrics.metrics, 'id', zoneField.key);
+            if (metric) {
                 res.data.push({
                     value: zoneField.value,
                     metric: metric,
-                })
+                });
             }
-           
+
         }
     }
 
-
-    return res
+    return res;
 }
 
 function extractObjectFields(from: any, keyField: string, key: string): { key: string; value: string }[] | undefined {
-    let res: { key: string; value: string }[] | undefined = undefined
+    let res: { key: string; value: string }[] | undefined = undefined;
     for (let entry of from) {
         let match = false;
         for (let k of Object.keys(entry)) {
@@ -65,7 +64,7 @@ function extractObjectFields(from: any, keyField: string, key: string): { key: s
                         key: k as string,
                         value: entry[k] as string,
                     }
-                )
+                );
             }
 
         }
@@ -75,12 +74,12 @@ function extractObjectFields(from: any, keyField: string, key: string): { key: s
         }
     }
 
-    return res
+    return res;
 }
 
-function findObject(from: any, keyField: string, key:string):any{
+function findObject(from: any, keyField: string, key: string): any {
     for (let entry of from) {
-        if(entry[keyField] === key){
+        if (entry[keyField] === key) {
             return entry;
         }
     }
@@ -98,7 +97,7 @@ export function XZoningMetrics(props: { codes: string[] }) {
                 <XCard.PropertyList title={zone.name}>
                     {
                         zone.data.map((v, i) => (
-                            <XCard.Property title={v.metric.metric + (v.metric.subtype ? " (" + v.metric.subtype + ")" : "") + (v.metric.units ? ", " + v.metric.units : "")}>{v.value}</XCard.Property>
+                            <XCard.Property key={v.metric.id + zone!!.name} title={v.metric.metric + (v.metric.subtype ? ' (' + v.metric.subtype + ')' : '')}>{v.value + (v.metric.units && v.value !== '-' ? ' ' + v.metric.units : '')}</XCard.Property>
                         ))
                     }
                 </XCard.PropertyList>
