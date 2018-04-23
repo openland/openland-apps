@@ -250,7 +250,9 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                         selectedFillOpacity: 0,
                                         selectedBorderColor: '#4428E1',
                                         selectedBorderWidth: 8,
-                                        selectedBorderOpacity: 1
+                                        selectedBorderOpacity: 1,
+                                        borderColor: this.props.router.query!!.mode === 'satellite' ? '#ffffff' : '#4428e0',
+                                        borderWidth: this.props.router.query!!.mode === 'satellite' ? 4 : 1,
                                     }}
                                     minZoom={16}
                                     flyOnClick={true}
@@ -266,6 +268,8 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                     style={{
                                         fillOpacity: 0.1,
                                         borderOpacity: 0.3,
+                                        borderColor: this.props.router.query!!.mode === 'satellite' ? '#ffffff' : '#4428e0',
+                                        borderWidth: this.props.router.query!!.mode === 'satellite' ? 4 : 1,
                                     }}
                                     flyOnClick={true}
                                     flyToMaxZoom={18}

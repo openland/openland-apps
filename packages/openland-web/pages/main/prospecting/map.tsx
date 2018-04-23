@@ -123,6 +123,8 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
                             source="parcels"
                             layer="parcels"
                             style={{
+                                borderColor: this.props.router.query!!.mode === 'satellite' ? '#ffffff' : '#4428e0',
+                                borderWidth: this.props.router.query!!.mode === 'satellite' ? 4 : 1,
                                 selectedFillOpacity: 0,
                                 selectedBorderColor: '#4428E1',
                                 selectedBorderWidth: 8,
@@ -142,6 +144,8 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
                             style={{
                                 fillOpacity: 0.1,
                                 borderOpacity: 0.3,
+                                borderColor: this.props.router.query!!.mode === 'satellite' ? '#ffffff' : '#4428e0',
+                                borderWidth: this.props.router.query!!.mode === 'satellite' ? 4 : 1,
                             }}
                             flyOnClick={true}
                             flyToMaxZoom={18}
