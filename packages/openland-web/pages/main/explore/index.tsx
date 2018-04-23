@@ -19,8 +19,8 @@ import { XMapSource } from '../../../components/X/XMapSource';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { trackEvent } from '../../../utils/analytics';
 import { canUseDOM } from '../../../utils/environment';
-import { XButtonMutation } from '../../../components/X/XButtonMutation';
-import { XWithRole } from '../../../components/X/XWithRole';
+// import { XButtonMutation } from '../../../components/X/XButtonMutation';
+// import { XWithRole } from '../../../components/X/XWithRole';
 import { Scaffold } from '../../../components/Scaffold';
 import XStyles from '../../../components/X/XStyles';
 
@@ -58,7 +58,7 @@ const FilterContainer = Glamorous(XCard)({
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: '#5968e2',
-    width: '422px',
+    width: '352px',
     height: '78px',
     pointerEvents: 'auto',
     position: 'absolute',
@@ -123,7 +123,7 @@ const DealsSource = withDealsMap((props) => {
     return null;
 });
 
-const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Prospect All!</XButtonMutation>);
+// const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Add to prospecting</XButtonMutation>);
 class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { query?: any }> {
 
     knownCameraLocation?: XMapCameraLocation;
@@ -210,9 +210,9 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                         </FilterHeader>
                         <FilterActions>
                             <XHorizontal>
-                                <XWithRole role={['super-admin', 'software-developer']}>
+                                {/* <XWithRole role={['super-admin', 'software-developer']}>
                                     {this.state.query && <AddOpportunitiesButton variables={{ query: JSON.stringify(this.state.query) }} />}
-                                </XWithRole>
+                                </XWithRole> */}
                                 <AppFilters onChange={this.handleUpdate} city={city} />
                             </XHorizontal>
                         </FilterActions>
