@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { ParcelCard } from '../../../components/ParcelCard';
-import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats, withDealsMap, withAddFromSearchOpportunity } from '../../../api/';
+import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XMap, XMapCameraLocation } from '../../../components/X/XMap';
 import { XHead } from '../../../components/X/XHead';
