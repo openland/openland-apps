@@ -95,11 +95,13 @@ export const ParcelFull = gql`
 
       extrasOwnerName
       extrasOwnerType
+      extrasOwnerPublic
 
       extrasShapeType
       extrasShapeSides
       extrasFitProjects
       extrasAnalyzed
+      extrasOwnerPublic
 
       userData {
           notes

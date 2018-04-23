@@ -90,7 +90,7 @@ export const ParcelCard = withParcelDirect((props) => {
                             text={props.data.item!!.address || 'No address'}
                             description={<ParcelNumber id={props.data.item!!.number} />}
                             truncateDescription={true}
-                            bullet={props.data!!.item!!.metadata.available ? 'ON SALE' : undefined}
+                            bullet={props.data!!.item!!.extrasOwnerPublic ? 'public' : (props.data!!.item!!.metadata.available ? 'ON SALE' : undefined)}
                             style="compact"
                         >
                             <XButton borderless={true} size="large" query={{ field: 'selectedParcel' }} icon="clear" />
