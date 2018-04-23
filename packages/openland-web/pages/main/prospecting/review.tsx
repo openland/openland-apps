@@ -33,6 +33,7 @@ import { XWithRole } from '../../../components/X/XWithRole';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';
 import { Text } from '../../../strings';
+import { XButton } from '../../../components/X/XButton';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> }) => {
     return (
@@ -128,12 +129,26 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
 
 const OpportunityInfo = withOpportunity((props) => {
     let approveText = 'Move to next stage';
+    let hasPublic = props.router.query.public ? true : false;
+    let mapUrl: string | undefined = undefined; // '/prospecting/map';
+    if (props.data.alphaNextReviewOpportunity) {
+        mapUrl = '/prospecting/map?selectedParcel=' + props.data.alphaNextReviewOpportunity.parcel.id;
+    }
+    if (hasPublic && mapUrl) {
+        mapUrl = mapUrl + '&public=true';
+    }
     if (props.data.variables.state === 'INCOMING') {
         approveText = 'Move to Zoning Review';
     } else if (props.data.variables.state === 'APPROVED_INITIAL') {
         approveText = 'Move to Unit Placement';
+        if (mapUrl) {
+            mapUrl = mapUrl + '&stage=zoning';
+        }
     } else if (props.data.variables.state === 'APPROVED_ZONING') {
         approveText = 'Approve';
+        if (mapUrl) {
+            mapUrl = mapUrl + '&stage=unit';
+        }
     }
 
     return (
@@ -146,6 +161,7 @@ const OpportunityInfo = withOpportunity((props) => {
                         description={<ParcelNumber city={props.data.alphaNextReviewOpportunity!!.parcel.city.name} id={props.data.alphaNextReviewOpportunity!!.parcel.number} />}
                         bullet={props.data.alphaNextReviewOpportunity!!.parcel.extrasOwnerPublic ? 'public' : undefined}
                     >
+                        {mapUrl && <XButton path={mapUrl} >View in map</XButton>}
                         <XButtonMutation
                             variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                             mutation={props.reject}
