@@ -213,9 +213,6 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
 
                     {props.router.path === notesPath && (
                         <>
-                            <XContent>
-                                <XTitle>Notes</XTitle>
-                            </XContent>
                             <XForm defaultValues={{ notes: props.data.item.userData ? props.data.item.userData.notes : '' }} submitMutation={props.parcelNotes} mutationDirect={true}>
                                 <XContent>
                                     <XForm.TextArea field="notes" placeholder="Notes" />
