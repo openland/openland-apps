@@ -96,6 +96,18 @@ export default withApp('UI Framework', 'viewer', (props) => {
                             <XSwitcher.Item>third</XSwitcher.Item>
                             <XSwitcher.Item>fourth</XSwitcher.Item>
                         </XSwitcher>
+                        <XSwitcher alignSelf="flex-start" fieldStyle={true}>
+                            <XSwitcher.Item path="/ui">first</XSwitcher.Item>
+                            <XSwitcher.Item>second</XSwitcher.Item>
+                            <XSwitcher.Item>third</XSwitcher.Item>
+                            <XSwitcher.Item>fourth</XSwitcher.Item>
+                        </XSwitcher>
+                        <XSwitcher alignSelf="flex-start" flatStyle={true}>
+                            <XSwitcher.Item path="/ui" count={0}>first</XSwitcher.Item>
+                            <XSwitcher.Item count={100}>second</XSwitcher.Item>
+                            <XSwitcher.Item count={80}>third</XSwitcher.Item>
+                            <XSwitcher.Item count={3}>fourth</XSwitcher.Item>
+                        </XSwitcher>
                         <XSlider dots step={5} defaultValue={100} />
                         <XRange dots step={5} defaultValue={[20, 40]} />
                         <XDropdown title="with children">
