@@ -34,6 +34,7 @@ import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';
 import { Text } from '../../../strings';
 import { XButton } from '../../../components/X/XButton';
+import { ParcelLayer } from '../../../components/ParcelLayer';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> }) => {
     return (
@@ -87,8 +88,8 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                     {props.parcel.compatibleBuildings && props.parcel.compatibleBuildings.length > 0 && (
                         <XView css={{ paddingRight: 24, paddingLeft: 8 }}>
                             <XCard.Map focusLocation={{ latitude: props.parcel.center!!.latitude, longitude: props.parcel.center!!.longitude, zoom: 18 }}>
-                                <XMapSource id={'parcel'} data={sourceFromGeometry(props.parcel.geometry!!)} />
-                                <XMapPolygonLayer source="parcel" layer="parcel" />
+                                <XMapSource id="parcels" data={sourceFromGeometry(props.parcel.geometry!!)} />
+                                <ParcelLayer inverted={false} />
                                 {props.parcel.compatibleBuildings.filter((v) => v.shape).map((v, i) => (
                                     <XMapSource
                                         key={'source-shape-' + i}
@@ -117,7 +118,12 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
             </XCard.PropertyColumns>
             {props.parcel.geometry && (
                 <XContent>
-                    <ParcelMaps id={props.parcel.id} geometry={props.parcel.geometry} disableNavigation={true} satellite={true} />
+                    <ParcelMaps
+                        id={props.parcel.id}
+                        geometry={props.parcel.geometry}
+                        disableNavigation={true}
+                        satellite={true}
+                    />
                 </XContent>
             )}
             <XContent>

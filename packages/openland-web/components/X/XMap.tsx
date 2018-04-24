@@ -14,7 +14,7 @@ let Wrapper = Glamorous.div({
 
 export type XMapCameraLocation = { latitude: number, longitude: number, zoom: number };
 
-interface XMapProps {
+export interface XMapProps {
     scrollZoom?: boolean;
     mapStyle?: string;
     focusPosition?: XMapCameraLocation;

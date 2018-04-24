@@ -6,10 +6,9 @@ import { withRouter, XWithRouter } from '../../../components/withRouter';
 import { XHead } from '../../../components/X/XHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { ProspectingNavigationMap } from '../../../components/ProspectingNavigation';
-import { XMap, XMapCameraLocation } from '../../../components/X/XMap';
-import { SourcingTileSource, BlockTileSource, ParcelTileSource } from '../../../api';
+import { XMapCameraLocation } from '../../../components/X/XMap';
+import { SourcingTileSource } from '../../../api';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
-import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { OpportunityState } from 'openland-api/Types';
@@ -17,6 +16,7 @@ import { XSwitcher } from '../../../components/X/XSwitcher';
 import { canUseDOM } from '../../../utils/environment';
 import { trackEvent } from '../../../utils/analytics';
 import { ParcelCard } from '../../../components/ParcelCard';
+import { ParcelMap } from '../../../components/ParcelMap';
 // import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 
 const Container = Glamorous.div({
@@ -87,70 +87,24 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
         }
     }
     render() {
-        let mapStyle = this.props.router.query!!.mode === 'full'
-            ? 'mapbox://styles/mapbox/streets-v9'
-            : (this.props.router.query!!.mode === 'satellite' ?
-                'mapbox://styles/mapbox/satellite-v9'
-                : (this.props.router.query!!.mode === 'zoning' ?
-                    'mapbox://styles/steve-kite/cje15jkmr3bvt2so3mu8nvsk6'
-                    : 'mapbox://styles/mapbox/light-v9'
-                )
-            );
         return (
             <>
                 <MapContainer>
-                    <XMap
-                        mapStyle={mapStyle}
+                    <ParcelMap
+                        mapStyle={this.props.router.query.mode}
                         focusPosition={{ latitude: 40.713919, longitude: -74.002332, zoom: 12 }}
                         lastKnownCameraLocation={this.knownCameraLocation}
                         onCameraLocationChanged={this.handleMap}
+                        onParcelClick={this.handleParcelClick}
+                        selectedParcel={this.props.router.query.selectedParcel}
                     >
-                        <ParcelTileSource
-                            layer="parcels"
-                            minZoom={16}
-                        />
-                        <BlockTileSource
-                            layer="blocks"
-                            minZoom={12}
-                        />
+    
                         <SourcingTileSource
                             layer="sourcing"
                             minZoom={12}
                             query={this.props.query}
                         />
 
-                        <XMapPolygonLayer
-                            source="parcels"
-                            layer="parcels"
-                            style={{
-                                borderColor: this.props.router.query!!.mode === 'satellite' ? '#ffffff' : '#4428e0',
-                                borderWidth: this.props.router.query!!.mode === 'satellite' ? 4 : 1,
-                                selectedFillOpacity: 0,
-                                selectedBorderColor: '#4428E1',
-                                selectedBorderWidth: 8,
-                                selectedBorderOpacity: 1
-                            }}
-                            minZoom={16}
-                            flyOnClick={true}
-                            onClick={this.handleParcelClick}
-                            selectedId={this.props.router.query!!.selectedParcel}
-                            flyToMaxZoom={18}
-                        />
-                        <XMapPolygonLayer
-                            source="blocks"
-                            layer="blocks"
-                            minZoom={12}
-                            maxZoom={16}
-                            style={{
-                                fillOpacity: 0.1,
-                                borderOpacity: 0.3,
-                                borderColor: this.props.router.query!!.mode === 'satellite' ? '#ffffff' : '#4428e0',
-                                borderWidth: this.props.router.query!!.mode === 'satellite' ? 4 : 1,
-                            }}
-                            flyOnClick={true}
-                            flyToMaxZoom={18}
-                            flyToPadding={{ left: 64, top: 64, bottom: 64, right: 64 }}
-                        />
                         <XMapPointLayer
                             source="sourcing"
                             layer="sourcing"
@@ -158,7 +112,7 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
                             onClick={this.handleDealClick}
                             flyToMaxZoom={18}
                         />
-                    </XMap>
+                    </ParcelMap>
                 </MapContainer>
                 {this.props.router.query!!.selectedParcel && <ParcelCard compact={true} parcelId={this.props.router.query!!.selectedParcel} />}
             </>

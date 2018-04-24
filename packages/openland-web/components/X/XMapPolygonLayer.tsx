@@ -24,7 +24,7 @@ interface XMapPolygonLayerStyle {
     selectedBorderWidth?: number;
 }
 
-interface XMapPolygonLayerProps {
+export interface XMapPolygonLayerProps {
     source: string;
     layer: string;
 

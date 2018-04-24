@@ -2,11 +2,9 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
-import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { ParcelCard } from '../../../components/ParcelCard';
-import { ParcelTileSource, BlockTileSource, ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
+import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
-import { XMap, XMapCameraLocation } from '../../../components/X/XMap';
 import { XHead } from '../../../components/X/XHead';
 import { XWithRouter, withRouter } from '../../../components/withRouter';
 import { XSwitcher } from '../../../components/X/XSwitcher';
@@ -23,6 +21,8 @@ import { canUseDOM } from '../../../utils/environment';
 // import { XWithRole } from '../../../components/X/XWithRole';
 import { Scaffold } from '../../../components/Scaffold';
 import XStyles from '../../../components/X/XStyles';
+import { ParcelMap } from '../../../components/ParcelMap';
+import { XMapCameraLocation } from '../../../components/X/XMap';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -164,16 +164,6 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
     }
 
     render() {
-        let mapStyle = this.props.router.query!!.mode === 'full'
-            ? 'mapbox://styles/mapbox/streets-v9'
-            : (this.props.router.query!!.mode === 'satellite' ?
-                'mapbox://styles/mapbox/satellite-v9'
-                : (this.props.router.query!!.mode === 'zoning' ?
-                    'mapbox://styles/steve-kite/cje15jkmr3bvt2so3mu8nvsk6'
-                    : 'mapbox://styles/mapbox/light-v9'
-                )
-            );
-
         let defaultCity = 'sf';
         if (this.props.roles.find((v) => v === 'feature-city-nyc-force')) {
             defaultCity = 'nyc';
@@ -220,21 +210,14 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                     {/* </AppContentMap.Item> */}
                     <XMapContainer>
                         <XMapContainer2>
-                            <XMap
-                                key={this.props.router.query!!.mode || 'map'}
-                                mapStyle={mapStyle}
+                            <ParcelMap
+                                mode={this.props.router.query.mode}
+                                selectedParcel={this.props.router.query.selectedParcel}
+                                onParcelClick={this.handleClick}
                                 focusPosition={focus}
                                 lastKnownCameraLocation={this.knownCameraLocation}
                                 onCameraLocationChanged={this.handleMap}
                             >
-                                <ParcelTileSource
-                                    layer="parcels"
-                                    minZoom={16}
-                                />
-                                <BlockTileSource
-                                    layer="blocks"
-                                    minZoom={12}
-                                />
                                 <ParcelPointSource
                                     layer="parcels-found"
                                     query={this.state.query}
@@ -243,38 +226,6 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 />
                                 <DealsSource />
 
-                                <XMapPolygonLayer
-                                    source="parcels"
-                                    layer="parcels"
-                                    style={{
-                                        selectedFillOpacity: 0,
-                                        selectedBorderColor: '#4428E1',
-                                        selectedBorderWidth: 8,
-                                        selectedBorderOpacity: 1,
-                                        borderColor: this.props.router.query!!.mode === 'satellite' ? '#ffffff' : '#4428e0',
-                                        borderWidth: this.props.router.query!!.mode === 'satellite' ? 4 : 1,
-                                    }}
-                                    minZoom={16}
-                                    flyOnClick={true}
-                                    onClick={this.handleClick}
-                                    selectedId={this.props.router.query!!.selectedParcel}
-                                    flyToMaxZoom={18}
-                                />
-                                <XMapPolygonLayer
-                                    source="blocks"
-                                    layer="blocks"
-                                    minZoom={12}
-                                    maxZoom={16}
-                                    style={{
-                                        fillOpacity: 0.1,
-                                        borderOpacity: 0.3,
-                                        borderColor: this.props.router.query!!.mode === 'satellite' ? '#ffffff' : '#4428e0',
-                                        borderWidth: this.props.router.query!!.mode === 'satellite' ? 4 : 1,
-                                    }}
-                                    flyOnClick={true}
-                                    flyToMaxZoom={18}
-                                    flyToPadding={{ left: 64, top: 64, bottom: 64, right: 64 }}
-                                />
                                 <XMapPointLayer
                                     source="parcels-found"
                                     layer="parcels-found"
@@ -287,7 +238,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                     color="#24b47e"
                                     onClick={this.handleClick}
                                 />
-                            </XMap>
+                            </ParcelMap>
                             <MapSwitcher>
                                 <XSwitcher fieldStyle={true}>
                                     <XSwitcher.Item query={{ field: 'mode' }}>Map</XSwitcher.Item>
