@@ -5,11 +5,11 @@ import { XArea } from './X/XArea';
 import { withRouter } from './withRouter';
 import { ParcelNumber } from './ParcelNumber';
 
-export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[] }>((props) => {
+export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[], showCity?: boolean }>((props) => {
     return (
         <XTable>
             <XTable.Header>
-                <XTable.Cell>City</XTable.Cell>
+                {props.showCity !== false && <XTable.Cell>City</XTable.Cell>}
                 <XTable.Cell>Parcel ID</XTable.Cell>
                 <XTable.Cell>Address</XTable.Cell>
                 <XTable.Cell textAlign="right">Area</XTable.Cell>
@@ -18,7 +18,7 @@ export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[] }>((
             <XTable.Body>
                 {props.items.map((v) => (
                     <XTable.Row key={v.id} path={'/parcels/' + v.id}>
-                        <XTable.Cell>{v.city.name}</XTable.Cell>
+                        {props.showCity !== false && <XTable.Cell>{v.city.name}</XTable.Cell>}
                         <XTable.Cell><ParcelNumber id={v.number} compact={true} /></XTable.Cell>
                         <XTable.Cell>{v.address}</XTable.Cell>
                         <XTable.Cell textAlign="right">{v.area && <XArea area={v.area.value} />}</XTable.Cell>

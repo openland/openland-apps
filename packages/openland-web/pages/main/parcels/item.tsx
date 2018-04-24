@@ -197,10 +197,10 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                             )}
                         </>)}
 
-                    {props.router.path === linksPath && props.data.item.links.length > 0 && (
-                        <XCard.PropertyList>
+                    {props.router.path === linksPath &&  props.data.item.links.length > 0 && (
+                        <XCard.PropertyList title="Links">
                             {props.data.item.links.map((v, i) => (
-                                <XCard.Property title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XCard.Property>
+                                <XCard.Property key={'link-' + i} title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XCard.Property>
                             ))}
                         </XCard.PropertyList>
                     )}

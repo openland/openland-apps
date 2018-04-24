@@ -6,6 +6,7 @@ import { XSelect, XSelectProps } from '../X/XSelect';
 import { withRouter, XWithRouter } from '../withRouter';
 import { XWithRole } from '../X/XWithRole';
 import XStyles from '../X/XStyles';
+import { XFilterInput } from '../X/XFilterInput';
 
 let AllLandUse = [
     'Residental',
@@ -545,6 +546,31 @@ interface AppFiltersProps {
     city?: string;
 }
 
+const StyledInput = Glamorous(XFilterInput)({
+    display: 'flex',
+    height: 28,
+    width: 320,
+    boxSizing: 'border-box',
+    border: '1px solid #ccc',
+    borderRadius: 4,
+    color: '#525f7f',
+    backgroundColor: '#fff',
+    fontSize: '14px',
+    lineHeight: 1.6,
+    paddingTop: 4,
+    paddingLeft: 7,
+    paddingRight: 7,
+    paddingBottom: 2,
+    outline: 'none',
+    '&:focus': {
+        border: '1px solid transparent',
+        boxShadow: '0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08)'
+    },
+    '&::placeholder': {
+        color: '#8898aa'
+    }
+});
+
 class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
 
     private modal: XModalTargeted | null = null;
@@ -565,6 +591,10 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
         if (this.props.router.query!!.filterStories) {
             clauses.push({ 'stories': JSON.parse(this.props.router.query!!.filterStories) });
         }
+        if (this.props.router.query!!.ownerName) {
+            clauses.push({ 'ownerName': this.props.router.query.ownerName });
+        }
+        // ownerName
         if (this.props.router.query!!.filterCurrentUse) {
             clauses.push({ 'currentUse': JSON.parse(this.props.router.query!!.filterCurrentUse) });
         }
@@ -716,11 +746,17 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                             </FilterCell>
                         </>
                     )}
+                    <FilterCell title="Owner name">
+                        <StyledInput
+                            searchKey="ownerName"
+                            placeholder="Owner name"
+                        />
+                    </FilterCell>
                     <FilterCell title="Zoning">
                         <RoutedSelector
                             fieldName="filterZoning"
                             options={AllNYCZOnes.map((v) => ({ value: v, label: v }))}
-                            placeholder="Zoning Code"
+                            placeholder="Zoning code"
                             multi={true}
                         />
                     </FilterCell>
@@ -732,12 +768,12 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                         />
                     </FilterCell>
                     <FilterCell title="Publicly owned">
-                            <RoutedSelector
-                                fieldName="publicOwner"
-                                options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
-                                placeholder="Publicly owned"
-                            />
-                        </FilterCell>
+                        <RoutedSelector
+                            fieldName="publicOwner"
+                            options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
+                            placeholder="Publicly owned"
+                        />
+                    </FilterCell>
                     <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                         <FilterCell title="Compatible buildings">
                             <RoutedSelector
