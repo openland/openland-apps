@@ -91,10 +91,18 @@ export function XZoningMetrics(props: { codes: string[] }) {
     let items = [...new Set(props.codes)].sort();
     let components: any[] = [];
 
-    let single = items.length === 1;
+    let zones = [];
 
     for (let itm of items) {
         let zone = zoneData(itm);
+        if (zone) {
+            zones.push(zone);
+        }
+    }
+
+    let single = zones.length === 1;
+
+    for (let zone of zones) {
 
         const zoneHeader = 'ZONE_HEADER';
         let toPick = [
@@ -163,6 +171,6 @@ export function XZoningMetrics(props: { codes: string[] }) {
 
         }
     }
-    return <XCard.PropertyColumns wrap={true}>{components}</XCard.PropertyColumns>;
+    return <XCard.PropertyColumns wrap={true} grow={0}>{components}</XCard.PropertyColumns>;
 
 }

@@ -57,13 +57,13 @@ let XCardPropertyColumsDiv = Glamorous.div<{ children: any, fwrap?: boolean }>((
     flexWrap: props.fwrap ? 'wrap' : 'nowrap'
 }));
 
-let XCardPropertyColumnsContainerDiv = Glamorous.div({
+let XCardPropertyColumnsContainerDiv = Glamorous.div<{ grow?: number }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
     flexBasis: 0,
-    flexGrow: 1
-});
+    flexGrow: (props.grow !== undefined ? props.grow : 1)
+}));
 
 let XCardPropertyTitle = Glamorous.div<{ compact?: boolean }>((props) => ({
     ...XStyles.text.h600,
@@ -74,11 +74,11 @@ let XCardPropertyTitle = Glamorous.div<{ compact?: boolean }>((props) => ({
     marginBottom: 8
 }));
 
-export function XCardPropertyColumns(props: { children: any, wrap?: boolean }) {
+export function XCardPropertyColumns(props: { children: any, wrap?: boolean, grow?: number }) {
     return (
         <XCardPropertyColumsDiv fwrap={props.wrap}>
             {React.Children.toArray(props.children).map((v, i) => (
-                <XCardPropertyColumnsContainerDiv key={'chilren_' + i}>{v}</XCardPropertyColumnsContainerDiv>
+                <XCardPropertyColumnsContainerDiv key={'chilren_' + i} grow={props.grow}>{v}</XCardPropertyColumnsContainerDiv>
             ))}
         </XCardPropertyColumsDiv>
     );
