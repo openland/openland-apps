@@ -41,7 +41,7 @@ export const ProspectingNavigation = withProspectingStats(withRouter((props) => 
                     <XTab.Item path={'/prospecting/zoning' + query} asArrow={true}>Zoning Review{convertNumber(props.data.approved_initial)}</XTab.Item>
                     <XTab.Item path={'/prospecting/unit' + query} asArrow={true}>Unit Placement{convertNumber(props.data.approved_zoning)}</XTab.Item>
                     <XTab.Item path={'/prospecting/approved' + query}>Approved{convertNumber(props.data.approved)}</XTab.Item>
-                    <XTab.Item path={'/prospecting/nyc' + query}>NYC Lots{convertNumber(props.data.approved)}</XTab.Item>
+                    <XTab.Item path={'/prospecting/nyc' + query}>NYC Lots{convertNumber(props.data.snoozed)}</XTab.Item>
                     <XTab.Item path={'/prospecting/rejected' + query}>Rejected</XTab.Item>
                 </XTab>
             </XWithRole>
