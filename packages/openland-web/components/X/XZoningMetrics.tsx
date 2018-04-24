@@ -3,6 +3,8 @@ import { XCard } from '../X/XCard';
 
 import zoning from './zoning/zoning.json';
 import metrics from './zoning/metrics.json';
+import { XTitle } from './XTitle';
+import { XCardProperty } from '../X/XCardProperty';
 
 export interface ZoneMetric {
     name: string;
@@ -97,25 +99,13 @@ export function XZoningMetrics(props: { codes: string[] }) {
         let zone = zoneData(itm);
         if (zone) {
             zones.push(zone);
+            zones.push(zone);
         }
     }
 
-    let single = zones.length === 1;
-
     for (let zone of zones) {
 
-        const zoneHeader = 'ZONE_HEADER';
         let toPick = [
-            {
-                title: zoneHeader,
-                names: [
-                    'Density Factor',
-                    'Minimum Rear Yard',
-                    'Minimum Setback',
-                    'Maximum Units',
-                    'Minimum Unit Size',
-                    'Minimum Open Space']
-            },
             {
                 title: 'Maximum FAR',
                 names: [
@@ -150,11 +140,26 @@ export function XZoningMetrics(props: { codes: string[] }) {
                     'Height: Perimiter Wall',
                     'Height: Building',
                     'Height: Base (min-max)']
-            }
+            },
+            {
+                title: 'Other',
+                names: [
+                    'Density Factor',
+                    'Minimum Rear Yard',
+                    'Minimum Setback',
+                    'Maximum Units',
+                    'Minimum Unit Size',
+                    'Minimum Open Space']
+            },
         ];
 
         if (zone) {
-            let groupComponents = single ? components : [];
+            components.push(
+                <XCardProperty>
+                    <XTitle marginBottom={0}>{zone.name + ':'}</XTitle>
+                </XCardProperty>);
+
+            let groupComponents = [];
             for (let group of zone.pick(toPick, false)) {
                 let metricsComponents = [];
 
@@ -162,15 +167,13 @@ export function XZoningMetrics(props: { codes: string[] }) {
                     metricsComponents.push(
                         <XCard.Property key={v.meta.name + v.meta.subtype + zone!!.name} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.format()}</XCard.Property>);
                 }
-                groupComponents.push(<XCard.PropertyList width={300} key={zone.name} title={group.title === zoneHeader ? zone.name : group.title}>{metricsComponents}</XCard.PropertyList>);
+                groupComponents.push(<XCard.PropertyList  subtitle={true}  width={300} key={zone.name} title={group.title}>{metricsComponents}</XCard.PropertyList>);
 
             }
-            if (!single) {
-                components.push(<XCard.PropertyList>{groupComponents}</XCard.PropertyList>);
-            }
+            components.push(<XCard.PropertyColumns wrap={true} grow={0}>{groupComponents}</XCard.PropertyColumns>);
 
         }
     }
-    return <XCard.PropertyColumns wrap={true} grow={0}>{components}</XCard.PropertyColumns>;
+    return <>{components}</>;
 
 }

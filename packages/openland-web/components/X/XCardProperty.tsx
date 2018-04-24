@@ -75,6 +75,15 @@ let XCardPropertyTitle = Glamorous.div<{ compact?: boolean }>((props) => ({
     marginBottom: 8
 }));
 
+let XCardPropertySubTitle = Glamorous.div<{ compact?: boolean }>((props) => ({
+    ...XStyles.text.h500,
+    paddingLeft: props.compact ? 16 : 24,
+    paddingRight: props.compact ? 16 : 24,
+    textAlign: 'left',
+    color: '#262626',
+    marginBottom: 8
+}));
+
 export function XCardPropertyColumns(props: { children: any, wrap?: boolean, grow?: number }) {
     return (
         <XCardPropertyColumsDiv fwrap={props.wrap}>
@@ -85,10 +94,10 @@ export function XCardPropertyColumns(props: { children: any, wrap?: boolean, gro
     );
 }
 
-export function XCardPropertyList(props: { children: any, title?: string, compact?: boolean, width?: number }) {
+export function XCardPropertyList(props: { children: any, title?: string, compact?: boolean, width?: number, subtitle?: boolean }) {
     return (
         <XCardPropertyListDiv width={props.width}>
-            {props.title && <XCardPropertyTitle compact={props.compact}>{props.title} </XCardPropertyTitle>}
+            {props.title && (props.subtitle ? (<XCardPropertySubTitle compact={props.compact}>{props.title} </XCardPropertySubTitle>) : (<XCardPropertyTitle compact={props.compact}>{props.title} </XCardPropertyTitle>))}
             {props.children}
         </XCardPropertyListDiv>
     );
