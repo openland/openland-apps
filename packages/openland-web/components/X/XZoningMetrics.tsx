@@ -75,7 +75,12 @@ export class ZoneData {
 export function zoneData(zoneId: string): ZoneData | undefined {
     let res: ZoneData | undefined = undefined;
 
-    let zone = zoning.zoning[zoneId];
+    let zone;
+    for (let z of Object.keys(zoning.zoning)) {
+        if (z.startsWith(zoneId)) {
+            zone = zoning.zoning[z];
+        }
+    }
     if (zone) {
         res = new ZoneData(zoneId);
         for (let metricName of Object.keys(zone)) {
@@ -98,7 +103,6 @@ export function XZoningMetrics(props: { codes: string[] }) {
     for (let itm of items) {
         let zone = zoneData(itm);
         if (zone) {
-            zones.push(zone);
             zones.push(zone);
         }
     }
@@ -167,7 +171,7 @@ export function XZoningMetrics(props: { codes: string[] }) {
                     metricsComponents.push(
                         <XCard.Property key={v.meta.name + v.meta.subtype + zone!!.name} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.format()}</XCard.Property>);
                 }
-                groupComponents.push(<XCard.PropertyList  subtitle={true}  width={300} key={zone.name} title={group.title}>{metricsComponents}</XCard.PropertyList>);
+                groupComponents.push(<XCard.PropertyList subtitle={true} width={300} key={zone.name} title={group.title}>{metricsComponents}</XCard.PropertyList>);
 
             }
             components.push(<XCard.PropertyColumns wrap={true} grow={0}>{groupComponents}</XCard.PropertyColumns>);
