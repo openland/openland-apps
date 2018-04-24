@@ -716,35 +716,35 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                             </FilterCell>
                         </>
                     )}
-                    <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
-                        <FilterCell title="Zoning">
+                    <FilterCell title="Zoning">
+                        <RoutedSelector
+                            fieldName="filterZoning"
+                            options={AllNYCZOnes.map((v) => ({ value: v, label: v }))}
+                            placeholder="Zoning Code"
+                            multi={true}
+                        />
+                    </FilterCell>
+                    <FilterCell title="Vacant">
+                        <RoutedSelector
+                            fieldName="isVacant"
+                            options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
+                            placeholder="Vacant"
+                        />
+                    </FilterCell>
+                    <FilterCell title="Publicly owned">
                             <RoutedSelector
-                                fieldName="filterZoning"
-                                options={AllNYCZOnes.map((v) => ({ value: v, label: v }))}
-                                placeholder="Zoning Code"
-                                multi={true}
-                            />
-                        </FilterCell>
-                        <FilterCell title="Vacant">
-                            <RoutedSelector
-                                fieldName="isVacant"
+                                fieldName="publicOwner"
                                 options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
-                                placeholder="Vacant"
+                                placeholder="Publicly owned"
                             />
                         </FilterCell>
+                    <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                         <FilterCell title="Compatible buildings">
                             <RoutedSelector
                                 fieldName="compatible"
                                 options={[{ value: 'kasita-1', label: 'Elemynt-1' }, { value: 'kasita-2', label: 'Elemynt-2' }]}
                                 placeholder="Building type"
                                 multi={true}
-                            />
-                        </FilterCell>
-                        <FilterCell title="Publicly owned">
-                            <RoutedSelector
-                                fieldName="publicOwner"
-                                options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
-                                placeholder="Publicly owned"
                             />
                         </FilterCell>
                         {/* <FilterCell title="Public owners">

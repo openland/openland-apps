@@ -171,7 +171,7 @@ const ProspectingMapWrapped = withRouter(ProspectingMap);
 export default withApp('Prospecting Map', 'viewer', withRouter((props) => {
     let hasPublic = props.router.query.public ? true : false;
     let squery: any = { stage: OpportunityState.INCOMING };
-    if (props.router.query.stage === 'snoozed') {
+    if (props.router.query.stage === 'snoozed' || props.router.query.stage === 'nyc') {
         squery = { stage: OpportunityState.SNOOZED };
     } else if (props.router.query.stage === 'approved') {
         squery = { stage: OpportunityState.APPROVED };

@@ -191,16 +191,32 @@ const OpportunityInfo = withOpportunity((props) => {
                         >
                             Reject
                             </XButtonMutation>
-                        <XButtonMutation
-                            variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
-                            mutation={props.snooze}
-                            onSuccess={() => {
-                                trackEvent('Parcel Snoozed', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
-                                props.data.refetch({ forceFetch: true });
-                            }}
-                        >
-                            Snooze
+                        <>
+                            <XWithRole role="feature-customer-kassita" negate={true}>
+                                <XButtonMutation
+                                    variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
+                                    mutation={props.snooze}
+                                    onSuccess={() => {
+                                        trackEvent('Parcel Snoozed', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                        props.data.refetch({ forceFetch: true });
+                                    }}
+                                >
+                                    Snooze
                             </XButtonMutation>
+                            </XWithRole>
+                            <XWithRole role="feature-customer-kassita">
+                                <XButtonMutation
+                                    variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
+                                    mutation={props.snooze}
+                                    onSuccess={() => {
+                                        trackEvent('Parcel Snoozed', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                        props.data.refetch({ forceFetch: true });
+                                    }}
+                                >
+                                    Approve (NYC)
+                            </XButtonMutation>
+                            </XWithRole>
+                        </>
                         <XButtonMutation
                             variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                             mutation={props.approve}
