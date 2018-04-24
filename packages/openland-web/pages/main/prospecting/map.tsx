@@ -91,7 +91,7 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
             <>
                 <MapContainer>
                     <ParcelMap
-                        mapStyle={this.props.router.query.mode}
+                        mode={this.props.router.query.mode}
                         focusPosition={{ latitude: 40.713919, longitude: -74.002332, zoom: 12 }}
                         lastKnownCameraLocation={this.knownCameraLocation}
                         onCameraLocationChanged={this.handleMap}
