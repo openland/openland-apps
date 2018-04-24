@@ -13,6 +13,7 @@ import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { OpportunityState } from 'openland-api/Types';
 import * as qs from 'query-string';
+import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -37,12 +38,10 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
     return (
         <>
             <XHead title="Incoming opportunities" />
-            <Scaffold>
+            <ProspectingScaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Incoming opportunities">
-                        {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
-                        {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
                         <XButton path={'/prospecting/map' + queryMap}>Map View</XButton>
                         <XButton style="dark" path={'/prospecting/review' + query}>Begin Review</XButton>
                     </XHeader>
@@ -53,7 +52,7 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                         </XCard.Empty>
                     </OpportunitiesTable>
                 </Scaffold.Content>
-            </Scaffold>
+            </ProspectingScaffold>
         </>
     );
 }));

@@ -35,6 +35,7 @@ import { ProjectTypes } from '../../../components/ProjectTypes';
 import { Text } from '../../../strings';
 import { XButton } from '../../../components/X/XButton';
 import { ParcelLayer } from '../../../components/ParcelLayer';
+import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> }) => {
     return (
@@ -268,11 +269,11 @@ export default withApp('Initial Review', 'viewer', withRouter((props) => {
     return (
         <>
             <XHead title={title} />
-            <Scaffold>
+            <ProspectingScaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <OpportunityInfo variables={{ state: state, query: squery }} />
                 </Scaffold.Content>
-            </Scaffold>
+            </ProspectingScaffold>
         </>
     );
 }));

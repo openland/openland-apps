@@ -10,6 +10,7 @@ import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { OpportunityState } from 'openland-api/Types';
 import { withRouter } from '../../../components/withRouter';
+import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 
 export default withApp('Unit placement', 'viewer', withRouter((props) => {
     let hasPublic = props.router.query.public ? true : false;
@@ -22,12 +23,10 @@ export default withApp('Unit placement', 'viewer', withRouter((props) => {
     return (
         <>
             <XHead title="Unit placement" />
-            <Scaffold>
+            <ProspectingScaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Unit placement">
-                        {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
-                        {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
                         <XButton path={'/prospecting/map?stage=unit' + queryMap}>Map View</XButton>
                         <XButton style="dark" path={'/prospecting/review?stage=unit' + queryMap}>Begin review</XButton>
                     </XHeader>
@@ -35,7 +34,7 @@ export default withApp('Unit placement', 'viewer', withRouter((props) => {
                         <XCard.Empty text="There are no parcels for review" icon="sort" />
                     </OpportunitiesTable>
                 </Scaffold.Content>
-            </Scaffold>
+            </ProspectingScaffold>
         </>
     );
 }));

@@ -9,14 +9,13 @@ import { ProspectingNavigationMap } from '../../../components/ProspectingNavigat
 import { XMapCameraLocation } from '../../../components/X/XMap';
 import { SourcingTileSource } from '../../../api';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
-import { XCard } from '../../../components/X/XCard';
-import { XButton } from '../../../components/X/XButton';
 import { OpportunityState } from 'openland-api/Types';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { canUseDOM } from '../../../utils/environment';
 import { trackEvent } from '../../../utils/analytics';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelMap } from '../../../components/ParcelMap';
+import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 // import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 
 const Container = Glamorous.div({
@@ -31,20 +30,20 @@ const Container = Glamorous.div({
     }
 });
 
-const Filter = Glamorous(XCard)({
-    position: 'absolute',
-    left: 8,
-    top: 8,
-    // width: '200px',
-    // height: '48px',
-    paddingLeft: 8,
-    paddingRight: 8,
-    paddingTop: 8,
-    paddingBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
-});
+// const Filter = Glamorous(XCard)({
+//     position: 'absolute',
+//     left: 8,
+//     top: 8,
+//     // width: '200px',
+//     // height: '48px',
+//     paddingLeft: 8,
+//     paddingRight: 8,
+//     paddingTop: 8,
+//     paddingBottom: 8,
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     justifyContent: 'center'
+// });
 
 const MapSwitcher = Glamorous.div({
     position: 'absolute',
@@ -98,7 +97,7 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
                         onParcelClick={this.handleParcelClick}
                         selectedParcel={this.props.router.query.selectedParcel}
                     >
-    
+
                         <SourcingTileSource
                             layer="sourcing"
                             minZoom={12}
@@ -140,19 +139,19 @@ export default withApp('Prospecting Map', 'viewer', withRouter((props) => {
         squery = {
             '$and': [squery, { isPublic: true }]
         };
+    } else {
+        squery = {
+            '$and': [squery, { '$not': { isPublic: true } }]
+        };
     }
     return (
         <>
             <XHead title={['Prospecting Map']} />
-            <Scaffold>
+            <ProspectingScaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ProspectingNavigationMap />
                     <Container>
                         <ProspectingMapWrapped query={squery} key={props.router.query.mode || 'map'} />
-                        <Filter shadow="medium">
-                            {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
-                            {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
-                        </Filter>
                         <MapSwitcher>
                             <XSwitcher fieldStyle={true}>
                                 <XSwitcher.Item query={{ field: 'mode' }}>Map</XSwitcher.Item>
@@ -161,7 +160,7 @@ export default withApp('Prospecting Map', 'viewer', withRouter((props) => {
                         </MapSwitcher>
                     </Container>
                 </Scaffold.Content>
-            </Scaffold>
+            </ProspectingScaffold>
         </>
     );
 }));

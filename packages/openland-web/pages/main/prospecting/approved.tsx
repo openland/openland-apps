@@ -10,6 +10,7 @@ import { Scaffold } from '../../../components/Scaffold';
 import { OpportunityState } from 'openland-api/Types';
 import { withRouter } from '../../../components/withRouter';
 import { XButton } from '../../../components/X/XButton';
+import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 
 export default withApp('Approved opportunities', 'viewer', withRouter((props) => {
     let hasPublic = props.router.query.public ? true : false;
@@ -22,12 +23,10 @@ export default withApp('Approved opportunities', 'viewer', withRouter((props) =>
     return (
         <>
             <XHead title="Approved opportunities" />
-            <Scaffold>
+            <ProspectingScaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Approved opportinities">
-                        {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
-                        {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
                         <XButton path={'/prospecting/map?stage=snoozed' + queryMap}>Map View</XButton>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.APPROVED, query: squery }}>
@@ -35,7 +34,7 @@ export default withApp('Approved opportunities', 'viewer', withRouter((props) =>
                     </OpportunitiesTable>
 
                 </Scaffold.Content>
-            </Scaffold>
+            </ProspectingScaffold>
         </>
     );
 }));
