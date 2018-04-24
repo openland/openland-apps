@@ -159,8 +159,8 @@ export function XZoningMetrics(props: { codes: string[] }) {
 
         if (zone) {
             components.push(
-                <XCardProperty>
-                    <XTitle marginBottom={0}>{zone.name + ':'}</XTitle>
+                <XCardProperty divider={true}>
+                    <XTitle >{zone.name + ':'}</XTitle>
                 </XCardProperty>);
 
             let groupComponents = [];
@@ -171,7 +171,7 @@ export function XZoningMetrics(props: { codes: string[] }) {
                     metricsComponents.push(
                         <XCard.Property key={v.meta.name + v.meta.subtype + zone!!.name} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.format()}</XCard.Property>);
                 }
-                groupComponents.push(<XCard.PropertyList subtitle={true} width={300} key={zone.name} title={group.title}>{metricsComponents}</XCard.PropertyList>);
+                groupComponents.push(<XCard.PropertyList subtitle={true} width={350} key={zone.name} title={group.title}>{metricsComponents}</XCard.PropertyList>);
 
             }
             components.push(<XCard.PropertyColumns wrap={true} grow={0}>{groupComponents}</XCard.PropertyColumns>);

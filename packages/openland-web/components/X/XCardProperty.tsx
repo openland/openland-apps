@@ -2,7 +2,8 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import XStyles from './XStyles';
 
-let XCardFieldContainer = Glamorous.div<{ compact?: boolean }>((props) => ({
+let XCardFieldContainer = Glamorous.div<{ compact?: boolean, divider?: boolean }>((props) => ({
+    position: 'relative',
     display: 'flex',
     flexDirection: 'row',
     paddingLeft: props.compact ? 16 : 24,
@@ -10,7 +11,16 @@ let XCardFieldContainer = Glamorous.div<{ compact?: boolean }>((props) => ({
     marginBottom: 8,
     '&:last-child': {
         marginBottom: 0
-    }
+    },
+    '&::after': props.divider ? {
+        content: `''`,
+        bottom: -1,
+        left: 24,
+        position: 'absolute',
+        right: 24,
+        height: 1,
+        backgroundColor: '#e6ebf1'
+    } : {}
 }));
 
 let XCardFieldTitle = Glamorous.div<{ width?: number }>((props) => ({
@@ -103,9 +113,9 @@ export function XCardPropertyList(props: { children: any, title?: string, compac
     );
 }
 
-export function XCardProperty(props: { children: any, title?: string, width?: number, compact?: boolean }) {
+export function XCardProperty(props: { children: any, title?: string, width?: number, compact?: boolean, divider?: boolean }) {
     return (
-        <XCardFieldContainer compact={props.compact}>
+        <XCardFieldContainer compact={props.compact} divider={props.divider}>
             {props.title && (<XCardFieldTitle width={props.width}>{props.title}</XCardFieldTitle>)}
             {React.Children.count(props.children) > 0 && <XCardFieldValue>{props.children}</XCardFieldValue>}
         </XCardFieldContainer>
