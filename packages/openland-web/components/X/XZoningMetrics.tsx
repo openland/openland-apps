@@ -18,6 +18,23 @@ class ZoneMetricValueGroup {
 class ZoneMetricValue {
     value: string | number;
     meta: ZoneMetric;
+
+    constructor(value: string | number, meta: ZoneMetric) {
+        this.value = value;
+        this.meta = meta;
+    }
+
+    format() {
+        if (typeof this.value === 'number') {
+            let units: any = this.meta.units;
+            if (units === 'sq ft') {
+                units = <span>ft < sup > 2</sup ></span>;
+            }
+            return <span>{Math.round(this.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} {units}</span>;
+        } else {
+            return this.value;
+        }
+    }
 }
 
 export class ZoneData {
@@ -30,11 +47,11 @@ export class ZoneData {
 
     pick(metricsToPick: ZoneMetricValueGroup[], showEmpty?: boolean): ZoneMetricValueGroup[] {
         let res: ZoneMetricValueGroup[] = [];
-
         for (let group of metricsToPick) {
             let addGroup = false;
             for (let nameToPick of group.names) {
                 for (let metric of this.data) {
+
                     if (metric.meta.name === nameToPick && (showEmpty === undefined || showEmpty || (metric.value != null && metric.value !== '-'))) {
                         if (addGroup === false) {
                             addGroup = true;
@@ -44,8 +61,11 @@ export class ZoneData {
                     }
                 }
             }
-            res.push(group);
+            if (addGroup) {
+                res.push(group);
+            }
         }
+
         return res;
     }
 }
@@ -59,10 +79,7 @@ export function zoneData(zoneId: string): ZoneData | undefined {
         for (let metricName of Object.keys(zone)) {
             let metric = metrics.metrics[metricName];
             if (metric) {
-                res.data.push({
-                    meta: metric,
-                    value: zone[metricName]
-                });
+                res.data.push(new ZoneMetricValue(zone[metricName], metric));
             }
         }
     }
@@ -135,7 +152,7 @@ export function XZoningMetrics(props: { codes: string[] }) {
 
                 for (let v of group.metrics!!) {
                     metricsComponents.push(
-                        <XCard.Property key={v.meta.name + v.meta.subtype + zone!!.name} width={300} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.value + (v.meta.units && v.value !== '-' ? ' ' + v.meta.units : '')}</XCard.Property>);
+                        <XCard.Property key={v.meta.name + v.meta.subtype + zone!!.name} width={300} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.format()}</XCard.Property>);
                 }
                 groupComponents.push(<XCard.PropertyList key={zone.name} title={group.title === zoneHeader ? zone.name : group.title}>{metricsComponents}</XCard.PropertyList>);
 
