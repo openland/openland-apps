@@ -160,9 +160,9 @@ export function XZoningMetrics(props: { codes: string[] }) {
 
                 for (let v of group.metrics!!) {
                     metricsComponents.push(
-                        <XCard.Property key={v.meta.name + v.meta.subtype + zone!!.name} width={300} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.format()}</XCard.Property>);
+                        <XCard.Property key={v.meta.name + v.meta.subtype + zone!!.name} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.format()}</XCard.Property>);
                 }
-                groupComponents.push(<XCard.PropertyList key={zone.name} title={group.title === zoneHeader ? zone.name : group.title}>{metricsComponents}</XCard.PropertyList>);
+                groupComponents.push(<XCard.PropertyList width={300} key={zone.name} title={group.title === zoneHeader ? zone.name : group.title}>{metricsComponents}</XCard.PropertyList>);
 
             }
             if (!single) {
