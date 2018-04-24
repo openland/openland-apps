@@ -386,7 +386,7 @@ const RangeInput = Glamorous.input({
     backgroundColor: '#fff',
     fontSize: '14px',
     lineHeight: 1.6,
-    paddingTop: 4,
+    paddingTop: 2,
     paddingLeft: 7,
     paddingRight: 7,
     paddingBottom: 2,
@@ -396,7 +396,7 @@ const RangeInput = Glamorous.input({
         boxShadow: '0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08)'
     },
     '&::placeholder': {
-        color: '#8898aa'
+        color: '#C1CAD2'
     }
 });
 
@@ -557,7 +557,7 @@ const StyledInput = Glamorous(XFilterInput)({
     backgroundColor: '#fff',
     fontSize: '14px',
     lineHeight: 1.6,
-    paddingTop: 4,
+    paddingTop: 2,
     paddingLeft: 7,
     paddingRight: 7,
     paddingBottom: 2,
@@ -567,7 +567,7 @@ const StyledInput = Glamorous(XFilterInput)({
         boxShadow: '0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08)'
     },
     '&::placeholder': {
-        color: '#8898aa'
+        color: '#C1CAD2'
     }
 });
 
