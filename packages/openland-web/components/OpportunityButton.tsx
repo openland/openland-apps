@@ -21,7 +21,7 @@ export const OpportunitiButton = (props: { parcelId: string, opportunityId?: str
             return (
                 <>
                     <XWithRole role="feature-customer-kassita" negate={true}>
-                        <XButton path={'/prospecting/snoozed'} style="dark" size="medium">Snoozed Parcel</XButton>;
+                        <XButton path={'/prospecting/snoozed'} style="dark" size="medium">Snoozed Parcel</XButton>
                     </XWithRole>
                     <XWithRole role="feature-customer-kassita">
                         <XButton path={'/prospecting/nyc'} style="dark" size="medium">NYC Lot</XButton>
