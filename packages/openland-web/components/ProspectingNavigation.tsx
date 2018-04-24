@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { withProspectingStats } from '../api';
 import { XTab } from './X/XTab';
-import { withRouter } from 'next/router';
 import * as qs from 'query-string';
+import { withRouter } from './withRouter';
 // import { XWithRole } from './X/XWithRole';
 
 function convertNumber(value?: number) {
@@ -16,7 +16,7 @@ function convertNumber(value?: number) {
     }
 }
 
-export const ProspectingNavigation = withProspectingStats(withRouter((props) => {
+const ProspectingNavigationBase = withProspectingStats(withRouter((props) => {
     let sort = props.router.query.sort ? { sort: props.router.query.sort } : {};
     let pub = props.router.query.public ? { public: true } : {};
     let query = qs.stringify(Object.assign({}, sort, pub));
@@ -49,7 +49,18 @@ export const ProspectingNavigation = withProspectingStats(withRouter((props) => 
     );
 }));
 
-export const ProspectingNavigationReview = withProspectingStats(withRouter((props) => {
+export const ProspectingNavigation = withRouter((props) => {
+    let hasPublic = props.router.query.public ? true : false;
+    let squery: any;
+    if (hasPublic) {
+        squery = { isPublic: true };
+    } else {
+        squery = { '$not': [{ isPublic: true }] };
+    }
+    return (<ProspectingNavigationBase variables={{ query: JSON.stringify(squery) }} />);
+});
+
+const ProspectingNavigationReviewBase = withProspectingStats(withRouter((props) => {
     let sort = props.router.query.sort ? { sort: props.router.query.sort } : {};
     let pub = props.router.query.public ? { public: true } : {};
     let query = qs.stringify(Object.assign({}, sort, pub));
@@ -88,7 +99,18 @@ export const ProspectingNavigationReview = withProspectingStats(withRouter((prop
     );
 }));
 
-export const ProspectingNavigationMap = withProspectingStats(withRouter((props) => {
+export const ProspectingNavigationReview = withRouter((props) => {
+    let hasPublic = props.router.query.public ? true : false;
+    let squery: any;
+    if (hasPublic) {
+        squery = { isPublic: true };
+    } else {
+        squery = { '$not': [{ isPublic: true }] };
+    }
+    return (<ProspectingNavigationReviewBase variables={{ query: JSON.stringify(squery) }} />);
+});
+
+const ProspectingNavigationMapBase = withProspectingStats(withRouter((props) => {
     let pub = props.router.query.public ? { public: true } : {};
     let query = qs.stringify(Object.assign({}, pub));
     if (query.length > 0) {
@@ -131,3 +153,14 @@ export const ProspectingNavigationMap = withProspectingStats(withRouter((props) 
         </>
     );
 }));
+
+export const ProspectingNavigationMap = withRouter((props) => {
+    let hasPublic = props.router.query.public ? true : false;
+    let squery: any;
+    if (hasPublic) {
+        squery = { isPublic: true };
+    } else {
+        squery = { '$not': [{ isPublic: true }] };
+    }
+    return (<ProspectingNavigationMapBase variables={{ query: JSON.stringify(squery) }} />);
+});

@@ -114,12 +114,12 @@ export const NextOpportunityQuery = gql`
 `;
 
 export const OpportunityStatsQuery = gql`
-    query OpportunityStats {
-        incoming: alphaOpportunitiesCount(state: INCOMING)
-        approved_initial: alphaOpportunitiesCount(state: APPROVED_INITIAL)
-        approved_zoning: alphaOpportunitiesCount(state: APPROVED_ZONING)
-        approved: alphaOpportunitiesCount(state: APPROVED)
-        rejected: alphaOpportunitiesCount(state: REJECTED)
-        snoozed: alphaOpportunitiesCount(state: SNOOZED)
+    query OpportunityStats($query: String) {
+        incoming: alphaOpportunitiesCount(state: INCOMING, query: $query)
+        approved_initial: alphaOpportunitiesCount(state: APPROVED_INITIAL, query: $query)
+        approved_zoning: alphaOpportunitiesCount(state: APPROVED_ZONING, query: $query)
+        approved: alphaOpportunitiesCount(state: APPROVED, query: $query)
+        rejected: alphaOpportunitiesCount(state: REJECTED, query: $query)
+        snoozed: alphaOpportunitiesCount(state: SNOOZED, query: $query)
     }
 `;
