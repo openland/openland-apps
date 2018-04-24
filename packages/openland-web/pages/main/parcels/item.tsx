@@ -110,9 +110,9 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                             <XSwitcher.Item path={detailsPath} >Parcel</XSwitcher.Item>
                             <XSwitcher.Item path={linksPath} count={props.data.item.links.length}>Links</XSwitcher.Item>
                             <XSwitcher.Item path={notesPath} count={props.data.item.userData && props.data.item.userData.notes && props.data.item.userData.notes.length > 0 ? 1 : undefined}>Notes</XSwitcher.Item>
-                            <XWithRole role={['super-admin', 'software-developer', 'parcel-zoning-metrics']}>
-                                <XSwitcher.Item path={zoningPath} >Zoning</XSwitcher.Item>
-                            </XWithRole>
+                            {/* <XWithRole role={['super-admin', 'software-developer', 'parcel-zoning-metrics']}> */}
+                            <XSwitcher.Item path={zoningPath} >Zoning</XSwitcher.Item>
+                            {/* </XWithRole> */}
                         </XSwitcher>
                     </XCardProperty>
 
@@ -197,7 +197,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                             )}
                         </>)}
 
-                    {props.router.path === linksPath &&  props.data.item.links.length > 0 && (
+                    {props.router.path === linksPath && props.data.item.links.length > 0 && (
                         <XCard.PropertyList title="Links">
                             {props.data.item.links.map((v, i) => (
                                 <XCard.Property key={'link-' + i} title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XCard.Property>
@@ -206,9 +206,9 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                     )}
 
                     {props.router.path === zoningPath && props.data.item.extrasZoning && props.data.item.extrasZoning!!.length > 0 &&
-                        <XWithRole role={['super-admin', 'software-developer', 'parcel-zoning-metrics']}>
-                            <XZoningMetrics codes={props.data.item!!.extrasZoning!!} />
-                        </XWithRole>
+                        // <XWithRole role={['super-admin', 'software-developer', 'parcel-zoning-metrics']}>
+                        <XZoningMetrics codes={props.data.item!!.extrasZoning!!} />
+                        // </XWithRole>
                     }
 
                     {props.router.path === notesPath && (
