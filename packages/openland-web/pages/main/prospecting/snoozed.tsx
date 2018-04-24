@@ -11,7 +11,7 @@ import { OpportunityState } from 'openland-api/Types';
 import { withRouter } from '../../../components/withRouter';
 import { XButton } from '../../../components/X/XButton';
 
-export default withApp('NYC Lots', 'viewer', withRouter((props) => {
+export default withApp('Snoozed opportunities', 'viewer', withRouter((props) => {
     let hasPublic = props.router.query.public ? true : false;
     let squery: string | null = null;
     let queryMap = '';
@@ -19,14 +19,15 @@ export default withApp('NYC Lots', 'viewer', withRouter((props) => {
         squery = '{"isPublic": true}';
         queryMap = '&public=true';
     }
+    const title = props.router.path === '/prospecting/nyc' ? 'NYC Lots' : 'Snoozed opportunities';
     return (
         <>
-            <XHead title="NYC Lots" />
+            <XHead title={title} />
             <Scaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
 
-                    <XHeader text="NYC Lots">
+                    <XHeader text={title}>
                         {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
                         {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
                         <XButton path={'/prospecting/map?stage=snoozed' + queryMap}>Map View</XButton>
