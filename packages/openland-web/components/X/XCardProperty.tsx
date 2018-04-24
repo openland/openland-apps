@@ -44,12 +44,13 @@ let XCardFieldValue = Glamorous.div({
     // color: '#182642'
 });
 
-let XCardPropertyListDiv = Glamorous.div({
+let XCardPropertyListDiv = Glamorous.div<{ width?: number }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     paddingTop: '12px',
-    paddingBottom: '12px'
-});
+    paddingBottom: '12px',
+    width: props.width
+}));
 
 let XCardPropertyColumsDiv = Glamorous.div<{ children: any, fwrap?: boolean }>((props) => ({
     display: 'flex',
@@ -84,9 +85,9 @@ export function XCardPropertyColumns(props: { children: any, wrap?: boolean, gro
     );
 }
 
-export function XCardPropertyList(props: { children: any, title?: string, compact?: boolean }) {
+export function XCardPropertyList(props: { children: any, title?: string, compact?: boolean, width?: number }) {
     return (
-        <XCardPropertyListDiv>
+        <XCardPropertyListDiv width={props.width}>
             {props.title && <XCardPropertyTitle compact={props.compact}>{props.title} </XCardPropertyTitle>}
             {props.children}
         </XCardPropertyListDiv>

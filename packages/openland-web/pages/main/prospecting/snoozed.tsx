@@ -12,7 +12,7 @@ import { withRouter } from '../../../components/withRouter';
 import { XButton } from '../../../components/X/XButton';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 
-export default withApp('NYC Lots', 'viewer', withRouter((props) => {
+export default withApp('Snoozed opportunities', 'viewer', withRouter((props) => {
     let hasPublic = props.router.query.public ? true : false;
     let squery: string | null = null;
     let queryMap = '';
@@ -22,18 +22,17 @@ export default withApp('NYC Lots', 'viewer', withRouter((props) => {
     }
     return (
         <>
-            <XHead title="NYC Lots" />
+            <XHead title={'Snoozed opportunities'} />
             <ProspectingScaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
 
-                    <XHeader text="NYC Lots">
+                    <XHeader text={'Snoozed opportunities'}>
                         <XButton path={'/prospecting/map?stage=snoozed' + queryMap}>Map View</XButton>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.SNOOZED, query: squery }}>
                         <XCard.Empty text="No snoozed parcels" icon="sort" />
                     </OpportunitiesTable>
-
                 </Scaffold.Content>
             </ProspectingScaffold>
         </>

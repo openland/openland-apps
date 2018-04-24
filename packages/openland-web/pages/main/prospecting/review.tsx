@@ -199,19 +199,19 @@ const OpportunityInfo = withOpportunity((props) => {
                             Reject
                             </XButtonMutation>
                         <>
-                            <XWithRole role="feature-customer-kassita" negate={true}>
-                                <XButtonMutation
-                                    variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
-                                    mutation={props.snooze}
-                                    onSuccess={() => {
-                                        trackEvent('Parcel Snoozed', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
-                                        props.data.refetch({ forceFetch: true });
-                                    }}
-                                >
-                                    Snooze
+                            {/* <XWithRole role="feature-customer-kassita" negate={true}> */}
+                            <XButtonMutation
+                                variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
+                                mutation={props.snooze}
+                                onSuccess={() => {
+                                    trackEvent('Parcel Snoozed', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                    props.data.refetch({ forceFetch: true });
+                                }}
+                            >
+                                Snooze
                             </XButtonMutation>
-                            </XWithRole>
-                            <XWithRole role="feature-customer-kassita">
+                            {/* </XWithRole> */}
+                            {/* <XWithRole role="feature-customer-kassita">
                                 <XButtonMutation
                                     variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                                     mutation={props.snooze}
@@ -222,7 +222,7 @@ const OpportunityInfo = withOpportunity((props) => {
                                 >
                                     Approve (NYC)
                             </XButtonMutation>
-                            </XWithRole>
+                            </XWithRole> */}
                         </>
                         <XButtonMutation
                             variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}

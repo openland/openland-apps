@@ -3,7 +3,7 @@ import { withAddOpportunity } from '../api';
 import { XButtonMutation } from './X/XButtonMutation';
 import { XButton } from './X/XButton';
 import { OpportunityState } from 'openland-api/Types';
-import { XWithRole } from './X/XWithRole';
+// import { XWithRole } from './X/XWithRole';
 
 const OpportunityCreate = withAddOpportunity((props) => {
     return <XButtonMutation mutation={props.add} size="medium" accent={true}>Add to prospecting</XButtonMutation>;
@@ -20,12 +20,12 @@ export const OpportunitiButton = (props: { parcelId: string, opportunityId?: str
         } else if (props.opportunityState === OpportunityState.SNOOZED) {
             return (
                 <>
-                    <XWithRole role="feature-customer-kassita" negate={true}>
-                        <XButton path={'/prospecting/snoozed'} style="dark" size="medium">Snoozed Parcel</XButton>
-                    </XWithRole>
-                    <XWithRole role="feature-customer-kassita">
+                    {/* <XWithRole role="feature-customer-kassita" negate={true}> */}
+                    <XButton path={'/prospecting/snoozed'} style="dark" size="medium">Snoozed Parcel</XButton>
+                    {/* </XWithRole> */}
+                    {/* <XWithRole role="feature-customer-kassita">
                         <XButton path={'/prospecting/nyc'} style="dark" size="medium">NYC Lot</XButton>
-                    </XWithRole>
+                    </XWithRole> */}
                 </>
             );
         } else if (props.opportunityState === OpportunityState.INCOMING) {
