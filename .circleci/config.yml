@@ -55,5 +55,8 @@ workflows:
           requires:
             - build
       - staging: 
+          filters:
+            only: 
+              - master
           requires:
             - docker
