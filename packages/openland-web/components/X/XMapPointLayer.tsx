@@ -6,8 +6,10 @@ interface XMapPointLayerProps {
     layer: string;
     source: string;
     color?: string;
+    minZoom?: number;
+    flyToMaxZoom?: number;
 
-    onClick?: (id: string) => void;
+    onClick?: (id: string, item: any) => void;
 }
 
 export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
@@ -43,7 +45,7 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
         }
 
         let color = this.props.color || '#007cbf';
-
+        let minZoom = this.props.minZoom !== undefined ? this.props.minZoom : 0;
         this.map.addLayer({
             'id': this.layer + '-cluster',
             'type': 'circle',
@@ -61,7 +63,8 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
                 ],
                 'circle-color': color
             },
-            filter: ['has', 'point_count']
+            filter: ['has', 'point_count'],
+            minzoom: minZoom
         });
 
         this.map.addLayer({
@@ -73,7 +76,8 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
                 'text-field': '{point_count_abbreviated}',
                 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
                 'text-size': 12
-            }
+            },
+            minzoom: minZoom
         });
 
         this.map.addLayer({
@@ -88,7 +92,8 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
                 },
                 'circle-color': color
             },
-            filter: ['!has', 'point_count']
+            filter: ['!has', 'point_count'],
+            minzoom: minZoom
         });
 
         //
@@ -99,7 +104,7 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
             let feature = e.features[0];
             let longitude = feature.geometry.coordinates[0] as number;
             let latitude = feature.geometry.coordinates[1] as number;
-            let zoom = Math.max(15, Math.round(this.map!!.getZoom() + 2));
+            let zoom = Math.max(this.props.flyToMaxZoom || 15, Math.round(this.map!!.getZoom() + 2));
             this.map!!.flyTo({ center: [longitude, latitude], zoom: zoom });
         });
 
@@ -115,7 +120,7 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
             let zoom = 17;
             this.map!!.flyTo({ center: [longitude, latitude], zoom: zoom });
             if (this.props.onClick) {
-                this.props.onClick(id);
+                this.props.onClick(id, feature);
             }
         });
     }

@@ -21,7 +21,12 @@ const TileHeight = 0.005;
 const TileWidthLarge = 0.04;
 const TileHeightLarge = 0.04;
 
-export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometry?: string | null, center?: { latitude: number, longitude: number } | null }> | null }>(QueryDocument: DocumentNode, cluster?: boolean) {
+export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometry?: string | null, center?: { latitude: number, longitude: number } | null }> | null }>(
+    QueryDocument: DocumentNode,
+    options: {
+        cluster?: boolean,
+        propertiesFactory?: (src: any) => any;
+    } = {}) {
     return class GraphQLTileSource extends React.Component<GraphQLTileSourceProps, { data?: any }> {
         static contextTypes = {
             mapSubscribe: PropTypes.func.isRequired,
@@ -151,23 +156,37 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                         if (s.geometry) {
                             let geometry = parseGeometry(s.geometry);
                             this.allElements.set(s.id, { key: s.id, geometry: geometry });
+                            let properties = {
+                                'id': s.id
+                            };
+                            if (options.propertiesFactory) {
+                                properties = {
+                                    ...options.propertiesFactory(s),
+                                    ...properties
+                                };
+                            }
                             this.allFeatures.push({
                                 type: 'Feature',
                                 'geometry': { type: 'MultiPolygon', coordinates: geometry },
-                                properties: {
-                                    'id': s.id
-                                }
+                                properties
                             });
                         } else if (s.center) {
                             let latitude = s.center.latitude as number;
                             let longitude = s.center.longitude as number;
                             this.allElements.set(s.id, { key: s.id, geometry: { latitude: latitude, longitude: longitude } });
+                            let properties = {
+                                'id': s.id
+                            };
+                            if (options.propertiesFactory) {
+                                properties = {
+                                    ...options.propertiesFactory(s),
+                                    ...properties
+                                };
+                            }
                             this.allFeatures.push({
                                 type: 'Feature',
                                 'geometry': { type: 'Point', coordinates: [longitude, latitude] },
-                                properties: {
-                                    'id': s.id
-                                }
+                                properties
                             });
                         }
                         wasUpdated = true;
@@ -196,7 +215,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
 
         render() {
             return (
-                <XMapSource id={this.props.layer} data={this.state.data} cluster={cluster} />
+                <XMapSource id={this.props.layer} data={this.state.data} cluster={options.cluster} />
             );
         }
 

@@ -23,6 +23,13 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
     let sort = props.router.query.sort ? { sort: props.router.query.sort } : {};
     let pub = props.router.query.public ? { public: true } : {};
     let query = qs.stringify(Object.assign({}, sort, pub));
+    let queryMap = qs.stringify(Object.assign({}, pub));
+    if (query.length > 0) {
+        query = '?' + query;
+    }
+    if (queryMap.length > 0) {
+        queryMap = '?' + queryMap;
+    }
     let squery: string | null = null;
     if (hasPublic) {
         squery = '{"isPublic": true}';
@@ -36,7 +43,8 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                     <XHeader text="Incoming opportunities">
                         {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
                         {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
-                        <XButton style="dark" path={'/prospecting/review?' + query}>Begin Review</XButton>
+                        <XButton path={'/prospecting/map' + queryMap}>Map View</XButton>
+                        <XButton style="dark" path={'/prospecting/review' + query}>Begin Review</XButton>
                     </XHeader>
 
                     <OpportunitiesTable variables={{ state: OpportunityState.INCOMING, query: squery }}>

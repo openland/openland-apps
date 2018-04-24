@@ -7,6 +7,7 @@ import { XMapPolygonLayer } from './X/XMapPolygonLayer';
 import { ParcelTileSource, BlockTileSource } from '../api/index';
 import { findCenter } from '../utils/map';
 import { withRouter } from './withRouter';
+import { ParcelLayer } from './ParcelLayer';
 
 const Wrapper = Glamorous(XCard)({
     flexGrow: 1,
@@ -25,20 +26,13 @@ export const ParcelMaps = withRouter<{ id: string, geometry: string, disableNavi
                 <XCard.Map focusLocation={{ ...findCenter(props.geometry), zoom: 18 }} satellite={props.satellite}>
                     <ParcelTileSource layer="parcels" minZoom={16} />
                     <BlockTileSource layer="blocks" minZoom={12} />
-                    <XMapPolygonLayer
-                        source="parcels"
-                        layer="parcels"
-                        minZoom={16}
-                        selectedId={props.id}
-                        style={{
-                            selectedFillOpacity: 0,
-                            selectedBorderColor: '#4428E1',
-                            selectedBorderWidth: 8,
-                            selectedBorderOpacity: 1
-                        }}
+                    <ParcelLayer
+                        inverted={props.satellite}
                         allowHover={props.disableNavigation !== true}
                         allowClick={props.disableNavigation !== true}
+                        flyOnClick={props.disableNavigation !== true}
                         onClick={props.disableNavigation !== true ? (v) => props.router.push('/parcels/' + v) : undefined}
+                        selectedId={props.id}
                     />
                     <XMapPolygonLayer
                         source="blocks"

@@ -571,6 +571,9 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
         if (this.props.router.query!!.isOkForTower) {
             clauses.push({ 'isOkForTower': JSON.parse(this.props.router.query!!.isOkForTower) });
         }
+        if (this.props.router.query!!.publicOwner) {
+            clauses.push({ 'ownerPublic': JSON.parse(this.props.router.query!!.publicOwner) });
+        }
         let isVacantSet: boolean | undefined;
         if (this.props.router.query!!.isVacant) {
             if (JSON.parse(this.props.router.query!!.isVacant) === 'true') {
@@ -713,22 +716,29 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                             </FilterCell>
                         </>
                     )}
-                    <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
-                        <FilterCell title="Zoning">
+                    <FilterCell title="Zoning">
+                        <RoutedSelector
+                            fieldName="filterZoning"
+                            options={AllNYCZOnes.map((v) => ({ value: v, label: v }))}
+                            placeholder="Zoning Code"
+                            multi={true}
+                        />
+                    </FilterCell>
+                    <FilterCell title="Vacant">
+                        <RoutedSelector
+                            fieldName="isVacant"
+                            options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
+                            placeholder="Vacant"
+                        />
+                    </FilterCell>
+                    <FilterCell title="Publicly owned">
                             <RoutedSelector
-                                fieldName="filterZoning"
-                                options={AllNYCZOnes.map((v) => ({ value: v, label: v }))}
-                                placeholder="Zoning Code"
-                                multi={true}
-                            />
-                        </FilterCell>
-                        <FilterCell title="Is vacant">
-                            <RoutedSelector
-                                fieldName="isVacant"
+                                fieldName="publicOwner"
                                 options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
-                                placeholder="Is vacant"
+                                placeholder="Publicly owned"
                             />
                         </FilterCell>
+                    <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                         <FilterCell title="Compatible buildings">
                             <RoutedSelector
                                 fieldName="compatible"
@@ -737,16 +747,17 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                                 multi={true}
                             />
                         </FilterCell>
-                        <FilterCell title="Custom Queries">
+                        {/* <FilterCell title="Public owners">
                             <RoutedSelector
                                 fieldName="customQuery"
                                 options={[
                                     { value: 'customerUrbynQuery1', label: 'Departments' },
-                                    { value: 'customerUrbynQuery2', label: 'City of New York' }]}
-                                placeholder="Custom Queries"
+                                    { value: 'customerUrbynQuery2', label: 'City of New York' },
+                                    { value: 'customerUrbynQuery3', label: 'Abbreviations' }]}
+                                placeholder="Public owners"
                                 multi={true}
                             />
-                        </FilterCell>
+                        </FilterCell> */}
                     </XWithRole>
                     <FilterCell title="Area">
                         <FilterRange placeholderFrom="1000 ft" placeholderTo="1000000 ft" />

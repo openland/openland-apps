@@ -14,8 +14,10 @@ import { withRouter } from '../../../components/withRouter';
 export default withApp('Unit placement', 'viewer', withRouter((props) => {
     let hasPublic = props.router.query.public ? true : false;
     let squery: string | null = null;
+    let queryMap = '';
     if (hasPublic) {
         squery = '{"isPublic": true}';
+        queryMap = '&public=true';
     }
     return (
         <>
@@ -26,7 +28,8 @@ export default withApp('Unit placement', 'viewer', withRouter((props) => {
                     <XHeader text="Unit placement">
                         {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
                         {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
-                        <XButton style="dark" path="/prospecting/review?stage=unit">Begin review</XButton>
+                        <XButton path={'/prospecting/map?stage=unit' + queryMap}>Map View</XButton>
+                        <XButton style="dark" path={'/prospecting/review?stage=unit' + queryMap}>Begin review</XButton>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.APPROVED_ZONING, query: squery }} stage="unit">
                         <XCard.Empty text="There are no parcels for review" icon="sort" />

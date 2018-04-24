@@ -1244,6 +1244,11 @@ export interface ParcelQuery {
     },
     // Geometry
     geometry: string | null,
+    center:  {
+      __typename: "Geo",
+      latitude: number,
+      longitude: number,
+    } | null,
     address: string | null,
     compatibleBuildings:  Array< {
       __typename: "BuildingLocation",
@@ -1319,6 +1324,7 @@ export interface ParcelQuery {
     extrasRecordationDate: string | null,
     extrasOwnerName: string | null,
     extrasOwnerType: OwnerType | null,
+    extrasOwnerPublic: boolean | null,
     extrasShapeType: string | null,
     extrasShapeSides: Array< number > | null,
     extrasFitProjects: Array< string > | null,
@@ -2402,6 +2408,11 @@ export interface OpportunityQuery {
       },
       // Geometry
       geometry: string | null,
+      center:  {
+        __typename: "Geo",
+        latitude: number,
+        longitude: number,
+      } | null,
       address: string | null,
       compatibleBuildings:  Array< {
         __typename: "BuildingLocation",
@@ -2477,6 +2488,7 @@ export interface OpportunityQuery {
       extrasRecordationDate: string | null,
       extrasOwnerName: string | null,
       extrasOwnerType: OwnerType | null,
+      extrasOwnerPublic: boolean | null,
       extrasShapeType: string | null,
       extrasShapeSides: Array< number > | null,
       extrasFitProjects: Array< string > | null,
@@ -2531,6 +2543,7 @@ export interface OpportunityQuery {
 
 export interface OpportunityTileOverlayQueryVariables {
   box: GeoBox,
+  query?: string | null,
 };
 
 export interface OpportunityTileOverlayQuery {
@@ -2542,6 +2555,10 @@ export interface OpportunityTileOverlayQuery {
       latitude: number,
       longitude: number,
     } | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+    },
   } > | null,
 };
 
@@ -2632,6 +2649,11 @@ export interface NextOpportunityQuery {
       },
       // Geometry
       geometry: string | null,
+      center:  {
+        __typename: "Geo",
+        latitude: number,
+        longitude: number,
+      } | null,
       address: string | null,
       compatibleBuildings:  Array< {
         __typename: "BuildingLocation",
@@ -2707,6 +2729,7 @@ export interface NextOpportunityQuery {
       extrasRecordationDate: string | null,
       extrasOwnerName: string | null,
       extrasOwnerType: OwnerType | null,
+      extrasOwnerPublic: boolean | null,
       extrasShapeType: string | null,
       extrasShapeSides: Array< number > | null,
       extrasFitProjects: Array< string > | null,
@@ -3007,6 +3030,11 @@ export interface ParcelFullFragment {
   },
   // Geometry
   geometry: string | null,
+  center:  {
+    __typename: string,
+    latitude: number,
+    longitude: number,
+  } | null,
   address: string | null,
   compatibleBuildings:  Array< {
     __typename: string,
@@ -3082,6 +3110,7 @@ export interface ParcelFullFragment {
   extrasRecordationDate: string | null,
   extrasOwnerName: string | null,
   extrasOwnerType: OwnerType | null,
+  extrasOwnerPublic: boolean | null,
   extrasShapeType: string | null,
   extrasShapeSides: Array< number > | null,
   extrasFitProjects: Array< string > | null,

@@ -45,12 +45,15 @@ export const OpportunityQuery = gql`
 `;
 
 export const OpportunityTileOverlay = gql`
-    query OpportunityTileOverlay($box: GeoBox!) {
-        tiles: alphaOpportunityOverlay(box: $box, limit: 5000) {
+    query OpportunityTileOverlay($box: GeoBox!, $query: String) {
+        tiles: alphaOpportunityOverlay(box: $box, limit: 5000, query: $query) {
             id
             center {
                 latitude
                 longitude
+            }
+            parcel {
+                id
             }
         }
     }

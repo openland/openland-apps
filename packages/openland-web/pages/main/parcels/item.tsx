@@ -39,7 +39,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                     <XHeader
                         text={props.data.item.address || 'No address'}
                         description={<ParcelNumber city={props.data.item.city.name} id={props.data.item.number} />}
-                        bullet={props.data.item.metadata.available ? 'ON SALE' : undefined}
+                        bullet={props.data!!.item!!.extrasOwnerPublic ? 'public' : (props.data.item.metadata.available ? 'ON SALE' : undefined)}
                         truncateDescription={true}
                     >
                         <XWithRole role={['super-admin', 'editor']}>

@@ -125,7 +125,7 @@ export const withParcelDirect = graphqlCompose3(withParcelDirect2, withParcelLik
 // export const withParcelUnlikes = graphqlMutation<{ doUnlike: MutationFunc<{}> }>(Parcels.ParcelUnlike, { name: 'doUnlike' });
 
 export const ParcelTileSource = graphQLTileSource<Types.ParcelsTileOverlayQuery>(Queries.Parcels.ParcelsTileOverlay);
-export const ParcelPointSource = graphQLTileSource<Types.ParcelsPointOverlayQuery>(Queries.Parcels.ParcelsPointOverlay, true);
+export const ParcelPointSource = graphQLTileSource<Types.ParcelsPointOverlayQuery>(Queries.Parcels.ParcelsPointOverlay, { cluster: true });
 export const BlockTileSource = graphQLTileSource<Types.BlocksTileOverlayQuery>(Queries.Parcels.BlocksTileOverlay);
 
 const ParcelMetadataAlter = graphqlMutation<{ parcelAlterMetadata: MutationFunc<Types.ParcelAlterMutationVariables> }>(Queries.Parcels.ParcelAlter, { name: 'parcelAlterMetadata', params: ['parcelId'] });
@@ -227,4 +227,6 @@ export const withOpportunityByIdGet = graphqlRouted<Types.OpportunityQuery>(Quer
 export const withOpportunity = graphqlCompose5(withNextOpportunity, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity, withParcelNotes);
 export const withOpportunityById = graphqlCompose4(withOpportunityByIdGet, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity);
 export const withAddFromSearchOpportunity = graphqlMutation<{ addFromSearch: MutationFunc<{}> }>(Queries.Sourcing.AddOpportunityFromSearchMutation, { name: 'addFromSearch', refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
-export const SourcingTileSource = graphQLTileSource<Types.OpportunityTileOverlayQuery>(Queries.Sourcing.OpportunityTileOverlay);
+export const SourcingTileSource = graphQLTileSource<Types.OpportunityTileOverlayQuery>(Queries.Sourcing.OpportunityTileOverlay, {
+    propertiesFactory: (src) => ({ parcelId: src.parcel.id })
+});

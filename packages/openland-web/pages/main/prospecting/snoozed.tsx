@@ -14,8 +14,10 @@ import { XButton } from '../../../components/X/XButton';
 export default withApp('Snoozed opportunities', 'viewer', withRouter((props) => {
     let hasPublic = props.router.query.public ? true : false;
     let squery: string | null = null;
+    let queryMap = '';
     if (hasPublic) {
         squery = '{"isPublic": true}';
+        queryMap = '&public=true';
     }
     return (
         <>
@@ -27,8 +29,9 @@ export default withApp('Snoozed opportunities', 'viewer', withRouter((props) => 
                     <XHeader text="Snoozed opportinities">
                         {!hasPublic && <XButton query={{ field: 'public', value: 'true' }}>Show only public land</XButton>}
                         {hasPublic && <XButton style="important" query={{ field: 'public' }}>Show only public land</XButton>}
+                        <XButton path={'/prospecting/map?stage=snoozed' + queryMap}>Map View</XButton>
                     </XHeader>
-                    <OpportunitiesTable variables={{ state: OpportunityState.SNOOZED, query: squery}}>
+                    <OpportunitiesTable variables={{ state: OpportunityState.SNOOZED, query: squery }}>
                         <XCard.Empty text="No snoozed parcels" icon="sort" />
                     </OpportunitiesTable>
 
