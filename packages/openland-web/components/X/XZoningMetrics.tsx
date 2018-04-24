@@ -76,13 +76,15 @@ export function zoneData(zoneId: string): ZoneData | undefined {
     let res: ZoneData | undefined = undefined;
 
     let zone;
+    let zoneFullName;
     for (let z of Object.keys(zoning.zoning)) {
         if (z.startsWith(zoneId)) {
             zone = zoning.zoning[z];
+            zoneFullName = z;
         }
     }
-    if (zone) {
-        res = new ZoneData(zoneId);
+    if (zone && zoneFullName) {
+        res = new ZoneData(zoneFullName);
         for (let metricName of Object.keys(zone)) {
             let metric = metrics.metrics[metricName];
             if (metric) {
