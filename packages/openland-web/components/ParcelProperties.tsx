@@ -13,8 +13,6 @@ import { XNumber } from './X/XNumber';
 import { XDistance } from './X/XDistance';
 import { Text } from '../strings';
 import { XVertical } from './X/XVertical';
-import { XLinkExternal } from './X/XLinkExternal';
-import { XZoningMetrics } from './X/XZoningMetrics';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
 
@@ -157,22 +155,6 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         }
                     </XCard.PropertyList>
                 )}
-            <XCard.PropertyColumns>
-                {props.item.links.length > 0 && (
-                    <XCard.PropertyList title="Links">
-                        {props.item.links.map((v, i) => (
-                            <XCard.Property title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XCard.Property>
-                        ))}
-                    </XCard.PropertyList>
-                )}
-
-                {props.item.extrasZoning && props.item.extrasZoning!!.length > 0 &&
-                    <XWithRole role={['super-admin', 'software-developer', 'parcel-zoning-metrics']}>
-                        <XZoningMetrics codes={props.item!!.extrasZoning!!} />
-                    </XWithRole>
-                }
-
-            </XCard.PropertyColumns>
         </>
     );
 }

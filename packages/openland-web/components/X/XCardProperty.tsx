@@ -92,10 +92,10 @@ export function XCardPropertyList(props: { children: any, title?: string, compac
     );
 }
 
-export function XCardProperty(props: { title: string, children: any, width?: number, compact?: boolean }) {
+export function XCardProperty(props: { children: any, title?: string,  width?: number, compact?: boolean }) {
     return (
         <XCardFieldContainer compact={props.compact}>
-            <XCardFieldTitle width={props.width}>{props.title}</XCardFieldTitle>
+            {props.title && (<XCardFieldTitle width={props.width}>{props.title}</XCardFieldTitle>)}
             {React.Children.count(props.children) > 0 && <XCardFieldValue>{props.children}</XCardFieldValue>}
         </XCardFieldContainer>
     );

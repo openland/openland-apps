@@ -21,6 +21,12 @@ routes.add('/parcels', '/main/parcels/list');
 routes.add('/parcels/', '/main/parcels/list');
 routes.add('/parcels/:parcelId', '/main/parcels/item');
 routes.add('/parcels/:parcelId/', '/main/parcels/item');
+routes.add('/parcels/:parcelId/links', '/main/parcels/item');
+routes.add('/parcels/:parcelId/links/', '/main/parcels/item');
+routes.add('/parcels/:parcelId/notes', '/main/parcels/item');
+routes.add('/parcels/:parcelId/notes/', '/main/parcels/item');
+routes.add('/parcels/:parcelId/zoning', '/main/parcels/item');
+routes.add('/parcels/:parcelId/zoning/', '/main/parcels/item');
 routes.add('/parcels/:parcelId/edit', '/main/parcels/edit');
 routes.add('/parcels/:parcelId/edit/', '/main/parcels/edit');
 
