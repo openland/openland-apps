@@ -167,7 +167,9 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                 )}
 
                 {props.item.extrasZoning && props.item.extrasZoning!!.length > 0 &&
-                    <XZoningMetrics codes={props.item!!.extrasZoning!!} />
+                    <XWithRole role={['super-admin', 'software-developer', 'parcel-zoning-metrics']}>
+                        <XZoningMetrics codes={props.item!!.extrasZoning!!} />
+                    </XWithRole>
                 }
 
             </XCard.PropertyColumns>
