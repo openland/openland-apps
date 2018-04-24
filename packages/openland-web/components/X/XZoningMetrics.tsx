@@ -74,10 +74,23 @@ export function XZoningMetrics(props: { codes: string[] }) {
     let items = [...new Set(props.codes)].sort();
     let components: any[] = [];
 
+    let single = items.length === 1;
+
     for (let itm of items) {
         let zone = zoneData(itm);
 
+        const zoneHeader = 'ZONE_HEADER';
         let toPick = [
+            {
+                title: zoneHeader,
+                names: [
+                    'Density Factor',
+                    'Minimum Rear Yard',
+                    'Minimum Setback',
+                    'Maximum Units',
+                    'Minimum Unit Size',
+                    'Minimum Open Space']
+            },
             {
                 title: 'Maximum FAR',
                 names: [
@@ -112,32 +125,27 @@ export function XZoningMetrics(props: { codes: string[] }) {
                     'Height: Perimiter Wall',
                     'Height: Building',
                     'Height: Base (min-max)']
-            },
-            {
-                title: 'Other', names: [
-                    'Density Factor',
-                    'Minimum Rear Yard',
-                    'Minimum Setback',
-                    'Maximum Units',
-                    'Minimum Unit Size',
-                    'Minimum Open Space']
             }
         ];
 
         if (zone) {
-
+            let groupComponents = single ? components : [];
             for (let group of zone.pick(toPick, false)) {
                 let metricsComponents = [];
 
                 for (let v of group.metrics!!) {
                     metricsComponents.push(
-                        <XCard.Property key={v.meta.name + v.meta.subtype + zone!!.name} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.value + (v.meta.units && v.value !== '-' ? ' ' + v.meta.units : '')}</XCard.Property>);
+                        <XCard.Property key={v.meta.name + v.meta.subtype + zone!!.name} width={300} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.value + (v.meta.units && v.value !== '-' ? ' ' + v.meta.units : '')}</XCard.Property>);
                 }
-                components.push(<XCard.PropertyList key={zone.name} title={group.title}>{metricsComponents}</XCard.PropertyList>);
+                groupComponents.push(<XCard.PropertyList key={zone.name} title={group.title === zoneHeader ? zone.name : group.title}>{metricsComponents}</XCard.PropertyList>);
 
+            }
+            if (!single) {
+                components.push(<XCard.PropertyList>{groupComponents}</XCard.PropertyList>);
             }
 
         }
-        return components.length === 1 ? components[0] : <React.Fragment>{components}</React.Fragment>;
     }
+    return <XCard.PropertyColumns wrap={true}>{components}</XCard.PropertyColumns>;
+
 }

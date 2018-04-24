@@ -51,10 +51,11 @@ let XCardPropertyListDiv = Glamorous.div({
     paddingBottom: '12px'
 });
 
-let XCardPropertyColumsDiv = Glamorous.div({
+let XCardPropertyColumsDiv = Glamorous.div<{ children: any, fwrap?: boolean }>((props) => ({
     display: 'flex',
-    flexDirection: 'row'
-});
+    flexDirection: 'row',
+    flexWrap: props.fwrap ? 'wrap' : 'nowrap'
+}));
 
 let XCardPropertyColumnsContainerDiv = Glamorous.div({
     display: 'flex',
@@ -73,9 +74,9 @@ let XCardPropertyTitle = Glamorous.div<{ compact?: boolean }>((props) => ({
     marginBottom: 8
 }));
 
-export function XCardPropertyColumns(props: { children: any }) {
+export function XCardPropertyColumns(props: { children: any, wrap?: boolean }) {
     return (
-        <XCardPropertyColumsDiv>
+        <XCardPropertyColumsDiv fwrap={props.wrap}>
             {React.Children.toArray(props.children).map((v, i) => (
                 <XCardPropertyColumnsContainerDiv key={'chilren_' + i}>{v}</XCardPropertyColumnsContainerDiv>
             ))}
@@ -92,7 +93,7 @@ export function XCardPropertyList(props: { children: any, title?: string, compac
     );
 }
 
-export function XCardProperty(props: { children: any, title?: string,  width?: number, compact?: boolean }) {
+export function XCardProperty(props: { children: any, title?: string, width?: number, compact?: boolean }) {
     return (
         <XCardFieldContainer compact={props.compact}>
             {props.title && (<XCardFieldTitle width={props.width}>{props.title}</XCardFieldTitle>)}
