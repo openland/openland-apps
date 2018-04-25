@@ -31,15 +31,15 @@ const MapSwitcher = Glamorous.div({
 
 export default withApp('UI Framework - Map', 'viewer', withRouter((props) => {
     return (
-        <DevDocsScaffold title={'Map'} bottomOffset={false}>
+        <DevDocsScaffold bottomOffset={false}>
             <XMapContainer2>
-            <ParcelMap mode={props.router.query.mode} />
-            <MapSwitcher>
-                <XSwitcher fieldStyle={true}>
-                    <XSwitcher.Item query={{ field: 'mode' }}>Map</XSwitcher.Item>
-                    <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
-                </XSwitcher>
-            </MapSwitcher>
+                <ParcelMap mode={props.router.query.mode} />
+                <MapSwitcher>
+                    <XSwitcher fieldStyle={true}>
+                        <XSwitcher.Item query={{ field: 'mode' }}>Map</XSwitcher.Item>
+                        <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
+                    </XSwitcher>
+                </MapSwitcher>
             </XMapContainer2>
         </DevDocsScaffold>
 
