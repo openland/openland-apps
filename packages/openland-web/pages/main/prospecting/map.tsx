@@ -77,7 +77,7 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
     }
 
     handleParcelClick = (id: string) => {
-        trackEvent('Prospecting Map View Parcel', { id: id });
+        trackEvent('Prospecting Map view Parcel', { id: id });
         this.props.router.pushQuery('selectedParcel', id);
     }
     handleDealClick = (id: string, item: any) => {

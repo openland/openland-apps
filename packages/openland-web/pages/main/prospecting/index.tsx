@@ -42,8 +42,8 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Incoming opportunities">
-                        <XButton path={'/prospecting/map' + queryMap}>Map View</XButton>
-                        <XButton style="dark" path={'/prospecting/review' + query}>Begin Review</XButton>
+                        <XButton path={'/prospecting/map' + queryMap}>Map view</XButton>
+                        <XButton style="dark" path={'/prospecting/review' + query}>Begin review</XButton>
                     </XHeader>
 
                     <OpportunitiesTable variables={{ state: OpportunityState.INCOMING, query: squery }}>

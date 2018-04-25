@@ -27,7 +27,7 @@ export default withApp('Zoning Review', 'viewer', withRouter((props) => {
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Zoning Review">
-                        <XButton path={'/prospecting/map?stage=zoning' + queryMap}>Map View</XButton>
+                        <XButton path={'/prospecting/map?stage=zoning' + queryMap}>Map view</XButton>
                         <XButton style="dark" path={'/prospecting/review?stage=zoning' + queryMap}>Begin review</XButton>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.APPROVED_INITIAL, query: squery }} stage="zoning">

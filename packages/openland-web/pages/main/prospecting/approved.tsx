@@ -27,7 +27,7 @@ export default withApp('Approved opportunities', 'viewer', withRouter((props) =>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Approved opportinities">
-                        <XButton path={'/prospecting/map?stage=snoozed' + queryMap}>Map View</XButton>
+                        <XButton path={'/prospecting/map?stage=snoozed' + queryMap}>Map view</XButton>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.APPROVED, query: squery }}>
                         <XCard.Empty text="No approved parcels" icon="sort" />

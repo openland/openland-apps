@@ -728,7 +728,7 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                             <FilterCell title="Tower opportunity">
                                 <RoutedSelector
                                     fieldName="isOkForTower"
-                                    options={[{ value: 'true', label: 'Yes (105+ height, 0-2 stories now)' }, { value: 'false', label: 'No' }]}
+                                    options={[{ value: 'true', label: 'Yes (90+ height, 0-2 stories now)' }, { value: 'false', label: 'No' }]}
                                     placeholder="Tower opportunity"
                                 />
                             </FilterCell>

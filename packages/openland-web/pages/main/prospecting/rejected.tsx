@@ -27,7 +27,7 @@ export default withApp('Rejected opportunities', 'viewer', withRouter((props) =>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Rejected opportinities">
-                        <XButton path={'/prospecting/map?stage=rejected' + queryMap}>Map View</XButton>
+                        <XButton path={'/prospecting/map?stage=rejected' + queryMap}>Map view</XButton>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.REJECTED, query: squery }}>
                         <XCard.Empty text="No rejected parcels" icon="sort" />
