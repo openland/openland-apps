@@ -54,7 +54,6 @@ interface XTooltipProps {
 interface XTooltipState {
     class: string;
     showPopover: boolean;
-    hovered: boolean;
 }
 
 class XTooltipContent extends React.Component {
@@ -99,7 +98,6 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
         this.state = {
             class: 'hide',
             showPopover: false,
-            hovered: false
         };
 
         this.modalOver = this.modalOver.bind(this);
@@ -118,7 +116,6 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
         this.setState({
             class: XTooltip.active.size === 0 ? 'show' : 'static',
             showPopover: true,
-            hovered: true
         });
         for (let tooltip of XTooltip.active) {
             if (tooltip !== this) {
@@ -134,17 +131,11 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
         XTooltip.current = this;
         clearTimeout(this.timeout);
         this.hovered = true;
-        this.setState({
-            hovered: true
-        });
         XTooltip.active.add(this);
     }
 
     out() {
         this.hovered = false;
-        this.setState({
-            hovered: false
-        });
         this.timeout = setTimeout(
             () => {
                 if (!this.hovered) {
