@@ -135,9 +135,9 @@ export function XZoningMetrics(props: { codes: string[] }) {
             {
                 title: 'Height',
                 names: [
-                    'Height: Perimiter Wall',
-                    'Height: Building',
-                    'Height: Base (min-max)']
+                    'Perimiter Wall',
+                    'Building',
+                    'Base (min-max)']
             },
             {
                 title: 'Other',
@@ -163,9 +163,9 @@ export function XZoningMetrics(props: { codes: string[] }) {
 
                 for (let v of group.metrics!!) {
                     metricsComponents.push(
-                        <XCard.Property key={zone.name  + group.title + v.meta.name + v.meta.subtype + '_prop'} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.format()}</XCard.Property>);
+                        <XCard.Property width={240} key={zone.name  + group.title + v.meta.name + v.meta.subtype + '_prop'} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.format()}</XCard.Property>);
                 }
-                groupComponents.push(<XCard.PropertyList subtitle={true} width={350} key={zone.name +  group.title + '_group'} title={group.title}>{metricsComponents}</XCard.PropertyList>);
+                groupComponents.push(<XCard.PropertyList subtitle={true} width={380} key={zone.name +  group.title + '_group'} title={group.title}>{metricsComponents}</XCard.PropertyList>);
 
             }
             components.push(<XCard.PropertyColumns wrap={true} grow={0} key={zone.name + '_zone_zontainer'}>{groupComponents}</XCard.PropertyColumns>);

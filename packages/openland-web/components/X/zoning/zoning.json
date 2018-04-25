@@ -1,6 +1,7 @@
 {
     "zoning": {
         "R1-1": {
+            "id": "R1-1",
             "metric1": 100,
             "metric2": "-",
             "metric3": 9500,
@@ -27,6 +28,7 @@
             "metric24": 150
         },
         "R1-2": {
+            "id": "R1-2",
             "metric1": 60,
             "metric2": "-",
             "metric3": 5700,
@@ -53,6 +55,7 @@
             "metric24": 150
         },
         "R1-2A": {
+            "id": "R1-2A",
             "metric1": 60,
             "metric2": "-",
             "metric3": 5700,
@@ -79,6 +82,7 @@
             "metric24": "-"
         },
         "R2": {
+            "id": "R2",
             "metric1": 40,
             "metric2": "-",
             "metric3": 3800,
@@ -105,6 +109,7 @@
             "metric24": 150
         },
         "R2A": {
+            "id": "R2A",
             "metric1": 40,
             "metric2": "-",
             "metric3": 3800,
@@ -131,6 +136,7 @@
             "metric24": "-"
         },
         "R2X": {
+            "id": "R2X",
             "metric1": 30,
             "metric2": "-",
             "metric3": 2850,
@@ -157,6 +163,7 @@
             "metric24": "-"
         },
         "R3A": {
+            "id": "R3A",
             "metric1": 25,
             "metric2": "-",
             "metric3": 2375,
@@ -183,6 +190,7 @@
             "metric24": "-"
         },
         "R3X": {
+            "id": "R3X",
             "metric1": 35,
             "metric2": "-",
             "metric3": 3325,
@@ -209,6 +217,7 @@
             "metric24": "-"
         },
         "R3-1": {
+            "id": "R3-1",
             "metric1": 40,
             "metric2": 18,
             "metric3": 3800,
@@ -235,6 +244,7 @@
             "metric24": "-"
         },
         "R3-2": {
+            "id": "R3-2",
             "metric1": 40,
             "metric2": 18,
             "metric3": 3800,
@@ -261,6 +271,7 @@
             "metric24": "-"
         },
         "R4": {
+            "id": "R4",
             "metric1": 40,
             "metric2": 18,
             "metric3": 3800,
@@ -287,6 +298,7 @@
             "metric24": "-"
         },
         "R4-1": {
+            "id": "R4-1",
             "metric1": 25,
             "metric2": 18,
             "metric3": 2375,
@@ -313,6 +325,7 @@
             "metric24": "-"
         },
         "R4A": {
+            "id": "R4A",
             "metric1": 30,
             "metric2": "-",
             "metric3": 2850,
@@ -339,6 +352,7 @@
             "metric24": "-"
         },
         "R4B": {
+            "id": "R4B",
             "metric1": 25,
             "metric2": 18,
             "metric3": 2375,
@@ -365,6 +379,7 @@
             "metric24": "-"
         },
         "R4 Infill": {
+            "id": "R4 Infill",
             "metric1": 40,
             "metric2": 18,
             "metric3": 3800,
@@ -391,6 +406,7 @@
             "metric24": "-"
         },
         "R5 Infill": {
+            "id": "R5 Infill",
             "metric1": 40,
             "metric2": 18,
             "metric3": 3800,
@@ -417,6 +433,7 @@
             "metric24": "-"
         },
         "R5": {
+            "id": "R5",
             "metric1": 40,
             "metric2": 18,
             "metric3": 3800,
@@ -443,6 +460,7 @@
             "metric24": "-"
         },
         "R5A": {
+            "id": "R5A",
             "metric1": 30,
             "metric2": "-",
             "metric3": 2850,
@@ -469,11 +487,12 @@
             "metric24": "-"
         },
         "R5B": {
+            "id": "R5B",
             "metric1": 25,
             "metric2": 18,
             "metric3": 2375,
             "metric4": 1700,
-            "metric5": "900*",
+            "metric5": 900,
             "metric6": 8,
             "metric7": 4,
             "metric8": "-",
@@ -495,6 +514,7 @@
             "metric24": "-"
         },
         "R5D": {
+            "id": "R5D",
             "metric1": 25,
             "metric2": 18,
             "metric3": 2375,
@@ -521,6 +541,7 @@
             "metric24": "-"
         },
         "R6HF": {
+            "id": "R6HF",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
@@ -547,6 +568,7 @@
             "metric24": "27.5-37.5"
         },
         "R6QH": {
+            "id": "R6QH",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
@@ -573,6 +595,7 @@
             "metric24": "-"
         },
         "R6A": {
+            "id": "R6A",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
@@ -599,6 +622,7 @@
             "metric24": "-"
         },
         "R6B": {
+            "id": "R6B",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
@@ -625,6 +649,7 @@
             "metric24": "-"
         },
         "R7HF": {
+            "id": "R7HF",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
@@ -641,7 +666,7 @@
             "metric14": "0.87-3.44",
             "metric15": "-",
             "metric16": "-",
-            "metric17": "60%*",
+            "metric17": 0.6,
             "metric18": 0.15,
             "metric19": "-",
             "metric20": "Sky Exp",
@@ -651,6 +676,7 @@
             "metric24": "15.5-25.5"
         },
         "R7QH": {
+            "id": "R7QH",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
@@ -677,6 +703,7 @@
             "metric24": "-"
         },
         "R7-3": {
+            "id": "R7-3",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
@@ -703,6 +730,7 @@
             "metric24": "-"
         },
         "R7A": {
+            "id": "R7A",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
@@ -729,6 +757,7 @@
             "metric24": "-"
         },
         "R7B": {
+            "id": "R7B",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
@@ -755,6 +784,7 @@
             "metric24": "-"
         },
         "R7D": {
+            "id": "R7D",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
@@ -781,6 +811,7 @@
             "metric24": "-"
         },
         "R7X": {
+            "id": "R7X",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
@@ -807,11 +838,12 @@
             "metric24": "-"
         },
         "R8HF": {
+            "id": "R8HF",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "740*",
+            "metric5": 740,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -833,11 +865,12 @@
             "metric24": "5.9-11.9"
         },
         "R8QH": {
+            "id": "R8QH",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "740*",
+            "metric5": 740,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -859,11 +892,12 @@
             "metric24": "-"
         },
         "R8A": {
+            "id": "R8A",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "740*",
+            "metric5": 740,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -885,11 +919,12 @@
             "metric24": "-"
         },
         "R8B": {
+            "id": "R8B",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "740*",
+            "metric5": 740,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -911,11 +946,12 @@
             "metric24": "-"
         },
         "R8X": {
+            "id": "R8X",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "740*",
+            "metric5": 740,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -937,11 +973,12 @@
             "metric24": "-"
         },
         "R9HF": {
+            "id": "R9HF",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "740*",
+            "metric5": 740,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -963,11 +1000,12 @@
             "metric24": "1.0-9.0"
         },
         "R9QH/R9A": {
+            "id": "R9QH/R9A",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "740*",
+            "metric5": 740,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -989,11 +1027,12 @@
             "metric24": "-"
         },
         "R9-1": {
+            "id": "R9-1",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "790*",
+            "metric5": 790,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -1015,11 +1054,12 @@
             "metric24": "-"
         },
         "R9D": {
+            "id": "R9D",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "740*",
+            "metric5": 740,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -1041,11 +1081,12 @@
             "metric24": "-"
         },
         "R9X": {
+            "id": "R9X",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "790*",
+            "metric5": 790,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -1067,11 +1108,12 @@
             "metric24": "-"
         },
         "R10": {
+            "id": "R10",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "790*",
+            "metric5": 790,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -1093,11 +1135,12 @@
             "metric24": "-"
         },
         "R10QH/R10A": {
+            "id": "R10QH/R10A",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "790*",
+            "metric5": 790,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
@@ -1119,11 +1162,12 @@
             "metric24": "-"
         },
         "R10X": {
+            "id": "R10X",
             "metric1": "-",
             "metric2": "-",
             "metric3": "-",
             "metric4": "-",
-            "metric5": "790*",
+            "metric5": 790,
             "metric6": "-",
             "metric7": "-",
             "metric8": "-",
