@@ -53,9 +53,8 @@ interface XTooltipProps {
 
 interface XTooltipState {
     class: string;
-    targetHover?: boolean;
-    modalHover?: boolean;
-    popper?: boolean;
+    showPopover: boolean;
+    hovered: boolean;
 }
 
 class XTooltipContent extends React.Component {
@@ -87,108 +86,77 @@ class XTooltipTarget extends React.Component {
 export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
     static Target = XTooltipTarget;
     static Content = XTooltipContent;
+    static current?: any;
+    static active = new Set();
+
     timeout: any;
+    hovered = false;
+    prevClass = 'hide';
 
     constructor(props: any) {
         super(props);
 
         this.state = {
             class: 'hide',
-            targetHover: false,
-            modalHover: false,
-            popper: false
+            showPopover: false,
+            hovered: false
         };
 
         this.modalOver = this.modalOver.bind(this);
-        this.modalOut = this.modalOut.bind(this);
+        this.out = this.out.bind(this);
         this.targetOver = this.targetOver.bind(this);
-        this.targetOut = this.targetOut.bind(this);
     }
 
     componentWillUnmount() {
         clearTimeout(this.timeout);
     }
 
-    modalOver() {
-        clearTimeout(this.timeout);
-
-        this.setState({
-            targetHover: false,
-            modalHover: true,
-            popper: true
-        });
-        if (this.state.class === 'hide') {
-            this.setState({
-                class: 'hide'
-            });
-            this.timeout = setTimeout(
-                () => {
-                    this.setState({
-                        popper: false
-                    });
-                },
-                50);
-        } else {
-            this.setState({
-                class: 'static'
-            });
-        }
-    }
-
-    modalOut() {
-        this.setState({
-            class: 'hide'
-        });
-
-        this.timeout = setTimeout(
-            () => {
-                if (this.state.targetHover === true) {
-                    this.setState({
-                        class: 'static'
-                    });
-                    return;
-                } else {
-                    this.setState({
-                        class: 'hide',
-                        modalHover: false
-                    });
-                    this.timeout = setTimeout(
-                        () => {
-                            this.setState({
-                                popper: false
-                            });
-                        },
-                        100);
-                }
-            },
-            100);
-    }
-
     targetOver() {
+        XTooltip.current = this;
+        this.hovered = true;
         clearTimeout(this.timeout);
         this.setState({
-            class: 'show',
-            targetHover: true,
-            modalHover: false,
-            popper: true
+            class: XTooltip.active.size === 0 ? 'show' : 'static',
+            showPopover: true,
+            hovered: true
         });
+        for (let tooltip of XTooltip.active) {
+            if (tooltip !== this) {
+                tooltip.setState({
+                    showPopover: false
+                });
+            }
+        }
+        XTooltip.active.add(this);
     }
 
-    targetOut() {
+    modalOver() {
+        XTooltip.current = this;
+        clearTimeout(this.timeout);
+        this.hovered = true;
+        this.setState({
+            hovered: true
+        });
+        XTooltip.active.add(this);
+    }
+
+    out() {
+        this.hovered = false;
+        this.setState({
+            hovered: false
+        });
         this.timeout = setTimeout(
             () => {
-                if (this.state.modalHover === true) {
-                    return;
-                } else {
+                if (!this.hovered) {
                     this.setState({
-                        class: 'hide',
-                        targetHover: false,
-                        modalHover: false
+                        class: 'hide'
                     });
+                    XTooltip.active.delete(this);
+
                     this.timeout = setTimeout(
                         () => {
                             this.setState({
-                                popper: false
+                                showPopover: false
                             });
                         },
                         100);
@@ -209,23 +177,26 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
             }
         }
 
+        let animation = this.state.class === 'static' && this.prevClass === 'show' ? 'show' : this.state.class;
         let popover = (
-            <Popper placement={this.props.placement ? this.props.placement : 'top'} class={this.state.class} onMouseover={this.modalOver} onMouseout={this.modalOut} nonePointerEvents={true}>
+            <Popper placement={this.props.placement ? this.props.placement : 'top'} class={animation} onMouseover={this.modalOver} onMouseout={this.out} nonePointerEvents={true}>
                 {content.length > 0 ? (content) : (this.props.title)}
             </Popper>
         );
+        this.prevClass = animation;
+
         return (
             <Manager>
                 <XTooltipDiv marginLeft={this.props.marginLeft} margin={this.props.margin} marginRight={this.props.marginRight} centeredContent={this.props.centeredContent}>
                     <Target>
                         <TargetContent
                             onMouseOver={this.targetOver}
-                            onMouseOut={this.targetOut}
+                            onMouseOut={this.out}
                         >
                             {target.length > 0 ? (target) : (<XIcon icon="error" />)}
                         </TargetContent>
                     </Target>
-                    {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popover, document.body)}
+                    {(XTooltip.current === this && this.state.showPopover && canUseDOM && ReactDOM.createPortal(popover, document.body))}
                 </XTooltipDiv>
             </Manager>
         );

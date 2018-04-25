@@ -363,6 +363,13 @@ const PopperDiv = Glamorous.div<{nonePointerEvents?: boolean, autoWidth?: boolea
 
     '& .popper.static': {
         display: 'block',
+
+        '> .popper-content': {
+            animationDuration: '0.000002s',
+            animationFillMode: 'forwards',
+            animationName: `${showAnimationTop}`,
+            animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
+        }
     },
 
     '& .popper .popper-content::after': {
