@@ -93,6 +93,8 @@ routes.add('/ui/typography', '/dev/ui/typography');
 routes.add('/ui/typography/', '/dev/ui/typography');
 routes.add('/ui/grid', '/dev/ui/grid');
 routes.add('/ui/grid/', '/dev/ui/grid');
+routes.add('/ui/map', '/dev/ui/map');
+routes.add('/ui/map/', '/dev/ui/map');
 
 //
 // Dev Tools
