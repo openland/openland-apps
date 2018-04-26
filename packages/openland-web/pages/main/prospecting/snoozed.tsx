@@ -15,8 +15,26 @@ import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { buildProspectingQuery, buildQs } from '../../../components/prospectingQuery';
 import { OwnersSelect } from '../../../api';
 
-let OwnersSelectStyled = Glamorous(OwnersSelect)({
-    width: 300
+let OwnersSelectStyled = Glamorous.div({
+    fontSize: 14,
+    '& > .Select': {
+        width: 300
+    },
+    '&.has-value': {
+        '& .Select-arrow': {
+            marginBottom: '0px !important'
+        }
+    },
+    '& .Select-option': {
+        height: 36,
+        lineHeight: '18px'
+    },
+    '& .Select-placeholder, & .Select-value-label': {
+        lineHeight: '32px'
+    },
+    '& .Select-input > input': {
+        padding: '0 !important'
+    }
 });
 
 export default withApp('Snoozed opportunities', 'viewer', withRouter((props) => {
@@ -29,12 +47,14 @@ export default withApp('Snoozed opportunities', 'viewer', withRouter((props) => 
                     <ProspectingNavigation />
 
                     <XHeader text={'Snoozed opportunities'}>
-                        <OwnersSelectStyled
-                            variables={{ query: q.ownerQuery, state: OpportunityState.SNOOZED }}
-                            placeholder="Owner name"
-                            value={props.router.query.owner}
-                            onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
-                        />
+                        <OwnersSelectStyled>
+                            <OwnersSelect
+                                variables={{ query: q.ownerQuery, state: OpportunityState.SNOOZED }}
+                                placeholder="Owner name"
+                                value={props.router.query.owner}
+                                onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
+                            />
+                        </OwnersSelectStyled>
                         <XButton path={'/prospecting/map' + buildQs({ stage: 'snoozed', ...q.qsMap })}>Map view</XButton>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.SNOOZED, query: q.query }} stage="snoozed">
