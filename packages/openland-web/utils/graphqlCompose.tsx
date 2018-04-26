@@ -55,3 +55,14 @@ export function graphqlCompose5<T1, T2, T3, T4, T5>(
 ) {
     return graphqlComposeImpl<T1 & T2 & T3 & T4 & T5>(src1, src2, src3, src4, src5);
 }
+
+export function graphqlCompose6<T1, T2, T3, T4, T5, T6>(
+    src1: (src: React.ComponentType<T1>) => React.ComponentType<{}>,
+    src2: (src: React.ComponentType<T2>) => React.ComponentType<{}>,
+    src3: (src: React.ComponentType<T3>) => React.ComponentType<{}>,
+    src4: (src: React.ComponentType<T4>) => React.ComponentType<{}>,
+    src5: (src: React.ComponentType<T5>) => React.ComponentType<{}>,
+    src6: (src: React.ComponentType<T6>) => React.ComponentType<{}>,
+) {
+    return graphqlComposeImpl<T1 & T2 & T3 & T4 & T5 & T6>(src1, src2, src3, src4, src5, src6);
+}

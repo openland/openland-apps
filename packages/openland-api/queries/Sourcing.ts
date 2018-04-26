@@ -92,6 +92,12 @@ export const SnoozeOpportunityMutation = gql`
     }
 `;
 
+export const ResetOpportunityMutation = gql`
+    mutation ResetOpportunityMutation($opportunityId: ID!, $state: OpportunityState!) {
+        alphaReset(opportunityId: $opportunityId, state: $state)
+    }
+`;
+
 export const AddOpportunityFromSearchMutation = gql`
     mutation alphaAddOpportunitiesFromSearch($query: String!) {
         alphaAddOpportunitiesFromSearch(state: "NY", county: "New York", city: "New York", query: $query)

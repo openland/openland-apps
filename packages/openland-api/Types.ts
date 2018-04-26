@@ -2615,6 +2615,15 @@ export interface SnoozeOpportunityMutationMutation {
   alphaSnooze: string,
 };
 
+export interface ResetOpportunityMutationMutationVariables {
+  opportunityId: string,
+  state: OpportunityState,
+};
+
+export interface ResetOpportunityMutationMutation {
+  alphaReset: string,
+};
+
 export interface alphaAddOpportunitiesFromSearchMutationVariables {
   query: string,
 };

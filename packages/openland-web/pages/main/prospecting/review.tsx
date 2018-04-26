@@ -193,7 +193,7 @@ const OpportunityInfo = withOpportunity((props) => {
     let mapUrl: string | undefined = undefined; // '/prospecting/map';
 
     let canMoveNext = true;
-    let canReset = false;
+    let canReset = true;
 
     if (props.data.alphaNextReviewOpportunity) {
         mapUrl = '/prospecting/map?selectedParcel=' + props.data.alphaNextReviewOpportunity.parcel.id;
@@ -285,9 +285,9 @@ const OpportunityInfo = withOpportunity((props) => {
 
                         {canReset && (<XButtonMutation
                             variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
-                            mutation={props.approve}
+                            mutation={props.reset}
                             onSuccess={() => {
-                                trackEvent('Parcel Rejected', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                trackEvent('Parsel stage Reset done', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
                                 props.data.refetch({ forceFetch: true });
                             }}
                             style="dark"
