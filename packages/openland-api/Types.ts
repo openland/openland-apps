@@ -1039,6 +1039,9 @@ export interface ParcelsConnectionQueryVariables {
   cursor?: string | null,
   query?: string | null,
   page?: number | null,
+  state: string,
+  county: string,
+  city: string,
 };
 
 export interface ParcelsConnectionQuery {
@@ -2780,6 +2783,10 @@ export interface NextOpportunityQuery {
       } >,
     },
   } | null,
+};
+
+export interface OpportunityStatsQueryVariables {
+  query?: string | null,
 };
 
 export interface OpportunityStatsQuery {

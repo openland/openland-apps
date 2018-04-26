@@ -1714,6 +1714,16 @@
                     "name": "OpportunityState",
                     "ofType": null
                   }
+                },
+                {
+                  "defaultValue": null,
+                  "description": "",
+                  "name": "query",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
                 }
               ],
               "deprecationReason": null,
