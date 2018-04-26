@@ -74,7 +74,6 @@ export const withBlocks = graphqlRouted<Types.BlocksConnectionQuery>(Queries.Par
 export const withBlock = graphqlRouted<Types.BlockQuery>(Queries.Parcels.BlockQuery, ['blockId']);
 export const withParcels = graphqlRouted<Types.ParcelsConnectionQuery>(Queries.Parcels.ParcelsConnection, ['page', 'query']);
 export const withParcelRaw = graphqlRouted<Types.ParcelQuery>(Queries.Parcels.ParcelQuery, ['parcelId']);
-
 export const withParcelsFavorites = graphqlRouted<Types.ParcelsFavoritesQuery>(Queries.Parcels.ParcelsFavorites);
 export const withParcelsFavroutesCount = graphqlRouted<Types.ParcelsFavoritesCountQuery>(Queries.Parcels.ParcelsFavoritesCount);
 
@@ -230,3 +229,9 @@ export const withAddFromSearchOpportunity = graphqlMutation<{ addFromSearch: Mut
 export const SourcingTileSource = graphQLTileSource<Types.OpportunityTileOverlayQuery>(Queries.Sourcing.OpportunityTileOverlay, {
     propertiesFactory: (src) => ({ parcelId: src.parcel.id })
 });
+
+export const OwnersSelect = graphqlSelect<Types.OwnersQueryQueryVariables>(Queries.Sourcing.OwnersQuery);
+
+// export const RejectButton = withRejectOpportunity((props)=>{
+//     return (<XButton></XButton>);
+// });

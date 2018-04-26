@@ -123,3 +123,9 @@ export const OpportunityStatsQuery = gql`
         snoozed: alphaOpportunitiesCount(state: SNOOZED, query: $query)
     }
 `;
+
+export const OwnersQuery = gql`
+    query OwnersQuery($state: OpportunityState, $query: String) {
+        items: alphaOpportunityUsers(state: $state, query: $query)
+    }
+`;

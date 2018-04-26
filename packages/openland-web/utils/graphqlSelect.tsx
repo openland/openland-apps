@@ -16,8 +16,15 @@ export function graphqlSelect<V = {}>(document: DocumentNode) {
                 vars = { query: input, ...(this.props.variables as any) };
             }
             let res = await client.query({ query: document, variables: vars });
-            let items = (res.data as any).items as [{ id: string, title: string, subtitle?: string | null }];
-            let opts = items.map((v) => ({ value: v.id, label: v.subtitle ? v.title + ' (' + v.subtitle + ')' : v.title }));
+            let items = (res.data as any).items as [{ id: string, title: string, subtitle?: string | null } | string];
+            let opts = items.map((v) => {
+                if (typeof v === 'string') {
+                    return { value: v, label: v };
+                } else {
+                    return { value: v.id, label: v.subtitle ? v.title + ' (' + v.subtitle + ')' : v.title };
+                }
+            }
+            );
             return {
                 options: opts
             };

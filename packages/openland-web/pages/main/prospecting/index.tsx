@@ -7,20 +7,25 @@ import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { XLink } from '../../../components/X/XLink';
-import { withProspectingStats } from '../../../api';
+import { withProspectingStats, OwnersSelect } from '../../../api';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { OpportunityState } from 'openland-api/Types';
 import * as qs from 'query-string';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
+import { buildProspectingQuery } from '../../../components/prospectingQuery';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
 });
 
+let OwnersSelectStyled = Glamorous(OwnersSelect)({
+    width: 300
+});
+
 export default withApp('Incoming opportunities', 'viewer', withProspectingStats((props) => {
-    let hasPublic = props.router.query.public ? true : false;
+    
     let sort = props.router.query.sort ? { sort: props.router.query.sort } : {};
     let pub = props.router.query.public ? { public: true } : {};
     let query = qs.stringify(Object.assign({}, sort, pub));
@@ -31,10 +36,8 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
     if (queryMap.length > 0) {
         queryMap = '?' + queryMap;
     }
-    let squery: string | null = null;
-    if (hasPublic) {
-        squery = '{"isPublic": true}';
-    }
+    let q = buildProspectingQuery(OpportunityState.INCOMING, props.router);
+
     return (
         <>
             <XHead title="Incoming opportunities" />
@@ -42,11 +45,17 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Incoming opportunities">
+                        <OwnersSelectStyled
+                            variables={{ query: q.ownerQuery, state: OpportunityState.INCOMING }}
+                            placeholder="Owner name"
+                            value={props.router.query.owner}
+                            onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
+                        />
                         <XButton path={'/prospecting/map' + queryMap}>Map view</XButton>
                         <XButton style="dark" path={'/prospecting/review' + query}>Begin review</XButton>
                     </XHeader>
 
-                    <OpportunitiesTable variables={{ state: OpportunityState.INCOMING, query: squery }}>
+                    <OpportunitiesTable variables={{ state: OpportunityState.INCOMING, query: q.query }}>
                         <XCard.Empty text="You can find your first parcel at" icon="sort">
                             <Link path="/">Explore page</Link>
                         </XCard.Empty>

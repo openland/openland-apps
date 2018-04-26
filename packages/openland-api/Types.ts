@@ -2798,6 +2798,15 @@ export interface OpportunityStatsQuery {
   snoozed: number,
 };
 
+export interface OwnersQueryQueryVariables {
+  state?: OpportunityState | null,
+  query?: string | null,
+};
+
+export interface OwnersQueryQuery {
+  items: Array< string | null > | null,
+};
+
 export interface UsersQueryQueryVariables {
   query: string,
 };
