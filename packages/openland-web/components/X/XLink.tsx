@@ -8,6 +8,7 @@ export interface XLinkProps {
     path?: string | null;
     href?: string | null;
     query?: { field: string, value?: string } | null;
+    default?: boolean;
     className?: string;
     activateForSubpaths?: boolean | null;
     onClick?: React.MouseEventHandler<HTMLAnchorElement>;
@@ -80,7 +81,7 @@ export class XLink extends XRouterReceiver<XLinkProps> {
                 return true;
             }
         } else if (this.props.query) {
-            return this.router.query[this.props.query.field] === this.props.query.value;
+            return this.router.query[this.props.query.field] === this.props.query.value || (this.props.default && this.router.query[this.props.query.field] === undefined);
         }
         return false;
     }
