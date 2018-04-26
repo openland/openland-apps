@@ -51,7 +51,7 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
 
             <XCardProperty>
                 <XSwitcher alignSelf="flex-start" flatStyle={true}>
-                    <XSwitcher.Item query={{ field: 'tab', value: detailsPath }} default={true}>Parcel</XSwitcher.Item>
+                    <XSwitcher.Item query={{ field: 'tab' }} >Parcel</XSwitcher.Item>
                     <XSwitcher.Item query={{ field: 'tab', value: linksPath }} count={props.parcel.links.length}>Links</XSwitcher.Item>
                     <XSwitcher.Item query={{ field: 'tab', value: notesPath }} count={props.parcel.userData && props.parcel.userData.notes && props.parcel.userData.notes.length > 0 ? 1 : undefined}>Notes</XSwitcher.Item>
                     {/* <XWithRole role={['super-admin', 'software-developer', 'parcel-zoning-metrics']}> */}
