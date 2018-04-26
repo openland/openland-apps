@@ -59,6 +59,14 @@ routes.add('/prospecting/review', '/main/prospecting/review');
 routes.add('/prospecting/review/', '/main/prospecting/review');
 routes.add('/prospecting/map', '/main/prospecting/map');
 routes.add('/prospecting/map/', '/main/prospecting/map');
+
+routes.add('/prospecting/review/links', '/main/prospecting/review');
+routes.add('/prospecting/review/links/', '/main/prospecting/review');
+routes.add('/prospecting/review/notes', '/main/prospecting/review');
+routes.add('/prospecting/review/notes/', '/main/prospecting/review');
+routes.add('/prospecting/review/zoning', '/main/prospecting/review');
+routes.add('/prospecting/review/zoning/', '/main/prospecting/review');
+
 // Hack
 routes.add('/prospecting/nyc', '/main/prospecting/snoozed');
 routes.add('/prospecting/nyc/', '/main/prospecting/snoozed');
