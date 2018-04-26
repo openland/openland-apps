@@ -20,12 +20,30 @@ let Link = Glamorous(XLink)({
     color: '#3297d3',
 });
 
-let OwnersSelectStyled = Glamorous(OwnersSelect)({
-    width: 300
+let OwnersSelectStyled = Glamorous.div({
+    fontSize: 14,
+    '& > .Select': {
+        width: 300
+    },
+    '&.has-value': {
+        '& .Select-arrow': {
+            marginBottom: '0px !important'
+        }
+    },
+    '& .Select-option': {
+        height: 36,
+        lineHeight: '18px'
+    },
+    '& .Select-placeholder, & .Select-value-label': {
+        lineHeight: '32px'
+    },
+    '& .Select-input > input': {
+        padding: '0 !important'
+    }
 });
 
 export default withApp('Incoming opportunities', 'viewer', withProspectingStats((props) => {
-    
+
     let sort = props.router.query.sort ? { sort: props.router.query.sort } : {};
     let pub = props.router.query.public ? { public: true } : {};
     let query = qs.stringify(Object.assign({}, sort, pub));
@@ -45,12 +63,14 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
                     <XHeader text="Incoming opportunities">
-                        <OwnersSelectStyled
-                            variables={{ query: q.ownerQuery, state: OpportunityState.INCOMING }}
-                            placeholder="Owner name"
-                            value={props.router.query.owner}
-                            onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
-                        />
+                        <OwnersSelectStyled>
+                            <OwnersSelect
+                                variables={{ query: q.ownerQuery, state: OpportunityState.INCOMING }}
+                                placeholder="Owner name"
+                                value={props.router.query.owner}
+                                onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
+                            />
+                        </OwnersSelectStyled>
                         <XButton path={'/prospecting/map' + queryMap}>Map view</XButton>
                         <XButton style="dark" path={'/prospecting/review' + query}>Begin review</XButton>
                     </XHeader>
