@@ -191,6 +191,10 @@ const OpportunityInfo = withOpportunity((props) => {
     let approveText = 'Move to next stage';
     // let hasPublic = props.router.query.public ? true : false;
     let mapUrl: string | undefined = undefined; // '/prospecting/map';
+
+    let canMoveNext = true;
+    let canReset = false;
+
     if (props.data.alphaNextReviewOpportunity) {
         mapUrl = '/prospecting/map?selectedParcel=' + props.data.alphaNextReviewOpportunity.parcel.id;
     }
@@ -199,6 +203,7 @@ const OpportunityInfo = withOpportunity((props) => {
     }
     if (props.data.variables.state === 'INCOMING') {
         approveText = 'Move to Zoning Review';
+        canReset = false;
     } else if (props.data.variables.state === 'APPROVED_INITIAL') {
         approveText = 'Move to Unit Placement';
         if (mapUrl) {
@@ -209,6 +214,12 @@ const OpportunityInfo = withOpportunity((props) => {
         if (mapUrl) {
             mapUrl = mapUrl + '&stage=unit';
         }
+    } else if (props.data.variables.state === 'APPROVED') {
+        canMoveNext = false;
+    } else if (props.data.variables.state === 'REJECTED') {
+        canMoveNext = false;
+    } else if (props.data.variables.state === 'SNOOZED') {
+        canMoveNext = false;
     }
 
     return (
@@ -222,6 +233,7 @@ const OpportunityInfo = withOpportunity((props) => {
                         bullet={props.data.alphaNextReviewOpportunity!!.parcel.extrasOwnerPublic ? 'public' : undefined}
                     >
                         {mapUrl && <XButton path={mapUrl} >View on map</XButton>}
+                        {props.data.variables.state !== 'REJECTED' && (
                         <XButtonMutation
                             variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                             mutation={props.reject}
@@ -231,9 +243,10 @@ const OpportunityInfo = withOpportunity((props) => {
                             }}
                         >
                             Reject
-                            </XButtonMutation>
+                            </XButtonMutation>)}
                         <>
                             {/* <XWithRole role="feature-customer-kassita" negate={true}> */}
+                            {props.data.variables.state !== 'SNOOZED' && (
                             <XButtonMutation
                                 variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                                 mutation={props.snooze}
@@ -243,7 +256,7 @@ const OpportunityInfo = withOpportunity((props) => {
                                 }}
                             >
                                 Snooze
-                            </XButtonMutation>
+                            </XButtonMutation>)}
                             {/* </XWithRole> */}
                             {/* <XWithRole role="feature-customer-kassita">
                                 <XButtonMutation
@@ -258,7 +271,7 @@ const OpportunityInfo = withOpportunity((props) => {
                             </XButtonMutation>
                             </XWithRole> */}
                         </>
-                        <XButtonMutation
+                        {canMoveNext && (<XButtonMutation
                             variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                             mutation={props.approve}
                             onSuccess={() => {
@@ -268,7 +281,19 @@ const OpportunityInfo = withOpportunity((props) => {
                             style="dark"
                         >
                             {approveText}
-                        </XButtonMutation>
+                        </XButtonMutation>)}
+
+                        {canReset && (<XButtonMutation
+                            variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
+                            mutation={props.approve}
+                            onSuccess={() => {
+                                trackEvent('Parcel Rejected', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                props.data.refetch({ forceFetch: true });
+                            }}
+                            style="dark"
+                        >
+                            Reset
+                        </XButtonMutation>)}
                     </XHeader>
                 )}
                 {(!props.data.alphaNextReviewOpportunity && (!props.data.loading)) && (
@@ -283,7 +308,7 @@ const OpportunityInfo = withOpportunity((props) => {
 }) as React.ComponentType<{ variables?: any, router: XRouter }>;
 
 export default withApp('Initial Review', 'viewer', withRouter((props) => {
-    let state: 'INCOMING' | 'APPROVED_INITIAL' | 'APPROVED_ZONING' = 'INCOMING';
+    let state: 'INCOMING' | 'APPROVED_INITIAL' | 'APPROVED_ZONING' | 'APPROVED' | 'REJECTED' | 'SNOOZED' = 'INCOMING';
     let title = 'Initial Review';
     if (props.router.routeQuery.stage) {
         if (props.router.routeQuery.stage === 'zoning') {
@@ -292,6 +317,15 @@ export default withApp('Initial Review', 'viewer', withRouter((props) => {
         } else if (props.router.routeQuery.stage === 'unit') {
             state = 'APPROVED_ZONING';
             title = 'Unit Placement Review';
+        } else if (props.router.routeQuery.stage === 'approved') {
+            state = 'APPROVED';
+            title = 'Approved';
+        } else if (props.router.routeQuery.stage === 'rejected') {
+            state = 'REJECTED';
+            title = 'Rejected';
+        } else if (props.router.routeQuery.stage === 'snoozed') {
+            state = 'SNOOZED';
+            title = 'Snoozed';
         }
     }
 

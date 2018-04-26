@@ -36,7 +36,7 @@ export default withApp('Approved opportunities', 'viewer', withRouter((props) =>
                         />
                         <XButton path={'/prospecting/map' + buildQs({ stage: 'snoozed', ...q.qsMap })}>Map view</XButton>
                     </XHeader>
-                    <OpportunitiesTable variables={{ state: OpportunityState.APPROVED, query: q.query }}>
+                    <OpportunitiesTable variables={{ state: OpportunityState.APPROVED, query: q.query }} stage="approved">
                         <XCard.Empty text="No approved parcels" icon="sort" />
                     </OpportunitiesTable>
                 </Scaffold.Content>

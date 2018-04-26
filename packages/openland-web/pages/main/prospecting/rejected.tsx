@@ -36,7 +36,7 @@ export default withApp('Rejected opportunities', 'viewer', withRouter((props) =>
                         />
                         <XButton path={'/prospecting/map' + buildQs({ ...q.qsMap, stage: 'rejected' })}>Map view</XButton>
                     </XHeader>
-                    <OpportunitiesTable variables={{ state: OpportunityState.REJECTED, query: q.query }}>
+                    <OpportunitiesTable variables={{ state: OpportunityState.REJECTED, query: q.query }} stage="rejected">
                         <XCard.Empty text="No rejected parcels" icon="sort" />
                     </OpportunitiesTable>
                 </Scaffold.Content>
