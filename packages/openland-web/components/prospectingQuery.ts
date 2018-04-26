@@ -32,8 +32,8 @@ export function buildProspectingQuery(router: XRouter) {
         clauses.push({ isPublic: true });
         ownerClauses.push({ isPublic: true });
     } else if (router.query.pipeline === 'hpd') {
-        clauses.push({ '$and': [{ isPublic: true }, { ownerName: 'hpd' }] });
-        ownerClauses.push({ '$and': [{ isPublic: true }, { ownerName: 'hpd' }] });
+        clauses.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
+        ownerClauses.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
     }
     if (router.query.owner) {
         clauses.push({ ownerName: router.query.owner });
