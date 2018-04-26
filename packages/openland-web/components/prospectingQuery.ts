@@ -25,16 +25,13 @@ export function buildQs(src: any) {
 export function buildProspectingQuery(router: XRouter) {
     let clauses: any[] = [];
     let ownerClauses: any[] = [];
-    if (!router.query.pipeline) {
-        clauses.push({ '$not': [{ isPublic: true }] });
-        ownerClauses.push({ '$not': [{ isPublic: true }] });
-    } else if (router.query.pipeline === 'public') {
+    if (router.query.pipeline === 'public') {
         clauses.push({ isPublic: true });
         ownerClauses.push({ isPublic: true });
     } else if (router.query.pipeline === 'hpd') {
         clauses.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
         ownerClauses.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
-    } else {
+    } else if (router.query.pipeline === 'private') {
         clauses.push({ '$not': [{ isPublic: true }] });
         ownerClauses.push({ '$not': [{ isPublic: true }] });
     }
