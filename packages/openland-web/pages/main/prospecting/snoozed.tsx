@@ -42,7 +42,7 @@ export default withApp('Snoozed opportunities', 'viewer', withRouter((props) => 
                         />
                         <XButton path={'/prospecting/map?stage=snoozed' + queryMap}>Map view</XButton>
                     </XHeader>
-                    <OpportunitiesTable variables={{ state: OpportunityState.SNOOZED, query: q.query }}>
+                    <OpportunitiesTable variables={{ state: OpportunityState.SNOOZED, query: q.query }} stage="snoozed">
                         <XCard.Empty text="No snoozed parcels" icon="sort" />
                     </OpportunitiesTable>
                 </Scaffold.Content>

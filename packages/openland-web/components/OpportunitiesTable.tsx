@@ -14,14 +14,8 @@ export const OpportunitiesTable = withSourcing((props) => {
     if ((props as any).stage) {
         stage = '&stage=' + (props as any).stage;
     }
-    let useDirect = false;
-    if (props.data.variables.state === 'APPROVED') {
-        useDirect = true;
-    } else if (props.data.variables.state === 'REJECTED') {
-        useDirect = true;
-    } else if (props.data.variables.state === 'SNOOZED') {
-        useDirect = true;
-    }
+    let useDirect = false; 
+    
     let sVal = props.router.query.sort;
     let sort = props.router.query.sort ? '&sort=' + props.router.query.sort : '';
     return (
@@ -88,4 +82,4 @@ export const OpportunitiesTable = withSourcing((props) => {
             )}
         </XCard.Loader>
     );
-}) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' }>;
+}) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning'| 'approved'| 'rejected' | 'snoozed' }>;
