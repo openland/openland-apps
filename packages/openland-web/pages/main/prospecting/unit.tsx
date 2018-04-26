@@ -12,7 +12,7 @@ import { Scaffold } from '../../../components/Scaffold';
 import { OpportunityState } from 'openland-api/Types';
 import { withRouter } from '../../../components/withRouter';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
-import { buildProspectingQuery } from '../../../components/prospectingQuery';
+import { buildProspectingQuery, buildQs } from '../../../components/prospectingQuery';
 import { OwnersSelect } from '../../../api';
 
 let OwnersSelectStyled = Glamorous(OwnersSelect)({
@@ -20,12 +20,7 @@ let OwnersSelectStyled = Glamorous(OwnersSelect)({
 });
 
 export default withApp('Unit placement', 'viewer', withRouter((props) => {
-    let hasPublic = props.router.query.public ? true : false;
-    let queryMap = '';
-    if (hasPublic) {
-        queryMap = '&public=true';
-    }
-    let q = buildProspectingQuery(OpportunityState.APPROVED_ZONING, props.router);
+    let q = buildProspectingQuery(props.router);
     return (
         <>
             <XHead title="Unit placement" />
@@ -39,8 +34,8 @@ export default withApp('Unit placement', 'viewer', withRouter((props) => {
                             value={props.router.query.owner}
                             onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
                         />
-                        <XButton path={'/prospecting/map?stage=unit' + queryMap}>Map view</XButton>
-                        <XButton style="dark" path={'/prospecting/review?stage=unit' + queryMap}>Begin review</XButton>
+                        <XButton path={'/prospecting/map' + buildQs({ stage: 'unit', ...q.qsMap })}>Map view</XButton>
+                        <XButton style="dark" path={'/prospecting/review' + buildQs({ stage: 'unit', ...q.qsReview })}>Begin review</XButton>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.APPROVED_ZONING, query: q.query }} stage="unit">
                         <XCard.Empty text="There are no parcels for review" icon="sort" />

@@ -16,6 +16,7 @@ import { trackEvent } from '../../../utils/analytics';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
+import { buildProspectingQuery } from '../../../components/prospectingQuery';
 // import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 
 const Container = Glamorous.div({
@@ -122,7 +123,6 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
 const ProspectingMapWrapped = withRouter(ProspectingMap);
 
 export default withApp('Prospecting Map', 'viewer', withRouter((props) => {
-    let hasPublic = props.router.query.public ? true : false;
     let squery: any = { stage: OpportunityState.INCOMING };
     if (props.router.query.stage === 'snoozed' || props.router.query.stage === 'nyc') {
         squery = { stage: OpportunityState.SNOOZED };
@@ -135,15 +135,13 @@ export default withApp('Prospecting Map', 'viewer', withRouter((props) => {
     } else if (props.router.query.stage === 'rejected') {
         squery = { stage: OpportunityState.REJECTED };
     }
-    if (hasPublic) {
+    let q = buildProspectingQuery(props.router);
+    if (q.queryRaw) {
         squery = {
-            '$and': [squery, { isPublic: true }]
-        };
-    } else {
-        squery = {
-            '$and': [squery, { '$not': { isPublic: true } }]
+            '$and': [squery, q.queryRaw]
         };
     }
+
     return (
         <>
             <XHead title={['Prospecting Map']} />

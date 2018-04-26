@@ -39,6 +39,7 @@ import { XRouter } from '../../../components/routing/XRouter';
 import { XSwitcher } from './../../../components/X/XSwitcher';
 import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XZoningMetrics } from './../../../components/X/XZoningMetrics';
+import { buildProspectingQuery } from '../../../components/prospectingQuery';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}>, router: XRouter }) => {
     const detailsPath = 'review';
@@ -188,13 +189,13 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
 
 const OpportunityInfo = withOpportunity((props) => {
     let approveText = 'Move to next stage';
-    let hasPublic = props.router.query.public ? true : false;
+    // let hasPublic = props.router.query.public ? true : false;
     let mapUrl: string | undefined = undefined; // '/prospecting/map';
     if (props.data.alphaNextReviewOpportunity) {
         mapUrl = '/prospecting/map?selectedParcel=' + props.data.alphaNextReviewOpportunity.parcel.id;
     }
-    if (hasPublic && mapUrl) {
-        mapUrl = mapUrl + '&public=true';
+    if (props.router.query.pipeline && mapUrl) {
+        mapUrl = mapUrl + '&pipeline=' + props.router.query.pipeline;
     }
     if (props.data.variables.state === 'INCOMING') {
         approveText = 'Move to Zoning Review';
@@ -293,18 +294,15 @@ export default withApp('Initial Review', 'viewer', withRouter((props) => {
             title = 'Unit Placement Review';
         }
     }
-    let hasPublic = props.router.query.public ? true : false;
-    let squery: string | null = null;
-    if (hasPublic) {
-        squery = '{"isPublic": true}';
-    }
+
+    let q = buildProspectingQuery(props.router);
 
     return (
         <>
             <XHead title={title} />
             <ProspectingScaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
-                    <OpportunityInfo variables={{ state: state, query: squery }} router={props.router} />
+                    <OpportunityInfo variables={{ state: state, query: q.query }} router={props.router} />
                 </Scaffold.Content>
             </ProspectingScaffold>
         </>

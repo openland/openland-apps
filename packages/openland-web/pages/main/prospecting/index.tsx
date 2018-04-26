@@ -12,9 +12,8 @@ import { ProspectingNavigation } from '../../../components/ProspectingNavigation
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { OpportunityState } from 'openland-api/Types';
-import * as qs from 'query-string';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
-import { buildProspectingQuery } from '../../../components/prospectingQuery';
+import { buildProspectingQuery, buildQs } from '../../../components/prospectingQuery';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -25,19 +24,7 @@ let OwnersSelectStyled = Glamorous(OwnersSelect)({
 });
 
 export default withApp('Incoming opportunities', 'viewer', withProspectingStats((props) => {
-    
-    let sort = props.router.query.sort ? { sort: props.router.query.sort } : {};
-    let pub = props.router.query.public ? { public: true } : {};
-    let query = qs.stringify(Object.assign({}, sort, pub));
-    let queryMap = qs.stringify(Object.assign({}, pub));
-    if (query.length > 0) {
-        query = '?' + query;
-    }
-    if (queryMap.length > 0) {
-        queryMap = '?' + queryMap;
-    }
-    let q = buildProspectingQuery(OpportunityState.INCOMING, props.router);
-
+    let q = buildProspectingQuery(props.router);
     return (
         <>
             <XHead title="Incoming opportunities" />
@@ -51,8 +38,8 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                             value={props.router.query.owner}
                             onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
                         />
-                        <XButton path={'/prospecting/map' + queryMap}>Map view</XButton>
-                        <XButton style="dark" path={'/prospecting/review' + query}>Begin review</XButton>
+                        <XButton path={'/prospecting/map' + buildQs(q.qsMap)}>Map view</XButton>
+                        <XButton style="dark" path={'/prospecting/review' + buildQs(q.qsReview)}>Begin review</XButton>
                     </XHeader>
 
                     <OpportunitiesTable variables={{ state: OpportunityState.INCOMING, query: q.query }}>

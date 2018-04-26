@@ -8,11 +8,15 @@ import { PriorityIndicator } from './PriorityIndicator';
 import { ParcelNumber } from './ParcelNumber';
 import { XDate } from './X/XDate';
 import ATypes from 'openland-api';
+import { withRouter } from './withRouter';
 
-export const OpportunitiesTable = withSourcing((props) => {
+export const OpportunitiesTable = withSourcing(withRouter((props) => {
     let stage = '';
     if ((props as any).stage) {
         stage = '&stage=' + (props as any).stage;
+    }
+    if (props.router.query.pipeline) {
+        stage = stage + '&pipeline=' + props.router.query.pipeline;
     }
     let useDirect = false;
     if (props.data.variables.state === 'APPROVED') {
@@ -88,4 +92,4 @@ export const OpportunitiesTable = withSourcing((props) => {
             )}
         </XCard.Loader>
     );
-}) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' }>;
+})) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning', pipeline?: any }>;

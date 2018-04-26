@@ -12,7 +12,7 @@ import { OpportunityState } from 'openland-api/Types';
 import { withRouter } from '../../../components/withRouter';
 import { XButton } from '../../../components/X/XButton';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
-import { buildProspectingQuery } from '../../../components/prospectingQuery';
+import { buildProspectingQuery, buildQs } from '../../../components/prospectingQuery';
 import { OwnersSelect } from '../../../api';
 
 let OwnersSelectStyled = Glamorous(OwnersSelect)({
@@ -20,12 +20,7 @@ let OwnersSelectStyled = Glamorous(OwnersSelect)({
 });
 
 export default withApp('Approved opportunities', 'viewer', withRouter((props) => {
-    let hasPublic = props.router.query.public ? true : false;
-    let queryMap = '';
-    if (hasPublic) {
-        queryMap = '&public=true';
-    }
-    let q = buildProspectingQuery(OpportunityState.APPROVED, props.router);
+    let q = buildProspectingQuery(props.router);
     return (
         <>
             <XHead title="Approved opportunities" />
@@ -39,12 +34,11 @@ export default withApp('Approved opportunities', 'viewer', withRouter((props) =>
                             value={props.router.query.owner}
                             onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
                         />
-                        <XButton path={'/prospecting/map?stage=snoozed' + queryMap}>Map view</XButton>
+                        <XButton path={'/prospecting/map' + buildQs({ stage: 'snoozed', ...q.qsMap })}>Map view</XButton>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.APPROVED, query: q.query }}>
                         <XCard.Empty text="No approved parcels" icon="sort" />
                     </OpportunitiesTable>
-
                 </Scaffold.Content>
             </ProspectingScaffold>
         </>

@@ -31,8 +31,19 @@ export const SidebarItem = Glamorous(XLink)({
     }
 });
 
+export const SidebarSubItem = Glamorous(XLink)({
+    ...XStyles.text.m500,
+    lineHeight: '32px',
+    paddingLeft: XStyles.paddings.xlarge,
+    paddingRight: XStyles.paddings.large,
+    '&.is-active': {
+        color: XStyles.color.accent
+    }
+});
+
 export class Sidebar extends React.Component<{ title: string }> {
     static Item = SidebarItem;
+    static Subitem = SidebarSubItem;
 
     render() {
         return (
