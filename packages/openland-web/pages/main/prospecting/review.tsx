@@ -287,12 +287,12 @@ const OpportunityInfo = withOpportunity((props) => {
                             variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                             mutation={props.reset}
                             onSuccess={() => {
-                                trackEvent('Parsel stage Reset done', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                trackEvent('Parsel Reset', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
                                 props.data.refetch({ forceFetch: true });
                             }}
                             style="dark"
                         >
-                            Reset
+                            Restart review
                         </XButtonMutation>)}
                     </XHeader>
                 )}
