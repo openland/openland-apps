@@ -4,7 +4,7 @@ import { graphQLTileSource } from '../utils/graphqlTileSource';
 import { graphqlSelect } from '../utils/graphqlSelect';
 import { graphqlRouted } from '../utils/graphqlRouted';
 import { graphqlMutation } from '../utils/graphqlMutation';
-import { graphqlCompose3, graphqlCompose2, graphqlCompose4, graphqlCompose5, graphqlCompose6 } from '../utils/graphqlCompose';
+import { graphqlCompose3, graphqlCompose2, graphqlCompose4, graphqlCompose6 } from '../utils/graphqlCompose';
 import Types, { Queries } from 'openland-api';
 
 //
