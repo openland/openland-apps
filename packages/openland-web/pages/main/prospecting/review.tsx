@@ -40,12 +40,15 @@ import { XSwitcher } from './../../../components/X/XSwitcher';
 import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XZoningMetrics } from './../../../components/X/XZoningMetrics';
 import { buildProspectingQuery } from '../../../components/prospectingQuery';
+import { unitCapacity } from '../../../utils/zoning/ZoningMatrix';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}>, router: XRouter }) => {
     const detailsPath = 'review';
     const linksPath = 'links';
     const notesPath = 'notes';
     const zoningPath = 'zoning';
+
+    const unitCapacityVal: number | undefined = props.parcel.extrasZoning && props.parcel.area ? unitCapacity(props.parcel.extrasZoning, props.parcel.area.value) : undefined;
 
     return (
         <XVertical>
@@ -77,6 +80,11 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                                 {props.parcel.area &&
                                     <XCard.Property title="Area"><XArea area={props.parcel.area!!.value} /></XCard.Property>
                                 }
+                                <XWithRole role={['super-admin', 'software-developer', 'unit-capacity']}>
+                                    {unitCapacityVal !== undefined &&
+                                        <XCard.Property title="Unit Capacity">{unitCapacityVal}</XCard.Property>
+                                    }
+                                </XWithRole>
                                 {props.parcel.front &&
                                     <XCard.Property title="Frontage"><XDistance value={props.parcel.front!!.value} /></XCard.Property>
                                 }
@@ -234,28 +242,28 @@ const OpportunityInfo = withOpportunity((props) => {
                     >
                         {mapUrl && <XButton path={mapUrl} >View on map</XButton>}
                         {props.data.variables.state !== 'REJECTED' && (
-                        <XButtonMutation
-                            variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
-                            mutation={props.reject}
-                            onSuccess={() => {
-                                trackEvent('Parcel Approved', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
-                                props.data.refetch({ forceFetch: true });
-                            }}
-                        >
-                            Reject
+                            <XButtonMutation
+                                variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
+                                mutation={props.reject}
+                                onSuccess={() => {
+                                    trackEvent('Parcel Approved', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                    props.data.refetch({ forceFetch: true });
+                                }}
+                            >
+                                Reject
                             </XButtonMutation>)}
                         <>
                             {/* <XWithRole role="feature-customer-kassita" negate={true}> */}
                             {props.data.variables.state !== 'SNOOZED' && (
-                            <XButtonMutation
-                                variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
-                                mutation={props.snooze}
-                                onSuccess={() => {
-                                    trackEvent('Parcel Snoozed', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
-                                    props.data.refetch({ forceFetch: true });
-                                }}
-                            >
-                                Snooze
+                                <XButtonMutation
+                                    variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
+                                    mutation={props.snooze}
+                                    onSuccess={() => {
+                                        trackEvent('Parcel Snoozed', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                        props.data.refetch({ forceFetch: true });
+                                    }}
+                                >
+                                    Snooze
                             </XButtonMutation>)}
                             {/* </XWithRole> */}
                             {/* <XWithRole role="feature-customer-kassita">

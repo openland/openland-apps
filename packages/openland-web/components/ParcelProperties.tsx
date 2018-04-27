@@ -13,9 +13,10 @@ import { XNumber } from './X/XNumber';
 import { XDistance } from './X/XDistance';
 import { Text } from '../strings';
 import { XVertical } from './X/XVertical';
+import { unitCapacity } from '../utils/zoning/ZoningMatrix';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
-
+    const unitCapacityVal: number | undefined = props.item.extrasZoning && props.item.area ? unitCapacity(props.item.extrasZoning, props.item.area.value) : undefined;
     return (
         <>
             <XCard.PropertyColumns>
@@ -30,6 +31,11 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         {props.item.area &&
                             <XCard.Property title="Area"><XArea area={props.item.area!!.value} /></XCard.Property>
                         }
+                        <XWithRole role={['super-admin', 'software-developer', 'unit-capacity']}>
+                            {unitCapacityVal !== undefined &&
+                                <XCard.Property title="Unit Capacity">{unitCapacityVal}</XCard.Property>
+                            }
+                        </XWithRole>
                         {props.item.front &&
                             <XCard.Property title="Frontage"><XDistance value={props.item.front!!.value} /></XCard.Property>
                         }

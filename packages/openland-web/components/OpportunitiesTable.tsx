@@ -4,11 +4,13 @@ import { XCard } from './X/XCard';
 import { XTable } from './X/XTable';
 import { XButton } from './X/XButton';
 import { XArea } from './X/XArea';
+import { XWithRole } from './X/XWithRole';
 import { PriorityIndicator } from './PriorityIndicator';
 import { ParcelNumber } from './ParcelNumber';
 import { XDate } from './X/XDate';
 import ATypes from 'openland-api';
 import { withRouter } from './withRouter';
+import { unitCapacity } from '../utils/zoning/ZoningMatrix';
 
 export const OpportunitiesTable = withSourcing(withRouter((props) => {
     let stage = '';
@@ -18,17 +20,17 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
     if (props.router.query.pipeline) {
         stage = stage + '&pipeline=' + props.router.query.pipeline;
     }
-//     let useDirect = false;
-//     if (props.data.variables.state === 'APPROVED') {
-//         useDirect = true;
-//     } else if (props.data.variables.state === 'REJECTED') {
-//         useDirect = true;
-//     } else if (props.data.variables.state === 'SNOOZED') {
-//         useDirect = true;
-//     }
-// =======
-    let useDirect = false; 
-    
+    //     let useDirect = false;
+    //     if (props.data.variables.state === 'APPROVED') {
+    //         useDirect = true;
+    //     } else if (props.data.variables.state === 'REJECTED') {
+    //         useDirect = true;
+    //     } else if (props.data.variables.state === 'SNOOZED') {
+    //         useDirect = true;
+    //     }
+    // =======
+    let useDirect = false;
+
     let sVal = props.router.query.sort;
     let sort = props.router.query.sort ? '&sort=' + props.router.query.sort : '';
     return (
@@ -46,12 +48,15 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                             >
                                 Area
                             </XTable.Cell>
-                            <XTable.Cell width={90} textAlign="left">Zoning</XTable.Cell>
+                            <XTable.Cell width={90} textAlign="right">Zoning</XTable.Cell>
+                            <XWithRole role={['super-admin', 'software-developer', 'unit-capacity']}>
+                                <XTable.Cell width={90} textAlign="right">Units</XTable.Cell>
+                            </XWithRole>
                             <XTable.Cell width={120} textAlign="right">Priority</XTable.Cell>
                             <XTable.Cell width={140} textAlign="right">{}</XTable.Cell>
                         </XTable.Header>
                         <XTable.Body>
-                            {props.data.alphaOpportunities.edges.map((v) => (
+                            {props.data.alphaOpportunities.edges.map((v) => ({ ...v, unitCapacity: (v.node.parcel.extrasZoning && v.node.parcel.area ? unitCapacity(v.node.parcel.extrasZoning!!, v.node.parcel.area!!.value) : undefined) })).map((v) => (
                                 <XTable.Row key={v.node.id} path={useDirect ? '/parcels/' + v.node.parcel.id : ('/prospecting/review?initialId=' + v.node.id + stage + sort)}>
                                     <XTable.Cell>
                                         {v.node.parcel.extrasBorough}
@@ -65,9 +70,14 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                     <XTable.Cell textAlign="right">
                                         {v.node.parcel && v.node.parcel.area && <XArea area={v.node.parcel.area.value} />}
                                     </XTable.Cell>
-                                    <XTable.Cell>
+                                    <XTable.Cell textAlign="right">
                                         {v.node.parcel.extrasZoning}
                                     </XTable.Cell>
+                                    <XWithRole role={['super-admin', 'software-developer', 'unit-capacity']}>
+                                        <XTable.Cell textAlign="right">
+                                            {v.unitCapacity}
+                                        </XTable.Cell>
+                                    </XWithRole>
                                     <XTable.Cell textAlign="right">
                                         <PriorityIndicator priority={v.node.priority} />
                                     </XTable.Cell>
@@ -95,4 +105,4 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
             )}
         </XCard.Loader>
     );
-})) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning'| 'approved'| 'rejected' | 'snoozed' }>;
+})) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
