@@ -48,7 +48,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                             >
                                 Area
                             </XTable.Cell>
-                            <XTable.Cell width={90} textAlign="right">Zoning</XTable.Cell>
+                            <XTable.Cell width={120} textAlign="right">Zoning</XTable.Cell>
                             <XWithRole role={['super-admin', 'software-developer', 'unit-capacity']}>
                                 <XTable.Cell width={90} textAlign="right">Units</XTable.Cell>
                             </XWithRole>

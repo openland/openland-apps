@@ -1188,5 +1188,151 @@
             "metric23": "60-85",
             "metric24": "-"
         }
+    },
+    "map": {
+        "C4-2": {
+            "id": "C4-2",
+            "equivalent": "R6"
+        },
+        "C4-3": {
+            "id": "C4-3",
+            "equivalent": "R6"
+        },
+        "C4-4": {
+            "id": "C4-4",
+            "equivalent": "R7-2"
+        },
+        "C4-5": {
+            "id": "C4-5",
+            "equivalent": "R7-2"
+        },
+        "C4-6": {
+            "id": "C4-6",
+            "equivalent": "R10"
+        },
+        "C4-7": {
+            "id": "C4-7",
+            "equivalent": "R10"
+        },
+        "C4-2A": {
+            "id": "C4-2A",
+            "equivalent": "R6A"
+        },
+        "C4-3A": {
+            "id": "C4-3A",
+            "equivalent": "R6A"
+        },
+        "C4-4A": {
+            "id": "C4-4A",
+            "equivalent": "R7A"
+        },
+        "C4-5A": {
+            "id": "C4-5A",
+            "equivalent": "R7A"
+        },
+        "C4-6A": {
+            "id": "C4-6A",
+            "equivalent": "R10A"
+        },
+        "C4-7A": {
+            "id": "C4-7A",
+            "equivalent": "R10A"
+        },
+        "C4-4D": {
+            "id": "C4-4D",
+            "equivalent": "R8A"
+        },
+        "C4-5D": {
+            "id": "C4-5D",
+            "equivalent": "R7D"
+        },
+        "C4-5X": {
+            "id": "C4-5X",
+            "equivalent": "R7X"
+        },
+        "C5-1": {
+            "id": "C5-1",
+            "equivalent": "R10"
+        },
+        "C5-3": {
+            "id": "C5-3",
+            "equivalent": "R9"
+        },
+        "C5-4": {
+            "id": "C5-4",
+            "equivalent": "R10"
+        },
+        "C5-5": {
+            "id": "C5-5",
+            "equivalent": "R10"
+        },
+        "C5-2A": {
+            "id": "C5-2A",
+            "equivalent": "R10A"
+        },
+        "C6-1": {
+            "id": "C6-1",
+            "equivalent": "R7-2"
+        },
+        "C6-2": {
+            "id": "C6-2",
+            "equivalent": "R10"
+        },
+        "C6-3": {
+            "id": "C6-3",
+            "equivalent": "R9"
+        },
+        "C6-4": {
+            "id": "C6-4",
+            "equivalent": "R10"
+        },
+        "C6-5": {
+            "id": "C6-5",
+            "equivalent": "R10"
+        },
+        "C6-6": {
+            "id": "C6-6",
+            "equivalent": "R10"
+        },
+        "C6-7": {
+            "id": "C6-7",
+            "equivalent": "R10"
+        },
+        "C6-8": {
+            "id": "C6-8",
+            "equivalent": "R10"
+        },
+        "C6-9": {
+            "id": "C6-9",
+            "equivalent": "R10"
+        },
+        "C6-1A": {
+            "id": "C6-1A",
+            "equivalent": "R6"
+        },
+        "C6-2A": {
+            "id": "C6-2A",
+            "equivalent": "R8A"
+        },
+        "C6-3A": {
+            "id": "C6-3A",
+            "equivalent": "R9A"
+        },
+        "C6-3D": {
+            "id": "C6-3D",
+            "equivalent": "R9D"
+        },
+        "C6-3X": {
+            "id": "C6-3X",
+            "equivalent": "R9X"
+        },
+        "C6-4A": {
+            "id": "C6-4A",
+            "equivalent": "R10A"
+        },
+        "C6-4X": {
+            "id": "C6-4X",
+            "equivalent": "R10X"
+        }
     }
 }

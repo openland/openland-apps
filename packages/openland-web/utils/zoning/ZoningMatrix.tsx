@@ -45,12 +45,15 @@ export class ZoneData {
         this.name = zoneName;
 
         let zone = zoning.zoning[zoneName];
-        for (let metricName of Object.keys(zone)) {
-            let metric = metrics.metrics[metricName];
-            if (metric) {
-                this.addValue(new ZoneMetricValue(zone[metricName], metric));
+        if (zone) {
+            for (let metricName of Object.keys(zone)) {
+                let metric = metrics.metrics[metricName];
+                if (metric) {
+                    this.addValue(new ZoneMetricValue(zone[metricName], metric));
+                }
             }
         }
+
     }
 
     addValue(value: ZoneMetricValue) {
@@ -101,7 +104,7 @@ export class ZoneData {
 
         // Round down for .74
         // Round up for .75+
-        res = res % 1 <= 0.74 ? Math.floor(res) : Math.ceil(res);        
+        res = res % 1 <= 0.74 ? Math.floor(res) : Math.ceil(res);
 
         // Additional rule: If area < 1700 sf > max units <= 2    
         res = parcelArea < 1700 ? Math.min(2, res) : res;
@@ -111,61 +114,62 @@ export class ZoneData {
 
 }
 
-export function zoneData(query: string): ZoneData[] {
-    let res: ZoneData[] = [];
-    query = query.toLowerCase();
-    query = query.startsWith('c') ? ('r' + query.substring(1)) : query;
-    for (let zoneName of Object.keys(zoning.zoning)) {
-        if (zoneName.toLowerCase().startsWith(query)) {
-            let zd = new ZoneData(zoneName);
-            res.push(zd);
+export function unitCapacity(zones: string[], parcelArea: number): number | undefined {
+    let res: number[] = [];
+    for (let z of exectZoneData(zones)) {
 
+        let uc = z.unitCapacity(parcelArea);
+        
+        if (uc !== undefined) {
+            res.push(uc);
         }
     }
+
+    return res.length > 0 ? Math.max(...res) : undefined;
+}
+
+export function zoneData(zones: string[]): ZoneData[] {
+    let res: ZoneData[] = [];
+    let zonesNorm = normilizeZones(zones);
+
+    for (let query of zonesNorm) {
+        for (let zoneName of Object.keys(zoning.zoning)) {
+            if (zoneName.startsWith(query)) {
+                let zd = new ZoneData(zoneName);
+                res.push(zd);
+            }
+        }
+    }
+
     return res;
 }
 
-export function unitCapacity(zone: string | string[], parcelArea: number): number | undefined {
-    let zd = exectZoneData(zone);
-    if (!zd) {
-        return undefined;
-    }    
-
-    return zd.unitCapacity(parcelArea);
-}
-
-export function exectZoneData(zones: string | string[]): ZoneData | undefined {
-
-    if (!Array.isArray(zones)) {
-        zones = [zones];
-    }
-    // normilize zones
-    let zonesNorm = [];
-
-    for (let zonesRaw of zones) {
-        zonesNorm.push(...zonesRaw.split('/'));
-    }
+export function exectZoneData(zones: string[]): ZoneData[] {
+    let res = [];
+    let zonesNorm = normilizeZones(zones);
 
     for (let z of zonesNorm) {
-        // TODO C -> R
-        /*
-        C* codes converted to R* codes (to use Zoning Matrix)  https://www1.nyc.gov/assets/planning/download/pdf/zoning/districts-tools/commercial_zoning_data_tables.pdf
-            R6 > R6QH
-        */
-
-        z = z.startsWith('R1') ? 'R1-1' : z;
-        z = z.startsWith('R2') ? 'R2' : z;
-        z = z.startsWith('R3') ? 'R3' : z;
-        z = z.startsWith('R4') ? 'R4' : z;
-        z = z.startsWith('R5') ? 'R5' : z;
-        z = z.startsWith('R6') ? 'R6QH' : z;
-
         let zone = zoning.zoning[z];
-        if (!zone) {
-            continue;
+        if (zone) {
+            res.push(new ZoneData(z));
         }
-        return new ZoneData(z);
     }
 
-    return undefined;
+    return res;
+}
+
+function normilizeZones(zones: string[]) {
+    let zonesNorm = [];
+    for (let zonesRaw of zones) {
+        zonesNorm.push(...zonesRaw.split('/').map(zoneNamingHacks));
+    }
+    return zonesNorm;
+}
+
+function zoneNamingHacks(z: string) {
+    z = zoning.map[z] ? zoning.map[z].equivalent : z;
+    z = z === 'R1' ? 'R1-1' : z;
+    z = z === 'R6' ? 'R6QH' : z;
+
+    return z;
 }

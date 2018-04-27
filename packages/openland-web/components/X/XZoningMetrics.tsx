@@ -10,16 +10,7 @@ export function XZoningMetrics(props: { codes: string[] }) {
 
     let zones = [];
 
-    // normilize zones
-    let zonesNorm = [];
-
-    for (let zonesRaw of items) {
-        zonesNorm.push(...zonesRaw.split('/'));
-    }
-
-    for (let itm of zonesNorm) {
-        zones.push(...zoneData(itm));
-    }
+    zones.push(...zoneData(items));
 
     for (let zone of zones) {
 
