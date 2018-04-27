@@ -48,8 +48,8 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                             >
                                 Area
                             </XTable.Cell>
-                            <XTable.Cell width={120} textAlign="right">Zoning</XTable.Cell>
-                            <XWithRole role={['super-admin', 'software-developer', 'unit-capacity']}>
+                            <XTable.Cell width={140} textAlign="right">Zoning</XTable.Cell>
+                            <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
                                 <XTable.Cell width={90} textAlign="right">Units</XTable.Cell>
                             </XWithRole>
                             <XTable.Cell width={120} textAlign="right">Priority</XTable.Cell>
@@ -73,9 +73,9 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                     <XTable.Cell textAlign="right">
                                         {v.node.parcel.extrasZoning}
                                     </XTable.Cell>
-                                    <XWithRole role={['super-admin', 'software-developer', 'unit-capacity']}>
+                                    <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
                                         <XTable.Cell textAlign="right">
-                                            {v.unitCapacity}
+                                            {v.unitCapacity ? v.unitCapacity.unitCapacity : v.unitCapacity}
                                         </XTable.Cell>
                                     </XWithRole>
                                     <XTable.Cell textAlign="right">

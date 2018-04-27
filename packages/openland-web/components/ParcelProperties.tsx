@@ -16,7 +16,7 @@ import { XVertical } from './X/XVertical';
 import { unitCapacity } from '../utils/zoning/ZoningMatrix';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
-    const unitCapacityVal: number | undefined = props.item.extrasZoning && props.item.area ? unitCapacity(props.item.extrasZoning, props.item.area.value) : undefined;
+    const unitCapacityVal = props.item.extrasZoning && props.item.area ? unitCapacity(props.item.extrasZoning, props.item.area.value) : undefined;
     return (
         <>
             <XCard.PropertyColumns>
@@ -31,9 +31,19 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         {props.item.area &&
                             <XCard.Property title="Area"><XArea area={props.item.area!!.value} /></XCard.Property>
                         }
-                        <XWithRole role={['super-admin', 'software-developer', 'unit-capacity']}>
+                        <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
                             {unitCapacityVal !== undefined &&
-                                <XCard.Property title="Unit Capacity">{unitCapacityVal}</XCard.Property>
+                                 <XTooltip marginLeft={0} placement="right">
+                                 <XTooltip.Target>
+                                     <XCard.Property title="Unit Capacity">
+                                         {unitCapacityVal.unitCapacity}
+                                     </XCard.Property>
+                                 </XTooltip.Target>
+                                 <XTooltip.Content><XArea area={unitCapacityVal.parcelArea} convert={false}/>
+                                     {' * ' + unitCapacityVal.maximumFARNarrow + '(FAR) / ' + unitCapacityVal.densityFactor + '(DF)'}
+                                 </XTooltip.Content>
+                             </XTooltip>
+
                             }
                         </XWithRole>
                         {props.item.front &&

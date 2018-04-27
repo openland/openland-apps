@@ -92,7 +92,7 @@ export class ZoneData {
         return res;
     }
 
-    unitCapacity(parcelArea: number): number | undefined {
+    unitCapacity(parcelArea: number): { unitCapacity: number, parcelArea: number , maximumFARNarrow: number, densityFactor: number} | undefined {
 
         if (this.maximumFARNarrow === undefined || this.densityFactor === undefined) {
             return undefined;
@@ -109,23 +109,23 @@ export class ZoneData {
         // Additional rule: If area < 1700 sf > max units <= 2    
         res = parcelArea < 1700 ? Math.min(2, res) : res;
 
-        return res;
+        return { unitCapacity: res, maximumFARNarrow: this.maximumFARNarrow, densityFactor: this.densityFactor, parcelArea: parcelArea };
     }
 
 }
 
-export function unitCapacity(zones: string[], parcelArea: number): number | undefined {
-    let res: number[] = [];
+export function unitCapacity(zones: string[], parcelArea: number): { unitCapacity: number, parcelArea: number, maximumFARNarrow: number, densityFactor: number } | undefined {
+    let res: { unitCapacity: number, parcelArea: number, maximumFARNarrow: number, densityFactor: number } | undefined = undefined;
     for (let z of exectZoneData(zones)) {
 
         let uc = z.unitCapacity(parcelArea);
-        
-        if (uc !== undefined) {
-            res.push(uc);
+
+        if (res === undefined || (uc !== undefined && uc.unitCapacity > res.unitCapacity)) {
+            res = uc;
         }
     }
 
-    return res.length > 0 ? Math.max(...res) : undefined;
+    return res;
 }
 
 export function zoneData(zones: string[]): ZoneData[] {

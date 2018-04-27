@@ -48,7 +48,7 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
     const notesPath = 'notes';
     const zoningPath = 'zoning';
 
-    const unitCapacityVal: number | undefined = props.parcel.extrasZoning && props.parcel.area ? unitCapacity(props.parcel.extrasZoning, props.parcel.area.value) : undefined;
+    const unitCapacityVal = props.parcel.extrasZoning && props.parcel.area ? unitCapacity(props.parcel.extrasZoning, props.parcel.area.value) : undefined;
 
     return (
         <XVertical>
@@ -80,9 +80,19 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                                 {props.parcel.area &&
                                     <XCard.Property title="Area"><XArea area={props.parcel.area!!.value} /></XCard.Property>
                                 }
-                                <XWithRole role={['super-admin', 'software-developer', 'unit-capacity']}>
+                                <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
                                     {unitCapacityVal !== undefined &&
-                                        <XCard.Property title="Unit Capacity">{unitCapacityVal}</XCard.Property>
+                                        <XTooltip marginLeft={0} placement="right">
+                                            <XTooltip.Target>
+                                                <XCard.Property title="Unit Capacity">
+                                                    {unitCapacityVal.unitCapacity}
+                                                </XCard.Property>
+                                            </XTooltip.Target>
+                                            <XTooltip.Content><XArea area={unitCapacityVal.parcelArea} convert={false}/>
+                                                {' * ' + unitCapacityVal.maximumFARNarrow + '(FAR) / ' + unitCapacityVal.densityFactor + '(DF)'}
+                                            </XTooltip.Content>
+                                        </XTooltip>
+
                                     }
                                 </XWithRole>
                                 {props.parcel.front &&
