@@ -23,6 +23,7 @@ import { Text } from '../strings';
 import { XIcon } from './X/XIcon';
 import { XHeader } from './X/XHeader';
 import { ParcelNumber } from './ParcelNumber';
+import { unitCapacity } from '../utils/zoning/ZoningMatrix';
 
 let panelWidth = 324;
 
@@ -81,6 +82,9 @@ function PropertyCell(props: { title: string, children: any }) {
 }
 
 export const ParcelCard = withParcelDirect((props) => {
+
+    const unitCapacityVal = props.data && props.data.item && props.data.item.extrasZoning && props.data.item.area ? unitCapacity(props.data.item.extrasZoning, props.data.item.area.value) : undefined;
+
     return (
         <Container>
             <LoaderWrapper loading={!props.data || props.data!!.loading}>
@@ -191,6 +195,19 @@ export const ParcelCard = withParcelDirect((props) => {
                             {props.data.item!!.area &&
                                 <PropertyCell title="Area"><XArea area={props.data.item!!.area!!.value} /></PropertyCell>
                             }
+                            <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
+                                {unitCapacityVal !== undefined &&
+                                    <XTooltip marginLeft={0} marginBottom={8} placement="left">
+                                        <XTooltip.Target>
+                                            <PropertyCell title="Unit Capacity"> {unitCapacityVal.unitCapacity}</PropertyCell>
+                                        </XTooltip.Target>
+                                        <XTooltip.Content><XArea area={unitCapacityVal.parcelArea} convert={false} />
+                                            {' * ' + unitCapacityVal.maximumFARNarrow + '(FAR) / ' + unitCapacityVal.densityFactor + '(DF)'}
+                                        </XTooltip.Content>
+                                    </XTooltip>
+
+                                }
+                            </XWithRole>
                             {props.data.item!!.front &&
                                 <PropertyCell title="Frontage"><XDistance value={props.data.item!!.front!!.value} /></PropertyCell>
                             }

@@ -8,6 +8,7 @@ import { XWithRole } from './X/XWithRole';
 import { PriorityIndicator } from './PriorityIndicator';
 import { ParcelNumber } from './ParcelNumber';
 import { XDate } from './X/XDate';
+import { XTooltip } from '../components/Incubator/XTooltip';
 import ATypes from 'openland-api';
 import { withRouter } from './withRouter';
 import { unitCapacity } from '../utils/zoning/ZoningMatrix';
@@ -74,9 +75,20 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                         {v.node.parcel.extrasZoning}
                                     </XTable.Cell>
                                     <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                                        <XTable.Cell textAlign="right">
-                                            {v.unitCapacity ? v.unitCapacity.unitCapacity : v.unitCapacity}
-                                        </XTable.Cell>
+                                        {v.unitCapacity ? (<>
+                                            <XTable.Cell textAlign="right">
+                                                <XTooltip placement="right">
+                                                    <XTooltip.Target>
+                                                        <div style={{ color: '#000000' }}>
+                                                            {v.unitCapacity.unitCapacity}
+                                                        </div>
+                                                    </XTooltip.Target>
+                                                    <XTooltip.Content><XArea area={v.unitCapacity.parcelArea} convert={false} />
+                                                        {' * ' + v.unitCapacity.maximumFARNarrow + '(FAR) / ' + v.unitCapacity.densityFactor + '(DF)'}
+                                                    </XTooltip.Content>
+                                                </XTooltip>
+                                            </XTable.Cell>
+                                        </>) : (<XTable.Cell textAlign="right">{}</XTable.Cell>)}
                                     </XWithRole>
                                     <XTable.Cell textAlign="right">
                                         <PriorityIndicator priority={v.node.priority} />
