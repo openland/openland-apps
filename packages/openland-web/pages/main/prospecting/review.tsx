@@ -82,7 +82,7 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                                 }
                                 <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
                                     {unitCapacityVal !== undefined &&
-                                        <XTooltip marginLeft={0} placement="right">
+                                        <XTooltip marginLeft={0} marginBottom={8} placement="right">
                                             <XTooltip.Target>
                                                 <XCard.Property title="Unit Capacity">
                                                     {unitCapacityVal.unitCapacity}

@@ -5,11 +5,13 @@ import { canUseDOM } from '../../utils/environment';
 import { Manager, Target, Popper } from './XPopper';
 import { XIcon } from '../X/XIcon';
 
-const XTooltipDiv = Glamorous.div<{ marginLeft?: number, marginRight?: number, margin?: number, centeredContent?: boolean }>((props) => ({
+const XTooltipDiv = Glamorous.div<{ marginLeft?: number, marginRight?: number, marginTop?: number, marginBottom?: number, margin?: number, centeredContent?: boolean }>((props) => ({
     display: 'flex',
     flexShrink: 0,
     alignItems: 'center',
     margin: props.margin,
+    marginTop: props.marginTop,
+    marginBottom: props.marginBottom,
     justifyContent: props.centeredContent ? 'center' : undefined,
     // alignSelf: 'flex-start',
     marginLeft: props.marginLeft !== undefined ? props.marginLeft : 4,
@@ -33,6 +35,8 @@ interface XTooltipProps {
     marginLeft?: number;
     marginRight?: number;
     margin?: number;
+    marginBottom?: number;
+    marginTop?: number;
     centeredContent?: boolean;
     placement?: 'auto-start'
     | 'auto'
@@ -178,7 +182,7 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
 
         return (
             <Manager>
-                <XTooltipDiv marginLeft={this.props.marginLeft} margin={this.props.margin} marginRight={this.props.marginRight} centeredContent={this.props.centeredContent}>
+                <XTooltipDiv marginLeft={this.props.marginLeft} margin={this.props.margin} marginRight={this.props.marginRight} marginTop={this.props.marginTop} marginBottom={this.props.marginBottom} centeredContent={this.props.centeredContent}>
                     <Target>
                         <TargetContent
                             onMouseOver={this.targetOver}
