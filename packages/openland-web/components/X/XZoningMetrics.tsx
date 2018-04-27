@@ -73,10 +73,11 @@ export class ZoneData {
 }
 
 export function zoneData(query: string): ZoneData[] {
-    let res: ZoneData[]  = [];
-
+    let res: ZoneData[] = [];
+    query = query.toLowerCase();
+    query = query.startsWith('c') ? ('r' + query.substring(1)) : query;
     for (let zoneName of Object.keys(zoning.zoning)) {
-        if (zoneName.startsWith(query)) {
+        if (zoneName.toLowerCase().startsWith(query)) {
             let zone = zoning.zoning[zoneName];
             let zd = new ZoneData(zoneName);
             res.push(zd);
@@ -85,7 +86,7 @@ export function zoneData(query: string): ZoneData[] {
                 if (metric) {
                     zd.data.push(new ZoneMetricValue(zone[metricName], metric));
                 }
-            }  
+            }
         }
     }
     return res;
@@ -98,7 +99,7 @@ export function XZoningMetrics(props: { codes: string[] }) {
     let zones = [];
 
     for (let itm of items) {
-        zones.push( ...zoneData(itm));
+        zones.push(...zoneData(itm));
     }
 
     for (let zone of zones) {
@@ -163,9 +164,9 @@ export function XZoningMetrics(props: { codes: string[] }) {
 
                 for (let v of group.metrics!!) {
                     metricsComponents.push(
-                        <XCard.Property width={240} key={zone.name  + group.title + v.meta.name + v.meta.subtype + '_prop'} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.format()}</XCard.Property>);
+                        <XCard.Property width={240} key={zone.name + group.title + v.meta.name + v.meta.subtype + '_prop'} title={v.meta.name + (v.meta.subtype ? ' (' + v.meta.subtype + ')' : '')}>{v.format()}</XCard.Property>);
                 }
-                groupComponents.push(<XCard.PropertyList subtitle={true} width={380} key={zone.name +  group.title + '_group'} title={group.title}>{metricsComponents}</XCard.PropertyList>);
+                groupComponents.push(<XCard.PropertyList subtitle={true} width={380} key={zone.name + group.title + '_group'} title={group.title}>{metricsComponents}</XCard.PropertyList>);
 
             }
             components.push(<XCard.PropertyColumns wrap={true} grow={0} key={zone.name + '_zone_zontainer'}>{groupComponents}</XCard.PropertyColumns>);
