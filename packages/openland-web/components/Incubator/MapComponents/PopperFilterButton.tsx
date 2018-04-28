@@ -9,6 +9,9 @@ import { XCloser } from '../../X/XCloser';
 const PopperComponent = Glamorous.div({
     '& .popper[data-placement^="bottom"]': {
         marginTop: '30px !important',
+    },
+    '& .popper .popper-content': {
+        padding: '18px !important'
     }
 });
 
@@ -124,7 +127,7 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
         let popoverComponent = (
             <ClickOutside onClickOutside={this.handleClose}>
                 <PopperComponent>
-                    <Popper placement="top" class={this.state.class} autoWidth={true}>
+                    <Popper placement="top" class={this.state.class} autoWidth={true} updated={false}>
                         {popper}
                     </Popper>
                 </PopperComponent>

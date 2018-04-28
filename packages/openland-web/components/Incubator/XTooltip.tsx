@@ -174,7 +174,7 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
 
         let animation = this.state.class === 'static' && this.prevClass === 'show' ? 'show' : this.state.class;
         let popover = (
-            <Popper placement={this.props.placement ? this.props.placement : 'top'} class={animation} onMouseover={this.modalOver} onMouseout={this.out} nonePointerEvents={true}>
+            <Popper placement={this.props.placement ? this.props.placement : 'top'} class={animation} onMouseover={this.modalOver} onMouseout={this.out} nonePointerEvents={true} updated={true}>
                 {content.length > 0 ? (content) : (this.props.title)}
             </Popper>
         );

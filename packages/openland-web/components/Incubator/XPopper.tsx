@@ -72,6 +72,7 @@ interface PopperChildProps {
 
 interface PopperProps extends Popper.PopperOptions {
     componentFactory: (popperProps: PopperChildProps) => React.ReactNode;
+    updated?: boolean;
 }
 
 interface PopperState {
@@ -141,7 +142,9 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
         //   this._createPopper()
         // }
 
-        this._popper.scheduleUpdate();
+        if (this.props.updated === true) {
+            this._popper.scheduleUpdate();
+        }
     }
 
     componentWillUnmount() {
@@ -154,7 +157,7 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
     }
 
     _createPopper() {
-        const { componentFactory, children, ...popperProps } = this.props;
+        const { componentFactory, children, updated, ...popperProps } = this.props;
 
         let constructor = PopperJS.default;
         // if (constructor == null) {
@@ -463,6 +466,7 @@ interface PopperDivProps {
     onMouseout?: Function;
     nonePointerEvents?: boolean;
     autoWidth?: boolean;
+    updated?: boolean;
     placement: 'auto-start'
     | 'auto'
     | 'auto-end'
@@ -484,6 +488,7 @@ export function Popper(props: PopperDivProps) {
     return (
         <PopperDiv nonePointerEvents={props.nonePointerEvents} autoWidth={props.autoWidth}>
             <PopperClass
+                updated={props.updated}
                 placement={props.placement}
                 componentFactory={(popperProps) => (
                     <div {...popperProps} className={classnames('popper', props.class)}>
