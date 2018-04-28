@@ -1,0 +1,3 @@
+image: node:8.9.4
+build:
+  script: "yarn install"
