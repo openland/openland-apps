@@ -11,7 +11,6 @@ import { XDate } from './X/XDate';
 import { XTooltip } from '../components/Incubator/XTooltip';
 import ATypes from 'openland-api';
 import { withRouter } from './withRouter';
-import { unitCapacity } from '../utils/zoning/ZoningMatrix';
 
 export const OpportunitiesTable = withSourcing(withRouter((props) => {
     let stage = '';
@@ -57,7 +56,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                             <XTable.Cell width={140} textAlign="right">{}</XTable.Cell>
                         </XTable.Header>
                         <XTable.Body>
-                            {props.data.alphaOpportunities.edges.map((v) => ({ ...v, unitCapacity: (v.node.parcel.extrasZoning && v.node.parcel.area ? unitCapacity(v.node.parcel.extrasZoning!!, v.node.parcel.area!!.value) : undefined) })).map((v) => (
+                            {props.data.alphaOpportunities.edges.map((v) => (
                                 <XTable.Row key={v.node.id} path={useDirect ? '/parcels/' + v.node.parcel.id : ('/prospecting/review?initialId=' + v.node.id + stage + sort)}>
                                     <XTable.Cell>
                                         {v.node.parcel.extrasBorough}
@@ -75,16 +74,16 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                         {v.node.parcel.extrasZoning}
                                     </XTable.Cell>
                                     <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                                        {v.unitCapacity ? (<>
+                                        {v.node.parcel.area && v.node.parcel.extrasUnitCapacityDencity && v.node.parcel.extrasUnitCapacityFar ? (<>
                                             <XTable.Cell textAlign="right">
                                                 <XTooltip placement="right">
                                                     <XTooltip.Target>
                                                         <div style={{ color: '#000000' }}>
-                                                            {v.unitCapacity.unitCapacity}
+                                                            {v.node.parcel.extrasUnitCapacity}
                                                         </div>
                                                     </XTooltip.Target>
-                                                    <XTooltip.Content><XArea area={v.unitCapacity.parcelArea} convert={false} />
-                                                        {' * ' + v.unitCapacity.maximumFARNarrow + '(FAR) / ' + v.unitCapacity.densityFactor + '(DF)'}
+                                                    <XTooltip.Content><XArea area={v.node.parcel.area.value}/>
+                                                        {' * ' + v.node.parcel.extrasUnitCapacityFar + '(FAR) / ' + v.node.parcel.extrasUnitCapacityDencity + '(DF)'}
                                                     </XTooltip.Content>
                                                 </XTooltip>
                                             </XTable.Cell>

@@ -23,7 +23,6 @@ import { Text } from '../strings';
 import { XIcon } from './X/XIcon';
 import { XHeader } from './X/XHeader';
 import { ParcelNumber } from './ParcelNumber';
-import { unitCapacity } from '../utils/zoning/ZoningMatrix';
 
 let panelWidth = 324;
 
@@ -82,8 +81,6 @@ function PropertyCell(props: { title: string, children: any }) {
 }
 
 export const ParcelCard = withParcelDirect((props) => {
-
-    const unitCapacityVal = props.data && props.data.item && props.data.item.extrasZoning && props.data.item.area ? unitCapacity(props.data.item.extrasZoning, props.data.item.area.value) : undefined;
 
     return (
         <Container>
@@ -196,13 +193,13 @@ export const ParcelCard = withParcelDirect((props) => {
                                 <PropertyCell title="Area"><XArea area={props.data.item!!.area!!.value} /></PropertyCell>
                             }
                             <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                                {unitCapacityVal !== undefined &&
+                                {props.data.item!!.area && props.data.item!!.extrasUnitCapacityDencity && props.data.item!!.extrasUnitCapacityFar &&
                                     <XTooltip marginLeft={0} marginBottom={8} placement="left">
                                         <XTooltip.Target>
-                                            <PropertyCell title="Unit Capacity"> {unitCapacityVal.unitCapacity}</PropertyCell>
+                                            <PropertyCell title="Unit Capacity"> {props.data.item!!.extrasUnitCapacityDencity}</PropertyCell>
                                         </XTooltip.Target>
-                                        <XTooltip.Content><XArea area={unitCapacityVal.parcelArea} convert={false} />
-                                            {' * ' + unitCapacityVal.maximumFARNarrow + '(FAR) / ' + unitCapacityVal.densityFactor + '(DF)'}
+                                        <XTooltip.Content><XArea area={props.data.item!!.area!!.value}/>
+                                            {' * ' + props.data.item!!.extrasUnitCapacityFar + '(FAR) / ' + props.data.item!!.extrasUnitCapacityDencity + '(DF)'}
                                         </XTooltip.Content>
                                     </XTooltip>
 

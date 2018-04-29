@@ -103,6 +103,10 @@ export const ParcelFull = gql`
       extrasAnalyzed
       extrasOwnerPublic
 
+      extrasUnitCapacity
+      extrasUnitCapacityFar
+      extrasUnitCapacityDencity
+
       userData {
           notes
       }
@@ -198,6 +202,11 @@ export const ParcelShort = gql`
       extrasShapeSides
       extrasFitProjects
       extrasAnalyzed
+
+      extrasUnitCapacity
+      extrasUnitCapacityFar
+      extrasUnitCapacityDencity
+      
       city {
           id
           name

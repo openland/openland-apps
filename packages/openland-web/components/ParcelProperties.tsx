@@ -13,10 +13,8 @@ import { XNumber } from './X/XNumber';
 import { XDistance } from './X/XDistance';
 import { Text } from '../strings';
 import { XVertical } from './X/XVertical';
-import { unitCapacity } from '../utils/zoning/ZoningMatrix';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
-    const unitCapacityVal = props.item.extrasZoning && props.item.area ? unitCapacity(props.item.extrasZoning, props.item.area.value) : undefined;
     return (
         <>
             <XCard.PropertyColumns>
@@ -32,17 +30,17 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                             <XCard.Property title="Area"><XArea area={props.item.area!!.value} /></XCard.Property>
                         }
                         <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                            {unitCapacityVal !== undefined &&
-                                 <XTooltip marginLeft={0} marginBottom={8} placement="right">
-                                 <XTooltip.Target>
-                                     <XCard.Property title="Unit Capacity">
-                                         {unitCapacityVal.unitCapacity}
-                                     </XCard.Property>
-                                 </XTooltip.Target>
-                                 <XTooltip.Content><XArea area={unitCapacityVal.parcelArea} convert={false}/>
-                                     {' * ' + unitCapacityVal.maximumFARNarrow + '(FAR) / ' + unitCapacityVal.densityFactor + '(DF)'}
-                                 </XTooltip.Content>
-                             </XTooltip>
+                            {props.item.area && props.item.extrasUnitCapacityFar && props.item.extrasUnitCapacityDencity &&
+                                <XTooltip marginLeft={0} marginBottom={8} placement="right">
+                                    <XTooltip.Target>
+                                        <XCard.Property title="Unit Capacity">
+                                            {props.item.extrasUnitCapacity}
+                                        </XCard.Property>
+                                    </XTooltip.Target>
+                                    <XTooltip.Content><XArea area={props.item.area.value}/>
+                                        {' * ' + props.item.extrasUnitCapacityFar + '(FAR) / ' + props.item.extrasUnitCapacityDencity + '(DF)'}
+                                    </XTooltip.Content>
+                                </XTooltip>
 
                             }
                         </XWithRole>

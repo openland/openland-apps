@@ -1109,6 +1109,9 @@ export interface ParcelsConnectionQuery {
         extrasShapeSides: Array< number > | null,
         extrasFitProjects: Array< string > | null,
         extrasAnalyzed: boolean | null,
+        extrasUnitCapacity: number | null,
+        extrasUnitCapacityFar: number | null,
+        extrasUnitCapacityDencity: number | null,
         // Addresses
         city:  {
           __typename: "City",
@@ -1202,6 +1205,9 @@ export interface ParcelsFavoritesQuery {
     extrasShapeSides: Array< number > | null,
     extrasFitProjects: Array< string > | null,
     extrasAnalyzed: boolean | null,
+    extrasUnitCapacity: number | null,
+    extrasUnitCapacityFar: number | null,
+    extrasUnitCapacityDencity: number | null,
     // Addresses
     city:  {
       __typename: "City",
@@ -1332,6 +1338,9 @@ export interface ParcelQuery {
     extrasShapeSides: Array< number > | null,
     extrasFitProjects: Array< string > | null,
     extrasAnalyzed: boolean | null,
+    extrasUnitCapacity: number | null,
+    extrasUnitCapacityFar: number | null,
+    extrasUnitCapacityDencity: number | null,
     // User Data
     userData:  {
       __typename: "ParcelUserData",
@@ -2352,6 +2361,9 @@ export interface SourcingQuery {
           extrasShapeSides: Array< number > | null,
           extrasFitProjects: Array< string > | null,
           extrasAnalyzed: boolean | null,
+          extrasUnitCapacity: number | null,
+          extrasUnitCapacityFar: number | null,
+          extrasUnitCapacityDencity: number | null,
           // Addresses
           city:  {
             __typename: "City",
@@ -2496,6 +2508,9 @@ export interface OpportunityQuery {
       extrasShapeSides: Array< number > | null,
       extrasFitProjects: Array< string > | null,
       extrasAnalyzed: boolean | null,
+      extrasUnitCapacity: number | null,
+      extrasUnitCapacityFar: number | null,
+      extrasUnitCapacityDencity: number | null,
       // User Data
       userData:  {
         __typename: "ParcelUserData",
@@ -2746,6 +2761,9 @@ export interface NextOpportunityQuery {
       extrasShapeSides: Array< number > | null,
       extrasFitProjects: Array< string > | null,
       extrasAnalyzed: boolean | null,
+      extrasUnitCapacity: number | null,
+      extrasUnitCapacityFar: number | null,
+      extrasUnitCapacityDencity: number | null,
       // User Data
       userData:  {
         __typename: "ParcelUserData",
@@ -3140,6 +3158,9 @@ export interface ParcelFullFragment {
   extrasShapeSides: Array< number > | null,
   extrasFitProjects: Array< string > | null,
   extrasAnalyzed: boolean | null,
+  extrasUnitCapacity: number | null,
+  extrasUnitCapacityFar: number | null,
+  extrasUnitCapacityDencity: number | null,
   // User Data
   userData:  {
     __typename: string,
@@ -3246,6 +3267,9 @@ export interface ParcelShortFragment {
   extrasShapeSides: Array< number > | null,
   extrasFitProjects: Array< string > | null,
   extrasAnalyzed: boolean | null,
+  extrasUnitCapacity: number | null,
+  extrasUnitCapacityFar: number | null,
+  extrasUnitCapacityDencity: number | null,
   // Addresses
   city:  {
     __typename: string,
