@@ -2400,6 +2400,15 @@ export interface SourcingQuery {
   },
 };
 
+export interface ProspectingCapacityQueryVariables {
+  state?: OpportunityState | null,
+  query?: string | null,
+};
+
+export interface ProspectingCapacityQuery {
+  totalCapacity: number,
+};
+
 export interface OpportunityQueryVariables {
   opportunityId: string,
 };

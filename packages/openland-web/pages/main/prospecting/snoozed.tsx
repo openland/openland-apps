@@ -14,6 +14,7 @@ import { XButton } from '../../../components/X/XButton';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { buildProspectingQuery, buildQs } from '../../../components/prospectingQuery';
 import { OwnersSelect } from '../../../api';
+import { CapacityIndicator } from '../../../components/CapacityIndicator';
 
 let OwnersSelectStyled = Glamorous.div({
     fontSize: 14,
@@ -46,7 +47,10 @@ export default withApp('Snoozed opportunities', 'viewer', withRouter((props) => 
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
 
-                    <XHeader text={'Snoozed opportunities'}>
+                    <XHeader
+                        text={'Snoozed opportunities'}
+                        description={<CapacityIndicator variables={{ state: OpportunityState.SNOOZED, query: q.query }} />}
+                    >
                         <OwnersSelectStyled>
                             <OwnersSelect
                                 variables={{ query: q.ownerQuery, state: OpportunityState.SNOOZED }}

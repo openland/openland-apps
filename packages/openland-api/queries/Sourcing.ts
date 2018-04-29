@@ -29,6 +29,12 @@ export const SourcingQuery = gql`
     ${ParcelShort}
 `;
 
+export const ProspectingCapacityQuery = gql`
+    query ProspectingCapacity($state: OpportunityState, $query: String) {
+        totalCapacity: alphaOpportunitiesCapacity(state: $state, query: $query)
+    }
+`;
+
 export const OpportunityQuery = gql`
     query Opportunity($opportunityId: ID!) {
         alphaOpportunity(id: $opportunityId) {

@@ -14,6 +14,7 @@ import { withRouter } from '../../../components/withRouter';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { buildProspectingQuery, buildQs } from '../../../components/prospectingQuery';
 import { OwnersSelect } from '../../../api';
+import { CapacityIndicator } from '../../../components/CapacityIndicator';
 
 let OwnersSelectStyled = Glamorous.div({
     fontSize: 14,
@@ -45,7 +46,10 @@ export default withApp('Unit placement', 'viewer', withRouter((props) => {
             <ProspectingScaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
-                    <XHeader text="Unit placement">
+                    <XHeader
+                        text="Unit placement"
+                        description={<CapacityIndicator variables={{ state: OpportunityState.APPROVED_ZONING, query: q.query }} />}
+                    >
                         <OwnersSelectStyled>
                             <OwnersSelect
                                 variables={{ query: q.ownerQuery, state: OpportunityState.APPROVED_ZONING }}

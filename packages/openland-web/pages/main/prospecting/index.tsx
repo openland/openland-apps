@@ -14,6 +14,7 @@ import { Scaffold } from '../../../components/Scaffold';
 import { OpportunityState } from 'openland-api/Types';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { buildProspectingQuery, buildQs } from '../../../components/prospectingQuery';
+import { CapacityIndicator } from '../../../components/CapacityIndicator';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -49,7 +50,10 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
             <ProspectingScaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />
-                    <XHeader text="Incoming opportunities">
+                    <XHeader
+                        text="Incoming opportunities"
+                        description={<CapacityIndicator variables={{ state: OpportunityState.INCOMING, query: q.query }}/>}
+                    >
                         <OwnersSelectStyled>
                             <OwnersSelect
                                 variables={{ query: q.ownerQuery, state: OpportunityState.INCOMING }}
