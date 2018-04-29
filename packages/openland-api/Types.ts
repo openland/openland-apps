@@ -131,9 +131,12 @@ export enum PermitSorting {
 
 
 export enum OpportunitySort {
+  DATE_ADDED_ASC = "DATE_ADDED_ASC",
   DATE_ADDED_DESC = "DATE_ADDED_DESC",
   AREA_ASC = "AREA_ASC",
   AREA_DESC = "AREA_DESC",
+  CAPACITY_ASC = "CAPACITY_ASC",
+  CAPACITY_DESC = "CAPACITY_DESC",
 }
 
 

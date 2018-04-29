@@ -5,7 +5,6 @@ import { XTable } from './X/XTable';
 import { XButton } from './X/XButton';
 import { XArea } from './X/XArea';
 import { XWithRole } from './X/XWithRole';
-import { PriorityIndicator } from './PriorityIndicator';
 import { ParcelNumber } from './ParcelNumber';
 import { XDate } from './X/XDate';
 import { XTooltip } from '../components/Incubator/XTooltip';
@@ -42,18 +41,33 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                             <XTable.Cell width={120}>Borough</XTable.Cell>
                             <XTable.Cell width={150}>Parcel</XTable.Cell>
                             <XTable.Cell>Address</XTable.Cell>
-                            <XTable.Cell width={100} textAlign="right"
+                            <XTable.Cell
+                                width={100}
+                                textAlign="right"
                                 orderBy={sVal === 'AREA_DESC' ? 'DESC' : sVal === 'AREA_ASC' ? 'ASC' : 'NO_SORT'}
-                                query={{ field: 'sort', value: (sVal === 'AREA_DESC' ? 'AREA_ASC' : sVal === 'AREA_ASC' ? undefined : 'AREA_DESC') }}
+                                query={{ field: 'sort', value: (sVal === 'AREA_DESC' ? 'AREA_ASC' : 'AREA_DESC') }}
                             >
                                 Area
                             </XTable.Cell>
                             <XTable.Cell width={140} textAlign="right">Zoning</XTable.Cell>
                             <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                                <XTable.Cell width={90} textAlign="right">Units</XTable.Cell>
+                                <XTable.Cell
+                                    width={90}
+                                    textAlign="right"
+                                    orderBy={sVal === 'CAPACITY_DESC' ? 'DESC' : sVal === 'CAPACITY_ASC' ? 'ASC' : 'NO_SORT'}
+                                    query={{ field: 'sort', value: (sVal === 'CAPACITY_DESC' ? 'CAPACITY_ASC' : 'CAPACITY_DESC') }}
+                                >
+                                    Units
+                                </XTable.Cell>
                             </XWithRole>
-                            <XTable.Cell width={120} textAlign="right">Priority</XTable.Cell>
-                            <XTable.Cell width={140} textAlign="right">{}</XTable.Cell>
+                            <XTable.Cell
+                                width={140}
+                                textAlign="right"
+                                orderBy={sVal === 'DATE_ADDED_ASC' ? 'ASC' : sVal === undefined ? 'DESC' : 'NO_SORT'}
+                                query={{ field: 'sort', value: (sVal === 'DATE_ADDED_ASC' ? undefined : 'DATE_ADDED_ASC') }}
+                            >
+                                Date
+                            </XTable.Cell>
                         </XTable.Header>
                         <XTable.Body>
                             {props.data.alphaOpportunities.edges.map((v) => (
@@ -82,16 +96,13 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                                             {v.node.parcel.extrasUnitCapacity}
                                                         </div>
                                                     </XTooltip.Target>
-                                                    <XTooltip.Content><XArea area={v.node.parcel.area.value}/>
+                                                    <XTooltip.Content><XArea area={v.node.parcel.area.value} />
                                                         {' * ' + v.node.parcel.extrasUnitCapacityFar + '(FAR) / ' + v.node.parcel.extrasUnitCapacityDencity + '(DF)'}
                                                     </XTooltip.Content>
                                                 </XTooltip>
                                             </XTable.Cell>
                                         </>) : (<XTable.Cell textAlign="right">{}</XTable.Cell>)}
                                     </XWithRole>
-                                    <XTable.Cell textAlign="right">
-                                        <PriorityIndicator priority={v.node.priority} />
-                                    </XTable.Cell>
                                     <XTable.Cell textAlign="right">
                                         <XDate format="humanize" date={v.node.updatedAt} />
                                     </XTable.Cell>

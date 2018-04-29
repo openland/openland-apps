@@ -7870,6 +7870,12 @@
               "deprecationReason": null,
               "description": "",
               "isDeprecated": false,
+              "name": "DATE_ADDED_ASC"
+            },
+            {
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
               "name": "DATE_ADDED_DESC"
             },
             {
@@ -7883,6 +7889,18 @@
               "description": "",
               "isDeprecated": false,
               "name": "AREA_DESC"
+            },
+            {
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "CAPACITY_ASC"
+            },
+            {
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "CAPACITY_DESC"
             }
           ],
           "fields": null,
