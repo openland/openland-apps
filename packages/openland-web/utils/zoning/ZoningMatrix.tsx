@@ -104,7 +104,7 @@ export class ZoneData {
 
         // Round down for .74
         // Round up for .75+
-        res = res % 1 <= 0.74 ? Math.floor(res) : Math.ceil(res);
+        res = res % 1 >= 0.75 ? Math.ceil(res) : Math.floor(res);
 
         // Additional rule: If area < 1700 sf > max units <= 2    
         res = parcelArea < 1700 ? Math.min(2, res) : res;
