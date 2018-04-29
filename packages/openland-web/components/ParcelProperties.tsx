@@ -30,14 +30,14 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                             <XCard.Property title="Area"><XArea area={props.item.area!!.value} /></XCard.Property>
                         }
                         <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                            {props.item.area && props.item.extrasUnitCapacityFar && props.item.extrasUnitCapacityDencity &&
+                            {Boolean(props.item.area && props.item.extrasUnitCapacityFar && props.item.extrasUnitCapacityDencity) &&
                                 <XTooltip marginLeft={0} marginBottom={8} placement="right">
                                     <XTooltip.Target>
                                         <XCard.Property title="Unit Capacity">
                                             {props.item.extrasUnitCapacity}
                                         </XCard.Property>
                                     </XTooltip.Target>
-                                    <XTooltip.Content><XArea area={props.item.area.value}/>
+                                    <XTooltip.Content><XArea area={props.item.area!!.value}/>
                                         {' * ' + props.item.extrasUnitCapacityFar + '(FAR) / ' + props.item.extrasUnitCapacityDencity + '(DF)'}
                                     </XTooltip.Content>
                                 </XTooltip>

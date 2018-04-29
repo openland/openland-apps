@@ -193,7 +193,7 @@ export const ParcelCard = withParcelDirect((props) => {
                                 <PropertyCell title="Area"><XArea area={props.data.item!!.area!!.value} /></PropertyCell>
                             }
                             <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                                {props.data.item!!.area && props.data.item!!.extrasUnitCapacityDencity && props.data.item!!.extrasUnitCapacityFar &&
+                                {Boolean(props.data.item!!.area && props.data.item!!.extrasUnitCapacityDencity && props.data.item!!.extrasUnitCapacityFar) &&
                                     <XTooltip marginLeft={0} marginBottom={8} placement="left">
                                         <XTooltip.Target>
                                             <PropertyCell title="Unit Capacity"> {props.data.item!!.extrasUnitCapacity}</PropertyCell>

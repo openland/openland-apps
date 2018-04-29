@@ -78,14 +78,14 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                                     <XCard.Property title="Area"><XArea area={props.parcel.area!!.value} /></XCard.Property>
                                 }
                                 <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                                    {props.parcel.area && props.parcel.extrasUnitCapacityFar && props.parcel.extrasUnitCapacityDencity && 
+                                    {Boolean(props.parcel.area && props.parcel.extrasUnitCapacityFar && props.parcel.extrasUnitCapacityDencity) && 
                                         <XTooltip marginLeft={0} marginBottom={8} placement="right">
                                             <XTooltip.Target>
                                                 <XCard.Property title="Unit Capacity">
                                                     {props.parcel.extrasUnitCapacity}
                                                 </XCard.Property>
                                             </XTooltip.Target>
-                                            <XTooltip.Content><XArea area={props.parcel.area.value}/>
+                                            <XTooltip.Content><XArea area={props.parcel.area!!.value}/>
                                                 {' * ' + props.parcel.extrasUnitCapacityFar + '(FAR) / ' + props.parcel.extrasUnitCapacityDencity + '(DF)'}
                                             </XTooltip.Content>
                                         </XTooltip>

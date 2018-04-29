@@ -88,7 +88,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                         {v.node.parcel.extrasZoning}
                                     </XTable.Cell>
                                     <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                                        {v.node.parcel.area && v.node.parcel.extrasUnitCapacityDencity && v.node.parcel.extrasUnitCapacityFar ? (<>
+                                        {Boolean(v.node.parcel.area && v.node.parcel.extrasUnitCapacityDencity && v.node.parcel.extrasUnitCapacityFar) ? (<>
                                             <XTable.Cell textAlign="right">
                                                 <XTooltip placement="right">
                                                     <XTooltip.Target>
@@ -96,7 +96,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                                             {v.node.parcel.extrasUnitCapacity}
                                                         </div>
                                                     </XTooltip.Target>
-                                                    <XTooltip.Content><XArea area={v.node.parcel.area.value} />
+                                                    <XTooltip.Content><XArea area={v.node.parcel.area!!.value}/>
                                                         {' * ' + v.node.parcel.extrasUnitCapacityFar + '(FAR) / ' + v.node.parcel.extrasUnitCapacityDencity + '(DF)'}
                                                     </XTooltip.Content>
                                                 </XTooltip>
