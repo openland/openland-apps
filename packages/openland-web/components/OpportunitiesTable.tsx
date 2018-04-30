@@ -18,27 +18,27 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
             return '""' + (data !== null && data !== undefined ? data : '') + '""';
         };
 
-        let parcelNumberFormat = (parcel: {
-            id: {
-                borough: string | null,
-                boroughId: string | null,
-                block: string | null,
-                blockPadded: string | null,
-                lot: string | null,
-                lotPadded: string | null,
-                title: string,
-            },
-            compact?: boolean,
-            city?: string
-        }) => {
-            if (parcel.id.borough && parcel.id.block && parcel.id.lot) {
-                return (parcel.city ? `${parcel.city} ` : '' + parcel.id.boroughId + '-' + parcel.id.blockPadded || parcel.id.block + '-' + parcel.id.lotPadded || parcel.id.lot);
-            } else if (parcel.id.block && parcel.id.lot) {
-                return <>{parcel.city ? `${parcel.city} | ` : ''}{parcel.id.blockPadded || parcel.id.block}-{parcel.id.lotPadded || parcel.id.lot}</>;
-            } else {
-                return <>{parcel.city ? `${parcel.city} | ` : ''}{parcel.id.title}</>;
-            }
-        };
+        // let parcelNumberFormat = (parcel: {
+        //     id: {
+        //         borough: string | null,
+        //         boroughId: string | null,
+        //         block: string | null,
+        //         blockPadded: string | null,
+        //         lot: string | null,
+        //         lotPadded: string | null,
+        //         title: string,
+        //     },
+        //     compact?: boolean,
+        //     city?: string
+        // }) => {
+        //     if (parcel.id.borough && parcel.id.block && parcel.id.lot) {
+        //         return (parcel.city ? `${parcel.city} ` : '' + parcel.id.boroughId + '-' + parcel.id.blockPadded || parcel.id.block + '-' + parcel.id.lotPadded || parcel.id.lot);
+        //     } else if (parcel.id.block && parcel.id.lot) {
+        //         return <>{parcel.city ? `${parcel.city} | ` : ''}{parcel.id.blockPadded || parcel.id.block}-{parcel.id.lotPadded || parcel.id.lot}</>;
+        //     } else {
+        //         return <>{parcel.city ? `${parcel.city} | ` : ''}{parcel.id.title}</>;
+        //     }
+        // };
 
         let csvContent = 'data:text/csv;charset=utf-8,';
         csvContent += 'Borough,';
