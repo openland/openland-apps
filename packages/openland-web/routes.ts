@@ -40,6 +40,12 @@ routes.add('/deals/:dealId', '/main/deals/view');
 routes.add('/deals/:dealId/', '/main/deals/view');
 
 //
+// Reports
+//
+routes.add('/reports/urbyn_mho_nyc', '/main/reports/urbynmho');
+routes.add('/reports/urbyn_mho_nyc/', '/main/reports/urbynmho');
+
+//
 // Sourcing
 //
 

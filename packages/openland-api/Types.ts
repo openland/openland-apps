@@ -2403,7 +2403,6 @@ export interface SourcingQuery {
 
 export interface SourcingAllQueryVariables {
   state?: OpportunityState | null,
-  sort?: OpportunitySort | null,
   query?: string | null,
 };
 

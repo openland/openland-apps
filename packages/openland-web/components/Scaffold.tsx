@@ -461,6 +461,18 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 <strong>Deals</strong>
                             </XTooltip.Content>
                         </XTooltip>
+                        <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
+                            <XTooltip placement="right">
+                                <XTooltip.Target>
+                                    <NavigatorItem path="/reports/urbyn_mho_nyc" activateForSubpaths={true}>
+                                        <NavigatorIcon icon="work" />
+                                    </NavigatorItem>
+                                </XTooltip.Target>
+                                <XTooltip.Content>
+                                    <strong>Reports</strong>
+                                </XTooltip.Content>
+                            </XTooltip>
+                        </XWithRole>
                         <XTooltip placement="right">
                             <XTooltip.Target>
                                 <NavigatorItem path="/favorites" activateForSubpaths={true}>

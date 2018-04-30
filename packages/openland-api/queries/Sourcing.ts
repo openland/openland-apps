@@ -31,8 +31,8 @@ export const SourcingQuery = gql`
 `;
 
 export const SourcingAllQuery = gql`
-    query SourcingAll($state: OpportunityState, $sort: OpportunitySort, $query: String) {
-        alphaAllOpportunities(state: $state, sort: $sort, query: $query) {
+    query SourcingAll($state: OpportunityState, $query: String) {
+        alphaAllOpportunities(state: $state, query: $query) {
             id
             state
             priority
