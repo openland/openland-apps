@@ -14,10 +14,9 @@ pipelines:
           - yarn install
           - yarn test
           - yarn build
-    - step:
-        script:
-         - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-         - docker build -t openland/web:v${BITBUCKET_BUILD_NUMBER} ./build/.
-         - docker push openland/web:v${BITBUCKET_BUILD_NUMBER}
+          - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+          - docker build -t openland/web:v${BITBUCKET_BUILD_NUMBER} ./build/.
+          - docker push openland/web:v${BITBUCKET_BUILD_NUMBER}
+         
 options:
   docker: true
