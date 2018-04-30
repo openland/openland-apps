@@ -237,8 +237,8 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                             <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</XButton>
                         )}
                         <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
-                            <XButton query={{ field: 'export', value: 'true' }} style="dark">Export</XButton>
-                            {/* <XButton onClick={exportCVS} style="dark">Export page</XButton>                             */}
+                            {/* <XButton query={{ field: 'export', value: 'true' }} style="dark">Export</XButton> */}
+                            <XButton onClick={exportCVS} style="dark">Export page</XButton>                            
                         </XWithRole>
 
                     </XCard.Footer>
