@@ -38,6 +38,7 @@ interface XTooltipProps {
     marginBottom?: number;
     marginTop?: number;
     centeredContent?: boolean;
+    type?: 'info' | 'error' | 'warning';
     placement?: 'auto-start'
     | 'auto'
     | 'auto-end'
@@ -188,7 +189,7 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
                             onMouseOver={this.targetOver}
                             onMouseOut={this.out}
                         >
-                            {target.length > 0 ? (target) : (<XIcon icon="error" />)}
+                            {target.length > 0 ? (target) : (<XIcon icon={this.props.type ? this.props.type : 'error'} />)}
                         </TargetContent>
                     </Target>
                     {(XTooltip.current === this && this.state.showPopover && canUseDOM && ReactDOM.createPortal(popover, document.body))}

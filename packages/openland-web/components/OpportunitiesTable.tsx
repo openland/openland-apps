@@ -88,20 +88,9 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                         {v.node.parcel.extrasZoning}
                                     </XTable.Cell>
                                     <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                                        {Boolean(v.node.parcel.area && v.node.parcel.extrasUnitCapacityDencity && v.node.parcel.extrasUnitCapacityFar) ? (<>
                                             <XTable.Cell textAlign="right">
-                                                <XTooltip placement="right">
-                                                    <XTooltip.Target>
-                                                        <div style={{ color: '#000000' }}>
-                                                            {v.node.parcel.extrasUnitCapacity}
-                                                        </div>
-                                                    </XTooltip.Target>
-                                                    <XTooltip.Content><XArea area={v.node.parcel.area!!.value}/>
-                                                        {' * ' + v.node.parcel.extrasUnitCapacityFar + '(FAR) / ' + v.node.parcel.extrasUnitCapacityDencity + '(DF)'}
-                                                    </XTooltip.Content>
-                                                </XTooltip>
-                                            </XTable.Cell>
-                                        </>) : (<XTable.Cell textAlign="right">{}</XTable.Cell>)}
+                                                {Boolean(v.node.parcel.area && v.node.parcel.extrasUnitCapacityDencity && v.node.parcel.extrasUnitCapacityFar) ? v.node.parcel.extrasUnitCapacity : ''}
+                                            </XTable.Cell> 
                                     </XWithRole>
                                     <XTable.Cell textAlign="right">
                                         <XDate format="humanize" date={v.node.updatedAt} />
