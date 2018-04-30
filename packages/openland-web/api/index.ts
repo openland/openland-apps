@@ -215,6 +215,7 @@ export const ParcelSelect = graphqlSelect(Queries.Parcels.ParcelsSearchQuery);
 
 export const withProspectingStats = graphqlRouted<Types.OpportunityStatsQuery>(Queries.Sourcing.OpportunityStatsQuery);
 export const withSourcing = graphqlRouted<Types.SourcingQuery>(Queries.Sourcing.SourcingQuery, ['filter', 'cursor', 'page', 'sort'], false, 'network-only');
+export const withSourcingAll = graphqlRouted<Types.SourcingAllQuery>(Queries.Sourcing.SourcingAllQuery, [], false, 'network-only');
 export const withSourcingCapacity = graphqlRouted<Types.ProspectingCapacityQuery>(Queries.Sourcing.ProspectingCapacityQuery, [], false, 'network-only');
 export const withAddOpportunity = graphqlMutation<{ add: MutationFunc<{}> }>(Queries.Sourcing.AddOpportunityMutation, { name: 'add', refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
 

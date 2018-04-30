@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { withSourcing } from '../api';
+import { withSourcing, withSourcingAll } from '../api';
 import { XCard } from './X/XCard';
 import { XTable } from './X/XTable';
+import { XModalRouted } from './X/XModalRouted';
 import { XButton } from './X/XButton';
 import { XArea } from './X/XArea';
 import { XWithRole } from './X/XWithRole';
@@ -10,35 +11,33 @@ import { XDate } from './X/XDate';
 import ATypes from 'openland-api';
 import { withRouter } from './withRouter';
 
-export const OpportunitiesTable = withSourcing(withRouter((props) => {
-    let stage = '';
-
+export const ExportModal = withSourcingAll((props) => {
     const exportCVS = () => {
         let wrap = (data: any) => {
-            return '""' + (data !== null && data !== undefined ? data : '') + '""';
+            return '"' + (data !== null && data !== undefined ? data : '') + '"';
         };
 
-        // let parcelNumberFormat = (parcel: {
-        //     id: {
-        //         borough: string | null,
-        //         boroughId: string | null,
-        //         block: string | null,
-        //         blockPadded: string | null,
-        //         lot: string | null,
-        //         lotPadded: string | null,
-        //         title: string,
-        //     },
-        //     compact?: boolean,
-        //     city?: string
-        // }) => {
-        //     if (parcel.id.borough && parcel.id.block && parcel.id.lot) {
-        //         return (parcel.city ? `${parcel.city} ` : '' + parcel.id.boroughId + '-' + parcel.id.blockPadded || parcel.id.block + '-' + parcel.id.lotPadded || parcel.id.lot);
-        //     } else if (parcel.id.block && parcel.id.lot) {
-        //         return <>{parcel.city ? `${parcel.city} | ` : ''}{parcel.id.blockPadded || parcel.id.block}-{parcel.id.lotPadded || parcel.id.lot}</>;
-        //     } else {
-        //         return <>{parcel.city ? `${parcel.city} | ` : ''}{parcel.id.title}</>;
-        //     }
-        // };
+        let parcelNumberFormat = (parcel: {
+            id: {
+                borough: string | null,
+                boroughId: string | null,
+                block: string | null,
+                blockPadded: string | null,
+                lot: string | null,
+                lotPadded: string | null,
+                title: string,
+            },
+            compact?: boolean,
+            city?: string
+        }) => {
+            if (parcel.id.borough && parcel.id.block && parcel.id.lot) {
+                return (parcel.city ? parcel.city : '') + parcel.id.boroughId + '-' + (parcel.id.blockPadded || parcel.id.block + '-' + parcel.id.lotPadded || parcel.id.lot);
+            } else if (parcel.id.block && parcel.id.lot) {
+                return (parcel.city ? parcel.city + ' | ' : '') + (parcel.id.blockPadded || parcel.id.block) + ' - ' + (parcel.id.lotPadded || parcel.id.lot);
+            } else {
+                return (parcel.city ? parcel.city + ' | ' : '') + parcel.id.title;
+            }
+        };
 
         let csvContent = 'data:text/csv;charset=utf-8,';
         csvContent += 'Borough,';
@@ -47,27 +46,39 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
         csvContent += 'Area,';
         csvContent += 'Zoning,';
         csvContent += 'Units,';
-        csvContent += 'Date';
+        csvContent += 'Owner,';
+        // csvContent += 'Date';
         csvContent += '\r\n';
-        for (let row of props.data.alphaOpportunities.edges) {
-            csvContent += wrap(row.node.parcel.extrasBorough) + ',';
-            csvContent += wrap(row.node.parcel.number) + ',';
-            csvContent += wrap(row.node.parcel.address) + ',';
-            csvContent += wrap(row.node.parcel.area) + ',';
-            csvContent += wrap(row.node.parcel.extrasZoning) + ',';
-            csvContent += wrap(row.node.parcel.extrasUnitCapacity) + ',';
-            csvContent += wrap(row.node.updatedAt);
+        for (let row of props.data.alphaAllOpportunities!!) {
+            csvContent += wrap(row.parcel.extrasBorough) + ',';
+            csvContent += wrap(parcelNumberFormat({ id: row.parcel.number })) + ',';
+            csvContent += wrap(row.parcel.address) + ',';
+            csvContent += wrap(row.parcel.area ? Math.round(row.parcel.area.value * 10.7639) : '') + ',';
+            csvContent += wrap(row.parcel.extrasZoning) + ',';
+            csvContent += wrap(row.parcel.extrasUnitCapacity) + ',';
+            csvContent += wrap(row.parcel.extrasOwnerName) + ',';
+            // csvContent += wrap(row.updatedAt);
             csvContent += '\r\n';
         }
 
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement('a');
         link.setAttribute('href', encodedUri);
-        link.setAttribute('download', props.data.variables.state + '_' + props.data.alphaOpportunities.pageInfo.currentPage + '.csv');
+        link.setAttribute('download', props.data.variables.state + '.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
+    return (
+        <XCard.Loader loading={(props.data.loading || false)}>
+            <XButton style="dark" onClick={exportCVS}>{'Download' + props.data.variables + '.csv'}</XButton>
+        </XCard.Loader>
+
+    );
+});
+
+export const OpportunitiesTable = withSourcing(withRouter((props) => {
+    let stage = '';
 
     if ((props as any).stage) {
         stage = '&stage=' + (props as any).stage;
@@ -89,8 +100,70 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
     let sVal = props.router.query.sort;
     let sort = props.router.query.sort ? '&sort=' + props.router.query.sort : '';
 
+    const exportCVS = () => {
+        let wrap = (data: any) => {
+            return '"' + (data !== null && data !== undefined ? data : '') + '"';
+        };
+
+        let parcelNumberFormat = (parcel: {
+            id: {
+                borough: string | null,
+                boroughId: string | null,
+                block: string | null,
+                blockPadded: string | null,
+                lot: string | null,
+                lotPadded: string | null,
+                title: string,
+            },
+            compact?: boolean,
+            city?: string
+        }) => {
+            if (parcel.id.borough && parcel.id.block && parcel.id.lot) {
+                return (parcel.city ? parcel.city : '') + parcel.id.boroughId + '-' + (parcel.id.blockPadded || parcel.id.block + '-' + parcel.id.lotPadded || parcel.id.lot);
+            } else if (parcel.id.block && parcel.id.lot) {
+                return (parcel.city ? parcel.city + ' | ' : '') + (parcel.id.blockPadded || parcel.id.block) + ' - ' + (parcel.id.lotPadded || parcel.id.lot);
+            } else {
+                return (parcel.city ? parcel.city + ' | ' : '') + parcel.id.title;
+            }
+        };
+
+        let csvContent = 'data:text/csv;charset=utf-8,';
+        csvContent += 'Borough,';
+        csvContent += 'Parcel,';
+        csvContent += 'Address,';
+        csvContent += 'Area,';
+        csvContent += 'Zoning,';
+        csvContent += 'Units,';
+        csvContent += 'Owner,';
+        // csvContent += 'Date';
+        csvContent += '\r\n';
+        for (let row of props.data.alphaOpportunities.edges) {
+            csvContent += wrap(row.node.parcel.extrasBorough) + ',';
+            csvContent += wrap(parcelNumberFormat({ id: row.node.parcel.number })) + ',';
+            csvContent += wrap(row.node.parcel.address) + ',';
+            csvContent += wrap(row.node.parcel.area ? Math.round(row.node.parcel.area.value * 10.7639) : '') + ',';
+            csvContent += wrap(row.node.parcel.extrasZoning) + ',';
+            csvContent += wrap(row.node.parcel.extrasUnitCapacity) + ',';
+            csvContent += wrap(row.node.parcel.extrasOwnerName) + ',';
+            // csvContent += wrap(row.updatedAt);
+            csvContent += '\r\n';
+        }
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', props.data.variables.state + '.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
+            <XModalRouted title="Export to CVS" query="export">
+                <ExportModal />
+            </XModalRouted>
+
             {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length !== 0 && (
                 <>
                     <XTable>
@@ -163,8 +236,9 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                         {(props.data.alphaOpportunities.pageInfo.currentPage < props.data.alphaOpportunities.pageInfo.pagesCount - 1) && (
                             <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</XButton>
                         )}
-                        <XWithRole role={['super-admin', 'software-developer']}>
-                            <XButton onClick={exportCVS} style="dark">Export page</XButton>
+                        <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
+                            {/* <XButton query={{ field: 'export', value: 'true' }} style="dark">Export</XButton> */}
+                            <XButton onClick={exportCVS} style="dark">Export page</XButton>                            
                         </XWithRole>
 
                     </XCard.Footer>
