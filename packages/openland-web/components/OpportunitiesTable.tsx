@@ -12,6 +12,63 @@ import { withRouter } from './withRouter';
 
 export const OpportunitiesTable = withSourcing(withRouter((props) => {
     let stage = '';
+
+    const exportCVS = () => {
+        let wrap = (data: any) => {
+            return '""' + (data !== null && data !== undefined ? data : '') + '""';
+        };
+
+        let parcelNumberFormat = (parcel: {
+            id: {
+                borough: string | null,
+                boroughId: string | null,
+                block: string | null,
+                blockPadded: string | null,
+                lot: string | null,
+                lotPadded: string | null,
+                title: string,
+            },
+            compact?: boolean,
+            city?: string
+        }) => {
+            if (parcel.id.borough && parcel.id.block && parcel.id.lot) {
+                return (parcel.city ? `${parcel.city} ` : '' + parcel.id.boroughId + '-' + parcel.id.blockPadded || parcel.id.block + '-' + parcel.id.lotPadded || parcel.id.lot);
+            } else if (parcel.id.block && parcel.id.lot) {
+                return <>{parcel.city ? `${parcel.city} | ` : ''}{parcel.id.blockPadded || parcel.id.block}-{parcel.id.lotPadded || parcel.id.lot}</>;
+            } else {
+                return <>{parcel.city ? `${parcel.city} | ` : ''}{parcel.id.title}</>;
+            }
+        };
+
+        let csvContent = 'data:text/csv;charset=utf-8,';
+        csvContent += 'Borough,';
+        csvContent += 'Parcel,';
+        csvContent += 'Address,';
+        csvContent += 'Area,';
+        csvContent += 'Zoning,';
+        csvContent += 'Units,';
+        csvContent += 'Date';
+        csvContent += '\r\n';
+        for (let row of props.data.alphaOpportunities.edges) {
+            csvContent += wrap(row.node.parcel.extrasBorough) + ',';
+            csvContent += wrap(row.node.parcel.number) + ',';
+            csvContent += wrap(row.node.parcel.address) + ',';
+            csvContent += wrap(row.node.parcel.area) + ',';
+            csvContent += wrap(row.node.parcel.extrasZoning) + ',';
+            csvContent += wrap(row.node.parcel.extrasUnitCapacity) + ',';
+            csvContent += wrap(row.node.updatedAt);
+            csvContent += '\r\n';
+        }
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', props.data.variables.state + '_' + props.data.alphaOpportunities.pageInfo.currentPage + '.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     if ((props as any).stage) {
         stage = '&stage=' + (props as any).stage;
     }
@@ -31,6 +88,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
 
     let sVal = props.router.query.sort;
     let sort = props.router.query.sort ? '&sort=' + props.router.query.sort : '';
+
     return (
         <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
             {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length !== 0 && (
@@ -87,9 +145,9 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                         {v.node.parcel.extrasZoning}
                                     </XTable.Cell>
                                     <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                                            <XTable.Cell textAlign="right">
-                                                {Boolean(v.node.parcel.area && v.node.parcel.extrasUnitCapacityDencity && v.node.parcel.extrasUnitCapacityFar) ? v.node.parcel.extrasUnitCapacity : ''}
-                                            </XTable.Cell> 
+                                        <XTable.Cell textAlign="right">
+                                            {Boolean(v.node.parcel.area && v.node.parcel.extrasUnitCapacityDencity && v.node.parcel.extrasUnitCapacityFar) ? v.node.parcel.extrasUnitCapacity : ''}
+                                        </XTable.Cell>
                                     </XWithRole>
                                     <XTable.Cell textAlign="right">
                                         <XDate format="humanize" date={v.node.updatedAt} />
@@ -105,6 +163,10 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                         {(props.data.alphaOpportunities.pageInfo.currentPage < props.data.alphaOpportunities.pageInfo.pagesCount - 1) && (
                             <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</XButton>
                         )}
+                        <XWithRole role={['super-admin', 'software-developer']}>
+                            <XButton onClick={exportCVS} style="dark">Export page</XButton>
+                        </XWithRole>
+
                     </XCard.Footer>
                 </>
             )}
