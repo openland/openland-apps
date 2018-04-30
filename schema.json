@@ -1966,6 +1966,57 @@
                 {
                   "defaultValue": null,
                   "description": "",
+                  "name": "state",
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "OpportunityState",
+                    "ofType": null
+                  }
+                },
+                {
+                  "defaultValue": null,
+                  "description": "",
+                  "name": "sort",
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "OpportunitySort",
+                    "ofType": null
+                  }
+                },
+                {
+                  "defaultValue": null,
+                  "description": "",
+                  "name": "query",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              ],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "alphaAllOpportunities",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Opportunity",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            {
+              "args": [
+                {
+                  "defaultValue": null,
+                  "description": "",
                   "name": "borough",
                   "type": {
                     "kind": "NON_NULL",

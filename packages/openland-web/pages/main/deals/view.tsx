@@ -76,7 +76,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                 <Scaffold.Content>
                     <XHeader
                         text={props.data.deal.title}
-                        description={<ParcelNumber city={props.data.deal.parcel!!.city.name} id={props.data.deal.parcel!!.number} />}
+                        description={props.data.deal.parcel ? <ParcelNumber city={props.data.deal.parcel!!.city.name} id={props.data.deal.parcel!!.number} /> : 'unknown parcel'}
                         bullet={bulletText} bulletColor={bulletColor}
                     >
                         <XWithRole role="super-admin">

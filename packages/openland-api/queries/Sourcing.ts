@@ -12,6 +12,7 @@ export const SourcingQuery = gql`
                     updatedAt
                     parcel {
                         ...ParcelShort
+                        extrasOwnerName
                     }
                 }
                 cursor
@@ -23,6 +24,22 @@ export const SourcingQuery = gql`
                 currentPage
                 pagesCount
                 openEnded
+            }
+        }
+    }
+    ${ParcelShort}
+`;
+
+export const SourcingAllQuery = gql`
+    query SourcingAll($state: OpportunityState, $sort: OpportunitySort, $query: String) {
+        alphaAllOpportunities(state: $state, sort: $sort, query: $query) {
+            id
+            state
+            priority
+            updatedAt
+            parcel {
+                ...ParcelShort
+                extrasOwnerName
             }
         }
     }
