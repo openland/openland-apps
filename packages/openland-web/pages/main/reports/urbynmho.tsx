@@ -6,9 +6,11 @@ import { XCard } from '../../../components/X/XCard';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTableUrbynReport';
 import { OpportunityState } from 'openland-api/Types';
 import { withRouter } from '../../../components/withRouter';
+import { buildProspectingQuery } from '../../../components/prospectingQuery';
 import { Scaffold } from '../../../components/Scaffold';
 
 export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
+    let q = buildProspectingQuery(props.router);
     return (
         <>
             <XHead title="Mini-Home Opportunities in New York City" />
