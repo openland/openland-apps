@@ -18,6 +18,7 @@ import { JustMap } from './JustMap';
 import hpdprojects from './lots_of_data.json';
 import { XRouter } from '../../../components/routing/XRouter';
 import XStyles from '../../../components/X/XStyles';
+import { XHeader } from '../../../components/X/XHeader';
 
 const UrbinHeaderWrapper = Glamorous.div({
     position: 'relative',
@@ -60,6 +61,21 @@ const UrbinTitle = Glamorous.div({
     alignSelf: 'flex-start'
 });
 
+const TabTitle = Glamorous.div({
+    width: 110,
+    height: 20,
+    fontFamily: 'CircularStd',
+    fontSize: 16,
+    fontWeight: 500,
+    fontStyle: 'normal',
+    fontStretch: 'normal',
+    lineHeight: 1.25,
+    letterSpacing: -0.2,
+    textAlign: 'left',
+    color: '#1f3449'
+
+});
+
 const XMapContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
@@ -70,7 +86,7 @@ const XMapContainer = Glamorous.div({
 const ChbContiner = Glamorous(XCard)<{}>((props) => ({
     top: 20,
     left: 20,
-    position: 'absolute', 
+    position: 'absolute',
     flexDirection: 'column',
     alignItems: 'flex-start',
     paddingLeft: 16,
@@ -78,6 +94,13 @@ const ChbContiner = Glamorous(XCard)<{}>((props) => ({
     paddingTop: 15,
     paddingBottom: 15,
 }));
+
+const Tabs = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'center'
+});
 
 const XMapContainer2 = Glamorous.div({
     position: 'relative',
@@ -223,7 +246,8 @@ const ContentWrapper = Glamorous.div({
 
 const TableWrapper = Glamorous.div({
     backgroundColor: '#fff',
-    borderRadius: 4
+    borderRadius: 4,
+    border: 'solid 1px rgba(229, 233, 242, 0.5)'
 });
 
 class Checkbox extends React.Component<{ checkedChangeListener: Function, label: string, checked?: boolean, color: string }, { isChecked: boolean }> {
@@ -255,7 +279,7 @@ class Checkbox extends React.Component<{ checkedChangeListener: Function, label:
                     <XIcon icon={this.state.isChecked ? 'done' : ''} />
                     <span>{this.props.label}</span>
                 </label>
-                <Circle color={this.props.color}/>
+                <Circle color={this.props.color} />
             </FilterInputDiv>
         );
     }
@@ -293,62 +317,78 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
 
             <XMapContainer2>
                 <JustMap
-                mode={this.props.router.query.mode}
-                selectedParcel={this.props.router.query.selectedParcel}
-                // onParcelClick={handleClick}
-                focusPosition={focus}
-            // lastKnownCameraLocation={knownCameraLocation}
-            // onCameraLocationChanged={handleMap}
-            >
-               
-                <DealsSource />
+                    mode={this.props.router.query.mode}
+                    selectedParcel={this.props.router.query.selectedParcel}
+                    // onParcelClick={handleClick}
+                    focusPosition={focus}
+                // lastKnownCameraLocation={knownCameraLocation}
+                // onCameraLocationChanged={handleMap}
+                >
 
-                {this.state.dealsEnabled &&
-                    <>
-                        <XMapImageLayer
-                            image="/static/img/icons/pin1.png"
-                            source="deals"
-                            layer="deals"
-                        // onClick={handleClick}
-                        />
+                    <DealsSource />
 
-                    </>}
-                <SourcingTileSource
-                    layer="sourcing"
-                    query={this.props.qHpd}
-                />
-                {this.state.hpdoEnabled &&
-                    <>
+                    {this.state.dealsEnabled &&
+                        <>
+                            <XMapImageLayer
+                                image="/static/img/icons/pin1.png"
+                                source="deals"
+                                layer="deals"
+                            // onClick={handleClick}
+                            />
 
-                        <XMapImageLayer
-                            image="/static/img/icons/pin2.png"
-                            source="sourcing"
-                            layer="sourcing"
-                        // onClick={handleClick}
-                        />
-                    </>}
-                <HPDProjectsSource />
+                        </>}
+                    <SourcingTileSource
+                        layer="sourcing"
+                        query={this.props.qHpd}
+                    />
+                    {this.state.hpdoEnabled &&
+                        <>
 
-                {this.state.hpdpEnabled &&
-                    <>
-                        <XMapImageLayer
-                            image="/static/img/icons/pin3.png"
-                            source="hpdp"
-                            layer="hpdp"
-                        // onClick={handleClick}
-                        />
-                    </>}
+                            <XMapImageLayer
+                                image="/static/img/icons/pin2.png"
+                                source="sourcing"
+                                layer="sourcing"
+                            // onClick={handleClick}
+                            />
+                        </>}
+                    <HPDProjectsSource />
 
-            </JustMap>
-            <ChbContiner>
-                <Checkbox label="Urbyn portfolio" checked={this.state.dealsEnabled} checkedChangeListener={this.onUrbynChange} color="#e8bd58"/>
-                <Checkbox label="HPD mini-home opportunities" checked={this.state.hpdoEnabled} checkedChangeListener={this.hpdoChange} color="#7f7cd5"/>
-                <Checkbox label="HPD projects" checked={this.state.hpdpEnabled} checkedChangeListener={this.hpdpChange} color="#79c07f"/>
-            </ChbContiner>
-        </XMapContainer2>
-            );
+                    {this.state.hpdpEnabled &&
+                        <>
+                            <XMapImageLayer
+                                image="/static/img/icons/pin3.png"
+                                source="hpdp"
+                                layer="hpdp"
+                            // onClick={handleClick}
+                            />
+                        </>}
+
+                </JustMap>
+                <ChbContiner>
+                    <Checkbox label="Urbyn portfolio" checked={this.state.dealsEnabled} checkedChangeListener={this.onUrbynChange} color="#e8bd58" />
+                    <Checkbox label="HPD mini-home opportunities" checked={this.state.hpdoEnabled} checkedChangeListener={this.hpdoChange} color="#7f7cd5" />
+                    <Checkbox label="HPD projects" checked={this.state.hpdpEnabled} checkedChangeListener={this.hpdpChange} color="#79c07f" />
+                </ChbContiner>
+            </XMapContainer2>
+        );
     }
 }
+
+const Divider = Glamorous.div({
+    width: '100%',
+    height: 1,
+    borderRadius: 1,
+    backgroundColor: 'rgba(229, 233, 242, 0.5)'
+
+});
+
+const DividerVertical = Glamorous.div({
+    width: 1,
+    height: '100%',
+    borderRadius: 1,
+    backgroundColor: 'rgba(229, 233, 242, 0.5)'
+
+});
 
 export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
     let clauses1: any[] = [];
@@ -366,11 +406,30 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                     <UrbinHeader />
                     <ContentWrapper>
                         <XVertical>
-                            <XMapContainer>
-                                <ReportMap router={props.router} qHpd={qHpd} />
-                            </XMapContainer>
+                            {/* <TableWrapper>
+                                <XVertical>
+                                    <XHeader text="Qualified Opportunities for Urbyn Mini-Homes" />
+                                    <Divider />
+                                    <Tabs>
+                                        <TabTitle>Urbyn portfolio</TabTitle>
+                                        <DividerVertical/>
+                                        <TabTitle>{'Housing & Preservation Department'}</TabTitle>
+                                        <DividerVertical/>
+                                        <TabTitle>Other public agencies</TabTitle>
+                                    </Tabs>
+                                </XVertical>
+                            </TableWrapper> */}
+                            <TableWrapper>
+                                <XVertical>
+                                    <XHeader text="Mini-Home Opportunities on the Map" />
+                                    <XMapContainer>
+                                        <ReportMap router={props.router} qHpd={qHpd} />
+                                    </XMapContainer>
+                                </XVertical>
+                            </TableWrapper>
                             <TableWrapper>
                                 <OpportunitiesTable
+                                    // variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
                                     variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
                                     stage="unit"
                                     type="hpd"
