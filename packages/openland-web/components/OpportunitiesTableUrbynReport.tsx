@@ -205,7 +205,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                     <XHeader text={(props as any).title}>
                         <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
                             <DownloadButton onClick={exportCVS} style="dark">
-                                <img src="/static/img/icons/reports/download-icon.svg"/>
+                                <img src="/static/img/icons/reports/download-icon.svg" style={{marginRight: 6, marginBottom: -1}}/>
                                 <span>Export list</span>
                             </DownloadButton>
                         </XWithRole>
@@ -218,8 +218,8 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                             <XTable.Cell
                                 width={100}
                                 textAlign="right"
-                                orderBy={sVal === 'AREA_DESC' ? 'DESC' : sVal === 'AREA_ASC' ? 'ASC' : 'NO_SORT'}
-                                query={{ field: 'sort', value: (sVal === 'AREA_DESC' ? 'AREA_ASC' : 'AREA_DESC') }}
+                                // orderBy={sVal === 'AREA_DESC' ? 'DESC' : sVal === 'AREA_ASC' ? 'ASC' : 'NO_SORT'}
+                                // query={{ field: 'sort', value: (sVal === 'AREA_DESC' ? 'AREA_ASC' : 'AREA_DESC') }}
                             >
                                 Area
                             </XTable.Cell>
@@ -228,20 +228,20 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                 <XTable.Cell
                                     width={90}
                                     textAlign="right"
-                                    orderBy={sVal === 'CAPACITY_DESC' ? 'DESC' : sVal === 'CAPACITY_ASC' ? 'ASC' : 'NO_SORT'}
-                                    query={{ field: 'sort', value: (sVal === 'CAPACITY_DESC' ? 'CAPACITY_ASC' : 'CAPACITY_DESC') }}
+                                    // orderBy={sVal === 'CAPACITY_DESC' ? 'DESC' : sVal === 'CAPACITY_ASC' ? 'ASC' : 'NO_SORT'}
+                                    // query={{ field: 'sort', value: (sVal === 'CAPACITY_DESC' ? 'CAPACITY_ASC' : 'CAPACITY_DESC') }}
                                 >
                                     Units
                                 </XTable.Cell>
                             </XWithRole>
-                            <XTable.Cell
+                            {/* <XTable.Cell
                                 width={140}
                                 textAlign="right"
-                                orderBy={sVal === 'DATE_ADDED_ASC' ? 'ASC' : sVal === undefined ? 'DESC' : 'NO_SORT'}
-                                query={{ field: 'sort', value: (sVal === 'DATE_ADDED_ASC' ? undefined : 'DATE_ADDED_ASC') }}
+                                // orderBy={sVal === 'DATE_ADDED_ASC' ? 'ASC' : sVal === undefined ? 'DESC' : 'NO_SORT'}
+                                // query={{ field: 'sort', value: (sVal === 'DATE_ADDED_ASC' ? undefined : 'DATE_ADDED_ASC') }}
                             >
                                 Date
-                            </XTable.Cell>
+                            </XTable.Cell> */}
                         </XTable.Header>
                         <XTable.Body>
                             {props.data.alphaOpportunities.edges.map((v) => (
@@ -266,9 +266,9 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                             {Boolean(v.node.parcel.area && v.node.parcel.extrasUnitCapacityDencity && v.node.parcel.extrasUnitCapacityFar) ? v.node.parcel.extrasUnitCapacity : ''}
                                         </XTable.Cell>
                                     </XWithRole>
-                                    <XTable.Cell textAlign="right">
+                                    {/* <XTable.Cell textAlign="right">
                                         <XDate format="humanize" date={v.node.updatedAt} />
-                                    </XTable.Cell>
+                                    </XTable.Cell> */}
                                 </XTable.Row>
                             ))}
                         </XTable.Body>
