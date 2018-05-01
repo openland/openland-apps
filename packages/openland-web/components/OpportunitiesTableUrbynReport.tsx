@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withSourcing, withSourcingAll } from '../api';
+import { withSourcing, withSourcingAll, withSourcingFirst } from '../api';
 import { XCard } from './X/XCard';
 import { XHeader } from './X/XHeader';
 import { XTable } from './X/XTable';
@@ -113,7 +113,7 @@ export const ExportModal = withSourcingAll((props) => {
     );
 });
 
-export const OpportunitiesTable = withSourcing(withRouter((props) => {
+export const OpportunitiesTable = withSourcingFirst(withRouter((props) => {
     let stage = '';
 
     if ((props as any).stage) {
@@ -287,4 +287,4 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
             )}
         </XCard.Loader>
     );
-})) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string, title?: string }>;
+})) as React.ComponentType<{ variables?: ATypes.SourcingFirstQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string, title?: string }>;
