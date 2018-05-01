@@ -6,6 +6,7 @@ interface XMapImageProps {
     layer: string;
     source: string;
     image: string;
+    clusterColor: string;
     minZoom?: number;
     flyToMaxZoom?: number;
 
@@ -67,6 +68,43 @@ export class XMapImageLayer extends React.Component<XMapImageProps> {
             });
         });
 
+        this.map.addLayer({
+            'id': this.layer + '-cluster',
+            'type': 'circle',
+            'source': this.source,
+            'layout': {},
+            'paint': {
+                'circle-radius': [
+                    'step',
+                    ['get', 'point_count'],
+                    20,
+                    100,
+                    30,
+                    750,
+                    40
+                ],
+                'circle-color': props.clusterColor
+            },
+            filter: ['has', 'point_count'],
+            // minzoom: props.minZoom
+        });
+
+        this.map.addLayer({
+            id: this.layer + '-cluster-count',
+            type: 'symbol',
+            source: this.source,
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12
+            },
+            paint: {
+                'text-color' : '#6b6b6b'
+            }
+            // minzoom: props.minZoom
+        });
+
     }
 
     render() {
@@ -84,6 +122,9 @@ export class XMapImageLayer extends React.Component<XMapImageProps> {
         if (this.map) {
             try {
                 this.map.removeLayer(this.layer);
+                this.map.removeLayer(this.layer + '-cluster');
+                this.map.removeLayer(this.layer + '-cluster-count');
+                
             } catch (e) {
                 // Just Ignore
             }

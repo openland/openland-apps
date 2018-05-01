@@ -251,7 +251,7 @@ class HPDProjectsSource extends React.Component<{ loaded: Function }> {
             }));
         this.props.loaded(features.length);
         let result = { 'type': 'FeatureCollection', features: features };
-        return <XMapSource id="hpdp" data={result} />;
+        return <XMapSource id="hpdp" data={result} cluster={true} clusterRadius={30}/>;
     }
 }
 
@@ -386,6 +386,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                                 image="/static/img/icons/pin1.png"
                                 source="deals"
                                 layer="deals"
+                                clusterColor="#e8bd58"
                             // onClick={handleClick}
                             />
 
@@ -402,6 +403,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                                 image="/static/img/icons/pin2.png"
                                 source="sourcing"
                                 layer="sourcing"
+                                clusterColor="#7f7cd5"
                             // onClick={handleClick}
                             />
                         </>}
@@ -413,6 +415,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                                 image="/static/img/icons/pin3.png"
                                 source="hpdp"
                                 layer="hpdp"
+                                clusterColor="#79c07f"
                             // onClick={handleClick}
                             />
                         </>}

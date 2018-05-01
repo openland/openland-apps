@@ -6,6 +6,8 @@ export interface XMapSourceProps {
     id: string;
     data?: any;
     cluster?: boolean;
+    clusterMaxZoom?: number;
+    clusterRadius?: number;
 }
 
 export class XMapSource extends React.PureComponent<XMapSourceProps> {
@@ -29,8 +31,8 @@ export class XMapSource extends React.PureComponent<XMapSourceProps> {
                     type: 'geojson',
                     data: dt,
                     cluster: this.props.cluster || false,
-                    clusterMaxZoom: 14,
-                    clusterRadius: 50
+                    clusterMaxZoom: this.props.clusterMaxZoom !== undefined ?  this.props.clusterMaxZoom : 50,
+                    clusterRadius: this.props.clusterRadius !== undefined ?  this.props.clusterRadius : 10
                 });
             } catch (e) {
                 // Ignore
