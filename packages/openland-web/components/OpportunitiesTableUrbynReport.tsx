@@ -1,6 +1,8 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { withSourcing, withSourcingAll } from '../api';
 import { XCard } from './X/XCard';
+import { XHeader } from './X/XHeader';
 import { XTable } from './X/XTable';
 import { XModalRouted } from './X/XModalRouted';
 import { XButton } from './X/XButton';
@@ -10,6 +12,40 @@ import { ParcelNumber } from './ParcelNumber';
 import { XDate } from './X/XDate';
 import ATypes from 'openland-api';
 import { withRouter } from './withRouter';
+
+const SwitchButton = Glamorous(XButton)({
+    boxShadow: 'none',
+    border: 'none',
+    background: 'tranparent',
+    backgroundColor: 'tranparent',
+    fontSize: 14,
+    lineHeight: 1.43,
+    letterSpacing: 0.1,
+    color: '#79a9c7',
+    textDecoration: 'underline',
+    padding: '0 !important',
+    '&:focus, &:hover': {
+        outline: 'none',
+        boxShadow: 'none',
+        color: '#79a9c7'
+    }
+});
+
+const DownloadButton = Glamorous(XButton)({
+    boxShadow: 'none',
+    border: '1px solid rgba(229, 233, 242, 0.7)',
+    color: '#79a9c7',
+    backgroundColor: '#fff',
+    padding: '6px 10px',
+    '&:focus, &:hover': {
+        outline: 'none',
+        boxShadow: 'none',
+        color: '#79a9c7'
+    },
+    '&:hover': {
+        backgroundColor: '#eceff5'
+    }
+});
 
 export const ExportModal = withSourcingAll((props) => {
     const exportCVS = () => {
@@ -166,6 +202,14 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
 
             {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length !== 0 && (
                 <>
+                    <XHeader text={(props as any).title}>
+                        <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
+                            <DownloadButton onClick={exportCVS} style="dark">
+                                <img src="/static/img/icons/reports/download-icon.svg"/>
+                                <span>Export list</span>
+                            </DownloadButton>
+                        </XWithRole>
+                    </XHeader>
                     <XTable>
                         <XTable.Header>
                             <XTable.Cell width={120}>Borough</XTable.Cell>
@@ -231,16 +275,11 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                     </XTable>
                     <XCard.Footer text={props.data.alphaOpportunities.pageInfo.itemsCount + ' items'}>
                         {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
-                            <XButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }}>Prev</XButton>
+                            <SwitchButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }}>Prev</SwitchButton>
                         )}
                         {(props.data.alphaOpportunities.pageInfo.currentPage < props.data.alphaOpportunities.pageInfo.pagesCount - 1) && (
-                            <XButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</XButton>
+                            <SwitchButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</SwitchButton>
                         )}
-                        <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
-                            {/* <XButton query={{ field: 'export', value: 'true' }} style="dark">Export</XButton> */}
-                            <XButton onClick={exportCVS} style="dark">Export page</XButton>                            
-                        </XWithRole>
-
                     </XCard.Footer>
                 </>
             )}
@@ -251,4 +290,4 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
             )}
         </XCard.Loader>
     );
-})) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string }>;
+})) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string, title?: string }>;
