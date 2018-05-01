@@ -23,7 +23,6 @@ import { JustMap } from './JustMap';
 import hpdprojects from './lots_of_data.json';
 import { XRouter } from '../../../components/routing/XRouter';
 import XStyles from '../../../components/X/XStyles';
-import { Checkbox } from 'react-form';
 
 const UrbinHeaderWrapper = Glamorous.div({
     position: 'relative',

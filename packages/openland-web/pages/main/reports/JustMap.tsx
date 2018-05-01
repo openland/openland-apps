@@ -12,7 +12,7 @@ export const JustMap = (props: XMapProps & { children?: any, mode?: 'satellite' 
     }
     return (
         <XMap mapStyle={mapStyle} {...other} key={props.mode || 'map'}>
-            
+
             {children}
         </XMap>
     );
