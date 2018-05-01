@@ -231,10 +231,10 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                     </XTable>
                     <XCard.Footer text={props.data.alphaOpportunities.pageInfo.itemsCount + ' items'}>
                         {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
-                            <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }}>Prev</XButton>
+                            <XButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }}>Prev</XButton>
                         )}
                         {(props.data.alphaOpportunities.pageInfo.currentPage < props.data.alphaOpportunities.pageInfo.pagesCount - 1) && (
-                            <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</XButton>
+                            <XButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</XButton>
                         )}
                         <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
                             {/* <XButton query={{ field: 'export', value: 'true' }} style="dark">Export</XButton> */}
@@ -251,4 +251,4 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
             )}
         </XCard.Loader>
     );
-})) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
+})) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string }>;

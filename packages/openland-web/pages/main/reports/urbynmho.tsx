@@ -61,17 +61,23 @@ const UrbinHeader = () => (
 );
 
 export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
-    let q = buildProspectingQuery(props.router);
+    let clauses1: any[] = [];
+    clauses1.push({ isPublic: true });
+    let q1 = buildQuery(clauses1);
+
+    let clauses2: any[] = [];
+    clauses2.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
+    let q2 = buildQuery(clauses2);
     return (
         <>
             <XHead title="Mini-Home Opportunities in New York City" />
             <Scaffold>
                 <Scaffold.Content>
                     <UrbinHeader />
-                    <OpportunitiesTable variables={{ state: OpportunityState.APPROVED_ZONING, query: q.query }} stage="unit">
+                    <OpportunitiesTable variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(q1), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined}} stage="zoning"  type="hpd" >
                         <XCard.Empty text="There are no parcels for review" icon="sort" />
                     </OpportunitiesTable>
-                    <OpportunitiesTable variables={{ state: OpportunityState.APPROVED_ZONING, query: q.query }} stage="unit">
+                    <OpportunitiesTable variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(q2), page: props.router.query.page_public ? props.router.query.page_public : undefined }} stage="zoning" type="public">
                         <XCard.Empty text="There are no parcels for review" icon="sort" />
                     </OpportunitiesTable>
                 </Scaffold.Content>
@@ -79,3 +85,15 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
         </>
     );
 }));
+
+function buildQuery(clauses: any[]): any | null {
+    if (clauses.length === 0) {
+        return null;
+    } else if (clauses.length === 1) {
+        return clauses[0];
+    } else {
+        return {
+            '$and': clauses
+        };
+    }
+}
