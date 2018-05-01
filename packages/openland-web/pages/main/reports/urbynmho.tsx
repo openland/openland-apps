@@ -9,6 +9,21 @@ import { OpportunitiesTable } from '../../../components/OpportunitiesTableUrbynR
 import { OpportunityState } from 'openland-api/Types';
 import { withRouter } from '../../../components/withRouter';
 import { Scaffold } from '../../../components/Scaffold';
+import { ParcelMap } from '../../../components/ParcelMap';
+import { SourcingTileSource } from '../../../api';
+import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
+import { XSwitcher } from '../../../components/X/XSwitcher';
+import { XIcon } from '../../../components/X/XIcon';
+import { XMapSource } from '../../../components/X/XMapSource';
+import { XMapCameraLocation } from '../../../components/X/XMap';
+import { canUseDOM } from '../../../utils/environment';
+import { XWithRouter } from '../../../components/withRouter';
+import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api';
+import { JustMap } from './JustMap';
+import hpdprojects from './lots_of_data.json';
+import { XRouter } from '../../../components/routing/XRouter';
+import XStyles from '../../../components/X/XStyles';
+import { Checkbox } from 'react-form';
 
 const UrbinHeaderWrapper = Glamorous.div({
     position: 'relative',
@@ -51,6 +66,49 @@ const UrbinTitle = Glamorous.div({
     alignSelf: 'flex-start'
 });
 
+const XMapContainer = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    height: '500px'
+});
+
+const DealsSource = withDealsMap((props) => {
+    if (props.data.deals) {
+        let features = props.data.deals
+            .filter((v) => v.parcel !== null)
+            .map((v) => ({
+                type: 'Feature',
+                'geometry': { type: 'Point', coordinates: [v.parcel!!.center!!.longitude, v.parcel!!.center!!.latitude] },
+                properties: {
+                    'id': v.parcel!!.id
+                }
+            }));
+        let result = { 'type': 'FeatureCollection', features: features };
+        return <XMapSource id="deals" data={result} />;
+    }
+    return null;
+});
+
+const HPDProjectsSource = () => {
+    let f = [];
+    for (let key of Object.keys(hpdprojects.data)) {
+        f.push(hpdprojects.data[key]);
+    }
+
+    let features = f
+        .filter((v) => v.longitude && v.latitude)
+        .map((v) => ({
+            type: 'Feature',
+            'geometry': { type: 'Point', coordinates: [v.longitude, v.latitude] },
+            properties: {
+                'id': v.id
+            }
+        }));
+    let result = { 'type': 'FeatureCollection', features: features };
+    return <XMapSource id="hpdp" data={result} />;
+};
+
 const UrbinHeader = () => (
     <UrbinHeaderWrapper>
         <NYLogo src="/static/img/icons/reports/ny-bei-nacht.svg" />
@@ -73,11 +131,11 @@ const TableWrapper = Glamorous.div({
 export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
     let clauses1: any[] = [];
     clauses1.push({ isPublic: true });
-    let q1 = buildQuery(clauses1);
-
+    let qPublic = buildQuery(clauses1);
     let clauses2: any[] = [];
     clauses2.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
-    let q2 = buildQuery(clauses2);
+    let qHpd = buildQuery(clauses2);
+
     return (
         <>
             <XHead title="Mini-Home Opportunities in New York City" />
@@ -86,6 +144,9 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                     <UrbinHeader />
                     <ContentWrapper>
                         <XVertical>
+                            <XMapContainer>
+                                <ReportMap router={props.router} qHpd={qHpd} />
+                            </XMapContainer>
                             <TableWrapper>
                                 <OpportunitiesTable
                                     variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(q1), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
@@ -112,6 +173,187 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
             </Scaffold>
         </>
     );
+}));
+
+class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsEnabled: boolean, dealsCount?: number, hpdoEnabled: boolean, hpdoCount?: number, hpdpEnabled: boolean, hpdpCount?: number }> {
+    constructor(props: { router: XRouter, qHpd: any }) {
+        super(props);
+        this.state = {
+            dealsEnabled: true,
+            hpdoEnabled: true,
+            hpdpEnabled: true,
+        };
+    }
+
+    onUrbynChange = (checked: boolean) => {
+        this.setState({ dealsEnabled: checked });
+    }
+
+    hpdoChange = (checked: boolean) => {
+        this.setState({ hpdoEnabled: checked });
+    }
+
+    hpdpChange = (checked: boolean) => {
+        this.setState({ hpdpEnabled: checked });
+    }
+
+    render() {
+
+        let focus = false
+            ? { latitude: 37.75444398077139, longitude: -122.43963811583545, zoom: 12 }
+            : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
+
+        return (
+            <JustMap
+                mode={this.props.router.query.mode}
+                selectedParcel={this.props.router.query.selectedParcel}
+                // onParcelClick={handleClick}
+                focusPosition={focus}
+            // lastKnownCameraLocation={knownCameraLocation}
+            // onCameraLocationChanged={handleMap}
+            >
+                <ChbContiner>
+                    <Checkbox label="Urbyn portfolio" checked={this.state.dealsEnabled} checkedChangeListener={this.onUrbynChange} />
+                </ChbContiner>
+                {this.state.dealsEnabled &&
+                    <>
+                        <DealsSource />
+                        <XMapPointLayer
+                            source="deals"
+                            layer="deals"
+                            color="#e8bd58"
+                        // onClick={handleClick}
+                        />
+
+                    </>}
+
+                <ChbContiner>
+                    <Checkbox label="HPD mini-home opportunities" checked={this.state.hpdoEnabled} checkedChangeListener={this.hpdoChange} />
+                </ChbContiner>
+                {this.state.hpdoEnabled &&
+                    <>
+                        <SourcingTileSource
+                            layer="sourcing"
+                            query={this.props.qHpd}
+                            // TODO change ti unit
+                            state={OpportunityState.INCOMING}
+                        />
+                        <XMapPointLayer
+                            source="sourcing"
+                            layer="sourcing"
+                            color="#7f7cd5"
+                        // onClick={handleClick}
+                        />
+                    </>}
+                <ChbContiner>
+                    <Checkbox label="HPD projects" checked={this.state.hpdpEnabled} checkedChangeListener={this.hpdpChange} />
+                </ChbContiner>
+                {this.state.hpdpEnabled &&
+                    <>
+                        <HPDProjectsSource />
+                        <XMapPointLayer
+                            source="hpdp"
+                            layer="hpdp"
+                            color="#79c07f"
+                        // onClick={handleClick}
+                        />
+                    </>}
+
+            </JustMap>);
+    }
+}
+
+class Checkbox extends React.Component<{ checkedChangeListener: Function, label: string, checked?: boolean }, { isChecked: boolean }> {
+    constructor(props: { checkedChangeListener: Function, label: string }) {
+        super(props);
+
+        this.state = {
+            isChecked: this.props.checked !== undefined ? this.props.checked : false
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange() {
+        this.props.checkedChangeListener(!this.state.isChecked);
+
+        this.setState({
+            isChecked: !this.state.isChecked
+        });
+    }
+
+    render() {
+        const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
+
+        return (
+            <FilterInputDiv active={this.state.isChecked}>
+                <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
+                <label htmlFor={id}>
+                    <XIcon icon={this.state.isChecked ? 'done' : ''} />
+                    <span>{this.props.label}</span>
+                </label>
+            </FilterInputDiv>
+        );
+    }
+}
+const ChbContiner = Glamorous(XCard)<{}>((props) => ({
+    flexDirection: 'column',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 15,
+    paddingBottom: 15,
+}));
+
+const FilterInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    '> input': {
+        display: 'none'
+    },
+    '> label': {
+        ...XStyles.text.h400,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        color: props.active ? '#4428e0' : '#525f7f',
+        cursor: 'pointer',
+        '> i': {
+            width: 16,
+            height: 16,
+            borderRadius: 3.5,
+            color: '#fff',
+            backgroundColor: props.active ? '#4428e0' : '#fff',
+            border: '1px solid rgba(97, 126, 156, 0.2)',
+            fontSize: 13,
+            lineHeight: '14px',
+            marginRight: 10,
+            paddingLeft: 1
+        },
+        '> div': {
+            width: 16,
+            height: 16,
+            borderRadius: 50,
+            backgroundColor: props.active ? '#4428e0' : '#fff',
+            border: '1px solid rgba(97, 126, 156, 0.2)',
+            marginRight: 10,
+            position: 'relative',
+            '&::after': {
+                content: props.active ? `''` : undefined,
+                width: 8,
+                height: 8,
+                borderRadius: 50,
+                backgroundColor: '#ffffff',
+                position: 'absolute',
+                top: 3,
+                left: 3
+            }
+        },
+        '> span': {
+            color: '#1f3449'
+        }
+    }
 }));
 
 function buildQuery(clauses: any[]): any | null {
