@@ -7,7 +7,6 @@ import { backoff } from './timer';
 import { startProgress, stopProgress } from './routing';
 import { XMapSource } from '../components/X/XMapSource';
 import { parseGeometry } from './Serializers';
-import { OpportunityState } from 'openland-api/Types';
 interface GraphQLTileSourceProps {
     layer: string;
     minZoom?: number;
