@@ -61,21 +61,6 @@ const UrbinTitle = Glamorous.div({
     alignSelf: 'flex-start'
 });
 
-// const TabTitle = Glamorous.div({
-//     width: 110,
-//     height: 20,
-//     fontFamily: 'CircularStd',
-//     fontSize: 16,
-//     fontWeight: 500,
-//     fontStyle: 'normal',
-//     fontStretch: 'normal',
-//     lineHeight: 1.25,
-//     letterSpacing: -0.2,
-//     textAlign: 'left',
-//     color: '#1f3449'
-
-// });
-
 const UrbinStatisticContent = Glamorous.div({
     display: 'flex',
     height: 117
@@ -114,7 +99,7 @@ const UrbinStatistic = () => (
             <UrbinStatisticNumber>50 sites</UrbinStatisticNumber>
         </UrbinStatisticWrapper>
         <UrbinStatisticWrapper bordered={true}>
-            <UrbinStatisticTite>Housing & Preservation Department</UrbinStatisticTite>
+            <UrbinStatisticTite>{'Housing & Preservation Department'}</UrbinStatisticTite>
             <UrbinStatisticNumber>114 sites, 530 units</UrbinStatisticNumber>
         </UrbinStatisticWrapper>
         <UrbinStatisticWrapper>
@@ -142,13 +127,6 @@ const ChbContiner = Glamorous(XCard)<{}>((props) => ({
     paddingTop: 15,
     paddingBottom: 15,
 }));
-
-// const Tabs = Glamorous.div({
-//     display: 'flex',
-//     flexDirection: 'row',
-//     alignItems: 'stretch',
-//     justifyContent: 'center'
-// });
 
 const XMapContainer2 = Glamorous.div({
     position: 'relative',
@@ -453,22 +431,6 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
     }
 }
 
-// const Divider = Glamorous.div({
-//     width: '100%',
-//     height: 1,
-//     borderRadius: 1,
-//     backgroundColor: 'rgba(229, 233, 242, 0.5)'
-
-// });
-
-// const DividerVertical = Glamorous.div({
-//     width: 1,
-//     height: '100%',
-//     borderRadius: 1,
-//     backgroundColor: 'rgba(229, 233, 242, 0.5)'
-
-// });
-
 export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
     // let clauses1: any[] = [];
     // clauses1.push({ isPublic: true });
@@ -493,19 +455,6 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                     <UrbinHeader />
                     <Wrapper>
                         <XVertical>
-                            {/* <ContentWrapper>
-                                <XVertical>
-                                    <XHeader text="Qualified Opportunities for Urbyn Mini-Homes" />
-                                    <Divider />
-                                    <Tabs>
-                                        <TabTitle>Urbyn portfolio</TabTitle>
-                                        <DividerVertical/>
-                                        <TabTitle>{'Housing & Preservation Department'}</TabTitle>
-                                        <DividerVertical/>
-                                        <TabTitle>Other public agencies</TabTitle>
-                                    </Tabs>
-                                </XVertical>
-                            </ContentWrapper> */}
                             <ContentWrapper>
                                 <XVertical>
                                     <XHeader text="Qualified Opportunities for Urbyn Mini-Homes" separated={true} />
@@ -522,7 +471,6 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                             </ContentWrapper>
                             <ContentWrapper>
                                 <OpportunitiesTable
-                                    // variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
                                     // variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
                                     variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(q1), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
                                     stage="unit"
