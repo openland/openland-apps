@@ -188,7 +188,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement('a');
         link.setAttribute('href', encodedUri);
-        link.setAttribute('download', props.data.variables.state + '.csv');
+        link.setAttribute('download', (props as any).title + '.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

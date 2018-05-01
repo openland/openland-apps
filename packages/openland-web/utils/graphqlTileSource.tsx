@@ -7,13 +7,11 @@ import { backoff } from './timer';
 import { startProgress, stopProgress } from './routing';
 import { XMapSource } from '../components/X/XMapSource';
 import { parseGeometry } from './Serializers';
-import { OpportunityState } from 'openland-api/Types';
 interface GraphQLTileSourceProps {
     layer: string;
     minZoom?: number;
     query?: any;
     skip?: boolean;
-    state?: OpportunityState;
 }
 
 const TileWidth = 0.005;
@@ -112,8 +110,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                                             west: (x1 + i) * currentTileHeight,
                                             east: (x1 + i + 1) * currentTileHeight
                                         },
-                                        query: props.query ? JSON.stringify(props.query) : undefined,
-                                        state: props.state ? props.state : undefined
+                                        query: props.query ? JSON.stringify(props.query) : undefined
                                     }
                                 })
                             );
