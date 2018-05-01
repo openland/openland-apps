@@ -11,6 +11,7 @@ import { withRouter } from '../../../components/withRouter';
 import { Scaffold } from '../../../components/Scaffold';
 import { SourcingTileSource } from '../../../api';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
+import { XMapImageLayer } from '../../../components/X/XMapImageLayer';
 import { XIcon } from '../../../components/X/XIcon';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { withDealsMap } from '../../../api';
@@ -259,10 +260,10 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                 {this.state.dealsEnabled &&
                     <>
                         <DealsSource />
-                        <XMapPointLayer
+                        <XMapImageLayer
+                            image="/static/img/icons/pin1.png"
                             source="deals"
                             layer="deals"
-                            color="#e8bd58"
                         // onClick={handleClick}
                         />
 
@@ -276,13 +277,12 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                         <SourcingTileSource
                             layer="sourcing"
                             query={this.props.qHpd}
-                            // TODO change ti unit
-                            state={OpportunityState.INCOMING}
+                        // TODO change ti unit
                         />
-                        <XMapPointLayer
+                         <XMapImageLayer
+                            image="/static/img/icons/pin2.png"
                             source="sourcing"
                             layer="sourcing"
-                            color="#7f7cd5"
                         // onClick={handleClick}
                         />
                     </>}
@@ -292,10 +292,10 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                 {this.state.hpdpEnabled &&
                     <>
                         <HPDProjectsSource />
-                        <XMapPointLayer
+                        <XMapImageLayer
+                            image="/static/img/icons/pin3.png"
                             source="hpdp"
                             layer="hpdp"
-                            color="#79c07f"
                         // onClick={handleClick}
                         />
                     </>}
@@ -309,7 +309,7 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
     clauses1.push({ isPublic: true });
     let qPublic = buildQuery(clauses1);
     let clauses2: any[] = [];
-    clauses2.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
+    clauses2.push({ 'stage': OpportunityState.INCOMING }, { '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
     let qHpd = buildQuery(clauses2);
 
     return (
