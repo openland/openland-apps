@@ -60,8 +60,10 @@ export class XMapImageLayer extends React.Component<XMapImageProps> {
                 'source': source,
                 'layout': {
                     'icon-image': props.image,
-                    'icon-size': .3
-                }
+                    'icon-size': .3,
+                    'icon-allow-overlap': true
+                },
+                filter: ['!has', 'point_count'],
             });
         });
 
