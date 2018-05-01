@@ -2401,6 +2401,123 @@ export interface SourcingQuery {
   },
 };
 
+export interface SourcingFirstQueryVariables {
+  state?: OpportunityState | null,
+  cursor?: string | null,
+  page?: number | null,
+  sort?: OpportunitySort | null,
+  query?: string | null,
+  first: number,
+};
+
+export interface SourcingFirstQuery {
+  alphaOpportunities:  {
+    __typename: "OpportunityConnection",
+    edges:  Array< {
+      __typename: "OpportunityEdge",
+      node:  {
+        __typename: "Opportunity",
+        id: string,
+        state: OpportunityState,
+        priority: OpportunityPriority,
+        updatedAt: string,
+        parcel:  {
+          __typename: "Parcel",
+          id: string,
+          number:  {
+            __typename: "ParcelNumber",
+            borough: string | null,
+            boroughId: string | null,
+            block: string | null,
+            blockPadded: string | null,
+            lot: string | null,
+            lotPadded: string | null,
+            title: string,
+          },
+          address: string | null,
+          // Geometry
+          geometry: string | null,
+          area:  {
+            __typename: "DataFloat",
+            value: number,
+          } | null,
+          depth:  {
+            __typename: "DataFloat",
+            value: number,
+          } | null,
+          front:  {
+            __typename: "DataFloat",
+            value: number,
+          } | null,
+          // Bunch of unsorted experimental data
+          extrasZoning: Array< string > | null,
+          extrasLandValue: number | null,
+          extrasImprovementValue: number | null,
+          extrasPropertyValue: number | null,
+          extrasFixturesValue: number | null,
+          extrasStories: number | null,
+          extrasUnits: number | null,
+          extrasRooms: number | null,
+          extrasBathrooms: number | null,
+          extrasBedrooms: number | null,
+          extrasYear: number | null,
+          extrasVacant: boolean | null,
+          extrasNeighborhood: string | null,
+          extrasBorough: string | null,
+          extrasMetroDistance: number | null,
+          extrasMetroStation: string | null,
+          extrasTrainDistance: number | null,
+          extrasTrainStation: string | null,
+          extrasTrainLocalDistance: number | null,
+          extrasTrainLocalStation: string | null,
+          extrasNearestTransitDistance: number | null,
+          extrasNearestTransitType: string | null,
+          extrasNearestTransitStation: string | null,
+          extrasLandUse: Array< string > | null,
+          extrasSalesDate: string | null,
+          extrasSalesPriorDate: string | null,
+          extrasRecordationDate: string | null,
+          extrasShapeType: string | null,
+          extrasShapeSides: Array< number > | null,
+          extrasFitProjects: Array< string > | null,
+          extrasAnalyzed: boolean | null,
+          extrasUnitCapacity: number | null,
+          extrasUnitCapacityFar: number | null,
+          extrasUnitCapacityDencity: number | null,
+          // Addresses
+          city:  {
+            __typename: "City",
+            id: string,
+            name: string,
+            county:  {
+              __typename: "County",
+              id: string,
+              name: string,
+            },
+            state:  {
+              __typename: "State",
+              id: string,
+              name: string,
+              code: string,
+            },
+          },
+          extrasOwnerName: string | null,
+        },
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+  },
+};
+
 export interface SourcingAllQueryVariables {
   state?: OpportunityState | null,
   query?: string | null,

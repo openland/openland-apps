@@ -30,6 +30,35 @@ export const SourcingQuery = gql`
     ${ParcelShort}
 `;
 
+export const SourcingQueryFirst = gql`
+    query SourcingFirst($state: OpportunityState, $cursor: String, $page: Int, $sort: OpportunitySort, $query: String, $first: Int!) {
+        alphaOpportunities(state: $state, first: $first, after: $cursor, page: $page, sort: $sort, query: $query) {
+            edges {
+                node {
+                    id
+                    state
+                    priority
+                    updatedAt
+                    parcel {
+                        ...ParcelShort
+                        extrasOwnerName
+                    }
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+                openEnded
+            }
+        }
+    }
+    ${ParcelShort}
+`;
+
 export const SourcingAllQuery = gql`
     query SourcingAll($state: OpportunityState, $query: String) {
         alphaAllOpportunities(state: $state, query: $query) {
