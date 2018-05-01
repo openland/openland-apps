@@ -171,48 +171,45 @@ const FilterInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
+    '&:last-child': {
+        marginBottom: 0
+    },
     '> input': {
         display: 'none'
     },
     '> label': {
         ...XStyles.text.h400,
         display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: 'column',
         color: props.active ? '#76afd4' : '#525f7f',
         cursor: 'pointer',
-        '> i': {
-            width: 16,
-            height: 16,
-            borderRadius: 3.5,
-            color: '#fff',
-            backgroundColor: props.active ? '#76afd4' : '#fff',
-            border: '1px solid rgba(97, 126, 156, 0.2)',
-            fontSize: 13,
-            lineHeight: '14px',
-            marginRight: 10,
-            paddingLeft: 1
-        },
-        '> div': {
-            width: 16,
-            height: 16,
-            borderRadius: 50,
-            backgroundColor: props.active ? '#76afd4' : '#fff',
-            border: '1px solid rgba(97, 126, 156, 0.2)',
-            marginRight: 10,
-            position: 'relative',
-            '&::after': {
-                content: props.active ? `''` : undefined,
-                width: 8,
-                height: 8,
-                borderRadius: 50,
-                backgroundColor: '#ffffff',
-                position: 'absolute',
-                top: 3,
-                left: 3
+        '& .top-content': {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 3,
+            '> i': {
+                width: 16,
+                height: 16,
+                borderRadius: 3.5,
+                color: '#fff',
+                backgroundColor: props.active ? '#76afd4' : '#fff',
+                border: '1px solid rgba(97, 126, 156, 0.2)',
+                fontSize: 13,
+                lineHeight: '14px',
+                marginRight: 10,
+                paddingLeft: 1
+            },
+            '> span': {
+                color: '#1f3449'
             }
         },
-        '> span': {
+        '& .bottom-content': {
+            paddingLeft: 27,
+            opacity: 0.4,
+            fontSize: 13,
+            lineHeight: 1.23,
+            letterSpacing: - 0.1,
             color: '#1f3449'
         }
     }
@@ -304,10 +301,13 @@ class Checkbox extends React.Component<{ checkedChangeListener: Function, label:
             <FilterInputDiv active={this.state.isChecked}>
                 <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
                 <label htmlFor={id}>
-                    <XIcon icon={this.state.isChecked ? 'done' : ''} />
-                    <span>{this.props.label}</span>
+                    <div className="top-content">
+                        <XIcon icon={this.state.isChecked ? 'done' : ''} />
+                        <span>{this.props.label}</span>
+                        <Circle color={this.props.color} />
+                    </div>
+                    <div className="bottom-content">{this.props.count} parcels</div>
                 </label>
-                <Circle color={this.props.color} />
             </FilterInputDiv>
         );
     }
@@ -420,11 +420,8 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                 </JustMap>
                 <ChbContiner>
                     <Checkbox label="Urbyn portfolio" checked={this.state.dealsEnabled} checkedChangeListener={this.onUrbynChange} color="#e8bd58" count={this.state.dealsCount} />
-                    {/* {this.state.dealsCount} */}
-                    <Checkbox label="HPD mini-home opportunities" checked={this.state.hpdoEnabled} checkedChangeListener={this.hpdoChange} color="#7f7cd5" />
-                    {/* {this.state.hpdoCount} */}
-                    <Checkbox label="HPD projects" checked={this.state.hpdpEnabled} checkedChangeListener={this.hpdpChange} color="#79c07f" />
-                    {/* {this.state.hpdpCount} */}
+                    <Checkbox label="HPD mini-home opportunities" checked={this.state.hpdoEnabled} checkedChangeListener={this.hpdoChange} color="#7f7cd5" count={this.state.hpdoCount} />
+                    <Checkbox label="HPD projects" checked={this.state.hpdpEnabled} checkedChangeListener={this.hpdpChange} color="#79c07f" count={this.state.hpdpCount} />
                 </ChbContiner>
             </XMapContainer2>
         );
