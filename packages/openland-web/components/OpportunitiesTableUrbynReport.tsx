@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withSourcing, withSourcingAll, withSourcingFirst } from '../api';
+import { withSourcingAll, withSourcingFirst } from '../api';
 import { XCard } from './X/XCard';
 import { XHeader } from './X/XHeader';
 import { XTable } from './X/XTable';
