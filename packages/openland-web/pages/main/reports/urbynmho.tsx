@@ -438,11 +438,11 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
 
     // let clauses1: any[] = [];
     // clauses1.push({ isPublic: true });
-    // let q1 = buildQuery(clauses1);
+    // let qPublic = buildQuery(clauses1);
 
     // let clauses2: any[] = [];
     // clauses2.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
-    // let q2 = buildQuery(clauses2);
+    // let qHpd = buildQuery(clauses2);
 
     return (
         <>
@@ -462,14 +462,14 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                                 <XVertical>
                                     <XHeader text="Mini-Home Opportunities on the Map" separated={true} />
                                     <XMapContainer>
-                                        <ReportMap router={props.router} qHpd={q2} />
+                                        <ReportMap router={props.router} qHpd={qHpd} />
                                     </XMapContainer>
                                 </XVertical>
                             </ContentWrapper>
                             <ContentWrapper>
                                 <OpportunitiesTable
                                     variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
-                                    // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(q1), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
+                                    // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
                                     stage="unit"
                                     type="hpd"
                                     title="HPD Mini-Home Opportunity Sites"
@@ -480,7 +480,7 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                             <ContentWrapper>
                                 <OpportunitiesTable
                                     variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined }}
-                                    // variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(q2), page: props.router.query.page_public ? props.router.query.page_public : undefined }}
+                                    // variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined }}
                                     stage="unit"
                                     type="public"
                                     title="Other Public Opportunity Sites"
