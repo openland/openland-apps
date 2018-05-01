@@ -396,6 +396,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                         layer="sourcing"
                         query={this.props.qHpd}
                         loaded={this.hpdoLoaded}
+                        minZoom={10}
                     />
                     {this.state.hpdoEnabled &&
                         <>
