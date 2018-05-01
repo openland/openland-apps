@@ -97,7 +97,7 @@ const UrbinStatisticTite = Glamorous.div({
     lineHeight: 1.25,
     letterSpacing: -0.2,
     color: '#1f3449',
-    marginBottom: 4
+    marginBottom: 10
 });
 
 const UrbinStatisticNumber = Glamorous.div({
