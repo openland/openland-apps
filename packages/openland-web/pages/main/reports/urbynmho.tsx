@@ -61,20 +61,20 @@ const UrbinTitle = Glamorous.div({
     alignSelf: 'flex-start'
 });
 
-const TabTitle = Glamorous.div({
-    width: 110,
-    height: 20,
-    fontFamily: 'CircularStd',
-    fontSize: 16,
-    fontWeight: 500,
-    fontStyle: 'normal',
-    fontStretch: 'normal',
-    lineHeight: 1.25,
-    letterSpacing: -0.2,
-    textAlign: 'left',
-    color: '#1f3449'
+// const TabTitle = Glamorous.div({
+//     width: 110,
+//     height: 20,
+//     fontFamily: 'CircularStd',
+//     fontSize: 16,
+//     fontWeight: 500,
+//     fontStyle: 'normal',
+//     fontStretch: 'normal',
+//     lineHeight: 1.25,
+//     letterSpacing: -0.2,
+//     textAlign: 'left',
+//     color: '#1f3449'
 
-});
+// });
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -95,12 +95,12 @@ const ChbContiner = Glamorous(XCard)<{}>((props) => ({
     paddingBottom: 15,
 }));
 
-const Tabs = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    justifyContent: 'center'
-});
+// const Tabs = Glamorous.div({
+//     display: 'flex',
+//     flexDirection: 'row',
+//     alignItems: 'stretch',
+//     justifyContent: 'center'
+// });
 
 const XMapContainer2 = Glamorous.div({
     position: 'relative',
@@ -374,21 +374,21 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
     }
 }
 
-const Divider = Glamorous.div({
-    width: '100%',
-    height: 1,
-    borderRadius: 1,
-    backgroundColor: 'rgba(229, 233, 242, 0.5)'
+// const Divider = Glamorous.div({
+//     width: '100%',
+//     height: 1,
+//     borderRadius: 1,
+//     backgroundColor: 'rgba(229, 233, 242, 0.5)'
 
-});
+// });
 
-const DividerVertical = Glamorous.div({
-    width: 1,
-    height: '100%',
-    borderRadius: 1,
-    backgroundColor: 'rgba(229, 233, 242, 0.5)'
+// const DividerVertical = Glamorous.div({
+//     width: 1,
+//     height: '100%',
+//     borderRadius: 1,
+//     backgroundColor: 'rgba(229, 233, 242, 0.5)'
 
-});
+// });
 
 export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
     let clauses1: any[] = [];
