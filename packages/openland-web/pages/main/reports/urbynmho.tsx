@@ -252,29 +252,33 @@ const DealsSource = withDealsMap((props) => {
                 }
             }));
         let result = { 'type': 'FeatureCollection', features: features };
+        (props as any).loaded(features.length);
         return <XMapSource id="deals" data={result} />;
     }
     return null;
-});
+}) as React.ComponentType<{ loaded: Function }>;
 
-const HPDProjectsSource = () => {
-    let f = [];
-    for (let key of Object.keys(hpdprojects.data)) {
-        f.push(hpdprojects.data[key]);
+class HPDProjectsSource extends React.Component<{ loaded: Function }> {
+    render() {
+        let f = [];
+        for (let key of Object.keys(hpdprojects.data)) {
+            f.push(hpdprojects.data[key]);
+        }
+
+        let features = f
+            .filter((v) => v.longitude && v.latitude)
+            .map((v) => ({
+                type: 'Feature',
+                'geometry': { type: 'Point', coordinates: [v.longitude, v.latitude] },
+                properties: {
+                    'id': v.id
+                }
+            }));
+        this.props.loaded(features.length);
+        let result = { 'type': 'FeatureCollection', features: features };
+        return <XMapSource id="hpdp" data={result} />;
     }
-
-    let features = f
-        .filter((v) => v.longitude && v.latitude)
-        .map((v) => ({
-            type: 'Feature',
-            'geometry': { type: 'Point', coordinates: [v.longitude, v.latitude] },
-            properties: {
-                'id': v.id
-            }
-        }));
-    let result = { 'type': 'FeatureCollection', features: features };
-    return <XMapSource id="hpdp" data={result} />;
-};
+}
 
 const UrbinHeader = () => (
     <UrbinHeaderWrapper>
@@ -296,7 +300,7 @@ const ContentWrapper = Glamorous.div({
     border: 'solid 1px rgba(229, 233, 242, 0.5)'
 });
 
-class Checkbox extends React.Component<{ checkedChangeListener: Function, label: string, checked?: boolean, color: string }, { isChecked: boolean }> {
+class Checkbox extends React.Component<{ checkedChangeListener: Function, label: string, checked?: boolean, color: string, count?: number }, { isChecked: boolean }> {
     constructor(props: { checkedChangeListener: Function, label: string, color: string }) {
         super(props);
 
@@ -332,6 +336,10 @@ class Checkbox extends React.Component<{ checkedChangeListener: Function, label:
 }
 
 class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsEnabled: boolean, dealsCount?: number, hpdoEnabled: boolean, hpdoCount?: number, hpdpEnabled: boolean, hpdpCount?: number }> {
+    dealsCount: number;
+    hpdoCount: number;
+    hpdpCount: number;
+
     constructor(props: { router: XRouter, qHpd: any }) {
         super(props);
         this.state = {
@@ -353,6 +361,27 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
         this.setState({ hpdpEnabled: checked });
     }
 
+    dealsLoaded = (count: number) => {
+        if (count !== this.dealsCount) {
+            this.setState({ dealsCount: count });
+            this.dealsCount = count;
+        }
+    }
+
+    hpdoLoaded = (count: number) => {
+        if (count !== this.hpdoCount) {
+            this.setState({ hpdoCount: count });
+            this.hpdoCount = count;
+        }
+    }
+
+    hpdpLoaded = (count: number) => {
+        if (count !== this.hpdpCount) {
+            this.setState({ hpdpCount: count });
+            this.hpdpCount = count;
+        }
+    }
+
     render() {
 
         let focus = false
@@ -371,7 +400,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                 // onCameraLocationChanged={handleMap}
                 >
 
-                    <DealsSource />
+                    <DealsSource loaded={this.dealsLoaded} />
 
                     {this.state.dealsEnabled &&
                         <>
@@ -386,6 +415,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                     <SourcingTileSource
                         layer="sourcing"
                         query={this.props.qHpd}
+                        loaded={this.hpdoLoaded}
                     />
                     {this.state.hpdoEnabled &&
                         <>
@@ -397,7 +427,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                             // onClick={handleClick}
                             />
                         </>}
-                    <HPDProjectsSource />
+                    <HPDProjectsSource loaded={this.hpdpLoaded} />
 
                     {this.state.hpdpEnabled &&
                         <>
@@ -411,9 +441,12 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
 
                 </JustMap>
                 <ChbContiner>
-                    <Checkbox label="Urbyn portfolio" checked={this.state.dealsEnabled} checkedChangeListener={this.onUrbynChange} color="#e8bd58" />
+                    <Checkbox label="Urbyn portfolio" checked={this.state.dealsEnabled} checkedChangeListener={this.onUrbynChange} color="#e8bd58" count={this.state.dealsCount} />
+                    {/* {this.state.dealsCount} */}
                     <Checkbox label="HPD mini-home opportunities" checked={this.state.hpdoEnabled} checkedChangeListener={this.hpdoChange} color="#7f7cd5" />
+                    {/* {this.state.hpdoCount} */}
                     <Checkbox label="HPD projects" checked={this.state.hpdpEnabled} checkedChangeListener={this.hpdpChange} color="#79c07f" />
+                    {/* {this.state.hpdpCount} */}
                 </ChbContiner>
             </XMapContainer2>
         );

@@ -12,6 +12,7 @@ interface GraphQLTileSourceProps {
     minZoom?: number;
     query?: any;
     skip?: boolean;
+    loaded?: Function;
 }
 
 const TileWidth = 0.005;
@@ -190,6 +191,10 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                         }
                         wasUpdated = true;
                     }
+                }
+
+                if (this.props.loaded) {
+                    this.props.loaded(this.allElements.size);
                 }
 
                 //
