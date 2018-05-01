@@ -7,7 +7,6 @@ import { XCard } from '../../../components/X/XCard';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTableUrbynReport';
 import { OpportunityState } from 'openland-api/Types';
 import { withRouter } from '../../../components/withRouter';
-import { buildProspectingQuery } from '../../../components/prospectingQuery';
 import { Scaffold } from '../../../components/Scaffold';
 
 const UrbinHeaderWrapper = Glamorous.div({
