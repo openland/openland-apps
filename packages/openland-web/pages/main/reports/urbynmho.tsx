@@ -10,7 +10,6 @@ import { OpportunityState } from 'openland-api/Types';
 import { withRouter } from '../../../components/withRouter';
 import { Scaffold } from '../../../components/Scaffold';
 import { SourcingTileSource } from '../../../api';
-import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XMapImageLayer } from '../../../components/X/XMapImageLayer';
 import { XIcon } from '../../../components/X/XIcon';
 import { XMapSource } from '../../../components/X/XMapSource';
