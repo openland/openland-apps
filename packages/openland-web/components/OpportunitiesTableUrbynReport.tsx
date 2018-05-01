@@ -158,7 +158,7 @@ class CollapsingTable extends React.Component<{ children: any }, { collapse: boo
     collapseHandler() {
         this.setState({
             collapse: !this.state.collapse,
-            btnText: (this.state.collapse === true) ? 'Show full table' : 'Hide table'
+            btnText: (!this.state.collapse === true) ? 'Show full table' : 'Hide table'
         });
     }
 
