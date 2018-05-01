@@ -68,6 +68,9 @@ const XMapContainer = Glamorous.div({
 });
 
 const ChbContiner = Glamorous(XCard)<{}>((props) => ({
+    top: 20,
+    left: 20,
+    position: 'absolute', 
     flexDirection: 'column',
     alignItems: 'flex-start',
     paddingLeft: 16,
@@ -76,15 +79,45 @@ const ChbContiner = Glamorous(XCard)<{}>((props) => ({
     paddingBottom: 15,
 }));
 
-const ControlsContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 20,
-    paddingBottom: 20,
+const XMapContainer2 = Glamorous.div({
+    position: 'relative',
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
+    height: '500px',
+    // alignItems: 'stretch',
+    // height: '100%'
+    '& .mapboxgl-ctrl-top-right': {
+        left: '18px !important',
+        bottom: '18px !important',
+        top: 'auto',
+        right: 'auto',
+        zIndex: 0,
+        '& .mapboxgl-ctrl-group': {
+            border: '1px solid rgba(132, 142, 143, 0.1)',
+            boxShadow: 'none',
+
+            '& .mapboxgl-ctrl-zoom-out': {
+                borderBottom: 'none !important'
+            },
+            '& .mapboxgl-ctrl-compass': {
+                display: 'none !important'
+            }
+        }
+    },
+    '& .mapboxgl-ctrl-bottom-left': {
+        display: 'none'
+    }
 });
+
+const Circle = Glamorous.div<{ color: string }>((props) => ({
+    marginLeft: 8,
+    height: 10,
+    width: 10,
+    backgroundColor: props.color,
+    borderRadius: '50%',
+    display: 'inline-block'
+}));
 
 const FilterInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
     display: 'flex',
@@ -99,14 +132,14 @@ const FilterInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        color: props.active ? '#4428e0' : '#525f7f',
+        color: props.active ? '#76afd4' : '#525f7f',
         cursor: 'pointer',
         '> i': {
             width: 16,
             height: 16,
             borderRadius: 3.5,
             color: '#fff',
-            backgroundColor: props.active ? '#4428e0' : '#fff',
+            backgroundColor: props.active ? '#76afd4' : '#fff',
             border: '1px solid rgba(97, 126, 156, 0.2)',
             fontSize: 13,
             lineHeight: '14px',
@@ -117,7 +150,7 @@ const FilterInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
             width: 16,
             height: 16,
             borderRadius: 50,
-            backgroundColor: props.active ? '#4428e0' : '#fff',
+            backgroundColor: props.active ? '#76afd4' : '#fff',
             border: '1px solid rgba(97, 126, 156, 0.2)',
             marginRight: 10,
             position: 'relative',
@@ -193,8 +226,8 @@ const TableWrapper = Glamorous.div({
     borderRadius: 4
 });
 
-class Checkbox extends React.Component<{ checkedChangeListener: Function, label: string, checked?: boolean }, { isChecked: boolean }> {
-    constructor(props: { checkedChangeListener: Function, label: string }) {
+class Checkbox extends React.Component<{ checkedChangeListener: Function, label: string, checked?: boolean, color: string }, { isChecked: boolean }> {
+    constructor(props: { checkedChangeListener: Function, label: string, color: string }) {
         super(props);
 
         this.state = {
@@ -222,6 +255,7 @@ class Checkbox extends React.Component<{ checkedChangeListener: Function, label:
                     <XIcon icon={this.state.isChecked ? 'done' : ''} />
                     <span>{this.props.label}</span>
                 </label>
+                <Circle color={this.props.color}/>
             </FilterInputDiv>
         );
     }
@@ -256,7 +290,9 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
             : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
 
         return (
-            <JustMap
+
+            <XMapContainer2>
+                <JustMap
                 mode={this.props.router.query.mode}
                 selectedParcel={this.props.router.query.selectedParcel}
                 // onParcelClick={handleClick}
@@ -264,13 +300,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
             // lastKnownCameraLocation={knownCameraLocation}
             // onCameraLocationChanged={handleMap}
             >
-                <ControlsContainer>
-                    <ChbContiner>
-                        <Checkbox label="Urbyn portfolio" checked={this.state.dealsEnabled} checkedChangeListener={this.onUrbynChange} />
-                        <Checkbox label="HPD mini-home opportunities" checked={this.state.hpdoEnabled} checkedChangeListener={this.hpdoChange} />
-                        <Checkbox label="HPD projects" checked={this.state.hpdpEnabled} checkedChangeListener={this.hpdpChange} />
-                    </ChbContiner>
-                </ControlsContainer>
+               
                 <DealsSource />
 
                 {this.state.dealsEnabled &&
@@ -309,7 +339,14 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                         />
                     </>}
 
-            </JustMap>);
+            </JustMap>
+            <ChbContiner>
+                <Checkbox label="Urbyn portfolio" checked={this.state.dealsEnabled} checkedChangeListener={this.onUrbynChange} color="#e8bd58"/>
+                <Checkbox label="HPD mini-home opportunities" checked={this.state.hpdoEnabled} checkedChangeListener={this.hpdoChange} color="#7f7cd5"/>
+                <Checkbox label="HPD projects" checked={this.state.hpdpEnabled} checkedChangeListener={this.hpdpChange} color="#79c07f"/>
+            </ChbContiner>
+        </XMapContainer2>
+            );
     }
 }
 
