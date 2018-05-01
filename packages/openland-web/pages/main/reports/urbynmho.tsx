@@ -69,11 +69,22 @@ const XMapContainer = Glamorous.div({
 
 const ChbContiner = Glamorous(XCard)<{}>((props) => ({
     flexDirection: 'column',
+    alignItems: 'flex-start',
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 15,
     paddingBottom: 15,
 }));
+
+const ControlsContainer = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+});
 
 const FilterInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
     display: 'flex',
@@ -253,12 +264,17 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
             // lastKnownCameraLocation={knownCameraLocation}
             // onCameraLocationChanged={handleMap}
             >
-                <ChbContiner>
-                    <Checkbox label="Urbyn portfolio" checked={this.state.dealsEnabled} checkedChangeListener={this.onUrbynChange} />
-                </ChbContiner>
+                <ControlsContainer>
+                    <ChbContiner>
+                        <Checkbox label="Urbyn portfolio" checked={this.state.dealsEnabled} checkedChangeListener={this.onUrbynChange} />
+                        <Checkbox label="HPD mini-home opportunities" checked={this.state.hpdoEnabled} checkedChangeListener={this.hpdoChange} />
+                        <Checkbox label="HPD projects" checked={this.state.hpdpEnabled} checkedChangeListener={this.hpdpChange} />
+                    </ChbContiner>
+                </ControlsContainer>
+                <DealsSource />
+
                 {this.state.dealsEnabled &&
                     <>
-                        <DealsSource />
                         <XMapImageLayer
                             image="/static/img/icons/pin1.png"
                             source="deals"
@@ -267,30 +283,24 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                         />
 
                     </>}
-
-                <ChbContiner>
-                    <Checkbox label="HPD mini-home opportunities" checked={this.state.hpdoEnabled} checkedChangeListener={this.hpdoChange} />
-                </ChbContiner>
+                <SourcingTileSource
+                    layer="sourcing"
+                    query={this.props.qHpd}
+                />
                 {this.state.hpdoEnabled &&
                     <>
-                        <SourcingTileSource
-                            layer="sourcing"
-                            query={this.props.qHpd}
-                        // TODO change ti unit
-                        />
-                         <XMapImageLayer
+
+                        <XMapImageLayer
                             image="/static/img/icons/pin2.png"
                             source="sourcing"
                             layer="sourcing"
                         // onClick={handleClick}
                         />
                     </>}
-                <ChbContiner>
-                    <Checkbox label="HPD projects" checked={this.state.hpdpEnabled} checkedChangeListener={this.hpdpChange} />
-                </ChbContiner>
+                <HPDProjectsSource />
+
                 {this.state.hpdpEnabled &&
                     <>
-                        <HPDProjectsSource />
                         <XMapImageLayer
                             image="/static/img/icons/pin3.png"
                             source="hpdp"
@@ -308,7 +318,7 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
     clauses1.push({ isPublic: true });
     let qPublic = buildQuery(clauses1);
     let clauses2: any[] = [];
-    clauses2.push({ 'stage': OpportunityState.APPROVED_ZONING }, { '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
+    clauses2.push({ 'stage': OpportunityState.INCOMING }, { '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
     let qHpd = buildQuery(clauses2);
 
     return (
@@ -324,8 +334,8 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                             </XMapContainer>
                             <TableWrapper>
                                 <OpportunitiesTable
-                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
-                                    stage="unit"
+                                    variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
+                                    stage="zoning"
                                     type="hpd"
                                     title="HPD Mini-Home Opportunity Sites"
                                 >
@@ -334,8 +344,8 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                             </TableWrapper>
                             <TableWrapper>
                                 <OpportunitiesTable
-                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined }}
-                                    stage="unit"
+                                    variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined }}
+                                    stage="zoning"
                                     type="public"
                                     title="Other Public Opportunity Sites"
                                 >
