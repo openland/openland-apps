@@ -318,7 +318,7 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
     clauses1.push({ isPublic: true });
     let qPublic = buildQuery(clauses1);
     let clauses2: any[] = [];
-    clauses2.push({ 'stage': OpportunityState.INCOMING }, { '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
+    clauses2.push({ 'stage': OpportunityState.APPROVED_ZONING }, { '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
     let qHpd = buildQuery(clauses2);
 
     return (
@@ -334,8 +334,8 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                             </XMapContainer>
                             <TableWrapper>
                                 <OpportunitiesTable
-                                    variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
-                                    stage="zoning"
+                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
+                                    stage="unit"
                                     type="hpd"
                                     title="HPD Mini-Home Opportunity Sites"
                                 >
@@ -344,8 +344,8 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                             </TableWrapper>
                             <TableWrapper>
                                 <OpportunitiesTable
-                                    variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined }}
-                                    stage="zoning"
+                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined }}
+                                    stage="unit"
                                     type="public"
                                     title="Other Public Opportunity Sites"
                                 >
