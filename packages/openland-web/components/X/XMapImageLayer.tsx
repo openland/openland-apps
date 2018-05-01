@@ -65,6 +65,7 @@ export class XMapImageLayer extends React.Component<XMapImageProps> {
                     'icon-allow-overlap': true
                 },
                 filter: ['!has', 'point_count'],
+                minzoom: props.minZoom
             });
         });
 
@@ -86,7 +87,7 @@ export class XMapImageLayer extends React.Component<XMapImageProps> {
                 'circle-color': props.clusterColor
             },
             filter: ['has', 'point_count'],
-            // minzoom: props.minZoom
+            minzoom: props.minZoom
         });
 
         this.map.addLayer({
@@ -101,8 +102,8 @@ export class XMapImageLayer extends React.Component<XMapImageProps> {
             },
             paint: {
                 'text-color' : '#6b6b6b'
-            }
-            // minzoom: props.minZoom
+            },
+            minzoom: props.minZoom
         });
 
     }

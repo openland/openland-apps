@@ -251,7 +251,7 @@ class HPDProjectsSource extends React.Component<{ loaded: Function }> {
             }));
         this.props.loaded(features.length);
         let result = { 'type': 'FeatureCollection', features: features };
-        return <XMapSource id="hpdp" data={result} cluster={true} clusterRadius={30}/>;
+        return <XMapSource id="hpdp" data={result} cluster={true} clusterRadius={30} />;
     }
 }
 
@@ -387,6 +387,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                                 source="deals"
                                 layer="deals"
                                 clusterColor="#e8bd58"
+                                minZoom={10}
                             // onClick={handleClick}
                             />
 
@@ -404,6 +405,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                                 source="sourcing"
                                 layer="sourcing"
                                 clusterColor="#7f7cd5"
+                                minZoom={10}
                             // onClick={handleClick}
                             />
                         </>}
@@ -416,6 +418,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                                 source="hpdp"
                                 layer="hpdp"
                                 clusterColor="#79c07f"
+                                minZoom={10}
                             // onClick={handleClick}
                             />
                         </>}
@@ -432,20 +435,20 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
 }
 
 export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
-    // let clauses1: any[] = [];
-    // clauses1.push({ isPublic: true });
-    // let qPublic = buildQuery(clauses1);
-    // let clauses2: any[] = [];
-    // clauses2.push({ 'stage': OpportunityState.APPROVED_ZONING }, { '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
-    // let qHpd = buildQuery(clauses2);
-
     let clauses1: any[] = [];
     clauses1.push({ isPublic: true });
     let qPublic = buildQuery(clauses1);
-
     let clauses2: any[] = [];
-    clauses2.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
+    clauses2.push({ 'stage': OpportunityState.APPROVED_ZONING }, { '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
     let qHpd = buildQuery(clauses2);
+
+    // let clauses1: any[] = [];
+    // clauses1.push({ isPublic: true });
+    // let qPublic = buildQuery(clauses1);
+
+    // let clauses2: any[] = [];
+    // clauses2.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
+    // let qHpd = buildQuery(clauses2);
 
     return (
         <>
@@ -471,8 +474,8 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                             </ContentWrapper>
                             <ContentWrapper>
                                 <OpportunitiesTable
-                                    // variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined, first: 10 }}
-                                    variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined, first: 10 }}
+                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined, first: 10 }}
+                                    // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined, first: 10 }}
                                     stage="unit"
                                     type="hpd"
                                     title="HPD Mini-Home Opportunity Sites"
@@ -482,8 +485,8 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                             </ContentWrapper>
                             <ContentWrapper>
                                 <OpportunitiesTable
-                                    // variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined, first: 10 }}
-                                    variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined, first: 10 }}
+                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined, first: 10 }}
+                                    // variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined, first: 10 }}
                                     stage="unit"
                                     type="public"
                                     title="Other Public Opportunity Sites"
