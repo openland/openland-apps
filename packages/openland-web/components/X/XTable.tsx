@@ -16,14 +16,19 @@ let TableHeader = Glamorous.table({
     '> thead': {
         backgroundColor: '#ffffff',
         color: '#525f7f',
-        borderBottomColor: '#d8d8da',
-        borderBottomWidth: '2px',
+        borderBottomColor: 'rgba(151, 151, 151, 0.14)',
+        borderBottomWidth: '1px',
         borderBottomStyle: 'solid',
 
         '> tr > td > div': {
             paddingTop: XStyles.paddings.medium,
             paddingBottom: XStyles.paddings.medium,
-            ...XStyles.text.h400
+            // ...XStyles.text.h400
+            opacity: 0.4,
+            fontSize: 14,
+            fontWeight: 500,
+            letterSpacing: 0.1,
+            color: '#1f3449'
         }
     },
     '& tr > td:first-child > div': {
@@ -45,7 +50,7 @@ let TableHeader = Glamorous.table({
 
 const XTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
     cursor: props.noHover ? 'default' : 'pointer',
-    borderBottom: '1px solid #F5F6F8',
+    borderBottom: '1px solid rgba(229, 233, 242, 0.5)',
     '&:hover': {
         backgroundColor: props.noHover ? undefined : '#f6f9fc'
     }
@@ -67,7 +72,10 @@ const XTableTDDivStyles = {
     paddingRight: XStyles.paddings.large,
     paddingTop: 12,
     paddingBottom: 9,
-    ...XStyles.text.p
+    // ...XStyles.text.p
+    fontSize: 14,
+    letterSpacing: 0.1,
+    color: '#1f3449'
 } as CSSProperties;
 
 let XTableTDDiv = Glamorous.div({

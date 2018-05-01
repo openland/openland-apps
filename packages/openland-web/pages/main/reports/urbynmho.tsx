@@ -76,6 +76,54 @@ const UrbinTitle = Glamorous.div({
 
 // });
 
+const UrbinStatisticContent = Glamorous.div({
+    display: 'flex',
+    height: 117
+});
+
+const UrbinStatisticWrapper = Glamorous.div<{ bordered?: boolean }>((props) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexBasis: '33.33%',
+    borderLeft: props.bordered ? '1px solid rgba(97, 126, 156, 0.2)' : undefined,
+    borderRight: props.bordered ? '1px solid rgba(97, 126, 156, 0.2)' : undefined
+}));
+
+const UrbinStatisticTite = Glamorous.div({
+    fontSize: 16,
+    fontWeight: 500,
+    lineHeight: 1.25,
+    letterSpacing: -0.2,
+    color: '#1f3449',
+    marginBottom: 4
+});
+
+const UrbinStatisticNumber = Glamorous.div({
+    fontSize: 28,
+    fontWeight: 500,
+    letterSpacing: -0.3,
+    color: '#76afd4'
+});
+
+const UrbinStatistic = () => (
+    <UrbinStatisticContent>
+        <UrbinStatisticWrapper>
+            <UrbinStatisticTite>Urbyn portfolio</UrbinStatisticTite>
+            <UrbinStatisticNumber>50 sites</UrbinStatisticNumber>
+        </UrbinStatisticWrapper>
+        <UrbinStatisticWrapper bordered={true}>
+            <UrbinStatisticTite>Housing & Preservation Department</UrbinStatisticTite>
+            <UrbinStatisticNumber>114 sites, 530 units</UrbinStatisticNumber>
+        </UrbinStatisticWrapper>
+        <UrbinStatisticWrapper>
+            <UrbinStatisticTite>Other public agencies</UrbinStatisticTite>
+            <UrbinStatisticNumber>129 sites, 595 units</UrbinStatisticNumber>
+        </UrbinStatisticWrapper>
+    </UrbinStatisticContent>
+);
+
 const XMapContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
@@ -111,10 +159,8 @@ const XMapContainer2 = Glamorous.div({
     // alignItems: 'stretch',
     // height: '100%'
     '& .mapboxgl-ctrl-top-right': {
-        left: '18px !important',
-        bottom: '18px !important',
-        top: 'auto',
-        right: 'auto',
+        right: '18px !important',
+        top: '18px !important',
         zIndex: 0,
         '& .mapboxgl-ctrl-group': {
             border: '1px solid rgba(132, 142, 143, 0.1)',
@@ -238,13 +284,13 @@ const UrbinHeader = () => (
     </UrbinHeaderWrapper>
 );
 
-const ContentWrapper = Glamorous.div({
+const Wrapper = Glamorous.div({
     backgroundColor: '#FAFAFC',
     padding: 18,
     marginTop: -16
 });
 
-const TableWrapper = Glamorous.div({
+const ContentWrapper = Glamorous.div({
     backgroundColor: '#fff',
     borderRadius: 4,
     border: 'solid 1px rgba(229, 233, 242, 0.5)'
@@ -391,12 +437,20 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
 // });
 
 export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
+    // let clauses1: any[] = [];
+    // clauses1.push({ isPublic: true });
+    // let qPublic = buildQuery(clauses1);
+    // let clauses2: any[] = [];
+    // clauses2.push({ 'stage': OpportunityState.APPROVED_ZONING }, { '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
+    // let qHpd = buildQuery(clauses2);
+
     let clauses1: any[] = [];
     clauses1.push({ isPublic: true });
-    let qPublic = buildQuery(clauses1);
+    let q1 = buildQuery(clauses1);
+
     let clauses2: any[] = [];
-    clauses2.push({ 'stage': OpportunityState.APPROVED_ZONING }, { '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
-    let qHpd = buildQuery(clauses2);
+    clauses2.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
+    let q2 = buildQuery(clauses2);
 
     return (
         <>
@@ -404,9 +458,9 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
             <Scaffold>
                 <Scaffold.Content bottomOffset={false}>
                     <UrbinHeader />
-                    <ContentWrapper>
+                    <Wrapper>
                         <XVertical>
-                            {/* <TableWrapper>
+                            {/* <ContentWrapper>
                                 <XVertical>
                                     <XHeader text="Qualified Opportunities for Urbyn Mini-Homes" />
                                     <Divider />
@@ -418,38 +472,46 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                                         <TabTitle>Other public agencies</TabTitle>
                                     </Tabs>
                                 </XVertical>
-                            </TableWrapper> */}
-                            <TableWrapper>
+                            </ContentWrapper> */}
+                            <ContentWrapper>
                                 <XVertical>
-                                    <XHeader text="Mini-Home Opportunities on the Map" />
+                                    <XHeader text="Qualified Opportunities for Urbyn Mini-Homes" separated={true} />
+                                    <UrbinStatistic />
+                                </XVertical>
+                            </ContentWrapper>
+                            <ContentWrapper>
+                                <XVertical>
+                                    <XHeader text="Mini-Home Opportunities on the Map" separated={true} />
                                     <XMapContainer>
-                                        <ReportMap router={props.router} qHpd={qHpd} />
+                                        <ReportMap router={props.router} qHpd={q2} />
                                     </XMapContainer>
                                 </XVertical>
-                            </TableWrapper>
-                            <TableWrapper>
+                            </ContentWrapper>
+                            <ContentWrapper>
                                 <OpportunitiesTable
                                     // variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
-                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
+                                    // variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
+                                    variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(q1), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined }}
                                     stage="unit"
                                     type="hpd"
                                     title="HPD Mini-Home Opportunity Sites"
                                 >
                                     <XCard.Empty text="There are no parcels for review" icon="sort" />
                                 </OpportunitiesTable>
-                            </TableWrapper>
-                            <TableWrapper>
+                            </ContentWrapper>
+                            <ContentWrapper>
                                 <OpportunitiesTable
-                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined }}
+                                    // variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined }}
+                                    variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(q2), page: props.router.query.page_public ? props.router.query.page_public : undefined }}
                                     stage="unit"
                                     type="public"
                                     title="Other Public Opportunity Sites"
                                 >
                                     <XCard.Empty text="There are no parcels for review" icon="sort" />
                                 </OpportunitiesTable>
-                            </TableWrapper>
+                            </ContentWrapper>
                         </XVertical>
-                    </ContentWrapper>
+                    </Wrapper>
                 </Scaffold.Content>
             </Scaffold>
         </>

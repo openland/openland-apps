@@ -30,13 +30,14 @@ const TargetDivStyle = Glamorous(XHorizontal)<{ellipcise?: boolean}>((props) => 
     textOverflow: props.ellipcise ? 'ellipsis' : undefined,
 }));
 
-let XCardHeaderDiv = Glamorous.div<{ appStyle?: 'default' | 'compact' }>((props) => ({
+let XCardHeaderDiv = Glamorous.div<{ appStyle?: 'default' | 'compact', separated?: boolean }>((props) => ({
     paddingLeft: props.appStyle === 'compact' ? XStyles.paddings.large : XStyles.paddings.xlarge,
     paddingRight: props.appStyle === 'compact' ? XStyles.paddings.large : XStyles.paddings.xlarge,
     paddingTop: XStyles.paddings.large,
     paddingBottom: XStyles.paddings.large,
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    borderBottom: props.separated ? '1px solid rgba(229, 233, 242, 0.5)' : undefined
 }));
 
 interface XCardHeaderProps {
@@ -49,6 +50,7 @@ interface XCardHeaderProps {
     filter?: string;
     bullet?: string | null;
     bulletColor?: 'red' | 'blue' | 'green' | 'yellow';
+    separated?: boolean;
 }
 
 export class HeaderTargetElement extends React.Component<({ children: any })> {
@@ -84,7 +86,7 @@ export class XHeader extends React.Component<XCardHeaderProps> {
 
         return (
 
-            <XCardHeaderDiv appStyle={this.props.style}>
+            <XCardHeaderDiv appStyle={this.props.style} separated={this.props.separated}>
                 <XCardTitle appStyle={this.props.style}>
                     <TargetDivStyle ellipcise={this.props.truncateTitle}>
                         {target}

@@ -202,7 +202,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
 
             {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length !== 0 && (
                 <>
-                    <XHeader text={(props as any).title}>
+                    <XHeader text={(props as any).title} separated={true}>
                         <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
                             <DownloadButton onClick={exportCVS} style="dark">
                                 <img src="/static/img/icons/reports/download-icon.svg" style={{marginRight: 6, marginBottom: -1}}/>
