@@ -88,11 +88,35 @@ const NavigatorItem = Glamorous(XLink)({
     flexShrink: 0,
     color: '#000000',
     cursor: 'pointer',
-    ':hover': {
-        color: '#522BFF',
-    },
     '.is-active': {
-        color: '#522BFF'
+        color: '#522BFF',
+        '& > .reports .hover': {
+            display: 'block'
+        },
+        '& > .reports .no-hover': {
+            display: 'none'
+        },
+    },
+    '&:hover': {
+        color: '#522BFF',
+        '& > .reports .hover': {
+            display: 'block'
+        },
+        '& > .reports .no-hover': {
+            display: 'none'
+        },
+    },
+    '& > .reports': {
+        width: 28,
+        height: 28,
+        display: 'flex',
+        justifyContent: 'center',
+        '& .hover': {
+            display: 'none'
+        },
+        '& .no-hover': {
+            display: 'block'
+        }
     }
 });
 
@@ -465,7 +489,10 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                             <XTooltip placement="right">
                                 <XTooltip.Target>
                                     <NavigatorItem path="/reports/urbyn_mho_nyc" activateForSubpaths={true}>
-                                        <NavigatorIcon icon="work" />
+                                        <div className="reports">
+                                            <img src="/static/img/icons/reports/dh-icon-black.svg" className="no-hover" />
+                                            <img src="/static/img/icons/reports/sh-iconblue.svg" className="hover" />
+                                        </div>
                                     </NavigatorItem>
                                 </XTooltip.Target>
                                 <XTooltip.Content>
