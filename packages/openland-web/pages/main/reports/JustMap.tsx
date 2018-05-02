@@ -11,7 +11,7 @@ export const JustMap = (props: XMapProps & { children?: any, mode?: 'satellite' 
         mapStyle = 'mapbox://styles/mapbox/satellite-v9';
     }
     return (
-        <XMap mapStyle={mapStyle} {...other} key={props.mode || 'map'}>
+        <XMap mapStyle={mapStyle} {...other} key={props.mode || 'map'} scrollZoom={false}>
 
             {children}
         </XMap>
