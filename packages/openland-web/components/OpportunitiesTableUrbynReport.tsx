@@ -8,6 +8,7 @@ import { XModalRouted } from './X/XModalRouted';
 import { XButton } from './X/XButton';
 import { XArea } from './X/XArea';
 import { XWithRole } from './X/XWithRole';
+import { XHorizontal } from './X/XHorizontal';
 import { ParcelNumber } from './ParcelNumber';
 import ATypes from 'openland-api';
 import { withRouter } from './withRouter';
@@ -129,7 +130,7 @@ const CollapsingTableWrapper = Glamorous.div<{ collapse: boolean }>((props) => (
 
 const CollapsWrapper = Glamorous.div<{ collapse: boolean }>((props) => ({
     overflow: 'hidden',
-    maxHeight: props.collapse ? 241 : 550,
+    maxHeight: props.collapse ? 241 : undefined,
     transition: 'all .2s'
 }));
 
@@ -145,8 +146,13 @@ const CollapseGradient = Glamorous.div<{ collapse: boolean }>((props) => ({
     transition: 'all .2s'
 }));
 
-class CollapsingTable extends React.Component<{ children: any }, { collapse: boolean, btnText: string }> {
-    constructor(props: { children: any }) {
+const ColapseFooterWrap = Glamorous.div({
+    position: 'absolute',
+    marginTop: -6
+});
+
+class CollapsingTable extends React.Component<{ children: any, count: number }, { collapse: boolean, btnText: string }> {
+    constructor(props: { children: any, count: number }) {
         super(props);
 
         this.state = {
@@ -169,6 +175,9 @@ class CollapsingTable extends React.Component<{ children: any }, { collapse: boo
                 <CollapsWrapper collapse={this.state.collapse}>
                     {this.props.children}
                 </CollapsWrapper>
+                {this.state.collapse &&  <ColapseFooterWrap>
+                    <XCard.Footer text={this.props.count + ' items'} />
+                </ColapseFooterWrap>}
                 <CollapseBtn onClick={() => this.collapseHandler()} collapse={this.state.collapse}>{this.state.btnText}</CollapseBtn>
             </CollapsingTableWrapper>
         );
@@ -191,29 +200,29 @@ let TableHeader = () => (
 const TableRows = (v: any) => (
     <>
         <XTable.Cell>
-            {v.node.parcel.extrasBorough}
+            {v.parcel.extrasBorough}
         </XTable.Cell>
         <XTable.Cell>
-            <ParcelNumber compact={true} id={v.node.parcel.number} />
+            <ParcelNumber compact={true} id={v.parcel.number} />
         </XTable.Cell>
         <XTable.Cell>
-            {v.node.parcel.address}
+            {v.parcel.address}
         </XTable.Cell>
         <XTable.Cell>
-            {v.node.parcel && v.node.parcel.area && <XArea area={v.node.parcel.area.value} />}
+            {v.parcel && v.parcel.area && <XArea area={v.parcel.area.value} />}
         </XTable.Cell>
         <XTable.Cell>
-            {v.node.parcel.extrasZoning}
+            {v.parcel.extrasZoning}
         </XTable.Cell>
         <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
             <XTable.Cell>
-                {Boolean(v.node.parcel.area && v.node.parcel.extrasUnitCapacityDencity && v.node.parcel.extrasUnitCapacityFar) ? v.node.parcel.extrasUnitCapacity : ''}
+                {Boolean(v.parcel.area && v.parcel.extrasUnitCapacityDencity && v.parcel.extrasUnitCapacityFar) ? v.parcel.extrasUnitCapacity : ''}
             </XTable.Cell>
         </XWithRole>
     </>
 );
 
-export const OpportunitiesTable = withSourcingFirst(withRouter((props) => {
+export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
     let stage = '';
 
     if ((props as any).stage) {
@@ -264,14 +273,17 @@ export const OpportunitiesTable = withSourcingFirst(withRouter((props) => {
         csvContent += 'Owner,';
         // csvContent += 'Date';
         csvContent += '\r\n';
-        for (let row of props.data.alphaOpportunities.edges) {
-            csvContent += wrap(row.node.parcel.extrasBorough) + ',';
-            csvContent += wrap(parcelNumberFormat({ id: row.node.parcel.number })) + ',';
-            csvContent += wrap(row.node.parcel.address) + ',';
-            csvContent += wrap(row.node.parcel.area ? Math.round(row.node.parcel.area.value * 10.7639) : '') + ',';
-            csvContent += wrap(row.node.parcel.extrasZoning) + ',';
-            csvContent += wrap(row.node.parcel.extrasUnitCapacity) + ',';
-            csvContent += wrap(row.node.parcel.extrasOwnerName) + ',';
+        if (!props.data.alphaAllOpportunities) {
+            return;
+        }
+        for (let row of props.data.alphaAllOpportunities) {
+            csvContent += wrap(row.parcel.extrasBorough) + ',';
+            csvContent += wrap(parcelNumberFormat({ id: row.parcel.number })) + ',';
+            csvContent += wrap(row.parcel.address) + ',';
+            csvContent += wrap(row.parcel.area ? Math.round(row.parcel.area.value * 10.7639) : '') + ',';
+            csvContent += wrap(row.parcel.extrasZoning) + ',';
+            csvContent += wrap(row.parcel.extrasUnitCapacity) + ',';
+            csvContent += wrap(row.parcel.extrasOwnerName) + ',';
             // csvContent += wrap(row.updatedAt);
             csvContent += '\r\n';
         }
@@ -286,12 +298,12 @@ export const OpportunitiesTable = withSourcingFirst(withRouter((props) => {
     };
 
     return (
-        <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
+        <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0)}>
             <XModalRouted title="Export to CVS" query="export">
                 <ExportModal />
             </XModalRouted>
 
-            {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length !== 0 && (
+            {props.data.alphaAllOpportunities && props.data.alphaAllOpportunities.length !== 0 && (
                 <>
                     <XHeader text={(props as any).title} separated={true}>
                         <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
@@ -302,57 +314,57 @@ export const OpportunitiesTable = withSourcingFirst(withRouter((props) => {
                         </XWithRole>
                     </XHeader>
                     {
-                        (props.data.alphaOpportunities.edges.length <= 5) ? (
+                        (props.data.alphaAllOpportunities.length <= 5) ? (
                             <>
                                 <XTable>
                                     <TableHeader />
                                     <XTable.Body>
-                                        {props.data.alphaOpportunities.edges.map((v) => {
+                                        {props.data.alphaAllOpportunities.map((v) => {
                                             return (
-                                                <XTable.Row key={v.node.id} path={useDirect ? '/parcels/' + v.node.parcel.id : ('/prospecting/review?initialId=' + v.node.id + stage + sort)}>
+                                                <XTable.Row key={v.id} path={useDirect ? '/parcels/' + v.parcel.id : ('/prospecting/review?initialId=' + v.id + stage + sort)}>
                                                     {TableRows(v)}
                                                 </XTable.Row>
                                             );
                                         })}
                                     </XTable.Body>
                                 </XTable>
-                                <XCard.Footer text={props.data.alphaOpportunities.pageInfo.itemsCount + ' items'}>
-                                    {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
+                                <XCard.Footer text={(props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0) + ' items'}>
+                                    {/* {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
                                         <SwitchButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }}>Prev</SwitchButton>
                                     )}
                                     {(props.data.alphaOpportunities.pageInfo.currentPage < props.data.alphaOpportunities.pageInfo.pagesCount - 1) && (
                                         <SwitchButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</SwitchButton>
-                                    )}
+                                    )} */}
                                 </XCard.Footer>
                             </>
                         ) : (
-                                <CollapsingTable>
+                                <CollapsingTable count={props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0}>
                                     <XTable>
                                         <TableHeader />
                                         <XTable.Body>
-                                            {props.data.alphaOpportunities.edges.map((v) => {
+                                            {props.data.alphaAllOpportunities.map((v) => {
                                                 return (
-                                                    <XTable.Row key={v.node.id} path={useDirect ? '/parcels/' + v.node.parcel.id : ('/prospecting/review?initialId=' + v.node.id + stage + sort)}>
+                                                    <XTable.Row key={v.id} path={useDirect ? '/parcels/' + v.parcel.id : ('/prospecting/review?initialId=' + v.id + stage + sort)}>
                                                         {TableRows(v)}
                                                     </XTable.Row>
                                                 );
                                             })}
                                         </XTable.Body>
                                     </XTable>
-                                    <XCard.Footer text={props.data.alphaOpportunities.pageInfo.itemsCount + ' items'}>
-                                        {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
+                                    <XCard.Footer text={(props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0) + ' items'}>
+                                        {/* {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
                                             <SwitchButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }}>Prev</SwitchButton>
                                         )}
                                         {(props.data.alphaOpportunities.pageInfo.currentPage < props.data.alphaOpportunities.pageInfo.pagesCount - 1) && (
                                             <SwitchButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</SwitchButton>
-                                        )}
+                                        )} */}
                                     </XCard.Footer>
                                 </CollapsingTable>
                             )
                     }
                 </>
             )}
-            {(!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0) && (
+            {(!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0) && (
                 <>
                     {props.children}
                 </>
