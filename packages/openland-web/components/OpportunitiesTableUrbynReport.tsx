@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withSourcingAll, withSourcingFirst } from '../api';
+import { withSourcingAll } from '../api';
 import { XCard } from './X/XCard';
 import { XHeader } from './X/XHeader';
 import { XTable } from './X/XTable';
@@ -8,7 +8,6 @@ import { XModalRouted } from './X/XModalRouted';
 import { XButton } from './X/XButton';
 import { XArea } from './X/XArea';
 import { XWithRole } from './X/XWithRole';
-import { XHorizontal } from './X/XHorizontal';
 import { ParcelNumber } from './ParcelNumber';
 import ATypes from 'openland-api';
 import { withRouter } from './withRouter';
