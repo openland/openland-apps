@@ -19,7 +19,8 @@ pipelines:
           - docker build -t openland/web:v${BITBUCKET_BUILD_NUMBER} .
           - docker push openland/web:v${BITBUCKET_BUILD_NUMBER}
     - step:
-        name: Deploy
+        name: Deploy to Staging
+        deployment: staging
         script:
           - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-200.0.0-linux-x86_64.tar.gz
           - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
