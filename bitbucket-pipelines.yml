@@ -27,6 +27,12 @@ pipelines:
           - /tmp/google-cloud-sdk/install.sh -q
           - source /tmp/google-cloud-sdk/path.bash.inc
           - gcloud -v
+          - echo $GCLOUD_API_KEYFILE | base64 --decode --ignore-garbage > ./gcloud-api-key.json
+          - gcloud auth activate-service-account --key-file gcloud-api-key.json
+          - gcloud --quiet config set project statecraft-188615
+          - gcloud --quiet config set compute/zone us-west1-a
+          - gcloud --quiet container clusters get-credentials statekube
+          - kubectl set image deployment/openland-web-dev openland-web-dev=index.docker.io/openland/web:v${BITBUCKET_BUILD_NUMBER}
 
 options:
   docker: true
