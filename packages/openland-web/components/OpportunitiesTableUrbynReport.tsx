@@ -163,7 +163,7 @@ class CollapsingTable extends React.Component<{ children: any, count: number }, 
     collapseHandler() {
         this.setState({
             collapse: !this.state.collapse,
-            btnText: (!this.state.collapse === true) ? 'Show full table' : 'Hide table'
+            btnText: (!this.state.collapse === true) ? 'Show full table' : 'Minimize table'
         });
     }
 
@@ -370,4 +370,4 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
             )}
         </XCard.Loader>
     );
-})) as React.ComponentType<{ variables?: ATypes.SourcingFirstQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string, title?: string }>;
+})) as React.ComponentType<{ variables?: ATypes.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string, title?: string }>;

@@ -475,8 +475,8 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                             </ContentWrapper>
                             <ContentWrapper>
                                 <OpportunitiesTable
-                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined, first: 10 }}
-                                    // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined, first: 10 }}
+                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qPublic) }}
+                                    // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic) }}
                                     stage="unit"
                                     type="hpd"
                                     title="HPD Mini-Home Opportunity Sites"
@@ -486,8 +486,8 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                             </ContentWrapper>
                             <ContentWrapper>
                                 <OpportunitiesTable
-                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined, first: 10 }}
-                                    // variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(qHpd), page: props.router.query.page_public ? props.router.query.page_public : undefined, first: 10 }}
+                                    variables={{ state: OpportunityState.APPROVED_ZONING, query: JSON.stringify(qHpd) }}
+                                    // variables={{ state: OpportunityState.INCOMING, query: JSON.stringify(qHpd) }}
                                     stage="unit"
                                     type="public"
                                     title="Other Public Opportunity Sites"
