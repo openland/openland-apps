@@ -8,6 +8,7 @@ image: node:8.9.4
 pipelines:
   default:
     - step:
+        name: Test & Build
         caches:
           - node
         script: # Modify the commands below to build your repository.
@@ -17,6 +18,14 @@ pipelines:
           - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
           - docker build -t openland/web:v${BITBUCKET_BUILD_NUMBER} .
           - docker push openland/web:v${BITBUCKET_BUILD_NUMBER}
+    - step:
+        name: Deploy
+        script:
+          - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-155.0.0-linux-x86_64.tar.gz
+          - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
+          - /tmp/google-cloud-sdk/install.sh -q
+          - source /tmp/google-cloud-sdk/path.bash.inc
+          - gcloud -v
 
 options:
   docker: true
