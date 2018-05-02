@@ -7,12 +7,12 @@ import { backoff } from './timer';
 import { startProgress, stopProgress } from './routing';
 import { XMapSource } from '../components/X/XMapSource';
 import { parseGeometry } from './Serializers';
-
 interface GraphQLTileSourceProps {
     layer: string;
     minZoom?: number;
     query?: any;
     skip?: boolean;
+    loaded?: Function;
 }
 
 const TileWidth = 0.005;
@@ -191,6 +191,10 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                         }
                         wasUpdated = true;
                     }
+                }
+
+                if (this.props.loaded) {
+                    this.props.loaded(this.allElements.size);
                 }
 
                 //

@@ -10,8 +10,10 @@ import { ParcelNumber } from './ParcelNumber';
 import { XDate } from './X/XDate';
 import ATypes from 'openland-api';
 import { withRouter } from './withRouter';
+// import { OpportunityState } from 'openland-api/Types';
+// import { OpportunitiesTable as _OpportunitiesTable } from './OpportunitiesTableUrbynReport';
 
-export const ExportModal = withSourcingAll((props) => {
+export const ExportModal = withSourcingAll(withRouter((props) => {
     const exportCVS = () => {
         let wrap = (data: any) => {
             return '"' + (data !== null && data !== undefined ? data : '') + '"';
@@ -75,7 +77,19 @@ export const ExportModal = withSourcingAll((props) => {
         </XCard.Loader>
 
     );
-});
+})) as React.ComponentType<{ variables?: ATypes.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
+
+// function buildQuery(clauses: any[]): any | null {
+//     if (clauses.length === 0) {
+//         return null;
+//     } else if (clauses.length === 1) {
+//         return clauses[0];
+//     } else {
+//         return {
+//             '$and': clauses
+//         };
+//     }
+// }
 
 export const OpportunitiesTable = withSourcing(withRouter((props) => {
     let stage = '';
@@ -158,10 +172,30 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
         document.body.removeChild(link);
     };
 
+    // let clauses1: any[] = [];
+    // clauses1.push({ isPublic: true });
+    // let qPublic = buildQuery(clauses1);
+
+    // let clauses2: any[] = [];
+    // clauses2.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
+    // let qHpd = buildQuery(clauses2);
+
     return (
         <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
             <XModalRouted title="Export to CVS" query="export">
-                <ExportModal />
+                <ExportModal 
+                 variables={(props as any).variables}
+                 // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined, first: 10 }}
+                 stage="unit"/>
+                {/* <_OpportunitiesTable
+                    variables={(props as any).variables}
+                    // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic) }}
+                    stage="unit"
+                    type="hpd"
+                    title="HPD Mini-Home Opportunity Sites"
+                >
+                    <XCard.Empty text="There are no parcels for review" icon="sort" />
+                </_OpportunitiesTable> */}
             </XModalRouted>
 
             {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length !== 0 && (

@@ -1,11 +1,29 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
+import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
+import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api';
+import { canUseDOM } from '../../../utils/environment';
+import { trackEvent } from '../../../utils/analytics';
+import { XMapCameraLocation } from '../../../components/X/XMap';
+import { XMapSource } from '../../../components/X/XMapSource';
+import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
+// import { XHorizontal } from '../../../components/X/XHorizontal';
+// import { XButton } from '../../../components/X/XButton';
+import { ParcelCard } from '../../../components/ParcelCard';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { ParcelMap } from '../../../components/ParcelMap';
-import { XSwitcher } from '../../../components/X/XSwitcher';
-import { withRouter } from '../../../components/withRouter';
+import { XSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
+import { XWithRouter, withRouter } from '../../../components/withRouter';
 import { MapFilters } from '../../../components/Incubator/MapComponents/MapFilters';
+import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
+
+const XMapContainer = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    height: '100vh'
+});
 
 const XMapContainer2 = Glamorous.div({
     position: 'relative',
@@ -16,16 +34,32 @@ const XMapContainer2 = Glamorous.div({
     // alignItems: 'stretch',
     // height: '100%'
     '& .mapboxgl-ctrl-top-right': {
-        top: '65px !important',
-        right: '6px !important',
-        zIndex: 0
+        left: '18px !important',
+        bottom: '18px !important',
+        top: 'auto',
+        right: 'auto',
+        zIndex: 0,
+        '& .mapboxgl-ctrl-group': {
+            border: '1px solid rgba(132, 142, 143, 0.1)',
+            boxShadow: 'none',
+
+            '& .mapboxgl-ctrl-zoom-out': {
+                borderBottom: 'none !important'
+            },
+            '& .mapboxgl-ctrl-compass': {
+                display: 'none !important'
+            }
+        }
+    },
+    '& .mapboxgl-ctrl-bottom-left': {
+        display: 'none'
     }
 });
 
 const MapSwitcher = Glamorous.div({
     position: 'absolute',
-    top: 12,
-    right: 16,
+    bottom: 18,
+    left: 68,
 
     display: 'flex',
     flexDirection: 'row'
@@ -40,19 +74,84 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     visibility: props.active ? 'visible' : 'hidden',
     opacity: props.active ? 1 : 0,
     transition: 'all 220ms',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    zIndex: 1
+    backgroundColor: 'rgba(0, 0, 0, 0.41)',
+    zIndex: 2
 }));
 
-class WrappedContainer extends React.Component<any, { shadowed: boolean }> {
-    constructor(props: any) {
+const FilterHeaderSubtitle = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    color: 'rgba(96, 124, 156, 0.52)',
+    fontSize: '14px',
+    fontWeight: 500,
+    opacity: 0.8,
+});
+
+const FilterComponent = withParcelStats((props) => {
+    return <FilterHeaderSubtitle>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</FilterHeaderSubtitle>;
+});
+
+const DealsSource = withDealsMap((props) => {
+    if (props.data.deals) {
+        let features = props.data.deals
+            .filter((v) => v.parcel !== null)
+            .map((v) => ({
+                type: 'Feature',
+                'geometry': { type: 'Point', coordinates: [v.parcel!!.center!!.longitude, v.parcel!!.center!!.latitude] },
+                properties: {
+                    'id': v.parcel!!.id
+                }
+            }));
+        let result = { 'type': 'FeatureCollection', features: features };
+        return <XMapSource id="deals" data={result} />;
+    }
+    return null;
+});
+
+class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentProps, { shadowed: boolean, query?: any }> {
+    knownCameraLocation?: XMapCameraLocation;
+
+    constructor(props: XWithRouter & UserInfoComponentProps) {
         super(props);
 
         this.state = {
             shadowed: false
         };
 
+        if (canUseDOM) {
+            let k = sessionStorage.getItem('__explore_location');
+            if (k != null) {
+                this.knownCameraLocation = JSON.parse(k);
+            }
+            let q = sessionStorage.getItem('__explore_query');
+            if (q != null) {
+                this.state = {
+                    shadowed: false,
+                    query: JSON.parse(q)
+                };
+            }
+        }
+
         this.shadowHandler = this.shadowHandler.bind(this);
+    }
+
+    handleUpdate = (e?: any) => {
+        this.setState({ query: e });
+        if (e) {
+            sessionStorage.setItem('__explore_query', JSON.stringify(e));
+        } else {
+            sessionStorage.removeItem('__explore_query');
+        }
+    }
+
+    handleClick = (id: string) => {
+        trackEvent('Explore Parcel', { id: id });
+        this.props.router.pushQuery('selectedParcel', id);
+    }
+
+    handleMap = (e: XMapCameraLocation) => {
+        sessionStorage.setItem('__explore_location', JSON.stringify(e));
+        this.knownCameraLocation = e;
     }
 
     shadowHandler(e: boolean) {
@@ -62,27 +161,93 @@ class WrappedContainer extends React.Component<any, { shadowed: boolean }> {
     }
 
     render() {
-        return (
-            <XMapContainer2>
-                <Shadow active={this.state.shadowed} />
-                <MapFilters shadowHandler={(e: boolean) => this.shadowHandler(e)} />
 
-                <ParcelMap mode={this.props.router.query.mode} />
-                <MapSwitcher>
-                    <XSwitcher fieldStyle={true}>
-                        <XSwitcher.Item query={{ field: 'mode' }}>Map</XSwitcher.Item>
-                        <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
-                    </XSwitcher>
-                </MapSwitcher>
-            </XMapContainer2>
+        let defaultCity = 'sf';
+        if (this.props.roles.find((v) => v === 'feature-city-nyc-force')) {
+            defaultCity = 'nyc';
+        }
+        let city = this.props.router.routeQuery.city || defaultCity;
+        let cityName = city === 'sf' ? 'San Francisco' : 'New York';
+        let countyName = city === 'sf' ? 'San Francisco' : 'New York';
+        let stateName = city === 'sf' ? 'CA' : 'NY';
+        let focus = city === 'sf'
+            ? { latitude: 37.75444398077139, longitude: -122.43963811583545, zoom: 12 }
+            : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
+
+        return (
+            <XMapContainer>
+                <XMapContainer2>
+                    <Shadow active={this.state.shadowed} />
+                    <MapFilters shadowHandler={(e: boolean) => this.shadowHandler(e)} />
+                    <CitySelector title={cityName} shadowHandler={(e: boolean) => this.shadowHandler(e)}>
+                        <CitySelector.Item
+                            query={{ field: 'city', value: 'sf' }}
+                            active={city === 'sf'}
+                            autoClose={true}
+                            label="San Francisco"
+                            onClick={() => this.shadowHandler(false)}
+                        />
+                        <CitySelector.Item
+                            query={{ field: 'city', value: 'nyc' }}
+                            active={city !== 'sf'}
+                            autoClose={true}
+                            label="New York"
+                            onClick={() => this.shadowHandler(false)}
+                        />
+                        <FilterComponent
+                            query={this.state.query && JSON.stringify(this.state.query)}
+                            city={cityName}
+                            county={countyName}
+                            state={stateName}
+                        />
+                    </CitySelector>
+
+                    <ParcelMap
+                        mode={this.props.router.query.mode}
+                        selectedParcel={this.props.router.query.selectedParcel}
+                        onParcelClick={this.handleClick}
+                        focusPosition={focus}
+                        lastKnownCameraLocation={this.knownCameraLocation}
+                        onCameraLocationChanged={this.handleMap}
+                    >
+                        <ParcelPointSource
+                            layer="parcels-found"
+                            query={this.state.query}
+                            minZoom={12}
+                            skip={this.state.query === undefined}
+                        />
+                        <DealsSource />
+
+                        <XMapPointLayer
+                            source="parcels-found"
+                            layer="parcels-found"
+                            onClick={this.handleClick}
+                        />
+
+                        <XMapPointLayer
+                            source="deals"
+                            layer="deals"
+                            color="#24b47e"
+                            onClick={this.handleClick}
+                        />
+                    </ParcelMap>
+                    <MapSwitcher>
+                        <XSwitcher fieldStyle={true}>
+                            <XSwitcher.Item query={{ field: 'mode' }}>Map</XSwitcher.Item>
+                            <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
+                        </XSwitcher>
+                    </MapSwitcher>
+                </XMapContainer2>
+                {this.props.router.query!!.selectedParcel && <ParcelCard parcelId={this.props.router.query!!.selectedParcel} />}
+            </XMapContainer>
         );
     }
 }
 
-export default withApp('UI Framework - Map', 'viewer', withRouter((props) => {
+export default withApp('UI Framework - Map', 'viewer', withRouter(withUserInfo((props) => {
     return (
-        <DevDocsScaffold bottomOffset={false}>
+        <DevDocsScaffold bottomOffset={false} hideSidebar={true}>
             <WrappedContainer {...props} />
         </DevDocsScaffold>
     );
-}));
+})));
