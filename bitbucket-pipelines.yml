@@ -18,5 +18,6 @@ pipelines:
           - docker build -t openland/web:v${BITBUCKET_BUILD_NUMBER} ./build/.
           - docker push openland/web:v${BITBUCKET_BUILD_NUMBER}
          
+
 options:
   docker: true
