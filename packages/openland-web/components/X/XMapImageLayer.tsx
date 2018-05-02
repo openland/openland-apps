@@ -98,6 +98,7 @@ export class XMapImageLayer extends React.Component<XMapImageProps> {
             layout: {
                 'text-field': '{point_count_abbreviated}',
                 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-allow-overlap': true,
                 'text-size': 12
             },
             paint: {

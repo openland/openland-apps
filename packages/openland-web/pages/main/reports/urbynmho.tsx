@@ -387,7 +387,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                                 source="deals"
                                 layer="deals"
                                 clusterColor="#e8bd58"
-                                minZoom={10}
+                                minZoom={7}
                             // onClick={handleClick}
                             />
 
@@ -396,7 +396,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                         layer="sourcing"
                         query={this.props.qHpd}
                         loaded={this.hpdoLoaded}
-                        minZoom={10}
+                        minZoom={7}
                     />
                     {this.state.hpdoEnabled &&
                         <>
@@ -406,7 +406,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                                 source="sourcing"
                                 layer="sourcing"
                                 clusterColor="#7f7cd5"
-                                minZoom={10}
+                                minZoom={7}
                             // onClick={handleClick}
                             />
                         </>}
@@ -419,7 +419,7 @@ class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsE
                                 source="hpdp"
                                 layer="hpdp"
                                 clusterColor="#79c07f"
-                                minZoom={10}
+                                minZoom={7}
                             // onClick={handleClick}
                             />
                         </>}
