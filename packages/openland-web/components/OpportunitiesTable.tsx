@@ -79,17 +79,17 @@ export const ExportModal = withSourcingAll(withRouter((props) => {
     );
 })) as React.ComponentType<{ variables?: ATypes.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
 
-function buildQuery(clauses: any[]): any | null {
-    if (clauses.length === 0) {
-        return null;
-    } else if (clauses.length === 1) {
-        return clauses[0];
-    } else {
-        return {
-            '$and': clauses
-        };
-    }
-}
+// function buildQuery(clauses: any[]): any | null {
+//     if (clauses.length === 0) {
+//         return null;
+//     } else if (clauses.length === 1) {
+//         return clauses[0];
+//     } else {
+//         return {
+//             '$and': clauses
+//         };
+//     }
+// }
 
 export const OpportunitiesTable = withSourcing(withRouter((props) => {
     let stage = '';
@@ -172,13 +172,13 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
         document.body.removeChild(link);
     };
 
-    let clauses1: any[] = [];
-    clauses1.push({ isPublic: true });
-    let qPublic = buildQuery(clauses1);
+    // let clauses1: any[] = [];
+    // clauses1.push({ isPublic: true });
+    // let qPublic = buildQuery(clauses1);
 
-    let clauses2: any[] = [];
-    clauses2.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
-    let qHpd = buildQuery(clauses2);
+    // let clauses2: any[] = [];
+    // clauses2.push({ '$and': [{ isPublic: true }, { '$or': [{ ownerName: 'HPD NYC' }, { ownerName: 'hpd' }, { ownerName: 'Housing Preservation' }] }] });
+    // let qHpd = buildQuery(clauses2);
 
     return (
         <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
