@@ -58,6 +58,12 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
     static Target = TargetElement;
     static active = new Set();
 
+    static closeAll = () => {
+        for (let filter of Filter.active) {
+            filter.handleClose(filter);
+        }
+    }
+
     constructor(props: ConfirmPopoverProps) {
         super(props);
 
@@ -98,20 +104,21 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
         Filter.active.add(this);
     }
 
-    handleClose = () => {
-        this.setState({
+    handleClose = (self?: any) => {
+        let target = (self instanceof Filter) ? self : this;
+        target.setState({
             class: 'hide',
         });
-        if (this.props.handler !== undefined) { this.props.handler(false, this); }
+        if (target.props.handler !== undefined) { target.props.handler(false, target); }
         setTimeout(
             () => {
-                this.setState({
+                target.setState({
                     class: 'hide',
                     popper: false
                 });
             },
             200);
-        Filter.active.delete(this);
+        Filter.active.delete(target);
     }
 
     render() {

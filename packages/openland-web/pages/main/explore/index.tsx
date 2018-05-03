@@ -10,7 +10,6 @@ import { XWithRouter, withRouter } from '../../../components/withRouter';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XCard } from '../../../components/X/XCard';
 import { AppFilters } from '../../../components/App/AppFilters';
-import { CitySelector } from '../../../components/Incubator/CitySelector';
 import { XButton } from '../../../components/X/XButton';
 import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XMapSource } from '../../../components/X/XMapSource';
@@ -20,11 +19,12 @@ import { canUseDOM } from '../../../utils/environment';
 // import { XButtonMutation } from '../../../components/X/XButtonMutation';
 // import { XWithRole } from '../../../components/X/XWithRole';
 import { Scaffold } from '../../../components/Scaffold';
-import XStyles from '../../../components/X/XStyles';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { XMapCameraLocation } from '../../../components/X/XMap';
 import { TextPageExplore } from 'openland-text/TextPageExplore';
 import { TextMap } from 'openland-text/TextMap';
+import { MapFilters } from '../../../components/Incubator/MapComponents/MapFilters';
+import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -42,66 +42,44 @@ const XMapContainer2 = Glamorous.div({
     // alignItems: 'stretch',
     // height: '100%'
     '& .mapboxgl-ctrl-top-right': {
-        top: '65px !important',
-        right: '6px !important'
+        left: '18px !important',
+        bottom: '18px !important',
+        top: 'auto',
+        right: 'auto',
+        zIndex: 0,
+        '& .mapboxgl-ctrl-group': {
+            border: '1px solid rgba(132, 142, 143, 0.1)',
+            boxShadow: 'none',
+
+            '& .mapboxgl-ctrl-zoom-out': {
+                borderBottom: 'none !important'
+            },
+            '& .mapboxgl-ctrl-compass': {
+                display: 'none !important'
+            }
+        }
+    },
+    '& .mapboxgl-ctrl-bottom-left': {
+        display: 'none'
     }
 });
 
 const MapSwitcher = Glamorous.div({
     position: 'absolute',
-    top: 12,
-    right: 16,
+    bottom: 18,
+    left: 68,
 
     display: 'flex',
     flexDirection: 'row'
 });
 
-const FilterContainer = Glamorous(XCard)({
-    display: 'flex',
-    flexDirection: 'row',
-    backgroundColor: '#5968e2',
-    width: '352px',
-    height: '78px',
-    pointerEvents: 'auto',
-    position: 'absolute',
-    top: 16,
-    left: 16,
-    zIndex: 1
-});
-
-const FilterHeader = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    paddingLeft: 16,
-    paddingRight: 16,
-    justifyContent: 'center'
-});
-
-const FilterHeaderTitle = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    ...XStyles.text.h400,
-    color: '#f5f6f8'
-});
-
 const FilterHeaderSubtitle = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    color: '#f5f6f8',
+    color: 'rgba(96, 124, 156, 0.52)',
     fontSize: '14px',
     fontWeight: 500,
-    opacity: 0.7,
-});
-
-const FilterActions = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 16,
-    paddingBottom: 16,
-    justifyContent: 'flex-start'
+    opacity: 0.8,
 });
 
 const FilterComponent = withParcelStats((props) => {
@@ -125,14 +103,30 @@ const DealsSource = withDealsMap((props) => {
     return null;
 });
 
+const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    width: '100vw',
+    height: '100vh',
+    visibility: props.active ? 'visible' : 'hidden',
+    opacity: props.active ? 1 : 0,
+    transition: 'all 220ms',
+    backgroundColor: 'rgba(0, 0, 0, 0.41)',
+    zIndex: 2,
+    pointerEvents: 'none'
+}));
+
 // const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Add to prospecting</XButtonMutation>);
-class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { query?: any }> {
+class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { query?: any, shadowed: boolean }> {
 
     knownCameraLocation?: XMapCameraLocation;
+    
+    shadowRequests = new Set();
 
     constructor(props: XWithRouter & UserInfoComponentProps) {
         super(props);
-        this.state = {};
+        this.state = { shadowed: false};
 
         if (canUseDOM) {
             let k = sessionStorage.getItem('__explore_location');
@@ -141,7 +135,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
             }
             let q = sessionStorage.getItem('__explore_query');
             if (q != null) {
-                this.state = { query: JSON.parse(q) };
+                this.state = { query: JSON.parse(q), shadowed: false };
             }
         }
     }
@@ -165,6 +159,16 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         this.knownCameraLocation = e;
     }
 
+    requestShadow = (add: boolean, caller: any) => {
+        if (add) {
+            this.shadowRequests.add(caller);
+        } else {
+            this.shadowRequests.delete(caller);
+        }
+
+        this.setState({ shadowed: this.shadowRequests.size > 0 });
+    }
+
     render() {
         let defaultCity = 'sf';
         if (this.props.roles.find((v) => v === 'feature-city-nyc-force')) {
@@ -181,37 +185,31 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         return (
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
-                    <FilterContainer shadow="medium" borderless={true}>
-                        <FilterHeader>
-                            <FilterHeaderTitle>
-                                <CitySelector title={cityName} inverted={true}>
-                                    <CitySelector.Popper>
-                                        <XHorizontal>
-                                            <XButton query={{ field: 'city', value: 'sf' }} style={city !== 'sf' ? 'normal' : 'dark'} autoClose={true}>San Francisco</XButton>
-                                            <XButton query={{ field: 'city', value: 'nyc' }} style={city === 'sf' ? 'normal' : 'dark'} autoClose={true}>New York</XButton>
-                                        </XHorizontal>
-                                    </CitySelector.Popper>
-                                </CitySelector>
-                            </FilterHeaderTitle>
-                            <FilterComponent
-                                query={this.state.query && JSON.stringify(this.state.query)}
-                                city={cityName}
-                                county={countyName}
-                                state={stateName}
-                            />
-                        </FilterHeader>
-                        <FilterActions>
-                            <XHorizontal>
-                                {/* <XWithRole role={['super-admin', 'software-developer']}>
-                                    {this.state.query && <AddOpportunitiesButton variables={{ query: JSON.stringify(this.state.query) }} />}
-                                </XWithRole> */}
-                                <AppFilters onChange={this.handleUpdate} city={city} />
-                            </XHorizontal>
-                        </FilterActions>
-                    </FilterContainer>
-                    {/* </AppContentMap.Item> */}
                     <XMapContainer>
                         <XMapContainer2>
+                            <Shadow active={this.state.shadowed} />
+                            <MapFilters shadowHandler={this.requestShadow} />
+                            <CitySelector title={cityName} shadowHandler={this.requestShadow}>
+                                <CitySelector.Item
+                                    query={{ field: 'city', value: 'sf' }}
+                                    active={city === 'sf'}
+                                    autoClose={true}
+                                    label="San Francisco"
+                                />
+                                <CitySelector.Item
+                                    query={{ field: 'city', value: 'nyc' }}
+                                    active={city !== 'sf'}
+                                    autoClose={true}
+                                    label="New York"
+                                />
+                                <FilterComponent
+                                    query={this.state.query && JSON.stringify(this.state.query)}
+                                    city={cityName}
+                                    county={countyName}
+                                    state={stateName}
+                                />
+                            </CitySelector>
+
                             <ParcelMap
                                 mode={this.props.router.query.mode}
                                 selectedParcel={this.props.router.query.selectedParcel}

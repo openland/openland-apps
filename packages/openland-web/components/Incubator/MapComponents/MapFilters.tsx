@@ -5,6 +5,250 @@ import { XCard } from '../../X/XCard';
 import { XIcon } from '../../X/XIcon';
 import { Filter } from './PopperFilterButton';
 import XStyles from '../../X/XStyles';
+import { ChangeEvent } from 'react';
+import { withRouter, XWithRouter } from '../../withRouter';
+import { XSelect, XSelectProps } from '../../X/XSelect';
+
+let AllLandUse = [
+    'Residental',
+    'Mixed Use',
+    'Commercial',
+    'Industrial',
+    'Public',
+];
+
+let AllZones = ['P',
+    'RH-1(D)',
+    'RH-1',
+    'RH-1(S)',
+    'RH-2',
+    'RH-3',
+    'RM-1',
+    'RM-2',
+    'RM-3',
+    'RM-4',
+    'RC-3',
+    'RC-4',
+    'RTO',
+    'RTO-M',
+    'RH DTR',
+    'SB-DTR',
+    'TB DTR',
+    'NC-1',
+    'NC-2',
+    'NC-3',
+    'NC-S',
+    'NCD',
+    'SPD',
+    'RED',
+    'RED-MX',
+    'RSD',
+    'SLR',
+    'SLI',
+    'SALI',
+    'SSO',
+    'MUG',
+    'WMUG',
+    'MUO',
+    'WMUO',
+    'MUR',
+    'UMU',
+    'RCD',
+    'C-2',
+    'C-3-S',
+    'C-3-R',
+    'C-3-G',
+    'C-3-O',
+    'C-3-O(S)',
+    'MB-OS',
+    'MB-O',
+    'MB-RA',
+    'HP-RA',
+    'NCT-1',
+    'NCT-2',
+    'NCT-3',
+    'NCT',
+    'M-1',
+    'M-2',
+    'PDR-1-B',
+    'PDR-1-D',
+    'PDR-1-G',
+    'PDR-2',
+    'CRNC',
+    'CVR',
+    'CCB',
+    'PM-MU1',
+    'PM-MU2',
+    'PM-S',
+    'PM-CF',
+    'PM-OS',
+    'PM-R'
+];
+
+let AllNYCZOnes = [
+    'R5',
+    'R4',
+    'R6',
+    'R3-2',
+    'R3A',
+    'R6B',
+    'R3-1',
+    'R3X',
+    'R4-1',
+    'R2',
+    'R2A',
+    'R5B',
+    'R4A',
+    'R6A',
+    'R4B',
+    'R7-1',
+    'R1-2',
+    'M1-1',
+    'R7A',
+    'R7-2',
+    'R8B',
+    'R5D',
+    'R8',
+    'R5A',
+    'R7B',
+    'PARK',
+    'M1-2',
+    'M3-1',
+    'C8-1',
+    'C4-3',
+    'C4-2',
+    'M2-1',
+    'R1-1',
+    'R8A',
+    'R1-2A',
+    'M1-4',
+    'C6-2A',
+    'M1-2/R6A',
+    'C4-4A',
+    'R10',
+    'C8-2',
+    'C1-9',
+    'M1-2D',
+    'R2X',
+    'C4-4',
+    'C4-2A',
+    'R10A',
+    'R7D',
+    'C6-2',
+    'C6-4',
+    'C4-3A',
+    'M1-6',
+    'C3A',
+    'C5-3',
+    'C6-1',
+    'M1-5B',
+    'C8-3',
+    'C1-6',
+    'R7X',
+    'C4-5X',
+    'C3',
+    'C2-8',
+    'C5-2',
+    'C6-1G',
+    'C1-6A',
+    'C4-1',
+    'M1-5',
+    'M1-3',
+    'M1-1D',
+    'C4-4L',
+    'C1-8X',
+    'R9A',
+    'C6-3',
+    'C5-1',
+    'M1-4/R6B',
+    'M1-2/R6B',
+    'C6-3A',
+    'C6-4.5',
+    'C6-4A',
+    'M1-4D',
+    'C6-6',
+    'C5-5',
+    'C5-2.5',
+    'M1-5A',
+    'M1-4/R7A',
+    'M1-2/R6',
+    'C4-4D',
+    'R9',
+    'C6-2G',
+    'C4-5D',
+    'C4-6A',
+    'C1-8A',
+    'M1-2/R5B',
+    'C2-6',
+    'C6-4M',
+    'M1-1/R7-2',
+    'PARKNYS',
+    'M1-2/R5D',
+    'M3-2',
+    'R8X',
+    'M1-5/R7-3',
+    'C4-7',
+    'M1-5M',
+    'C2-7A',
+    'C4-6',
+    'C1-9A',
+    'C2-8A',
+    'C4-5',
+    'C8-4',
+    'C1-7A',
+    'C1-7',
+    'C6-3X',
+    'C6-4X',
+    'C6-5',
+    'C5-P',
+    'M1-5/R9',
+    'M2-4',
+    'M1-6/R10',
+    'M2-3',
+    'C6-2M',
+    'C7',
+    'C6-7T',
+    'R9X',
+    'C5-2A',
+    'M1-4/R6A',
+    'C4-5A',
+    'C6-5.5',
+    'M1-1/R5',
+    'C6-7',
+    'M1-4/R8A',
+    'M1-6D',
+    'PARKUS',
+    'C2-6A',
+    'M1-3/R7X',
+    'C5-4',
+    'BPC',
+    'C6-9',
+    'C6-6.5',
+    'M1-1/R7D',
+    'M1-5/R7-2',
+    'M1-5/R7X',
+    'M1-4/R7X',
+    'M1-5/R8A',
+    'C2-7',
+    'R7-3',
+    'ZR 11-151',
+    'R10H',
+    'C6-3D',
+    'M1-6/R9',
+    'C5-1A',
+    'M1-2/R8A',
+    'C1-8',
+    'M1-3/R8',
+    'C6-1A',
+    'C4-2F',
+    'M1-5/R9-1',
+    'M1-2/R8',
+    'M1-5/R10',
+    'M2-2',
+    'M1-4/R7-2',
+    'M1-2/R7A',
+    'ZNA'
+];
 
 const FiltersContent = Glamorous.div({
     maxHeight: 'calc(100vh - 150px)',
@@ -359,25 +603,112 @@ const InlineInputWrapper = Glamorous.div({
     }
 });
 
-const InlineApplyInput = (props: { placeholder?: string }) => (
-    <InlineInputWrapper>
-        <div>
-            <input type="text" placeholder={props.placeholder} />
-        </div>
-        <XButton style="dark">Apply</XButton>
-    </InlineInputWrapper>
-);
+const FilterCellDiv = Glamorous.div({
+    width: '100%',
+    marginBottom: 32
+});
 
-const OwnerNameFiltersContent = () => (
+const FilterCellTitle = Glamorous.div({
+    marginBottom: 8,
+    ...XStyles.text.h500,
+    textAlign: 'left',
+    color: '#182642',
+});
+
+const FilterSelector = Glamorous(XSelect)({
+    width: 350
+});
+
+function FilterCell(props: { title?: string, children: any }) {
+    return (
+        <FilterCellDiv>
+            {props.title && <FilterCellTitle>{props.title}</FilterCellTitle>}
+            {props.children}
+        </FilterCellDiv>
+    );
+}
+
+// const RoutedSelector = (p: any) => (withRouter((props) => {
+//     return(<Selector {...props, ...p}/>);
+// });
+
+class Selector extends React.Component<XSelectProps & XWithRouter & { searchKey: string,  }> {
+    value: string | undefined = undefined;
+
+    apply = () => {
+        this.props.router.pushQuery(this.props.searchKey, this.value);
+        Filter.closeAll();
+    }
+    
+    render() {
+        let { searchKey, ...other } = this.props;
+        let val = this.props.router.query!![searchKey] ? JSON.parse(this.props.router.query!![searchKey]) : undefined;
+
+        return (
+            <InlineInputWrapper>
+                <FilterSelector {...other}
+                    onChange={(v) => {
+                        console.warn(v);
+                        if (v) {
+                            if (Array.isArray(v)) {
+                                if (v.length > 0) {
+                                    this.value = JSON.stringify(v.map((r: any) => r.value));
+                                }
+                            } else {
+                                this.value = JSON.stringify((v as any).value);
+                            }
+                        }
+                    }}
+                    value={val}
+                />
+                <XButton style="dark" onClick={this.apply} >Apply</XButton>
+            </InlineInputWrapper>);
+    }
+
+}
+
+class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?: string } & XWithRouter, { value: string }> {
+    value: string | undefined = undefined;
+
+    constructor(props: { searchKey: string, placeholder?: string } & XWithRouter) {
+        super(props);
+
+        this.value = this.props.router.query[this.props.searchKey];
+        this.state = { value: this.props.router.query[this.props.searchKey] === undefined ? '' : this.props.router.query[this.props.searchKey] };
+    }
+
+    handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        this.setState({ value: e.target.value });
+        this.value = e.target.value === '' ? undefined : e.target.value;
+    }
+
+    apply = () => {
+        this.props.router.pushQuery(this.props.searchKey, this.value);
+        Filter.closeAll();
+    }
+
+    render() {
+        return (
+            <InlineInputWrapper>
+                <div>
+                    <input type="text" onChange={this.handleChange} value={this.state.value} />
+                </div>
+                <XButton style="dark" onClick={this.apply} >Apply</XButton>
+            </InlineInputWrapper>);
+    }
+
+}
+
+const OwnerNameFiltersContent = withRouter((props) => (
     <FiltersContent>
-        <InlineApplyInput placeholder="Owner name contains" />
+        <InlineApplyInput placeholder="Owner name contains" searchKey="ownerName" router={props.router} />
         <FIlterDescriptionWrapper>
             <FilterDescription>
                 The land with the objects used under the commercial <br />institution (Banks, sales outlets and so on)
             </FilterDescription>
         </FIlterDescriptionWrapper>
     </FiltersContent>
-);
+));
 
 const AreaFiltersContent = () => (
     <FiltersContent>
@@ -453,7 +784,14 @@ export class MapFilters extends React.Component<{ shadowHandler: Function }, { a
                                 <XButton>Zoning</XButton>
                             </Filter.Target>
                             <Filter.Popper>
-                                <XButton autoClose={true}>qwe</XButton>
+                                <FilterCell title="Zoning">
+                                    <RoutedSelector
+                                        fieldName="filterZoning"
+                                        options={AllZones.map((v) => ({ value: v, label: v }))}
+                                        placeholder="Zoning Code"
+                                        multi={true}
+                                    />
+                                </FilterCell>
                             </Filter.Popper>
                         </Filter>
                     </FilterSwitcher>
