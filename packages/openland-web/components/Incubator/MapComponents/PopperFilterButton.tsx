@@ -4,7 +4,6 @@ import Glamorous from 'glamorous';
 import ClickOutside from '../ClickOutside';
 import { canUseDOM } from '../../../utils/environment';
 import { Manager, Target, Popper } from '../XPopper';
-import { XCloser } from '../../X/XCloser';
 
 const PopperComponent = Glamorous.div({
     '& .popper[data-placement^="bottom"]': {
@@ -51,12 +50,13 @@ interface ConfirmPopoverProps {
     onConfirm?: Function;
     title?: string;
     inverted?: boolean;
-    handler?: Function;
+    handler: Function;
 }
 
 export class Filter extends React.Component<ConfirmPopoverProps, { class?: string, popper?: boolean }> {
     static Popper = PopperElement;
     static Target = TargetElement;
+    static active = new Set();
 
     constructor(props: ConfirmPopoverProps) {
         super(props);
@@ -74,7 +74,7 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
             this.setState({
                 class: 'hide',
             });
-            if (this.props.handler !== undefined) { this.props.handler(false); }
+            if (this.props.handler !== undefined) { this.props.handler(false, this); }
             setTimeout(
                 () => {
                     this.setState({
@@ -88,15 +88,21 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
                 class: 'show',
                 popper: true
             });
-            if (this.props.handler !== undefined) { this.props.handler(true); }
+            if (this.props.handler !== undefined) { this.props.handler(true, this); }
         }
+        for (let filter of Filter.active) {
+            if (filter !== this) {
+                filter.handleClose();
+            }
+        }
+        Filter.active.add(this);
     }
 
     handleClose = () => {
         this.setState({
             class: 'hide',
         });
-        if (this.props.handler !== undefined) { this.props.handler(false); }
+        if (this.props.handler !== undefined) { this.props.handler(false, this); }
         setTimeout(
             () => {
                 this.setState({
@@ -105,6 +111,7 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
                 });
             },
             200);
+        Filter.active.delete(this);
     }
 
     render() {
@@ -126,25 +133,25 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
 
         let popoverComponent = (
             <ClickOutside onClickOutside={this.handleClose}>
-                <PopperComponent>
-                    <Popper placement="top" class={this.state.class} autoWidth={true} updated={false}>
-                        {popper}
-                    </Popper>
-                </PopperComponent>
+                <div style={{ display: 'flex', alignSelf: 'flex-start' }}>
+                    <PopperComponent>
+                        <Popper placement="top" class={this.state.class} autoWidth={true} updated={false}>
+                            {popper}
+                        </Popper>
+                    </PopperComponent>
+                </div>
             </ClickOutside>
         );
 
         return (
-            <XCloser handler={this.handleClose}>
-                <Manager>
-                    <ConfirmWrapper>
-                        <Target>
-                            {target}
-                        </Target>
-                        {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popoverComponent, document.body)}
-                    </ConfirmWrapper>
-                </Manager>
-            </XCloser>
+            <Manager>
+                <ConfirmWrapper>
+                    <Target>
+                        {target}
+                    </Target>
+                    {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popoverComponent, document.body)}
+                </ConfirmWrapper>
+            </Manager>
         );
     }
 }

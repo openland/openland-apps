@@ -411,74 +411,85 @@ const FilterSwitcher = Glamorous.div({
     }
 });
 
-interface MapFiltersProps {
-    shadowHandler: Function;
-    active?: boolean;
-}
+export class MapFilters extends React.Component<{ shadowHandler: Function }, { active: boolean }> {
+    shadowRequests = new Set();
 
-export class MapFilters extends React.Component<MapFiltersProps, { active: boolean }> {
-    constructor(props: MapFiltersProps) {
+    constructor(props: { shadowHandler: Function }) {
         super(props);
 
         this.state = {
-            active: true
+            active: false,
         };
+    }
+
+    shadowHandler = (add: boolean, caller: any) => {
+        this.props.shadowHandler(add, caller);
+        if (add) {
+            this.shadowRequests.add(caller);
+        } else {
+            this.shadowRequests.delete(caller);
+        }
+
+        this.setState({ active: this.shadowRequests.size > 0 });
     }
 
     render() {
         return (
-            <MapFilterWrapper active={this.state.active}>
-                <FilterSwitcher>
-                    <Filter handler={this.props.shadowHandler}>
-                        <Filter.Target>
-                            <XButton style="dark">Owner name</XButton>
-                        </Filter.Target>
-                        <Filter.Popper>
-                            <OwnerNameFiltersContent />
-                        </Filter.Popper>
-                    </Filter>
-                </FilterSwitcher>
-                <FilterSwitcher>
-                    <Filter handler={this.props.shadowHandler}>
-                        <Filter.Target>
-                            <XButton>Zoning</XButton>
-                        </Filter.Target>
-                        <Filter.Popper>
-                            <XButton autoClose={true}>qwe</XButton>
-                        </Filter.Popper>
-                    </Filter>
-                </FilterSwitcher>
-                <FilterSwitcher>
-                    <Filter handler={this.props.shadowHandler}>
-                        <Filter.Target>
-                            <XButton>Commercial</XButton>
-                        </Filter.Target>
-                        <Filter.Popper>
-                            <XButton autoClose={true}>qwe</XButton>
-                        </Filter.Popper>
-                    </Filter>
-                </FilterSwitcher>
-                <FilterSwitcher>
-                    <Filter handler={this.props.shadowHandler}>
-                        <Filter.Target>
-                            <XButton style="dark">Area</XButton>
-                        </Filter.Target>
-                        <Filter.Popper>
-                            <AreaFiltersContent />
-                        </Filter.Popper>
-                    </Filter>
-                </FilterSwitcher>
-                <FilterSwitcher>
-                    <Filter handler={this.props.shadowHandler}>
-                        <Filter.Target>
-                            <XButton style="dark">Other filters</XButton>
-                        </Filter.Target>
-                        <Filter.Popper>
-                            <OtherFiltersContent />
-                        </Filter.Popper>
-                    </Filter>
-                </FilterSwitcher>
-            </MapFilterWrapper>
+            <>
+                <MapFilterWrapper active={this.state.active}>
+                    <FilterSwitcher>
+                        <Filter handler={this.shadowHandler}>
+                            <Filter.Target>
+                                <XButton style="dark">Owner name</XButton>
+                            </Filter.Target>
+                            <Filter.Popper>
+                                <OwnerNameFiltersContent />
+                            </Filter.Popper>
+                        </Filter>
+                    </FilterSwitcher>
+                    <FilterSwitcher>
+                        <Filter handler={this.shadowHandler}>
+                            <Filter.Target>
+                                <XButton>Zoning</XButton>
+                            </Filter.Target>
+                            <Filter.Popper>
+                                <XButton autoClose={true}>qwe</XButton>
+                            </Filter.Popper>
+                        </Filter>
+                    </FilterSwitcher>
+                    <FilterSwitcher>
+                        <Filter handler={this.shadowHandler}>
+                            <Filter.Target>
+                                <XButton>Commercial</XButton>
+                            </Filter.Target>
+                            <Filter.Popper>
+                                <XButton autoClose={true}>qwe</XButton>
+                            </Filter.Popper>
+                        </Filter>
+                    </FilterSwitcher>
+                    <FilterSwitcher>
+                        <Filter handler={this.shadowHandler}>
+                            <Filter.Target>
+                                <XButton style="dark">Area</XButton>
+                            </Filter.Target>
+                            <Filter.Popper>
+                                <AreaFiltersContent />
+                            </Filter.Popper>
+                        </Filter>
+                    </FilterSwitcher>
+                    <FilterSwitcher>
+                        <Filter handler={this.shadowHandler}>
+                            <Filter.Target>
+                                <XButton style="dark">Other filters</XButton>
+                            </Filter.Target>
+                            <Filter.Popper>
+                                <OtherFiltersContent />
+                            </Filter.Popper>
+                        </Filter>
+                    </FilterSwitcher>
+
+                </MapFilterWrapper>
+            </>
         );
     }
 }

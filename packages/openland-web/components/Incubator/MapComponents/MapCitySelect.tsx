@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XCloser } from '../../X/XCloser';
 import { XCard } from '../../X/XCard';
 import { XLink, XLinkProps } from '../../X/XLink';
 import { XIcon } from '../../X/XIcon';
@@ -91,7 +90,7 @@ export class CitySelectorItem extends React.Component<CitySelectorItemProps> {
     }
 }
 
-const CityTitle = Glamorous.div<{active: boolean}>((props) => ({
+const CityTitle = Glamorous.div<{ active: boolean }>((props) => ({
     fontSize: 18,
     fontWeight: 500,
     lineHeight: 'normal',
@@ -124,34 +123,25 @@ interface ConfirmPopoverProps {
     shadowHandler: Function;
 }
 
-export class CitySelector extends React.Component<ConfirmPopoverProps, { open: boolean }> {
+export class CitySelector extends React.Component<ConfirmPopoverProps, { active: boolean }> {
     static Item = CitySelectorItem;
 
     constructor(props: any) {
         super(props);
 
         this.state = {
-            open: false
+            active: false
         };
     }
 
-    handler() {
-        let { open } = this.state;
-        let { shadowHandler } = this.props;
-
-        open === true ? shadowHandler(false) : shadowHandler(true);
-
-        this.setState({
-            open: !open
-        });
+    activate = () => {
+        this.setState({ active: true });
+        this.props.shadowHandler(true, this);
     }
 
-    handleClose() {
-        this.props.shadowHandler(false);
-
-        this.setState({
-            open: false
-        });
+    disable = () => {
+        this.props.shadowHandler(false, this);
+        this.setState({ active: false });
     }
 
     render() {
@@ -168,22 +158,22 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { open: b
         }
 
         return (
-            <XCloser handler={() => this.handler()}>
-                <MapFilterWrapper active={this.state.open}>
-                    <ClickOutside onClickOutside={() => this.handleClose()}>
-                        <CityTitle onClick={() => this.handler()} active={this.state.open}>
+            <>
+                <MapFilterWrapper active={this.state.active}>
+                    <ClickOutside onClickOutside={this.disable}>
+                        <CityTitle onClick={this.activate} active={this.state.active}>
                             <div className="title">
                                 {this.props.title}
-                                <XIcon icon="keyboard_arrow_right"/>
+                                <XIcon icon="keyboard_arrow_right" />
                             </div>
                             {children}
                         </CityTitle>
-                        <CitySelectorItemsWrapper open={this.state.open}>
+                        <CitySelectorItemsWrapper open={this.state.active}>
                             {items}
                         </CitySelectorItemsWrapper>
                     </ClickOutside>
                 </MapFilterWrapper>
-            </XCloser>
+            </>
         );
     }
 }
