@@ -75,7 +75,8 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     opacity: props.active ? 1 : 0,
     transition: 'all 220ms',
     backgroundColor: 'rgba(0, 0, 0, 0.41)',
-    zIndex: 2
+    zIndex: 2,
+    pointerEvents: 'none'
 }));
 
 const FilterHeaderSubtitle = Glamorous.div({
@@ -111,6 +112,8 @@ const DealsSource = withDealsMap((props) => {
 class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentProps, { shadowed: boolean, query?: any }> {
     knownCameraLocation?: XMapCameraLocation;
 
+    shadowRequests = new Set();
+
     constructor(props: XWithRouter & UserInfoComponentProps) {
         super(props);
 
@@ -131,8 +134,6 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
                 };
             }
         }
-
-        this.shadowHandler = this.shadowHandler.bind(this);
     }
 
     handleUpdate = (e?: any) => {
@@ -154,10 +155,14 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
         this.knownCameraLocation = e;
     }
 
-    shadowHandler(e: boolean) {
-        this.setState({
-            shadowed: e
-        });
+    requestShadow = (add: boolean, caller: any) => {
+        if (add) {
+            this.shadowRequests.add(caller);
+        } else {
+            this.shadowRequests.delete(caller);
+        }
+
+        this.setState({ shadowed: this.shadowRequests.size > 0 });
     }
 
     render() {
@@ -178,21 +183,19 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
             <XMapContainer>
                 <XMapContainer2>
                     <Shadow active={this.state.shadowed} />
-                    <MapFilters shadowHandler={(e: boolean) => this.shadowHandler(e)} />
-                    <CitySelector title={cityName} shadowHandler={(e: boolean) => this.shadowHandler(e)}>
+                    <MapFilters shadowHandler={this.requestShadow}/>
+                    <CitySelector title={cityName} shadowHandler={this.requestShadow}>
                         <CitySelector.Item
                             query={{ field: 'city', value: 'sf' }}
                             active={city === 'sf'}
                             autoClose={true}
                             label="San Francisco"
-                            onClick={() => this.shadowHandler(false)}
                         />
                         <CitySelector.Item
                             query={{ field: 'city', value: 'nyc' }}
                             active={city !== 'sf'}
                             autoClose={true}
                             label="New York"
-                            onClick={() => this.shadowHandler(false)}
                         />
                         <FilterComponent
                             query={this.state.query && JSON.stringify(this.state.query)}
