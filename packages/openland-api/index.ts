@@ -13,6 +13,7 @@ import * as Deals from './queries/Deals';
 import * as User from './queries/User';
 import * as FeatureFlags from './queries/FeatureFlag';
 import * as Sourcing from './queries/Sourcing';
+import * as Debug from './queries/Debug';
 
 export default ATypes;
 export let Queries = {
@@ -29,5 +30,6 @@ export let Queries = {
     Deals,
     User,
     FeatureFlags,
-    Sourcing
+    Sourcing,
+    Debug
 };

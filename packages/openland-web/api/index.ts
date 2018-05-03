@@ -239,3 +239,5 @@ export const OwnersSelect = graphqlSelect<Types.OwnersQueryQueryVariables>(Queri
 // export const RejectButton = withRejectOpportunity((props)=>{
 //     return (<XButton></XButton>);
 // });
+
+export const withDebugReaders = graphqlRouted<Types.DebugReadedStatesQuery>(Queries.Debug.DebugReadedStatesQuery);

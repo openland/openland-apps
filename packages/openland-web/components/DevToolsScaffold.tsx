@@ -14,6 +14,7 @@ export function DevToolsScaffold(props: { title: string, children?: any }) {
                         <Sidebar.Item path="/super/debug">Debugging</Sidebar.Item>
                         <Sidebar.Item path="/super/features">Features</Sidebar.Item>
                         <Sidebar.Item path="/super/admins">Super Admins</Sidebar.Item>
+                        <Sidebar.Item path="/super/readers">Event Readers</Sidebar.Item>
                     </Sidebar>
                 </Scaffold.Menu>
                 <Scaffold.Content>

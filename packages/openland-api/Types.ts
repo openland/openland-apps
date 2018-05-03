@@ -555,6 +555,15 @@ export interface RemoveDealMutation {
   dealRemove: string,
 };
 
+export interface DebugReadedStatesQuery {
+  debugReaderStates:  Array< {
+    __typename: "DebugReaderState",
+    id: string,
+    title: string,
+    remaining: number,
+  } >,
+};
+
 export interface FeatureFlagsQuery {
   featureFlags:  Array< {
     __typename: "FeatureFlag",

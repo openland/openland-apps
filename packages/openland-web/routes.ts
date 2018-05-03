@@ -118,6 +118,8 @@ routes.add('/super/debug', '/dev/debug');
 routes.add('/super/debug/', '/dev/debug');
 routes.add('/super/features', '/dev/features');
 routes.add('/super/features/', '/dev/features');
+routes.add('/super/readers', '/dev/readers');
+routes.add('/super/readers/', '/dev/readers');
 
 routes.add('/super', '/dev/orgs');
 routes.add('/super/', '/dev/orgs');
