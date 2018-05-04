@@ -14,6 +14,8 @@ import { XCard } from './X/XCard';
 import { XArea } from './X/XArea';
 import { XWithRole } from './X/XWithRole';
 import { XTooltip } from './Incubator/XTooltip';
+import { TextAppBar } from 'openland-text/TextAppBar';
+import { TextGlobal } from 'openland-text/TextGlobal';
 
 //
 // Root
@@ -148,7 +150,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
             </XPopover.Target>
             <XPopover.Content>
                 <XMenu>
-                    <XMenu.Item path="/auth/logout">Sign Out</XMenu.Item>
+                    <XMenu.Item path="/auth/logout">{TextGlobal.signOut}</XMenu.Item>
                 </XMenu>
             </XPopover.Content>
         </XPopover>
@@ -462,7 +464,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                <strong>Explore</strong>
+                                <strong>{TextAppBar.items.explore}</strong>
                             </XTooltip.Content>
                         </XTooltip>
                         <XTooltip placement="right">
@@ -472,7 +474,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                <strong>Prospecting</strong>
+                                <strong>{TextAppBar.items.prospecting}</strong>
                             </XTooltip.Content>
                         </XTooltip>
                         <XTooltip placement="right">
@@ -482,7 +484,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                <strong>Deals</strong>
+                                <strong>{TextAppBar.items.deals}</strong>
                             </XTooltip.Content>
                         </XTooltip>
                         <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
@@ -496,7 +498,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                     </NavigatorItem>
                                 </XTooltip.Target>
                                 <XTooltip.Content>
-                                    <strong>Reports</strong>
+                                    <strong>{TextAppBar.items.reports}</strong>
                                 </XTooltip.Content>
                             </XTooltip>
                         </XWithRole>
@@ -507,7 +509,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                <strong>Favorites</strong>
+                                <strong>{TextAppBar.items.favorites}</strong>
                             </XTooltip.Content>
                         </XTooltip>
                         <BottomNavigation>
@@ -519,7 +521,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                         </NavigatorItem>
                                     </XTooltip.Target>
                                     <XTooltip.Content>
-                                        <strong>DevTools</strong>
+                                        <strong>{TextAppBar.items.devTools}</strong>
                                     </XTooltip.Content>
                                 </XTooltip>
                                 <XTooltip placement="right" centeredContent={true}>
@@ -529,7 +531,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                         </NavigatorItem>
                                     </XTooltip.Target>
                                     <XTooltip.Content>
-                                        <strong>X Framework</strong>
+                                        <strong>{TextAppBar.items.xFramework}</strong>
                                     </XTooltip.Content>
                                 </XTooltip>
                             </XWithRole>

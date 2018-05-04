@@ -23,6 +23,8 @@ import { Scaffold } from '../../../components/Scaffold';
 import XStyles from '../../../components/X/XStyles';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { XMapCameraLocation } from '../../../components/X/XMap';
+import { TextPageExplore } from 'openland-text/TextPageExplore';
+import { TextMap } from 'openland-text/TextMap';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -241,9 +243,9 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                             </ParcelMap>
                             <MapSwitcher>
                                 <XSwitcher fieldStyle={true}>
-                                    <XSwitcher.Item query={{ field: 'mode' }}>Map</XSwitcher.Item>
-                                    <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
-                                    {city === 'sf' && <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>Zoning</XSwitcher.Item>}
+                                    <XSwitcher.Item query={{ field: 'mode' }}>{TextMap.map}</XSwitcher.Item>
+                                    <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>{TextMap.satellite}</XSwitcher.Item>
+                                    {city === 'sf' && <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>{TextMap.zoning}</XSwitcher.Item>}
                                 </XSwitcher>
                             </MapSwitcher>
                         </XMapContainer2>
@@ -258,7 +260,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 export default withApp('Explore', 'viewer', withRouter(withUserInfo((props) => {
     return (
         <>
-            <XHead title={['Explore']} />
+            <XHead title={[TextPageExplore.title]} />
             <ParcelCollection {...props} />
         </>
     );

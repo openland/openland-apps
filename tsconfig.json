@@ -27,7 +27,12 @@
     "outDir": "lib/",
     "baseUrl": "packages",
     "paths": {
-      "openland-api": ["openland-api"]
+      "openland-api": [
+        "openland-api"
+      ],
+      "openland-text": [
+        "openland-text"
+      ]
     },
     "importHelpers": true
   },
@@ -47,6 +52,7 @@
   ],
   "include": [
     "./packages/openland-web",
-    "./packages/openland-api"
+    "./packages/openland-api",
+    "./packages/openland-text"
   ]
 }
