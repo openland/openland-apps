@@ -16,6 +16,7 @@ import { XWithRole } from './X/XWithRole';
 import { XTooltip } from './Incubator/XTooltip';
 import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';
+import { TextGlobalSearch } from 'openland-text/TextGlobalSearch';
 
 //
 // Root
@@ -303,18 +304,18 @@ let SearchResults = withSearch((props) => {
                     {props.data.search.parcels.edges.map((v) => (
                         <XCard.ListItem key={v.node.id} path={'/parcels/' + v.node.id}>
                             <ResultTilte>
-                                <ResultTilteMain>Parcel #<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} /></ResultTilteMain>
+                                <ResultTilteMain>{TextGlobalSearch.parcelIdPrefix}<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} /></ResultTilteMain>
                                 <ResultTilteHint>{v.node.extrasArea && <XArea area={v.node.extrasArea} />}</ResultTilteHint>
                             </ResultTilte>
                             {!v.highlight.find((k) => k.key === 'address') && (
                                 <ResultBody>
-                                    <ResultBodyMain>Neighborhood</ResultBodyMain>
+                                    <ResultBodyMain>{TextGlobalSearch.neighborhood}</ResultBodyMain>
                                     {v.node.extrasNeighborhood}
                                 </ResultBody>
                             )}
                             {v.highlight.find((k) => k.key === 'address') && (
                                 <ResultBody>
-                                    <ResultBodyMain>Address</ResultBodyMain>
+                                    <ResultBodyMain>{TextGlobalSearch.address}</ResultBodyMain>
                                     <Highlighted field={'address'} highlight={v.highlight} />
                                 </ResultBody>
                             )}
@@ -439,7 +440,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                             <SearchContainer onClick={this.handleSearch} />
                             <SearchContent>
                                 <SearchInput
-                                    placeholder="Search"
+                                    placeholder={TextGlobalSearch.placeholder}
                                     onChange={this.handleSearchChange}
                                     innerRef={this.handleSearchRef}
                                     value={this.state.searchText}
