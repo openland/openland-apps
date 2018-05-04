@@ -17,6 +17,7 @@ export interface XRouter {
 
     push: (path: string) => void;
     pushQuery: (field: string, value?: string) => void;
+    pushQueryParams: (params: {}) => void;
     replace: (path: string) => void;
     replaceQuery: (field: string, value?: string) => void;
 }
@@ -75,6 +76,7 @@ export class XRouterProvider extends React.Component {
 
             push: this.push,
             pushQuery: this.pushQuery,
+            pushQueryParams: this.pushQueryParams,
             replace: this.replace,
             replaceQuery: this.replaceQuery
         };
@@ -93,6 +95,12 @@ export class XRouterProvider extends React.Component {
     pushQuery = (field: string, value?: string) => {
         Router.pushRoute(this.xRouterState.path + '?' + qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value })));
     }
+
+    pushQueryParams = (params?: {}) => {
+        Router.pushRoute(this.xRouterState.path + '?' + qs.stringify(Object.assign({}, this.xRouterState.query, params)));
+
+    }
+
     replace = (path: string) => {
         Router.replaceRoute(path)
             .then(this.scrollToTop);

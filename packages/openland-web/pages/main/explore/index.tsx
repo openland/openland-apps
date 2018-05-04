@@ -8,10 +8,6 @@ import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XHead } from '../../../components/X/XHead';
 import { XWithRouter, withRouter } from '../../../components/withRouter';
 import { XSwitcher } from '../../../components/X/XSwitcher';
-import { XCard } from '../../../components/X/XCard';
-import { AppFilters } from '../../../components/App/AppFilters';
-import { XButton } from '../../../components/X/XButton';
-import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { trackEvent } from '../../../utils/analytics';
@@ -23,7 +19,7 @@ import { ParcelMap } from '../../../components/ParcelMap';
 import { XMapCameraLocation } from '../../../components/X/XMap';
 import { TextPageExplore } from 'openland-text/TextPageExplore';
 import { TextMap } from 'openland-text/TextMap';
-import { MapFilters } from '../../../components/Incubator/MapComponents/MapFilters';
+import { RoutedMapFilters } from '../../../components/Incubator/MapComponents/MapFilters';
 import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
 
 const XMapContainer = Glamorous.div({
@@ -118,7 +114,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
 }));
 
 // const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Add to prospecting</XButtonMutation>);
-class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { query?: any, shadowed: boolean }> {
+class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { shadowed: boolean }> {
 
     knownCameraLocation?: XMapCameraLocation;
     
@@ -133,19 +129,90 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
             if (k != null) {
                 this.knownCameraLocation = JSON.parse(k);
             }
-            let q = sessionStorage.getItem('__explore_query');
-            if (q != null) {
-                this.state = { query: JSON.parse(q), shadowed: false };
-            }
         }
     }
 
-    handleUpdate = (e?: any) => {
-        this.setState({ query: e });
-        if (e) {
-            sessionStorage.setItem('__explore_query', JSON.stringify(e));
+    buildquery = () => {
+        let clauses: any[] = [];
+        if (this.props.router.query!!.filterZoning) {
+            clauses.push({ 'zone': JSON.parse(this.props.router.query!!.filterZoning) });
+        }
+        if (this.props.router.query!!.landUse) {
+            clauses.push({ 'landUse': JSON.parse(this.props.router.query!!.landUse) });
+        }
+        if (this.props.router.query!!.filterStories) {
+            clauses.push({ 'stories': JSON.parse(this.props.router.query!!.filterStories) });
+        }
+        if (this.props.router.query!!.ownerName) {
+            clauses.push({ 'ownerName': this.props.router.query.ownerName });
+        }
+        // ownerName
+        if (this.props.router.query!!.filterCurrentUse) {
+            clauses.push({ 'currentUse': JSON.parse(this.props.router.query!!.filterCurrentUse) });
+        }
+        if (this.props.router.query!!.isOkForTower) {
+            clauses.push({ 'isOkForTower': JSON.parse(this.props.router.query!!.isOkForTower) });
+        }
+        if (this.props.router.query!!.publicOwner) {
+            clauses.push({ 'ownerPublic': JSON.parse(this.props.router.query!!.publicOwner) });
+        }
+        let isVacantSet: boolean | undefined;
+        if (this.props.router.query!!.isVacant) {
+            if (JSON.parse(this.props.router.query!!.isVacant) === 'true') {
+                isVacantSet = true;
+            } else {
+                isVacantSet = false;
+            }
+        }
+        if (this.props.router.query!!.compatible) {
+            isVacantSet = true;
+            clauses.push({ 'compatibleBuildings': JSON.parse(this.props.router.query!!.compatible) });
+        }
+        if (isVacantSet !== undefined) {
+            clauses.push({ 'isVacant': isVacantSet.toString() });
+        }
+
+        if (this.props.router.query!!.filterOnSale) {
+            clauses.push({ 'onSale': JSON.parse(this.props.router.query!!.filterOnSale) });
+        }
+        if (this.props.router.query!!.filterTransit) {
+            clauses.push({
+                'transitDistance': {
+                    lt: parseInt(JSON.parse(this.props.router.query!!.filterTransit), 10)
+                }
+            });
+        }
+        if (this.props.router.query!!.customQuery) {
+            let res = JSON.parse(this.props.router.query!!.customQuery) as string[];
+            let q: any[] = [];
+            for (let r of res) {
+                q.push({
+                    [r]: true
+                });
+            }
+            clauses.push({
+                '$or': q
+            });
+        }
+        if (this.props.router.query!!.queryUrbyn2) {
+            clauses.push({
+                'customerUrbynQuery1': JSON.parse(this.props.router.query!!.queryUrbyn2)
+            });
+        }
+        if (this.props.router.query!!.area) {
+            let area = JSON.parse(this.props.router.query!!.area);
+            area.gte = (area.gte * 0.092903);
+            area.lte = (area.lte * 0.092903);
+            clauses.push({
+                'area': area
+            });
+        }
+        if (clauses.length > 0) {
+            let query = { '$and': clauses };
+            return query;
+
         } else {
-            sessionStorage.removeItem('__explore_query');
+            return undefined;
         }
     }
 
@@ -182,13 +249,15 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
             ? { latitude: 37.75444398077139, longitude: -122.43963811583545, zoom: 12 }
             : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
 
+        let query = this.buildquery();
+
         return (
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <XMapContainer>
                         <XMapContainer2>
                             <Shadow active={this.state.shadowed} />
-                            <MapFilters shadowHandler={this.requestShadow} />
+                            <RoutedMapFilters shadowHandler={this.requestShadow} city={city}/>
                             <CitySelector title={cityName} shadowHandler={this.requestShadow}>
                                 <CitySelector.Item
                                     query={{ field: 'city', value: 'sf' }}
@@ -203,7 +272,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                     label="New York"
                                 />
                                 <FilterComponent
-                                    query={this.state.query && JSON.stringify(this.state.query)}
+                                    query={query && JSON.stringify(query)}
                                     city={cityName}
                                     county={countyName}
                                     state={stateName}
@@ -220,9 +289,9 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                             >
                                 <ParcelPointSource
                                     layer="parcels-found"
-                                    query={this.state.query}
+                                    query={query}
                                     minZoom={12}
-                                    skip={this.state.query === undefined}
+                                    skip={query === undefined}
                                 />
                                 <DealsSource />
 

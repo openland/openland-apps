@@ -2,12 +2,14 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XButton } from '../../X/XButton';
 import { XCard } from '../../X/XCard';
-import { XIcon } from '../../X/XIcon';
+// import { XIcon } from '../../X/XIcon';
 import { Filter } from './PopperFilterButton';
 import XStyles from '../../X/XStyles';
 import { ChangeEvent } from 'react';
 import { withRouter, XWithRouter } from '../../withRouter';
 import { XSelect, XSelectProps } from '../../X/XSelect';
+import { XHorizontal } from '../../X/XHorizontal';
+import { XVertical } from '../../X/XVertical';
 
 let AllLandUse = [
     'Residental',
@@ -255,10 +257,10 @@ const FiltersContent = Glamorous.div({
     overflowY: 'scroll'
 });
 
-const FilterCategoryTitle = Glamorous.div({
-    ...XStyles.text.m500,
-    marginBottom: 20
-});
+// const FilterCategoryTitle = Glamorous.div({
+//     ...XStyles.text.m500,
+//     marginBottom: 20
+// });
 
 const FIlterDescriptionWrapper = Glamorous.div({
     display: 'flex',
@@ -275,121 +277,121 @@ const FilterDescription = Glamorous.div({
     color: '#1f3449'
 });
 
-const FilterInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    '> input': {
-        display: 'none'
-    },
-    '> label': {
-        ...XStyles.text.h400,
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        color: props.active ? '#4428e0' : '#525f7f',
-        cursor: 'pointer',
-        '> i': {
-            width: 16,
-            height: 16,
-            borderRadius: 3.5,
-            color: '#fff',
-            backgroundColor: props.active ? '#4428e0' : '#fff',
-            border: '1px solid rgba(97, 126, 156, 0.2)',
-            fontSize: 13,
-            lineHeight: '14px',
-            marginRight: 10,
-            paddingLeft: 1
-        },
-        '> div': {
-            width: 16,
-            height: 16,
-            borderRadius: 50,
-            backgroundColor: props.active ? '#4428e0' : '#fff',
-            border: '1px solid rgba(97, 126, 156, 0.2)',
-            marginRight: 10,
-            position: 'relative',
-            '&::after': {
-                content: props.active ? `''` : undefined,
-                width: 8,
-                height: 8,
-                borderRadius: 50,
-                backgroundColor: '#ffffff',
-                position: 'absolute',
-                top: 3,
-                left: 3
-            }
-        },
-        '> span': {
-            color: '#1f3449'
-        }
-    }
-}));
+// const FilterInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
+//     display: 'flex',
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     marginBottom: 20,
+//     '> input': {
+//         display: 'none'
+//     },
+//     '> label': {
+//         ...XStyles.text.h400,
+//         display: 'flex',
+//         flexDirection: 'row',
+//         alignItems: 'center',
+//         color: props.active ? '#4428e0' : '#525f7f',
+//         cursor: 'pointer',
+//         '> i': {
+//             width: 16,
+//             height: 16,
+//             borderRadius: 3.5,
+//             color: '#fff',
+//             backgroundColor: props.active ? '#4428e0' : '#fff',
+//             border: '1px solid rgba(97, 126, 156, 0.2)',
+//             fontSize: 13,
+//             lineHeight: '14px',
+//             marginRight: 10,
+//             paddingLeft: 1
+//         },
+//         '> div': {
+//             width: 16,
+//             height: 16,
+//             borderRadius: 50,
+//             backgroundColor: props.active ? '#4428e0' : '#fff',
+//             border: '1px solid rgba(97, 126, 156, 0.2)',
+//             marginRight: 10,
+//             position: 'relative',
+//             '&::after': {
+//                 content: props.active ? `''` : undefined,
+//                 width: 8,
+//                 height: 8,
+//                 borderRadius: 50,
+//                 backgroundColor: '#ffffff',
+//                 position: 'absolute',
+//                 top: 3,
+//                 left: 3
+//             }
+//         },
+//         '> span': {
+//             color: '#1f3449'
+//         }
+//     }
+// }));
 
-class FilterCeckbox extends React.Component<{ label: string, checked?: boolean }, { isChecked: boolean }> {
-    constructor(props: { label: string }) {
-        super(props);
+// class FilterCeckbox extends React.Component<{ label: string, checked?: boolean }, { isChecked: boolean }> {
+//     constructor(props: { label: string }) {
+//         super(props);
 
-        this.state = {
-            isChecked: this.props.checked !== undefined ? this.props.checked : false
-        };
+//         this.state = {
+//             isChecked: this.props.checked !== undefined ? this.props.checked : false
+//         };
 
-        this.handleChange = this.handleChange.bind(this);
-    }
+//         this.handleChange = this.handleChange.bind(this);
+//     }
 
-    handleChange() {
-        this.setState({
-            isChecked: !this.state.isChecked
-        });
-    }
+//     handleChange() {
+//         this.setState({
+//             isChecked: !this.state.isChecked
+//         });
+//     }
 
-    render() {
-        const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
+//     render() {
+//         const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
 
-        return (
-            <FilterInputDiv active={this.state.isChecked}>
-                <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
-                <label htmlFor={id}>
-                    <XIcon icon={this.state.isChecked ? 'done' : ''} />
-                    <span>{this.props.label}</span>
-                </label>
-            </FilterInputDiv>
-        );
-    }
-}
+//         return (
+//             <FilterInputDiv active={this.state.isChecked}>
+//                 <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
+//                 <label htmlFor={id}>
+//                     <XIcon icon={this.state.isChecked ? 'done' : ''} />
+//                     <span>{this.props.label}</span>
+//                 </label>
+//             </FilterInputDiv>
+//         );
+//     }
+// }
 
-class FilterRadio extends React.Component<{ label: string, checked?: boolean }, { isChecked: boolean }> {
-    constructor(props: { label: string }) {
-        super(props);
+// class FilterRadio extends React.Component<{ label: string, checked?: boolean }, { isChecked: boolean }> {
+//     constructor(props: { label: string }) {
+//         super(props);
 
-        this.state = {
-            isChecked: this.props.checked !== undefined ? this.props.checked : false
-        };
+//         this.state = {
+//             isChecked: this.props.checked !== undefined ? this.props.checked : false
+//         };
 
-        this.handleChange = this.handleChange.bind(this);
-    }
+//         this.handleChange = this.handleChange.bind(this);
+//     }
 
-    handleChange() {
-        this.setState({
-            isChecked: !this.state.isChecked
-        });
-    }
+//     handleChange() {
+//         this.setState({
+//             isChecked: !this.state.isChecked
+//         });
+//     }
 
-    render() {
-        const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
+//     render() {
+//         const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
 
-        return (
-            <FilterInputDiv active={this.state.isChecked}>
-                <input onChange={this.handleChange} id={id} type="radio" checked={this.state.isChecked} />
-                <label htmlFor={id}>
-                    <div />
-                    <span>{this.props.label}</span>
-                </label>
-            </FilterInputDiv>
-        );
-    }
-}
+//         return (
+//             <FilterInputDiv active={this.state.isChecked}>
+//                 <input onChange={this.handleChange} id={id} type="radio" checked={this.state.isChecked} />
+//                 <label htmlFor={id}>
+//                     <div />
+//                     <span>{this.props.label}</span>
+//                 </label>
+//             </FilterInputDiv>
+//         );
+//     }
+// }
 
 const RangeInput = Glamorous.input({
     width: 180,
@@ -430,17 +432,27 @@ const FilterRangeSeparator = Glamorous.p({
 interface FilterRangeProps {
     placeholderFrom?: string;
     placeholderTo?: string;
+    onChange: Function;
 }
 
-class FilterRangeBase extends React.Component<FilterRangeProps, { from: string, fromValue?: number, to: string, toValue?: number }> {
-    constructor(props: FilterRangeProps) {
+class FilterRangeBase extends React.Component<FilterRangeProps & XWithRouter, { from: string, fromValue?: number, to: string, toValue?: number }> {
+    constructor(props: FilterRangeProps & XWithRouter) {
         super(props);
-
-        let fromCurrent = undefined;
-        let fromCurrentValue = undefined;
-        let toCurrent = undefined;
-        let toCurrentValue = undefined;
-
+        let fromCurrentValue;
+        let fromCurrent;
+        let toCurrentValue;
+        let toCurrent;
+        if (props.router.query && props.router.query.area) {
+            let parsed = JSON.parse(props.router.query.area) as { gte?: number, lte?: number };
+            if (parsed.gte !== undefined) {
+                fromCurrentValue = parsed.gte;
+                fromCurrent = parsed.gte.toString();
+            }
+            if (parsed.lte !== undefined) {
+                toCurrentValue = parsed.lte;
+                toCurrent = parsed.lte.toString();
+            }
+        }
         this.state = {
             from: fromCurrent || '',
             fromValue: fromCurrentValue,
@@ -495,6 +507,18 @@ class FilterRangeBase extends React.Component<FilterRangeProps, { from: string, 
         }
     }
 
+    componentDidUpdate() {
+        if (this.state.fromValue === undefined && this.state.toValue === undefined) {
+            this.props.onChange(undefined);
+        } else {
+            this.props.onChange({
+                gte: this.state.fromValue,
+                lte: this.state.toValue
+            });
+        }
+
+    }
+
     render() {
         return (
             <FilterRangeDiv>
@@ -520,57 +544,57 @@ class FilterRangeBase extends React.Component<FilterRangeProps, { from: string, 
     }
 }
 
-const FilterCategory = Glamorous.div({
-    borderBottom: '1px solid #d8d8d8',
-    marginBottom: 18,
-    '&:last-child': {
-        borderBottom: 'none',
-        marginBottom: 0
-    }
-});
+// const FilterCategory = Glamorous.div({
+//     borderBottom: '1px solid #d8d8d8',
+//     marginBottom: 18,
+//     '&:last-child': {
+//         borderBottom: 'none',
+//         marginBottom: 0
+//     }
+// });
 
-const OtherFiltersContent = () => (
-    <FiltersContent>
-        <FilterCategory>
-            <FilterCategoryTitle>On Sale</FilterCategoryTitle>
-            <FilterCeckbox label="Yes" checked={true} />
-            <FilterCeckbox label="No" />
-        </FilterCategory>
-        <FilterCategory>
-            <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
-            <FilterCeckbox label="Yes (105+ height, 0-2 stories now)" checked={true} />
-            <FilterCeckbox label="No" />
-        </FilterCategory>
-        <FilterCategory>
-            <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
-            <FilterRadio label="< 200 feet" checked={true} />
-            <FilterRadio label="< 800 feet" />
-            <FilterRadio label="< 1500 feet" />
-            <FilterRadio label="< 4000 feet" />
-            <FilterRadio label="< 8000 feet" />
-            <FilterRadio label="< 20000 feet" />
-        </FilterCategory>
-        <FilterCategory>
-            <FilterCategoryTitle>On Sale</FilterCategoryTitle>
-            <FilterCeckbox label="Yes" checked={true} />
-            <FilterCeckbox label="No" />
-        </FilterCategory>
-        <FilterCategory>
-            <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
-            <FilterCeckbox label="Yes (105+ height, 0-2 stories now)" checked={true} />
-            <FilterCeckbox label="No" />
-        </FilterCategory>
-        <FilterCategory>
-            <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
-            <FilterRadio label="< 200 feet" checked={true} />
-            <FilterRadio label="< 800 feet" />
-            <FilterRadio label="< 1500 feet" />
-            <FilterRadio label="< 4000 feet" />
-            <FilterRadio label="< 8000 feet" />
-            <FilterRadio label="< 20000 feet" />
-        </FilterCategory>
-    </FiltersContent>
-);
+// const OtherFiltersContent = () => (
+//     <FiltersContent>
+//         <FilterCategory>
+//             <FilterCategoryTitle>On Sale</FilterCategoryTitle>
+//             <FilterCeckbox label="Yes" checked={true} />
+//             <FilterCeckbox label="No" />
+//         </FilterCategory>
+//         <FilterCategory>
+//             <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
+//             <FilterCeckbox label="Yes (105+ height, 0-2 stories now)" checked={true} />
+//             <FilterCeckbox label="No" />
+//         </FilterCategory>
+//         <FilterCategory>
+//             <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
+//             <FilterRadio label="< 200 feet" checked={true} />
+//             <FilterRadio label="< 800 feet" />
+//             <FilterRadio label="< 1500 feet" />
+//             <FilterRadio label="< 4000 feet" />
+//             <FilterRadio label="< 8000 feet" />
+//             <FilterRadio label="< 20000 feet" />
+//         </FilterCategory>
+//         <FilterCategory>
+//             <FilterCategoryTitle>On Sale</FilterCategoryTitle>
+//             <FilterCeckbox label="Yes" checked={true} />
+//             <FilterCeckbox label="No" />
+//         </FilterCategory>
+//         <FilterCategory>
+//             <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
+//             <FilterCeckbox label="Yes (105+ height, 0-2 stories now)" checked={true} />
+//             <FilterCeckbox label="No" />
+//         </FilterCategory>
+//         <FilterCategory>
+//             <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
+//             <FilterRadio label="< 200 feet" checked={true} />
+//             <FilterRadio label="< 800 feet" />
+//             <FilterRadio label="< 1500 feet" />
+//             <FilterRadio label="< 4000 feet" />
+//             <FilterRadio label="< 8000 feet" />
+//             <FilterRadio label="< 20000 feet" />
+//         </FilterCategory>
+//     </FiltersContent>
+// );
 
 const InlineInputWrapper = Glamorous.div({
     display: 'flex',
@@ -628,41 +652,75 @@ function FilterCell(props: { title?: string, children: any }) {
     );
 }
 
-// const RoutedSelector = (p: any) => (withRouter((props) => {
-//     return(<Selector {...props, ...p}/>);
-// });
+class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName: string, applyButton?: boolean, applyCallbacks?: Set<Function> }, { value: string[] | string | undefined }> {
+    constructor(props: XSelectProps & XWithRouter & { fieldName: string, applyButton?: boolean, applyCallbacks?: Set<Function> }) {
+        super(props);
+        this.state = { value: this.props.router.query!![props.fieldName] ? JSON.parse(this.props.router.query!![props.fieldName]) : undefined };
+        if (this.props.applyCallbacks !== undefined) {
+            this.props.applyCallbacks.add(this.queryParam);
+        }
+    }
 
-class Selector extends React.Component<XSelectProps & XWithRouter & { searchKey: string,  }> {
-    value: string | undefined = undefined;
+    queryParam = () => {
+        let value = undefined;
+        if (this.state.value !== undefined) {
+            if (Array.isArray(this.state.value)) {
+                if (this.state.value.length > 0) {
+                    value = JSON.stringify(this.state.value.map(r => r));
+                }
+            } else {
+                value = this.state.value;
+            }
+
+        }
+        return ({ fieldName: this.props.fieldName, value: value });
+    }
 
     apply = () => {
-        this.props.router.pushQuery(this.props.searchKey, this.value);
-        Filter.closeAll();
-    }
-    
-    render() {
-        let { searchKey, ...other } = this.props;
-        let val = this.props.router.query!![searchKey] ? JSON.parse(this.props.router.query!![searchKey]) : undefined;
+        if (this.state.value !== undefined) {
+            if (Array.isArray(this.state.value)) {
+                if (this.state.value.length > 0) {
+                    this.props.router.pushQuery(this.props.fieldName, JSON.stringify(this.state.value.map(r => r)));
+                } else {
+                    this.props.router.pushQuery(this.props.fieldName, undefined);
+                }
+            } else {
+                this.props.router.pushQuery(this.props.fieldName, this.state.value);
+            }
 
+        } else {
+            this.props.router.pushQuery(this.props.fieldName, undefined);
+        }
+        if (this.props.applyButton === undefined || this.props.applyButton) {
+            Filter.closeAll();
+        }
+    }
+
+    render() {
+        let { fieldName, ...other } = this.props;
         return (
-            <InlineInputWrapper>
+            <XHorizontal>
                 <FilterSelector {...other}
                     onChange={(v) => {
-                        console.warn(v);
+                        let value = undefined;
                         if (v) {
                             if (Array.isArray(v)) {
                                 if (v.length > 0) {
-                                    this.value = JSON.stringify(v.map((r: any) => r.value));
+                                    value = v.map((r: any) => r.value);
                                 }
                             } else {
-                                this.value = JSON.stringify((v as any).value);
+                                value = (v as any).value;
                             }
                         }
+
+                        this.setState({ value: value });
                     }}
-                    value={val}
+                    value={this.state.value}
                 />
-                <XButton style="dark" onClick={this.apply} >Apply</XButton>
-            </InlineInputWrapper>);
+                {Boolean(this.props.applyButton === undefined || this.props.applyButton) && (
+                    <XButton style="dark" onClick={this.apply} >Apply</XButton>
+                )}
+            </XHorizontal>);
     }
 
 }
@@ -701,7 +759,7 @@ class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?
 
 const OwnerNameFiltersContent = withRouter((props) => (
     <FiltersContent>
-        <InlineApplyInput placeholder="Owner name contains" searchKey="ownerName" router={props.router} />
+        <InlineApplyInput placeholder="Owner name contains" searchKey="ownerName" router={props.router}/>
         <FIlterDescriptionWrapper>
             <FilterDescription>
                 The land with the objects used under the commercial <br />institution (Banks, sales outlets and so on)
@@ -710,18 +768,36 @@ const OwnerNameFiltersContent = withRouter((props) => (
     </FiltersContent>
 ));
 
-const AreaFiltersContent = () => (
-    <FiltersContent>
-        <FilterRangeBase placeholderFrom="1000 ft" placeholderTo="1000000 ft" />
-        <FIlterDescriptionWrapper>
-            <FilterDescription>
-                The land with the objects used under the
-                <br />l institution (Banks, sales outlets and so on)
-            </FilterDescription>
-            <XButton autoClose={true} style="dark">Apply</XButton>
-        </FIlterDescriptionWrapper>
-    </FiltersContent>
-);
+class AreaFiltersContent extends React.Component<XWithRouter> {
+    area?: any;
+
+    onChange = (area: any) => {
+        this.area = area;
+    }
+
+    apply = () => {
+        if (this.area === undefined) {
+            this.props.router.pushQuery('area');
+        } else {
+            this.props.router.pushQuery('area', JSON.stringify(this.area));
+        }
+        Filter.closeAll();
+    }
+
+    render() {
+        return (
+            <FiltersContent>
+                <FilterRangeBase placeholderFrom="1000 ft" placeholderTo="1000000 ft" onChange={this.onChange} router={this.props.router} />
+                <FIlterDescriptionWrapper>
+                    <FilterDescription>
+                        The land with the objects used under the
+                        <br />l institution (Banks, sales outlets and so on)
+                    </FilterDescription>
+                    <XButton autoClose={true} style="dark" onClick={this.apply}>Apply</XButton>
+                </FIlterDescriptionWrapper>
+            </FiltersContent>);
+    }
+}
 
 const MapFilterWrapper = Glamorous(XCard)<{ active?: boolean }>((props) => ({
     position: 'absolute',
@@ -742,10 +818,11 @@ const FilterSwitcher = Glamorous.div({
     }
 });
 
-export class MapFilters extends React.Component<{ shadowHandler: Function }, { active: boolean }> {
+class MapFilters extends React.Component<XWithRouter & { shadowHandler: (add: boolean, caller: any) => void, city?: string }, { active: boolean }> {
     shadowRequests = new Set();
+    applyCallbacks: Set<Function> = new Set();
 
-    constructor(props: { shadowHandler: Function }) {
+    constructor(props: XWithRouter & { shadowHandler: (add: boolean, caller: any) => void, city?: string }) {
         super(props);
 
         this.state = {
@@ -764,41 +841,254 @@ export class MapFilters extends React.Component<{ shadowHandler: Function }, { a
         this.setState({ active: this.shadowRequests.size > 0 });
     }
 
+    otherApply = () => {
+        let params = {};
+        for (let c of this.applyCallbacks) {
+            let { fieldName, value } = c();
+            params[fieldName] = value;
+        }
+        this.props.router.pushQueryParams(params);
+        Filter.closeAll();
+    }
+
     render() {
+        let sfOther = [];
+
+        sfOther.push(
+            <FilterCell title="On Sale" key="On Sale" >
+                <Selector
+                    applyCallbacks={this.applyCallbacks}
+                    router={this.props.router}
+                    fieldName="filterOnSale"
+                    options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
+                    placeholder="On Sale"
+                    applyButton={false}
+                />
+            </FilterCell>
+        );
+
+        sfOther.push(
+            <FilterCell title="Tower opportunity">
+                <Selector
+                    applyCallbacks={this.applyCallbacks}
+                    router={this.props.router}
+                    fieldName="isOkForTower"
+                    options={[{ value: 'true', label: 'Yes (90+ height, 0-2 stories now)' }, { value: 'false', label: 'No' }]}
+                    placeholder="Tower opportunity"
+                    applyButton={false}
+                />
+            </FilterCell>
+        );
+
+        sfOther.push(
+            <FilterCell title="Nearest Transit">
+                <Selector
+                    applyCallbacks={this.applyCallbacks}
+                    router={this.props.router}
+                    fieldName="filterTransit"
+                    options={[
+                        { value: '60', label: '< 200 feet' },
+                        { value: '243', label: '< 800 feet' },
+                        { value: '457', label: '< 1500 feet' },
+                        { value: '1220', label: '< 4000 feet' },
+                        { value: '2430', label: '< 8000 feet' }]}
+                    placeholder="Distance"
+                    applyButton={false}
+                />
+            </FilterCell>
+        );
+
+        let other = [];
+
+        other.push(
+            <FilterCell title="Vacant">
+                <Selector
+                    applyCallbacks={this.applyCallbacks}
+                    router={this.props.router}
+                    fieldName="isVacant"
+                    options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
+                    placeholder="Vacant"
+                    applyButton={false}
+                />
+            </FilterCell>
+        );
+
+        other.push(
+            <FilterCell title="Publicly owned">
+                <Selector
+                    applyCallbacks={this.applyCallbacks}
+                    router={this.props.router}
+                    fieldName="publicOwner"
+                    options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}
+                    placeholder="Publicly owned"
+                    applyButton={false}
+                />
+            </FilterCell>
+        );
+
+        other.push(
+
+            <FilterCell title="Compatible buildings">
+                <Selector
+                    applyCallbacks={this.applyCallbacks}
+                    router={this.props.router}
+                    fieldName="compatible"
+                    options={[{ value: 'kasita-1', label: 'Elemynt-1' }, { value: 'kasita-2', label: 'Elemynt-2' }]}
+                    placeholder="Building type"
+                    multi={true}
+                    applyButton={false}
+                />
+            </FilterCell>
+        );
+
+        if (this.props.city === 'sf') {
+            other.push(...sfOther);
+        }
+
         return (
             <>
                 <MapFilterWrapper active={this.state.active}>
                     <FilterSwitcher>
                         <Filter handler={this.shadowHandler}>
                             <Filter.Target>
-                                <XButton style="dark">Owner name</XButton>
+                                <XButton style={this.props.router.query.ownerName !== undefined ? 'dark' : undefined}>Owner name</XButton>
                             </Filter.Target>
                             <Filter.Popper>
-                                <OwnerNameFiltersContent />
+                                <OwnerNameFiltersContent
+                                />
                             </Filter.Popper>
                         </Filter>
                     </FilterSwitcher>
                     <FilterSwitcher>
-                        <Filter handler={this.shadowHandler}>
-                            <Filter.Target>
-                                <XButton>Zoning</XButton>
-                            </Filter.Target>
-                            <Filter.Popper>
-                                <FilterCell title="Zoning">
-                                    <RoutedSelector
+                        {this.props.city === 'sf' && (
+                            <Filter handler={this.shadowHandler}>
+                                <Filter.Target>
+                                    <XButton style={this.props.router.query.filterZoning !== undefined ? 'dark' : undefined}>Zoning</XButton>
+                                </Filter.Target>
+                                <Filter.Popper>
+                                    <Selector
+                                        router={this.props.router}
                                         fieldName="filterZoning"
                                         options={AllZones.map((v) => ({ value: v, label: v }))}
                                         placeholder="Zoning Code"
                                         multi={true}
                                     />
-                                </FilterCell>
-                            </Filter.Popper>
-                        </Filter>
+                                </Filter.Popper>
+                            </Filter>
+                        )}
+
+                        {this.props.city === 'nyc' && (
+                            <Filter handler={this.shadowHandler}>
+                                <Filter.Target>
+                                    <XButton style={this.props.router.query.filterZoning !== undefined ? 'dark' : undefined}>Zoning</XButton>
+                                </Filter.Target>
+                                <Filter.Popper>
+                                    <Selector
+                                        router={this.props.router}
+                                        fieldName="filterZoning"
+                                        options={AllNYCZOnes.map((v) => ({ value: v, label: v }))}
+                                        placeholder="Zoning Code"
+                                        multi={true}
+                                    />
+                                </Filter.Popper>
+                            </Filter>
+                        )}
+
                     </FilterSwitcher>
+
+                    {this.props.city === 'sf' && (
+                        <>
+                            <FilterSwitcher>
+                                <Filter handler={this.shadowHandler}>
+                                    <Filter.Target>
+                                        <XButton style={this.props.router.query.filterLandUse !== undefined ? 'dark' : undefined}>Land Use</XButton>
+                                    </Filter.Target>
+                                    <Filter.Popper>
+                                        <Selector
+                                            router={this.props.router}
+                                            fieldName="filterLandUse"
+                                            options={AllLandUse.map((v) => ({ value: v, label: v }))}
+                                            placeholder="Land Use"
+                                            multi={true}
+                                        />
+                                    </Filter.Popper>
+                                </Filter>
+                            </FilterSwitcher>
+
+                            <FilterSwitcher>
+                                <Filter handler={this.shadowHandler}>
+                                    <Filter.Target>
+                                        <XButton style={this.props.router.query.filterStories !== undefined ? 'dark' : undefined}>Stories</XButton>
+                                    </Filter.Target>
+                                    <Filter.Popper>
+                                        <Selector
+                                            router={this.props.router}
+                                            fieldName="filterStories"
+                                            options={[
+                                                { value: '0', label: 'no stories' },
+                                                { value: '1', label: '1 story' },
+                                                { value: '2', label: '2 stories' },
+                                                { value: '3', label: '3 stories' },
+                                                { value: '4', label: '4 stories' }]}
+                                            placeholder="Stories"
+                                            multi={true}
+                                        />
+                                    </Filter.Popper>
+                                </Filter>
+                            </FilterSwitcher>
+
+                            <FilterSwitcher>
+                                <Filter handler={this.shadowHandler}>
+                                    <Filter.Target>
+                                        <XButton style={this.props.router.query.filterCurrentUse !== undefined ? 'dark' : undefined}>Current Use</XButton>
+                                    </Filter.Target>
+                                    <Filter.Popper>
+                                        <Selector
+                                            router={this.props.router}
+                                            fieldName="filterCurrentUse"
+                                            options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
+                                            placeholder="Current Use"
+                                        />
+                                    </Filter.Popper>
+                                </Filter>
+                            </FilterSwitcher>
+                        </>
+                    )}
+
                     <FilterSwitcher>
                         <Filter handler={this.shadowHandler}>
                             <Filter.Target>
-                                <XButton>Commercial</XButton>
+                                <XButton style={this.props.router.query.area !== undefined ? 'dark' : undefined}>Area</XButton>
+                            </Filter.Target>
+                            <Filter.Popper>
+                                <AreaFiltersContent
+                                    router={this.props.router}
+                                />
+                            </Filter.Popper>
+                        </Filter>
+                    </FilterSwitcher>
+
+                    <FilterSwitcher>
+                        <Filter handler={(add: boolean, caller: any) => {
+                            this.shadowHandler(add, caller);
+                        }}>
+                            <Filter.Target>
+                                <XButton>Other</XButton>
+                            </Filter.Target>
+                            <Filter.Popper>
+                                <XVertical>
+                                    {...other}
+                                    <XButton style="dark" size="medium" bounce={true} onClick={this.otherApply}>Apply</XButton>
+
+                                </XVertical>
+                            </Filter.Popper>
+                        </Filter>
+                    </FilterSwitcher>
+
+                    {/* <FilterSwitcher>
+                        <Filter handler={this.shadowHandler}>
+                            <Filter.Target>
+                                <XButton style={this.props.router.query.commercial !== undefined ? 'dark' : undefined}>Commercial</XButton>
                             </Filter.Target>
                             <Filter.Popper>
                                 <XButton autoClose={true}>qwe</XButton>
@@ -808,7 +1098,7 @@ export class MapFilters extends React.Component<{ shadowHandler: Function }, { a
                     <FilterSwitcher>
                         <Filter handler={this.shadowHandler}>
                             <Filter.Target>
-                                <XButton style="dark">Area</XButton>
+                                <XButton style={this.props.router.query.area !== undefined ? 'dark' : undefined}>Area</XButton>
                             </Filter.Target>
                             <Filter.Popper>
                                 <AreaFiltersContent />
@@ -818,16 +1108,18 @@ export class MapFilters extends React.Component<{ shadowHandler: Function }, { a
                     <FilterSwitcher>
                         <Filter handler={this.shadowHandler}>
                             <Filter.Target>
-                                <XButton style="dark">Other filters</XButton>
+                                <XButton style={this.props.router.query.other !== undefined ? 'dark' : undefined}>Other filters</XButton>
                             </Filter.Target>
                             <Filter.Popper>
                                 <OtherFiltersContent />
                             </Filter.Popper>
                         </Filter>
-                    </FilterSwitcher>
+                    </FilterSwitcher> */}
 
                 </MapFilterWrapper>
             </>
         );
     }
 }
+
+export const RoutedMapFilters = withRouter<{ shadowHandler: (add: boolean, caller: any) => void, city?: string }>(MapFilters);
