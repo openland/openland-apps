@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { XIcon } from 'openland-x/XIcon';
+import { XIcon } from './XIcon';
 import Glamorous from 'glamorous';
-import { XLink } from './XLink';
 
-export const ExternalLinkDiv = Glamorous(XLink)({
+export const ExternalLinkDiv = Glamorous.a({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

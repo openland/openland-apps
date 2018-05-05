@@ -29,7 +29,7 @@ import { XTitle } from '../../../components/X/XTitle';
 import { XVertical } from '../../../components/X/XVertical';
 import { ParcelNumber } from '../../../components/ParcelNumber';
 import { XSwitcher } from './../../../components/X/XSwitcher';
-import { XLinkExternal } from './../../../components/X/XLinkExternal';
+import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XZoningMetrics } from './../../../components/X/XZoningMetrics';
 import { XCardProperty } from './../../../components/X/XCardProperty';
 

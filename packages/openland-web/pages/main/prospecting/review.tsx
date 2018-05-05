@@ -26,7 +26,7 @@ import { XArea } from '../../../components/X/XArea';
 import { XDistance } from '../../../components/X/XDistance';
 import { XMoney } from '../../../components/X/XMoney';
 import { OwnerTypeComponent } from '../../../components/OwnerTypeComponent';
-import { XLinkExternal } from '../../../components/X/XLinkExternal';
+import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XZoningCode } from '../../../components/X/XZoningCode';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { XTooltip } from '../../../components/Incubator/XTooltip';

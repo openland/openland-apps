@@ -5,7 +5,7 @@ import { XButton } from '../../../components/X/XButton';
 import { XButtonLike } from '../../../components/X/XButtonLike';
 import { XTitle } from '../../../components/X/XTitle';
 import { XVertical } from '../../../components/X/XVertical';
-import { XLinkExternal } from '../../../components/X/XLinkExternal';
+import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XBullet } from '../../../components/X/XBullet';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XSlider, XRange } from '../../../components/X/XSlider';
