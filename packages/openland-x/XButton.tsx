@@ -64,9 +64,10 @@ let colorStyles = styleResolver({
         }
     },
     'primary': {
-        backgroundColor: '#654bfa',
+        backgroundColor: '#654BFA',
         color: '#ffffff',
         '&:hover': {
+            backgroundColor: '#7159F9',
             color: '#ffffff',
             boxShadow: '0 1px 2px 0 rgba(29, 21, 74, 0.42)'
         }
@@ -110,7 +111,10 @@ export const XButton = Glamorous<XButtonProps>(XLink)([
         wordBreak: 'keep-all',
         position: 'relative',
         outline: 'none',
-        transition: 'box-shadow .08s ease-in,color .08s ease-in,all .15s ease'
+        transition: 'box-shadow .08s ease-in,color .08s ease-in,all .15s ease',
+        '&:hover': {
+            transform: 'translateY(-1px)',
+        }
     },
     (props) => colorStyles(props.style),
     (props) => sizeStyles(props.size),
