@@ -1,3 +1,4 @@
+import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XLink, XLinkProps } from './XLink';
@@ -100,7 +101,7 @@ let colorStyles = styleResolver({
     }
 });
 
-export const XButton = Glamorous<XButtonProps>(XLink)([
+const StyledButton = Glamorous<XButtonProps>(XLink)([
     {
         display: 'flex',
         justifyContent: 'center',
@@ -119,3 +120,9 @@ export const XButton = Glamorous<XButtonProps>(XLink)([
     (props) => colorStyles(props.style),
     (props) => sizeStyles(props.size),
 ]);
+
+export class XButton extends React.PureComponent<XButtonProps> {
+    render() {
+        return (<StyledButton {...this.props}>{this.props.children}</StyledButton>);
+    }
+}
