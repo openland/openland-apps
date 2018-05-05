@@ -144,6 +144,18 @@ export function walkTree<Cache>(
                 return;
             }
 
+            // Context Support
+            if (element.type && (element.type as any)._context) {
+                (element.type as any)._context._currentValue = (element.props as any).value;
+            }
+
+            if (element && element.type && (element.type as any).Provider) {
+                const child = element.props.children((element.type as any)._currentValue);
+                if (child) {
+                    walkTree(child, context, visitor);
+                }
+            }
+
             if (element.props && element.props.children) {
                 Children.forEach(element.props.children, (child: any) => {
                     if (child) {

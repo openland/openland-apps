@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import * as qs from 'query-string';
 import { XRouter } from './XRouter';
 import { SingletonRouter } from 'next/router';
+import { XRouterContext } from './XRouterContext';
 
 interface NextRoutes {
     Router: {
@@ -17,9 +18,6 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes }> {
         hostName: PropTypes.string.isRequired,
         protocol: PropTypes.string.isRequired,
         router: PropTypes.object.isRequired
-    };
-    static childContextTypes = {
-        xrouter: PropTypes.object.isRequired
     };
 
     private xRouterState: XRouter;
@@ -98,13 +96,7 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes }> {
         this.xRouterState = this.buildState(nextContext);
     }
 
-    getChildContext() {
-        return {
-            xrouter: this.xRouterState
-        };
-    }
-
     render() {
-        return <>{this.props.children}</>;
+        return <XRouterContext.Provider value={this.xRouterState}>{this.props.children}</XRouterContext.Provider>;
     }
 }

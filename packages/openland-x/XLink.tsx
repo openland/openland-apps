@@ -1,7 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { XRouterReceiver } from 'openland-x-routing/XRouterReceiver';
 import { resolveActionPath } from 'openland-x-routing/resolveActionPath';
+import { XRouter } from 'openland-x-routing/XRouter';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 export interface XLinkProps {
     path?: string | null;
@@ -57,29 +58,30 @@ class XLinkAnchorRender extends React.Component<XLinkRender> {
 
 // export class XLinkDefault 
 
-export class XLink extends XRouterReceiver<XLinkProps> {
+export class XLink extends React.Component<XLinkProps> {
 
     static contextTypes = {
-        xcloser: PropTypes.func,
-        xrouter: PropTypes.object.isRequired
+        xcloser: PropTypes.func
     };
+
+    router?: XRouter;
 
     constructor(props: XLinkProps, context: any) {
         super(props, context);
     }
 
-    resolveIsActive() {
+    resolveIsActive(router: XRouter) {
         if (this.props.active !== undefined) {
             return this.props.active;
         }
         if (this.props.path) {
-            let ncurrent = normalizePath(this.router.path);
+            let ncurrent = normalizePath(router.path);
             let ntarget = normalizePath(this.props.path);
             if (ncurrent === ntarget || (ncurrent.startsWith(ntarget + '/') && this.props.activateForSubpaths)) {
                 return true;
             }
         } else if (this.props.query) {
-            return this.router.query[this.props.query.field] === this.props.query.value;
+            return router.query[this.props.query.field] === this.props.query.value;
         }
         return false;
     }
@@ -115,12 +117,13 @@ export class XLink extends XRouterReceiver<XLinkProps> {
             e.preventDefault();
 
             // Invoke router
-            if (this.props.path) {
-                this.router.push(this.props.path);
-            } else if (this.props.query) {
-                this.router.pushQuery(this.props.query.field, this.props.query.value);
+            if (this.router) {
+                if (this.props.path) {
+                    this.router.push(this.props.path);
+                } else if (this.props.query) {
+                    this.router.pushQuery(this.props.query.field, this.props.query.value);
+                }
             }
-
         } else if (this.props.href) {
             // Do nothing for href-based props - allow default browser action
         } else {
@@ -130,33 +133,44 @@ export class XLink extends XRouterReceiver<XLinkProps> {
     }
 
     render() {
-        let href = '#';
-        let newTab = false;
-        let isActive = this.resolveIsActive();
-
-        // Resolving Url
-        if (this.props.path) {
-            href = this.router.resolveLink(this.props.path);
-        } else if (this.props.query) {
-            let path = resolveActionPath(this.props, this.router);
-            href = this.router.resolveLink(path);
-        } else if (this.props.href) {
-            href = this.props.href;
-            newTab = true;
-        }
-
-        let Render: React.ComponentType<XLinkRender> = XLinkAnchorRender;
-
         return (
-            <Render
-                active={isActive}
-                className={this.props.className}
-                newTab={newTab}
-                href={href}
-                onClick={this.onClick}
-            >
-                {this.props.children}
-            </Render>
+            <XRouterContext.Consumer>
+                {router => {
+                    if (!router) {
+                        throw Error('Router not configured!');
+                    }
+                    this.router = router;
+                    let href = '#';
+                    let newTab = false;
+                    let isActive = this.resolveIsActive(router);
+
+                    // Resolving Url
+                    if (this.props.path) {
+                        href = router.resolveLink(this.props.path);
+                    } else if (this.props.query) {
+                        let path = resolveActionPath(this.props, router);
+                        href = router.resolveLink(path);
+                    } else if (this.props.href) {
+                        href = this.props.href;
+                        newTab = true;
+                    }
+
+                    let Render: React.ComponentType<XLinkRender> = XLinkAnchorRender;
+
+                    return (
+                        <Render
+                            active={isActive}
+                            className={this.props.className}
+                            newTab={newTab}
+                            href={href}
+                            onClick={this.onClick}
+                        >
+                            {this.props.children}
+                        </Render>
+                    );
+                }}
+            </XRouterContext.Consumer>
         );
+
     }
 }
