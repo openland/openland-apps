@@ -15,7 +15,7 @@ import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { XSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
 import { XWithRouter, withRouter } from '../../../components/withRouter';
-import { MapFilters } from '../../../components/Incubator/MapComponents/MapFilters';
+import { RoutedMapFilters } from '../../../components/Incubator/MapComponents/MapFilters';
 import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
 
 const XMapContainer = Glamorous.div({
@@ -183,7 +183,7 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
             <XMapContainer>
                 <XMapContainer2>
                     <Shadow active={this.state.shadowed} />
-                    <MapFilters shadowHandler={this.requestShadow}/>
+                    <RoutedMapFilters shadowHandler={this.requestShadow}/>
                     <CitySelector title={cityName} shadowHandler={this.requestShadow}>
                         <CitySelector.Item
                             query={{ field: 'city', value: 'sf' }}
