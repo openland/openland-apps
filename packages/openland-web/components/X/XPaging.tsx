@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink } from './XLink';
 import { XIcon } from 'openland-x/XIcon';
+import { XLink } from 'openland-x/XLink';
 
 interface MenuItemProps {
     active?: boolean;
