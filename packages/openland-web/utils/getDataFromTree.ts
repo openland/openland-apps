@@ -6,8 +6,7 @@ import {
     ComponentType,
     ComponentClass,
     ChildContextProvider,
-    isValidElement,
-    Fragment
+    isValidElement
 } from 'react';
 import ApolloClient from 'apollo-client';
 
