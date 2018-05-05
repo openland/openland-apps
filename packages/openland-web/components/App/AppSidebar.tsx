@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from '../X/XLink';
-import { XIcon } from '../X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import { XPopover } from '../X/XPopover';
 import { XMenu } from '../X/XMenu';
 import { withRouter } from '../withRouter';

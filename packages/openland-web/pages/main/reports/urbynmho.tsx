@@ -11,7 +11,7 @@ import { withRouter } from '../../../components/withRouter';
 import { Scaffold } from '../../../components/Scaffold';
 import { SourcingTileSource } from '../../../api';
 import { XMapImageLayer } from '../../../components/X/XMapImageLayer';
-import { XIcon } from '../../../components/X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { withDealsMap } from '../../../api';
 import { JustMap } from './JustMap';

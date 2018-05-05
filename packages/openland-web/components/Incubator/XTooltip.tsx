@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import { canUseDOM } from '../../utils/environment';
 import { Manager, Target, Popper } from './XPopper';
-import { XIcon } from '../X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 
 const XTooltipDiv = Glamorous.div<{ marginLeft?: number, marginRight?: number, marginTop?: number, marginBottom?: number, margin?: number, centeredContent?: boolean }>((props) => ({
     display: 'flex',

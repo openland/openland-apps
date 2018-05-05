@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import { withSearch } from '../../api/';
 import { XCard } from '../X/XCard';
-import { XIcon } from '../X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import { XArea } from '../X/XArea';
 
 const loading = glamor.keyframes({

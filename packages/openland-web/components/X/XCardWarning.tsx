@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XIcon } from './XIcon';
+import { XIcon } from 'openland-x/XIcon';
 
 let ItemIcon = Glamorous(XIcon)({
     marginRight: '10px',

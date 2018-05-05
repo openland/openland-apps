@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XIcon } from '../X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import ClickOutside from './ClickOutside';
 
 const XDropdownWrapper = Glamorous.div<{isOpen?: boolean}>((props) => ({

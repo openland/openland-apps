@@ -2,8 +2,8 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import { XLink, XLinkProps } from './XLink';
-import { XIcon } from './XIcon';
 import { withLayout, XLayoutProps } from './withLayout';
+import { XIcon } from 'openland-x/XIcon';
 
 function LoadingIcon(props: {white?: boolean}) {
     return (

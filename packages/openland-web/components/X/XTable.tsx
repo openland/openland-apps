@@ -4,7 +4,7 @@ import { CSSProperties } from 'glamorous';
 import * as classnames from 'classnames';
 import { XLink } from './XLink';
 import XStyles from './XStyles';
-import { XIcon } from './XIcon';
+import { XIcon } from 'openland-x/XIcon';
 
 let TableHeader = Glamorous.table({
     width: 'calc(100% - ' + (XStyles.paddings.xlarge * 2) + 'px)',

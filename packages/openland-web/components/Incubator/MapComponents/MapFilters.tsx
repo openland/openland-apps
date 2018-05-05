@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XButton } from '../../X/XButton';
 import { XCard } from '../../X/XCard';
-import { XIcon } from '../../X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import { Filter } from './PopperFilterButton';
 import XStyles from '../../X/XStyles';
 

@@ -19,7 +19,7 @@ import { XConfirm } from '../../../components/Incubator/XConfirm';
 import { CitySelector } from '../../../components/Incubator/CitySelector';
 import { ParcelShortList } from '../../../components/Incubator/ParcelShortList';
 import { XTab } from '../../../components/X/XTab';
-import { XIcon } from '../../../components/X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import { StateSelect } from '../../../api';
 import { XHeader } from '../../../components/X/XHeader';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';

@@ -5,7 +5,7 @@ import { findChild } from './utils';
 import { XVertical } from './X/XVertical';
 import { XPicture } from './X/XPicture';
 import { XLink } from './X/XLink';
-import { XIcon } from './X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
 import { XPopover } from './X/XPopover';
 import { XMenu } from './X/XMenu';

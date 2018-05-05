@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XIcon } from './XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import Glamorous from 'glamorous';
 import { XLink } from './XLink';
 
