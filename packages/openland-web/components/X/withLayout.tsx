@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { getComponentDisplayName } from '../../utils/utils';
+import { getComponentDisplayName } from 'openland-x-utils/getComponentDisplayName';
 
 export interface XLayoutProps {
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';

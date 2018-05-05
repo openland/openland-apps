@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { canUseDOM } from '../../utils/environment';
 import Glamorous from 'glamorous';
 import * as ReactDOM from 'react-dom';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 let MapBox = canUseDOM ? import('mapbox-gl') : null;
 

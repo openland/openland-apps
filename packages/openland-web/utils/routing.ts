@@ -1,8 +1,8 @@
 import Router from 'next/router';
 import * as NProgress from 'nprogress';
-import { XRouter } from '../components/withRouter';
 import * as qs from 'query-string';
 import { trackPage, trackError } from './analytics';
+import { XRouter } from 'openland-x-routing/XRouter';
 
 NProgress.configure({ showSpinner: false, parent: '#progress_container' });
 

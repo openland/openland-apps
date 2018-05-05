@@ -2,8 +2,8 @@ import * as React from 'react';
 import Types from 'openland-api';
 import { XTable } from './X/XTable';
 import { XArea } from './X/XArea';
-import { withRouter } from './withRouter';
 import { ParcelNumber } from './ParcelNumber';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[], showCity?: boolean }>((props) => {
     return (

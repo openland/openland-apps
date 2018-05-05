@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Types from 'openland-api';
-import { withRouter, XWithRouter } from './withRouter';
 import { trackProfile } from '../utils/analytics';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 
 export class UserInfoProvider extends React.Component<{
     user?: Types.UserShortFragment | null,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Types from 'openland-api';
 import { ResponsiveContainer, BarChart, CartesianGrid, Bar, Tooltip, XAxis, YAxis } from 'recharts';
-import { canUseDOM } from '../../utils/environment';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 let colors = ['#8884d8', '#82ca9d'];
 

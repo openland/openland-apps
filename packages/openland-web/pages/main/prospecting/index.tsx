@@ -6,7 +6,6 @@ import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { XButton } from '../../../components/X/XButton';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
-import { XLink } from '../../../components/X/XLink';
 import { withProspectingStats, OwnersSelect } from '../../../api';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 import { XHeader } from '../../../components/X/XHeader';
@@ -15,6 +14,7 @@ import { OpportunityState } from 'openland-api/Types';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { buildProspectingQuery, buildQs } from '../../../components/prospectingQuery';
 import { CapacityIndicator } from '../../../components/CapacityIndicator';
+import { XLink } from 'openland-x/XLink';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',

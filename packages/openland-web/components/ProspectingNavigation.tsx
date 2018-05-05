@@ -2,8 +2,8 @@ import * as React from 'react';
 import { withProspectingStats } from '../api';
 import { XTab } from './X/XTab';
 import * as qs from 'query-string';
-import { withRouter } from './withRouter';
 import { buildProspectingQuery } from './prospectingQuery';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 function convertNumber(value?: number) {
     if (value !== undefined && value > 0) {

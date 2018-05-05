@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { withRouter } from '../withRouter';
 import { XModalStyleProps, XModal } from './XModal';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 export const XModalRouted = withRouter<{ query: string } & XModalStyleProps>((props) => {
     let closedHandler = () => {

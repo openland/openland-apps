@@ -2,10 +2,10 @@ import '../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../components/X/XHead';
-import { RedirectComponent } from '../components/routing/RedirectComponent';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
 import { XTrack } from '../components/X/XTrack';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 const TypeformDiv = Glamorous.div({
     position: 'absolute',
@@ -48,13 +48,13 @@ export default withAppBase(withUserInfo((props) => {
     // Do not edit without reason!
     if (props.isLoggedIn) {
         if (props.isBlocked) {
-            return <RedirectComponent path="/suspended" />;
+            return <XPageRedirect path="/suspended" />;
         } else if (props.isCompleted) {
-            return <RedirectComponent path="/" />;
+            return <XPageRedirect path="/" />;
         } else if (!props.isActivated) {
-            return <RedirectComponent path="/activation" />;
+            return <XPageRedirect path="/activation" />;
         } else {
-            return <RedirectComponent path="/need_info" />;
+            return <XPageRedirect path="/need_info" />;
         }
     }
 

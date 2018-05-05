@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink } from './X/XLink';
 import XStyles from './X/XStyles';
+import { XLink } from 'openland-x/XLink';
 
 const SidebarContainer = Glamorous.div({
     display: 'flex',

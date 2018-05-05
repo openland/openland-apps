@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink } from '../X/XLink';
+import { XLink } from 'openland-x/XLink';
 
 const ParcelShortListDiv = Glamorous.div({
     display: 'flex',

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCard } from '../../X/XCard';
-import { XLink, XLinkProps } from '../../X/XLink';
 import { XIcon } from 'openland-x/XIcon';
 import XStyles from '../../X/XStyles';
 import ClickOutside from '../ClickOutside';
+import { XLink, XLinkProps } from 'openland-x/XLink';
 
 const MapFilterWrapper = Glamorous(XCard)<{ active: boolean }>((props) => ({
     position: 'absolute',

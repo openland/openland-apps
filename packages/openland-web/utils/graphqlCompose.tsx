@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withRouter, XWithRouter } from '../components/withRouter';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 
 function compose(funcs: Function[]) {
     const length = funcs ? funcs.length : 0;

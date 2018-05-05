@@ -2,20 +2,20 @@ import * as React from 'react';
 import { XWithRole } from './X/XWithRole';
 import { withAppBase } from './withAppBase';
 import { withUserInfo } from './UserInfo';
-import { RedirectComponent } from './routing/RedirectComponent';
 import { XTrack } from './X/XTrack';
-import { withRouter } from './withRouter';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 export function withApp(name: string, role: string | string[], WrappedComponent: React.ComponentType<{}>) {
     return withAppBase(withUserInfo(withRouter((props) => {
         if (props.isLoggedIn) {
             if (props.isBlocked) {
-                return (<RedirectComponent path="/suspended" />);
+                return (<XPageRedirect path="/suspended" />);
             } else if (!props.isCompleted) {
                 if (props.isActivated) {
-                    return (<RedirectComponent path="/need_info" />);
+                    return (<XPageRedirect path="/need_info" />);
                 } else {
-                    return (<RedirectComponent path="/activation" />);
+                    return (<XPageRedirect path="/activation" />);
                 }
             } else {
                 return (
@@ -27,7 +27,7 @@ export function withApp(name: string, role: string | string[], WrappedComponent:
                 );
             }
         } else {
-            return (<RedirectComponent path="/signin" />);
+            return (<XPageRedirect path="/signin" />);
         }
     })));
 }

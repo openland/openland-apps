@@ -1,8 +1,8 @@
 import Glamorous from 'glamorous';
 
 import * as React from 'react';
-import { XLink, XLinkProps } from './XLink';
 import { XCloudImage } from './XCloudImage';
+import { XLink, XLinkProps } from 'openland-x/XLink';
 
 let XItemDiv = Glamorous(XLink)({
     display: 'flex',

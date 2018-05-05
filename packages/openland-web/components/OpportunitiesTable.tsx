@@ -9,7 +9,7 @@ import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
 import { XDate } from './X/XDate';
 import ATypes from 'openland-api';
-import { withRouter } from './withRouter';
+import { withRouter } from 'openland-x-routing/withRouter';
 // import { OpportunityState } from 'openland-api/Types';
 // import { OpportunitiesTable as _OpportunitiesTable } from './OpportunitiesTableUrbynReport';
 

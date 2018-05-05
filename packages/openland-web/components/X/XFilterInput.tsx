@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { withRouter, XWithRouter } from '../withRouter';
 import * as qs from 'query-string';
 import { ChangeEvent } from 'react';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 
 type XFilterInputFieldProps = { searchKey: string, placeholder?: string, className?: string } & XWithRouter;
 

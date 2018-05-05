@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
-import { canUseDOM } from '../../utils/environment';
 import Popper from 'popper.js';
 import * as classnames from 'classnames';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const showAnimationTop = glamor.keyframes({
     '0%': {

@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Routes } from '../../routes';
-import { resolveActionPath } from '../../utils/routing';
-import { XRouterReceiver } from '../routing/XRouter';
+import { XRouterReceiver } from 'openland-x-routing/XRouterReceiver';
+import { resolveActionPath } from 'openland-x-routing/resolveActionPath';
 
 export interface XLinkProps {
     path?: string | null;
@@ -137,10 +136,10 @@ export class XLink extends XRouterReceiver<XLinkProps> {
 
         // Resolving Url
         if (this.props.path) {
-            href = Routes.findAndGetUrls(this.props.path).urls.as;
+            href = this.router.resolveLink(this.props.path);
         } else if (this.props.query) {
             let path = resolveActionPath(this.props, this.router);
-            href = Routes.findAndGetUrls(path).urls.as;
+            href = this.router.resolveLink(path);
         } else if (this.props.href) {
             href = this.props.href;
             newTab = true;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
-import { withRouter, XWithRouter } from '../components/withRouter';
 import { GraphQLRoutedComponentProps } from './graphql';
 import { prepareParams } from './utils';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 
 export interface MutationParams {
     name: string;

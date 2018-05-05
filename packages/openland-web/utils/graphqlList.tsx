@@ -1,8 +1,8 @@
 import { graphql } from 'react-apollo';
 import { DocumentNode } from 'graphql';
 import { GraphQLRoutedComponentProps, NotNullableDataProps } from './graphql';
-import { withRouter, XWithRouter } from '../components/withRouter';
 import { prepareParams } from './utils';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 
 export interface ListQueryResponse<T, E> {
     items: ListQueryConnection<T> & E;

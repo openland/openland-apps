@@ -102,7 +102,7 @@ declare module 'deck.gl' {
 }
 
 declare module 'next-routes' {
-    class Routes {
+    interface Routes {
         // tslint:disable-next-line:unified-signatures
         add(name: string, pattern?: string, page?: string): Routes;
         // tslint:disable-next-line:unified-signatures

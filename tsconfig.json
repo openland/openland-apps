@@ -35,6 +35,12 @@
       ],
       "openland-x": [
         "openland-x"
+      ],
+      "openland-x-routing": [
+        "openland-x-routing"
+      ],
+      "openland-x-utils": [
+        "openland-x-utils"
       ]
     },
     "importHelpers": true
@@ -57,6 +63,8 @@
     "./packages/openland-web",
     "./packages/openland-api",
     "./packages/openland-text",
-    "./packages/openland-x"
+    "./packages/openland-x",
+    "./packages/openland-x-routing",
+    "./packages/openland-x-utils"
   ]
 }

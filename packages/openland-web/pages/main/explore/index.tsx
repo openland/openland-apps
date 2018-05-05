@@ -6,14 +6,10 @@ import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XHead } from '../../../components/X/XHead';
-import { XWithRouter, withRouter } from '../../../components/withRouter';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { trackEvent } from '../../../utils/analytics';
-import { canUseDOM } from '../../../utils/environment';
-// import { XButtonMutation } from '../../../components/X/XButtonMutation';
-// import { XWithRole } from '../../../components/X/XWithRole';
 import { Scaffold } from '../../../components/Scaffold';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { XMapCameraLocation } from '../../../components/X/XMap';
@@ -21,6 +17,8 @@ import { TextPageExplore } from 'openland-text/TextPageExplore';
 import { TextMap } from 'openland-text/TextMap';
 import { RoutedMapFilters } from '../../../components/Incubator/MapComponents/MapFilters';
 import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',

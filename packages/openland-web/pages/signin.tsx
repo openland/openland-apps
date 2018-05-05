@@ -2,18 +2,18 @@ import '../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../components/X/XHead';
-import { XLink } from '../components/X/XLink';
 import { MessagePage } from '../components/MessagePage';
 import { XCard } from '../components/X/XCard';
 import { XButton } from '../components/X/XButton';
-import { RedirectComponent } from '../components/routing/RedirectComponent';
-import { withRouter } from '../components/withRouter';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
 import { createAuth0Client } from '../utils/Auth0Client';
 import { XHorizontal } from '../components/X/XHorizontal';
 import { XInput } from '../components/X/XInput';
 import { XTrack } from '../components/X/XTrack';
+import { withRouter } from 'openland-x-routing/withRouter';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { XLink } from 'openland-x/XLink';
 
 let Signup = Glamorous.span({
     opacity: 0.7
@@ -190,13 +190,13 @@ export default withAppBase(withRouter(withUserInfo((props) => {
     // Do not edit without reason!
     if (props.isLoggedIn) {
         if (props.isBlocked) {
-            return <RedirectComponent path="/suspended" />;
+            return <XPageRedirect path="/suspended" />;
         } else if (props.isCompleted) {
-            return <RedirectComponent path="/" />;
+            return <XPageRedirect path="/" />;
         } else if (!props.isActivated) {
-            return <RedirectComponent path="/activation" />;
+            return <XPageRedirect path="/activation" />;
         } else {
-            return <RedirectComponent path="/need_info" />;
+            return <XPageRedirect path="/need_info" />;
         }
     }
 

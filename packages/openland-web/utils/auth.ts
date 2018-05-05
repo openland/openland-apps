@@ -1,5 +1,5 @@
-import { canUseDOM } from './environment';
 import * as Cookie from 'js-cookie';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 //
 // Token Loading

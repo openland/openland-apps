@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import ClickOutside from './ClickOutside';
-import { canUseDOM } from '../../utils/environment';
 import { Manager, Target, Popper } from './XPopper';
 import { XCloser } from '../X/XCloser';
 import XStyles from '../X/XStyles';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const CityTitle = Glamorous.div<{ inverted?: boolean }>((props) => ({
     cursor: 'pointer',

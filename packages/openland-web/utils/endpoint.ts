@@ -1,4 +1,4 @@
-import { canUseDOM } from './environment';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 declare global {
     interface Window { server: { endpoint: string; }; }
