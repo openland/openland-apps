@@ -2,7 +2,20 @@ const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const path = require('path');
 
 const config = {
+    pageExtensions: ['ts', 'tsx'],
     webpack(config, options) {
+
+        // // Page Extensions
+        // if (!config.pageExtensions) {
+        //     config.pageExtensions = ['jsx', 'js']
+        // }
+        // if (config.pageExtensions.indexOf('ts') === -1) {
+        //     config.pageExtensions.unshift('ts')
+        // }
+        // if (config.pageExtensions.indexOf('tsx') === -1) {
+        //     config.pageExtensions.unshift('tsx')
+        // }
+    
 
         // Enable development sourcemaps
         if (options.dev) {
@@ -72,4 +85,4 @@ const config = {
     analyzeBrowser: ["browser", "both"].includes(process.env.BUNDLE_ANALYZE)
 };
 
-module.exports = withBundleAnalyzer(config)
+module.exports =  withBundleAnalyzer(config)
