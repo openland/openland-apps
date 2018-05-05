@@ -1,3 +1,4 @@
+import '../../../globals';
 import * as React from 'react';
 import { XMapProps, XMap } from './../../../components/X/XMap';
 

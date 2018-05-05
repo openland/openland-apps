@@ -1,3 +1,4 @@
+import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';

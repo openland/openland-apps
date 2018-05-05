@@ -43,7 +43,7 @@ function isReactElement(
 }
 
 function isComponentClass(Comp: ComponentType<any>): Comp is ComponentClass<any> {
-    return (Comp.prototype && (Comp.prototype.render || Comp.prototype.isReactComponent) || Comp.name === 'ProxyFacade');
+    return (Comp.prototype && (Comp.prototype.render || Comp.prototype.isReactComponent)); // || Comp.name === 'ProxyFacade');
 }
 
 function providesChildContext(
@@ -89,49 +89,61 @@ export function walkTree<Cache>(
                 const instance = new Comp(props, context);
 
                 // Special case for fragment
-                if ((instance as any).type === Fragment) {
-                    if (visitor(element, instance, context) === false) {
-                        return;
+                // if ((instance as any).type === Fragment) {
+                //     console.warn('fragment');
+                //     console.warn(instance);
+                //     console.warn(element.props);
+                //     if (instance.props && instance.props.children) {
+                //         Children.forEach(instance.props.children, (child2: any) => {
+                //             console.warn(child2);
+                //             if (child2) {
+                //                 walkTree(child2, context, visitor);
+                //             }
+                //         });
+                //     }
+                // } else {
+                // console.warn((instance as any).type === Fragment);
+
+                // In case the user doesn't pass these to super in the constructor
+                instance.props = instance.props || props;
+                instance.context = instance.context || context;
+                // set the instance state to null (not undefined) if not set, to match React behaviour
+                instance.state = instance.state || null;
+
+                // Override setState to just change the state, not queue up an update.
+                //   (we can't do the default React thing as we aren't mounted "properly"
+                //   however, we don't need to re-render as well only support setState in
+                //   componentWillMount, which happens *before* render).
+                // console.warn('---');
+                // console.warn(Comp);
+                // console.warn(Comp.name);
+                // console.warn(instance);
+                instance.setState = newState => {
+                    if (typeof newState === 'function') {
+                        // React's TS type definitions don't contain context as a third parameter for
+                        // setState's updater function.
+                        // Remove this cast to `any` when that is fixed.
+                        newState = (newState as any)(instance.state, instance.props, instance.context);
                     }
-                } else {
-                    // console.warn((instance as any).type === Fragment);
+                    instance.state = Object.assign({}, instance.state, newState);
+                };
 
-                    // In case the user doesn't pass these to super in the constructor
-                    // instance.props = instance.props || props;
-                    // instance.context = instance.context || context;
-                    // set the instance state to null (not undefined) if not set, to match React behaviour
-                    instance.state = instance.state || null;
-
-                    // Override setState to just change the state, not queue up an update.
-                    //   (we can't do the default React thing as we aren't mounted "properly"
-                    //   however, we don't need to re-render as well only support setState in
-                    //   componentWillMount, which happens *before* render).
-                    instance.setState = newState => {
-                        if (typeof newState === 'function') {
-                            // React's TS type definitions don't contain context as a third parameter for
-                            // setState's updater function.
-                            // Remove this cast to `any` when that is fixed.
-                            newState = (newState as any)(instance.state, instance.props, instance.context);
-                        }
-                        instance.state = Object.assign({}, instance.state, newState);
-                    };
-
-                    // this is a poor man's version of
-                    //   https://github.com/facebook/react/blob/master/src/renderers/shared/stack/reconciler/ReactCompositeComponent.js#L181
-                    if (instance.componentWillMount) {
-                        instance.componentWillMount();
-                    }
-
-                    if (providesChildContext(instance)) {
-                        childContext = Object.assign({}, context, instance.getChildContext());
-                    }
-
-                    if (visitor(element, instance, context) === false) {
-                        return;
-                    }
-
-                    child = instance.render();
+                // this is a poor man's version of
+                //   https://github.com/facebook/react/blob/master/src/renderers/shared/stack/reconciler/ReactCompositeComponent.js#L181
+                if (instance.componentWillMount) {
+                    instance.componentWillMount();
                 }
+
+                if (providesChildContext(instance)) {
+                    childContext = Object.assign({}, context, instance.getChildContext());
+                }
+
+                if (visitor(element, instance, context) === false) {
+                    return;
+                }
+
+                child = instance.render();
+                // }
             } else {
 
                 // just a stateless functional

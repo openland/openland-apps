@@ -1,3 +1,4 @@
+import '../../../globals';
 import * as React from 'react';
 import glamorous from 'glamorous';
 import XStyles from '../../../components/X/XStyles';
