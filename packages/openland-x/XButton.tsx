@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XLink } from './XLink';
