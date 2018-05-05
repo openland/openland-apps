@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
-import { XButton } from '../../../components/X/XButton';
+import { XButton } from 'openland-x/XButton';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { withProspectingStats, OwnersSelect } from '../../../api';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
@@ -52,7 +52,7 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                     <ProspectingNavigation />
                     <XHeader
                         text="Incoming opportunities"
-                        description={<CapacityIndicator variables={{ state: OpportunityState.INCOMING, query: q.query }}/>}
+                        description={<CapacityIndicator variables={{ state: OpportunityState.INCOMING, query: q.query }} />}
                     >
                         <OwnersSelectStyled>
                             <OwnersSelect
@@ -62,8 +62,8 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                                 onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
                             />
                         </OwnersSelectStyled>
-                        <XButton path={'/prospecting/map' + buildQs(q.qsMap)}>Map view</XButton>
-                        <XButton style="dark" path={'/prospecting/review' + buildQs(q.qsReview)}>Begin review</XButton>
+                        <XButton size="small" path={'/prospecting/map' + buildQs(q.qsMap)}>Map view</XButton>
+                        <XButton size="small" style="primary" path={'/prospecting/review' + buildQs(q.qsReview)}>Begin review</XButton>
                     </XHeader>
 
                     <OpportunitiesTable variables={{ state: OpportunityState.INCOMING, query: q.query }}>

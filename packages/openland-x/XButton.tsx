@@ -1,8 +1,8 @@
 import Glamorous from 'glamorous';
 import { styleResolver } from 'openland-x-utils/styleResolver';
-import { XLink } from './XLink';
+import { XLink, XLinkProps } from './XLink';
 
-export interface XButtonProps {
+export interface XButtonProps extends XLinkProps {
     size?: 'x-large' | 'large' | 'default' | 'small' | 'x-small';
     style?: 'primary' | 'danger' | 'default' | 'ghost' | 'flat';
 }
@@ -12,6 +12,7 @@ let sizeStyles = styleResolver({
         height: '56px',
         lineHeight: '56px',
         fontSize: '18px',
+        fontWeight: 500,
         paddingLeft: 32,
         paddingRight: 32,
         borderRadius: '4px'
@@ -20,6 +21,7 @@ let sizeStyles = styleResolver({
         height: '48px',
         lineHeight: '48px',
         fontSize: '18px',
+        fontWeight: 500,
         paddingLeft: 26,
         paddingRight: 26,
         borderRadius: '4px'
@@ -28,6 +30,7 @@ let sizeStyles = styleResolver({
         height: '40px',
         lineHeight: '40px',
         fontSize: '16px',
+        fontWeight: 500,
         paddingLeft: 20,
         paddingRight: 20,
         borderRadius: '4px'
@@ -36,9 +39,10 @@ let sizeStyles = styleResolver({
         height: '32px',
         lineHeight: '32px',
         fontSize: '14px',
+        fontWeight: 500,
         paddingLeft: 14,
         paddingRight: 14,
-        borderRadius: '3px'
+        borderRadius: '4px'
     },
     'x-small': {
         height: '24px',
