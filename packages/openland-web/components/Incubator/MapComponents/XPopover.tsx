@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import ClickOutside from '../ClickOutside';
-import { canUseDOM } from '../../../utils/environment';
+import { canUseDOM } from '../../../../openland-x-utils/canUseDOM';
 import { Manager, Target, Popper } from '../XPopper';
 
 export class PopperElement extends React.Component<({ children: any })> {
