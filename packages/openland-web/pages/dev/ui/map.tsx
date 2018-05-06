@@ -184,8 +184,8 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
             <XMapContainer>
                 <XMapContainer2>
                     <Shadow active={this.state.shadowed} />
-                    <RoutedMapFilters shadowHandler={this.requestShadow}/>
-                    <CitySelector title={cityName} shadowHandler={this.requestShadow}>
+                    <RoutedMapFilters />
+                    <CitySelector title={cityName} >
                         <CitySelector.Item
                             query={{ field: 'city', value: 'sf' }}
                             active={city === 'sf'}

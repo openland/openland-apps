@@ -106,10 +106,10 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
 
     handleClose = (self?: any) => {
         let target = (self instanceof Filter) ? self : this;
+        if (target.props.handler !== undefined) { target.props.handler(false, target); }
         target.setState({
             class: 'hide',
         });
-        if (target.props.handler !== undefined) { target.props.handler(false, target); }
         setTimeout(
             () => {
                 target.setState({
