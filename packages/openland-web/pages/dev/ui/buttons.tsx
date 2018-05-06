@@ -16,19 +16,28 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                 <XVertical>
                     <XTitle>Sizes</XTitle>
                     <XHorizontal>
-                        <XButton size="x-large">x-large</XButton>
-                        <XButton size="large">large</XButton>
-                        <XButton>default</XButton>
-                        <XButton size="small">small</XButton>
-                        <XButton size="x-small">x-small</XButton>
+                        <XButton size="x-large" text="x-large" />
+                        <XButton size="large" text="large" />
+                        <XButton text="default" />
+                        <XButton size="small" text="small" />
+                        <XButton size="x-small" text="x-small" />
                     </XHorizontal>
                     <XTitle>Styles</XTitle>
                     <XHorizontal>
-                        <XButton style="primary">primary</XButton>
-                        <XButton style="danger">danger</XButton>
-                        <XButton>default</XButton>
-                        <XButton style="ghost">ghost</XButton>
-                        <XButton style="flat">flat</XButton>
+                        <XButton style="primary" text="primary" />
+                        <XButton style="danger" text="danger" />
+                        <XButton text="default" />
+                        <XButton style="ghost" text="ghost" />
+                        <XButton style="flat" text="flat" />
+                    </XHorizontal>
+
+                    <XTitle>Loading</XTitle>
+                    <XHorizontal>
+                        <XButton style="primary" loading={true} text="primary" />
+                        <XButton style="danger" loading={true} text="danger" />
+                        <XButton loading={true} text="default" />
+                        <XButton style="ghost" loading={true} text="ghost" />
+                        <XButton style="flat" loading={true} text="flat" />
                     </XHorizontal>
 
                     <XTitle>Classic</XTitle>

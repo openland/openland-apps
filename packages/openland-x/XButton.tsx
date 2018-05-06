@@ -2,8 +2,11 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XLink, XLinkProps } from './XLink';
+import { XLoadingCircular } from './XLoadingCircular';
 
 export interface XButtonProps extends XLinkProps {
+    loading?: boolean;
+    text?: string;
     size?: 'x-large' | 'large' | 'default' | 'small' | 'x-small';
     style?: 'primary' | 'danger' | 'default' | 'ghost' | 'flat';
 }
@@ -117,12 +120,18 @@ const StyledButton = Glamorous<XButtonProps>(XLink)([
             transform: 'translateY(-1px)',
         }
     },
+    (props) => (props.loading && { '& > span': { opacity: 0 } } || {}),
     (props) => colorStyles(props.style),
     (props) => sizeStyles(props.size),
 ]);
 
 export class XButton extends React.PureComponent<XButtonProps> {
     render() {
-        return (<StyledButton {...this.props}>{this.props.children}</StyledButton>);
+        return (
+            <StyledButton {...this.props}>
+                <span>{this.props.text}</span>
+                {this.props.loading && <XLoadingCircular inverted={this.props.style === 'primary' || this.props.style === 'danger'} />}
+            </StyledButton>
+        );
     }
 }
