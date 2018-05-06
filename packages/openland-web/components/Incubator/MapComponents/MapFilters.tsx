@@ -499,6 +499,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
 class MapFilters extends React.Component<XWithRouter & { city?: string }, { active: boolean }> {
     shadowRequests = new Set();
     applyCallbacks: Set<Function> = new Set();
+    otherFilters: Set<string> = new Set(['isVacant', 'publicOwner', 'compatible', 'filterTransit', 'isOkForTower', 'filterOnSale', ]);
 
     constructor(props: XWithRouter & { city?: string }) {
         super(props);
@@ -534,6 +535,11 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
     }
 
     render() {
+
+        let otherActive = false;
+        for (let fieldKey of Object.keys(this.props.router.query)){
+            otherActive = otherActive || this.otherFilters.has(fieldKey);
+        }
     
         let sfOther = [];
 
@@ -601,6 +607,8 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
         if (this.props.city === 'sf') {
             other.push(...sfOther);
         }
+
+
 
         return (
             <>
@@ -731,7 +739,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     <FilterSwitcher>
                         <Filter handler={this.otherApplyHandler}>
                             <Filter.Target>
-                                <XButton>Other</XButton>
+                                <XButton style={otherActive ? 'dark' : undefined}>Other</XButton>
                             </Filter.Target>
                             <Filter.Popper>
                                 <FiltersContent>
