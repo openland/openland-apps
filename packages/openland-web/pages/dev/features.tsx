@@ -5,10 +5,10 @@ import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';
 import { withFeatureFlags, withFeatureFlagAdd } from '../../api/';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
-import { XButton } from '../../components/X/XButton';
 import { XForm } from '../../components/X/XForm';
 import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
+import { XButton } from 'openland-x/XButton';
 
 const AddFeatureForm = withFeatureFlagAdd((props) => {
     return (
@@ -32,7 +32,7 @@ export default withApp('Super Features', ['super-admin', 'software-developer'], 
             <XHeader text="Feature flags">
                 <XModalTargeted fullScreen={false} title="Adding Feature">
                     <XModalTargeted.Target>
-                        <XButton>Add Feature</XButton>
+                        <XButton text="Add Feature"/>
                     </XModalTargeted.Target>
                     <XModalTargeted.Content>
                         <AddFeatureForm />

@@ -2,7 +2,6 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
-import { XButton as XButton2 } from '../../../components/X/XButton';
 import { XVertical } from '../../../components/X/XVertical';
 import { XContent } from '../../../components/X/XContent';
 import { XButton } from 'openland-x/XButton';
@@ -48,19 +47,6 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton style="ghost" text="ghost" disabled={true} />
                         <XButton style="flat" text="flat" disabled={true} />
                     </XHorizontal>
-
-                    <XTitle>Classic</XTitle>
-                    <XButton2 alignSelf="flex-start">Default</XButton2>
-                    <XButton2 alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton2>
-
-                    <XButton2 alignSelf="flex-start" style="dark" icon="launch">icon</XButton2>
-                    <XButton2 alignSelf="flex-start" icon="close" />
-
-                    <XButton2 alignSelf="flex-start" style="dark" size="large">Large</XButton2>
-                    <XButton2 alignSelf="flex-start" style="dark" size="large" bounce={true} disabled={true}>Bounce</XButton2>
-                    <XButton2 alignSelf="flex-start" style="important">Important</XButton2>
-                    <XButton2 alignSelf="flex-start" loading={true} />
-                    <XButton2 alignSelf="flex-start" loading={true} disabled={true}>Loading</XButton2>
                 </XVertical>
             </XContent>
         </DevDocsScaffold>

@@ -4,11 +4,11 @@ import { withApp } from '../../components/withApp';
 import { withSuperAccounts, withSuperAccountAdd } from '../../api/';
 import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';
-import { XButton } from '../../components/X/XButton';
 import { XForm } from '../../components/X/XForm';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
+import { XButton } from 'openland-x/XButton';
 
 const AddAccountForm = withSuperAccountAdd((props) => {
     return (
@@ -29,7 +29,7 @@ export default withApp('Super Organizations', 'super-admin', withSuperAccounts((
             <XHeader text="Accounts" description={props.data.superAccounts.length + ' total'}>
                 <XModalTargeted fullScreen={false} title="Adding Account">
                     <XModalTargeted.Target>
-                        <XButton>Add account</XButton>
+                        <XButton text="Add account" />
                     </XModalTargeted.Target>
                     <XModalTargeted.Content>
                         <AddAccountForm />
@@ -49,7 +49,7 @@ export default withApp('Super Organizations', 'super-admin', withSuperAccounts((
                             <XTable.Cell>{v.state}</XTable.Cell>
                             <XTable.Cell>
                                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                    <XButton path={'/super/orgs/' + v.id} borderless={true}>View</XButton>
+                                    <XButton path={'/super/orgs/' + v.id} style="ghost" text="View"/>
                                 </div>
                             </XTable.Cell>
                         </XTable.Row>

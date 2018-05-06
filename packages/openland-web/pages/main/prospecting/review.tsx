@@ -31,7 +31,6 @@ import { XWithRole } from '../../../components/X/XWithRole';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';
 import { Text } from '../../../strings';
-import { XButton } from '../../../components/X/XButton';
 import { ParcelLayer } from '../../../components/ParcelLayer';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { XSwitcher } from './../../../components/X/XSwitcher';
@@ -39,6 +38,7 @@ import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XZoningMetrics } from './../../../components/X/XZoningMetrics';
 import { buildProspectingQuery } from '../../../components/prospectingQuery';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { XButton } from 'openland-x/XButton';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
@@ -243,7 +243,7 @@ const OpportunityInfo = withOpportunity((props) => {
                         description={<ParcelNumber city={props.data.alphaNextReviewOpportunity!!.parcel.city.name} id={props.data.alphaNextReviewOpportunity!!.parcel.number} />}
                         bullet={props.data.alphaNextReviewOpportunity!!.parcel.extrasOwnerPublic ? 'public' : undefined}
                     >
-                        {mapUrl && <XButton path={mapUrl} >View on map</XButton>}
+                        {mapUrl && <XButton path={mapUrl} text="View on map" />}
                         {props.data.variables.state !== 'REJECTED' && (
                             <XButtonMutation
                                 variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}

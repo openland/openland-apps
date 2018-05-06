@@ -4,11 +4,11 @@ import { withApp } from '../../components/withApp';
 import { withSuperAdmins, UserSelect, withSuperAdminAdd, withSuperAdminRemove } from '../../api/';
 import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';
-import { XButton } from '../../components/X/XButton';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XForm } from '../../components/X/XForm';
 import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
+import { XButton } from 'openland-x/XButton';
 
 const AddSuperAdminForm = withSuperAdminAdd((props) => {
     return (
@@ -52,7 +52,7 @@ export default withApp('Super Admins', 'super-admin', withSuperAdmins((props) =>
             <XHeader text="Super Admins" description={props.data.superAdmins.length + ' total'}>
                 <XModalTargeted fullScreen={false} title="Adding New Super Admin">
                     <XModalTargeted.Target>
-                        <XButton>Add New</XButton>
+                        <XButton text="Add New" />
                     </XModalTargeted.Target>
                     <XModalTargeted.Content>
                         <AddSuperAdminForm />
@@ -60,7 +60,7 @@ export default withApp('Super Admins', 'super-admin', withSuperAdmins((props) =>
                 </XModalTargeted>
                 <XModalTargeted fullScreen={false} title="Removing Super Admin">
                     <XModalTargeted.Target>
-                        <XButton>Remove Exising</XButton>
+                        <XButton text="Remove Exising" />
                     </XModalTargeted.Target>
                     <XModalTargeted.Content>
                         <RemoveSuperAdminForm />

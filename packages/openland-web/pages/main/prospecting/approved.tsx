@@ -9,12 +9,12 @@ import { ProspectingNavigation } from '../../../components/ProspectingNavigation
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { OpportunityState } from 'openland-api/Types';
-import { XButton } from '../../../components/X/XButton';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { buildProspectingQuery, buildQs } from '../../../components/prospectingQuery';
 import { OwnersSelect } from '../../../api';
 import { CapacityIndicator } from '../../../components/CapacityIndicator';
 import { withRouter } from 'openland-x-routing/withRouter';
+import { XButton } from 'openland-x/XButton';
 
 let OwnersSelectStyled = Glamorous.div({
     fontSize: 14,
@@ -58,7 +58,7 @@ export default withApp('Approved opportunities', 'viewer', withRouter((props) =>
                                 onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
                             />
                         </OwnersSelectStyled>
-                        <XButton path={'/prospecting/map' + buildQs({ stage: 'approved', ...q.qsMap })}>Map view</XButton>
+                        <XButton path={'/prospecting/map' + buildQs({ stage: 'approved', ...q.qsMap })} text="Map view" />
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.APPROVED, query: q.query }} stage="approved">
                         <XCard.Empty text="No approved parcels" icon="sort" />
