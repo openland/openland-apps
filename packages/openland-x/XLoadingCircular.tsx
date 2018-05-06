@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import * as glamor from 'glamor';
 import Lottie from 'react-lottie';
 
 const data = require('./anim.json');
