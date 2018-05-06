@@ -78,7 +78,7 @@ export function DealForm(props: { mutation: MutationFunc<{}>, defaultValues?: { 
                 <XForm.Text field="extrasLotSize" />
             </XForm.Field>
             <XCard.Footer>
-                <XForm.Submit style="dark">{props.defaultValues ? 'Save' : 'Add'}</XForm.Submit>
+                <XForm.Submit style="primary" text={props.defaultValues ? 'Save' : 'Add'}/>
             </XCard.Footer>
         </XForm>
     );

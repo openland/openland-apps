@@ -3,11 +3,11 @@ import * as PropTypes from 'prop-types';
 import Glamorous from 'glamorous';
 import { XVertical } from './XVertical';
 import { MutationFunc } from 'react-apollo';
-import { XButton } from './XButton';
 import { XCard } from './XCard';
 import { XInput } from './XInput';
 import { Router } from '../../routes';
 import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
+import { XButton, XButtonProps } from 'openland-x/XButton';
 
 let InputsStyle = {
     borderRadius: 4,
@@ -406,14 +406,14 @@ export class XFormSelectField extends React.Component<XFormSelectFieldProps, { v
     }
 }
 
-interface XFormSubmitProps {
-    alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
-    style?: 'normal' | 'dark' | 'important';
-    size?: 'large' | 'normal';
-    bounce?: boolean;
-    loading?: boolean;
-    disabled?: boolean;
-    icon?: string;
+interface XFormSubmitProps extends XButtonProps {
+    // alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
+    // style?: 'normal' | 'dark' | 'important';
+    // size?: 'large' | 'normal';
+    // bounce?: boolean;
+    // loading?: boolean;
+    // disabled?: boolean;
+    // icon?: string;
 }
 
 export class XFormSubmit extends React.Component<XFormSubmitProps> {

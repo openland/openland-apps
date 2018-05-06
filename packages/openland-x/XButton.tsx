@@ -3,12 +3,16 @@ import Glamorous from 'glamorous';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XLink, XLinkProps } from './XLink';
 import { XLoadingCircular } from './XLoadingCircular';
+import { XLayoutProps, applyFlex } from './Flex';
 
-export interface XButtonProps extends XLinkProps {
-    loading?: boolean;
+export interface XButtonStyleProps extends XLayoutProps {
     text?: string;
     size?: 'x-large' | 'large' | 'medium' | 'default' | 'small';
     style?: 'primary' | 'danger' | 'default' | 'ghost' | 'flat';
+}
+
+export interface XButtonProps extends XButtonStyleProps, XLinkProps {
+    loading?: boolean;
 }
 
 let sizeStyles = styleResolver({
@@ -210,6 +214,7 @@ const StyledButton = Glamorous<XButtonProps>(XLink)([
     (props) => colorDisabledStyles(props.style, props.disabled),
     (props) => loaderStyles(props.style),
     (props) => sizeStyles(props.size),
+    (props) => applyFlex(props)
 ]);
 
 export class XButton extends React.PureComponent<XButtonProps> {

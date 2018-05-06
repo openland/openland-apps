@@ -20,7 +20,7 @@ const AddFeatureForm = withFeatureFlagAdd((props) => {
                 <XForm.Text field="title" placeholder="ex. Advanced Feature" />
             </XForm.Field>
             <XCard.Footer>
-                <XForm.Submit style="dark">Add</XForm.Submit>
+                <XForm.Submit style="primary" text="Add"/>
             </XCard.Footer>
         </XForm>
     );

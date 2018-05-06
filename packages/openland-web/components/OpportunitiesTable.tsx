@@ -3,13 +3,13 @@ import { withSourcing, withSourcingAll } from '../api';
 import { XCard } from './X/XCard';
 import { XTable } from './X/XTable';
 import { XModalRouted } from './X/XModalRouted';
-import { XButton } from './X/XButton';
 import { XArea } from './X/XArea';
 import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
 import { XDate } from './X/XDate';
 import ATypes from 'openland-api';
 import { withRouter } from 'openland-x-routing/withRouter';
+import { XButton } from 'openland-x/XButton';
 // import { OpportunityState } from 'openland-api/Types';
 // import { OpportunitiesTable as _OpportunitiesTable } from './OpportunitiesTableUrbynReport';
 
@@ -73,7 +73,7 @@ export const ExportModal = withSourcingAll(withRouter((props) => {
     };
     return (
         <XCard.Loader loading={(props.data.loading || false)}>
-            <XButton style="dark" onClick={exportCVS}>{'Download' + props.data.variables + '.csv'}</XButton>
+            <XButton style="primary" onClick={exportCVS} text={'Download' + props.data.variables + '.csv'} />
         </XCard.Loader>
 
     );
@@ -183,10 +183,10 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
     return (
         <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
             <XModalRouted title="Export to CVS" query="export">
-                <ExportModal 
-                 variables={(props as any).variables}
-                 // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined, first: 10 }}
-                 stage="unit"/>
+                <ExportModal
+                    variables={(props as any).variables}
+                    // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined, first: 10 }}
+                    stage="unit" />
                 {/* <_OpportunitiesTable
                     variables={(props as any).variables}
                     // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic) }}
@@ -265,14 +265,14 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                     </XTable>
                     <XCard.Footer text={props.data.alphaOpportunities.pageInfo.itemsCount + ' items'}>
                         {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
-                            <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }}>Prev</XButton>
+                            <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }} text="Prev"/>
                         )}
                         {(props.data.alphaOpportunities.pageInfo.currentPage < props.data.alphaOpportunities.pageInfo.pagesCount - 1) && (
-                            <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</XButton>
+                            <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }} text="Next"/>
                         )}
                         <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
                             {/* <XButton query={{ field: 'export', value: 'true' }} style="dark">Export</XButton> */}
-                            <XButton onClick={exportCVS} style="dark">Export page</XButton>                            
+                            <XButton onClick={exportCVS} style="primary" text="Export page"/>
                         </XWithRole>
 
                     </XCard.Footer>

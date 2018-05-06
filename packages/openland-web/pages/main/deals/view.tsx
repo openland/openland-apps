@@ -3,12 +3,10 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withDeal, withDealAlterCombined, withDealRemove } from '../../../api/';
 import { XCard } from '../../../components/X/XCard';
-import { XButton } from '../../../components/X/XButton';
 import { DealForm } from '../../../components/DealForm';
 import { XHead } from '../../../components/X/XHead';
 import { XModalRouted } from '../../../components/X/XModalRouted';
 import { XMoney } from '../../../components/X/XMoney';
-import { XButtonMutation } from '../../../components/X/XButtonMutation';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { XArea } from '../../../components/X/XArea';
@@ -31,6 +29,8 @@ import { XTitle } from '../../../components/X/XTitle';
 import { XVertical } from '../../../components/X/XVertical';
 import { ParcelNumber } from '../../../components/ParcelNumber';
 import { XLink } from 'openland-x/XLink';
+import { XButton } from 'openland-x/XButton';
+import { XButtonMutation } from 'openland-x/XButtonMutation';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -40,7 +40,7 @@ const DealsForm = withDealAlterCombined((props) => (
 ));
 
 const RemoveButton = withDealRemove((props) => {
-    return (<XButtonMutation mutation={props.remove}>Remove</XButtonMutation>);
+    return (<XButtonMutation mutation={props.remove} style="danger" text="Remove" />);
 });
 
 export default withApp('Deal', 'viewer', withDeal((props) => {
@@ -82,7 +82,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                         <XWithRole role="super-admin">
                             <RemoveButton />
                         </XWithRole>
-                        <XButton query={{ field: 'edit', value: 'true' }}>Edit</XButton>
+                        <XButton query={{ field: 'edit', value: 'true' }} text="Edit" />
                     </XHeader>
                     {/* <XCard shadow="medium" separators={true}> */}
                     <XCard.PropertyColumns>

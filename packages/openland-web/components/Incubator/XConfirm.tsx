@@ -3,8 +3,8 @@ import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import ClickOutside from './ClickOutside';
 import { Manager, Target, Popper } from './XPopper';
-import { XButton } from '../X/XButton';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XButton } from 'openland-x/XButton';
 
 const ConfirmWrapper = Glamorous.div({
     display: 'flex',
@@ -39,24 +39,28 @@ export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: str
         this.setState({
             class: 'hide',
         });
-        setTimeout(() => {
-            this.setState({
-                class: 'hide',
-                popper: false
-            });
-        },         200);
+        setTimeout(
+            () => {
+                this.setState({
+                    class: 'hide',
+                    popper: false
+                });
+            },
+            200);
     }
 
     handleClose = (e: any) => {
         this.setState({
             class: 'hide',
         });
-        setTimeout(() => {
-            this.setState({
-                class: 'hide',
-                popper: false
-            });
-        },         200);
+        setTimeout(
+            () => {
+                this.setState({
+                    class: 'hide',
+                    popper: false
+                });
+            },
+            200);
     }
 
     render() {
@@ -65,16 +69,23 @@ export class XConfirm extends React.Component<ConfirmPopoverProps, { class?: str
             <Popper placement="top" class={this.state.class}>
                 <div style={{ marginBottom: 6 }}>Confirm action</div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <XButton onClick={(e) => {
-                        e.preventDefault();
-                        this.handleHide();
-                    }}>Cancel</XButton>
+                    <XButton
+                        text="Cancel"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            this.handleHide();
+                        }}
+                    />
                     <div style={{ width: 8 }} />
-                    <XButton style="important" onClick={(e) => {
-                        e.preventDefault();
-                        this.props.onConfirm();
-                        this.handleHide();
-                    }}>Confirm</XButton>
+                    <XButton
+                        style="primary"
+                        text="Comfirm"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            this.props.onConfirm();
+                            this.handleHide();
+                        }}
+                    />
                 </div>
             </Popper>
         );

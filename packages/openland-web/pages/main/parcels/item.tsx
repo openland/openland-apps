@@ -217,7 +217,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                     <XForm.TextArea field="notes" placeholder="Notes" />
                                 </XContent>
                                 <XForm.Footer>
-                                    <XForm.Submit style="dark">Save</XForm.Submit>
+                                    <XForm.Submit style="primary" text="Save" />
                                 </XForm.Footer>
                             </XForm>
                         </>)}

@@ -27,7 +27,7 @@ const AddSuperAdminForm = withSuperAdminAdd((props) => {
                 />
             </XForm.Field>
             <XCard.Footer>
-                <XForm.Submit style="dark">Add</XForm.Submit>
+                <XForm.Submit style="primary" text="Add" />
             </XCard.Footer>
         </XForm>
     );
@@ -40,7 +40,7 @@ const RemoveSuperAdminForm = withSuperAdminRemove((props) => {
                 <XForm.Select field="userId" component={UserSelect} />
             </XForm.Field>
             <XCard.Footer>
-                <XForm.Submit style="dark">Remove</XForm.Submit>
+                <XForm.Submit style="primary" text="Remove" />
             </XCard.Footer>
         </XForm>
     );

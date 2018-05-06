@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCard } from './X/XCard';
 import { withParcelDirect } from '../api';
-import { XButton } from './X/XButton';
+import { XButton as XButtonOld } from './X/XButton';
 import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { XDistance } from './X/XDistance';
@@ -23,6 +23,7 @@ import { Text } from '../strings';
 import { XIcon } from 'openland-x/XIcon';
 import { XHeader } from './X/XHeader';
 import { ParcelNumber } from './ParcelNumber';
+import { XButton } from 'openland-x/XButton';
 
 let panelWidth = 324;
 
@@ -94,7 +95,7 @@ export const ParcelCard = withParcelDirect((props) => {
                             bullet={props.data!!.item!!.extrasOwnerPublic ? 'public' : (props.data!!.item!!.metadata.available ? 'ON SALE' : undefined)}
                             style="compact"
                         >
-                            <XButton borderless={true} size="large" query={{ field: 'selectedParcel' }} icon="clear" />
+                            <XButtonOld borderless={true} size="large" query={{ field: 'selectedParcel' }} icon="clear" />
                         </XHeader>
                         {props.data!!.item!!.geometry && (
                             <XCard.Content>
@@ -107,18 +108,16 @@ export const ParcelCard = withParcelDirect((props) => {
                         <XCard.Content>
                             <XHorizontal>
                                 <XButton
+                                    text="Details"
                                     path={'/parcels/' + props.data.item!!.id}
                                     size="medium"
                                     flexGrow={1}
                                     flexBasis={0}
-                                >
-                                    Details
-                                </XButton>
+                                />
                                 <XView grow={1} basis={0}>
                                     <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']} negate={true}>
                                         <XButton
-                                            accent={true}
-                                            icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
+                                            // icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 if (props.data!!.item!!.likes.liked) {

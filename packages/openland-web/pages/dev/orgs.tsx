@@ -17,7 +17,7 @@ const AddAccountForm = withSuperAccountAdd((props) => {
                 <XForm.Text field="title" />
             </XForm.Field>
             <XCard.Footer>
-                <XForm.Submit style="dark">Add</XForm.Submit>
+                <XForm.Submit style="primary" text="Add"/>
             </XCard.Footer>
         </XForm>
     );
