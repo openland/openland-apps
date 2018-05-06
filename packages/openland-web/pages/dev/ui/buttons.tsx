@@ -18,9 +18,9 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                     <XHorizontal>
                         <XButton size="x-large" text="x-large" />
                         <XButton size="large" text="large" />
+                        <XButton size="medium" text="medium" />
                         <XButton text="default" />
                         <XButton size="small" text="small" />
-                        <XButton size="x-small" text="x-small" />
                     </XHorizontal>
                     <XTitle>Styles</XTitle>
                     <XHorizontal>

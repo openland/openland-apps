@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XButton } from '../../X/XButton';
 import { XCard } from '../../X/XCard';
 import { XCheckboxGroup } from 'openland-x/XCheckbox';
 import { XRadio } from 'openland-x/XRadio';
@@ -12,6 +11,7 @@ import { XHorizontal } from '../../X/XHorizontal';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { AllLandUse, AllZones, AllNYCZOnes } from './utils';
 import { XRouter } from 'openland-x-routing/XRouter';
+import { XButton } from 'openland-x/XButton';
 
 const FiltersContent = Glamorous.div({
     maxHeight: 'calc(100vh - 150px)',
@@ -361,7 +361,7 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
                     value={this.state.value}
                 />
                 {Boolean(this.props.applyButton === undefined || this.props.applyButton) && (
-                    <XButton style="dark" onClick={this.apply} >Apply</XButton>
+                    <XButton style="primary" onClick={this.apply} text="Apply" />
                 )}
             </XHorizontal>);
     }
@@ -394,7 +394,7 @@ class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?
                 <div>
                     <input type="text" onChange={this.handleChange} value={this.state.value} />
                 </div>
-                <XButton style="dark" onClick={this.apply} >Apply</XButton>
+                <XButton style="primary" onClick={this.apply} text="Apply" />
             </InlineInputWrapper>);
     }
 
@@ -436,7 +436,7 @@ class AreaFiltersContent extends React.Component<XWithRouter> {
                         The land with the objects used under the
                         <br />l institution (Banks, sales outlets and so on)
                     </FilterDescription>
-                    <XButton autoClose={true} style="dark" onClick={this.apply}>Apply</XButton>
+                    <XButton autoClose={true} style="primary" onClick={this.apply} text="Apply" />
                 </FIlterDescriptionWrapper>
             </FiltersContent>);
     }
@@ -614,7 +614,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     <FilterSwitcher>
                         <Filter handler={this.shadowHandler}>
                             <Filter.Target>
-                                <XButton style={this.props.router.query.ownerName !== undefined ? 'dark' : undefined}>Owner name</XButton>
+                                <XButton style={this.props.router.query.ownerName !== undefined ? 'primary' : 'ghost'} text="Owner name" />
                             </Filter.Target>
                             <Filter.Popper>
                                 <OwnerNameFiltersContent
@@ -626,7 +626,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                         {this.props.city === 'sf' && (
                             <Filter handler={this.shadowHandler}>
                                 <Filter.Target>
-                                    <XButton style={this.props.router.query.filterZoning !== undefined ? 'dark' : undefined}>Zoning</XButton>
+                                    <XButton style={this.props.router.query.filterZoning !== undefined ? 'primary' : 'ghost'} text="Zoning" />
                                 </Filter.Target>
                                 <Filter.Popper>
                                     <Selector
@@ -643,7 +643,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                         {this.props.city === 'nyc' && (
                             <Filter handler={this.shadowHandler}>
                                 <Filter.Target>
-                                    <XButton style={this.props.router.query.filterZoning !== undefined ? 'dark' : undefined}>Zoning</XButton>
+                                    <XButton style={this.props.router.query.filterZoning !== undefined ? 'primary' : 'ghost'} text="Zoning" />
                                 </Filter.Target>
                                 <Filter.Popper>
                                     <Selector
@@ -664,7 +664,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                             <FilterSwitcher>
                                 <Filter handler={this.applyHandler}>
                                     <Filter.Target>
-                                        <XButton style={this.props.router.query.filterLandUse !== undefined ? 'dark' : undefined}>{filterLandUseTitle}</XButton>
+                                        <XButton style={this.props.router.query.filterLandUse !== undefined ? 'primary' : 'ghost'} text={filterLandUseTitle} />
                                     </Filter.Target>
                                     <Filter.Popper>
                                         <ApplyFilterWrap fieldName="filterLandUse" applyCallbacks={this.applyCallbacks} router={this.props.router}>
@@ -679,7 +679,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                             <FilterSwitcher>
                                 <Filter handler={this.applyHandler}>
                                     <Filter.Target>
-                                        <XButton style={this.props.router.query.filterStories !== undefined ? 'dark' : undefined}>{filterStoriesTitle}</XButton>
+                                        <XButton style={this.props.router.query.filterStories !== undefined ? 'primary' : 'ghost'} text={filterStoriesTitle} />
                                     </Filter.Target>
                                     <Filter.Popper>
                                         <ApplyFilterWrap fieldName="filterStories" applyCallbacks={this.applyCallbacks} router={this.props.router}>
@@ -699,7 +699,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                             <FilterSwitcher>
                                 <Filter handler={this.applyHandler}>
                                     <Filter.Target>
-                                        <XButton style={this.props.router.query.filterCurrentUse !== undefined ? 'dark' : undefined}>{filterCurrentUseTitle}</XButton>
+                                        <XButton style={this.props.router.query.filterCurrentUse !== undefined ? 'primary' : 'ghost'} text={filterCurrentUseTitle} />
                                     </Filter.Target>
                                     <Filter.Popper>
                                         <ApplyFilterWrap fieldName="filterCurrentUse" applyCallbacks={this.applyCallbacks} router={this.props.router}>
@@ -716,7 +716,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     <FilterSwitcher>
                         <Filter handler={this.shadowHandler}>
                             <Filter.Target>
-                                <XButton style={this.props.router.query.area !== undefined ? 'dark' : undefined}>Area</XButton>
+                                <XButton style={this.props.router.query.area !== undefined ? 'primary' : 'ghost'} text="Area" />
                             </Filter.Target>
                             <Filter.Popper>
                                 <AreaFiltersContent
@@ -729,7 +729,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     <FilterSwitcher>
                         <Filter handler={this.applyHandler}>
                             <Filter.Target>
-                                <XButton style={otherActive ? 'dark' : undefined}>Other</XButton>
+                                <XButton style={otherActive ? 'primary' : 'ghost'} text="Other" />
                             </Filter.Target>
                             <Filter.Popper>
                                 <FiltersContent>

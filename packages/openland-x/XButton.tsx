@@ -7,7 +7,7 @@ import { XLoadingCircular } from './XLoadingCircular';
 export interface XButtonProps extends XLinkProps {
     loading?: boolean;
     text?: string;
-    size?: 'x-large' | 'large' | 'default' | 'small' | 'x-small';
+    size?: 'x-large' | 'large' | 'medium' | 'default' | 'small';
     style?: 'primary' | 'danger' | 'default' | 'ghost' | 'flat';
 }
 
@@ -30,7 +30,7 @@ let sizeStyles = styleResolver({
         paddingRight: 26,
         borderRadius: '4px'
     },
-    'default': {
+    'medium': {
         height: '40px',
         lineHeight: '40px',
         fontSize: '16px',
@@ -39,7 +39,7 @@ let sizeStyles = styleResolver({
         paddingRight: 20,
         borderRadius: '4px'
     },
-    'small': {
+    'default': {
         height: '32px',
         lineHeight: '32px',
         fontSize: '14px',
@@ -48,7 +48,7 @@ let sizeStyles = styleResolver({
         paddingRight: 14,
         borderRadius: '4px'
     },
-    'x-small': {
+    'small': {
         height: '24px',
         lineHeight: '24px',
         fontSize: '12px',
