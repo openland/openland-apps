@@ -251,7 +251,7 @@ const OpportunityInfo = withOpportunity((props) => {
                                 variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
                                 mutation={props.reject}
                                 onSuccess={() => {
-                                    trackEvent('Parcel Approved', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                    trackEvent('Parcel Rejected', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
                                     props.data.refetch({ forceFetch: true });
                                 }}
                             />
@@ -283,17 +283,18 @@ const OpportunityInfo = withOpportunity((props) => {
                             </XButtonMutation>
                             </XWithRole> */}
                         </>
-                        {canMoveNext && (<XButtonMutation
-                            variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
-                            mutation={props.approve}
-                            onSuccess={() => {
-                                trackEvent('Parcel Rejected', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
-                                props.data.refetch({ forceFetch: true });
-                            }}
-                            style="primary"
-                        >
-                            {approveText}
-                        </XButtonMutation>)}
+                        {canMoveNext && (
+                            <XButtonMutation
+                                text={approveText}
+                                variables={{ state: props.data.variables.state, opportunityId: props.data.alphaNextReviewOpportunity!!.id }}
+                                mutation={props.approve}
+                                onSuccess={() => {
+                                    trackEvent('Parcel Approved', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
+                                    props.data.refetch({ forceFetch: true });
+                                }}
+                                style="primary"
+                            />
+                        )}
 
                         {canReset && (<XButtonMutation
                             text="Restart review"
@@ -303,7 +304,6 @@ const OpportunityInfo = withOpportunity((props) => {
                                 trackEvent('Parsel Reset', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
                                 props.data.refetch({ forceFetch: true });
                             }}
-                            style="primary"
                         />
                         )}
                     </XHeader>
