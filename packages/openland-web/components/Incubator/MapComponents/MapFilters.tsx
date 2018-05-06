@@ -954,8 +954,7 @@ class MapFilters extends React.Component<XWithRouter & { shadowHandler: (add: bo
                                 <XButton style={this.props.router.query.ownerName !== undefined ? 'dark' : undefined}>Owner name</XButton>
                             </Filter.Target>
                             <Filter.Popper>
-                                <OwnerNameFiltersContent
-                                />
+                                <OwnerNameFiltersContent />
                             </Filter.Popper>
                         </Filter>
                     </FilterSwitcher>

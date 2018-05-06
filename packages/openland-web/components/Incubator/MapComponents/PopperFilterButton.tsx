@@ -53,7 +53,7 @@ interface ConfirmPopoverProps {
     handler: Function;
 }
 
-export class Filter extends React.Component<ConfirmPopoverProps, { class?: string, popper?: boolean }> {
+export class Filter extends React.Component<ConfirmPopoverProps, { popper?: boolean }> {
     static Popper = PopperElement;
     static Target = TargetElement;
     static active = new Set();
@@ -68,7 +68,6 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
         super(props);
 
         this.state = {
-            class: 'hide',
             popper: false
         };
 
@@ -77,21 +76,12 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
 
     handleShow() {
         if (this.state.popper === true) {
-            this.setState({
-                class: 'hide',
-            });
             if (this.props.handler !== undefined) { this.props.handler(false, this); }
-            setTimeout(
-                () => {
-                    this.setState({
-                        class: '',
-                        popper: false
-                    });
-                },
-                200);
+            this.setState({
+                popper: false
+            });
         } else {
             this.setState({
-                class: 'show',
                 popper: true
             });
             if (this.props.handler !== undefined) { this.props.handler(true, this); }
@@ -106,18 +96,10 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
 
     handleClose = (self?: any) => {
         let target = (self instanceof Filter) ? self : this;
-        target.setState({
-            class: 'hide',
-        });
         if (target.props.handler !== undefined) { target.props.handler(false, target); }
-        setTimeout(
-            () => {
-                target.setState({
-                    class: 'hide',
-                    popper: false
-                });
-            },
-            200);
+        target.setState({
+            popper: false
+        });
         Filter.active.delete(target);
     }
 
@@ -142,7 +124,7 @@ export class Filter extends React.Component<ConfirmPopoverProps, { class?: strin
             <ClickOutside onClickOutside={this.handleClose}>
                 <div style={{ display: 'flex', alignSelf: 'flex-start' }}>
                     <PopperComponent>
-                        <Popper placement="top" class={this.state.class} autoWidth={true} updated={false}>
+                        <Popper placement="top" class="static" autoWidth={true} updated={false}>
                             {popper}
                         </Popper>
                     </PopperComponent>

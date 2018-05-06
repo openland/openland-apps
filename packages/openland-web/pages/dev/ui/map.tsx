@@ -10,7 +10,7 @@ import { XMapSource } from '../../../components/X/XMapSource';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 // import { XHorizontal } from '../../../components/X/XHorizontal';
 // import { XButton } from '../../../components/X/XButton';
-import { ParcelCard } from '../../../components/ParcelCard';
+import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { XSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
@@ -76,7 +76,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     transition: 'all 220ms',
     backgroundColor: 'rgba(0, 0, 0, 0.41)',
     zIndex: 2,
-    pointerEvents: 'none'
+    // pointerEvents: 'none'
 }));
 
 const FilterHeaderSubtitle = Glamorous.div({
@@ -188,13 +188,11 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
                         <CitySelector.Item
                             query={{ field: 'city', value: 'sf' }}
                             active={city === 'sf'}
-                            autoClose={true}
                             label="San Francisco"
                         />
                         <CitySelector.Item
                             query={{ field: 'city', value: 'nyc' }}
                             active={city !== 'sf'}
-                            autoClose={true}
                             label="New York"
                         />
                         <FilterComponent

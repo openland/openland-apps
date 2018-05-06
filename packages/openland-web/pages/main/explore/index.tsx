@@ -110,7 +110,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     transition: 'all 220ms',
     backgroundColor: 'rgba(0, 0, 0, 0.41)',
     zIndex: 2,
-    pointerEvents: 'none'
+    // pointerEvents: 'none'
 }));
 
 // const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Add to prospecting</XButtonMutation>);
@@ -262,13 +262,11 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 <CitySelector.Item
                                     query={{ field: 'city', value: 'sf' }}
                                     active={city === 'sf'}
-                                    autoClose={true}
                                     label="San Francisco"
                                 />
                                 <CitySelector.Item
                                     query={{ field: 'city', value: 'nyc' }}
                                     active={city !== 'sf'}
-                                    autoClose={true}
                                     label="New York"
                                 />
                                 <FilterComponent

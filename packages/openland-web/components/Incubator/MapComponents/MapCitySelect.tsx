@@ -135,8 +135,13 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { active:
     }
 
     activate = () => {
-        this.setState({ active: true });
-        this.props.shadowHandler(true, this);
+        if (this.state.active === false) {
+            this.setState({ active: true });
+            this.props.shadowHandler(true, this);
+        } else {
+            this.setState({ active: false });
+            this.props.shadowHandler(false, this);
+        }
     }
 
     disable = () => {
@@ -151,7 +156,7 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { active:
 
         for (let i of React.Children.toArray(this.props.children)) {
             if (React.isValidElement(i) && (i.props as any)._isCitySelectorElement === true) {
-                items.push(i);
+                items.push(React.cloneElement(i as any, { onClick: this.disable }));
             } else {
                 children.push(i);
             }

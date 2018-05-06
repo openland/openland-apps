@@ -32,22 +32,31 @@ const HidenComponents = Glamorous.div<{ loading?: boolean }>((props) => ({
     opacity: props.loading ? 0 : 1,
     '& *': {
         cursor: props.loading ? 'default' : undefined
-    }
+    },
 }));
 
-const XCardLoaderDiv = Glamorous.div({
+const XCardLoaderDiv = Glamorous.div<{ loading?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
-    position: 'relative'
+    position: 'relative',
+    flexGrow: props.loading ? 1 : undefined,
+    pointerEvents: props.loading ? 'none' : undefined
+}));
+
+const ContentCloser = Glamorous.div({
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0
 });
 
-export function XCardLoader(props: { children?: any, loading?: boolean, className?: string }) {
-    return (
-        <XCardLoaderDiv className={props.className}>
-            {props.loading && <LoadingDiv><ItemIcon icon="cached" /></LoadingDiv>}
-            <HidenComponents loading={props.loading}>
-                {props.children}
-            </HidenComponents>
-        </XCardLoaderDiv>
-    );
-}
+export const XCardLoader = (props: { children?: any, loading?: boolean }) => (
+    <XCardLoaderDiv loading={props.loading}>
+        {props.loading && <LoadingDiv><ItemIcon icon="cached" /></LoadingDiv>}
+        <HidenComponents loading={props.loading}>
+            {props.children}
+            {props.loading && <ContentCloser />}
+        </HidenComponents>
+    </XCardLoaderDiv>
+);

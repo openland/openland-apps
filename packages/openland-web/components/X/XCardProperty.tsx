@@ -57,8 +57,8 @@ let XCardFieldValue = Glamorous.div({
 let XCardPropertyListDiv = Glamorous.div<{ width?: number }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
-    paddingTop: '12px',
-    paddingBottom: '12px',
+    paddingTop: 12,
+    paddingBottom: 12,
     width: props.width
 }));
 
@@ -91,33 +91,27 @@ let XCardPropertySubTitle = Glamorous.div<{ compact?: boolean }>((props) => ({
     paddingRight: props.compact ? 16 : 24,
     textAlign: 'left',
     color: '#262626',
-    marginBottom: 8
+    marginBottom: 10
 }));
 
-export function XCardPropertyColumns(props: { children: any, wrap?: boolean, grow?: number }) {
-    return (
-        <XCardPropertyColumsDiv fwrap={props.wrap}>
-            {React.Children.toArray(props.children).map((v, i) => (
-                <XCardPropertyColumnsContainerDiv key={'chilren_' + i} grow={props.grow}>{v}</XCardPropertyColumnsContainerDiv>
-            ))}
-        </XCardPropertyColumsDiv>
-    );
-}
+export const XCardPropertyColumns = (props: { children: any, wrap?: boolean, grow?: number }) => (
+    <XCardPropertyColumsDiv fwrap={props.wrap}>
+        {React.Children.toArray(props.children).map((v, i) => (
+            <XCardPropertyColumnsContainerDiv key={'chilren_' + i} grow={props.grow}>{v}</XCardPropertyColumnsContainerDiv>
+        ))}
+    </XCardPropertyColumsDiv>
+);
 
-export function XCardPropertyList(props: { children: any, title?: string, compact?: boolean, width?: number, subtitle?: boolean }) {
-    return (
-        <XCardPropertyListDiv width={props.width}>
-            {props.title && (props.subtitle ? (<XCardPropertySubTitle compact={props.compact}>{props.title} </XCardPropertySubTitle>) : (<XCardPropertyTitle compact={props.compact}>{props.title} </XCardPropertyTitle>))}
-            {props.children}
-        </XCardPropertyListDiv>
-    );
-}
+export const XCardPropertyList = (props: { children: any, title?: string, compact?: boolean, width?: number, subtitle?: boolean }) => (
+    <XCardPropertyListDiv width={props.width}>
+        {props.title && (props.subtitle ? (<XCardPropertySubTitle compact={props.compact}>{props.title} </XCardPropertySubTitle>) : (<XCardPropertyTitle compact={props.compact}>{props.title} </XCardPropertyTitle>))}
+        {props.children}
+    </XCardPropertyListDiv>
+);
 
-export function XCardProperty(props: { children: any, title?: string, width?: number, compact?: boolean, divider?: boolean }) {
-    return (
-        <XCardFieldContainer compact={props.compact} divider={props.divider}>
-            {props.title && (<XCardFieldTitle width={props.width}>{props.title}</XCardFieldTitle>)}
-            {React.Children.count(props.children) > 0 && <XCardFieldValue>{props.children}</XCardFieldValue>}
-        </XCardFieldContainer>
-    );
-}
+export const XCardProperty = (props: { children: any, title?: string, width?: number, compact?: boolean, divider?: boolean }) => (
+    <XCardFieldContainer compact={props.compact} divider={props.divider}>
+        {props.title && (<XCardFieldTitle width={props.width}>{props.title}</XCardFieldTitle>)}
+        {React.Children.count(props.children) > 0 && <XCardFieldValue>{props.children}</XCardFieldValue>}
+    </XCardFieldContainer>
+);
