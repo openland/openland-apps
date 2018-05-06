@@ -20,10 +20,10 @@ import { XLink } from 'openland-x/XLink';
 // Basic Row
 //
 
-const loading = glamor.keyframes({
-    '0%': { transform: `rotate(0deg)` },
-    '100%': { transform: `rotate(360deg)` }
-});
+// const loading = glamor.keyframes({
+//     '0%': { transform: `rotate(0deg)` },
+//     '100%': { transform: `rotate(360deg)` }
+// });
 
 export const XCardRowDiv = Glamorous(XRow)({
     height: 82,
