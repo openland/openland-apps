@@ -15,6 +15,7 @@ export interface XLinkProps {
     autoClose?: boolean;
     active?: boolean;
     as?: React.ComponentType<XLinkRender>;
+    disabled?: boolean;
 }
 
 function normalizePath(src: string): string {
@@ -88,6 +89,11 @@ export class XLink extends React.Component<XLinkProps> {
 
     onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
 
+        // Ignore if disabled
+        if (this.props.disabled) {
+            return;
+        }
+
         // Ignore click for new tab / new window behavior
         // if clicked node is anchor element
         if (e.currentTarget.nodeName === 'A' &&
@@ -153,6 +159,11 @@ export class XLink extends React.Component<XLinkProps> {
                     } else if (this.props.href) {
                         href = this.props.href;
                         newTab = true;
+                    }
+
+                    if (this.props.disabled) {
+                        href = '#';
+                        isActive = false;
                     }
 
                     let Render: React.ComponentType<XLinkRender> = XLinkAnchorRender;

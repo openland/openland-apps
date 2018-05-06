@@ -1,31 +1,7 @@
-import * as React from 'react';
 import Glamorous from 'glamorous';
-import Lottie from 'react-lottie';
+import { XAnimation } from './XAnimation';
 
-const data = require('./anim.json');
-
-function Loader(props: { className?: string, inverted?: boolean }) {
-    return (
-        <div className={props.className}>
-            <Lottie
-                options={{
-                    loop: true,
-                    autoplay: true,
-                    animationData: data,
-                    rendererSettings: {
-                        preserveAspectRatio: 'xMidYMid meet'
-                    }
-                }}
-                width={20}
-                height={20}
-                isStopped={false}
-                isPaused={false}
-            />
-        </div>
-    );
-}
-
-export const XLoadingCircular = Glamorous(Loader)({
+export const XLoadingCircular = Glamorous<{ inverted?: boolean }>(XAnimation(require('./animations/loading_circular.json')))((props) => ({
     display: 'block',
     position: 'absolute',
     width: '20px',
@@ -33,4 +9,5 @@ export const XLoadingCircular = Glamorous(Loader)({
     lineHeight: '20px',
     left: 'calc(50% - 10px)',
     top: 'calc(50% - 10px)',
-});
+    'svg *': { fill: '#ff0000'}
+}));

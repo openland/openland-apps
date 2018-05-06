@@ -5,7 +5,10 @@ export class StyleMap {
     constructor(styles: { [key: string]: CSSProperties }) {
         this.styles = styles;
     }
-    resolve = (key?: string) => {
+    resolve = (key?: string, condition?: boolean) => {
+        if (condition === false) {
+            return {} as CSSProperties;
+        }
         let k = key || 'default';
         return (this.styles[k] || this.styles.default || {}) as CSSProperties;
     }

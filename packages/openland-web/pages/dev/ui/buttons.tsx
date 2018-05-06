@@ -40,6 +40,15 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton style="flat" loading={true} text="flat" />
                     </XHorizontal>
 
+                    <XTitle>Disabled</XTitle>
+                    <XHorizontal>
+                        <XButton style="primary" text="primary" disabled={true} />
+                        <XButton style="danger" text="danger" disabled={true} />
+                        <XButton text="default" disabled={true} />
+                        <XButton style="ghost" text="ghost" disabled={true} />
+                        <XButton style="flat" text="flat" disabled={true} />
+                    </XHorizontal>
+
                     <XTitle>Classic</XTitle>
                     <XButton2 alignSelf="flex-start">Default</XButton2>
                     <XButton2 alignSelf="flex-start" style="dark" disabled={true}>Bordered</XButton2>
