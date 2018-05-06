@@ -30,6 +30,7 @@ export const XLoadingCircular = Glamorous(Loader)({
     position: 'absolute',
     width: '20px',
     height: '20px',
+    lineHeight: '20px',
     left: 'calc(50% - 10px)',
     top: 'calc(50% - 10px)',
 });
