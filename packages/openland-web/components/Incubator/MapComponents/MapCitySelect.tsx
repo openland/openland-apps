@@ -68,6 +68,19 @@ const CitySelectorItemLink = Glamorous(XLink)<{ active: boolean }>((props) => ({
     }
 }));
 
+const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    width: '100vw',
+    height: '100vh',
+    visibility: props.active ? 'visible' : 'hidden',
+    opacity: props.active ? 1 : 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.41)',
+    zIndex: 2,
+    pointerEvents: 'none'
+}));
+
 interface CitySelectorItemProps extends XLinkProps {
     label: string;
     active: boolean;
@@ -120,7 +133,6 @@ interface ConfirmPopoverProps {
     children: any;
     title?: string;
     count?: string;
-    shadowHandler: Function;
 }
 
 export class CitySelector extends React.Component<ConfirmPopoverProps, { active: boolean }> {
@@ -135,12 +147,10 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { active:
     }
 
     activate = () => {
-        this.setState({ active: true });
-        this.props.shadowHandler(true, this);
+        this.setState({ active: !this.state.active });
     }
 
     disable = () => {
-        this.props.shadowHandler(false, this);
         this.setState({ active: false });
     }
 
@@ -151,7 +161,7 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { active:
 
         for (let i of React.Children.toArray(this.props.children)) {
             if (React.isValidElement(i) && (i.props as any)._isCitySelectorElement === true) {
-                items.push(i);
+                items.push(React.cloneElement(i as any, { onClick: this.disable }));
             } else {
                 children.push(i);
             }
@@ -159,6 +169,7 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { active:
 
         return (
             <>
+                <Shadow active={this.state.active} />
                 <MapFilterWrapper active={this.state.active}>
                     <ClickOutside onClickOutside={this.disable}>
                         <CityTitle onClick={this.activate} active={this.state.active}>

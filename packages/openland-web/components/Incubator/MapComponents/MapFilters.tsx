@@ -759,7 +759,7 @@ class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?
 
 const OwnerNameFiltersContent = withRouter((props) => (
     <FiltersContent>
-        <InlineApplyInput placeholder="Owner name contains" searchKey="ownerName" router={props.router}/>
+        <InlineApplyInput placeholder="Owner name contains" searchKey="ownerName" router={props.router} />
         <FIlterDescriptionWrapper>
             <FilterDescription>
                 The land with the objects used under the commercial <br />institution (Banks, sales outlets and so on)
@@ -818,11 +818,24 @@ const FilterSwitcher = Glamorous.div({
     }
 });
 
-class MapFilters extends React.Component<XWithRouter & { shadowHandler: (add: boolean, caller: any) => void, city?: string }, { active: boolean }> {
+const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    width: '100vw',
+    height: '100vh',
+    visibility: props.active ? 'visible' : 'hidden',
+    opacity: props.active ? 1 : 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.41)',
+    zIndex: 2,
+    pointerEvents: 'none'
+}));
+
+class MapFilters extends React.Component<XWithRouter & { city?: string }, { active: boolean }> {
     shadowRequests = new Set();
     applyCallbacks: Set<Function> = new Set();
 
-    constructor(props: XWithRouter & { shadowHandler: (add: boolean, caller: any) => void, city?: string }) {
+    constructor(props: XWithRouter & { city?: string }) {
         super(props);
 
         this.state = {
@@ -831,7 +844,6 @@ class MapFilters extends React.Component<XWithRouter & { shadowHandler: (add: bo
     }
 
     shadowHandler = (add: boolean, caller: any) => {
-        this.props.shadowHandler(add, caller);
         if (add) {
             this.shadowRequests.add(caller);
         } else {
@@ -947,6 +959,9 @@ class MapFilters extends React.Component<XWithRouter & { shadowHandler: (add: bo
 
         return (
             <>
+
+                <Shadow active={this.state.active} />
+
                 <MapFilterWrapper active={this.state.active}>
                     <FilterSwitcher>
                         <Filter handler={this.shadowHandler}>
@@ -1122,4 +1137,4 @@ class MapFilters extends React.Component<XWithRouter & { shadowHandler: (add: bo
     }
 }
 
-export const RoutedMapFilters = withRouter<{ shadowHandler: (add: boolean, caller: any) => void, city?: string }>(MapFilters);
+export const RoutedMapFilters = withRouter<{ city?: string }>(MapFilters);

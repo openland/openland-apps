@@ -97,27 +97,11 @@ const DealsSource = withDealsMap((props) => {
     return null;
 });
 
-const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
-    position: 'fixed',
-    left: 0,
-    top: 0,
-    width: '100vw',
-    height: '100vh',
-    visibility: props.active ? 'visible' : 'hidden',
-    opacity: props.active ? 1 : 0,
-    transition: 'all 220ms',
-    backgroundColor: 'rgba(0, 0, 0, 0.41)',
-    zIndex: 2,
-    pointerEvents: 'none'
-}));
-
 // const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Add to prospecting</XButtonMutation>);
 class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { shadowed: boolean }> {
 
     knownCameraLocation?: XMapCameraLocation;
     
-    shadowRequests = new Set();
-
     constructor(props: XWithRouter & UserInfoComponentProps) {
         super(props);
         this.state = { shadowed: false};
@@ -224,16 +208,6 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         this.knownCameraLocation = e;
     }
 
-    requestShadow = (add: boolean, caller: any) => {
-        if (add) {
-            this.shadowRequests.add(caller);
-        } else {
-            this.shadowRequests.delete(caller);
-        }
-
-        this.setState({ shadowed: this.shadowRequests.size > 0 });
-    }
-
     render() {
         let defaultCity = 'sf';
         if (this.props.roles.find((v) => v === 'feature-city-nyc-force')) {
@@ -254,9 +228,8 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <XMapContainer>
                         <XMapContainer2>
-                            <Shadow active={this.state.shadowed} />
-                            <RoutedMapFilters shadowHandler={this.requestShadow} city={city}/>
-                            <CitySelector title={cityName} shadowHandler={this.requestShadow}>
+                            <RoutedMapFilters city={city}/>
+                            <CitySelector title={cityName}>
                                 <CitySelector.Item
                                     query={{ field: 'city', value: 'sf' }}
                                     active={city === 'sf'}
