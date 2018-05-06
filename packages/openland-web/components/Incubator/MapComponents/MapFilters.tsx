@@ -2,14 +2,13 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XButton } from '../../X/XButton';
 import { XCard } from '../../X/XCard';
-import { XCheckbox, XCheckboxGroup } from 'openland-x/XCheckbox';
+import { XCheckboxGroup } from 'openland-x/XCheckbox';
 import { XRadio } from 'openland-x/XRadio';
 import { Filter } from './PopperFilterButton';
 import XStyles from '../../X/XStyles';
 import { ChangeEvent } from 'react';
 import { XSelect, XSelectProps } from '../../X/XSelect';
 import { XHorizontal } from '../../X/XHorizontal';
-import { XVertical } from '../../X/XVertical';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { AllLandUse, AllZones, AllNYCZOnes } from './utils';
 import { XRouter } from 'openland-x-routing/XRouter';
@@ -230,30 +229,9 @@ const InlineInputWrapper = Glamorous.div({
     }
 });
 
-const FilterCellDiv = Glamorous.div({
-    width: '100%',
-    marginBottom: 32
-});
-
-const FilterCellTitle = Glamorous.div({
-    marginBottom: 8,
-    ...XStyles.text.h500,
-    textAlign: 'left',
-    color: '#182642',
-});
-
 const FilterSelector = Glamorous(XSelect)({
     width: 350
 });
-
-function FilterCell(props: { title?: string, children: any }) {
-    return (
-        <FilterCellDiv>
-            {props.title && <FilterCellTitle>{props.title}</FilterCellTitle>}
-            {props.children}
-        </FilterCellDiv>
-    );
-}
 
 class ApplyFilterWrap extends React.Component<{ fieldName: string, router: XRouter, applyCallbacks?: Set<Function>, children: any }, { value?: string | string[] }> {
     value?: string | string[];
@@ -499,7 +477,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
 class MapFilters extends React.Component<XWithRouter & { city?: string }, { active: boolean }> {
     shadowRequests = new Set();
     applyCallbacks: Set<Function> = new Set();
-    otherFilters: Set<string> = new Set(['isVacant', 'publicOwner', 'compatible', 'filterTransit', 'isOkForTower', 'filterOnSale', ]);
+    otherFilters: Set<string> = new Set(['isVacant', 'publicOwner', 'compatible', 'filterTransit', 'isOkForTower', 'filterOnSale']);
 
     constructor(props: XWithRouter & { city?: string }) {
         super(props);
@@ -519,7 +497,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
         this.setState({ active: this.shadowRequests.size > 0 });
     }
 
-    otherApplyHandler = (add: boolean, caller: any) => {
+    applyHandler = (add: boolean, caller: any) => {
         console.warn(add, caller);
         if (!add) {
             let params = {};
@@ -531,16 +509,16 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             this.props.router.pushQueryParams(params);
         }
         this.shadowHandler(add, caller);
-        
+
     }
 
     render() {
 
         let otherActive = false;
-        for (let fieldKey of Object.keys(this.props.router.query)){
+        for (let fieldKey of Object.keys(this.props.router.query)) {
             otherActive = otherActive || this.otherFilters.has(fieldKey);
         }
-    
+
         let sfOther = [];
 
         sfOther.push(
@@ -608,7 +586,24 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             other.push(...sfOther);
         }
 
+        // 'filterLandUse' 'filterCurrentUse' 'filterStories'
+        let filterLandUseArgs = this.props.router.query!!.filterLandUse ? JSON.parse(this.props.router.query!!.filterLandUse) : undefined;
+        let filterLandUseTitle = 'Land Use';
+        if (filterLandUseArgs) {
+            filterLandUseTitle = filterLandUseArgs.length === 1 ? filterLandUseArgs[0] : filterLandUseTitle + ' · ' + filterLandUseArgs.length;
+        }
 
+        let filterCurrentUseArgs = this.props.router.query!!.filterCurrentUse ? JSON.parse(this.props.router.query!!.filterCurrentUse) : undefined;
+        let filterCurrentUseTitle = 'Current Use';
+        if (filterCurrentUseArgs) {
+            filterCurrentUseTitle = filterCurrentUseArgs.length === 1 ? filterCurrentUseArgs[0] : filterCurrentUseTitle + ' · ' + filterCurrentUseArgs.length;
+        }
+
+        let filterStoriesArgs = this.props.router.query!!.filterStories ? JSON.parse(this.props.router.query!!.filterStories) : undefined;
+        let filterStoriesTitle = 'Stories';
+        if (filterStoriesArgs) {
+            filterStoriesTitle = filterStoriesArgs.length === 1 ? filterStoriesArgs[0] : filterStoriesTitle + ' · ' + filterStoriesArgs.length;
+        }
 
         return (
             <>
@@ -667,56 +662,51 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     {this.props.city === 'sf' && (
                         <>
                             <FilterSwitcher>
-                                <Filter handler={this.shadowHandler}>
+                                <Filter handler={this.applyHandler}>
                                     <Filter.Target>
-                                        <XButton style={this.props.router.query.filterLandUse !== undefined ? 'dark' : undefined}>Land Use</XButton>
+                                        <XButton style={this.props.router.query.filterLandUse !== undefined ? 'dark' : undefined}>{filterLandUseTitle}</XButton>
                                     </Filter.Target>
                                     <Filter.Popper>
-                                        <Selector
-                                            router={this.props.router}
-                                            fieldName="filterLandUse"
-                                            options={AllLandUse.map((v) => ({ value: v, label: v }))}
-                                            placeholder="Land Use"
-                                            multi={true}
-                                        />
+                                        <ApplyFilterWrap fieldName="filterLandUse" applyCallbacks={this.applyCallbacks} router={this.props.router}>
+                                            <XCheckboxGroup
+                                                divided={true}
+                                                elements={AllLandUse.map((v) => ({ value: v.label, label: v.label, hint: v.hint }))} />
+                                        </ApplyFilterWrap>
                                     </Filter.Popper>
                                 </Filter>
                             </FilterSwitcher>
 
                             <FilterSwitcher>
-                                <Filter handler={this.shadowHandler}>
+                                <Filter handler={this.applyHandler}>
                                     <Filter.Target>
-                                        <XButton style={this.props.router.query.filterStories !== undefined ? 'dark' : undefined}>Stories</XButton>
+                                        <XButton style={this.props.router.query.filterStories !== undefined ? 'dark' : undefined}>{filterStoriesTitle}</XButton>
                                     </Filter.Target>
                                     <Filter.Popper>
-                                        <Selector
-                                            router={this.props.router}
-                                            fieldName="filterStories"
-                                            options={[
-                                                { value: '0', label: 'no stories' },
-                                                { value: '1', label: '1 story' },
-                                                { value: '2', label: '2 stories' },
-                                                { value: '3', label: '3 stories' },
-                                                { value: '4', label: '4 stories' }]}
-                                            placeholder="Stories"
-                                            multi={true}
-                                        />
+                                        <ApplyFilterWrap fieldName="filterStories" applyCallbacks={this.applyCallbacks} router={this.props.router}>
+                                            <XCheckboxGroup
+                                                divided={true}
+                                                elements={[
+                                                    { value: '0', label: 'no stories' },
+                                                    { value: '1', label: '1 story' },
+                                                    { value: '2', label: '2 stories' },
+                                                    { value: '3', label: '3 stories' },
+                                                    { value: '4', label: '4 stories' }]} />
+                                        </ApplyFilterWrap>
                                     </Filter.Popper>
                                 </Filter>
                             </FilterSwitcher>
 
                             <FilterSwitcher>
-                                <Filter handler={this.shadowHandler}>
+                                <Filter handler={this.applyHandler}>
                                     <Filter.Target>
-                                        <XButton style={this.props.router.query.filterCurrentUse !== undefined ? 'dark' : undefined}>Current Use</XButton>
+                                        <XButton style={this.props.router.query.filterCurrentUse !== undefined ? 'dark' : undefined}>{filterCurrentUseTitle}</XButton>
                                     </Filter.Target>
                                     <Filter.Popper>
-                                        <Selector
-                                            router={this.props.router}
-                                            fieldName="filterCurrentUse"
-                                            options={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
-                                            placeholder="Current Use"
-                                        />
+                                        <ApplyFilterWrap fieldName="filterCurrentUse" applyCallbacks={this.applyCallbacks} router={this.props.router}>
+                                            <XCheckboxGroup
+                                                divided={true}
+                                                elements={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]} />
+                                        </ApplyFilterWrap>
                                     </Filter.Popper>
                                 </Filter>
                             </FilterSwitcher>
@@ -737,7 +727,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     </FilterSwitcher>
 
                     <FilterSwitcher>
-                        <Filter handler={this.otherApplyHandler}>
+                        <Filter handler={this.applyHandler}>
                             <Filter.Target>
                                 <XButton style={otherActive ? 'dark' : undefined}>Other</XButton>
                             </Filter.Target>
@@ -748,17 +738,6 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                             </Filter.Popper>
                         </Filter>
                     </FilterSwitcher>
-
-                    {/* <FilterSwitcher>
-                        <Filter handler={this.shadowHandler}>
-                            <Filter.Target>
-                                <XButton style={this.props.router.query.other !== undefined ? 'dark' : undefined}>Other filters</XButton>
-                            </Filter.Target>
-                            <Filter.Popper>
-                                <OtherFiltersContent />
-                            </Filter.Popper>
-                        </Filter>
-                    </FilterSwitcher> */}
 
                 </MapFilterWrapper>
             </>
