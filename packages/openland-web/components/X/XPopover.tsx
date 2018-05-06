@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { canUseDOM } from '../../utils/environment';
+import { canUseDOM } from '../../../openland-x-utils/canUseDOM';
 import Popper from 'popper.js';
 import * as classnames from 'classnames';
 import { PopperDiv } from '../Incubator/XPopper';

@@ -4,8 +4,7 @@ import { findChild } from './utils';
 // import { XScrollView } from './X/XScrollView';
 import { XVertical } from './X/XVertical';
 import { XPicture } from './X/XPicture';
-import { XLink } from './X/XLink';
-import { XIcon } from './X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
 import { XPopover } from './X/XPopover';
 import { XMenu } from './X/XMenu';
@@ -17,6 +16,7 @@ import { XTooltip } from './Incubator/XTooltip';
 import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';
 import { TextGlobalSearch } from 'openland-text/TextGlobalSearch';
+import { XLink } from 'openland-x/XLink';
 
 //
 // Root

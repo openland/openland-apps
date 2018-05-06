@@ -11,7 +11,7 @@ import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { CitySelector } from '../../../components/Incubator/CitySelector';
 import { XHorizontal } from '../../../components/X/XHorizontal';
-import { withRouter } from '../../../components/withRouter';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 const Content = withParcels((props) => {
     let city = props.router.query.city || 'nyc';

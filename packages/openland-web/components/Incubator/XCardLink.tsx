@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCard } from '../X/XCard';
-import { XIcon } from '../X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 
 const XCardLinkDiv = Glamorous(XCard)({
     alignSelf: 'flex-start',

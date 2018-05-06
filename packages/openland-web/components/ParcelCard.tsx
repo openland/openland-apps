@@ -20,7 +20,7 @@ import { XNumber } from './X/XNumber';
 import { XView } from './X/XView';
 import { OpportunitiButton } from './OpportunityButton';
 import { Text } from '../strings';
-import { XIcon } from './X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import { XHeader } from './X/XHeader';
 import { ParcelNumber } from './ParcelNumber';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { formatPageTitle } from '../../utils/strings';
-import { withRouter } from '../withRouter';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 export const XHead = withRouter<{ title: string | string[], titleSocial?: string | null, imgCloud?: string | null, imgUrl?: string | null }>((props) => {
     let parts = ['Openland'];

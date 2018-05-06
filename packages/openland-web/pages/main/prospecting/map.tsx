@@ -2,7 +2,6 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
-import { withRouter, XWithRouter } from '../../../components/withRouter';
 import { XHead } from '../../../components/X/XHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { ProspectingNavigationMap } from '../../../components/ProspectingNavigation';
@@ -11,12 +10,13 @@ import { SourcingTileSource } from '../../../api';
 import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { OpportunityState } from 'openland-api/Types';
 import { XSwitcher } from '../../../components/X/XSwitcher';
-import { canUseDOM } from '../../../utils/environment';
 import { trackEvent } from '../../../utils/analytics';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { buildProspectingQuery } from '../../../components/prospectingQuery';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 // import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 
 const Container = Glamorous.div({

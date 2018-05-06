@@ -2,7 +2,6 @@ import '../../../globals';
 import * as React from 'react';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
-import { withRouter } from '../../../components/withRouter';
 import { XVertical } from '../../../components/X/XVertical';
 import { XCard } from '../../../components/X/XCard';
 import { ParcelMaps } from '../../../components/ParcelMaps';
@@ -26,7 +25,7 @@ import { XArea } from '../../../components/X/XArea';
 import { XDistance } from '../../../components/X/XDistance';
 import { XMoney } from '../../../components/X/XMoney';
 import { OwnerTypeComponent } from '../../../components/OwnerTypeComponent';
-import { XLinkExternal } from '../../../components/X/XLinkExternal';
+import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XZoningCode } from '../../../components/X/XZoningCode';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
@@ -35,13 +34,13 @@ import { Text } from '../../../strings';
 import { XButton } from '../../../components/X/XButton';
 import { ParcelLayer } from '../../../components/ParcelLayer';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
-import { XRouter } from '../../../components/routing/XRouter';
 import { XSwitcher } from './../../../components/X/XSwitcher';
 import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XZoningMetrics } from './../../../components/X/XZoningMetrics';
 import { buildProspectingQuery } from '../../../components/prospectingQuery';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 
-const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}>, router: XRouter }) => {
+const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
     const linksPath = 'links';
     const notesPath = 'notes';
@@ -317,7 +316,7 @@ const OpportunityInfo = withOpportunity((props) => {
             )}
         </XVertical>
     );
-}) as React.ComponentType<{ variables?: any, router: XRouter }>;
+}) as React.ComponentType<{ variables?: any } & XWithRouter>;
 
 export default withApp('Initial Review', 'viewer', withRouter((props) => {
     let state: 'INCOMING' | 'APPROVED_INITIAL' | 'APPROVED_ZONING' | 'APPROVED' | 'REJECTED' | 'SNOOZED' = 'INCOMING';

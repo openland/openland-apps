@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ATypes from 'openland-api';
-import { XIcon } from './X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import Glamorous from 'glamorous';
 
 let IconNormal = Glamorous(XIcon)({

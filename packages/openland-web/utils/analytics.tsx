@@ -1,6 +1,6 @@
 import * as ga from 'react-ga';
 import * as Mixpanel from 'mixpanel-browser';
-import { canUseDOM } from './environment';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 let shouldTrack = canUseDOM && (window as any).isProduction;
 if (shouldTrack) {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink } from './XLink';
+import { XLink } from 'openland-x/XLink';
 
 const XMenuItem = Glamorous(XLink)({
     display: 'block',

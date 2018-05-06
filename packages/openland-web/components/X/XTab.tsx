@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink, XLinkProps } from './XLink';
+import { XLink, XLinkProps } from 'openland-x/XLink';
 
 export const XTabItem = Glamorous(XLink)<{ asArrow?: boolean }>((props) => ({
     cursor: 'pointer',

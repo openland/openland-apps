@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import ClickOutside from './ClickOutside';
-import { canUseDOM } from '../../utils/environment';
 import { Manager, Target, Popper } from './XPopper';
 import { XButton } from '../X/XButton';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const ConfirmWrapper = Glamorous.div({
     display: 'flex',

@@ -1,8 +1,8 @@
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { canUseDOM } from './environment';
 import { API_ENDPOINT } from './endpoint';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 let cachedClient: ApolloClient<NormalizedCacheObject> | undefined = undefined;
 

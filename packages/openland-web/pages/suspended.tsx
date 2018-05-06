@@ -1,13 +1,13 @@
 import '../globals';
 import * as React from 'react';
 import { XHead } from '../components/X/XHead';
-import { XLink } from '../components/X/XLink';
 import { MessagePage } from '../components/MessagePage';
 import { MessagePageContent } from '../components/MessagePageContent';
-import { RedirectComponent } from '../components/routing/RedirectComponent';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
 import { XTrack } from '../components/X/XTrack';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { XLink } from 'openland-x/XLink';
 
 export default withAppBase(withUserInfo((props) => {
 
@@ -16,16 +16,16 @@ export default withAppBase(withUserInfo((props) => {
         if (!props.isBlocked) {
             if (!props.isCompleted) {
                 if (props.isActivated) {
-                    return <RedirectComponent path="/need_info" />;
+                    return <XPageRedirect path="/need_info" />;
                 } else {
-                    return <RedirectComponent path="/activation" />;
+                    return <XPageRedirect path="/activation" />;
                 }
             } else {
-                return <RedirectComponent path="/" />;
+                return <XPageRedirect path="/" />;
             }
         }
     } else {
-        return <RedirectComponent path="/signin" />;
+        return <XPageRedirect path="/signin" />;
     }
 
     return (

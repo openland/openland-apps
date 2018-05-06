@@ -1,9 +1,9 @@
+import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api';
-import { canUseDOM } from '../../../utils/environment';
 import { trackEvent } from '../../../utils/analytics';
 import { XMapCameraLocation } from '../../../components/X/XMap';
 import { XMapSource } from '../../../components/X/XMapSource';
@@ -14,9 +14,10 @@ import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParce
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { XSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
-import { XWithRouter, withRouter } from '../../../components/withRouter';
 import { RoutedMapFilters } from '../../../components/Incubator/MapComponents/MapFilters';
 import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',

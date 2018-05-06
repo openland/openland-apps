@@ -6,8 +6,8 @@ import { XStreetView } from './X/XStreetView';
 import { XMapPolygonLayer } from './X/XMapPolygonLayer';
 import { ParcelTileSource, BlockTileSource } from '../api/index';
 import { findCenter } from '../utils/map';
-import { withRouter } from './withRouter';
 import { ParcelLayer } from './ParcelLayer';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 const Wrapper = Glamorous(XCard)({
     flexGrow: 1,

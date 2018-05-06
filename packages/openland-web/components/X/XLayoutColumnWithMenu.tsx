@@ -3,10 +3,10 @@ import Glamorous from 'glamorous';
 import { XRow } from './XGrid';
 import { Layout } from './_Layout';
 import { XVertical } from './XVertical';
-import { withRouter, XWithRouter } from '../withRouter';
-import { XLink } from './XLink';
 import { XDesktopContainer } from './XDesktopContainer';
 import { XMobileContainer } from './XMobileContainer';
+import { XLink } from 'openland-x/XLink';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 
 let FixedContainer = Glamorous.div({
     zIndex: 100,

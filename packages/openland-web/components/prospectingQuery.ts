@@ -1,5 +1,5 @@
-import { XRouter } from './withRouter';
 import * as qs from 'query-string';
+import { XRouter } from 'openland-x-routing/XRouter';
 
 function buildQuery(clauses: any[]): any | null {
     if (clauses.length === 0) {

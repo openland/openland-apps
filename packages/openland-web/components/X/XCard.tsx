@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import { CSSUtils } from './utils';
-import { XLink } from './XLink';
 import { XRow, XColumn } from './XGrid';
 import { XCardFooter } from './XCardFooter';
 import { XCardProperty, XCardPropertyList, XCardPropertyColumns } from './XCardProperty';
@@ -15,6 +14,7 @@ import { XCardWarning } from './XCardWarning';
 import { XCardLoader } from './XCardLoader';
 import { XCardEmpty } from './XCardEmpty';
 import { XCardList, XCardListItem } from './XCardList';
+import { XLink } from 'openland-x/XLink';
 
 //
 // Basic Row

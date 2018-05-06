@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
-import { XLink, XLinkProps } from './XLink';
-import { XIcon } from './XIcon';
 import { withLayout, XLayoutProps } from './withLayout';
+import { XIcon } from 'openland-x/XIcon';
+import { XLinkProps, XLink } from 'openland-x/XLink';
 
 function LoadingIcon(props: {white?: boolean}) {
     return (
-        <svg className="loading-icon" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style={{enableBackground: 'new 0 0 512 512'}} xmlSpace="preserve" width={512} height={512}>
+        <svg className="loading-icon" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" xmlSpace="preserve" width={512} height={512}>
             <g>
                 <g>
                     <path d="M256.001,0c-8.284,0-15,6.716-15,15v96.4c0,8.284,6.716,15,15,15s15-6.716,15-15V15C271.001,6.716,264.285,0,256.001,0z" fill={props.white ? '#fff' : '#933EC5'} />

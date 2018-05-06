@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink, XLinkProps } from '../X/XLink';
-import { XIcon } from '../X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import { XPopover } from '../X/XPopover';
 import { XMenu } from '../X/XMenu';
-import { withRouter } from '../withRouter';
 import { withUserInfo } from '../UserInfo';
 import { AppSearch } from './AppSearch';
+import { XLinkProps, XLink } from 'openland-x/XLink';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 let Container = Glamorous.div<{ asOverlay?: boolean }>((props) => ({
     display: 'flex',

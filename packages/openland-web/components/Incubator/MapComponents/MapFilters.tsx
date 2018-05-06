@@ -6,10 +6,10 @@ import { XCard } from '../../X/XCard';
 import { Filter } from './PopperFilterButton';
 import XStyles from '../../X/XStyles';
 import { ChangeEvent } from 'react';
-import { withRouter, XWithRouter } from '../../withRouter';
 import { XSelect, XSelectProps } from '../../X/XSelect';
 import { XHorizontal } from '../../X/XHorizontal';
 import { XVertical } from '../../X/XVertical';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 
 let AllLandUse = [
     'Residental',

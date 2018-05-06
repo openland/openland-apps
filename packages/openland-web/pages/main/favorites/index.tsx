@@ -4,7 +4,6 @@ import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
-import { XLink } from '../../../components/X/XLink';
 import { withParcelsFavorites } from '../../../api/';
 import { TableParcels } from '../../../components/TableParcels';
 import Types from 'openland-api';
@@ -12,6 +11,7 @@ import { XButton } from '../../../components/X/XButton';
 import * as FileSaver from 'file-saver';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
+import { XLink } from 'openland-x/XLink';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',

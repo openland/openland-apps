@@ -7,18 +7,17 @@ import { XCard } from '../../../components/X/XCard';
 import { XVertical } from '../../../components/X/XVertical';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTableUrbynReport';
 import { OpportunityState } from 'openland-api/Types';
-import { withRouter } from '../../../components/withRouter';
 import { Scaffold } from '../../../components/Scaffold';
 import { SourcingTileSource } from '../../../api';
 import { XMapImageLayer } from '../../../components/X/XMapImageLayer';
-import { XIcon } from '../../../components/X/XIcon';
+import { XIcon } from 'openland-x/XIcon';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { withDealsMap } from '../../../api';
 import { JustMap } from './JustMap';
 import hpdprojects from './lots_of_data.json';
-import { XRouter } from '../../../components/routing/XRouter';
 import XStyles from '../../../components/X/XStyles';
 import { XHeader } from '../../../components/X/XHeader';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 
 const UrbinHeaderWrapper = Glamorous.div({
     position: 'relative',
@@ -313,12 +312,12 @@ class Checkbox extends React.Component<{ checkedChangeListener: Function, label:
     }
 }
 
-class ReportMap extends React.Component<{ router: XRouter, qHpd: any }, { dealsEnabled: boolean, dealsCount?: number, hpdoEnabled: boolean, hpdoCount?: number, hpdpEnabled: boolean, hpdpCount?: number }> {
+class ReportMap extends React.Component<{ qHpd: any } & XWithRouter, { dealsEnabled: boolean, dealsCount?: number, hpdoEnabled: boolean, hpdoCount?: number, hpdpEnabled: boolean, hpdpCount?: number }> {
     dealsCount: number;
     hpdoCount: number;
     hpdpCount: number;
 
-    constructor(props: { router: XRouter, qHpd: any }) {
+    constructor(props: { qHpd: any } & XWithRouter) {
         super(props);
         this.state = {
             dealsEnabled: true,

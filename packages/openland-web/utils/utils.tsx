@@ -19,7 +19,3 @@ export function prepareParams(fields: ({ key: string, default?: string } | strin
     }
     return res;
 }
-
-export function getComponentDisplayName(Component: any) {
-    return Component.displayName || Component.name || 'FunctionalStateless';
-}

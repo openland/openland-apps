@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLinkExternal } from './XLinkExternal';
+import { XLinkExternal } from 'openland-x/XLinkExternal';
 const Links = {
     'RH-1': 'http://library.amlegal.com/nxt/gateway.dll/California/planning/article2usedistricts?f=templates$fn=default.htm$3.0$vid=amlegal:sanfrancisco_ca$anc=JD_209.1',
     'RH-3': 'http://library.amlegal.com/nxt/gateway.dll/California/planning/article2usedistricts?f=templates$fn=default.htm$3.0$vid=amlegal:sanfrancisco_ca$anc=JD_209.1',

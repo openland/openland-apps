@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
-import { XIcon } from './XIcon';
+import { XIcon } from 'openland-x/XIcon';
 
 const loading = glamor.keyframes({
     '0%': { transform: `rotate(0deg) scaleX(-1)` },
