@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import * as glamor from 'glamor';
+// import * as glamor from 'glamor';
 import { CSSUtils } from './utils';
 import { XRow, XColumn } from './XGrid';
 import { XCardFooter } from './XCardFooter';
