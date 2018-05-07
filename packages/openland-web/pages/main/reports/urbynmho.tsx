@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
-import { XVertical } from '../../../components/X/XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTableUrbynReport';
 import { OpportunityState } from 'openland-api/Types';
 import { Scaffold } from '../../../components/Scaffold';
@@ -13,12 +13,12 @@ import { XIcon } from 'openland-x/XIcon';
 import { withDealsMap } from '../../../api';
 import '../../../globals';
 import hpdprojects from '../../../utils/reports/urbyn/lots_of_data.json';
-import XStyles from '../../../components/X/XStyles';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { XMapProps, XMap } from 'openland-x-map/XMap';
 import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapImageLayer } from 'openland-x-map/XMapImageLayer';
+import XStyles from 'openland-x/XStyles';
 
 const UrbinHeaderWrapper = Glamorous.div({
     position: 'relative',

@@ -111,6 +111,8 @@ routes.add('/ui/grid', '/dev/ui/grid');
 routes.add('/ui/grid/', '/dev/ui/grid');
 routes.add('/ui/map', '/dev/ui/map');
 routes.add('/ui/map/', '/dev/ui/map');
+routes.add('/ui/bullets', '/dev/ui/bullet');
+routes.add('/ui/bullets/', '/dev/ui/bullet');
 
 //
 // Dev Tools

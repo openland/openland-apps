@@ -4,14 +4,14 @@ import { XCard } from '../../X/XCard';
 import { XCheckboxGroup } from 'openland-x/XCheckbox';
 import { XRadioGroup } from 'openland-x/XRadio';
 import { Filter } from './PopperFilterButton';
-import XStyles from '../../X/XStyles';
 import { ChangeEvent } from 'react';
 import { XSelect, XSelectProps } from '../../X/XSelect';
-import { XHorizontal } from '../../X/XHorizontal';
+import { XHorizontal } from 'openland-x/XHorizontal';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { AllLandUse, AllZones, AllNYCZOnes } from './utils';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XButton } from 'openland-x/XButton';
+import XStyles from 'openland-x/XStyles';
 
 const FiltersContent = Glamorous.div({
     maxHeight: 'calc(100vh - 150px)',

@@ -8,7 +8,7 @@ import { XButton } from 'openland-x/XButton';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { withProspectingStats, OwnersSelect } from '../../../api';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { OpportunityState } from 'openland-api/Types';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';

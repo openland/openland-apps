@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHorizontal } from './XHorizontal';
-import XStyles from './XStyles';
+import { XHorizontal } from 'openland-x/XHorizontal';
+import XStyles from 'openland-x/XStyles';
 
-export const XCardText = Glamorous.div({
+const FooterText = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     color: '#6b7c93',
@@ -12,7 +12,7 @@ export const XCardText = Glamorous.div({
     whiteSpace: 'pre',
 });
 
-let XCardFooterDiv = Glamorous.div({
+let FooterWrapper = Glamorous.div({
     minHeight: 50,
     paddingLeft: XStyles.paddings.xlarge,
     paddingRight: XStyles.paddings.xlarge,
@@ -23,15 +23,15 @@ let XCardFooterDiv = Glamorous.div({
     justifyContent: 'space-between'
 });
 
-export function XCardFooter(props: { children?: any, text?: string | null }) {
+export function XFooter(props: { children?: any, text?: string | null }) {
     return (
-        <XCardFooterDiv>
-            <XCardText>
+        <FooterWrapper>
+            <FooterText>
                 {props.text}
-            </XCardText>
+            </FooterText>
             <XHorizontal separator="normal">
                 {props.children}
             </XHorizontal>
-        </XCardFooterDiv>
+        </FooterWrapper>
     );
 }

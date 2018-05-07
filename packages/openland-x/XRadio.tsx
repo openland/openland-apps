@@ -1,5 +1,5 @@
 import Glamorous from 'glamorous';
-import XStyles from '../openland-web/components/X/XStyles';
+import XStyles from './XStyles';
 import * as React from 'react';
 
 const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({

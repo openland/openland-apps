@@ -2,7 +2,6 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
-import { XTable } from '../../../components/X/XTable';
 import { withParcel } from '../../../api/';
 import { ParcelProperties } from '../../../components/ParcelProperties';
 import { XHead } from '../../../components/X/XHead';
@@ -10,16 +9,14 @@ import { PermitType } from '../../../components/PermitType';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { trackEvent } from '../../../utils/analytics';
-import { XHorizontal } from '../../../components/X/XHorizontal';
-import { XView } from '../../../components/X/XView';
+import { XHorizontal } from 'openland-x/XHorizontal';
 import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
 import { OpportunitiButton } from '../../../components/OpportunityButton';
 import { XForm } from '../../../components/X/XForm';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XContent } from '../../../components/X/XContent';
-import { XTitle } from '../../../components/X/XTitle';
-import { XVertical } from '../../../components/X/XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import { ParcelNumber } from '../../../components/ParcelNumber';
 import { XSwitcher } from './../../../components/X/XSwitcher';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
@@ -32,6 +29,9 @@ import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 import { XAngle } from 'openland-x-format/XAngle';
 import { ZoningMetrics } from '../../../components/ZoningMetrics';
+import { XTable } from 'openland-x/XTable';
+import { XView } from 'openland-x/XView';
+import { XTitle } from 'openland-x/XTitle';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 

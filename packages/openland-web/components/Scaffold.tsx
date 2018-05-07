@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { findChild } from './utils';
 // import { XScrollView } from './X/XScrollView';
-import { XVertical } from './X/XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import { XPicture } from './X/XPicture';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';

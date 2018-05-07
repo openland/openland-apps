@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Scaffold } from './Scaffold';
 import { XHead } from './X/XHead';
 import { Sidebar } from './Sidebar';
-import { XHeader } from './X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 
 // const ContentView = Glamorous.div({
 //     display: 'flex',
@@ -22,11 +22,13 @@ export function DevDocsScaffold(props: { title?: string, children?: any, bottomO
                     <Scaffold.Menu>
                         <Sidebar title="X Framework">
                             <Sidebar.Item path="/ui">Home</Sidebar.Item>
-                            <Sidebar.Item path="/ui/typography">Typography</Sidebar.Item>
-                            <Sidebar.Item path="/ui/grid">Grid</Sidebar.Item>
-                            <Sidebar.Item path="/ui/buttons">Buttons</Sidebar.Item>
-                            <Sidebar.Item path="/ui/inputs">Inputs</Sidebar.Item>
+                            <Sidebar.Item path="/ui/buttons">Button</Sidebar.Item>
+                            <Sidebar.Item path="/ui/inputs">Input</Sidebar.Item>
                             <Sidebar.Item path="/ui/map">Map</Sidebar.Item>
+                            <Sidebar.Item path="/ui/bullets">Bullet</Sidebar.Item>
+                            <Sidebar.Item>Basic Styles</Sidebar.Item>
+                            <Sidebar.Subitem path="/ui/typography">Typography</Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/grid">Grid</Sidebar.Subitem>
                         </Sidebar>
                     </Scaffold.Menu>
                 )}

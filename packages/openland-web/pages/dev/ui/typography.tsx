@@ -1,11 +1,11 @@
 import '../../../globals';
 import * as React from 'react';
 import glamorous from 'glamorous';
-import XStyles from '../../../components/X/XStyles';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { XContent } from '../../../components/X/XContent';
-import { XVertical } from '../../../components/X/XVertical';
+import { XVertical } from 'openland-x/XVertical';
+import XStyles from 'openland-x/XStyles';
 
 const H900 = glamorous.div({
     ...XStyles.text.h900

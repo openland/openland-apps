@@ -1,12 +1,9 @@
 import '../../../globals';
 import * as React from 'react';
 import { XCard } from '../../../components/X/XCard';
-import { XTitle } from '../../../components/X/XTitle';
-import { XVertical } from '../../../components/X/XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
-import { XBullet } from '../../../components/X/XBullet';
 import { XSwitcher } from '../../../components/X/XSwitcher';
-import { XSlider, XRange } from '../../../components/X/XSlider';
 import { XSelect } from '../../../components/X/XSelect';
 import { XForm } from '../../../components/X/XForm';
 import { XCardLink } from '../../../components/Incubator/XCardLink';
@@ -17,9 +14,10 @@ import { ParcelShortList } from '../../../components/Incubator/ParcelShortList';
 import { XTab } from '../../../components/X/XTab';
 import { XIcon } from 'openland-x/XIcon';
 import { StateSelect } from '../../../api';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { XContent } from '../../../components/X/XContent';
+import { XTitle } from 'openland-x/XTitle';
 
 export default withApp('UI Framework', 'viewer', (props) => {
     return (
@@ -78,11 +76,6 @@ export default withApp('UI Framework', 'viewer', (props) => {
                                 { value: 'two', label: 'Two' },
                             ]}
                         />
-                        <XBullet alignSelf="flex-start">bullet</XBullet>
-                        <XBullet alignSelf="flex-start" color="red">bullet</XBullet>
-                        <XBullet alignSelf="flex-start" color="green">bullet</XBullet>
-                        <XBullet alignSelf="flex-start" color="blue">bullet</XBullet>
-                        <XBullet alignSelf="flex-start" color="yellow">bullet</XBullet>
                         <XSwitcher alignSelf="flex-start">
                             <XSwitcher.Item path="/ui">first</XSwitcher.Item>
                             <XSwitcher.Item>second</XSwitcher.Item>
@@ -100,9 +93,7 @@ export default withApp('UI Framework', 'viewer', (props) => {
                             <XSwitcher.Item count={100}>second</XSwitcher.Item>
                             <XSwitcher.Item count={80}>third</XSwitcher.Item>
                             <XSwitcher.Item count={3}>fourth</XSwitcher.Item>
-                        </XSwitcher>
-                        <XSlider dots step={5} defaultValue={100} />
-                        <XRange dots step={5} defaultValue={[20, 40]} />
+                        </XSwitcher>>
                     </XVertical>
                 </XContent>
             </XCard>
@@ -132,7 +123,7 @@ export default withApp('UI Framework', 'viewer', (props) => {
                     <XForm.Header title="x-form title" description={`$ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"`} />
                     <XForm.Field title="x-form-field container test" description="description text" novalid={true}>
                         <XForm.RawTextarea placeholder="loles" novalid={true} />
-                        <XForm.RawInput placeholder="loles" novalid={true} />
+                        <XForm.RawInput placeholder="loles" noValid={true} />
                     </XForm.Field>
                 </XForm>
             </XCard>

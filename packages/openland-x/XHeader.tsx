@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHorizontal } from './XHorizontal';
-import { XBullet } from './XBullet';
-import XStyles from './XStyles';
+import { XHorizontal } from 'openland-x/XHorizontal';
+import { XBullet } from 'openland-x/XBullet';
+import XStyles from 'openland-x/XStyles';
 
 const XCardTitle = Glamorous.div<{ appStyle?: 'default' | 'compact' }>((props) => ({
     ...(props.appStyle === 'compact' ? XStyles.text.h600 : XStyles.text.h700),

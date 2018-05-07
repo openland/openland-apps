@@ -2,17 +2,17 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
-import { XVertical } from '../../../components/X/XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import { XContent } from '../../../components/X/XContent';
 import { XInput } from 'openland-x/XInput';
-import { XTitle } from '../../../components/X/XTitle';
+import { XTitle } from 'openland-x/XTitle';
 
 export default withApp('UI Framework - Inputs', 'viewer', (props) => {
     return (
         <DevDocsScaffold title="Inputs">
             <XContent>
                 <XVertical>
-                    <XTitle>XInput</XTitle>
+                    <XTitle>Sizes</XTitle>
                     <XVertical>
                         <XInput format="large" placeholder="large" value="large" alignSelf="flex-start" />
                         <XInput format="medium" placeholder="medium" alignSelf="flex-start" />

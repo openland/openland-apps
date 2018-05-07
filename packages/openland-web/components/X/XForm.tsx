@@ -1,13 +1,14 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Glamorous from 'glamorous';
-import { XVertical } from './XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import { MutationFunc } from 'react-apollo';
 import { XCard } from './XCard';
-import { XInput } from './XInput';
 import { Router } from '../../routes';
 import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
 import { XButton, XButtonProps } from 'openland-x/XButton';
+import { XInput } from 'openland-x/XInput';
+import { XFooter } from 'openland-x/XFooter';
 
 let InputsStyle = {
     borderRadius: 4,
@@ -239,9 +240,9 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
         }
     }
 
-    handleChange = (src: any) => {
+    handleChange = (val: string) => {
         let xForm = this.context.xForm as XFormController;
-        let val = src.target.value as string;
+        // let val = src.target.value as string;
         this.setState({ value: val });
         xForm.writeValue(this.props.field, val);
     }
@@ -429,7 +430,7 @@ export class XFormSubmit extends React.Component<XFormSubmitProps> {
 export class XForm extends React.Component<XFormProps, { loading: boolean, error?: string }> {
 
     static Header = XFormHeader;
-    static Footer = XCard.Footer;
+    static Footer = XFooter;
 
     static Field = XFormField;
     static Boolean = XFormBooleanField;

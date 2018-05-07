@@ -1,16 +1,17 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver } from 'openland-x-utils/styleResolver';
-import { XLayoutProps, applyFlex } from './Flex';
+import { XFlexStyles, applyFlex } from './Flex';
 import { XIcon } from './XIcon';
 
-export interface XInputStyleProps extends XLayoutProps {
+export interface XInputStyleProps extends XFlexStyles {
     placeholder?: string;
     value?: string;
     icon?: string;
     required?: boolean;
     noValid?: boolean;
     format?: 'large' | 'medium' | 'default' | 'small';
+    onChange?: (value: string) => void;
 }
 
 interface XInputWrapperProps extends XInputStyleProps {
@@ -33,7 +34,7 @@ class ClickOutside extends React.Component<XInputWrapperProps> {
     }
 
     render() {
-        const { children, onClickOutside, ...props } = this.props;
+        const { children, onClickOutside, onChange, ...props } = this.props;
         return (
             <div
                 {...props}
@@ -171,6 +172,9 @@ export class XInput extends React.PureComponent<XInputStyleProps, { active: bool
             active: true,
             value: e.target.value
         });
+        if (this.props.onChange) {
+            this.props.onChange(e.target.value);
+        }
     }
 
     activeDisabled = () => {

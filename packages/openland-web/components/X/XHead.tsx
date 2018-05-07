@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Head from 'next/head';
-import { formatPageTitle } from '../../utils/strings';
 import { withRouter } from 'openland-x-routing/withRouter';
 
 export const XHead = withRouter<{ title: string | string[], titleSocial?: string | null, imgCloud?: string | null, imgUrl?: string | null }>((props) => {
@@ -10,7 +9,7 @@ export const XHead = withRouter<{ title: string | string[], titleSocial?: string
     } else {
         parts = ['Openland', ...props.title];
     }
-    let title = formatPageTitle(...parts);
+    let title = parts.reverse().join(' - ');
 
     let img = 'https://openland.com/img/og-2.png';
     if (props.imgUrl) {
