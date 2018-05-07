@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as Turf from '@turf/turf';
-import { XModalTargeted } from '../X/XModalTargeted';
 import { XCardStreetViewFullScreen } from '../X/XCardStreetView';
 import { XStreetViewPreview } from '../X/XStreetViewPreview';
 import Glamorous from 'glamorous';
 import { parseGeometry } from '../../utils/Serializers';
 import { XButton } from 'openland-x/XButton';
+import { XModalTargeted } from 'openland-x-modal/XModalTargeted';
 
 function loadCenter(src: string) {
     let center = Turf.center({ type: 'MultiPolygon', coordinates: parseGeometry(src) });

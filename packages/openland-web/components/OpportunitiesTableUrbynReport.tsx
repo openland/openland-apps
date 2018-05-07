@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { withSourcingAll } from '../api';
 import { XCard } from './X/XCard';
 import { XHeader } from 'openland-x/XHeader';
-import { XModalRouted } from './X/XModalRouted';
 import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
 import ATypes from 'openland-api';
@@ -12,6 +11,7 @@ import { XArea } from 'openland-x-format/XArea';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
+import { XModalRouted } from 'openland-x-modal/XModalRouted';
 
 const SwitchButton = Glamorous(XButton)({
     boxShadow: 'none',

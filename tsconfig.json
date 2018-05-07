@@ -50,6 +50,9 @@
       ],
       "openland-x-charts": [
         "openland-x-charts"
+      ],
+      "openland-x-modal": [
+        "openland-x-modal"
       ]
     },
     "importHelpers": true
@@ -77,6 +80,7 @@
     "./packages/openland-x-utils",
     "./packages/openland-x-format",
     "./packages/openland-x-map",
-    "./packages/openland-x-charts"
+    "./packages/openland-x-charts",
+    "./packages/openland-x-modal"
   ]
 }

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XCard } from './XCard';
 import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
 import XStyles from 'openland-x/XStyles';
+import { XCard } from 'openland-x/XCard';
 
 export const XDialogContainer = Glamorous(XCard)<{ width?: number | string }>((props) => ({
     display: 'block',

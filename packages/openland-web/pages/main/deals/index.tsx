@@ -5,7 +5,6 @@ import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withDeals, withDealAdd } from '../../../api/';
-import { XModalRouted } from '../../../components/X/XModalRouted';
 import { DealForm } from '../../../components/DealForm';
 import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
@@ -17,6 +16,7 @@ import { XMoney } from 'openland-x-format/XMoney';
 import { XBullet } from 'openland-x/XBullet';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
+import { XModalRouted } from 'openland-x-modal/XModalRouted';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',

@@ -5,7 +5,6 @@ import { withDeal, withDealAlterCombined, withDealRemove } from '../../../api/';
 import { XCard } from '../../../components/X/XCard';
 import { DealForm } from '../../../components/DealForm';
 import { XHead } from '../../../components/X/XHead';
-import { XModalRouted } from '../../../components/X/XModalRouted';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
@@ -31,6 +30,7 @@ import { XAngle } from 'openland-x-format/XAngle';
 import { ZoningCode } from '../../../components/ZoningCode';
 import { XView } from 'openland-x/XView';
 import { XTitle } from 'openland-x/XTitle';
+import { XModalRouted } from 'openland-x-modal/XModalRouted';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XModalTargeted } from '../X/XModalTargeted';
 import { XSelect, XSelectProps } from '../X/XSelect';
 import { XWithRole } from '../X/XWithRole';
 // import { XFilterInput } from '../X/XFilterInput';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import XStyles from 'openland-x/XStyles';
+import { XModalTargeted } from 'openland-x-modal/XModalTargeted';
 
 let AllLandUse = [
     'Residental',

@@ -2,13 +2,13 @@ import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { withSuperAdmins, UserSelect, withSuperAdminAdd, withSuperAdminRemove } from '../../api/';
-import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XForm } from '../../components/X/XForm';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
+import { XModalTargeted } from 'openland-x-modal/XModalTargeted';
 
 const AddSuperAdminForm = withSuperAdminAdd((props) => {
     return (

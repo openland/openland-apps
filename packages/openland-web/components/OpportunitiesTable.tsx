@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withSourcing, withSourcingAll } from '../api';
 import { XCard } from './X/XCard';
-import { XModalRouted } from './X/XModalRouted';
 import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
 import ATypes from 'openland-api';
@@ -11,6 +10,7 @@ import { XArea } from 'openland-x-format/XArea';
 import { XDate } from 'openland-x-format/XDate';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
+import { XModalRouted } from 'openland-x-modal/XModalRouted';
 
 // import { OpportunityState } from 'openland-api/Types';
 // import { OpportunitiesTable as _OpportunitiesTable } from './OpportunitiesTableUrbynReport';
