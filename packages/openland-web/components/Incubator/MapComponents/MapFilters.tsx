@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCard } from '../../X/XCard';
 import { XCheckboxGroup } from 'openland-x/XCheckbox';
-import { XRadio } from 'openland-x/XRadio';
+import { XRadioGroup } from 'openland-x/XRadio';
 import { Filter } from './PopperFilterButton';
 import XStyles from '../../X/XStyles';
 import { ChangeEvent } from 'react';
@@ -269,7 +269,7 @@ class ApplyFilterWrap extends React.Component<{ fieldName: string, router: XRout
             this.value = this.props.router.query[this.props.fieldName];
         }
 
-        if (component.props._isRadio) {
+        if (component.props._isRadioGroup) {
             res.selected = this.props.router.query[this.props.fieldName];
             this.value = this.props.router.query[this.props.fieldName];
         }
@@ -523,9 +523,9 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             <FilterCategory key={'filter_filterOnSale'}>
                 <FilterCategoryTitle>On Sale</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="filterOnSale" applyCallbacks={this.applyCallbacks} router={this.props.router}>
-                    <XRadio elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
+                    <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
                 </ApplyFilterWrap>
-            </FilterCategory>
+            </FilterCategory >
 
         );
 
@@ -533,7 +533,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             <FilterCategory key={'filter_isOkForTower'}>
                 <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="isOkForTower" applyCallbacks={this.applyCallbacks} router={this.props.router}>
-                    <XRadio elements={[{ value: 'true', label: 'Yes (90+ height, 0-2 stories now)' }, { value: 'false', label: 'No' }]} />
+                    <XRadioGroup elements={[{ value: 'true', label: 'Yes (90+ height, 0-2 stories now)' }, { value: 'false', label: 'No' }]} />
                 </ApplyFilterWrap>
             </FilterCategory>
         );
@@ -542,7 +542,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             <FilterCategory key={'filter_filterTransit'}>
                 <FilterCategoryTitle>Nearest Transit</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="filterTransit" applyCallbacks={this.applyCallbacks} router={this.props.router}>
-                    <XRadio elements={[{ value: '60', label: '< 200 feet' },
+                    <XRadioGroup elements={[{ value: '60', label: '< 200 feet' },
                     { value: '243', label: '< 800 feet' },
                     { value: '457', label: '< 1500 feet' },
                     { value: '1220', label: '< 4000 feet' },
@@ -557,7 +557,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             <FilterCategory key={'filter_isVacant'}>
                 <FilterCategoryTitle>Vacant</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="isVacant" applyCallbacks={this.applyCallbacks} router={this.props.router}>
-                    <XRadio elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
+                    <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
                 </ApplyFilterWrap>
             </FilterCategory>
         );
@@ -566,7 +566,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             <FilterCategory key={'filter_publicOwner'}>
                 <FilterCategoryTitle>Publicly owned</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="publicOwner" applyCallbacks={this.applyCallbacks} router={this.props.router}>
-                    <XRadio elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
+                    <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
                 </ApplyFilterWrap>
             </FilterCategory>
         );
