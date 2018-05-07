@@ -164,10 +164,10 @@ export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selec
             res.push(
                 this.props.divided ? (
                     <Divided>
-                        <XCheckbox label={label} value={value} checked={this.state.selected && this.selected.has(value)} onChange={this.handleChange} hint={hint}/>
+                        <XCheckbox key={label + '_' + value} label={label} value={value} checked={this.state.selected && this.selected.has(value)} onChange={this.handleChange} hint={hint}/>
                     </Divided>
                 ) : (
-                        <XCheckbox label={label} value={value} checked={this.state.selected && this.selected.has(value)} onChange={this.handleChange} />
+                        <XCheckbox key={label + '_' + value} label={label} value={value} checked={this.state.selected && this.selected.has(value)} onChange={this.handleChange} />
                     ));
         }
         return (

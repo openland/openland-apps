@@ -498,15 +498,13 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
     }
 
     applyHandler = (add: boolean, caller: any) => {
-        console.warn(add, caller);
         if (!add) {
             let params = {};
             for (let c of this.applyCallbacks) {
                 let { fieldName, value } = c();
                 params[fieldName] = value;
             }
-            console.warn(params);
-            this.props.router.pushQueryParams(params);
+            // this.props.router.pushQueryParams(params);
         }
         this.shadowHandler(add, caller);
 
@@ -522,7 +520,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
         let sfOther = [];
 
         sfOther.push(
-            <FilterCategory>
+            <FilterCategory key={'filter_filterOnSale'}>
                 <FilterCategoryTitle>On Sale</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="filterOnSale" applyCallbacks={this.applyCallbacks} router={this.props.router}>
                     <XRadio elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
@@ -532,7 +530,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
         );
 
         sfOther.push(
-            <FilterCategory>
+            <FilterCategory key={'filter_isOkForTower'}>
                 <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="isOkForTower" applyCallbacks={this.applyCallbacks} router={this.props.router}>
                     <XRadio elements={[{ value: 'true', label: 'Yes (90+ height, 0-2 stories now)' }, { value: 'false', label: 'No' }]} />
@@ -541,7 +539,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
         );
 
         sfOther.push(
-            <FilterCategory>
+            <FilterCategory key={'filter_filterTransit'}>
                 <FilterCategoryTitle>Nearest Transit</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="filterTransit" applyCallbacks={this.applyCallbacks} router={this.props.router}>
                     <XRadio elements={[{ value: '60', label: '< 200 feet' },
@@ -556,7 +554,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
         let other = [];
 
         other.push(
-            <FilterCategory>
+            <FilterCategory key={'filter_isVacant'}>
                 <FilterCategoryTitle>Vacant</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="isVacant" applyCallbacks={this.applyCallbacks} router={this.props.router}>
                     <XRadio elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
@@ -565,7 +563,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
         );
 
         other.push(
-            <FilterCategory>
+            <FilterCategory key={'filter_publicOwner'}>
                 <FilterCategoryTitle>Publicly owned</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="publicOwner" applyCallbacks={this.applyCallbacks} router={this.props.router}>
                     <XRadio elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
@@ -574,7 +572,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
         );
 
         other.push(
-            <FilterCategory>
+            <FilterCategory key={'filter_compatible'}>
                 <FilterCategoryTitle>Compatible buildings</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="compatible" applyCallbacks={this.applyCallbacks} router={this.props.router}>
                     <XCheckboxGroup elements={[{ value: 'kasita-1', label: 'Elemynt-1' }, { value: 'kasita-2', label: 'Elemynt-2' }]} />
@@ -611,7 +609,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                 <Shadow active={this.state.active} />
 
                 <MapFilterWrapper active={this.state.active}>
-                    <FilterSwitcher>
+                    <FilterSwitcher  key={'filter_ownerName'}>
                         <Filter handler={this.shadowHandler}>
                             <Filter.Target>
                                 <XButton style={this.props.router.query.ownerName !== undefined ? 'primary' : 'ghost'} text="Owner name" />
@@ -621,9 +619,9 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                             </Filter.Popper>
                         </Filter>
                     </FilterSwitcher>
-                    <FilterSwitcher>
+                    <FilterSwitcher   key={'filter_filterZoning_container'}>
                         {this.props.city === 'sf' && (
-                            <Filter handler={this.shadowHandler}>
+                            <Filter handler={this.shadowHandler}    key={'filter_filterZoning_sf'}>
                                 <Filter.Target>
                                     <XButton style={this.props.router.query.filterZoning !== undefined ? 'primary' : 'ghost'} text="Zoning" />
                                 </Filter.Target>
@@ -640,7 +638,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                         )}
 
                         {this.props.city === 'nyc' && (
-                            <Filter handler={this.shadowHandler}>
+                            <Filter handler={this.shadowHandler}     key={'filter_filterZoning_nyc'}>
                                 <Filter.Target>
                                     <XButton style={this.props.router.query.filterZoning !== undefined ? 'primary' : 'ghost'} text="Zoning" />
                                 </Filter.Target>
@@ -660,7 +658,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
 
                     {this.props.city === 'sf' && (
                         <>
-                            <FilterSwitcher>
+                            <FilterSwitcher     key={'filter_filterLandUse'}>
                                 <Filter handler={this.applyHandler}>
                                     <Filter.Target>
                                         <XButton style={this.props.router.query.filterLandUse !== undefined ? 'primary' : 'ghost'} text={filterLandUseTitle} />
@@ -675,7 +673,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                 </Filter>
                             </FilterSwitcher>
 
-                            <FilterSwitcher>
+                            <FilterSwitcher   key={'filter_filterStories'}>
                                 <Filter handler={this.applyHandler}>
                                     <Filter.Target>
                                         <XButton style={this.props.router.query.filterStories !== undefined ? 'primary' : 'ghost'} text={filterStoriesTitle} />
@@ -695,7 +693,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                 </Filter>
                             </FilterSwitcher>
 
-                            <FilterSwitcher>
+                            <FilterSwitcher key={'filter_filterCurrentUse'}>
                                 <Filter handler={this.applyHandler}>
                                     <Filter.Target>
                                         <XButton style={this.props.router.query.filterCurrentUse !== undefined ? 'primary' : 'ghost'} text={filterCurrentUseTitle} />
@@ -712,7 +710,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                         </>
                     )}
 
-                    <FilterSwitcher>
+                    <FilterSwitcher  key={'filter_filterArea'}>
                         <Filter handler={this.shadowHandler}>
                             <Filter.Target>
                                 <XButton style={this.props.router.query.area !== undefined ? 'primary' : 'ghost'} text="Area" />
@@ -725,7 +723,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                         </Filter>
                     </FilterSwitcher>
 
-                    <FilterSwitcher>
+                    <FilterSwitcher  key={'filter_other_container'}>
                         <Filter handler={this.applyHandler}>
                             <Filter.Target>
                                 <XButton style={otherActive ? 'primary' : 'ghost'} text="Other" />

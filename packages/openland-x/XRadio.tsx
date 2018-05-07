@@ -107,7 +107,7 @@ export class XRadio extends React.Component<XRadioProps, { selected?: string }> 
             let label = (element as any).label !== undefined ? (element as any).label : element;
             let value = (element as any).value !== undefined ? (element as any).value : element;
             res.push(
-                <XRadioElement label={label} value={value} checked={value === this.state.selected} onChange={this.handleChange} />
+                <XRadioElement key={label + '_' + value}  label={label} value={value} checked={value === this.state.selected} onChange={this.handleChange} />
             );
         }
         return (
