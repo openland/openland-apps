@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { XCard } from './X/XCard';
 import { zoneData } from './../utils/zoning/ZoningMatrix';
-import { XTitle } from './X/XTitle';
 import { XCardProperty } from './X/XCardProperty';
+import { XTitle } from 'openland-x/XTitle';
 
 export function ZoningMetrics(props: { codes: string[] }) {
     let items = [...new Set(props.codes)].sort();
@@ -65,7 +65,7 @@ export function ZoningMetrics(props: { codes: string[] }) {
         if (zone) {
             components.push(
                 <XCardProperty divider={true} key={zone.name + '_title'}>
-                    <XTitle >{zone.name}</XTitle>
+                    <XTitle>{zone.name}</XTitle>
                 </XCardProperty>);
 
             let groupComponents = [];

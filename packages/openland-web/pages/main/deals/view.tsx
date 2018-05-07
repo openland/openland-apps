@@ -8,17 +8,15 @@ import { XHead } from '../../../components/X/XHead';
 import { XModalRouted } from '../../../components/X/XModalRouted';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
-import { XView } from '../../../components/X/XView';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';
 import { Text } from '../../../strings';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
-import { XHorizontal } from '../../../components/X/XHorizontal';
+import { XHorizontal } from 'openland-x/XHorizontal';
 import { XContent } from '../../../components/X/XContent';
-import { XTitle } from '../../../components/X/XTitle';
-import { XVertical } from '../../../components/X/XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import { ParcelNumber } from '../../../components/ParcelNumber';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
@@ -31,6 +29,8 @@ import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 import { XAngle } from 'openland-x-format/XAngle';
 import { ZoningCode } from '../../../components/ZoningCode';
+import { XView } from 'openland-x/XView';
+import { XTitle } from 'openland-x/XTitle';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm

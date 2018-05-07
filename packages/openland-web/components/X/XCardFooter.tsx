@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHorizontal } from './XHorizontal';
+import { XHorizontal } from 'openland-x/XHorizontal';
 import XStyles from 'openland-x/XStyles';
 
 export const XCardText = Glamorous.div({

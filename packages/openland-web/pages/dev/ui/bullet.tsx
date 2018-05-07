@@ -2,11 +2,11 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
-import { XVertical } from '../../../components/X/XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import { XContent } from '../../../components/X/XContent';
-import { XHorizontal } from '../../../components/X/XHorizontal';
-import { XTitle } from '../../../components/X/XTitle';
+import { XHorizontal } from 'openland-x/XHorizontal';
 import { XBullet } from 'openland-x/XBullet';
+import { XTitle } from 'openland-x/XTitle';
 
 export default withApp('UI Framework - Bullets', 'viewer', (props) => {
     return (

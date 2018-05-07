@@ -18,12 +18,12 @@ import { ParcelNumber } from '../../ParcelNumber';
 import { ProjectTypes } from '../../ProjectTypes';
 import { XCard } from '../../X/XCard';
 import { XHeader } from '../../X/XHeader';
-import { XView } from '../../X/XView';
 import { XWithRole } from '../../X/XWithRole';
 import { ZoningCode } from '../../ZoningCode';
 import { XPopover } from './XPopover';
 import { XButton } from 'openland-x/XButton';
 import { XContent } from '../../X/XContent';
+import { XView } from 'openland-x/XView';
 
 let panelWidth = 390;
 

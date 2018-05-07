@@ -2,11 +2,11 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
-import { XVertical } from '../../../components/X/XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import glamorous from 'glamorous';
-import { XTitle } from '../../../components/X/XTitle';
 import { XContent } from '../../../components/X/XContent';
 import XStyles from 'openland-x/XStyles';
+import { XTitle } from 'openland-x/XTitle';
 
 const Small = glamorous.div({
     width: XStyles.paddings.small,

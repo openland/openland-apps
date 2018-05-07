@@ -7,7 +7,7 @@ import { XCard } from '../components/X/XCard';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
 import { createAuth0Client } from '../utils/Auth0Client';
-import { XHorizontal } from '../components/X/XHorizontal';
+import { XHorizontal } from 'openland-x/XHorizontal';
 import { XTrack } from '../components/X/XTrack';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';

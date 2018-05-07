@@ -4,7 +4,7 @@ import glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { XContent } from '../../../components/X/XContent';
-import { XVertical } from '../../../components/X/XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import XStyles from 'openland-x/XStyles';
 
 const H900 = glamorous.div({

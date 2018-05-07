@@ -6,7 +6,7 @@ import { XRadioGroup } from 'openland-x/XRadio';
 import { Filter } from './PopperFilterButton';
 import { ChangeEvent } from 'react';
 import { XSelect, XSelectProps } from '../../X/XSelect';
-import { XHorizontal } from '../../X/XHorizontal';
+import { XHorizontal } from 'openland-x/XHorizontal';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { AllLandUse, AllZones, AllNYCZOnes } from './utils';
 import { XRouter } from 'openland-x-routing/XRouter';

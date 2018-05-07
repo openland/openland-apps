@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Glamorous from 'glamorous';
-import { XVertical } from './XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import { MutationFunc } from 'react-apollo';
 import { XCard } from './XCard';
 import { Router } from '../../routes';

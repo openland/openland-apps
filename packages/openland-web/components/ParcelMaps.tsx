@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHorizontal } from './X/XHorizontal';
+import { XHorizontal } from 'openland-x/XHorizontal';
 import { XCard } from './X/XCard';
 import { XStreetView } from './X/XStreetView';
 import { ParcelTileSource, BlockTileSource } from '../api/index';

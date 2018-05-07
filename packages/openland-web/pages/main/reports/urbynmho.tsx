@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
-import { XVertical } from '../../../components/X/XVertical';
+import { XVertical } from 'openland-x/XVertical';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTableUrbynReport';
 import { OpportunityState } from 'openland-api/Types';
 import { Scaffold } from '../../../components/Scaffold';
