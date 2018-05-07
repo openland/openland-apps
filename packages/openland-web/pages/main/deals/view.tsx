@@ -9,7 +9,6 @@ import { XModalRouted } from '../../../components/X/XModalRouted';
 import { XMoney } from '../../../components/X/XMoney';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
-import { XArea } from '../../../components/X/XArea';
 import { XZoningCode } from '../../../components/X/XZoningCode';
 import { XDimensions } from '../../../components/X/XDimensions';
 import { XView } from '../../../components/X/XView';
@@ -31,6 +30,7 @@ import { ParcelNumber } from '../../../components/ParcelNumber';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
+import { XArea } from 'openland-x/XArea';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -100,7 +100,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                             {props.data.deal.parcel && props.data.deal.parcel.extrasZoning && (<XCard.Property title="Zoning"><XZoningCode codes={props.data.deal.parcel.extrasZoning} /></XCard.Property>)}
                             {props.data.deal.location && (<XCard.Property title="Location">{props.data.deal.location}</XCard.Property>)}
                             {props.data.deal.address && (<XCard.Property title="Address">{props.data.deal.address}</XCard.Property>)}
-                            {area != null && (<XCard.Property title="Area"><XArea area={area} /></XCard.Property>)}
+                            {area != null && (<XCard.Property title="Area"><XArea value={area} /></XCard.Property>)}
                             {props.data.deal.parcel && props.data.deal.parcel.extrasShapeType &&
                                 <XCard.Property title="Parcel Shape">{props.data.deal.parcel.extrasShapeType}</XCard.Property>
                             }

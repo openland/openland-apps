@@ -3,13 +3,13 @@ import { withSourcing, withSourcingAll } from '../api';
 import { XCard } from './X/XCard';
 import { XTable } from './X/XTable';
 import { XModalRouted } from './X/XModalRouted';
-import { XArea } from './X/XArea';
 import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
 import { XDate } from './X/XDate';
 import ATypes from 'openland-api';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
+import { XArea } from 'openland-x/XArea';
 // import { OpportunityState } from 'openland-api/Types';
 // import { OpportunitiesTable as _OpportunitiesTable } from './OpportunitiesTableUrbynReport';
 
@@ -246,7 +246,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                         {v.node.parcel.address}
                                     </XTable.Cell>
                                     <XTable.Cell textAlign="right">
-                                        {v.node.parcel && v.node.parcel.area && <XArea area={v.node.parcel.area.value} />}
+                                        {v.node.parcel && v.node.parcel.area && <XArea value={v.node.parcel.area.value} />}
                                     </XTable.Cell>
                                     <XTable.Cell textAlign="right">
                                         {v.node.parcel.extrasZoning}

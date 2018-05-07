@@ -10,12 +10,12 @@ import { XModalRouted } from '../../../components/X/XModalRouted';
 import { DealForm } from '../../../components/DealForm';
 import { XMoney } from '../../../components/X/XMoney';
 import { XBullet } from '../../../components/X/XBullet';
-import { XArea } from '../../../components/X/XArea';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
+import { XArea } from 'openland-x/XArea';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -91,7 +91,7 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
                                                 {d.location}
                                             </XTable.Cell>
                                             <XTable.Cell textAlign="right">
-                                                {d.parcel && d.parcel.extrasArea != null && <XArea area={d.parcel.extrasArea} />}
+                                                {d.parcel && d.parcel.extrasArea != null && <XArea value={d.parcel.extrasArea} />}
                                             </XTable.Cell>
                                             <XTable.Cell textAlign="right">
                                                 {d.price && <XMoney value={d.price} />}

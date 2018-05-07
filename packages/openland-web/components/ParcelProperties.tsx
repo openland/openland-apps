@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Types from 'openland-api';
 import { XCard } from './X/XCard';
-import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { XZoningCode } from './X/XZoningCode';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
@@ -13,6 +12,7 @@ import { XNumber } from './X/XNumber';
 import { XDistance } from './X/XDistance';
 import { Text } from '../strings';
 import { XVertical } from './X/XVertical';
+import { XArea } from 'openland-x/XArea';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
     return (
@@ -27,14 +27,14 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                             <XCard.Property title="Owner Name">{props.item.extrasOwnerName}</XCard.Property>
                         }
                         {props.item.area &&
-                            <XCard.Property title="Area"><XArea area={props.item.area!!.value} /></XCard.Property>
+                            <XCard.Property title="Area"><XArea value={props.item.area!!.value} /></XCard.Property>
                         }
                         <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
                             {Boolean(props.item.area && props.item.extrasUnitCapacityFar && props.item.extrasUnitCapacityDencity) &&
                                 <XCard.Property title="Unit Capacity">
                                     {props.item.extrasUnitCapacity}
                                     <XTooltip placement="right" type="info">
-                                        <XTooltip.Content><XArea area={props.item.area!!.value} />
+                                        <XTooltip.Content><XArea value={props.item.area!!.value} />
                                             {' * ' + props.item.extrasUnitCapacityFar + '(FAR) / ' + props.item.extrasUnitCapacityDencity + '(DF)'}
                                         </XTooltip.Content>
                                     </XTooltip>

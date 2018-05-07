@@ -20,7 +20,6 @@ import ATypes from 'openland-api';
 import { XContent } from '../../../components/X/XContent';
 import { ParcelNumber } from '../../../components/ParcelNumber';
 import { MutationFunc } from 'react-apollo';
-import { XArea } from '../../../components/X/XArea';
 import { XDistance } from '../../../components/X/XDistance';
 import { XMoney } from '../../../components/X/XMoney';
 import { OwnerTypeComponent } from '../../../components/OwnerTypeComponent';
@@ -39,6 +38,7 @@ import { buildProspectingQuery } from '../../../components/prospectingQuery';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
+import { XArea } from 'openland-x/XArea';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
@@ -74,14 +74,14 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                                     <XCard.Property title="Owner Name">{props.parcel.extrasOwnerName}</XCard.Property>
                                 }
                                 {props.parcel.area &&
-                                    <XCard.Property title="Area"><XArea area={props.parcel.area!!.value} /></XCard.Property>
+                                    <XCard.Property title="Area"><XArea value={props.parcel.area!!.value} /></XCard.Property>
                                 }
                                 <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
                                     {Boolean(props.parcel.area && props.parcel.extrasUnitCapacityFar && props.parcel.extrasUnitCapacityDencity) &&
                                         <XCard.Property title="Unit Capacity">
                                             {props.parcel.extrasUnitCapacity}
                                             <XTooltip placement="right" type="info">
-                                                <XTooltip.Content><XArea area={props.parcel.area!!.value} />
+                                                <XTooltip.Content><XArea value={props.parcel.area!!.value} />
                                                     {' * ' + props.parcel.extrasUnitCapacityFar + '(FAR) / ' + props.parcel.extrasUnitCapacityDencity + '(DF)'}
                                                 </XTooltip.Content>
                                             </XTooltip>

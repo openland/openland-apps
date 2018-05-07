@@ -10,13 +10,13 @@ import { XPopover } from './X/XPopover';
 import { XMenu } from './X/XMenu';
 import { withSearch } from '../api';
 import { XCard } from './X/XCard';
-import { XArea } from './X/XArea';
 import { XWithRole } from './X/XWithRole';
 import { XTooltip } from './Incubator/XTooltip';
 import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';
 import { TextGlobalSearch } from 'openland-text/TextGlobalSearch';
 import { XLink } from 'openland-x/XLink';
+import { XArea } from 'openland-x/XArea';
 
 //
 // Root
@@ -305,7 +305,7 @@ let SearchResults = withSearch((props) => {
                         <XCard.ListItem key={v.node.id} path={'/parcels/' + v.node.id}>
                             <ResultTilte>
                                 <ResultTilteMain>{TextGlobalSearch.parcelIdPrefix}<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} /></ResultTilteMain>
-                                <ResultTilteHint>{v.node.extrasArea && <XArea area={v.node.extrasArea} />}</ResultTilteHint>
+                                <ResultTilteHint>{v.node.extrasArea && <XArea value={v.node.extrasArea} />}</ResultTilteHint>
                             </ResultTilte>
                             {!v.highlight.find((k) => k.key === 'address') && (
                                 <ResultBody>

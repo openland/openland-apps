@@ -4,7 +4,7 @@ import * as glamor from 'glamor';
 import { withSearch } from '../../api/';
 import { XCard } from '../X/XCard';
 import { XIcon } from 'openland-x/XIcon';
-import { XArea } from '../X/XArea';
+import { XArea } from 'openland-x/XArea';
 
 const loading = glamor.keyframes({
     '0%': { transform: `rotate(0deg) scaleX(-1)` },
@@ -139,7 +139,7 @@ let SearchResults = withSearch((props) => {
                             {/* <ResultHeader>PARCEL</ResultHeader> */}
                             <ResultTilte>
                                 <ResultTilteMain>Parcel #<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} /></ResultTilteMain>
-                                <ResultTilteHint>{v.node.extrasArea && <XArea area={v.node.extrasArea} />}</ResultTilteHint>
+                                <ResultTilteHint>{v.node.extrasArea && <XArea value={v.node.extrasArea} />}</ResultTilteHint>
                             </ResultTilte>
                             {!v.highlight.find((k) => k.key === 'address') && (
                                 <ResultBody>

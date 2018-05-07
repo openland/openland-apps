@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { XCard } from './X/XCard';
 import { withParcelDirect } from '../api';
 import { XButton as XButtonOld } from './X/XButton';
-import { XArea } from './X/XArea';
 import { XMoney } from './X/XMoney';
 import { XDistance } from './X/XDistance';
 import { AStreetViewModalPreview } from './App/AStreetViewModal';
@@ -24,6 +23,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { XHeader } from './X/XHeader';
 import { ParcelNumber } from './ParcelNumber';
 import { XButton } from 'openland-x/XButton';
+import { XArea } from 'openland-x/XArea';
 
 let panelWidth = 324;
 
@@ -189,14 +189,14 @@ export const ParcelCard = withParcelDirect((props) => {
                                 <PropertyCell title="Owner Name">{props.data.item!!.extrasOwnerName}</PropertyCell>
                             }
                             {props.data.item!!.area &&
-                                <PropertyCell title="Area"><XArea area={props.data.item!!.area!!.value} /></PropertyCell>
+                                <PropertyCell title="Area"><XArea value={props.data.item!!.area!!.value} /></PropertyCell>
                             }
                             <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
                                 {Boolean(props.data.item!!.area && props.data.item!!.extrasUnitCapacityDencity && props.data.item!!.extrasUnitCapacityFar) &&
                                     <PropertyCell title="Unit Capacity">
                                         {props.data.item!!.extrasUnitCapacity}
                                         <XTooltip placement="left" type="info">
-                                            <XTooltip.Content><XArea area={props.data.item!!.area!!.value} />
+                                            <XTooltip.Content><XArea value={props.data.item!!.area!!.value} />
                                                 {' * ' + props.data.item!!.extrasUnitCapacityFar + '(FAR) / ' + props.data.item!!.extrasUnitCapacityDencity + '(DF)'}
                                             </XTooltip.Content>
                                         </XTooltip>

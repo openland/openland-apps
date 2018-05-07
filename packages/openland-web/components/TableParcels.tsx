@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Types from 'openland-api';
 import { XTable } from './X/XTable';
-import { XArea } from './X/XArea';
 import { ParcelNumber } from './ParcelNumber';
 import { withRouter } from 'openland-x-routing/withRouter';
+import { XArea } from 'openland-x/XArea';
 
 export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[], showCity?: boolean }>((props) => {
     return (
@@ -21,7 +21,7 @@ export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[], sho
                         {props.showCity !== false && <XTable.Cell>{v.city.name}</XTable.Cell>}
                         <XTable.Cell><ParcelNumber id={v.number} compact={true} /></XTable.Cell>
                         <XTable.Cell>{v.address}</XTable.Cell>
-                        <XTable.Cell textAlign="right">{v.area && <XArea area={v.area.value} />}</XTable.Cell>
+                        <XTable.Cell textAlign="right">{v.area && <XArea value={v.area.value} />}</XTable.Cell>
                         <XTable.Cell textAlign="right">{v.extrasZoning && v.extrasZoning.join()}</XTable.Cell>
                     </XTable.Row>
                 ))}

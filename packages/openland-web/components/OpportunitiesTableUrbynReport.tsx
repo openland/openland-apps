@@ -6,11 +6,11 @@ import { XHeader } from './X/XHeader';
 import { XTable } from './X/XTable';
 import { XModalRouted } from './X/XModalRouted';
 import { XButton } from './X/XButton';
-import { XArea } from './X/XArea';
 import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
 import ATypes from 'openland-api';
 import { withRouter } from 'openland-x-routing/withRouter';
+import { XArea } from 'openland-x/XArea';
 
 const SwitchButton = Glamorous(XButton)({
     boxShadow: 'none',
@@ -208,7 +208,7 @@ const TableRows = (v: any) => (
             {v.parcel.address}
         </XTable.Cell>
         <XTable.Cell>
-            {v.parcel && v.parcel.area && <XArea area={v.parcel.area.value} />}
+            {v.parcel && v.parcel.area && <XArea value={v.parcel.area.value} />}
         </XTable.Cell>
         <XTable.Cell>
             {v.parcel.extrasZoning}
