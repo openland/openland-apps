@@ -4,7 +4,6 @@ import Glamorous from 'glamorous';
 import { XHead } from '../components/X/XHead';
 import { MessagePage } from '../components/MessagePage';
 import { XCard } from '../components/X/XCard';
-import { XButton } from '../components/X/XButton';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
 import { createAuth0Client } from '../utils/Auth0Client';
@@ -14,6 +13,7 @@ import { XTrack } from '../components/X/XTrack';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLink } from 'openland-x/XLink';
+import { XButton } from 'openland-x/XButton';
 
 let Signup = Glamorous.span({
     opacity: 0.7
@@ -144,10 +144,10 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                     {!this.state.email && (<>
                         <Title>Sign in to Openland</Title>
                         <XCard.Content>
-                            <XButton onClick={this.loginWithGoogle} style="dark" bounce={true}>Signin with Google</XButton>
+                            <XButton onClick={this.loginWithGoogle} style="primary" text="Signin with Google"/>
                         </XCard.Content>
                         <XCard.Content>
-                            <XButton onClick={this.loginWithEmail} style="normal" bounce={true}>Signin with Email</XButton>
+                            <XButton onClick={this.loginWithEmail} style="default" text="Signin with Email"/>
                         </XCard.Content>
                     </>)}
                     {this.state.email && !this.state.emailSent && (<>
@@ -158,8 +158,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                         </XCard.Content>
                         <XCard.Content>
                             <XHorizontal>
-                                <XButton onClick={this.loginReset} bounce={true} alignSelf="stretch" flexGrow={1}>Reset</XButton>
-                                <XButton onClick={this.loginEmailStart} style="dark" bounce={true} alignSelf="stretch" flexGrow={1} loading={this.state.codeSending}>Next</XButton>
+                                <XButton onClick={this.loginReset} alignSelf="stretch" flexGrow={1} text="Reset"/>
+                                <XButton onClick={this.loginEmailStart} style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text="Next"/>
                             </XHorizontal>
                         </XCard.Content>
                     </>)}
@@ -171,8 +171,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                         </XCard.Content>
                         <XCard.Content>
                             <XHorizontal>
-                                <XButton onClick={this.loginReset} bounce={true} alignSelf="stretch" flexGrow={1}>Reset</XButton>
-                                <XButton onClick={this.loginCodeStart} style="dark" bounce={true} alignSelf="stretch" flexGrow={1} loading={this.state.codeSending}>Complete</XButton>
+                                <XButton onClick={this.loginReset} alignSelf="stretch" flexGrow={1} text="Reset"/>
+                                <XButton onClick={this.loginCodeStart} style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text="Complete"/>
                             </XHorizontal>
                         </XCard.Content>
                     </>)}

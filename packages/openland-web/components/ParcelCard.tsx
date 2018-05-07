@@ -10,7 +10,6 @@ import { Text } from '../strings';
 import { trackEvent } from '../utils/analytics';
 import { withParcelDirect } from '../api';
 import { XArea } from 'openland-x-format/XArea';
-import { XButton as XButtonOld } from './X/XButton';
 import { XButton } from 'openland-x/XButton';
 import { XCard } from './X/XCard';
 import { XDimensions } from 'openland-x-format/XDimensions';
@@ -95,7 +94,7 @@ export const ParcelCard = withParcelDirect((props) => {
                             bullet={props.data!!.item!!.extrasOwnerPublic ? 'public' : (props.data!!.item!!.metadata.available ? 'ON SALE' : undefined)}
                             style="compact"
                         >
-                            <XButtonOld borderless={true} size="large" query={{ field: 'selectedParcel' }} icon="clear" />
+                            <XButton style="flat" query={{ field: 'selectedParcel' }} icon="clear" />
                         </XHeader>
                         {props.data!!.item!!.geometry && (
                             <XCard.Content>

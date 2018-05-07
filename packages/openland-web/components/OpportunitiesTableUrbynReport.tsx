@@ -5,12 +5,12 @@ import { XCard } from './X/XCard';
 import { XHeader } from './X/XHeader';
 import { XTable } from './X/XTable';
 import { XModalRouted } from './X/XModalRouted';
-import { XButton } from './X/XButton';
 import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
 import ATypes from 'openland-api';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XArea } from 'openland-x-format/XArea';
+import { XButton } from 'openland-x/XButton';
 
 const SwitchButton = Glamorous(XButton)({
     boxShadow: 'none',
@@ -106,7 +106,7 @@ export const ExportModal = withSourcingAll((props) => {
     };
     return (
         <XCard.Loader loading={(props.data.loading || false)}>
-            <XButton style="dark" onClick={exportCVS}>{'Download' + props.data.variables + '.csv'}</XButton>
+            <XButton style="primary" onClick={exportCVS} text={'Download' + props.data.variables + '.csv'} />
         </XCard.Loader>
 
     );
@@ -174,7 +174,7 @@ class CollapsingTable extends React.Component<{ children: any, count: number }, 
                 <CollapsWrapper collapse={this.state.collapse}>
                     {this.props.children}
                 </CollapsWrapper>
-                {this.state.collapse &&  <ColapseFooterWrap>
+                {this.state.collapse && <ColapseFooterWrap>
                     <XCard.Footer text={this.props.count + ' items'} />
                 </ColapseFooterWrap>}
                 <CollapseBtn onClick={() => this.collapseHandler()} collapse={this.state.collapse}>{this.state.btnText}</CollapseBtn>
@@ -306,10 +306,7 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
                 <>
                     <XHeader text={(props as any).title} separated={true}>
                         <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
-                            <DownloadButton onClick={exportCVS} style="dark">
-                                <img src="/static/img/icons/reports/download-icon.svg" style={{ marginRight: 6, marginBottom: -1 }} />
-                                <span>Export list</span>
-                            </DownloadButton>
+                            <DownloadButton onClick={exportCVS} style="primary" icon="download" text="Export list" />
                         </XWithRole>
                     </XHeader>
                     {

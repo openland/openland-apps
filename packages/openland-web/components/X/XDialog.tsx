@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCard } from './XCard';
-import { XButton } from './XButton';
 import { XHeader } from './XHeader';
 import XStyles from './XStyles';
+import { XButton } from 'openland-x/XButton';
 
 export const XDialogContainer = Glamorous(XCard)<{ width?: number | string }>((props) => ({
     display: 'block',
@@ -59,7 +59,7 @@ export function XDialog(props: { style?: 'full-screen' | 'normal', title: string
                     <XDialogFullScreenContainerHeader>
                         <span>{props.title}</span>
                         <div>
-                            <XButton borderless={true} size="large" icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
+                            <XButton size="large" icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
                         </div>
                     </XDialogFullScreenContainerHeader>
                     {props.children}
@@ -70,7 +70,7 @@ export function XDialog(props: { style?: 'full-screen' | 'normal', title: string
         return (
             <XDialogContainer shadow="medium" width={props.width}>
                 <XHeader text={props.title}>
-                    <XButton borderless={true} icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
+                    <XButton icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
                 </XHeader>
                 {props.children}
             </XDialogContainer>

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XButton } from '../X/XButton';
 import { XModalTargeted } from '../X/XModalTargeted';
 import { XSelect, XSelectProps } from '../X/XSelect';
 import { XWithRole } from '../X/XWithRole';
 import XStyles from '../X/XStyles';
 import { XFilterInput } from '../X/XFilterInput';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
+import { XButton } from 'openland-x/XButton';
 
 let AllLandUse = [
     'Residental',
@@ -677,7 +677,7 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
         return (
             <XModalTargeted title="Parcel filters" fullScreen={true} ref={this.handleInstance} width={320}>
                 <XModalTargeted.Target>
-                    <XButton bounce={true} style={this.props.isActive ? 'dark' : 'normal'}>Filters</XButton>
+                    <XButton style={this.props.isActive ? 'primary' : 'default'} text="Filters" />
                 </XModalTargeted.Target>
                 <XModalTargeted.Content>
                     {this.props.city === 'sf' && (
@@ -799,7 +799,7 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                         <FilterRange placeholderFrom="1000 ft" placeholderTo="1000000 ft" />
                     </FilterCell>
                     <ApplyButtonDiv>
-                        <XButton style="dark" size="medium" bounce={true} onClick={this.handleUpdate}>Apply</XButton>
+                        <XButton style="primary" size="medium" onClick={this.handleUpdate} text="Apply"/>
                     </ApplyButtonDiv>
                 </XModalTargeted.Content>
             </XModalTargeted>

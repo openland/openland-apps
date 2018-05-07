@@ -16,13 +16,13 @@ import { OpportunitiButton } from '../../OpportunityButton';
 import { OwnerTypeComponent } from '../../OwnerTypeComponent';
 import { ParcelNumber } from '../../ParcelNumber';
 import { ProjectTypes } from '../../ProjectTypes';
-import { XButton } from '../../X/XButton';
 import { XCard } from '../../X/XCard';
 import { XHeader } from '../../X/XHeader';
 import { XView } from '../../X/XView';
 import { XWithRole } from '../../X/XWithRole';
 import { ZoningCode } from '../../ZoningCode';
 import { XPopover } from './XPopover';
+import { XButton } from 'openland-x/XButton';
 
 let panelWidth = 390;
 
@@ -179,7 +179,7 @@ const PropertySeparatedDiv = Glamorous(XCard.PropertyList)();
 export const ParcelCard = withParcelDirect((props) => (
     <Container>
         <ContainerHider>
-            <ContainerHiderButton borderless={true} query={{ field: 'selectedParcel' }} icon="keyboard_arrow_right" />
+            <ContainerHiderButton style="flat" query={{ field: 'selectedParcel' }} icon="keyboard_arrow_right" />
         </ContainerHider>
         <XCard.Loader loading={!props.data || props.data!!.loading}>
             {props.data && props.data!!.item &&
@@ -358,7 +358,7 @@ export const ParcelCard = withParcelDirect((props) => (
                         <XView grow={1} basis={0}>
                             <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']} negate={true}>
                                 <XButton
-                                    accent={true}
+                                    text="Favorite"
                                     icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
                                     onClick={(e) => {
                                         e.preventDefault();
@@ -399,9 +399,7 @@ export const ParcelCard = withParcelDirect((props) => (
                                     size="medium"
                                     flexGrow={1}
                                     flexBasis={0}
-                                >
-                                    Favorite
-                                                </XButton>
+                                />
                             </XWithRole>
                             <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']}>
                                 <OpportunitiButton

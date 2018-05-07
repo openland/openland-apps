@@ -2,11 +2,11 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withParcelMetadataForm } from '../../../api/';
-import { XButton } from '../../../components/X/XButton';
 import { XForm } from '../../../components/X/XForm';
 import { XHead } from '../../../components/X/XHead';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
+import { XButton } from 'openland-x/XButton';
 
 export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetadataForm((props) => {
     return (
@@ -34,7 +34,7 @@ export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetad
                         </XForm.Field>
                         <XForm.Footer>
                             <XForm.Submit style="primary" text="Save" />
-                            <XButton path={'/parcels/' + props.data.item.id}>Cancel</XButton>
+                            <XButton path={'/parcels/' + props.data.item.id} text="Cancel" />
                         </XForm.Footer>
                     </XForm>
 
