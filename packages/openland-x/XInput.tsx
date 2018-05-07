@@ -125,7 +125,7 @@ const InputWrapperStyle = Glamorous<XInputWrapperProps>(ClickOutside)([
         background: '#fff',
         borderRadius: 4,
         border: `1px solid ${props.noValid ? '#e26363' : props.active ? '#986AFE' : '#d4dae7'}`,
-        boxShadow: props.noValid ? undefined : props.active ? '0 0 0 2px rgba(143, 124, 246, 0.2)' : undefined,
+        boxShadow: props.active ? '0 0 0 2px rgba(143, 124, 246, 0.2)' : undefined,
         cursor: 'text',
         boxSizing: 'border-box',
         '> .icon': {
