@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withSourcingAll } from '../api';
 import { XCard } from './X/XCard';
-import { XHeader } from './X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { XModalRouted } from './X/XModalRouted';
 import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';

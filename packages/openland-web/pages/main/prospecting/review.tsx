@@ -27,7 +27,7 @@ import { XContent } from '../../../components/X/XContent';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XForm } from '../../../components/X/XForm';
 import { XHead } from '../../../components/X/XHead';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XSwitcher } from './../../../components/X/XSwitcher';
 import { XTooltip } from '../../../components/Incubator/XTooltip';

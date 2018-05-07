@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCard } from './XCard';
-import { XHeader } from './XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
 import XStyles from 'openland-x/XStyles';
 

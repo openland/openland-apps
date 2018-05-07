@@ -4,7 +4,7 @@ import { withApp } from '../../components/withApp';
 import { withSuperAccounts, withSuperAccountAdd } from '../../api/';
 import { XForm } from '../../components/X/XForm';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
-import { XHeader } from '../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';

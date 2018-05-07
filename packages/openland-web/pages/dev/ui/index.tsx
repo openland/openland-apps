@@ -14,7 +14,7 @@ import { ParcelShortList } from '../../../components/Incubator/ParcelShortList';
 import { XTab } from '../../../components/X/XTab';
 import { XIcon } from 'openland-x/XIcon';
 import { StateSelect } from '../../../api';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { XContent } from '../../../components/X/XContent';
 import { XTitle } from 'openland-x/XTitle';

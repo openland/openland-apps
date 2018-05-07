@@ -13,7 +13,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { withDealsMap } from '../../../api';
 import '../../../globals';
 import hpdprojects from '../../../utils/reports/urbyn/lots_of_data.json';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { XMapProps, XMap } from 'openland-x-map/XMap';
 import { XMapSource } from 'openland-x-map/XMapSource';

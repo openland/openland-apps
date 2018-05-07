@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Scaffold } from './Scaffold';
 import { XHead } from './X/XHead';
 import { Sidebar } from './Sidebar';
-import { XHeader } from './X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 
 // const ContentView = Glamorous.div({
 //     display: 'flex',

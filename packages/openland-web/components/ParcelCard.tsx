@@ -13,7 +13,7 @@ import { XArea } from 'openland-x-format/XArea';
 import { XButton } from 'openland-x/XButton';
 import { XCard } from './X/XCard';
 import { XDimensions } from 'openland-x-format/XDimensions';
-import { XHeader } from './X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { XHorizontal } from 'openland-x/XHorizontal';
 import { XIcon } from 'openland-x/XIcon';
 import { XTooltip } from './Incubator/XTooltip';

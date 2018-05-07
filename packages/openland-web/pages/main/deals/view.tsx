@@ -11,7 +11,7 @@ import { ParcelMaps } from '../../../components/ParcelMaps';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';
 import { Text } from '../../../strings';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
 import { XHorizontal } from 'openland-x/XHorizontal';

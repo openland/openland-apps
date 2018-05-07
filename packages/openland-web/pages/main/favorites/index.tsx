@@ -8,7 +8,7 @@ import { withParcelsFavorites } from '../../../api/';
 import { TableParcels } from '../../../components/TableParcels';
 import Types from 'openland-api';
 import * as FileSaver from 'file-saver';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';

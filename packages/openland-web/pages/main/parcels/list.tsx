@@ -6,7 +6,7 @@ import { withParcels } from '../../../api/';
 import { XHead } from '../../../components/X/XHead';
 import { AppFilters } from '../../../components/App/AppFilters';
 import { TableParcels } from '../../../components/TableParcels';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { CitySelector } from '../../../components/Incubator/CitySelector';
 import { XHorizontal } from 'openland-x/XHorizontal';

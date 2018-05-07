@@ -7,7 +7,7 @@ import { XCard } from '../../../components/X/XCard';
 import { withDeals, withDealAdd } from '../../../api/';
 import { XModalRouted } from '../../../components/X/XModalRouted';
 import { DealForm } from '../../../components/DealForm';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { XLink } from 'openland-x/XLink';

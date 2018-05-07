@@ -4,7 +4,7 @@ import { withApp } from '../../../components/withApp';
 import { withParcelMetadataForm } from '../../../api/';
 import { XForm } from '../../../components/X/XForm';
 import { XHead } from '../../../components/X/XHead';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XButton } from 'openland-x/XButton';
 

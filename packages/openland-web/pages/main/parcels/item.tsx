@@ -13,7 +13,7 @@ import { XHorizontal } from 'openland-x/XHorizontal';
 import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
 import { OpportunitiButton } from '../../../components/OpportunityButton';
 import { XForm } from '../../../components/X/XForm';
-import { XHeader } from '../../../components/X/XHeader';
+import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XContent } from '../../../components/X/XContent';
 import { XVertical } from 'openland-x/XVertical';
