@@ -41,6 +41,9 @@
       ],
       "openland-x-utils": [
         "openland-x-utils"
+      ],
+      "openland-x-format": [
+        "openland-x-format"
       ]
     },
     "importHelpers": true

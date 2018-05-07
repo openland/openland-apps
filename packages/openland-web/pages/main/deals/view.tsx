@@ -30,7 +30,7 @@ import { ParcelNumber } from '../../../components/ParcelNumber';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
-import { XArea } from 'openland-x/XArea';
+import { XArea } from 'openland-x-format/XArea';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm

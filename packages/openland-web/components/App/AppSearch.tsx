@@ -4,7 +4,7 @@ import * as glamor from 'glamor';
 import { withSearch } from '../../api/';
 import { XCard } from '../X/XCard';
 import { XIcon } from 'openland-x/XIcon';
-import { XArea } from 'openland-x/XArea';
+import { XArea } from 'openland-x-format/XArea';
 
 const loading = glamor.keyframes({
     '0%': { transform: `rotate(0deg) scaleX(-1)` },

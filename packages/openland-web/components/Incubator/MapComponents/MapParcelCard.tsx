@@ -22,7 +22,7 @@ import { XIcon } from '../../../../openland-x/XIcon';
 import { XHeader } from '../../X/XHeader';
 import { ParcelNumber } from '../../ParcelNumber';
 import { XPopover } from './XPopover';
-import { XArea } from 'openland-x/XArea';
+import { XArea } from 'openland-x-format/XArea';
 
 let panelWidth = 390;
 

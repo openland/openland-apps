@@ -3,7 +3,7 @@ import Types from 'openland-api';
 import { XTable } from './X/XTable';
 import { ParcelNumber } from './ParcelNumber';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { XArea } from 'openland-x/XArea';
+import { XArea } from 'openland-x-format/XArea';
 
 export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[], showCity?: boolean }>((props) => {
     return (

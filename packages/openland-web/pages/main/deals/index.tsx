@@ -15,7 +15,7 @@ import { Scaffold } from '../../../components/Scaffold';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
-import { XArea } from 'openland-x/XArea';
+import { XArea } from 'openland-x-format/XArea';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',

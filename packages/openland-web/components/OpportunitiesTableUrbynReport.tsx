@@ -10,7 +10,7 @@ import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
 import ATypes from 'openland-api';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { XArea } from 'openland-x/XArea';
+import { XArea } from 'openland-x-format/XArea';
 
 const SwitchButton = Glamorous(XButton)({
     boxShadow: 'none',
