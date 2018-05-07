@@ -2,75 +2,14 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCardFooter } from './XCardFooter';
 import { XCardProperty, XCardPropertyList, XCardPropertyColumns } from './XCardProperty';
-import { XCardGallery } from './XCardGallery';
 import { XCardMap } from './XCardMap';
 import { XSeparated } from './XSeparated';
-import { XCardFormList, XCardFormCell } from './XCardForm';
 import { XCardHint } from './XCardHint';
 import { XCardWarning } from './XCardWarning';
 import { XCardLoader } from './XCardLoader';
 import { XCardEmpty } from './XCardEmpty';
 import { XCardList, XCardListItem } from './XCardList';
 import { XLink } from 'openland-x/XLink';
-
-export class XCardTitle extends React.Component<{ title: string, subtitle?: string | null, path?: string | null, preview?: string | null }> {
-    render() {
-        if (this.props.preview) {
-            return (
-                <div className="x-card-s-title-photo">
-                    {this.props.path && (<XLink path={this.props.path}><img className="photo" src={this.props.preview} /></XLink>)}
-                    {!this.props.path && (<img className="photo" src={this.props.preview} />)}
-
-                    <div className="x-card-s-title content">
-                        {this.props.path && (<XLink path={this.props.path}><div className="title">{this.props.title}</div></XLink>)}
-                        {!this.props.path && (<div className="title">{this.props.title}</div>)}
-                        {this.props.subtitle && <div className="subtitle">{this.props.subtitle}</div>}
-                    </div>
-                </div>
-            );
-        } else {
-            return (
-                <div className="x-card-s-title">
-                    {this.props.path && (<XLink path={this.props.path}><div className="title">{this.props.title}</div></XLink>)}
-                    {!this.props.path && (<div className="title">{this.props.title}</div>)}
-                    {this.props.subtitle && <div className="subtitle">{this.props.subtitle}</div>}
-                </div>
-            );
-        }
-    }
-}
-
-export class XCardTitleLarge extends React.Component<{ title: string, subtitle?: string | null, path?: string | null }> {
-    render() {
-        return (
-            <div className="x-card-s-title">
-                {this.props.path && (<XLink path={this.props.path}><div className="title">{this.props.title}</div></XLink>)}
-                {!this.props.path && (<div className="title">{this.props.title}</div>)}
-                {this.props.subtitle && <div className="subtitle">{this.props.subtitle}</div>}
-            </div>
-        );
-    }
-}
-
-export class XCardButton extends React.Component<{ title: string, path: string }> {
-    render() {
-        return (
-            <XLink className="x-card-s-button" path={this.props.path}>
-                <span>{this.props.title}</span>
-            </XLink>
-        );
-    }
-}
-
-export class XCardExternalLink extends React.Component<{ href: string }> {
-    render() {
-        return (
-            <a className="x-card-s-link" href={this.props.href} target="_blank">
-                <i className="icon-share" />
-            </a>
-        );
-    }
-}
 
 interface XCardDivProps {
     shadow?: 'none' | 'normal' | 'medium' | 'large';
@@ -124,15 +63,6 @@ let XCardDiv = Glamorous.div<XCardDivProps>((props) => ({
     // }
 }));
 
-let XCardDivContent = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 12,
-    paddingBottom: 12
-});
-
 let XCardSeparator = Glamorous.div({
     height: 1,
     backgroundColor: '#e6ebf1'
@@ -152,19 +82,11 @@ interface XCardProps {
 
 export class XCard extends React.Component<XCardProps> {
     static Footer = XCardFooter;
-    static Title = XCardTitle;
-    static Button = XCardButton;
-    static ExternalLink = XCardExternalLink;
     static Empty = XCardEmpty;
-    static Content = XCardDivContent;
     static Property = XCardProperty;
     static PropertyList = XCardPropertyList;
     static PropertyColumns = XCardPropertyColumns;
-    static Gallery = XCardGallery;
-    static GalleryItem = XCardGallery.Item;
     static Map = XCardMap;
-    static FormList = XCardFormList;
-    static FormCell = XCardFormCell;
     static Hint = XCardHint;
     static Warning = XCardWarning;
     static Loader = XCardLoader;

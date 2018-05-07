@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessagePage } from './MessagePage';
-import { XCard } from './X/XCard';
 import { trackError } from '../utils/analytics';
+import { XContent } from './X/XContent';
 
 export class RootErrorBoundary extends React.Component<{}, { isError: boolean }> {
     constructor(props: {}) {
@@ -18,9 +18,9 @@ export class RootErrorBoundary extends React.Component<{}, { isError: boolean }>
         if (this.state.isError) {
             return (
                 <MessagePage>
-                    <XCard.Content>
+                    <XContent>
                         Unexpected error
-                    </XCard.Content>
+                    </XContent>
                 </MessagePage>
             );
         }

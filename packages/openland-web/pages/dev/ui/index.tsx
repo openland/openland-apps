@@ -9,7 +9,6 @@ import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XSlider, XRange } from '../../../components/X/XSlider';
 import { XSelect } from '../../../components/X/XSelect';
 import { XForm } from '../../../components/X/XForm';
-import { XDropdown } from '../../../components/Incubator/XDropdown2';
 import { XCardLink } from '../../../components/Incubator/XCardLink';
 import { withApp } from '../../../components/withApp';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
@@ -20,6 +19,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { StateSelect } from '../../../api';
 import { XHeader } from '../../../components/X/XHeader';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
+import { XContent } from '../../../components/X/XContent';
 
 export default withApp('UI Framework', 'viewer', (props) => {
     return (
@@ -49,7 +49,7 @@ export default withApp('UI Framework', 'viewer', (props) => {
                 <div>qwe</div>
             </XCard>
             <XCard>
-                <XCard.Content>
+                <XContent>
                     <XTitle>Default Button</XTitle>
                     <XVertical>
                         <XForm.DateSingle onDateChange={(date: any) => console.warn(date)} />
@@ -103,19 +103,8 @@ export default withApp('UI Framework', 'viewer', (props) => {
                         </XSwitcher>
                         <XSlider dots step={5} defaultValue={100} />
                         <XRange dots step={5} defaultValue={[20, 40]} />
-                        <XDropdown title="with children">
-                            <XCard>
-                                <XCard.FormList>
-                                    <XCard.FormCell
-                                        title="XForm example"
-                                        placeholder="Placeholder"
-                                        description="Form description"
-                                    />
-                                </XCard.FormList>
-                            </XCard>
-                        </XDropdown>
                     </XVertical>
-                </XCard.Content>
+                </XContent>
             </XCard>
             <XCardLink href="https://goo.gl/urJT1F" title="GET /_next/webpack/c14ba59cb321053a0d76" text="DONE  Compiled successfully in 892ms" icon="beach_access" />
             <XCard separators={true}>
@@ -170,32 +159,10 @@ export default withApp('UI Framework', 'viewer', (props) => {
                     </XHeader.Target>
                 </XHeader>
                 <XCard.Loader loading={true} >
-                    <XCard.FormList>
-                        <XCard.FormCell
-                            title="XForm example"
-                            placeholder="Placeholder"
-                            description="Form description"
-                        />
-                    </XCard.FormList>
                     <XCard.Warning title="Warning example with hint and button element">
                         {}
                     </XCard.Warning>
                 </XCard.Loader>
-            </XCard>
-            {/* <XCard shadow="medium" loading={true}>
-                <XCard.Footer text="footer">
-                    <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                    <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                </XCard.Footer>
-            </XCard> */}
-            <XCard>
-                <XCard.FormList>
-                    <XCard.FormCell
-                        title="XForm example"
-                        placeholder="Placeholder"
-                        description="Form description"
-                    />
-                </XCard.FormList>
             </XCard>
         </DevDocsScaffold>
     );

@@ -14,6 +14,7 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
+import { XContent } from '../components/X/XContent';
 
 let Signup = Glamorous.span({
     opacity: 0.7
@@ -143,42 +144,42 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                 <MessagePage>
                     {!this.state.email && (<>
                         <Title>Sign in to Openland</Title>
-                        <XCard.Content>
+                        <XContent>
                             <XButton onClick={this.loginWithGoogle} style="primary" text="Signin with Google"/>
-                        </XCard.Content>
-                        <XCard.Content>
+                        </XContent>
+                        <XContent>
                             <XButton onClick={this.loginWithEmail} style="default" text="Signin with Email"/>
-                        </XCard.Content>
+                        </XContent>
                     </>)}
                     {this.state.email && !this.state.emailSent && (<>
                         <Title>Sign in with Email</Title>
                         {this.state.emailError !== '' && <XCard.Warning title={this.state.emailError} />}
-                        <XCard.Content>
+                        <XContent>
                             <XInput onChange={this.emailChanged} value={this.state.emailValue} placeholder="Your work email" />
-                        </XCard.Content>
-                        <XCard.Content>
+                        </XContent>
+                        <XContent>
                             <XHorizontal>
                                 <XButton onClick={this.loginReset} alignSelf="stretch" flexGrow={1} text="Reset"/>
                                 <XButton onClick={this.loginEmailStart} style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text="Next"/>
                             </XHorizontal>
-                        </XCard.Content>
+                        </XContent>
                     </>)}
                     {this.state.emailSent && (<>
                         <Title>Please, enter activation code</Title>
                         {this.state.codeError !== '' && <XCard.Warning title={this.state.codeError} />}
-                        <XCard.Content>
+                        <XContent>
                             <XInput onChange={this.codeChanged} value={this.state.codeValue} placeholder="XXXXXX" />
-                        </XCard.Content>
-                        <XCard.Content>
+                        </XContent>
+                        <XContent>
                             <XHorizontal>
                                 <XButton onClick={this.loginReset} alignSelf="stretch" flexGrow={1} text="Reset"/>
                                 <XButton onClick={this.loginCodeStart} style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text="Complete"/>
                             </XHorizontal>
-                        </XCard.Content>
+                        </XContent>
                     </>)}
-                    <XCard.Content>
+                    <XContent>
                         <SignupContainer><Signup>Don't have an Openland account? </Signup>{'\u00A0'}<XLink path="/signup">Sign Up</XLink></SignupContainer>
-                    </XCard.Content>
+                    </XContent>
                 </MessagePage>
             </>
         );

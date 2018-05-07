@@ -23,6 +23,7 @@ import { ZoningCode } from './ZoningCode';
 import { XDistance } from 'openland-x-format/XDistance';
 import { XMoney } from 'openland-x-format/XMoney';
 import { XNumber } from 'openland-x-format/XNumber';
+import { XContent } from './X/XContent';
 
 let panelWidth = 324;
 
@@ -97,14 +98,14 @@ export const ParcelCard = withParcelDirect((props) => {
                             <XButton style="flat" query={{ field: 'selectedParcel' }} icon="clear" />
                         </XHeader>
                         {props.data!!.item!!.geometry && (
-                            <XCard.Content>
+                            <XContent>
                                 <StreetViewDiv>
                                     <AStreetViewModal geometry={props.data!!.item!!.geometry!!} />
                                     <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={panelWidth - 32} height={144} />
                                 </StreetViewDiv>
-                            </XCard.Content>
+                            </XContent>
                         )}
-                        <XCard.Content>
+                        <XContent>
                             <XHorizontal>
                                 <XButton
                                     text="Details"
@@ -169,7 +170,7 @@ export const ParcelCard = withParcelDirect((props) => {
                                     </XWithRole>
                                 </XView>
                             </XHorizontal>
-                        </XCard.Content>
+                        </XContent>
 
                         {props.data.item!!.userData && props.data.item!!.userData!!.notes && (
                             <Notes>

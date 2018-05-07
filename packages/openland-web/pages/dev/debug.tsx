@@ -2,10 +2,10 @@ import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { withUserInfo } from '../../components/UserInfo';
-import { XCard } from '../../components/X/XCard';
 import { XTable } from '../../components/X/XTable';
 import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
+import { XContent } from '../../components/X/XContent';
 
 export default withApp('Super Debug', ['super-admin', 'software-developer'], withUserInfo((props) => {
     return (
@@ -26,13 +26,13 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
                 </XTable.Body>
             </XTable>
             <XHeader text="Your Organization" />
-            <XCard.Content>
+            <XContent>
                 {props.account && (
                     <>
                         <div>{props.account.title}</div>
                     </>
                 )}
-            </XCard.Content>
+            </XContent>
         </DevToolsScaffold>
     );
 }));

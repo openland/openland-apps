@@ -23,6 +23,7 @@ import { XWithRole } from '../../X/XWithRole';
 import { ZoningCode } from '../../ZoningCode';
 import { XPopover } from './XPopover';
 import { XButton } from 'openland-x/XButton';
+import { XContent } from '../../X/XContent';
 
 let panelWidth = 390;
 
@@ -168,7 +169,7 @@ const ProspectingWrapper = Glamorous.div({
     backgroundColor: '#fff'
 });
 
-const SeparatedDiv = Glamorous(XCard.Content)({
+const SeparatedDiv = Glamorous(XContent)({
     borderBottom: '1px solid rgba(97, 126, 156, 0.2)',
     paddingTop: 18,
     paddingBottom: 18,
