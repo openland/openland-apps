@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XDate } from './X/XDate';
+import { XDate } from 'openland-x-format/XDate';
 // FILING
 // FILED
 // ISSUED
@@ -185,7 +185,7 @@ export function PermitStatus(props: { status: string | null, date?: string | nul
         {props.date && (
             <div className="x-permit--status">
                 <i className={'icon-' + icon} />
-                <span><XDate date={props.date} format={'date'} /></span>
+                <span><XDate value={props.date} format={'date'} /></span>
                 {text}
             </div>
         )}

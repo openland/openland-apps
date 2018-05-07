@@ -6,13 +6,13 @@ import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { XTooltip } from './Incubator/XTooltip';
 import { XWithRole } from './X/XWithRole';
 import { ProjectTypes } from './ProjectTypes';
-import { XNumber } from './X/XNumber';
 import { Text } from '../strings';
 import { XVertical } from './X/XVertical';
 import { XArea } from 'openland-x-format/XArea';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XDistance } from 'openland-x-format/XDistance';
 import { XMoney } from 'openland-x-format/XMoney';
+import { XNumber } from 'openland-x-format/XNumber';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
     return (

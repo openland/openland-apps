@@ -7,7 +7,6 @@ import { withParcel } from '../../../api/';
 import { ParcelProperties } from '../../../components/ParcelProperties';
 import { XHead } from '../../../components/X/XHead';
 import { PermitType } from '../../../components/PermitType';
-import { XDate } from '../../../components/X/XDate';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { trackEvent } from '../../../utils/analytics';
@@ -32,6 +31,7 @@ import { XZoningMetrics } from './../../../components/X/XZoningMetrics';
 import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XButton } from 'openland-x/XButton';
 import { XDimensions } from 'openland-x-format/XDimensions';
+import { XDate } from 'openland-x-format/XDate';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -178,13 +178,13 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                         <XTable.Body>
                                             {props.data.item.permits.map((v) => (
                                                 <XTable.Row key={v.id} href={v.governmentalUrl!!}>
-                                                    <XTable.Cell>{v.createdAt && <XDate date={v.createdAt} />}</XTable.Cell>
+                                                    <XTable.Cell>{v.createdAt && <XDate value={v.createdAt} />}</XTable.Cell>
                                                     <XTable.Cell>{v.id}</XTable.Cell>
                                                     <XTable.Cell>{v.type && <PermitType type={v.type!!} />}</XTable.Cell>
                                                     <XTable.Cell>
                                                         {v.status}
                                                         {v.statusUpdatedAt && ' ('}
-                                                        {v.statusUpdatedAt && <XDate date={v.statusUpdatedAt} />}
+                                                        {v.statusUpdatedAt && <XDate value={v.statusUpdatedAt} />}
                                                         {v.statusUpdatedAt && ')'}
                                                     </XTable.Cell>
                                                     <XTable.Cell>{v.description}</XTable.Cell>

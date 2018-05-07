@@ -17,13 +17,13 @@ import { XDimensions } from 'openland-x-format/XDimensions';
 import { XHeader } from './X/XHeader';
 import { XHorizontal } from './X/XHorizontal';
 import { XIcon } from 'openland-x/XIcon';
-import { XNumber } from './X/XNumber';
 import { XTooltip } from './Incubator/XTooltip';
 import { XView } from './X/XView';
 import { XWithRole } from './X/XWithRole';
 import { XZoningCode } from './X/XZoningCode';
 import { XDistance } from 'openland-x-format/XDistance';
 import { XMoney } from 'openland-x-format/XMoney';
+import { XNumber } from 'openland-x-format/XNumber';
 
 let panelWidth = 324;
 

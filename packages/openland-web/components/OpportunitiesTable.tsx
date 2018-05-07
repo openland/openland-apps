@@ -5,11 +5,11 @@ import { XTable } from './X/XTable';
 import { XModalRouted } from './X/XModalRouted';
 import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
-import { XDate } from './X/XDate';
 import ATypes from 'openland-api';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XArea } from 'openland-x-format/XArea';
+import { XDate } from 'openland-x-format/XDate';
 // import { OpportunityState } from 'openland-api/Types';
 // import { OpportunitiesTable as _OpportunitiesTable } from './OpportunitiesTableUrbynReport';
 
@@ -257,7 +257,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                         </XTable.Cell>
                                     </XWithRole>
                                     <XTable.Cell textAlign="right">
-                                        <XDate format="humanize" date={v.node.updatedAt} />
+                                        <XDate format="humanize" value={v.node.updatedAt} />
                                     </XTable.Cell>
                                 </XTable.Row>
                             ))}
