@@ -1,5 +1,5 @@
 import glamorous from 'glamorous';
-import XStyles from './XStyles';
+import XStyles from 'openland-x/XStyles';
 
 export const XContent = glamorous.div({
     display: 'flex',

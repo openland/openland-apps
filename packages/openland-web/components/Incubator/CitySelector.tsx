@@ -4,8 +4,8 @@ import Glamorous from 'glamorous';
 import ClickOutside from './ClickOutside';
 import { Manager, Target, Popper } from './XPopper';
 import { XCloser } from '../X/XCloser';
-import XStyles from '../X/XStyles';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import XStyles from 'openland-x/XStyles';
 
 const CityTitle = Glamorous.div<{ inverted?: boolean }>((props) => ({
     cursor: 'pointer',

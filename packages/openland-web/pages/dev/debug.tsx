@@ -2,10 +2,10 @@ import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { withUserInfo } from '../../components/UserInfo';
-import { XTable } from '../../components/X/XTable';
 import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XContent } from '../../components/X/XContent';
+import { XTable } from 'openland-x/XTable';
 
 export default withApp('Super Debug', ['super-admin', 'software-developer'], withUserInfo((props) => {
     return (

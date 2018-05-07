@@ -3,12 +3,12 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { withSuperAdmins, UserSelect, withSuperAdminAdd, withSuperAdminRemove } from '../../api/';
 import { XCard } from '../../components/X/XCard';
-import { XTable } from '../../components/X/XTable';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XForm } from '../../components/X/XForm';
 import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
+import { XTable } from 'openland-x/XTable';
 
 const AddSuperAdminForm = withSuperAdminAdd((props) => {
     return (

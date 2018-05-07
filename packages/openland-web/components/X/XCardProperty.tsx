@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import XStyles from './XStyles';
+import XStyles from 'openland-x/XStyles';
 
 let XCardFieldContainer = Glamorous.div<{ compact?: boolean, divider?: boolean }>((props) => ({
     position: 'relative',

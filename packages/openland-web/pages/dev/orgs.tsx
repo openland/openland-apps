@@ -3,12 +3,12 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { withSuperAccounts, withSuperAccountAdd } from '../../api/';
 import { XCard } from '../../components/X/XCard';
-import { XTable } from '../../components/X/XTable';
 import { XForm } from '../../components/X/XForm';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
+import { XTable } from 'openland-x/XTable';
 
 const AddAccountForm = withSuperAccountAdd((props) => {
     return (

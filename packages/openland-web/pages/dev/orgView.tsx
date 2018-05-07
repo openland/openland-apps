@@ -2,7 +2,6 @@ import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { XCard } from '../../components/X/XCard';
-import { XTable } from '../../components/X/XTable';
 import {
     withSuperAccount, withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountMemberAdd,
     UserSelect, withSuperAccountFeatureAdd, withSuperAccountFeatureRemove,
@@ -14,6 +13,7 @@ import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
+import { XTable } from 'openland-x/XTable';
 
 const ActivateButton = withSuperAccountActivate((props) => <XButtonMutation style="primary" mutation={props.activate}>Activate</XButtonMutation>);
 const SuspendButton = withSuperAccountSuspend((props) => <XButtonMutation style="danger" mutation={props.suspend}>Suspend</XButtonMutation>);

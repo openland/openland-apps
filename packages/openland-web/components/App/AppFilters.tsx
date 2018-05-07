@@ -3,10 +3,10 @@ import Glamorous from 'glamorous';
 import { XModalTargeted } from '../X/XModalTargeted';
 import { XSelect, XSelectProps } from '../X/XSelect';
 import { XWithRole } from '../X/XWithRole';
-import XStyles from '../X/XStyles';
 // import { XFilterInput } from '../X/XFilterInput';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
+import XStyles from 'openland-x/XStyles';
 
 let AllLandUse = [
     'Residental',

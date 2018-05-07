@@ -4,9 +4,9 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { XVertical } from '../../../components/X/XVertical';
 import glamorous from 'glamorous';
-import XStyles from '../../../components/X/XStyles';
 import { XTitle } from '../../../components/X/XTitle';
 import { XContent } from '../../../components/X/XContent';
+import XStyles from 'openland-x/XStyles';
 
 const Small = glamorous.div({
     width: XStyles.paddings.small,

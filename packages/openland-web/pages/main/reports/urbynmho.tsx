@@ -13,12 +13,12 @@ import { XIcon } from 'openland-x/XIcon';
 import { withDealsMap } from '../../../api';
 import '../../../globals';
 import hpdprojects from '../../../utils/reports/urbyn/lots_of_data.json';
-import XStyles from '../../../components/X/XStyles';
 import { XHeader } from '../../../components/X/XHeader';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { XMapProps, XMap } from 'openland-x-map/XMap';
 import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapImageLayer } from 'openland-x-map/XMapImageLayer';
+import XStyles from 'openland-x/XStyles';
 
 const UrbinHeaderWrapper = Glamorous.div({
     position: 'relative',

@@ -2,7 +2,6 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
-import { XTable } from '../../../components/X/XTable';
 import { withParcel } from '../../../api/';
 import { ParcelProperties } from '../../../components/ParcelProperties';
 import { XHead } from '../../../components/X/XHead';
@@ -32,6 +31,7 @@ import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 import { XAngle } from 'openland-x-format/XAngle';
 import { ZoningMetrics } from '../../../components/ZoningMetrics';
+import { XTable } from 'openland-x/XTable';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
