@@ -54,8 +54,12 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
     }
 }));
 
-class XRadioElement extends React.Component<{ label: string, value: string, checked: boolean, onChange: (checked?: string) => void }> {
-    constructor(props: { label: string, value: string, checked: boolean, onChange: (checked?: string) => void }) {
+export class XRadioItem extends React.Component<{ label: string, value?: string, checked?: boolean, onChange?: (checked?: string) => void, useAnyOption?: boolean }> {
+    static defaultProps = {
+        _isRadioItem: true
+    };
+
+    constructor(props: { label: string, value?: string, checked?: boolean, onChange?: (checked?: string) => void }) {
         super(props);
 
         this.state = {
@@ -65,15 +69,17 @@ class XRadioElement extends React.Component<{ label: string, value: string, chec
     }
 
     handleChange = () => {
-        this.props.onChange(this.props.checked ? undefined : this.props.value);
+        if (this.props.onChange) {
+            this.props.onChange(this.props.checked ? undefined : this.props.value !== undefined ? this.props.value : this.props.label);
+        }
     }
 
     render() {
         const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
 
         return (
-            <CheckboxInputDiv active={this.props.checked}>
-                <input onClick={this.handleChange} id={id} type="radio" checked={this.props.checked} />
+            <CheckboxInputDiv active={this.props.checked !== undefined ? this.props.checked : false}>
+                <input onClick={this.props.useAnyOption === false ? this.handleChange : undefined} onChange={this.props.useAnyOption === false ? undefined : this.handleChange} id={id} type="radio" checked={this.props.checked} />
                 <label htmlFor={id}>
                     <div />
                     <span>{this.props.label}</span>
@@ -83,10 +89,10 @@ class XRadioElement extends React.Component<{ label: string, value: string, chec
     }
 }
 
-class XRadioProps { elements: string[] | { value: string, label: string }[]; selected?: string; onChange?: (value?: string) => void; }
-export class XRadio extends React.Component<XRadioProps, { selected?: string }> {
+class XRadioProps { elements?: string[] | { value: string, label: string }[]; selected?: string; onChange?: (value?: string) => void; useAnyOption?: boolean; }
+export class XRadioGroup extends React.Component<XRadioProps, { selected?: string }> {
     static defaultProps = {
-        _isRadio: true
+        _isRadioGroup: true
     };
     constructor(props: XRadioProps) {
         super(props);
@@ -95,23 +101,52 @@ export class XRadio extends React.Component<XRadioProps, { selected?: string }> 
         };
     }
     handleChange = (checked?: string) => {
+        if (checked === 'any_option_value_stub') {
+            checked = undefined;
+        }
         if (this.props.onChange) {
             this.props.onChange(checked);
         }
         this.setState({ selected: checked });
     }
 
+    modifyProps = (component: any): any => {
+        let res: any = {};
+        if (component.props && component.props._isRadioItem) {
+            res.checked = (component.props.value !== undefined ? component.props.value : component.props.label) === this.state.selected;
+            res.onChange = this.handleChange;
+            res.useAnyOption = this.props.useAnyOption;
+        }
+
+        return res;
+    }
+
     render() {
-        let res = [];
-        for (let element of this.props.elements) {
-            let label = (element as any).label !== undefined ? (element as any).label : element;
-            let value = (element as any).value !== undefined ? (element as any).value : element;
-            res.push(
-                <XRadioElement key={label + '_' + value}  label={label} value={value} checked={value === this.state.selected} onChange={this.handleChange} />
+
+        let children: any[] = [];
+
+        for (let c of React.Children.toArray(this.props.children)) {
+            children.push(React.cloneElement(c as any, this.modifyProps(c)));
+        }
+
+        if (this.props.elements) {
+            for (let element of this.props.elements) {
+                let label = (element as any).label !== undefined ? (element as any).label : element;
+                let value = (element as any).value !== undefined ? (element as any).value : element;
+                children.push(
+                    <XRadioItem key={label + '_' + value} label={label} value={value} checked={value === this.state.selected} onChange={this.handleChange} useAnyOption={this.props.useAnyOption}/>
+                );
+            }
+
+        }
+        if (this.props.useAnyOption !== false) {
+            children.push(
+                <XRadioItem key={'any_option'} label={'Any'} value={'any_option_value_stub'} checked={this.state.selected === undefined} onChange={this.handleChange} />
             );
         }
+
         return (
-            res
+            children
         );
     }
 }

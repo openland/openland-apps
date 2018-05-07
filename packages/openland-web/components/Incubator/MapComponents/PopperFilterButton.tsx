@@ -14,32 +14,6 @@ const PopperComponent = Glamorous.div({
     }
 });
 
-class PopperElement extends React.Component<({ children: any })> {
-    static defaultProps = {
-        _isPopperElement: true
-    };
-    render() {
-        return (
-            <>
-                {this.props.children}
-            </>
-        );
-    }
-}
-
-class TargetElement extends React.Component<({ children: any, onClick?: () => void })> {
-    static defaultProps = {
-        _isTargetElement: true
-    };
-    render() {
-        return (
-            <>
-                {React.cloneElement(this.props.children as any, { onClick: this.props.onClick })}
-            </>
-        );
-    }
-}
-
 const ConfirmWrapper = Glamorous.div({
     display: 'flex',
     alignSelf: 'flex-start'
@@ -47,15 +21,11 @@ const ConfirmWrapper = Glamorous.div({
 
 interface ConfirmPopoverProps {
     children: any;
-    onConfirm?: Function;
-    title?: string;
-    inverted?: boolean;
     handler: Function;
+    content: any;
 }
 
 export class Filter extends React.Component<ConfirmPopoverProps, { popper?: boolean }> {
-    static Popper = PopperElement;
-    static Target = TargetElement;
     static active = new Set();
 
     static closeAll = () => {
@@ -103,40 +73,34 @@ export class Filter extends React.Component<ConfirmPopoverProps, { popper?: bool
         Filter.active.delete(target);
     }
 
+    modifyProps = () => {
+        return({onClick: this.handleShow});
+    }
+
     render() {
-
-        let popper: any[] = [];
-        let target: any[] = [];
-
-        for (let i of React.Children.toArray(this.props.children)) {
-            if (React.isValidElement(i) && (i.props as any)._isPopperElement === true) {
-                popper.push(i);
-            }
-        }
-
-        for (let i of React.Children.toArray(this.props.children)) {
-            if (React.isValidElement(i) && (i.props as any)._isTargetElement === true) {
-                target.push(React.cloneElement(i as any, { onClick: this.handleShow }));
-            }
-        }
 
         let popoverComponent = (
             <ClickOutside onClickOutside={this.handleClose}>
                 <div style={{ display: 'flex', alignSelf: 'flex-start' }}>
                     <PopperComponent>
-                        <Popper placement="top" class="static" autoWidth={true} updated={false}>
-                            {popper}
+                        <Popper class="static" autoWidth={true} updated={false}>
+                            {this.props.content}
                         </Popper>
                     </PopperComponent>
                 </div>
             </ClickOutside>
         );
 
+        let children = [];
+        for (let c of React.Children.toArray(this.props.children)) {
+            children.push(React.cloneElement(c as any, this.modifyProps()));
+        }
+
         return (
-            <Manager>
+            <Manager >
                 <ConfirmWrapper>
                     <Target>
-                        {target}
+                        {children}
                     </Target>
                     {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popoverComponent, document.body)}
                 </ConfirmWrapper>
