@@ -21,7 +21,7 @@ import { XCard } from '../../X/XCard';
 import { XHeader } from '../../X/XHeader';
 import { XView } from '../../X/XView';
 import { XWithRole } from '../../X/XWithRole';
-import { XZoningCode } from '../../X/XZoningCode';
+import { ZoningCode } from '../../ZoningCode';
 import { XPopover } from './XPopover';
 
 let panelWidth = 390;
@@ -276,7 +276,7 @@ export const ParcelCard = withParcelDirect((props) => (
                             <PropertyCell title="Supervisor District">{props.data.item!!.extrasSupervisorDistrict}</PropertyCell>
                         }
                         {props.data.item!!.extrasZoning && props.data.item!!.extrasZoning!!.length > 0 &&
-                            <PropertyCell title="Zoning"><XZoningCode codes={props.data.item!!.extrasZoning!!} /></PropertyCell>
+                            <PropertyCell title="Zoning"><ZoningCode codes={props.data.item!!.extrasZoning!!} /></PropertyCell>
                         }
                         {props.data.item!!.extrasLandUse !== null &&
                             <PropertyCell title="Land Use">{props.data.item!!.extrasLandUse}</PropertyCell>

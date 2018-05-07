@@ -73,7 +73,7 @@ const Container = Glamorous.div({
     flexDirection: 'row'
 });
 
-export function XZoningCode(props: { codes: string[] }) {
+export function ZoningCode(props: { codes: string[] }) {
     let items = [...new Set(props.codes)].sort();
     let components: any[] = [];
     let isFirst = true;

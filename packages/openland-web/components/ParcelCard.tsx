@@ -20,7 +20,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { XTooltip } from './Incubator/XTooltip';
 import { XView } from './X/XView';
 import { XWithRole } from './X/XWithRole';
-import { XZoningCode } from './X/XZoningCode';
+import { ZoningCode } from './ZoningCode';
 import { XDistance } from 'openland-x-format/XDistance';
 import { XMoney } from 'openland-x-format/XMoney';
 import { XNumber } from 'openland-x-format/XNumber';
@@ -232,7 +232,7 @@ export const ParcelCard = withParcelDirect((props) => {
                                 <PropertyCell title="Supervisor District">{props.data.item!!.extrasSupervisorDistrict}</PropertyCell>
                             }
                             {props.data.item!!.extrasZoning && props.data.item!!.extrasZoning!!.length > 0 &&
-                                <PropertyCell title="Zoning"><XZoningCode codes={props.data.item!!.extrasZoning!!} /></PropertyCell>
+                                <PropertyCell title="Zoning"><ZoningCode codes={props.data.item!!.extrasZoning!!} /></PropertyCell>
                             }
                             {props.data.item!!.extrasLandUse !== null &&
                                 <PropertyCell title="Land Use">{props.data.item!!.extrasLandUse}</PropertyCell>

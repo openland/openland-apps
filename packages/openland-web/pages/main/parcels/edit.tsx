@@ -1,20 +1,19 @@
 import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { XCard } from '../../../components/X/XCard';
 import { withParcelMetadataForm } from '../../../api/';
-import { AppContent } from '../../../components/App/AppContent';
 import { XButton } from '../../../components/X/XButton';
 import { XForm } from '../../../components/X/XForm';
 import { XHead } from '../../../components/X/XHead';
 import { XHeader } from '../../../components/X/XHeader';
+import { Scaffold } from '../../../components/Scaffold';
 
 export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetadataForm((props) => {
     return (
         <>
             <XHead title={['Edit Parcel #' + props.data.item.number.title]} />
-            <AppContent>
-                <XCard shadow="medium" separators={true}>
+            <Scaffold>
+                <Scaffold.Content bottomOffset={true}>
                     <XHeader text={'Update Parcel #' + props.data.item.number.title} />
                     <XForm
                         defaultValues={props.data.item.metadata}
@@ -38,8 +37,9 @@ export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetad
                             <XButton path={'/parcels/' + props.data.item.id}>Cancel</XButton>
                         </XForm.Footer>
                     </XForm>
-                </XCard>
-            </AppContent>
+
+                </Scaffold.Content>
+            </Scaffold>
         </>
     );
 }));

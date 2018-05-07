@@ -8,7 +8,6 @@ import { XHead } from '../../../components/X/XHead';
 import { XModalRouted } from '../../../components/X/XModalRouted';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
-import { XZoningCode } from '../../../components/X/XZoningCode';
 import { XView } from '../../../components/X/XView';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';
@@ -16,7 +15,6 @@ import { Text } from '../../../strings';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
-import { XAngle } from '../../../components/X/XAngle';
 import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XContent } from '../../../components/X/XContent';
 import { XTitle } from '../../../components/X/XTitle';
@@ -31,6 +29,8 @@ import { XMoney } from 'openland-x-format/XMoney';
 import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
 import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
+import { XAngle } from 'openland-x-format/XAngle';
+import { ZoningCode } from '../../../components/ZoningCode';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -97,7 +97,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                         </XCard.PropertyList>
                         <XCard.PropertyList title="Parcel">
                             {props.data.deal.parcel && (<XCard.Property title="Parcel ID"><XLink path={'/parcels/' + props.data.deal.parcel.id}>{props.data.deal.parcel.number.title}</XLink></XCard.Property>)}
-                            {props.data.deal.parcel && props.data.deal.parcel.extrasZoning && (<XCard.Property title="Zoning"><XZoningCode codes={props.data.deal.parcel.extrasZoning} /></XCard.Property>)}
+                            {props.data.deal.parcel && props.data.deal.parcel.extrasZoning && (<XCard.Property title="Zoning"><ZoningCode codes={props.data.deal.parcel.extrasZoning} /></XCard.Property>)}
                             {props.data.deal.location && (<XCard.Property title="Location">{props.data.deal.location}</XCard.Property>)}
                             {props.data.deal.address && (<XCard.Property title="Address">{props.data.deal.address}</XCard.Property>)}
                             {area != null && (<XCard.Property title="Area"><XArea value={area} /></XCard.Property>)}

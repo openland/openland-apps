@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { XCard } from '../X/XCard';
-import { zoneData } from '../../utils/zoning/ZoningMatrix';
-import { XTitle } from './XTitle';
-import { XCardProperty } from '../X/XCardProperty';
+import { XCard } from './X/XCard';
+import { zoneData } from './../utils/zoning/ZoningMatrix';
+import { XTitle } from './X/XTitle';
+import { XCardProperty } from './X/XCardProperty';
 
-export function XZoningMetrics(props: { codes: string[] }) {
+export function ZoningMetrics(props: { codes: string[] }) {
     let items = [...new Set(props.codes)].sort();
     let components: any[] = [];
 

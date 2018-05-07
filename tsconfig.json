@@ -47,6 +47,9 @@
       ],
       "openland-x-map": [
         "openland-x-map"
+      ],
+      "openland-x-charts": [
+        "openland-x-charts"
       ]
     },
     "importHelpers": true
@@ -73,6 +76,7 @@
     "./packages/openland-x-routing",
     "./packages/openland-x-utils",
     "./packages/openland-x-format",
-    "./packages/openland-x-map"
+    "./packages/openland-x-map",
+    "./packages/openland-x-charts"
   ]
 }

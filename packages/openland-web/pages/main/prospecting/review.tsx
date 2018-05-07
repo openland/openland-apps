@@ -34,11 +34,11 @@ import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { XVertical } from '../../../components/X/XVertical';
 import { XView } from '../../../components/X/XView';
 import { XWithRole } from '../../../components/X/XWithRole';
-import { XZoningCode } from '../../../components/X/XZoningCode';
-import { XZoningMetrics } from './../../../components/X/XZoningMetrics';
 import '../../../globals';
 import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
+import { ZoningCode } from '../../../components/ZoningCode';
+import { ZoningMetrics } from '../../../components/ZoningMetrics';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
@@ -98,7 +98,7 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                                     <XCard.Property title="Dimensions"> <XDimensions value={props.parcel!!.extrasShapeSides!!} /></XCard.Property>
                                 }
                                 {props.parcel.extrasZoning && props.parcel.extrasZoning!!.length > 0 &&
-                                    <XCard.Property title="Zoning"><XZoningCode codes={props.parcel!!.extrasZoning!!} /></XCard.Property>
+                                    <XCard.Property title="Zoning"><ZoningCode codes={props.parcel!!.extrasZoning!!} /></XCard.Property>
                                 }
                                 {props.parcel.extrasLandValue !== null &&
                                     <XCard.Property title="Land Value"><XMoney value={props.parcel.extrasLandValue!!} /></XCard.Property>
@@ -191,7 +191,7 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
 
             {props.router.query.tab === zoningPath && props.parcel.extrasZoning && props.parcel.extrasZoning!!.length > 0 &&
                 // <XWithRole role={['super-admin', 'software-developer', 'parcel-zoning-metrics']}>
-                <XZoningMetrics codes={props.parcel.extrasZoning!!} />
+                <ZoningMetrics codes={props.parcel.extrasZoning!!} />
                 // </XWithRole>
             }
         </XVertical>

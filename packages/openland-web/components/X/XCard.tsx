@@ -1,8 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-// import * as glamor from 'glamor';
-import { CSSUtils } from './utils';
-import { XRow, XColumn } from './XGrid';
 import { XCardFooter } from './XCardFooter';
 import { XCardProperty, XCardPropertyList, XCardPropertyColumns } from './XCardProperty';
 import { XCardGallery } from './XCardGallery';
@@ -15,45 +12,6 @@ import { XCardLoader } from './XCardLoader';
 import { XCardEmpty } from './XCardEmpty';
 import { XCardList, XCardListItem } from './XCardList';
 import { XLink } from 'openland-x/XLink';
-
-//
-// Basic Row
-//
-
-// const loading = glamor.keyframes({
-//     '0%': { transform: `rotate(0deg)` },
-//     '100%': { transform: `rotate(360deg)` }
-// });
-
-export const XCardRowDiv = Glamorous(XRow)({
-    height: 82,
-    borderBottom: '1px solid rgba(38,38,38,0.08)',
-    '&:last-child': {
-        borderBottom: 0
-    }
-});
-
-export const XCardRowDivVert = Glamorous(XCardRowDiv)({
-    height: 'auto',
-    [CSSUtils.forXS]: {
-        flexDirection: 'column',
-    }
-});
-
-export class XCardRow extends React.Component<{ verticalize?: boolean }> {
-    render() {
-        let Wrapper = this.props.verticalize === true ? XCardRowDivVert : XCardRowDiv;
-        return (
-            <Wrapper>
-                {this.props.children}
-            </Wrapper>
-        );
-    }
-}
-
-export const XCardColumn = Glamorous(XColumn)({
-    height: 82,
-});
 
 export class XCardTitle extends React.Component<{ title: string, subtitle?: string | null, path?: string | null, preview?: string | null }> {
     render() {
@@ -194,8 +152,6 @@ interface XCardProps {
 
 export class XCard extends React.Component<XCardProps> {
     static Footer = XCardFooter;
-    static Row = XCardRow;
-    static Col = XCardColumn;
     static Title = XCardTitle;
     static Button = XCardButton;
     static ExternalLink = XCardExternalLink;

@@ -13,7 +13,6 @@ import { trackEvent } from '../../../utils/analytics';
 import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XView } from '../../../components/X/XView';
 import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
-import { XAngle } from '../../../components/X/XAngle';
 import { OpportunitiButton } from '../../../components/OpportunityButton';
 import { XForm } from '../../../components/X/XForm';
 import { XHeader } from '../../../components/X/XHeader';
@@ -24,7 +23,6 @@ import { XVertical } from '../../../components/X/XVertical';
 import { ParcelNumber } from '../../../components/ParcelNumber';
 import { XSwitcher } from './../../../components/X/XSwitcher';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
-import { XZoningMetrics } from './../../../components/X/XZoningMetrics';
 import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XButton } from 'openland-x/XButton';
 import { XDimensions } from 'openland-x-format/XDimensions';
@@ -32,6 +30,8 @@ import { XDate } from 'openland-x-format/XDate';
 import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
 import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
+import { XAngle } from 'openland-x-format/XAngle';
+import { ZoningMetrics } from '../../../components/ZoningMetrics';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -206,7 +206,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
 
                     {props.router.path === zoningPath && props.data.item.extrasZoning && props.data.item.extrasZoning!!.length > 0 &&
                         // <XWithRole role={['super-admin', 'software-developer', 'parcel-zoning-metrics']}>
-                        <XZoningMetrics codes={props.data.item!!.extrasZoning!!} />
+                        <ZoningMetrics codes={props.data.item!!.extrasZoning!!} />
                         // </XWithRole>
                     }
 

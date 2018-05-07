@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Types from 'openland-api';
 import { XCard } from './X/XCard';
-import { XZoningCode } from './X/XZoningCode';
+import { ZoningCode } from './ZoningCode';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { XTooltip } from './Incubator/XTooltip';
 import { XWithRole } from './X/XWithRole';
@@ -57,7 +57,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                             <XCard.Property title="Supervisor District">{props.item.extrasSupervisorDistrict}</XCard.Property>
                         }
                         {props.item.extrasZoning && props.item.extrasZoning!!.length > 0 &&
-                            <XCard.Property title="Zoning"><XZoningCode codes={props.item!!.extrasZoning!!} /></XCard.Property>
+                            <XCard.Property title="Zoning"><ZoningCode codes={props.item!!.extrasZoning!!} /></XCard.Property>
                         }
                         {props.item!!.extrasLandUse !== null &&
                             <XCard.Property title="Land Use">{props.item!!.extrasLandUse!!.join(',\u00A0')}</XCard.Property>
