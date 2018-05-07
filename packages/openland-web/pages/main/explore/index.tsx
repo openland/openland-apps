@@ -97,20 +97,6 @@ const DealsSource = withDealsMap((props) => {
     return null;
 });
 
-const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
-    position: 'fixed',
-    left: 0,
-    top: 0,
-    width: '100vw',
-    height: '100vh',
-    visibility: props.active ? 'visible' : 'hidden',
-    opacity: props.active ? 1 : 0,
-    transition: 'all 220ms',
-    backgroundColor: 'rgba(0, 0, 0, 0.41)',
-    zIndex: 2,
-    // pointerEvents: 'none'
-}));
-
 // const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Add to prospecting</XButtonMutation>);
 class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { shadowed: boolean }> {
 

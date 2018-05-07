@@ -78,7 +78,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     opacity: props.active ? 1 : 0,
     backgroundColor: 'rgba(0, 0, 0, 0.41)',
     zIndex: 2,
-    pointerEvents: 'none'
+    // pointerEvents: 'none'
 }));
 
 interface CitySelectorItemProps extends XLinkProps {
