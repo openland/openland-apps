@@ -19,65 +19,70 @@ export interface XButtonProps extends XButtonStyleProps, XLinkProps {
 
 let sizeStyles = styleResolver({
     'x-large': {
-        height: '56px',
+        height: 56,
         lineHeight: '56px',
-        fontSize: '18px',
+        fontSize: 18,
         fontWeight: 500,
         paddingLeft: 32,
         paddingRight: 32,
-        borderRadius: '4px',
+        borderRadius: 4,
         '> .icon': {
-            marginLeft: '-8px',
-            width: '32px',
-            fontSize: '24px',
-            lineHeight: '56px'
+            marginLeft: -8,
+            marginRight: 12,
+            width: 32,
+            fontSize: 24,
+            lineHeight: '56px',
         }
     },
     'large': {
-        height: '48px',
+        height: 48,
         lineHeight: '48px',
-        fontSize: '18px',
+        fontSize: 18,
         fontWeight: 500,
         paddingLeft: 26,
         paddingRight: 26,
-        borderRadius: '4px',
+        borderRadius: 4,
         '> .icon': {
-            fontSize: '28px'
+            marginRight: 10,
+            fontSize: 28
         }
     },
     'medium': {
-        height: '40px',
+        height: 49,
         lineHeight: '40px',
-        fontSize: '16px',
+        fontSize: 16,
         fontWeight: 500,
         paddingLeft: 20,
         paddingRight: 20,
-        borderRadius: '4px',
+        borderRadius: 4,
         '> .icon': {
-            fontSize: '24px'
+            marginRight: 8,
+            fontSize: 24
         }
     },
     'default': {
-        height: '32px',
+        height: 32,
         lineHeight: '32px',
-        fontSize: '14px',
+        fontSize: 14,
         fontWeight: 500,
         paddingLeft: 14,
         paddingRight: 14,
-        borderRadius: '4px',
+        borderRadius: 4,
         '> .icon': {
-            fontSize: '16px'
+            marginRight: 6,
+            fontSize: 16
         }
     },
     'small': {
-        height: '24px',
+        height: 24,
         lineHeight: '24px',
-        fontSize: '12px',
+        fontSize: 12,
         paddingLeft: 10,
         paddingRight: 10,
-        borderRadius: '3px',
+        borderRadius: 3,
         '> .icon': {
-            fontSize: '14px'
+            marginRight: 5,
+            fontSize: 14
         }
     }
 });
@@ -139,6 +144,7 @@ let colorStyles = styleResolver({
     'flat': {
         backgroundColor: '#ffffff',
         color: '#1f3449',
+        border: 'solid 1px transparent',
         '&:hover': {
             color: '#1f3449',
             boxShadow: '0 1px 2px 0 #dbe2ef',
@@ -154,24 +160,24 @@ let colorStyles = styleResolver({
 
 let colorDisabledStyles = styleResolver({
     'default': {
-        backgroundColor: '#edf0f6!important',
+        backgroundColor: '#edf0f6 !important',
         color: '#1f3449!important',
     },
     'primary': {
-        backgroundColor: '#654bfa!important',
+        backgroundColor: '#654bfa !important',
         color: '#ffffff!important',
     },
     'danger': {
-        backgroundColor: '#d75454!important',
+        backgroundColor: '#d75454 !important',
         color: '#ffffff!important',
     },
     'ghost': {
-        backgroundColor: '#ffffff!important',
+        backgroundColor: '#ffffff !important',
         color: '#1f3449!important',
-        border: 'solid 1px #c2cbde!important',
+        border: 'solid 1px #c2cbde !important',
     },
     'flat': {
-        backgroundColor: '#ffffff!important',
+        backgroundColor: '#ffffff !important',
         color: '#1f3449!important',
     }
 });
