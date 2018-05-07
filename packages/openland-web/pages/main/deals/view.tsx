@@ -10,7 +10,6 @@ import { XMoney } from '../../../components/X/XMoney';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { XZoningCode } from '../../../components/X/XZoningCode';
-import { XDimensions } from '../../../components/X/XDimensions';
 import { XView } from '../../../components/X/XView';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';
@@ -31,6 +30,7 @@ import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XArea } from 'openland-x-format/XArea';
+import { XDimensions } from 'openland-x-format/XDimensions';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -105,7 +105,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                                 <XCard.Property title="Parcel Shape">{props.data.deal.parcel.extrasShapeType}</XCard.Property>
                             }
                             {props.data.deal.parcel && props.data.deal.parcel!!.extrasShapeSides && props.data.deal.parcel!!.extrasShapeSides!!.length > 0 &&
-                                <XCard.Property title="Parcel Dimensions"> <XDimensions dimensions={props.data.deal.parcel!!.extrasShapeSides!!} /></XCard.Property>
+                                <XCard.Property title="Parcel Dimensions"> <XDimensions value={props.data.deal.parcel!!.extrasShapeSides!!} /></XCard.Property>
                             }
                             <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                                 {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed !== true &&
@@ -132,7 +132,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                                     <XView grow={1} basis={0}>
                                         <XCard.PropertyList>
                                             <XCard.Property title="Construction Type">{v.title}</XCard.Property>
-                                            {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
+                                            {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions value={[v.width, v.height]} /></XCard.Property>}
                                             {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
                                             {v.center && <XCard.Property title="Location">{v.center.latitude.toFixed(6)},{v.center.longitude.toFixed(6)}</XCard.Property>}
                                         </XCard.PropertyList>

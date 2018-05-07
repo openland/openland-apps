@@ -13,7 +13,6 @@ import { trackEvent } from '../utils/analytics';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { XTooltip } from './Incubator/XTooltip';
 import { XWithRole } from './X/XWithRole';
-import { XDimensions } from './X/XDimensions';
 import { ProjectTypes } from './ProjectTypes';
 import { XNumber } from './X/XNumber';
 import { XView } from './X/XView';
@@ -24,6 +23,7 @@ import { XHeader } from './X/XHeader';
 import { ParcelNumber } from './ParcelNumber';
 import { XButton } from 'openland-x/XButton';
 import { XArea } from 'openland-x-format/XArea';
+import { XDimensions } from 'openland-x-format/XDimensions';
 
 let panelWidth = 324;
 
@@ -210,7 +210,7 @@ export const ParcelCard = withParcelDirect((props) => {
                                 <PropertyCell title="Depth"><XDistance value={props.data.item!!.depth!!.value} /></PropertyCell>
                             }
                             {props.data.item!!.extrasShapeSides && !props.data.item!!.front && !props.data.item!!.depth && props.data.item!!.extrasShapeSides!!.length > 0 &&
-                                <PropertyCell title="Dimensions"> <XDimensions dimensions={props.data.item!!.extrasShapeSides!!} /></PropertyCell>
+                                <PropertyCell title="Dimensions"> <XDimensions value={props.data.item!!.extrasShapeSides!!} /></PropertyCell>
                             }
                             {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && (
                                 <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>

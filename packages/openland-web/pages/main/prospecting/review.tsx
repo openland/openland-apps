@@ -8,7 +8,6 @@ import { ParcelMaps } from '../../../components/ParcelMaps';
 import { withOpportunity } from '../../../api';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { XView } from '../../../components/X/XView';
-import { XDimensions } from '../../../components/X/XDimensions';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { sourceFromGeometry } from '../../../utils/map';
 import { ProspectingNavigationReview } from '../../../components/ProspectingNavigation';
@@ -38,7 +37,8 @@ import { buildProspectingQuery } from '../../../components/prospectingQuery';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
-import { XArea } from 'openland-x/XArea';
+import { XArea } from 'openland-x-format/XArea';
+import { XDimensions } from 'openland-x-format/XDimensions';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
@@ -95,7 +95,7 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                                     <XCard.Property title="Depth"><XDistance value={props.parcel.depth!!.value} /></XCard.Property>
                                 }
                                 {props.parcel!!.extrasShapeSides && !props.parcel.front && !props.parcel.depth && props.parcel!!.extrasShapeSides!!.length > 0 &&
-                                    <XCard.Property title="Dimensions"> <XDimensions dimensions={props.parcel!!.extrasShapeSides!!} /></XCard.Property>
+                                    <XCard.Property title="Dimensions"> <XDimensions value={props.parcel!!.extrasShapeSides!!} /></XCard.Property>
                                 }
                                 {props.parcel.extrasZoning && props.parcel.extrasZoning!!.length > 0 &&
                                     <XCard.Property title="Zoning"><XZoningCode codes={props.parcel!!.extrasZoning!!} /></XCard.Property>

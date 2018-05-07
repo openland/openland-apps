@@ -13,7 +13,6 @@ import { ParcelMaps } from '../../../components/ParcelMaps';
 import { trackEvent } from '../../../utils/analytics';
 import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XView } from '../../../components/X/XView';
-import { XDimensions } from '../../../components/X/XDimensions';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
@@ -32,6 +31,7 @@ import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XZoningMetrics } from './../../../components/X/XZoningMetrics';
 import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XButton } from 'openland-x/XButton';
+import { XDimensions } from 'openland-x-format/XDimensions';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -130,7 +130,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                                 <XView grow={1} basis={0}>
                                                     <XCard.PropertyList>
                                                         <XCard.Property title="Construction Type">{v.title}</XCard.Property>
-                                                        {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions dimensions={[v.width, v.height]} /></XCard.Property>}
+                                                        {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions value={[v.width, v.height]} /></XCard.Property>}
                                                         {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
                                                         {v.center && <XCard.Property title="Location">{v.center.latitude.toFixed(6)},{v.center.longitude.toFixed(6)}</XCard.Property>}
                                                     </XCard.PropertyList>

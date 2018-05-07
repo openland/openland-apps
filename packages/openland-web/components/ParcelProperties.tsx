@@ -5,7 +5,6 @@ import { XMoney } from './X/XMoney';
 import { XZoningCode } from './X/XZoningCode';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { XTooltip } from './Incubator/XTooltip';
-import { XDimensions } from './X/XDimensions';
 import { XWithRole } from './X/XWithRole';
 import { ProjectTypes } from './ProjectTypes';
 import { XNumber } from './X/XNumber';
@@ -13,6 +12,7 @@ import { XDistance } from './X/XDistance';
 import { Text } from '../strings';
 import { XVertical } from './X/XVertical';
 import { XArea } from 'openland-x-format/XArea';
+import { XDimensions } from 'openland-x-format/XDimensions';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
     return (
@@ -48,7 +48,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                             <XCard.Property title="Depth"><XDistance value={props.item.depth!!.value} /></XCard.Property>
                         }
                         {props.item!!.extrasShapeSides && !props.item.front && !props.item.depth && props.item!!.extrasShapeSides!!.length > 0 &&
-                            <XCard.Property title="Dimensions"> <XDimensions dimensions={props.item!!.extrasShapeSides!!} /></XCard.Property>
+                            <XCard.Property title="Dimensions"> <XDimensions value={props.item!!.extrasShapeSides!!} /></XCard.Property>
                         }
                         {props.item.extrasNeighborhood &&
                             <XCard.Property title="Neighborhood">{props.item.extrasNeighborhood}</XCard.Property>
