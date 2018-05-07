@@ -4,7 +4,7 @@ import { XModalTargeted } from '../X/XModalTargeted';
 import { XSelect, XSelectProps } from '../X/XSelect';
 import { XWithRole } from '../X/XWithRole';
 import XStyles from '../X/XStyles';
-import { XFilterInput } from '../X/XFilterInput';
+// import { XFilterInput } from '../X/XFilterInput';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 
@@ -546,30 +546,30 @@ interface AppFiltersProps {
     city?: string;
 }
 
-const StyledInput = Glamorous(XFilterInput)({
-    display: 'flex',
-    height: 28,
-    width: 320,
-    boxSizing: 'border-box',
-    border: '1px solid #ccc',
-    borderRadius: 4,
-    color: '#525f7f',
-    backgroundColor: '#fff',
-    fontSize: '14px',
-    lineHeight: 1.6,
-    paddingTop: 2,
-    paddingLeft: 7,
-    paddingRight: 7,
-    paddingBottom: 2,
-    outline: 'none',
-    '&:focus': {
-        border: '1px solid transparent',
-        boxShadow: '0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08)'
-    },
-    '&::placeholder': {
-        color: '#C1CAD2'
-    }
-});
+// const StyledInput = Glamorous(XFilterInput)({
+//     display: 'flex',
+//     height: 28,
+//     width: 320,
+//     boxSizing: 'border-box',
+//     border: '1px solid #ccc',
+//     borderRadius: 4,
+//     color: '#525f7f',
+//     backgroundColor: '#fff',
+//     fontSize: '14px',
+//     lineHeight: 1.6,
+//     paddingTop: 2,
+//     paddingLeft: 7,
+//     paddingRight: 7,
+//     paddingBottom: 2,
+//     outline: 'none',
+//     '&:focus': {
+//         border: '1px solid transparent',
+//         boxShadow: '0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08)'
+//     },
+//     '&::placeholder': {
+//         color: '#C1CAD2'
+//     }
+// });
 
 class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
 
@@ -746,12 +746,12 @@ class AppFiltersImpl extends React.Component<AppFiltersProps & XWithRouter> {
                             </FilterCell>
                         </>
                     )}
-                    <FilterCell title="Owner name">
+                    {/* <FilterCell title="Owner name">
                         <StyledInput
                             searchKey="ownerName"
                             placeholder="Owner name"
                         />
-                    </FilterCell>
+                    </FilterCell> */}
                     <FilterCell title="Zoning">
                         <RoutedSelector
                             fieldName="filterZoning"

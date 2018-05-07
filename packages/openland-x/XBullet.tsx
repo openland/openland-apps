@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XFlexStyles, applyFlex } from './Flex';
 
-interface XBulletProps {
+interface XBulletProps extends XFlexStyles {
     color?: 'red' | 'green' | 'blue' | 'yellow';
-    alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
 }
 
 let style = {
@@ -25,24 +25,27 @@ let style = {
     }
 };
 
-let XBulletDiv = Glamorous.div<XBulletProps>((props) => ({
-    display: 'flex',
-    alignSelf: props.alignSelf,
-    paddingLeft: 8,
-    paddingRight: 8,
-    paddingTop: 2,
-    paddingBottom: 2,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontWeight: 500,
-    fontSize: '12px',
-    lineHeight: '16px',
-    textTransform: 'uppercase',
-    color: props.color ? style[props.color].color : '#888',
-    boxShadow: props.color ? style[props.color].boxShadow : 'inset 0 0 0 1px hsla(0, 0%, 53%, .5)',
-    borderRadius: '20px'
-}));
+let XBulletDiv = Glamorous.div<XBulletProps>([
+    (props) => ({
+        display: 'flex',
+        alignSelf: props.alignSelf,
+        paddingLeft: 8,
+        paddingRight: 8,
+        paddingTop: 2,
+        paddingBottom: 2,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontWeight: 500,
+        fontSize: '12px',
+        lineHeight: '16px',
+        textTransform: 'uppercase',
+        color: props.color ? style[props.color].color : '#888',
+        boxShadow: props.color ? style[props.color].boxShadow : 'inset 0 0 0 1px hsla(0, 0%, 53%, .5)',
+        borderRadius: '20px'
+    }),
+    (props) => applyFlex(props)
+]);
 
 export function XBullet(props: XBulletProps & { children?: any }) {
     return (

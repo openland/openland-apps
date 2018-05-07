@@ -4,10 +4,10 @@ import Glamorous from 'glamorous';
 import { XVertical } from './XVertical';
 import { MutationFunc } from 'react-apollo';
 import { XCard } from './XCard';
-import { XInput } from './XInput';
 import { Router } from '../../routes';
 import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
 import { XButton, XButtonProps } from 'openland-x/XButton';
+import { XInput } from 'openland-x/XInput';
 
 let InputsStyle = {
     borderRadius: 4,
@@ -239,9 +239,9 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
         }
     }
 
-    handleChange = (src: any) => {
+    handleChange = (val: string) => {
         let xForm = this.context.xForm as XFormController;
-        let val = src.target.value as string;
+        // let val = src.target.value as string;
         this.setState({ value: val });
         xForm.writeValue(this.props.field, val);
     }

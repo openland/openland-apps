@@ -1,13 +1,13 @@
 import  { CSSProperties } from 'glamorous';
 
-export interface XLayoutProps {
+export interface XFlexStyles {
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
     flexGrow?: number;
     flexShrink?: number;
     flexBasis?: number;
 }
 
-export const applyFlex = (props: XLayoutProps) => ({
+export const applyFlex = (props: XFlexStyles) => ({
     flexGrow: props.flexGrow,
     flexShrink: props.flexShrink,
     flexBasis: props.flexBasis,

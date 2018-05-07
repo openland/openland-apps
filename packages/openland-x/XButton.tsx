@@ -3,10 +3,10 @@ import Glamorous from 'glamorous';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XLink, XLinkProps } from './XLink';
 import { XLoadingCircular } from './XLoadingCircular';
-import { XLayoutProps, applyFlex } from './Flex';
+import { XFlexStyles, applyFlex } from './Flex';
 import { XIcon } from './XIcon';
 
-export interface XButtonStyleProps extends XLayoutProps {
+export interface XButtonStyleProps extends XFlexStyles {
     text?: string;
     icon?: string;
     size?: 'x-large' | 'large' | 'medium' | 'default' | 'small';

@@ -8,13 +8,13 @@ import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
 import { createAuth0Client } from '../utils/Auth0Client';
 import { XHorizontal } from '../components/X/XHorizontal';
-import { XInput } from '../components/X/XInput';
 import { XTrack } from '../components/X/XTrack';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XContent } from '../components/X/XContent';
+import { XInput } from 'openland-x/XInput';
 
 let Signup = Glamorous.span({
     opacity: 0.7
@@ -104,13 +104,11 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
         });
     }
 
-    emailChanged = (e: React.SyntheticEvent<any>) => {
-        let val = (e.target as any).value as string;
+    emailChanged = (val: string) => {
         this.setState({ emailValue: val });
     }
 
-    codeChanged = (e: React.SyntheticEvent<any>) => {
-        let val = (e.target as any).value as string;
+    codeChanged = (val: string) => {
         this.setState({ codeValue: val });
     }
 

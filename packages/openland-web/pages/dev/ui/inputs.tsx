@@ -12,7 +12,7 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
         <DevDocsScaffold title="Inputs">
             <XContent>
                 <XVertical>
-                    <XTitle>XInput</XTitle>
+                    <XTitle>Sizes</XTitle>
                     <XVertical>
                         <XInput format="large" placeholder="large" value="large" alignSelf="flex-start" />
                         <XInput format="medium" placeholder="medium" alignSelf="flex-start" />

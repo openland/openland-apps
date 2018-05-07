@@ -8,7 +8,6 @@ import { withDeals, withDealAdd } from '../../../api/';
 import { XTable } from '../../../components/X/XTable';
 import { XModalRouted } from '../../../components/X/XModalRouted';
 import { DealForm } from '../../../components/DealForm';
-import { XBullet } from '../../../components/X/XBullet';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XWithRole } from '../../../components/X/XWithRole';
@@ -16,6 +15,7 @@ import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XArea } from 'openland-x-format/XArea';
 import { XMoney } from 'openland-x-format/XMoney';
+import { XBullet } from 'openland-x/XBullet';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
