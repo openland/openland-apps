@@ -4,7 +4,6 @@ import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
-import { XButton } from '../../../components/X/XButton';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 import { XHeader } from '../../../components/X/XHeader';
@@ -15,6 +14,7 @@ import { buildProspectingQuery, buildQs } from '../../../components/prospectingQ
 import { OwnersSelect } from '../../../api';
 import { CapacityIndicator } from '../../../components/CapacityIndicator';
 import { withRouter } from 'openland-x-routing/withRouter';
+import { XButton } from 'openland-x/XButton';
 
 let OwnersSelectStyled = Glamorous.div({
     fontSize: 14,
@@ -58,8 +58,8 @@ export default withApp('Zoning Review', 'viewer', withRouter((props) => {
                                 onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
                             />
                         </OwnersSelectStyled>
-                        <XButton path={'/prospecting/map' + buildQs({ stage: 'zoning', ...q.qsMap })}>Map view</XButton>
-                        <XButton style="dark" path={'/prospecting/review' + + buildQs({ stage: 'zoning', ...q.qsMap })}>Begin review</XButton>
+                        <XButton path={'/prospecting/map' + buildQs({ stage: 'zoning', ...q.qsMap })} text="Map view"/>
+                        <XButton style="primary" path={'/prospecting/review' + + buildQs({ stage: 'zoning', ...q.qsMap })} text="Begin review"/>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.APPROVED_INITIAL, query: q.query }} stage="zoning">
                         <XCard.Empty text="There are no parcels for review" icon="sort" />

@@ -8,16 +8,16 @@ import {
     UserSelect, withSuperAccountFeatureAdd, withSuperAccountFeatureRemove,
     withSuperAccountMemberRemove
 } from '../../api/';
-import { XButtonMutation } from '../../components/X/XButtonMutation';
 import { XForm } from '../../components/X/XForm';
-import { XButton } from '../../components/X/XButton';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { withLoader } from '../../components/Incubator/withLoader';
 import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
+import { XButton } from 'openland-x/XButton';
+import { XButtonMutation } from 'openland-x/XButtonMutation';
 
-const ActivateButton = withSuperAccountActivate((props) => <XButtonMutation style="important" mutation={props.activate}>Activate</XButtonMutation>);
-const SuspendButton = withSuperAccountSuspend((props) => <XButtonMutation style="dark" mutation={props.suspend}>Suspend</XButtonMutation>);
+const ActivateButton = withSuperAccountActivate((props) => <XButtonMutation style="primary" mutation={props.activate}>Activate</XButtonMutation>);
+const SuspendButton = withSuperAccountSuspend((props) => <XButtonMutation style="danger" mutation={props.suspend}>Suspend</XButtonMutation>);
 
 const AddMemberForm = withSuperAccountMemberAdd((props) => {
     return (
@@ -26,7 +26,7 @@ const AddMemberForm = withSuperAccountMemberAdd((props) => {
                 <XForm.Select field="userId" component={UserSelect} />
             </XForm.Field>
             <XCard.Footer>
-                <XForm.Submit style="dark">Add</XForm.Submit>
+                <XForm.Submit style="primary" text="Add" />
             </XCard.Footer>
         </XForm>
     );
@@ -39,7 +39,7 @@ const RemoveMemberForm = withSuperAccountMemberRemove((props) => {
                 <XForm.Select field="userId" component={UserSelect} />
             </XForm.Field>
             <XCard.Footer>
-                <XForm.Submit style="dark">Remove</XForm.Submit>
+                <XForm.Submit style="danger" text="Remove" />
             </XCard.Footer>
         </XForm>
     );
@@ -52,7 +52,7 @@ const AddFeature = withSuperAccountFeatureAdd(withLoader((props) => {
                 <XForm.Select field="featureId" options={props.data.featureFlags.map((v) => ({ value: v.id, title: v.title }))} />
             </XForm.Field>
             <XCard.Footer>
-                <XForm.Submit style="dark">Add</XForm.Submit>
+                <XForm.Submit style="primary" text="Add"/>
             </XCard.Footer>
         </XForm>
     );
@@ -65,7 +65,7 @@ const RemoveFeature = withSuperAccountFeatureRemove(withLoader((props) => {
                 <XForm.Select field="featureId" options={props.data.featureFlags.map((v) => ({ value: v.id, title: v.title }))} />
             </XForm.Field>
             <XCard.Footer>
-                <XForm.Submit style="dark">Remove</XForm.Submit>
+                <XForm.Submit style="danger" text="Remove"/>
             </XCard.Footer>
         </XForm>
     );
@@ -77,7 +77,7 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
             <XHeader text={props.data.superAccount.title} description={'Current State: ' + props.data.superAccount.state}>
                 <XModalTargeted fullScreen={false} title="Adding new member">
                     <XModalTargeted.Target>
-                        <XButton>Add Member</XButton>
+                        <XButton text="Add member" />
                     </XModalTargeted.Target>
                     <XModalTargeted.Content>
                         <AddMemberForm />
@@ -85,7 +85,7 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
                 </XModalTargeted>
                 <XModalTargeted fullScreen={false} title="Remove member">
                     <XModalTargeted.Target>
-                        <XButton>Remove Member</XButton>
+                        <XButton text="Remove Member" />
                     </XModalTargeted.Target>
                     <XModalTargeted.Content>
                         <RemoveMemberForm />
@@ -112,7 +112,7 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
             <XHeader text="Features" description={props.data.superAccount.features.length + ' total'}>
                 <XModalTargeted fullScreen={false} title="Adding Feature">
                     <XModalTargeted.Target>
-                        <XButton style="important">Add Feature</XButton>
+                        <XButton style="primary" text="Add feature" />
                     </XModalTargeted.Target>
                     <XModalTargeted.Content>
                         <AddFeature />
@@ -120,7 +120,7 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
                 </XModalTargeted>
                 <XModalTargeted fullScreen={false} title="Adding Feature">
                     <XModalTargeted.Target>
-                        <XButton>Remove Feature</XButton>
+                        <XButton text="Remove feature" />
                     </XModalTargeted.Target>
                     <XModalTargeted.Content>
                         <RemoveFeature />

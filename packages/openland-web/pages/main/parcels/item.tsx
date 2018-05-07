@@ -4,7 +4,6 @@ import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { XTable } from '../../../components/X/XTable';
 import { withParcel } from '../../../api/';
-import { XButton } from '../../../components/X/XButton';
 import { ParcelProperties } from '../../../components/ParcelProperties';
 import { XHead } from '../../../components/X/XHead';
 import { PermitType } from '../../../components/PermitType';
@@ -32,6 +31,7 @@ import { XSwitcher } from './../../../components/X/XSwitcher';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XZoningMetrics } from './../../../components/X/XZoningMetrics';
 import { XCardProperty } from './../../../components/X/XCardProperty';
+import { XButton } from 'openland-x/XButton';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -52,7 +52,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                         truncateDescription={true}
                     >
                         <XWithRole role={['super-admin', 'editor']}>
-                            <XButton path={'/parcels/' + props.data.item.id + '/edit'}>Edit</XButton>
+                            <XButton path={'/parcels/' + props.data.item.id + '/edit'} text="Edit" />
                         </XWithRole>
                         <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']}>
                             <OpportunitiButton
@@ -62,8 +62,9 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                             />
                         </XWithRole>
                         <XButton
-                            accent={true}
-                            icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
+                            style="ghost"
+                            text="Favorite"
+                            // icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
                             onClick={(e) => {
                                 e.preventDefault();
                                 if (props.data!!.item!!.likes.liked) {
@@ -100,9 +101,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                     });
                                 }
                             }}
-                        >
-                            Favorite
-                        </XButton>
+                        />
                     </XHeader>
 
                     <XCardProperty>
@@ -218,7 +217,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                     <XForm.TextArea field="notes" placeholder="Notes" />
                                 </XContent>
                                 <XForm.Footer>
-                                    <XForm.Submit style="dark">Save</XForm.Submit>
+                                    <XForm.Submit style="primary" text="Save" />
                                 </XForm.Footer>
                             </XForm>
                         </>)}

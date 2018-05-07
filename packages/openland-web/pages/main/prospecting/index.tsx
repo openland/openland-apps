@@ -62,8 +62,8 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                                 onChange={(v) => props.router.pushQuery('owner', v ? (v as any).value as string : undefined)}
                             />
                         </OwnersSelectStyled>
-                        <XButton size="small" path={'/prospecting/map' + buildQs(q.qsMap)} text="Map view" />
-                        <XButton size="small" style="primary" path={'/prospecting/review' + buildQs(q.qsReview)} text="Begin review" />
+                        <XButton path={'/prospecting/map' + buildQs(q.qsMap)} text="Map view" />
+                        <XButton style="primary" path={'/prospecting/review' + buildQs(q.qsReview)} text="Begin review" />
                     </XHeader>
 
                     <OpportunitiesTable variables={{ state: OpportunityState.INCOMING, query: q.query }}>

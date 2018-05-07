@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { XButton } from './XButton';
 import { XCloudImage } from './XCloudImage';
 import * as UploadCare from 'uploadcare-widget';
+import { XButton } from 'openland-x/XButton';
 
 export interface XImageUploadProps {
     uuid?: string | null;
@@ -64,10 +64,8 @@ export class XImageUpload extends React.Component<XImageUploadProps, { isLoading
         return (
             <div style={{paddingBottom: 8}}>
                 <div>
-                    <XButton onClick={this.doUpload} loading={this.state.isLoading} style="dark">
-                        Upload Logo
-                    </XButton>
-                    {uuid && <XButton onClick={this.doClear}>Remove Logo</XButton>}
+                    <XButton onClick={this.doUpload} loading={this.state.isLoading} style="primary" text="Upload logo"/>
+                    {uuid && <XButton onClick={this.doClear} text="Remove logo" style="danger"/>}
                 </div>
                 {uuid && (
                     <div style={{marginTop: 8, width: 200, height: 200}}>

@@ -1,8 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
 import { XCard } from '../../../components/X/XCard';
-import { XButton } from '../../../components/X/XButton';
-import { XButtonLike } from '../../../components/X/XButtonLike';
 import { XTitle } from '../../../components/X/XTitle';
 import { XVertical } from '../../../components/X/XVertical';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
@@ -15,7 +13,6 @@ import { XDropdown } from '../../../components/Incubator/XDropdown2';
 import { XCardLink } from '../../../components/Incubator/XCardLink';
 import { withApp } from '../../../components/withApp';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
-import { XConfirm } from '../../../components/Incubator/XConfirm';
 import { CitySelector } from '../../../components/Incubator/CitySelector';
 import { ParcelShortList } from '../../../components/Incubator/ParcelShortList';
 import { XTab } from '../../../components/X/XTab';
@@ -58,7 +55,6 @@ export default withApp('UI Framework', 'viewer', (props) => {
                         <XForm.DateSingle onDateChange={(date: any) => console.warn(date)} />
                         <XForm.DateRange anyDate={true} />
                         <StateSelect />
-                        <XButtonLike />
                         <CitySelector title="San Francisco">
                             <CitySelector.Popper>
                                 <button>lol</button>
@@ -73,9 +69,6 @@ export default withApp('UI Framework', 'viewer', (props) => {
                                 </XTooltip.Content>
                         </XTooltip>
                         <XTooltip marginLeft={0} title="Openland systems detected that this parcel is too complex for automatical building placement. 222222" />
-                        <XConfirm onConfirm={() => { console.warn('confirm function'); }}>
-                            <XButton onClick={(e) => { e.preventDefault(); }}>Confirm button</XButton>
-                        </XConfirm>
                         <XLinkExternal href="https://goo.gl/urJT1F" />
                         <XSelect
                             name="form-field-name"
@@ -135,19 +128,6 @@ export default withApp('UI Framework', 'viewer', (props) => {
                     <XLinkExternal href="https://goo.gl/urJT1F" />
                 </XCard.Empty>
             </XCard>
-            <XCard shadow="medium" href="vk.com" bounce={true}>
-                <XCard.Footer text="footer">
-                    <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                    <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
-                </XCard.Footer>
-                <XCard.Hint title="test data" />
-            </XCard>
-            <XCard>
-                <XCard.Hint title="test data" />
-                <XCard.Warning title="Warning example with hint and button element">
-                    <XButton alignSelf="flex-start">Default</XButton>
-                </XCard.Warning>
-            </XCard>
             <XCard>
                 <XForm>
                     <XForm.Header title="x-form title" />
@@ -188,8 +168,6 @@ export default withApp('UI Framework', 'viewer', (props) => {
                             </CitySelector.Popper>
                         </CitySelector>
                     </XHeader.Target>
-                    <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
-                    <XButton alignSelf="flex-start" style="dark" icon="launch">icon</XButton>
                 </XHeader>
                 <XCard.Loader loading={true} >
                     <XCard.FormList>
@@ -200,7 +178,7 @@ export default withApp('UI Framework', 'viewer', (props) => {
                         />
                     </XCard.FormList>
                     <XCard.Warning title="Warning example with hint and button element">
-                        <XButton alignSelf="flex-start">Default</XButton>
+                        {}
                     </XCard.Warning>
                 </XCard.Loader>
             </XCard>

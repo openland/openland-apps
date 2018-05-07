@@ -4,7 +4,6 @@ import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
-import { XButton } from '../../../components/X/XButton';
 import { withDeals, withDealAdd } from '../../../api/';
 import { XTable } from '../../../components/X/XTable';
 import { XModalRouted } from '../../../components/X/XModalRouted';
@@ -16,6 +15,7 @@ import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { XLink } from 'openland-x/XLink';
+import { XButton } from 'openland-x/XButton';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -65,7 +65,7 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
             <Scaffold>
                 <Scaffold.Content>
                     <XHeader text="Deals">
-                        <XButton query={{ field: 'add', value: 'true' }}>Add</XButton>
+                        <XButton query={{ field: 'add', value: 'true' }} text="Add"/>
                     </XHeader>
                     {props.data.deals!!.length > 0 && (
                         <>
@@ -109,7 +109,7 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
                             </XTable>
                             <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
                                 <XCard.Footer >
-                                    <XButton style="dark" onClick={exportCVS}>{'Export'}</XButton>
+                                    <XButton style="primary" onClick={exportCVS} text="Export"/>
                                 </XCard.Footer>
                             </XWithRole>
                         </>

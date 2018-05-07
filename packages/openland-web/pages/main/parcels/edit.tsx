@@ -34,7 +34,7 @@ export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetad
                             <XForm.Select field="currentUse" options={[{ title: 'Parking', value: 'PARKING' }, { title: 'Public Storage', value: 'STORAGE' }]} />
                         </XForm.Field>
                         <XForm.Footer>
-                            <XForm.Submit style="dark">Save</XForm.Submit>
+                            <XForm.Submit style="primary" text="Save" />
                             <XButton path={'/parcels/' + props.data.item.id}>Cancel</XButton>
                         </XForm.Footer>
                     </XForm>

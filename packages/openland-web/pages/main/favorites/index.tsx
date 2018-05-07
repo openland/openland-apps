@@ -7,11 +7,11 @@ import { XCard } from '../../../components/X/XCard';
 import { withParcelsFavorites } from '../../../api/';
 import { TableParcels } from '../../../components/TableParcels';
 import Types from 'openland-api';
-import { XButton } from '../../../components/X/XButton';
 import * as FileSaver from 'file-saver';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XLink } from 'openland-x/XLink';
+import { XButton } from 'openland-x/XButton';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -53,11 +53,10 @@ export default withApp('Favorites', 'viewer', withParcelsFavorites((props) => {
                 <Scaffold.Content>
                     <XHeader text="Favorites" description={props.data.items.length === 0 ? 'No parcels' : props.data.items.length + ' parcels'}>
                         <XButton
-                            style="dark"
+                            style="primary"
                             onClick={(e) => { e.preventDefault(); exportCSV(props.data.items); }}
-                        >
-                            Export to CSV
-                        </XButton>
+                            text="Export to CSV"
+                        />
                     </XHeader>
                     {(props.data.items.length === 0)
                         ? (

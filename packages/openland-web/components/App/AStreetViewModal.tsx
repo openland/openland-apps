@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as Turf from '@turf/turf';
 import { XModalTargeted } from '../X/XModalTargeted';
-import { XButton } from '../X/XButton';
 import { XCardStreetViewFullScreen } from '../X/XCardStreetView';
 import { XStreetViewPreview } from '../X/XStreetViewPreview';
 import Glamorous from 'glamorous';
 import { parseGeometry } from '../../utils/Serializers';
+import { XButton } from 'openland-x/XButton';
 
 function loadCenter(src: string) {
     let center = Turf.center({ type: 'MultiPolygon', coordinates: parseGeometry(src) });
@@ -16,7 +16,7 @@ export function AStreetViewModal(props: { geometry: string }) {
     return (
         <XModalTargeted title="Street View" closeOnClick={false} width="auto">
             <XModalTargeted.Target>
-                <XButton>Street View</XButton>
+                <XButton text="Street View" />
             </XModalTargeted.Target>
             <XModalTargeted.Content>
                 <XCardStreetViewFullScreen location={loadCenter(props.geometry)} />

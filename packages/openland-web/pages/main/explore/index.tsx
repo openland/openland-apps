@@ -116,8 +116,6 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
     knownCameraLocation?: XMapCameraLocation;
     
-    shadowRequests = new Set();
-
     constructor(props: XWithRouter & UserInfoComponentProps) {
         super(props);
         this.state = { shadowed: false};
@@ -224,16 +222,6 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         this.knownCameraLocation = e;
     }
 
-    requestShadow = (add: boolean, caller: any) => {
-        if (add) {
-            this.shadowRequests.add(caller);
-        } else {
-            this.shadowRequests.delete(caller);
-        }
-
-        this.setState({ shadowed: this.shadowRequests.size > 0 });
-    }
-
     render() {
         let defaultCity = 'sf';
         if (this.props.roles.find((v) => v === 'feature-city-nyc-force')) {
@@ -254,9 +242,8 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <XMapContainer>
                         <XMapContainer2>
-                            <Shadow active={this.state.shadowed} />
-                            <RoutedMapFilters shadowHandler={this.requestShadow} city={city}/>
-                            <CitySelector title={cityName} shadowHandler={this.requestShadow}>
+                            <RoutedMapFilters city={city}/>
+                            <CitySelector title={cityName}>
                                 <CitySelector.Item
                                     query={{ field: 'city', value: 'sf' }}
                                     active={city === 'sf'}
