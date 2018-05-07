@@ -2,13 +2,13 @@ import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { withSuperAdmins, UserSelect, withSuperAdminAdd, withSuperAdminRemove } from '../../api/';
-import { XCard } from '../../components/X/XCard';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XForm } from '../../components/X/XForm';
 import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
+import { XFooter } from 'openland-x/XFooter';
 
 const AddSuperAdminForm = withSuperAdminAdd((props) => {
     return (
@@ -26,9 +26,9 @@ const AddSuperAdminForm = withSuperAdminAdd((props) => {
                     ]}
                 />
             </XForm.Field>
-            <XCard.Footer>
+            <XFooter>
                 <XForm.Submit style="primary" text="Add" />
-            </XCard.Footer>
+            </XFooter>
         </XForm>
     );
 });
@@ -39,9 +39,9 @@ const RemoveSuperAdminForm = withSuperAdminRemove((props) => {
             <XForm.Field title="User">
                 <XForm.Select field="userId" component={UserSelect} />
             </XForm.Field>
-            <XCard.Footer>
+            <XFooter>
                 <XForm.Submit style="primary" text="Remove" />
-            </XCard.Footer>
+            </XFooter>
         </XForm>
     );
 });

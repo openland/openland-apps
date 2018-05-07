@@ -1,7 +1,6 @@
 import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { XCard } from '../../components/X/XCard';
 import { withFeatureFlags, withFeatureFlagAdd } from '../../api/';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XForm } from '../../components/X/XForm';
@@ -9,6 +8,7 @@ import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
+import { XFooter } from 'openland-x/XFooter';
 
 const AddFeatureForm = withFeatureFlagAdd((props) => {
     return (
@@ -19,9 +19,9 @@ const AddFeatureForm = withFeatureFlagAdd((props) => {
             <XForm.Field title="Title">
                 <XForm.Text field="title" placeholder="ex. Advanced Feature" />
             </XForm.Field>
-            <XCard.Footer>
+            <XFooter>
                 <XForm.Submit style="primary" text="Add"/>
-            </XCard.Footer>
+            </XFooter>
         </XForm>
     );
 });

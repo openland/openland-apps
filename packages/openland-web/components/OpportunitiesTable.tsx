@@ -10,6 +10,8 @@ import { XButton } from 'openland-x/XButton';
 import { XArea } from 'openland-x-format/XArea';
 import { XDate } from 'openland-x-format/XDate';
 import { XTable } from 'openland-x/XTable';
+import { XFooter } from 'openland-x/XFooter';
+
 // import { OpportunityState } from 'openland-api/Types';
 // import { OpportunitiesTable as _OpportunitiesTable } from './OpportunitiesTableUrbynReport';
 
@@ -263,7 +265,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                             ))}
                         </XTable.Body>
                     </XTable>
-                    <XCard.Footer text={props.data.alphaOpportunities.pageInfo.itemsCount + ' items'}>
+                    <XFooter text={props.data.alphaOpportunities.pageInfo.itemsCount + ' items'}>
                         {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
                             <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }} text="Prev"/>
                         )}
@@ -275,7 +277,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                             <XButton onClick={exportCVS} style="primary" text="Export page"/>
                         </XWithRole>
 
-                    </XCard.Footer>
+                    </XFooter>
                 </>
             )}
             {(!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0) && (

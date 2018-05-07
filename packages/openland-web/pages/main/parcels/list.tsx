@@ -12,6 +12,7 @@ import { CitySelector } from '../../../components/Incubator/CitySelector';
 import { XHorizontal } from 'openland-x/XHorizontal';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
+import { XFooter } from 'openland-x/XFooter';
 
 const Content = withParcels((props) => {
     let city = props.router.query.city || 'nyc';
@@ -40,14 +41,14 @@ const Content = withParcels((props) => {
                     <XCard.Loader loading={props.data.loading || false}>
                         <TableParcels items={props.data.items.edges.map((v) => v.node)} showCity={false} />
                     </XCard.Loader>
-                    <XCard.Footer text={props.data.items.pageInfo.itemsCount + ' items'}>
+                    <XFooter text={props.data.items.pageInfo.itemsCount + ' items'}>
                         {props.data.items.pageInfo.currentPage > 1 && (
                             <XButton query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }}>Prev</XButton>
                         )}
                         {(props.data.items.pageInfo.currentPage < props.data.items.pageInfo.pagesCount - 1) && (
                             <XButton query={{ field: 'page', value: (props.data.items.pageInfo.currentPage + 1).toString() }}>Next</XButton>
                         )}
-                    </XCard.Footer>
+                    </XFooter>
                 </Scaffold.Content>
             </Scaffold>
         </>

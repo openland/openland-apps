@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XCardFooter } from './XCardFooter';
 import { XCardProperty, XCardPropertyList, XCardPropertyColumns } from './XCardProperty';
 import { XCardMap } from './XCardMap';
 import { XSeparated } from './XSeparated';
@@ -81,7 +80,6 @@ interface XCardProps {
 }
 
 export class XCard extends React.Component<XCardProps> {
-    static Footer = XCardFooter;
     static Empty = XCardEmpty;
     static Property = XCardProperty;
     static PropertyList = XCardPropertyList;

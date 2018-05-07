@@ -11,6 +11,7 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { XArea } from 'openland-x-format/XArea';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
+import { XFooter } from 'openland-x/XFooter';
 
 const SwitchButton = Glamorous(XButton)({
     boxShadow: 'none',
@@ -175,7 +176,7 @@ class CollapsingTable extends React.Component<{ children: any, count: number }, 
                     {this.props.children}
                 </CollapsWrapper>
                 {this.state.collapse && <ColapseFooterWrap>
-                    <XCard.Footer text={this.props.count + ' items'} />
+                    <XFooter text={this.props.count + ' items'} />
                 </ColapseFooterWrap>}
                 <CollapseBtn onClick={() => this.collapseHandler()} collapse={this.state.collapse}>{this.state.btnText}</CollapseBtn>
             </CollapsingTableWrapper>
@@ -324,14 +325,14 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
                                         })}
                                     </XTable.Body>
                                 </XTable>
-                                <XCard.Footer text={(props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0) + ' items'}>
+                                <XFooter text={(props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0) + ' items'}>
                                     {/* {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
                                         <SwitchButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }}>Prev</SwitchButton>
                                     )}
                                     {(props.data.alphaOpportunities.pageInfo.currentPage < props.data.alphaOpportunities.pageInfo.pagesCount - 1) && (
                                         <SwitchButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</SwitchButton>
                                     )} */}
-                                </XCard.Footer>
+                                </XFooter>
                             </>
                         ) : (
                                 <CollapsingTable count={props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0}>
@@ -347,14 +348,14 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
                                             })}
                                         </XTable.Body>
                                     </XTable>
-                                    <XCard.Footer text={(props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0) + ' items'}>
+                                    <XFooter text={(props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0) + ' items'}>
                                         {/* {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
                                             <SwitchButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }}>Prev</SwitchButton>
                                         )}
                                         {(props.data.alphaOpportunities.pageInfo.currentPage < props.data.alphaOpportunities.pageInfo.pagesCount - 1) && (
                                             <SwitchButton query={{ field: 'page_' + (props as any).type, value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }}>Next</SwitchButton>
                                         )} */}
-                                    </XCard.Footer>
+                                    </XFooter>
                                 </CollapsingTable>
                             )
                     }

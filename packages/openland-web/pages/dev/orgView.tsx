@@ -1,7 +1,6 @@
 import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { XCard } from '../../components/X/XCard';
 import {
     withSuperAccount, withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountMemberAdd,
     UserSelect, withSuperAccountFeatureAdd, withSuperAccountFeatureRemove,
@@ -14,6 +13,7 @@ import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XTable } from 'openland-x/XTable';
+import { XFooter } from 'openland-x/XFooter';
 
 const ActivateButton = withSuperAccountActivate((props) => <XButtonMutation style="primary" mutation={props.activate}>Activate</XButtonMutation>);
 const SuspendButton = withSuperAccountSuspend((props) => <XButtonMutation style="danger" mutation={props.suspend}>Suspend</XButtonMutation>);
@@ -24,9 +24,9 @@ const AddMemberForm = withSuperAccountMemberAdd((props) => {
             <XForm.Field title="User">
                 <XForm.Select field="userId" component={UserSelect} />
             </XForm.Field>
-            <XCard.Footer>
+            <XFooter>
                 <XForm.Submit style="primary" text="Add" />
-            </XCard.Footer>
+            </XFooter>
         </XForm>
     );
 });
@@ -37,9 +37,9 @@ const RemoveMemberForm = withSuperAccountMemberRemove((props) => {
             <XForm.Field title="User">
                 <XForm.Select field="userId" component={UserSelect} />
             </XForm.Field>
-            <XCard.Footer>
+            <XFooter>
                 <XForm.Submit style="danger" text="Remove" />
-            </XCard.Footer>
+            </XFooter>
         </XForm>
     );
 });
@@ -50,9 +50,9 @@ const AddFeature = withSuperAccountFeatureAdd((props) => {
             <XForm.Field title="Feature">
                 <XForm.Select field="featureId" options={props.data.featureFlags.map((v) => ({ value: v.id, title: v.title }))} />
             </XForm.Field>
-            <XCard.Footer>
+            <XFooter>
                 <XForm.Submit style="primary" text="Add"/>
-            </XCard.Footer>
+            </XFooter>
         </XForm>
     );
 });
@@ -63,9 +63,9 @@ const RemoveFeature = withSuperAccountFeatureRemove((props) => {
             <XForm.Field title="Feature">
                 <XForm.Select field="featureId" options={props.data.featureFlags.map((v) => ({ value: v.id, title: v.title }))} />
             </XForm.Field>
-            <XCard.Footer>
+            <XFooter>
                 <XForm.Submit style="danger" text="Remove"/>
-            </XCard.Footer>
+            </XFooter>
         </XForm>
     );
 });

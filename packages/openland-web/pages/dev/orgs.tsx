@@ -2,13 +2,13 @@ import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { withSuperAccounts, withSuperAccountAdd } from '../../api/';
-import { XCard } from '../../components/X/XCard';
 import { XForm } from '../../components/X/XForm';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
 import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
+import { XFooter } from 'openland-x/XFooter';
 
 const AddAccountForm = withSuperAccountAdd((props) => {
     return (
@@ -16,9 +16,9 @@ const AddAccountForm = withSuperAccountAdd((props) => {
             <XForm.Field title="Organization Name">
                 <XForm.Text field="title" />
             </XForm.Field>
-            <XCard.Footer>
+            <XFooter>
                 <XForm.Submit style="primary" text="Add"/>
-            </XCard.Footer>
+            </XFooter>
         </XForm>
     );
 });

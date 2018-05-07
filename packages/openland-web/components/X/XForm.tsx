@@ -8,6 +8,7 @@ import { Router } from '../../routes';
 import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import { XInput } from 'openland-x/XInput';
+import { XFooter } from 'openland-x/XFooter';
 
 let InputsStyle = {
     borderRadius: 4,
@@ -429,7 +430,7 @@ export class XFormSubmit extends React.Component<XFormSubmitProps> {
 export class XForm extends React.Component<XFormProps, { loading: boolean, error?: string }> {
 
     static Header = XFormHeader;
-    static Footer = XCard.Footer;
+    static Footer = XFooter;
 
     static Field = XFormField;
     static Boolean = XFormBooleanField;

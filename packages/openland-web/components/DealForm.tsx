@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MutationFunc } from 'react-apollo';
 import { XForm } from './X/XForm';
-import { XCard } from './X/XCard';
+import { XFooter } from 'openland-x/XFooter';
 import { ParcelSelect } from '../api';
 
 export function DealForm(props: { mutation: MutationFunc<{}>, defaultValues?: { [key: string]: any; } }) {
@@ -77,9 +77,9 @@ export function DealForm(props: { mutation: MutationFunc<{}>, defaultValues?: { 
             <XForm.Field title="Lot Size">
                 <XForm.Text field="extrasLotSize" />
             </XForm.Field>
-            <XCard.Footer>
+            <XFooter>
                 <XForm.Submit style="primary" text={props.defaultValues ? 'Save' : 'Add'}/>
-            </XCard.Footer>
+            </XFooter>
         </XForm>
     );
 }
