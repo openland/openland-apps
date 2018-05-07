@@ -13,8 +13,9 @@ import { XMapImageLayer } from '../../../components/X/XMapImageLayer';
 import { XIcon } from 'openland-x/XIcon';
 import { XMapSource } from '../../../components/X/XMapSource';
 import { withDealsMap } from '../../../api';
-import { JustMap } from './JustMap';
-import hpdprojects from './lots_of_data.json';
+import '../../../globals';
+import { XMapProps, XMap } from './../../../components/X/XMap';
+import hpdprojects from '../../../utils/reports/urbyn/lots_of_data.json';
 import XStyles from '../../../components/X/XStyles';
 import { XHeader } from '../../../components/X/XHeader';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
@@ -311,6 +312,23 @@ class Checkbox extends React.Component<{ checkedChangeListener: Function, label:
         );
     }
 }
+
+const JustMap = (props: XMapProps & { children?: any, mode?: 'satellite' | 'zoning', selectedParcel?: string, onParcelClick?: (id: string) => void }) => {
+    let { children, mode, ...other } = props;
+    let mapStyle = 'mapbox://styles/mapbox/light-v9';
+    if (props.mode === 'zoning') {
+        mapStyle = 'mapbox://styles/steve-kite/cje15jkmr3bvt2so3mu8nvsk6';
+    }
+    if (props.mode === 'satellite') {
+        mapStyle = 'mapbox://styles/mapbox/satellite-v9';
+    }
+    return (
+        <XMap mapStyle={mapStyle} {...other} key={props.mode || 'map'} scrollZoom={false}>
+
+            {children}
+        </XMap>
+    );
+};
 
 class ReportMap extends React.Component<{ qHpd: any } & XWithRouter, { dealsEnabled: boolean, dealsCount?: number, hpdoEnabled: boolean, hpdoCount?: number, hpdpEnabled: boolean, hpdpCount?: number }> {
     dealsCount: number;
