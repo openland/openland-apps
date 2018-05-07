@@ -471,7 +471,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     opacity: props.active ? 1 : 0,
     backgroundColor: 'rgba(0, 0, 0, 0.41)',
     zIndex: 2,
-    pointerEvents: 'none'
+    // pointerEvents: 'none'
 }));
 
 class MapFilters extends React.Component<XWithRouter & { city?: string }, { active: boolean }> {
@@ -617,8 +617,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                 <XButton style={this.props.router.query.ownerName !== undefined ? 'primary' : 'ghost'} text="Owner name" />
                             </Filter.Target>
                             <Filter.Popper>
-                                <OwnerNameFiltersContent
-                                />
+                                <OwnerNameFiltersContent />
                             </Filter.Popper>
                         </Filter>
                     </FilterSwitcher>

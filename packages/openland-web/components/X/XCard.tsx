@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import * as glamor from 'glamor';
+// import * as glamor from 'glamor';
 import { CSSUtils } from './utils';
 import { XRow, XColumn } from './XGrid';
 import { XCardFooter } from './XCardFooter';
@@ -20,10 +20,10 @@ import { XLink } from 'openland-x/XLink';
 // Basic Row
 //
 
-const loading = glamor.keyframes({
-    '0%': { transform: `rotate(0deg)` },
-    '100%': { transform: `rotate(360deg)` }
-});
+// const loading = glamor.keyframes({
+//     '0%': { transform: `rotate(0deg)` },
+//     '100%': { transform: `rotate(360deg)` }
+// });
 
 export const XCardRowDiv = Glamorous(XRow)({
     height: 82,
@@ -116,7 +116,7 @@ export class XCardExternalLink extends React.Component<{ href: string }> {
 
 interface XCardDivProps {
     shadow?: 'none' | 'normal' | 'medium' | 'large';
-    loading?: boolean;
+    // loading?: boolean;
     bounce?: boolean;
     borderless?: boolean;
 }
@@ -140,30 +140,30 @@ let XCardDiv = Glamorous.div<XCardDivProps>((props) => ({
     '&:hover': {
         transform: props.bounce ? 'translateY(-2px)' : undefined
     },
-    '&::before': {
-        content: props.loading ? `''` : undefined,
-        display: 'block',
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        left: 0,
-        top: 0,
-        background: '#fff',
-        zIndex: 1
-    },
-    '&::after': {
-        content: props.loading ? `''` : undefined,
-        display: 'block',
-        position: 'absolute',
-        width: '20px',
-        height: '20px',
-        left: 'calc(50% - 10px)',
-        top: 'calc(50% - 10px)',
-        backgroundImage: props.loading ? 'url(/static/X/loading.svg)' : undefined,
-        backgroundSize: '20px',
-        animation: props.loading ? `${loading} 2s linear infinite` : undefined,
-        zIndex: 2
-    }
+    // '&::before': {
+    //     content: props.loading ? `''` : undefined,
+    //     display: 'block',
+    //     position: 'absolute',
+    //     width: '100%',
+    //     height: '100%',
+    //     left: 0,
+    //     top: 0,
+    //     background: '#fff',
+    //     zIndex: 1
+    // },
+    // '&::after': {
+    //     content: props.loading ? `''` : undefined,
+    //     display: 'block',
+    //     position: 'absolute',
+    //     width: '20px',
+    //     height: '20px',
+    //     left: 'calc(50% - 10px)',
+    //     top: 'calc(50% - 10px)',
+    //     backgroundImage: props.loading ? 'url(/static/X/loading.svg)' : undefined,
+    //     backgroundSize: '20px',
+    //     animation: props.loading ? `${loading} 2s linear infinite` : undefined,
+    //     zIndex: 2
+    // }
 }));
 
 let XCardDivContent = Glamorous.div({
@@ -184,7 +184,7 @@ interface XCardProps {
     className?: string;
     shadow?: 'none' | 'normal' | 'medium' | 'large';
     separators?: boolean;
-    loading?: boolean;
+    // loading?: boolean;
     path?: string | null;
     href?: string | null;
     bounce?: boolean;
@@ -228,7 +228,7 @@ export class XCard extends React.Component<XCardProps> {
         } = this.props;
 
         return (
-            <XCardDiv className={className} shadow={shadow} loading={this.props.loading} bounce={bounce} borderless={borderless}>
+            <XCardDiv className={className} shadow={shadow} bounce={bounce} borderless={borderless}>
                 {(path || href) ? (
                     <XLink path={path} href={href}>
                         {separators && <XSeparated separator={XCardSeparator}>{this.props.children}</XSeparated>}

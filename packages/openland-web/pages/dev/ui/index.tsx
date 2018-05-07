@@ -182,6 +182,12 @@ export default withApp('UI Framework', 'viewer', (props) => {
                     </XCard.Warning>
                 </XCard.Loader>
             </XCard>
+            {/* <XCard shadow="medium" loading={true}>
+                <XCard.Footer text="footer">
+                    <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                    <XButton alignSelf="flex-start" style="dark">Bordered</XButton>
+                </XCard.Footer>
+            </XCard> */}
             <XCard>
                 <XCard.FormList>
                     <XCard.FormCell

@@ -233,13 +233,11 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 <CitySelector.Item
                                     query={{ field: 'city', value: 'sf' }}
                                     active={city === 'sf'}
-                                    autoClose={true}
                                     label="San Francisco"
                                 />
                                 <CitySelector.Item
                                     query={{ field: 'city', value: 'nyc' }}
                                     active={city !== 'sf'}
-                                    autoClose={true}
                                     label="New York"
                                 />
                                 <FilterComponent

@@ -320,16 +320,17 @@ const hideAnimationLeft = glamor.keyframes({
     }
 });
 
-const PopperDiv = Glamorous.div<{nonePointerEvents?: boolean, autoWidth?: boolean}>((props) => ({
+export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boolean, arrowStyle?: 'default' | 'none'; }>((props) => ({
+    zIndex: 501,
     '& .popper .popper-content *': {
         pointerEvents: props.nonePointerEvents ? 'none' : undefined,
         cursor: props.nonePointerEvents ? 'auto' : undefined
     },
-    '& .popper': {
+    '&, & .popper': {
         display: 'none',
         zIndex: 501,
 
-        '> .popper-content': {
+        '> .popper-content, .popper-content': {
             padding: 10,
             background: '#fff',
             maxWidth: props.autoWidth ? 'auto' : 200,
@@ -338,14 +339,14 @@ const PopperDiv = Glamorous.div<{nonePointerEvents?: boolean, autoWidth?: boolea
             color: '#525f7f',
             fontSize: 14,
             lineHeight: 'normal',
-            fontWeight: '400',
+            fontWeight: 400,
         }
     },
 
-    '& .popper.hide': {
+    '&, & .popper.hide': {
         display: 'block',
 
-        '> .popper-content': {
+        '> .popper-content, .popper-content.hide': {
             animationDuration: '0.2s',
             animationFillMode: 'forwards',
             animationName: `${hideAnimationTop}`,
@@ -353,10 +354,10 @@ const PopperDiv = Glamorous.div<{nonePointerEvents?: boolean, autoWidth?: boolea
         }
     },
 
-    '& .popper.show': {
+    '&, & .popper.show': {
         display: 'block',
 
-        '> .popper-content': {
+        '> .popper-content, .popper-content.show': {
             animationDuration: '0.2s',
             animationFillMode: 'forwards',
             animationName: `${showAnimationTop}`,
@@ -364,10 +365,10 @@ const PopperDiv = Glamorous.div<{nonePointerEvents?: boolean, autoWidth?: boolea
         }
     },
 
-    '& .popper.static': {
+    '&, & .popper.static': {
         display: 'block',
 
-        '> .popper-content': {
+        '> .popper-content, .popper-content.static': {
             animationDuration: '0.000002s',
             animationFillMode: 'forwards',
             animationName: `${showAnimationTop}`,
@@ -375,20 +376,20 @@ const PopperDiv = Glamorous.div<{nonePointerEvents?: boolean, autoWidth?: boolea
         }
     },
 
-    '& .popper .popper-content::after': {
+    '& .popper .popper-content::after, & .popper-content::after': {
         display: 'block',
-        content: `''`,
+        content: props.arrowStyle === 'default' ? `''` : undefined,
         width: 0,
         height: 0,
         borderStyle: 'solid',
         position: 'absolute'
     },
 
-    '& .popper[data-placement^="top"]': {
+    '& .popper[data-placement^="top"], &[x-placement^="top"] .popper-content': {
         marginBottom: 10
     },
 
-    '& .popper[data-placement^="top"] .popper-content::after': {
+    '& .popper[data-placement^="top"] .popper-content::after, &[x-placement^="top"] .popper-content::after': {
         borderWidth: '5px 5px 0 5px',
         borderColor: '#fff transparent transparent transparent',
         bottom: -5,
@@ -397,17 +398,17 @@ const PopperDiv = Glamorous.div<{nonePointerEvents?: boolean, autoWidth?: boolea
         marginBottom: 0
     },
 
-    '& .popper[data-placement^="bottom"]': {
+    '& .popper[data-placement^="bottom"], &[x-placement^="bottom"] .popper-content': {
         marginTop: 10,
-        '&.show > .popper-content': {
+        '&.show > .popper-content, &.show': {
             animationName: `${showAnimationBottom} !important`,
         },
-        '&.hide > .popper-content': {
+        '&.hide > .popper-content, &.hide': {
             animationName: `${hideAnimationBottom} !important`
         }
     },
 
-    '& .popper[data-placement^="bottom"] .popper-content::after': {
+    '& .popper[data-placement^="bottom"] .popper-content::after, &[x-placement^="bottom"] .popper-content::after': {
         borderWidth: '0 5px 5px 5px',
         borderColor: 'transparent transparent #fff transparent',
         top: -5,
@@ -416,17 +417,17 @@ const PopperDiv = Glamorous.div<{nonePointerEvents?: boolean, autoWidth?: boolea
         marginBottom: 0
     },
 
-    '& .popper[data-placement^="right"]': {
+    '& .popper[data-placement^="right"], &[x-placement^="right"] .popper-content': {
         marginLeft: 10,
-        '&.show > .popper-content': {
+        '&.show > .popper-content, &.show': {
             animationName: `${showAnimationRight} !important`,
         },
-        '&.hide > .popper-content': {
+        '&.hide > .popper-content, &.hide': {
             animationName: `${hideAnimationRight} !important`
         }
     },
 
-    '& .popper[data-placement^="right"] .popper-content::after': {
+    '& .popper[data-placement^="right"] .popper-content::after, &[x-placement^="right"] .popper-content::after': {
         borderWidth: '5px 5px 5px 0',
         borderColor: 'transparent #fff transparent transparent',
         left: -5,
@@ -435,17 +436,17 @@ const PopperDiv = Glamorous.div<{nonePointerEvents?: boolean, autoWidth?: boolea
         marginRight: 0
     },
 
-    '& .popper[data-placement^="left"]': {
+    '& .popper[data-placement^="left"], &[x-placement^="left"] .popper-content': {
         marginRight: 10,
-        '&.show > .popper-content': {
+        '&.show > .popper-content, &.show': {
             animationName: `${showAnimationLeft} !important`,
         },
-        '&.hide > .popper-content': {
+        '&.hide > .popper-content, &.hide': {
             animationName: `${hideAnimationLeft} !important`
         }
     },
 
-    '& .popper[data-placement^="left"] .popper-content::after': {
+    '& .popper[data-placement^="left"] .popper-content::after, &[x-placement^="left"] .popper-content::after': {
         borderWidth: '5px 0 5px 5px',
         borderColor: 'transparent transparent transparent #fff',
         right: -5,
@@ -454,7 +455,7 @@ const PopperDiv = Glamorous.div<{nonePointerEvents?: boolean, autoWidth?: boolea
         marginRight: 0
     },
 
-    '& .popper[data-x-out-of-boundaries]': {
+    '& .popper[data-x-out-of-boundaries], &[data-x-out-of-boundaries]': {
         display: 'none'
     }
 }));
@@ -467,6 +468,7 @@ interface PopperDivProps {
     nonePointerEvents?: boolean;
     autoWidth?: boolean;
     updated?: boolean;
+    arrowStyle?: 'default' | 'none';
     placement: 'auto-start'
     | 'auto'
     | 'auto-end'
@@ -486,7 +488,11 @@ interface PopperDivProps {
 
 export function Popper(props: PopperDivProps) {
     return (
-        <PopperDiv nonePointerEvents={props.nonePointerEvents} autoWidth={props.autoWidth}>
+        <PopperDiv
+            nonePointerEvents={props.nonePointerEvents}
+            autoWidth={props.autoWidth}
+            arrowStyle={props.arrowStyle || 'default'}
+        >
             <PopperClass
                 updated={props.updated}
                 placement={props.placement}
