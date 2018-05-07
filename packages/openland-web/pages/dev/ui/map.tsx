@@ -5,9 +5,6 @@ import { withApp } from '../../../components/withApp';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api';
 import { trackEvent } from '../../../utils/analytics';
-import { XMapCameraLocation } from '../../../components/X/XMap';
-import { XMapSource } from '../../../components/X/XMapSource';
-import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 // import { XHorizontal } from '../../../components/X/XHorizontal';
 // import { XButton } from '../../../components/X/XButton';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
@@ -18,6 +15,9 @@ import { RoutedMapFilters } from '../../../components/Incubator/MapComponents/Ma
 import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XMapSource } from 'openland-x-map/XMapSource';
+import { XMapCameraLocation } from 'openland-x-map/XMap';
+import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',

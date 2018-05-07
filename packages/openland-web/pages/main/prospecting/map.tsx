@@ -5,9 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { XHead } from '../../../components/X/XHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { ProspectingNavigationMap } from '../../../components/ProspectingNavigation';
-import { XMapCameraLocation } from '../../../components/X/XMap';
 import { SourcingTileSource } from '../../../api';
-import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { OpportunityState } from 'openland-api/Types';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { trackEvent } from '../../../utils/analytics';
@@ -17,6 +15,8 @@ import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { buildProspectingQuery } from '../../../components/prospectingQuery';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XMapCameraLocation } from 'openland-x-map/XMap';
+import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
 // import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 
 const Container = Glamorous.div({

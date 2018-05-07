@@ -44,6 +44,9 @@
       ],
       "openland-x-format": [
         "openland-x-format"
+      ],
+      "openland-x-map": [
+        "openland-x-map"
       ]
     },
     "importHelpers": true
@@ -68,6 +71,8 @@
     "./packages/openland-text",
     "./packages/openland-x",
     "./packages/openland-x-routing",
-    "./packages/openland-x-utils"
+    "./packages/openland-x-utils",
+    "./packages/openland-x-format",
+    "./packages/openland-x-map"
   ]
 }

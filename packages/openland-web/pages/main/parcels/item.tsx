@@ -12,10 +12,7 @@ import { ParcelMaps } from '../../../components/ParcelMaps';
 import { trackEvent } from '../../../utils/analytics';
 import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XView } from '../../../components/X/XView';
-import { XMapSource } from '../../../components/X/XMapSource';
-import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
-import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XAngle } from '../../../components/X/XAngle';
 import { OpportunitiButton } from '../../../components/OpportunityButton';
 import { XForm } from '../../../components/X/XForm';
@@ -32,6 +29,9 @@ import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XButton } from 'openland-x/XButton';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XDate } from 'openland-x-format/XDate';
+import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
+import { XMapSource } from 'openland-x-map/XMapSource';
+import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 

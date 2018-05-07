@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { DocumentNode } from 'graphql';
-import { XMapSubscriber } from '../components/X/XMap';
 import ApolloClient, { ApolloQueryResult } from 'apollo-client';
 import { backoff } from './timer';
 import { startProgress, stopProgress } from './routing';
-import { XMapSource } from '../components/X/XMapSource';
 import { parseGeometry } from './Serializers';
+import { XMapSubscriber } from 'openland-x-map/XMap';
+import { XMapSource } from 'openland-x-map/XMapSource';
 interface GraphQLTileSourceProps {
     layer: string;
     minZoom?: number;

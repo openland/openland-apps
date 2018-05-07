@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { XMapProps, XMap } from './X/XMap';
 import { BlockTileSource, ParcelTileSource } from '../api';
-import { XMapPolygonLayer } from './X/XMapPolygonLayer';
 import { ParcelLayer } from './ParcelLayer';
+import { XMapProps, XMap } from 'openland-x-map/XMap';
+import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 
 export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite' | 'zoning', selectedParcel?: string, onParcelClick?: (id: string) => void }) => {
     let { children, mode, ...other } = props;

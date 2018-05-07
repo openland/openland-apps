@@ -3,11 +3,11 @@ import Glamorous from 'glamorous';
 import { XHorizontal } from './X/XHorizontal';
 import { XCard } from './X/XCard';
 import { XStreetView } from './X/XStreetView';
-import { XMapPolygonLayer } from './X/XMapPolygonLayer';
 import { ParcelTileSource, BlockTileSource } from '../api/index';
 import { findCenter } from '../utils/map';
 import { ParcelLayer } from './ParcelLayer';
 import { withRouter } from 'openland-x-routing/withRouter';
+import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 
 const Wrapper = Glamorous(XCard)({
     flexGrow: 1,
@@ -31,7 +31,7 @@ export const ParcelMaps = withRouter<{ id: string, geometry: string, disableNavi
                         allowHover={props.disableNavigation !== true}
                         allowClick={props.disableNavigation !== true}
                         flyOnClick={props.disableNavigation !== true}
-                        onClick={props.disableNavigation !== true ? (v) => props.router.push('/parcels/' + v) : undefined}
+                        onClick={props.disableNavigation !== true ? (v: any) => props.router.push('/parcels/' + v) : undefined}
                         selectedId={props.id}
                     />
                     <XMapPolygonLayer

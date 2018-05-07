@@ -29,8 +29,6 @@ import { XForm } from '../../../components/X/XForm';
 import { XHead } from '../../../components/X/XHead';
 import { XHeader } from '../../../components/X/XHeader';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
-import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
-import { XMapSource } from '../../../components/X/XMapSource';
 import { XSwitcher } from './../../../components/X/XSwitcher';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { XVertical } from '../../../components/X/XVertical';
@@ -39,6 +37,8 @@ import { XWithRole } from '../../../components/X/XWithRole';
 import { XZoningCode } from '../../../components/X/XZoningCode';
 import { XZoningMetrics } from './../../../components/X/XZoningMetrics';
 import '../../../globals';
+import { XMapSource } from 'openland-x-map/XMapSource';
+import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';

@@ -15,11 +15,8 @@ import { ProjectTypes } from '../../../components/ProjectTypes';
 import { Text } from '../../../strings';
 import { XHeader } from '../../../components/X/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
-import { XMapSource } from '../../../components/X/XMapSource';
-import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
 import { XAngle } from '../../../components/X/XAngle';
-import { XMapPointLayer } from '../../../components/X/XMapPointLayer';
 import { XHorizontal } from '../../../components/X/XHorizontal';
 import { XContent } from '../../../components/X/XContent';
 import { XTitle } from '../../../components/X/XTitle';
@@ -31,6 +28,9 @@ import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XArea } from 'openland-x-format/XArea';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XMoney } from 'openland-x-format/XMoney';
+import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
+import { XMapSource } from 'openland-x-map/XMapSource';
+import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm

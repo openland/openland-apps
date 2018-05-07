@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XMapPolygonLayer, XMapPolygonLayerProps } from './X/XMapPolygonLayer';
+import { XMapPolygonLayer, XMapPolygonLayerProps } from 'openland-x-map/XMapPolygonLayer';
 
 export function ParcelLayer(props: Partial<XMapPolygonLayerProps> & { inverted?: boolean }) {
     let { inverted, ...other } = props;

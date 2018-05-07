@@ -9,16 +9,16 @@ import { OpportunitiesTable } from '../../../components/OpportunitiesTableUrbynR
 import { OpportunityState } from 'openland-api/Types';
 import { Scaffold } from '../../../components/Scaffold';
 import { SourcingTileSource } from '../../../api';
-import { XMapImageLayer } from '../../../components/X/XMapImageLayer';
 import { XIcon } from 'openland-x/XIcon';
-import { XMapSource } from '../../../components/X/XMapSource';
 import { withDealsMap } from '../../../api';
 import '../../../globals';
-import { XMapProps, XMap } from './../../../components/X/XMap';
 import hpdprojects from '../../../utils/reports/urbyn/lots_of_data.json';
 import XStyles from '../../../components/X/XStyles';
 import { XHeader } from '../../../components/X/XHeader';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { XMapProps, XMap } from 'openland-x-map/XMap';
+import { XMapSource } from 'openland-x-map/XMapSource';
+import { XMapImageLayer } from 'openland-x-map/XMapImageLayer';
 
 const UrbinHeaderWrapper = Glamorous.div({
     position: 'relative',
@@ -324,7 +324,6 @@ const JustMap = (props: XMapProps & { children?: any, mode?: 'satellite' | 'zoni
     }
     return (
         <XMap mapStyle={mapStyle} {...other} key={props.mode || 'map'} scrollZoom={false}>
-
             {children}
         </XMap>
     );

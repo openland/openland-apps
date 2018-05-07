@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XMap } from './XMap';
+import { XMap } from 'openland-x-map/XMap';
 
 let XCardMapDiv = Glamorous.div({
     height: '360px',
