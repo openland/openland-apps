@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XCard } from './X/XCard';
+import { XContent } from './X/XContent';
 
 let Title = Glamorous.div({
     fontSize: 20,
@@ -14,7 +14,7 @@ let Title = Glamorous.div({
     marginBottom: 16
 });
 
-let Message = Glamorous(XCard.Content)({
+let Message = Glamorous(XContent)({
     alignContent: 'center'
 });
 

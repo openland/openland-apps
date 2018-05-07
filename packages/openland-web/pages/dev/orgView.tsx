@@ -10,7 +10,6 @@ import {
 } from '../../api/';
 import { XForm } from '../../components/X/XForm';
 import { XModalTargeted } from '../../components/X/XModalTargeted';
-import { withLoader } from '../../components/Incubator/withLoader';
 import { XHeader } from '../../components/X/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
@@ -45,7 +44,7 @@ const RemoveMemberForm = withSuperAccountMemberRemove((props) => {
     );
 });
 
-const AddFeature = withSuperAccountFeatureAdd(withLoader((props) => {
+const AddFeature = withSuperAccountFeatureAdd((props) => {
     return (
         <XForm submitMutation={props.add} mutationDirect={true}>
             <XForm.Field title="Feature">
@@ -56,9 +55,9 @@ const AddFeature = withSuperAccountFeatureAdd(withLoader((props) => {
             </XCard.Footer>
         </XForm>
     );
-}));
+});
 
-const RemoveFeature = withSuperAccountFeatureRemove(withLoader((props) => {
+const RemoveFeature = withSuperAccountFeatureRemove((props) => {
     return (
         <XForm submitMutation={props.remove} mutationDirect={true}>
             <XForm.Field title="Feature">
@@ -69,7 +68,7 @@ const RemoveFeature = withSuperAccountFeatureRemove(withLoader((props) => {
             </XCard.Footer>
         </XForm>
     );
-}));
+});
 
 export default withApp('Super Organization', 'super-admin', withSuperAccount((props) => {
     return (
