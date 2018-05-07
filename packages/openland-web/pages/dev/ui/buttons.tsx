@@ -29,7 +29,14 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton style="ghost" text="ghost" />
                         <XButton style="flat" text="flat" />
                     </XHorizontal>
-
+                    <XTitle>Icons</XTitle>
+                    <XHorizontal>
+                        <XButton size="x-large" text="x-large" icon="star" />
+                        <XButton size="large" text="large" icon="star" />
+                        <XButton size="medium" text="medium" icon="star" />
+                        <XButton text="default" icon="star" />
+                        <XButton size="small" text="small" icon="star" />
+                    </XHorizontal>
                     <XTitle>Loading</XTitle>
                     <XHorizontal>
                         <XButton style="primary" loading={true} text="primary" />
@@ -38,7 +45,6 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton style="ghost" loading={true} text="ghost" />
                         <XButton style="flat" loading={true} text="flat" />
                     </XHorizontal>
-
                     <XTitle>Disabled</XTitle>
                     <XHorizontal>
                         <XButton style="primary" text="primary" disabled={true} />

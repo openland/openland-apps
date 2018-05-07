@@ -4,9 +4,11 @@ import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XLink, XLinkProps } from './XLink';
 import { XLoadingCircular } from './XLoadingCircular';
 import { XLayoutProps, applyFlex } from './Flex';
+import { XIcon } from './XIcon';
 
 export interface XButtonStyleProps extends XLayoutProps {
     text?: string;
+    icon?: string;
     size?: 'x-large' | 'large' | 'medium' | 'default' | 'small';
     style?: 'primary' | 'danger' | 'default' | 'ghost' | 'flat';
 }
@@ -23,7 +25,13 @@ let sizeStyles = styleResolver({
         fontWeight: 500,
         paddingLeft: 32,
         paddingRight: 32,
-        borderRadius: '4px'
+        borderRadius: '4px',
+        '> .icon': {
+            marginLeft: '-8px',
+            width: '32px',
+            fontSize: '24px',
+            lineHeight: '56px'
+        }
     },
     'large': {
         height: '48px',
@@ -32,7 +40,10 @@ let sizeStyles = styleResolver({
         fontWeight: 500,
         paddingLeft: 26,
         paddingRight: 26,
-        borderRadius: '4px'
+        borderRadius: '4px',
+        '> .icon': {
+            fontSize: '28px'
+        }
     },
     'medium': {
         height: '40px',
@@ -41,7 +52,10 @@ let sizeStyles = styleResolver({
         fontWeight: 500,
         paddingLeft: 20,
         paddingRight: 20,
-        borderRadius: '4px'
+        borderRadius: '4px',
+        '> .icon': {
+            fontSize: '24px'
+        }
     },
     'default': {
         height: '32px',
@@ -50,7 +64,10 @@ let sizeStyles = styleResolver({
         fontWeight: 500,
         paddingLeft: 14,
         paddingRight: 14,
-        borderRadius: '4px'
+        borderRadius: '4px',
+        '> .icon': {
+            fontSize: '16px'
+        }
     },
     'small': {
         height: '24px',
@@ -58,7 +75,10 @@ let sizeStyles = styleResolver({
         fontSize: '12px',
         paddingLeft: 10,
         paddingRight: 10,
-        borderRadius: '3px'
+        borderRadius: '3px',
+        '> .icon': {
+            fontSize: '14px'
+        }
     }
 });
 
@@ -190,6 +210,7 @@ const StyledButton = Glamorous<XButtonProps>(XLink)([
         justifyContent: 'center',
         alignItems: 'center',
         textDecoration: 'none',
+        flexDirection: 'row',
         userSelect: 'none',
         whiteSpace: 'nowrap',
         wordBreak: 'keep-all',
@@ -221,6 +242,7 @@ export class XButton extends React.PureComponent<XButtonProps> {
     render() {
         return (
             <StyledButton {...this.props}>
+                {this.props.icon && <XIcon icon={this.props.icon} className="icon" />}
                 <span>{this.props.text}</span>
                 {this.props.loading && <XLoadingCircular inverted={this.props.style === 'primary' || this.props.style === 'danger'} />}
             </StyledButton>
