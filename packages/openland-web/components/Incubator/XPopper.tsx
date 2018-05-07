@@ -469,7 +469,7 @@ interface PopperDivProps {
     autoWidth?: boolean;
     updated?: boolean;
     arrowStyle?: 'default' | 'none';
-    placement: 'auto-start'
+    placement?: 'auto-start'
     | 'auto'
     | 'auto-end'
     | 'top-start'
@@ -495,7 +495,7 @@ export function Popper(props: PopperDivProps) {
         >
             <PopperClass
                 updated={props.updated}
-                placement={props.placement}
+                placement={props.placement ? props.placement : 'auto'}
                 componentFactory={(popperProps) => (
                     <div {...popperProps} className={classnames('popper', props.class)}>
                         <div className="popper-content" onMouseOver={() => props.onMouseover ? props.onMouseover() : undefined} onMouseOut={() => props.onMouseout ? props.onMouseout() : undefined}>
