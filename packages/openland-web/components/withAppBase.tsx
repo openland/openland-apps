@@ -6,7 +6,6 @@ import { withData } from './withData';
 
 export function withAppBase(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAccountQuery((props) => {
-        console.warn(props);
         return (
             <>
                 <XDocumentHead title={['App']} />
