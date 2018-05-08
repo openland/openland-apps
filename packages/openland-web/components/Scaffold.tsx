@@ -8,7 +8,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
 import { XPopover } from './Incubator/XPopover';
 import { withSearch } from '../api';
-import { XWithRole } from './X/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XTooltip } from './Incubator/XTooltip';
 import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';

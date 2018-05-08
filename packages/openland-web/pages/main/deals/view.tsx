@@ -3,7 +3,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withDeal, withDealAlterCombined, withDealRemove } from '../../../api/';
 import { DealForm } from '../../../components/DealForm';
-import { XWithRole } from '../../../components/X/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';

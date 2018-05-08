@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import Types from 'openland-api';
 import { trackProfile } from '../utils/analytics';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 
 export class UserInfoProvider extends React.Component<{
     user?: Types.UserShortFragment | null,
@@ -15,7 +16,6 @@ export class UserInfoProvider extends React.Component<{
         user: PropTypes.object,
         area: PropTypes.object,
         account: PropTypes.object,
-        roles: PropTypes.arrayOf(PropTypes.string),
         isLoggedIn: PropTypes.bool.isRequired,
         isActivated: PropTypes.bool.isRequired,
         isProfileCreated: PropTypes.bool.isRequired,
@@ -24,7 +24,11 @@ export class UserInfoProvider extends React.Component<{
     };
 
     render() {
-        return <>{this.props.children}</>;
+        return (
+            <XRoleContext.Provider value={{ roles: this.props.roles }}>
+                {this.props.children}
+            </XRoleContext.Provider>
+        );
     }
 
     getChildContext() {
@@ -38,7 +42,6 @@ export class UserInfoProvider extends React.Component<{
             user: hasUser ? this.props.user : null,
             area: this.props.area !== null && this.props.area !== undefined ? this.props.area : null,
             account: hasAccount ? this.props.account : null,
-            roles: this.props.roles,
             isLoggedIn: this.props.profile.isLoggedIn && hasUser,
             isProfileCreated: this.props.profile.isProfileCreated && hasUser,
             isActivated: this.props.profile.isAccountActivated && hasAccount && hasUser,

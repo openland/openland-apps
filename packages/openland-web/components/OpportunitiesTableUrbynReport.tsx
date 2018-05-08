@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withSourcingAll } from '../api';
 import { XHeader } from 'openland-x/XHeader';
-import { XWithRole } from './X/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
 import ATypes from 'openland-api';
 import { withRouter } from 'openland-x-routing/withRouter';

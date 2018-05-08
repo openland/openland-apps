@@ -14,7 +14,7 @@ import { XHeader } from 'openland-x/XHeader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XIcon } from 'openland-x/XIcon';
 import { XTooltip } from './Incubator/XTooltip';
-import { XWithRole } from './X/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ZoningCode } from './ZoningCode';
 import { XDistance } from 'openland-x-format/XDistance';
 import { XMoney } from 'openland-x-format/XMoney';

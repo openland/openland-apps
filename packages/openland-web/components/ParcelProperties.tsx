@@ -3,7 +3,7 @@ import Types from 'openland-api';
 import { ZoningCode } from './ZoningCode';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { XTooltip } from './Incubator/XTooltip';
-import { XWithRole } from './X/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ProjectTypes } from './ProjectTypes';
 import { Text } from '../strings';
 import { XVertical } from 'openland-x-layout/XVertical';

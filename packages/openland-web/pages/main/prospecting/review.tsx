@@ -28,7 +28,7 @@ import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XWithRole } from '../../../components/X/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import '../../../globals';
 import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';

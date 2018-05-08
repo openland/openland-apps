@@ -4,7 +4,7 @@ import { withApp } from '../../../components/withApp';
 import { withParcel } from '../../../api/';
 import { ParcelProperties } from '../../../components/ParcelProperties';
 import { PermitType } from '../../../components/PermitType';
-import { XWithRole } from '../../../components/X/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { trackEvent } from '../../../utils/analytics';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';

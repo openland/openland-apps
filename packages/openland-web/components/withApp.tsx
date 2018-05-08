@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XWithRole } from './X/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withAppBase } from './withAppBase';
 import { withUserInfo } from './UserInfo';
 import { XTrack } from './X/XTrack';

@@ -6,7 +6,7 @@ import { withDeals, withDealAdd } from '../../../api/';
 import { DealForm } from '../../../components/DealForm';
 import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
-import { XWithRole } from '../../../components/X/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XArea } from 'openland-x-format/XArea';

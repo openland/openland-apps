@@ -17,7 +17,7 @@ import { OwnerTypeComponent } from '../../OwnerTypeComponent';
 import { ParcelNumber } from '../../ParcelNumber';
 import { ProjectTypes } from '../../ProjectTypes';
 import { XHeader } from 'openland-x/XHeader';
-import { XWithRole } from '../../X/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ZoningCode } from '../../ZoningCode';
 import { XPopover } from './XPopover';
 import { XButton } from 'openland-x/XButton';
