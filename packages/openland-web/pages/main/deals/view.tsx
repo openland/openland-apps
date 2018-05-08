@@ -2,7 +2,6 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withDeal, withDealAlterCombined, withDealRemove } from '../../../api/';
-import { XCard } from '../../../components/X/XCard';
 import { DealForm } from '../../../components/DealForm';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
@@ -32,6 +31,7 @@ import { XTitle } from 'openland-x/XTitle';
 import { XModalRouted } from 'openland-x-modal/XModalRouted';
 import { XMapSmall } from 'openland-x-map/XMapSmall';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { XPropertyColumns, XPropertyList, XProperty } from 'openland-x/XProperty';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -86,43 +86,43 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                         <XButton query={{ field: 'edit', value: 'true' }} text="Edit" />
                     </XHeader>
                     {/* <XCard shadow="medium" separators={true}> */}
-                    <XCard.PropertyColumns>
-                        <XCard.PropertyList title="Deal Info">
-                            {props.data.deal.price && (<XCard.Property title="Price"><XMoney value={props.data.deal.price} /></XCard.Property>)}
-                            {props.data.deal.price && area && (<XCard.Property title="Price $/Sq ft"><XMoney value={props.data.deal.price / area} /></XCard.Property>)}
-                            {props.data.deal.extrasTaxBill && (<XCard.Property title="Last Tax Bill"><XMoney value={props.data.deal.extrasTaxBill} /></XCard.Property>)}
-                            {props.data.deal.extrasTaxBill && area && (<XCard.Property title="Tax/Sq. Ft."><XMoney value={props.data.deal.extrasTaxBill / area} /></XCard.Property>)}
-                            {props.data.deal.extrasCompany && (<XCard.Property title="Company">{props.data.deal.extrasCompany}</XCard.Property>)}
-                            {props.data.deal.extrasAttorney && (<XCard.Property title="Seller's Attorney">{props.data.deal.extrasAttorney}</XCard.Property>)}
-                            {props.data.deal.extrasReferee && (<XCard.Property title="Refereee">{props.data.deal.extrasReferee}</XCard.Property>)}
-                        </XCard.PropertyList>
-                        <XCard.PropertyList title="Parcel">
-                            {props.data.deal.parcel && (<XCard.Property title="Parcel ID"><XLink path={'/parcels/' + props.data.deal.parcel.id}>{props.data.deal.parcel.number.title}</XLink></XCard.Property>)}
-                            {props.data.deal.parcel && props.data.deal.parcel.extrasZoning && (<XCard.Property title="Zoning"><ZoningCode codes={props.data.deal.parcel.extrasZoning} /></XCard.Property>)}
-                            {props.data.deal.location && (<XCard.Property title="Location">{props.data.deal.location}</XCard.Property>)}
-                            {props.data.deal.address && (<XCard.Property title="Address">{props.data.deal.address}</XCard.Property>)}
-                            {area != null && (<XCard.Property title="Area"><XArea value={area} /></XCard.Property>)}
+                    <XPropertyColumns>
+                        <XPropertyList title="Deal Info">
+                            {props.data.deal.price && (<XProperty title="Price"><XMoney value={props.data.deal.price} /></XProperty>)}
+                            {props.data.deal.price && area && (<XProperty title="Price $/Sq ft"><XMoney value={props.data.deal.price / area} /></XProperty>)}
+                            {props.data.deal.extrasTaxBill && (<XProperty title="Last Tax Bill"><XMoney value={props.data.deal.extrasTaxBill} /></XProperty>)}
+                            {props.data.deal.extrasTaxBill && area && (<XProperty title="Tax/Sq. Ft."><XMoney value={props.data.deal.extrasTaxBill / area} /></XProperty>)}
+                            {props.data.deal.extrasCompany && (<XProperty title="Company">{props.data.deal.extrasCompany}</XProperty>)}
+                            {props.data.deal.extrasAttorney && (<XProperty title="Seller's Attorney">{props.data.deal.extrasAttorney}</XProperty>)}
+                            {props.data.deal.extrasReferee && (<XProperty title="Refereee">{props.data.deal.extrasReferee}</XProperty>)}
+                        </XPropertyList>
+                        <XPropertyList title="Parcel">
+                            {props.data.deal.parcel && (<XProperty title="Parcel ID"><XLink path={'/parcels/' + props.data.deal.parcel.id}>{props.data.deal.parcel.number.title}</XLink></XProperty>)}
+                            {props.data.deal.parcel && props.data.deal.parcel.extrasZoning && (<XProperty title="Zoning"><ZoningCode codes={props.data.deal.parcel.extrasZoning} /></XProperty>)}
+                            {props.data.deal.location && (<XProperty title="Location">{props.data.deal.location}</XProperty>)}
+                            {props.data.deal.address && (<XProperty title="Address">{props.data.deal.address}</XProperty>)}
+                            {area != null && (<XProperty title="Area"><XArea value={area} /></XProperty>)}
                             {props.data.deal.parcel && props.data.deal.parcel.extrasShapeType &&
-                                <XCard.Property title="Parcel Shape">{props.data.deal.parcel.extrasShapeType}</XCard.Property>
+                                <XProperty title="Parcel Shape">{props.data.deal.parcel.extrasShapeType}</XProperty>
                             }
                             {props.data.deal.parcel && props.data.deal.parcel!!.extrasShapeSides && props.data.deal.parcel!!.extrasShapeSides!!.length > 0 &&
-                                <XCard.Property title="Parcel Dimensions"> <XDimensions value={props.data.deal.parcel!!.extrasShapeSides!!} /></XCard.Property>
+                                <XProperty title="Parcel Dimensions"> <XDimensions value={props.data.deal.parcel!!.extrasShapeSides!!} /></XProperty>
                             }
                             <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                                 {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed !== true &&
-                                    <XCard.Property title="Compatible buildings">
+                                    <XProperty title="Compatible buildings">
                                         <XView direction="row">
                                             <XTooltip marginLeft={0} title={Text.hint_too_complex} />
                                             {Text.text_too_complex}
                                         </XView>
-                                    </XCard.Property>
+                                    </XProperty>
                                 }
                                 {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed === true && props.data.deal.parcel.extrasFitProjects &&
-                                    <XCard.Property title="Compatible buildings"><ProjectTypes types={props.data.deal.parcel.extrasFitProjects!!} /></XCard.Property>
+                                    <XProperty title="Compatible buildings"><ProjectTypes types={props.data.deal.parcel.extrasFitProjects!!} /></XProperty>
                                 }
                             </XWithRole>
-                        </XCard.PropertyList>
-                    </XCard.PropertyColumns>
+                        </XPropertyList>
+                    </XPropertyColumns>
                     {props.data.deal.parcel && props.data.deal.parcel!!.city.name === 'New York' && (props.data.deal.parcel!!.extrasVacant === null || props.data.deal.parcel!!.extrasVacant) && props.data.deal.parcel!!.compatibleBuildings && props.data.deal.parcel!!.compatibleBuildings!!.length > 0 && (
                         <XVertical>
                             <XContent>
@@ -131,12 +131,12 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                             {props.data.deal!!.parcel!!.compatibleBuildings!!.map((v, i) => (
                                 <XHorizontal>
                                     <XView grow={1} basis={0}>
-                                        <XCard.PropertyList>
-                                            <XCard.Property title="Construction Type">{v.title}</XCard.Property>
-                                            {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions value={[v.width, v.height]} /></XCard.Property>}
-                                            {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
-                                            {v.center && <XCard.Property title="Location">{v.center.latitude.toFixed(6)},{v.center.longitude.toFixed(6)}</XCard.Property>}
-                                        </XCard.PropertyList>
+                                        <XPropertyList>
+                                            <XProperty title="Construction Type">{v.title}</XProperty>
+                                            {v.width && v.height && <XProperty title="Dimensions"><XDimensions value={[v.width, v.height]} /></XProperty>}
+                                            {v.angle && <XProperty title="Azimuth"><XAngle value={v.angle} /></XProperty>}
+                                            {v.center && <XProperty title="Location">{v.center.latitude.toFixed(6)},{v.center.longitude.toFixed(6)}</XProperty>}
+                                        </XPropertyList>
                                     </XView>
                                     <XView grow={1} basis={0}>
                                         {v.center && <XMapSmall focusPosition={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
