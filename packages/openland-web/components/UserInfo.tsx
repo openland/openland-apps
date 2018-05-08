@@ -55,7 +55,6 @@ export interface UserInfoComponentProps {
     user: Types.UserShortFragment | null;
     area: Types.AreaShortFragment | null;
     account: Types.AccountShortFragment | null;
-    roles: string[];
     isLoggedIn: boolean;
     isActivated: boolean;
     isProfileCreated: boolean;
@@ -80,7 +79,6 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
         var user = this.context.user as Types.UserShortFragment | null;
         var area = this.context.area as Types.AreaShortFragment | null;
         var account = this.context.account as Types.AccountShortFragment | null;
-        var roles = this.context.roles as string[];
         var isLoggedIn = this.context.isLoggedIn as boolean;
         var isActivated = this.context.isActivated as boolean;
         var isProfileCreated = this.context.isProfileCreated as boolean;
@@ -91,7 +89,6 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
             <Wrapped
                 user={user}
                 area={area}
-                roles={roles}
                 account={account}
                 isLoggedIn={isLoggedIn}
                 isActivated={isActivated}
