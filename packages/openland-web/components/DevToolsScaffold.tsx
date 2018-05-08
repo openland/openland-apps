@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Scaffold } from './Scaffold';
-import { XHead } from './X/XHead';
 import { Sidebar } from './Sidebar';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 export function DevToolsScaffold(props: { title: string, children?: any }) {
     return (
         <>
-            <XHead title={[props.title]} />
+            <XDocumentHead title={[props.title]} />
             <Scaffold>
                 <Scaffold.Menu>
                     <Sidebar title="Dev Tools">

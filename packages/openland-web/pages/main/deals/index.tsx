@@ -1,7 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { withDeals, withDealAdd } from '../../../api/';
 import { DealForm } from '../../../components/DealForm';
@@ -17,6 +16,7 @@ import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
 import { XModalRouted } from 'openland-x-modal/XModalRouted';
 import { XEmpty } from 'openland-x/XEmpty';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -59,7 +59,7 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
 
     return (
         <>
-            <XHead title="Deals" />
+            <XDocumentHead title="Deals" />
             <XModalRouted title="Add New project" query="add">
                 <DealsForm />
             </XModalRouted>

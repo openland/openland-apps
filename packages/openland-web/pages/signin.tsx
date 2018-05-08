@@ -1,7 +1,6 @@
 import '../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHead } from '../components/X/XHead';
 import { MessagePage } from '../components/MessagePage';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
@@ -15,6 +14,7 @@ import { XButton } from 'openland-x/XButton';
 import { XContent } from 'openland-x/XContent';
 import { XInput } from 'openland-x/XInput';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 let Signup = Glamorous.span({
     opacity: 0.7
@@ -202,7 +202,7 @@ export default withAppBase(withRouter(withUserInfo((props) => {
     let redirect = props.router.query ? (props.router.query.r ? props.router.query.r : null) : null;
     return (
         <>
-            <XHead title="Sign in" titleSocial="Openland - land acquisition platfom" />
+            <XDocumentHead title="Sign in" titleSocial="Openland - land acquisition platfom" />
             <XTrack event="View Signin">
                 <SignInComponent redirect={redirect} />
             </XTrack>

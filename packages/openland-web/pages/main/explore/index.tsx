@@ -4,7 +4,6 @@ import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
-import { XHead } from '../../../components/X/XHead';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { trackEvent } from '../../../utils/analytics';
@@ -19,6 +18,7 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XMapCameraLocation } from 'openland-x-map/XMap';
 import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
 import { XMapSource } from 'openland-x-map/XMapSource';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -296,7 +296,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 export default withApp('Explore', 'viewer', withRouter(withUserInfo((props) => {
     return (
         <>
-            <XHead title={[TextPageExplore.title]} />
+            <XDocumentHead title={[TextPageExplore.title]} />
             <ParcelCollection {...props} />
         </>
     );

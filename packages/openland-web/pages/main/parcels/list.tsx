@@ -1,9 +1,7 @@
 import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { XCard } from '../../../components/X/XCard';
 import { withParcels } from '../../../api/';
-import { XHead } from '../../../components/X/XHead';
 import { AppFilters } from '../../../components/App/AppFilters';
 import { TableParcels } from '../../../components/TableParcels';
 import { XHeader } from 'openland-x/XHeader';
@@ -13,13 +11,15 @@ import { XHorizontal } from 'openland-x/XHorizontal';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XFooter } from 'openland-x/XFooter';
+import { XLoader } from 'openland-x/XLoader';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const Content = withParcels((props) => {
     let city = props.router.query.city || 'nyc';
     let cityName = city === 'sf' ? 'San Francisco' : 'New York';
     return (
         <>
-            <XHead title={['Parcels']} />
+            <XDocumentHead title={['Parcels']} />
             <Scaffold>
                 <Scaffold.Content>
                     <XHeader text={
@@ -38,9 +38,9 @@ const Content = withParcels((props) => {
                             city={cityName}
                         />
                     </XHeader>
-                    <XCard.Loader loading={props.data.loading || false}>
+                    <XLoader loading={props.data.loading || false}>
                         <TableParcels items={props.data.items.edges.map((v) => v.node)} showCity={false} />
-                    </XCard.Loader>
+                    </XLoader>
                     <XFooter text={props.data.items.pageInfo.itemsCount + ' items'}>
                         {props.data.items.pageInfo.currentPage > 1 && (
                             <XButton query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }}>Prev</XButton>

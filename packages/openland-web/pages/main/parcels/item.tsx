@@ -4,7 +4,6 @@ import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { withParcel } from '../../../api/';
 import { ParcelProperties } from '../../../components/ParcelProperties';
-import { XHead } from '../../../components/X/XHead';
 import { PermitType } from '../../../components/PermitType';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
@@ -33,6 +32,7 @@ import { XTable } from 'openland-x/XTable';
 import { XView } from 'openland-x/XView';
 import { XTitle } from 'openland-x/XTitle';
 import { XMapSmall } from 'openland-x-map/XMapSmall';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -43,7 +43,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
 
     return (
         <>
-            <XHead title={['Parcel #' + props.data.item.number.title]} />
+            <XDocumentHead title={['Parcel #' + props.data.item.number.title]} />
             <Scaffold>
                 <Scaffold.Content bottomOffset={true}>
                     <XHeader

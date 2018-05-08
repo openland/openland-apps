@@ -1,7 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
@@ -15,6 +14,7 @@ import { CapacityIndicator } from '../../../components/CapacityIndicator';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XEmpty } from 'openland-x/XEmpty';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 let OwnersSelectStyled = Glamorous.div({
     fontSize: 14,
@@ -42,7 +42,7 @@ export default withApp('Unit placement', 'viewer', withRouter((props) => {
     let q = buildProspectingQuery(props.router);
     return (
         <>
-            <XHead title="Unit placement" />
+            <XDocumentHead title="Unit placement" />
             <ProspectingScaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />

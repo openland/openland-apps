@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { XCloudImage } from './XCloudImage';
 import * as UploadCare from 'uploadcare-widget';
 import { XButton } from 'openland-x/XButton';
+import { XCloudImage } from 'openland-x/XCloudImage';
 
 export interface XImageUploadProps {
     uuid?: string | null;

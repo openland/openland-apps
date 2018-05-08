@@ -1,9 +1,9 @@
 import * as React from 'react';
 // import Glamorous from 'glamorous';
 import { Scaffold } from './Scaffold';
-import { XHead } from './X/XHead';
 import { Sidebar } from './Sidebar';
 import { XHeader } from 'openland-x/XHeader';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 // const ContentView = Glamorous.div({
 //     display: 'flex',
@@ -16,7 +16,7 @@ import { XHeader } from 'openland-x/XHeader';
 export function DevDocsScaffold(props: { title?: string, children?: any, bottomOffset?: boolean, hideSidebar?: boolean }) {
     return (
         <>
-            {props.title !== undefined && (<XHead title={props.title} />)}
+            {props.title !== undefined && (<XDocumentHead title={props.title} />)}
             <Scaffold>
                 {props.hideSidebar !== true && (
                     <Scaffold.Menu>

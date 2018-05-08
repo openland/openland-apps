@@ -2,13 +2,13 @@ import * as React from 'react';
 import { withData } from './../utils/withData';
 import { withAccountQuery } from './../api';
 import { UserInfoProvider } from './UserInfo';
-import { XHead } from './X/XHead';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 export function withAppBase(WrappedComponent: React.ComponentType<{}>) {
     return withData(withAccountQuery((props) => {
         return (
             <>
-                <XHead title={['App']} />
+                <XDocumentHead title={['App']} />
                 <UserInfoProvider
                     user={props.data.me}
                     router={props.router}

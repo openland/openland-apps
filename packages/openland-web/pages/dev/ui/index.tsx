@@ -21,6 +21,7 @@ import { XTitle } from 'openland-x/XTitle';
 import { XEmpty } from 'openland-x/XEmpty';
 import { XBanner } from 'openland-x/XBanner';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
+import { XLoader } from 'openland-x/XLoader';
 
 export default withApp('UI Framework', 'viewer', (props) => {
     return (
@@ -152,9 +153,9 @@ export default withApp('UI Framework', 'viewer', (props) => {
                         </CitySelector>
                     </XHeader.Target>
                 </XHeader>
-                <XCard.Loader loading={true} >
+                <XLoader loading={true} >
                     <XServiceMessage title="Warning example with hint and button element"/>
-                </XCard.Loader>
+                </XLoader>
             </XCard>
         </DevDocsScaffold>
     );

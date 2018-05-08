@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
-import { XIcon } from 'openland-x/XIcon';
+import { XIcon } from './XIcon';
 
 const loading = glamor.keyframes({
     '0%': { transform: `rotate(0deg) scaleX(-1)` },
@@ -51,7 +51,7 @@ const ContentCloser = Glamorous.div({
     left: 0
 });
 
-export const XCardLoader = (props: { children?: any, loading?: boolean }) => (
+export const XLoader = (props: { children?: any, loading?: boolean }) => (
     <XCardLoaderDiv loading={props.loading}>
         {props.loading && <LoadingDiv><ItemIcon icon="cached" /></LoadingDiv>}
         <HidenComponents loading={props.loading}>

@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCardProperty, XCardPropertyList, XCardPropertyColumns } from './XCardProperty';
 import { XSeparated } from './XSeparated';
-import { XCardLoader } from './XCardLoader';
 import { XCardList, XCardListItem } from './XCardList';
 import { XLink } from 'openland-x/XLink';
 
@@ -79,7 +78,6 @@ export class XCard extends React.Component<XCardProps> {
     static Property = XCardProperty;
     static PropertyList = XCardPropertyList;
     static PropertyColumns = XCardPropertyColumns;
-    static Loader = XCardLoader;
     static List = XCardList;
     static ListItem = XCardListItem;
 

@@ -1,7 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XCard } from '../../../components/X/XCard';
 import { XVertical } from 'openland-x/XVertical';
@@ -20,6 +19,7 @@ import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapImageLayer } from 'openland-x-map/XMapImageLayer';
 import XStyles from 'openland-x/XStyles';
 import { XEmpty } from 'openland-x/XEmpty';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const UrbinHeaderWrapper = Glamorous.div({
     position: 'relative',
@@ -470,7 +470,7 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
 
     return (
         <>
-            <XHead title="Mini-Home Opportunities in New York City" />
+            <XDocumentHead title="Mini-Home Opportunities in New York City" />
             <Scaffold>
                 <Scaffold.Content bottomOffset={false}>
                     <UrbinHeader />

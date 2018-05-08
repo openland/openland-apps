@@ -2,7 +2,6 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
-import { XHead } from '../../../components/X/XHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { ProspectingNavigationMap } from '../../../components/ProspectingNavigation';
 import { SourcingTileSource } from '../../../api';
@@ -17,6 +16,7 @@ import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XMapCameraLocation } from 'openland-x-map/XMap';
 import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 // import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 
 const Container = Glamorous.div({
@@ -144,7 +144,7 @@ export default withApp('Prospecting Map', 'viewer', withRouter((props) => {
 
     return (
         <>
-            <XHead title={['Prospecting Map']} />
+            <XDocumentHead title={['Prospecting Map']} />
             <ProspectingScaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ProspectingNavigationMap />

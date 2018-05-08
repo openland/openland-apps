@@ -1,7 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { withParcelsFavorites } from '../../../api/';
 import { TableParcels } from '../../../components/TableParcels';
@@ -12,6 +11,7 @@ import { Scaffold } from '../../../components/Scaffold';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XEmpty } from 'openland-x/XEmpty';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -48,7 +48,7 @@ function exportCSV(items: Types.ParcelShortFragment[]) {
 export default withApp('Favorites', 'viewer', withParcelsFavorites((props) => {
     return (
         <>
-            <XHead title={['Favorites']} />
+            <XDocumentHead title={['Favorites']} />
             <Scaffold>
                 <Scaffold.Content>
                     <XHeader text="Favorites" description={props.data.items.length === 0 ? 'No parcels' : props.data.items.length + ' parcels'}>

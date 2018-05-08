@@ -1,6 +1,5 @@
 import '../globals';
 import * as React from 'react';
-import { XHead } from '../components/X/XHead';
 import { MessagePage } from '../components/MessagePage';
 import { MessagePageContent } from '../components/MessagePageContent';
 import { withAppBase } from '../components/withAppBase';
@@ -8,6 +7,7 @@ import { withUserInfo } from '../components/UserInfo';
 import { XTrack } from '../components/X/XTrack';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLink } from 'openland-x/XLink';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 export default withAppBase(withUserInfo((props) => {
 
@@ -30,7 +30,7 @@ export default withAppBase(withUserInfo((props) => {
 
     return (
         <>
-            <XHead title="Blocked" titleSocial="Openland - land acquisition platfom" />
+            <XDocumentHead title="Blocked" titleSocial="Openland - land acquisition platfom" />
             <XTrack event="View Suspended">
                 <MessagePage>
                     <MessagePageContent

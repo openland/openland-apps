@@ -26,7 +26,6 @@ import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XContent } from 'openland-x/XContent';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XForm } from '../../../components/X/XForm';
-import { XHead } from '../../../components/X/XHead';
 import { XHeader } from 'openland-x/XHeader';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XSwitcher } from './../../../components/X/XSwitcher';
@@ -41,6 +40,8 @@ import { ZoningMetrics } from '../../../components/ZoningMetrics';
 import { XView } from 'openland-x/XView';
 import { XEmpty } from 'openland-x/XEmpty';
 import { XMapSmall } from 'openland-x-map/XMapSmall';
+import { XLoader } from 'openland-x/XLoader';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
@@ -238,7 +239,7 @@ const OpportunityInfo = withOpportunity((props) => {
     return (
         <XVertical>
             <ProspectingNavigationReview />
-            <XCard.Loader loading={props.data.loading || false}>
+            <XLoader loading={props.data.loading || false}>
                 {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
                     <XHeader
                         text={props.data.alphaNextReviewOpportunity!!.parcel.address || 'No address'}
@@ -313,7 +314,7 @@ const OpportunityInfo = withOpportunity((props) => {
                 {(!props.data.alphaNextReviewOpportunity && (!props.data.loading)) && (
                     <XEmpty text="There are no parcels for review" icon="sort" />
                 )}
-            </XCard.Loader>
+            </XLoader>
             {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
                 <OpportunityDescription parcel={props.data.alphaNextReviewOpportunity.parcel} parcelNotes={props.parcelNotes} router={props.router} />
             )}
@@ -347,7 +348,7 @@ export default withApp('Initial Review', 'viewer', withRouter((props) => {
 
     return (
         <>
-            <XHead title={title} />
+            <XDocumentHead title={title} />
             <ProspectingScaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <OpportunityInfo variables={{ state: state, query: q.query }} router={props.router} />

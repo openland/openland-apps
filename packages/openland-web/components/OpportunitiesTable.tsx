@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withSourcing, withSourcingAll } from '../api';
-import { XCard } from './X/XCard';
 import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
 import ATypes from 'openland-api';
@@ -11,6 +10,7 @@ import { XDate } from 'openland-x-format/XDate';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
 import { XModalRouted } from 'openland-x-modal/XModalRouted';
+import { XLoader } from 'openland-x/XLoader';
 
 // import { OpportunityState } from 'openland-api/Types';
 // import { OpportunitiesTable as _OpportunitiesTable } from './OpportunitiesTableUrbynReport';
@@ -74,9 +74,9 @@ export const ExportModal = withSourcingAll(withRouter((props) => {
         document.body.removeChild(link);
     };
     return (
-        <XCard.Loader loading={(props.data.loading || false)}>
+        <XLoader loading={(props.data.loading || false)}>
             <XButton style="primary" onClick={exportCVS} text={'Download' + props.data.variables + '.csv'} />
-        </XCard.Loader>
+        </XLoader>
 
     );
 })) as React.ComponentType<{ variables?: ATypes.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
@@ -183,7 +183,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
     // let qHpd = buildQuery(clauses2);
 
     return (
-        <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
+        <XLoader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
             <XModalRouted title="Export to CVS" query="export">
                 <ExportModal
                     variables={(props as any).variables}
@@ -285,6 +285,6 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                     {props.children}
                 </>
             )}
-        </XCard.Loader>
+        </XLoader>
     );
 })) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;

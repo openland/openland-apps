@@ -4,7 +4,6 @@ import { withApp } from '../../../components/withApp';
 import { withDeal, withDealAlterCombined, withDealRemove } from '../../../api/';
 import { XCard } from '../../../components/X/XCard';
 import { DealForm } from '../../../components/DealForm';
-import { XHead } from '../../../components/X/XHead';
 import { XWithRole } from '../../../components/X/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
@@ -32,6 +31,7 @@ import { XView } from 'openland-x/XView';
 import { XTitle } from 'openland-x/XTitle';
 import { XModalRouted } from 'openland-x-modal/XModalRouted';
 import { XMapSmall } from 'openland-x-map/XMapSmall';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -69,7 +69,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
 
     return (
         <>
-            <XHead title={props.data.deal.title} />
+            <XDocumentHead title={props.data.deal.title} />
             <XModalRouted title="Edit Deal" query="edit">
                 <DealsForm />
             </XModalRouted>

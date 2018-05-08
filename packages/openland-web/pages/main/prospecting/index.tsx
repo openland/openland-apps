@@ -1,7 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
 import { XButton } from 'openland-x/XButton';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
@@ -15,6 +14,7 @@ import { buildProspectingQuery, buildQs } from '../../../components/prospectingQ
 import { CapacityIndicator } from '../../../components/CapacityIndicator';
 import { XLink } from 'openland-x/XLink';
 import { XEmpty } from 'openland-x/XEmpty';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -46,7 +46,7 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
     let q = buildProspectingQuery(props.router);
     return (
         <>
-            <XHead title="Incoming opportunities" />
+            <XDocumentHead title="Incoming opportunities" />
             <ProspectingScaffold>
                 <Scaffold.Content bottomOffset={true} padding={false}>
                     <ProspectingNavigation />

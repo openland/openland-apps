@@ -2,7 +2,7 @@ import * as React from 'react';
 import Head from 'next/head';
 import { withRouter } from 'openland-x-routing/withRouter';
 
-export const XHead = withRouter<{ title: string | string[], titleSocial?: string | null, imgCloud?: string | null, imgUrl?: string | null }>((props) => {
+export const XDocumentHead = withRouter<{ title: string | string[], titleSocial?: string | null, imgCloud?: string | null, imgUrl?: string | null }>((props) => {
     let parts = ['Openland'];
     if (typeof (props.title) === 'string') {
         parts = ['Openland', props.title];

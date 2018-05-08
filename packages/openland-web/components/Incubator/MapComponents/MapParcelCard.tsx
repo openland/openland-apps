@@ -26,6 +26,7 @@ import { XContent } from 'openland-x/XContent';
 import { XView } from 'openland-x/XView';
 import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
+import { XLoader } from 'openland-x/XLoader';
 
 let panelWidth = 390;
 
@@ -184,7 +185,7 @@ export const ParcelCard = withParcelDirect((props) => (
         <ContainerHider>
             <ContainerHiderButton style="flat" query={{ field: 'selectedParcel' }} icon="keyboard_arrow_right" />
         </ContainerHider>
-        <XCard.Loader loading={!props.data || props.data!!.loading}>
+        <XLoader loading={!props.data || props.data!!.loading}>
             {props.data && props.data!!.item &&
                 <Scrollable compact={(props as any).compact || false}>
                     <XHeader
@@ -414,6 +415,6 @@ export const ParcelCard = withParcelDirect((props) => (
                         </XView>
                     </ProspectingWrapper>
                 </Scrollable>}
-        </XCard.Loader>
+        </XLoader>
     </Container>
 )) as React.ComponentClass<{ parcelId: string, compact?: boolean, onClose?: () => void }>;

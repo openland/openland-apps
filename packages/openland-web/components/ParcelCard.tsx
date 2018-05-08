@@ -24,6 +24,7 @@ import { XContent } from 'openland-x/XContent';
 import { XView } from 'openland-x/XView';
 import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
+import { XLoader } from 'openland-x/XLoader';
 
 let panelWidth = 324;
 
@@ -39,7 +40,7 @@ let Container = Glamorous.div({
     boxShadow: '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)'
 });
 
-let LoaderWrapper = Glamorous(XCard.Loader)({
+let LoaderWrapper = Glamorous(XLoader)({
     flexGrow: 1
 });
 

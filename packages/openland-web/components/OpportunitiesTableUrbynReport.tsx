@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withSourcingAll } from '../api';
-import { XCard } from './X/XCard';
 import { XHeader } from 'openland-x/XHeader';
 import { XWithRole } from './X/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
@@ -12,6 +11,7 @@ import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
 import { XModalRouted } from 'openland-x-modal/XModalRouted';
+import { XLoader } from 'openland-x/XLoader';
 
 const SwitchButton = Glamorous(XButton)({
     boxShadow: 'none',
@@ -106,9 +106,9 @@ export const ExportModal = withSourcingAll((props) => {
         document.body.removeChild(link);
     };
     return (
-        <XCard.Loader loading={(props.data.loading || false)}>
+        <XLoader loading={(props.data.loading || false)}>
             <XButton style="primary" onClick={exportCVS} text={'Download' + props.data.variables + '.csv'} />
-        </XCard.Loader>
+        </XLoader>
 
     );
 });
@@ -298,7 +298,7 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
     };
 
     return (
-        <XCard.Loader loading={(props.data.loading || false) && (!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0)}>
+        <XLoader loading={(props.data.loading || false) && (!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0)}>
             <XModalRouted title="Export to CVS" query="export">
                 <ExportModal />
             </XModalRouted>
@@ -366,6 +366,6 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
                     {props.children}
                 </>
             )}
-        </XCard.Loader>
+        </XLoader>
     );
 })) as React.ComponentType<{ variables?: ATypes.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string, title?: string }>;

@@ -1,11 +1,11 @@
 import '../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHead } from '../components/X/XHead';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
 import { XTrack } from '../components/X/XTrack';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const TypeformDiv = Glamorous.div({
     position: 'absolute',
@@ -60,7 +60,7 @@ export default withAppBase(withUserInfo((props) => {
 
     return (
         <RootDiv>
-            <XHead title="Sign Up" />
+            <XDocumentHead title="Sign Up" />
             <XTrack event="View Signup">
                 <TypeformEmbedded url="https://openlandapp.typeform.com/to/RoMP5U" />
             </XTrack>

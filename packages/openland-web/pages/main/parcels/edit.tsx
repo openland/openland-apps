@@ -3,15 +3,15 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withParcelMetadataForm } from '../../../api/';
 import { XForm } from '../../../components/X/XForm';
-import { XHead } from '../../../components/X/XHead';
 import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XButton } from 'openland-x/XButton';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetadataForm((props) => {
     return (
         <>
-            <XHead title={['Edit Parcel #' + props.data.item.number.title]} />
+            <XDocumentHead title={['Edit Parcel #' + props.data.item.number.title]} />
             <Scaffold>
                 <Scaffold.Content bottomOffset={true}>
                     <XHeader text={'Update Parcel #' + props.data.item.number.title} />
