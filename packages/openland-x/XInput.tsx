@@ -9,56 +9,31 @@ export interface XInputStyleProps extends XFlexStyles {
     value?: string;
     icon?: string;
     required?: boolean;
-    noValid?: boolean;
+    invalid?: boolean;
     format?: 'large' | 'medium' | 'default' | 'small';
     onChange?: (value: string) => void;
 }
 
 interface XInputWrapperProps extends XInputStyleProps {
-    active?: boolean;
-    noValid?: boolean;
-    onClickOutside: Function;
     onClick: () => void;
+    invalid?: boolean;
 }
 
-class ClickOutside extends React.Component<XInputWrapperProps> {
-    private container: any;
+class InputWrap extends React.Component<XInputWrapperProps> {
 
     constructor(props: XInputWrapperProps) {
         super(props);
-        this.getContainer = this.getContainer.bind(this);
-    }
-
-    getContainer(ref: any) {
-        this.container = ref;
     }
 
     render() {
-        const { children, onClickOutside, onChange, ...props } = this.props;
+        const { children, onChange, ...props } = this.props;
         return (
             <div
                 {...props}
-                ref={this.getContainer}
             >
                 {children}
             </div>
         );
-    }
-
-    componentDidMount() {
-        document.addEventListener('click', this.handle, true);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('click', this.handle, true);
-    }
-
-    handle = (e: any) => {
-        const { onClickOutside } = this.props;
-        const el = this.container;
-        if (!el.contains(e.target)) {
-            onClickOutside(e);
-        }
     }
 }
 
@@ -116,7 +91,7 @@ let sizeStyles = styleResolver({
     }
 });
 
-const InputWrapperStyle = Glamorous<XInputWrapperProps>(ClickOutside)([
+const InputWrapperStyle = Glamorous<XInputWrapperProps>(InputWrap)([
     (props) => ({
         display: 'flex',
         flexDirection: 'row',
@@ -124,20 +99,26 @@ const InputWrapperStyle = Glamorous<XInputWrapperProps>(ClickOutside)([
         alignItems: 'center',
         background: '#fff',
         borderRadius: 4,
-        border: `1px solid ${props.noValid ? '#e26363' : props.active ? '#986AFE' : '#d4dae7'}`,
-        boxShadow: props.active ? '0 0 0 2px rgba(143, 124, 246, 0.2)' : undefined,
+        border: `1px solid ${props.invalid ? '#e26363' : '#d4dae7'}`,
         cursor: 'text',
         boxSizing: 'border-box',
         '> .icon': {
             marginRight: 6,
-            color: props.noValid ? '#e26363' : props.active ? '#986AFE' : '#d4dae7'
+            color: props.invalid ? '#e26363' : '#d4dae7'
         },
         '> .star': {
             width: 10,
             height: 10,
             fontSize: 23,
             marginLeft: 6
-        }
+        },
+        '&:focus-within': {
+            boxShadow: '0 0 0 2px rgba(143, 124, 246, 0.2)',
+            border: props.invalid ? undefined : '1px solid #986AFE',
+            '> .icon': {
+                color: '#986AFE'
+            }
+        },
     }),
     (props) => sizeStyles(props.format),
     (props) => applyFlex(props)
@@ -155,21 +136,18 @@ const InputStyle = Glamorous.input<XInputStyleProps>([
     })
 ]);
 
-export class XInput extends React.PureComponent<XInputStyleProps, { active: boolean, value: string }> {
-    private myInp: HTMLInputElement;
-
+export class XInput extends React.PureComponent<XInputStyleProps, { inputWrapClass?: string, value: string }> {
+    private inputElement: HTMLInputElement;
     constructor(props: XInputStyleProps) {
         super(props);
 
         this.state = {
-            active: false,
             value: this.props.value || ''
         };
     }
 
     handleChange = (e: any) => {
         this.setState({
-            active: true,
             value: e.target.value
         });
         if (this.props.onChange) {
@@ -177,29 +155,27 @@ export class XInput extends React.PureComponent<XInputStyleProps, { active: bool
         }
     }
 
-    activeDisabled = () => {
-        this.setState({
-            active: false
-        });
+    handleClick = () => {
+        if (this.inputElement) {
+            this.inputElement.focus();
+        }
     }
 
     render() {
-        const { placeholder, format, icon, required, noValid, ...other } = this.props;
+        const { placeholder, format, icon, required, invalid, ...other } = this.props;
         return (
             <InputWrapperStyle
                 {...other}
                 format={format}
-                noValid={noValid}
-                active={this.state.active}
-                onClickOutside={() => this.activeDisabled()}
-                onClick={() => { this.myInp.focus(); this.setState({ active: true }); }}
+                invalid={invalid}
+                onClick={this.handleClick}
             >
                 {icon && <XIcon icon={icon} className="icon" />}
                 <InputStyle
                     format={format}
                     placeholder={placeholder}
                     value={this.state.value}
-                    innerRef={(input: any) => { this.myInp = input; }}
+                    innerRef={(input: any) => { this.inputElement = input; }} 
                     onChange={this.handleChange}
                 />
                 {required && <span className="star" style={{ color: '#e26363' }}>*</span>}

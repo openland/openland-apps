@@ -33,12 +33,12 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
                         <XInput format="default" placeholder="default" value="default" icon="star" required={true} alignSelf="flex-start"  />
                         <XInput format="small" placeholder="small" icon="star" required={true} alignSelf="flex-start"  />
                     </XVertical>
-                    <XTitle>Icon & Required & Novalid</XTitle>
+                    <XTitle>Icon & Required & Invalid</XTitle>
                     <XVertical>
-                        <XInput format="large" placeholder="large" icon="star" required={true} noValid={true} alignSelf="flex-start" />
-                        <XInput format="medium" placeholder="medium" icon="star" required={true} noValid={true} alignSelf="flex-start"  />
-                        <XInput format="default" placeholder="default" icon="star" required={true} noValid={true} alignSelf="flex-start"  />
-                        <XInput format="small" placeholder="small" value="small" icon="star" required={true} noValid={true} alignSelf="flex-start"  />
+                        <XInput format="large" placeholder="large" icon="star" required={true} invalid={true} alignSelf="flex-start" />
+                        <XInput format="medium" placeholder="medium" icon="star" required={true} invalid={true} alignSelf="flex-start"  />
+                        <XInput format="default" placeholder="default" icon="star" required={true} invalid={true} alignSelf="flex-start"  />
+                        <XInput format="small" placeholder="small" value="small" icon="star" required={true} invalid={true} alignSelf="flex-start"  />
                     </XVertical>
                 </XVertical>
             </XContent>
