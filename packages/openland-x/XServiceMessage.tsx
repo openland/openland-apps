@@ -27,7 +27,7 @@ let XWarningDiv = Glamorous.div({
     paddingBottom: 16,
 });
 
-export function XCardWarning(props: { children?: any, title?: string }) {
+export function XServiceMessage(props: { children?: any, title?: string }) {
     return (
         <XWarningDiv>
             <XWarningTitle>

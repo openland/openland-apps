@@ -9,8 +9,8 @@ import { XIcon } from '../../../../openland-x/XIcon';
 import { withParcelDirect } from '../../../api';
 import { Text } from '../../../strings';
 import { trackEvent } from '../../../utils/analytics';
-import { AStreetViewModal } from '../../App/AStreetViewModal';
-import { AStreetViewModalPreview } from '../../App/AStreetViewModal';
+// import { AStreetViewModal } from '../../App/AStreetViewModal';
+// import { AStreetViewModalPreview } from '../../App/AStreetViewModal';
 import { XTooltip } from '../../Incubator/XTooltip';
 import { OpportunitiButton } from '../../OpportunityButton';
 import { OwnerTypeComponent } from '../../OwnerTypeComponent';
@@ -22,8 +22,10 @@ import { XWithRole } from '../../X/XWithRole';
 import { ZoningCode } from '../../ZoningCode';
 import { XPopover } from './XPopover';
 import { XButton } from 'openland-x/XButton';
-import { XContent } from '../../X/XContent';
+import { XContent } from 'openland-x/XContent';
 import { XView } from 'openland-x/XView';
+import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
+import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
 
 let panelWidth = 390;
 
@@ -211,8 +213,8 @@ export const ParcelCard = withParcelDirect((props) => (
                     {props.data!!.item!!.geometry && (
                         <SeparatedDiv>
                             <StreetViewDiv>
-                                <AStreetViewModal geometry={props.data!!.item!!.geometry!!} />
-                                <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={panelWidth - 32} height={170} />
+                                <XStreetViewModal geometry={props.data!!.item!!.geometry!!} />
+                                <XStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={panelWidth - 32} height={170} />
                             </StreetViewDiv>
                         </SeparatedDiv>
                     )}

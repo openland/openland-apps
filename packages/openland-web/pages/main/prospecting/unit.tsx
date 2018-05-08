@@ -3,7 +3,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
-import { XCard } from '../../../components/X/XCard';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 import { XHeader } from 'openland-x/XHeader';
@@ -15,6 +14,7 @@ import { OwnersSelect } from '../../../api';
 import { CapacityIndicator } from '../../../components/CapacityIndicator';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
+import { XEmpty } from 'openland-x/XEmpty';
 
 let OwnersSelectStyled = Glamorous.div({
     fontSize: 14,
@@ -62,7 +62,7 @@ export default withApp('Unit placement', 'viewer', withRouter((props) => {
                         <XButton style="primary" path={'/prospecting/review' + buildQs({ stage: 'unit', ...q.qsReview })} text="Begin review"/>
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.APPROVED_ZONING, query: q.query }} stage="unit">
-                        <XCard.Empty text="There are no parcels for review" icon="sort" />
+                        <XEmpty text="There are no parcels for review" icon="sort" />
                     </OpportunitiesTable>
                 </Scaffold.Content>
             </ProspectingScaffold>

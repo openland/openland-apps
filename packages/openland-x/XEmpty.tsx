@@ -30,13 +30,13 @@ export const XCardEmptyContent = Glamorous.div({
     }
 });
 
-interface XCardEmptyProps {
+interface XEmptyProps {
     children?: any;
     icon: string;
     text: string;
 }
 
-export function XCardEmpty(props: XCardEmptyProps) {
+export function XEmpty(props: XEmptyProps) {
     return (
         <XCardEmptyDiv>
             <XCardEmptyIcon icon={props.icon} />

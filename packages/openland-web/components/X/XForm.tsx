@@ -9,6 +9,7 @@ import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import { XInput } from 'openland-x/XInput';
 import { XFooter } from 'openland-x/XFooter';
+import { XServiceMessage } from 'openland-x/XServiceMessage';
 
 let InputsStyle = {
     borderRadius: 4,
@@ -518,7 +519,7 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
         return (
             <>
                 <XCard.Loader loading={this.state.loading}>
-                    {this.state.error && <XCard.Warning title={this.state.error} />}
+                    {this.state.error && <XServiceMessage title={this.state.error} />}
                     {this.props.children}
                 </XCard.Loader>
             </>

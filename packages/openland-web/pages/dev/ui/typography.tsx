@@ -3,7 +3,7 @@ import * as React from 'react';
 import glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
-import { XContent } from '../../../components/X/XContent';
+import { XContent } from 'openland-x/XContent';
 import { XVertical } from 'openland-x/XVertical';
 import XStyles from 'openland-x/XStyles';
 

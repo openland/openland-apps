@@ -14,7 +14,7 @@ import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { sourceFromGeometry, sourceFromPoint } from '../../../utils/map';
 import { XHorizontal } from 'openland-x/XHorizontal';
-import { XContent } from '../../../components/X/XContent';
+import { XContent } from 'openland-x/XContent';
 import { XVertical } from 'openland-x/XVertical';
 import { ParcelNumber } from '../../../components/ParcelNumber';
 import { XLink } from 'openland-x/XLink';
@@ -31,6 +31,7 @@ import { ZoningCode } from '../../../components/ZoningCode';
 import { XView } from 'openland-x/XView';
 import { XTitle } from 'openland-x/XTitle';
 import { XModalRouted } from 'openland-x-modal/XModalRouted';
+import { XMapSmall } from 'openland-x-map/XMapSmall';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -138,7 +139,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                                         </XCard.PropertyList>
                                     </XView>
                                     <XView grow={1} basis={0}>
-                                        {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
+                                        {v.center && <XMapSmall focusPosition={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
                                             <XMapSource id={'parcel'} data={sourceFromGeometry(props.data.deal.parcel!!.geometry!!)} />
                                             <XMapPolygonLayer source="parcel" layer="parcel" />
 
@@ -147,7 +148,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
 
                                             {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
                                             {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
-                                        </XCard.Map>}
+                                        </XMapSmall>}
                                     </XView>
                                 </XHorizontal>
                             ))}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 
-export const XHintText = Glamorous.div({
+const XHintText = Glamorous.div({
     textAlign: 'center',
     color: '#FFF',
     fontSize: '10px',
@@ -26,7 +26,7 @@ let XHintDiv = Glamorous.div({
     top: 0
 });
 
-export function XCardHint(props: { title: string }) {
+export function XBanner(props: { title: string }) {
     return (
         <XHintDiv>
             <XHintText>{props.title}</XHintText>

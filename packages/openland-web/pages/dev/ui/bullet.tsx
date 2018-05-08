@@ -3,7 +3,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { XVertical } from 'openland-x/XVertical';
-import { XContent } from '../../../components/X/XContent';
+import { XContent } from 'openland-x/XContent';
 import { XHorizontal } from 'openland-x/XHorizontal';
 import { XBullet } from 'openland-x/XBullet';
 import { XTitle } from 'openland-x/XTitle';

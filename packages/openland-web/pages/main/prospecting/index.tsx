@@ -3,7 +3,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
-import { XCard } from '../../../components/X/XCard';
 import { XButton } from 'openland-x/XButton';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { withProspectingStats, OwnersSelect } from '../../../api';
@@ -15,6 +14,7 @@ import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { buildProspectingQuery, buildQs } from '../../../components/prospectingQuery';
 import { CapacityIndicator } from '../../../components/CapacityIndicator';
 import { XLink } from 'openland-x/XLink';
+import { XEmpty } from 'openland-x/XEmpty';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -67,9 +67,9 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
                     </XHeader>
 
                     <OpportunitiesTable variables={{ state: OpportunityState.INCOMING, query: q.query }}>
-                        <XCard.Empty text="You can find your first parcel at" icon="sort">
+                        <XEmpty text="You can find your first parcel at" icon="sort">
                             <Link path="/">Explore page</Link>
-                        </XCard.Empty>
+                        </XEmpty>
                     </OpportunitiesTable>
                 </Scaffold.Content>
             </ProspectingScaffold>

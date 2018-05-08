@@ -16,8 +16,11 @@ import { XIcon } from 'openland-x/XIcon';
 import { StateSelect } from '../../../api';
 import { XHeader } from 'openland-x/XHeader';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
-import { XContent } from '../../../components/X/XContent';
+import { XContent } from 'openland-x/XContent';
 import { XTitle } from 'openland-x/XTitle';
+import { XEmpty } from 'openland-x/XEmpty';
+import { XBanner } from 'openland-x/XBanner';
+import { XServiceMessage } from 'openland-x/XServiceMessage';
 
 export default withApp('UI Framework', 'viewer', (props) => {
     return (
@@ -104,9 +107,9 @@ export default withApp('UI Framework', 'viewer', (props) => {
                     truncateDescription={true}
                     description="qweqweqweqwe"
                 />
-                <XCard.Empty icon="remove_shopping_cart" text="empty text">
+                <XEmpty icon="remove_shopping_cart" text="empty text">
                     <XLinkExternal href="https://goo.gl/urJT1F" />
-                </XCard.Empty>
+                </XEmpty>
             </XCard>
             <XCard>
                 <XForm>
@@ -128,7 +131,7 @@ export default withApp('UI Framework', 'viewer', (props) => {
                 </XForm>
             </XCard>
             <XCard separators={true}>
-                <XCard.Hint title="test data" />
+                <XBanner title="test data" />
                 <XHeader
                     truncateDescription={true}
                     description={`
@@ -150,9 +153,7 @@ export default withApp('UI Framework', 'viewer', (props) => {
                     </XHeader.Target>
                 </XHeader>
                 <XCard.Loader loading={true} >
-                    <XCard.Warning title="Warning example with hint and button element">
-                        {}
-                    </XCard.Warning>
+                    <XServiceMessage title="Warning example with hint and button element"/>
                 </XCard.Loader>
             </XCard>
         </DevDocsScaffold>

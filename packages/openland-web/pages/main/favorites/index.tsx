@@ -3,7 +3,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
-import { XCard } from '../../../components/X/XCard';
 import { withParcelsFavorites } from '../../../api/';
 import { TableParcels } from '../../../components/TableParcels';
 import Types from 'openland-api';
@@ -12,6 +11,7 @@ import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
+import { XEmpty } from 'openland-x/XEmpty';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -60,11 +60,11 @@ export default withApp('Favorites', 'viewer', withParcelsFavorites((props) => {
                     </XHeader>
                     {(props.data.items.length === 0)
                         ? (
-                            <XCard.Empty icon="favorite_border" text="You can find your first parcel at">
+                            <XEmpty icon="favorite_border" text="You can find your first parcel at">
                                 <Link path="/">
                                     Explore page
                                     </Link>
-                            </XCard.Empty>
+                            </XEmpty>
                         )
                         : (
                             <TableParcels items={props.data.items} />

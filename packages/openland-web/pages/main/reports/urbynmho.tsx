@@ -19,6 +19,7 @@ import { XMapProps, XMap } from 'openland-x-map/XMap';
 import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapImageLayer } from 'openland-x-map/XMapImageLayer';
 import XStyles from 'openland-x/XStyles';
+import { XEmpty } from 'openland-x/XEmpty';
 
 const UrbinHeaderWrapper = Glamorous.div({
     position: 'relative',
@@ -497,7 +498,7 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                                     type="hpd"
                                     title="HPD Mini-Home Opportunity Sites"
                                 >
-                                    <XCard.Empty text="There are no parcels for review" icon="sort" />
+                                    <XEmpty text="There are no parcels for review" icon="sort" />
                                 </OpportunitiesTable>
                             </ContentWrapper>
                             <ContentWrapper>
@@ -508,7 +509,7 @@ export default withApp('Reports Urbyn MHO', 'viewer', withRouter((props) => {
                                     type="public"
                                     title="Other Public Opportunity Sites"
                                 >
-                                    <XCard.Empty text="There are no parcels for review" icon="sort" />
+                                    <XEmpty text="There are no parcels for review" icon="sort" />
                                 </OpportunitiesTable>
                             </ContentWrapper>
                         </XVertical>

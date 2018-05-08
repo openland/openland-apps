@@ -23,7 +23,7 @@ import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XCard } from '../../../components/X/XCard';
 import { XCardProperty } from './../../../components/X/XCardProperty';
-import { XContent } from '../../../components/X/XContent';
+import { XContent } from 'openland-x/XContent';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XForm } from '../../../components/X/XForm';
 import { XHead } from '../../../components/X/XHead';
@@ -39,6 +39,8 @@ import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 import { ZoningCode } from '../../../components/ZoningCode';
 import { ZoningMetrics } from '../../../components/ZoningMetrics';
 import { XView } from 'openland-x/XView';
+import { XEmpty } from 'openland-x/XEmpty';
+import { XMapSmall } from 'openland-x-map/XMapSmall';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
@@ -124,7 +126,7 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                         <XVertical>
                             {props.parcel.compatibleBuildings && props.parcel.compatibleBuildings.length > 0 && (
                                 <XView css={{ paddingRight: 24, paddingLeft: 8 }}>
-                                    <XCard.Map focusLocation={{ latitude: props.parcel.center!!.latitude, longitude: props.parcel.center!!.longitude, zoom: 18 }}>
+                                    <XMapSmall focusPosition={{ latitude: props.parcel.center!!.latitude, longitude: props.parcel.center!!.longitude, zoom: 18 }}>
                                         <XMapSource id="parcels" data={sourceFromGeometry(props.parcel.geometry!!)} />
                                         <ParcelLayer inverted={false} />
                                         {props.parcel.compatibleBuildings.filter((v) => v.shape).map((v, i) => (
@@ -148,7 +150,7 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                                                 }}
                                             />
                                         ))}
-                                    </XCard.Map>
+                                    </XMapSmall>
                                 </XView>
                             )}
                         </XVertical>
@@ -309,7 +311,7 @@ const OpportunityInfo = withOpportunity((props) => {
                     </XHeader>
                 )}
                 {(!props.data.alphaNextReviewOpportunity && (!props.data.loading)) && (
-                    <XCard.Empty text="There are no parcels for review" icon="sort" />
+                    <XEmpty text="There are no parcels for review" icon="sort" />
                 )}
             </XCard.Loader>
             {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (

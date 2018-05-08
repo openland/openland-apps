@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XContent } from './X/XContent';
+import { XContent } from 'openland-x/XContent';
 
 let Title = Glamorous.div({
     fontSize: 20,

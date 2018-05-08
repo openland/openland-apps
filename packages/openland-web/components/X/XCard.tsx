@@ -1,12 +1,8 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XCardProperty, XCardPropertyList, XCardPropertyColumns } from './XCardProperty';
-import { XCardMap } from './XCardMap';
 import { XSeparated } from './XSeparated';
-import { XCardHint } from './XCardHint';
-import { XCardWarning } from './XCardWarning';
 import { XCardLoader } from './XCardLoader';
-import { XCardEmpty } from './XCardEmpty';
 import { XCardList, XCardListItem } from './XCardList';
 import { XLink } from 'openland-x/XLink';
 
@@ -80,13 +76,9 @@ interface XCardProps {
 }
 
 export class XCard extends React.Component<XCardProps> {
-    static Empty = XCardEmpty;
     static Property = XCardProperty;
     static PropertyList = XCardPropertyList;
     static PropertyColumns = XCardPropertyColumns;
-    static Map = XCardMap;
-    static Hint = XCardHint;
-    static Warning = XCardWarning;
     static Loader = XCardLoader;
     static List = XCardList;
     static ListItem = XCardListItem;

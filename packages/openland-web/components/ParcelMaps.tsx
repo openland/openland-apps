@@ -2,12 +2,13 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x/XHorizontal';
 import { XCard } from './X/XCard';
-import { XStreetView } from './X/XStreetView';
+import { XStreetView } from 'openland-x-map/XStreetView';
 import { ParcelTileSource, BlockTileSource } from '../api/index';
 import { findCenter } from '../utils/map';
 import { ParcelLayer } from './ParcelLayer';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
+import { XMapSmall } from 'openland-x-map/XMapSmall';
 
 const Wrapper = Glamorous(XCard)({
     flexGrow: 1,
@@ -23,7 +24,7 @@ export const ParcelMaps = withRouter<{ id: string, geometry: string, disableNavi
     return (
         <XHorizontal>
             <Wrapper shadow="medium">
-                <XCard.Map focusLocation={{ ...findCenter(props.geometry), zoom: 18 }} satellite={props.satellite}>
+                <XMapSmall focusPosition={{ ...findCenter(props.geometry), zoom: 18 }} satellite={props.satellite}>
                     <ParcelTileSource layer="parcels" minZoom={16} />
                     <BlockTileSource layer="blocks" minZoom={12} />
                     <ParcelLayer
@@ -40,7 +41,7 @@ export const ParcelMaps = withRouter<{ id: string, geometry: string, disableNavi
                         minZoom={12}
                         maxZoom={16}
                     />
-                </XCard.Map>
+                </XMapSmall>
             </Wrapper>
             <Wrapper shadow="medium">
                 <StreetView key={props.id} location={findCenter(props.geometry)} />

@@ -4,7 +4,7 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { XVertical } from 'openland-x/XVertical';
 import glamorous from 'glamorous';
-import { XContent } from '../../../components/X/XContent';
+import { XContent } from 'openland-x/XContent';
 import XStyles from 'openland-x/XStyles';
 import { XTitle } from 'openland-x/XTitle';
 

@@ -15,7 +15,7 @@ import { OpportunitiButton } from '../../../components/OpportunityButton';
 import { XForm } from '../../../components/X/XForm';
 import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
-import { XContent } from '../../../components/X/XContent';
+import { XContent } from 'openland-x/XContent';
 import { XVertical } from 'openland-x/XVertical';
 import { ParcelNumber } from '../../../components/ParcelNumber';
 import { XSwitcher } from './../../../components/X/XSwitcher';
@@ -32,6 +32,7 @@ import { ZoningMetrics } from '../../../components/ZoningMetrics';
 import { XTable } from 'openland-x/XTable';
 import { XView } from 'openland-x/XView';
 import { XTitle } from 'openland-x/XTitle';
+import { XMapSmall } from 'openland-x-map/XMapSmall';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -137,7 +138,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                                 </XView>
                                                 <XView grow={1} basis={0}>
                                                     <XView css={{ paddingRight: 24 }}>
-                                                        {v.center && <XCard.Map focusLocation={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
+                                                        {v.center && <XMapSmall focusPosition={{ latitude: v.center.latitude, longitude: v.center.longitude, zoom: 18 }}>
                                                             <XMapSource id={'parcel'} data={sourceFromGeometry(props.data.item.geometry!!)} />
                                                             <XMapPolygonLayer source="parcel" layer="parcel" />
 
@@ -146,7 +147,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
 
                                                             {v.shape && <XMapSource id={'shape'} data={sourceFromGeometry(v.shape)} />}
                                                             {v.shape && <XMapPolygonLayer source="shape" layer="shape" />}
-                                                        </XCard.Map>}
+                                                        </XMapSmall>}
                                                     </XView>
                                                 </XView>
                                             </XHorizontal>

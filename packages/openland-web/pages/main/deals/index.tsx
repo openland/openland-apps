@@ -3,7 +3,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
-import { XCard } from '../../../components/X/XCard';
 import { withDeals, withDealAdd } from '../../../api/';
 import { DealForm } from '../../../components/DealForm';
 import { XHeader } from 'openland-x/XHeader';
@@ -17,6 +16,7 @@ import { XBullet } from 'openland-x/XBullet';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
 import { XModalRouted } from 'openland-x-modal/XModalRouted';
+import { XEmpty } from 'openland-x/XEmpty';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -116,9 +116,9 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
                         </>
                     )}
                     {props.data.deals!!.length === 0 && (
-                        <XCard.Empty icon="work" text="You can add new project">
+                        <XEmpty icon="work" text="You can add new project">
                             <Link query={{ field: 'add', value: 'true' }} >here</Link>
-                        </XCard.Empty>
+                        </XEmpty>
                     )}
                 </Scaffold.Content>
             </Scaffold>

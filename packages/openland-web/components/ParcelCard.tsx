@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { AStreetViewModal } from './App/AStreetViewModal';
-import { AStreetViewModalPreview } from './App/AStreetViewModal';
 import { OpportunitiButton } from './OpportunityButton';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { ParcelNumber } from './ParcelNumber';
@@ -22,8 +20,10 @@ import { ZoningCode } from './ZoningCode';
 import { XDistance } from 'openland-x-format/XDistance';
 import { XMoney } from 'openland-x-format/XMoney';
 import { XNumber } from 'openland-x-format/XNumber';
-import { XContent } from './X/XContent';
+import { XContent } from 'openland-x/XContent';
 import { XView } from 'openland-x/XView';
+import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
+import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
 
 let panelWidth = 324;
 
@@ -100,8 +100,8 @@ export const ParcelCard = withParcelDirect((props) => {
                         {props.data!!.item!!.geometry && (
                             <XContent>
                                 <StreetViewDiv>
-                                    <AStreetViewModal geometry={props.data!!.item!!.geometry!!} />
-                                    <AStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={panelWidth - 32} height={144} />
+                                    <XStreetViewModal geometry={props.data!!.item!!.geometry!!} />
+                                    <XStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={panelWidth - 32} height={144} />
                                 </StreetViewDiv>
                             </XContent>
                         )}

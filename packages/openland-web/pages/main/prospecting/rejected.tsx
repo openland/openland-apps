@@ -3,7 +3,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../../../components/X/XHead';
 import { withApp } from '../../../components/withApp';
-import { XCard } from '../../../components/X/XCard';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTable';
 import { ProspectingNavigation } from '../../../components/ProspectingNavigation';
 import { XHeader } from 'openland-x/XHeader';
@@ -15,6 +14,7 @@ import { OwnersSelect } from '../../../api';
 import { CapacityIndicator } from '../../../components/CapacityIndicator';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
+import { XEmpty } from 'openland-x/XEmpty';
 
 let OwnersSelectStyled = Glamorous.div({
     fontSize: 14,
@@ -61,7 +61,7 @@ export default withApp('Rejected opportunities', 'viewer', withRouter((props) =>
                         <XButton path={'/prospecting/map' + buildQs({ ...q.qsMap, stage: 'rejected' })} text="Map view" />
                     </XHeader>
                     <OpportunitiesTable variables={{ state: OpportunityState.REJECTED, query: q.query }} stage="rejected">
-                        <XCard.Empty text="No rejected parcels" icon="sort" />
+                        <XEmpty text="No rejected parcels" icon="sort" />
                     </OpportunitiesTable>
                 </Scaffold.Content>
             </ProspectingScaffold>

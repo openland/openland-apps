@@ -3,7 +3,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHead } from '../components/X/XHead';
 import { MessagePage } from '../components/MessagePage';
-import { XCard } from '../components/X/XCard';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
 import { createAuth0Client } from '../utils/Auth0Client';
@@ -13,8 +12,9 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
-import { XContent } from '../components/X/XContent';
+import { XContent } from 'openland-x/XContent';
 import { XInput } from 'openland-x/XInput';
+import { XServiceMessage } from 'openland-x/XServiceMessage';
 
 let Signup = Glamorous.span({
     opacity: 0.7
@@ -151,7 +151,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                     </>)}
                     {this.state.email && !this.state.emailSent && (<>
                         <Title>Sign in with Email</Title>
-                        {this.state.emailError !== '' && <XCard.Warning title={this.state.emailError} />}
+                        {this.state.emailError !== '' && <XServiceMessage title={this.state.emailError} />}
                         <XContent>
                             <XInput onChange={this.emailChanged} value={this.state.emailValue} placeholder="Your work email" />
                         </XContent>
@@ -164,7 +164,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                     </>)}
                     {this.state.emailSent && (<>
                         <Title>Please, enter activation code</Title>
-                        {this.state.codeError !== '' && <XCard.Warning title={this.state.codeError} />}
+                        {this.state.codeError !== '' && <XServiceMessage title={this.state.codeError} />}
                         <XContent>
                             <XInput onChange={this.codeChanged} value={this.state.codeValue} placeholder="XXXXXX" />
                         </XContent>
