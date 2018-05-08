@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Types from 'openland-api';
-import { XCard } from './X/XCard';
 import { ZoningCode } from './ZoningCode';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { XTooltip } from './Incubator/XTooltip';
@@ -13,66 +12,67 @@ import { XDimensions } from 'openland-x-format/XDimensions';
 import { XDistance } from 'openland-x-format/XDistance';
 import { XMoney } from 'openland-x-format/XMoney';
 import { XNumber } from 'openland-x-format/XNumber';
+import { XProperty, XPropertyList, XPropertyColumns } from 'openland-x/XProperty';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
     return (
         <>
-            <XCard.PropertyColumns>
+            <XPropertyColumns>
                 <XVertical>
-                    <XCard.PropertyList title="Parcel Details">
+                    <XPropertyList title="Parcel Details">
                         {props.item.extrasOwnerType && props.item.extrasOwnerType !== 'PRIVATE' &&
-                            <XCard.Property title="Ownership Type"><OwnerTypeComponent type={props.item.extrasOwnerType!!} /></XCard.Property>
+                            <XProperty title="Ownership Type"><OwnerTypeComponent type={props.item.extrasOwnerType!!} /></XProperty>
                         }
                         {props.item.extrasOwnerName &&
-                            <XCard.Property title="Owner Name">{props.item.extrasOwnerName}</XCard.Property>
+                            <XProperty title="Owner Name">{props.item.extrasOwnerName}</XProperty>
                         }
                         {props.item.area &&
-                            <XCard.Property title="Area"><XArea value={props.item.area!!.value} /></XCard.Property>
+                            <XProperty title="Area"><XArea value={props.item.area!!.value} /></XProperty>
                         }
                         <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
                             {Boolean(props.item.area && props.item.extrasUnitCapacityFar && props.item.extrasUnitCapacityDencity) &&
-                                <XCard.Property title="Unit Capacity">
+                                <XProperty title="Unit Capacity">
                                     {props.item.extrasUnitCapacity}
                                     <XTooltip placement="right" type="info">
                                         <XTooltip.Content><XArea value={props.item.area!!.value} />
                                             {' * ' + props.item.extrasUnitCapacityFar + '(FAR) / ' + props.item.extrasUnitCapacityDencity + '(DF)'}
                                         </XTooltip.Content>
                                     </XTooltip>
-                                </XCard.Property>
+                                </XProperty>
                             }
                         </XWithRole>
                         {props.item.front &&
-                            <XCard.Property title="Frontage"><XDistance value={props.item.front!!.value} /></XCard.Property>
+                            <XProperty title="Frontage"><XDistance value={props.item.front!!.value} /></XProperty>
                         }
                         {props.item.depth &&
-                            <XCard.Property title="Depth"><XDistance value={props.item.depth!!.value} /></XCard.Property>
+                            <XProperty title="Depth"><XDistance value={props.item.depth!!.value} /></XProperty>
                         }
                         {props.item!!.extrasShapeSides && !props.item.front && !props.item.depth && props.item!!.extrasShapeSides!!.length > 0 &&
-                            <XCard.Property title="Dimensions"> <XDimensions value={props.item!!.extrasShapeSides!!} /></XCard.Property>
+                            <XProperty title="Dimensions"> <XDimensions value={props.item!!.extrasShapeSides!!} /></XProperty>
                         }
                         {props.item.extrasNeighborhood &&
-                            <XCard.Property title="Neighborhood">{props.item.extrasNeighborhood}</XCard.Property>
+                            <XProperty title="Neighborhood">{props.item.extrasNeighborhood}</XProperty>
                         }
                         {props.item.extrasSupervisorDistrict &&
-                            <XCard.Property title="Supervisor District">{props.item.extrasSupervisorDistrict}</XCard.Property>
+                            <XProperty title="Supervisor District">{props.item.extrasSupervisorDistrict}</XProperty>
                         }
                         {props.item.extrasZoning && props.item.extrasZoning!!.length > 0 &&
-                            <XCard.Property title="Zoning"><ZoningCode codes={props.item!!.extrasZoning!!} /></XCard.Property>
+                            <XProperty title="Zoning"><ZoningCode codes={props.item!!.extrasZoning!!} /></XProperty>
                         }
                         {props.item!!.extrasLandUse !== null &&
-                            <XCard.Property title="Land Use">{props.item!!.extrasLandUse!!.join(',\u00A0')}</XCard.Property>
+                            <XProperty title="Land Use">{props.item!!.extrasLandUse!!.join(',\u00A0')}</XProperty>
                         }
                         {props.item.extrasLandValue !== null &&
-                            <XCard.Property title="Land Value"><XMoney value={props.item.extrasLandValue!!} /></XCard.Property>
+                            <XProperty title="Land Value"><XMoney value={props.item.extrasLandValue!!} /></XProperty>
                         }
                         {props.item.extrasImprovementValue !== null &&
-                            <XCard.Property title="Improvement Value"><XMoney value={props.item.extrasImprovementValue!!} /></XCard.Property>
+                            <XProperty title="Improvement Value"><XMoney value={props.item.extrasImprovementValue!!} /></XProperty>
                         }
                         {props.item.extrasFixturesValue !== null &&
-                            <XCard.Property title="Fixtures Value"><XMoney value={props.item.extrasFixturesValue!!} /></XCard.Property>
+                            <XProperty title="Fixtures Value"><XMoney value={props.item.extrasFixturesValue!!} /></XProperty>
                         }
                         {props.item.extrasPropertyValue !== null &&
-                            <XCard.Property title="Personal Property Value"><XMoney value={props.item.extrasPropertyValue!!} /></XCard.Property>
+                            <XProperty title="Personal Property Value"><XMoney value={props.item.extrasPropertyValue!!} /></XProperty>
                         }
                         {/* {props.item.extrasArea &&
                             <XCard.Property title="City Register Area"><XArea area={props.item.extrasAssessorArea!!} />
@@ -89,20 +89,20 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                                 <XTooltip title={Text.hint_unrealiable_assesor} />
                             </XCard.Property>
                         } */}
-                    </XCard.PropertyList>
+                    </XPropertyList>
                     {props.item!!.city.name === 'New York' && (props.item!!.extrasVacant === null || props.item!!.extrasVacant) && (
                         <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
-                            <XCard.PropertyList title="Analysis">
+                            <XPropertyList title="Analysis">
                                 {props.item!!.extrasAnalyzed !== true &&
-                                    <XCard.Property title="Compatible buildings">
+                                    <XProperty title="Compatible buildings">
                                         <XTooltip title={Text.hint_too_complex} marginLeft={0} />
                                         {Text.text_too_complex}
-                                    </XCard.Property>
+                                    </XProperty>
                                 }
                                 {props.item!!.extrasAnalyzed === true && props.item!!.extrasFitProjects &&
-                                    <XCard.Property title="Compatible buildings"><ProjectTypes types={props.item!!.extrasFitProjects!!} /></XCard.Property>
+                                    <XProperty title="Compatible buildings"><ProjectTypes types={props.item!!.extrasFitProjects!!} /></XProperty>
                                 }
-                            </XCard.PropertyList>
+                            </XPropertyList>
                         </XWithRole>
                     )}
                 </XVertical>
@@ -116,55 +116,55 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                     || props.item!!.extrasBathrooms !== null
                     || props.item!!.metadata.currentUse !== null
                     || props.item!!.extrasVacant !== null) && (
-                        <XCard.PropertyList title="Current Building">
+                        <XPropertyList title="Current Building">
                             {props.item!!.extrasVacant !== null &&
-                                <XCard.Property title="Vacant">{props.item!!.extrasVacant ? 'Yes' : 'No'}</XCard.Property>
+                                <XProperty title="Vacant">{props.item!!.extrasVacant ? 'Yes' : 'No'}</XProperty>
                             }
                             {props.item!!.metadata.currentUse !== null &&
-                                <XCard.Property title="Current Use">{props.item!!.metadata.currentUse}</XCard.Property>
+                                <XProperty title="Current Use">{props.item!!.metadata.currentUse}</XProperty>
                             }
                             {props.item!!.extrasSalesDate !== null &&
-                                <XCard.Property title="Sale Date">{props.item!!.extrasSalesDate}</XCard.Property>
+                                <XProperty title="Sale Date">{props.item!!.extrasSalesDate}</XProperty>
                             }
                             {props.item!!.extrasSalesPriorDate !== null &&
-                                <XCard.Property title="Prior Sale Date">{props.item!!.extrasSalesPriorDate}</XCard.Property>
+                                <XProperty title="Prior Sale Date">{props.item!!.extrasSalesPriorDate}</XProperty>
                             }
                             {props.item!!.extrasYear !== null &&
-                                <XCard.Property title="Year Built"><XNumber value={props.item!!.extrasYear} /></XCard.Property>
+                                <XProperty title="Year Built"><XNumber value={props.item!!.extrasYear} /></XProperty>
                             }
                             {props.item!!.extrasUnits !== null &&
-                                <XCard.Property title="Buildings Count"><XNumber value={props.item!!.extrasUnits} /></XCard.Property>
+                                <XProperty title="Buildings Count"><XNumber value={props.item!!.extrasUnits} /></XProperty>
                             }
                             {props.item!!.extrasStories !== null &&
-                                <XCard.Property title="Stories Count"><XNumber value={props.item!!.extrasStories} /></XCard.Property>
+                                <XProperty title="Stories Count"><XNumber value={props.item!!.extrasStories} /></XProperty>
                             }
                             {props.item!!.extrasRooms !== null &&
-                                <XCard.Property title="Rooms Count"><XNumber value={props.item!!.extrasRooms} /></XCard.Property>
+                                <XProperty title="Rooms Count"><XNumber value={props.item!!.extrasRooms} /></XProperty>
                             }
                             {props.item!!.extrasBedrooms !== null &&
-                                <XCard.Property title="Bedrooms Count"><XNumber value={props.item!!.extrasBedrooms} /></XCard.Property>
+                                <XProperty title="Bedrooms Count"><XNumber value={props.item!!.extrasBedrooms} /></XProperty>
                             }
                             {props.item!!.extrasBathrooms !== null &&
-                                <XCard.Property title="Bathrooms Count"><XNumber value={props.item!!.extrasBathrooms} /></XCard.Property>
+                                <XProperty title="Bathrooms Count"><XNumber value={props.item!!.extrasBathrooms} /></XProperty>
                             }
-                        </XCard.PropertyList>
+                        </XPropertyList>
                     )}
-            </XCard.PropertyColumns>
+            </XPropertyColumns>
             {(props.item.extrasMetroDistance !== null
                 || props.item.extrasTrainLocalDistance !== null
                 || props.item.extrasTrainDistance !== null)
                 && (
-                    <XCard.PropertyList title="Nearby Transit">
+                    <XPropertyList title="Nearby Transit">
                         {props.item.extrasMetroDistance !== null &&
-                            <XCard.Property title="Muni Metro">{props.item.extrasMetroDistance} ({props.item.extrasMetroStation})</XCard.Property>
+                            <XProperty title="Muni Metro">{props.item.extrasMetroDistance} ({props.item.extrasMetroStation})</XProperty>
                         }
                         {props.item.extrasTrainLocalDistance !== null &&
-                            <XCard.Property title="BART">{props.item.extrasTrainLocalDistance} ({props.item.extrasTrainLocalStation})</XCard.Property>
+                            <XProperty title="BART">{props.item.extrasTrainLocalDistance} ({props.item.extrasTrainLocalStation})</XProperty>
                         }
                         {props.item.extrasTrainDistance !== null &&
-                            <XCard.Property title="Caltrain">{props.item.extrasTrainDistance} ({props.item.extrasTrainStation})</XCard.Property>
+                            <XProperty title="Caltrain">{props.item.extrasTrainDistance} ({props.item.extrasTrainStation})</XProperty>
                         }
-                    </XCard.PropertyList>
+                    </XPropertyList>
                 )}
         </>
     );

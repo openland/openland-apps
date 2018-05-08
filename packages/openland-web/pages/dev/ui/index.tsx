@@ -5,13 +5,10 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XSelect } from '../../../components/X/XSelect';
-import { XCardLink } from '../../../components/Incubator/XCardLink';
 import { withApp } from '../../../components/withApp';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
-import { CitySelector } from '../../../components/Incubator/CitySelector';
 import { ParcelShortList } from '../../../components/Incubator/ParcelShortList';
 import { XIcon } from 'openland-x/XIcon';
-import { StateSelect } from '../../../api';
 import { XHeader } from 'openland-x/XHeader';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
@@ -42,14 +39,6 @@ export default withApp('UI Framework', 'viewer', (props) => {
                 <XContent>
                     <XTitle>Default Button</XTitle>
                     <XVertical>
-                        {/* <XForm.DateSingle onDateChange={(date: any) => console.warn(date)} />
-                        <XForm.DateRange anyDate={true} /> */}
-                        <StateSelect />
-                        <CitySelector title="San Francisco">
-                            <CitySelector.Popper>
-                                <button>lol</button>
-                            </CitySelector.Popper>
-                        </CitySelector>
                         <XTooltip marginLeft={0} placement="left">
                             <XTooltip.Target>
                                 <XIcon icon="arrow_left" />
@@ -89,7 +78,6 @@ export default withApp('UI Framework', 'viewer', (props) => {
                     </XVertical>
                 </XContent>
             </XCard>
-            <XCardLink href="https://goo.gl/urJT1F" title="GET /_next/webpack/c14ba59cb321053a0d76" text="DONE  Compiled successfully in 892ms" icon="beach_access" />
             <XCard separators={true}>
                 <XHeader
                     text="Loader block title"
@@ -113,17 +101,9 @@ export default withApp('UI Framework', 'viewer', (props) => {
                         $ /Users/max_volkov/Desktop/statecraft-web/node_modules/.bin/less-watch-compiler --minified false src/less build/dist/static/css style.less
                         $ /Users/max_volkov/Desktop/statecraft-web/node_modules/.bin/cpx './src/static/**/*' ./build/dist/static/ --watch
                         `}
-                >
-                    <XHeader.Target>
-                        <CitySelector title="San Francisco">
-                            <CitySelector.Popper>
-                                <button>lol</button>
-                            </CitySelector.Popper>
-                        </CitySelector>
-                    </XHeader.Target>
-                </XHeader>
+                />
                 <XLoader loading={true} >
-                    <XServiceMessage title="Warning example with hint and button element"/>
+                    <XServiceMessage title="Warning example with hint and button element" />
                 </XLoader>
             </XCard>
         </DevDocsScaffold>

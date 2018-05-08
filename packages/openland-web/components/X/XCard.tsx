@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XCardProperty, XCardPropertyList, XCardPropertyColumns } from './XCardProperty';
 import { XSeparated } from './XSeparated';
 import { XLink } from 'openland-x/XLink';
 
@@ -74,10 +73,6 @@ interface XCardProps {
 }
 
 export class XCard extends React.Component<XCardProps> {
-    static Property = XCardProperty;
-    static PropertyList = XCardPropertyList;
-    static PropertyColumns = XCardPropertyColumns;
-
     render() {
 
         const {

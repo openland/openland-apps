@@ -1,7 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { XCard } from '../../../components/X/XCard';
 import { withParcel } from '../../../api/';
 import { ParcelProperties } from '../../../components/ParcelProperties';
 import { PermitType } from '../../../components/PermitType';
@@ -18,7 +17,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { ParcelNumber } from '../../../components/ParcelNumber';
 import { XSwitcher } from './../../../components/X/XSwitcher';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
-import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XButton } from 'openland-x/XButton';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XDate } from 'openland-x-format/XDate';
@@ -33,6 +31,7 @@ import { XTitle } from 'openland-x/XTitle';
 import { XMapSmall } from 'openland-x-map/XMapSmall';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XForm } from 'openland-x-forms/XForm';
+import { XProperty, XPropertyList } from 'openland-x/XProperty';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -105,7 +104,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                         />
                     </XHeader>
 
-                    <XCardProperty>
+                    <XProperty>
                         <XSwitcher alignSelf="flex-start" flatStyle={true}>
                             <XSwitcher.Item path={detailsPath} >Parcel</XSwitcher.Item>
                             <XSwitcher.Item path={linksPath} count={props.data.item.links.length}>Links</XSwitcher.Item>
@@ -114,7 +113,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                             <XSwitcher.Item path={zoningPath} >Zoning</XSwitcher.Item>
                             {/* </XWithRole> */}
                         </XSwitcher>
-                    </XCardProperty>
+                    </XProperty>
 
                     {props.router.path === detailsPath && (
                         <>
@@ -129,12 +128,12 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                         {props.data.item.compatibleBuildings.map((v, i) => (
                                             <XHorizontal key={v.key + '-' + i}>
                                                 <XView grow={1} basis={0}>
-                                                    <XCard.PropertyList>
-                                                        <XCard.Property title="Construction Type">{v.title}</XCard.Property>
-                                                        {v.width && v.height && <XCard.Property title="Dimensions"><XDimensions value={[v.width, v.height]} /></XCard.Property>}
-                                                        {v.angle && <XCard.Property title="Azimuth"><XAngle value={v.angle} /></XCard.Property>}
-                                                        {v.center && <XCard.Property title="Location">{v.center.latitude.toFixed(6)},{v.center.longitude.toFixed(6)}</XCard.Property>}
-                                                    </XCard.PropertyList>
+                                                    <XPropertyList>
+                                                        <XProperty title="Construction Type">{v.title}</XProperty>
+                                                        {v.width && v.height && <XProperty title="Dimensions"><XDimensions value={[v.width, v.height]} /></XProperty>}
+                                                        {v.angle && <XProperty title="Azimuth"><XAngle value={v.angle} /></XProperty>}
+                                                        {v.center && <XProperty title="Location">{v.center.latitude.toFixed(6)},{v.center.longitude.toFixed(6)}</XProperty>}
+                                                    </XPropertyList>
                                                 </XView>
                                                 <XView grow={1} basis={0}>
                                                     <XView css={{ paddingRight: 24 }}>
@@ -198,11 +197,11 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                         </>)}
 
                     {props.router.path === linksPath && props.data.item.links.length > 0 && (
-                        <XCard.PropertyList title="Links">
+                        <XPropertyList title="Links">
                             {props.data.item.links.map((v, i) => (
-                                <XCard.Property key={'link-' + i} title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XCard.Property>
+                                <XProperty key={'link-' + i} title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XProperty>
                             ))}
-                        </XCard.PropertyList>
+                        </XPropertyList>
                     )}
 
                     {props.router.path === zoningPath && props.data.item.extrasZoning && props.data.item.extrasZoning!!.length > 0 &&

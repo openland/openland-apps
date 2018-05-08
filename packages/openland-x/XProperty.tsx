@@ -94,7 +94,7 @@ let XCardPropertySubTitle = Glamorous.div<{ compact?: boolean }>((props) => ({
     marginBottom: 10
 }));
 
-export const XCardPropertyColumns = (props: { children: any, wrap?: boolean, grow?: number }) => (
+export const XPropertyColumns = (props: { children: any, wrap?: boolean, grow?: number }) => (
     <XCardPropertyColumsDiv fwrap={props.wrap}>
         {React.Children.toArray(props.children).map((v, i) => (
             <XCardPropertyColumnsContainerDiv key={'chilren_' + i} grow={props.grow}>{v}</XCardPropertyColumnsContainerDiv>
@@ -102,14 +102,14 @@ export const XCardPropertyColumns = (props: { children: any, wrap?: boolean, gro
     </XCardPropertyColumsDiv>
 );
 
-export const XCardPropertyList = (props: { children: any, title?: string, compact?: boolean, width?: number, subtitle?: boolean }) => (
+export const XPropertyList = (props: { children: any, title?: string, compact?: boolean, width?: number, subtitle?: boolean }) => (
     <XCardPropertyListDiv width={props.width}>
         {props.title && (props.subtitle ? (<XCardPropertySubTitle compact={props.compact}>{props.title} </XCardPropertySubTitle>) : (<XCardPropertyTitle compact={props.compact}>{props.title} </XCardPropertyTitle>))}
         {props.children}
     </XCardPropertyListDiv>
 );
 
-export const XCardProperty = (props: { children: any, title?: string, width?: number, compact?: boolean, divider?: boolean }) => (
+export const XProperty = (props: { children: any, title?: string, width?: number, compact?: boolean, divider?: boolean }) => (
     <XCardFieldContainer compact={props.compact} divider={props.divider}>
         {props.title && (<XCardFieldTitle width={props.width}>{props.title}</XCardFieldTitle>)}
         {React.Children.count(props.children) > 0 && <XCardFieldValue>{props.children}</XCardFieldValue>}

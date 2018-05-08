@@ -9,7 +9,6 @@ import { trackEvent } from '../utils/analytics';
 import { withParcelDirect } from '../api';
 import { XArea } from 'openland-x-format/XArea';
 import { XButton } from 'openland-x/XButton';
-import { XCard } from './X/XCard';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XHeader } from 'openland-x/XHeader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -25,6 +24,7 @@ import { XView } from 'openland-x-layout/XView';
 import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
 import { XLoader } from 'openland-x/XLoader';
+import { XProperty, XPropertyList } from 'openland-x/XProperty';
 
 let panelWidth = 324;
 
@@ -78,7 +78,7 @@ let ItemIcon = Glamorous(XIcon)({
 
 function PropertyCell(props: { title: string, children: any }) {
     return (
-        <XCard.Property {...props} compact={true} width={150}>{props.children}</XCard.Property>
+        <XProperty {...props} compact={true} width={150}>{props.children}</XProperty>
     );
 }
 
@@ -182,7 +182,7 @@ export const ParcelCard = withParcelDirect((props) => {
                             </Notes>
                         )}
 
-                        <XCard.PropertyList title="Parcel details" compact={true}>
+                        <XPropertyList title="Parcel details" compact={true}>
                             {props.data.item!!.extrasOwnerType && props.data.item!!.extrasOwnerType !== 'PRIVATE' &&
                                 <PropertyCell title="Ownership Type"><OwnerTypeComponent type={props.data.item!!.extrasOwnerType!!} /></PropertyCell>
                             }
@@ -251,7 +251,7 @@ export const ParcelCard = withParcelDirect((props) => {
                             {props.data.item!!.extrasPropertyValue !== null &&
                                 <PropertyCell title="Personal Property Value"><XMoney value={props.data.item!!.extrasPropertyValue!!} /></PropertyCell>
                             }
-                        </XCard.PropertyList>
+                        </XPropertyList>
                         {(props.data.item!!.extrasYear !== null
                             || props.data.item!!.extrasUnits !== null
                             || props.data.item!!.extrasStories !== null
@@ -263,7 +263,7 @@ export const ParcelCard = withParcelDirect((props) => {
                             || props.data.item!!.extrasSalesDate !== null
                             || props.data.item!!.extrasSalesPriorDate !== null
                             || props.data.item!!.extrasVacant !== null) && (
-                                <XCard.PropertyList title="Current Building" compact={true}>
+                                <XPropertyList title="Current Building" compact={true}>
                                     {props.data.item!!.extrasVacant !== null &&
                                         <PropertyCell title="Vacant">{props.data.item!!.extrasVacant ? 'Yes' : 'No'}</PropertyCell>
                                     }
@@ -294,13 +294,13 @@ export const ParcelCard = withParcelDirect((props) => {
                                     {props.data.item!!.extrasBathrooms !== null &&
                                         <PropertyCell title="Bathrooms Count"><XNumber value={props.data.item!!.extrasBathrooms} /></PropertyCell>
                                     }
-                                </XCard.PropertyList>
+                                </XPropertyList>
                             )}
                         {(props.data.item!!.extrasMetroDistance !== null
                             || props.data.item!!.extrasTrainLocalDistance !== null
                             || props.data.item!!.extrasTrainDistance !== null)
                             && (
-                                <XCard.PropertyList title="Nearby Transit">
+                                <XPropertyList title="Nearby Transit">
                                     {props.data.item!!.extrasMetroDistance !== null &&
                                         <PropertyCell title="Muni Metro"><XDistance value={props.data.item!!.extrasMetroDistance!!} /> ({props.data.item!!.extrasMetroStation})</PropertyCell>
                                     }
@@ -310,7 +310,7 @@ export const ParcelCard = withParcelDirect((props) => {
                                     {props.data.item!!.extrasTrainDistance !== null &&
                                         <PropertyCell title="Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</PropertyCell>
                                     }
-                                </XCard.PropertyList>
+                                </XPropertyList>
                             )}
                     </Scrollable>}
             </LoaderWrapper>

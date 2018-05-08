@@ -21,8 +21,6 @@ import { XMoney } from 'openland-x-format/XMoney';
 import { XDistance } from 'openland-x-format/XDistance';
 import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
-import { XCard } from '../../../components/X/XCard';
-import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XContent } from 'openland-x-layout/XContent';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XHeader } from 'openland-x/XHeader';
@@ -42,6 +40,7 @@ import { XMapSmall } from 'openland-x-map/XMapSmall';
 import { XLoader } from 'openland-x/XLoader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XForm } from 'openland-x-forms/XForm';
+import { XProperty, XPropertyColumns, XPropertyList } from 'openland-x/XProperty';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
@@ -52,7 +51,7 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
     return (
         <XVertical>
 
-            <XCardProperty>
+            <XProperty>
                 <XSwitcher alignSelf="flex-start" flatStyle={true}>
                     <XSwitcher.Item query={{ field: 'tab' }} >Parcel</XSwitcher.Item>
                     <XSwitcher.Item query={{ field: 'tab', value: linksPath }} count={props.parcel.links.length}>Links</XSwitcher.Item>
@@ -61,68 +60,68 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                     <XSwitcher.Item query={{ field: 'tab', value: zoningPath }} >Zoning</XSwitcher.Item>
                     {/* </XWithRole> */}
                 </XSwitcher>
-            </XCardProperty>
+            </XProperty>
 
             {(props.router.query.tab === detailsPath || props.router.query.tab === undefined) && (
                 <>
 
-                    <XCard.PropertyColumns>
+                    <XPropertyColumns>
                         <XVertical>
 
-                            <XCard.PropertyList title="Parcel Details">
+                            <XPropertyList title="Parcel Details">
                                 {props.parcel.extrasOwnerType && props.parcel.extrasOwnerType !== 'PRIVATE' &&
-                                    <XCard.Property title="Ownership Type"><OwnerTypeComponent type={props.parcel.extrasOwnerType!!} /></XCard.Property>
+                                    <XProperty title="Ownership Type"><OwnerTypeComponent type={props.parcel.extrasOwnerType!!} /></XProperty>
                                 }
                                 {props.parcel.extrasOwnerName &&
-                                    <XCard.Property title="Owner Name">{props.parcel.extrasOwnerName}</XCard.Property>
+                                    <XProperty title="Owner Name">{props.parcel.extrasOwnerName}</XProperty>
                                 }
                                 {props.parcel.area &&
-                                    <XCard.Property title="Area"><XArea value={props.parcel.area!!.value} /></XCard.Property>
+                                    <XProperty title="Area"><XArea value={props.parcel.area!!.value} /></XProperty>
                                 }
                                 <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
                                     {Boolean(props.parcel.area && props.parcel.extrasUnitCapacityFar && props.parcel.extrasUnitCapacityDencity) &&
-                                        <XCard.Property title="Unit Capacity">
+                                        <XProperty title="Unit Capacity">
                                             {props.parcel.extrasUnitCapacity}
                                             <XTooltip placement="right" type="info">
                                                 <XTooltip.Content><XArea value={props.parcel.area!!.value} />
                                                     {' * ' + props.parcel.extrasUnitCapacityFar + '(FAR) / ' + props.parcel.extrasUnitCapacityDencity + '(DF)'}
                                                 </XTooltip.Content>
                                             </XTooltip>
-                                        </XCard.Property>
+                                        </XProperty>
                                     }
                                 </XWithRole>
                                 {props.parcel.front &&
-                                    <XCard.Property title="Frontage"><XDistance value={props.parcel.front!!.value} /></XCard.Property>
+                                    <XProperty title="Frontage"><XDistance value={props.parcel.front!!.value} /></XProperty>
                                 }
                                 {props.parcel.depth &&
-                                    <XCard.Property title="Depth"><XDistance value={props.parcel.depth!!.value} /></XCard.Property>
+                                    <XProperty title="Depth"><XDistance value={props.parcel.depth!!.value} /></XProperty>
                                 }
                                 {props.parcel!!.extrasShapeSides && !props.parcel.front && !props.parcel.depth && props.parcel!!.extrasShapeSides!!.length > 0 &&
-                                    <XCard.Property title="Dimensions"> <XDimensions value={props.parcel!!.extrasShapeSides!!} /></XCard.Property>
+                                    <XProperty title="Dimensions"> <XDimensions value={props.parcel!!.extrasShapeSides!!} /></XProperty>
                                 }
                                 {props.parcel.extrasZoning && props.parcel.extrasZoning!!.length > 0 &&
-                                    <XCard.Property title="Zoning"><ZoningCode codes={props.parcel!!.extrasZoning!!} /></XCard.Property>
+                                    <XProperty title="Zoning"><ZoningCode codes={props.parcel!!.extrasZoning!!} /></XProperty>
                                 }
                                 {props.parcel.extrasLandValue !== null &&
-                                    <XCard.Property title="Land Value"><XMoney value={props.parcel.extrasLandValue!!} /></XCard.Property>
+                                    <XProperty title="Land Value"><XMoney value={props.parcel.extrasLandValue!!} /></XProperty>
                                 }
                                 {props.parcel!!.extrasVacant !== null &&
-                                    <XCard.Property title="Vacant">{props.parcel!!.extrasVacant ? 'Yes' : 'No'}</XCard.Property>
+                                    <XProperty title="Vacant">{props.parcel!!.extrasVacant ? 'Yes' : 'No'}</XProperty>
                                 }
                                 {props.parcel.city.name === 'New York' && (props.parcel.extrasVacant === null || props.parcel.extrasVacant) && (
                                     <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                                         {props.parcel.extrasAnalyzed !== true &&
-                                            <XCard.Property title="Compatible buildings">
+                                            <XProperty title="Compatible buildings">
                                                 <XTooltip title={Text.hint_too_complex} marginLeft={0} />
                                                 {Text.text_too_complex}
-                                            </XCard.Property>
+                                            </XProperty>
                                         }
                                         {props.parcel!!.extrasAnalyzed === true && props.parcel!!.extrasFitProjects &&
-                                            <XCard.Property title="Compatible buildings"><ProjectTypes types={props.parcel!!.extrasFitProjects!!} /></XCard.Property>
+                                            <XProperty title="Compatible buildings"><ProjectTypes types={props.parcel!!.extrasFitProjects!!} /></XProperty>
                                         }
                                     </XWithRole>
                                 )}
-                            </XCard.PropertyList>
+                            </XPropertyList>
                         </XVertical>
                         <XVertical>
                             {props.parcel.compatibleBuildings && props.parcel.compatibleBuildings.length > 0 && (
@@ -155,7 +154,7 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                                 </XView>
                             )}
                         </XVertical>
-                    </XCard.PropertyColumns>
+                    </XPropertyColumns>
                     {props.parcel.geometry && (
                         <XContent>
                             <ParcelMaps
@@ -185,11 +184,11 @@ const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parc
                 </XForm>)}
 
             {props.router.query.tab === linksPath && props.parcel.links.length > 0 && (
-                <XCard.PropertyList title="Links">
+                <XPropertyList title="Links">
                     {props.parcel.links.map((v, i) => (
-                        <XCard.Property title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XCard.Property>
+                        <XProperty title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XProperty>
                     ))}
-                </XCard.PropertyList>
+                </XPropertyList>
             )}
 
             {props.router.query.tab === zoningPath && props.parcel.extrasZoning && props.parcel.extrasZoning!!.length > 0 &&
