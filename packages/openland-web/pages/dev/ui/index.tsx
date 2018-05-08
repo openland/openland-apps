@@ -10,7 +10,6 @@ import { withApp } from '../../../components/withApp';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { CitySelector } from '../../../components/Incubator/CitySelector';
 import { ParcelShortList } from '../../../components/Incubator/ParcelShortList';
-import { XTab } from '../../../components/X/XTab';
 import { XIcon } from 'openland-x/XIcon';
 import { StateSelect } from '../../../api';
 import { XHeader } from 'openland-x/XHeader';
@@ -25,16 +24,6 @@ import { XLoader } from 'openland-x/XLoader';
 export default withApp('UI Framework', 'viewer', (props) => {
     return (
         <DevDocsScaffold title="UI Framework">
-            <XTab>
-                <XTab.Item path="/ui" asArrow={true}>Inbox</XTab.Item>
-                <XTab.Item asArrow={true}>Something</XTab.Item>
-                <XTab.Item asArrow={true}>Something</XTab.Item>
-                <XTab.Item asArrow={true}>Something</XTab.Item>
-                <XTab.Item asArrow={true}>Something</XTab.Item>
-                <XTab.Item asArrow={true}>Something</XTab.Item>
-                <XTab.Item>Other One</XTab.Item>
-            </XTab>
-
             <XCard shadow="medium">
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <ParcelShortList>

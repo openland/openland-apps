@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 
-export const XTabItem = Glamorous(XLink)<{ asArrow?: boolean }>((props) => ({
+const TabItemLink = Glamorous(XLink)<{ asArrow?: boolean }>((props) => ({
     cursor: 'pointer',
     userSelect: 'none',
     flexGrow: 1,
@@ -73,21 +73,6 @@ export const XTabItem = Glamorous(XLink)<{ asArrow?: boolean }>((props) => ({
     }
 }));
 
-interface XTabItemDivProps extends XLinkProps {
-    asArrow?: boolean;
-}
-
-class XTabItemDiv extends React.Component<XTabItemDivProps> {
-    render() {
-        return (
-            <XTabItem {...this.props}>
-                <div className="top-shadow" />
-                {this.props.children}
-            </XTabItem>
-        );
-    }
-}
-
 const XTabsDiv = Glamorous.div<{ inline?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
@@ -103,9 +88,23 @@ const XTabsDiv = Glamorous.div<{ inline?: boolean }>((props) => ({
     zIndex: 0
 }));
 
-export class XTab extends React.Component<{ inline?: boolean }> {
+export interface XTabsItemProps extends XLinkProps {
+    asArrow?: boolean;
+}
 
-    static Item = XTabItemDiv;
+export class XTabsItem extends React.Component<XTabsItemProps> {
+    render() {
+        return (
+            <TabItemLink {...this.props}>
+                <div className="top-shadow" />
+                {this.props.children}
+            </TabItemLink>
+        );
+    }
+}
+export class XTabs extends React.Component<{ inline?: boolean }> {
+
+    static Item = XTabsItem;
 
     constructor(props: {}) {
         super(props);
