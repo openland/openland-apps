@@ -126,7 +126,7 @@ export default withApp('UI Framework', 'viewer', (props) => {
                     <XForm.Header title="x-form title" description={`$ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"`} />
                     <XForm.Field title="x-form-field container test" description="description text" novalid={true}>
                         <XForm.RawTextarea placeholder="loles" novalid={true} />
-                        <XForm.RawInput placeholder="loles" noValid={true} />
+                        <XForm.RawInput placeholder="loles" invalid={true} />
                     </XForm.Field>
                 </XForm>
             </XCard>
