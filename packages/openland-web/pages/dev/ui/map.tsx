@@ -4,7 +4,6 @@ import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api';
-import { trackEvent } from '../../../utils/analytics';
 // import { XHorizontal } from '../../../components/X/XHorizontal';
 // import { XButton } from '../../../components/X/XButton';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
@@ -147,7 +146,6 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
     }
 
     handleClick = (id: string) => {
-        trackEvent('Explore Parcel', { id: id });
         this.props.router.pushQuery('selectedParcel', id);
     }
 

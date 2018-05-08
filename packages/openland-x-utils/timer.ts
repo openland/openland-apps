@@ -12,9 +12,3 @@ export async function backoff<T>(callback: () => Promise<T>): Promise<T> {
         }
     }
 }
-
-export async function forever(callback: () => Promise<void>) {
-    while (true) {
-        await backoff(callback);
-    }
-}

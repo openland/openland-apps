@@ -6,15 +6,12 @@ import { ApolloClient } from 'apollo-client';
 import Head from 'next/head';
 import { apolloClient } from './apolloClient';
 import { getToken } from './auth';
-import { isPageChanged } from './routing';
+import { isPageChanged } from 'openland-x-routing/NextRouting';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { trackPage } from '../utils/analytics';
-import { RootErrorBoundary } from '../components/RootErrorBoundary';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { HostNameProvider } from 'openland-x-routing/HostNameProvider';
-import { XRouterProvider } from 'openland-x-routing/XRouterProvider';
-import { Routes } from '../routes';
 import { getComponentDisplayName } from 'openland-x-utils/getComponentDisplayName';
+import { trackPage } from 'openland-x-analytics';
 
 export const withData = (ComposedComponent: React.ComponentType) => {
     return class WithData extends React.Component<{
@@ -67,9 +64,9 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                     await getDataFromTree(
                         <ApolloProvider client={apollo}>
                             <HostNameProvider hostName={host} protocol={protocol}>
-                                <XRouterProvider routes={Routes}>
+                                {/* <XRouterProvider routes={Routes}> */}
                                     <ComposedComponent />
-                                </XRouterProvider>
+                                {/* </XRouterProvider> */}
                             </HostNameProvider>
                         </ApolloProvider>
                         ,
@@ -108,9 +105,9 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                     await getDataFromTree(
                         <ApolloProvider client={apollo}>
                             <HostNameProvider hostName={host} protocol={protocol}>
-                                <XRouterProvider routes={Routes}>
+                                {/* <XRouterProvider routes={Routes}> */}
                                     <ComposedComponent />
-                                </XRouterProvider>
+                                {/* </XRouterProvider> */}
                             </HostNameProvider>
                         </ApolloProvider>
                         ,
@@ -149,15 +146,13 @@ export const withData = (ComposedComponent: React.ComponentType) => {
 
         render() {
             return (
-                <RootErrorBoundary>
-                    <ApolloProvider client={this.apollo}>
-                        <HostNameProvider hostName={this.props.host} protocol={this.props.protocol}>
-                            <XRouterProvider routes={Routes}>
-                                <ComposedComponent />
-                            </XRouterProvider>
-                        </HostNameProvider>
-                    </ApolloProvider>
-                </RootErrorBoundary>
+                <ApolloProvider client={this.apollo}>
+                    <HostNameProvider hostName={this.props.host} protocol={this.props.protocol}>
+                        {/* <XRouterProvider routes={Routes}> */}
+                            <ComposedComponent />
+                        {/* </XRouterProvider> */}
+                    </HostNameProvider>
+                </ApolloProvider>
             );
         }
     };

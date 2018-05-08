@@ -6,7 +6,6 @@ import { ParcelProperties } from '../../../components/ParcelProperties';
 import { PermitType } from '../../../components/PermitType';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
-import { trackEvent } from '../../../utils/analytics';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
 import { OpportunitiButton } from '../../../components/OpportunityButton';
@@ -32,6 +31,7 @@ import { XMapSmall } from 'openland-x-map/XMapSmall';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XForm } from 'openland-x-forms/XForm';
 import { XProperty, XPropertyList } from 'openland-x/XProperty';
+import { trackEvent } from 'openland-x-analytics';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 

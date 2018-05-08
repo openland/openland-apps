@@ -1,6 +1,6 @@
 import Router from 'next/router';
 import * as NProgress from 'nprogress';
-import { trackPage, trackError } from './analytics';
+import { trackPage, trackError } from 'openland-x-analytics';
 
 NProgress.configure({ showSpinner: false, parent: '#progress_container' });
 

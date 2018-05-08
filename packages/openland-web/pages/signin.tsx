@@ -4,9 +4,7 @@ import Glamorous from 'glamorous';
 import { MessagePage } from '../components/MessagePage';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
-import { createAuth0Client } from '../utils/Auth0Client';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XTrack } from '../components/X/XTrack';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLink } from 'openland-x/XLink';
@@ -15,6 +13,8 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XInput } from 'openland-x/XInput';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
+import { XTrack } from 'openland-x-analytics/XTrack';
 
 let Signup = Glamorous.span({
     opacity: 0.7

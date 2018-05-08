@@ -12,7 +12,6 @@ import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { Scaffold } from '../../../components/Scaffold';
 import { sourceFromGeometry } from '../../../utils/map';
 import { Text } from '../../../strings';
-import { trackEvent } from '../../../utils/analytics';
 import { withApp } from '../../../components/withApp';
 import { withOpportunity } from '../../../api';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
@@ -41,6 +40,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XForm } from 'openland-x-forms/XForm';
 import { XProperty, XPropertyColumns, XPropertyList } from 'openland-x/XProperty';
+import { trackEvent } from 'openland-x-analytics';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';

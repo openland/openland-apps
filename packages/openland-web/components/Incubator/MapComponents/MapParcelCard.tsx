@@ -8,9 +8,6 @@ import * as React from 'react';
 import { XIcon } from '../../../../openland-x/XIcon';
 import { withParcelDirect } from '../../../api';
 import { Text } from '../../../strings';
-import { trackEvent } from '../../../utils/analytics';
-// import { AStreetViewModal } from '../../App/AStreetViewModal';
-// import { AStreetViewModalPreview } from '../../App/AStreetViewModal';
 import { XTooltip } from '../../Incubator/XTooltip';
 import { OpportunitiButton } from '../../OpportunityButton';
 import { OwnerTypeComponent } from '../../OwnerTypeComponent';
@@ -27,6 +24,7 @@ import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
 import { XLoader } from 'openland-x/XLoader';
 import { XPropertyList } from 'openland-x/XProperty';
+import { trackEvent } from 'openland-x-analytics';
 
 let panelWidth = 390;
 

@@ -2,9 +2,9 @@ import * as React from 'react';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withAppBase } from './withAppBase';
 import { withUserInfo } from './UserInfo';
-import { XTrack } from './X/XTrack';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { withRouter } from 'openland-x-routing/withRouter';
+import { XTrack } from 'openland-x-analytics/XTrack';
 
 export function withApp(name: string, role: string | string[], WrappedComponent: React.ComponentType<{}>) {
     return withAppBase(withUserInfo(withRouter((props) => {

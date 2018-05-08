@@ -5,7 +5,6 @@ import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { ParcelNumber } from './ParcelNumber';
 import { ProjectTypes } from './ProjectTypes';
 import { Text } from '../strings';
-import { trackEvent } from '../utils/analytics';
 import { withParcelDirect } from '../api';
 import { XArea } from 'openland-x-format/XArea';
 import { XButton } from 'openland-x/XButton';
@@ -25,6 +24,7 @@ import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
 import { XLoader } from 'openland-x/XLoader';
 import { XProperty, XPropertyList } from 'openland-x/XProperty';
+import { trackEvent } from 'openland-x-analytics';
 
 let panelWidth = 324;
 

@@ -1,3 +1,3 @@
 import './api/index';
 import './components/withApp';
-import './utils/analytics';
+import 'openland-x-analytics';

@@ -62,6 +62,12 @@
       ],
       "openland-x-permissions": [
         "openland-x-permissions"
+      ],
+      "openland-x-graphql": [
+        "openland-x-graphql"
+      ],
+      "openland-x-analytics": [
+        "openland-x-analytics"
       ]
     },
     "importHelpers": true
@@ -93,6 +99,8 @@
     "./packages/openland-x-modal",
     "./packages/openland-x-forms",
     "./packages/openland-x-layout",
-    "./packages/openland-x-permissions"
+    "./packages/openland-x-permissions",
+    "./packages/openland-x-graphql",
+    "./packages/openland-x-analytics"
   ]
 }

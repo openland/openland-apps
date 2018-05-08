@@ -4,10 +4,10 @@ import { MessagePage } from '../components/MessagePage';
 import { MessagePageContent } from '../components/MessagePageContent';
 import { withAppBase } from '../components/withAppBase';
 import { withUserInfo } from '../components/UserInfo';
-import { XTrack } from '../components/X/XTrack';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLink } from 'openland-x/XLink';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { XTrack } from 'openland-x-analytics/XTrack';
 
 export default withAppBase(withUserInfo((props) => {
 

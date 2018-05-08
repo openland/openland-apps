@@ -3,9 +3,9 @@ import * as React from 'react';
 import * as Cookie from 'js-cookie';
 import Error from 'next/error';
 import createHistory from 'history/createBrowserHistory';
-import { API_AUTH_ENDPOINT } from '../../utils/endpoint';
-import { withData } from '../../utils/withData';
-import { createAuth0Client } from '../../utils/Auth0Client';
+import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
+import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
+import { withData } from 'openland-x-graphql/withData';
 
 interface AuthResult {
     expiresIn: number;

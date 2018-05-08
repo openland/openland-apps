@@ -6,7 +6,6 @@ import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
-import { trackEvent } from '../../../utils/analytics';
 import { Scaffold } from '../../../components/Scaffold';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { TextPageExplore } from 'openland-text/TextPageExplore';
@@ -19,6 +18,7 @@ import { XMapCameraLocation } from 'openland-x-map/XMap';
 import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
 import { XMapSource } from 'openland-x-map/XMapSource';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { trackEvent } from 'openland-x-analytics';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',

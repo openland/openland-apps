@@ -7,7 +7,6 @@ import { ProspectingNavigationMap } from '../../../components/ProspectingNavigat
 import { SourcingTileSource } from '../../../api';
 import { OpportunityState } from 'openland-api/Types';
 import { XSwitcher } from 'openland-x/XSwitcher';
-import { trackEvent } from '../../../utils/analytics';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
@@ -17,6 +16,7 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XMapCameraLocation } from 'openland-x-map/XMap';
 import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { trackEvent } from 'openland-x-analytics';
 // import { XMapPolygonLayer } from '../../../components/X/XMapPolygonLayer';
 
 const Container = Glamorous.div({

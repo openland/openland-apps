@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { trackEvent } from '../../utils/analytics';
+import { trackEvent } from 'openland-x-analytics';
 
 export class XTrack extends React.Component<{ event: string, params?: any }> {
 

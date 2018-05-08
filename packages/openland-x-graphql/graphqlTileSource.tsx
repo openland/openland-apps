@@ -2,11 +2,11 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { DocumentNode } from 'graphql';
 import ApolloClient, { ApolloQueryResult } from 'apollo-client';
-import { backoff } from './timer';
-import { startProgress, stopProgress } from './routing';
-import { parseGeometry } from './Serializers';
 import { XMapSubscriber } from 'openland-x-map/XMap';
 import { XMapSource } from 'openland-x-map/XMapSource';
+import { backoff } from 'openland-x-utils/timer';
+import { stopProgress, startProgress } from 'openland-x-routing/NextRouting';
+import { parseGeometry } from 'openland-x-utils/parseGeometry';
 interface GraphQLTileSourceProps {
     layer: string;
     minZoom?: number;

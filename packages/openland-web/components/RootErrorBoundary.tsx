@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessagePage } from './MessagePage';
-import { trackError } from '../utils/analytics';
 import { XContent } from 'openland-x-layout/XContent';
+import { trackError } from 'openland-x-analytics';
 
 export class RootErrorBoundary extends React.Component<{}, { isError: boolean }> {
     constructor(props: {}) {

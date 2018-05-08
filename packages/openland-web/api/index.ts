@@ -1,10 +1,10 @@
 import { graphql } from 'react-apollo';
 import { MutationFunc } from 'react-apollo';
-import { graphQLTileSource } from '../utils/graphqlTileSource';
-import { graphqlSelect } from '../utils/graphqlSelect';
-import { graphqlRouted } from '../utils/graphqlRouted';
-import { graphqlMutation } from '../utils/graphqlMutation';
-import { graphqlCompose3, graphqlCompose2, graphqlCompose4, graphqlCompose6 } from '../utils/graphqlCompose';
+import { graphQLTileSource } from 'openland-x-graphql/graphqlTileSource';
+import { graphqlSelect } from 'openland-x-graphql/graphqlSelect';
+import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
+import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
+import { graphqlCompose3, graphqlCompose2, graphqlCompose4, graphqlCompose6 } from 'openland-x-graphql/graphqlCompose';
 import Types, { Queries } from 'openland-api';
 
 //
