@@ -1,8 +1,8 @@
 import '../../globals';
 import * as React from 'react';
 import * as qs from 'query-string';
-import { withData } from 'openland-x-graphql/withData';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
+import { withData } from '../../components/withData';
 
 class LoginStarter extends React.Component<{}, { error: boolean }> {
 

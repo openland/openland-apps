@@ -2,7 +2,7 @@ import '../../globals';
 import * as React from 'react';
 import createHistory from 'history/createBrowserHistory';
 import * as Cookie from 'js-cookie';
-import { withData } from 'openland-x-graphql/withData';
+import { withData } from '../../components/withData';
 
 class LogoutHandler extends React.Component<{}, {}> {
 

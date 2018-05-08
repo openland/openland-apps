@@ -6,6 +6,7 @@ import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTable } from 'openland-x/XTable';
+import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 
 export default withApp('Super Debug', ['super-admin', 'software-developer'], withUserInfo((props) => {
     return (
@@ -17,12 +18,14 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
                     <XTable.Cell>Description</XTable.Cell>
                 </XTable.Header>
                 <XTable.Body>
-                    {props.roles.map((v) => (
-                        <XTable.Row>
-                            <XTable.Cell>{v}</XTable.Cell>
-                            <XTable.Cell>{}</XTable.Cell>
-                        </XTable.Row>
-                    ))}
+                    <XRoleContext.Consumer>
+                        {roles => roles!!.roles.map((v) => (
+                            <XTable.Row>
+                                <XTable.Cell>{v}</XTable.Cell>
+                                <XTable.Cell>{}</XTable.Cell>
+                            </XTable.Row>
+                        ))}
+                    </XRoleContext.Consumer>
                 </XTable.Body>
             </XTable>
             <XHeader text="Your Organization" />

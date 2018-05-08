@@ -5,7 +5,7 @@ import Error from 'next/error';
 import createHistory from 'history/createBrowserHistory';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
-import { withData } from 'openland-x-graphql/withData';
+import { withData } from '../../components/withData';
 
 interface AuthResult {
     expiresIn: number;

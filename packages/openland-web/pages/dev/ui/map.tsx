@@ -167,9 +167,6 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
     render() {
 
         let defaultCity = 'sf';
-        if (this.props.roles.find((v) => v === 'feature-city-nyc-force')) {
-            defaultCity = 'nyc';
-        }
         let city = this.props.router.routeQuery.city || defaultCity;
         let cityName = city === 'sf' ? 'San Francisco' : 'New York';
         let countyName = city === 'sf' ? 'San Francisco' : 'New York';
