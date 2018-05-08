@@ -2,7 +2,7 @@ const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const path = require('path');
 
 const config = {
-    pageExtensions: ['ts', 'tsx'],
+    pageExtensions: ['page.ts', 'page.tsx'],
     webpack(config, options) {
 
         // // Page Extensions

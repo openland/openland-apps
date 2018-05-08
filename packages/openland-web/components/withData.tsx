@@ -15,6 +15,7 @@ import { XRouterProvider } from 'openland-x-routing/XRouterProvider';
 import { Routes } from '../routes';
 import { RootErrorBoundary } from './RootErrorBoundary';
 import getDataFromTree from 'openland-x-graphql/getDataFromTree';
+import '../globals';
 
 export const withData = (ComposedComponent: React.ComponentType) => {
     return class WithData extends React.Component<{
