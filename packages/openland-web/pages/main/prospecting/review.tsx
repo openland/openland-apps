@@ -25,7 +25,6 @@ import { XCard } from '../../../components/X/XCard';
 import { XCardProperty } from './../../../components/X/XCardProperty';
 import { XContent } from 'openland-x/XContent';
 import { XDimensions } from 'openland-x-format/XDimensions';
-import { XForm } from '../../../components/X/XForm';
 import { XHeader } from 'openland-x/XHeader';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XSwitcher } from './../../../components/X/XSwitcher';
@@ -42,6 +41,7 @@ import { XEmpty } from 'openland-x/XEmpty';
 import { XMapSmall } from 'openland-x-map/XMapSmall';
 import { XLoader } from 'openland-x/XLoader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { XForm } from 'openland-x-forms/XForm';
 
 const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';

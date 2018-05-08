@@ -3,8 +3,7 @@ import * as PropTypes from 'prop-types';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x/XVertical';
 import { MutationFunc } from 'react-apollo';
-import { Router } from '../../routes';
-import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
+// import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import { XInput } from 'openland-x/XInput';
 import { XFooter } from 'openland-x/XFooter';
@@ -444,8 +443,8 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
     static RawTextarea = XFormTextAreaStyle;
     static RawSelect = XFormSelect;
 
-    static DateSingle = XDateSinglePicker;
-    static DateRange = XDateRangePicker;
+    // static DateSingle = XDateSinglePicker;
+    // static DateRange = XDateRangePicker;
 
     static childContextTypes = {
         xForm: PropTypes.object.isRequired
@@ -482,11 +481,11 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
             }
             this.props.submitMutation({ variables: destVars })
                 .then((v) => {
-                    if (this.props.completePath) {
-                        Router.pushRoute(this.props.completePath);
-                    } else {
-                        this.setState({ loading: false });
-                    }
+                    // if (this.props.completePath) {
+                    //     Router.pushRoute(this.props.completePath);
+                    // } else {
+                    //     this.setState({ loading: false });
+                    // }
 
                     if (this.props.onCompleted) {
                         this.props.onCompleted(vals);

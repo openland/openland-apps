@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { MutationFunc } from 'react-apollo';
-import { XForm } from './X/XForm';
 import { XFooter } from 'openland-x/XFooter';
 import { ParcelSelect } from '../api';
+import { XForm } from 'openland-x-forms/XForm';
 
 export function DealForm(props: { mutation: MutationFunc<{}>, defaultValues?: { [key: string]: any; } }) {
 

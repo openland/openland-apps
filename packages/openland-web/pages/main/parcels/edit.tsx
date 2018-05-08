@@ -2,11 +2,11 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withParcelMetadataForm } from '../../../api/';
-import { XForm } from '../../../components/X/XForm';
 import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XButton } from 'openland-x/XButton';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { XForm } from 'openland-x-forms/XForm';
 
 export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetadataForm((props) => {
     return (

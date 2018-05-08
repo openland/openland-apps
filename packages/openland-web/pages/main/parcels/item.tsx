@@ -11,7 +11,6 @@ import { trackEvent } from '../../../utils/analytics';
 import { XHorizontal } from 'openland-x/XHorizontal';
 import { sourceFromPoint, sourceFromGeometry } from '../../../utils/map';
 import { OpportunitiButton } from '../../../components/OpportunityButton';
-import { XForm } from '../../../components/X/XForm';
 import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XContent } from 'openland-x/XContent';
@@ -33,6 +32,7 @@ import { XView } from 'openland-x/XView';
 import { XTitle } from 'openland-x/XTitle';
 import { XMapSmall } from 'openland-x-map/XMapSmall';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { XForm } from 'openland-x-forms/XForm';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 

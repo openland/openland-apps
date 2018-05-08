@@ -6,7 +6,6 @@ import {
     UserSelect, withSuperAccountFeatureAdd, withSuperAccountFeatureRemove,
     withSuperAccountMemberRemove
 } from '../../api/';
-import { XForm } from '../../components/X/XForm';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
@@ -14,6 +13,7 @@ import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
 import { XModalTargeted } from 'openland-x-modal/XModalTargeted';
+import { XForm } from 'openland-x-forms/XForm';
 
 const ActivateButton = withSuperAccountActivate((props) => <XButtonMutation style="primary" mutation={props.activate}>Activate</XButtonMutation>);
 const SuspendButton = withSuperAccountSuspend((props) => <XButtonMutation style="danger" mutation={props.suspend}>Suspend</XButtonMutation>);

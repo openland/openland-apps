@@ -5,7 +5,6 @@ import { XVertical } from 'openland-x/XVertical';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XSelect } from '../../../components/X/XSelect';
-import { XForm } from '../../../components/X/XForm';
 import { XCardLink } from '../../../components/Incubator/XCardLink';
 import { withApp } from '../../../components/withApp';
 import { XTooltip } from '../../../components/Incubator/XTooltip';
@@ -54,8 +53,8 @@ export default withApp('UI Framework', 'viewer', (props) => {
                 <XContent>
                     <XTitle>Default Button</XTitle>
                     <XVertical>
-                        <XForm.DateSingle onDateChange={(date: any) => console.warn(date)} />
-                        <XForm.DateRange anyDate={true} />
+                        {/* <XForm.DateSingle onDateChange={(date: any) => console.warn(date)} />
+                        <XForm.DateRange anyDate={true} /> */}
                         <StateSelect />
                         <CitySelector title="San Francisco">
                             <CitySelector.Popper>
@@ -111,25 +110,6 @@ export default withApp('UI Framework', 'viewer', (props) => {
                 <XEmpty icon="remove_shopping_cart" text="empty text">
                     <XLinkExternal href="https://goo.gl/urJT1F" />
                 </XEmpty>
-            </XCard>
-            <XCard>
-                <XForm>
-                    <XForm.Header title="x-form title" />
-                    <XForm.Field title="x-form-field container test">
-                        <XForm.RawInput placeholder="loles" />
-                        <XForm.RawSelect options={[{ title: 'qwe1', value: 'qwe1' }, { title: 'qwe2', value: 'qwe2' }, { title: 'qwe3', value: 'qwe3' }]} />
-                    </XForm.Field>
-                    <XForm.Field title="x-form-field container test" description="If you use your SSN for tax purposes, you can enter that here. Don't have one yet? Apply online. (Sadly, the website has opening hours. Really.)">
-                        <XForm.RawInput placeholder="loles" />
-                    </XForm.Field>
-                </XForm>
-                <XForm>
-                    <XForm.Header title="x-form title" description={`$ concurrently "yarn sources:watch" "yarn assets:watch" "yarn less:watch" "yarn server"`} />
-                    <XForm.Field title="x-form-field container test" description="description text" novalid={true}>
-                        <XForm.RawTextarea placeholder="loles" novalid={true} />
-                        <XForm.RawInput placeholder="loles" invalid={true} />
-                    </XForm.Field>
-                </XForm>
             </XCard>
             <XCard separators={true}>
                 <XBanner title="test data" />
