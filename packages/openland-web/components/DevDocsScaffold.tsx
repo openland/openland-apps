@@ -21,11 +21,19 @@ export function DevDocsScaffold(props: { title?: string, children?: any, bottomO
                 {props.hideSidebar !== true && (
                     <Scaffold.Menu>
                         <Sidebar title="X Framework">
-                            <Sidebar.Item path="/ui">Home</Sidebar.Item>
-                            <Sidebar.Item path="/ui/buttons">Button</Sidebar.Item>
-                            <Sidebar.Item path="/ui/inputs">Input</Sidebar.Item>
-                            <Sidebar.Item path="/ui/map">Map</Sidebar.Item>
-                            <Sidebar.Item path="/ui/bullets">Bullet</Sidebar.Item>
+                            <Sidebar.Item path="/ui">Buttons</Sidebar.Item>
+                            <Sidebar.Item path="/ui/inputs">Inputs</Sidebar.Item>
+                            <Sidebar.Item path="/ui/map">Maps</Sidebar.Item>
+                            <Sidebar.Item path="/ui/bullets">Bullets</Sidebar.Item>
+                            <Sidebar.Item path="/ui/tabs">Tabs</Sidebar.Item>
+                            <Sidebar.Item path="/ui/switchers">Switchers</Sidebar.Item>
+                            <Sidebar.Item path="/ui/sliders">Sliders</Sidebar.Item>
+                            <Sidebar.Item path="/ui/tables">Tables</Sidebar.Item>
+                            <Sidebar.Item path="/ui/properties">Properties</Sidebar.Item>
+                            <Sidebar.Item path="/ui/animations">Animations</Sidebar.Item>
+                            <Sidebar.Item path="/ui/radios">Radio Buttons</Sidebar.Item>
+                            <Sidebar.Item path="/ui/checkbox">Checkboxes</Sidebar.Item>
+                            <Sidebar.Item path="/ui/select">Select</Sidebar.Item>
                             <Sidebar.Item>Basic Styles</Sidebar.Item>
                             <Sidebar.Subitem path="/ui/typography">Typography</Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/grid">Grid</Sidebar.Subitem>

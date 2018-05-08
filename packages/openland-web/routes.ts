@@ -99,10 +99,8 @@ routes.add('/inquiries/', '/main/inquiries/index');
 // UI
 //
 
-routes.add('/ui', '/dev/ui/index');
-routes.add('/ui/', '/dev/ui/index');
-routes.add('/ui/buttons', '/dev/ui/buttons');
-routes.add('/ui/buttons/', '/dev/ui/buttons');
+routes.add('/ui', '/dev/ui/buttons');
+routes.add('/ui/', '/dev/ui/buttons');
 routes.add('/ui/inputs', '/dev/ui/inputs');
 routes.add('/ui/inputs/', '/dev/ui/inputs');
 routes.add('/ui/typography', '/dev/ui/typography');
@@ -113,6 +111,24 @@ routes.add('/ui/map', '/dev/ui/map');
 routes.add('/ui/map/', '/dev/ui/map');
 routes.add('/ui/bullets', '/dev/ui/bullet');
 routes.add('/ui/bullets/', '/dev/ui/bullet');
+routes.add('/ui/tabs', '/dev/ui/tabs');
+routes.add('/ui/tabs/', '/dev/ui/tabs');
+routes.add('/ui/switchers', '/dev/ui/switcher');
+routes.add('/ui/switchers/', '/dev/ui/switcher');
+routes.add('/ui/sliders', '/dev/ui/slider');
+routes.add('/ui/sliders/', '/dev/ui/sliders');
+routes.add('/ui/tables', '/dev/ui/tables');
+routes.add('/ui/tables/', '/dev/ui/tables');
+routes.add('/ui/properties', '/dev/ui/property');
+routes.add('/ui/properties/', '/dev/ui/property');
+routes.add('/ui/animations', '/dev/ui/animations');
+routes.add('/ui/animations/', '/dev/ui/animations');
+routes.add('/ui/radios', '/dev/ui/radio');
+routes.add('/ui/radios/', '/dev/ui/radios');
+routes.add('/ui/checkbox', '/dev/ui/checkbox');
+routes.add('/ui/checkbox/', '/dev/ui/checkbox');
+routes.add('/ui/select', '/dev/ui/select');
+routes.add('/ui/select/', '/dev/ui/select');
 
 //
 // Dev Tools

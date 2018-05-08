@@ -76,11 +76,19 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes }> {
             .then(this.scrollToTop);
     }
     pushQuery = (field: string, value?: string) => {
-        this.props.routes.Router.pushRoute(this.xRouterState.path + '?' + qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value })));
+        let q = qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value }));
+        if (q !== '') {
+            q = '?' + q;
+        }
+        this.props.routes.Router.pushRoute(this.xRouterState.path + q);
     }
 
     pushQueryParams = (params?: {}) => {
-        this.props.routes.Router.pushRoute(this.xRouterState.path + '?' + qs.stringify(Object.assign({}, this.xRouterState.query, params)));
+        let q = qs.stringify(Object.assign({}, this.xRouterState.query, params));
+        if (q !== '') {
+            q = '?' + q;
+        }
+        this.props.routes.Router.pushRoute(this.xRouterState.path + q);
 
     }
 
