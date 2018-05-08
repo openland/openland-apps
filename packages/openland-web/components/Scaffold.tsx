@@ -6,8 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XPicture } from 'openland-x/XPicture';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
-import { XPopover } from './X/XPopover';
-import { XMenu } from './X/XMenu';
+import { XPopover } from './Incubator/XPopover';
 import { withSearch } from '../api';
 import { XWithRole } from './X/XWithRole';
 import { XTooltip } from './Incubator/XTooltip';
@@ -141,6 +140,36 @@ const AvatarImg = Glamorous.img({
     boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
     cursor: 'pointer'
 });
+
+const XMenuItem = Glamorous(XLink)({
+    display: 'block',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    borderRadius: 4,
+    width: '100%',
+    fontSize: 14,
+    fontWeight: 'normal',
+    color: '#525f7f',
+    lineHeight: '28px',
+    // '&:hover': {
+    //     backgroundColor: '#f6f9fc',
+    //     color: '#525f7f'
+    // }
+});
+
+class XMenu extends React.Component {
+
+    static Item = XMenuItem;
+
+    render() {
+        return (
+            <>
+                {this.props.children}
+            </>
+        );
+    }
+}
 
 let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
     return (

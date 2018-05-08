@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { DocumentNode } from 'graphql';
-import { XSelectAsync, XSelectAsyncProps } from '../components/X/XSelect';
+import { XSelectAsync, XSelectAsyncProps } from 'openland-x/XSelect';
 import { ApolloClient } from 'apollo-client';
 
 export function graphqlSelect<V = {}>(document: DocumentNode) {

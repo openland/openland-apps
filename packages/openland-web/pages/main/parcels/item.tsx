@@ -15,7 +15,7 @@ import { Scaffold } from '../../../components/Scaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { ParcelNumber } from '../../../components/ParcelNumber';
-import { XSwitcher } from './../../../components/X/XSwitcher';
+import { XSwitcher } from 'openland-x/XSwitcher';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XButton } from 'openland-x/XButton';
 import { XDimensions } from 'openland-x-format/XDimensions';

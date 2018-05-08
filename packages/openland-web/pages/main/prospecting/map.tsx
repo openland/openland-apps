@@ -6,7 +6,7 @@ import { Scaffold } from '../../../components/Scaffold';
 import { ProspectingNavigationMap } from '../../../components/ProspectingNavigation';
 import { SourcingTileSource } from '../../../api';
 import { OpportunityState } from 'openland-api/Types';
-import { XSwitcher } from '../../../components/X/XSwitcher';
+import { XSwitcher } from 'openland-x/XSwitcher';
 import { trackEvent } from '../../../utils/analytics';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelMap } from '../../../components/ParcelMap';

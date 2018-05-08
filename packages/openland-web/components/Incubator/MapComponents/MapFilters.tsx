@@ -5,7 +5,7 @@ import { XCheckboxGroup } from 'openland-x/XCheckbox';
 import { XRadioGroup } from 'openland-x/XRadio';
 import { Filter } from './PopperFilterButton';
 import { ChangeEvent } from 'react';
-import { XSelect, XSelectProps } from '../../X/XSelect';
+import { XSelect, XSelectProps } from 'openland-x/XSelect';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { AllLandUse, AllZones, AllNYCZOnes } from './utils';

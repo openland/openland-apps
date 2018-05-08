@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { ParcelCard } from '../../../components/ParcelCard';
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
-import { XSwitcher } from '../../../components/X/XSwitcher';
+import { XSwitcher } from 'openland-x/XSwitcher';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { trackEvent } from '../../../utils/analytics';
 import { Scaffold } from '../../../components/Scaffold';
