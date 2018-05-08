@@ -56,6 +56,9 @@
       ],
       "openland-x-forms": [
         "openland-x-forms"
+      ],
+      "openland-x-layout": [
+        "openland-x-layout"
       ]
     },
     "importHelpers": true
@@ -85,6 +88,7 @@
     "./packages/openland-x-map",
     "./packages/openland-x-charts",
     "./packages/openland-x-modal",
-    "./packages/openland-x-forms"
+    "./packages/openland-x-forms",
+    "./packages/openland-x-layout"
   ]
 }

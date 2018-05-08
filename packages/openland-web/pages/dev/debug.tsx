@@ -4,7 +4,7 @@ import { withApp } from '../../components/withApp';
 import { withUserInfo } from '../../components/UserInfo';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from '../../components/DevToolsScaffold';
-import { XContent } from 'openland-x/XContent';
+import { XContent } from 'openland-x-layout/XContent';
 import { XTable } from 'openland-x/XTable';
 
 export default withApp('Super Debug', ['super-admin', 'software-developer'], withUserInfo((props) => {

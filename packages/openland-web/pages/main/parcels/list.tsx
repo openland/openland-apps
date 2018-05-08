@@ -7,7 +7,7 @@ import { TableParcels } from '../../../components/TableParcels';
 import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { CitySelector } from '../../../components/Incubator/CitySelector';
-import { XHorizontal } from 'openland-x/XHorizontal';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XFooter } from 'openland-x/XFooter';

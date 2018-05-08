@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Glamorous from 'glamorous';
-import { XVertical } from 'openland-x/XVertical';
+import { XVertical } from 'openland-x-layout/XVertical';
 import { MutationFunc } from 'react-apollo';
 // import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
 import { XButton, XButtonProps } from 'openland-x/XButton';

@@ -2,10 +2,10 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
-import { XVertical } from 'openland-x/XVertical';
-import { XContent } from 'openland-x/XContent';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
-import { XHorizontal } from 'openland-x/XHorizontal';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XTitle } from 'openland-x/XTitle';
 
 export default withApp('UI Framework - Buttons', 'viewer', (props) => {

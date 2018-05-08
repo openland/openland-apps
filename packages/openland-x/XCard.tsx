@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
-import { XSeparated } from './XSeparated';
+import { XSeparated } from 'openland-x-layout/XSeparated';
 
 interface XCardDivProps {
     shadow?: 'none' | 'normal' | 'medium' | 'large';

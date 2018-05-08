@@ -2,14 +2,13 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { findChild } from './utils';
 // import { XScrollView } from './X/XScrollView';
-import { XVertical } from 'openland-x/XVertical';
+import { XVertical } from 'openland-x-layout/XVertical';
 import { XPicture } from 'openland-x/XPicture';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
 import { XPopover } from './X/XPopover';
 import { XMenu } from './X/XMenu';
 import { withSearch } from '../api';
-import { XCard } from './X/XCard';
 import { XWithRole } from './X/XWithRole';
 import { XTooltip } from './Incubator/XTooltip';
 import { TextAppBar } from 'openland-text/TextAppBar';
@@ -17,6 +16,7 @@ import { TextGlobal } from 'openland-text/TextGlobal';
 import { TextGlobalSearch } from 'openland-text/TextGlobalSearch';
 import { XLink } from 'openland-x/XLink';
 import { XArea } from 'openland-x-format/XArea';
+import { XList, XListItem } from 'openland-x/XList';
 
 //
 // Root
@@ -300,9 +300,9 @@ let SearchResults = withSearch((props) => {
     if (props.data && props.data.search && props.data.search.parcels.edges.length > 0) {
         return (
             <ResultsContainer>
-                <XCard.List>
+                <XList>
                     {props.data.search.parcels.edges.map((v) => (
-                        <XCard.ListItem key={v.node.id} path={'/parcels/' + v.node.id}>
+                        <XListItem key={v.node.id} path={'/parcels/' + v.node.id}>
                             <ResultTilte>
                                 <ResultTilteMain>{TextGlobalSearch.parcelIdPrefix}<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} /></ResultTilteMain>
                                 <ResultTilteHint>{v.node.extrasArea && <XArea value={v.node.extrasArea} />}</ResultTilteHint>
@@ -319,9 +319,9 @@ let SearchResults = withSearch((props) => {
                                     <Highlighted field={'address'} highlight={v.highlight} />
                                 </ResultBody>
                             )}
-                        </XCard.ListItem>
+                        </XListItem>
                     ))}
-                </XCard.List>
+                </XList>
             </ResultsContainer>
         );
     } else {

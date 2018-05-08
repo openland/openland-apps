@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as PropTypes from 'prop-types';
-import { Router } from '../../routes';
 
 const XCardWrapper = Glamorous.div({
     display: 'flex',
@@ -26,19 +25,15 @@ const XCardItemWrapper = Glamorous.div({
     }
 });
 
-export function XCardList(props: { children: any }) {
-    return (<XCardWrapper>{props.children}</XCardWrapper>);
-}
-
-export class XCardListItem extends React.Component<{ path?: string }> {
+export class XListItem extends React.Component<{ path?: string }> {
     static contextTypes = {
         router: PropTypes.object.isRequired
     };
 
     mouseDownHandler = () => {
-        if (this.props.path) {
-            Router.pushRoute(this.props.path);
-        }
+        // if (this.props.path) {
+        //     Router.pushRoute(this.props.path);
+        // }
     }
 
     render() {
@@ -50,4 +45,8 @@ export class XCardListItem extends React.Component<{ path?: string }> {
             </XCardItemWrapper>
         );
     }
+}
+
+export function XList(props: { children: any }) {
+    return (<XCardWrapper>{props.children}</XCardWrapper>);
 }

@@ -7,7 +7,7 @@ import { XTooltip } from './Incubator/XTooltip';
 import { XWithRole } from './X/XWithRole';
 import { ProjectTypes } from './ProjectTypes';
 import { Text } from '../strings';
-import { XVertical } from 'openland-x/XVertical';
+import { XVertical } from 'openland-x-layout/XVertical';
 import { XArea } from 'openland-x-format/XArea';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XDistance } from 'openland-x-format/XDistance';

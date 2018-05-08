@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHorizontal } from 'openland-x/XHorizontal';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XBullet } from 'openland-x/XBullet';
 import XStyles from 'openland-x/XStyles';
 

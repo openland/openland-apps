@@ -1,7 +1,7 @@
 import '../../../globals';
 import * as React from 'react';
 import { XCard } from '../../../components/X/XCard';
-import { XVertical } from 'openland-x/XVertical';
+import { XVertical } from 'openland-x-layout/XVertical';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XSwitcher } from '../../../components/X/XSwitcher';
 import { XSelect } from '../../../components/X/XSelect';
@@ -14,7 +14,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { StateSelect } from '../../../api';
 import { XHeader } from 'openland-x/XHeader';
 import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
-import { XContent } from 'openland-x/XContent';
+import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
 import { XEmpty } from 'openland-x/XEmpty';
 import { XBanner } from 'openland-x/XBanner';
