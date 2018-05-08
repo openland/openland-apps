@@ -1,6 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
-import { XCard } from '../../../components/X/XCard';
+import { XCard } from 'openland-x/XCard';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XSwitcher } from '../../../components/X/XSwitcher';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XCard } from './X/XCard';
+import { XCard } from 'openland-x/XCard';
 import { XStreetView } from 'openland-x-map/XStreetView';
 import { ParcelTileSource, BlockTileSource } from '../api/index';
 import { findCenter } from '../utils/map';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XCard } from './X/XCard';
+import { XCard } from 'openland-x/XCard';
 
 let ErrorDiv = Glamorous.div({
     position: 'relative',

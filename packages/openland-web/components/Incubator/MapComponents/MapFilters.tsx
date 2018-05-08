@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XCard } from '../../X/XCard';
+import { XCard } from 'openland-x/XCard';
 import { XCheckboxGroup } from 'openland-x/XCheckbox';
 import { XRadioGroup } from 'openland-x/XRadio';
 import { Filter } from './PopperFilterButton';

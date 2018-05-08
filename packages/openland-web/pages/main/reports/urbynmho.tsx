@@ -2,7 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
-import { XCard } from '../../../components/X/XCard';
+import { XCard } from 'openland-x/XCard';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { OpportunitiesTable } from '../../../components/OpportunitiesTableUrbynReport';
 import { OpportunityState } from 'openland-api/Types';

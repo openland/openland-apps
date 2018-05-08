@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XCard } from '../../X/XCard';
+import { XCard } from 'openland-x/XCard';
 import { XIcon } from 'openland-x/XIcon';
 import ClickOutside from '../ClickOutside';
 import { XLink, XLinkProps } from 'openland-x/XLink';

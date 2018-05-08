@@ -16,7 +16,6 @@ import { OpportunitiButton } from '../../OpportunityButton';
 import { OwnerTypeComponent } from '../../OwnerTypeComponent';
 import { ParcelNumber } from '../../ParcelNumber';
 import { ProjectTypes } from '../../ProjectTypes';
-import { XCard } from '../../X/XCard';
 import { XHeader } from 'openland-x/XHeader';
 import { XWithRole } from '../../X/XWithRole';
 import { ZoningCode } from '../../ZoningCode';
@@ -27,6 +26,7 @@ import { XView } from 'openland-x-layout/XView';
 import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
 import { XLoader } from 'openland-x/XLoader';
+import { XPropertyList } from 'openland-x/XProperty';
 
 let panelWidth = 390;
 
@@ -178,7 +178,7 @@ const SeparatedDiv = Glamorous(XContent)({
     paddingBottom: 18,
 });
 
-const PropertySeparatedDiv = Glamorous(XCard.PropertyList)();
+const PropertySeparatedDiv = Glamorous(XPropertyList)();
 
 export const ParcelCard = withParcelDirect((props) => (
     <Container>
