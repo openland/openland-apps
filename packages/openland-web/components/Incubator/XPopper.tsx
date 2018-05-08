@@ -95,6 +95,7 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
     private _popper: PopperJS.default;
     // private _arrowNode: React.ReactNode;
     private _node: Element;
+    private _arrowNode: Element;
     private _component: React.ReactNode;
 
     constructor(props: PopperProps) {
@@ -170,18 +171,19 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
             ...popperProps,
             modifiers: {
                 ...popperProps.modifiers,
-                applyStyle: { enabled: false },
+                // applyStyle: { enabled: false },
                 preventOverflow: {
                     boundariesElement: 'viewport'
-                }
-                // arrow: {
-                //     element: this._arrowNode as any,
-                // },
+                },
+                arrow: {
+                    enabled: true,
+                    element: this._arrowNode as any,
+                },
             },
-            onUpdate: (data: Popper.Data) => {
-                this.setState({ data });
-                return data;
-            },
+            // onUpdate: (data: Popper.Data) => {
+            //     this.setState({ data });
+            //     return data;
+            // },
         });
 
         // schedule an update to make sure everything gets positioned correctly
@@ -195,11 +197,24 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
         }
     }
 
-    _setNodeRef = (node: Element) => {
+    _setNodeRef = (node: any) => {
         this._node = node;
-        if (this._node) {
+        this.initPopper();
+    }
+
+    _setArrowRef = (node: any) => {
+        this._arrowNode = node;
+        this.initPopper();
+    }
+
+    initPopper = () => {
+        if (this._node && this._arrowNode) {
             this._createPopper();
         }
+    }
+
+    stub = () => {
+        //
     }
 
     render() {
@@ -207,12 +222,21 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
 
         this._component = componentFactory({
             style: this.state.data && this.state.data.styles,
-            ref: this._setNodeRef,
+            ref: this.stub,
             'data-placement': this.state.data && this.state.data.placement,
             // ['data-x-out-of-boundaries']: popperHide,
         });
 
-        return this._component;
+        return (
+            <div ref={this._setNodeRef}>
+                <div className="arrow" ref={this._setArrowRef} style={{ width: 10, height: 10, background: 'green', position: 'absolute' }} />
+                <div style={{ padding: 10 }} >
+                    {this._component}
+                </div>
+            </div >
+            // this._component
+
+        );
     }
 }
 
@@ -375,85 +399,86 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
             animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
         }
     },
+    margin: 10,    
 
-    '& .popper .popper-content::after, & .popper-content::after': {
-        display: 'block',
-        content: props.arrowStyle === 'default' ? `''` : undefined,
-        width: 0,
-        height: 0,
-        borderStyle: 'solid',
-        position: 'absolute'
-    },
+    // '& .popper .popper-content::after, & .popper-content::after': {
+    //     display: 'block',
+    //     content: props.arrowStyle === 'default' ? `''` : undefined,
+    //     width: 0,
+    //     height: 0,
+    //     borderStyle: 'solid',
+    //     position: 'absolute'
+    // },
 
-    '& .popper[data-placement^="top"], &[x-placement^="top"] .popper-content': {
-        marginBottom: 10
-    },
+    // '& .popper[data-placement^="top"], &[x-placement^="top"] .popper-content': {
+    //     marginBottom: 10
+    // },
 
-    '& .popper[data-placement^="top"] .popper-content::after, &[x-placement^="top"] .popper-content::after': {
-        borderWidth: '5px 5px 0 5px',
-        borderColor: '#fff transparent transparent transparent',
-        bottom: -5,
-        left: 'calc(50% - 5px)',
-        marginTop: 0,
-        marginBottom: 0
-    },
+    // '& .popper[data-placement^="top"] .popper-content::after, &[x-placement^="top"] .popper-content::after': {
+    //     borderWidth: '5px 5px 0 5px',
+    //     borderColor: '#fff transparent transparent transparent',
+    //     bottom: -5,
+    //     left: 'calc(50% - 5px)',
+    //     marginTop: 0,
+    //     marginBottom: 0
+    // },
 
-    '& .popper[data-placement^="bottom"], &[x-placement^="bottom"] .popper-content': {
-        marginTop: 10,
-        '&.show > .popper-content, &.show': {
-            animationName: `${showAnimationBottom} !important`,
-        },
-        '&.hide > .popper-content, &.hide': {
-            animationName: `${hideAnimationBottom} !important`
-        }
-    },
+    // '& .popper[data-placement^="bottom"], &[x-placement^="bottom"] .popper-content': {
+    //     marginTop: 10,
+    //     '&.show > .popper-content, &.show': {
+    //         animationName: `${showAnimationBottom} !important`,
+    //     },
+    //     '&.hide > .popper-content, &.hide': {
+    //         animationName: `${hideAnimationBottom} !important`
+    //     }
+    // },
 
-    '& .popper[data-placement^="bottom"] .popper-content::after, &[x-placement^="bottom"] .popper-content::after': {
-        borderWidth: '0 5px 5px 5px',
-        borderColor: 'transparent transparent #fff transparent',
-        top: -5,
-        left: 'calc(50% - 5px)',
-        marginTop: 0,
-        marginBottom: 0
-    },
+    // '& .popper[data-placement^="bottom"] .popper-content::after, &[x-placement^="bottom"] .popper-content::after': {
+    //     borderWidth: '0 5px 5px 5px',
+    //     borderColor: 'transparent transparent #fff transparent',
+    //     top: -5,
+    //     left: 'calc(50% - 5px)',
+    //     marginTop: 0,
+    //     marginBottom: 0
+    // },
 
-    '& .popper[data-placement^="right"], &[x-placement^="right"] .popper-content': {
-        marginLeft: 10,
-        '&.show > .popper-content, &.show': {
-            animationName: `${showAnimationRight} !important`,
-        },
-        '&.hide > .popper-content, &.hide': {
-            animationName: `${hideAnimationRight} !important`
-        }
-    },
+    // '& .popper[data-placement^="right"], &[x-placement^="right"] .popper-content': {
+    //     marginLeft: 10,
+    //     '&.show > .popper-content, &.show': {
+    //         animationName: `${showAnimationRight} !important`,
+    //     },
+    //     '&.hide > .popper-content, &.hide': {
+    //         animationName: `${hideAnimationRight} !important`
+    //     }
+    // },
 
-    '& .popper[data-placement^="right"] .popper-content::after, &[x-placement^="right"] .popper-content::after': {
-        borderWidth: '5px 5px 5px 0',
-        borderColor: 'transparent #fff transparent transparent',
-        left: -5,
-        top: 'calc(50% - 5px)',
-        marginLeft: 0,
-        marginRight: 0
-    },
+    // '& .popper[data-placement^="right"] .popper-content::after, &[x-placement^="right"] .popper-content::after': {
+    //     borderWidth: '5px 5px 5px 0',
+    //     borderColor: 'transparent #fff transparent transparent',
+    //     left: -5,
+    //     top: 'calc(50% - 5px)',
+    //     marginLeft: 0,
+    //     marginRight: 0
+    // },
 
-    '& .popper[data-placement^="left"], &[x-placement^="left"] .popper-content': {
-        marginRight: 10,
-        '&.show > .popper-content, &.show': {
-            animationName: `${showAnimationLeft} !important`,
-        },
-        '&.hide > .popper-content, &.hide': {
-            animationName: `${hideAnimationLeft} !important`
-        }
-    },
+    // '& .popper[data-placement^="left"], &[x-placement^="left"] .popper-content': {
+    //     marginRight: 10,
+    //     '&.show > .popper-content, &.show': {
+    //         animationName: `${showAnimationLeft} !important`,
+    //     },
+    //     '&.hide > .popper-content, &.hide': {
+    //         animationName: `${hideAnimationLeft} !important`
+    //     }
+    // },
 
-    '& .popper[data-placement^="left"] .popper-content::after, &[x-placement^="left"] .popper-content::after': {
-        borderWidth: '5px 0 5px 5px',
-        borderColor: 'transparent transparent transparent #fff',
-        right: -5,
-        top: 'calc(50% - 5px)',
-        marginLeft: 0,
-        marginRight: 0
-    },
+    // '& .popper[data-placement^="left"] .popper-content::after, &[x-placement^="left"] .popper-content::after': {
+    //     borderWidth: '5px 0 5px 5px',
+    //     borderColor: 'transparent transparent transparent #fff',
+    //     right: -5,
+    //     top: 'calc(50% - 5px)',
+    //     marginLeft: 0,
+    //     marginRight: 0
+    // },
 
     '& .popper[data-x-out-of-boundaries], &[data-x-out-of-boundaries]': {
         display: 'none'
