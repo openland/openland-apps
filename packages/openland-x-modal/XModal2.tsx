@@ -1,7 +1,10 @@
 import * as React from 'react';
 import * as ReactModal from 'react-modal';
+import Glamorous from 'glamorous';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { XButton } from 'openland-x/XButton';
 
 class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'default' | 'small', isOpen: boolean, onCloseRequest: () => void; }> {
 
@@ -21,12 +24,9 @@ class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'def
                 shouldCloseOnOverlayClick={true}
                 shouldCloseOnEsc={true}
                 ariaHideApp={false}
+                closeTimeoutMS={300}
                 style={{
                     overlay: {
-                        // animationName: `${this.state.isHiding ? hideAnimation : showAnimation}`,
-                        // animationTimingFunction: `${this.state.isHiding ? 'cubic-bezier(0.25, 0.8, 0.25, 1)' : 'cubic-bezier(0.55, 0, 0.55, 0.2)'}`,
-                        // animationDuration: '0.2s',
-                        // animationFillMode: 'forwards',
                         zIndex: 100,
                         backgroundColor: (this.props.size !== 'x-large' && this.props.size !== 'large') ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.3)'
                     },
@@ -43,11 +43,11 @@ class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'def
 
                         // Sizes
                         width: this.props.size !== 'x-large' ? width : 'calc(100% - 128px)',
-                        top: this.props.size !== 'x-large' ? '50%' : 64,
+                        top: this.props.size !== 'x-large' ? 96 : 64,
                         left: this.props.size !== 'x-large' ? '50%' : 64,
                         right: this.props.size !== 'x-large' ? 'auto' : 64,
                         bottom: this.props.size !== 'x-large' ? 'auto' : 64,
-                        transform: this.props.size !== 'x-large' ? 'translate(-50%, -50%)' : undefined,
+                        transform: this.props.size !== 'x-large' ? 'translate(-50%, 0%)' : undefined,
                     }
                 }}
             >
@@ -57,10 +57,60 @@ class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'def
     }
 }
 
+let Body = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    paddingLeft: 24,
+    paddingRight: 24,
+});
+
+let Header = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    paddingLeft: 24,
+    paddingRight: 24,
+    height: 64,
+    lineHeight: '64px',
+    fontSize: '18px',
+    fontWeight: 'bold'
+});
+
+let Footer = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    paddingLeft: 24,
+    paddingRight: 24,
+    height: 64,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+});
+
+class ModalContentRender extends React.Component<{
+    title?: string;
+    heading?: any;
+    body?: any;
+    footer?: any;
+}> {
+    render() {
+        return (
+            <XVertical separator="none">
+                <Header>Header</Header>
+                <Body>
+                    {this.props.children}
+                </Body>
+                <Footer><XButton text="Close" /></Footer>
+            </XVertical>
+        );
+    }
+}
+
 export interface XModalProps {
 
     // Content
     title?: string;
+    heading?: any;
+    body?: any;
+    footer?: any;
 
     // Style
     size?: 'x-large' | 'large' | 'default' | 'small';
@@ -109,7 +159,9 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                 <>
                     {TargetClone}
                     <ModalRender isOpen={this.state.isOpen} onCloseRequest={this.onModalCloseRequest} size={size}>
-                        {this.props.children}
+                        <ModalContentRender title={this.props.title} heading={this.props.heading} footer={this.props.footer} body={this.props.body}>
+                            {this.props.children}
+                        </ModalContentRender>
                     </ModalRender>
                 </>
             );
@@ -121,7 +173,9 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                         this.lastRouter = router;
                         return (
                             <ModalRender isOpen={!!router!!.query[q]} onCloseRequest={this.onModalCloseRequest} size={size}>
-                                {this.props.children}
+                                <ModalContentRender title={this.props.title} heading={this.props.heading} footer={this.props.footer} body={this.props.body}>
+                                    {this.props.children}
+                                </ModalContentRender>
                             </ModalRender>
                         );
                     }}
@@ -130,7 +184,9 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
         } else if (this.props.isOpen !== undefined) {
             return (
                 <ModalRender isOpen={this.props.isOpen} onCloseRequest={this.onModalCloseRequest} size={size}>
-                    {this.props.children}
+                    <ModalContentRender title={this.props.title} heading={this.props.heading} footer={this.props.footer} body={this.props.body}>
+                        {this.props.children}
+                    </ModalContentRender>
                 </ModalRender>
             );
         } else {

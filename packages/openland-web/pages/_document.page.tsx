@@ -119,6 +119,17 @@ export default class StateDocument extends Document {
                         sub, sup { font-size:75%; line-height:0; position:relative; }
                         sup { top:-0.5em; }
                         sub { bottom:-0.25em; }
+
+                        .ReactModal__Overlay {
+                            opacity: 0;
+                        } 
+                        .ReactModal__Overlay--after-open {
+                            opacity: 1;
+                            transition: opacity 300ms;
+                        }  
+                        .ReactModal__Overlay--before-close {
+                            opacity: 0;
+                        }
                         `}
                     </style>
                 </Head>

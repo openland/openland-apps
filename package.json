@@ -98,6 +98,7 @@
 		"react-dom": "^16.2.0",
 		"react-form": "^2.14.1",
 		"react-ga": "^2.3.5",
+		"react-lorem-component": "^0.13.0",
 		"react-lottie": "^1.1.0",
 		"react-modal": "^3.2.1",
 		"react-native": "^0.55.0",

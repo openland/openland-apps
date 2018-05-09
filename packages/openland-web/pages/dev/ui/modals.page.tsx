@@ -7,6 +7,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
 import { XModal } from 'openland-x-modal/XModal2';
 import { XButton } from 'openland-x/XButton';
+import Lorem from 'react-lorem-component';
 
 class ControlledModal extends React.Component<{}, { show: boolean }> {
     constructor(props: {}) {
@@ -32,12 +33,12 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                 <XVertical>
                     <XTitle>Modals</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>
-                        Hey!
+                        <Lorem count={2} />
                     </XModal>
                     <XTitle>Controlled</XTitle>
                     <ControlledModal />
                     <XTitle>Routed</XTitle>
-                    <XButton query={{ field: 'modal', value: 'true' }} text="Show Modal"/>
+                    <XButton query={{ field: 'modal', value: 'true' }} text="Show Modal" />
                     <XModal targetQuery="modal">
                         Hey!
                     </XModal>
