@@ -6,7 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
 import { XTitle } from 'openland-x/XTitle';
-import { XPopper2 } from '../../../components/Incubator/XPopper2';
+import { XPopper2, PopperDefaultRender } from '../../../components/Incubator/XPopper2';
 
 export default withApp('UI Framework - Popper', 'viewer', (props) => {
     return (
@@ -14,7 +14,7 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
             <XContent>
                 <XVertical>
                     <XTitle>Tooltip</XTitle>
-                    <XVertical>
+                      <XVertical>
 
                         <XPopper2 content={'lorem ipsum'} show={true} placement="right">
                             <XButton text="right | always shown" alignSelf="flex-start" />
@@ -40,8 +40,20 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                             <XButton text="margin-left" alignSelf="flex-start" />
                         </XPopper2>
 
-                         <XPopper2 content={'lorem ipsum'} show={true}  placement="bottom" margin={20}>
+                         <XPopper2 content={'lorem ipsum'} show={true}  placement="right" margin={20}>
                             <XButton text="margin" alignSelf="flex-start" />
+                        </XPopper2>
+
+                         <XPopper2 content={(<XButton text="lorem ipsum"/>)} show="hover"  placement="right" >
+                            <XButton text="reach content" alignSelf="flex-start" />
+                        </XPopper2>
+
+                         <XPopper2 content={(<XButton text="lorem ipsum"/>)} show="hover"  placement="right" animated={false}>
+                            <XButton text="not animated" alignSelf="flex-start" />
+                        </XPopper2>
+
+                        <XPopper2 content={(<XButton text="lorem ipsum"/>)} show="hover"  placement="right" renderer={PopperDefaultRender}>
+                            <XButton text="using rendered" alignSelf="flex-start" />
                         </XPopper2>
                     </XVertical>
 
