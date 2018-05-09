@@ -9,8 +9,8 @@ import { XArea } from 'openland-x-format/XArea';
 import { XDate } from 'openland-x-format/XDate';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
-import { XModalRouted } from 'openland-x-modal/XModalRouted';
 import { XLoader } from 'openland-x/XLoader';
+import { XModal } from 'openland-x-modal/XModal';
 
 // import { OpportunityState } from 'openland-api/Types';
 // import { OpportunitiesTable as _OpportunitiesTable } from './OpportunitiesTableUrbynReport';
@@ -184,7 +184,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
 
     return (
         <XLoader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
-            <XModalRouted title="Export to CVS" query="export">
+            <XModal title="Export to CVS" targetQuery="export">
                 <ExportModal
                     variables={(props as any).variables}
                     // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined, first: 10 }}
@@ -198,7 +198,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                 >
                     <XCard.Empty text="There are no parcels for review" icon="sort" />
                 </_OpportunitiesTable> */}
-            </XModalRouted>
+            </XModal>
 
             {props.data.alphaOpportunities && props.data.alphaOpportunities.edges.length !== 0 && (
                 <>

@@ -1,115 +1,248 @@
 import * as React from 'react';
-import * as glamor from 'glamor';
 import * as ReactModal from 'react-modal';
-import { XDialog } from './XDialog';
+import Glamorous from 'glamorous';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XRouter } from 'openland-x-routing/XRouter';
+import { XButton } from 'openland-x/XButton';
+import { XModalContext } from './XModalContext';
 
-const showAnimation = glamor.keyframes({
-    '0%': { backgroundColor: 'transparent', opacity: 0 },
-    '100%': { backgroundColor: 'rgba(0,0,0,0.75)', opacity: 1 }
-});
-
-const hideAnimation = glamor.keyframes({
-    '0%': { backgroundColor: 'rgba(0,0,0,0.75)', opacity: 1 },
-    '100%': { backgroundColor: 'transparent', opacity: 0 }
-});
-
-const contentAnimation = glamor.keyframes({
-    '0%': {
-        opacity: 0,
-        transform: 'translateY(100%)',
-        transformOrigin: '50% 100%'
-    },
-    '100%': {
-        opacity: 1,
-        transform: 'translateY(0)',
-        transformOrigin: '50% 100%'
-    }
-});
-
-export interface XModalStyleProps {
-    title: string;
-    style?: 'full-screen' | 'normal';
-    width?: number | string; // DEPRECATED!
-}
-
-export interface XModalProps extends XModalStyleProps {
-    isOpen: boolean;
-    closeOnClick?: boolean;
-    onClosed: () => void;
-}
-
-export class XModal extends React.Component<XModalProps, { isHiding: boolean }> {
-
-    constructor(props: XModalProps) {
-        super(props);
-        this.state = { isHiding: false };
-    }
-
-    handleClose = (src?: any) => {
-        if (src && src.preventDefault) {
-            src.preventDefault();
-        }
-        this.props.onClosed();
-        this.setState({ isHiding: true });
-        setTimeout(() => { this.setState({ isHiding: false }); }, 250);
-    }
+class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'default' | 'small', isOpen: boolean, closeOnClick?: boolean, onCloseRequest: () => void; }> {
 
     render() {
 
-        //
-        // Portal's reference callback is expected to be called BEFORE adding to DOM tree and it seems to be true
-        // for React.
-        //
+        let width = 560;
+        if (this.props.size === 'large') {
+            width = 940;
+        } else if (this.props.size === 'small') {
+            width = 460;
+        }
 
         return (
             <ReactModal
-                isOpen={this.props.isOpen || this.state.isHiding}
-                onRequestClose={this.handleClose}
-                ariaHideApp={false}
+                isOpen={this.props.isOpen === true}
+                onRequestClose={this.props.onCloseRequest}
                 shouldCloseOnOverlayClick={this.props.closeOnClick !== undefined ? this.props.closeOnClick : true}
+                shouldCloseOnEsc={true}
+                ariaHideApp={false}
+                closeTimeoutMS={300}
                 style={{
                     overlay: {
-                        animationName: `${this.state.isHiding ? hideAnimation : showAnimation}`,
-                        animationTimingFunction: `${this.state.isHiding ? 'cubic-bezier(0.25, 0.8, 0.25, 1)' : 'cubic-bezier(0.55, 0, 0.55, 0.2)'}`,
-                        animationDuration: '0.2s',
-                        animationFillMode: 'forwards',
-                        zIndex: 10,
-                        backgroundColor: 'rgba(0,0,0,0.75)'
+                        zIndex: 100,
+                        backgroundColor: (this.props.size !== 'x-large' && this.props.size !== 'large') ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.3)'
                     },
                     content: {
-                        minWidth: this.props.width ? undefined : 600,
-                        maxWidth: this.props.style === 'full-screen' ? undefined : this.props.width ? undefined : 728,
-                        width: this.props.style === 'full-screen' ? '100%' : this.props.width ? this.props.width : undefined,
                         display: 'block',
-                        background: 'none',
-                        border: 'none',
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
+                        background: '#ffffff',
                         margin: 'auto',
-                        // paddingLeft: this.props.style === 'full-screen' ? undefined : 64,
-                        // paddingRight: this.props.style === 'full-screen' ? undefined : 64,
-                        // paddingTop: this.props.style === 'full-screen' ? undefined : 64,
-                        // paddingBottom: this.props.style === 'full-screen' ? undefined : 64,
                         padding: 0,
-                        borderRadius: 0,
-                        animationDuration: '0.2s',
-                        animationFillMode: 'forwards',
-                        animationName: `${contentAnimation}`,
-                        animationTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
+
+                        // Border/shadow
+                        border: 'none',
+                        boxShadow: '0px 2px 2px 0px #777',
+                        borderRadius: 6,
+
+                        // Sizes
+                        width: this.props.size !== 'x-large' ? width : 'calc(100% - 128px)',
+                        top: this.props.size !== 'x-large' ? 96 : 64,
+                        left: this.props.size !== 'x-large' ? '50%' : 64,
+                        right: this.props.size !== 'x-large' ? 'auto' : 64,
+                        bottom: this.props.size !== 'x-large' ? 'auto' : 64,
+                        transform: this.props.size !== 'x-large' ? 'translate(-50%, 0%)' : undefined,
                     }
                 }}
             >
-                <XDialog
-                    style={this.props.style}
-                    title={this.props.title}
-                    onClose={this.handleClose}
-                    width={this.props.width}
-                >
+                <XModalContext.Provider value={{ close: this.props.onCloseRequest }}>
                     {this.props.children}
-                </XDialog>
+                </XModalContext.Provider>
             </ReactModal>
         );
+    }
+}
+
+let Root = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    height: '100%'
+});
+
+export let XModalBody = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    paddingLeft: 24,
+    paddingRight: 24,
+    flexGrow: 1
+});
+
+export let XModalHeader = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    paddingLeft: 24,
+    paddingRight: 24,
+    height: 64,
+    lineHeight: '64px',
+    fontSize: '18px',
+    fontWeight: 'bold'
+});
+
+export let XModalHeaderEmpty = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    paddingLeft: 24,
+    paddingRight: 24,
+    height: 24,
+    lineHeight: '64px',
+    fontSize: '18px',
+    fontWeight: 'bold'
+});
+
+export let XModalFooter = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    paddingLeft: 24,
+    paddingRight: 24,
+    height: 64,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+});
+
+class ModalContentRender extends React.Component<{
+    title?: string;
+    heading?: any;
+    body?: any;
+    footer?: any;
+    customContent?: boolean;
+}> {
+    render() {
+        if (this.props.customContent) {
+            return (
+                <Root>
+                    {this.props.children}
+                </Root>
+            );
+        }
+        return (
+            <Root>
+                {this.props.heading === undefined && this.props.title && <XModalHeader>{this.props.title}</XModalHeader>}
+                {this.props.heading === undefined && !this.props.title && <XModalHeaderEmpty />}
+                {this.props.heading !== undefined && this.props.heading}
+                {this.props.body === undefined && <XModalBody>{this.props.children}</XModalBody>}
+                {this.props.body !== undefined && this.props.body}
+                {this.props.footer === undefined && <XModalFooter><XButton text="Close" autoClose={true} /></XModalFooter>}
+                {this.props.footer !== undefined && this.props.footer}
+            </Root>
+        );
+    }
+}
+
+export interface XModalProps {
+
+    // Content
+    title?: string;
+    heading?: any;
+    body?: any;
+    footer?: any;
+    customContent?: boolean;
+
+    // Style
+    size?: 'x-large' | 'large' | 'default' | 'small';
+
+    // Controlled/Uncontrolled
+    isOpen?: boolean;
+    onClosed?: () => void;
+    closeOnClick?: boolean;
+
+    // Target
+    target?: React.ReactElement<any>;
+    targetQuery?: string;
+}
+
+export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }> {
+
+    static Footer = XModalFooter;
+
+    // TODO: Better perissting of router
+    lastRouter: XRouter | undefined;
+
+    constructor(props: XModalProps) {
+        super(props);
+        this.state = { isOpen: false };
+    }
+
+    onTargetClick = () => {
+        this.setState((state) => ({ isOpen: true }));
+    }
+
+    onModalCloseRequest = () => {
+        if (this.props.onClosed) {
+            this.props.onClosed();
+        }
+        if (this.props.target) {
+            this.setState((state) => ({ isOpen: false }));
+        } else if (this.props.targetQuery) {
+            if (this.lastRouter) {
+                this.lastRouter!!.pushQuery(this.props.targetQuery!!);
+            }
+        }
+    }
+
+    render() {
+        let size = this.props.size || 'default';
+        if (this.props.target) {
+            let TargetClone = React.cloneElement(this.props.target, { onClick: this.onTargetClick });
+            return (
+                <>
+                    {TargetClone}
+                    <ModalRender isOpen={this.state.isOpen} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
+                        <ModalContentRender
+                            title={this.props.title}
+                            heading={this.props.heading}
+                            footer={this.props.footer}
+                            body={this.props.body}
+                            customContent={this.props.customContent}
+                        >
+                            {this.props.children}
+                        </ModalContentRender>
+                    </ModalRender>
+                </>
+            );
+        } else if (this.props.targetQuery) {
+            let q = this.props.targetQuery;
+            return (
+                <XRouterContext.Consumer>
+                    {(router) => {
+                        this.lastRouter = router;
+                        return (
+                            <ModalRender isOpen={!!router!!.query[q]} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
+                                <ModalContentRender
+                                    title={this.props.title}
+                                    heading={this.props.heading}
+                                    footer={this.props.footer}
+                                    body={this.props.body}
+                                    customContent={this.props.customContent}
+                                >
+                                    {this.props.children}
+                                </ModalContentRender>
+                            </ModalRender>
+                        );
+                    }}
+                </XRouterContext.Consumer>
+            );
+        } else if (this.props.isOpen !== undefined) {
+            return (
+                <ModalRender isOpen={this.props.isOpen} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
+                    <ModalContentRender
+                        title={this.props.title}
+                        heading={this.props.heading}
+                        footer={this.props.footer}
+                        body={this.props.body}
+                        customContent={this.props.customContent}>
+                        {this.props.children}
+                    </ModalContentRender>
+                </ModalRender>
+            );
+        } else {
+            throw Error('You should provide show, targetQuery or target');
+        }
     }
 }

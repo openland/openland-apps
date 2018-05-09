@@ -6,20 +6,21 @@ import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
-import { XFooter } from 'openland-x/XFooter';
-import { XModalTargeted } from 'openland-x-modal/XModalTargeted';
 import { XForm } from 'openland-x-forms/XForm';
+import { XModalForm } from 'openland-x-modal/XModalForm';
 
 const AddAccountForm = withSuperAccountAdd((props) => {
     return (
-        <XForm submitMutation={props.add} mutationDirect={true}>
+        <XModalForm
+            title="Add new organization"
+            target={<XButton text="Add account" />}
+            submitMutation={props.add}
+            mutationDirect={true}
+            actionName="Add">
             <XForm.Field title="Organization Name">
                 <XForm.Text field="title" />
             </XForm.Field>
-            <XFooter>
-                <XForm.Submit style="primary" text="Add"/>
-            </XFooter>
-        </XForm>
+        </XModalForm>
     );
 });
 
@@ -27,14 +28,7 @@ export default withApp('Super Organizations', 'super-admin', withSuperAccounts((
     return (
         <DevToolsScaffold title="Accounts">
             <XHeader text="Accounts" description={props.data.superAccounts.length + ' total'}>
-                <XModalTargeted fullScreen={false} title="Adding Account">
-                    <XModalTargeted.Target>
-                        <XButton text="Add account" />
-                    </XModalTargeted.Target>
-                    <XModalTargeted.Content>
-                        <AddAccountForm />
-                    </XModalTargeted.Content>
-                </XModalTargeted>
+                <AddAccountForm />
             </XHeader>
             <XTable>
                 <XTable.Header>
@@ -49,7 +43,7 @@ export default withApp('Super Organizations', 'super-admin', withSuperAccounts((
                             <XTable.Cell>{v.state}</XTable.Cell>
                             <XTable.Cell>
                                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                    <XButton path={'/super/orgs/' + v.id} style="ghost" text="View"/>
+                                    <XButton path={'/super/orgs/' + v.id} style="ghost" text="View" />
                                 </div>
                             </XTable.Cell>
                         </XTable.Row>

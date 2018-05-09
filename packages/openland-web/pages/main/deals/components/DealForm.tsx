@@ -1,10 +1,16 @@
 import * as React from 'react';
 import { MutationFunc } from 'react-apollo';
-import { XFooter } from 'openland-x/XFooter';
 import { XForm } from 'openland-x-forms/XForm';
 import { ParcelSelect } from '../../../../api';
+import { XModalForm } from 'openland-x-modal/XModalForm';
 
-export function DealForm(props: { mutation: MutationFunc<{}>, defaultValues?: { [key: string]: any; } }) {
+export function DealForm(props: {
+    query: string,
+    title: string,
+    action: string,
+    mutation: MutationFunc<{}>,
+    defaultValues?: { [key: string]: any; }
+}) {
 
     let defs: { [key: string]: any; } = {};
     let fields = ['title', 'address', 'location', 'status', 'statusDate', 'statusDescription',
@@ -23,7 +29,7 @@ export function DealForm(props: { mutation: MutationFunc<{}>, defaultValues?: { 
     }
 
     return (
-        <XForm submitMutation={props.mutation} defaultValues={defs}>
+        <XModalForm submitMutation={props.mutation} defaultValues={defs} targetQuery={props.query} actionName={props.action} title={props.title}>
             <XForm.Field title="Deal Name">
                 <XForm.Text field="title" />
             </XForm.Field>
@@ -77,9 +83,6 @@ export function DealForm(props: { mutation: MutationFunc<{}>, defaultValues?: { 
             <XForm.Field title="Lot Size">
                 <XForm.Text field="extrasLotSize" />
             </XForm.Field>
-            <XFooter>
-                <XForm.Submit style="primary" text={props.defaultValues ? 'Save' : 'Add'}/>
-            </XFooter>
-        </XForm>
+        </XModalForm>
     );
 }

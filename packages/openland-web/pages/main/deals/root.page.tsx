@@ -14,7 +14,6 @@ import { XMoney } from 'openland-x-format/XMoney';
 import { XBullet } from 'openland-x/XBullet';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
-import { XModalRouted } from 'openland-x-modal/XModalRouted';
 import { XEmpty } from 'openland-x/XEmpty';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
@@ -22,7 +21,7 @@ let Link = Glamorous(XLink)({
     color: '#3297d3',
 });
 
-const DealsForm = withDealAdd((props) => <DealForm mutation={props.add} />);
+const DealsForm = withDealAdd((props) => <DealForm mutation={props.add} title="Add New project" query="add" action="Add" />);
 
 export default withApp('Deals', 'viewer', withDeals((props) => {
 
@@ -60,13 +59,11 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
     return (
         <>
             <XDocumentHead title="Deals" />
-            <XModalRouted title="Add New project" query="add">
-                <DealsForm />
-            </XModalRouted>
+            <DealsForm />
             <Scaffold>
                 <Scaffold.Content>
                     <XHeader text="Deals">
-                        <XButton query={{ field: 'add', value: 'true' }} text="Add"/>
+                        <XButton query={{ field: 'add', value: 'true' }} text="Add" />
                     </XHeader>
                     {props.data.deals!!.length > 0 && (
                         <>
@@ -110,7 +107,7 @@ export default withApp('Deals', 'viewer', withDeals((props) => {
                             </XTable>
                             <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
                                 <XFooter >
-                                    <XButton style="primary" onClick={exportCVS} text="Export"/>
+                                    <XButton style="primary" onClick={exportCVS} text="Export" />
                                 </XFooter>
                             </XWithRole>
                         </>

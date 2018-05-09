@@ -11,62 +11,75 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XTable } from 'openland-x/XTable';
-import { XFooter } from 'openland-x/XFooter';
-import { XModalTargeted } from 'openland-x-modal/XModalTargeted';
 import { XForm } from 'openland-x-forms/XForm';
+import { XModalForm } from 'openland-x-modal/XModalForm';
 
-const ActivateButton = withSuperAccountActivate((props) => <XButtonMutation style="primary" mutation={props.activate}>Activate</XButtonMutation>);
-const SuspendButton = withSuperAccountSuspend((props) => <XButtonMutation style="danger" mutation={props.suspend}>Suspend</XButtonMutation>);
+const ActivateButton = withSuperAccountActivate((props) => <XButtonMutation style="primary" mutation={props.activate} text="Activate" />);
+const SuspendButton = withSuperAccountSuspend((props) => <XButtonMutation style="danger" mutation={props.suspend} text="Suspend" />);
 
 const AddMemberForm = withSuperAccountMemberAdd((props) => {
     return (
-        <XForm submitMutation={props.add} mutationDirect={true}>
+        <XModalForm
+            title="Add member to organization"
+            submitMutation={props.add}
+            mutationDirect={true}
+            actionName="Add"
+            target={<XButton text="Add member" />}
+        >
             <XForm.Field title="User">
                 <XForm.Select field="userId" component={UserSelect} />
             </XForm.Field>
-            <XFooter>
-                <XForm.Submit style="primary" text="Add" />
-            </XFooter>
-        </XForm>
+        </XModalForm>
     );
 });
 
 const RemoveMemberForm = withSuperAccountMemberRemove((props) => {
     return (
-        <XForm submitMutation={props.remove} mutationDirect={true}>
+        <XModalForm
+            title="Remove member from organization"
+            submitMutation={props.remove}
+            mutationDirect={true}
+            actionStyle="danger"
+            actionName="Remove"
+            target={<XButton style="danger" text="Remove member" />}
+        >
             <XForm.Field title="User">
                 <XForm.Select field="userId" component={UserSelect} />
             </XForm.Field>
-            <XFooter>
-                <XForm.Submit style="danger" text="Remove" />
-            </XFooter>
-        </XForm>
+        </XModalForm>
     );
 });
 
 const AddFeature = withSuperAccountFeatureAdd((props) => {
     return (
-        <XForm submitMutation={props.add} mutationDirect={true}>
+        <XModalForm
+            title="Add feature to organization"
+            submitMutation={props.add}
+            mutationDirect={true}
+            actionName="Add"
+            target={<XButton text="Add feature" />}
+        >
             <XForm.Field title="Feature">
                 <XForm.Select field="featureId" options={props.data.featureFlags.map((v) => ({ value: v.id, title: v.title }))} />
             </XForm.Field>
-            <XFooter>
-                <XForm.Submit style="primary" text="Add"/>
-            </XFooter>
-        </XForm>
+        </XModalForm>
     );
 });
 
 const RemoveFeature = withSuperAccountFeatureRemove((props) => {
     return (
-        <XForm submitMutation={props.remove} mutationDirect={true}>
+        <XModalForm
+            title="Remove feature from organization"
+            submitMutation={props.remove}
+            mutationDirect={true}
+            actionStyle="danger"
+            actionName="Remove"
+            target={<XButton style="danger" text="Remove feature" />}
+        >
             <XForm.Field title="Feature">
                 <XForm.Select field="featureId" options={props.data.featureFlags.map((v) => ({ value: v.id, title: v.title }))} />
             </XForm.Field>
-            <XFooter>
-                <XForm.Submit style="danger" text="Remove"/>
-            </XFooter>
-        </XForm>
+        </XModalForm>
     );
 });
 
@@ -74,22 +87,8 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
     return (
         <DevToolsScaffold title={props.data.superAccount.title}>
             <XHeader text={props.data.superAccount.title} description={'Current State: ' + props.data.superAccount.state}>
-                <XModalTargeted fullScreen={false} title="Adding new member">
-                    <XModalTargeted.Target>
-                        <XButton text="Add member" />
-                    </XModalTargeted.Target>
-                    <XModalTargeted.Content>
-                        <AddMemberForm />
-                    </XModalTargeted.Content>
-                </XModalTargeted>
-                <XModalTargeted fullScreen={false} title="Remove member">
-                    <XModalTargeted.Target>
-                        <XButton text="Remove Member" />
-                    </XModalTargeted.Target>
-                    <XModalTargeted.Content>
-                        <RemoveMemberForm />
-                    </XModalTargeted.Content>
-                </XModalTargeted>
+                <AddMemberForm />
+                <RemoveMemberForm />
                 {props.data.superAccount.state !== 'ACTIVATED' && <ActivateButton />}
                 {props.data.superAccount.state === 'ACTIVATED' && <SuspendButton />}
             </XHeader>
@@ -109,22 +108,8 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
                 </XTable.Body>
             </XTable>
             <XHeader text="Features" description={props.data.superAccount.features.length + ' total'}>
-                <XModalTargeted fullScreen={false} title="Adding Feature">
-                    <XModalTargeted.Target>
-                        <XButton style="primary" text="Add feature" />
-                    </XModalTargeted.Target>
-                    <XModalTargeted.Content>
-                        <AddFeature />
-                    </XModalTargeted.Content>
-                </XModalTargeted>
-                <XModalTargeted fullScreen={false} title="Adding Feature">
-                    <XModalTargeted.Target>
-                        <XButton text="Remove feature" />
-                    </XModalTargeted.Target>
-                    <XModalTargeted.Content>
-                        <RemoveFeature />
-                    </XModalTargeted.Content>
-                </XModalTargeted>
+                <AddFeature />
+                <RemoveFeature />
             </XHeader>
             <XTable>
                 <XTable.Header>

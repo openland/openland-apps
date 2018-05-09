@@ -28,7 +28,6 @@ import { XAngle } from 'openland-x-format/XAngle';
 import { ZoningCode } from '../../../components/ZoningCode';
 import { XView } from 'openland-x-layout/XView';
 import { XTitle } from 'openland-x/XTitle';
-import { XModalRouted } from 'openland-x-modal/XModalRouted';
 import { XMapSmall } from 'openland-x-map/XMapSmall';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XPropertyColumns, XPropertyList, XProperty } from 'openland-x/XProperty';
@@ -37,6 +36,9 @@ const DealsForm = withDealAlterCombined((props) => (
     <DealForm
         mutation={props.alter}
         defaultValues={props.data.deal}
+        title="Edit Deal" 
+        query="edit"
+        action="Save"
     />
 ));
 
@@ -70,9 +72,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
     return (
         <>
             <XDocumentHead title={props.data.deal.title} />
-            <XModalRouted title="Edit Deal" query="edit">
-                <DealsForm />
-            </XModalRouted>
+            <DealsForm />
             <Scaffold>
                 <Scaffold.Content>
                     <XHeader

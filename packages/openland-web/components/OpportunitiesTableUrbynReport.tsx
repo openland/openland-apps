@@ -10,8 +10,8 @@ import { XArea } from 'openland-x-format/XArea';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
-import { XModalRouted } from 'openland-x-modal/XModalRouted';
 import { XLoader } from 'openland-x/XLoader';
+import { XModal } from 'openland-x-modal/XModal';
 
 const SwitchButton = Glamorous(XButton)({
     boxShadow: 'none',
@@ -299,9 +299,9 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
 
     return (
         <XLoader loading={(props.data.loading || false) && (!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0)}>
-            <XModalRouted title="Export to CVS" query="export">
+            <XModal title="Export to CVS" targetQuery="export">
                 <ExportModal />
-            </XModalRouted>
+            </XModal>
 
             {props.data.alphaAllOpportunities && props.data.alphaAllOpportunities.length !== 0 && (
                 <>

@@ -4,25 +4,27 @@ import { withApp } from '../../components/withApp';
 import { withFeatureFlags, withFeatureFlagAdd } from '../../api/';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
-import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
-import { XFooter } from 'openland-x/XFooter';
-import { XModalTargeted } from 'openland-x-modal/XModalTargeted';
 import { XForm } from 'openland-x-forms/XForm';
+import { XModalForm } from 'openland-x-modal/XModalForm';
+import { XButton } from 'openland-x/XButton';
 
 const AddFeatureForm = withFeatureFlagAdd((props) => {
     return (
-        <XForm submitMutation={props.add} mutationDirect={true}>
+        <XModalForm
+            title="Adding Feature"
+            submitMutation={props.add}
+            mutationDirect={true}
+            actionName="Add"
+            target={<XButton text="Add feature" />}
+        >
             <XForm.Field title="Key">
                 <XForm.Text field="key" placeholder="format: awesome-feature" />
             </XForm.Field>
             <XForm.Field title="Title">
                 <XForm.Text field="title" placeholder="ex. Advanced Feature" />
             </XForm.Field>
-            <XFooter>
-                <XForm.Submit style="primary" text="Add"/>
-            </XFooter>
-        </XForm>
+        </XModalForm>
     );
 });
 
@@ -30,14 +32,7 @@ export default withApp('Super Features', ['super-admin', 'software-developer'], 
     return (
         <DevToolsScaffold title="Feature flags">
             <XHeader text="Feature flags">
-                <XModalTargeted fullScreen={false} title="Adding Feature">
-                    <XModalTargeted.Target>
-                        <XButton text="Add Feature"/>
-                    </XModalTargeted.Target>
-                    <XModalTargeted.Content>
-                        <AddFeatureForm />
-                    </XModalTargeted.Content>
-                </XModalTargeted>
+                <AddFeatureForm />
             </XHeader>
             <XTable>
                 <XTable.Header>

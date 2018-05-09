@@ -5,9 +5,10 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
-import { XModal } from 'openland-x-modal/XModal2';
+import { XModal } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
 import Lorem from 'react-lorem-component';
+import { XModalForm } from 'openland-x-modal/XModalForm';
 
 class ControlledModal extends React.Component<{}, { show: boolean }> {
     constructor(props: {}) {
@@ -42,6 +43,10 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                     <XModal targetQuery="modal">
                         Hey!
                     </XModal>
+                    <XTitle>With Title</XTitle>
+                    <XModal title="Modal Dialog" target={<XButton text="Show Modal" />}>
+                        <Lorem count={2} />
+                    </XModal>
                     <XTitle>Sizes</XTitle>
                     <XModal target={<XButton text="X-Large" />} size="x-large">
                         Hey!
@@ -59,6 +64,10 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                     <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={40} />
                     </XModal>
+                    <XTitle>Form</XTitle>
+                    <XModalForm target={<XButton text="Show Form" />}>
+                        {}
+                    </XModalForm>
                 </XVertical>
             </XContent>
         </DevDocsScaffold>

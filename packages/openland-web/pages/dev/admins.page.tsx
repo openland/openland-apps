@@ -5,14 +5,19 @@ import { withSuperAdmins, UserSelect, withSuperAdminAdd, withSuperAdminRemove } 
 import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
-import { XFooter } from 'openland-x/XFooter';
-import { XModalTargeted } from 'openland-x-modal/XModalTargeted';
 import { XForm } from 'openland-x-forms/XForm';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
+import { XModalForm } from 'openland-x-modal/XModalForm';
 
 const AddSuperAdminForm = withSuperAdminAdd((props) => {
     return (
-        <XForm submitMutation={props.add} mutationDirect={true}>
+        <XModalForm
+            title="Add Super Admin"
+            submitMutation={props.add}
+            mutationDirect={true}
+            actionName="Add"
+            target={<XButton text="Add New" />}
+        >
             <XForm.Field title="User">
                 <XForm.Select field="userId" component={UserSelect} />
             </XForm.Field>
@@ -26,23 +31,24 @@ const AddSuperAdminForm = withSuperAdminAdd((props) => {
                     ]}
                 />
             </XForm.Field>
-            <XFooter>
-                <XForm.Submit style="primary" text="Add" />
-            </XFooter>
-        </XForm>
+        </XModalForm>
     );
 });
 
 const RemoveSuperAdminForm = withSuperAdminRemove((props) => {
     return (
-        <XForm submitMutation={props.remove} mutationDirect={true}>
+        <XModalForm
+            title="Remove Super Admin"
+            submitMutation={props.remove} 
+            mutationDirect={true}
+            actionName="Remove"
+            actionStyle="danger"
+            target={<XButton text="Remove existing" />}
+        >
             <XForm.Field title="User">
                 <XForm.Select field="userId" component={UserSelect} />
             </XForm.Field>
-            <XFooter>
-                <XForm.Submit style="primary" text="Remove" />
-            </XFooter>
-        </XForm>
+        </XModalForm>
     );
 });
 
@@ -50,22 +56,8 @@ export default withApp('Super Admins', 'super-admin', withSuperAdmins((props) =>
     return (
         <DevToolsScaffold title="Super Admins">
             <XHeader text="Super Admins" description={props.data.superAdmins.length + ' total'}>
-                <XModalTargeted fullScreen={false} title="Adding New Super Admin">
-                    <XModalTargeted.Target>
-                        <XButton text="Add New" />
-                    </XModalTargeted.Target>
-                    <XModalTargeted.Content>
-                        <AddSuperAdminForm />
-                    </XModalTargeted.Content>
-                </XModalTargeted>
-                <XModalTargeted fullScreen={false} title="Removing Super Admin">
-                    <XModalTargeted.Target>
-                        <XButton text="Remove Exising" />
-                    </XModalTargeted.Target>
-                    <XModalTargeted.Content>
-                        <RemoveSuperAdminForm />
-                    </XModalTargeted.Content>
-                </XModalTargeted>
+                <AddSuperAdminForm />
+                <RemoveSuperAdminForm />
             </XHeader>
             <XTable>
                 <XTable.Header>

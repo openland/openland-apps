@@ -9,6 +9,9 @@ import { XInput } from 'openland-x/XInput';
 import { XFooter } from 'openland-x/XFooter';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { XLoader } from 'openland-x/XLoader';
+import { XRouter } from 'openland-x-routing/XRouter';
+import { XModalContextValue, XModalContext } from 'openland-x-modal/XModalContext';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 let InputsStyle = {
     borderRadius: 4,
@@ -73,7 +76,7 @@ export const XFormHeaderDiv = Glamorous.div({
 export const XFormFieldDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#f6f9fc',
+    // backgroundColor: '#f6f9fc',
     paddingTop: 20,
     paddingLeft: 20,
     paddingRight: 20,
@@ -187,7 +190,7 @@ export function XFormField(props: { title: string, children: any, description?: 
     );
 }
 
-interface XFormProps {
+export interface XFormProps {
 
     //
     // Submit Handling
@@ -203,6 +206,7 @@ interface XFormProps {
 
     completePath?: string;
     onCompleted?: (values: any) => void;
+    autoClose?: boolean;
 
     //
     // Configuration
@@ -427,22 +431,7 @@ export class XFormSubmit extends React.Component<XFormSubmitProps> {
     }
 }
 
-export class XForm extends React.Component<XFormProps, { loading: boolean, error?: string }> {
-
-    static Header = XFormHeader;
-    static Footer = XFooter;
-
-    static Field = XFormField;
-    static Boolean = XFormBooleanField;
-    static Select = XFormSelectField;
-    static Text = XFormTextField;
-    static TextArea = XFormTextArea;
-    static Submit = XFormSubmit;
-
-    static RawInput = XInput;
-    static RawTextarea = XFormTextAreaStyle;
-    static RawSelect = XFormSelect;
-
+class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal?: XModalContextValue }, { loading: boolean, error?: string }> {
     // static DateSingle = XDateSinglePicker;
     // static DateRange = XDateRangePicker;
 
@@ -468,7 +457,7 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
     writeValue = (name: string, value: any) => {
         this.values[name] = value;
     }
-    submitForm = () => {
+    submitForm = async () => {
         let vals = Object.assign({}, this.values);
         if (this.props.onSubmit) {
             this.props.onSubmit(vals);
@@ -479,21 +468,30 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
             if (this.props.mutationDirect === true) {
                 destVars = vals;
             }
-            this.props.submitMutation({ variables: destVars })
-                .then((v) => {
-                    // if (this.props.completePath) {
-                    //     Router.pushRoute(this.props.completePath);
-                    // } else {
-                    //     this.setState({ loading: false });
-                    // }
-
-                    if (this.props.onCompleted) {
-                        this.props.onCompleted(vals);
+            try {
+                await this.props.submitMutation({ variables: destVars });
+                if (this.props.autoClose) {
+                    if (this.props.modal) {
+                        this.props.modal.close();
                     }
-                })
-                .catch((v) => {
-                    this.setState({ loading: false, error: v.toString() });
-                });
+                }
+                if (this.props.completePath) {
+                    if (this.props.router) {
+                        this.props.router.push(this.props.completePath);
+                    } else {
+                        this.setState({ loading: false });
+                    }
+                } else {
+                    this.setState({ loading: false });
+                }
+                this.setState({ loading: false });
+
+                if (this.props.onCompleted) {
+                    this.props.onCompleted(vals);
+                }
+            } catch (v) {
+                this.setState({ loading: false, error: v.toString() });
+            }
         }
     }
 
@@ -514,7 +512,6 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
     }
 
     render() {
-
         return (
             <>
                 <XLoader loading={this.state.loading}>
@@ -522,6 +519,43 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
                     {this.props.children}
                 </XLoader>
             </>
+        );
+    }
+}
+
+export class XForm extends React.Component<XFormProps, { loading: boolean, error?: string }> {
+
+    static Header = XFormHeader;
+    static Footer = XFooter;
+
+    static Field = XFormField;
+    static Boolean = XFormBooleanField;
+    static Select = XFormSelectField;
+    static Text = XFormTextField;
+    static TextArea = XFormTextArea;
+    static Submit = XFormSubmit;
+
+    static RawInput = XInput;
+    static RawTextarea = XFormTextAreaStyle;
+    static RawSelect = XFormSelect;
+
+    constructor(props: XFormProps) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <XRouterContext.Consumer>
+                {(router) => (
+                    <XModalContext.Consumer>
+                        {(modal) => (
+                            <XFormRender {...this.props} modal={modal} router={router}>
+                                {this.props.children}
+                            </XFormRender>
+                        )}
+                    </XModalContext.Consumer>
+                )}
+            </XRouterContext.Consumer>
         );
     }
 }
