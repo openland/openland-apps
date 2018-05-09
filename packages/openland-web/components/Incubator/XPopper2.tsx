@@ -271,7 +271,7 @@ export class XPopper2 extends React.Component<XPopper2Props & { renderer?: (prop
             target.push(React.cloneElement(c as any, { ref: this.caputureTargetNode }));
         }
 
-        let {children, ...renderProps} = { ...this.props, ...this.state };
+        let renderProps = { ...this.props, ...this.state };
 
         return (
             <>
