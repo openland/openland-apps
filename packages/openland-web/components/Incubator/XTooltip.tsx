@@ -5,6 +5,8 @@ import { Manager, Target, Popper } from './XPopper';
 import { XIcon } from 'openland-x/XIcon';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
+import { XPopper2 } from './XPopper2';
+
 const XTooltipDiv = Glamorous.div<{ marginLeft?: number, marginRight?: number, marginTop?: number, marginBottom?: number, margin?: number, centeredContent?: boolean }>((props) => ({
     display: 'flex',
     flexShrink: 0,
@@ -182,19 +184,28 @@ export class XTooltip extends React.Component<XTooltipProps, XTooltipState> {
         this.prevClass = animation;
 
         return (
-            <Manager>
-                <XTooltipDiv marginLeft={this.props.marginLeft} margin={this.props.margin} marginRight={this.props.marginRight} marginTop={this.props.marginTop} marginBottom={this.props.marginBottom} centeredContent={this.props.centeredContent}>
-                    <Target>
-                        <TargetContent
-                            onMouseOver={this.targetOver}
-                            onMouseOut={this.out}
-                        >
-                            {target.length > 0 ? (target) : (<XIcon icon={this.props.type ? this.props.type : 'error'} />)}
-                        </TargetContent>
-                    </Target>
-                    {(XTooltip.current === this && this.state.showPopover && canUseDOM && ReactDOM.createPortal(popover, document.body))}
-                </XTooltipDiv>
-            </Manager>
+            <XPopper2 content={content} show={this.state.showPopover} placement={this.props.placement ? this.props.placement : 'right'}>
+                <TargetContent
+                    onMouseOver={this.targetOver}
+                    onMouseOut={this.out}
+                >
+                    {target.length > 0 ? (target) : (<XIcon icon={this.props.type ? this.props.type : 'error'} />)}
+                </TargetContent>
+            </XPopper2>
+
+            // <Manager>
+            //     <XTooltipDiv marginLeft={this.props.marginLeft} margin={this.props.margin} marginRight={this.props.marginRight} marginTop={this.props.marginTop} marginBottom={this.props.marginBottom} centeredContent={this.props.centeredContent}>
+            //         <Target>
+            //             <TargetContent
+            //                 onMouseOver={this.targetOver}
+            //                 onMouseOut={this.out}
+            //             >
+            //                 {target.length > 0 ? (target) : (<XIcon icon={this.props.type ? this.props.type : 'error'} />)}
+            //             </TargetContent>
+            //         </Target>
+            //         {(XTooltip.current === this && this.state.showPopover && canUseDOM && ReactDOM.createPortal(popover, document.body))}
+            //     </XTooltipDiv>
+            // </Manager>
         );
     }
 }
