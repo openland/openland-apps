@@ -1,8 +1,8 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { resolveActionPath } from 'openland-x-routing/resolveActionPath';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XModalContext } from 'openland-x-modal/XModalContext';
 
 export interface XLinkProps {
     path?: string | null;
@@ -57,18 +57,10 @@ class XLinkAnchorRender extends React.Component<XLinkRender> {
     }
 }
 
-// export class XLinkDefault 
+class XLinkMainRender extends React.Component<XLinkProps & { autoCloseContext?: { close: () => void }, router?: XRouter }> {
 
-export class XLink extends React.Component<XLinkProps> {
-
-    static contextTypes = {
-        xcloser: PropTypes.func
-    };
-
-    router?: XRouter;
-
-    constructor(props: XLinkProps, context: any) {
-        super(props, context);
+    constructor(props: XLinkProps) {
+        super(props);
     }
 
     resolveIsActive(router: XRouter) {
@@ -111,9 +103,8 @@ export class XLink extends React.Component<XLinkProps> {
         }
 
         // Auto close on click
-        if (this.props.autoClose === true && this.context.xcloser) {
-            console.warn('Auto closing');
-            (this.context.xcloser as () => void)();
+        if (this.props.autoClose === true && this.props.autoCloseContext) {
+            this.props.autoCloseContext.close();
         }
 
         // Handling click itself
@@ -123,11 +114,11 @@ export class XLink extends React.Component<XLinkProps> {
             e.preventDefault();
 
             // Invoke router
-            if (this.router) {
+            if (this.props.router) {
                 if (this.props.path) {
-                    this.router.push(this.props.path);
+                    this.props.router.push(this.props.path);
                 } else if (this.props.query) {
-                    this.router.pushQuery(this.props.query.field, this.props.query.value);
+                    this.props.router.pushQuery(this.props.query.field, this.props.query.value);
                 }
             }
         } else if (this.props.href) {
@@ -145,7 +136,6 @@ export class XLink extends React.Component<XLinkProps> {
                     if (!router) {
                         throw Error('Router not configured!');
                     }
-                    this.router = router;
                     let href = '#';
                     let newTab = false;
                     let isActive = this.resolveIsActive(router);
@@ -183,5 +173,19 @@ export class XLink extends React.Component<XLinkProps> {
             </XRouterContext.Consumer>
         );
 
+    }
+}
+
+export class XLink extends React.PureComponent<XLinkProps> {
+    render() {
+        return (
+            <XModalContext.Consumer>
+                {(modal) => (
+                    <XRouterContext.Consumer>
+                        {(router) => (<XLinkMainRender {...this.props} autoCloseContext={modal} router={router} />)}
+                    </XRouterContext.Consumer>
+                )}
+            </XModalContext.Consumer>
+        );
     }
 }

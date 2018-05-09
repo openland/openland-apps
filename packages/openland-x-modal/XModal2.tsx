@@ -3,8 +3,8 @@ import * as ReactModal from 'react-modal';
 import Glamorous from 'glamorous';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
+import { XModalContext } from './XModalContext';
 
 class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'default' | 'small', isOpen: boolean, onCloseRequest: () => void; }> {
 
@@ -51,17 +51,27 @@ class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'def
                     }
                 }}
             >
-                {this.props.children}
+                <XModalContext.Provider value={{ close: this.props.onCloseRequest }}>
+                    {this.props.children}
+                </XModalContext.Provider>
             </ReactModal>
         );
     }
 }
+
+let Root = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    height: '100%'
+});
 
 let Body = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     paddingLeft: 24,
     paddingRight: 24,
+    flexGrow: 1
 });
 
 let Header = Glamorous.div({
@@ -93,13 +103,13 @@ class ModalContentRender extends React.Component<{
 }> {
     render() {
         return (
-            <XVertical separator="none">
+            <Root>
                 <Header>Header</Header>
                 <Body>
                     {this.props.children}
                 </Body>
-                <Footer><XButton text="Close" /></Footer>
-            </XVertical>
+                <Footer><XButton text="Close" autoClose={true} /></Footer>
+            </Root>
         );
     }
 }

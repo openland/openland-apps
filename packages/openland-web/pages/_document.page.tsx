@@ -122,6 +122,7 @@ export default class StateDocument extends Document {
 
                         .ReactModal__Overlay {
                             opacity: 0;
+                            overflow-y: auto;
                         } 
                         .ReactModal__Overlay--after-open {
                             opacity: 1;

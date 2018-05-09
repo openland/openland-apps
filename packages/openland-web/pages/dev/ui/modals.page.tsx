@@ -55,6 +55,10 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                     <XModal target={<XButton text="Small" />} size="small">
                         Hey!
                     </XModal>
+                    <XTitle>Large Content</XTitle>
+                    <XModal target={<XButton text="Show Modal" />}>
+                        <Lorem count={40} />
+                    </XModal>
                 </XVertical>
             </XContent>
         </DevDocsScaffold>
