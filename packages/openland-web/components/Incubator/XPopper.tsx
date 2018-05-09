@@ -347,7 +347,6 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
         cursor: props.nonePointerEvents ? 'auto' : undefined,
     },
     '&, & .popper': {
-        display: 'none',
         zIndex: 501,
 
         '> .popper-content, .popper-content': {
@@ -369,37 +368,28 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
         position: 'absolute',
     },
 
-    '&, & .popper.hide': {
-        display: 'block',
+    '& .popper.hide': {
+        // display: 'block',
 
-        '> .popper': {
-            animationDuration: '0.2s',
-            animationFillMode: 'forwards',
-            animationName: `${hideAnimationTop}`,
-            animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
-        }
+        animationDuration: '0.2s',
+        animationFillMode: 'forwards',
+        animationName: `${hideAnimationTop}`,
+        animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
     },
 
-    '&, & .popper.show': {
-        display: 'block',
+    '& .popper.show': {
 
-        '> .popper': {
-            animationDuration: '0.2s',
-            animationFillMode: 'forwards',
-            animationName: `${showAnimationTop}`,
-            animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
-        }
+        animationDuration: '0.2s',
+        animationFillMode: 'forwards',
+        animationName: `${showAnimationTop}`,
+        animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
     },
 
-    '&, & .popper.static': {
-        display: 'block',
-
-        '> .popper': {
-            animationDuration: '0.000002s',
-            animationFillMode: 'forwards',
-            animationName: `${showAnimationTop}`,
-            animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
-        }
+    '& .popper.static': {
+        animationDuration: '0.0002s',
+        animationFillMode: 'forwards',
+        animationName: `${showAnimationTop}`,
+        animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
     },
 
     '& .popper[data-placement^="top"], & .popper[x-placement^="top"] .popper-content': {
