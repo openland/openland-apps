@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@mapbox/geo-viewport": "^0.2.2",
+		"@turf/center-of-mass": "^6.0.1",
 		"@turf/turf": "^5.1.6",
 		"@typeform/embed": "^0.5.6",
 		"@types/auth0-js": "^8.11.0",
@@ -137,6 +138,7 @@
 		"test": "yarn lint && yarn compile",
 		"build": "NODE_ENV=production next build ./packages/openland-web",
 		"analyze": "BUNDLE_ANALYZE=both next build ./packages/openland-web",
+		"analyze:web": "BUNDLE_ANALYZE=browser next build ./packages/openland-web",
 		"start": "NODE_ENV=production ./node_modules/.bin/ts-node --compilerOptions '{\"module\":\"commonjs\"}' packages/openland-web/server.ts ",
 		"schema": "yarn schema:download && yarn schema:generate",
 		"schema:local": "yarn schema:download:local && yarn schema:generate",
