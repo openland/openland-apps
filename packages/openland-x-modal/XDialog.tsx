@@ -51,6 +51,17 @@ export const XDialogFullScreenContainerHeader = Glamorous.div({
     marginBottom: 24
 });
 
+const CloseButton = Glamorous(XButton)({
+    border: 'none',
+    boxShadow: 'none',
+    paddingRight: 0,
+    '&:hover, &:active': {
+        border: 'none',
+        boxShadow: 'none',
+        transform: 'none'
+    }
+});
+
 export function XDialog(props: { style?: 'full-screen' | 'normal', title: string, onClose?: () => void, children: any, width?: number | string }) {
     if (props.style === 'full-screen') {
         return (
@@ -59,7 +70,7 @@ export function XDialog(props: { style?: 'full-screen' | 'normal', title: string
                     <XDialogFullScreenContainerHeader>
                         <span>{props.title}</span>
                         <div>
-                            <XButton size="large" icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
+                            <CloseButton style="flat" size="large" icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
                         </div>
                     </XDialogFullScreenContainerHeader>
                     {props.children}
@@ -70,7 +81,7 @@ export function XDialog(props: { style?: 'full-screen' | 'normal', title: string
         return (
             <XDialogContainer shadow="medium" width={props.width}>
                 <XHeader text={props.title}>
-                    <XButton icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
+                    <CloseButton style="flat" icon={'clear'} onClick={(e: any) => { e.preventDefault(); props.onClose!!(); }} />
                 </XHeader>
                 {props.children}
             </XDialogContainer>

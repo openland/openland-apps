@@ -82,7 +82,7 @@ let XCardPropertyTitle = Glamorous.div<{ compact?: boolean }>((props) => ({
     paddingRight: props.compact ? 16 : 24,
     textAlign: 'left',
     color: '#262626',
-    marginBottom: 8
+    marginBottom: 14
 }));
 
 let XCardPropertySubTitle = Glamorous.div<{ compact?: boolean }>((props) => ({

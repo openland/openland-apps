@@ -2,7 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
-import { ParcelCard } from '../../../components/ParcelCard';
+import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';

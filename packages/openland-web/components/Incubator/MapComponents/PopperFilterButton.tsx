@@ -40,41 +40,40 @@ export class Filter extends React.Component<ConfirmPopoverProps, { popper?: bool
         this.state = {
             popper: false
         };
-
-        this.handleShow = this.handleShow.bind(this);
     }
 
-    handleShow() {
-        if (this.state.popper === true) {
+    handleShow = () => {
+
+        const { popper } = this.state;
+
+        if (popper === true) {
             if (this.props.handler !== undefined) { this.props.handler(false, this); }
             this.setState({
                 popper: false
             });
-        } else {
+        } else if (popper === false) {
             this.setState({
                 popper: true
             });
             if (this.props.handler !== undefined) { this.props.handler(true, this); }
         }
+
         for (let filter of Filter.active) {
             if (filter !== this) {
                 filter.handleClose();
             }
         }
+
         Filter.active.add(this);
     }
 
     handleClose = (self?: any) => {
         let target = (self instanceof Filter) ? self : this;
-        if (target.props.handler !== undefined) { target.props.handler(false, target); }
+        if (this.props.handler !== undefined) { this.props.handler(false, target); }
         target.setState({
             popper: false
         });
         Filter.active.delete(target);
-    }
-
-    modifyProps = () => {
-        return({onClick: this.handleShow});
     }
 
     render() {
@@ -93,7 +92,7 @@ export class Filter extends React.Component<ConfirmPopoverProps, { popper?: bool
 
         let children = [];
         for (let c of React.Children.toArray(this.props.children)) {
-            children.push(React.cloneElement(c as any, this.modifyProps()));
+            children.push(React.cloneElement(c as any, { onClick: this.handleShow }));
         }
 
         return (

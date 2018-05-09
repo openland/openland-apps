@@ -507,7 +507,6 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             this.props.router.pushQueryParams(params);
         }
         this.shadowHandler(add, caller);
-
     }
 
     render() {

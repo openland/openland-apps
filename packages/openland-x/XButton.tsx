@@ -10,12 +10,31 @@ export interface XButtonStyleProps extends XFlexStyles {
     text?: string;
     icon?: string;
     size?: 'x-large' | 'large' | 'medium' | 'default' | 'small';
-    style?: 'primary' | 'danger' | 'default' | 'ghost' | 'flat';
+    style?: 'primary' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat';
 }
 
 export interface XButtonProps extends XButtonStyleProps, XLinkProps {
     loading?: boolean;
 }
+
+let iconsIndentation = styleResolver({
+    'x-large': {
+        marginLeft: -8,
+        marginRight: 12
+    },
+    'large': {
+        marginRight: 10
+    },
+    'medium': {
+        marginRight: 8
+    },
+    'default': {
+        marginRight: 6
+    },
+    'small': {
+        marginRight: 5
+    }
+});
 
 let sizeStyles = styleResolver({
     'x-large': {
@@ -27,8 +46,6 @@ let sizeStyles = styleResolver({
         paddingRight: 32,
         borderRadius: 4,
         '> .icon': {
-            marginLeft: -8,
-            marginRight: 12,
             width: 32,
             fontSize: 24,
             lineHeight: '56px',
@@ -43,7 +60,6 @@ let sizeStyles = styleResolver({
         paddingRight: 26,
         borderRadius: 4,
         '> .icon': {
-            marginRight: 10,
             fontSize: 28
         }
     },
@@ -56,7 +72,6 @@ let sizeStyles = styleResolver({
         paddingRight: 20,
         borderRadius: 4,
         '> .icon': {
-            marginRight: 8,
             fontSize: 24
         }
     },
@@ -69,7 +84,6 @@ let sizeStyles = styleResolver({
         paddingRight: 14,
         borderRadius: 4,
         '> .icon': {
-            marginRight: 6,
             fontSize: 16
         }
     },
@@ -81,7 +95,6 @@ let sizeStyles = styleResolver({
         paddingRight: 10,
         borderRadius: 3,
         '> .icon': {
-            marginRight: 5,
             fontSize: 14
         }
     }
@@ -141,6 +154,17 @@ let colorStyles = styleResolver({
             boxShadow: 'none'
         }
     },
+    'electric': {
+        backgroundColor: '#ffffff',
+        color: '#5640d6',
+        border: 'solid 1px #654bfa',
+        '&:hover': {
+            boxShadow: '0 1px 2px 0 #ced5e2',
+        },
+        '&:active': {
+            boxShadow: 'none'
+        }
+    },
     'flat': {
         backgroundColor: '#ffffff',
         color: '#1f3449',
@@ -176,6 +200,11 @@ let colorDisabledStyles = styleResolver({
         color: '#1f3449!important',
         border: 'solid 1px #c2cbde !important',
     },
+    'electric': {
+        backgroundColor: '#ffffff !important',
+        color: '#5640d6!important',
+        border: 'solid 1px #b1a4f9 !important',
+    },
     'flat': {
         backgroundColor: '#ffffff !important',
         color: '#1f3449!important',
@@ -203,12 +232,21 @@ let loaderStyles = styleResolver({
             stroke: '#1f3449 !important'
         }
     },
+    'electric': {
+        '& svg path': {
+            stroke: '#5640d6 !important'
+        }
+    },
     'flat': {
         '& svg path': {
             stroke: '#1f3449 !important'
         }
     }
 });
+
+const StyledIcon = Glamorous<XButtonProps>(XIcon)([
+    (props) => iconsIndentation(props.size, props.text === undefined ? false : true)
+]);
 
 const StyledButton = Glamorous<XButtonProps>(XLink)([
     (props) => ({
@@ -248,7 +286,7 @@ export class XButton extends React.PureComponent<XButtonProps> {
     render() {
         return (
             <StyledButton {...this.props}>
-                {this.props.icon && <XIcon icon={this.props.icon} className="icon" />}
+                {this.props.icon && <StyledIcon text={this.props.text} icon={this.props.icon} className="icon" />}
                 <span>{this.props.text}</span>
                 {this.props.loading && <XLoadingCircular inverted={this.props.style === 'primary' || this.props.style === 'danger'} />}
             </StyledButton>

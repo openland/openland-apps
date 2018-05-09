@@ -44,6 +44,7 @@ let Scrollable = Glamorous.div<{ compact: boolean }>((props) => ({
     height: props.compact ? 'calc(100vh - 56px)' : '100vh',
     overflowY: 'auto',
     position: 'relative',
+    paddingBottom: 90
 }));
 
 let StreetViewDiv = Glamorous.div({
@@ -78,7 +79,7 @@ const PropertyCellContainer = Glamorous.div({
     flexDirection: 'row',
     paddingLeft: 16,
     paddingRight: 16,
-    marginBottom: 8,
+    marginBottom: 12,
     '&:last-child': {
         marginBottom: 0
     }
@@ -129,7 +130,14 @@ const ContainerHider = Glamorous.div({
 
 const ContainerHiderButton = Glamorous(XButton)({
     width: 10,
-    minWidth: 10
+    minWidth: 10,
+    border: 'none',
+    boxShadow: 'none',
+    '&:hover, &:active': {
+        border: 'none',
+        boxShadow: 'none',
+        transform: 'none'
+    }
 });
 
 const DottedStyle = Glamorous.div({
@@ -160,13 +168,15 @@ const DottedMenuButton = () => (
 );
 
 const ProspectingWrapper = Glamorous.div({
-    position: 'sticky',
+    position: 'fixed',
+    width: panelWidth,
     bottom: 0,
+    right: 0,
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 18,
     paddingBottom: 18,
-    boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.22)',
+    boxShadow: '2px 2px 8px 0 rgba(0, 0, 0, 0.22)',
     backgroundColor: '#fff'
 });
 
@@ -203,9 +213,8 @@ export const ParcelCard = withParcelDirect((props) => (
                                     size="medium"
                                     flexGrow={1}
                                     flexBasis={0}
-                                >
-                                    Details
-                                </XButton>
+                                    text="Details"
+                                />
                             </XPopover.Content>
                         </XPopover>
                     </XHeader>
