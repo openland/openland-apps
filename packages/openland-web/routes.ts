@@ -6,7 +6,7 @@ let routes = NRoutes();
 // App Root
 //
 
-routes.add('/', '/main/explore/index');
+routes.add('/', '/main/explore/root');
 routes.add('/signup', '/signup');
 routes.add('/signin', '/signin');
 routes.add('/activation', '/activation');
@@ -34,8 +34,8 @@ routes.add('/parcels/:parcelId/edit/', '/main/parcels/edit');
 // Deals
 //
 
-routes.add('/deals', '/main/deals/index');
-routes.add('/deals/', '/main/deals/index');
+routes.add('/deals', '/main/deals/root');
+routes.add('/deals/', '/main/deals/root');
 routes.add('/deals/:dealId', '/main/deals/view');
 routes.add('/deals/:dealId/', '/main/deals/view');
 
@@ -49,8 +49,8 @@ routes.add('/reports/urbyn_mho_nyc/', '/main/reports/urbynmho');
 // Sourcing
 //
 
-routes.add('/prospecting', '/main/prospecting/index');
-routes.add('/prospecting/', '/main/prospecting/index');
+routes.add('/prospecting', '/main/prospecting/root');
+routes.add('/prospecting/', '/main/prospecting/root');
 routes.add('/prospecting/rejected', '/main/prospecting/rejected');
 routes.add('/prospecting/rejected/', '/main/prospecting/rejected');
 routes.add('/prospecting/approved', '/main/prospecting/approved');
@@ -90,10 +90,10 @@ routes.add('/projects/:projectId/', '/main/projects/view');
 // Extras
 //
 
-routes.add('/favorites', '/main/favorites/index');
-routes.add('/favorites/', '/main/favorites/index');
-routes.add('/inquiries', '/main/inquiries/index');
-routes.add('/inquiries/', '/main/inquiries/index');
+routes.add('/favorites', '/main/favorites/root');
+routes.add('/favorites/', '/main/favorites/root');
+routes.add('/inquiries', '/main/inquiries/root');
+routes.add('/inquiries/', '/main/inquiries/root');
 
 //
 // UI
