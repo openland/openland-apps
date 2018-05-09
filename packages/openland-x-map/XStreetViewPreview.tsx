@@ -3,7 +3,8 @@ import Glamorous from 'glamorous';
 
 const Image = Glamorous.img({
     borderRadius: '4px',
-    objectFit: 'cover'
+    objectFit: 'cover',
+    display: 'block'
 });
 
 export function XStreetViewPreview(props: {

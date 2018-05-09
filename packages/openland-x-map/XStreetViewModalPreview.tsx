@@ -9,7 +9,7 @@ function loadCenter(src: string) {
     let center = Turf.center({ type: 'MultiPolygon', coordinates: parseGeometry(src) });
     return { latitude: center.geometry!!.coordinates[1], longitude: center.geometry!!.coordinates[0] };
 }
-const StyledStreetViewPreview = Glamorous(XStreetViewPreview)<{ width: number, height: number }>((props) => ({
+const StyledStreetViewPreview = Glamorous(XStreetViewPreview)<{ width: number | string, height: number | string }>((props) => ({
     height: props.height,
     width: props.width
 }));

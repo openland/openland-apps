@@ -369,7 +369,8 @@ const MenuView = Glamorous.div({
     position: 'sticky',
     top: 0,
     left: 72,
-    height: '100vh'
+    height: '100vh',
+    overflowY: 'scroll'
 });
 
 //

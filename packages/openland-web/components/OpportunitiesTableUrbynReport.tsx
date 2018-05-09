@@ -27,7 +27,7 @@ const SwitchButton = Glamorous(XButton)({
     '&:focus, &:hover': {
         outline: 'none',
         boxShadow: 'none',
-        color: '#79a9c7'
+        color: '#79a9c7',
     }
 });
 
@@ -36,7 +36,6 @@ const DownloadButton = Glamorous(XButton)({
     border: '1px solid rgba(229, 233, 242, 0.7)',
     color: '#79a9c7',
     backgroundColor: '#fff',
-    padding: '6px 10px',
     '&:focus, &:hover': {
         outline: 'none',
         boxShadow: 'none',
@@ -106,20 +105,26 @@ export const ExportModal = withSourcingAll((props) => {
         document.body.removeChild(link);
     };
     return (
-        <XLoader loading={(props.data.loading || false)}>
+        <>
+            <XLoader loading={(props.data.loading || false)} />
             <XButton style="primary" onClick={exportCVS} text={'Download' + props.data.variables + '.csv'} />
-        </XLoader>
-
+        </>
     );
 });
 
-const CollapseBtn = Glamorous(SwitchButton)<{ collapse: boolean }>((props) => ({
+const CollapseBtn = Glamorous(SwitchButton)<{ collapse: boolean, hide?: boolean }>((props) => ({
     position: 'absolute',
     width: 200,
     bottom: props.collapse ? 10 : 15,
     left: 'calc(50% - 100px)',
     transition: 'all .2s',
-    zIndex: 2
+    zIndex: props.hide ? undefined : 2,
+    '&:focus, &:hover': {
+        outline: 'none',
+        boxShadow: 'none',
+        color: '#79a9c7',
+        backgroundColor: 'transparent'
+    }
 }));
 
 const CollapsingTableWrapper = Glamorous.div<{ collapse: boolean }>((props) => ({
@@ -151,8 +156,8 @@ const ColapseFooterWrap = Glamorous.div({
     marginTop: -6
 });
 
-class CollapsingTable extends React.Component<{ children: any, count: number }, { collapse: boolean, btnText: string }> {
-    constructor(props: { children: any, count: number }) {
+class CollapsingTable extends React.Component<{ children: any, count: number, loading?: boolean }, { collapse: boolean, btnText: string }> {
+    constructor(props: { children: any, count: number, loading: boolean }) {
         super(props);
 
         this.state = {
@@ -178,7 +183,7 @@ class CollapsingTable extends React.Component<{ children: any, count: number }, 
                 {this.state.collapse && <ColapseFooterWrap>
                     <XFooter text={this.props.count + ' items'} />
                 </ColapseFooterWrap>}
-                <CollapseBtn onClick={() => this.collapseHandler()} collapse={this.state.collapse}>{this.state.btnText}</CollapseBtn>
+                <CollapseBtn hide={this.props.loading} text={this.state.btnText} onClick={() => this.collapseHandler()} collapse={this.state.collapse} />
             </CollapsingTableWrapper>
         );
     }
@@ -298,7 +303,8 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
     };
 
     return (
-        <XLoader loading={(props.data.loading || false) && (!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0)}>
+        <>
+            <XLoader loading={(props.data.loading || false) && (!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0)} />
             <XModal title="Export to CVS" targetQuery="export">
                 <ExportModal />
             </XModal>
@@ -307,7 +313,7 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
                 <>
                     <XHeader text={(props as any).title} separated={true}>
                         <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
-                            <DownloadButton onClick={exportCVS} style="primary" icon="download" text="Export list" />
+                            <DownloadButton onClick={exportCVS} text="Export list" />
                         </XWithRole>
                     </XHeader>
                     {
@@ -335,7 +341,7 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
                                 </XFooter>
                             </>
                         ) : (
-                                <CollapsingTable count={props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0}>
+                                <CollapsingTable count={props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0} loading={(props.data.loading || false) && (!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0)}>
                                     <XTable>
                                         <TableHeader />
                                         <XTable.Body>
@@ -366,6 +372,6 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
                     {props.children}
                 </>
             )}
-        </XLoader>
+        </>
     );
 })) as React.ComponentType<{ variables?: ATypes.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string, title?: string }>;

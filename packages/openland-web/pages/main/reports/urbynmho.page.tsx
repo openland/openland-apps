@@ -273,7 +273,8 @@ const Wrapper = Glamorous.div({
 const ContentWrapper = Glamorous.div({
     backgroundColor: '#fff',
     borderRadius: 4,
-    border: 'solid 1px rgba(229, 233, 242, 0.5)'
+    border: 'solid 1px rgba(229, 233, 242, 0.5)',
+    position: 'relative'
 });
 
 class Checkbox extends React.Component<{ checkedChangeListener: Function, label: string, checked?: boolean, color: string, count?: number }, { isChecked: boolean }> {

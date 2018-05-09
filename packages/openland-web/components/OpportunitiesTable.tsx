@@ -11,6 +11,7 @@ import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
 import { XLoader } from 'openland-x/XLoader';
 import { XModal } from 'openland-x-modal/XModal';
+import { XVertical } from 'openland-x-layout/XVertical';
 
 // import { OpportunityState } from 'openland-api/Types';
 // import { OpportunitiesTable as _OpportunitiesTable } from './OpportunitiesTableUrbynReport';
@@ -74,10 +75,10 @@ export const ExportModal = withSourcingAll(withRouter((props) => {
         document.body.removeChild(link);
     };
     return (
-        <XLoader loading={(props.data.loading || false)}>
+        <>
+            <XLoader loading={(props.data.loading || false)} />
             <XButton style="primary" onClick={exportCVS} text={'Download' + props.data.variables + '.csv'} />
-        </XLoader>
-
+        </>
     );
 })) as React.ComponentType<{ variables?: ATypes.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
 
@@ -183,7 +184,8 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
     // let qHpd = buildQuery(clauses2);
 
     return (
-        <XLoader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)}>
+        <XVertical>
+            <XLoader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)} />
             <XModal title="Export to CVS" targetQuery="export">
                 <ExportModal
                     variables={(props as any).variables}
@@ -227,7 +229,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                 </XTable.Cell>
                             </XWithRole>
                             <XTable.Cell
-                                width={140}
+                                width={150}
                                 textAlign="right"
                                 orderBy={sVal === 'DATE_ADDED_ASC' ? 'ASC' : sVal === undefined ? 'DESC' : 'NO_SORT'}
                                 query={{ field: 'sort', value: (sVal === 'DATE_ADDED_ASC' ? undefined : 'DATE_ADDED_ASC') }}
@@ -267,14 +269,14 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                     </XTable>
                     <XFooter text={props.data.alphaOpportunities.pageInfo.itemsCount + ' items'}>
                         {props.data.alphaOpportunities.pageInfo.currentPage > 1 && (
-                            <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }} text="Prev"/>
+                            <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage - 1).toString() }} text="Prev" />
                         )}
                         {(props.data.alphaOpportunities.pageInfo.currentPage < props.data.alphaOpportunities.pageInfo.pagesCount - 1) && (
-                            <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }} text="Next"/>
+                            <XButton query={{ field: 'page', value: (props.data.alphaOpportunities.pageInfo.currentPage + 1).toString() }} text="Next" />
                         )}
                         <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
                             {/* <XButton query={{ field: 'export', value: 'true' }} style="dark">Export</XButton> */}
-                            <XButton onClick={exportCVS} style="primary" text="Export page"/>
+                            <XButton onClick={exportCVS} style="primary" text="Export page" />
                         </XWithRole>
 
                     </XFooter>
@@ -285,6 +287,6 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                     {props.children}
                 </>
             )}
-        </XLoader>
+        </XVertical>
     );
 })) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;

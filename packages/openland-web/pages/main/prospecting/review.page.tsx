@@ -238,7 +238,8 @@ const OpportunityInfo = withOpportunity((props) => {
     return (
         <XVertical>
             <ProspectingNavigationReview />
-            <XLoader loading={props.data.loading || false}>
+            <XVertical>
+                <XLoader loading={props.data.loading || false} />
                 {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
                     <XHeader
                         text={props.data.alphaNextReviewOpportunity!!.parcel.address || 'No address'}
@@ -313,10 +314,10 @@ const OpportunityInfo = withOpportunity((props) => {
                 {(!props.data.alphaNextReviewOpportunity && (!props.data.loading)) && (
                     <XEmpty text="There are no parcels for review" icon="sort" />
                 )}
-            </XLoader>
-            {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
-                <OpportunityDescription parcel={props.data.alphaNextReviewOpportunity.parcel} parcelNotes={props.parcelNotes} router={props.router} />
-            )}
+                {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
+                    <OpportunityDescription parcel={props.data.alphaNextReviewOpportunity.parcel} parcelNotes={props.parcelNotes} router={props.router} />
+                )}
+            </XVertical>
         </XVertical>
     );
 }) as React.ComponentType<{ variables?: any } & XWithRouter>;

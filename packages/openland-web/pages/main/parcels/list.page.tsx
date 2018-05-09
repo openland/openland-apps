@@ -10,6 +10,7 @@ import { XButton } from 'openland-x/XButton';
 import { XFooter } from 'openland-x/XFooter';
 import { XLoader } from 'openland-x/XLoader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { XVertical } from 'openland-x-layout/XVertical';
 
 const Content = withParcels((props) => {
     return (
@@ -19,18 +20,20 @@ const Content = withParcels((props) => {
                 <Scaffold.Content>
                     <XHeader
                         text="Something"
-                        description={props.data.items.pageInfo.itemsCount + ' parcels found'}/>
-                    <XLoader loading={props.data.loading || false}>
+                        description={props.data.items.pageInfo.itemsCount + ' parcels found'}
+                    />
+                    <XVertical>
+                        <XLoader loading={props.data.loading || false} />
                         <TableParcels items={props.data.items.edges.map((v) => v.node)} showCity={false} />
-                    </XLoader>
-                    <XFooter text={props.data.items.pageInfo.itemsCount + ' items'}>
-                        {props.data.items.pageInfo.currentPage > 1 && (
-                            <XButton query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }}>Prev</XButton>
-                        )}
-                        {(props.data.items.pageInfo.currentPage < props.data.items.pageInfo.pagesCount - 1) && (
-                            <XButton query={{ field: 'page', value: (props.data.items.pageInfo.currentPage + 1).toString() }}>Next</XButton>
-                        )}
-                    </XFooter>
+                        <XFooter text={props.data.items.pageInfo.itemsCount + ' items'}>
+                            {props.data.items.pageInfo.currentPage > 1 && (
+                                <XButton text="Prev" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }} />
+                            )}
+                            {(props.data.items.pageInfo.currentPage < props.data.items.pageInfo.pagesCount - 1) && (
+                                <XButton text="Next" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage + 1).toString() }} />
+                            )}
+                        </XFooter>
+                    </XVertical>
                 </Scaffold.Content>
             </Scaffold>
         </>

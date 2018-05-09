@@ -17,46 +17,28 @@ const ItemIcon = Glamorous(XIcon)({
 });
 
 const LoadingDiv = Glamorous.div({
-    position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     width: 25,
     height: 25,
-    top: 'calc(50% - 12.5px)',
-    left: 'calc(50% - 12.5px)',
     animation: `${loading} 1s linear infinite`,
 });
 
-const HidenComponents = Glamorous.div<{ loading?: boolean }>((props) => ({
-    opacity: props.loading ? 0 : 1,
-    '& *': {
-        cursor: props.loading ? 'default' : undefined
-    },
-}));
-
 const XCardLoaderDiv = Glamorous.div<{ loading?: boolean }>((props) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'relative',
-    flexGrow: props.loading ? 1 : undefined,
-    pointerEvents: props.loading ? 'none' : undefined
+    display: props.loading ? 'flex' : 'none',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    flexGrow: 1,
+    height: '100%',
+    width: '100%',
+    backgroundColor: '#fff',
+    zIndex: 2
 }));
 
-const ContentCloser = Glamorous.div({
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    top: 0,
-    left: 0
-});
-
-export const XLoader = (props: { children?: any, loading?: boolean }) => (
+export const XLoader = (props: { loading?: boolean }) => (
     <XCardLoaderDiv loading={props.loading}>
-        {props.loading && <LoadingDiv><ItemIcon icon="cached" /></LoadingDiv>}
-        <HidenComponents loading={props.loading}>
-            {props.children}
-            {props.loading && <ContentCloser />}
-        </HidenComponents>
+        <LoadingDiv><ItemIcon icon="cached" /></LoadingDiv>
     </XCardLoaderDiv>
 );
