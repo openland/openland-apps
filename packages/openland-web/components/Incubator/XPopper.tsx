@@ -67,6 +67,8 @@ class TargetClass extends React.Component<TargetProps> {
 interface PopperChildProps {
     style: any;
     ref: (ref: React.ReactNode) => void;
+    refArrow: (ref: React.ReactNode) => void;
+
     'data-placement': string | null;
 }
 
@@ -95,6 +97,7 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
     private _popper: PopperJS.default;
     // private _arrowNode: React.ReactNode;
     private _node: Element;
+    private _arrowNode: Element;
     private _component: React.ReactNode;
 
     constructor(props: PopperProps) {
@@ -170,18 +173,22 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
             ...popperProps,
             modifiers: {
                 ...popperProps.modifiers,
-                applyStyle: { enabled: false },
+                // applyStyle: { enabled: false },
                 preventOverflow: {
                     boundariesElement: 'viewport'
-                }
-                // arrow: {
-                //     element: this._arrowNode as any,
-                // },
+                },
+                computeStyle: {
+                    gpuAcceleration: false
+                },
+                arrow: {
+                    enabled: true,
+                    element: this._arrowNode as any,
+                },
             },
-            onUpdate: (data: Popper.Data) => {
-                this.setState({ data });
-                return data;
-            },
+            // onUpdate: (data: Popper.Data) => {
+            //     this.setState({ data });
+            //     return data;
+            // },
         });
 
         // schedule an update to make sure everything gets positioned correctly
@@ -195,9 +202,18 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
         }
     }
 
-    _setNodeRef = (node: Element) => {
+    _setNodeRef = (node: any) => {
         this._node = node;
-        if (this._node) {
+        this.initPopper();
+    }
+
+    _setArrowRef = (node: any) => {
+        this._arrowNode = node;
+        this.initPopper();
+    }
+
+    initPopper = () => {
+        if (this._node && this._arrowNode) {
             this._createPopper();
         }
     }
@@ -208,11 +224,15 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
         this._component = componentFactory({
             style: this.state.data && this.state.data.styles,
             ref: this._setNodeRef,
+            refArrow: this._setArrowRef,
             'data-placement': this.state.data && this.state.data.placement,
             // ['data-x-out-of-boundaries']: popperHide,
         });
 
-        return this._component;
+        return (
+            this._component
+
+        );
     }
 }
 
@@ -324,10 +344,9 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
     zIndex: 501,
     '& .popper .popper-content *': {
         pointerEvents: props.nonePointerEvents ? 'none' : undefined,
-        cursor: props.nonePointerEvents ? 'auto' : undefined
+        cursor: props.nonePointerEvents ? 'auto' : undefined,
     },
     '&, & .popper': {
-        display: 'none',
         zIndex: 501,
 
         '> .popper-content, .popper-content': {
@@ -340,66 +359,51 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
             fontSize: 14,
             lineHeight: 'normal',
             fontWeight: 400,
-        }
+        },
+
     },
 
-    '&, & .popper.hide': {
-        display: 'block',
-
-        '> .popper-content, .popper-content.hide': {
-            animationDuration: '0.2s',
-            animationFillMode: 'forwards',
-            animationName: `${hideAnimationTop}`,
-            animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
-        }
-    },
-
-    '&, & .popper.show': {
-        display: 'block',
-
-        '> .popper-content, .popper-content.show': {
-            animationDuration: '0.2s',
-            animationFillMode: 'forwards',
-            animationName: `${showAnimationTop}`,
-            animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
-        }
-    },
-
-    '&, & .popper.static': {
-        display: 'block',
-
-        '> .popper-content, .popper-content.static': {
-            animationDuration: '0.000002s',
-            animationFillMode: 'forwards',
-            animationName: `${showAnimationTop}`,
-            animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
-        }
-    },
-
-    '& .popper .popper-content::after, & .popper-content::after': {
-        display: 'block',
-        content: props.arrowStyle === 'default' ? `''` : undefined,
-        width: 0,
-        height: 0,
+    '& .popper > .arrow': {
         borderStyle: 'solid',
-        position: 'absolute'
+        position: 'absolute',
     },
 
-    '& .popper[data-placement^="top"], &[x-placement^="top"] .popper-content': {
+    '& .popper.hide': {
+        // display: 'block',
+
+        animationDuration: '0.2s',
+        animationFillMode: 'forwards',
+        animationName: `${hideAnimationTop}`,
+        animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+    },
+
+    '& .popper.show': {
+
+        animationDuration: '0.2s',
+        animationFillMode: 'forwards',
+        animationName: `${showAnimationTop}`,
+        animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
+    },
+
+    '& .popper.static': {
+        animationDuration: '0.0002s',
+        animationFillMode: 'forwards',
+        animationName: `${showAnimationTop}`,
+        animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
+    },
+
+    '& .popper[data-placement^="top"], & .popper[x-placement^="top"] .popper-content': {
         marginBottom: 10
     },
 
-    '& .popper[data-placement^="top"] .popper-content::after, &[x-placement^="top"] .popper-content::after': {
+    '& .popper[x-placement^="top"] > .arrow': {
         borderWidth: '5px 5px 0 5px',
         borderColor: '#fff transparent transparent transparent',
-        bottom: -5,
-        left: 'calc(50% - 5px)',
-        marginTop: 0,
-        marginBottom: 0
+        bottom: 5,
     },
 
-    '& .popper[data-placement^="bottom"], &[x-placement^="bottom"] .popper-content': {
-        marginTop: 10,
+    '& .popper[data-placement^="bottom"], & .popper[x-placement^="bottom"] .popper-content': {
+        marginTop: 30,
         '&.show > .popper-content, &.show': {
             animationName: `${showAnimationBottom} !important`,
         },
@@ -408,16 +412,15 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
         }
     },
 
-    '& .popper[data-placement^="bottom"] .popper-content::after, &[x-placement^="bottom"] .popper-content::after': {
+    '& .popper[x-placement^="bottom"] > .arrow': {
         borderWidth: '0 5px 5px 5px',
         borderColor: 'transparent transparent #fff transparent',
-        top: -5,
-        left: 'calc(50% - 5px)',
-        marginTop: 0,
-        marginBottom: 0
+        top: 5,
+        marginTop: 20,
+        
     },
 
-    '& .popper[data-placement^="right"], &[x-placement^="right"] .popper-content': {
+    '& .popper[data-placement^="right"], & .popper[x-placement^="right"] .popper-content': {
         marginLeft: 10,
         '&.show > .popper-content, &.show': {
             animationName: `${showAnimationRight} !important`,
@@ -427,16 +430,15 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
         }
     },
 
-    '& .popper[data-placement^="right"] .popper-content::after, &[x-placement^="right"] .popper-content::after': {
+    '& .popper[x-placement^="right"] > .arrow': {
         borderWidth: '5px 5px 5px 0',
         borderColor: 'transparent #fff transparent transparent',
-        left: -5,
-        top: 'calc(50% - 5px)',
-        marginLeft: 0,
-        marginRight: 0
+        left: 5,
+        // top: 'calc(50% - 5px)',
+
     },
 
-    '& .popper[data-placement^="left"], &[x-placement^="left"] .popper-content': {
+    '& .popper[data-placement^="left"], & .popper[x-placement^="left"] .popper-content': {
         marginRight: 10,
         '&.show > .popper-content, &.show': {
             animationName: `${showAnimationLeft} !important`,
@@ -446,18 +448,17 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
         }
     },
 
-    '& .popper[data-placement^="left"] .popper-content::after, &[x-placement^="left"] .popper-content::after': {
+    '& .popper[x-placement^="left"] > .arrow': {
         borderWidth: '5px 0 5px 5px',
         borderColor: 'transparent transparent transparent #fff',
-        right: -5,
-        top: 'calc(50% - 5px)',
-        marginLeft: 0,
-        marginRight: 0
+        right: 5,
+        // top: 'calc(50% - 5px)',
     },
 
     '& .popper[data-x-out-of-boundaries], &[data-x-out-of-boundaries]': {
         display: 'none'
     }
+    
 }));
 
 interface PopperDivProps {
@@ -501,6 +502,8 @@ export function Popper(props: PopperDivProps) {
                         <div className="popper-content" onMouseOver={() => props.onMouseover ? props.onMouseover() : undefined} onMouseOut={() => props.onMouseout ? props.onMouseout() : undefined}>
                             {props.children}
                         </div>
+                        <div className="arrow" ref={popperProps.refArrow} />
+
                     </div>
                 )}
             />

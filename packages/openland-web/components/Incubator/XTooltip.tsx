@@ -57,7 +57,7 @@ interface XTooltipProps {
 }
 
 interface XTooltipState {
-    class: string;
+    class: 'static'|'show'|'hide';
     showPopover: boolean;
 }
 
