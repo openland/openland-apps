@@ -9,104 +9,104 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 const showAnimationTop = glamor.keyframes({
     '0%': {
         opacity: 0,
-        transform: 'scale(0)',
-        transformOrigin: '50% 60%'
+        // transform: 'scale(0)',
+        // transformOrigin: '50% 60%'
     },
     '100%': {
         opacity: 1,
-        transform: 'scale(1)',
-        transformOrigin: '50% 60%'
+        // transform: 'scale(1)',
+        // transformOrigin: '50% 60%'
     }
 });
 
 const showAnimationBottom = glamor.keyframes({
     '0%': {
         opacity: 0,
-        transform: 'scale(0)',
-        transformOrigin: '50% calc(-10% + 11px)'
+        // transform: 'scale(0)',
+        // transformOrigin: '50% calc(-10% + 11px)'
     },
     '100%': {
         opacity: 1,
-        transform: 'scale(1)',
-        transformOrigin: '50% calc(-10% + 11px)'
+        // transform: 'scale(1)',
+        // transformOrigin: '50% calc(-10% + 11px)'
     }
 });
 
 const showAnimationRight = glamor.keyframes({
     '0%': {
         opacity: 0,
-        transform: 'scale(0)',
-        transformOrigin: '60% 50%'
+        // transform: 'scale(0)',
+        // transformOrigin: '60% 50%'
     },
     '100%': {
         opacity: 1,
-        transform: 'scale(1)',
-        transformOrigin: '60% 50%'
+        // transform: 'scale(1)',
+        // transformOrigin: '60% 50%'
     }
 });
 
 const showAnimationLeft = glamor.keyframes({
     '0%': {
         opacity: 0,
-        transform: 'scale(0)',
-        transformOrigin: '40% 50%'
+        // transform: 'scale(0)',
+        // transformOrigin: '40% 50%'
     },
     '100%': {
         opacity: 1,
-        transform: 'scale(1)',
-        transformOrigin: '40% 50%'
+        // transform: 'scale(1)',
+        // transformOrigin: '40% 50%'
     }
 });
 
 const hideAnimationTop = glamor.keyframes({
     '0%': {
         opacity: 1,
-        transform: 'scale(1)',
-        transformOrigin: '50% 60%'
+        // transform: 'scale(1)',
+        // transformOrigin: '50% 60%'
     },
     '100%': {
         opacity: 0,
-        transform: 'scale(0)',
-        transformOrigin: '50% 60%'
+        // transform: 'scale(0)',
+        // transformOrigin: '50% 60%'
     }
 });
 
 const hideAnimationBottom = glamor.keyframes({
     '0%': {
         opacity: 1,
-        transform: 'scale(1)',
-        transformOrigin: '50% calc(-10% + 11px)'
+        // transform: 'scale(1)',
+        // transformOrigin: '50% calc(-10% + 11px)'
     },
     '100%': {
         opacity: 0,
-        transform: 'scale(0)',
-        transformOrigin: '50% calc(-10% + 11px)'
+        // transform: 'scale(0)',
+        // transformOrigin: '50% calc(-10% + 11px)'
     }
 });
 
 const hideAnimationRight = glamor.keyframes({
     '0%': {
         opacity: 1,
-        transform: 'scale(1)',
-        transformOrigin: '60% 50%'
+        // transform: 'scale(1)',
+        // transformOrigin: '60% 50%'
     },
     '100%': {
         opacity: 0,
-        transform: 'scale(0)',
-        transformOrigin: '60% 50%'
+        // transform: 'scale(0)',
+        // transformOrigin: '60% 50%'
     }
 });
 
 const hideAnimationLeft = glamor.keyframes({
     '0%': {
         opacity: 1,
-        transform: 'scale(1)',
-        transformOrigin: '40% 50%'
+        // transform: 'scale(1)',
+        // transformOrigin: '40% 50%'
     },
     '100%': {
         opacity: 0,
-        transform: 'scale(0)',
-        transformOrigin: '40% 50%'
+        // transform: 'scale(0)',
+        // transformOrigin: '40% 50%'
     }
 });
 
@@ -229,7 +229,7 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
 class XPopper2Props {
     content: any;
     show: boolean;
-    animate?: boolean;
+    animation?: boolean | 'show' | 'hide' | 'static';
 }
 
 export class XPopper2 extends React.Component<XPopper2Props & Popper.PopperOptions> {
@@ -241,19 +241,16 @@ export class XPopper2 extends React.Component<XPopper2Props & Popper.PopperOptio
     caputureTargetNode = (node: any) => {
         this._targetNode = node;
         this.initPopper();
-        console.warn('caputureTargetNode')
     }
 
     caputurePopperNode = (node: any) => {
         this._node = node;
         this.initPopper();
-        console.warn('caputurePopperNode')
     }
 
     caputurePopperArrowNode = (node: any) => {
         this._arrowNode = node;
         this.initPopper();
-        console.warn('caputurePopperArrowNode')
     }
 
     initPopper = () => {
@@ -265,34 +262,22 @@ export class XPopper2 extends React.Component<XPopper2Props & Popper.PopperOptio
     _createPopper = () => {
 
         let constructor = PopperJS.default;
-        // if (constructor == null) {
-        //     // Not sure how someone got here but they did... I'm assuming their
-        //     // build system isn't using modules, attempting something else
-        //     constructor = PopperJSDist;
-        // }
 
+        let {children, content, show, animation, ...popperProps} = this.props;
+        
         this._popper = new constructor(this._targetNode, this._node, {
-            // ...popperProps,
-           
             modifiers: {
-                // ...popperProps.modifiers,
-                // applyStyle: { enabled: false },
                 preventOverflow: {
                     boundariesElement: 'viewport'
-                },
-                computeStyle: {
-                    gpuAcceleration: false
                 },
                 arrow: {
                     enabled: true,
                     element: this._arrowNode,
                 },
             },
-            placement: this.props.placement
-            // onUpdate: (data: Popper.Data) => {
-            //     this.setState({ data });
-            //     return data;
-            // },
+            placement: this.props.placement,
+            ...popperProps,
+            
         });
         this._popper.scheduleUpdate();
 
@@ -306,7 +291,7 @@ export class XPopper2 extends React.Component<XPopper2Props & Popper.PopperOptio
             // autoWidth={props.autoWidth}
             // arrowStyle={props.arrowStyle || 'default'} 
             >
-                <div className={classnames('popper', this.props.animate ? (this.props.show ? 'show' : 'hide') : 'static')} ref={this.caputurePopperNode} >
+                <div className={classnames('popper', this.props.animation !== false ? (this.props.show ? 'static' : 'hide') : 'static')} ref={this.caputurePopperNode} >
                     <div className="popper-content" >
                         {this.props.content}
                     </div>

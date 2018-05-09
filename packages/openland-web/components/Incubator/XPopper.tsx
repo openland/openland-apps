@@ -403,7 +403,7 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
     },
 
     '& .popper[data-placement^="bottom"], & .popper[x-placement^="bottom"] .popper-content': {
-        marginTop: 10,
+        marginTop: 30,
         '&.show > .popper-content, &.show': {
             animationName: `${showAnimationBottom} !important`,
         },
@@ -416,6 +416,8 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
         borderWidth: '0 5px 5px 5px',
         borderColor: 'transparent transparent #fff transparent',
         top: 5,
+        marginTop: 20,
+        
     },
 
     '& .popper[data-placement^="right"], & .popper[x-placement^="right"] .popper-content': {
@@ -456,6 +458,7 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
     '& .popper[data-x-out-of-boundaries], &[data-x-out-of-boundaries]': {
         display: 'none'
     }
+    
 }));
 
 interface PopperDivProps {
