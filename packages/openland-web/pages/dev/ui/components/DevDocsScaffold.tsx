@@ -1,9 +1,8 @@
 import * as React from 'react';
-// import Glamorous from 'glamorous';
-import { Scaffold } from './Scaffold';
-import { Sidebar } from './Sidebar';
 import { XHeader } from 'openland-x/XHeader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { Scaffold } from '../../../../components/Scaffold';
+import { Sidebar } from '../../../../components/Sidebar';
 
 // const ContentView = Glamorous.div({
 //     display: 'flex',
@@ -34,6 +33,7 @@ export function DevDocsScaffold(props: { title?: string, children?: any, bottomO
                             <Sidebar.Item path="/ui/radios">Radio Buttons</Sidebar.Item>
                             <Sidebar.Item path="/ui/checkbox">Checkboxes</Sidebar.Item>
                             <Sidebar.Item path="/ui/select">Select</Sidebar.Item>
+                            <Sidebar.Item path="/ui/modals">Modals</Sidebar.Item>
                             <Sidebar.Item>Basic Styles</Sidebar.Item>
                             <Sidebar.Subitem path="/ui/typography">Typography</Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/grid">Grid</Sidebar.Subitem>

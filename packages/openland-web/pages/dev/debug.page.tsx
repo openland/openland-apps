@@ -3,7 +3,7 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { withUserInfo } from '../../components/UserInfo';
 import { XHeader } from 'openland-x/XHeader';
-import { DevToolsScaffold } from '../../components/DevToolsScaffold';
+import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTable } from 'openland-x/XTable';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';

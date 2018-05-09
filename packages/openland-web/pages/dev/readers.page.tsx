@@ -2,7 +2,7 @@ import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { XHeader } from 'openland-x/XHeader';
-import { DevToolsScaffold } from '../../components/DevToolsScaffold';
+import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { withDebugReaders } from '../../api';
 import { XTable } from 'openland-x/XTable';
 

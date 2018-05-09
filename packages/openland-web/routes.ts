@@ -129,6 +129,8 @@ routes.add('/ui/checkbox', '/dev/ui/checkbox');
 routes.add('/ui/checkbox/', '/dev/ui/checkbox');
 routes.add('/ui/select', '/dev/ui/select');
 routes.add('/ui/select/', '/dev/ui/select');
+routes.add('/ui/modals', '/dev/ui/modals');
+routes.add('/ui/modals/', '/dev/ui/modals');
 
 //
 // Dev Tools

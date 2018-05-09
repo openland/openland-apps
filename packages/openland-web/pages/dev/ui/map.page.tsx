@@ -7,7 +7,7 @@ import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api';
 // import { XHorizontal } from '../../../components/X/XHorizontal';
 // import { XButton } from '../../../components/X/XButton';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
-import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
+import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { XSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
 import { RoutedMapFilters } from '../../../components/Incubator/MapComponents/MapFilters';

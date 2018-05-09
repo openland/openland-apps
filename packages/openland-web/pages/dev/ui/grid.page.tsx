@@ -1,7 +1,7 @@
 import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
+import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import glamorous from 'glamorous';
 import { XContent } from 'openland-x-layout/XContent';

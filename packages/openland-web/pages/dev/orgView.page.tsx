@@ -7,7 +7,7 @@ import {
     withSuperAccountMemberRemove
 } from '../../api/';
 import { XHeader } from 'openland-x/XHeader';
-import { DevToolsScaffold } from '../../components/DevToolsScaffold';
+import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XTable } from 'openland-x/XTable';

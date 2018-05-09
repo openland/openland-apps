@@ -2,7 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
-import { DevDocsScaffold } from '../../../components/DevDocsScaffold';
+import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XVertical } from 'openland-x-layout/XVertical';
 import XStyles from 'openland-x/XStyles';

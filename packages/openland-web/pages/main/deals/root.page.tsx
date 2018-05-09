@@ -3,7 +3,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { withDeals, withDealAdd } from '../../../api/';
-import { DealForm } from '../../../components/DealForm';
+import { DealForm } from './components/DealForm';
 import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XWithRole } from 'openland-x-permissions/XWithRole';

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Scaffold } from './Scaffold';
-import { Sidebar } from './Sidebar';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { Scaffold } from '../../../components/Scaffold';
+import { Sidebar } from '../../../components/Sidebar';
 
 export function DevToolsScaffold(props: { title: string, children?: any }) {
     return (
