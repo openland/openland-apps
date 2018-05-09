@@ -5,8 +5,6 @@ import { Manager, Target, Popper } from './XPopper';
 import { XIcon } from 'openland-x/XIcon';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
-import { XPopper2 } from './XPopper2';
-
 const XTooltipDiv = Glamorous.div<{ marginLeft?: number, marginRight?: number, marginTop?: number, marginBottom?: number, margin?: number, centeredContent?: boolean }>((props) => ({
     display: 'flex',
     flexShrink: 0,
