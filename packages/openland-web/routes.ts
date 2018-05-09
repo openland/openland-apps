@@ -131,6 +131,8 @@ routes.add('/ui/select', '/dev/ui/select');
 routes.add('/ui/select/', '/dev/ui/select');
 routes.add('/ui/modals', '/dev/ui/modals');
 routes.add('/ui/modals/', '/dev/ui/modals');
+routes.add('/ui/popper', '/dev/ui/popper');
+routes.add('/ui/popper/', '/dev/ui/popper');
 
 //
 // Dev Tools
