@@ -110,8 +110,9 @@ const hideAnimationLeft = glamor.keyframes({
     }
 });
 
-export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boolean, arrowStyle?: 'default' | 'none'; }>((props) => ({
+export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boolean, arrowStyle?: 'default' | 'none'; margin?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string }>((props) => ({
     zIndex: 501,
+
     '& .popper .popper-content *': {
         pointerEvents: props.nonePointerEvents ? 'none' : undefined,
         cursor: props.nonePointerEvents ? 'auto' : undefined,
@@ -138,9 +139,10 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
         position: 'absolute',
     },
 
+    ////////
+    // animations: now disabled - mb use https://reactjs.org/docs/animation.html
+    ////////
     '& .popper.hide': {
-        // display: 'block',
-
         animationDuration: '0.2s',
         animationFillMode: 'forwards',
         animationName: `${hideAnimationTop}`,
@@ -161,6 +163,8 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
         animationName: `${showAnimationTop}`,
         animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
     },
+    //
+    ////////////////
 
     '& .popper[data-placement^="top"], & .popper[x-placement^="top"] .popper-content': {
         marginBottom: 10
@@ -223,28 +227,52 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
 
     '& .popper[data-x-out-of-boundaries], &[data-x-out-of-boundaries]': {
         display: 'none'
+    },
+
+    '& .popper': {
+        margin: (typeof props.margin === 'number' || typeof props.margin === 'string') ? props.margin : undefined,
+        marginLeft: (props.margin !== undefined && (typeof props.margin !== 'number') && (typeof props.margin !== 'string')) ? props.margin.left : undefined,
+        marginTop: (props.margin !== undefined && (typeof props.margin !== 'number') && (typeof props.margin !== 'string')) ? props.margin.top : undefined,
+        marginRight: (props.margin !== undefined && (typeof props.margin !== 'number') && (typeof props.margin !== 'string')) ? props.margin.right : undefined,
+        marginBottom: (props.margin !== undefined && (typeof props.margin !== 'number') && (typeof props.margin !== 'string')) ? props.margin.bottom : undefined,
     }
 }));
 
 class XPopper2Props {
     content: any;
-    show: boolean;
+    show?: boolean | 'hover';
+    // animation now unused
     animation?: boolean | 'show' | 'hide' | 'static';
+    margin?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string;
 }
 
-export class XPopper2 extends React.Component<XPopper2Props & Popper.PopperOptions> {
+export class XPopper2 extends React.Component<XPopper2Props & Popper.PopperOptions, { show: boolean }> {
     private _popper: PopperJS.default;
     private _node: Element;
     private _targetNode: Element;
     private _arrowNode: Element;
 
+    constructor(props: XPopper2Props & Popper.PopperOptions) {
+        super(props);
+
+        this.state = { show: typeof this.props.show === 'boolean' ? this.props.show : false };
+    }
+
     caputureTargetNode = (node: any) => {
-        this._targetNode = node;
+
+        this._targetNode = ReactDOM.findDOMNode(node);
+        if (this._targetNode && this.props.show === 'hover') {
+            this.dispose();
+            this._targetNode.addEventListener('mouseover', this.onMouseOverTarget);
+            this._targetNode.addEventListener('mouseout', this.onMouseOutTarget);
+        }
+
         this.initPopper();
     }
 
     caputurePopperNode = (node: any) => {
         this._node = node;
+
         this.initPopper();
     }
 
@@ -263,8 +291,8 @@ export class XPopper2 extends React.Component<XPopper2Props & Popper.PopperOptio
 
         let constructor = PopperJS.default;
 
-        let {children, content, show, animation, ...popperProps} = this.props;
-        
+        let { children, content, show, animation, margin, ...popperProps } = this.props;
+
         this._popper = new constructor(this._targetNode, this._node, {
             modifiers: {
                 preventOverflow: {
@@ -275,23 +303,53 @@ export class XPopper2 extends React.Component<XPopper2Props & Popper.PopperOptio
                     element: this._arrowNode,
                 },
             },
-            placement: this.props.placement,
             ...popperProps,
-            
+
         });
         this._popper.scheduleUpdate();
 
     }
 
+    onMouseOverTarget = () => {
+        this.setState({ show: true });
+    }
+    onMouseOutTarget = () => {
+        this.setState({ show: false });
+    }
+
+    modifyProps = (component: any) => {
+        let props: any = {};
+
+        props.ref = this.caputureTargetNode;
+
+        return props;
+    }
+
+    dispose = () => {
+        if (this._targetNode) {
+            this._targetNode.removeEventListener('mouseover', this.onMouseOverTarget);
+            this._targetNode.removeEventListener('mouseout', this.onMouseOutTarget);
+        }
+    }
+
+    componentWillUnmount() {
+        this.dispose();
+    }
+
     render() {
+        let children: any = [];
+
+        for (let c of React.Children.toArray(this.props.children)) {
+            children.push(React.cloneElement(c as any, this.modifyProps(c)));
+        }
 
         let popper = (
             <PopperDiv
-            // nonePointerEvents={props.nonePointerEvents}
-            // autoWidth={props.autoWidth}
-            // arrowStyle={props.arrowStyle || 'default'} 
+                margin={this.props.margin}
             >
-                <div className={classnames('popper', this.props.animation !== false ? (this.props.show ? 'static' : 'hide') : 'static')} ref={this.caputurePopperNode} >
+                <div
+                    className={classnames('popper', this.props.animation !== false ? (this.props.show ? 'static' : 'hide') : 'static')}
+                    ref={this.caputurePopperNode} >
                     <div className="popper-content" >
                         {this.props.content}
                     </div>
@@ -303,10 +361,8 @@ export class XPopper2 extends React.Component<XPopper2Props & Popper.PopperOptio
 
         return (
             <>
-                <div ref={this.caputureTargetNode}>
-                    {this.props.children}
-                </div>
-                {(this.props.show && canUseDOM && ReactDOM.createPortal(popper, document.body))}
+                {children}
+                {(this.state.show && canUseDOM && ReactDOM.createPortal(popper, document.body))}
 
             </>
         );
