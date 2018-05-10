@@ -11,6 +11,7 @@ import { XTooltip2 } from '../../../components/Incubator/XTooltip2';
 import Glamorous from 'glamorous';
 import { XIcon } from 'openland-x/XIcon';
 import { XLink } from 'openland-x/XLink';
+import { TextAppBar } from 'openland-text/TextAppBar';
 
 const NavigatorIcon = Glamorous(XIcon)({
     fontSize: '28px',
@@ -130,25 +131,25 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                         <XTitle>Tooltip</XTitle>
 
                         <NavigationContainer>
-                            <XTooltip2 content="lorem ipsum" show="hover" placement="right">
-                            <NavigatorItem path="/prospecting" activateForSubpaths={true}>
+                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} show="hover" placement="right">
+                                <NavigatorItem path="/prospecting" activateForSubpaths={true}>
                                     <NavigatorIcon icon="explore" />
                                 </NavigatorItem>
                             </XTooltip2>
 
-                            <XTooltip2 content="lorem ipsum" show="hover" placement="right">
+                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} show="hover" placement="right">
                                 <NavigatorItem path="/prospecting" activateForSubpaths={true}>
                                     <NavigatorIcon icon="search" />
                                 </NavigatorItem>
                             </XTooltip2>
 
-                            <XTooltip2 content="lorem ipsum" show="hover" placement="right">
+                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} show="hover" placement="right">
                                 <NavigatorItem path="/prospecting" activateForSubpaths={true}>
                                     <NavigatorIcon icon="work" />
                                 </NavigatorItem>
                             </XTooltip2>
 
-                            <XTooltip2 content="lorem ipsum" show="hover" placement="right">
+                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} show="hover" placement="right">
                                 <NavigatorItem path="/prospecting" activateForSubpaths={true}>
                                     <NavigatorIcon icon="sort" />
                                 </NavigatorItem>

@@ -18,23 +18,22 @@ export class XTooltip2 extends React.Component<XPopper2Props> {
 
         if (!props.willHideInstant) {
             XTooltip2.activeTooltips.add(this);
+            XTooltip2.current = this;
         } else {
             XTooltip2.activeTooltips.delete(this);
         }
 
-        if (pendingAnimation === 'show' && (XTooltip2.activeTooltips.size > 1 || props.willHide || props.willHideInstant || this.prevAnimation === 'static') ) {
+        if (pendingAnimation === 'show' && (XTooltip2.activeTooltips.size > 1 || props.willHide || props.willHideInstant || this.prevAnimation === 'static')) {
             pendingAnimation = 'static';
-        }
-
-        if (pendingAnimation === 'hide' && XTooltip2.activeTooltips.size > 0) {
-            props.show = false;
-            pendingAnimation = 'static';
-
         }
 
         this.prevAnimation = pendingAnimation;
 
         props.animationClass = pendingAnimation;
+
+        if (this !== XTooltip2.current) {
+            props.show = false;
+        }
 
         return (
             <Popper {...props} />
