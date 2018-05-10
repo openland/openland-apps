@@ -141,7 +141,6 @@ class XPopper2SelfProps {
 class XPopper2State {
     showPopper: boolean;
     willHide: boolean;
-    willHideInstant: boolean;
     caputurePopperArrowNode: (node: any) => void;
     caputurePopperNode: (node: any) => void;
     onMouseOverTarget: () => void;
@@ -185,7 +184,6 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
 
     hideTimeout: any;
     willHideTimeout: any;
-    willHideInstantTimeout: any;
 
     constructor(props: XPopper2Props) {
         super(props);
@@ -193,7 +191,6 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
         this.state = {
             showPopper: typeof this.props.show === 'boolean' ? this.props.show : false,
             willHide: false,
-            willHideInstant: false,
             caputurePopperArrowNode: this.caputurePopperArrowNode,
             caputurePopperNode: this.caputurePopperNode,
             onMouseOverTarget: this.onMouseOverTarget,
@@ -251,20 +248,15 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     onMouseOverTarget = () => {
         clearTimeout(this.hideTimeout);
         clearTimeout(this.willHideTimeout);
-        clearTimeout(this.willHideInstantTimeout);
-        this.setState({ showPopper: true, willHide: false, willHideInstant: false });
+        this.setState({ showPopper: true, willHide: false });
     }
 
     onMouseOutTarget = () => {
         clearTimeout(this.hideTimeout);
         clearTimeout(this.willHideTimeout);
-        const hoverJumpTimeout = this.props.hoverJumpTimeout !== undefined ? this.props.hoverJumpTimeout : 50;
+        const hoverJumpTimeout = this.props.hoverJumpTimeout !== undefined ? this.props.hoverJumpTimeout : 0;
         const animationDuration = this.props.animated === false ? 0 : this.props.animationDuration !== undefined ? this.props.animationDuration : 200;
-        this.willHideInstantTimeout = setTimeout(
-            () => {
-                this.setState({ willHideInstant: true });
-            },
-            0);
+        
         this.willHideTimeout = setTimeout(
             () => {
                 this.setState({ willHide: true });

@@ -112,7 +112,7 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                             <XButton text="margin-left" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} show={true} placement="right" margin={20}>
+                        <XPopper2 content={'lorem ipsum'} show="hover" placement="right" margin={20} hoverJumpTimeout={50}>
                             <XButton text="margin" alignSelf="flex-start" />
                         </XPopper2>
 
@@ -131,25 +131,25 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                         <XTitle>Tooltip</XTitle>
 
                         <NavigationContainer>
-                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} show="hover" placement="right">
+                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} placement="right">
                                 <NavigatorItem path="/prospecting" activateForSubpaths={true}>
                                     <NavigatorIcon icon="explore" />
                                 </NavigatorItem>
                             </XTooltip2>
 
-                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} show="hover" placement="right">
+                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} placement="right">
                                 <NavigatorItem path="/prospecting" activateForSubpaths={true}>
                                     <NavigatorIcon icon="search" />
                                 </NavigatorItem>
                             </XTooltip2>
 
-                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} show="hover" placement="right">
+                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} placement="right">
                                 <NavigatorItem path="/prospecting" activateForSubpaths={true}>
                                     <NavigatorIcon icon="work" />
                                 </NavigatorItem>
                             </XTooltip2>
 
-                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} show="hover" placement="right">
+                            <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} placement="right">
                                 <NavigatorItem path="/prospecting" activateForSubpaths={true}>
                                     <NavigatorIcon icon="sort" />
                                 </NavigatorItem>
