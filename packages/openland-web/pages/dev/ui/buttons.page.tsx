@@ -47,6 +47,14 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton style="electric" loading={true} text="electric" />
                         <XButton style="flat" loading={true} text="flat" />
                     </XHorizontal>
+                    <XTitle>Loading</XTitle>
+                    <XHorizontal>
+                        <XButton size="x-large" style="primary" loading={true} text="primary" />
+                        <XButton size="large" style="danger" loading={true} text="danger" />
+                        <XButton size="medium" loading={true} text="default" />
+                        <XButton size="default" style="ghost" loading={true} text="ghost" />
+                        <XButton size="small" style="electric" loading={true} text="electric" />
+                    </XHorizontal>
                     <XTitle>Disabled</XTitle>
                     <XHorizontal>
                         <XButton style="primary" text="primary" disabled={true} />

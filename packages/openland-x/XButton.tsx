@@ -41,77 +41,118 @@ let sizeStyles = styleResolver({
         height: 56,
         lineHeight: '56px',
         fontSize: 18,
+        letterSpacing: 0.6,
         fontWeight: 500,
         paddingLeft: 32,
         paddingRight: 32,
         borderRadius: 4,
         '> .icon': {
             width: 32,
-            fontSize: 24,
+            fontSize: 28,
             lineHeight: '56px',
+        },
+        '> .loading': {
+            width: 24,
+            height: 24,
+            lineHeight: 'normal',
+            top: 'calc(50% - 12px)',
+            left: 'calc(50% - 12px)'
         }
     },
     'large': {
         height: 48,
         lineHeight: '48px',
         fontSize: 18,
+        letterSpacing: 0.6,
         fontWeight: 500,
         paddingLeft: 26,
         paddingRight: 26,
         borderRadius: 4,
         '> .icon': {
-            fontSize: 28
+            fontSize: 24
+        },
+        '> .loading': {
+            width: 21,
+            height: 21,
+            lineHeight: 'normal',
+            top: 'calc(50% - 10.5px)',
+            left: 'calc(50% - 10.5px)'
         }
     },
     'medium': {
-        height: 49,
+        height: 40,
         lineHeight: '40px',
         fontSize: 16,
+        letterSpacing: 0.5,
         fontWeight: 500,
         paddingLeft: 20,
         paddingRight: 20,
         borderRadius: 4,
         '> .icon': {
-            fontSize: 24
+            fontSize: 20
+        },
+        '> .loading': {
+            width: 18,
+            height: 18,
+            lineHeight: 'normal',
+            top: 'calc(50% - 9px)',
+            left: 'calc(50% - 9px)'
         }
     },
     'default': {
         height: 32,
         lineHeight: '32px',
         fontSize: 14,
+        letterSpacing: 0.4,
         fontWeight: 500,
         paddingLeft: 14,
         paddingRight: 14,
         borderRadius: 4,
         '> .icon': {
             fontSize: 16
+        },
+        '> .loading': {
+            width: 15,
+            height: 15,
+            lineHeight: 'normal',
+            top: 'calc(50% - 7.5px)',
+            left: 'calc(50% - 7.5px)'
         }
     },
     'small': {
         height: 24,
         lineHeight: '24px',
         fontSize: 12,
+        letterSpacing: 0.4,
+        fontWeight: 500,
         paddingLeft: 10,
         paddingRight: 10,
         borderRadius: 3,
         '> .icon': {
             fontSize: 14
+        },
+        '> .loading': {
+            width: 14,
+            height: 14,
+            lineHeight: 'normal',
+            top: 'calc(50% - 7px)',
+            left: 'calc(50% - 7px)'
         }
     }
 });
 
 let colorStyles = styleResolver({
     'default': {
-        backgroundColor: '#ecedf0',
-        color: '#1f3449',
+        backgroundColor: '#f3f3f5',
+        color: '#334562',
         '&:hover': {
-            backgroundColor: '#eeecfa',
-            color: '#5640d6',
+            backgroundColor: '#ecedf0',
+            color: '#334562',
             boxShadow: '0 1px 2px 0 #ced5e2'
         },
         '&:active': {
-            backgroundColor: '#d6dde9',
-            color: '#1f3449',
+            backgroundColor: '#eeecfa',
+            color: '#5640d6',
             boxShadow: 'none'
         },
         '&:focus': {
@@ -187,10 +228,10 @@ let colorStyles = styleResolver({
     },
     'flat': {
         backgroundColor: '#ffffff',
-        color: '#1f3449',
+        color: '#334562',
         border: 'solid 1px transparent',
         '&:hover': {
-            color: '#1f3449',
+            color: '#334562',
             backgroundColor: '#f4f6fb',
             boxShadow: '0 1px 2px 0 #dbe2ef',
             border: 'solid 1px #c2cbde'
@@ -209,37 +250,37 @@ let colorStyles = styleResolver({
 
 let colorDisabledStyles = styleResolver({
     'default': {
-        backgroundColor: '#edf0f6 !important',
-        color: '#1f3449!important',
+        backgroundColor: '#f3f3f5 !important',
+        color: 'rgba(51, 69, 98, 0.7) !important',
     },
     'primary': {
-        backgroundColor: '#654bfa !important',
-        color: '#ffffff!important',
+        backgroundColor: '#9380fc !important',
+        color: 'rgba(255, 255, 255, 0.7) !important',
     },
     'danger': {
-        backgroundColor: '#d75454 !important',
-        color: '#ffffff!important',
+        backgroundColor: '#e28787 !important',
+        color: 'rgba(255, 255, 255, 0.7) !important',
     },
     'ghost': {
         backgroundColor: '#ffffff !important',
-        color: '#1f3449!important',
+        color: 'rgba(51, 69, 98, 0.7) !important',
         border: 'solid 1px #c2cbde !important',
     },
     'electric': {
         backgroundColor: '#ffffff !important',
-        color: '#5640d6!important',
+        color: 'rgba(86, 64, 214, 0.7) !important',
         border: 'solid 1px #b1a4f9 !important',
     },
     'flat': {
         backgroundColor: '#ffffff !important',
-        color: '#1f3449!important',
+        color: 'rgba(51, 69, 98, 0.7) !important',
     }
 });
 
 let loaderStyles = styleResolver({
     'default': {
         '& svg path': {
-            stroke: '#1f3449 !important'
+            stroke: '#334562 !important'
         }
     },
     'primary': {
@@ -254,7 +295,7 @@ let loaderStyles = styleResolver({
     },
     'ghost': {
         '& svg path': {
-            stroke: '#1f3449 !important'
+            stroke: '#334562 !important'
         }
     },
     'electric': {
@@ -264,13 +305,13 @@ let loaderStyles = styleResolver({
     },
     'flat': {
         '& svg path': {
-            stroke: '#1f3449 !important'
+            stroke: '#334562 !important'
         }
     }
 });
 
 const StyledIcon = Glamorous<XButtonProps>(XIcon)([
-    (props) => iconsIndentation(props.size, props.text === undefined ? false : true)
+    (props) => iconsIndentation(props.size, !!props.text)
 ]);
 
 const StyledButton = Glamorous<XButtonProps>(XLink)([
@@ -292,9 +333,9 @@ const StyledButton = Glamorous<XButtonProps>(XLink)([
     (props) => (props.loading && {
         '& > span': { opacity: 0 }
     } || {}),
-    (props) => (props.disabled && !props.loading && {
-        '& > span': { opacity: 0.5 }
-    } || {}),
+    // (props) => (props.disabled && !props.loading && {
+    //     '& > span': { opacity: 0.5 }
+    // } || {}),
     (props) => (!props.disabled && {
         '&:hover': {
             transform: 'translateY(-1px)',
@@ -313,7 +354,7 @@ export class XButton extends React.PureComponent<XButtonProps> {
             <StyledButton {...this.props}>
                 {this.props.icon && <StyledIcon text={this.props.text} icon={this.props.icon} className="icon" />}
                 <span>{this.props.text}</span>
-                {this.props.loading && <XLoadingCircular inverted={this.props.style === 'primary' || this.props.style === 'danger'} />}
+                {this.props.loading && <XLoadingCircular inverted={this.props.style === 'primary' || this.props.style === 'danger'} className="loading"/>}
             </StyledButton>
         );
     }
