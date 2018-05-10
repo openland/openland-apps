@@ -166,10 +166,10 @@ const Input = Glamorous.input<XInputProps & { format?: 'large' | 'medium' | 'def
             color: '#9d9d9d'
         }
     }),
-    (props) => IconPaddingStyles(props.format, props.icon !== undefined ? true : false),
-    (props) => NonIconPaddingStyles(props.format, props.icon === undefined ? true : false),
-    (props) => RequiredPaddingStyles(props.format, props.required !== undefined ? true : false),
-    (props) => NonRequiredPaddingStyles(props.format, props.required === undefined ? true : false)
+    (props) => IconPaddingStyles(props.format, !!props.icon),
+    (props) => NonIconPaddingStyles(props.format, !props.icon),
+    (props) => RequiredPaddingStyles(props.format, !!props.required),
+    (props) => NonRequiredPaddingStyles(props.format, !props.required)
 ]);
 
 const RequireElement = Glamorous.span({

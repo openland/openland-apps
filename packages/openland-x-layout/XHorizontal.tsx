@@ -4,7 +4,8 @@ import Glamorous from 'glamorous';
 export let XHorizontalDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'stretch'
+    alignItems: 'stretch',
+    position: 'relative'
 });
 
 export let XHorizontalSpaceDiv = Glamorous.div<{ separator?: 'large' | 'normal' }>((props) => ({
