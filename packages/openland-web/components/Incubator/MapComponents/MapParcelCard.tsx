@@ -125,12 +125,17 @@ const ContainerHider = Glamorous.div({
     backgroundColor: '#fff',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    boxShadow: '-3px 0 3px 0 rgba(0, 0, 0, 0.08)'
 });
 
 const ContainerHiderButton = Glamorous(XButton)({
     width: 10,
     minWidth: 10,
+    paddingLeft: 9,
+    paddingRight: 10,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
     border: 'none',
     boxShadow: 'none',
     transform: 'none',
@@ -154,12 +159,13 @@ const DottedStyle = Glamorous.div({
 });
 
 const DottedMenuButtonStyle = Glamorous.div({
-    width: 20,
+    width: 40,
+    height: 40,
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'center',
     cursor: 'pointer',
-    paddingRight: 5,
 });
 
 const DottedMenuButton = () => (
@@ -191,6 +197,12 @@ const SeparatedDiv = Glamorous(XContent)({
     paddingRight: 18,
 });
 
+const MenuButtonWrapper = Glamorous.div({
+    position: 'absolute',
+    right: -16,
+    top: -20
+});
+
 const PropertySeparatedDiv = Glamorous(XPropertyList)();
 
 export const ParcelCard = withParcelDirect((props) => (
@@ -208,20 +220,22 @@ export const ParcelCard = withParcelDirect((props) => (
                     bullet={props.data!!.item!!.extrasOwnerPublic ? 'public' : (props.data!!.item!!.metadata.available ? 'ON SALE' : undefined)}
                     style="compact"
                 >
-                    <XPopover placement="bottom-start">
-                        <XPopover.Target>
-                            <DottedMenuButton />
-                        </XPopover.Target>
-                        <XPopover.Content>
-                            <XButton
-                                path={'/parcels/' + props.data.item!!.id}
-                                size="medium"
-                                flexGrow={1}
-                                flexBasis={0}
-                                text="Details"
-                            />
-                        </XPopover.Content>
-                    </XPopover>
+                    <MenuButtonWrapper>
+                        <XPopover placement="bottom-start">
+                            <XPopover.Target>
+                                <DottedMenuButton />
+                            </XPopover.Target>
+                            <XPopover.Content>
+                                <XButton
+                                    path={'/parcels/' + props.data.item!!.id}
+                                    size="medium"
+                                    flexGrow={1}
+                                    flexBasis={0}
+                                    text="Details"
+                                />
+                            </XPopover.Content>
+                        </XPopover>
+                    </MenuButtonWrapper>
                 </XHeader>
                 {props.data!!.item!!.geometry && (
                     <SeparatedDiv>

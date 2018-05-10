@@ -102,17 +102,20 @@ let sizeStyles = styleResolver({
 
 let colorStyles = styleResolver({
     'default': {
-        backgroundColor: '#edf0f6',
+        backgroundColor: '#ecedf0',
         color: '#1f3449',
         '&:hover': {
-            backgroundColor: '#f4f6fb',
-            color: '#1f3449',
+            backgroundColor: '#eeecfa',
+            color: '#5640d6',
             boxShadow: '0 1px 2px 0 #ced5e2'
         },
         '&:active': {
             backgroundColor: '#d6dde9',
             color: '#1f3449',
             boxShadow: 'none'
+        },
+        '&:focus': {
+            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         }
     },
     'primary': {
@@ -127,6 +130,9 @@ let colorStyles = styleResolver({
             backgroundColor: '#5640d6',
             color: '#ffffff',
             boxShadow: 'none'
+        },
+        '&:focus': {
+            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         }
     },
     'danger': {
@@ -141,6 +147,9 @@ let colorStyles = styleResolver({
             backgroundColor: '#c54f4f',
             color: '#ffffff',
             boxShadow: 'none'
+        },
+        '&:focus': {
+            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         }
     },
     'ghost': {
@@ -148,10 +157,17 @@ let colorStyles = styleResolver({
         color: '#1f3449',
         border: 'solid 1px #c2cbde',
         '&:hover': {
+            backgroundColor: '#f3f3f5',
             boxShadow: '0 1px 2px 0 #dbe2ef',
+            color: '#334562'
         },
         '&:active': {
-            boxShadow: 'none'
+            backgroundColor: '#eeecfa',
+            boxShadow: 'none',
+            color: '#5640d6'
+        },
+        '&:focus': {
+            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         }
     },
     'electric': {
@@ -159,10 +175,14 @@ let colorStyles = styleResolver({
         color: '#5640d6',
         border: 'solid 1px #654bfa',
         '&:hover': {
+            backgroundColor: '#eeecfa',
             boxShadow: '0 1px 2px 0 #ced5e2',
         },
         '&:active': {
             boxShadow: 'none'
+        },
+        '&:focus': {
+            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         }
     },
     'flat': {
@@ -171,13 +191,18 @@ let colorStyles = styleResolver({
         border: 'solid 1px transparent',
         '&:hover': {
             color: '#1f3449',
+            backgroundColor: '#f4f6fb',
             boxShadow: '0 1px 2px 0 #dbe2ef',
             border: 'solid 1px #c2cbde'
         },
         '&:active': {
             boxShadow: 'none',
-            backgroundColor: '#edf0f6',
-            border: 'solid 1px #c2cbde'
+            backgroundColor: '#eeecfa',
+            border: 'solid 1px #c2cbde',
+            color: '#5640d6'
+        },
+        '&:focus': {
+            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         }
     }
 });
@@ -276,7 +301,7 @@ const StyledButton = Glamorous<XButtonProps>(XLink)([
         }
     } || {}),
     (props) => colorStyles(props.style, !props.disabled),
-    (props) => colorDisabledStyles(props.style, props.disabled),
+    (props) => colorDisabledStyles(props.style, !!props.disabled),
     (props) => loaderStyles(props.style),
     (props) => sizeStyles(props.size),
     (props) => applyFlex(props)

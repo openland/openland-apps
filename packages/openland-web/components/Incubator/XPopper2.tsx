@@ -24,8 +24,10 @@ const hideAnimation = glamor.keyframes({
     }
 });
 
-export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boolean, arrowStyle?: 'default' | 'none'; margin?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string }>((props) => ({
+const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boolean, arrowStyle?: 'default' | 'none'; margin?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string, show?: boolean }>((props) => ({
     zIndex: 501,
+
+    display: props.show ? undefined : 'none',
 
     '& .popper .popper-content *': {
         pointerEvents: props.nonePointerEvents ? 'none' : undefined,
@@ -126,13 +128,14 @@ export const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?
     }
 }));
 
-class XPopper2Props {
+class XPopper2SelfProps {
     content: any;
     show?: boolean | 'hover';
     animated?: boolean;
     margin?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string;
     animationDuration?: number;
     hoverJumpTimeout?: number;
+    renderer?: (props: PopperRendererProps) => JSX.Element;
 }
 
 class XPopper2State {
@@ -145,10 +148,14 @@ class XPopper2State {
 
 }
 
-export const PopperDefaultRender = (props: XPopper2Props & XPopper2State) => {
+export interface PopperRendererProps extends XPopper2SelfProps, XPopper2State {
+    animationClass?: 'static' | 'hide' | 'show';
+}
+
+export const Popper = (props: PopperRendererProps) => {
     return (
-        <PopperDiv margin={props.margin}>
-            <div className={classnames('popper', props.animated === false ? 'static' : props.willHide ? 'hide' : 'show')} ref={props.caputurePopperNode} onMouseOver={props.show === 'hover' ? props.onMouseOverTarget : undefined} onMouseOut={props.show === 'hover' ? props.onMouseOutTarget : undefined}>
+        <PopperDiv show={props.show !== false} margin={props.margin}>
+            <div className={classnames('popper', props.animationClass ? props.animationClass : props.animated === false ? 'static' : props.willHide ? 'hide' : 'show')} ref={props.caputurePopperNode} onMouseOver={props.show === 'hover' ? props.onMouseOverTarget : undefined} onMouseOut={props.show === 'hover' ? props.onMouseOutTarget : undefined}>
                 <div className="popper-content">
                     {props.content}
                 </div>
@@ -159,7 +166,17 @@ export const PopperDefaultRender = (props: XPopper2Props & XPopper2State) => {
     );
 };
 
-export class XPopper2 extends React.Component<XPopper2Props & { renderer?: (props: XPopper2Props & XPopper2State) => JSX.Element } & Popper.PopperOptions, XPopper2State> {
+export const PopperDefaultRender = (props: PopperRendererProps) => {
+    return (
+        <Popper {...props} />
+    );
+};
+
+export interface XPopper2Props extends XPopper2SelfProps, Popper.PopperOptions {
+
+}
+
+export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     private _popper: PopperJS.default;
     private _node: Element;
     private _targetNode: Element;
@@ -168,7 +185,7 @@ export class XPopper2 extends React.Component<XPopper2Props & { renderer?: (prop
     hideTimeout: any;
     willHideTimeout: any;
 
-    constructor(props: XPopper2Props & { renderer?: (props: XPopper2Props & XPopper2State) => JSX.Element } & Popper.PopperOptions) {
+    constructor(props: XPopper2Props) {
         super(props);
 
         this.state = {
@@ -217,6 +234,9 @@ export class XPopper2 extends React.Component<XPopper2Props & { renderer?: (prop
                         enabled: true,
                         element: this._arrowNode,
                     },
+                    preventOverflow: {
+                        boundariesElement: 'viewport'
+                    },
                 },
                 ...popperProps,
 
@@ -234,8 +254,9 @@ export class XPopper2 extends React.Component<XPopper2Props & { renderer?: (prop
     onMouseOutTarget = () => {
         clearTimeout(this.hideTimeout);
         clearTimeout(this.willHideTimeout);
-        const hoverJumpTimeout = this.props.hoverJumpTimeout !== undefined ? this.props.hoverJumpTimeout : 50;
+        const hoverJumpTimeout = this.props.hoverJumpTimeout !== undefined ? this.props.hoverJumpTimeout : 0;
         const animationDuration = this.props.animated === false ? 0 : this.props.animationDuration !== undefined ? this.props.animationDuration : 200;
+        
         this.willHideTimeout = setTimeout(
             () => {
                 this.setState({ willHide: true });
