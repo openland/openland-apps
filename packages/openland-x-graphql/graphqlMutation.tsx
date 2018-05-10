@@ -1,20 +1,19 @@
 import * as React from 'react';
-import { graphql } from 'react-apollo';
-import { DocumentNode } from 'graphql';
+import { graphql, MutationFunc } from 'react-apollo';
 import { GraphQLRoutedComponentProps } from './graphql';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { prepareParams } from './prepareParams';
+import { GraphqlTypedMutation } from './typed';
 
 export interface MutationParams {
-    name: string;
     params?: string[];
     refetchQueries?: any[];
 }
 
-export function graphqlMutation<TResult, TVars = any>(document: DocumentNode, params: MutationParams) {
-    return function (component: React.ComponentType<GraphQLRoutedComponentProps<{}> & TResult>): React.ComponentType<{ variables?: TVars }> {
-        let qlWrapper = graphql<{}, XWithRouter & { variables?: TVars }, GraphQLRoutedComponentProps<{}> & TResult>(document, {
-            name: params.name,
+export function graphqlMutation<TQuery, TVars, TN extends string>(mutation: GraphqlTypedMutation<TQuery, TVars>, name: TN, params: MutationParams = {}) {
+    return function (component: React.ComponentType<GraphQLRoutedComponentProps<{}> & Record<TN, MutationFunc<TQuery, { variables?: TVars }>>>): React.ComponentType<{ variables?: TVars }> {
+        let qlWrapper = graphql<{}, XWithRouter & { variables?: TVars }, GraphQLRoutedComponentProps<{}> & Record<TN, MutationFunc<TQuery, TVars>>>(mutation.document, {
+            name: name,
             options: (props: XWithRouter & { variables?: any }) => {
                 return {
                     variables: {

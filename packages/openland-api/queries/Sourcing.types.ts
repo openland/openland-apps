@@ -14,6 +14,7 @@ export const OpportunityStatsQuery = typedQuery<Types.OpportunityStatsQuery, Typ
 export const OwnersQuery = typedQuery<Types.OwnersQuery, Types.OwnersQueryVariables>(Sourcing.OwnersQuery);
 
 export const AddOpportunityMutation = typedMutation<Types.ApproveOpportunityMutation, Types.AddOpportunityMutationVariables>(Sourcing.AddOpportunityMutation);
+export const ApproveOpportunityMutation = typedMutation<Types.ApproveOpportunityMutation, Types.ApproveOpportunityMutationVariables>(Sourcing.ApproveOpportunityMutation);
 export const RejectOpportunityMutation = typedMutation<Types.RejectOpportunityMutation, Types.RejectOpportunityMutationVariables>(Sourcing.RejectOpportunityMutation);
 export const SnoozeOpportunityMutation = typedMutation<Types.SnoozeOpportunityMutation, Types.SnoozeOpportunityMutationVariables>(Sourcing.SnoozeOpportunityMutation);
 export const ResetOpportunityMutation = typedMutation<Types.ResetOpportunityMutation, Types.ResetOpportunityMutationVariables>(Sourcing.ResetOpportunityMutation);

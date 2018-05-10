@@ -245,10 +245,12 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                                 label="New York"
                                             />
                                             <FilterComponent
-                                                query={query && JSON.stringify(query)}
-                                                city={cityName}
-                                                county={countyName}
-                                                state={stateName}
+                                                variables={{
+                                                    query: query && JSON.stringify(query),
+                                                    city: cityName,
+                                                    county: countyName,
+                                                    state: stateName
+                                                }}
                                             />
                                         </CitySelector>
 
@@ -289,7 +291,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                             </XSwitcher>
                                         </MapSwitcher>
                                     </XMapContainer2>
-                                    {this.props.router.query!!.selectedParcel && <ParcelCard parcelId={this.props.router.query!!.selectedParcel} />}
+                                    {this.props.router.query!!.selectedParcel && <ParcelCard variables={{ parcelId: this.props.router.query!!.selectedParcel }} />}
                                 </XMapContainer>
                             </Scaffold.Content>
                         </Scaffold>);

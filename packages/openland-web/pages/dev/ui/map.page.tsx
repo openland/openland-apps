@@ -6,7 +6,7 @@ import { withUserInfo, UserInfoComponentProps } from '../../../components/UserIn
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api';
 // import { XHorizontal } from '../../../components/X/XHorizontal';
 // import { XButton } from '../../../components/X/XButton';
-import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
+// import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { XSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
@@ -192,10 +192,12 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
                             label="New York"
                         />
                         <FilterComponent
-                            query={this.state.query && JSON.stringify(this.state.query)}
-                            city={cityName}
-                            county={countyName}
-                            state={stateName}
+                            variables={{
+                                query: this.state.query && JSON.stringify(this.state.query),
+                                city: cityName,
+                                county: countyName,
+                                state: stateName
+                            }}
                         />
                     </CitySelector>
 
@@ -235,7 +237,7 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
                         </XSwitcher>
                     </MapSwitcher>
                 </XMapContainer2>
-                {this.props.router.query!!.selectedParcel && <ParcelCard parcelId={this.props.router.query!!.selectedParcel} />}
+                {/* {this.props.router.query!!.selectedParcel && <ParcelCard parcelId={this.props.router.query!!.selectedParcel} />} */}
             </XMapContainer>
         );
     }

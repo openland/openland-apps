@@ -475,7 +475,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                     innerRef={this.handleSearchRef}
                                     value={this.state.searchText}
                                 />
-                                {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults query={this.state.searchText} />)}
+                                {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults variables={{ query: this.state.searchText }} />)}
                             </SearchContent>
                         </SearchWrapperSticky>
                     </SearchWrapper>

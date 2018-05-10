@@ -443,4 +443,4 @@ export const ParcelCard = withParcelDirect((props) => (
                 </ProspectingWrapper>
             </Scrollable>}
     </Container>
-)) as React.ComponentClass<{ parcelId: string, compact?: boolean, onClose?: () => void }>;
+)) as React.ComponentClass<{ variables: { parcelId: string }, compact?: boolean, onClose?: () => void }>;

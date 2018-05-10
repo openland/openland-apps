@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { DocumentNode } from 'graphql';
 import ApolloClient, { ApolloQueryResult } from 'apollo-client';
 import { XMapSubscriber } from 'openland-x-map/XMap';
 import { XMapSource } from 'openland-x-map/XMapSource';
 import { backoff } from 'openland-x-utils/timer';
 import { stopProgress, startProgress } from 'openland-x-routing/NextRouting';
 import { parseGeometry } from 'openland-x-utils/parseGeometry';
+import { GraphqlTypedQuery } from './typed';
 interface GraphQLTileSourceProps {
     layer: string;
     minZoom?: number;
@@ -22,7 +22,7 @@ const TileWidthLarge = 0.04;
 const TileHeightLarge = 0.04;
 
 export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometry?: string | null, center?: { latitude: number, longitude: number } | null }> | null }>(
-    QueryDocument: DocumentNode,
+    query: GraphqlTypedQuery<T, { box: { south: number, north: number, west: number, east: number }, query?: string | null }>,
     options: {
         cluster?: boolean,
         propertiesFactory?: (src: any) => any;
@@ -103,7 +103,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                         if (!this.loaded.has(key)) {
                             let response = backoff(async () =>
                                 this.client!!.query<T>({
-                                    query: QueryDocument,
+                                    query: query.document,
                                     variables: {
                                         box: {
                                             south: (y1 + j) * currentTileWidth,

@@ -1,21 +1,23 @@
 /* tslint:disable */
 export class GraphqlTypedQuery<QUERY, VARIABLES> {
-    query: QUERY;
+    document: any;
     ____vars: VARIABLES;
-    constructor(query: QUERY) {
-        this.query = query;
+    ____query: QUERY;
+    constructor(document: QUERY) {
+        this.document = document;
     }
 }
 
 export class GraphqlTypedMutation<QUERY, VARIABLES> {
-    query: QUERY;
+    document: any;
     ____vars: VARIABLES;
-    constructor(query: QUERY) {
-        this.query = query;
+    ____query: QUERY;
+    constructor(document: any) {
+        this.document = document;
     }
 }
 
-export function typedQuery<QUERY, VARIABLES>(query: QUERY) {
+export function typedQuery<QUERY, VARIABLES>(query: any) {
     return new GraphqlTypedQuery<QUERY, VARIABLES>(query);
 }
 
