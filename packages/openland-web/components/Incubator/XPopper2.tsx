@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as PopperJS from 'popper.js';
+import PopperJS from 'popper.js';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import * as classnames from 'classnames';
@@ -24,10 +24,8 @@ const hideAnimation = glamor.keyframes({
     }
 });
 
-const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boolean, arrowStyle?: 'default' | 'none'; margin?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string, show?: boolean }>((props) => ({
+const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boolean, arrowStyle?: 'default' | 'none'; padding?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string, show?: boolean }>((props) => ({
     zIndex: 501,
-
-    display: props.show ? undefined : 'none',
 
     '& .popper .popper-content *': {
         pointerEvents: props.nonePointerEvents ? 'none' : undefined,
@@ -35,6 +33,7 @@ const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boole
     },
     '&, & .popper': {
         zIndex: 501,
+        display: 'none',
 
         '> .popper-content, .popper-content': {
             padding: 10,
@@ -48,6 +47,10 @@ const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boole
             fontWeight: 400,
         },
 
+    },
+
+    '&, & .popper[x-placement]': {
+        display: props.show ? 'block' : 'none',
     },
 
     '& .popper > .arrow': {
@@ -120,42 +123,56 @@ const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boole
     },
 
     '& .popper': {
-        margin: (typeof props.margin === 'number' || typeof props.margin === 'string') ? props.margin : undefined,
-        marginLeft: (props.margin !== undefined && (typeof props.margin !== 'number') && (typeof props.margin !== 'string')) ? props.margin.left : undefined,
-        marginTop: (props.margin !== undefined && (typeof props.margin !== 'number') && (typeof props.margin !== 'string')) ? props.margin.top : undefined,
-        marginRight: (props.margin !== undefined && (typeof props.margin !== 'number') && (typeof props.margin !== 'string')) ? props.margin.right : undefined,
-        marginBottom: (props.margin !== undefined && (typeof props.margin !== 'number') && (typeof props.margin !== 'string')) ? props.margin.bottom : undefined,
+        padding: (typeof props.padding === 'number' || typeof props.padding === 'string') ? props.padding : undefined,
+        paddingLeft: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.left : undefined,
+        paddingTop: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.top : undefined,
+        paddingRight: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.right : undefined,
+        paddingBottom: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.bottom : undefined,
+    },
+
+    '& .arrow': {
+        margin: (typeof props.padding === 'number' || typeof props.padding === 'string') ? props.padding : undefined,
+        marginLeft: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.left : undefined,
+        marginTop: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.top : undefined,
+        marginRight: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.right : undefined,
+        marginBottom: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.bottom : undefined,
     }
 }));
 
-class XPopper2SelfProps {
+interface XPopper2SelfProps {
     content: any;
+    //  TODO separate to booleans -> isVisible?
     show?: boolean | 'hover';
     animated?: boolean;
-    margin?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string;
+    padding?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string;
     animationDuration?: number;
-    hoverJumpTimeout?: number;
     renderer?: (props: PopperRendererProps) => JSX.Element;
 }
 
-class XPopper2State {
+interface XPopper2State {
     showPopper: boolean;
     willHide: boolean;
-    caputurePopperArrowNode: (node: any) => void;
-    caputurePopperNode: (node: any) => void;
-    onMouseOverTarget: () => void;
-    onMouseOutTarget: () => void;
-
 }
 
 export interface PopperRendererProps extends XPopper2SelfProps, XPopper2State {
     animationClass?: 'static' | 'hide' | 'show';
+    caputurePopperArrowNode: (node: any) => void;
+    caputurePopperNode: (node: any) => void;
+    onMouseOverTarget: () => void;
+    onMouseOutTarget: () => void;
 }
 
+// TODO make easear to override -> remove renderer, separate to components, extract arrow component, mb extract container component
 export const Popper = (props: PopperRendererProps) => {
     return (
-        <PopperDiv show={props.show !== false} margin={props.margin}>
-            <div className={classnames('popper', props.animationClass ? props.animationClass : props.animated === false ? 'static' : props.willHide ? 'hide' : 'show')} ref={props.caputurePopperNode} onMouseOver={props.show === 'hover' ? props.onMouseOverTarget : undefined} onMouseOut={props.show === 'hover' ? props.onMouseOutTarget : undefined}>
+        <PopperDiv show={props.show !== false} padding={props.padding}>
+            <div
+                className={classnames('popper', props.animationClass ? props.animationClass : props.animated === false ? 'static' : props.willHide ? 'hide' : 'show')}
+                ref={props.caputurePopperNode}
+                onMouseOver={props.show === 'hover' ? props.onMouseOverTarget : undefined}
+                onMouseOut={props.show === 'hover' ? props.onMouseOutTarget : undefined}
+            >
+                {/* TODO try move to glam  */}
                 <div className="popper-content">
                     {props.content}
                 </div>
@@ -166,6 +183,7 @@ export const Popper = (props: PopperRendererProps) => {
     );
 };
 
+// TODO remove this useless wrap
 export const PopperDefaultRender = (props: PopperRendererProps) => {
     return (
         <Popper {...props} />
@@ -177,7 +195,7 @@ export interface XPopper2Props extends XPopper2SelfProps, Popper.PopperOptions {
 }
 
 export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
-    private _popper: PopperJS.default;
+    private _popper: PopperJS;
     private _node: Element;
     private _targetNode: Element;
     private _arrowNode: Element;
@@ -191,11 +209,6 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
         this.state = {
             showPopper: typeof this.props.show === 'boolean' ? this.props.show : false,
             willHide: false,
-            caputurePopperArrowNode: this.caputurePopperArrowNode,
-            caputurePopperNode: this.caputurePopperNode,
-            onMouseOverTarget: this.onMouseOverTarget,
-            onMouseOutTarget: this.onMouseOutTarget,
-
         };
     }
 
@@ -204,31 +217,31 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
         this._targetNode = ReactDOM.findDOMNode(node);
         if (this._targetNode && this.props.show === 'hover') {
             this.dispose();
+            // TODO: check if changed
             this._targetNode.addEventListener('mouseover', this.onMouseOverTarget);
             this._targetNode.addEventListener('mouseout', this.onMouseOutTarget);
         }
 
-        this.initPopper();
+        this.initPopperIfNeeded();
     }
 
     caputurePopperNode = (node: any) => {
         this._node = node;
 
-        this.initPopper();
+        this.initPopperIfNeeded();
     }
 
     caputurePopperArrowNode = (node: any) => {
         this._arrowNode = node;
-        this.initPopper();
+        this.initPopperIfNeeded();
     }
 
-    initPopper = () => {
+    initPopperIfNeeded = () => {
         if (this._node && this._arrowNode && this._targetNode) {
-            let constructor = PopperJS.default;
 
-            let { children, content, show, animated, margin, renderer, animationDuration, hoverJumpTimeout, ...popperProps } = this.props;
+            let { children, content, show, animated, padding, renderer, animationDuration, ...popperProps } = this.props;
 
-            this._popper = new constructor(this._targetNode, this._node, {
+            this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
                     arrow: {
                         enabled: true,
@@ -254,19 +267,18 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     onMouseOutTarget = () => {
         clearTimeout(this.hideTimeout);
         clearTimeout(this.willHideTimeout);
-        const hoverJumpTimeout = this.props.hoverJumpTimeout !== undefined ? this.props.hoverJumpTimeout : 0;
         const animationDuration = this.props.animated === false ? 0 : this.props.animationDuration !== undefined ? this.props.animationDuration : 200;
-        
+
         this.willHideTimeout = setTimeout(
             () => {
                 this.setState({ willHide: true });
             },
-            hoverJumpTimeout);
+            0);
         this.hideTimeout = setTimeout(
             () => {
                 this.setState({ showPopper: false });
             },
-            (animationDuration) + hoverJumpTimeout);
+            (animationDuration));
     }
 
     dispose = () => {
@@ -292,7 +304,13 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
             target.push(React.cloneElement(c as any, { ref: this.caputureTargetNode }));
         }
 
-        let renderProps = { ...this.props, ...this.state };
+        let renderProps = {
+            ...this.props, ...this.state,
+            caputurePopperArrowNode: this.caputurePopperArrowNode,
+            caputurePopperNode: this.caputurePopperNode,
+            onMouseOverTarget: this.onMouseOverTarget,
+            onMouseOutTarget: this.onMouseOutTarget,
+        };
 
         return (
             <>
