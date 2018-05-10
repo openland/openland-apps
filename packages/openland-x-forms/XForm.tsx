@@ -513,12 +513,11 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
 
     render() {
         return (
-            <>
-                <XLoader loading={this.state.loading}>
-                    {this.state.error && <XServiceMessage title={this.state.error} />}
-                    {this.props.children}
-                </XLoader>
-            </>
+            <XVertical>
+                <XLoader loading={this.state.loading} />
+                {this.state.error && <XServiceMessage title={this.state.error} />}
+                {this.props.children}
+            </XVertical>
         );
     }
 }
