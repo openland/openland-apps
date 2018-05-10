@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const StateQuery = gql`
-    query StateQuery {
+    query State {
         items: states(active: true) {
             id
             title: name
@@ -11,7 +11,7 @@ export const StateQuery = gql`
 `;
 
 export const CountyQuery = gql`
-    query CountyQuery($stateId: ID!) {
+    query County($stateId: ID!) {
         items: counties(stateId: $stateId) {
             id
             title: name

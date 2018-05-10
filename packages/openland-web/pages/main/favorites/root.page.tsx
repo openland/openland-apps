@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { withParcelsFavorites } from '../../../api/';
 import { TableParcels } from '../../../components/TableParcels';
-import Types from 'openland-api';
+import * as Types from 'openland-api/Types';
 import * as FileSaver from 'file-saver';
 import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';

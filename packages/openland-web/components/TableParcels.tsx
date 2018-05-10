@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Types from 'openland-api';
+import * as Types from 'openland-api/Types';
 import { ParcelNumber } from './ParcelNumber';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XArea } from 'openland-x-format/XArea';

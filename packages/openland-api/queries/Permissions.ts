@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { UserShort } from './User';
+import { UserShort } from '../fragments/UserShort';
 
 export const PermissionsQuery = gql`
     query Permissions {
@@ -50,7 +50,7 @@ export const SuperAccountQuery = gql`
     ${UserShort}
 `;
 
-export const SuperAccountActivate = gql`
+export const SuperAccountActivateMutation = gql`
     mutation SuperAccountActivate($accountId: ID!) {
         superAccountActivate(id: $accountId) {
             id
@@ -59,7 +59,7 @@ export const SuperAccountActivate = gql`
     }
 `;
 
-export const SuperAccountSuspend = gql`
+export const SuperAccountSuspendMutation = gql`
     mutation SuperAccountSuspend($accountId: ID!) {
         superAccountSuspend(id: $accountId) {
             id
@@ -68,7 +68,7 @@ export const SuperAccountSuspend = gql`
     }
 `;
 
-export const SuperAccountAdd = gql`
+export const SuperAccountAddMutation = gql`
     mutation SuperAccountAdd($title: String!) {
         superAccountAdd(title: $title) {
             id
@@ -76,7 +76,7 @@ export const SuperAccountAdd = gql`
     }
 `;
 
-export const SuperAccountMemberAdd = gql`
+export const SuperAccountMemberAddMutation = gql`
     mutation SuperAccountMemberAdd($accountId: ID!, $userId: ID!) {
         superAccountMemberAdd(id: $accountId, userId: $userId) {
             id
@@ -88,7 +88,7 @@ export const SuperAccountMemberAdd = gql`
     ${UserShort}
 `;
 
-export const SuperAccountMemberRemove = gql`
+export const SuperAccountMemberRemoveMutation = gql`
     mutation SuperAccountMemberRemove($accountId: ID!, $userId: ID!) {
         superAccountMemberRemove(id: $accountId, userId: $userId) {
             id
@@ -100,13 +100,13 @@ export const SuperAccountMemberRemove = gql`
     ${UserShort}
 `;
 
-export const SuperAdminAdd = gql`
+export const SuperAdminAddMutation = gql`
     mutation SuperAdminAdd($userId: ID!, $role: SuperAdminRole!) {
         superAdminAdd(userId: $userId, role: $role)
     }
 `;
 
-export const SuperAdminRemove = gql`
+export const SuperAdminRemoveMutation = gql`
     mutation SuperAdminRemove($userId: ID!) {
         superAdminRemove(userId: $userId)
     }

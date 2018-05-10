@@ -114,7 +114,7 @@ export const DealQuery = gql`
     }
 `;
 
-export const AddDealMitation = gql`
+export const AddDealMutation = gql`
     mutation AddDeal($data: DealInput!) {
         dealAdd(input: $data) {
             id
@@ -143,7 +143,7 @@ export const AddDealMitation = gql`
     }
 `;
 
-export const AlterDealMitation = gql`
+export const AlterDealMutation = gql`
     mutation AlterDeal($dealId: ID!, $data: DealInput!) {
         dealAlter(id: $dealId, input: $data) {
             id

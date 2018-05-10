@@ -30,7 +30,7 @@ export const SourcingQuery = gql`
     ${ParcelShort}
 `;
 
-export const SourcingQueryFirst = gql`
+export const SourcingFirstQuery = gql`
     query SourcingFirst($state: OpportunityState, $cursor: String, $page: Int, $sort: OpportunitySort, $query: String, $first: Int!) {
         alphaOpportunities(state: $state, first: $first, after: $cursor, page: $page, sort: $sort, query: $query) {
             edges {
@@ -96,7 +96,7 @@ export const OpportunityQuery = gql`
     ${ParcelFull}
 `;
 
-export const OpportunityTileOverlay = gql`
+export const OpportunityTileOverlayQuery = gql`
     query OpportunityTileOverlay($box: GeoBox!, $query: String) {
         tiles: alphaOpportunityOverlay(box: $box, limit: 5000, query: $query) {
             id
@@ -112,7 +112,7 @@ export const OpportunityTileOverlay = gql`
 `;
 
 export const AddOpportunityMutation = gql`
-    mutation AddOpportunityMutation($parcelId: ID!) {
+    mutation AddOpportunity($parcelId: ID!) {
         aphaAddOpportunity(parcelId: $parcelId) {
             id
             state
@@ -129,29 +129,29 @@ export const AddOpportunityMutation = gql`
 `;
 
 export const ApproveOpportunityMutation = gql`
-    mutation ApproveOpportunityMutation($opportunityId: ID!, $state: OpportunityState!) {
+    mutation ApproveOpportunity($opportunityId: ID!, $state: OpportunityState!) {
         alphaApprove(opportunityId: $opportunityId, state: $state)
     }
 `;
 export const RejectOpportunityMutation = gql`
-    mutation RejectOpportunityMutation($opportunityId: ID!, $state: OpportunityState!) {
+    mutation RejectOpportunity($opportunityId: ID!, $state: OpportunityState!) {
         alphaReject(opportunityId: $opportunityId, state: $state)
     }
 `;
 export const SnoozeOpportunityMutation = gql`
-    mutation SnoozeOpportunityMutation($opportunityId: ID!, $state: OpportunityState!) {
+    mutation SnoozeOpportunity($opportunityId: ID!, $state: OpportunityState!) {
         alphaSnooze(opportunityId: $opportunityId, state: $state)
     }
 `;
 
 export const ResetOpportunityMutation = gql`
-    mutation ResetOpportunityMutation($opportunityId: ID!, $state: OpportunityState!) {
+    mutation ResetOpportunity($opportunityId: ID!, $state: OpportunityState!) {
         alphaReset(opportunityId: $opportunityId, state: $state)
     }
 `;
 
 export const AddOpportunityFromSearchMutation = gql`
-    mutation alphaAddOpportunitiesFromSearch($query: String!) {
+    mutation AddOpportunityFromSearch($query: String!) {
         alphaAddOpportunitiesFromSearch(state: "NY", county: "New York", city: "New York", query: $query)
     }
 `;
@@ -183,7 +183,7 @@ export const OpportunityStatsQuery = gql`
 `;
 
 export const OwnersQuery = gql`
-    query OwnersQuery($state: OpportunityState, $query: String) {
+    query Owners($state: OpportunityState, $query: String) {
         items: alphaOpportunityUsers(state: $state, query: $query)
     }
 `;

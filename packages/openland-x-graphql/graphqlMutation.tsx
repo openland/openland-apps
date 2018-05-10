@@ -11,9 +11,9 @@ export interface MutationParams {
     refetchQueries?: any[];
 }
 
-export function graphqlMutation<TResult>(document: DocumentNode, params: MutationParams) {
-    return function (component: React.ComponentType<GraphQLRoutedComponentProps<{}> & TResult>): React.ComponentType<{ variables?: any }> {
-        let qlWrapper = graphql<{}, XWithRouter & { variables?: any }, GraphQLRoutedComponentProps<{}> & TResult>(document, {
+export function graphqlMutation<TResult, TVars = any>(document: DocumentNode, params: MutationParams) {
+    return function (component: React.ComponentType<GraphQLRoutedComponentProps<{}> & TResult>): React.ComponentType<{ variables?: TVars }> {
+        let qlWrapper = graphql<{}, XWithRouter & { variables?: TVars }, GraphQLRoutedComponentProps<{}> & TResult>(document, {
             name: params.name,
             options: (props: XWithRouter & { variables?: any }) => {
                 return {

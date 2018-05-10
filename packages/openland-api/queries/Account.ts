@@ -1,22 +1,7 @@
 import gql from 'graphql-tag';
-import { UserShort } from './User';
-
-export const MyProfileFull = gql`
-    fragment MyProfileFull on MyProfile {
-        isLoggedIn
-        isProfileCreated
-        isAccountActivated
-        isCompleted
-        isBlocked
-    }
-`;
-
-export const AccountShort = gql`
-    fragment AccountShort on MyAccount {
-        id
-        title
-    }
-`;
+import { UserShort } from '../fragments/UserShort';
+import { MyProfileFull } from '../fragments/MyProfileFull';
+import { AccountShort } from '../fragments/AccountShort';
 
 export const AccountQuery = gql`
     query Account {

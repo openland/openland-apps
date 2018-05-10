@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ATypes from 'openland-api';
+import * as Types from 'openland-api/Types';
 import { buildProspectingQuery } from '../../../components/prospectingQuery';
 import { MutationFunc } from 'react-apollo';
 import { OwnerTypeComponent } from '../../../components/OwnerTypeComponent';
@@ -42,7 +42,7 @@ import { XForm } from 'openland-x-forms/XForm';
 import { XProperty, XPropertyColumns, XPropertyList } from 'openland-x/XProperty';
 import { trackEvent } from 'openland-x-analytics';
 
-const OpportunityDescription = (props: { parcel: ATypes.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
+const OpportunityDescription = (props: { parcel: Types.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
     const linksPath = 'links';
     const notesPath = 'notes';

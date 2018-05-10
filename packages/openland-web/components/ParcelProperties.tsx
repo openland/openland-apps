@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Types from 'openland-api';
+import * as Types from 'openland-api/Types';
 import { ZoningCode } from './ZoningCode';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
 import { XTooltip } from './Incubator/XTooltip';

@@ -4,7 +4,7 @@ import { withSourcingAll } from '../api';
 import { XHeader } from 'openland-x/XHeader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
-import ATypes from 'openland-api';
+import * as Types from 'openland-api/Types';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XArea } from 'openland-x-format/XArea';
 import { XButton } from 'openland-x/XButton';
@@ -374,4 +374,4 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
             )}
         </>
     );
-})) as React.ComponentType<{ variables?: ATypes.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string, title?: string }>;
+})) as React.ComponentType<{ variables?: Types.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string, title?: string }>;

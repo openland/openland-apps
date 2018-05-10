@@ -251,7 +251,7 @@ export const BlockFull = gql`
    }
 `;
 
-export const BlocksConnection = gql`
+export const BlocksConnectionQuery = gql`
     query BlocksConnection($cursor: String, $page: Int) {
         items: blocksConnection(state: "CA", county: "San Francisco", city: "San Francisco", first: 50, after: $cursor, page: $page) {
             edges {
@@ -282,7 +282,7 @@ export const BlockQuery = gql`
     ${BlockFull}
 `;
 
-export const ParcelsConnection = gql`
+export const ParcelsConnectionQuery = gql`
     query ParcelsConnection($cursor: String, $query: String, $page: Int, $state: String!, $county: String!, $city: String!) {
         items: parcelsConnection(state: $state, county: $county, city: $city, first: 50, after: $cursor, page: $page, query: $query) {
             edges {
@@ -304,7 +304,7 @@ export const ParcelsConnection = gql`
     ${ParcelShort}
 `;
 
-export const ParcelsFavorites = gql`
+export const ParcelsFavoritesQuery = gql`
     query ParcelsFavorites {
         items: parcelFavorites {
             ...ParcelShort
@@ -313,7 +313,7 @@ export const ParcelsFavorites = gql`
     ${ParcelShort}
 `;
 
-export const ParcelsFavoritesCount = gql`
+export const ParcelsFavoritesCountQuery = gql`
     query ParcelsFavoritesCount {
         parcelFavoritesCount
         dealsCount
@@ -329,7 +329,7 @@ export const ParcelQuery = gql`
     ${ParcelFull}
 `;
 
-export const ParcelsTileOverlay = gql`
+export const ParcelsTileOverlayQuery = gql`
     query ParcelsTileOverlay($box: GeoBox!, $query: String) {
         tiles: parcelsOverlay(box: $box, limit: 5000, query: $query) {
             id
@@ -338,7 +338,7 @@ export const ParcelsTileOverlay = gql`
     }
 `;
 
-export const ParcelsPointOverlay = gql`
+export const ParcelsPointOverlayQuery = gql`
     query ParcelsPointOverlay($box: GeoBox!, $query: String) {
         tiles: parcelsOverlay(box: $box, limit: 5000, query: $query) {
             id
@@ -350,7 +350,7 @@ export const ParcelsPointOverlay = gql`
     }
 `;
 
-export const BlocksTileOverlay = gql`
+export const BlocksTileOverlayQuery = gql`
     query BlocksTileOverlay($box: GeoBox!, $query: String) {
         tiles: blocksOverlay(box: $box, limit: 5000, query: $query) {
             id
@@ -359,7 +359,7 @@ export const BlocksTileOverlay = gql`
     }
 `;
 
-export const ParcelAlter = gql`
+export const ParcelAlterMutation = gql`
     mutation ParcelAlter($parcelId: ID!, $data: ParcelMetadataInput!) {
         parcelAlterMetadata(id: $parcelId, data: $data) {
             id
@@ -373,7 +373,7 @@ export const ParcelAlter = gql`
     }
 `;
 
-export const ParcelLike = gql`
+export const ParcelLikeMutation = gql`
     mutation ParcelLike($parcelId: ID!) {
         likeParcel(id: $parcelId) {
             id
@@ -385,7 +385,7 @@ export const ParcelLike = gql`
     }
 `;
 
-export const ParcelUnlike = gql`
+export const ParcelUnlikeMutation = gql`
     mutation ParcelUnlike($parcelId: ID!) {
         unlikeParcel(id: $parcelId) {
             id
@@ -397,14 +397,14 @@ export const ParcelUnlike = gql`
     }
 `;
 
-export const ParcelsStats = gql`
+export const ParcelsStatsQuery = gql`
     query ParcelsStats($query: String, $state: String!, $county: String!, $city: String!) {
         parcelsStats(query: $query, state: $state, county: $county, city: $city)
     }
 `;
 
 export const ParcelsSearchQuery = gql`
-    query ParcelsSearchQuery($query: String!) {
+    query ParcelsSearch($query: String!) {
         items: searchParcels(query: $query) {
             id
             title
@@ -412,7 +412,7 @@ export const ParcelsSearchQuery = gql`
     }
 `;
 
-export const ParcelNotes = gql`
+export const ParcelNotesMutation = gql`
     mutation ParcelNotes($parcelId: ID!, $notes: String!) {
         alphaSetNote(parcelId: $parcelId, notes: $notes) {
             id

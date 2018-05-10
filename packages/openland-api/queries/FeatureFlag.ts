@@ -10,7 +10,7 @@ export const FeatureFlagsQuery = gql`
     }
 `;
 
-export const FeatureFlagAdd = gql`
+export const FeatureFlagAddMutation = gql`
     mutation FeatureFlagAdd($key: String!, $title: String!) {
         featureFlagAdd(key: $key, title: $title) {
             id
@@ -20,8 +20,8 @@ export const FeatureFlagAdd = gql`
     }
 `;
 
-export const FeatureFlagOrganizationAdd = gql`
-    mutation FeatureFlagOrganizationAdd($accountId: ID!, $featureId: ID!) {
+export const FeatureFlagEnableMutation = gql`
+    mutation FeatureFlagEnable($accountId: ID!, $featureId: ID!) {
         superAccountFeatureAdd(id: $accountId, featureId: $featureId) {
             id
             features {
@@ -33,8 +33,8 @@ export const FeatureFlagOrganizationAdd = gql`
     }
 `;
 
-export const FeatureFlagOrganizationRemove = gql`
-    mutation FeatureFlagOrganizationRemove($accountId: ID!, $featureId: ID!) {
+export const FeatureFlagDisableMutation = gql`
+    mutation FeatureFlagDisable($accountId: ID!, $featureId: ID!) {
         superAccountFeatureRemove(id: $accountId, featureId: $featureId) {
             id
             features {

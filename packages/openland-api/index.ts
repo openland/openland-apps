@@ -1,4 +1,3 @@
-import * as ATypes from './Types';
 import * as Area from './queries/Area';
 import * as AreaStats from './queries/AreaStats';
 import * as Organizations from './queries/Organizations';
@@ -15,7 +14,6 @@ import * as FeatureFlags from './queries/FeatureFlag';
 import * as Sourcing from './queries/Sourcing';
 import * as Debug from './queries/Debug';
 
-export default ATypes;
 export let Queries = {
     Area,
     AreaStats,

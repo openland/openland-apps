@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withSourcing, withSourcingAll } from '../api';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
-import ATypes from 'openland-api';
+import * as Types from 'openland-api/Types';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XArea } from 'openland-x-format/XArea';
@@ -80,7 +80,7 @@ export const ExportModal = withSourcingAll(withRouter((props) => {
             <XButton style="primary" onClick={exportCVS} text={'Download' + props.data.variables + '.csv'} />
         </>
     );
-})) as React.ComponentType<{ variables?: ATypes.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
+})) as React.ComponentType<{ variables?: Types.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
 
 // function buildQuery(clauses: any[]): any | null {
 //     if (clauses.length === 0) {
@@ -289,4 +289,4 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
             )}
         </XVertical>
     );
-})) as React.ComponentType<{ variables?: ATypes.SourcingQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
+})) as React.ComponentType<{ variables?: Types.SourcingQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;

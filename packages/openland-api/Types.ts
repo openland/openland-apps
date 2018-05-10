@@ -169,7 +169,7 @@ export interface AccountQuery {
   },
 };
 
-export interface StateQueryQuery {
+export interface StateQuery {
   items:  Array< {
     __typename: "State",
     id: string,
@@ -178,11 +178,11 @@ export interface StateQueryQuery {
   } >,
 };
 
-export interface CountyQueryQueryVariables {
+export interface CountyQueryVariables {
   stateId: string,
 };
 
-export interface CountyQueryQuery {
+export interface CountyQuery {
   items:  Array< {
     __typename: "County",
     id: string,
@@ -587,12 +587,12 @@ export interface FeatureFlagAddMutation {
   },
 };
 
-export interface FeatureFlagOrganizationAddMutationVariables {
+export interface FeatureFlagEnableMutationVariables {
   accountId: string,
   featureId: string,
 };
 
-export interface FeatureFlagOrganizationAddMutation {
+export interface FeatureFlagEnableMutation {
   superAccountFeatureAdd:  {
     __typename: "SuperAccount",
     id: string,
@@ -605,12 +605,12 @@ export interface FeatureFlagOrganizationAddMutation {
   },
 };
 
-export interface FeatureFlagOrganizationRemoveMutationVariables {
+export interface FeatureFlagDisableMutationVariables {
   accountId: string,
   featureId: string,
 };
 
-export interface FeatureFlagOrganizationRemoveMutation {
+export interface FeatureFlagDisableMutation {
   superAccountFeatureRemove:  {
     __typename: "SuperAccount",
     id: string,
@@ -793,12 +793,12 @@ export interface OrganizationQuery {
   },
 };
 
-export interface OrganizationMutationAddMutationVariables {
+export interface OrganizationCreateMutationVariables {
   slug: string,
   title: string,
 };
 
-export interface OrganizationMutationAddMutation {
+export interface OrganizationCreateMutation {
   organizationAdd:  {
     __typename: "Organization",
     id: string,
@@ -852,11 +852,11 @@ export interface OrganizationMutationAddMutation {
   },
 };
 
-export interface OrganizationMutationRemoveMutationVariables {
+export interface OrganizationRemoveMutationVariables {
   orgId: string,
 };
 
-export interface OrganizationMutationRemoveMutation {
+export interface OrganizationRemoveMutation {
   organizationRemove: string,
 };
 
@@ -1506,11 +1506,11 @@ export interface ParcelsStatsQuery {
   parcelsStats: number,
 };
 
-export interface ParcelsSearchQueryQueryVariables {
+export interface ParcelsSearchQueryVariables {
   query: string,
 };
 
-export interface ParcelsSearchQueryQuery {
+export interface ParcelsSearchQuery {
   items:  Array< {
     __typename: "Parcel",
     id: string,
@@ -2816,11 +2816,11 @@ export interface OpportunityTileOverlayQuery {
   } > | null,
 };
 
-export interface AddOpportunityMutationMutationVariables {
+export interface AddOpportunityMutationVariables {
   parcelId: string,
 };
 
-export interface AddOpportunityMutationMutation {
+export interface AddOpportunityMutation {
   aphaAddOpportunity:  {
     __typename: "Opportunity",
     id: string,
@@ -2839,47 +2839,47 @@ export interface AddOpportunityMutationMutation {
   } | null,
 };
 
-export interface ApproveOpportunityMutationMutationVariables {
+export interface ApproveOpportunityMutationVariables {
   opportunityId: string,
   state: OpportunityState,
 };
 
-export interface ApproveOpportunityMutationMutation {
+export interface ApproveOpportunityMutation {
   alphaApprove: string,
 };
 
-export interface RejectOpportunityMutationMutationVariables {
+export interface RejectOpportunityMutationVariables {
   opportunityId: string,
   state: OpportunityState,
 };
 
-export interface RejectOpportunityMutationMutation {
+export interface RejectOpportunityMutation {
   alphaReject: string,
 };
 
-export interface SnoozeOpportunityMutationMutationVariables {
+export interface SnoozeOpportunityMutationVariables {
   opportunityId: string,
   state: OpportunityState,
 };
 
-export interface SnoozeOpportunityMutationMutation {
+export interface SnoozeOpportunityMutation {
   alphaSnooze: string,
 };
 
-export interface ResetOpportunityMutationMutationVariables {
+export interface ResetOpportunityMutationVariables {
   opportunityId: string,
   state: OpportunityState,
 };
 
-export interface ResetOpportunityMutationMutation {
+export interface ResetOpportunityMutation {
   alphaReset: string,
 };
 
-export interface alphaAddOpportunitiesFromSearchMutationVariables {
+export interface AddOpportunityFromSearchMutationVariables {
   query: string,
 };
 
-export interface alphaAddOpportunitiesFromSearchMutation {
+export interface AddOpportunityFromSearchMutation {
   alphaAddOpportunitiesFromSearch: number,
 };
 
@@ -3061,26 +3061,73 @@ export interface OpportunityStatsQuery {
   snoozed: number,
 };
 
-export interface OwnersQueryQueryVariables {
+export interface OwnersQueryVariables {
   state?: OpportunityState | null,
   query?: string | null,
 };
 
-export interface OwnersQueryQuery {
+export interface OwnersQuery {
   items: Array< string | null > | null,
 };
 
-export interface UsersQueryQueryVariables {
+export interface UsersQueryVariables {
   query: string,
 };
 
-export interface UsersQueryQuery {
+export interface UsersQuery {
   items:  Array< {
     __typename: "User",
     id: string,
     title: string,
     subtitle: string,
   } >,
+};
+
+export interface ChartFullFragment {
+  __typename: "Chart",
+  labels: Array< string >,
+  datasets:  Array< {
+    __typename: string,
+    label: string,
+    values: Array< number >,
+  } >,
+};
+
+export interface GeoShortFragment {
+  __typename: "Geo",
+  latitude: number,
+  longitude: number,
+};
+
+export interface ProjectShortFragment {
+  __typename: "BuildingProject",
+  id: string,
+  slug: string,
+  name: string,
+  description: string | null,
+  status: string | null,
+  extrasYearEnd: string | null,
+  extrasAddress: string | null,
+  extrasAddressSecondary: string | null,
+  existingUnits: number | null,
+  proposedUnits: number | null,
+  verified: boolean,
+  extrasUrl: string | null,
+  preview:  {
+    __typename: string,
+    url: string,
+    retina: string,
+  } | null,
+};
+
+export interface UserShortFragment {
+  __typename: "User",
+  id: string,
+  name: string,
+  firstName: string,
+  lastName: string,
+  picture: string,
+  email: string,
 };
 
 export interface MyProfileFullFragment {
@@ -3103,22 +3150,6 @@ export interface AreaShortFragment {
   id: string,
   slug: string,
   writeAccess: boolean,
-};
-
-export interface ChartFullFragment {
-  __typename: "Chart",
-  labels: Array< string >,
-  datasets:  Array< {
-    __typename: string,
-    label: string,
-    values: Array< number >,
-  } >,
-};
-
-export interface GeoShortFragment {
-  __typename: "Geo",
-  latitude: number,
-  longitude: number,
 };
 
 export interface OrganizationShortFragment {
@@ -3646,27 +3677,6 @@ export interface PermitFullFragment {
   } >,
 };
 
-export interface ProjectShortFragment {
-  __typename: "BuildingProject",
-  id: string,
-  slug: string,
-  name: string,
-  description: string | null,
-  status: string | null,
-  extrasYearEnd: string | null,
-  extrasAddress: string | null,
-  extrasAddressSecondary: string | null,
-  existingUnits: number | null,
-  proposedUnits: number | null,
-  verified: boolean,
-  extrasUrl: string | null,
-  preview:  {
-    __typename: string,
-    url: string,
-    retina: string,
-  } | null,
-};
-
 export interface ProjectPreviewFragment {
   __typename: "BuildingProject",
   id: string,
@@ -3837,14 +3847,4 @@ export interface ProjectFullFragment {
       streetNumberSuffix: string | null,
     } >,
   } >,
-};
-
-export interface UserShortFragment {
-  __typename: "User",
-  id: string,
-  name: string,
-  firstName: string,
-  lastName: string,
-  picture: string,
-  email: string,
 };

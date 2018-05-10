@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ATypes from 'openland-api';
+import * as Types from 'openland-api/Types';
 import { XIcon } from 'openland-x/XIcon';
 import Glamorous from 'glamorous';
 
@@ -13,12 +13,12 @@ let IconLow = Glamorous(XIcon)({
     color: '#00ff00'
 });
 
-export function PriorityIndicator(props: { priority: ATypes.OpportunityPriority }) {
-    if (props.priority === ATypes.OpportunityPriority.HIGH) {
+export function PriorityIndicator(props: { priority: Types.OpportunityPriority }) {
+    if (props.priority === Types.OpportunityPriority.HIGH) {
         return <span><IconNormal icon="arrow_upward" /> High</span>;
-    } else if (props.priority === ATypes.OpportunityPriority.NORMAL) {
+    } else if (props.priority === Types.OpportunityPriority.NORMAL) {
         return <span><IconNormal icon="arrow_upward" /> Medium</span>;
-    } else if (props.priority === ATypes.OpportunityPriority.LOW) {
+    } else if (props.priority === Types.OpportunityPriority.LOW) {
         return <span><IconLow icon="arrow_downward" /> Low</span>;
     }
 

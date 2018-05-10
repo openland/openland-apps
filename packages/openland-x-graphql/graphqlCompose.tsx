@@ -20,12 +20,14 @@ function compose(funcs: Function[]) {
 }
 
 function graphqlComposeImpl<TResult>(...funcs: Function[]) {
-    return function (component: React.ComponentType<XWithRouter & TResult>) {
-        return withRouter(compose(funcs.reverse())(component));
+    return function <T = {}>(component: React.ComponentType<XWithRouter & TResult & T>) {
+        return withRouter<T>(compose(funcs.reverse())(component));
     };
 }
 
-export function graphqlCompose2<T1, T2>(src1: (src: React.ComponentType<T1>) => React.ComponentType<{}>, src2: (src: React.ComponentType<T2>) => React.ComponentType<{}>) {
+export function graphqlCompose2<T1, T2>(
+    src1: (src: React.ComponentType<T1>) => React.ComponentType<{}>,
+    src2: (src: React.ComponentType<T2>) => React.ComponentType<{}>) {
     return graphqlComposeImpl<T1 & T2>(src1, src2);
 }
 

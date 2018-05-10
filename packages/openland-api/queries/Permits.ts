@@ -86,7 +86,7 @@ export const PermitQuery = gql`
     ${PermitFull}
 `;
 
-export const PermitsConnection = gql`
+export const PermitsConnectionQuery = gql`
     query PermitsConnection($cursor: String, $filter: String, $page: Int, $type: PermitType, $sort: PermitSorting, $minUnits: Int, $issuedYear: String, $fromPipeline: Boolean) {
         items: permits(filter: $filter, first: 50, after: $cursor, page: $page, type: $type, sort: $sort, minUnits: $minUnits, issuedYear: $issuedYear, fromPipeline: $fromPipeline) {
             edges {

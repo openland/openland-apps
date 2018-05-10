@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
-import { ChartFull } from './Charts';
-import { ProjectPreview } from './Projects';
+import { ChartFull } from '../fragments/ChartFull';
+import { ProjectPreview } from '../fragments/ProjectPreview';
 
 export const AreaStatsQuery = gql`
     query AreaStats($areaId: String!) {

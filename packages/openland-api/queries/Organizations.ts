@@ -1,56 +1,6 @@
 import gql from 'graphql-tag';
-import { ProjectShort } from './ProjectShort';
-
-export const OrganizationShort = gql`
-    fragment OrganizationShort on Organization {
-        id
-        slug
-        title
-        comments
-        logo
-        url
-        isDeveloper
-        isConstructor
-        developerIn {
-            ...ProjectShort
-        }
-        constructorIn {
-            ...ProjectShort
-        }
-    }
-    ${ProjectShort}
-`;
-
-export const OrganizationFull = gql`
-    fragment OrganizationFull on Organization {
-        id
-        slug
-        title
-        comments
-        logo
-        cover
-        url
-        address
-        city
-        twitter
-        linkedin
-        facebook
-        isDeveloper
-        isConstructor
-        description
-        developerIn {
-            ...ProjectShort
-        }
-        constructorIn {
-            ...ProjectShort
-        }
-        partners {
-            ...OrganizationShort
-        }
-    }
-    ${ProjectShort}
-    ${OrganizationShort}
-`;
+import { OrganizationShort } from '../fragments/OrganizationShort';
+import { OrganizationFull } from '../fragments/OrganizationFull';
 
 export const OrganizationsQuery = gql`
     query Organizations {
@@ -70,8 +20,8 @@ export const OrganizationQuery = gql`
     ${OrganizationFull}
 `;
 
-export const OrganizationMutationAdd = gql`
-    mutation OrganizationMutationAdd($slug: String!, $title: String!) {
+export const OrganizationCreateMutation = gql`
+    mutation OrganizationCreate($slug: String!, $title: String!) {
         organizationAdd(slug: $slug, title: $title) {
             ...OrganizationShort
         }
@@ -79,13 +29,13 @@ export const OrganizationMutationAdd = gql`
     ${OrganizationShort}
 `;
 
-export const OrganizationMutationRemove = gql`
-    mutation OrganizationMutationRemove($orgId: String!) {
+export const OrganizationRemoveMutation = gql`
+    mutation OrganizationRemove($orgId: String!) {
         organizationRemove(slug: $orgId)
     }
 `;
 
-export const OrganizationMutationAlter = gql`
+export const OrganizationAlterMutation = gql`
     mutation OrganizationAlter
         ($orgId: String!, $title: String,
         $comments: String, $logo: String, $cover: String, $url: String, $city: String, $address: String,
