@@ -195,3 +195,4 @@ export const OwnersSelect = graphqlSelect<Types.OwnersQueryVariables>(Queries.So
 // });
 
 export const withDebugReaders = graphqlRouted(Queries.Debug.DebugReadedStatesQuery);
+export const withSuperCities = graphqlRouted(Queries.SuperCity.SuperCitiesQuery);

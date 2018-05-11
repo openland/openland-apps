@@ -13,6 +13,7 @@ import * as User from './queries/User.types';
 import * as FeatureFlags from './queries/FeatureFlag.types';
 import * as Sourcing from './queries/Sourcing.types';
 import * as Debug from './queries/Debug.types';
+import * as SuperCity from './queries/SuperCity.types';
 
 export let Queries = {
     Area,
@@ -29,5 +30,6 @@ export let Queries = {
     User,
     FeatureFlags,
     Sourcing,
-    Debug
+    Debug,
+    SuperCity
 };
