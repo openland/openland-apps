@@ -239,7 +239,7 @@ const OpportunityInfo = withOpportunity((props) => {
         <XVertical>
             <ProspectingNavigationReview />
             <XVertical>
-                <XLoader loading={props.data.loading || false} />
+                <XLoader loading={props.data.loading || false} height={600} />
                 {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
                     <XHeader
                         text={props.data.alphaNextReviewOpportunity!!.parcel.address || 'No address'}
