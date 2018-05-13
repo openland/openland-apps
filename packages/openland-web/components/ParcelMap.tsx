@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { BlockTileSource, ParcelTileSource } from '../api';
-import { ParcelLayer } from './ParcelLayer';
+// import { BlockTileSource, ParcelTileSource } from '../api';
+// import { ParcelLayer } from './ParcelLayer';
 import { XMapProps, XMap } from 'openland-x-map/XMap';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
+import { XMapSourceTile } from 'openland-x-map/XMapSourceTile';
 
-export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite' | 'zoning', selectedParcel?: string, onParcelClick?: (id: string) => void }) => {
+export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite' | 'zoning', selectedParcel?: string, onParcelClick?: (id: string) => void }, city: string) => {
     let { children, mode, ...other } = props;
     let mapStyle = 'mapbox://styles/mapbox/light-v9';
     if (props.mode === 'zoning') {
@@ -15,11 +16,19 @@ export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite
     }
     return (
         <XMap mapStyle={mapStyle} {...other} key={props.mode || 'map'}>
-            <ParcelTileSource
+            <XMapSourceTile
+                id="parcels"
+                url="mapbox://steve-kite.parcels_nyc_v1"
+            />
+            <XMapSourceTile
+                id="blocks"
+                url="mapbox://steve-kite.blocks_nyc_v1"
+            />
+            {/* <ParcelTileSource
                 layer="parcels"
                 minZoom={16}
-            />
-            <BlockTileSource
+            /> */}
+            {/* <BlockTileSource
                 layer="blocks"
                 minZoom={12}
             />
@@ -27,11 +36,13 @@ export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite
                 inverted={props.mode === 'satellite'}
                 onClick={props.onParcelClick}
                 selectedId={props.selectedParcel}
-            />
+            /> */}
             <XMapPolygonLayer
                 source="blocks"
                 layer="blocks"
-                minZoom={props.mode === 'satellite' ? 14 : 12}
+                layerSource="nyc_blocks"
+                inlineHover={true}
+                minZoom={props.mode === 'satellite' ? 14 : 1}
                 maxZoom={16}
                 style={{
                     fillOpacity: 0.1,

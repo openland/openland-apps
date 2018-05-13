@@ -23,9 +23,6 @@ export class XMapSourceTile extends React.PureComponent<XMapSourceTileProps> {
                 map.addSource(this.props.id, {
                     type: 'vector',
                     url: this.props.url,
-                    // cluster: this.props.cluster || false,
-                    // clusterMaxZoom: this.props.clusterMaxZoom !== undefined ?  this.props.clusterMaxZoom : 50,
-                    // clusterRadius: this.props.clusterRadius !== undefined ?  this.props.clusterRadius : 10
                 });
             } catch (e) {
                 console.warn(e);
@@ -36,15 +33,12 @@ export class XMapSourceTile extends React.PureComponent<XMapSourceTileProps> {
 
     componentWillReceiveProps(nextProps: XMapSourceTileProps) {
         if (this.isInited) {
-            // let dt = nextProps.data !== undefined ? nextProps.data : { 'type': 'FeatureCollection', features: [] };
             if (this.props.id !== nextProps.id) {
                 try {
                     this.map.removeSource(this.props.id);
-                    // this.datasources.removeGeoJsonSource(this.props.id);
-                    // this.datasources.addGeoJSONSource(this.props.id, dt);
                     this.map.addSource(nextProps.id, {
                         type: 'vector',
-                    url: this.props.url,
+                        url: this.props.url,
                     });
                 } catch (e) {
                     console.warn(e);

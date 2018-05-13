@@ -27,6 +27,8 @@ interface XMapPolygonLayerStyle {
 export interface XMapPolygonLayerProps {
     source: string;
     layer: string;
+    layerSource?: string;
+    inlineHover?: boolean;
 
     style?: XMapPolygonLayerStyle;
 
@@ -61,7 +63,10 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
     private map: mapboxgl.Map | null = null;
     private datasources: DataSources | null = null;
 
+    private inlineHover: boolean;
+    private inlineHoverId?: string;
     private layer: string;
+    private layerSource?: string;
 
     private source: string;
     private sourceHover: string;
@@ -71,7 +76,9 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
     constructor(props: XMapPolygonLayerProps) {
         super(props);
         this.layer = props.layer;
+        this.layerSource = props.layerSource;
         this.source = props.source;
+        this.inlineHover = props.inlineHover || false;
 
         // TODO: Randomize
         this.sourceHover = props.source + '-hover';
@@ -113,6 +120,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
             'id': this.layer + '-fill',
             'type': 'fill',
             'source': this.source,
+            'source-layer': this.layerSource,
             'minzoom': minZoom,
             'maxzoom': maxZoom,
             'layout': {},
@@ -120,7 +128,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 'fill-color': fillColor,
                 'fill-opacity': fillOpacity
             },
-            'filter': ['!=', 'id', selected]
+            'filter': ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]
         });
 
         //
@@ -135,6 +143,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
             'id': this.layer + '-borders',
             'type': 'line',
             'source': this.source,
+            'source-layer': this.layerSource,
             'minzoom': minZoom,
             'maxzoom': maxZoom,
             'layout': {},
@@ -143,7 +152,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 'line-width': borderWidth,
                 'line-opacity': borderOpacity
             },
-            'filter': ['!=', 'id', selected]
+            'filter': ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]
         });
 
         //
@@ -199,6 +208,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
             'id': this.layer + '-fill-selected',
             'type': 'fill',
             'source': this.source,
+            'source-layer': this.layerSource,
             'minzoom': minZoom,
             'maxzoom': this.props.maxFillZoom !== undefined ? this.props.maxFillZoom : maxZoom,
             'layout': {},
@@ -221,6 +231,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
             'id': this.layer + '-borders-selected',
             'type': 'line',
             'source': this.source,
+            'source-layer': this.layerSource,
             'minzoom': minZoom,
             'maxzoom': maxZoom,
             'layout': {
@@ -241,13 +252,21 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         this.map.on('mousemove', this.layer + '-fill', (e: any) => {
             if (this._isMounted && (this.props.allowHover || (this.props.allowHover || this.props.onClick || this.props.flyOnClick))) {
                 let id = e.features[0].properties.id;
-                if (this.focusedId !== id) {
-                    this.focusedId = id;
-                    let element = this.datasources!!.findGeoJSONElement(this.source, id);
-                    if (element) {
-                        let source = this.map!!.getSource(this.sourceHover);
-                        if (source.type === 'geojson') {
-                            source.setData({ 'type': 'FeatureCollection', features: [element] });
+                if (this.inlineHover) {
+                    if (this.inlineHoverId !== id) {
+                        this.inlineHoverId = id;
+                        this.map!!.setFilter(this.layer + '-fill', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
+                        this.map!!.setFilter(this.layer + '-borders', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
+                    }
+                } else {
+                    if (this.focusedId !== id) {
+                        this.focusedId = id;
+                        let element = this.datasources!!.findGeoJSONElement(this.source, id);
+                        if (element) {
+                            let source = this.map!!.getSource(this.sourceHover);
+                            if (source.type === 'geojson') {
+                                source.setData({ 'type': 'FeatureCollection', features: [element] });
+                            }
                         }
                     }
                 }
@@ -256,11 +275,19 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
 
         this.map.on('mouseleave', this.layer + '-fill', () => {
             if (this._isMounted && (this.props.allowHover || (this.props.allowHover || this.props.onClick || this.props.flyOnClick))) {
-                if (this.focusedId !== undefined) {
-                    this.focusedId = undefined;
-                    let source = this.map!!.getSource(this.sourceHover);
-                    if (source.type === 'geojson') {
-                        source.setData({ 'type': 'FeatureCollection', features: [] });
+                if (this.inlineHover) {
+                    if (this.inlineHoverId !== undefined) {
+                        this.inlineHoverId = undefined;
+                        this.map!!.setFilter(this.layer + '-fill', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
+                        this.map!!.setFilter(this.layer + '-borders', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
+                    }
+                } else {
+                    if (this.focusedId !== undefined) {
+                        this.focusedId = undefined;
+                        let source = this.map!!.getSource(this.sourceHover);
+                        if (source.type === 'geojson') {
+                            source.setData({ 'type': 'FeatureCollection', features: [] });
+                        }
                     }
                 }
             }
@@ -273,9 +300,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         this.map.on('click', this.layer + '-fill', (e: any) => {
             let id = e.features[0].properties.id;
             if (this.props.flyOnClick) {
-                let element = this.datasources!!.findGeoJSONElement(this.source, id);
-                if (element) {
-                    let center = Turf.bbox(element);
+                if (e.features[0].properties.min_lon && e.features[0].properties.max_lon && e.features[0].properties.min_lat && e.features[0].properties.max_lat) {
                     let params: any = { duration: 300 };
                     if (this.props.flyToPadding !== undefined) {
                         params.padding = this.props.flyToPadding;
@@ -283,7 +308,21 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                     if (this.props.flyToMaxZoom !== undefined) {
                         params.maxZoom = this.props.flyToMaxZoom;
                     }
-                    this.map!!.fitBounds([[center[0], center[1]], [center[2], center[3]]], params);
+                    this.map!!.fitBounds([[e.features[0].properties.min_lon, e.features[0].properties.min_lat], [e.features[0].properties.max_lon, e.features[0].properties.max_lat]], params);
+                } else {
+                    console.warn(e.features[0].properties);
+                    let element = this.datasources!!.findGeoJSONElement(this.source, id);
+                    if (element) {
+                        let center = Turf.bbox(element);
+                        let params: any = { duration: 300 };
+                        if (this.props.flyToPadding !== undefined) {
+                            params.padding = this.props.flyToPadding;
+                        }
+                        if (this.props.flyToMaxZoom !== undefined) {
+                            params.maxZoom = this.props.flyToMaxZoom;
+                        }
+                        this.map!!.fitBounds([[center[0], center[1]], [center[2], center[3]]], params);
+                    }
                 }
             }
             if (this.props.onClick && this.props.allowClick !== false) {
@@ -300,8 +339,8 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         if (this.props.selectedId !== nextProps.selectedId && this.isInited && this._isMounted) {
             if (nextProps.selectedId !== undefined) {
                 let selected = nextProps.selectedId || '';
-                this.map!!.setFilter(this.layer + '-fill', ['!=', 'id', selected]);
-                this.map!!.setFilter(this.layer + '-borders', ['!=', 'id', selected]);
+                this.map!!.setFilter(this.layer + '-fill', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
+                this.map!!.setFilter(this.layer + '-borders', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
                 this.map!!.setFilter(this.layer + '-fill-selected', ['==', 'id', selected]);
                 this.map!!.setFilter(this.layer + '-borders-selected', ['==', 'id', selected]);
                 let source = this.map!!.getSource(this.sourceHover);
