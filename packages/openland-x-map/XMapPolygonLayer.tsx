@@ -128,7 +128,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 'fill-color': fillColor,
                 'fill-opacity': fillOpacity
             },
-            'filter': ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]
+            'filter': ['!=', 'id', selected]
         });
 
         //
@@ -152,7 +152,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 'line-width': borderWidth,
                 'line-opacity': borderOpacity
             },
-            'filter': ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]
+            'filter': ['!=', 'id', selected]
         });
 
         //
@@ -165,14 +165,16 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         this.map.addLayer({
             'id': this.layer + '-fill-hover',
             'type': 'fill',
-            'source': this.sourceHover,
+            'source': this.inlineHover ? this.source : this.sourceHover,
+            'source-layer': this.inlineHover ? this.layerSource : undefined,
             'minzoom': minZoom,
             'maxzoom': this.props.maxFillZoom !== undefined ? this.props.maxFillZoom : maxZoom,
             'layout': {},
             'paint': {
                 'fill-color': hoverFillColor,
                 'fill-opacity': hoverFillOpacity
-            }
+            },
+            'filter': this.inlineHover ? ['==', 'id', this.inlineHoverId || ''] : undefined
         });
 
         //
@@ -186,7 +188,8 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         this.map.addLayer({
             'id': this.layer + '-borders-hover',
             'type': 'line',
-            'source': this.sourceHover,
+            'source': this.inlineHover ? this.source : this.sourceHover,
+            'source-layer': this.inlineHover ? this.layerSource : undefined,
             'minzoom': minZoom,
             'maxzoom': maxZoom,
             'layout': {},
@@ -194,7 +197,8 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 'line-color': hoverBorderColor,
                 'line-width': hoverBorderWidth,
                 'line-opacity': hoverBorderOpacity
-            }
+            },
+            'filter': this.inlineHover ? ['==', 'id', this.inlineHoverId || ''] : undefined
         });
 
         //
@@ -252,20 +256,22 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         this.map.on('mousemove', this.layer + '-fill', (e: any) => {
             if (this._isMounted && (this.props.allowHover || (this.props.allowHover || this.props.onClick || this.props.flyOnClick))) {
                 let id = e.features[0].properties.id;
-                if (this.inlineHover) {
-                    if (this.inlineHoverId !== id) {
-                        this.inlineHoverId = id;
-                        this.map!!.setFilter(this.layer + '-fill', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
-                        this.map!!.setFilter(this.layer + '-borders', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
-                    }
-                } else {
-                    if (this.focusedId !== id) {
-                        this.focusedId = id;
-                        let element = this.datasources!!.findGeoJSONElement(this.source, id);
-                        if (element) {
-                            let source = this.map!!.getSource(this.sourceHover);
-                            if (source.type === 'geojson') {
-                                source.setData({ 'type': 'FeatureCollection', features: [element] });
+                if (id) {
+                    if (this.inlineHover) {
+                        if (this.inlineHoverId !== id) {
+                            this.inlineHoverId = id;
+                            this.map!!.setFilter(this.layer + '-fill-hover', ['==', 'id', this.inlineHoverId]);
+                            this.map!!.setFilter(this.layer + '-borders-hover', ['==', 'id', this.inlineHoverId]);
+                        }
+                    } else {
+                        if (this.focusedId !== id) {
+                            this.focusedId = id;
+                            let element = this.datasources!!.findGeoJSONElement(this.source, id);
+                            if (element) {
+                                let source = this.map!!.getSource(this.sourceHover);
+                                if (source.type === 'geojson') {
+                                    source.setData({ 'type': 'FeatureCollection', features: [element] });
+                                }
                             }
                         }
                     }
@@ -278,8 +284,10 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 if (this.inlineHover) {
                     if (this.inlineHoverId !== undefined) {
                         this.inlineHoverId = undefined;
-                        this.map!!.setFilter(this.layer + '-fill', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
-                        this.map!!.setFilter(this.layer + '-borders', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
+                        // this.map!!.setFilter(this.layer + '-fill', ['all', ['!=', 'id', selected], ['!=', 'id', '']]);
+                        // this.map!!.setFilter(this.layer + '-borders', ['all', ['!=', 'id', selected], ['!=', 'id', '']]);
+                        this.map!!.setFilter(this.layer + '-fill-hover', ['==', 'id', '']);
+                        this.map!!.setFilter(this.layer + '-borders-hover', ['==', 'id', '']);
                     }
                 } else {
                     if (this.focusedId !== undefined) {
@@ -339,8 +347,8 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
         if (this.props.selectedId !== nextProps.selectedId && this.isInited && this._isMounted) {
             if (nextProps.selectedId !== undefined) {
                 let selected = nextProps.selectedId || '';
-                this.map!!.setFilter(this.layer + '-fill', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
-                this.map!!.setFilter(this.layer + '-borders', ['all', ['!=', 'id', selected], ['!=', 'id', this.inlineHoverId || '']]);
+                this.map!!.setFilter(this.layer + '-fill', ['!=', 'id', selected]);
+                this.map!!.setFilter(this.layer + '-borders', ['!=', 'id', selected]);
                 this.map!!.setFilter(this.layer + '-fill-selected', ['==', 'id', selected]);
                 this.map!!.setFilter(this.layer + '-borders-selected', ['==', 'id', selected]);
                 let source = this.map!!.getSource(this.sourceHover);

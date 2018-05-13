@@ -38,6 +38,25 @@ export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite
                 selectedId={props.selectedParcel}
             /> */}
             <XMapPolygonLayer
+                source="parcels"
+                layer="parcels"
+                layerSource="nyc_parcels"
+                inlineHover={true}
+                style={{
+                    selectedFillOpacity: 0,
+                    selectedBorderColor: '#4428E1',
+                    selectedBorderWidth: 8,
+                    selectedBorderOpacity: 1,
+                    borderColor: props.mode === 'satellite' ? '#ffffff' : '#4428e0',
+                    borderWidth: props.mode === 'satellite' ? 4 : 1,
+                }}
+                minZoom={16}
+                flyOnClick={true}
+                flyToMaxZoom={18}
+                onClick={props.onParcelClick}
+                selectedId={props.selectedParcel}
+            />
+            <XMapPolygonLayer
                 source="blocks"
                 layer="blocks"
                 layerSource="nyc_blocks"
