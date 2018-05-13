@@ -61,7 +61,7 @@ export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite
                 layer="blocks"
                 layerSource="nyc_blocks"
                 inlineHover={true}
-                minZoom={props.mode === 'satellite' ? 14 : 1}
+                minZoom={props.mode === 'satellite' ? 14 : 12}
                 maxZoom={16}
                 style={{
                     fillOpacity: 0.1,
