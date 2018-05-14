@@ -84,9 +84,7 @@ export const withParcelDirect = graphqlCompose3(withParcelDirect2, withParcelLik
 // export const withParcelLikes = graphqlMutation<{ doLike: MutationFunc<{}> }>(Parcels.ParcelLike, { name: 'doLike' });
 // export const withParcelUnlikes = graphqlMutation<{ doUnlike: MutationFunc<{}> }>(Parcels.ParcelUnlike, { name: 'doUnlike' });
 
-export const ParcelTileSource = graphQLTileSource(Queries.Parcels.ParcelsTileOverlayQuery);
 export const ParcelPointSource = graphQLTileSource(Queries.Parcels.ParcelsPointOverlayQuery, { cluster: true });
-export const BlockTileSource = graphQLTileSource(Queries.Parcels.BlocksTileOverlayQuery);
 
 const ParcelMetadataAlter = graphqlMutation(Queries.Parcels.ParcelAlterMutation, 'parcelAlterMetadata', { params: ['parcelId'] });
 export const withParcelMetadataForm = graphqlCompose2(withParcelRaw, ParcelMetadataAlter);
