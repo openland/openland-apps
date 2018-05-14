@@ -1,11 +1,9 @@
 import * as React from 'react';
-// import { BlockTileSource, ParcelTileSource } from '../api';
-// import { ParcelLayer } from './ParcelLayer';
 import { XMapProps, XMap } from 'openland-x-map/XMap';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 import { XMapSourceTile } from 'openland-x-map/XMapSourceTile';
 
-export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite' | 'zoning', selectedParcel?: string, onParcelClick?: (id: string) => void }, city: string) => {
+export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite' | 'zoning', selectedParcel?: string, onParcelClick?: (id: string, city: string) => void, city: string }) => {
     let { children, mode, ...other } = props;
     let mapStyle = 'mapbox://styles/mapbox/light-v9';
     if (props.mode === 'zoning') {
@@ -14,33 +12,33 @@ export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite
     if (props.mode === 'satellite') {
         mapStyle = 'mapbox://styles/mapbox/satellite-v9';
     }
+    let parcelsSource = 'mapbox://steve-kite.parcels_nyc_v1';
+    let parcelsSourceLayer = 'nyc_parcels';
+    let blocksSource = 'mapbox://steve-kite.blocks_nyc_v1';
+    let blocksSourceLayer = 'nyc_blocks';
+    if (props.city === 'sf') {
+        parcelsSource = 'mapbox://steve-kite.parcels_sf_v1';
+        parcelsSourceLayer = 'sf_parcels';
+        blocksSource = 'mapbox://steve-kite.blocks_sf_v1';
+        blocksSourceLayer = 'sf_blocks';
+    }
     return (
         <XMap mapStyle={mapStyle} {...other} key={props.mode || 'map'}>
             <XMapSourceTile
-                id="parcels"
-                url="mapbox://steve-kite.parcels_nyc_v1"
+                id={'parcels_' + props.city}
+                key={'parcels_' + props.city}
+                url={parcelsSource}
             />
             <XMapSourceTile
-                id="blocks"
-                url="mapbox://steve-kite.blocks_nyc_v1"
+                id={'blocks_' + props.city}
+                key={'blocks_' + props.city}
+                url={blocksSource}
             />
-            {/* <ParcelTileSource
-                layer="parcels"
-                minZoom={16}
-            /> */}
-            {/* <BlockTileSource
-                layer="blocks"
-                minZoom={12}
-            />
-            <ParcelLayer
-                inverted={props.mode === 'satellite'}
-                onClick={props.onParcelClick}
-                selectedId={props.selectedParcel}
-            /> */}
             <XMapPolygonLayer
-                source="parcels"
-                layer="parcels"
-                layerSource="nyc_parcels"
+                key={'parcels_layer_' + props.city}
+                source={'parcels_' + props.city}
+                layer={'parcels_' + props.city}
+                layerSource={parcelsSourceLayer}
                 inlineHover={true}
                 style={{
                     selectedFillOpacity: 0,
@@ -53,13 +51,14 @@ export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite
                 minZoom={16}
                 flyOnClick={true}
                 flyToMaxZoom={18}
-                onClick={props.onParcelClick}
+                onClick={props.onParcelClick ? (id: string) => props.onParcelClick!!(id, props.city) : undefined}
                 selectedId={props.selectedParcel}
             />
             <XMapPolygonLayer
-                source="blocks"
-                layer="blocks"
-                layerSource="nyc_blocks"
+                key={'blocks_layer_' + props.city}
+                source={'blocks_' + props.city}
+                layer={'blocks_' + props.city}
+                layerSource={blocksSourceLayer}
                 inlineHover={true}
                 minZoom={props.mode === 'satellite' ? 14 : 12}
                 maxZoom={16}
