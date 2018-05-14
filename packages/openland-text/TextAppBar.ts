@@ -5,6 +5,7 @@ export const TextAppBar = {
         deals: 'Deals',
         reports: 'Reports',
         favorites: 'Favorites',
+        folders: 'Folders',
         devTools: 'DevTools',
         xFramework: 'X Framework'
     }
