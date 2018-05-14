@@ -22,7 +22,8 @@ const RootContainer = Glamorous.div({
 
 const LeftContainer = Glamorous.div({
     backgroundColor: '#fff',
-    borderRight: 'solid 1px rgba(0, 0, 0, 0.08)',
+    // borderRight: 'solid 1px rgba(0, 0, 0, 0.08)',
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
     height: '100%',
     flexBasis: '60%',
     paddingLeft: 32,
@@ -31,6 +32,7 @@ const LeftContainer = Glamorous.div({
     paddingBottom: 22,
     display: 'flex',
     flexDirection: 'column',
+    zIndex: 1,
     '@media(max-width: 950px)': {
         flexBasis: '100%',
     }
@@ -98,6 +100,7 @@ const LogoTitle = Glamorous.div({
 const HeaderStyled = Glamorous.div({
     display: 'flex',
     justifyContent: 'space-between',
+    marginBottom: 'auto',
     '@media(max-width: 600px)': {
         flexDirection: 'column',
         justifyContent: 'center',
@@ -155,7 +158,8 @@ const MapCardContentStyle = Glamorous.div({
     maxWidth: 350,
     borderRadius: 5,
     backgroundColor: '#fff',
-    border: 'solid 1px rgba(0, 0, 0, 0.08)',
+    // border: 'solid 1px rgba(0, 0, 0, 0.08)',
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
     paddingLeft: 42,
     paddingRight: 34,
     paddingTop: 42,
@@ -177,6 +181,15 @@ const MapCardTitle = Glamorous.div({
     },
     '& i': {
         color: '#654bfa'
+    },
+    '&.filter': {
+        '& > svg': {
+            width: 22,
+            height: 19,
+            '& path': {
+                transform: 'scale(0.048)'
+            }
+        }
     }
 });
 
@@ -191,8 +204,12 @@ const MapCardText = Glamorous.div<{ marginBottom?: number }>((props) => ({
 
 const MapCardContent = () => (
     <MapCardContentStyle>
-        <MapCardTitle>
-            <XIcon icon="filter_list" />
+        <MapCardTitle className="filter">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="402.577px" height="402.577px">
+                <g>
+                    <path fill="#654bfa" d="M400.858,11.427c-3.241-7.421-8.85-11.132-16.854-11.136H18.564c-7.993,0-13.61,3.715-16.846,11.136 c-3.234,7.801-1.903,14.467,3.999,19.985l140.757,140.753v138.755c0,4.955,1.809,9.232,5.424,12.854l73.085,73.083 c3.429,3.614,7.71,5.428,12.851,5.428c2.282,0,4.66-0.479,7.135-1.43c7.426-3.238,11.14-8.851,11.14-16.845V172.166L396.861,31.413 C402.765,25.895,404.093,19.231,400.858,11.427z" />
+                </g>
+            </svg>
             <span>Prospecting</span>
         </MapCardTitle>
         <MapCardText marginBottom={42}>
@@ -272,6 +289,10 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean }>((props) => ({
     '&:focus': {
         boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
     },
+    '&:active': {
+        backgroundColor: props.primary ? '#5640d6' : '#f3f3f5',
+        transform: 'translateY(0px)',
+    },
     '& span': {
         fontSize: 16,
         fontWeight: 500,
@@ -288,9 +309,6 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean }>((props) => ({
             height: 23,
             marginRight: 7
         },
-        '&:hover svg path:first-child': {
-            fill: '#F0B84D'
-        }
     }
 }));
 
