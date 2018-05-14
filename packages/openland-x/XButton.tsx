@@ -43,15 +43,17 @@ let sizeStyles = styleResolver({
         fontSize: 18,
         letterSpacing: 0.6,
         fontWeight: 500,
-        paddingLeft: 32,
-        paddingRight: 32,
         borderRadius: 4,
-        '> .icon': {
+        '& .button-content': {
+            paddingLeft: 32,
+            paddingRight: 32
+        },
+        '& .icon': {
             width: 32,
             fontSize: 28,
             lineHeight: '56px',
         },
-        '> .loading': {
+        '& .loading-icon': {
             width: 24,
             height: 24,
             lineHeight: 'normal',
@@ -65,13 +67,15 @@ let sizeStyles = styleResolver({
         fontSize: 18,
         letterSpacing: 0.6,
         fontWeight: 500,
-        paddingLeft: 26,
-        paddingRight: 26,
         borderRadius: 4,
-        '> .icon': {
+        '& .button-content': {
+            paddingLeft: 26,
+            paddingRight: 26
+        },
+        '& .icon': {
             fontSize: 24
         },
-        '> .loading': {
+        '& .loading-icon': {
             width: 21,
             height: 21,
             lineHeight: 'normal',
@@ -85,13 +89,15 @@ let sizeStyles = styleResolver({
         fontSize: 16,
         letterSpacing: 0.5,
         fontWeight: 500,
-        paddingLeft: 20,
-        paddingRight: 20,
         borderRadius: 4,
-        '> .icon': {
+        '& .button-content': {
+            paddingLeft: 20,
+            paddingRight: 20
+        },
+        '& .icon': {
             fontSize: 20
         },
-        '> .loading': {
+        '& .loading-icon': {
             width: 18,
             height: 18,
             lineHeight: 'normal',
@@ -105,13 +111,15 @@ let sizeStyles = styleResolver({
         fontSize: 14,
         letterSpacing: 0.4,
         fontWeight: 500,
-        paddingLeft: 14,
-        paddingRight: 14,
         borderRadius: 4,
-        '> .icon': {
+        '& .button-content': {
+            paddingLeft: 14,
+            paddingRight: 14
+        },
+        '& .icon': {
             fontSize: 16
         },
-        '> .loading': {
+        '& .loading-icon': {
             width: 15,
             height: 15,
             lineHeight: 'normal',
@@ -125,13 +133,15 @@ let sizeStyles = styleResolver({
         fontSize: 12,
         letterSpacing: 0.4,
         fontWeight: 500,
-        paddingLeft: 10,
-        paddingRight: 10,
         borderRadius: 3,
-        '> .icon': {
+        '& .button-content': {
+            paddingLeft: 10,
+            paddingRight: 10
+        },
+        '& .icon': {
             fontSize: 14
         },
-        '> .loading': {
+        '& .loading-icon': {
             width: 14,
             height: 14,
             lineHeight: 'normal',
@@ -147,13 +157,11 @@ let colorStyles = styleResolver({
         color: '#334562',
         '&:hover': {
             backgroundColor: '#ecedf0',
-            color: '#334562',
-            boxShadow: '0 1px 2px 0 #ced5e2'
+            color: '#334562'
         },
         '&:active': {
             backgroundColor: '#eeecfa',
-            color: '#5640d6',
-            boxShadow: 'none'
+            color: '#5640d6'
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
@@ -164,13 +172,11 @@ let colorStyles = styleResolver({
         color: '#ffffff',
         '&:hover': {
             backgroundColor: '#7159f9',
-            color: '#ffffff',
-            boxShadow: '0 1px 2px 0 rgba(29, 21, 74, 0.42)'
+            color: '#ffffff'
         },
         '&:active': {
             backgroundColor: '#5640d6',
-            color: '#ffffff',
-            boxShadow: 'none'
+            color: '#ffffff'
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
@@ -181,13 +187,11 @@ let colorStyles = styleResolver({
         color: '#ffffff',
         '&:hover': {
             backgroundColor: '#ec6262',
-            color: '#ffffff',
-            boxShadow: '0 1px 2px 0 #d29d9d'
+            color: '#ffffff'
         },
         '&:active': {
             backgroundColor: '#c54f4f',
-            color: '#ffffff',
-            boxShadow: 'none'
+            color: '#ffffff'
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
@@ -199,12 +203,10 @@ let colorStyles = styleResolver({
         border: 'solid 1px #c2cbde',
         '&:hover': {
             backgroundColor: '#f3f3f5',
-            boxShadow: '0 1px 2px 0 #dbe2ef',
             color: '#334562'
         },
         '&:active': {
             backgroundColor: '#eeecfa',
-            boxShadow: 'none',
             color: '#5640d6'
         },
         '&:focus': {
@@ -217,10 +219,10 @@ let colorStyles = styleResolver({
         border: 'solid 1px #654bfa',
         '&:hover': {
             backgroundColor: '#eeecfa',
-            boxShadow: '0 1px 2px 0 #ced5e2',
         },
         '&:active': {
-            boxShadow: 'none'
+            backgroundColor: '#eeecfa',
+            border: 'solid 1px transparent',
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
@@ -233,13 +235,11 @@ let colorStyles = styleResolver({
         '&:hover': {
             color: '#334562',
             backgroundColor: '#f4f6fb',
-            boxShadow: '0 1px 2px 0 #dbe2ef',
             border: 'solid 1px #c2cbde'
         },
         '&:active': {
-            boxShadow: 'none',
             backgroundColor: '#eeecfa',
-            border: 'solid 1px #c2cbde',
+            border: 'solid 1px transparent',
             color: '#5640d6'
         },
         '&:focus': {
@@ -314,32 +314,29 @@ const StyledIcon = Glamorous<XButtonProps>(XIcon)([
     (props) => iconsIndentation(props.size, !!props.text)
 ]);
 
+const StyledButtonContentWrapper = Glamorous.div({
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textDecoration: 'none',
+    flexDirection: 'row',
+    userSelect: 'none',
+    whiteSpace: 'nowrap',
+    wordBreak: 'keep-all',
+    position: 'relative',
+    outline: 'none'
+});
+
 const StyledButton = Glamorous<XButtonProps>(XLink)([
     (props) => ({
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textDecoration: 'none',
-        flexDirection: 'row',
-        userSelect: 'none',
-        whiteSpace: 'nowrap',
-        wordBreak: 'keep-all',
-        position: 'relative',
-        outline: 'none',
         pointerEvents: (props.loading || props.disabled) ? 'none' : 'auto',
         cursor: (props.loading || props.disabled) ? 'inherit' : 'pointer',
         transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease'
     }),
     (props) => (props.loading && {
-        '& > span': { opacity: 0 }
-    } || {}),
-    // (props) => (props.disabled && !props.loading && {
-    //     '& > span': { opacity: 0.5 }
-    // } || {}),
-    (props) => (!props.disabled && {
-        '&:hover': {
-            transform: 'translateY(-1px)',
-        }
+        '& span': { opacity: 0 }
     } || {}),
     (props) => colorStyles(props.style, !props.disabled),
     (props) => colorDisabledStyles(props.style, !!props.disabled),
@@ -352,9 +349,11 @@ export class XButton extends React.PureComponent<XButtonProps> {
     render() {
         return (
             <StyledButton {...this.props}>
-                {this.props.icon && <StyledIcon text={this.props.text} icon={this.props.icon} className="icon" />}
-                <span>{this.props.text}</span>
-                {this.props.loading && <XLoadingCircular inverted={this.props.style === 'primary' || this.props.style === 'danger'} className="loading"/>}
+                <StyledButtonContentWrapper tabIndex={-1} className="button-content">
+                    {this.props.icon && <StyledIcon text={this.props.text} icon={this.props.icon} className="icon" />}
+                    <span>{this.props.text}</span>
+                    {this.props.loading && <XLoadingCircular inverted={this.props.style === 'primary' || this.props.style === 'danger'} className="loading-icon" />}
+                </StyledButtonContentWrapper>
             </StyledButton>
         );
     }

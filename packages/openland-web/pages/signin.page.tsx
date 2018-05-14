@@ -22,7 +22,6 @@ const RootContainer = Glamorous.div({
 
 const LeftContainer = Glamorous.div({
     backgroundColor: '#fff',
-    // borderRight: 'solid 1px rgba(0, 0, 0, 0.08)',
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
     height: '100%',
     flexBasis: '60%',
@@ -158,7 +157,6 @@ const MapCardContentStyle = Glamorous.div({
     maxWidth: 350,
     borderRadius: 5,
     backgroundColor: '#fff',
-    // border: 'solid 1px rgba(0, 0, 0, 0.08)',
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
     paddingLeft: 42,
     paddingRight: 34,
@@ -278,25 +276,24 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean }>((props) => ({
     transition: 'all .15s ease',
     backgroundColor: props.primary ? '#654bfa' : '#ffffff',
     color: props.primary ? '#fff' : '#334562',
-    borderRadius: 5,
+    borderRadius: 6,
     border: props.primary ? 'solid 1px transparent' : 'solid 1px #dcdee4',
     '&:hover': {
-        transform: 'translateY(-1px)',
         color: props.primary ? '#fff' : '#334562',
-        backgroundColor: props.primary ? '#7159f9' : '#fff',
-        boxShadow: '0 1px 2px 0 rgba(29, 21, 74, 0.42)'
+        backgroundColor: props.primary ? '#7159f9' : '#f3f3f5'
     },
     '&:focus': {
         boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
     },
     '&:active': {
-        backgroundColor: props.primary ? '#5640d6' : '#f3f3f5',
-        transform: 'translateY(0px)',
+        color: props.primary ? '#fff' : '#5640d6',
+        backgroundColor: props.primary ? '#5640d6' : '#eeecfa'
     },
     '& span': {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 500,
-        letterSpacing: 0.5,
+        letterSpacing: 0.6,
+        lineHeight: 1.11
     },
     '& svg': {
         width: 20,
@@ -329,7 +326,7 @@ const ImgButton = (props: ButtonProps) => {
     const { children, ...other } = props;
     return (
         <StyledButton {...other}>
-            <ButtonChildren>
+            <ButtonChildren tabIndex={-1}>
                 {props.children}
             </ButtonChildren>
         </StyledButton>
@@ -375,14 +372,6 @@ const Separator = () => (
         <div>or</div>
     </SeparatorStyle>
 );
-
-const Button = Glamorous(XButton)({
-    '& span': {
-        fontSize: 16,
-        fontWeight: 500,
-        letterSpacing: 0.5,
-    }
-});
 
 class SignInComponent extends React.Component<{ redirect?: string | null }, {
 
@@ -517,8 +506,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                         </ButtonsWrapper>
                         <ButtonsWrapper marginTop={20}>
                             <XHorizontal>
-                                <Button onClick={this.loginReset} style="ghost" size="medium" alignSelf="stretch" flexGrow={1} text="Reset" />
-                                <Button onClick={this.loginEmailStart} style="primary" size="medium" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text="Next" />
+                                <XButton onClick={this.loginReset} style="ghost" size="medium" alignSelf="stretch" flexGrow={1} text="Reset" />
+                                <XButton onClick={this.loginEmailStart} style="primary" size="medium" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text="Next" />
                             </XHorizontal>
                         </ButtonsWrapper>
                     </>)}
@@ -531,8 +520,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                         </ButtonsWrapper>
                         <ButtonsWrapper marginTop={20}>
                             <XHorizontal>
-                                <Button onClick={this.loginReset} size="medium" alignSelf="stretch" flexGrow={1} text="Reset" />
-                                <Button onClick={this.loginCodeStart} size="medium" style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text="Complete" />
+                                <XButton onClick={this.loginReset} size="medium" alignSelf="stretch" flexGrow={1} text="Reset" />
+                                <XButton onClick={this.loginCodeStart} size="medium" style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text="Complete" />
                             </XHorizontal>
                         </ButtonsWrapper>
                     </>)}

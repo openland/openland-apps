@@ -118,7 +118,7 @@ const CityTitle = Glamorous.div<{ active: boolean }>((props) => ({
     '& .title': {
         display: 'flex',
         alignItems: 'center',
-
+        userSelect: 'none',
         '& .material-icons': {
             fontSize: 15,
             color: '#abbacb',
