@@ -26,7 +26,7 @@ export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite
                 source="parcels"
                 layer="parcels"
                 layerSource="all_parcels"
-                inlineHover={true}
+                
                 style={{
                     selectedFillOpacity: 0,
                     selectedBorderColor: '#4428E1',
@@ -45,7 +45,6 @@ export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite
                 source="blocks"
                 layer="blocks"
                 layerSource="all_blocks"
-                inlineHover={true}
                 minZoom={props.mode === 'satellite' ? 14 : 12}
                 maxZoom={16}
                 style={{

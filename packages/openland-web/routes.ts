@@ -78,6 +78,12 @@ routes.add('/prospecting/nyc', '/main/prospecting/snoozed');
 routes.add('/prospecting/nyc/', '/main/prospecting/snoozed');
 
 //
+// Folders
+//
+routes.add('/folders', '/main/folders/all');
+routes.add('/folders/', '/main/folders/all');
+
+//
 // Projects
 //
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import * as PropTypes from 'prop-types';
+import { XLink } from './XLink';
 
 const XCardWrapper = Glamorous.div({
     display: 'flex',
@@ -11,7 +11,7 @@ const XCardWrapper = Glamorous.div({
     }
 });
 
-const XCardItemWrapper = Glamorous.div({
+const XCardItemWrapper = Glamorous(XLink)({
     display: 'flex',
     flexDirection: 'column',
     paddingTop: 8,
@@ -26,21 +26,9 @@ const XCardItemWrapper = Glamorous.div({
 });
 
 export class XListItem extends React.Component<{ path?: string }> {
-    static contextTypes = {
-        router: PropTypes.object.isRequired
-    };
-
-    mouseDownHandler = () => {
-        // if (this.props.path) {
-        //     Router.pushRoute(this.props.path);
-        // }
-    }
-
     render() {
         return (
-            <XCardItemWrapper
-                onMouseDown={this.mouseDownHandler}
-            >
+            <XCardItemWrapper path={this.props.path}>
                 {this.props.children}
             </XCardItemWrapper>
         );

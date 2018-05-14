@@ -498,6 +498,18 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 <strong>{TextAppBar.items.explore}</strong>
                             </XTooltip.Content>
                         </XTooltip>
+                        <XWithRole role={['super-admin', 'software-developer']}>
+                            <XTooltip placement="right">
+                                <XTooltip.Target>
+                                    <NavigatorItem path="/folders" activateForSubpaths={true}>
+                                        <NavigatorIcon icon="folder" />
+                                    </NavigatorItem>
+                                </XTooltip.Target>
+                                <XTooltip.Content>
+                                    <strong>{TextAppBar.items.folders}</strong>
+                                </XTooltip.Content>
+                            </XTooltip>
+                        </XWithRole>
                         <XTooltip placement="right">
                             <XTooltip.Target>
                                 <NavigatorItem path="/prospecting" activateForSubpaths={true}>
@@ -511,7 +523,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                         <XTooltip placement="right">
                             <XTooltip.Target>
                                 <NavigatorItem path="/deals" activateForSubpaths={true}>
-                                    <NavigatorIcon icon="work" />
+                                    <NavigatorIcon icon="business_center" />
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
