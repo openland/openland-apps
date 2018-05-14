@@ -351,6 +351,11 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 this.map!!.setFilter(this.layer + '-borders', ['!=', 'id', selected]);
                 this.map!!.setFilter(this.layer + '-fill-selected', ['==', 'id', selected]);
                 this.map!!.setFilter(this.layer + '-borders-selected', ['==', 'id', selected]);
+                if (nextProps.selectedId) {
+                    this.inlineHoverId = undefined;
+                    this.map!!.setFilter(this.layer + '-fill-hover', ['==', 'id', '']);
+                    this.map!!.setFilter(this.layer + '-borders-hover', ['==', 'id', '']);
+                }
                 let source = this.map!!.getSource(this.sourceHover);
                 if (source.type === 'geojson') {
                     source.setData({ 'type': 'FeatureCollection', features: [] });
