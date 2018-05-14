@@ -7,7 +7,7 @@ import { ProspectingNavigationMap } from '../../../components/ProspectingNavigat
 import { SourcingTileSource } from '../../../api';
 import { OpportunityState } from 'openland-api/Types';
 import { XSwitcher } from 'openland-x/XSwitcher';
-import { ParcelCard } from '../../../components/ParcelCard';
+import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { ProspectingScaffold } from '../../../components/ProspectingScaffold';
 import { buildProspectingQuery } from '../../../components/prospectingQuery';
@@ -87,6 +87,7 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
         }
     }
     render() {
+        console.warn(this.props.router.routeQuery);
         return (
             <>
                 <MapContainer>
@@ -96,7 +97,7 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
                         lastKnownCameraLocation={this.knownCameraLocation}
                         onCameraLocationChanged={this.handleMap}
                         onParcelClick={this.handleParcelClick}
-                        selectedParcel={this.props.router.query.selectedParcel}
+                        selectedParcel={this.props.router.routeQuery.selectedParcel}
                     >
 
                         <SourcingTileSource
@@ -114,7 +115,7 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
                         />
                     </ParcelMap>
                 </MapContainer>
-                {this.props.router.query!!.selectedParcel && <ParcelCard compact={true} parcelId={this.props.router.query!!.selectedParcel} />}
+                {this.props.router.routeQuery.selectedParcel && <ParcelCard compact={true} variables={{parcelId: this.props.router.routeQuery.selectedParcel}} />}
             </>
         );
     }
