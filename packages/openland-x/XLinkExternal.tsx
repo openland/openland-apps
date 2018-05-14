@@ -40,7 +40,7 @@ export function XLinkExternal(props: { href: string, content?: string }) {
     }
 
     return (
-        <ExternalLinkDiv href={props.href}>
+        <ExternalLinkDiv href={props.href} target="_blank">
             {content}<ExternalLinkIcon icon="launch" />
         </ExternalLinkDiv>
     );
