@@ -4,6 +4,7 @@ import Glamorous from 'glamorous';
 import ClickOutside from '../ClickOutside';
 import { Manager, Target, Popper } from '../XPopper';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XWithRouter } from 'openland-x-routing/withRouter';
 
 const PopperComponent = Glamorous.div({
     '& .popper[data-placement^="bottom"]': {
@@ -20,21 +21,23 @@ const ConfirmWrapper = Glamorous.div({
 });
 
 interface ConfirmPopoverProps {
-    children: any;
     handler: Function;
     content: any;
+    filterTitle?: string;
+    fieldName?: string;
+    valueTitleMap?: any;
 }
 
-export class Filter extends React.Component<ConfirmPopoverProps, { popper?: boolean }> {
+export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRouter, { popper?: boolean }> {
     static active = new Set();
 
     static closeAll = () => {
-        for (let filter of Filter.active) {
+        for (let filter of FilterButton.active) {
             filter.handleClose(filter);
         }
     }
 
-    constructor(props: ConfirmPopoverProps) {
+    constructor(props: ConfirmPopoverProps & XWithRouter) {
         super(props);
 
         this.state = {
@@ -58,22 +61,47 @@ export class Filter extends React.Component<ConfirmPopoverProps, { popper?: bool
             if (this.props.handler !== undefined) { this.props.handler(true, this); }
         }
 
-        for (let filter of Filter.active) {
+        for (let filter of FilterButton.active) {
             if (filter !== this) {
                 filter.handleClose();
             }
         }
 
-        Filter.active.add(this);
+        FilterButton.active.add(this);
     }
 
     handleClose = (self?: any) => {
-        let target = (self instanceof Filter) ? self : this;
+        let target = (self instanceof FilterButton) ? self : this;
         if (this.props.handler !== undefined) { this.props.handler(false, target); }
         target.setState({
             popper: false
         });
-        Filter.active.delete(target);
+        FilterButton.active.delete(target);
+    }
+
+    modifyProps = (component: any) => {
+        let res: any = {};
+
+        if (this.props.fieldName) {
+            if (component.props.text === undefined) {
+                let qargs = this.props.router.query!![this.props.fieldName] ? JSON.parse(this.props.router.query!![this.props.fieldName]) : undefined;
+                let buttonText = this.props.filterTitle;
+                if (qargs) {
+                    let valueTitle = this.props.valueTitleMap && this.props.valueTitleMap[qargs[0]] !== undefined ? this.props.valueTitleMap[qargs[0]] : qargs[0];
+                    buttonText = qargs.length === 1 ? valueTitle : buttonText + ' · ' + qargs.length;
+                }
+                res.text = buttonText;
+            }
+
+            if (component.props.style === undefined) {
+                res.style = this.props.router.query!![this.props.fieldName] !== undefined ? 'primary' : 'ghost';
+            }
+
+        }
+
+        res.onClick = this.handleShow;
+
+        return res;
     }
 
     render() {
@@ -92,7 +120,7 @@ export class Filter extends React.Component<ConfirmPopoverProps, { popper?: bool
 
         let children = [];
         for (let c of React.Children.toArray(this.props.children)) {
-            children.push(React.cloneElement(c as any, { onClick: this.handleShow }));
+            children.push(React.cloneElement(c as any, this.modifyProps(c)));
         }
 
         return (
