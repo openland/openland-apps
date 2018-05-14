@@ -84,7 +84,6 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes }> {
     }
 
     pushQueryParams = (params?: {}) => {
-        console.warn('old params:', this.xRouterState.query);
         let q = qs.stringify(Object.assign({}, this.xRouterState.query, params));
         if (q !== '') {
             q = '?' + q;
