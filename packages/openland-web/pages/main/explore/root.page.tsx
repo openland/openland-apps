@@ -109,7 +109,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
         if (canUseDOM) {
             let k = sessionStorage.getItem('__explore_location');
-            if (k != null) {
+            if (k !== null) {
                 this.knownCameraLocation = JSON.parse(k);
             }
         }
@@ -201,7 +201,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
     handleClick = (id: string) => {
         trackEvent('Explore Parcel', { id: id });
-        this.props.router.pushQuery('selectedParcel', id);
+        this.props!!.router.pushQuery('selectedParcel', id);
     }
 
     handleMap = (e: XMapCameraLocation) => {
@@ -261,7 +261,6 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                             focusPosition={focus}
                                             lastKnownCameraLocation={this.knownCameraLocation}
                                             onCameraLocationChanged={this.handleMap}
-                                            city={city}
                                         >
                                             <ParcelPointSource
                                                 layer="parcels-found"
@@ -292,7 +291,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                             </XSwitcher>
                                         </MapSwitcher>
                                     </XMapContainer2>
-                                    {this.props.router.query!!.selectedParcel && <ParcelCard variables={{ parcelId: this.props.router.query!!.selectedParcel }} />}
+                                    {this.props.router.query.selectedParcel && <ParcelCard variables={{ parcelId: this.props.router.query!!.selectedParcel }} />}
                                 </XMapContainer>
                             </Scaffold.Content>
                         </Scaffold>);

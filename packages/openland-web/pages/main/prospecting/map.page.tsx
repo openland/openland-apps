@@ -97,7 +97,6 @@ class ProspectingMap extends React.Component<XWithRouter & { query: any | null }
                         onCameraLocationChanged={this.handleMap}
                         onParcelClick={this.handleParcelClick}
                         selectedParcel={this.props.router.query.selectedParcel}
-                        city="nyc"
                     >
 
                         <SourcingTileSource

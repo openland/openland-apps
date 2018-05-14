@@ -208,7 +208,6 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
                         focusPosition={focus}
                         lastKnownCameraLocation={this.knownCameraLocation}
                         onCameraLocationChanged={this.handleMap}
-                        city="nyc"
                     >
                         <ParcelPointSource
                             layer="parcels-found"
