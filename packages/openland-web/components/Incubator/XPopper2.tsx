@@ -5,148 +5,18 @@ import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import * as classnames from 'classnames';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-
-const showAnimation = glamor.keyframes({
-    '0%': {
-        opacity: 0,
-    },
-    '100%': {
-        opacity: 1,
-    }
-});
-
-const hideAnimation = glamor.keyframes({
-    '0%': {
-        opacity: 1,
-    },
-    '100%': {
-        opacity: 0,
-    }
-});
-
-const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boolean, arrowStyle?: 'default' | 'none'; padding?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string, show?: boolean }>((props) => ({
-    zIndex: 501,
-
-    '& .popper .popper-content *': {
-        pointerEvents: props.nonePointerEvents ? 'none' : undefined,
-        cursor: props.nonePointerEvents ? 'auto' : undefined,
-    },
-    '&, & .popper': {
-        zIndex: 501,
-        display: 'none',
-
-        '> .popper-content, .popper-content': {
-            padding: 10,
-            background: '#fff',
-            borderRadius: 4,
-            boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
-            color: '#525f7f',
-            fontSize: 14,
-            lineHeight: 'normal',
-            fontWeight: 400,
-        },
-
-    },
-
-    '&, & .popper[x-placement]': {
-        display: props.show ? 'block' : 'none',
-    },
-
-    '& .popper > .arrow': {
-        borderStyle: 'solid',
-        position: 'absolute',
-    },
-
-    '& .popper.hide': {
-        animationDuration: '2s',
-        animationFillMode: 'forwards',
-        animationName: `${hideAnimation}`,
-        animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-    },
-
-    '& .popper.show': {
-
-        animationDuration: '2s',
-        animationFillMode: 'forwards',
-        animationName: `${showAnimation}`,
-        animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
-    },
-
-    '& .popper.static': {
-        opacity: 1
-    },
-
-    '& .popper[data-placement^="top"], & .popper[x-placement^="top"] .popper-content': {
-        marginBottom: 10
-    },
-
-    '& .popper[x-placement^="top"] > .arrow': {
-        borderWidth: '5px 5px 0 5px',
-        borderColor: '#fff transparent transparent transparent',
-        bottom: 5,
-    },
-
-    '& .popper[data-placement^="bottom"], & .popper[x-placement^="bottom"] .popper-content': {
-        marginTop: 10,
-    },
-
-    '& .popper[x-placement^="bottom"] > .arrow': {
-        borderWidth: '0 5px 5px 5px',
-        borderColor: 'transparent transparent #fff transparent',
-        top: 5,
-    },
-
-    '& .popper[data-placement^="right"], & .popper[x-placement^="right"] .popper-content': {
-        marginLeft: 10,
-    },
-
-    '& .popper[x-placement^="right"] > .arrow': {
-        borderWidth: '5px 5px 5px 0',
-        borderColor: 'transparent #fff transparent transparent',
-        left: 5,
-
-    },
-
-    '& .popper[data-placement^="left"], & .popper[x-placement^="left"] .popper-content': {
-        marginRight: 10,
-    },
-
-    '& .popper[x-placement^="left"] > .arrow': {
-        borderWidth: '5px 0 5px 5px',
-        borderColor: 'transparent transparent transparent #fff',
-        right: 5,
-    },
-
-    '& .popper[data-x-out-of-boundaries], &[data-x-out-of-boundaries]': {
-        display: 'none'
-    },
-
-    '& .popper': {
-        padding: (typeof props.padding === 'number' || typeof props.padding === 'string') ? props.padding : undefined,
-        paddingLeft: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.left : undefined,
-        paddingTop: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.top : undefined,
-        paddingRight: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.right : undefined,
-        paddingBottom: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.bottom : undefined,
-    },
-
-    '& .arrow': {
-        margin: (typeof props.padding === 'number' || typeof props.padding === 'string') ? props.padding : undefined,
-        marginLeft: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.left : undefined,
-        marginTop: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.top : undefined,
-        marginRight: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.right : undefined,
-        marginBottom: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.bottom : undefined,
-    }
-}));
-
+import ClickOutside from '../../components/Incubator/ClickOutside';
+import { XPopperContent } from './XPopperContent';
 interface XPopper2SelfProps {
     content: any;
-    //  TODO separate to booleans -> isVisible?
-    show?: boolean | 'hover';
+    isVisible?: boolean;
+    visibleOnHover?: boolean;
     animated?: boolean;
     padding?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string;
+    width?: number;
     groupId?: string;
     animationDuration?: number;
-    renderer?: (props: PopperRendererProps) => JSX.Element;
+    contentCardStyle?: boolean;
 }
 
 interface XPopper2State {
@@ -167,15 +37,11 @@ export interface XPopper2Props extends XPopper2SelfProps, Popper.PopperOptions {
 }
 
 export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
-    static activePoppers = new Map<string, Set<XPopper2>>();
-    static currentPopper = new Map<string, XPopper2>();
 
     private _popper: PopperJS;
     private _node: Element;
     private _targetNode: Element;
     private _arrowNode: Element;
-
-    prevAnimation?: string;
 
     hideTimeout: any;
     willHideTimeout: any;
@@ -184,22 +50,25 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
         super(props);
 
         this.state = {
-            showPopper: this.props.show === true,
+            showPopper: this.props.isVisible === true,
             willHide: false,
         };
     }
 
-    caputureTargetNode = (node: any) => {
+    caputureTargetNode = (node: any) => { 
+        let newTargetNode = ReactDOM.findDOMNode(node);
+        if (newTargetNode !== this._targetNode) {
+            this._targetNode = newTargetNode;
+            if (this._targetNode && this.props.visibleOnHover) {
+                this.dispose();
+                // TODO: check if changed
+                this._targetNode.addEventListener('mouseover', this.onMouseOverTarget);
+                this._targetNode.addEventListener('mouseout', this.onMouseOutTarget);
+            }
 
-        this._targetNode = ReactDOM.findDOMNode(node);
-        if (this._targetNode && this.props.show === 'hover') {
-            this.dispose();
-            // TODO: check if changed
-            this._targetNode.addEventListener('mouseover', this.onMouseOverTarget);
-            this._targetNode.addEventListener('mouseout', this.onMouseOutTarget);
+            this.initPopperIfNeeded();
         }
 
-        this.initPopperIfNeeded();
     }
 
     caputurePopperNode = (node: any) => {
@@ -216,7 +85,7 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     initPopperIfNeeded = () => {
         if (this._node && this._arrowNode && this._targetNode) {
 
-            let { children, content, show, animated, padding, renderer, animationDuration, groupId, ...popperProps } = this.props;
+            let { children, content, isVisible, animated, padding, contentCardStyle, animationDuration, groupId, visibleOnHover, width, ...popperProps } = this.props;
 
             this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
@@ -258,55 +127,6 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
             (animationDuration));
     }
 
-    Popper = (props: PopperRendererProps) => {
-
-        let pendingAnimation: 'static' | 'hide' | 'show' = props.animated === false ? 'static' : props.willHide ? 'hide' : 'show';
-
-        if (this.props.groupId !== undefined) {
-            let group = XPopper2.activePoppers[this.props.groupId];
-            if (group === undefined) {
-                group = new Set();
-                XPopper2.activePoppers[this.props.groupId] = group;
-            }
-            if (!props.willHide) {
-                group.add(this);
-                XPopper2.currentPopper[this.props.groupId] = this;
-            } else {
-                group.delete(this);
-            }
-
-            if (this !== XPopper2.currentPopper[this.props.groupId]) {
-                props.show = false;
-            }
-
-            if (pendingAnimation === 'show' && (group.size > 1 || props.willHide || props.willHide || this.prevAnimation === 'static')) {
-                pendingAnimation = 'static';
-            }
-        }
-
-        this.prevAnimation = pendingAnimation;
-
-        props.animationClass = pendingAnimation;
-
-        return (
-            <PopperDiv show={props.show !== false} padding={props.padding}>
-                <div
-                    className={classnames('popper', props.animationClass ? props.animationClass : props.animated === false ? 'static' : props.willHide ? 'hide' : 'show')}
-                    ref={props.caputurePopperNode}
-                    onMouseOver={props.show === 'hover' ? props.onMouseOverTarget : undefined}
-                    onMouseOut={props.show === 'hover' ? props.onMouseOutTarget : undefined}
-                >
-                    {/* TODO try move to glam  */}
-                    <div className="popper-content">
-                        {props.content}
-                    </div>
-                    <div className="arrow" ref={props.caputurePopperArrowNode} />
-
-                </div>
-            </PopperDiv>
-        );
-    }
-
     dispose = () => {
         clearTimeout(this.hideTimeout);
         if (this._targetNode) {
@@ -321,19 +141,6 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
 
     componentWillUnmount() {
         this.dispose();
-        if (this.props.groupId !== undefined) {
-            let group = XPopper2.activePoppers[this.props.groupId];
-            if (group === undefined) {
-                group = new Set();
-                XPopper2.activePoppers[this.props.groupId] = group;
-            }
-            group.delete(this);
-
-            if (XPopper2.currentPopper[this.props.groupId] === this) {
-                XPopper2.currentPopper[this.props.groupId] = undefined;
-            }
-        }
-
     }
 
     render() {
@@ -354,8 +161,10 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
         return (
             <>
                 {target}
-                {((this.state.showPopper || this.props.show === true) && canUseDOM && ReactDOM.createPortal(
-                    this.Popper(renderProps),
+                {((this.state.showPopper || this.props.isVisible === true) && canUseDOM && ReactDOM.createPortal(
+                    (
+                        <XPopperContent {...renderProps} />
+                    ),
                     document.body))}
             </>
         );

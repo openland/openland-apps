@@ -18,7 +18,7 @@ export default class ClickOutside extends React.Component<ClickOutsideProps> {
 
     render() {
         const { children, onClickOutside, ...props } = this.props;
-        return <div {...props} ref={this.getContainer} style={{display: 'flex', alignSelf: 'flex-start'}}>{children}</div>;
+        return <div {...props} ref={this.getContainer} style={{ display: 'flex', alignSelf: 'flex-start' }}>{children}</div>;
     }
 
     componentDidMount() {

@@ -12,7 +12,7 @@ import Glamorous from 'glamorous';
 import { XIcon } from 'openland-x/XIcon';
 import { XLink } from 'openland-x/XLink';
 import { TextAppBar } from 'openland-text/TextAppBar';
-
+import ClickOutside from '../../../components/Incubator/ClickOutside';
 const NavigatorIcon = Glamorous(XIcon)({
     fontSize: '28px',
     textAlign: 'center'
@@ -87,44 +87,51 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
 
                         <XPopper2
                             content={`Lorem ipsum dolor sit amet, mei euripidis consequat ad, qui quot dicam recusabo ne, cu pro harum scripta voluptua. Vivendo theophrastus est ut, audire eleifend no sea. Per ei mediocrem expetendis interpretaris, melius aliquam dissentias nam ex. Eum an viris choro honestatis. Recusabo deseruisse definitionem sed no, stet facilis albucius et usu, vitae iuvaret ne est.`}
-                            show={true}
+                            isVisible={true}
+                            width={200}
                             placement="right">
-                            <XButton text="right | always shown" alignSelf="flex-start" />
+                            <XButton text="right | always shown | sliding arrow | width" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} show="hover" placement="left">
+                        <XPopper2 content={'lorem ipsum'} visibleOnHover={true} placement="left">
                             <XButton text="left | hover" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} show="hover" placement="top">
+                        <XPopper2 content={'lorem ipsum'} visibleOnHover={true} placement="top">
                             <XButton text="top | hover" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} show="hover" placement="bottom">
+                        <XPopper2 content={'lorem ipsum'} visibleOnHover={true} placement="bottom">
                             <XButton text="bottom | hover" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} show={false}>
+                        <XPopper2 content={'lorem ipsum'} isVisible={false}>
                             <XButton text="hiden" alignSelf="flex-start" />
-                        </XPopper2> 
+                        </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} show={true} placement="right" padding={{ left: 20 }}>
+                        <XPopper2 content={'lorem ipsum'} isVisible={true} placement="right" padding={{ left: 20 }}>
                             <XButton text="padding-left" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} show="hover" placement="right" padding={20}>
+                        <XPopper2 content={'lorem ipsum'} visibleOnHover={true} placement="right" padding={20}>
                             <XButton text="padding" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={(<XButton text="lorem ipsum" />)} show="hover" placement="right" >
+                        <XPopper2 content={<XButton text="lorem ipsum" />
+                        } visibleOnHover={true} placement="right" >
                             <XButton text="reach content" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={(<XButton text="lorem ipsum" />)} show="hover" placement="right" animated={false}>
+                        <XPopper2 content={<XButton text="lorem ipsum" />
+                        } isVisible={true} placement="right" contentCardStyle={false}>
+                            <XButton text="reach content - disable wrap" alignSelf="flex-start"/>
+                        </XPopper2>
+
+                        <XPopper2 content={(<XButton text="lorem ipsum" />)} visibleOnHover={true} placement="right" animated={false}>
                             <XButton text="not animated" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XTitle>Tooltip</XTitle>
+                        <XTitle>Tooltip</XTitle> 
 
                         <NavigationContainer>
                             <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} placement="right">
