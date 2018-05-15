@@ -7,74 +7,6 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
 import { XTitle } from 'openland-x/XTitle';
 import { XPopper2 } from 'openland-x/XPopper';
-import { XTooltip2 } from '../../../components/Incubator/XTooltip2';
-import Glamorous from 'glamorous';
-import { XIcon } from 'openland-x/XIcon';
-import { XLink } from 'openland-x/XLink';
-import { TextAppBar } from 'openland-text/TextAppBar';
-const NavigatorIcon = Glamorous(XIcon)({
-    fontSize: '28px',
-    textAlign: 'center'
-});
-
-const NavigatorItem = Glamorous(XLink)({
-    display: 'flex',
-    flexDirection: 'column',
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    paddingTop: '16px',
-    paddingBottom: '16px',
-    flexShrink: 0,
-    color: '#000000',
-    cursor: 'pointer',
-    '.is-active': {
-        color: '#522BFF',
-        '& > .reports .hover': {
-            display: 'block'
-        },
-        '& > .reports .no-hover': {
-            display: 'none'
-        },
-    },
-    '&:hover': {
-        color: '#522BFF',
-        '& > .reports .hover': {
-            display: 'block'
-        },
-        '& > .reports .no-hover': {
-            display: 'none'
-        },
-    },
-    '& > .reports': {
-        width: 28,
-        height: 28,
-        display: 'flex',
-        justifyContent: 'center',
-        '& .hover': {
-            display: 'none'
-        },
-        '& .no-hover': {
-            display: 'block'
-        }
-    }
-});
-
-const NavigationContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-    width: '72px',
-    paddingTop: '8px',
-    backgroundColor: '#FAFAFC',
-    flexShrink: 0,
-    borderRightColor: 'rgba(0,0,0, 0.05)',
-    borderRightStyle: 'solid',
-    borderRightWidth: '1px',
-    alignItems: 'center',
-    overflowY: 'scroll',
-    position: 'sticky',
-    top: 0
-});
 
 export default withApp('UI Framework - Popper', 'viewer', (props) => {
     return (
@@ -121,16 +53,15 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                             <XButton text="reach content" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={<XButton text="lorem ipsum" />
-                        } isVisible={true} placement="right" contentHolderCss={null}>
-                            <XButton text="reach content - disable wrap" alignSelf="flex-start"/>
+                        <XPopper2 content={<XButton text="lorem ipsum" />} isVisible={true} placement="right">
+                            <XButton text="reach content - disable wrap" alignSelf="flex-start" />
                         </XPopper2>
 
                         <XPopper2 content={(<XButton text="lorem ipsum" />)} visibleOnHover={true} placement="right" animated={false}>
                             <XButton text="not animated" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XTitle>Tooltip</XTitle> 
+                        {/* <XTitle>Tooltip</XTitle>
 
                         <NavigationContainer>
                             <XTooltip2 content={<strong>{TextAppBar.items.explore}</strong>} placement="right">
@@ -156,7 +87,7 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                                     <NavigatorIcon icon="sort" />
                                 </NavigatorItem>
                             </XTooltip2>
-                        </NavigationContainer>
+                        </NavigationContainer> */}
 
                     </XVertical>
 
