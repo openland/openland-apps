@@ -26,37 +26,117 @@ import { XLoader } from 'openland-x/XLoader';
 import { XPropertyList } from 'openland-x/XProperty';
 import { trackEvent } from 'openland-x-analytics';
 
-let panelWidth = 335;
+const panelWidth = 335;
 
-let Container = Glamorous.div({
+const ContainerStyle = Glamorous.div<{ compact: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
     zIndex: 1,
     position: 'relative',
-    width: panelWidth,
+    width: props.compact ? 0 : panelWidth,
     backgroundColor: '#ffffff',
-    boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.08)'
+    boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.08)',
+}));
+
+const ContainerHider = Glamorous.div({
+    width: 20,
+    border: '1px solid rgba(132, 142, 143, 0.1)',
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+    borderRight: 'none',
+    position: 'absolute',
+    top: 18,
+    left: -20,
+    backgroundColor: '#fff',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '-3px 0 3px 0 rgba(0, 0, 0, 0.08)'
 });
 
-let Scrollable = Glamorous.div<{ compact: boolean }>((props) => ({
+const ContainerHiderButton = Glamorous(XButton)({
+    width: 20,
+    minWidth: 20,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    border: 'none',
+    boxShadow: 'none',
+    transform: 'none',
+    backgroundColor: '#fff',
+    '& .button-content': {
+        paddingLeft: 9,
+        paddingRight: 10,
+    },
+    '&:hover, &:active, &:focus': {
+        border: 'none',
+        boxShadow: 'none',
+        transform: 'none',
+    }
+});
+
+interface ContainerProps {
+    children: any;
+    parcel?: string;
+    mapMode?: string;
+}
+
+class Container extends React.Component<ContainerProps, { compact: boolean }> {
+    constructor(props: ContainerProps) {
+        super(props);
+
+        this.state = {
+            compact: false
+        };
+    }
+
+    compacter = () => {
+        this.setState({
+            compact: !this.state.compact
+        });
+    }
+
+    shouldComponentUpdate(nextProps: any) {
+        if (this.props.parcel !== nextProps.parcel) {
+            this.setState({
+                compact: false
+            });
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    render() {
+        console.log(this.props)
+        return (
+            <ContainerStyle compact={this.state.compact}>
+                <ContainerHider>
+                    <ContainerHiderButton query={{ field: 'mode', value: this.props.mapMode }} onClick={this.compacter} icon={this.state.compact ? 'keyboard_arrow_left' : 'keyboard_arrow_right'} />
+                </ContainerHider>
+                {this.props.children}
+            </ContainerStyle>
+        );
+    }
+}
+
+const Scrollable = Glamorous.div<{ compact: boolean }>((props) => ({
     width: '100%',
     height: props.compact ? 'calc(100vh - 56px)' : '100vh',
     overflowY: 'auto',
-    position: 'relative',
     paddingBottom: 90
 }));
 
-let StreetViewDiv = Glamorous.div({
+const StreetViewDiv = Glamorous.div({
     position: 'relative',
     '& > a': {
         position: 'absolute',
         top: 16,
-        right: 16
+        left: 171
     }
 });
 
-let Notes = Glamorous.div({
+const Notes = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: '#fdfaf6',
@@ -66,7 +146,7 @@ let Notes = Glamorous.div({
     paddingBottom: 18
 });
 
-let ItemIcon = Glamorous(XIcon)({
+const ItemIcon = Glamorous(XIcon)({
     marginRight: 10,
     width: 16,
     fontSize: 16,
@@ -113,42 +193,6 @@ const PropertyCell = (props: { children: any, title?: string, width?: number, co
     </PropertyCellContainer>
 );
 
-const ContainerHider = Glamorous.div({
-    width: 20,
-    border: '1px solid rgba(132, 142, 143, 0.1)',
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
-    borderRight: 'none',
-    position: 'absolute',
-    top: 18,
-    left: -20,
-    backgroundColor: '#fff',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxShadow: '-3px 0 3px 0 rgba(0, 0, 0, 0.08)'
-});
-
-const ContainerHiderButton = Glamorous(XButton)({
-    width: 20,
-    minWidth: 20,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-    border: 'none',
-    boxShadow: 'none',
-    transform: 'none',
-    backgroundColor: '#fff',
-    '& .button-content': {
-        paddingLeft: 9,
-        paddingRight: 10,
-    },
-    '&:hover, &:active, &:focus': {
-        border: 'none',
-        boxShadow: 'none',
-        transform: 'none',
-    }
-});
-
 const DottedStyle = Glamorous.div({
     width: 4,
     height: 4,
@@ -179,10 +223,10 @@ const DottedMenuButton = () => (
 );
 
 const ProspectingWrapper = Glamorous.div({
-    position: 'fixed',
-    width: panelWidth,
+    position: 'absolute',
+    width: '100%',
     bottom: 0,
-    right: 0,
+    left: 0,
     paddingLeft: 18,
     paddingRight: 18,
     paddingTop: 18,
@@ -193,7 +237,7 @@ const ProspectingWrapper = Glamorous.div({
 
 const SeparatedDiv = Glamorous(XContent)({
     borderBottom: '1px solid rgba(97, 126, 156, 0.2)',
-    paddingTop: 18,
+    marginTop: 2,
     paddingBottom: 18,
     paddingLeft: 18,
     paddingRight: 18,
@@ -208,10 +252,7 @@ const MenuButtonWrapper = Glamorous.div({
 const PropertySeparatedDiv = Glamorous(XPropertyList)();
 
 export const ParcelCard = withParcelDirect((props) => (
-    <Container>
-        <ContainerHider>
-            <ContainerHiderButton query={{ field: 'selectedParcel' }} icon="keyboard_arrow_right" />
-        </ContainerHider>
+    <Container parcel={props.variables.parcelId} mapMode={props.mapMode}>
         <XLoader loading={!props.data || props.data!!.loading} />
         {props.data && props.data!!.item &&
             <Scrollable compact={(props as any).compact || false}>
@@ -234,6 +275,7 @@ export const ParcelCard = withParcelDirect((props) => (
                                     flexBasis={0}
                                     text="Details"
                                 />
+                                <XButton query={{ field: 'selectedParcel' }} text="Close" />
                             </XPopover.Content>
                         </XPopover>
                     </MenuButtonWrapper>
@@ -373,7 +415,7 @@ export const ParcelCard = withParcelDirect((props) => (
                     || props.data.item!!.extrasTrainLocalDistance !== null
                     || props.data.item!!.extrasTrainDistance !== null)
                     && (
-                        <PropertySeparatedDiv title="Nearby Transit">
+                        <PropertySeparatedDiv title="Nearby Transit" compact={true}>
                             {props.data.item!!.extrasMetroDistance !== null &&
                                 <PropertyCell title="Muni Metro"><XDistance value={props.data.item!!.extrasMetroDistance!!} /> ({props.data.item!!.extrasMetroStation})</PropertyCell>
                             }
@@ -444,4 +486,4 @@ export const ParcelCard = withParcelDirect((props) => (
                 </ProspectingWrapper>
             </Scrollable>}
     </Container>
-)) as React.ComponentClass<{ variables: { parcelId: string }, compact?: boolean, onClose?: () => void }>;
+)) as React.ComponentClass<{ variables: { parcelId: string }, mapMode?: string, compact?: boolean, onClose?: () => void }>;

@@ -106,7 +106,9 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
     constructor(props: XWithRouter & UserInfoComponentProps) {
         super(props);
-        this.state = { shadowed: false };
+        this.state = { 
+            shadowed: false
+        };
 
         if (canUseDOM) {
             let k = sessionStorage.getItem('__explore_location');
@@ -292,7 +294,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                             </XSwitcher>
                                         </MapSwitcher>
                                     </XMapContainer2>
-                                    {this.props.router.query.selectedParcel && <ParcelCard variables={{ parcelId: this.props.router.query!!.selectedParcel }} />}
+                                    {this.props.router.query.selectedParcel && <ParcelCard variables={{ parcelId: this.props.router.query!!.selectedParcel }} mapMode={this.props.router.routeQuery.mode} />}
                                 </XMapContainer>
                             </Scaffold.Content>
                         </Scaffold>);

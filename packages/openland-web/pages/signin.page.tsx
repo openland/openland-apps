@@ -306,6 +306,11 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean }>((props) => ({
             height: 23,
             marginRight: 7
         },
+        '&:active': {
+            '& svg path:first-child': {
+                fill: '#5640d6'
+            }
+        }
     }
 }));
 
