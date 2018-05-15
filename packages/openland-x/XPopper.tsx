@@ -188,8 +188,8 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     }
 
     onMouseOverTarget = () => {
-        clearTimeout(this.hideTimeout);
-        clearTimeout(this.willHideTimeout);
+        if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
+        if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
         this.setState({ showPopper: true, willHide: false }, () => {
             if (this._popper) {
                 this._popper.scheduleUpdate();
@@ -198,8 +198,8 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     }
 
     onMouseOutTarget = () => {
-        clearTimeout(this.hideTimeout);
-        clearTimeout(this.willHideTimeout);
+        if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
+        if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
         const animationDuration = this.props.animated === false ? 0 : this.props.animationDuration !== undefined ? this.props.animationDuration : 200;
 
         this.willHideTimeout = window.setTimeout(
