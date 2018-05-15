@@ -1,5 +1,6 @@
-import { typedQuery } from 'openland-x-graphql/typed';
+import { typedQuery, typedMutation } from 'openland-x-graphql/typed';
 import * as Types from '../Types';
 import * as Folder from './Folder';
 
 export const FoldersQuery = typedQuery<Types.FoldersQuery, {}>(Folder.FoldersQuery);
+export const CreateFolderMutation = typedMutation<Types.CreateFolderMutation, Types.CreateFolderMutationVariables>(Folder.CreateFolderMutation);

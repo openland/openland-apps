@@ -3,11 +3,11 @@ import { graphql, MutationFunc } from 'react-apollo';
 import { GraphQLRoutedComponentProps } from './graphql';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { prepareParams } from './prepareParams';
-import { GraphqlTypedMutation } from './typed';
+import { GraphqlTypedMutation, GraphqlTypedQuery } from './typed';
 
 export interface MutationParams {
     params?: string[];
-    refetchQueries?: any[];
+    refetchQueries?: GraphqlTypedQuery<any, any>[];
 }
 
 export function graphqlMutation<TQuery, TVars, TN extends string>(mutation: GraphqlTypedMutation<TQuery, TVars>, name: TN, params: MutationParams = {}) {
@@ -20,7 +20,7 @@ export function graphqlMutation<TQuery, TVars, TN extends string>(mutation: Grap
                         ...prepareParams(params.params ? params.params : [], props.router.routeQuery),
                         ...props.variables
                     },
-                    refetchQueries: params.refetchQueries ? params.refetchQueries.map((p: any) => ({ query: p })) : []
+                    refetchQueries: params.refetchQueries ? params.refetchQueries.map((p) => ({ query: p.document })) : []
                 };
             }
         });

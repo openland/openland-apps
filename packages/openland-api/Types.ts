@@ -638,6 +638,19 @@ export interface FoldersQuery {
   } >,
 };
 
+export interface CreateFolderMutationVariables {
+  name: string,
+};
+
+export interface CreateFolderMutation {
+  folder:  {
+    __typename: "Folder",
+    id: string,
+    name: string,
+    special: SpecialFolder | null,
+  },
+};
+
 export interface OrganizationsQuery {
   organizations:  Array< {
     __typename: "Organization",

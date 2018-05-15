@@ -9,3 +9,13 @@ export const FoldersQuery = gql`
         }
     }
 `;
+
+export const CreateFolderMutation = gql`
+    mutation CreateFolder($name: String!) {
+        folder: alphaCreateFolder(name: $name) {
+            id
+            name
+            special
+        }
+    }
+`;
