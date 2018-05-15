@@ -108,7 +108,6 @@ class Container extends React.Component<ContainerProps, { compact: boolean }> {
     }
 
     render() {
-        console.log(this.props)
         return (
             <ContainerStyle compact={this.state.compact}>
                 <ContainerHider>
