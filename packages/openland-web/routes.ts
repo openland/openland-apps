@@ -82,6 +82,8 @@ routes.add('/prospecting/nyc/', '/main/prospecting/snoozed');
 //
 routes.add('/folders', '/main/folders/all');
 routes.add('/folders/', '/main/folders/all');
+routes.add('/folders/:folderId', '/main/folders/all');
+routes.add('/folders/:folderId/', '/main/folders/all');
 
 //
 // Projects

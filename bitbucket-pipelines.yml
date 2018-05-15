@@ -31,7 +31,7 @@ pipelines:
           - gcloud --quiet container clusters get-credentials statekube
           - ./kubectl set image deployment/openland-web-dev openland-web-dev=index.docker.io/openland/web:v${BITBUCKET_BUILD_NUMBER}
           - ./kubectl set image deployment/openland-web-next openland-web-next=index.docker.io/openland/web:v${BITBUCKET_BUILD_NUMBER}
-          - ./kubectl rollout status deployments openland-web-next openland-web-dev || true
+          - ./kubectl rollout status deployments openland-web-next || true
     - step:
         name: Deploy to Production
         deployment: production

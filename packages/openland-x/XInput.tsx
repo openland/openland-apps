@@ -11,6 +11,7 @@ export interface XInputProps extends XFlexStyles {
     required?: boolean;
     invalid?: boolean;
     size?: 'large' | 'medium' | 'default' | 'small';
+    autofocus?: boolean;
     onChange?: (value: string) => void;
 }
 
@@ -183,12 +184,19 @@ const RequireElement = Glamorous.span({
 });
 
 export class XInput extends React.PureComponent<XInputProps, { inputWrapClass?: string, value: string }> {
+
     constructor(props: XInputProps) {
         super(props);
 
         this.state = {
             value: this.props.value || ''
         };
+    }
+
+    handleRef = (e: any) => {
+        if (e && this.props.autofocus) {
+            e.focus();
+        }
     }
 
     handleChange = (e: any) => {
@@ -210,6 +218,7 @@ export class XInput extends React.PureComponent<XInputProps, { inputWrapClass?: 
             value,
             children,
             onChange,
+            autofocus,
             ...other
         } = this.props;
         return (
@@ -226,6 +235,8 @@ export class XInput extends React.PureComponent<XInputProps, { inputWrapClass?: 
                     placeholder={placeholder}
                     value={this.state.value}
                     onChange={this.handleChange}
+                    autofocus={autofocus}
+                    innerRef={this.handleRef}
                 />
                 {required && <RequireElement>*</RequireElement>}
             </RootContainer>

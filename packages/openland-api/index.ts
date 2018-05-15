@@ -14,6 +14,7 @@ import * as FeatureFlags from './queries/FeatureFlag.types';
 import * as Sourcing from './queries/Sourcing.types';
 import * as Debug from './queries/Debug.types';
 import * as SuperCity from './queries/SuperCity.types';
+import * as Folder from './queries/Folder.types';
 
 export let Queries = {
     Area,
@@ -31,5 +32,6 @@ export let Queries = {
     FeatureFlags,
     Sourcing,
     Debug,
-    SuperCity
+    SuperCity,
+    Folder
 };

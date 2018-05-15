@@ -224,6 +224,7 @@ interface XFormController {
 interface XFormTextFieldProps {
     field: string;
     placeholder?: string;
+    autofocus?: boolean;
 }
 
 export class XFormTextField extends React.Component<XFormTextFieldProps, { value: string }> {
@@ -252,7 +253,7 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
     }
     render() {
         return (
-            <XInput placeholder={this.props.placeholder} onChange={this.handleChange} value={this.state.value} />
+            <XInput autofocus={this.props.autofocus} placeholder={this.props.placeholder} onChange={this.handleChange} value={this.state.value} />
         );
     }
 }

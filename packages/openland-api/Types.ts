@@ -26,6 +26,12 @@ export interface DealInput {
   parcelId?: string | null,
 };
 
+export enum SpecialFolder {
+  ALL = "ALL",
+  FAVORITES = "FAVORITES",
+}
+
+
 export enum OwnerType {
   CITY = "CITY",
   MIXED = "MIXED",
@@ -621,6 +627,15 @@ export interface FeatureFlagDisableMutation {
       title: string,
     } >,
   },
+};
+
+export interface FoldersQuery {
+  folders:  Array< {
+    __typename: "Folder",
+    id: string,
+    name: string,
+    special: SpecialFolder | null,
+  } >,
 };
 
 export interface OrganizationsQuery {
