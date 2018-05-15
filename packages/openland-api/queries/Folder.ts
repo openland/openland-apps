@@ -7,6 +7,16 @@ export const FoldersQuery = gql`
             id
             name
             special
+            parcelsCount
+        }
+    }
+`;
+
+export const FoldersSelectQuery = gql`
+    query FoldersSelect {
+        items: alphaFolders {
+            id
+            title: name
         }
     }
 `;
@@ -17,6 +27,7 @@ export const FolderQuery = gql`
             id
             name
             special
+            parcelsCount
             parcels {
                 edges {
                     node {
@@ -43,6 +54,20 @@ export const CreateFolderMutation = gql`
             id
             name
             special
+            parcelsCount
+        }
+    }
+`;
+
+export const AddToFolderMutation = gql`
+    mutation AddToFolder($parcelId: ID!, $folderId: ID!) {
+        addToFolder: alphaParcelAddToFolder(parcelId: $parcelId, folderId: $folderId) {
+            id
+            folder {
+                id
+                name
+                parcelsCount
+            }
         }
     }
 `;
