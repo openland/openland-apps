@@ -38,7 +38,6 @@ const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boole
         '> .popper-content, .popper-content': {
             padding: 10,
             background: '#fff',
-            maxWidth: props.autoWidth ? 'auto' : 200,
             borderRadius: 4,
             boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
             color: '#525f7f',
@@ -59,7 +58,7 @@ const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boole
     },
 
     '& .popper.hide': {
-        animationDuration: '0.2s',
+        animationDuration: '2s',
         animationFillMode: 'forwards',
         animationName: `${hideAnimation}`,
         animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
@@ -67,7 +66,7 @@ const PopperDiv = Glamorous.div<{ nonePointerEvents?: boolean, autoWidth?: boole
 
     '& .popper.show': {
 
-        animationDuration: '0.2s',
+        animationDuration: '2s',
         animationFillMode: 'forwards',
         animationName: `${showAnimation}`,
         animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
@@ -145,6 +144,7 @@ interface XPopper2SelfProps {
     show?: boolean | 'hover';
     animated?: boolean;
     padding?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string;
+    groupId?: string;
     animationDuration?: number;
     renderer?: (props: PopperRendererProps) => JSX.Element;
 }
@@ -162,43 +162,20 @@ export interface PopperRendererProps extends XPopper2SelfProps, XPopper2State {
     onMouseOutTarget: () => void;
 }
 
-// TODO make easear to override -> remove renderer, separate to components, extract arrow component, mb extract container component
-export const Popper = (props: PopperRendererProps) => {
-    return (
-        <PopperDiv show={props.show !== false} padding={props.padding}>
-            <div
-                className={classnames('popper', props.animationClass ? props.animationClass : props.animated === false ? 'static' : props.willHide ? 'hide' : 'show')}
-                ref={props.caputurePopperNode}
-                onMouseOver={props.show === 'hover' ? props.onMouseOverTarget : undefined}
-                onMouseOut={props.show === 'hover' ? props.onMouseOutTarget : undefined}
-            >
-                {/* TODO try move to glam  */}
-                <div className="popper-content">
-                    {props.content}
-                </div>
-                <div className="arrow" ref={props.caputurePopperArrowNode} />
-
-            </div>
-        </PopperDiv>
-    );
-};
-
-// TODO remove this useless wrap
-export const PopperDefaultRender = (props: PopperRendererProps) => {
-    return (
-        <Popper {...props} />
-    );
-};
-
 export interface XPopper2Props extends XPopper2SelfProps, Popper.PopperOptions {
 
 }
 
 export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
+    static activePoppers = new Map<string, Set<XPopper2>>();
+    static currentPopper = new Map<string, XPopper2>();
+
     private _popper: PopperJS;
     private _node: Element;
     private _targetNode: Element;
     private _arrowNode: Element;
+
+    prevAnimation?: string;
 
     hideTimeout: any;
     willHideTimeout: any;
@@ -207,7 +184,7 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
         super(props);
 
         this.state = {
-            showPopper: typeof this.props.show === 'boolean' ? this.props.show : false,
+            showPopper: this.props.show === true,
             willHide: false,
         };
     }
@@ -239,7 +216,7 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     initPopperIfNeeded = () => {
         if (this._node && this._arrowNode && this._targetNode) {
 
-            let { children, content, show, animated, padding, renderer, animationDuration, ...popperProps } = this.props;
+            let { children, content, show, animated, padding, renderer, animationDuration, groupId, ...popperProps } = this.props;
 
             this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
@@ -281,6 +258,55 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
             (animationDuration));
     }
 
+    Popper = (props: PopperRendererProps) => {
+
+        let pendingAnimation: 'static' | 'hide' | 'show' = props.animated === false ? 'static' : props.willHide ? 'hide' : 'show';
+
+        if (this.props.groupId !== undefined) {
+            let group = XPopper2.activePoppers[this.props.groupId];
+            if (group === undefined) {
+                group = new Set();
+                XPopper2.activePoppers[this.props.groupId] = group;
+            }
+            if (!props.willHide) {
+                group.add(this);
+                XPopper2.currentPopper[this.props.groupId] = this;
+            } else {
+                group.delete(this);
+            }
+
+            if (this !== XPopper2.currentPopper[this.props.groupId]) {
+                props.show = false;
+            }
+
+            if (pendingAnimation === 'show' && (group.size > 1 || props.willHide || props.willHide || this.prevAnimation === 'static')) {
+                pendingAnimation = 'static';
+            }
+        }
+
+        this.prevAnimation = pendingAnimation;
+
+        props.animationClass = pendingAnimation;
+
+        return (
+            <PopperDiv show={props.show !== false} padding={props.padding}>
+                <div
+                    className={classnames('popper', props.animationClass ? props.animationClass : props.animated === false ? 'static' : props.willHide ? 'hide' : 'show')}
+                    ref={props.caputurePopperNode}
+                    onMouseOver={props.show === 'hover' ? props.onMouseOverTarget : undefined}
+                    onMouseOut={props.show === 'hover' ? props.onMouseOutTarget : undefined}
+                >
+                    {/* TODO try move to glam  */}
+                    <div className="popper-content">
+                        {props.content}
+                    </div>
+                    <div className="arrow" ref={props.caputurePopperArrowNode} />
+
+                </div>
+            </PopperDiv>
+        );
+    }
+
     dispose = () => {
         clearTimeout(this.hideTimeout);
         if (this._targetNode) {
@@ -295,6 +321,19 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
 
     componentWillUnmount() {
         this.dispose();
+        if (this.props.groupId !== undefined) {
+            let group = XPopper2.activePoppers[this.props.groupId];
+            if (group === undefined) {
+                group = new Set();
+                XPopper2.activePoppers[this.props.groupId] = group;
+            }
+            group.delete(this);
+
+            if (XPopper2.currentPopper[this.props.groupId] === this) {
+                XPopper2.currentPopper[this.props.groupId] = undefined;
+            }
+        }
+
     }
 
     render() {
@@ -315,12 +354,8 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
         return (
             <>
                 {target}
-                {(this.state.showPopper && canUseDOM && ReactDOM.createPortal(
-                    this.props.renderer === undefined ?
-                        (
-                            <PopperDefaultRender {...renderProps} />
-                        ) :
-                        this.props.renderer(renderProps),
+                {((this.state.showPopper || this.props.show === true) && canUseDOM && ReactDOM.createPortal(
+                    this.Popper(renderProps),
                     document.body))}
             </>
         );

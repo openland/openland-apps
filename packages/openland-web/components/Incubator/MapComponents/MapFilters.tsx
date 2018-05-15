@@ -12,6 +12,7 @@ import { AllLandUse, AllZones, AllNYCZOnes } from './utils';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XButton } from 'openland-x/XButton';
 import XStyles from 'openland-x/XStyles';
+import { XVertical } from 'openland-x-layout/XVertical';
 
 const FiltersContent = Glamorous.div({
     maxHeight: 'calc(100vh - 150px)',
@@ -234,7 +235,7 @@ const FilterSelector = Glamorous(XSelect)({
 });
 
 class ApplyFilterWrap extends React.Component<{ fieldName: string, router: XRouter, children: any }, { value?: string | string[] }> {
-    static newQueryParams = new Map<string, string>();
+    static newQueryParams = {};
     value?: string | string[];
 
     constructor(props: { fieldName: string, router: XRouter, applyCallbacks?: Set<Function>, children: any }) {
@@ -493,15 +494,16 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
 
     applyHandler = (add: boolean, caller: any) => {
         if (!add) {
-            this.props.router.pushQueryParams(ApplyFilterWrap.newQueryParams);
+            if (Object.keys(ApplyFilterWrap.newQueryParams).length > 0) {
+                this.props.router.pushQueryParams(ApplyFilterWrap.newQueryParams);
+            }
+        } else {
+            ApplyFilterWrap.newQueryParams = {};
         }
         this.shadowHandler(add, caller);
     }
 
     render() {
-
-        ApplyFilterWrap.newQueryParams.clear();
-
         let otherActive = false;
         for (let fieldKey of Object.keys(this.props.router.query)) {
             otherActive = otherActive || this.otherFilters.has(fieldKey);
@@ -565,7 +567,10 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             <FilterCategory key={'filter_compatible'}>
                 <FilterCategoryTitle>Compatible buildings</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="compatible" router={this.props.router}>
-                    <XCheckboxGroup elements={[{ value: 'kasita-1', label: 'Elemynt-1' }, { value: 'kasita-2', label: 'Elemynt-2' }]} />
+                    <XVertical>
+
+                        <XCheckboxGroup elements={[{ value: 'kasita-1', label: 'Elemynt-1' }, { value: 'kasita-2', label: 'Elemynt-2' }]} />
+                    </XVertical>
                 </ApplyFilterWrap>
             </FilterCategory>
         );
@@ -647,9 +652,11 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                     filterTitle="Land Use"
                                     content={(
                                         <ApplyFilterWrap fieldName="filterLandUse" router={this.props.router}>
-                                            <XCheckboxGroup
-                                                divided={true}
-                                                elements={AllLandUse.map((v) => ({ value: v.label, label: v.label, hint: v.hint }))} />
+                                            <XVertical>
+                                                <XCheckboxGroup
+                                                    divided={true}
+                                                    elements={AllLandUse.map((v) => ({ value: v.label, label: v.label, hint: v.hint }))} />
+                                            </XVertical>
                                         </ApplyFilterWrap>
                                     )}>
                                     <XButton />
@@ -672,15 +679,19 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                     content={(
 
                                         <ApplyFilterWrap fieldName="filterStories" router={this.props.router}>
-                                            <XCheckboxGroup
-                                                divided={true}
+                                            <XVertical>
 
-                                                elements={[
-                                                    { value: '0', label: 'no stories' },
-                                                    { value: '1', label: '1 story' },
-                                                    { value: '2', label: '2 stories' },
-                                                    { value: '3', label: '3 stories' },
-                                                    { value: '4', label: '4 stories' }]} />
+                                                <XCheckboxGroup
+                                                    divided={true}
+
+                                                    elements={[
+                                                        { value: '0', label: 'no stories' },
+                                                        { value: '1', label: '1 story' },
+                                                        { value: '2', label: '2 stories' },
+                                                        { value: '3', label: '3 stories' },
+                                                        { value: '4', label: '4 stories' }]} />
+                                            </XVertical>
+
                                         </ApplyFilterWrap>
                                     )}>
                                     <XButton />
@@ -698,9 +709,13 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                     }}
                                     content={(
                                         <ApplyFilterWrap fieldName="filterCurrentUse" router={this.props.router}>
-                                            <XCheckboxGroup
-                                                divided={true}
-                                                elements={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]} />
+                                            <XVertical>
+
+                                                <XCheckboxGroup
+                                                    divided={true}
+                                                    elements={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]} />
+                                            </XVertical>
+
                                         </ApplyFilterWrap>
                                     )}>
                                     <XButton />
