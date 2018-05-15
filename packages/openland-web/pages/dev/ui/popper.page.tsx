@@ -124,10 +124,6 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                             <XButton text="not animated" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={(<XButton text="lorem ipsum" />)} show="hover" placement="right" renderer={PopperDefaultRender}>
-                            <XButton text="using rendered" alignSelf="flex-start" />
-                        </XPopper2>
-
                         <XTitle>Tooltip</XTitle>
 
                         <NavigationContainer>
