@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { ParcelShort } from './Parcels';
 
 export const FoldersQuery = gql`
     query Folders {
@@ -16,8 +17,24 @@ export const FolderQuery = gql`
             id
             name
             special
+            parcels {
+                edges {
+                    node {
+                        ...ParcelShort
+                    }
+                }
+                pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                    itemsCount
+                    pagesCount
+                    currentPage
+                    openEnded
+                }
+            }
         }
     }
+    ${ParcelShort}
 `;
 
 export const CreateFolderMutation = gql`

@@ -13,6 +13,9 @@ import { XHeader } from 'openland-x/XHeader';
 import { XIcon } from 'openland-x/XIcon';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XForm } from 'openland-x-forms/XForm';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { TableParcels } from '../../../components/TableParcels';
+import { XEmpty } from 'openland-x/XEmpty';
 
 const SidebarItemsStyle = {
     height: 40,
@@ -121,9 +124,15 @@ const FolderContent = withFolder((props) => {
         return <XLoader loading={true} />;
     }
     return (
-        <>
+        <XVertical flexGrow={1}>
             <XHeader text={props.data.folder.name} />
-        </>
+            {props.data.folder.parcels.pageInfo.itemsCount > 0 && (
+                <TableParcels items={props.data.folder.parcels.edges.map((v) => v.node)} />
+            )}
+            {props.data.folder.parcels.pageInfo.itemsCount <= 0 && (
+                <XEmpty icon="folder" text="You can find your first parcel at Explore" flexGrow={1} />
+            )}
+        </XVertical>
     );
 });
 

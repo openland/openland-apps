@@ -1,14 +1,15 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XIcon } from 'openland-x/XIcon';
+import { XFlexStyles, applyFlex } from './Flex';
 
-export const XCardEmptyDiv = Glamorous.div({
+export const XCardEmptyDiv = Glamorous.div<XFlexStyles>([{
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 564,
-});
+}, applyFlex]);
 
 export const XCardEmptyIcon = Glamorous(XIcon)({
     width: 128,
@@ -30,7 +31,7 @@ export const XCardEmptyContent = Glamorous.div({
     }
 });
 
-interface XEmptyProps {
+interface XEmptyProps extends XFlexStyles {
     children?: any;
     icon: string;
     text: string;
@@ -38,7 +39,7 @@ interface XEmptyProps {
 
 export function XEmpty(props: XEmptyProps) {
     return (
-        <XCardEmptyDiv>
+        <XCardEmptyDiv flexBasis={props.flexBasis} flexGrow={props.flexGrow} flexShrink={props.flexShrink} alignSelf={props.alignSelf}>
             <XCardEmptyIcon icon={props.icon} />
             <XCardEmptyContent>
                 {props.text}
