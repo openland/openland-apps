@@ -12,7 +12,6 @@ import Glamorous from 'glamorous';
 import { XIcon } from 'openland-x/XIcon';
 import { XLink } from 'openland-x/XLink';
 import { TextAppBar } from 'openland-text/TextAppBar';
-import ClickOutside from '../../../components/Incubator/ClickOutside';
 const NavigatorIcon = Glamorous(XIcon)({
     fontSize: '28px',
     textAlign: 'center'
@@ -123,7 +122,7 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                         </XPopper2>
 
                         <XPopper2 content={<XButton text="lorem ipsum" />
-                        } isVisible={true} placement="right" contentCardStyle={false}>
+                        } isVisible={true} placement="right" contentHolderCss={null}>
                             <XButton text="reach content - disable wrap" alignSelf="flex-start"/>
                         </XPopper2>
 

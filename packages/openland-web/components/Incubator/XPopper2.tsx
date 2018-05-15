@@ -1,11 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import PopperJS from 'popper.js';
-import Glamorous from 'glamorous';
-import * as glamor from 'glamor';
-import * as classnames from 'classnames';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import ClickOutside from '../../components/Incubator/ClickOutside';
 import { XPopperContent } from './XPopperContent';
 import {  CSSProperties } from 'react';
 interface XPopper2SelfProps {
@@ -17,7 +13,7 @@ interface XPopper2SelfProps {
     width?: number;
     groupId?: string;
     animationDuration?: number;
-    contentHolderCss?:  CSSProperties;
+    contentHolderCss?:  CSSProperties | null;
 }
 
 interface XPopper2State {
