@@ -6,8 +6,9 @@ import XStyles from 'openland-x/XStyles';
 const SidebarContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    width: '208px',
-    paddingRight: '8px'
+    width: 208,
+    paddingRight: 8,
+    paddingLeft: 8
 });
 
 const SidebarHeader = Glamorous.div({
@@ -18,7 +19,11 @@ const SidebarHeader = Glamorous.div({
     paddingTop: XStyles.paddings.large,
     paddingBottom: XStyles.paddings.large,
 
-    ...XStyles.text.h600
+    fontSize: 18,
+    fontWeight: 600,
+    lineHeight: 1.11,
+    color: '#334562'
+    // ...XStyles.text.h600
 });
 
 export const SidebarItem = Glamorous(XLink)({
