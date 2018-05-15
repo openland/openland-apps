@@ -1,10 +1,10 @@
+import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XArea } from 'openland-x-format/XArea';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XDistance } from 'openland-x-format/XDistance';
 import { XMoney } from 'openland-x-format/XMoney';
 import { XNumber } from 'openland-x-format/XNumber';
-import * as React from 'react';
 import { XIcon } from '../../../../openland-x/XIcon';
 import { withParcelDirect } from '../../../api';
 import { Text } from '../../../strings';
@@ -75,6 +75,13 @@ const ContainerHiderButton = Glamorous(XButton)({
     }
 });
 
+const Scrollable = Glamorous.div({
+    width: '100%',
+    height: '100vh',
+    overflowY: 'auto',
+    paddingBottom: 90
+});
+
 interface ContainerProps {
     children: any;
     parcel?: string;
@@ -82,12 +89,18 @@ interface ContainerProps {
 }
 
 class Container extends React.Component<ContainerProps, { compact: boolean }> {
+    contentRef: any | null = null;
+
     constructor(props: ContainerProps) {
         super(props);
 
         this.state = {
             compact: false
         };
+    }
+
+    handleContentRef = (ref: any | null) => {
+        this.contentRef = ref;
     }
 
     compacter = () => {
@@ -97,10 +110,13 @@ class Container extends React.Component<ContainerProps, { compact: boolean }> {
     }
 
     shouldComponentUpdate(nextProps: any) {
+        let contentDiv = this.contentRef;
+
         if (this.props.parcel !== nextProps.parcel) {
             this.setState({
                 compact: false
             });
+            contentDiv.scrollTop = 0;
             return false;
         } else {
             return true;
@@ -113,18 +129,13 @@ class Container extends React.Component<ContainerProps, { compact: boolean }> {
                 <ContainerHider>
                     <ContainerHiderButton query={{ field: 'mode', value: this.props.mapMode }} onClick={this.compacter} icon={this.state.compact ? 'keyboard_arrow_left' : 'keyboard_arrow_right'} />
                 </ContainerHider>
-                {this.props.children}
+                <Scrollable innerRef={this.handleContentRef}>
+                    {this.props.children}
+                </Scrollable>
             </ContainerStyle>
         );
     }
 }
-
-const Scrollable = Glamorous.div<{ compact: boolean }>((props) => ({
-    width: '100%',
-    height: props.compact ? 'calc(100vh - 56px)' : '100vh',
-    overflowY: 'auto',
-    paddingBottom: 90
-}));
 
 const StreetViewDiv = Glamorous.div({
     position: 'relative',
@@ -254,7 +265,7 @@ export const ParcelCard = withParcelDirect((props) => (
     <Container parcel={props.variables.parcelId} mapMode={props.mapMode}>
         <XLoader loading={!props.data || props.data!!.loading} />
         {props.data && props.data!!.item &&
-            <Scrollable compact={(props as any).compact || false}>
+            <>
                 <XHeader
                     text={props.data.item!!.address || 'No address'}
                     description={<ParcelNumber id={props.data.item!!.number} />}
@@ -483,6 +494,6 @@ export const ParcelCard = withParcelDirect((props) => (
                         </XWithRole>
                     </XView>
                 </ProspectingWrapper>
-            </Scrollable>}
+            </>}
     </Container>
 )) as React.ComponentClass<{ variables: { parcelId: string }, mapMode?: string, compact?: boolean, onClose?: () => void }>;
