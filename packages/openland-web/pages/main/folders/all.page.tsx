@@ -25,7 +25,6 @@ const SidebarItemsStyle = {
     fontSize: 16,
     fontWeight: 500,
     lineHeight: 1.25,
-    letterSpacing: 0.7,
     paddingLeft: 12,
     paddingRight: 12,
     marginLeft: 4,
@@ -82,8 +81,8 @@ const CreateFolderButonStyle = Glamorous(Sidebar.Item)({
     }
 });
 
-const CreateFolderButton = () => (
-    <CreateFolderButonStyle>
+const CreateFolderButton = (props: XLinkProps) => (
+    <CreateFolderButonStyle {...props}>
         <XIcon icon="add_circle" />
         <span>New folder</span>
     </CreateFolderButonStyle>
