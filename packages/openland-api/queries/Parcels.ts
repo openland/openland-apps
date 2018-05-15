@@ -96,6 +96,11 @@ export const ParcelFull = gql`
       extrasUnitCapacityFar
       extrasUnitCapacityDencity
 
+      folder {
+          id
+          name
+      }
+
       userData {
           notes
       }
@@ -195,6 +200,11 @@ export const ParcelShort = gql`
       extrasUnitCapacity
       extrasUnitCapacityFar
       extrasUnitCapacityDencity
+
+      folder {
+          id
+          name
+      }
       
       city {
           id

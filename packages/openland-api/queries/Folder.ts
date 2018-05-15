@@ -11,6 +11,15 @@ export const FoldersQuery = gql`
     }
 `;
 
+export const FoldersSelectQuery = gql`
+    query FoldersSelect {
+        items: alphaFolders {
+            id
+            title: name
+        }
+    }
+`;
+
 export const FolderQuery = gql`
     query Folder($folderId: ID!) {
         folder: alphaFolder(id: $folderId) {
@@ -43,6 +52,18 @@ export const CreateFolderMutation = gql`
             id
             name
             special
+        }
+    }
+`;
+
+export const AddToFolderMutation = gql`
+    mutation AddToFolder($parcelId: ID!, $folderId: ID!) {
+        addToFolder: alphaParcelAddToFolder(parcelId: $parcelId, folderId: $folderId) {
+            id
+            folder {
+                id
+                name
+            }
         }
     }
 `;

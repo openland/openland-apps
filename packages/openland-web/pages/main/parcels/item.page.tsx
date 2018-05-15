@@ -32,6 +32,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XForm } from 'openland-x-forms/XForm';
 import { XProperty, XPropertyList } from 'openland-x/XProperty';
 import { trackEvent } from 'openland-x-analytics';
+import { FolderButton } from '../../../components/FolderButton';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -61,10 +62,13 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                 opportunityState={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.state : undefined}
                             />
                         </XWithRole>
+                        <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']}>
+                            <FolderButton folder={props.data!!.item.folder} parcelId={props.data!!.item!!.id} />
+                        </XWithRole>
                         <XButton
                             style="ghost"
                             text="Favorite"
-                            // icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
+                            icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
                             onClick={(e) => {
                                 e.preventDefault();
                                 if (props.data!!.item!!.likes.liked) {

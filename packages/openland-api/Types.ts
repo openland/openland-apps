@@ -638,6 +638,14 @@ export interface FoldersQuery {
   } >,
 };
 
+export interface FoldersSelectQuery {
+  item:  Array< {
+    __typename: "Folder",
+    id: string,
+    title: string,
+  } >,
+};
+
 export interface FolderQueryVariables {
   folderId: string,
 };
@@ -715,6 +723,11 @@ export interface FolderQuery {
           extrasUnitCapacity: number | null,
           extrasUnitCapacityFar: number | null,
           extrasUnitCapacityDencity: number | null,
+          folder:  {
+            __typename: "Folder",
+            id: string,
+            name: string,
+          } | null,
           // Addresses
           city:  {
             __typename: "City",
@@ -757,6 +770,23 @@ export interface CreateFolderMutation {
     id: string,
     name: string,
     special: SpecialFolder | null,
+  },
+};
+
+export interface AddToFolderMutationVariables {
+  parcelId: string,
+  folderId: string,
+};
+
+export interface AddToFolderMutation {
+  addToFolder:  {
+    __typename: "Parcel",
+    id: string,
+    folder:  {
+      __typename: "Folder",
+      id: string,
+      name: string,
+    } | null,
   },
 };
 
@@ -1261,6 +1291,11 @@ export interface ParcelsConnectionQuery {
         extrasUnitCapacity: number | null,
         extrasUnitCapacityFar: number | null,
         extrasUnitCapacityDencity: number | null,
+        folder:  {
+          __typename: "Folder",
+          id: string,
+          name: string,
+        } | null,
         // Addresses
         city:  {
           __typename: "City",
@@ -1357,6 +1392,11 @@ export interface ParcelsFavoritesQuery {
     extrasUnitCapacity: number | null,
     extrasUnitCapacityFar: number | null,
     extrasUnitCapacityDencity: number | null,
+    folder:  {
+      __typename: "Folder",
+      id: string,
+      name: string,
+    } | null,
     // Addresses
     city:  {
       __typename: "City",
@@ -1490,6 +1530,11 @@ export interface ParcelQuery {
     extrasUnitCapacity: number | null,
     extrasUnitCapacityFar: number | null,
     extrasUnitCapacityDencity: number | null,
+    folder:  {
+      __typename: "Folder",
+      id: string,
+      name: string,
+    } | null,
     // User Data
     userData:  {
       __typename: "ParcelUserData",
@@ -2513,6 +2558,11 @@ export interface SourcingQuery {
           extrasUnitCapacity: number | null,
           extrasUnitCapacityFar: number | null,
           extrasUnitCapacityDencity: number | null,
+          folder:  {
+            __typename: "Folder",
+            id: string,
+            name: string,
+          } | null,
           // Addresses
           city:  {
             __typename: "City",
@@ -2630,6 +2680,11 @@ export interface SourcingFirstQuery {
           extrasUnitCapacity: number | null,
           extrasUnitCapacityFar: number | null,
           extrasUnitCapacityDencity: number | null,
+          folder:  {
+            __typename: "Folder",
+            id: string,
+            name: string,
+          } | null,
           // Addresses
           city:  {
             __typename: "City",
@@ -2739,6 +2794,11 @@ export interface SourcingAllQuery {
       extrasUnitCapacity: number | null,
       extrasUnitCapacityFar: number | null,
       extrasUnitCapacityDencity: number | null,
+      folder:  {
+        __typename: "Folder",
+        id: string,
+        name: string,
+      } | null,
       // Addresses
       city:  {
         __typename: "City",
@@ -2884,6 +2944,11 @@ export interface OpportunityQuery {
       extrasUnitCapacity: number | null,
       extrasUnitCapacityFar: number | null,
       extrasUnitCapacityDencity: number | null,
+      folder:  {
+        __typename: "Folder",
+        id: string,
+        name: string,
+      } | null,
       // User Data
       userData:  {
         __typename: "ParcelUserData",
@@ -3137,6 +3202,11 @@ export interface NextOpportunityQuery {
       extrasUnitCapacity: number | null,
       extrasUnitCapacityFar: number | null,
       extrasUnitCapacityDencity: number | null,
+      folder:  {
+        __typename: "Folder",
+        id: string,
+        name: string,
+      } | null,
       // User Data
       userData:  {
         __typename: "ParcelUserData",
@@ -3751,6 +3821,11 @@ export interface ParcelFullFragment {
   extrasUnitCapacity: number | null,
   extrasUnitCapacityFar: number | null,
   extrasUnitCapacityDencity: number | null,
+  folder:  {
+    __typename: string,
+    id: string,
+    name: string,
+  } | null,
   // User Data
   userData:  {
     __typename: string,
@@ -3860,6 +3935,11 @@ export interface ParcelShortFragment {
   extrasUnitCapacity: number | null,
   extrasUnitCapacityFar: number | null,
   extrasUnitCapacityDencity: number | null,
+  folder:  {
+    __typename: string,
+    id: string,
+    name: string,
+  } | null,
   // Addresses
   city:  {
     __typename: string,
