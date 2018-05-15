@@ -15,9 +15,8 @@ const XCardTitle = Glamorous.div<{ appStyle?: 'default' | 'compact' }>((props) =
 const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
     opacity: 0.7,
     color: '#182642',
-    fontSize: '14px',
-    lineHeight: 'normal',
-    fontWeight: 'normal',
+    fontSize: 14,
+    letterSpacing: -0.2,
     overflow: props.ellipcise ? 'hidden' : undefined,
     whiteSpace: props.ellipcise ? 'nowrap' : undefined,
     textOverflow: props.ellipcise ? 'ellipsis' : undefined,

@@ -75,6 +75,7 @@ const FilterHeaderSubtitle = Glamorous.div({
     fontSize: '14px',
     fontWeight: 500,
     opacity: 0.8,
+    userSelect: 'none'
 });
 
 const FilterComponent = withParcelStats((props) => {

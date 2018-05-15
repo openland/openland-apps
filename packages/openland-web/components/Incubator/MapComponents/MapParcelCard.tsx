@@ -26,7 +26,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { XPropertyList } from 'openland-x/XProperty';
 import { trackEvent } from 'openland-x-analytics';
 
-let panelWidth = 390;
+let panelWidth = 335;
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -102,7 +102,7 @@ const PropertyCellValue = Glamorous.div({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     fontSize: 16,
-    letterSpacing: -0.2,
+    letterSpacing: -0.1,
     color: '#1f3449'
 });
 
@@ -130,16 +130,18 @@ const ContainerHider = Glamorous.div({
 });
 
 const ContainerHiderButton = Glamorous(XButton)({
-    width: 10,
-    minWidth: 10,
-    paddingLeft: 9,
-    paddingRight: 10,
+    width: 20,
+    minWidth: 20,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
     border: 'none',
     boxShadow: 'none',
     transform: 'none',
     backgroundColor: '#fff',
+    '& .button-content': {
+        paddingLeft: 9,
+        paddingRight: 10,
+    },
     '&:hover, &:active, &:focus': {
         border: 'none',
         boxShadow: 'none',
@@ -228,7 +230,6 @@ export const ParcelCard = withParcelDirect((props) => (
                             <XPopover.Content>
                                 <XButton
                                     path={'/parcels/' + props.data.item!!.id}
-                                    size="medium"
                                     flexGrow={1}
                                     flexBasis={0}
                                     text="Details"
