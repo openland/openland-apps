@@ -6,7 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
 import { XTitle } from 'openland-x/XTitle';
-import { XPopper2 } from '../../../components/Incubator/XPopper2';
+import { XPopper2 } from 'openland-x/XPopper';
 import { XTooltip2 } from '../../../components/Incubator/XTooltip2';
 import Glamorous from 'glamorous';
 import { XIcon } from 'openland-x/XIcon';
