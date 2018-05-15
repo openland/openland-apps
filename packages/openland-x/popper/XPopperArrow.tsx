@@ -10,29 +10,28 @@ const PlacementLeft = '&[x-placement^="left"]';
 const ArrowDiv = Glamorous.div({
     borderStyle: 'solid',
     position: 'absolute',
-    backgroundColor: '#ff0000',
     [PlacementTop]: {
         borderWidth: '5px 5px 0 5px',
         borderColor: '#fff transparent transparent transparent',
-        bottom: 5,
+        bottom: -5,
         marginLeft: -5,
     },
     [PlacementBottom]: {
         borderWidth: '0 5px 5px 5px',
         borderColor: 'transparent transparent #fff transparent',
-        top: 5,
+        top: -5,
         marginLeft: -5,
     },
     [PlacementRight]: {
         borderWidth: '5px 5px 5px 0',
         borderColor: 'transparent #fff transparent transparent',
-        left: 5,
+        left: -5,
         marginTop: -5,
     },
     [PlacementLeft]: {
         borderWidth: '5px 0 5px 5px',
         borderColor: 'transparent transparent transparent #fff',
-        right: 5,
+        right: -5,
         marginTop: -5,
     },
 });

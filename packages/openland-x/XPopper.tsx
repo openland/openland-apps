@@ -10,7 +10,7 @@ interface XPopper2SelfProps {
     isVisible?: boolean;
     visibleOnHover?: boolean;
     animated?: boolean;
-    padding?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string;
+    padding?: number;
     width?: number;
     groupId?: string;
     animationDuration?: number;

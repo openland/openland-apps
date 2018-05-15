@@ -108,7 +108,7 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                             <XButton text="hiden" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} isVisible={true} placement="right" padding={{ left: 20 }}>
+                        <XPopper2 content={'lorem ipsum'} isVisible={true} placement="right" padding={20}>
                             <XButton text="padding-left" alignSelf="flex-start" />
                         </XPopper2>
 

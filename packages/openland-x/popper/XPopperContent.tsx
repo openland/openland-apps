@@ -29,6 +29,7 @@ const ContentHolderArrowMargin = glamor.css({
 });
 
 const ContentHolder = Glamorous.div<{ width?: number; }>((props) => ({
+    position: 'relative',
     width: props.width !== undefined ? props.width : undefined,
     padding: 10,
     background: '#fff',
@@ -40,7 +41,7 @@ const ContentHolder = Glamorous.div<{ width?: number; }>((props) => ({
     fontWeight: 400,
 }));
 
-const PopperRoot = Glamorous.div<{ padding?: { left?: number | string, top?: number | string, right?: number | string, bottom?: number | string } | number | string, show?: boolean }>((props) => ({
+const PopperRoot = Glamorous.div<{ padding?: number, show?: boolean }>((props) => ({
     zIndex: 501,
 
     '&, & .popper': {
@@ -52,11 +53,6 @@ const PopperRoot = Glamorous.div<{ padding?: { left?: number | string, top?: num
         display: props.show ? 'block' : 'none',
     },
 
-    // '& .popper > .arrow': {
-    //     borderStyle: 'solid',
-    //     position: 'absolute',
-    // },
-
     '& .popper.hide': {
         animationDuration: '0.2s',
         animationFillMode: 'forwards',
@@ -65,7 +61,6 @@ const PopperRoot = Glamorous.div<{ padding?: { left?: number | string, top?: num
     },
 
     '& .popper.show': {
-
         animationDuration: '0.2s',
         animationFillMode: 'forwards',
         animationName: `${showAnimation}`,
@@ -76,45 +71,26 @@ const PopperRoot = Glamorous.div<{ padding?: { left?: number | string, top?: num
         opacity: 1
     },
 
-    // Arrow
-
-    // Content
-
     [`& .popper[data-placement^="top"], & .popper[x-placement^="top"] .${ContentHolderArrowMargin}`]: {
-        marginBottom: 10
+        // marginBottom: 10,
+        marginBottom: props.padding || 10,
     },
 
     [`& .popper[data-placement^="bottom"], & .popper[x-placement^="bottom"] .${ContentHolderArrowMargin}`]: {
-        marginTop: 10,
+        marginTop: props.padding || 10,
     },
 
     [`& .popper[data-placement^="right"], & .popper[x-placement^="right"] .${ContentHolderArrowMargin}`]: {
-        marginLeft: 10,
+        marginLeft: props.padding || 10,
     },
 
     [`& .popper[data-placement^="left"], & .popper[x-placement^="left"] .${ContentHolderArrowMargin}`]: {
-        marginRight: 10,
+        marginRight: props.padding || 10,
     },
 
     '& .popper[data-x-out-of-boundaries], &[data-x-out-of-boundaries]': {
         display: 'none'
     },
-
-    '& .popper': {
-        padding: (typeof props.padding === 'number' || typeof props.padding === 'string') ? props.padding : undefined,
-        paddingLeft: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.left : undefined,
-        paddingTop: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.top : undefined,
-        paddingRight: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.right : undefined,
-        paddingBottom: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.bottom : undefined,
-    },
-
-    '> .arrow': {
-        margin: (typeof props.padding === 'number' || typeof props.padding === 'string') ? props.padding : undefined,
-        marginLeft: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.left : undefined,
-        marginTop: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.top : undefined,
-        marginRight: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.right : undefined,
-        marginBottom: (props.padding !== undefined && (typeof props.padding !== 'number') && (typeof props.padding !== 'string')) ? props.padding.bottom : undefined,
-    }
 }));
 
 export class XPopperContent extends React.Component<PopperRendererProps> {
@@ -176,11 +152,13 @@ export class XPopperContent extends React.Component<PopperRendererProps> {
                     onMouseOver={renderProps.visibleOnHover ? renderProps.onMouseOverTarget : undefined}
                     onMouseOut={renderProps.visibleOnHover ? renderProps.onMouseOutTarget : undefined}
                 >
+
                     {this.props.contentHolderCss === undefined ? (
                         /// cant use Glamorous div here - selectors stops working (https://github.com/paypal/glamorous/issues/274)
                         <div className={ContentHolderArrowMargin.toString()} >
                             <ContentHolder width={this.props.width}>
                                 {renderProps.content}
+                                <XPopperArrow arrowRef={renderProps.caputurePopperArrowNode} />
                             </ContentHolder>
                         </div>
                     ) : this.props.contentHolderCss !== null ? (
@@ -195,7 +173,6 @@ export class XPopperContent extends React.Component<PopperRendererProps> {
                                 </div>
                             )}
 
-                    <XPopperArrow arrowRef={renderProps.caputurePopperArrowNode} />
                 </div>
             </PopperRoot >
         );
