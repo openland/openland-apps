@@ -635,11 +635,12 @@ export interface FoldersQuery {
     id: string,
     name: string,
     special: SpecialFolder | null,
+    parcelsCount: number,
   } >,
 };
 
 export interface FoldersSelectQuery {
-  item:  Array< {
+  items:  Array< {
     __typename: "Folder",
     id: string,
     title: string,
@@ -656,6 +657,7 @@ export interface FolderQuery {
     id: string,
     name: string,
     special: SpecialFolder | null,
+    parcelsCount: number,
     parcels:  {
       __typename: "ParcelConnection",
       edges:  Array< {
@@ -770,6 +772,7 @@ export interface CreateFolderMutation {
     id: string,
     name: string,
     special: SpecialFolder | null,
+    parcelsCount: number,
   },
 };
 
@@ -786,6 +789,7 @@ export interface AddToFolderMutation {
       __typename: "Folder",
       id: string,
       name: string,
+      parcelsCount: number,
     } | null,
   },
 };

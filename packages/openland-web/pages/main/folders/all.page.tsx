@@ -156,7 +156,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
                                     icon = 'folder';
                             }
                             return (
-                                <SidebarItem key={v.id} path={'/folders/' + v.id} icon={icon} title={v.name} />
+                                <SidebarItem key={v.id} path={'/folders/' + v.id} icon={icon} title={v.name + '(' + v.parcelsCount + ')'} />
                             );
                         })}
                         <CreateFolder />

@@ -7,6 +7,7 @@ export const FoldersQuery = gql`
             id
             name
             special
+            parcelsCount
         }
     }
 `;
@@ -26,6 +27,7 @@ export const FolderQuery = gql`
             id
             name
             special
+            parcelsCount
             parcels {
                 edges {
                     node {
@@ -52,6 +54,7 @@ export const CreateFolderMutation = gql`
             id
             name
             special
+            parcelsCount
         }
     }
 `;
@@ -63,6 +66,7 @@ export const AddToFolderMutation = gql`
             folder {
                 id
                 name
+                parcelsCount
             }
         }
     }
