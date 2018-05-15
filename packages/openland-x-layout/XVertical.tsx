@@ -1,12 +1,16 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XFlexStyles, applyFlex } from 'openland-x/Flex';
 
-export let XVerticalDiv = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    position: 'relative'
-});
+export let XVerticalDiv = Glamorous.div<XFlexStyles>([
+    {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        position: 'relative'
+    },
+    applyFlex
+]);
 
 export let XVerticalSpaceDiv = Glamorous.div<{ separator?: 'large' | 'normal' }>((props) => ({
     height: props.separator === 'large' ? 32 : 16,
@@ -15,8 +19,11 @@ export let XVerticalSpaceDiv = Glamorous.div<{ separator?: 'large' | 'normal' }>
     flexGrow: 0
 }));
 
-export class XVertical extends React.Component<{ separator?: 'large' | 'normal' | 'none', className?: string }> {
+export class XVertical extends React.Component<{ separator?: 'large' | 'normal' | 'none', className?: string } & XFlexStyles> {
     render() {
+
+        let { alignSelf, flexGrow, flexShrink, flexBasis } = this.props;
+
         if (this.props.separator !== 'none') {
             let elements = React.Children.toArray(this.props.children);
             let children: any[] = [];
@@ -41,13 +48,13 @@ export class XVertical extends React.Component<{ separator?: 'large' | 'normal' 
                 }
             }
             return (
-                <XVerticalDiv className={this.props.className}>
+                <XVerticalDiv className={this.props.className} alignSelf={alignSelf} flexGrow={flexGrow} flexShrink={flexShrink} flexBasis={flexBasis}>
                     {children}
                 </XVerticalDiv>
             );
         } else {
             return (
-                <XVerticalDiv className={this.props.className}>
+                <XVerticalDiv className={this.props.className} alignSelf={alignSelf} flexGrow={flexGrow} flexShrink={flexShrink} flexBasis={flexBasis}>
                     {this.props.children}
                 </XVerticalDiv>
             );

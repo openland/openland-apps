@@ -418,7 +418,7 @@ class ScaffoldContent extends React.Component<{ padding?: boolean, bottomOffset?
             );
         }
         return (
-            <XVertical>
+            <XVertical flexGrow={1}>
                 {this.props.children}
                 {this.props.bottomOffset !== false && <PageDiv />}
             </XVertical>

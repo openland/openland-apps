@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { Scaffold } from '../../../components/Scaffold';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Sidebar } from '../../../components/Sidebar';
-import { withFolders, withCreateFolderMutation } from '../../../api';
+import { withFolders, withCreateFolderMutation, withFolder } from '../../../api';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLinkProps } from 'openland-x/XLink';
 import { XLoader } from 'openland-x/XLoader';
@@ -116,6 +116,17 @@ const SidebarItem = (props: SidebarProps) => (
     </SidebarItemStyle>
 );
 
+const FolderContent = withFolder((props) => {
+    if (props.data.loading) {
+        return <XLoader loading={true} />;
+    }
+    return (
+        <>
+            <XHeader text={props.data.folder.name} />
+        </>
+    );
+});
+
 export default withApp('Folders', 'viewer', withFolders((props) => {
     return (
         <>
@@ -146,9 +157,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
                 <Scaffold.Content>
                     {!props.router.routeQuery.folderId && <XLoader loading={true} />}
                     {!props.router.routeQuery.folderId && <XPageRedirect path={'/folders/' + props.data.folders[0].id} />}
-                    {props.router.routeQuery.folderId && <>
-                        <XHeader text="Folder" />
-                    </>}
+                    {props.router.routeQuery.folderId && <FolderContent variables={{ folderId: props.router.routeQuery.folderId }} />}
                 </Scaffold.Content>
             </Scaffold>
         </>

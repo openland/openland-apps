@@ -6,7 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
 import { XTitle } from 'openland-x/XTitle';
-import { XPopper2, PopperDefaultRender } from '../../../components/Incubator/XPopper2';
+import { XPopper2 } from '../../../components/Incubator/XPopper2';
 import { XTooltip2 } from '../../../components/Incubator/XTooltip2';
 import Glamorous from 'glamorous';
 import { XIcon } from 'openland-x/XIcon';
@@ -122,10 +122,6 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
 
                         <XPopper2 content={(<XButton text="lorem ipsum" />)} show="hover" placement="right" animated={false}>
                             <XButton text="not animated" alignSelf="flex-start" />
-                        </XPopper2>
-
-                        <XPopper2 content={(<XButton text="lorem ipsum" />)} show="hover" placement="right" renderer={PopperDefaultRender}>
-                            <XButton text="using rendered" alignSelf="flex-start" />
                         </XPopper2>
 
                         <XTitle>Tooltip</XTitle>

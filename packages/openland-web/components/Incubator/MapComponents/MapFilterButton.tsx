@@ -1,19 +1,8 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import ClickOutside from '../ClickOutside';
-import { Manager, Target, Popper } from '../XPopper';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XPopper2 } from '../XPopper2';
 import { XWithRouter } from 'openland-x-routing/withRouter';
-
-const PopperComponent = Glamorous.div({
-    '& .popper[data-placement^="bottom"]': {
-        marginTop: '30px !important',
-    },
-    '& .popper .popper-content': {
-        padding: '18px !important'
-    }
-});
 
 const ConfirmWrapper = Glamorous.div({
     display: 'flex',
@@ -30,6 +19,7 @@ interface ConfirmPopoverProps {
 
 export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRouter, { popper?: boolean }> {
     static active = new Set();
+    stateLocked = false;
 
     static closeAll = () => {
         for (let filter of FilterButton.active) {
@@ -46,40 +36,45 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
     }
 
     handleShow = () => {
+        if (!this.stateLocked) {
+            const { popper } = this.state;
 
-        const { popper } = this.state;
-
-        if (popper === true) {
-            if (this.props.handler !== undefined) { this.props.handler(false, this); }
-            this.setState({
-                popper: false
-            });
-        } else if (popper === false) {
-            this.setState({
-                popper: true
-            });
-            if (this.props.handler !== undefined) { this.props.handler(true, this); }
-        }
-
-        for (let filter of FilterButton.active) {
-            if (filter !== this) {
-                filter.handleClose();
+            if (popper === true) {
+                if (this.props.handler !== undefined) { this.props.handler(false, this); }
+                this.setState({
+                    popper: false
+                });
+            } else if (popper === false) {
+                this.setState({
+                    popper: true
+                });
+                if (this.props.handler !== undefined) { this.props.handler(true, this); }
             }
+
+            for (let filter of FilterButton.active) {
+                if (filter !== this) {
+                    filter.handleClose();
+                }
+            }
+
+            FilterButton.active.add(this);
         }
 
-        FilterButton.active.add(this);
     }
 
     handleClose = (self?: any) => {
+        this.stateLocked = true;
+        let target = (self instanceof FilterButton) ? self : this;
+        if (this.props.handler !== undefined) { this.props.handler(false, target); }
+        target.setState({
+            popper: false
+        });
+        FilterButton.active.delete(target);
+
         // move to next interpreter cicle  - prevent from chaging state before original click handled (posible double handle via Button/ClickOutside) 
         setTimeout(
             () => {
-                let target = (self instanceof FilterButton) ? self : this;
-                if (this.props.handler !== undefined) { this.props.handler(false, target); }
-                target.setState({
-                    popper: false
-                });
-                FilterButton.active.delete(target);
+                this.stateLocked = false;
             },
             0);
     }
@@ -111,32 +106,25 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
 
     render() {
 
-        let popoverComponent = (
-            <ClickOutside onClickOutside={this.handleClose}>
-                <div style={{ display: 'flex', alignSelf: 'flex-start' }}>
-                    <PopperComponent>
-                        <Popper class="static" autoWidth={true} updated={false}>
-                            {this.props.content}
-                        </Popper>
-                    </PopperComponent>
-                </div>
-            </ClickOutside>
-        );
-
         let children = [];
         for (let c of React.Children.toArray(this.props.children)) {
             children.push(React.cloneElement(c as any, this.modifyProps(c)));
         }
 
         return (
-            <Manager >
+            <XPopper2 content={
+                <ClickOutside onClickOutside={this.handleClose}>
+                    {this.props.content}
+                </ClickOutside>}
+                show={this.state.popper}
+                padding={20}
+                animated={false}
+            >
                 <ConfirmWrapper>
-                    <Target>
-                        {children}
-                    </Target>
-                    {this.state.popper === true && canUseDOM && ReactDOM.createPortal(popoverComponent, document.body)}
+                    {children}
                 </ConfirmWrapper>
-            </Manager>
+            </XPopper2>
+
         );
     }
 }
