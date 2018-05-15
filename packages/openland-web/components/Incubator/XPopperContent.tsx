@@ -28,7 +28,6 @@ const ContentHolderArrowMargin = glamor.css({
 });
 
 const ContentHolder = Glamorous.div<{ width?: number; }>((props) => ({
-
     width: props.width !== undefined ? props.width : undefined,
     padding: 10,
     background: '#fff',
@@ -197,22 +196,27 @@ export class XPopperContent extends React.Component<PopperRendererProps> {
                     onMouseOver={renderProps.visibleOnHover ? renderProps.onMouseOverTarget : undefined}
                     onMouseOut={renderProps.visibleOnHover ? renderProps.onMouseOutTarget : undefined}
                 >
-                    {this.props.contentCardStyle !== false ? (
+                    {this.props.contentHolderCss === undefined ? (
                         /// cant use Glamorous div here - selectors stops working (https://github.com/paypal/glamorous/issues/274)
                         <div className={ContentHolderArrowMargin.toString()} >
                             <ContentHolder width={this.props.width}>
                                 {renderProps.content}
                             </ContentHolder>
                         </div>
+                    ) : this.props.contentHolderCss !== null ? (
+                        /// cant use Glamorous div here - selectors stops working (https://github.com/paypal/glamorous/issues/274)
+                        <div className={ContentHolderArrowMargin.toString()} style={this.props.contentHolderCss} >
+                            {renderProps.content}
+                        </div>
                     ) : (
-                            /// cant use Glamorous div here - selectors stops working (https://github.com/paypal/glamorous/issues/274)
-                            <div className={ContentHolderArrowMargin.toString()} >
-                                {renderProps.content}
-                            </div>
-                        )}
+                                /// cant use Glamorous div here - selectors stops working (https://github.com/paypal/glamorous/issues/274)
+                                <div className={ContentHolderArrowMargin.toString()} >
+                                    {renderProps.content}
+                                </div>
+                            )}
 
                     <div className="arrow" ref={renderProps.caputurePopperArrowNode} />
-
+ 
                 </div>
             </PopperRoot >
         );

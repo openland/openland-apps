@@ -7,6 +7,7 @@ import * as classnames from 'classnames';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import ClickOutside from '../../components/Incubator/ClickOutside';
 import { XPopperContent } from './XPopperContent';
+import {  CSSProperties } from 'react';
 interface XPopper2SelfProps {
     content: any;
     isVisible?: boolean;
@@ -16,7 +17,7 @@ interface XPopper2SelfProps {
     width?: number;
     groupId?: string;
     animationDuration?: number;
-    contentCardStyle?: boolean;
+    contentHolderCss?:  CSSProperties;
 }
 
 interface XPopper2State {
@@ -55,7 +56,7 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
         };
     }
 
-    caputureTargetNode = (node: any) => { 
+    caputureTargetNode = (node: any) => {
         let newTargetNode = ReactDOM.findDOMNode(node);
         if (newTargetNode !== this._targetNode) {
             this._targetNode = newTargetNode;
@@ -85,7 +86,7 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     initPopperIfNeeded = () => {
         if (this._node && this._arrowNode && this._targetNode) {
 
-            let { children, content, isVisible, animated, padding, contentCardStyle, animationDuration, groupId, visibleOnHover, width, ...popperProps } = this.props;
+            let { children, content, isVisible, animated, padding, contentHolderCss, animationDuration, groupId, visibleOnHover, width, ...popperProps } = this.props;
 
             this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
