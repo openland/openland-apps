@@ -79,8 +79,8 @@ const CreateFolderButonStyle = Glamorous(Sidebar.Item)({
     }
 });
 
-const CreateFolderButton = () => (
-    <CreateFolderButonStyle>
+const CreateFolderButton = (props: XLinkProps) => (
+    <CreateFolderButonStyle {...props}>
         <XIcon icon="add_circle" />
         <span>New folder</span>
     </CreateFolderButonStyle>
