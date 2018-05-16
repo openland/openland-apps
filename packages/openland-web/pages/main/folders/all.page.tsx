@@ -105,6 +105,7 @@ const SidebarItemWrapper = Glamorous(Sidebar.Item)({
             color: '#654bfa'
         },
         '& .counter': {
+            opacity: 1,
             color: '#654bfa'
         }
     },
