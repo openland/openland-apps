@@ -49,12 +49,31 @@ export const FolderQuery = gql`
 `;
 
 export const CreateFolderMutation = gql`
-    mutation CreateFolder($name: String!) {
-        folder: alphaCreateFolder(name: $name) {
+    mutation CreateFolder($name: String!, $initialParcels: [ID!]) {
+        folder: alphaCreateFolder(name: $name, initialParcels: $initialParcels) {
             id
             name
             special
             parcelsCount
+            parcels {
+                edges {
+                    node {
+                        id
+                        folder {
+                            id
+                            name
+                        }
+                    }
+                }
+                pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                    itemsCount
+                    pagesCount
+                    currentPage
+                    openEnded
+                }
+            }
         }
     }
 `;

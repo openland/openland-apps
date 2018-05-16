@@ -11,7 +11,7 @@ export interface MutationParams {
 }
 
 export function graphqlMutation<TQuery, TVars, TN extends string>(mutation: GraphqlTypedMutation<TQuery, TVars>, name: TN, params: MutationParams = {}) {
-    return function (component: React.ComponentType<GraphQLRoutedComponentProps<{}> & Record<TN, MutationFunc<TQuery, { variables?: TVars }>>>): React.ComponentType<{ variables?: TVars }> {
+    return function (component: React.ComponentType<GraphQLRoutedComponentProps<{}> & Record<TN, MutationFunc<TQuery, { variables?: Partial<TVars> }>>>): React.ComponentType<{ variables?: Partial<TVars> }> {
         let qlWrapper = graphql<{}, XWithRouter & { variables?: TVars }, GraphQLRoutedComponentProps<{}> & Record<TN, MutationFunc<TQuery, TVars>>>(mutation.document, {
             name: name,
             options: (props: XWithRouter & { variables?: any }) => {

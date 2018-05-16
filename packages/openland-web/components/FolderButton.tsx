@@ -92,7 +92,7 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
         }
         return (
             <>
-                <CreateFolder />
+                <CreateFolder variables={{ initialParcels: [this.props.parcelId] }} />
                 <Shadow active={this.state.show} />
                 <XPopper
                     show={this.state.show}

@@ -764,6 +764,7 @@ export interface FolderQuery {
 
 export interface CreateFolderMutationVariables {
   name: string,
+  initialParcels?: Array< string > | null,
 };
 
 export interface CreateFolderMutation {
