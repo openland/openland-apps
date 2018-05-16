@@ -70,7 +70,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     visibility: props.active ? 'visible' : 'hidden',
     opacity: props.active ? 1 : 0,
     backgroundColor: 'rgba(0, 0, 0, 0.41)',
-    zIndex: 2,
+    zIndex: 10,
     // pointerEvents: 'none'
 }));
 export class FolderButton extends React.PureComponent<{ folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize, width?: number, menuWidth?: number }, { show: boolean }> {

@@ -14,7 +14,7 @@ const MapFilterWrapper = Glamorous(XCard)<{ active: boolean }>((props) => ({
     paddingRight: 0,
     paddingTop: 12,
     paddingBottom: 12,
-    zIndex: props.active ? 2 : 1,
+    zIndex: props.active ? 12 : 1,
     '& > div': {
         display: 'flex',
         flexDirection: 'column'
@@ -77,7 +77,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     visibility: props.active ? 'visible' : 'hidden',
     opacity: props.active ? 1 : 0,
     backgroundColor: 'rgba(0, 0, 0, 0.41)',
-    zIndex: 2,
+    zIndex: 10,
     // pointerEvents: 'none'
 }));
 
