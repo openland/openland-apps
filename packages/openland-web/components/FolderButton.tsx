@@ -23,16 +23,19 @@ const ButtonMoveToFolder = withSetFolderMutation((props) => {
 
 const FolderForm = withFolders((props) => {
     return (
-        <XVertical>
-            {props.data.folders && props.data.folders.map((v) => (
-                <ButtonMoveToFolder key={v.id} parcelId={(props as any).parcelId} text={v.name} folderId={v.id} />
-            ))}
-            <ButtonMoveToFolder key="_remove" parcelId={(props as any).parcelId} text="Remove" />
-        </XVertical>
+        <>
+            <XPopper.Invalidator />
+            <XVertical>
+                {props.data.folders && props.data.folders.map((v) => (
+                    <ButtonMoveToFolder key={v.id} parcelId={(props as any).parcelId} text={v.name} folderId={v.id} />
+                ))}
+                <ButtonMoveToFolder key="_remove" parcelId={(props as any).parcelId} text="Remove" />
+            </XVertical>
+        </>
     );
 }) as React.ComponentType<{ parcelId: string, size?: XButtonSize }>;
 
-export class FolderButton extends React.PureComponent<{ folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize, width?: number }, { show: boolean }> {
+export class FolderButton extends React.PureComponent<{ folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize, width?: number, menuWidth?: number }, { show: boolean }> {
     constructor(props: { folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize }) {
         super(props);
         this.state = { show: false };
@@ -75,7 +78,8 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
                     </XModalContext.Provider>}
                 padding={10}
                 arrow={null}
-                placement="bottom">
+                placement="bottom"
+                width={this.props.menuWidth}>
                 {button}
             </XPopper>
         );

@@ -52,12 +52,35 @@ const PlacementBottom = '&[x-placement^="bottom"]';
 const PlacementRight = '&[x-placement^="right"]';
 const PlacementLeft = '&[x-placement^="left"]';
 
+export const XPopperContext = React.createContext<{ invalidate: () => void } | undefined>(undefined);
+
+class XPopperInvalidatorRender extends React.Component<{ invalidate?: () => void }> {
+    componentDidUpdate() {
+        if (this.props.invalidate) {
+            this.props.invalidate();
+        }
+    }
+    render() {
+        return null;
+    }
+}
+
+export const XPopperInvalidator = () => {
+    return (
+        <XPopperContext.Consumer>
+            {(context) => <XPopperInvalidatorRender invalidate={context && context.invalidate} />}
+        </XPopperContext.Consumer>
+    );
+};
+
 export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
     static PlacementTop = PlacementTop;
     static PlacementBottom = PlacementBottom;
     static PlacementRight = PlacementRight;
     static PlacementLeft = PlacementLeft;
+
+    static Invalidator = XPopperInvalidator;
 
     private _popper?: PopperJS;
     private _node: Element;
@@ -257,6 +280,12 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         }
     }
 
+    invalidate = () => {
+        if (this._popper) {
+            this._popper.scheduleUpdate();
+        }
+    }
+
     componentWillUnmount() {
         this.mounted = false;
         this.dispose();
@@ -283,13 +312,13 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         };
 
         return (
-            <>
+            <XPopperContext.Provider value={{ invalidate: this.invalidate }}>
                 {target}
                 {((this.state.showPopper || this.props.show === true) && canUseDOM && this.state.ownMounted && ReactDOM.createPortal(
                     <XPopperRender {...renderProps} />,
                     document.body
                 ))}
-            </>
+            </XPopperContext.Provider>
         );
     }
 
