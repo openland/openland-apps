@@ -7,6 +7,7 @@ import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XForm } from 'openland-x-forms/XForm';
+import Glamorous from 'glamorous';
 
 const ButtonMoveToFolder = withSetFolderMutation((props) => {
     return (
@@ -60,6 +61,18 @@ const FolderForm = withFolders((props) => {
     );
 }) as React.ComponentType<{ parcelId: string, size?: XButtonSize, remove: boolean }>;
 
+const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    width: '100vw',
+    height: '100vh',
+    visibility: props.active ? 'visible' : 'hidden',
+    opacity: props.active ? 1 : 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.41)',
+    zIndex: 10,
+    // pointerEvents: 'none'
+}));
 export class FolderButton extends React.PureComponent<{ folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize, width?: number, menuWidth?: number }, { show: boolean }> {
     constructor(props: { folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize }) {
         super(props);
@@ -73,13 +86,14 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
     render() {
         let button;
         if (this.props.folder) {
-            button = <XButton width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} disabled={this.state.show} />;
+            button = <XButton width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} />;
         } else {
             button = <XButton width={this.props.width} icon="add" style="electric" size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} />;
         }
         return (
             <>
                 <CreateFolder />
+                <Shadow active={this.state.show} />
                 <XPopper
                     show={this.state.show}
                     content={

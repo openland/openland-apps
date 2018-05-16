@@ -456,7 +456,7 @@ const MapFilterWrapper = Glamorous(XCard)<{ active?: boolean }>((props) => ({
     paddingRight: 16,
     paddingTop: 15,
     paddingBottom: 15,
-    zIndex: props.active ? 2 : 1
+    zIndex: props.active ? 12 : 1
 }));
 
 const FilterButtonMargins = Glamorous.div({
@@ -475,7 +475,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     visibility: props.active ? 'visible' : 'hidden',
     opacity: props.active ? 1 : 0,
     backgroundColor: 'rgba(0, 0, 0, 0.41)',
-    zIndex: 2,
+    zIndex: 10,
     // pointerEvents: 'none'
 }));
 

@@ -7,6 +7,7 @@ export interface XFlexStyles {
     flexBasis?: number;
     width?: number;
     height?: number;
+    zIndex?: number;
 }
 
 export const applyFlex = (props: XFlexStyles) => ({
@@ -16,6 +17,7 @@ export const applyFlex = (props: XFlexStyles) => ({
     alignSelf: props.alignSelf,
     width: props.width,
     height: props.height,
+    zIndex: props.zIndex,
 } as CSSProperties);
 
 // export function withLayout<TProps>(Wrapped: React.ComponentType<TProps>): React.ComponentType<TProps & XLayoutProps> {
