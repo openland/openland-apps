@@ -30,34 +30,23 @@ const SidebarItemsStyle = {
     marginLeft: 4,
     marginRight: 4,
     color: '#334562',
-    '& > span': {
+    '& span': {
         maxWidth: '100%',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap'
     },
-    '& > i': {
+    '& i': {
         fontSize: 18,
         marginRight: 6,
         color: '#bcc3cc'
     },
     '&:hover': {
-        '& > i': {
+        '& i': {
             color: '#334562'
         }
     }
 } as CSSProperties;
-
-const SidebarItemStyle = Glamorous(Sidebar.Item)({
-    ...SidebarItemsStyle,
-    '&.is-active': {
-        color: '#654bfa',
-        backgroundColor: '#eff1f3',
-        '& > i': {
-            color: '#654bfa'
-        }
-    }
-});
 
 const CreateFolderButonStyle = Glamorous(Sidebar.Item)({
     ...SidebarItemsStyle,
@@ -106,16 +95,52 @@ const CreateFolder = withCreateFolderMutation((props) => {
     );
 });
 
+const SidebarItemWrapper = Glamorous(Sidebar.Item)({
+    ...SidebarItemsStyle,
+    justifyContent: 'space-between',
+    '&.is-active': {
+        color: '#654bfa',
+        backgroundColor: '#eff1f3',
+        '& i': {
+            color: '#654bfa'
+        },
+        '& .counter': {
+            color: '#654bfa'
+        }
+    },
+    '& .counter': {
+        opacity: 0.5,
+        color: '#334562'
+    }
+});
+
+const SidebarItemTitle = Glamorous.div({
+    maxWidth: '85%',
+    display: 'flex',
+    alignItems: 'center',
+});
+
+const SidebarItemCounter = Glamorous.div({
+    fontSize: 14,
+    fontWeight: 600,
+    lineHeight: 1.43,
+    textAlign: 'right',
+});
+
 interface SidebarProps extends XLinkProps {
     icon: string;
     title: string;
+    counter: string | number;
 }
 
 const SidebarItem = (props: SidebarProps) => (
-    <SidebarItemStyle path={props.path}>
-        <XIcon icon={props.icon} />
-        <span>{props.title}</span>
-    </SidebarItemStyle>
+    <SidebarItemWrapper path={props.path}>
+        <SidebarItemTitle>
+            <XIcon icon={props.icon} />
+            <span>{props.title}</span>
+        </SidebarItemTitle>
+        <SidebarItemCounter className="counter">{props.counter}</SidebarItemCounter>
+    </SidebarItemWrapper>
 );
 
 const FolderContent = withFolder((props) => {
@@ -156,7 +181,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
                                     icon = 'folder';
                             }
                             return (
-                                <SidebarItem key={v.id} path={'/folders/' + v.id} icon={icon} title={v.name + '(' + v.parcelsCount + ')'} />
+                                <SidebarItem key={v.id} path={'/folders/' + v.id} icon={icon} title={v.name} counter={v.parcelsCount} />
                             );
                         })}
                         <CreateFolder />
