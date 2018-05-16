@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import PopperJS from 'popper.js';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { XPopperRender } from './popper/XPopperRender';
+import { XPopperRender, PopperRendererProps } from './popper/XPopperRender';
 import { XPopperArrow } from './popper/XPopperArrow';
 import { XPopperContent } from './popper/XPopperContent';
 
@@ -366,11 +366,70 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             <XPopperContext.Provider value={{ invalidate: this.invalidate }}>
                 {target}
                 {((this.state.showPopper || this.props.show === true) && canUseDOM && this.state.ownMounted && ReactDOM.createPortal(
-                    <XPopperRender {...renderProps} />,
+                    <XPopperGrouped {...renderProps} />,
                     document.body
                 ))}
             </XPopperContext.Provider>
         );
     }
 
+}
+
+export class XPopperGrouped extends React.Component<PopperRendererProps> {
+    static activePoppers = new Map<string, Set<XPopperGrouped>>();
+    static currentPopper = new Map<string, XPopperGrouped>();
+    prevAnimation?: string;
+
+    componentWillUnmount() {
+        if (this.props.groupId !== undefined) {
+            let group = XPopperGrouped.activePoppers[this.props.groupId];
+            if (group === undefined) {
+                group = new Set();
+                XPopperGrouped.activePoppers[this.props.groupId] = group;
+            }
+            group.delete(this);
+
+            if (XPopperGrouped.currentPopper[this.props.groupId] === this) {
+                XPopperGrouped.currentPopper[this.props.groupId] = undefined;
+            }
+        }
+
+    }
+
+    render() {
+
+        let pendingAnimation: 'static' | 'hide' | 'show' = this.props.animated === false ? 'static' : this.props.willHide ? 'hide' : 'show';
+        let renderProps = { ...this.props };
+
+        if (renderProps.groupId !== undefined) {
+            let group = XPopperGrouped.activePoppers[renderProps.groupId];
+            if (group === undefined) {
+                group = new Set();
+                XPopperGrouped.activePoppers[renderProps.groupId] = group;
+            }
+            if (!renderProps.willHide) {
+                group.add(this);
+                XPopperGrouped.currentPopper[renderProps.groupId] = this;
+            } else {
+                group.delete(this);
+            }
+
+            if (this !== XPopperGrouped.currentPopper[renderProps.groupId]) {
+                renderProps.show = false;
+            }
+
+            if (pendingAnimation === 'show' && (group.size > 1 || renderProps.willHide || renderProps.willHide || this.prevAnimation === 'static')) {
+                pendingAnimation = 'static';
+            }
+        }
+
+        this.prevAnimation = pendingAnimation;
+
+        renderProps.animationClass = pendingAnimation;
+
+        return (
+            <XPopperRender {...renderProps} />
+        );
+
+    }
 }

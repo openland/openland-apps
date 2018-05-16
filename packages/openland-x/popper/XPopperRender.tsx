@@ -74,25 +74,25 @@ const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDuratio
 }));
 
 export class XPopperRender extends React.Component<PopperRendererProps> {
-    static activePoppers = new Map<string, Set<XPopperRender>>();
-    static currentPopper = new Map<string, XPopperRender>();
-    prevAnimation?: string;
+    // static activePoppers = new Map<string, Set<XPopperRender>>();
+    // static currentPopper = new Map<string, XPopperRender>();
+    // prevAnimation?: string;
 
-    componentWillUnmount() {
-        if (this.props.groupId !== undefined) {
-            let group = XPopperRender.activePoppers[this.props.groupId];
-            if (group === undefined) {
-                group = new Set();
-                XPopperRender.activePoppers[this.props.groupId] = group;
-            }
-            group.delete(this);
+    // componentWillUnmount() {
+    //     if (this.props.groupId !== undefined) {
+    //         let group = XPopperRender.activePoppers[this.props.groupId];
+    //         if (group === undefined) {
+    //             group = new Set();
+    //             XPopperRender.activePoppers[this.props.groupId] = group;
+    //         }
+    //         group.delete(this);
 
-            if (XPopperRender.currentPopper[this.props.groupId] === this) {
-                XPopperRender.currentPopper[this.props.groupId] = undefined;
-            }
-        }
+    //         if (XPopperRender.currentPopper[this.props.groupId] === this) {
+    //             XPopperRender.currentPopper[this.props.groupId] = undefined;
+    //         }
+    //     }
 
-    }
+    // }
 
     componentDidMount() {
         this.props.onMounted();
@@ -103,34 +103,34 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
     }
 
     render() {
-        let pendingAnimation: 'static' | 'hide' | 'show' = this.props.animated === false ? 'static' : this.props.willHide ? 'hide' : 'show';
-        let renderProps = { ...this.props };
+        // let pendingAnimation: 'static' | 'hide' | 'show' = this.props.animated === false ? 'static' : this.props.willHide ? 'hide' : 'show';
+        // let renderProps = { ...this.props };
 
-        if (renderProps.groupId !== undefined) {
-            let group = XPopperRender.activePoppers[renderProps.groupId];
-            if (group === undefined) {
-                group = new Set();
-                XPopperRender.activePoppers[renderProps.groupId] = group;
-            }
-            if (!renderProps.willHide) {
-                group.add(this);
-                XPopperRender.currentPopper[renderProps.groupId] = this;
-            } else {
-                group.delete(this);
-            }
+        // if (renderProps.groupId !== undefined) {
+        //     let group = XPopperRender.activePoppers[renderProps.groupId];
+        //     if (group === undefined) {
+        //         group = new Set();
+        //         XPopperRender.activePoppers[renderProps.groupId] = group;
+        //     }
+        //     if (!renderProps.willHide) {
+        //         group.add(this);
+        //         XPopperRender.currentPopper[renderProps.groupId] = this;
+        //     } else {
+        //         group.delete(this);
+        //     }
 
-            if (this !== XPopperRender.currentPopper[renderProps.groupId]) {
-                renderProps.show = false;
-            }
+        //     if (this !== XPopperRender.currentPopper[renderProps.groupId]) {
+        //         renderProps.show = false;
+        //     }
 
-            if (pendingAnimation === 'show' && (group.size > 1 || renderProps.willHide || renderProps.willHide || this.prevAnimation === 'static')) {
-                pendingAnimation = 'static';
-            }
-        }
+        //     if (pendingAnimation === 'show' && (group.size > 1 || renderProps.willHide || renderProps.willHide || this.prevAnimation === 'static')) {
+        //         pendingAnimation = 'static';
+        //     }
+        // }
 
-        this.prevAnimation = pendingAnimation;
+        // this.prevAnimation = pendingAnimation;
 
-        renderProps.animationClass = pendingAnimation;
+        // renderProps.animationClass = pendingAnimation;
 
         let animationDurationIn = this.props.animationDurationIn !== undefined ? this.props.animationDurationIn : 150;
         let animationDurationOut = this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 300;
@@ -139,10 +139,10 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
             this.props.show !== false ?
                 (
                     <PopperRoot
-                        className={classnames(renderProps.animationClass ? renderProps.animationClass : renderProps.animated === false ? 'static' : renderProps.willHide ? 'hide' : 'show')}
-                        innerRef={renderProps.caputurePopperNode}
-                        onMouseOver={renderProps.showOnHover ? renderProps.onMouseOverContent : undefined}
-                        onMouseOut={renderProps.showOnHover ? renderProps.onMouseOutContent : undefined}
+                        className={classnames(this.props.animationClass ? this.props.animationClass : this.props.animated === false ? 'static' : this.props.willHide ? 'hide' : 'show')}
+                        innerRef={this.props.caputurePopperNode}
+                        onMouseOver={this.props.showOnHover ? this.props.onMouseOverContent : undefined}
+                        onMouseOut={this.props.showOnHover ? this.props.onMouseOutContent : undefined}
                         animationDurationIn={animationDurationIn} animationDurationOut={animationDurationOut}
                     >
 
@@ -154,7 +154,7 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
                             minWidth: this.props.minWidth,
                             minHeight: this.props.minHeight,
 
-                            children: renderProps.content,
+                            children: this.props.content,
 
                             captureContent: this.props.caputurePopperContentNode
                         })}
