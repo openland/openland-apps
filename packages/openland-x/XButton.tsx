@@ -6,11 +6,14 @@ import { XLoadingCircular } from './XLoadingCircular';
 import { XFlexStyles, applyFlex } from './Flex';
 import { XIcon } from './XIcon';
 
+export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small';
+export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat';
+
 export interface XButtonStyleProps extends XFlexStyles {
     text?: string;
     icon?: string;
-    size?: 'x-large' | 'large' | 'medium' | 'default' | 'small';
-    style?: 'primary' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat';
+    size?: XButtonSize;
+    style?: XButtonStyle;
 }
 
 export interface XButtonProps extends XButtonStyleProps, XLinkProps {

@@ -24,7 +24,8 @@ import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
 import { XLoader } from 'openland-x/XLoader';
 import { XPropertyList } from 'openland-x/XProperty';
-import { trackEvent } from 'openland-x-analytics';
+import { FolderButton } from '../../FolderButton';
+import { XLink } from 'openland-x/XLink';
 
 const panelWidth = 335;
 
@@ -267,7 +268,7 @@ export const ParcelCard = withParcelDirect((props) => (
         {props.data && props.data!!.item &&
             <>
                 <XHeader
-                    text={props.data.item!!.address || 'No address'}
+                    text={<XLink path={'/parcels/' + props.data.item!!.id}>{props.data.item!!.address || 'No address'}</XLink>}
                     description={<ParcelNumber id={props.data.item!!.number} />}
                     truncateDescription={true}
                     bullet={props.data!!.item!!.extrasOwnerPublic ? 'public' : (props.data!!.item!!.metadata.available ? 'ON SALE' : undefined)}
@@ -439,52 +440,10 @@ export const ParcelCard = withParcelDirect((props) => (
                     )}
                 <ProspectingWrapper>
                     <XView grow={1} basis={0}>
-                        <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']} negate={true}>
-                            <XButton
-                                text="Favorite"
-                                icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (props.data!!.item!!.likes.liked) {
-                                        trackEvent('Unlike Parcel', { id: props.data!!.item!!.id });
-                                        (props as any).doUnlike({
-                                            optimisticResponse: {
-                                                __typename: 'Mutation',
-                                                unlikeParcel: {
-                                                    __typename: 'Parcel',
-                                                    id: props.data!!.item!!.id,
-                                                    likes: {
-                                                        __typename: 'Likes',
-                                                        liked: false,
-                                                        count: Math.max(0, props.data!!.item!!.likes!!.count!! - 1)
-                                                    }
-                                                },
-                                            }
-                                        });
-                                    } else {
-                                        trackEvent('Like Parcel', { id: props.data!!.item!!.id });
-                                        (props as any).doLike({
-                                            optimisticResponse: {
-                                                __typename: 'Mutation',
-                                                likeParcel: {
-                                                    __typename: 'Parcel',
-                                                    id: props.data!!.item!!.id,
-                                                    likes: {
-                                                        __typename: 'Likes',
-                                                        liked: true,
-                                                        count: props.data!!.item!!.likes!!.count!! + 1
-                                                    }
-                                                },
-                                            }
-                                        });
-                                    }
-                                }}
-                                size="medium"
-                                flexGrow={1}
-                                flexBasis={0}
-                            />
+                        <XWithRole role={['feature-customer-kassita']} negate={true}>
+                            <FolderButton parcelId={props.data!!.item!!.id} folder={props.data!!.item.folder} size="medium" />
                         </XWithRole>
-                        <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']}>
+                        <XWithRole role={['feature-customer-kassita']}>
                             <OpportunitiButton
                                 size="medium"
                                 parcelId={props.data!!.item!!.id}

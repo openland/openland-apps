@@ -31,7 +31,6 @@ import { XMapSmall } from 'openland-x-map/XMapSmall';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XForm } from 'openland-x-forms/XForm';
 import { XProperty, XPropertyList } from 'openland-x/XProperty';
-import { trackEvent } from 'openland-x-analytics';
 import { FolderButton } from '../../../components/FolderButton';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
@@ -55,57 +54,18 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                         <XWithRole role={['super-admin', 'editor']}>
                             <XButton path={'/parcels/' + props.data.item.id + '/edit'} text="Edit" />
                         </XWithRole>
-                        <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']}>
-                            <OpportunitiButton
-                                parcelId={props.data!!.item!!.id}
-                                opportunityId={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.id : undefined}
-                                opportunityState={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.state : undefined}
-                            />
-                        </XWithRole>
-                        <XWithRole role={['super-admin', 'software-developer', 'feature-portfolio']}>
-                            <FolderButton folder={props.data!!.item.folder} parcelId={props.data!!.item!!.id} />
-                        </XWithRole>
-                        <XButton
-                            style="ghost"
-                            text="Favorite"
-                            icon={props.data!!.item!!.likes.liked ? 'favorite' : 'favorite_border'}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                if (props.data!!.item!!.likes.liked) {
-                                    trackEvent('Unlike Parcel', { id: props.data!!.item!!.id });
-                                    (props as any).doUnlike({
-                                        optimisticResponse: {
-                                            __typename: 'Mutation',
-                                            unlikeParcel: {
-                                                __typename: 'Parcel',
-                                                id: props.data!!.item!!.id,
-                                                likes: {
-                                                    __typename: 'Likes',
-                                                    liked: false,
-                                                    count: Math.max(0, props.data!!.item!!.likes!!.count!! - 1)
-                                                }
-                                            },
-                                        }
-                                    });
-                                } else {
-                                    trackEvent('Like Parcel', { id: props.data!!.item!!.id });
-                                    (props as any).doLike({
-                                        optimisticResponse: {
-                                            __typename: 'Mutation',
-                                            likeParcel: {
-                                                __typename: 'Parcel',
-                                                id: props.data!!.item!!.id,
-                                                likes: {
-                                                    __typename: 'Likes',
-                                                    liked: true,
-                                                    count: props.data!!.item!!.likes!!.count!! + 1
-                                                }
-                                            },
-                                        }
-                                    });
-                                }
-                            }}
-                        />
+                        <>
+                            <XWithRole role={['feature-customer-kassita']}>
+                                <OpportunitiButton
+                                    parcelId={props.data!!.item!!.id}
+                                    opportunityId={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.id : undefined}
+                                    opportunityState={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.state : undefined}
+                                />
+                            </XWithRole>
+                            <XWithRole role={['feature-customer-kassita']} negate={true}>
+                                <FolderButton folder={props.data!!.item.folder} parcelId={props.data!!.item!!.id} />
+                            </XWithRole>
+                        </>
                     </XHeader>
 
                     <XProperty>
@@ -113,9 +73,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                             <XSwitcher.Item path={detailsPath} >Parcel</XSwitcher.Item>
                             <XSwitcher.Item path={linksPath} count={props.data.item.links.length}>Links</XSwitcher.Item>
                             <XSwitcher.Item path={notesPath} count={props.data.item.userData && props.data.item.userData.notes && props.data.item.userData.notes.length > 0 ? 1 : undefined}>Notes</XSwitcher.Item>
-                            {/* <XWithRole role={['super-admin', 'software-developer', 'parcel-zoning-metrics']}> */}
                             <XSwitcher.Item path={zoningPath} >Zoning</XSwitcher.Item>
-                            {/* </XWithRole> */}
                         </XSwitcher>
                     </XProperty>
 
