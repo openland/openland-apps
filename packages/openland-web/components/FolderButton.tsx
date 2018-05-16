@@ -27,12 +27,12 @@ const FolderForm = withFolders((props) => {
             {props.data.folders && props.data.folders.map((v) => (
                 <ButtonMoveToFolder key={v.id} parcelId={(props as any).parcelId} text={v.name} folderId={v.id} />
             ))}
-            <ButtonMoveToFolder key="_remove" parcelId={(props as any).parcelId} text="Remove"/>
+            <ButtonMoveToFolder key="_remove" parcelId={(props as any).parcelId} text="Remove" />
         </XVertical>
     );
 }) as React.ComponentType<{ parcelId: string, size?: XButtonSize }>;
 
-export class FolderButton extends React.PureComponent<{ folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize }, { show: boolean }> {
+export class FolderButton extends React.PureComponent<{ folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize, width?: number }, { show: boolean }> {
     constructor(props: { folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize }) {
         super(props);
         this.state = { show: false };
@@ -62,9 +62,9 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
     render() {
         let button;
         if (this.props.folder) {
-            button = <XButton icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: true })} />;
+            button = <XButton width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: true })} />;
         } else {
-            button = <XButton icon="add" style="electric" size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: true })} />;
+            button = <XButton width={this.props.width} icon="add" style="electric" size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: true })} />;
         }
         return (
             <XPopper

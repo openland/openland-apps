@@ -1,10 +1,12 @@
-import  { CSSProperties } from 'glamorous';
+import { CSSProperties } from 'glamorous';
 
 export interface XFlexStyles {
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
     flexGrow?: number;
     flexShrink?: number;
     flexBasis?: number;
+    width?: number;
+    height?: number;
 }
 
 export const applyFlex = (props: XFlexStyles) => ({
@@ -12,6 +14,8 @@ export const applyFlex = (props: XFlexStyles) => ({
     flexShrink: props.flexShrink,
     flexBasis: props.flexBasis,
     alignSelf: props.alignSelf,
+    width: props.width,
+    height: props.height,
 } as CSSProperties);
 
 // export function withLayout<TProps>(Wrapped: React.ComponentType<TProps>): React.ComponentType<TProps & XLayoutProps> {

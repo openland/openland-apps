@@ -63,7 +63,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                 />
                             </XWithRole>
                             <XWithRole role={['feature-customer-kassita']} negate={true}>
-                                <FolderButton folder={props.data!!.item.folder} parcelId={props.data!!.item!!.id} />
+                                <FolderButton folder={props.data!!.item.folder} parcelId={props.data!!.item!!.id} width={160} />
                             </XWithRole>
                         </>
                     </XHeader>
