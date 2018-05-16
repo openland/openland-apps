@@ -7,24 +7,24 @@ import { XPopperArrow } from './popper/XPopperArrow';
 import { XPopperContent } from './popper/XPopperContent';
 
 type Placement = 'auto-start'
-| 'auto'
-| 'auto-end'
-| 'top-start'
-| 'top'
-| 'top-end'
-| 'right-start'
-| 'right'
-| 'right-end'
-| 'bottom-end'
-| 'bottom'
-| 'bottom-start'
-| 'left-end'
-| 'left'
-| 'left-start';
+    | 'auto'
+    | 'auto-end'
+    | 'top-start'
+    | 'top'
+    | 'top-end'
+    | 'right-start'
+    | 'right'
+    | 'right-end'
+    | 'bottom-end'
+    | 'bottom'
+    | 'bottom-start'
+    | 'left-end'
+    | 'left'
+    | 'left-start';
 
 interface XPopperProps {
     placement?: Placement;
-    
+
     content: any;
     show?: boolean;
     showOnHover?: boolean;
@@ -53,17 +53,6 @@ interface XPopperState {
     showPopper: boolean;
     willHide: boolean;
     ownMounted: boolean;
-}
-
-export interface PopperRendererProps extends XPopperProps, XPopperState {
-    animationClass?: 'static' | 'hide' | 'show';
-    caputurePopperArrowNode: (node: any) => void;
-    caputurePopperContentNode: (node: any) => void;
-    caputurePopperNode: (node: any) => void;
-    onMouseOverContent: () => void;
-    onMouseOutContent: () => void;
-    onMounted: () => void;
-    onUnmounted: () => void;
 }
 
 const PlacementTop = '&[x-placement^="top"]';
@@ -103,7 +92,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
     static Arrow = XPopperArrow;
     static Content = XPopperContent;
-    
+
     private _popper?: PopperJS;
     private _node: Element;
     private _targetNode: Element;
@@ -235,7 +224,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                     this._node.setAttribute('x-placement', data.placement);
                     this._contentNode.setAttribute('x-placement', data.placement);
                 },
-                placement: this.props.placement !== undefined ?  this.props.placement : 'auto'
+                placement: this.props.placement !== undefined ? this.props.placement : 'auto'
             });
             setTimeout(() => {
                 if (this._popper) {
@@ -344,7 +333,24 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         }
 
         let renderProps = {
-            ...this.props, ...this.state,
+            content: this.props.content,
+            show: this.props.show,
+            showOnHover: this.props.showOnHover,
+
+            width: this.props.width,
+            height: this.props.height,
+            maxWidth: this.props.maxWidth,
+            maxHeight: this.props.maxHeight,
+            minWidth: this.props.minWidth,
+            minHeight: this.props.minHeight,
+
+            groupId: this.props.groupId,
+            animated: this.props.animated,
+            animationDurationIn: this.props.animationDurationIn,
+            animationDurationOut: this.props.animationDurationOut,
+
+            willHide: this.state.willHide,
+
             arrow: this.arrow,
             contentContainer: this.contentContainer,
             caputurePopperNode: this.caputurePopperNode,

@@ -2,7 +2,39 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import * as classnames from 'classnames';
-import { PopperRendererProps } from '../XPopper';
+
+export interface PopperRendererProps {    
+    content: any;
+    show?: boolean;
+    showOnHover?: boolean;
+
+    width?: number;
+    height?: number;
+    maxWidth?: number;
+    maxHeight?: number;
+    minWidth?: number;
+    minHeight?: number;
+
+    groupId?: string;
+
+    animated?: boolean;
+    animationDurationIn?: number;
+    animationDurationOut?: number;
+
+    arrow?: any | null;
+    contentContainer?: any;
+
+    willHide: boolean;
+
+    animationClass?: 'static' | 'hide' | 'show';
+    caputurePopperArrowNode: (node: any) => void;
+    caputurePopperContentNode: (node: any) => void;
+    caputurePopperNode: (node: any) => void;
+    onMouseOverContent: () => void;
+    onMouseOutContent: () => void;
+    onMounted: () => void;
+    onUnmounted: () => void;
+}
 
 const showAnimation = glamor.keyframes({
     '0%': {
