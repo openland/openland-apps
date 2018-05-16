@@ -41,7 +41,7 @@ interface XPopperProps {
 
     groupId?: string;
 
-    animated?: boolean;
+    animation?: 'fade' | 'pop' | null;
     animationDurationIn?: number;
     animationDurationOut?: number;
 
@@ -80,6 +80,65 @@ export const XPopperInvalidator = () => {
         </XPopperContext.Consumer>
     );
 };
+
+export class XPopperGrouped extends React.Component<PopperRendererProps> {
+    static activePoppers = new Map<string, Set<XPopperGrouped>>();
+    static currentPopper = new Map<string, XPopperGrouped>();
+    prevAnimation?: string;
+
+    componentWillUnmount() {
+        if (this.props.groupId !== undefined) {
+            let group = XPopperGrouped.activePoppers[this.props.groupId];
+            if (group === undefined) {
+                group = new Set();
+                XPopperGrouped.activePoppers[this.props.groupId] = group;
+            }
+            group.delete(this);
+
+            if (XPopperGrouped.currentPopper[this.props.groupId] === this) {
+                XPopperGrouped.currentPopper[this.props.groupId] = undefined;
+            }
+        }
+
+    }
+
+    render() {
+
+        let pendingAnimation: 'static' | 'hide' | 'show' = this.props.animation === null ? 'static' : this.props.willHide ? 'hide' : 'show';
+        let renderProps = { ...this.props };
+
+        if (renderProps.groupId !== undefined) {
+            let group = XPopperGrouped.activePoppers[renderProps.groupId];
+            if (group === undefined) {
+                group = new Set();
+                XPopperGrouped.activePoppers[renderProps.groupId] = group;
+            }
+            if (!renderProps.willHide) {
+                group.add(this);
+                XPopperGrouped.currentPopper[renderProps.groupId] = this;
+            } else {
+                group.delete(this);
+            }
+
+            if (this !== XPopperGrouped.currentPopper[renderProps.groupId]) {
+                renderProps.show = false;
+            }
+
+            if (pendingAnimation === 'show' && (group.size > 1 || renderProps.willHide || renderProps.willHide || this.prevAnimation === 'static')) {
+                pendingAnimation = 'static';
+            }
+        }
+
+        this.prevAnimation = pendingAnimation;
+
+        renderProps.animationClass = pendingAnimation;
+
+        return (
+            <XPopperRender {...renderProps} />
+        );
+
+    }
+}
 
 export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
@@ -211,6 +270,9 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                         enabled: this.arrow !== null,
                         element: this._arrowNode,
                     },
+                    computeStyle: {
+                        gpuAcceleration: false
+                    },
                     preventOverflow: {
                         order: 99,
                         boundariesElement: 'viewport',
@@ -259,7 +321,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     onMouseOutTarget = () => {
         if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
         if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
-        const animationDurationOut = this.props.animated === false ? 0 : this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 150;
+        const animationDurationOut = this.props.animation === null ? 0 : this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 150;
 
         this.willHideTimeout = window.setTimeout(
             () => {
@@ -345,7 +407,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             minHeight: this.props.minHeight,
 
             groupId: this.props.groupId,
-            animated: this.props.animated,
+            animation: this.props.animation,
             animationDurationIn: this.props.animationDurationIn,
             animationDurationOut: this.props.animationDurationOut,
 
@@ -373,63 +435,4 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         );
     }
 
-}
-
-export class XPopperGrouped extends React.Component<PopperRendererProps> {
-    static activePoppers = new Map<string, Set<XPopperGrouped>>();
-    static currentPopper = new Map<string, XPopperGrouped>();
-    prevAnimation?: string;
-
-    componentWillUnmount() {
-        if (this.props.groupId !== undefined) {
-            let group = XPopperGrouped.activePoppers[this.props.groupId];
-            if (group === undefined) {
-                group = new Set();
-                XPopperGrouped.activePoppers[this.props.groupId] = group;
-            }
-            group.delete(this);
-
-            if (XPopperGrouped.currentPopper[this.props.groupId] === this) {
-                XPopperGrouped.currentPopper[this.props.groupId] = undefined;
-            }
-        }
-
-    }
-
-    render() {
-
-        let pendingAnimation: 'static' | 'hide' | 'show' = this.props.animated === false ? 'static' : this.props.willHide ? 'hide' : 'show';
-        let renderProps = { ...this.props };
-
-        if (renderProps.groupId !== undefined) {
-            let group = XPopperGrouped.activePoppers[renderProps.groupId];
-            if (group === undefined) {
-                group = new Set();
-                XPopperGrouped.activePoppers[renderProps.groupId] = group;
-            }
-            if (!renderProps.willHide) {
-                group.add(this);
-                XPopperGrouped.currentPopper[renderProps.groupId] = this;
-            } else {
-                group.delete(this);
-            }
-
-            if (this !== XPopperGrouped.currentPopper[renderProps.groupId]) {
-                renderProps.show = false;
-            }
-
-            if (pendingAnimation === 'show' && (group.size > 1 || renderProps.willHide || renderProps.willHide || this.prevAnimation === 'static')) {
-                pendingAnimation = 'static';
-            }
-        }
-
-        this.prevAnimation = pendingAnimation;
-
-        renderProps.animationClass = pendingAnimation;
-
-        return (
-            <XPopperRender {...renderProps} />
-        );
-
-    }
 }

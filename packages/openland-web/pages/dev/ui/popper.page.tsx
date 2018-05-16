@@ -79,28 +79,32 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                             <XButton text="reach content - disable wrap" alignSelf="flex-start" />
                         </XPopper>
 
-                        <XPopper content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" animated={false}>
+                        <XPopper content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" animation={null}>
                             <XButton text="not animated" alignSelf="flex-start" />
                         </XPopper>
 
+                        <XPopper content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" animation="pop">
+                            <XButton text="animation pop" alignSelf="flex-start" />
+                        </XPopper>
+
                         <XPopper content={(<XButton text="lorem ipsum" />)}
-                            show={true} placement="right" animated={false} arrow={null}>
+                            show={true} placement="right" animation={null} arrow={null}>
                             <XButton text="no arrow" alignSelf="flex-start" />
                         </XPopper>
 
                         <XPopper content={(<XButton text="lorem ipsum" />)}
-                            show={true} placement="right" animated={false}
+                            show={true} placement="right" animation={null}
                             arrow={(
-                                <CustomArrowDiv/>
+                                <CustomArrowDiv />
                             )}>
                             <XButton text="custom arrow" alignSelf="flex-start" />
                         </XPopper>
 
                         <XPopper
                             content={(<XButton text="lorem ipsum" />)}
-                            show={true} placement="right" animated={false}
+                            show={true} placement="right" animation={null}
                             contentContainer={(
-                                <CustomContentDiv  />
+                                <CustomContentDiv />
                             )}
                         >
                             <XButton text="custom content container" alignSelf="flex-start" />
@@ -114,6 +118,10 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
 
                         <XPopper content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" showOnHoverContent={false}>
                             <XButton text="ignore content hover" alignSelf="flex-start" />
+                        </XPopper>
+
+                        <XPopper content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" showOnHoverContent={false}>
+                            <XButton text="animation pop" alignSelf="flex-start" />
                         </XPopper>
 
                         {/* <XTitle>Tooltip</XTitle>

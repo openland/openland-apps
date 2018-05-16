@@ -17,7 +17,7 @@ export interface PopperRendererProps {
 
     groupId?: string;
 
-    animated?: boolean;
+    animation?: 'fade' | 'pop' | null;
     animationDurationIn?: number;
     animationDurationOut?: number;
 
@@ -54,7 +54,111 @@ const hideAnimation = glamor.keyframes({
     }
 });
 
-const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDurationOut: number }>((props) => ({
+const showAnimationTop = glamor.keyframes({
+    '0%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% 60%'
+    },
+    '100%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% 60%'
+    }
+});
+
+const showAnimationBottom = glamor.keyframes({
+    '0%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% calc(-10% + 11px)'
+    },
+    '100%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% calc(-10% + 11px)'
+    }
+});
+
+const showAnimationRight = glamor.keyframes({
+    '0%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '60% 50%'
+    },
+    '100%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '60% 50%'
+    }
+});
+
+const showAnimationLeft = glamor.keyframes({
+    '0%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '40% 50%'
+    },
+    '100%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '40% 50%'
+    }
+});
+
+const hideAnimationTop = glamor.keyframes({
+    '0%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% 60%'
+    },
+    '100%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% 60%'
+    }
+});
+
+const hideAnimationBottom = glamor.keyframes({
+    '0%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '50% calc(-10% + 11px)'
+    },
+    '100%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '50% calc(-10% + 11px)'
+    }
+});
+
+const hideAnimationRight = glamor.keyframes({
+    '0%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '60% 50%'
+    },
+    '100%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '60% 50%'
+    }
+});
+
+const hideAnimationLeft = glamor.keyframes({
+    '0%': {
+        opacity: 1,
+        transform: 'scale(1)',
+        transformOrigin: '40% 50%'
+    },
+    '100%': {
+        opacity: 0,
+        transform: 'scale(0)',
+        transformOrigin: '40% 50%'
+    }
+});
+
+const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDurationOut: number, animation: 'fade' | 'pop' | null }>((props) => ({
     '.hide': {
         animationDuration: `${props.animationDurationOut}ms`,
         animationFillMode: 'forwards',
@@ -68,31 +172,53 @@ const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDuratio
         animationName: `${showAnimation}`,
         animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
     },
+
+    '[x-placement^="right"]': {
+        marginLeft: 10,
+        '.show': {
+            animationName: `${props.animation === 'pop' ? showAnimationRight : showAnimation } !important`,
+        },
+        '.hide': {
+            animationName: `${props.animation === 'pop' ? hideAnimationRight : hideAnimation } !important`
+        }
+    },
+
+    '[x-placement^="left"]': {
+        marginLeft: 10,
+        '.show': {
+            animationName: `${props.animation === 'pop' ? showAnimationLeft : showAnimation } !important`,
+        },
+        '.hide': {
+            animationName: `${props.animation === 'pop' ? hideAnimationLeft : hideAnimation } !important`
+        }
+    },
+
+    '[x-placement^="top"]': {
+        marginLeft: 10,
+        '.show': {
+            animationName: `${props.animation === 'pop' ? showAnimationTop : showAnimation } !important`,
+        },
+        '.hide': {
+            animationName: `${props.animation === 'pop' ? hideAnimationTop : hideAnimation } !important`
+        }
+    },
+
+    '[x-placement^="bottom"]': {
+        marginLeft: 10,
+        '.show': {
+            animationName: `${props.animation === 'pop' ? showAnimationBottom : showAnimation } !important`,
+        },
+        '.hide': {
+            animationName: `${props.animation === 'pop' ? hideAnimationBottom : hideAnimation } !important`
+        }
+    },
+
     '.static': {
         opacity: 1
     },
 }));
 
 export class XPopperRender extends React.Component<PopperRendererProps> {
-    // static activePoppers = new Map<string, Set<XPopperRender>>();
-    // static currentPopper = new Map<string, XPopperRender>();
-    // prevAnimation?: string;
-
-    // componentWillUnmount() {
-    //     if (this.props.groupId !== undefined) {
-    //         let group = XPopperRender.activePoppers[this.props.groupId];
-    //         if (group === undefined) {
-    //             group = new Set();
-    //             XPopperRender.activePoppers[this.props.groupId] = group;
-    //         }
-    //         group.delete(this);
-
-    //         if (XPopperRender.currentPopper[this.props.groupId] === this) {
-    //             XPopperRender.currentPopper[this.props.groupId] = undefined;
-    //         }
-    //     }
-
-    // }
 
     componentDidMount() {
         this.props.onMounted();
@@ -103,34 +229,6 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
     }
 
     render() {
-        // let pendingAnimation: 'static' | 'hide' | 'show' = this.props.animated === false ? 'static' : this.props.willHide ? 'hide' : 'show';
-        // let renderProps = { ...this.props };
-
-        // if (renderProps.groupId !== undefined) {
-        //     let group = XPopperRender.activePoppers[renderProps.groupId];
-        //     if (group === undefined) {
-        //         group = new Set();
-        //         XPopperRender.activePoppers[renderProps.groupId] = group;
-        //     }
-        //     if (!renderProps.willHide) {
-        //         group.add(this);
-        //         XPopperRender.currentPopper[renderProps.groupId] = this;
-        //     } else {
-        //         group.delete(this);
-        //     }
-
-        //     if (this !== XPopperRender.currentPopper[renderProps.groupId]) {
-        //         renderProps.show = false;
-        //     }
-
-        //     if (pendingAnimation === 'show' && (group.size > 1 || renderProps.willHide || renderProps.willHide || this.prevAnimation === 'static')) {
-        //         pendingAnimation = 'static';
-        //     }
-        // }
-
-        // this.prevAnimation = pendingAnimation;
-
-        // renderProps.animationClass = pendingAnimation;
 
         let animationDurationIn = this.props.animationDurationIn !== undefined ? this.props.animationDurationIn : 150;
         let animationDurationOut = this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 300;
@@ -139,7 +237,8 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
             this.props.show !== false ?
                 (
                     <PopperRoot
-                        className={classnames(this.props.animationClass ? this.props.animationClass : this.props.animated === false ? 'static' : this.props.willHide ? 'hide' : 'show')}
+                        className={classnames('popper', this.props.animationClass ? this.props.animationClass : this.props.animation === null ? 'static' : this.props.willHide ? 'hide' : 'show')}
+                        animation={this.props.animation !== undefined ? this.props.animation : 'fade'}
                         innerRef={this.props.caputurePopperNode}
                         onMouseOver={this.props.showOnHover ? this.props.onMouseOverContent : undefined}
                         onMouseOut={this.props.showOnHover ? this.props.onMouseOutContent : undefined}
