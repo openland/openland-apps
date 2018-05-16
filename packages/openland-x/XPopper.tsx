@@ -10,18 +10,22 @@ interface XPopper2SelfProps {
     content: any;
     show?: boolean;
     showOnHover?: boolean;
-    animated?: boolean;
+    onClickOutside?: () => void;
+
     padding?: number;
+
     width?: number;
     height?: number;
     maxWidth?: number;
     maxHeight?: number;
     minWidth?: number;
     minHeight?: number;
+
     groupId?: string;
+
+    animated?: boolean;
     animationDurationIn?: number;
     animationDurationOut?: number;
-    animation?: 'fade' | 'pop' | null;
     arrow?: ((arrowRef: (node: any) => void) => any) | null;
     contentContainer?: (contentRef: (node: any) => void) => any;
 }
@@ -170,12 +174,6 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         this.initPopperIfNeeded();
     }
 
-    componentDidMount() {
-        window.setTimeout(() => {
-            this.setState({ ownMounted: true });
-        });
-    }
-
     captureUnmounted = () => {
         this.mounted = false;
         if (this._popper) {
@@ -186,7 +184,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
     initPopperIfNeeded = () => {
         if (this._node && (this.arrow === null || this._arrowNode) && this._targetNode && this._contentNode && this.mounted && !this._popper) {
-            let { children, content, show, animated, padding, animationDurationIn, animationDurationOut, groupId, showOnHover, width, height, maxWidth, maxHeight, minWidth, minHeight, animation, arrow, contentContainer, ...popperProps } = this.props;
+            let { children, content, show, animated, animationDurationIn, animationDurationOut, padding, groupId, showOnHover, width, height, maxWidth, maxHeight, minWidth, minHeight, arrow, contentContainer, onClickOutside, ...popperProps } = this.props;
             this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
                     shift: {
@@ -245,7 +243,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     onMouseOutTarget = () => {
         if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
         if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
-        const animationDurationOut = this.props.animated === false ? 0 : this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 150;
+        const animationDurationOut = this.props.animated === false ? 0 : 150;
 
         this.willHideTimeout = window.setTimeout(
             () => {
@@ -267,6 +265,12 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             (animationDurationOut));
     }
 
+    onMouseDown = (e: any) => {
+        if (this.props.onClickOutside && this._contentNode && !this._contentNode.contains(e.target) && this._arrowNode && !this._arrowNode.contains(e.target)) {
+            this.props.onClickOutside();
+        }
+    }
+
     dispose = () => {
         if (this.hideTimeout) { clearTimeout(this.hideTimeout!); }
         if (this._targetNode) {
@@ -286,8 +290,22 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         }
     }
 
+    componentDidMount() {
+        window.setTimeout(() => {
+            this.setState({ ownMounted: true });
+        });
+
+        if (this.props.onClickOutside) {
+            document.addEventListener('mousedown', this.onMouseDown, true);
+
+        }
+    }
+
     componentWillUnmount() {
         this.mounted = false;
+        if (this.props.onClickOutside) {
+            document.removeEventListener('mousedown', this.onMouseDown, true);
+        }
         this.dispose();
     }
 

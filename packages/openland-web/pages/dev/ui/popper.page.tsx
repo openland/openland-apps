@@ -134,6 +134,12 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                             <XButton text="custom content container" alignSelf="flex-start" />
                         </XPopper>
 
+                         <XPopper content={(<XButton text="lorem ipsum" />)} show={true} placement="right" onClickOutside={() => {
+                             console.warn('click outside!');
+                         }}>
+                            <XButton text="log click outside" alignSelf="flex-start" />
+                        </XPopper>
+
                         {/* <XTitle>Tooltip</XTitle>
 
                         <NavigationContainer>

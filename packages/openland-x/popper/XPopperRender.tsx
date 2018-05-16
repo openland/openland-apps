@@ -4,11 +4,6 @@ import * as glamor from 'glamor';
 import * as classnames from 'classnames';
 import { PopperRendererProps } from '../XPopper';
 
-// interface AnimatonSet {
-//     in: string;
-//     out: string;
-// }
-
 const showAnimation = glamor.keyframes({
     '0%': {
         opacity: 0,
@@ -26,12 +21,6 @@ const hideAnimation = glamor.keyframes({
         opacity: 0,
     }
 });
-
-// class AnimationCollection {
-//     'fade': {
-
-//     };
-// }
 
 const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDurationOut: number, show?: boolean }>((props) => ({
     zIndex: 501,
