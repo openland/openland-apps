@@ -3,25 +3,31 @@ import * as ReactDOM from 'react-dom';
 import PopperJS from 'popper.js';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XPopperRender } from './popper/XPopperRender';
+import { XPopperArrow } from './popper/XPopperArrow';
+import { XPopperContent } from './popper/XPopperContent';
 
 interface XPopper2SelfProps {
     content: any;
-    isVisible?: boolean;
-    visibleOnHover?: boolean;
+    show?: boolean;
+    showOnHover?: boolean;
     animated?: boolean;
     padding?: number;
-    width?: number;
+    maxWidth?: number;
+    maxHeight?: number;
     groupId?: string;
     animationDuration?: number;
+    animation?: 'fade' | 'pop' | null;
+    arrow?: any | null;
+    contentContainer?: any | null;
 }
 
-interface XPopper2State {
+interface XPopperState {
     showPopper: boolean;
     willHide: boolean;
     ownMounted: boolean;
 }
 
-export interface PopperRendererProps extends XPopper2SelfProps, XPopper2State {
+export interface PopperRendererProps extends XPopper2SelfProps, XPopperState {
     animationClass?: 'static' | 'hide' | 'show';
     caputurePopperArrowNode: (node: any) => void;
     caputurePopperContentNode: (node: any) => void;
@@ -32,7 +38,7 @@ export interface PopperRendererProps extends XPopper2SelfProps, XPopper2State {
     onUnmounted: () => void;
 }
 
-export interface XPopper2Props extends XPopper2SelfProps, Popper.PopperOptions {
+export interface XPopperProps extends XPopper2SelfProps, Popper.PopperOptions {
 
 }
 
@@ -41,7 +47,7 @@ const PlacementBottom = '&[x-placement^="bottom"]';
 const PlacementRight = '&[x-placement^="right"]';
 const PlacementLeft = '&[x-placement^="left"]';
 
-export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
+export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
     static PlacementTop = PlacementTop;
     static PlacementBottom = PlacementBottom;
@@ -58,14 +64,23 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     private willHideTimeout?: number;
     private mounted = false;
 
-    constructor(props: XPopper2Props) {
+    private arrow: any | null;
+    private contentContainer: any | null;
+    constructor(props: XPopperProps) {
         super(props);
 
         this.state = {
-            showPopper: this.props.isVisible === true,
+            showPopper: this.props.show === true,
             willHide: false,
             ownMounted: false
         };
+        this.arrow = props.arrow === undefined ? (
+            <XPopperArrow />
+        ) : props.arrow;
+
+        this.contentContainer = props.contentContainer === undefined ? (
+            <XPopperContent />
+        ) : props.contentContainer;
     }
 
     caputureTargetNode = (node: any | null) => {
@@ -73,7 +88,7 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
             let newTargetNode = ReactDOM.findDOMNode(node);
             if (newTargetNode !== this._targetNode) {
                 this._targetNode = newTargetNode;
-                if (this._targetNode && this.props.visibleOnHover) {
+                if (this._targetNode && this.props.showOnHover) {
                     this.dispose();
                     // TODO: check if changed
                     this._targetNode.addEventListener('mouseover', this.onMouseOverTarget);
@@ -142,27 +157,27 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     }
 
     initPopperIfNeeded = () => {
-        if (this._node && this._arrowNode && this._targetNode && this._contentNode && this.mounted && !this._popper) {
-            let { children, content, isVisible, animated, padding, animationDuration, groupId, visibleOnHover, width, ...popperProps } = this.props;
+        if (this._node && (this.arrow === null || this._arrowNode) && this._targetNode && this._contentNode && this.mounted && !this._popper) {
+            let { children, content, show, animated, padding, animationDuration, groupId, showOnHover, maxWidth, maxHeight, animation, arrow, contentContainer, ...popperProps } = this.props;
             this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
                     shift: {
                         order: 100,
                         fn: (data, options: Object) => {
                             if (data.placement === 'top') {
-                                data.offsets.popper.top = data.offsets.popper.top - (this.props.padding || 10);
+                                data.offsets.popper.top = data.offsets.popper.top - (this.props.padding || (this.arrow === null ? 0 : 10));
                             } else if (data.placement === 'bottom') {
-                                data.offsets.popper.top = data.offsets.popper.top + (this.props.padding || 10);
+                                data.offsets.popper.top = data.offsets.popper.top + (this.props.padding || (this.arrow === null ? 0 : 10));
                             } else if (data.placement === 'left') {
-                                data.offsets.popper.left = data.offsets.popper.left - (this.props.padding || 10);
+                                data.offsets.popper.left = data.offsets.popper.left - (this.props.padding || (this.arrow === null ? 0 : 10));
                             } else if (data.placement === 'right') {
-                                data.offsets.popper.left = data.offsets.popper.left + (this.props.padding || 10);
+                                data.offsets.popper.left = data.offsets.popper.left + (this.props.padding || (this.arrow === null ? 0 : 10));
                             }
                             return data;
                         }
                     },
                     arrow: {
-                        enabled: true,
+                        enabled: this.arrow !== null,
                         element: this._arrowNode,
                     },
                     preventOverflow: {
@@ -172,7 +187,9 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
                     },
                 },
                 onUpdate: (data: PopperJS.Data) => {
-                    this._arrowNode.setAttribute('x-placement', data.placement);
+                    if (this._arrowNode) {
+                        this._arrowNode.setAttribute('x-placement', data.placement);
+                    }
                     this._node.setAttribute('x-placement', data.placement);
                     this._contentNode.setAttribute('x-placement', data.placement);
                 },
@@ -210,7 +227,7 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
                     }
                 });
             },
-            0);
+            50);
         this.hideTimeout = window.setTimeout(
             () => {
                 this.setState({ showPopper: false }, () => {
@@ -223,7 +240,10 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     }
 
     dispose = () => {
-        clearTimeout(this.hideTimeout);
+//  error TS2345: Argument of type 'number | undefined' is not assignable to parameter of type 'number'.
+//          Type 'undefined' is not assignable to type 'number'.
+// WTF, lint?
+        clearTimeout(this.hideTimeout!);
         if (this._targetNode) {
             this._targetNode.removeEventListener('mouseover', this.onMouseOverTarget);
             this._targetNode.removeEventListener('mouseout', this.onMouseOutTarget);
@@ -249,6 +269,8 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
 
         let renderProps = {
             ...this.props, ...this.state,
+            arrow: this.arrow,
+            contentContainer: this.contentContainer,
             caputurePopperNode: this.caputurePopperNode,
             caputurePopperArrowNode: this.caputurePopperArrowNode,
             caputurePopperContentNode: this.caputurePopperContentNode,
@@ -261,7 +283,7 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
         return (
             <>
                 {target}
-                {((this.state.showPopper || this.props.isVisible === true) && canUseDOM && this.state.ownMounted && ReactDOM.createPortal(
+                {((this.state.showPopper || this.props.show === true) && canUseDOM && this.state.ownMounted && ReactDOM.createPortal(
                     <XPopperRender {...renderProps} />,
                     document.body
                 ))}

@@ -6,38 +6,34 @@ const PlacementBottom = '&[x-placement^="bottom"]';
 const PlacementRight = '&[x-placement^="right"]';
 const PlacementLeft = '&[x-placement^="left"]';
 
-const ArrowDiv = Glamorous.div({
+const ArrowDiv = Glamorous.div<{ size: number }>((props) => ({
     borderStyle: 'solid',
     position: 'absolute',
     [PlacementTop]: {
-        borderWidth: '5px 5px 0 5px',
+        borderWidth: `${props.size}px ${props.size}px 0 ${props.size}px`,
         borderColor: '#fff transparent transparent transparent',
-        bottom: -5,
+        bottom: -props.size,
     },
     [PlacementBottom]: {
-        borderWidth: '0 5px 5px 5px',
+        borderWidth: `0 ${props.size}px ${props.size}px ${props.size}px`,
         borderColor: 'transparent transparent #fff transparent',
-        top: -5,
+        top: -props.size,
     },
     [PlacementRight]: {
-        borderWidth: '5px 5px 5px 0',
+        borderWidth: `${props.size}px ${props.size}px ${props.size}px 0`,
         borderColor: 'transparent #fff transparent transparent',
-        left: -5,
+        left: -props.size,
     },
     [PlacementLeft]: {
-        borderWidth: '5px 0 5px 5px',
+        borderWidth: `${props.size}px 0 ${props.size}px ${props.size}px`,
         borderColor: 'transparent transparent transparent #fff',
-        right: -5,
+        right: -props.size,
     },
-});
+}));
 
-export class XPopperArrow extends React.PureComponent<{ arrowRef: (arrow: any) => void, className?: string }> {
-    static PlacementTop = PlacementTop;
-    static PlacementBottom = PlacementBottom;
-    static PlacementRight = PlacementRight;
-    static PlacementLeft = PlacementLeft;
-
+export class XPopperArrow extends React.PureComponent<{ size?: number, captureRef?: (arrow: any) => void }> implements XPopperArrow {
     render() {
-        return (<ArrowDiv className={this.props.className} innerRef={this.props.arrowRef} />);
+        let size = this.props.size === undefined ? 5 : this.props.size;
+        return (<ArrowDiv innerRef={this.props.captureRef} size={size}/>);
     }
 }

@@ -1,11 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 
-const PlacementTop = '&[x-placement^="top"]';
-const PlacementBottom = '&[x-placement^="bottom"]';
-const PlacementRight = '&[x-placement^="right"]';
-const PlacementLeft = '&[x-placement^="left"]';
-
 const ContentDiv = Glamorous.div<{ maxWidth?: number }>((props) => ({
     position: 'relative',
     maxWidth: props.maxWidth,
@@ -21,15 +16,11 @@ const ContentDiv = Glamorous.div<{ maxWidth?: number }>((props) => ({
     flexDirection: 'column'
 }));
 
-export class XPopperContent extends React.PureComponent<{ contentRef: (arrow: any) => void, className?: string, maxWidth?: number }> {
-    static PlacementTop = PlacementTop;
-    static PlacementBottom = PlacementBottom;
-    static PlacementRight = PlacementRight;
-    static PlacementLeft = PlacementLeft;
+export class XPopperContent extends React.PureComponent<{ captureRef?: (arrow: any) => void, maxWidth?: number }> {
 
     render() {
         return (
-            <ContentDiv className={this.props.className} innerRef={this.props.contentRef} maxWidth={this.props.maxWidth}>
+            <ContentDiv innerRef={this.props.captureRef} maxWidth={this.props.maxWidth}>
                 {this.props.children}
             </ContentDiv>);
     }
