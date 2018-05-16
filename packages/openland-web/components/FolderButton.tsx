@@ -41,25 +41,8 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
         this.state = { show: false };
     }
 
-    componentDidMount() {
-        document.addEventListener('mousedown', this.handleClickOutside, true);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleClickOutside, true);
-    }
-
     handleClose = () => {
-        console.warn('handleClose');
         this.setState({ show: false });
-    }
-
-    handleClickOutside = (e: any) => {
-        console.warn(e);
-        // const el = this.container;
-        // if (!el.contains(e.target)) {
-        //     onClickOutside(e);
-        // }
     }
 
     render() {
@@ -79,7 +62,8 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
                 padding={10}
                 arrow={null}
                 placement="bottom"
-                width={this.props.menuWidth}>
+                width={this.props.menuWidth}
+                onClickOutside={this.handleClose}>
                 {button}
             </XPopper>
         );
