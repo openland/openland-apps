@@ -794,6 +794,24 @@ export interface AddToFolderMutation {
   },
 };
 
+export interface SetParcelFolderMutationVariables {
+  parcelId: string,
+  folderId?: string | null,
+};
+
+export interface SetParcelFolderMutation {
+  setFolder:  {
+    __typename: "Parcel",
+    id: string,
+    folder:  {
+      __typename: "Folder",
+      id: string,
+      name: string,
+      parcelsCount: number,
+    } | null,
+  },
+};
+
 export interface OrganizationsQuery {
   organizations:  Array< {
     __typename: "Organization",

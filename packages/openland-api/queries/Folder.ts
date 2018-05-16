@@ -71,3 +71,16 @@ export const AddToFolderMutation = gql`
         }
     }
 `;
+
+export const SetParcelFolderMutation = gql`
+    mutation SetParcelFolder($parcelId: ID!, $folderId: ID) {
+        setFolder: alphaParcelSetFolder(parcelId: $parcelId, folderId: $folderId) {
+            id
+            folder {
+                id
+                name
+                parcelsCount
+            }
+        }
+    }
+`;

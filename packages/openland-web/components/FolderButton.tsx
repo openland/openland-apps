@@ -2,24 +2,24 @@ import * as React from 'react';
 import { XButton, XButtonSize } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { withFolders, withAddToFolderMutation } from '../api';
+import { withFolders, withSetFolderMutation } from '../api';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 
-const ButtonMoveToFolder = withAddToFolderMutation((props) => {
+const ButtonMoveToFolder = withSetFolderMutation((props) => {
     return (
         <XModalContext.Consumer>
             {(modal) => (
                 <XButtonMutation
                     text={(props as any).text}
-                    mutation={props.addToFolder}
+                    mutation={props.setFolder}
                     variables={{ parcelId: (props as any).parcelId, folderId: (props as any).folderId }}
                     onSuccess={modal!!.close}
                 />
             )}
         </XModalContext.Consumer>
     );
-}) as React.ComponentType<{ text: string, parcelId: string, folderId: string }>;
+}) as React.ComponentType<{ text: string, parcelId: string, folderId?: string }>;
 
 const FolderForm = withFolders((props) => {
     return (
@@ -27,6 +27,7 @@ const FolderForm = withFolders((props) => {
             {props.data.folders && props.data.folders.map((v) => (
                 <ButtonMoveToFolder key={v.id} parcelId={(props as any).parcelId} text={v.name} folderId={v.id} />
             ))}
+            <ButtonMoveToFolder key="_remove" parcelId={(props as any).parcelId} text="Remove"/>
         </XVertical>
     );
 }) as React.ComponentType<{ parcelId: string, size?: XButtonSize }>;
@@ -73,7 +74,8 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
                         <FolderForm parcelId={this.props.parcelId} />
                     </XModalContext.Provider>}
                 padding={10}
-                arrow={null}>
+                arrow={null}
+                placement="bottom">
                 {button}
             </XPopper>
         );

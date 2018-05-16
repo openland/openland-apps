@@ -6,4 +6,5 @@ export const FoldersQuery = typedQuery<Types.FoldersQuery, {}>(Folder.FoldersQue
 export const FoldersSelectQuery = typedQuery<Types.FoldersSelectQuery, {}>(Folder.FoldersSelectQuery);
 export const FolderQuery = typedQuery<Types.FolderQuery, Types.FolderQueryVariables>(Folder.FolderQuery);
 export const CreateFolderMutation = typedMutation<Types.CreateFolderMutation, Types.CreateFolderMutationVariables>(Folder.CreateFolderMutation);
+export const SetParcelFolderMutation = typedMutation<Types.SetParcelFolderMutation, Types.SetParcelFolderMutationVariables>(Folder.SetParcelFolderMutation);
 export const AddToFolderMutation = typedMutation<Types.AddToFolderMutation, Types.AddToFolderMutationVariables>(Folder.AddToFolderMutation);
