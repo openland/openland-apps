@@ -7,7 +7,52 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
 import { XTitle } from 'openland-x/XTitle';
 import { XPopper } from 'openland-x/XPopper';
-import { XPopperArrow } from 'openland-x/popper/XPopperArrow';
+import Glamorous from 'glamorous';
+
+const CustomContentDiv = Glamorous.div<{ maxWidth?: number }>((props) => ({
+    position: 'relative',
+    maxWidth: props.maxWidth,
+    padding: 10,
+    background: '#fff',
+    borderRadius: 4,
+    boxShadow: '0 0 0 1px rgba(255, 10, 10, .1), 0 15px 35px 0 rgba(255, 10, 10, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
+    color: '#525f7f',
+    fontSize: 14,
+    lineHeight: 'normal',
+    fontWeight: 400,
+    display: 'flex',
+    flexDirection: 'column'
+}));
+
+const PlacementTop = '&[x-placement^="top"]';
+const PlacementBottom = '&[x-placement^="bottom"]';
+const PlacementRight = '&[x-placement^="right"]';
+const PlacementLeft = '&[x-placement^="left"]';
+
+const CustomArrowDiv = Glamorous.div<{ size: number }>((props) => ({
+    borderStyle: 'solid',
+    position: 'absolute',
+    [PlacementTop]: {
+        borderWidth: `${props.size}px ${props.size}px 0 ${props.size}px`,
+        borderColor: '#f22 transparent transparent transparent',
+        bottom: -props.size,
+    },
+    [PlacementBottom]: {
+        borderWidth: `0 ${props.size}px ${props.size}px ${props.size}px`,
+        borderColor: 'transparent transparent #f22 transparent',
+        top: -props.size,
+    },
+    [PlacementRight]: {
+        borderWidth: `${props.size}px ${props.size}px ${props.size}px 0`,
+        borderColor: 'transparent #f22 transparent transparent',
+        left: -props.size,
+    },
+    [PlacementLeft]: {
+        borderWidth: `${props.size}px 0 ${props.size}px ${props.size}px`,
+        borderColor: 'transparent transparent transparent #f22',
+        right: -props.size,
+    },
+}));
 
 export default withApp('UI Framework - Popper', 'viewer', (props) => {
     return (
@@ -68,10 +113,25 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                         </XPopper>
 
                         <XPopper content={(<XButton text="lorem ipsum" />)}
-                            show={true} placement="right" animated={false} arrow={(
-                                <XPopperArrow size={20}/>
-                            )} padding={40}>
+                            show={true} placement="right" animated={false} 
+                            arrow={(arrowRef: (node: any) => void) => {
+                                return (
+                                    <CustomArrowDiv innerRef={arrowRef} size={10}/>
+                                );
+                            }}>
                             <XButton text="custom arrow" alignSelf="flex-start" />
+                        </XPopper>
+
+                        <XPopper
+                            content={(<XButton text="lorem ipsum" />)}
+                            show={true} placement="right" animated={false}
+                            contentContainer={(contentRef: (node: any) => void) => {
+                                return (
+                                    <CustomContentDiv innerRef={contentRef} />
+                                );
+                            }}
+                        >
+                            <XButton text="custom content container" alignSelf="flex-start" />
                         </XPopper>
 
                         {/* <XTitle>Tooltip</XTitle>

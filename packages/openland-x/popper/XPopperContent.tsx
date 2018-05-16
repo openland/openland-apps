@@ -16,11 +16,11 @@ const ContentDiv = Glamorous.div<{ maxWidth?: number }>((props) => ({
     flexDirection: 'column'
 }));
 
-export class XPopperContent extends React.PureComponent<{ captureRef?: (arrow: any) => void, maxWidth?: number }> {
+export class XPopperContent extends React.PureComponent<{ captureRef?: (arrow: any) => void, maxWidth?: number, style?: React.CSSProperties}> {
 
     render() {
         return (
-            <ContentDiv innerRef={this.props.captureRef} maxWidth={this.props.maxWidth}>
+            <ContentDiv innerRef={this.props.captureRef} maxWidth={this.props.maxWidth} style={this.props.style}>
                 {this.props.children}
             </ContentDiv>);
     }

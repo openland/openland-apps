@@ -3,8 +3,6 @@ import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import * as classnames from 'classnames';
 import { PopperRendererProps } from '../XPopper';
-import { XPopperArrow } from './XPopperArrow';
-import { XPopperContent } from './XPopperContent';
 
 const showAnimation = glamor.keyframes({
     '0%': {
@@ -82,8 +80,8 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
         this.props.onMounted();
     }
 
-    prepareRef = (arrow?: React.ReactElement<XPopperArrow> | null, capturer?: (node: any) => void) => {
-        return arrow ? React.cloneElement(arrow as any, {captureRef: capturer}) : arrow;
+    prepareRef = (element?: any | null,  props?: any) => {
+        return element ? React.cloneElement(element as any, props) : element;
     }
 
     render() {
@@ -124,10 +122,10 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
                     onMouseOver={renderProps.showOnHover ? renderProps.onMouseOverTarget : undefined}
                     onMouseOut={renderProps.showOnHover ? renderProps.onMouseOutTarget : undefined}
                 >
-                    <XPopperContent maxWidth={this.props.maxWidth} captureRef={renderProps.caputurePopperContentNode}>
-                        {renderProps.content}
-                    </XPopperContent>
-                    {this.prepareRef(this.props.arrow, renderProps.caputurePopperArrowNode)}
+                 
+                    {this.prepareRef(this.props.contentContainer, {captureRef: renderProps.caputurePopperContentNode, maxWidth: this.props.maxWidth, children: renderProps.content})}
+                    
+                    {this.prepareRef(this.props.arrow, {captureRef: renderProps.caputurePopperArrowNode})}
                 </div>
             </PopperRoot>
         );

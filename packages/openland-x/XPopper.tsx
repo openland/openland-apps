@@ -17,8 +17,8 @@ interface XPopper2SelfProps {
     groupId?: string;
     animationDuration?: number;
     animation?: 'fade' | 'pop' | null;
-    arrow?: any | null;
-    contentContainer?: any | null;
+    arrow?: ((arrowRef: (node: any) => void) => any) | null;
+    contentContainer?: (contentRef: (node: any) => void) => any;
 }
 
 interface XPopperState {
@@ -76,11 +76,11 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         };
         this.arrow = props.arrow === undefined ? (
             <XPopperArrow />
-        ) : props.arrow;
+        ) : props.arrow === null ? null : props.arrow(this.caputurePopperArrowNode);
 
         this.contentContainer = props.contentContainer === undefined ? (
             <XPopperContent />
-        ) : props.contentContainer;
+        ) : props.contentContainer(this.caputurePopperContentNode);
     }
 
     caputureTargetNode = (node: any | null) => {
@@ -165,13 +165,13 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                         order: 100,
                         fn: (data, options: Object) => {
                             if (data.placement === 'top') {
-                                data.offsets.popper.top = data.offsets.popper.top - (this.props.padding || (this.arrow === null ? 0 : 10));
+                                data.offsets.popper.top = data.offsets.popper.top - (this.props.padding || 10);
                             } else if (data.placement === 'bottom') {
-                                data.offsets.popper.top = data.offsets.popper.top + (this.props.padding || (this.arrow === null ? 0 : 10));
+                                data.offsets.popper.top = data.offsets.popper.top + (this.props.padding || 10);
                             } else if (data.placement === 'left') {
-                                data.offsets.popper.left = data.offsets.popper.left - (this.props.padding || (this.arrow === null ? 0 : 10));
+                                data.offsets.popper.left = data.offsets.popper.left - (this.props.padding || 10);
                             } else if (data.placement === 'right') {
-                                data.offsets.popper.left = data.offsets.popper.left + (this.props.padding || (this.arrow === null ? 0 : 10));
+                                data.offsets.popper.left = data.offsets.popper.left + (this.props.padding || 10);
                             }
                             return data;
                         }
