@@ -114,8 +114,8 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
 
         renderProps.animationClass = pendingAnimation;
 
-        let animationDurationIn = 150;
-        let animationDurationOut = 300;
+        let animationDurationIn = this.props.animationDurationIn !== undefined ? this.props.animationDurationIn : 150;
+        let animationDurationOut = this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 300;
 
         return (
             <PopperRoot show={renderProps.show !== false} animationDurationIn={animationDurationIn} animationDurationOut={animationDurationOut}>

@@ -24,6 +24,8 @@ interface XPopper2SelfProps {
     groupId?: string;
 
     animated?: boolean;
+    animationDurationIn?: number;
+    animationDurationOut?: number;
     arrow?: ((arrowRef: (node: any) => void) => any) | null;
     contentContainer?: (contentRef: (node: any) => void) => any;
 }
@@ -159,7 +161,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
     initPopperIfNeeded = () => {
         if (this._node && (this.arrow === null || this._arrowNode) && this._targetNode && this._contentNode && this.mounted && !this._popper) {
-            let { children, content, show, animated, padding, groupId, showOnHover, width, height, maxWidth, maxHeight, minWidth, minHeight, arrow, contentContainer, onClickOutside, ...popperProps } = this.props;
+            let { children, content, show, animated, animationDurationIn, animationDurationOut, padding, groupId, showOnHover, width, height, maxWidth, maxHeight, minWidth, minHeight, arrow, contentContainer, onClickOutside, ...popperProps } = this.props;
             this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
                     shift: {
