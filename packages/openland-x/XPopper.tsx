@@ -122,7 +122,6 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                 this._targetNode = newTargetNode;
                 if (this._targetNode && this.props.showOnHover) {
                     this.dispose();
-                    // TODO: check if changed
                     this._targetNode.addEventListener('mouseover', this.onMouseOverTarget);
                     this._targetNode.addEventListener('mouseout', this.onMouseOutTarget);
                 }
@@ -243,7 +242,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     onMouseOutTarget = () => {
         if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
         if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
-        const animationDurationOut = this.props.animated === false ? 0 : 150;
+        const animationDurationOut = this.props.animated === false ? 0 : this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 150;
 
         this.willHideTimeout = window.setTimeout(
             () => {
@@ -266,7 +265,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     }
 
     onMouseDown = (e: any) => {
-        if (this.props.onClickOutside && this._contentNode && !this._contentNode.contains(e.target) && this._arrowNode && !this._arrowNode.contains(e.target)) {
+        if (this.props.onClickOutside && this._contentNode && !this._contentNode.contains(e.target) && (this.props.arrow === null || (this._arrowNode && !this._arrowNode.contains(e.target)))) {
             this.props.onClickOutside();
         }
     }
