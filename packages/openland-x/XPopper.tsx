@@ -278,7 +278,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     }
 
     onMouseDown = (e: any) => {
-        if (this.props.onClickOutside && this._contentNode && !this._contentNode.contains(e.target) && (this.props.arrow === null || (this._arrowNode && !this._arrowNode.contains(e.target)))) {
+        if (this.props.onClickOutside && this._contentNode && !this._contentNode.contains(e.target) && this._targetNode && !this._targetNode.contains(e.target) && (this.props.arrow === null || (this._arrowNode && !this._arrowNode.contains(e.target)))) {
             this.props.onClickOutside();
         }
     }
