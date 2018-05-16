@@ -12,10 +12,15 @@ interface XPopper2SelfProps {
     showOnHover?: boolean;
     animated?: boolean;
     padding?: number;
+    width?: number;
+    height?: number;
     maxWidth?: number;
     maxHeight?: number;
+    minWidth?: number;
+    minHeight?: number;
     groupId?: string;
-    animationDuration?: number;
+    animationDurationIn?: number;
+    animationDurationOut?: number;
     animation?: 'fade' | 'pop' | null;
     arrow?: ((arrowRef: (node: any) => void) => any) | null;
     contentContainer?: (contentRef: (node: any) => void) => any;
@@ -75,11 +80,11 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             ownMounted: false
         };
         this.arrow = props.arrow === undefined ? (
-            <XPopperArrow />
+            <XPopperArrow captureRef={this.caputurePopperArrowNode} />
         ) : props.arrow === null ? null : props.arrow(this.caputurePopperArrowNode);
 
         this.contentContainer = props.contentContainer === undefined ? (
-            <XPopperContent />
+            <XPopperContent captureRef={this.caputurePopperContentNode} />
         ) : props.contentContainer(this.caputurePopperContentNode);
     }
 
@@ -158,7 +163,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
     initPopperIfNeeded = () => {
         if (this._node && (this.arrow === null || this._arrowNode) && this._targetNode && this._contentNode && this.mounted && !this._popper) {
-            let { children, content, show, animated, padding, animationDuration, groupId, showOnHover, maxWidth, maxHeight, animation, arrow, contentContainer, ...popperProps } = this.props;
+            let { children, content, show, animated, padding, animationDurationIn, animationDurationOut, groupId, showOnHover, width, height, maxWidth, maxHeight, minWidth, minHeight, animation, arrow, contentContainer, ...popperProps } = this.props;
             this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
                     shift: {
@@ -217,7 +222,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     onMouseOutTarget = () => {
         if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
         if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
-        const animationDuration = this.props.animated === false ? 0 : this.props.animationDuration !== undefined ? this.props.animationDuration : 200;
+        const animationDurationOut = this.props.animated === false ? 0 : this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 150;
 
         this.willHideTimeout = window.setTimeout(
             () => {
@@ -236,14 +241,11 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                     }
                 });
             },
-            (animationDuration));
+            (animationDurationOut));
     }
 
     dispose = () => {
-//  error TS2345: Argument of type 'number | undefined' is not assignable to parameter of type 'number'.
-//          Type 'undefined' is not assignable to type 'number'.
-// WTF, lint?
-        clearTimeout(this.hideTimeout!);
+        if (this.hideTimeout) { clearTimeout(this.hideTimeout!); }
         if (this._targetNode) {
             this._targetNode.removeEventListener('mouseover', this.onMouseOverTarget);
             this._targetNode.removeEventListener('mouseout', this.onMouseOutTarget);

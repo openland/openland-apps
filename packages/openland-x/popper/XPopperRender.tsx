@@ -4,6 +4,11 @@ import * as glamor from 'glamor';
 import * as classnames from 'classnames';
 import { PopperRendererProps } from '../XPopper';
 
+interface AnimatonSet {
+    in: string;
+    out: string;
+}
+
 const showAnimation = glamor.keyframes({
     '0%': {
         opacity: 0,
@@ -22,7 +27,13 @@ const hideAnimation = glamor.keyframes({
     }
 });
 
-const PopperRoot = Glamorous.div<{ show?: boolean }>((props) => ({
+class AnimationCollection {
+    'fade': {
+
+    };
+}
+
+const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDurationOut: number, show?: boolean }>((props) => ({
     zIndex: 501,
 
     '&, & .popper': {
@@ -35,14 +46,14 @@ const PopperRoot = Glamorous.div<{ show?: boolean }>((props) => ({
     },
 
     '& .popper.hide': {
-        animationDuration: '0.3s',
+        animationDuration: `${props.animationDurationOut}ms`,
         animationFillMode: 'forwards',
         animationName: `${hideAnimation}`,
         animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
     },
 
     '& .popper.show': {
-        animationDuration: '0.15s',
+        animationDuration: `${props.animationDurationIn}ms`,
         animationFillMode: 'forwards',
         animationName: `${showAnimation}`,
         animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
@@ -80,7 +91,7 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
         this.props.onMounted();
     }
 
-    prepareRef = (element?: any | null,  props?: any) => {
+    prepareRef = (element?: any | null, props?: any) => {
         return element ? React.cloneElement(element as any, props) : element;
     }
 
@@ -114,18 +125,29 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
 
         renderProps.animationClass = pendingAnimation;
 
+        let animationDurationIn = this.props.animationDurationIn !== undefined ? this.props.animationDurationIn : 150;
+        let animationDurationOut = this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 300;
+
         return (
-            <PopperRoot show={renderProps.show !== false}>
+            <PopperRoot show={renderProps.show !== false} animationDurationIn={animationDurationIn} animationDurationOut={animationDurationOut}>
                 <div
                     className={classnames('popper', renderProps.animationClass ? renderProps.animationClass : renderProps.animated === false ? 'static' : renderProps.willHide ? 'hide' : 'show')}
                     ref={renderProps.caputurePopperNode}
                     onMouseOver={renderProps.showOnHover ? renderProps.onMouseOverTarget : undefined}
                     onMouseOut={renderProps.showOnHover ? renderProps.onMouseOutTarget : undefined}
                 >
-                 
-                    {this.prepareRef(this.props.contentContainer, {captureRef: renderProps.caputurePopperContentNode, maxWidth: this.props.maxWidth, children: renderProps.content})}
-                    
-                    {this.prepareRef(this.props.arrow, {captureRef: renderProps.caputurePopperArrowNode})}
+
+                    {this.prepareRef(this.props.contentContainer, {
+                        width: this.props.width,
+                        height: this.props.height,
+                        maxWidth: this.props.maxWidth,
+                        maxHeight: this.props.maxHeight,
+                        minWidth: this.props.minWidth,
+                        minHeight: this.props.minHeight,
+                        children: renderProps.content
+                    })}
+
+                    {this.props.arrow}
                 </div>
             </PopperRoot>
         );

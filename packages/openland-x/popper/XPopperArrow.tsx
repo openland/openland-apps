@@ -31,7 +31,7 @@ const ArrowDiv = Glamorous.div<{ size: number }>((props) => ({
     },
 }));
 
-export class XPopperArrow extends React.PureComponent<{ size?: number, captureRef?: (arrow: any) => void }> implements XPopperArrow {
+export class XPopperArrow extends React.PureComponent<{ size?: number, captureRef: (arrow: any) => void }> implements XPopperArrow {
     render() {
         let size = this.props.size === undefined ? 5 : this.props.size;
         return (<ArrowDiv innerRef={this.props.captureRef} size={size}/>);

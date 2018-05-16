@@ -65,7 +65,7 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                         <XPopper
                             content={`Lorem ipsum dolor sit amet, mei euripidis consequat ad, qui quot dicam recusabo ne, cu pro harum scripta voluptua. Vivendo theophrastus est ut, audire eleifend no sea. Per ei mediocrem expetendis interpretaris, melius aliquam dissentias nam ex. Eum an viris choro honestatis. Recusabo deseruisse definitionem sed no, stet facilis albucius et usu, vitae iuvaret ne est.`}
                             show={true}
-                            maxWidth={200}
+                            width={200}
                             placement="right">
                             <XButton text="right | always shown | sliding arrow | width" alignSelf="flex-start" />
                         </XPopper>
