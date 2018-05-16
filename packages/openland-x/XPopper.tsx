@@ -38,7 +38,7 @@ export interface PopperRendererProps extends XPopper2SelfProps, XPopperState {
     onUnmounted: () => void;
 }
 
-export interface XPopperProps extends XPopper2SelfProps, Popper.PopperOptions {
+export interface XPopperProps extends XPopper2SelfProps, PopperJS.PopperOptions {
 
 }
 

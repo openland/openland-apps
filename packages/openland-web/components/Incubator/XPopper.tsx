@@ -72,13 +72,13 @@ interface PopperChildProps {
     'data-placement': string | null;
 }
 
-interface PopperProps extends Popper.PopperOptions {
+interface PopperProps extends PopperJS.PopperOptions {
     componentFactory: (popperProps: PopperChildProps) => React.ReactNode;
     updated?: boolean;
 }
 
 interface PopperState {
-    data: Popper.Data | null;
+    data: PopperJS.Data | null;
 }
 
 class PopperClass extends React.Component<PopperProps, PopperState> {
