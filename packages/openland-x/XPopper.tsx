@@ -233,7 +233,10 @@ export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
     }
 
     dispose = () => {
-        clearTimeout(this.hideTimeout);
+//  error TS2345: Argument of type 'number | undefined' is not assignable to parameter of type 'number'.
+//          Type 'undefined' is not assignable to type 'number'.
+// WTF, lint?
+        clearTimeout(this.hideTimeout!);
         if (this._targetNode) {
             this._targetNode.removeEventListener('mouseover', this.onMouseOverTarget);
             this._targetNode.removeEventListener('mouseout', this.onMouseOutTarget);
