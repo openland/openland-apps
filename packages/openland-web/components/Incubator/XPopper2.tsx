@@ -29,7 +29,7 @@ export interface PopperRendererProps extends XPopper2SelfProps, XPopper2State {
     onMouseOutTarget: () => void;
 }
 
-export interface XPopper2Props extends XPopper2SelfProps, Popper.PopperOptions {
+export interface XPopper2Props extends XPopper2SelfProps, PopperJS.PopperOptions {
 
 }
 
