@@ -24,30 +24,14 @@ interface StreetViewModalPreviewProps {
     height: number;
 }
 
-export class XStreetViewModalPreview extends React.Component<StreetViewModalPreviewProps, { location: any }> {
-    constructor(props: StreetViewModalPreviewProps) {
-        super(props);
-
-        this.state = {
-            location: ''
-        };
-    }
-
-    componentDidMount() {
+export function XStreetViewModalPreview(props: StreetViewModalPreviewProps) {
         let center = CityLocations.sf;
-        if (this.props.location) {
-            center = this.props.location;
-        } else if (this.props.geometry) {
-            center = loadCenter(this.props.geometry);
+        if (props.location) {
+            center = props.location;
+        } else if (props.geometry) {
+            center = loadCenter(props.geometry);
         }
-        this.setState({
-            location: center
-        });
-    }
-
-    render() {
         return (
-            <StyledStreetViewPreview location={this.state.location} width={this.props.width} height={this.props.height} />
+            <StyledStreetViewPreview location={center} width={props.width} height={props.height} />
         );
-    }
 }

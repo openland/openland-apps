@@ -294,7 +294,7 @@ export const ParcelCard = withParcelDirect((props) => (
                     <SeparatedDiv>
                         <StreetViewDiv>
                             <XStreetViewModal geometry={props.data.item.geometry} />
-                            <XStreetViewModalPreview geometry={props.data.item.geometry} width={panelWidth - 32} height={170} />
+                            <XStreetViewModalPreview key={props.variables.parcelId + 'streetView'} geometry={props.data.item.geometry} width={panelWidth - 32} height={170} />
                         </StreetViewDiv>
                     </SeparatedDiv>
                 )}
