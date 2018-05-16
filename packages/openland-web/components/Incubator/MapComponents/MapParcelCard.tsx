@@ -109,7 +109,7 @@ class Container extends React.Component<ContainerProps, { compact: boolean }> {
         });
     }
 
-    shouldComponentUpdate(nextProps: any) {
+    shouldComponentUpdate(nextProps: ContainerProps) {
         let contentDiv = this.contentRef;
 
         if (this.props.parcel !== nextProps.parcel) {
@@ -290,11 +290,11 @@ export const ParcelCard = withParcelDirect((props) => (
                         </XPopover>
                     </MenuButtonWrapper>
                 </XHeader>
-                {props.data!!.item!!.geometry && (
+                {props.data.item.geometry && !props.data!!.loading && (
                     <SeparatedDiv>
                         <StreetViewDiv>
-                            <XStreetViewModal geometry={props.data!!.item!!.geometry!!} />
-                            <XStreetViewModalPreview geometry={props.data!!.item!!.geometry!!} width={panelWidth - 32} height={170} />
+                            <XStreetViewModal geometry={props.data.item.geometry} />
+                            <XStreetViewModalPreview geometry={props.data.item.geometry} width={panelWidth - 32} height={170} />
                         </StreetViewDiv>
                     </SeparatedDiv>
                 )}
