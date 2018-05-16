@@ -7,6 +7,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
 import { XTitle } from 'openland-x/XTitle';
 import { XPopper2 } from 'openland-x/XPopper';
+import { XPopperArrowDefault } from 'openland-x/popper/XPopperArrow';
 
 export default withApp('UI Framework - Popper', 'viewer', (props) => {
     return (
@@ -18,47 +19,59 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
 
                         <XPopper2
                             content={`Lorem ipsum dolor sit amet, mei euripidis consequat ad, qui quot dicam recusabo ne, cu pro harum scripta voluptua. Vivendo theophrastus est ut, audire eleifend no sea. Per ei mediocrem expetendis interpretaris, melius aliquam dissentias nam ex. Eum an viris choro honestatis. Recusabo deseruisse definitionem sed no, stet facilis albucius et usu, vitae iuvaret ne est.`}
-                            isVisible={true}
-                            width={200}
+                            show={true}
+                            maxWidth={200}
                             placement="right">
                             <XButton text="right | always shown | sliding arrow | width" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} visibleOnHover={true} placement="left">
+                        <XPopper2 content={'lorem ipsum'} showOnHover={true} placement="left">
                             <XButton text="left | hover" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} visibleOnHover={true} placement="top">
+                        <XPopper2 content={'lorem ipsum'} showOnHover={true} placement="top">
                             <XButton text="top | hover" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} visibleOnHover={true} placement="bottom">
+                        <XPopper2 content={'lorem ipsum'} showOnHover={true} placement="bottom">
                             <XButton text="bottom | hover" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} isVisible={false}>
+                        <XPopper2 content={'lorem ipsum'} show={false}>
                             <XButton text="hiden" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} isVisible={true} placement="right" padding={20}>
+                        <XPopper2 content={'lorem ipsum'} show={true} placement="right" padding={20}>
                             <XButton text="padding-left" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={'lorem ipsum'} visibleOnHover={true} placement="right" padding={20}>
+                        <XPopper2 content={'lorem ipsum'} showOnHover={true} placement="right" padding={20}>
                             <XButton text="padding" alignSelf="flex-start" />
                         </XPopper2>
 
                         <XPopper2 content={<XButton text="lorem ipsum" />
-                        } visibleOnHover={true} placement="right" >
+                        } showOnHover={true} placement="right" >
                             <XButton text="reach content" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={<XButton text="lorem ipsum" />} isVisible={true} placement="right">
+                        <XPopper2 content={<XButton text="lorem ipsum" />} show={true} placement="right">
                             <XButton text="reach content - disable wrap" alignSelf="flex-start" />
                         </XPopper2>
 
-                        <XPopper2 content={(<XButton text="lorem ipsum" />)} visibleOnHover={true} placement="right" animated={false}>
+                        <XPopper2 content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" animated={false}>
                             <XButton text="not animated" alignSelf="flex-start" />
+                        </XPopper2>
+
+                        <XPopper2 content={(<XButton text="lorem ipsum" />)}
+                            show={true} placement="right" animated={false} arrow={null}>
+                            <XButton text="no arrow" alignSelf="flex-start" />
+                        </XPopper2>
+
+                        <XPopper2 content={(<XButton text="lorem ipsum" />)}
+                            show={true} placement="right" animated={false} arrow={(
+                                <XPopperArrowDefault size={20}/>
+                            )} padding={40}>
+                            <XButton text="custom arrow" alignSelf="flex-start" />
                         </XPopper2>
 
                         {/* <XTitle>Tooltip</XTitle>
@@ -93,6 +106,6 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
 
                 </XVertical>
             </XContent>
-        </DevDocsScaffold>
+        </DevDocsScaffold >
     );
 });

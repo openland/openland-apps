@@ -82,6 +82,10 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
         this.props.onMounted();
     }
 
+    prepareArrow = (arrow?: React.ReactElement<XPopperArrow> | null, capturer?: (node: any) => void) => {
+        return arrow ? React.cloneElement(arrow as any, {arrowRef: capturer}) : arrow;
+    }
+
     render() {
         let pendingAnimation: 'static' | 'hide' | 'show' = this.props.animated === false ? 'static' : this.props.willHide ? 'hide' : 'show';
         let renderProps = { ...this.props };
@@ -100,7 +104,7 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
             }
 
             if (this !== XPopperRender.currentPopper[renderProps.groupId]) {
-                renderProps.isVisible = false;
+                renderProps.show = false;
             }
 
             if (pendingAnimation === 'show' && (group.size > 1 || renderProps.willHide || renderProps.willHide || this.prevAnimation === 'static')) {
@@ -113,17 +117,17 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
         renderProps.animationClass = pendingAnimation;
 
         return (
-            <PopperRoot show={renderProps.isVisible !== false}>
+            <PopperRoot show={renderProps.show !== false}>
                 <div
                     className={classnames('popper', renderProps.animationClass ? renderProps.animationClass : renderProps.animated === false ? 'static' : renderProps.willHide ? 'hide' : 'show')}
                     ref={renderProps.caputurePopperNode}
-                    onMouseOver={renderProps.visibleOnHover ? renderProps.onMouseOverTarget : undefined}
-                    onMouseOut={renderProps.visibleOnHover ? renderProps.onMouseOutTarget : undefined}
+                    onMouseOver={renderProps.showOnHover ? renderProps.onMouseOverTarget : undefined}
+                    onMouseOut={renderProps.showOnHover ? renderProps.onMouseOutTarget : undefined}
                 >
-                    <XPopperContent maxWidth={this.props.width} contentRef={renderProps.caputurePopperContentNode}>
+                    <XPopperContent maxWidth={this.props.maxWidth} contentRef={renderProps.caputurePopperContentNode}>
                         {renderProps.content}
                     </XPopperContent>
-                    <XPopperArrow arrowRef={renderProps.caputurePopperArrowNode} />
+                    {this.prepareArrow(this.props.arrow, renderProps.caputurePopperArrowNode)}
                 </div>
             </PopperRoot>
         );
