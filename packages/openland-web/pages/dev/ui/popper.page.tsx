@@ -83,8 +83,16 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                             <XButton text="not animated" alignSelf="flex-start" />
                         </XPopper>
 
+                          <XPopper content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" animationDurationIn={2000} animationDurationOut={5000}>
+                            <XButton text="slow animation" alignSelf="flex-start" />
+                        </XPopper>
+
                         <XPopper content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" animation="pop">
                             <XButton text="animation pop" alignSelf="flex-start" />
+                        </XPopper>
+
+                        <XPopper content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" animationOut="pop" >
+                            <XButton text="animation pop only out" alignSelf="flex-start" />
                         </XPopper>
 
                         <XPopper content={(<XButton text="lorem ipsum" />)}
@@ -118,10 +126,6 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
 
                         <XPopper content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" showOnHoverContent={false}>
                             <XButton text="ignore content hover" alignSelf="flex-start" />
-                        </XPopper>
-
-                        <XPopper content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" showOnHoverContent={false}>
-                            <XButton text="animation pop" alignSelf="flex-start" />
                         </XPopper>
 
                         {/* <XTitle>Tooltip</XTitle>

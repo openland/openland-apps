@@ -42,6 +42,8 @@ interface XPopperProps {
     groupId?: string;
 
     animation?: 'fade' | 'pop' | null;
+    animationIn?: 'fade' | 'pop' | null;
+    animationOut?: 'fade' | 'pop' | null;
     animationDurationIn?: number;
     animationDurationOut?: number;
 
@@ -408,6 +410,8 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
             groupId: this.props.groupId,
             animation: this.props.animation,
+            animationIn: this.props.animationIn,
+            animationOut: this.props.animationOut,
             animationDurationIn: this.props.animationDurationIn,
             animationDurationOut: this.props.animationDurationOut,
 

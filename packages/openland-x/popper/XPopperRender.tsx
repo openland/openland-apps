@@ -18,6 +18,8 @@ export interface PopperRendererProps {
     groupId?: string;
 
     animation?: 'fade' | 'pop' | null;
+    animationIn?: 'fade' | 'pop' | null;
+    animationOut?: 'fade' | 'pop' | null;
     animationDurationIn?: number;
     animationDurationOut?: number;
 
@@ -158,7 +160,7 @@ const hideAnimationLeft = glamor.keyframes({
     }
 });
 
-const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDurationOut: number, animation: 'fade' | 'pop' | null }>((props) => ({
+const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDurationOut: number, animationIn: 'fade' | 'pop',  animationOut: 'fade' | 'pop'}>((props) => ({
     '.hide': {
         animationDuration: `${props.animationDurationOut}ms`,
         animationFillMode: 'forwards',
@@ -176,40 +178,40 @@ const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDuratio
     '[x-placement^="right"]': {
         marginLeft: 10,
         '.show': {
-            animationName: `${props.animation === 'pop' ? showAnimationRight : showAnimation } !important`,
+            animationName: `${props.animationIn === 'pop' ? showAnimationRight : showAnimation } !important`,
         },
         '.hide': {
-            animationName: `${props.animation === 'pop' ? hideAnimationRight : hideAnimation } !important`
+            animationName: `${props.animationOut === 'pop' ? hideAnimationRight : hideAnimation } !important`
         }
     },
 
     '[x-placement^="left"]': {
         marginLeft: 10,
         '.show': {
-            animationName: `${props.animation === 'pop' ? showAnimationLeft : showAnimation } !important`,
+            animationName: `${props.animationIn === 'pop' ? showAnimationLeft : showAnimation } !important`,
         },
         '.hide': {
-            animationName: `${props.animation === 'pop' ? hideAnimationLeft : hideAnimation } !important`
+            animationName: `${props.animationOut === 'pop' ? hideAnimationLeft : hideAnimation } !important`
         }
     },
 
     '[x-placement^="top"]': {
         marginLeft: 10,
         '.show': {
-            animationName: `${props.animation === 'pop' ? showAnimationTop : showAnimation } !important`,
+            animationName: `${props.animationIn === 'pop' ? showAnimationTop : showAnimation } !important`,
         },
         '.hide': {
-            animationName: `${props.animation === 'pop' ? hideAnimationTop : hideAnimation } !important`
+            animationName: `${props.animationOut === 'pop' ? hideAnimationTop : hideAnimation } !important`
         }
     },
 
     '[x-placement^="bottom"]': {
         marginLeft: 10,
         '.show': {
-            animationName: `${props.animation === 'pop' ? showAnimationBottom : showAnimation } !important`,
+            animationName: `${props.animationIn === 'pop' ? showAnimationBottom : showAnimation } !important`,
         },
         '.hide': {
-            animationName: `${props.animation === 'pop' ? hideAnimationBottom : hideAnimation } !important`
+            animationName: `${props.animationOut === 'pop' ? hideAnimationBottom : hideAnimation } !important`
         }
     },
 
@@ -238,7 +240,8 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
                 (
                     <PopperRoot
                         className={classnames('popper', this.props.animationClass ? this.props.animationClass : this.props.animation === null ? 'static' : this.props.willHide ? 'hide' : 'show')}
-                        animation={this.props.animation !== undefined ? this.props.animation : 'fade'}
+                        animationIn={this.props.animationIn ? this.props.animationIn : this.props.animation ? this.props.animation : 'fade'}
+                        animationOut={this.props.animationOut  ? this.props.animationOut : this.props.animation ? this.props.animation : 'fade'}
                         innerRef={this.props.caputurePopperNode}
                         onMouseOver={this.props.showOnHover ? this.props.onMouseOverContent : undefined}
                         onMouseOut={this.props.showOnHover ? this.props.onMouseOutContent : undefined}
