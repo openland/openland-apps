@@ -113,10 +113,10 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                         </XPopper>
 
                         <XPopper content={(<XButton text="lorem ipsum" />)}
-                            show={true} placement="right" animated={false} 
+                            show={true} placement="right" animated={false}
                             arrow={(arrowRef: (node: any) => void) => {
                                 return (
-                                    <CustomArrowDiv innerRef={arrowRef} size={10}/>
+                                    <CustomArrowDiv innerRef={arrowRef} size={10} />
                                 );
                             }}>
                             <XButton text="custom arrow" alignSelf="flex-start" />
@@ -134,10 +134,14 @@ export default withApp('UI Framework - Popper', 'viewer', (props) => {
                             <XButton text="custom content container" alignSelf="flex-start" />
                         </XPopper>
 
-                         <XPopper content={(<XButton text="lorem ipsum" />)} show={true} placement="right" onClickOutside={() => {
-                             console.warn('click outside!');
-                         }}>
+                        <XPopper content={(<XButton text="lorem ipsum" />)} show={true} placement="right" onClickOutside={() => {
+                            console.warn('click outside!');
+                        }}>
                             <XButton text="log click outside" alignSelf="flex-start" />
+                        </XPopper>
+
+                        <XPopper content={(<XButton text="lorem ipsum" />)} showOnHover={true} placement="right" showOnHoverContent={false}>
+                            <XButton text="ignore content hover" alignSelf="flex-start" />
                         </XPopper>
 
                         {/* <XTitle>Tooltip</XTitle>

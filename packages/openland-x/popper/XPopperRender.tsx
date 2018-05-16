@@ -122,8 +122,8 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
                 <div
                     className={classnames('popper', renderProps.animationClass ? renderProps.animationClass : renderProps.animated === false ? 'static' : renderProps.willHide ? 'hide' : 'show')}
                     ref={renderProps.caputurePopperNode}
-                    onMouseOver={renderProps.showOnHover ? renderProps.onMouseOverTarget : undefined}
-                    onMouseOut={renderProps.showOnHover ? renderProps.onMouseOutTarget : undefined}
+                    onMouseOver={renderProps.showOnHover ? renderProps.onMouseOverContent : undefined}
+                    onMouseOut={renderProps.showOnHover ? renderProps.onMouseOutContent : undefined}
                 >
 
                     {this.prepareRef(this.props.contentContainer, {
