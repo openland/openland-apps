@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import * as classnames from 'classnames';
 
-export interface PopperRendererProps {    
+export interface PopperRendererProps {
     content: any;
     show?: boolean;
     showOnHover?: boolean;
@@ -54,36 +54,22 @@ const hideAnimation = glamor.keyframes({
     }
 });
 
-const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDurationOut: number, show?: boolean }>((props) => ({
-    zIndex: 501,
-
-    '&, & .popper': {
-        zIndex: 501,
-        display: 'none',
-    },
-
-    '&, & .popper[x-placement]': {
-        display: props.show ? 'block' : 'none',
-    },
-
-    '& .popper.hide': {
+const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDurationOut: number }>((props) => ({
+    '.hide': {
         animationDuration: `${props.animationDurationOut}ms`,
         animationFillMode: 'forwards',
         animationName: `${hideAnimation}`,
         animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
     },
 
-    '& .popper.show': {
+    '.show': {
         animationDuration: `${props.animationDurationIn}ms`,
         animationFillMode: 'forwards',
         animationName: `${showAnimation}`,
         animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
     },
-    '& .popper.static': {
+    '.static': {
         opacity: 1
-    },
-    '& .popper[data-x-out-of-boundaries], &[data-x-out-of-boundaries]': {
-        display: 'none'
     },
 }));
 
@@ -150,32 +136,34 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
         let animationDurationOut = this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 300;
 
         return (
-            <PopperRoot show={renderProps.show !== false} animationDurationIn={animationDurationIn} animationDurationOut={animationDurationOut}>
-                <div
-                    className={classnames('popper', renderProps.animationClass ? renderProps.animationClass : renderProps.animated === false ? 'static' : renderProps.willHide ? 'hide' : 'show')}
-                    ref={renderProps.caputurePopperNode}
-                    onMouseOver={renderProps.showOnHover ? renderProps.onMouseOverContent : undefined}
-                    onMouseOut={renderProps.showOnHover ? renderProps.onMouseOutContent : undefined}
-                >
+            this.props.show !== false ?
+                (
+                    <PopperRoot
+                        className={classnames(renderProps.animationClass ? renderProps.animationClass : renderProps.animated === false ? 'static' : renderProps.willHide ? 'hide' : 'show')}
+                        innerRef={renderProps.caputurePopperNode}
+                        onMouseOver={renderProps.showOnHover ? renderProps.onMouseOverContent : undefined}
+                        onMouseOut={renderProps.showOnHover ? renderProps.onMouseOutContent : undefined}
+                        animationDurationIn={animationDurationIn} animationDurationOut={animationDurationOut}
+                    >
 
-                    {this.prepareRef(this.props.contentContainer, {
-                        width: this.props.width,
-                        height: this.props.height,
-                        maxWidth: this.props.maxWidth,
-                        maxHeight: this.props.maxHeight,
-                        minWidth: this.props.minWidth,
-                        minHeight: this.props.minHeight,
+                        {this.prepareRef(this.props.contentContainer, {
+                            width: this.props.width,
+                            height: this.props.height,
+                            maxWidth: this.props.maxWidth,
+                            maxHeight: this.props.maxHeight,
+                            minWidth: this.props.minWidth,
+                            minHeight: this.props.minHeight,
 
-                        children: renderProps.content,
+                            children: renderProps.content,
 
-                        captureContent: this.props.caputurePopperContentNode
-                    })}
+                            captureContent: this.props.caputurePopperContentNode
+                        })}
 
-                    {this.prepareRef(this.props.arrow, {
-                        captureArrow: this.props.caputurePopperArrowNode
-                    })}
-                </div>
-            </PopperRoot>
+                        {this.prepareRef(this.props.arrow, {
+                            captureArrow: this.props.caputurePopperArrowNode
+                        })}
+                    </PopperRoot>
+                ) : null
         );
     }
 }
