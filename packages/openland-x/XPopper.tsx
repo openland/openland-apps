@@ -10,10 +10,10 @@ interface XPopper2SelfProps {
     content: any;
     show?: boolean;
     showOnHover?: boolean;
+    showOnHoverContent?: boolean;
     onClickOutside?: () => void;
 
     padding?: number;
-
     width?: number;
     height?: number;
     maxWidth?: number;
@@ -26,6 +26,7 @@ interface XPopper2SelfProps {
     animated?: boolean;
     animationDurationIn?: number;
     animationDurationOut?: number;
+
     arrow?: ((arrowRef: (node: any) => void) => any) | null;
     contentContainer?: (contentRef: (node: any) => void) => any;
 }
@@ -41,8 +42,8 @@ export interface PopperRendererProps extends XPopper2SelfProps, XPopperState {
     caputurePopperArrowNode: (node: any) => void;
     caputurePopperContentNode: (node: any) => void;
     caputurePopperNode: (node: any) => void;
-    onMouseOverTarget: () => void;
-    onMouseOutTarget: () => void;
+    onMouseOverContent: () => void;
+    onMouseOutContent: () => void;
     onMounted: () => void;
     onUnmounted: () => void;
 }
@@ -183,7 +184,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
     initPopperIfNeeded = () => {
         if (this._node && (this.arrow === null || this._arrowNode) && this._targetNode && this._contentNode && this.mounted && !this._popper) {
-            let { children, content, show, animated, animationDurationIn, animationDurationOut, padding, groupId, showOnHover, width, height, maxWidth, maxHeight, minWidth, minHeight, arrow, contentContainer, onClickOutside, ...popperProps } = this.props;
+            let { children, content, show, animated, animationDurationIn, animationDurationOut, padding, groupId, showOnHover, width, height, maxWidth, maxHeight, minWidth, minHeight, arrow, contentContainer, onClickOutside, showOnHoverContent, ...popperProps } = this.props;
             this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
                     shift: {
@@ -229,6 +230,12 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         }
     }
 
+    onMouseOverContent = () => {
+        if (this.props.showOnHoverContent !== false) {
+            this.onMouseOverTarget();
+        }
+    }
+
     onMouseOverTarget = () => {
         if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
         if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
@@ -237,6 +244,12 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                 this._popper.scheduleUpdate();
             }
         });
+    }
+
+    onMouseOutContent = () => {
+        if (this.props.showOnHoverContent !== false) {
+            this.onMouseOutTarget();
+        }
     }
 
     onMouseOutTarget = () => {
@@ -265,7 +278,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     }
 
     onMouseDown = (e: any) => {
-        if (this.props.onClickOutside && this._contentNode && !this._contentNode.contains(e.target) && (this.props.arrow === null || (this._arrowNode && !this._arrowNode.contains(e.target)))) {
+        if (this.props.onClickOutside && this._contentNode && !this._contentNode.contains(e.target) && this._targetNode && !this._targetNode.contains(e.target) && (this.props.arrow === null || (this._arrowNode && !this._arrowNode.contains(e.target)))) {
             this.props.onClickOutside();
         }
     }
@@ -322,8 +335,8 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             caputurePopperNode: this.caputurePopperNode,
             caputurePopperArrowNode: this.caputurePopperArrowNode,
             caputurePopperContentNode: this.caputurePopperContentNode,
-            onMouseOverTarget: this.onMouseOverTarget,
-            onMouseOutTarget: this.onMouseOutTarget,
+            onMouseOverContent: this.onMouseOverContent,
+            onMouseOutContent: this.onMouseOutContent,
             onMounted: this.captureMounted,
             onUnmounted: this.captureUnmounted
         };
