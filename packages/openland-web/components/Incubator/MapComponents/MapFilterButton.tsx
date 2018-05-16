@@ -113,7 +113,7 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
 
         return (
             <XPopper content={
-                <ClickOutside onClickOutside={this.handleClose}>
+                <ClickOutside onClickOutside={this.handleClose} flex={false}>
                     {this.props.content}
                 </ClickOutside>}
                 show={this.state.popper}
@@ -124,7 +124,6 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
                     {children}
                 </ConfirmWrapper>
             </XPopper>
-
         );
     }
 }

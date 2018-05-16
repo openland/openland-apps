@@ -16,7 +16,15 @@ import { XVertical } from 'openland-x-layout/XVertical';
 
 const FiltersContent = Glamorous.div({
     maxHeight: 'calc(100vh - 150px)',
-    overflowY: 'scroll'
+    overflowY: 'scroll',
+    width: 'calc(100% + 20px)',
+    marginLeft: -10,
+    marginTop: -10,
+    marginBottom: -10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
 });
 
 const FilterCategoryTitle = Glamorous.div({
@@ -226,7 +234,9 @@ const InlineInputWrapper = Glamorous.div({
     },
     '& > a': {
         borderTopLeftRadius: '0 !important',
-        borderBottomLeftRadius: '0 !important'
+        borderBottomLeftRadius: '0 !important',
+        height: 'calc(100% + 2px)',
+        marginTop: -1
     }
 });
 
@@ -388,12 +398,11 @@ class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?
         return (
             <InlineInputWrapper>
                 <div>
-                    <input type="text" onChange={this.handleChange} value={this.state.value} />
+                    <input type="text" onChange={this.handleChange} value={this.state.value} placeholder={this.props.placeholder} />
                 </div>
                 <XButton style="primary" onClick={this.apply} text="Apply" />
             </InlineInputWrapper>);
     }
-
 }
 
 const OwnerNameFiltersContent = withRouter((props) => (
@@ -441,7 +450,7 @@ class AreaFiltersContent extends React.Component<XWithRouter> {
 const MapFilterWrapper = Glamorous(XCard)<{ active?: boolean }>((props) => ({
     position: 'absolute',
     top: 18,
-    left: 208,
+    left: 214,
     flexDirection: 'row',
     paddingLeft: 16,
     paddingRight: 16,
@@ -518,7 +527,6 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
                 </ApplyFilterWrap>
             </FilterCategory >
-
         );
 
         sfOther.push(
@@ -568,7 +576,6 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                 <FilterCategoryTitle>Compatible buildings</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="compatible" router={this.props.router}>
                     <XVertical>
-
                         <XCheckboxGroup elements={[{ value: 'kasita-1', label: 'Elemynt-1' }, { value: 'kasita-2', label: 'Elemynt-2' }]} />
                     </XVertical>
                 </ApplyFilterWrap>
@@ -606,13 +613,15 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                 router={this.props.router}
                                 filterTitle="Zoning"
                                 content={(
-                                    <Selector
-                                        router={this.props.router}
-                                        fieldName="filterZoning"
-                                        options={AllZones.map((v) => ({ value: v, label: v }))}
-                                        placeholder="Zoning Code"
-                                        multi={true}
-                                    />
+                                    <FiltersContent>
+                                        <Selector
+                                            router={this.props.router}
+                                            fieldName="filterZoning"
+                                            options={AllZones.map((v) => ({ value: v, label: v }))}
+                                            placeholder="Zoning Code"
+                                            multi={true}
+                                        />
+                                    </FiltersContent>
                                 )}>
                                 <XButton />
 
@@ -627,13 +636,15 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                 router={this.props.router}
                                 filterTitle="Zoning"
                                 content={(
-                                    <Selector
-                                        router={this.props.router}
-                                        fieldName="filterZoning"
-                                        options={AllNYCZOnes.map((v) => ({ value: v, label: v }))}
-                                        placeholder="Zoning Code"
-                                        multi={true}
-                                    />
+                                    <FiltersContent>
+                                        <Selector
+                                            router={this.props.router}
+                                            fieldName="filterZoning"
+                                            options={AllNYCZOnes.map((v) => ({ value: v, label: v }))}
+                                            placeholder="Zoning Code"
+                                            multi={true}
+                                        />
+                                    </FiltersContent>
                                 )}>
                                 <XButton />
 

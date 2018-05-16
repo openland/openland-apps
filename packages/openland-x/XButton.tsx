@@ -332,6 +332,13 @@ const StyledButtonContentWrapper = Glamorous.div({
     outline: 'none'
 });
 
+const ButtomTitle = Glamorous.span({
+    maxWidth: '100%',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden'
+});
+
 const StyledButton = Glamorous<XButtonProps>(XLink)([
     (props) => ({
         pointerEvents: (props.loading || props.disabled) ? 'none' : 'auto',
@@ -354,7 +361,7 @@ export class XButton extends React.PureComponent<XButtonProps> {
             <StyledButton {...this.props}>
                 <StyledButtonContentWrapper tabIndex={-1} className="button-content">
                     {this.props.icon && <StyledIcon text={this.props.text} icon={this.props.icon} className="icon" />}
-                    <span>{this.props.text}</span>
+                    <ButtomTitle>{this.props.text}</ButtomTitle>
                     {this.props.loading && <XLoadingCircular inverted={this.props.style === 'primary' || this.props.style === 'danger'} className="loading-icon" />}
                 </StyledButtonContentWrapper>
             </StyledButton>

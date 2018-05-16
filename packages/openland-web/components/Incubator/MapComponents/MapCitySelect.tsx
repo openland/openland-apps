@@ -7,6 +7,7 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 import XStyles from 'openland-x/XStyles';
 
 const MapFilterWrapper = Glamorous(XCard)<{ active: boolean }>((props) => ({
+    width: 178,
     position: 'absolute',
     top: 18,
     left: 18,
