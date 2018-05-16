@@ -1,39 +1,44 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import * as classnames from 'classnames';
 
 const PlacementTop = '&[x-placement^="top"]';
 const PlacementBottom = '&[x-placement^="bottom"]';
 const PlacementRight = '&[x-placement^="right"]';
 const PlacementLeft = '&[x-placement^="left"]';
 
-const ArrowDiv = Glamorous.div<{ size: number }>((props) => ({
+const ArrowDiv = Glamorous.div({
     borderStyle: 'solid',
     position: 'absolute',
     [PlacementTop]: {
-        borderWidth: `${props.size}px ${props.size}px 0 ${props.size}px`,
+        borderWidth: `5px 5px 0 5px`,
         borderColor: '#fff transparent transparent transparent',
-        bottom: -props.size,
+        bottom: -5,
     },
     [PlacementBottom]: {
-        borderWidth: `0 ${props.size}px ${props.size}px ${props.size}px`,
+        borderWidth: `0 5px 5px 5px`,
         borderColor: 'transparent transparent #fff transparent',
-        top: -props.size,
+        top: -5,
     },
     [PlacementRight]: {
-        borderWidth: `${props.size}px ${props.size}px ${props.size}px 0`,
+        borderWidth: `5px 5px 5px 0`,
         borderColor: 'transparent #fff transparent transparent',
-        left: -props.size,
+        left: -5,
     },
     [PlacementLeft]: {
-        borderWidth: `${props.size}px 0 ${props.size}px ${props.size}px`,
+        borderWidth: `5px 0 5px 5px`,
         borderColor: 'transparent transparent transparent #fff',
-        right: -props.size,
+        right: -5,
     },
-}));
+});
 
-export class XPopperArrow extends React.PureComponent<{ size?: number, captureRef: (arrow: any) => void }> implements XPopperArrow {
+export class XPopperArrow extends React.PureComponent<{ captureArrow?: (arrow: any) => void, className?: string }> {
+    static PlacementTop = PlacementTop;
+    static PlacementBottom = PlacementBottom;
+    static PlacementRight = PlacementRight;
+    static PlacementLeft = PlacementLeft;
+
     render() {
-        let size = this.props.size === undefined ? 5 : this.props.size;
-        return (<ArrowDiv innerRef={this.props.captureRef} size={size}/>);
+        return (<ArrowDiv className={classnames('arrow', this.props.className)} innerRef={this.props.captureArrow} />);
     }
 }

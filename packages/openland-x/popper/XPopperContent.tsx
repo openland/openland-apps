@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import * as classnames from 'classnames';
 
 export const ContentDiv = Glamorous.div<{ width?: number, height?: number, maxWidth?: number, maxHeight?: number, minWidth?: number, minHeight?: number }>((props) => ({
     position: 'relative',
@@ -21,12 +22,13 @@ export const ContentDiv = Glamorous.div<{ width?: number, height?: number, maxWi
     flexDirection: 'column'
 }));
 
-export class XPopperContent extends React.PureComponent<{ captureRef: (arrow: any) => void, width?: number, height?: number, maxWidth?: number, maxHeight?: number, minWidth?: number, minHeight?: number, style?: React.CSSProperties }> {
+export class XPopperContent extends React.PureComponent<{ captureContent?: (arrow: any) => void, width?: number, height?: number, maxWidth?: number, maxHeight?: number, minWidth?: number, minHeight?: number, style?: React.CSSProperties, className?: string }> {
 
     render() {
         return (
             <ContentDiv
-                innerRef={this.props.captureRef}
+                className={classnames('content', this.props.className)}
+                innerRef={this.props.captureContent}
                 maxWidth={this.props.maxWidth}
                 maxHeight={this.props.maxHeight}
                 minWidth={this.props.minWidth}

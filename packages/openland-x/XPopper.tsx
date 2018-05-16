@@ -6,7 +6,25 @@ import { XPopperRender } from './popper/XPopperRender';
 import { XPopperArrow } from './popper/XPopperArrow';
 import { XPopperContent } from './popper/XPopperContent';
 
-interface XPopper2SelfProps {
+type Placement = 'auto-start'
+| 'auto'
+| 'auto-end'
+| 'top-start'
+| 'top'
+| 'top-end'
+| 'right-start'
+| 'right'
+| 'right-end'
+| 'bottom-end'
+| 'bottom'
+| 'bottom-start'
+| 'left-end'
+| 'left'
+| 'left-start';
+
+interface XPopperProps {
+    placement?: Placement;
+    
     content: any;
     show?: boolean;
     showOnHover?: boolean;
@@ -27,8 +45,8 @@ interface XPopper2SelfProps {
     animationDurationIn?: number;
     animationDurationOut?: number;
 
-    arrow?: ((arrowRef: (node: any) => void) => any) | null;
-    contentContainer?: (contentRef: (node: any) => void) => any;
+    arrow?: any | null;
+    contentContainer?: any;
 }
 
 interface XPopperState {
@@ -37,7 +55,7 @@ interface XPopperState {
     ownMounted: boolean;
 }
 
-export interface PopperRendererProps extends XPopper2SelfProps, XPopperState {
+export interface PopperRendererProps extends XPopperProps, XPopperState {
     animationClass?: 'static' | 'hide' | 'show';
     caputurePopperArrowNode: (node: any) => void;
     caputurePopperContentNode: (node: any) => void;
@@ -46,10 +64,6 @@ export interface PopperRendererProps extends XPopper2SelfProps, XPopperState {
     onMouseOutContent: () => void;
     onMounted: () => void;
     onUnmounted: () => void;
-}
-
-export interface XPopperProps extends XPopper2SelfProps, PopperJS.PopperOptions {
-
 }
 
 const PlacementTop = '&[x-placement^="top"]';
@@ -87,6 +101,9 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
     static Invalidator = XPopperInvalidator;
 
+    static Arrow = XPopperArrow;
+    static Content = XPopperContent;
+    
     private _popper?: PopperJS;
     private _node: Element;
     private _targetNode: Element;
@@ -108,12 +125,12 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             ownMounted: false
         };
         this.arrow = props.arrow === undefined ? (
-            <XPopperArrow captureRef={this.caputurePopperArrowNode} />
-        ) : props.arrow === null ? null : props.arrow(this.caputurePopperArrowNode);
+            <XPopperArrow />
+        ) : props.arrow === null ? null : props.arrow;
 
         this.contentContainer = props.contentContainer === undefined ? (
-            <XPopperContent captureRef={this.caputurePopperContentNode} />
-        ) : props.contentContainer(this.caputurePopperContentNode);
+            <XPopperContent />
+        ) : props.contentContainer;
     }
 
     caputureTargetNode = (node: any | null) => {
@@ -184,7 +201,6 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
     initPopperIfNeeded = () => {
         if (this._node && (this.arrow === null || this._arrowNode) && this._targetNode && this._contentNode && this.mounted && !this._popper) {
-            let { children, content, show, animated, animationDurationIn, animationDurationOut, padding, groupId, showOnHover, width, height, maxWidth, maxHeight, minWidth, minHeight, arrow, contentContainer, onClickOutside, showOnHoverContent, ...popperProps } = this.props;
             this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
                     shift: {
@@ -219,8 +235,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                     this._node.setAttribute('x-placement', data.placement);
                     this._contentNode.setAttribute('x-placement', data.placement);
                 },
-                ...popperProps,
-
+                placement: this.props.placement !== undefined ?  this.props.placement : 'auto'
             });
             setTimeout(() => {
                 if (this._popper) {

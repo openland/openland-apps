@@ -133,10 +133,15 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
                         maxHeight: this.props.maxHeight,
                         minWidth: this.props.minWidth,
                         minHeight: this.props.minHeight,
-                        children: renderProps.content
+
+                        children: renderProps.content,
+
+                        captureContent: this.props.caputurePopperContentNode
                     })}
 
-                    {this.props.arrow}
+                    {this.prepareRef(this.props.arrow, {
+                        captureArrow: this.props.caputurePopperArrowNode
+                    })}
                 </div>
             </PopperRoot>
         );
