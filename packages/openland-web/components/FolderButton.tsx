@@ -14,13 +14,13 @@ const AddToFolderModal = withAddToFolderMutation((props) => {
             target={<XButton icon="add" style={(props as any).style} size={(props as any).size} text={'Save to folder'} />}
         >
             <XForm.Select component={FolderSelect} field="folderId" />
-        </XModalForm >
+        </XModalForm>
     );
 }) as React.ComponentType<{ parcelId: string, style?: XButtonStyle, size?: XButtonSize }>;
 
 export function FolderButton(props: { folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize }) {
     if (props.folder) {
-        return <XButton icon="folder" text={'Saved to ' + props.folder.name} style="primary" size={props.size} path={'/folders/' + props.folder.id} />;
+        return <XButton icon="folder" text={props.folder.name} style="primary" size={props.size} path={'/folders/' + props.folder.id} />;
     } else {
         return <AddToFolderModal parcelId={props.parcelId} style="electric" size={props.size} />;
     }
