@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import ClickOutside from '../ClickOutside';
-import { XPopper2 } from '../XPopper2';
+import { XPopper } from 'openland-x/XPopper';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 
 const ConfirmWrapper = Glamorous.div({
@@ -112,18 +112,18 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
         }
 
         return (
-            <XPopper2 content={
+            <XPopper content={
                 <ClickOutside onClickOutside={this.handleClose}>
                     {this.props.content}
                 </ClickOutside>}
-                isVisible={this.state.popper}
-                padding={20}
+                show={this.state.popper}
+                padding={30}
                 animated={false}
             >
                 <ConfirmWrapper>
                     {children}
                 </ConfirmWrapper>
-            </XPopper2>
+            </XPopper>
 
         );
     }

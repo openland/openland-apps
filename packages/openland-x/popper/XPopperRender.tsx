@@ -82,8 +82,8 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
         this.props.onMounted();
     }
 
-    prepareArrow = (arrow?: React.ReactElement<XPopperArrow> | null, capturer?: (node: any) => void) => {
-        return arrow ? React.cloneElement(arrow as any, {arrowRef: capturer}) : arrow;
+    prepareRef = (arrow?: React.ReactElement<XPopperArrow> | null, capturer?: (node: any) => void) => {
+        return arrow ? React.cloneElement(arrow as any, {captureRef: capturer}) : arrow;
     }
 
     render() {
@@ -124,10 +124,10 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
                     onMouseOver={renderProps.showOnHover ? renderProps.onMouseOverTarget : undefined}
                     onMouseOut={renderProps.showOnHover ? renderProps.onMouseOutTarget : undefined}
                 >
-                    <XPopperContent maxWidth={this.props.maxWidth} contentRef={renderProps.caputurePopperContentNode}>
+                    <XPopperContent maxWidth={this.props.maxWidth} captureRef={renderProps.caputurePopperContentNode}>
                         {renderProps.content}
                     </XPopperContent>
-                    {this.prepareArrow(this.props.arrow, renderProps.caputurePopperArrowNode)}
+                    {this.prepareRef(this.props.arrow, renderProps.caputurePopperArrowNode)}
                 </div>
             </PopperRoot>
         );
