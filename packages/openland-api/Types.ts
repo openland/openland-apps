@@ -774,6 +774,30 @@ export interface CreateFolderMutation {
     name: string,
     special: SpecialFolder | null,
     parcelsCount: number,
+    parcels:  {
+      __typename: "ParcelConnection",
+      edges:  Array< {
+        __typename: "ParcelEdge",
+        node:  {
+          __typename: "Parcel",
+          id: string,
+          folder:  {
+            __typename: "Folder",
+            id: string,
+            name: string,
+          } | null,
+        },
+      } >,
+      pageInfo:  {
+        __typename: "PageInfo",
+        hasNextPage: boolean,
+        hasPreviousPage: boolean,
+        itemsCount: number,
+        pagesCount: number,
+        currentPage: number,
+        openEnded: boolean,
+      },
+    },
   },
 };
 
@@ -2486,6 +2510,24 @@ export interface SearchQuery {
             available: boolean | null,
             currentUse: ParcelUse | null,
           },
+        },
+        score: number,
+        highlight:  Array< {
+          __typename: "SearchHighlight",
+          key: string,
+          match: string,
+        } >,
+      } >,
+      total: number,
+    },
+    folders:  {
+      __typename: "FolderSearchResult",
+      edges:  Array< {
+        __typename: "FolderResult",
+        node:  {
+          __typename: "Folder",
+          id: string,
+          name: string,
         },
         score: number,
         highlight:  Array< {

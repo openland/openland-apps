@@ -22,7 +22,7 @@ export const ContentDiv = Glamorous.div<{ width?: number, height?: number, maxWi
     flexDirection: 'column'
 }));
 
-export class XPopperContent extends React.PureComponent<{ captureContent?: (arrow: any) => void, width?: number, height?: number, maxWidth?: number, maxHeight?: number, minWidth?: number, minHeight?: number, style?: React.CSSProperties, className?: string }> {
+export class XPopperContent extends React.PureComponent<{ captureContent?: (arrow: any) => void, width?: number, height?: number, maxWidth?: number, maxHeight?: number, minWidth?: number, minHeight?: number, className?: string }> {
 
     render() {
         return (
@@ -34,8 +34,7 @@ export class XPopperContent extends React.PureComponent<{ captureContent?: (arro
                 minWidth={this.props.minWidth}
                 minHeight={this.props.minHeight}
                 width={this.props.width}
-                height={this.props.height}
-                style={this.props.style}>
+                height={this.props.height}>
                 {this.props.children}
             </ContentDiv>);
     }
