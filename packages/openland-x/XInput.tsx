@@ -140,6 +140,7 @@ const RootContainer = Glamorous.div<XInputProps & { invalid?: boolean, format?: 
         borderRadius: 4,
         border: `1px solid ${props.invalid ? '#e26363' : '#d4dae7'}`,
         boxSizing: 'border-box',
+        color: '#334562',
         '> .icon': {
             position: 'absolute',
             color: props.invalid ? '#e26363' : '#d4dae7'
