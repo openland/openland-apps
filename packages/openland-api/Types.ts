@@ -801,6 +801,19 @@ export interface CreateFolderMutation {
   },
 };
 
+export interface AlterFolderMutationVariables {
+  folderId: string,
+  name: string,
+};
+
+export interface AlterFolderMutation {
+  alaterFolder:  {
+    __typename: "Folder",
+    id: string,
+    name: string,
+  },
+};
+
 export interface AddToFolderMutationVariables {
   parcelId: string,
   folderId: string,

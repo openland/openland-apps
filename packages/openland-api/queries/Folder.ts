@@ -78,6 +78,15 @@ export const CreateFolderMutation = gql`
     }
 `;
 
+export const AlterFolderMutation = gql`
+    mutation AlterFolder($folderId: ID!, $name: String!) {
+        alaterFolder: alphaAlterFolder(folderId: $folderId, name: $name) {
+            id
+            name
+        }
+    }
+`;
+
 export const AddToFolderMutation = gql`
     mutation AddToFolder($parcelId: ID!, $folderId: ID!) {
         addToFolder: alphaParcelAddToFolder(parcelId: $parcelId, folderId: $folderId) {
