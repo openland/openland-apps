@@ -23,6 +23,20 @@ export const SearchQuery = gql`
                 }
                 total
             }
+            folders {
+                edges {
+                    node {
+                        id
+                        name
+                    }
+                    score
+                    highlight {
+                        key
+                        match
+                    }
+                }
+                total
+            }
         }
     }
 `;

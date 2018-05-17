@@ -171,6 +171,7 @@ const PropertyCellContainer = Glamorous.div({
     paddingLeft: 18,
     paddingRight: 18,
     marginBottom: 12,
+    fontWeight: 600,
     '&:last-child': {
         marginBottom: 0
     }
@@ -180,7 +181,7 @@ const PropertyCellTitle = Glamorous.div<{ width?: number }>((props) => ({
     width: props.width ? props.width : 150,
     flexShrink: 0,
     opacity: 0.4,
-    fontSize: 16,
+    fontSize: 15,
     lineHeight: 1.25,
     letterSpacing: -0.2,
     color: '#1f3449'
@@ -192,9 +193,10 @@ const PropertyCellValue = Glamorous.div({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    fontSize: 16,
+    fontSize: 15,
     letterSpacing: -0.1,
-    color: '#1f3449'
+    color: '#1f3449',
+    fontWeight: 500,
 });
 
 const PropertyCell = (props: { children: any, title?: string, width?: number, compact?: boolean }) => (

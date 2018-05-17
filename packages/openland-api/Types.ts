@@ -2533,6 +2533,24 @@ export interface SearchQuery {
       } >,
       total: number,
     },
+    folders:  {
+      __typename: "FolderSearchResult",
+      edges:  Array< {
+        __typename: "FolderResult",
+        node:  {
+          __typename: "Folder",
+          id: string,
+          name: string,
+        },
+        score: number,
+        highlight:  Array< {
+          __typename: "SearchHighlight",
+          key: string,
+          match: string,
+        } >,
+      } >,
+      total: number,
+    },
   },
 };
 

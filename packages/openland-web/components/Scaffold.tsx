@@ -16,6 +16,7 @@ import { TextGlobalSearch } from 'openland-text/TextGlobalSearch';
 import { XLink } from 'openland-x/XLink';
 import { XArea } from 'openland-x-format/XArea';
 import { XList, XListItem } from 'openland-x/XList';
+import { XTitle } from 'openland-x/XTitle';
 
 //
 // Root
@@ -262,7 +263,7 @@ const ResultsContainer = Glamorous.div({
     flexDirection: 'column',
     alignItems: 'stretch',
     paddingTop: '16px',
-    width: '100%'
+    width: '100%',
 });
 
 let HighlightedWrapper = Glamorous.span({
@@ -325,11 +326,24 @@ const ResultBodyMain = Glamorous.div({
     width: 100
 });
 
+const Tilte = Glamorous(XTitle)({
+    paddingLeft: '16px'
+});
+
 let SearchResults = withSearch((props) => {
-    if (props.data && props.data.search && props.data.search.parcels.edges.length > 0) {
+    if (props.data && props.data.search && (props.data.search.parcels.edges.length > 0 || props.data.search.folders.edges.length > 0)) {
         return (
             <ResultsContainer>
                 <XList>
+                    {props.data.search.folders.edges.length > 0 && <Tilte>Folders</Tilte>}
+                    {props.data.search.folders.edges.map((v) => (
+                        <XListItem key={v.node.id} path={'/folders/' + v.node.id}>
+                            <ResultTilte>
+                                <ResultTilteMain>{v.node.name}</ResultTilteMain>
+                            </ResultTilte>
+                        </XListItem>
+                    ))}
+                    {props.data.search.folders.edges.length > 0 && <Tilte>Parcels</Tilte>}
                     {props.data.search.parcels.edges.map((v) => (
                         <XListItem key={v.node.id} path={'/parcels/' + v.node.id}>
                             <ResultTilte>
