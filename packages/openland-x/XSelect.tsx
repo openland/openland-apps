@@ -116,7 +116,7 @@ const Styles = {
     },
     '&.Select--single > .Select-control .Select-value, .Select-placeholder': {
         bottom: 0,
-        color: 'rgba(51, 69, 98, 0.4)',
+        color: 'rgba(51, 69, 98, 0.25)',
         fontSize: 14,
         // color: '#C1CAD2',
         left: 0,
@@ -131,7 +131,7 @@ const Styles = {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
-        fontWeight: 300,
+        fontWeight: 400,
     },
     '&.Select--single > .Select-control .Select-value': {
         paddingTop: 'calc(5% - 10px)'
