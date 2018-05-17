@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { styleResolver } from 'openland-x-utils/styleResolver';
+import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
 import { XLink, XLinkProps } from './XLink';
 import { XLoadingCircular } from './XLoadingCircular';
 import { XFlexStyles, applyFlex } from './Flex';
@@ -14,6 +14,7 @@ export interface XButtonStyleProps extends XFlexStyles {
     icon?: string;
     size?: XButtonSize;
     style?: XButtonStyle;
+    attach?: 'left' | 'right' | 'both';
 }
 
 export interface XButtonProps extends XButtonStyleProps, XLinkProps {
@@ -39,6 +40,42 @@ let iconsIndentation = styleResolver({
     }
 });
 
+let borderRadiusStyles = styleResolverWithProps((props: {attach?: 'left' | 'right' | 'both'}) => {
+    return ({
+        'x-large': {
+            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+        },
+        'large': {
+            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+        },
+        'medium': {
+            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+        },
+        'default': {
+            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+        },
+        'small': {
+            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+        }
+    });
+
+});
+
 let sizeStyles = styleResolver({
     'x-large': {
         height: 56,
@@ -46,7 +83,6 @@ let sizeStyles = styleResolver({
         fontSize: 18,
         letterSpacing: 0.6,
         fontWeight: 500,
-        borderRadius: 4,
         '& .button-content': {
             paddingLeft: 32,
             paddingRight: 32
@@ -70,7 +106,6 @@ let sizeStyles = styleResolver({
         fontSize: 18,
         letterSpacing: 0.6,
         fontWeight: 500,
-        borderRadius: 4,
         '& .button-content': {
             paddingLeft: 26,
             paddingRight: 26
@@ -92,7 +127,6 @@ let sizeStyles = styleResolver({
         fontSize: 16,
         letterSpacing: 0.5,
         fontWeight: 500,
-        borderRadius: 4,
         '& .button-content': {
             paddingLeft: 20,
             paddingRight: 20
@@ -114,7 +148,6 @@ let sizeStyles = styleResolver({
         fontSize: 14,
         letterSpacing: 0.4,
         fontWeight: 500,
-        borderRadius: 4,
         '& .button-content': {
             paddingLeft: 14,
             paddingRight: 14
@@ -136,7 +169,6 @@ let sizeStyles = styleResolver({
         fontSize: 12,
         letterSpacing: 0.4,
         fontWeight: 500,
-        borderRadius: 3,
         '& .button-content': {
             paddingLeft: 10,
             paddingRight: 10
@@ -352,6 +384,7 @@ const StyledButton = Glamorous<XButtonProps>(XLink)([
     (props) => colorDisabledStyles(props.style, !!props.disabled),
     (props) => loaderStyles(props.style),
     (props) => sizeStyles(props.size),
+    (props) => borderRadiusStyles({attach: props.attach}, props.size),
     (props) => applyFlex(props)
 ]);
 

@@ -4,17 +4,17 @@ import { XCard } from 'openland-x/XCard';
 import { XCheckboxGroup } from 'openland-x/XCheckbox';
 import { XRadioGroup } from 'openland-x/XRadio';
 import { FilterButton } from './MapFilterButton';
-import { ChangeEvent } from 'react';
 import { XSelect, XSelectProps } from 'openland-x/XSelect';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { AllLandUse, AllZones, AllNYCZOnes } from './utils';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XButton } from 'openland-x/XButton';
 import XStyles from 'openland-x/XStyles';
 import { XVertical } from 'openland-x-layout/XVertical';
+import { XInput } from 'openland-x/XInput';
+import { XAttach } from 'openland-x/XAttach';
 
-const FiltersContent = Glamorous.div<{visible?: boolean}>((props) => ({
+const FiltersContent = Glamorous.div<{ visible?: boolean }>((props) => ({
     maxHeight: 'calc(100vh - 150px)',
     overflowY: props.visible ? undefined : 'scroll',
     width: 'calc(100% + 20px)',
@@ -207,39 +207,6 @@ const FilterCategory = Glamorous.div({
     }
 });
 
-const InlineInputWrapper = Glamorous.div({
-    display: 'flex',
-    width: 310,
-    height: 36,
-    borderRadius: 3.5,
-    border: '1px solid rgba(97, 126, 156, 0.2)',
-    '& > div': {
-        flexGrow: 1,
-        '& > input': {
-            width: '100%',
-            height: '100%',
-            outline: 'none',
-            color: '#525f7f',
-            backgroundColor: 'transparent',
-            fontSize: 14,
-            lineHeight: 1.6,
-            paddingTop: 2,
-            paddingLeft: 7,
-            paddingRight: 7,
-            paddingBottom: 2,
-            '&::placeholder': {
-                color: 'rgba(97, 126, 156, 0.4)'
-            }
-        }
-    },
-    '& > a': {
-        borderTopLeftRadius: '0 !important',
-        borderBottomLeftRadius: '0 !important',
-        height: 'calc(100% + 2px)',
-        marginTop: -1
-    }
-});
-
 const FilterSelector = Glamorous(XSelect)({
     width: 350
 });
@@ -348,7 +315,7 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
     render() {
         let { fieldName, ...other } = this.props;
         return (
-            <XHorizontal>
+            <XAttach>
                 <FilterSelector {...other}
                     onChange={(v) => {
                         let value = undefined;
@@ -369,7 +336,7 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
                 {Boolean(this.props.applyButton === undefined || this.props.applyButton) && (
                     <XButton style="primary" onClick={this.apply} text="Apply" />
                 )}
-            </XHorizontal>);
+            </XAttach>);
     }
 
 }
@@ -384,9 +351,9 @@ class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?
         this.state = { value: this.props.router.query[this.props.searchKey] === undefined ? '' : this.props.router.query[this.props.searchKey] };
     }
 
-    handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        this.setState({ value: e.target.value });
-        this.value = e.target.value === '' ? undefined : e.target.value;
+    handleChange = (value: string) => {
+        this.setState({ value: value });
+        this.value = value === '' ? undefined : value;
     }
 
     apply = () => {
@@ -396,12 +363,11 @@ class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?
 
     render() {
         return (
-            <InlineInputWrapper>
-                <div>
-                    <input type="text" onChange={this.handleChange} value={this.state.value} placeholder={this.props.placeholder} />
-                </div>
-                <XButton style="primary" onClick={this.apply} text="Apply" />
-            </InlineInputWrapper>);
+            <XAttach>
+                <XInput onChange={this.handleChange} flexGrow={1} value={this.state.value} placeholder={this.props.placeholder} />
+                <XButton style="primary" onClick={this.apply} text="Apply"/>
+            </XAttach>
+        );
     }
 }
 
@@ -759,7 +725,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                     {...other}
                                 </FiltersContent>
                             )}>
-                            <XButton style={otherActive ? 'primary' : 'ghost'} text="Other" clickOnDown/>
+                            <XButton style={otherActive ? 'primary' : 'ghost'} text="Other" clickOnDown />
 
                         </FilterButton>
 

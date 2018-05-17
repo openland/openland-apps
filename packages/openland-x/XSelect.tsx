@@ -12,7 +12,7 @@ const SelectAnimationSpin = glamor.keyframes({
     'to': { transform: 'rotate(1turn)' }
 });
 
-const Styles = {
+const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
     '&.Select': {
         position: 'relative'
     },
@@ -93,7 +93,10 @@ const Styles = {
     '& .Select-control': {
         backgroundColor: '#fff',
         // borderColor: '#d9d9d9 #ccc #b3b3b3',
-        borderRadius: 4,
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
         border: '1px solid #dcdee4',
         color: '#333',
         cursor: 'default',
@@ -397,13 +400,17 @@ const Styles = {
     '&.Select--multi.is-disabled .Select-value-icon:active, &.Select--multi.is-disabled .Select-value-icon:focus, &.Select--multi.is-disabled .Select-value-icon:hover': {
         backgroundColor: '#fcfcfc'
     }
-};
+}));
 
 const StyledAsync = Glamorous(Async)(Styles) as React.ComponentType<ReactAsyncSelectProps>; // Some Weird typing problems
 const StyledSelect = Glamorous(Select)(Styles);
 
-export type XSelectProps = ReactSelectProps;
-export type XSelectAsyncProps = ReactAsyncSelectProps;
+export type XSelectProps = ReactSelectProps & {
+    attach?: 'left' | 'right' | 'both';
+};
+export type XSelectAsyncProps = ReactAsyncSelectProps & {
+    attach?: 'left' | 'right' | 'both';
+};
 
 export function XSelect(props: XSelectProps) {
     return (

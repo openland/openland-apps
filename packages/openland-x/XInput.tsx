@@ -11,6 +11,7 @@ export interface XInputProps extends XFlexStyles {
     required?: boolean;
     invalid?: boolean;
     size?: 'large' | 'medium' | 'default' | 'small';
+    attach?: 'left' | 'right' | 'both';
     autofocus?: boolean;
     onChange?: (value: string) => void;
 }
@@ -133,11 +134,14 @@ let NonRequiredPaddingStyles = styleResolver({
     }
 });
 
-const RootContainer = Glamorous.div<XInputProps & { invalid?: boolean, format?: 'large' | 'medium' | 'default' | 'small' }>([
+const RootContainer = Glamorous.div<XInputProps & { invalid?: boolean, format?: 'large' | 'medium' | 'default' | 'small', attach?: 'left' | 'right' | 'both' }>([
     (props) => ({
         position: 'relative',
         background: '#fff',
-        borderRadius: 4,
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
         border: `1px solid ${props.invalid ? '#e26363' : '#d4dae7'}`,
         boxSizing: 'border-box',
         color: '#334562',
