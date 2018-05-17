@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import ClickOutside from '../ClickOutside';
 import { XPopper } from 'openland-x/XPopper';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 
@@ -19,7 +18,6 @@ interface ConfirmPopoverProps {
 
 export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRouter, { popper?: boolean }> {
     static active = new Set();
-    stateLocked = false;
 
     static closeAll = () => {
         for (let filter of FilterButton.active) {
@@ -36,47 +34,37 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
     }
 
     handleShow = () => {
-        if (!this.stateLocked) {
-            const { popper } = this.state;
+        const { popper } = this.state;
 
-            if (popper === true) {
-                if (this.props.handler !== undefined) { this.props.handler(false, this); }
-                this.setState({
-                    popper: false
-                });
-            } else if (popper === false) {
-                this.setState({
-                    popper: true
-                });
-                if (this.props.handler !== undefined) { this.props.handler(true, this); }
-            }
-
-            for (let filter of FilterButton.active) {
-                if (filter !== this) {
-                    filter.handleClose();
-                }
-            }
-
-            FilterButton.active.add(this);
+        if (popper === true) {
+            if (this.props.handler !== undefined) { this.props.handler(false, this); }
+            this.setState({
+                popper: false
+            });
+        } else if (popper === false) {
+            this.setState({
+                popper: true
+            });
+            if (this.props.handler !== undefined) { this.props.handler(true, this); }
         }
+
+        for (let filter of FilterButton.active) {
+            if (filter !== this) {
+                filter.handleClose();
+            }
+        }
+
+        FilterButton.active.add(this);
 
     }
 
     handleClose = (self?: any) => {
-        this.stateLocked = true;
         let target = (self instanceof FilterButton) ? self : this;
-        if (this.props.handler !== undefined) { this.props.handler(false, target); }
         target.setState({
             popper: false
         });
         FilterButton.active.delete(target);
-
-        // move to next interpreter cicle  - prevent from chaging state before original click handled (posible double handle via Button/ClickOutside) 
-        setTimeout(
-            () => {
-                this.stateLocked = false;
-            },
-            0);
+        if (this.props.handler !== undefined) { this.props.handler(false, target); }
     }
 
     modifyProps = (component: any) => {
@@ -99,9 +87,11 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
 
         }
 
-        res.onClick = this.handleShow;
-
         return res;
+    }
+
+    onMouseDown = () => {
+        this.state.popper ? this.handleClose() : this.handleShow();
     }
 
     render() {
@@ -112,15 +102,13 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
         }
 
         return (
-            <XPopper content={
-                <ClickOutside onClickOutside={this.handleClose} flex={false}>
-                    {this.props.content}
-                </ClickOutside>}
+            <XPopper content={this.props.content}
+                onClickOutside={this.handleClose}
                 show={this.state.popper}
                 padding={30}
                 animation={null}
             >
-                <ConfirmWrapper>
+                <ConfirmWrapper onMouseDown={this.onMouseDown}>
                     {children}
                 </ConfirmWrapper>
             </XPopper>
