@@ -64,6 +64,15 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton style="electric" text="electric" disabled={true} />
                         <XButton style="flat" text="flat" disabled={true} />
                     </XHorizontal>
+                    <XTitle>Pressed</XTitle>
+                    <XHorizontal>
+                        <XButton style="primary" text="primary" pressed={true} />
+                        <XButton style="danger" text="danger" pressed={true} />
+                        <XButton text="default" pressed={true} />
+                        <XButton style="ghost" text="ghost" pressed={true} />
+                        <XButton style="electric" text="electric" pressed={true} />
+                        <XButton style="flat" text="flat" pressed={true} />
+                    </XHorizontal>
                 </XVertical>
             </XContent>
         </DevDocsScaffold>

@@ -19,6 +19,7 @@ export interface XButtonStyleProps extends XFlexStyles {
 
 export interface XButtonProps extends XButtonStyleProps, XLinkProps {
     loading?: boolean;
+    pressed?: boolean;
 }
 
 let iconsIndentation = styleResolver({
@@ -40,7 +41,7 @@ let iconsIndentation = styleResolver({
     }
 });
 
-let borderRadiusStyles = styleResolverWithProps((props: {attach?: 'left' | 'right' | 'both'}) => {
+let borderRadiusStyles = styleResolverWithProps((props: { attach?: 'left' | 'right' | 'both' }) => {
     return ({
         'x-large': {
             borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
@@ -312,6 +313,35 @@ let colorDisabledStyles = styleResolver({
     }
 });
 
+let colorPressedStyles = styleResolver({
+    'default': {
+        backgroundColor: '#eeecfa !important',
+        color: '#5640d6 !important'
+    },
+    'primary': {
+        backgroundColor: '#5640d6 !important',
+        color: '#ffffff !important'
+    },
+    'danger': {
+        backgroundColor: '#c54f4f !important',
+        color: '#ffffff !important'
+    },
+    'ghost': {
+        backgroundColor: '#eeecfa !important',
+        color: '#5640d6 !important'
+    },
+    'electric': {
+        backgroundColor: '#eeecfa !important',
+        color: '#5640d6 !important',
+        border: 'solid 1px transparent !important',
+    },
+    'flat': {
+        backgroundColor: '#eeecfa !important',
+        border: 'solid 1px transparent !important',
+        color: '#5640d6 !important'
+    }
+});
+
 let loaderStyles = styleResolver({
     'default': {
         '& svg path': {
@@ -380,11 +410,12 @@ const StyledButton = Glamorous<XButtonProps>(XLink)([
     (props) => (props.loading && {
         '& span': { opacity: 0 }
     } || {}),
-    (props) => colorStyles(props.style, !props.disabled),
+    (props) => colorStyles(props.style, !props.disabled && !props.pressed),
     (props) => colorDisabledStyles(props.style, !!props.disabled),
+    (props) => colorPressedStyles(props.style, !!props.pressed),
     (props) => loaderStyles(props.style),
     (props) => sizeStyles(props.size),
-    (props) => borderRadiusStyles({attach: props.attach}, props.size),
+    (props) => borderRadiusStyles({ attach: props.attach }, props.size),
     (props) => applyFlex(props)
 ]);
 
