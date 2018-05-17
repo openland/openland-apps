@@ -774,6 +774,43 @@ export interface CreateFolderMutation {
     name: string,
     special: SpecialFolder | null,
     parcelsCount: number,
+    parcels:  {
+      __typename: "ParcelConnection",
+      edges:  Array< {
+        __typename: "ParcelEdge",
+        node:  {
+          __typename: "Parcel",
+          id: string,
+          folder:  {
+            __typename: "Folder",
+            id: string,
+            name: string,
+          } | null,
+        },
+      } >,
+      pageInfo:  {
+        __typename: "PageInfo",
+        hasNextPage: boolean,
+        hasPreviousPage: boolean,
+        itemsCount: number,
+        pagesCount: number,
+        currentPage: number,
+        openEnded: boolean,
+      },
+    },
+  },
+};
+
+export interface AlterFolderMutationVariables {
+  folderId: string,
+  name: string,
+};
+
+export interface AlterFolderMutation {
+  alaterFolder:  {
+    __typename: "Folder",
+    id: string,
+    name: string,
   },
 };
 
