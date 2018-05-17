@@ -13,10 +13,6 @@ const SelectAnimationSpin = glamor.keyframes({
 });
 
 const Styles = {
-    '& .Select-menu > .Select-option.is-focused': {
-        backgroundColor: 'rgb(68, 40, 224) !important',
-        color: '#fff !important'
-    },
     '&.Select': {
         position: 'relative'
     },
@@ -44,7 +40,8 @@ const Styles = {
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
         background: '#fff',
-        borderColor: '#b3b3b3 #ccc #d9d9d9'
+        borderColor: '#986AFE #986AFE #986AFE',
+        // boxShadow: '0 0 0 2px rgba(143, 124, 246, 0.2)'
     },
     '&.Select.is-open > .Select-control .Select-arrow': {
         top: -2,
@@ -58,16 +55,18 @@ const Styles = {
         background: '#fff'
     },
     '&.Select.is-focused:not(.is-open) > .Select-control': {
-        borderColor: '#007eff',
-        boxShadow: 'inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 0 3px rgba(0, 126, 255, .1)',
+        borderColor: '#986AFE',
+        boxShadow: '0 0 0 2px rgba(143, 124, 246, 0.2)',
         background: '#fff'
     },
     '&.Select.has-value.is-clearable.Select--single > .Select-control .Select-value': {
         paddingRight: 42
     },
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label': {
-        color: '#525f7f',
-        fontWeight: 500
+        fontSize: 14,
+        color: '#334562',
+        fontWeight: 500,
+        verticalAlign: 'middle'
     },
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label': {
         cursor: 'pointer',
@@ -93,9 +92,9 @@ const Styles = {
     },
     '& .Select-control': {
         backgroundColor: '#fff',
-        borderColor: '#d9d9d9 #ccc #b3b3b3',
+        // borderColor: '#d9d9d9 #ccc #b3b3b3',
         borderRadius: 4,
-        border: '1px solid #ccc',
+        border: '1px solid #dcdee4',
         color: '#333',
         cursor: 'default',
         display: 'table',
@@ -105,10 +104,11 @@ const Styles = {
         outline: 'none',
         overflow: 'hidden',
         position: 'relative',
-        width: '100%'
+        width: '100%',
+        minHeight: 32
     },
     '& .Select-control:hover': {
-        boxShadow: '0 1px 0 rgba(0, 0, 0, .06)'
+        // boxShadow: '0 1px 0 rgba(0, 0, 0, .06)'
     },
     '& .Select-control .Select-input:focus': {
         outline: 'none',
@@ -116,9 +116,12 @@ const Styles = {
     },
     '&.Select--single > .Select-control .Select-value, .Select-placeholder': {
         bottom: 0,
-        color: '#C1CAD2',
+        color: 'rgba(51, 69, 98, 0.4)',
+        fontSize: 14,
+        // color: '#C1CAD2',
         left: 0,
-        lineHeight: '30px',
+        // lineHeight: '30px',
+        lineHeight: 'normal',
         paddingLeft: 10,
         paddingRight: 10,
         position: 'absolute',
@@ -128,13 +131,22 @@ const Styles = {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
-        fontWeight: 300
+        fontWeight: 300,
+    },
+    '&.Select--single > .Select-control .Select-value': {
+        paddingTop: 'calc(5% - 10px)'
+    },
+    '& .Select-placeholder': {
+        paddingTop: 'calc(5% - 8px)'
     },
     '& .Select-input': {
         height: 28,
         paddingLeft: 10,
         paddingRight: 10,
-        verticalAlign: 'middle'
+        // verticalAlign: 'middle',
+
+        // display: 'flex !important',
+        // alignItems: 'center'
     },
     '& .Select-input > input': {
         width: '100%',
@@ -144,12 +156,18 @@ const Styles = {
         cursor: 'default',
         display: 'inline-block',
         fontFamily: 'inherit',
-        fontSize: 'inherit',
+        // fontSize: 'inherit',
         margin: 0,
         outline: 'none',
-        lineHeight: '17px',
-        padding: '8px 0 12px',
-        WebkitAppearance: 'none'
+        // height: '100%',
+        // lineHeight: '17px',
+        // padding: '8px 0 12px',
+        WebkitAppearance: 'none',
+        fontSize: 14,
+        fontWeight: 500,
+        alignSelf: 'center',
+        verticalAlign: 'middle',
+        marginTop: 6
     },
     '&.is-focused .Select-input > input': {
         cursor: 'text'
@@ -193,7 +211,8 @@ const Styles = {
         color: '#d0021b'
     },
     '& .Select-clear': {
-        display: 'inline-block',
+        // display: 'inline-block',
+        display: 'table-cell',
         fontSize: '18px',
         lineHeight: 1
     },
@@ -220,13 +239,17 @@ const Styles = {
         display: 'inline-block',
         height: 0,
         width: 0,
-        position: 'relative'
+        position: 'relative',
+        verticalAlign: 'middle'
     },
     '& .Select-control > :last-child': {
         paddingRight: 5
     },
     '&.Select--multi .Select-multi-value-wrapper': {
         display: 'inline-block'
+    },
+    '&.Select--multi .Select-multi-value-wrapper .Select-placeholder': {
+        paddingTop: 'calc(5% - 10px)'
     },
     '&.Select .Select-aria-only': {
         position: 'absolute',
@@ -242,7 +265,7 @@ const Styles = {
         borderBottomRightRadius: 4,
         borderBottomLeftRadius: 4,
         backgroundColor: '#fff',
-        border: '1px solid #ccc',
+        border: '1px solid #986AFE',
         borderTopColor: '#e6e6e6',
         boxShadow: '0 1px 0 rgba(0, 0, 0, .06)',
         boxSizing: 'border-box',
@@ -264,20 +287,29 @@ const Styles = {
         color: '#666',
         cursor: 'pointer',
         display: 'block',
-        padding: '8px 10px'
+        padding: '8px 10px',
+
+        // height: 36,
+        lineHeight: '20px',
+        fontSize: 14,
+        fontWeight: 500
     },
     '& .Select-option:last-child': {
         borderBottomRightRadius: 4,
         borderBottomLeftRadius: 4
     },
     '& .Select-option.is-selected': {
-        backgroundColor: '#f5faff',
+        backgroundColor: '#ebe2ff2e',
         color: '#333'
     },
     '& .Select-option.is-focused': {
-        backgroundColor: '#ebf5ff',
-        color: '#333'
+        backgroundColor: '#654bfa !important',
+        color: '#fff !important'
     },
+    // '& .Select-option.is-focused': {
+    //     backgroundColor: '#ebf5ff',
+    //     color: '#333'
+    // },
     '& .Select-option.is-disabled': {
         color: '#ccc',
         cursor: 'default'

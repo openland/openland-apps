@@ -5,6 +5,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
+import { XSelect } from 'openland-x/XSelect';
 
 export default withApp('UI Framework - Select', 'viewer', (props) => {
     return (
@@ -12,7 +13,12 @@ export default withApp('UI Framework - Select', 'viewer', (props) => {
             <XContent>
                 <XVertical>
                     <XTitle>Select</XTitle>
-                    TODO
+                    <XSelect
+                        options={[
+                            { value: 'one', label: 'One' },
+                            { value: 'two', label: 'Two' },
+                        ]}
+                    />
                 </XVertical>
             </XContent>
         </DevDocsScaffold>

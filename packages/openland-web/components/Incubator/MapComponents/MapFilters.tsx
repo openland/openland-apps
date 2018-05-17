@@ -14,9 +14,9 @@ import { XButton } from 'openland-x/XButton';
 import XStyles from 'openland-x/XStyles';
 import { XVertical } from 'openland-x-layout/XVertical';
 
-const FiltersContent = Glamorous.div({
+const FiltersContent = Glamorous.div<{visible?: boolean}>((props) => ({
     maxHeight: 'calc(100vh - 150px)',
-    overflowY: 'scroll',
+    overflowY: props.visible ? undefined : 'scroll',
     width: 'calc(100% + 20px)',
     marginLeft: -10,
     marginTop: -10,
@@ -25,7 +25,7 @@ const FiltersContent = Glamorous.div({
     paddingRight: 20,
     paddingTop: 20,
     paddingBottom: 20,
-});
+}));
 
 const FilterCategoryTitle = Glamorous.div({
     ...XStyles.text.m500,
@@ -613,7 +613,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                 router={this.props.router}
                                 filterTitle="Zoning"
                                 content={(
-                                    <FiltersContent>
+                                    <FiltersContent visible={true}>
                                         <Selector
                                             router={this.props.router}
                                             fieldName="filterZoning"
@@ -636,7 +636,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                 router={this.props.router}
                                 filterTitle="Zoning"
                                 content={(
-                                    <FiltersContent>
+                                    <FiltersContent visible={true}>
                                         <Selector
                                             router={this.props.router}
                                             fieldName="filterZoning"

@@ -21,24 +21,11 @@ let Link = Glamorous(XLink)({
 });
 
 let OwnersSelectStyled = Glamorous.div({
-    fontSize: 14,
     '& > .Select': {
-        width: 300
-    },
-    '&.has-value': {
-        '& .Select-arrow': {
-            marginBottom: '0px !important'
+        width: 300,
+        '& .Select-input > input': {
+            marginTop: '0 !important'
         }
-    },
-    '& .Select-option': {
-        height: 36,
-        lineHeight: '18px'
-    },
-    '& .Select-placeholder, & .Select-value-label': {
-        lineHeight: '32px'
-    },
-    '& .Select-input > input': {
-        padding: '0 !important'
     }
 });
 
