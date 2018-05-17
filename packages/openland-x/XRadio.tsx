@@ -6,7 +6,10 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 14,
+    // '&:last-child': {
+    //     marginBottom: 22,
+    // },
     '> input': {
         display: 'none'
     },
@@ -17,6 +20,7 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
         alignItems: 'center',
         color: props.active ? '#4428e0' : '#525f7f',
         cursor: 'pointer',
+        width: '100%',
         '> i': {
             width: 16,
             height: 16,

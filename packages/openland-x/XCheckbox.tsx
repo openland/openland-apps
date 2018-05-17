@@ -7,7 +7,10 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 14,
+    // '&:last-child': {
+    //     marginBottom: 22,
+    // },
     '> input': {
         display: 'none'
     },
@@ -17,11 +20,12 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
         flexDirection: 'column',
         color: props.active ? '#4428e0' : '#525f7f',
         cursor: 'pointer',
+        width: '100%',
         '& .top-content': {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            marginBottom: 3,
+            // marginBottom: 3,
             '> i': {
                 width: 16,
                 height: 16,
@@ -75,7 +79,10 @@ const Divided = Glamorous.div({
 
     '&:last-child': {
         borderBottom: 'none',
-        marginBottom: 0
+        marginBottom: 0,
+        '& > div': {
+            marginBottom: 0
+        }
     }
 });
 
@@ -114,7 +121,7 @@ export class XCheckbox extends React.Component<XCheckboxProps, { isChecked: bool
                         <XIcon icon={this.state.isChecked ? 'done' : ''} />
                         <span>{this.props.label}</span>
                     </div>
-                    <div className="bottom-content">{this.props.hint}</div>
+                    {this.props.hint && <div className="bottom-content">{this.props.hint}</div>}
                 </label>
             </CheckboxInputDiv>
         );

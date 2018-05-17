@@ -116,10 +116,18 @@ const CityTitle = Glamorous.div<{ active: boolean }>((props) => ({
     paddingBottom: props.active ? 11 : 0,
     borderBottom: props.active ? '1px solid rgba(96, 124, 156, 0.07)' : '1px solid rgba(0, 0, 0, 0)',
     transition: 'all .2s',
+    // '&:hover .title': {
+    //     color: '#522BFF',
+    //     '& .material-icons': {
+    //         color: '#334562'
+    //     }
+    // },
     '& .title': {
         display: 'flex',
         alignItems: 'center',
         userSelect: 'none',
+        whiteSpace: 'nowrap',
+        transition: 'all .2s',
         '& .material-icons': {
             fontSize: 15,
             color: '#abbacb',
