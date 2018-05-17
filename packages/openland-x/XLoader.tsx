@@ -17,6 +17,7 @@ const XCardLoaderDiv = Glamorous.div<XLoaderProps>((props) => ({
     width: '100%',
     backgroundColor: '#fff',
     zIndex: 2,
+    overflow: 'hidden',
     '> .loading': {
         width: 30,
         height: 30,

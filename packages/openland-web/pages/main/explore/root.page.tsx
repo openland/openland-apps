@@ -68,18 +68,21 @@ const MapSwitcher = Glamorous.div({
     flexDirection: 'row'
 });
 
-const FilterHeaderSubtitle = Glamorous.div({
+const FilterHeaderSubtitle = Glamorous.div<{filtered?: boolean}>((props) => ({
     display: 'flex',
     flexDirection: 'row',
-    color: 'rgba(96, 124, 156, 0.52)',
+    color: props.filtered ? '#522BFF' : 'rgba(96, 124, 156, 0.52)',
     fontSize: '14px',
     fontWeight: 500,
     opacity: 0.8,
-    userSelect: 'none'
-});
+    userSelect: 'none',
+    whiteSpace: 'nowrap'
+}));
 
 const FilterComponent = withParcelStats((props) => {
-    return <FilterHeaderSubtitle>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</FilterHeaderSubtitle>;
+    return (
+        <FilterHeaderSubtitle filtered={(props as any).variables.query !== undefined}>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</FilterHeaderSubtitle>
+    );
 });
 
 const DealsSource = withDealsMap((props) => {
@@ -106,7 +109,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
     constructor(props: XWithRouter & UserInfoComponentProps) {
         super(props);
-        this.state = { 
+        this.state = {
             shadowed: false
         };
 

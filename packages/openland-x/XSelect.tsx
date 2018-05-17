@@ -134,13 +134,15 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
-        fontWeight: 400,
+        fontWeight: 500,
     },
     '&.Select--single > .Select-control .Select-value': {
-        paddingTop: 'calc(5% - 10px)'
+        // paddingTop: 'calc(5% - 10px)'
+        marginTop: 5
     },
     '& .Select-placeholder': {
-        paddingTop: 'calc(5% - 8px)'
+        // paddingTop: 'calc(5% - 8px)'
+        marginTop: 5
     },
     '& .Select-input': {
         height: 28,
@@ -252,7 +254,8 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         display: 'inline-block'
     },
     '&.Select--multi .Select-multi-value-wrapper .Select-placeholder': {
-        paddingTop: 'calc(5% - 10px)'
+        // paddingTop: 'calc(5% - 10px)'
+        marginTop: 5
     },
     '&.Select .Select-aria-only': {
         position: 'absolute',
