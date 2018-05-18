@@ -8,7 +8,7 @@ const AttachRoot = Glamorous.div<XFlexStyles>(
     }),
     (props) => applyFlex(props));
 
-export class XAttach extends React.Component<XFlexStyles> {
+export class XGroup extends React.Component<XFlexStyles> {
     render() {
         let children = [];
         const childrenRaw = React.Children.toArray(this.props.children);

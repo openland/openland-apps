@@ -12,7 +12,7 @@ import { XButton } from 'openland-x/XButton';
 import XStyles from 'openland-x/XStyles';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
-import { XAttach } from 'openland-x/XAttach';
+import { XGroup } from 'openland-x/XAttach';
 
 const FiltersContent = Glamorous.div<{ visible?: boolean }>((props) => ({
     maxHeight: 'calc(100vh - 150px)',
@@ -318,7 +318,7 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
     render() {
         let { fieldName, ...other } = this.props;
         return (
-            <XAttach>
+            <XGroup>
                 <FilterSelector {...other}
                     onChange={(v) => {
                         let value = undefined;
@@ -339,7 +339,7 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
                 {Boolean(this.props.applyButton === undefined || this.props.applyButton) && (
                     <XButton style="primary" onClick={this.apply} text="Apply" />
                 )}
-            </XAttach>);
+            </XGroup>);
     }
 
 }
@@ -366,10 +366,10 @@ class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?
 
     render() {
         return (
-            <XAttach>
+            <XGroup>
                 <XInput onChange={this.handleChange} flexGrow={1} value={this.state.value} placeholder={this.props.placeholder} />
                 <XButton style="primary" onClick={this.apply} text="Apply" />
-            </XAttach>
+            </XGroup>
         );
     }
 }
