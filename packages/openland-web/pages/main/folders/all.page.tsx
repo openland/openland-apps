@@ -16,7 +16,6 @@ import { XForm } from 'openland-x-forms/XForm';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { TableParcels } from '../../../components/TableParcels';
 import { XEmpty } from 'openland-x/XEmpty';
-import { XButton } from 'openland-x/XButton';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
 
 const SidebarItemsStyle = {
