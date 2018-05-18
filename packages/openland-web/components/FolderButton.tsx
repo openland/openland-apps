@@ -91,9 +91,10 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
     render() {
         let button;
         if (this.props.folder) {
-            button = <Button width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} active={this.state.show} />;
+            button = <Button width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} active={this.state.show} zIndex={10}/>;
         } else {
-            button = <Button width={this.props.width} icon="add" style={this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} active={this.state.show} />;
+            button = <Button width={this.props.width} icon="add" style={this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} active={this.state.show} zIndex={10}/>;
+
         }
         return (
             <>
@@ -107,7 +108,7 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
                         </XModalContext.Provider>}
                     padding={10}
                     arrow={null}
-                    placement="bottom"
+                    placement="top"
                     width={this.props.menuWidth}
                     onClickOutside={this.handleClose}>
                     {button}

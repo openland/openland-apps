@@ -176,7 +176,6 @@ const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDuratio
     },
 
     '[x-placement^="right"]': {
-        marginLeft: 10,
         '.show': {
             animationName: `${props.animationIn === 'pop' ? showAnimationRight : showAnimation } !important`,
         },
@@ -186,7 +185,6 @@ const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDuratio
     },
 
     '[x-placement^="left"]': {
-        marginLeft: 10,
         '.show': {
             animationName: `${props.animationIn === 'pop' ? showAnimationLeft : showAnimation } !important`,
         },
@@ -196,7 +194,6 @@ const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDuratio
     },
 
     '[x-placement^="top"]': {
-        marginLeft: 10,
         '.show': {
             animationName: `${props.animationIn === 'pop' ? showAnimationTop : showAnimation } !important`,
         },
@@ -206,7 +203,6 @@ const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDuratio
     },
 
     '[x-placement^="bottom"]': {
-        marginLeft: 10,
         '.show': {
             animationName: `${props.animationIn === 'pop' ? showAnimationBottom : showAnimation } !important`,
         },

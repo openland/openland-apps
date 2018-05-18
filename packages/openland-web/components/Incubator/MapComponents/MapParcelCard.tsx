@@ -463,7 +463,7 @@ export const ParcelCard = withParcelDirect((props) => (
                 <ProspectingWrapper>
                     <XView grow={1} basis={0}>
                         <XWithRole role={['feature-customer-kassita']} negate={true}>
-                            <FolderButton parcelId={props.data!!.item!!.id} folder={props.data!!.item.folder} size="medium" menuWidth={300} />
+                            <FolderButton parcelId={props.data!!.item!!.id} folder={props.data!!.item.folder} size="medium" menuWidth={297} />
                         </XWithRole>
                         <XWithRole role={['feature-customer-kassita']}>
                             <OpportunitiButton
