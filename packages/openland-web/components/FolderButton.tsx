@@ -73,6 +73,11 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     zIndex: 10,
     // pointerEvents: 'none'
 }));
+
+const Button = Glamorous(XButton)<{active?: boolean}>((props) => ({
+    zIndex: props.active ? 10 : undefined
+}));
+
 export class FolderButton extends React.PureComponent<{ folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize, width?: number, menuWidth?: number }, { show: boolean }> {
     constructor(props: { folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize }) {
         super(props);
@@ -86,9 +91,9 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
     render() {
         let button;
         if (this.props.folder) {
-            button = <XButton width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} />;
+            button = <Button width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} active={this.state.show} />;
         } else {
-            button = <XButton width={this.props.width} icon="add" style="electric" size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} />;
+            button = <Button width={this.props.width} icon="add" style={this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} active={this.state.show} />;
         }
         return (
             <>

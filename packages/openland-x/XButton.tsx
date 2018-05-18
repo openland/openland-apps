@@ -11,6 +11,7 @@ export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electri
 
 export interface XButtonStyleProps extends XFlexStyles {
     text?: string;
+    additionalText?: string;
     icon?: string;
     size?: XButtonSize;
     style?: XButtonStyle;
@@ -379,11 +380,11 @@ const StyledIcon = Glamorous<XButtonProps>(XIcon)([
     (props) => iconsIndentation(props.size, !!props.text)
 ]);
 
-const StyledButtonContentWrapper = Glamorous.div({
+const StyledButtonContentWrapper = Glamorous.div<{ additionalText?: boolean }>((props) => ({
     width: '100%',
     height: '100%',
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: props.additionalText ? 'space-between' : 'center',
     alignItems: 'center',
     textDecoration: 'none',
     flexDirection: 'row',
@@ -392,9 +393,21 @@ const StyledButtonContentWrapper = Glamorous.div({
     wordBreak: 'keep-all',
     position: 'relative',
     outline: 'none'
-});
+}));
 
-const ButtomTitle = Glamorous.span({
+const MainContent = Glamorous.div<{ additionalText?: boolean }>((props) => ({
+    display: 'flex',
+    alignItems: 'center',
+    marginRight: props.additionalText ? 5 : undefined
+}));
+
+const AdditionalContent = Glamorous.div<{ additionalText?: boolean }>((props) => ({
+    display: 'flex',
+    alignItems: 'center',
+    marginLeft: props.additionalText ? 5 : undefined
+}));
+
+const ButtomText = Glamorous.span({
     maxWidth: '100%',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -423,10 +436,17 @@ export class XButton extends React.PureComponent<XButtonProps> {
     render() {
         return (
             <StyledButton {...this.props}>
-                <StyledButtonContentWrapper tabIndex={-1} className="button-content">
-                    {this.props.icon && <StyledIcon text={this.props.text} icon={this.props.icon} className="icon" />}
-                    <ButtomTitle>{this.props.text}</ButtomTitle>
+                <StyledButtonContentWrapper tabIndex={-1} className="button-content" additionalText={this.props.additionalText !== undefined}>
+                    <MainContent additionalText={this.props.additionalText !== undefined}>
+                        {this.props.icon && <StyledIcon text={this.props.text} icon={this.props.icon} className="icon" />}
+                        <ButtomText>{this.props.text}</ButtomText>
+                    </MainContent>
                     {this.props.loading && <XLoadingCircular inverted={this.props.style === 'primary' || this.props.style === 'danger'} className="loading-icon" />}
+                    {this.props.additionalText && (
+                        <AdditionalContent additionalText={this.props.additionalText !== undefined}>
+                            <ButtomText>{this.props.additionalText}</ButtomText>
+                        </AdditionalContent>
+                    )}
                 </StyledButtonContentWrapper>
             </StyledButton>
         );
