@@ -814,6 +814,14 @@ export interface AlterFolderMutation {
   },
 };
 
+export interface DeleteFolderMutationVariables {
+  folderId: string,
+};
+
+export interface DeleteFolderMutation {
+  alphaDeleteFolder: string,
+};
+
 export interface AddToFolderMutationVariables {
   parcelId: string,
   folderId: string,

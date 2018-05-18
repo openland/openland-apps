@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { Scaffold } from '../../../components/Scaffold';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Sidebar } from '../../../components/Sidebar';
-import { withFolders, withCreateFolderMutation, withFolder } from '../../../api';
+import { withFolders, withCreateFolderMutation, withFolder, withDeleteFolderMutation } from '../../../api';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLinkProps } from 'openland-x/XLink';
 import { XLoader } from 'openland-x/XLoader';
@@ -16,6 +16,8 @@ import { XForm } from 'openland-x-forms/XForm';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { TableParcels } from '../../../components/TableParcels';
 import { XEmpty } from 'openland-x/XEmpty';
+import { XButton } from 'openland-x/XButton';
+import { XButtonMutation } from 'openland-x/XButtonMutation';
 
 const SidebarItemsStyle = {
     height: 40,
@@ -95,6 +97,10 @@ const CreateFolder = withCreateFolderMutation((props) => {
     );
 });
 
+const DeleteFolder = withDeleteFolderMutation((props) => {
+    return <XButtonMutation style="danger" text="Delete" mutation={props.deleteFolder} />;
+});
+
 const SidebarItemWrapper = Glamorous(Sidebar.Item)({
     ...SidebarItemsStyle,
     justifyContent: 'space-between',
@@ -150,7 +156,9 @@ const FolderContent = withFolder((props) => {
     }
     return (
         <XVertical flexGrow={1}>
-            <XHeader text={props.data.folder.name} />
+            <XHeader text={props.data.folder.name}>
+                <DeleteFolder variables={{ folderId: props.data.folder.id }} />
+            </XHeader>
             {props.data.folder.parcels.pageInfo.itemsCount > 0 && (
                 <TableParcels items={props.data.folder.parcels.edges.map((v) => v.node)} />
             )}

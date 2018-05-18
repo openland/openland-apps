@@ -196,7 +196,9 @@ export const withDebugReaders = graphqlRouted(Queries.Debug.DebugReadedStatesQue
 export const withSuperCities = graphqlRouted(Queries.SuperCity.SuperCitiesQuery);
 export const withFolders = graphqlRouted(Queries.Folder.FoldersQuery);
 export const withFolder = graphqlRouted(Queries.Folder.FolderQuery, [], true, 'network-only');
+
 export const withCreateFolderMutation = graphqlMutation(Queries.Folder.CreateFolderMutation, 'createFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
+export const withDeleteFolderMutation = graphqlMutation(Queries.Folder.DeleteFolderMutation, 'deleteFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
 export const withAddToFolderMutation = graphqlMutation(Queries.Folder.AddToFolderMutation, 'addToFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
 export const withSetFolderMutation = graphqlMutation(Queries.Folder.SetParcelFolderMutation, 'setFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
 
