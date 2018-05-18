@@ -188,15 +188,8 @@ const PropertyCellTitle = Glamorous.div<{ width?: number }>((props) => ({
     letterSpacing: -0.2,
     color: '#1f3449',
     overflow: 'hidden',
-    '& > span': {
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'row',
-        maxWidth: '100%',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-    }
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
 }));
 
 const PropertyCellValue = Glamorous.div({
@@ -208,21 +201,14 @@ const PropertyCellValue = Glamorous.div({
     color: '#1f3449',
     fontWeight: 500,
     overflow: 'hidden',
-    '& > span': {
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'row',
-        maxWidth: '100%',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-    }
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
 });
 
 const PropertyCell = (props: { children: any, title?: string, width?: number, compact?: boolean }) => (
     <PropertyCellContainer>
-        {props.title && (<PropertyCellTitle width={props.width}><span>{props.title}</span></PropertyCellTitle>)}
-        {React.Children.count(props.children) > 0 && <PropertyCellValue><span>{props.children}</span></PropertyCellValue>}
+        {props.title && (<PropertyCellTitle width={props.width}>{props.title}</PropertyCellTitle>)}
+        {React.Children.count(props.children) > 0 && <PropertyCellValue>{props.children}</PropertyCellValue>}
     </PropertyCellContainer>
 );
 

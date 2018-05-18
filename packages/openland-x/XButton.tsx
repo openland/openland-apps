@@ -415,6 +415,7 @@ const ButtomText = Glamorous.span({
 });
 
 const StyledButton = Glamorous<XButtonProps>(XLink)([
+    (props) => ({display: 'flex'}),
     (props) => ({
         pointerEvents: (props.loading || props.disabled) ? 'none' : 'auto',
         cursor: (props.loading || props.disabled) ? 'inherit' : 'pointer',
