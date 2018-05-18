@@ -4,6 +4,7 @@ import { MutationFunc } from 'react-apollo';
 interface XMutationProps {
     mutation: MutationFunc<{}>;
     variables?: any;
+    className?: string;
     onSuccess?: () => void;
 }
 
@@ -46,6 +47,10 @@ export class XMutation extends React.Component<XMutationProps, { loading: boolea
             }));
         }
 
-        return childs;
+        return (
+            <div className={this.props.className} >
+            {childs}
+            </div>
+        );
     }
 }

@@ -11,7 +11,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { XMutation } from 'openland-x/XMutation';
 import { XButtonMutation } from 'openland-x/XButtonMutation';
 
-const FolderEntry = Glamorous.div((props) => ({
+const FolderEntry = Glamorous(XMutation) ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -21,11 +21,8 @@ const FolderEntry = Glamorous.div((props) => ({
     },
     '> a': {
         margin: 10
-    },
-    // '& .loader': {
-    //     display: (props as any).loading ? undefined : 'none' 
-    // }
-}));
+    }
+});
 
 const FolderEntryContent = Glamorous.div({
     flexGrow: 1,
@@ -42,11 +39,10 @@ const ButtonMoveToFolder = withSetFolderMutation((props) => {
     return (
         <XModalContext.Consumer>
             {(modal) => (
-                <XMutation
+                <FolderEntry
                     mutation={props.setFolder}
                     variables={{ parcelId: (props as any).parcelId, folderId: (props as any).folderId }}
                     onSuccess={modal!!.close}>
-                    <FolderEntry>
                         <FolderEntryContent>
                             <XIcon icon="folder" />
                             {(props as any).text}
@@ -61,9 +57,7 @@ const ButtonMoveToFolder = withSetFolderMutation((props) => {
                                 style="danger" />
                         )}
 
-                    </FolderEntry>
-
-                </XMutation>
+                </FolderEntry>
 
             )}
         </XModalContext.Consumer>
