@@ -3,27 +3,72 @@ import { XButton, XButtonSize, XButtonStyle } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { withFolders, withSetFolderMutation, withCreateFolderMutation } from '../api';
-import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XForm } from 'openland-x-forms/XForm';
 import Glamorous from 'glamorous';
+import { XIcon } from 'openland-x/XIcon';
+import { XMutation } from 'openland-x/XMutation';
+import { XButtonMutation } from 'openland-x/XButtonMutation';
+
+const FolderEntry = Glamorous.div((props) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    ':hover': {
+        backgroundColor: '#f8f8fb'
+    },
+    '> a': {
+        margin: 10
+    },
+    // '& .loader': {
+    //     display: (props as any).loading ? undefined : 'none' 
+    // }
+}));
+
+const FolderEntryContent = Glamorous.div({
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    '> i': {
+        padding: 10
+    }
+});
 
 const ButtonMoveToFolder = withSetFolderMutation((props) => {
     return (
         <XModalContext.Consumer>
             {(modal) => (
-                <XButtonMutation
-                    text={(props as any).text}
+                <XMutation
                     mutation={props.setFolder}
                     variables={{ parcelId: (props as any).parcelId, folderId: (props as any).folderId }}
-                    onSuccess={modal!!.close}
-                    style={(props as any).style}
-                />
+                    onSuccess={modal!!.close}>
+                    <FolderEntry>
+                        <FolderEntryContent>
+                            <XIcon icon="folder" />
+                            {(props as any).text}
+                        </FolderEntryContent>
+                        {(props as any).remove && (
+                            <XButtonMutation
+                                size="small"
+                                mutation={props.setFolder}
+                                variables={{ parcelId: (props as any).parcelId, folder: null }}
+                                onSuccess={modal!!.close}
+                                text="Remove"
+                                style="danger" />
+                        )}
+
+                    </FolderEntry>
+
+                </XMutation>
+
             )}
         </XModalContext.Consumer>
     );
-}) as React.ComponentType<{ text: string, parcelId: string, folderId?: string, style?: XButtonStyle }>;
+}) as React.ComponentType<{ text: string, parcelId: string, folderId?: string, style?: XButtonStyle, remove?: boolean }>;
 
 const CreateFolder = withCreateFolderMutation((props) => {
     return (
@@ -51,15 +96,12 @@ const FolderForm = withFolders((props) => {
             <XVertical>
                 <XButton icon="add" text="New Folder" style="electric" query={{ field: 'newFolder', value: 'true' }} autoClose={true} />
                 {props.data.folders && props.data.folders.map((v) => (
-                    <ButtonMoveToFolder key={v.id} parcelId={(props as any).parcelId} text={v.name} folderId={v.id} />
+                    <ButtonMoveToFolder key={v.id} parcelId={(props as any).parcelId} text={v.name} folderId={v.id} remove={(props as any).currentFolder && v.id === (props as any).currentFolder.id} />
                 ))}
-                {(props as any).remove &&
-                    <ButtonMoveToFolder key="_remove" parcelId={(props as any).parcelId} text="Remove" style="danger" />
-                }
             </XVertical>
         </>
     );
-}) as React.ComponentType<{ parcelId: string, size?: XButtonSize, remove: boolean }>;
+}) as React.ComponentType<{ parcelId: string, size?: XButtonSize, currentFolder?: { id: string, name: string } | null }>;
 
 const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     position: 'fixed',
@@ -74,7 +116,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     // pointerEvents: 'none'
 }));
 
-const Button = Glamorous(XButton)<{active?: boolean}>((props) => ({
+const Button = Glamorous(XButton)<{ active?: boolean }>((props) => ({
     zIndex: props.active ? 10 : undefined
 }));
 
@@ -91,9 +133,9 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
     render() {
         let button;
         if (this.props.folder) {
-            button = <Button width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} active={this.state.show} zIndex={10}/>;
+            button = <Button width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} active={this.state.show} zIndex={10} />;
         } else {
-            button = <Button width={this.props.width} icon="add" style={this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} active={this.state.show} zIndex={10}/>;
+            button = <Button width={this.props.width} icon="add" style={this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} active={this.state.show} zIndex={10} />;
 
         }
         return (
@@ -104,7 +146,7 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
                     show={this.state.show}
                     content={
                         <XModalContext.Provider value={{ close: this.handleClose }}>
-                            <FolderForm parcelId={this.props.parcelId} remove={!!this.props.folder} />
+                            <FolderForm parcelId={this.props.parcelId} currentFolder={this.props.folder} />
                         </XModalContext.Provider>}
                     padding={10}
                     arrow={null}

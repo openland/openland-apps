@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { MutationFunc } from 'react-apollo';
-import { XButtonStyleProps, XButton } from './XButton';
 
-interface XButtonMutationProps extends XButtonStyleProps {
+interface XMutationProps {
     mutation: MutationFunc<{}>;
     variables?: any;
     onSuccess?: () => void;
 }
 
-export class XButtonMutation extends React.Component<XButtonMutationProps, { loading: boolean }> {
+export class XMutation extends React.Component<XMutationProps, { loading: boolean }> {
 
-    constructor(props: XButtonMutationProps) {
+    constructor(props: XMutationProps) {
         super(props);
         this.state = { loading: false };
     }
@@ -39,7 +38,14 @@ export class XButtonMutation extends React.Component<XButtonMutationProps, { loa
     }
 
     render() {
-        let { mutation, variables, ...other } = this.props;
-        return <XButton loading={this.state.loading} {...other} onClick={this.handleClick} />;
+        let childs = [];
+        for (let c of React.Children.toArray(this.props.children)) {
+            childs.push(React.cloneElement(c as any, {
+                loading: this.state.loading,
+                onClick: this.handleClick,
+            }));
+        }
+
+        return childs;
     }
 }
