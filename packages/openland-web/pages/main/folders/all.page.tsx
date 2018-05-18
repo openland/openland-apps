@@ -217,7 +217,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
                 </Scaffold.Menu>
                 <Scaffold.Content>
                     {!props.router.routeQuery.folderId && <XLoader loading={true} />}
-                    {!props.router.routeQuery.folderId && <XPageRedirect path={'/folders/' + props.data.folders[0].id} />}
+                    {(!props.router.routeQuery.folderId || props.data.folders.map(folder => folder.id).indexOf(props.router.routeQuery.folderId) === -1) && <XPageRedirect path={'/folders/' + props.data.folders[0].id} />}
                     {props.router.routeQuery.folderId && <FolderContent variables={{ folderId: props.router.routeQuery.folderId }} />}
                 </Scaffold.Content>
             </Scaffold>
