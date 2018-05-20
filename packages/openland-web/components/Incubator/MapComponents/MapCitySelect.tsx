@@ -13,12 +13,16 @@ const MapFilterWrapper = Glamorous(XCard)<{ active: boolean }>((props) => ({
     left: 18,
     paddingLeft: 0,
     paddingRight: 0,
-    paddingTop: 12,
-    paddingBottom: 12,
-    zIndex: props.active ? 12 : 1,
+    // paddingTop: props.active ? 12 : 0,
+    paddingBottom: props.active ? 12 : 0,
+    zIndex: props.active ? 12 : 2,
+    border: 'none',
+    transition: 'padding .2s',
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
     '& > div': {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        width: '100%'
     }
 }));
 
@@ -105,17 +109,21 @@ export class CitySelectorItem extends React.Component<CitySelectorItemProps> {
 }
 
 const CityTitle = Glamorous.div<{ active: boolean }>((props) => ({
-    fontSize: 18,
+    height: 56,
+    fontSize: 15,
     fontWeight: 500,
     lineHeight: 'normal',
-    letterSpacing: -0.2,
+    letterSpacing: 0.5,
     color: '#1f3449',
     cursor: 'pointer',
     paddingLeft: 16,
     paddingRight: 16,
+    paddingTop: props.active ? 11 : 0,
     paddingBottom: props.active ? 11 : 0,
     borderBottom: props.active ? '1px solid rgba(96, 124, 156, 0.07)' : '1px solid rgba(0, 0, 0, 0)',
     transition: 'all .2s',
+    display: 'flex',
+    alignItems: 'center',
     // '&:hover .title': {
     //     color: '#522BFF',
     //     '& .material-icons': {
@@ -129,6 +137,7 @@ const CityTitle = Glamorous.div<{ active: boolean }>((props) => ({
         whiteSpace: 'nowrap',
         transition: 'all .2s',
         '& .material-icons': {
+            marginTop: 3,
             fontSize: 15,
             color: '#abbacb',
             opacity: 0.8,

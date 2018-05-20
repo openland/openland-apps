@@ -20,6 +20,7 @@ import { XMapSource } from 'openland-x-map/XMapSource';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { trackEvent } from 'openland-x-analytics';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
+import { XCard } from 'openland-x/XCard';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -68,20 +69,39 @@ const MapSwitcher = Glamorous.div({
     flexDirection: 'row'
 });
 
-const FilterHeaderSubtitle = Glamorous.div<{filtered?: boolean}>((props) => ({
+const FilterCounterWrapper = Glamorous(XCard)({
+    border: 'none',
     display: 'flex',
     flexDirection: 'row',
-    color: props.filtered ? '#522BFF' : 'rgba(96, 124, 156, 0.52)',
-    fontSize: '14px',
+    alignItems: 'center',
+    position: 'absolute',
+    paddingLeft: 16,
+    width: 178,
+    height: 48,
+    left: 18,
+    top: 84,
+    zIndex: 1,
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
+});
+
+const FilterCounter = Glamorous.div<{ filtered?: boolean }>((props) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    color: props.filtered ? '#522BFF' : '#334562',
+    fontSize: 14,
     fontWeight: 500,
-    opacity: 0.8,
-    userSelect: 'none',
+    // userSelect: 'none',
     whiteSpace: 'nowrap'
 }));
 
 const FilterComponent = withParcelStats((props) => {
     return (
-        <FilterHeaderSubtitle filtered={(props as any).variables.query !== undefined}>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</FilterHeaderSubtitle>
+        <FilterCounterWrapper>
+            <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                <span>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</span>
+            </FilterCounter>
+        </FilterCounterWrapper>
     );
 });
 
@@ -250,15 +270,15 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                                 active={city !== 'sf'}
                                                 label="New York"
                                             />
-                                            <FilterComponent
-                                                variables={{
-                                                    query: query && JSON.stringify(query),
-                                                    city: cityName,
-                                                    county: countyName,
-                                                    state: stateName
-                                                }}
-                                            />
                                         </CitySelector>
+                                        <FilterComponent
+                                            variables={{
+                                                query: query && JSON.stringify(query),
+                                                city: cityName,
+                                                county: countyName,
+                                                state: stateName
+                                            }}
+                                        />
 
                                         <ParcelMap
                                             mode={this.props.router.query.mode}

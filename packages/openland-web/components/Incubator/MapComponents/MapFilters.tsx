@@ -422,19 +422,13 @@ const MapFilterWrapper = Glamorous(XCard)<{ active?: boolean }>((props) => ({
     top: 18,
     left: 214,
     flexDirection: 'row',
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 15,
-    paddingBottom: 15,
-    zIndex: props.active ? 12 : 1
+    height: 56,
+    borderRadius: 6,
+    overflow: 'hidden',
+    border: 'none',
+    zIndex: props.active ? 12 : 1,
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
 }));
-
-const FilterButtonMargins = Glamorous.div({
-    marginRight: 14,
-    '&:last-child': {
-        marginRight: 0
-    }
-});
 
 const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     position: 'fixed',
@@ -562,7 +556,6 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                 <Shadow active={this.state.active} />
 
                 <MapFilterWrapper active={this.state.active}>
-                    <FilterButtonMargins key={'filter_ownerName'}>
                         <FilterButton
                             handler={this.shadowHandler}
                             fieldName="ownerName"
@@ -570,11 +563,9 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                             content={(
                                 <OwnerNameFiltersContent />
                             )}>
-                            <XButton text="Owner name" />
+                            <XButton size="medium" text="Owner name" attach="both" />
 
                         </FilterButton>
-                    </FilterButtonMargins>
-                    <FilterButtonMargins key={'filter_filterZoning_container'}>
                         {this.props.city === 'sf' && (
                             <FilterButton
                                 handler={this.shadowHandler}
@@ -593,7 +584,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                         />
                                     </FiltersContent>
                                 )}>
-                                <XButton />
+                                <XButton size="medium" attach="both" />
                             </FilterButton>
                         )}
 
@@ -615,15 +606,12 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                         />
                                     </FiltersContent>
                                 )}>
-                                <XButton />
+                                <XButton size="medium" attach="both" />
                             </FilterButton>
                         )}
 
-                    </FilterButtonMargins>
-
                     {this.props.city === 'sf' && (
                         <>
-                            <FilterButtonMargins key={'filter_filterLandUse'}>
                                 <FilterButton
                                     handler={this.applyHandler}
                                     fieldName="filterLandUse"
@@ -640,11 +628,9 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                             </XVertical>
                                         </FiltersContent>
                                     )}>
-                                    <XButton />
+                                    <XButton size="medium" attach="both" />
                                 </FilterButton>
-                            </FilterButtonMargins>
 
-                            <FilterButtonMargins key={'filter_filterStories'}>
                                 <FilterButton handler={this.applyHandler}
                                     fieldName="filterStories"
                                     router={this.props.router}
@@ -672,11 +658,9 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                             </XVertical>
                                         </FiltersContent>
                                     )}>
-                                    <XButton />
+                                    <XButton size="medium" attach="both" />
                                 </FilterButton>
-                            </FilterButtonMargins>
 
-                            <FilterButtonMargins key={'filter_filterCurrentUse'}>
                                 <FilterButton handler={this.applyHandler}
                                     fieldName="filterCurrentUse"
                                     filterTitle="Current Use"
@@ -697,13 +681,11 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                             </XVertical>
                                         </FiltersContent>
                                     )}>
-                                    <XButton />
+                                    <XButton size="medium" attach="both" />
                                 </FilterButton>
-                            </FilterButtonMargins>
                         </>
                     )}
 
-                    <FilterButtonMargins key={'filter_filterArea'}>
                         <FilterButton
                             fieldName="area"
                             router={this.props.router}
@@ -713,11 +695,9 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                     router={this.props.router}
                                 />
                             }>
-                            <XButton text="Area" />
+                            <XButton size="medium" text="Area" attach="both" />
                         </FilterButton>
-                    </FilterButtonMargins>
 
-                    <FilterButtonMargins key={'filter_other_container'}>
                         <FilterButton handler={this.applyHandler}
                             router={this.props.router}
                             content={(
@@ -725,9 +705,8 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                     {...other}
                                 </FiltersContent>
                             )}>
-                            <XButton style={otherActive ? 'primary' : 'ghost'} text="Other" clickOnDown />
+                            <XButton size="medium" style={otherActive ? 'primary' : 'ghost'} text="Other" attach="both" clickOnDown />
                         </FilterButton>
-                    </FilterButtonMargins>
                 </MapFilterWrapper>
             </>
         );

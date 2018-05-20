@@ -126,7 +126,7 @@ let sizeStyles = styleResolver({
     'medium': {
         height: 40,
         lineHeight: '40px',
-        fontSize: 16,
+        fontSize: 15,
         letterSpacing: 0.5,
         fontWeight: 500,
         '& .button-content': {
@@ -317,6 +317,7 @@ let colorDisabledStyles = styleResolver({
 let colorPressedStyles = styleResolver({
     'default': {
         backgroundColor: '#eeecfa !important',
+        border: 'solid 1px transparent !important',
         color: '#5640d6 !important'
     },
     'primary': {
@@ -329,6 +330,7 @@ let colorPressedStyles = styleResolver({
     },
     'ghost': {
         backgroundColor: '#eeecfa !important',
+        border: 'solid 1px transparent !important',
         color: '#5640d6 !important'
     },
     'electric': {
