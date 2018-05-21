@@ -113,7 +113,7 @@ const FolderForm = withFolders((props) => {
         <>
             <XPopper.Invalidator />
             <FolderPopupWrapper>
-                <AddFolderButton text="New Folder" style="electric" query={{ field: 'newFolder', value: 'true' }} autoClose={true} />
+                <AddFolderButton text="Add to new folder" style="electric" query={{ field: 'newFolder', value: 'true' }} autoClose={true} />
                 {props.data.folders && props.data.folders.map((v) => (
                     <ButtonMoveToFolder key={v.id} parcelId={(props as any).parcelId} text={v.name} folderId={v.id} remove={(props as any).currentFolder && v.id === (props as any).currentFolder.id} />
                 ))}
