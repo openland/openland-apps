@@ -12,7 +12,7 @@ import { XButton } from 'openland-x/XButton';
 import XStyles from 'openland-x/XStyles';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
-import { XGroup } from 'openland-x/XAttach';
+import { XGroup } from 'openland-x/XGroup';
 
 const FiltersContent = Glamorous.div<{ visible?: boolean }>((props) => ({
     maxHeight: 'calc(100vh - 150px)',
