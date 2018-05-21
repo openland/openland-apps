@@ -109,8 +109,9 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
             <XPopper content={this.props.content}
                 onClickOutside={this.handleClose}
                 show={this.state.popper}
-                padding={30}
+                padding={26}
                 animation={null}
+                bordered={true}
             >
                 <ConfirmWrapper onMouseDown={this.onMouseDown}>
                     {children}
