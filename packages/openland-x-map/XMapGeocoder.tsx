@@ -52,7 +52,7 @@ export class XMapGeocoder extends React.Component<{ city: string, bbox: number[]
                     accessToken: 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw',
                     country: 'US',
                     zoom: 19,
-                    types: 'address',
+                    types: 'address,postcode,neighborhood,district',
                     bbox: [
                         Math.min(this.props.bbox[0], this.props.bbox[2]), Math.min(this.props.bbox[1], this.props.bbox[3]),
                         Math.max(this.props.bbox[0], this.props.bbox[2]), Math.max(this.props.bbox[1], this.props.bbox[3])
