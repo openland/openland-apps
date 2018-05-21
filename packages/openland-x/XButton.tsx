@@ -289,14 +289,17 @@ let colorDisabledStyles = styleResolver({
     'default': {
         backgroundColor: '#f3f3f5 !important',
         color: 'rgba(51, 69, 98, 0.7) !important',
+        border: 'solid 1px transparent !important',
     },
     'primary': {
         backgroundColor: '#9380fc !important',
         color: 'rgba(255, 255, 255, 0.7) !important',
+        border: 'solid 1px transparent !important',
     },
     'danger': {
         backgroundColor: '#e28787 !important',
         color: 'rgba(255, 255, 255, 0.7) !important',
+        border: 'solid 1px transparent !important',
     },
     'ghost': {
         backgroundColor: '#ffffff !important',
@@ -311,6 +314,7 @@ let colorDisabledStyles = styleResolver({
     'flat': {
         backgroundColor: '#ffffff !important',
         color: 'rgba(51, 69, 98, 0.7) !important',
+        border: 'solid 1px transparent !important',
     }
 });
 
@@ -322,10 +326,12 @@ let colorPressedStyles = styleResolver({
     },
     'primary': {
         backgroundColor: '#5640d6 !important',
+        border: 'solid 1px transparent !important',
         color: '#ffffff !important'
     },
     'danger': {
         backgroundColor: '#c54f4f !important',
+        border: 'solid 1px transparent !important',
         color: '#ffffff !important'
     },
     'ghost': {
@@ -417,7 +423,7 @@ const ButtomText = Glamorous.span({
 });
 
 const StyledButton = Glamorous<XButtonProps>(XLink)([
-    (props) => ({display: 'flex'}),
+    (props) => ({display: 'flex', boxSizing: 'border-box'}),
     (props) => ({
         pointerEvents: (props.loading || props.disabled) ? 'none' : 'auto',
         cursor: (props.loading || props.disabled) ? 'inherit' : 'pointer',

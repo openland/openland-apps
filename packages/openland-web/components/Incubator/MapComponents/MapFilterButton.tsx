@@ -5,15 +5,7 @@ import { XWithRouter } from 'openland-x-routing/withRouter';
 
 const ConfirmWrapper = Glamorous.div({
     display: 'flex',
-    alignSelf: 'stretch',
-    '& > a': {
-        height: '100% !important',
-        border: '1px solid transparent',
-        borderRight: '1px solid #c1c7cf !important'
-    },
-    '&:last-child > a': {
-        borderRight: '1px solid transparent !important'
-    }
+    alignSelf: 'center'
 });
 
 interface ConfirmPopoverProps {
@@ -90,12 +82,14 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
             }
 
             if (component.props.style === undefined) {
-                res.style = this.props.router.query!![this.props.fieldName] !== undefined ? 'primary' : 'ghost';
+                res.style = this.props.router.query!![this.props.fieldName] !== undefined ? 'primary' : 'flat';
             }
 
+            if (this.state.popper) {
+                res.style = 'primary';
+                res.pressed = true;
+            }
         }
-
-        res.pressed = this.state.popper;
 
         return res;
     }

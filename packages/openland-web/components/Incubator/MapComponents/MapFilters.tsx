@@ -339,9 +339,9 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
                 {Boolean(this.props.applyButton === undefined || this.props.applyButton) && (
                     <XButton style="primary" onClick={this.apply} text="Apply" />
                 )}
-            </XGroup>);
+            </XGroup>
+        );
     }
-
 }
 
 class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?: string } & XWithRouter, { value: string }> {
@@ -422,6 +422,7 @@ const MapFilterWrapper = Glamorous(XCard)<{ active?: boolean }>((props) => ({
     top: 18,
     left: 214,
     flexDirection: 'row',
+    alignItems: 'center',
     height: 56,
     borderRadius: 6,
     overflow: 'hidden',
@@ -429,6 +430,18 @@ const MapFilterWrapper = Glamorous(XCard)<{ active?: boolean }>((props) => ({
     zIndex: props.active ? 12 : 1,
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
 }));
+
+const FilterButtonWrapper = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    height: '100%',
+    paddingLeft: 8,
+    paddingRight: 8,
+    borderRight: '1px solid #c1c7cf',
+    '&:last-child': {
+        borderRight: 'none'
+    }
+});
 
 const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     position: 'fixed',
@@ -556,6 +569,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                 <Shadow active={this.state.active} />
 
                 <MapFilterWrapper active={this.state.active}>
+                    <FilterButtonWrapper key={'filter_ownerName'}>
                         <FilterButton
                             handler={this.shadowHandler}
                             fieldName="ownerName"
@@ -563,10 +577,12 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                             content={(
                                 <OwnerNameFiltersContent />
                             )}>
-                            <XButton size="medium" text="Owner name" attach="both" />
+                            <XButton size="medium" text="Owner name" />
 
                         </FilterButton>
-                        {this.props.city === 'sf' && (
+                    </FilterButtonWrapper>
+                    {this.props.city === 'sf' && (
+                        <FilterButtonWrapper key={'filter_filterZoning_container'}>
                             <FilterButton
                                 handler={this.shadowHandler}
                                 key={'filter_filterZoning_sf'}
@@ -584,11 +600,13 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                         />
                                     </FiltersContent>
                                 )}>
-                                <XButton size="medium" attach="both" />
+                                <XButton size="medium" />
                             </FilterButton>
-                        )}
+                        </FilterButtonWrapper>
+                    )}
 
-                        {this.props.city === 'nyc' && (
+                    {this.props.city === 'nyc' && (
+                        <FilterButtonWrapper key={'filter_filterZoning_container'}>
                             <FilterButton
                                 handler={this.shadowHandler}
                                 key={'filter_filterZoning_nyc'}
@@ -606,12 +624,14 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                         />
                                     </FiltersContent>
                                 )}>
-                                <XButton size="medium" attach="both" />
+                                <XButton size="medium" />
                             </FilterButton>
-                        )}
+                        </FilterButtonWrapper>
+                    )}
 
                     {this.props.city === 'sf' && (
                         <>
+                            <FilterButtonWrapper key={'filter_filterLandUse'}>
                                 <FilterButton
                                     handler={this.applyHandler}
                                     fieldName="filterLandUse"
@@ -628,9 +648,11 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                             </XVertical>
                                         </FiltersContent>
                                     )}>
-                                    <XButton size="medium" attach="both" />
+                                    <XButton size="medium" />
                                 </FilterButton>
+                            </FilterButtonWrapper>
 
+                            <FilterButtonWrapper key={'filter_filterStories'}>
                                 <FilterButton handler={this.applyHandler}
                                     fieldName="filterStories"
                                     router={this.props.router}
@@ -658,9 +680,11 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                             </XVertical>
                                         </FiltersContent>
                                     )}>
-                                    <XButton size="medium" attach="both" />
+                                    <XButton size="medium" />
                                 </FilterButton>
+                            </FilterButtonWrapper>
 
+                            <FilterButtonWrapper key={'filter_filterCurrentUse'}>
                                 <FilterButton handler={this.applyHandler}
                                     fieldName="filterCurrentUse"
                                     filterTitle="Current Use"
@@ -681,11 +705,13 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                             </XVertical>
                                         </FiltersContent>
                                     )}>
-                                    <XButton size="medium" attach="both" />
+                                    <XButton size="medium" />
                                 </FilterButton>
+                            </FilterButtonWrapper>
                         </>
                     )}
 
+                    <FilterButtonWrapper key={'filter_filterArea'}>
                         <FilterButton
                             fieldName="area"
                             router={this.props.router}
@@ -695,18 +721,22 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                     router={this.props.router}
                                 />
                             }>
-                            <XButton size="medium" text="Area" attach="both" />
+                            <XButton size="medium" text="Area" />
                         </FilterButton>
+                    </FilterButtonWrapper>
 
+                    <FilterButtonWrapper key={'filter_other_container'}>
                         <FilterButton handler={this.applyHandler}
+                            fieldName="other"
                             router={this.props.router}
                             content={(
                                 <FiltersContent>
                                     {...other}
                                 </FiltersContent>
                             )}>
-                            <XButton size="medium" style={otherActive ? 'primary' : 'ghost'} text="Other" attach="both" clickOnDown />
+                            <XButton size="medium" text="Other" clickOnDown />
                         </FilterButton>
+                    </FilterButtonWrapper>
                 </MapFilterWrapper>
             </>
         );
