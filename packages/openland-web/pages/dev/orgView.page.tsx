@@ -9,13 +9,12 @@ import {
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
-import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XTable } from 'openland-x/XTable';
 import { XForm } from 'openland-x-forms/XForm';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 
-const ActivateButton = withSuperAccountActivate((props) => <XButtonMutation style="primary" mutation={props.activate} text="Activate" />);
-const SuspendButton = withSuperAccountSuspend((props) => <XButtonMutation style="danger" mutation={props.suspend} text="Suspend" />);
+const ActivateButton = withSuperAccountActivate((props) => <XButton style="primary" action={() => props.activate({})} text="Activate" />);
+const SuspendButton = withSuperAccountSuspend((props) => <XButton style="danger" action={() => props.suspend({})} text="Suspend" />);
 
 const AddMemberForm = withSuperAccountMemberAdd((props) => {
     return (

@@ -8,9 +8,8 @@ import { XForm } from 'openland-x-forms/XForm';
 import Glamorous from 'glamorous';
 import { XIcon } from 'openland-x/XIcon';
 import { XMutation } from 'openland-x/XMutation';
-import { XButtonMutation } from 'openland-x/XButtonMutation';
 
-const FolderEntry = Glamorous(XMutation)<{selected?: boolean}>((props) => ({
+const FolderEntry = Glamorous(XMutation)<{ selected?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -50,7 +49,7 @@ const Loader = Glamorous(XButton)({
         borderColor: 'transparent'
 
     },
-    
+
 });
 
 const ButtonMoveToFolder = withSetFolderMutation((props) => {
@@ -63,19 +62,20 @@ const ButtonMoveToFolder = withSetFolderMutation((props) => {
                     active={!(props as any).remove}
                     variables={{ parcelId: (props as any).parcelId, folderId: (props as any).folderId }}
                     onSuccess={modal!!.close}>
-                        <FolderEntryContent selected={(props as any).remove}>
-                            <XIcon icon="folder" />
-                            {(props as any).text}
-                        </FolderEntryContent>
-                        {(props as any).remove && (
-                            <XButtonMutation
-                                size="small"
-                                mutation={props.setFolder}
-                                variables={{ parcelId: (props as any).parcelId, folder: null }}
-                                onSuccess={modal!!.close}
-                                text="Remove"
-                                style="danger" />
-                        )}
+                    <FolderEntryContent selected={(props as any).remove}>
+                        <XIcon icon="folder" />
+                        {(props as any).text}
+                    </FolderEntryContent>
+                    {(props as any).remove && (
+                        <XButton
+                            size="small"
+                            action={() => props.setFolder({ variables: { parcelId: (props as any).parcelId, folder: null } as any })}
+                            // mutation={props.setFolder}
+                            // variables={{ parcelId: (props as any).parcelId, folder: null }}
+                            onSuccess={modal!!.close}
+                            text="Remove"
+                            style="danger" />
+                    )}
                     {!(props as any).remove && (
                         <Loader
                             text="Remove"
@@ -187,7 +187,8 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
                     arrow={null}
                     placement="top"
                     width={this.props.menuWidth}
-                    onClickOutside={this.handleClose}>
+                    onClickOutside={this.handleClose}
+                >
                     {button}
                 </XPopper>
             </>

@@ -1,15 +1,17 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
-import { XLink, XLinkProps } from './XLink';
 import { XLoadingCircular } from './XLoadingCircular';
 import { XFlexStyles, applyFlex } from './Flex';
 import { XIcon } from './XIcon';
+import { makeNavigable, NavigableParentProps } from './Navigable';
+import { makeActionable, ActionableParentProps } from './Actionable';
 
 export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small';
 export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat';
 
 export interface XButtonStyleProps extends XFlexStyles {
+    className?: string;
     text?: string;
     additionalText?: string;
     icon?: string;
@@ -18,10 +20,7 @@ export interface XButtonStyleProps extends XFlexStyles {
     attach?: 'left' | 'right' | 'both';
 }
 
-export interface XButtonProps extends XButtonStyleProps, XLinkProps {
-    loading?: boolean;
-    pressed?: boolean;
-}
+export type XButtonProps = ActionableParentProps<NavigableParentProps<XButtonStyleProps & { pressed?: boolean; }>>;
 
 let iconsIndentation = styleResolver({
     'x-large': {
@@ -422,42 +421,64 @@ const ButtomText = Glamorous.span({
     overflow: 'hidden'
 });
 
-const StyledButton = Glamorous<XButtonProps>(XLink)([
-    (props) => ({display: 'flex', boxSizing: 'border-box'}),
-    (props) => ({
-        pointerEvents: (props.loading || props.enabled === false) ? 'none' : 'auto',
-        cursor: (props.loading || props.enabled === false) ? 'inherit' : 'pointer',
-        transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease'
-    }),
-    (props) => (props.loading && {
-        '& span': { opacity: 0 }
-    } || {}),
-    (props) => colorStyles(props.style, props.enabled !== false && !props.pressed),
-    (props) => colorDisabledStyles(props.style, props.enabled === false),
-    (props) => colorPressedStyles(props.style, !!props.pressed),
-    (props) => loaderStyles(props.style),
-    (props) => sizeStyles(props.size),
-    (props) => borderRadiusStyles({ attach: props.attach }, props.size),
-    (props) => applyFlex(props)
-]);
+const StyledButton = Glamorous.a<
+    {
+        buttonSize?: string,
+        buttonStyle?: string,
+        loading?: boolean,
+        enabled?: boolean,
+        pressed?: boolean,
+        attach?: 'left' | 'right' | 'both'
+    } & XFlexStyles
+    >([
+        (props) => ({ display: 'flex', boxSizing: 'border-box' }),
+        (props) => ({
+            pointerEvents: (props.loading || props.enabled === false) ? 'none' : 'auto',
+            cursor: (props.loading || props.enabled === false) ? 'inherit' : 'pointer',
+            transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease'
+        }),
+        (props) => (props.loading && {
+            '& span': { opacity: 0 }
+        } || {}),
+        (props) => colorStyles(props.buttonStyle, props.enabled !== false && !props.pressed),
+        (props) => colorDisabledStyles(props.buttonStyle, props.enabled === false),
+        (props) => colorPressedStyles(props.buttonStyle, !!props.pressed),
+        (props) => loaderStyles(props.buttonStyle),
+        (props) => sizeStyles(props.buttonSize),
+        (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize),
+        (props) => applyFlex(props)
+    ]);
 
-export class XButton extends React.PureComponent<XButtonProps> {
-    render() {
-        return (
-            <StyledButton {...this.props}>
-                <StyledButtonContentWrapper tabIndex={-1} className="button-content" additionalText={this.props.additionalText !== undefined}>
-                    <MainContent additionalText={this.props.additionalText !== undefined}>
-                        {this.props.icon && <StyledIcon text={this.props.text} icon={this.props.icon} className="icon" />}
-                        <ButtomText>{this.props.text}</ButtomText>
-                    </MainContent>
-                    {this.props.loading && <XLoadingCircular inverted={this.props.style === 'primary' || this.props.style === 'danger'} className="loading-icon" />}
-                    {this.props.additionalText && (
-                        <AdditionalContent additionalText={this.props.additionalText !== undefined}>
-                            <ButtomText>{this.props.additionalText}</ButtomText>
-                        </AdditionalContent>
-                    )}
-                </StyledButtonContentWrapper>
-            </StyledButton>
-        );
-    }
-}
+export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
+    return (
+        <StyledButton
+            href={props.href}
+            target={props.hrefTarget}
+            buttonSize={props.size}
+            buttonStyle={props.style}
+            loading={props.loading}
+            enabled={props.enabled}
+            pressed={props.pressed}
+            attach={props.attach}
+            flexBasis={props.flexBasis}
+            flexGrow={props.flexGrow}
+            flexShrink={props.flexShrink}
+            alignSelf={props.alignSelf}
+            onClick={props.onClick}
+            className={props.className}
+        >
+            <StyledButtonContentWrapper tabIndex={-1} className="button-content" additionalText={props.additionalText !== undefined}>
+                <MainContent additionalText={props.additionalText !== undefined}>
+                    {props.icon && <StyledIcon text={props.text} icon={props.icon} className="icon" />}
+                    <ButtomText>{props.text}</ButtomText>
+                </MainContent>
+                {props.loading && <XLoadingCircular inverted={props.style === 'primary' || props.style === 'danger'} className="loading-icon" />}
+                {props.additionalText && (
+                    <AdditionalContent additionalText={props.additionalText !== undefined}>
+                        <ButtomText>{props.additionalText}</ButtomText>
+                    </AdditionalContent>
+                )}
+            </StyledButtonContentWrapper>
+        </StyledButton>
+    );
+}));

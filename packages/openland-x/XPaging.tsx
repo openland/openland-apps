@@ -6,9 +6,7 @@ import { XLinkProps } from './XLink';
 
 interface MenuItemProps extends XLinkProps {
     active?: boolean;
-    disabled?: boolean;
     icon?: boolean;
-    query?: { field: string, value?: string } | null;
 }
 
 export const MenuItem = Glamorous<MenuItemProps>(XLink)((props) => ({
@@ -27,9 +25,9 @@ export const MenuItem = Glamorous<MenuItemProps>(XLink)((props) => ({
     boxSizing: 'border-box',
     borderRadius: '25px',
     border: props.icon ? 'solid 1px #553ed6' : undefined,
-    cursor: props.disabled ? 'default' : 'pointer',
+    cursor: props.enabled === false ? 'default' : 'pointer',
     '&:hover': {
-        color: props.disabled ? '#fff' : undefined
+        color: props.enabled === false ? '#fff' : undefined
     },
     '&.icon': {
         width: '40px',
@@ -68,13 +66,13 @@ function XPageItem(props: { toPage: number, currentPage: number, disabled?: bool
             <MenuItem
                 query={{ field: 'page', value: props.toPage.toString() }}
                 active={props.currentPage === props.toPage}
-                disabled={props.currentPage === props.toPage}
+                enabled={props.currentPage !== props.toPage}
             >
                 {props.toPage}
             </MenuItem>
         );
     } else {
-        return <MenuItem query={{ field: 'page' }} disabled={props.currentPage === props.toPage} active={props.currentPage === props.toPage}>1</MenuItem>;
+        return <MenuItem query={{ field: 'page' }} enabled={props.currentPage !== props.toPage} active={props.currentPage === props.toPage}>1</MenuItem>;
     }
 }
 

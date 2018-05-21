@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { withAddOpportunity } from '../api';
 import { OpportunityState } from 'openland-api/Types';
-import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XButton } from 'openland-x/XButton';
 
 const OpportunityCreate = withAddOpportunity((props) => {
-    return <XButtonMutation mutation={props.add} size={(props as any).size} style="primary" text="Add to prospecting" />;
+    return <XButton action={() => props.add({})} size={(props as any).size} style="primary" text="Add to prospecting" />;
 });
 
 export const OpportunitiButton = (props: { parcelId: string, public?: boolean, opportunityId?: string, opportunityState?: OpportunityState, size?: 'x-large' | 'large' | 'medium' | 'default' | 'small' }) => {

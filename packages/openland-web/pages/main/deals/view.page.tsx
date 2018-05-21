@@ -17,7 +17,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { ParcelNumber } from '../../../components/ParcelNumber';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
-import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XArea } from 'openland-x-format/XArea';
 import { XDimensions } from 'openland-x-format/XDimensions';
 import { XMoney } from 'openland-x-format/XMoney';
@@ -36,14 +35,14 @@ const DealsForm = withDealAlterCombined((props) => (
     <DealForm
         mutation={props.alter}
         defaultValues={props.data.deal}
-        title="Edit Deal" 
+        title="Edit Deal"
         query="edit"
         action="Save"
     />
 ));
 
 const RemoveButton = withDealRemove((props) => {
-    return (<XButtonMutation mutation={props.remove} style="danger" text="Remove" />);
+    return (<XButton action={() => props.remove({})} style="danger" text="Remove" />);
 });
 
 export default withApp('Deal', 'viewer', withDeal((props) => {

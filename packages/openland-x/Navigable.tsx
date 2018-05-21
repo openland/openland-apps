@@ -11,7 +11,6 @@ export interface NavigableChildProps {
 
     // State
     active?: boolean;
-    // loading: boolean;
     enabled?: boolean;
 
     // Handlers
@@ -21,17 +20,17 @@ export interface NavigableChildProps {
 interface NavigableProps {
 
     // Navigation action
-    href?: string | null;
-    path?: string | null;
-    query?: { field: string, value?: string } | null;
+    href?: string;
+    path?: string;
+    query?: { field: string, value?: string };
     autoClose?: boolean;
 
     // Activation
-    activateForSubpaths?: boolean | null;
-    active?: boolean | null;
+    activateForSubpaths?: boolean;
+    active?: boolean;
 
     // Enabled
-    enabled?: boolean | null;
+    enabled?: boolean;
 
     // On Click
     onClick?: React.MouseEventHandler<any>;
@@ -110,6 +109,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
 
                 // First of all preventing default behavior
                 e.preventDefault();
+                e.stopPropagation();
 
                 // Invoke router
                 if (this.props.__router) {
@@ -124,6 +124,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             } else {
                 // If nothing is provided, just prevent default behaviour
                 e.preventDefault();
+                // e.stopPropagation();
             }
         }
 
@@ -170,25 +171,24 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
     };
 
     // Forwarding contexts
-    let result = (props: NavigableParentProps<T> & { children: any }) => {
-        let { children, ...other } = props as any;
-        return (
-            <XModalContext.Consumer>
-                {(modal) => (
-                    <XRouterContext.Consumer>
-                        {(router) => (
-                            <Actionable {...other} __router={router!!}>
-                                {children}
-                            </Actionable>
-                        )}
-                    </XRouterContext.Consumer>
-                )}
-            </XModalContext.Consumer>
-        );
-    };
+    class ContextWrapper extends React.PureComponent<NavigableParentProps<T>> {
+        render() {
+            let { children, ...other } = this.props as any;
+            return (
+                <XModalContext.Consumer>
+                    {(modal) => (
+                        <XRouterContext.Consumer>
+                            {(router) => (
+                                <Actionable {...other} __router={router!!} __modal={modal}>
+                                    {children}
+                                </Actionable>
+                            )}
+                        </XRouterContext.Consumer>
+                    )}
+                </XModalContext.Consumer>
+            );
+        }
+    }
 
-    // Better Display Name
-    // (result as any).displayName = 'Actionable(' + getComponentDisplayName(Wrapped) + ')';
-
-    return result;
+    return ContextWrapper;
 }

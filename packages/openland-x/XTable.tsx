@@ -140,7 +140,7 @@ interface XTableCellProps {
     textAlign?: 'left' | 'right' | 'center';
     path?: string;
     href?: string;
-    query?: { field: string, value?: string } | null;
+    query?: { field: string, value?: string };
     orderBy?: OrderBy;
 }
 
