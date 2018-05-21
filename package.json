@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@mapbox/geo-viewport": "^0.2.2",
+		"@mapbox/mapbox-gl-geocoder": "^2.2.0",
 		"@turf/turf": "^5.1.6",
 		"@typeform/embed": "^0.5.6",
 		"@types/auth0-js": "^8.11.0",

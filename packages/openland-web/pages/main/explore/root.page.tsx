@@ -21,6 +21,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { trackEvent } from 'openland-x-analytics';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { XCard } from 'openland-x/XCard';
+import { XMapGeocoder } from 'openland-x-map/XMapGeocoder';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -248,6 +249,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                     let cityName = city === 'sf' ? 'San Francisco' : 'New York';
                     let countyName = city === 'sf' ? 'San Francisco' : 'New York';
                     let stateName = city === 'sf' ? 'CA' : 'NY';
+                    let boundingBox = city === 'sf' ? [-123.0137, 37.6040, -122.3549, 37.8324] : [-74.2589, 40.4774, -73.7004, 40.9176];
                     let focus = city === 'sf'
                         ? { latitude: 37.75444398077139, longitude: -122.43963811583545, zoom: 12 }
                         : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
@@ -289,6 +291,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                             lastKnownCameraLocation={this.knownCameraLocation}
                                             onCameraLocationChanged={this.handleMap}
                                         >
+                                            <XMapGeocoder city={cityName} bbox={boundingBox} />
                                             <ParcelPointSource
                                                 layer="parcels-found"
                                                 query={query}

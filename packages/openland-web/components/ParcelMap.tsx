@@ -3,7 +3,12 @@ import { XMapProps, XMap } from 'openland-x-map/XMap';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 import { XMapSourceTile } from 'openland-x-map/XMapSourceTile';
 
-export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite' | 'zoning', selectedParcel?: string, onParcelClick?: (id: string) => void }) => {
+export const ParcelMap = (props: XMapProps & {
+    children?: any,
+    mode?: 'satellite' | 'zoning',
+    selectedParcel?: string,
+    onParcelClick?: (id: string) => void,
+}) => {
     let { children, mode, ...other } = props;
     let mapStyle = 'mapbox://styles/mapbox/light-v9';
     if (props.mode === 'zoning') {
@@ -26,7 +31,7 @@ export const ParcelMap = (props: XMapProps & { children?: any, mode?: 'satellite
                 source="parcels"
                 layer="parcels"
                 layerSource="all_parcels"
-                
+
                 style={{
                     selectedFillOpacity: 0,
                     selectedBorderColor: '#4428E1',

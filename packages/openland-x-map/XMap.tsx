@@ -171,10 +171,9 @@ export class XMap extends React.Component<XMapProps> {
                 (this.props.focusPosition.latitude !== nextProps.focusPosition.latitude) ||
                 (this.props.focusPosition.longitude !== nextProps.focusPosition.longitude) ||
                 (this.props.focusPosition.zoom !== nextProps.focusPosition.zoom)) {
-                this.map!!.flyTo({
+                this.map!!.jumpTo({
                     center: [nextProps.focusPosition.longitude, nextProps.focusPosition.latitude],
                     zoom: nextProps.focusPosition.zoom,
-                    // duration: 1000
                 });
             }
 

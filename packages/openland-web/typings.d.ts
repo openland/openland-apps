@@ -277,3 +277,33 @@ declare module 'react-lorem-component' {
     class Lorem extends React.Component<{ count: number }, any> { }
     export default Lorem
 }
+
+declare module '@mapbox/mapbox-gl-geocoder' {
+    class Geocoder {
+        constructor(args: {
+            accessToken: string
+            country?: string,
+            zoom?: number,
+            filter?: (item: any) => boolean;
+            bbox?: number[];
+        })
+
+        on(type: string, listener: Function): this;
+
+        on(type: string, layer: string, listener: Function): this;
+
+        off(type?: string | any, listener?: Function): this;
+
+        off(type?: string | any, layer?: string, listener?: Function): this;
+
+        once(type: string, listener: Function): this;
+
+        fire(type: string, data?: mapboxgl.EventData | Object): this;
+
+        listens(type: string): boolean;
+
+        onAdd(map: any): any;
+        setProximity(location: { latitude: number, longitude: number } | null): void;
+    }
+    export = Geocoder;
+}
