@@ -75,6 +75,7 @@ const FilterCounterWrapper = Glamorous(XCard)({
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
+    borderRadius: 6,
     paddingLeft: 16,
     width: 178,
     height: 48,

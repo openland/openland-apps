@@ -1,5 +1,6 @@
 import Glamorous from 'glamorous';
 import XStyles from './XStyles';
+import { XIcon } from 'openland-x/XIcon';
 import * as React from 'react';
 
 const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
@@ -24,33 +25,15 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
         '> i': {
             width: 16,
             height: 16,
-            borderRadius: 3.5,
+            borderRadius: 50,
             color: '#fff',
             backgroundColor: props.active ? '#4428e0' : '#fff',
             border: '1px solid rgba(97, 126, 156, 0.2)',
             fontSize: 13,
             lineHeight: '14px',
             marginRight: 10,
-            paddingLeft: 1
-        },
-        '> div': {
-            width: 16,
-            height: 16,
-            borderRadius: 50,
-            backgroundColor: props.active ? '#4428e0' : '#fff',
-            border: '1px solid rgba(97, 126, 156, 0.2)',
-            marginRight: 10,
-            position: 'relative',
-            '&::after': {
-                content: props.active ? `''` : undefined,
-                width: 8,
-                height: 8,
-                borderRadius: 50,
-                backgroundColor: '#ffffff',
-                position: 'absolute',
-                top: 3,
-                left: 3
-            }
+            paddingLeft: 1,
+            paddingTop: 1
         },
         '> span': {
             color: '#1f3449'
@@ -85,7 +68,7 @@ export class XRadioItem extends React.Component<{ label: string, value?: string,
             <CheckboxInputDiv active={this.props.checked !== undefined ? this.props.checked : false}>
                 <input onClick={this.props.useAnyOption === false ? this.handleChange : undefined} onChange={this.props.useAnyOption === false ? undefined : this.handleChange} id={id} type="radio" checked={this.props.checked} />
                 <label htmlFor={id}>
-                    <div />
+                    <XIcon icon={this.props.checked ? 'done' : ''} />
                     <span>{this.props.label}</span>
                 </label>
             </CheckboxInputDiv>
@@ -138,7 +121,7 @@ export class XRadioGroup extends React.Component<XRadioProps, { selected?: strin
                 let label = (element as any).label !== undefined ? (element as any).label : element;
                 let value = (element as any).value !== undefined ? (element as any).value : element;
                 children.push(
-                    <XRadioItem key={label + '_' + value} label={label} value={value} checked={value === this.state.selected} onChange={this.handleChange} useAnyOption={this.props.useAnyOption}/>
+                    <XRadioItem key={label + '_' + value} label={label} value={value} checked={value === this.state.selected} onChange={this.handleChange} useAnyOption={this.props.useAnyOption} />
                 );
             }
 

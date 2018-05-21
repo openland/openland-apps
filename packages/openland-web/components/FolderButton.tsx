@@ -25,7 +25,7 @@ const FolderEntry = Glamorous(XMutation)<{selected?: boolean}>((props) => ({
     }
 }));
 
-const FolderEntryContent = Glamorous.div<{selected?: boolean}>((props) => ({
+const FolderEntryContent = Glamorous.div<{ selected?: boolean }>((props) => ({
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'row',
@@ -40,6 +40,19 @@ const FolderEntryContent = Glamorous.div<{selected?: boolean}>((props) => ({
     }
 }));
 
+// little dirty hacks, dont tell anyone 0_-
+const Loader = Glamorous(XButton)({
+    backgroundColor: 'transparent',
+    color: 'transparent',
+    ':hover, :active, :focus': {
+        color: 'transparent',
+        backgroundColor: 'transparent',
+        borderColor: 'transparent'
+
+    },
+    
+});
+
 const ButtonMoveToFolder = withSetFolderMutation((props) => {
     return (
         <XModalContext.Consumer>
@@ -47,6 +60,7 @@ const ButtonMoveToFolder = withSetFolderMutation((props) => {
                 <FolderEntry
                     selected={(props as any).remove}
                     mutation={props.setFolder}
+                    active={!(props as any).remove}
                     variables={{ parcelId: (props as any).parcelId, folderId: (props as any).folderId }}
                     onSuccess={modal!!.close}>
                         <FolderEntryContent selected={(props as any).remove}>
@@ -62,6 +76,12 @@ const ButtonMoveToFolder = withSetFolderMutation((props) => {
                                 text="Remove"
                                 style="danger" />
                         )}
+                    {!(props as any).remove && (
+                        <Loader
+                            text="Remove"
+                            size="small"
+                            style="flat" />
+                    )}
 
                 </FolderEntry>
 

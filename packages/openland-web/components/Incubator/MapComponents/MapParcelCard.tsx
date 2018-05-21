@@ -251,7 +251,8 @@ const ProspectingWrapper = Glamorous.div({
     paddingTop: 18,
     paddingBottom: 18,
     boxShadow: '2px 2px 8px 0 rgba(0, 0, 0, 0.22)',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    zIndex: 0
 });
 
 const SeparatedDiv = Glamorous(XContent)({

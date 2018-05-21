@@ -3,6 +3,7 @@ import { MutationFunc } from 'react-apollo';
 
 interface XMutationProps {
     mutation: MutationFunc<{}>;
+    active?: boolean;
     variables?: any;
     className?: string;
     onSuccess?: () => void;
@@ -41,15 +42,20 @@ export class XMutation extends React.Component<XMutationProps, { loading: boolea
     render() {
         let childs = [];
         for (let c of React.Children.toArray(this.props.children)) {
-            childs.push(React.cloneElement(c as any, {
-                loading: this.state.loading,
-                onClick: this.handleClick,
-            }));
+            let modification = {};
+            if (!(c as any).props._isMutation) {
+                modification = {
+                    loading: this.state.loading,
+                    onClick: this.props.active !== false ? this.handleClick : undefined,
+                };
+            }
+            childs.push(React.cloneElement(c as any, modification));
+
         }
 
         return (
             <div className={this.props.className} >
-            {childs}
+                {childs}
             </div>
         );
     }
