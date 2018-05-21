@@ -286,6 +286,7 @@ declare module '@mapbox/mapbox-gl-geocoder' {
             zoom?: number,
             filter?: (item: any) => boolean;
             bbox?: number[];
+            types?: string;
         })
 
         on(type: string, listener: Function): this;
