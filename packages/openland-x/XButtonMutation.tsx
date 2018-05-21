@@ -10,6 +10,10 @@ interface XButtonMutationProps extends XButtonStyleProps {
 
 export class XButtonMutation extends React.Component<XButtonMutationProps, { loading: boolean }> {
 
+    static defaultProps = {
+        _isMutation: true
+    };
+
     constructor(props: XButtonMutationProps) {
         super(props);
         this.state = { loading: false };
