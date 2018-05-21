@@ -16,8 +16,8 @@ export class XMapSource extends React.PureComponent<XMapSourceProps> {
         mapUnsubscribe: PropTypes.func.isRequired,
     };
     private isInited = false;
-    private map: mapboxgl.Map;
-    private datasources: DataSources;
+    private map?: mapboxgl.Map;
+    private datasources?: DataSources;
 
     listener: XMapSubscriber = (src, map, datasources) => {
         if (!this.isInited) {
@@ -45,10 +45,10 @@ export class XMapSource extends React.PureComponent<XMapSourceProps> {
             let dt = nextProps.data !== undefined ? nextProps.data : { 'type': 'FeatureCollection', features: [] };
             if (this.props.id !== nextProps.id) {
                 try {
-                    this.map.removeSource(this.props.id);
-                    this.datasources.removeGeoJsonSource(this.props.id);
-                    this.datasources.addGeoJSONSource(this.props.id, dt);
-                    this.map.addSource(nextProps.id, {
+                    this.map!!.removeSource(this.props.id);
+                    this.datasources!!.removeGeoJsonSource(this.props.id);
+                    this.datasources!!.addGeoJSONSource(this.props.id, dt);
+                    this.map!!.addSource(nextProps.id, {
                         type: 'geojson',
                         data: dt,
                         cluster: this.props.cluster || false,
@@ -60,9 +60,9 @@ export class XMapSource extends React.PureComponent<XMapSourceProps> {
                 }
             } else {
                 try {
-                    let source = this.map.getSource(this.props.id);
+                    let source = this.map!!.getSource(this.props.id);
                     if (source.type === 'geojson') {
-                        this.datasources.updateGeoJSONSource(this.props.id, dt);
+                        this.datasources!!.updateGeoJSONSource(this.props.id, dt);
                         source.setData(dt);
                     }
                 } catch (e) {
@@ -90,7 +90,7 @@ export class XMapSource extends React.PureComponent<XMapSourceProps> {
                 console.warn(e);
                 // Ignore
             }
-            this.datasources.removeGeoJsonSource(this.props.id);
+            this.datasources!!.removeGeoJsonSource(this.props.id);
         }
     }
 }

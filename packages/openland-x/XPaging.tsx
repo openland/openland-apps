@@ -2,8 +2,9 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XIcon } from 'openland-x/XIcon';
 import { XLink } from 'openland-x/XLink';
+import { XLinkProps } from './XLink';
 
-interface MenuItemProps {
+interface MenuItemProps extends XLinkProps {
     active?: boolean;
     disabled?: boolean;
     icon?: boolean;
@@ -115,8 +116,8 @@ export function XPaging(props: XPagingProps) {
             if (!props.openEnded) {
                 for (let i = 2; i < 5; i++) {
                     elements.push(
-                        <XPageItem 
-                            key={'page_' + (props.totalPages - 5 + i)} 
+                        <XPageItem
+                            key={'page_' + (props.totalPages - 5 + i)}
                             toPage={props.totalPages - 5 + i}
                             currentPage={props.currentPage}
                         />
@@ -129,10 +130,10 @@ export function XPaging(props: XPagingProps) {
             );
             for (let i = 0; i < 3; i++) {
                 elements.push(
-                    <XPageItem 
-                        key={'page_' + (props.currentPage - 1 + i)} 
+                    <XPageItem
+                        key={'page_' + (props.currentPage - 1 + i)}
                         toPage={props.currentPage - 1 + i}
-                        currentPage={props.currentPage} 
+                        currentPage={props.currentPage}
                     />
                 );
             }

@@ -155,10 +155,10 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     static Content = XPopperContent;
 
     private _popper?: PopperJS;
-    private _node: Element;
-    private _targetNode: Element;
-    private _arrowNode: Element;
-    private _contentNode: Element;
+    private _node?: Element;
+    private _targetNode?: Element;
+    private _arrowNode?: Element;
+    private _contentNode?: Element;
 
     private hideTimeout?: number;
     private willHideTimeout?: number;
@@ -285,8 +285,12 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                     if (this._arrowNode) {
                         this._arrowNode.setAttribute('x-placement', data.placement);
                     }
-                    this._node.setAttribute('x-placement', data.placement);
-                    this._contentNode.setAttribute('x-placement', data.placement);
+                    if (this._node) {
+                        this._node.setAttribute('x-placement', data.placement);
+                    }
+                    if (this._contentNode) {
+                        this._contentNode.setAttribute('x-placement', data.placement);
+                    }
                 },
                 placement: this.props.placement !== undefined ? this.props.placement : 'auto'
             });

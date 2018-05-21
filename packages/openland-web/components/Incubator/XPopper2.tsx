@@ -35,10 +35,10 @@ export interface XPopper2Props extends XPopper2SelfProps, PopperJS.PopperOptions
 
 export class XPopper2 extends React.Component<XPopper2Props, XPopper2State> {
 
-    private _popper: PopperJS;
-    private _node: Element;
-    private _targetNode: Element;
-    private _arrowNode: Element;
+    private _popper?: PopperJS;
+    private _node?: Element;
+    private _targetNode?: Element;
+    private _arrowNode?: Element;
 
     hideTimeout: any;
     willHideTimeout: any;

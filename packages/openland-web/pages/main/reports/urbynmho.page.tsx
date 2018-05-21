@@ -332,9 +332,9 @@ const JustMap = (props: XMapProps & { children?: any, mode?: 'satellite' | 'zoni
 };
 
 class ReportMap extends React.Component<{ qHpd: any } & XWithRouter, { dealsEnabled: boolean, dealsCount?: number, hpdoEnabled: boolean, hpdoCount?: number, hpdpEnabled: boolean, hpdpCount?: number }> {
-    dealsCount: number;
-    hpdoCount: number;
-    hpdpCount: number;
+    dealsCount?: number;
+    hpdoCount?: number;
+    hpdpCount?: number;
 
     constructor(props: { qHpd: any } & XWithRouter) {
         super(props);

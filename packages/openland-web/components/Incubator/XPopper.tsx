@@ -12,7 +12,7 @@ export class Manager extends React.Component {
         },
     };
 
-    private _targetNode: Element;
+    private _targetNode?: Element;
 
     getChildContext() {
         return {
@@ -94,10 +94,10 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
         },
     };
 
-    private _popper: PopperJS.default;
+    private _popper?: PopperJS.default;
     // private _arrowNode: React.ReactNode;
-    private _node: Element;
-    private _arrowNode: Element;
+    private _node?: Element;
+    private _arrowNode?: Element;
     private _component: React.ReactNode;
 
     constructor(props: PopperProps) {
@@ -146,7 +146,9 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
         // }
 
         if (this.props.updated === true) {
-            this._popper.scheduleUpdate();
+            if (this._popper) {
+                this._popper.scheduleUpdate();
+            }
         }
     }
 
@@ -169,7 +171,7 @@ class PopperClass extends React.Component<PopperProps, PopperState> {
         //     constructor = PopperJSDist;
         // }
 
-        this._popper = new constructor(this._getTargetNode(), this._node, {
+        this._popper = new constructor(this._getTargetNode(), this._node!!, {
             ...popperProps,
             modifiers: {
                 ...popperProps.modifiers,

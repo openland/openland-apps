@@ -21,6 +21,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
     "allowSyntheticDefaultImports": false,
+    "strictPropertyInitialization": true,
     "typeRoots": [
       "./node_modules/@types"
     ],

@@ -425,15 +425,15 @@ const ButtomText = Glamorous.span({
 const StyledButton = Glamorous<XButtonProps>(XLink)([
     (props) => ({display: 'flex', boxSizing: 'border-box'}),
     (props) => ({
-        pointerEvents: (props.loading || props.disabled) ? 'none' : 'auto',
-        cursor: (props.loading || props.disabled) ? 'inherit' : 'pointer',
+        pointerEvents: (props.loading || props.enabled === false) ? 'none' : 'auto',
+        cursor: (props.loading || props.enabled === false) ? 'inherit' : 'pointer',
         transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease'
     }),
     (props) => (props.loading && {
         '& span': { opacity: 0 }
     } || {}),
-    (props) => colorStyles(props.style, !props.disabled && !props.pressed),
-    (props) => colorDisabledStyles(props.style, !!props.disabled),
+    (props) => colorStyles(props.style, props.enabled !== false && !props.pressed),
+    (props) => colorDisabledStyles(props.style, props.enabled === false),
     (props) => colorPressedStyles(props.style, !!props.pressed),
     (props) => loaderStyles(props.style),
     (props) => sizeStyles(props.size),

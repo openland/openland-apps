@@ -13,7 +13,7 @@ export class XMapSourceTile extends React.PureComponent<XMapSourceTileProps> {
         mapUnsubscribe: PropTypes.func.isRequired,
     };
     private isInited = false;
-    private map: mapboxgl.Map;
+    private map?: mapboxgl.Map;
 
     listener: XMapSubscriber = (src, map, datasources) => {
         if (!this.isInited) {
@@ -35,8 +35,8 @@ export class XMapSourceTile extends React.PureComponent<XMapSourceTileProps> {
         if (this.isInited) {
             if (this.props.id !== nextProps.id) {
                 try {
-                    this.map.removeSource(this.props.id);
-                    this.map.addSource(nextProps.id, {
+                    this.map!!.removeSource(this.props.id);
+                    this.map!!.addSource(nextProps.id, {
                         type: 'vector',
                         url: this.props.url,
                     });

@@ -141,6 +141,8 @@ routes.add('/ui/modals', '/dev/ui/modals');
 routes.add('/ui/modals/', '/dev/ui/modals');
 routes.add('/ui/popper', '/dev/ui/popper');
 routes.add('/ui/popper/', '/dev/ui/popper');
+routes.add('/ui/links', '/dev/ui/links');
+routes.add('/ui/links/', '/dev/ui/links');
 
 //
 // Dev Tools

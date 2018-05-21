@@ -1,8 +1,8 @@
 /* tslint:disable */
 export class GraphqlTypedQuery<QUERY, VARIABLES> {
     document: any;
-    ____vars: VARIABLES;
-    ____query: QUERY;
+    ____vars?: VARIABLES;
+    ____query?: QUERY;
     constructor(document: QUERY) {
         this.document = document;
     }
@@ -10,8 +10,8 @@ export class GraphqlTypedQuery<QUERY, VARIABLES> {
 
 export class GraphqlTypedMutation<QUERY, VARIABLES> {
     document: any;
-    ____vars: VARIABLES;
-    ____query: QUERY;
+    ____vars?: VARIABLES;
+    ____query?: QUERY;
     constructor(document: any) {
         this.document = document;
     }

@@ -156,7 +156,7 @@ const ApplyBtnStyle = Glamorous.div<XInputStyleProps>([
 ]);
 
 export class XInput extends React.PureComponent<XInputStyleProps, { active: boolean, value: string }> {
-    private myInp: HTMLInputElement;
+    private myInp?: HTMLInputElement;
 
     constructor(props: XInputStyleProps) {
         super(props);
@@ -189,7 +189,7 @@ export class XInput extends React.PureComponent<XInputStyleProps, { active: bool
                 format={format}
                 active={this.state.active}
             >
-                <ClickOutside onClickOutside={() => this.activeDisabled()} onClick={() => { this.myInp.focus(); this.setState({ active: true }); }}>
+                <ClickOutside onClickOutside={() => this.activeDisabled()} onClick={() => { this.myInp!!.focus(); this.setState({ active: true }); }}>
                     {(format === 'large' && title) && (
                         <InputTitleStyle shifted={shiftedTitle}>{title}</InputTitleStyle>
                     )}

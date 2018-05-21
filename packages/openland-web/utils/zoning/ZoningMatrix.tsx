@@ -9,8 +9,8 @@ export interface ZoneMetric {
 }
 
 class ZoneMetricValueGroup {
-    title: string;
-    names: string[];
+    title?: string;
+    names?: string[];
     metrics?: ZoneMetricValue[];
 }
 class ZoneMetricValue {
@@ -72,7 +72,7 @@ export class ZoneData {
         let res: ZoneMetricValueGroup[] = [];
         for (let group of metricsToPick) {
             let addGroup = false;
-            for (let nameToPick of group.names) {
+            for (let nameToPick of group.names!!) {
                 for (let metric of this.data) {
 
                     if (metric.meta.name === nameToPick && (showEmpty === undefined || showEmpty || (metric.value != null && metric.value !== '-'))) {

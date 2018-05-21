@@ -86,7 +86,7 @@ const Divided = Glamorous.div({
     }
 });
 
-class XCheckboxProps { label: string; value?: string; onChange?: (checked: { label: string, checked: boolean }) => void; checked?: boolean; hint?: string; }
+interface XCheckboxProps { label: string; value?: string; onChange?: (checked: { label: string, checked: boolean }) => void; checked?: boolean; hint?: string; }
 
 export class XCheckbox extends React.Component<XCheckboxProps, { isChecked: boolean }> {
     static defaultProps = {
@@ -128,7 +128,7 @@ export class XCheckbox extends React.Component<XCheckboxProps, { isChecked: bool
     }
 }
 
-class XCheckboxGroupProps { elements: string[] | { value: string, label: string, hint?: string}[]; selected?: string[]; onChange?: (value: string[]) => void; divided?: boolean; }
+interface XCheckboxGroupProps { elements: string[] | { value: string, label: string, hint?: string}[]; selected?: string[]; onChange?: (value: string[]) => void; divided?: boolean; }
 export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selected?: string[] }> {
 
     static defaultProps = {
