@@ -4,7 +4,7 @@ import { graphQLTileSource } from 'openland-x-graphql/graphqlTileSource';
 import { graphqlSelect } from 'openland-x-graphql/graphqlSelect';
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { graphqlCompose3, graphqlCompose2, graphqlCompose4, graphqlCompose6 } from 'openland-x-graphql/graphqlCompose';
+import { graphqlCompose3, graphqlCompose2, graphqlCompose4, graphqlCompose6, graphqlCompose5 } from 'openland-x-graphql/graphqlCompose';
 
 //
 // Account
@@ -202,5 +202,6 @@ export const withDeleteFolderMutation = graphqlMutation(Queries.Folder.DeleteFol
 export const withAlterFolderMutation = graphqlMutation(Queries.Folder.AlterFolderMutation, 'alterFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
 export const withAddToFolderMutation = graphqlMutation(Queries.Folder.AddToFolderMutation, 'addToFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
 export const withSetFolderMutation = graphqlMutation(Queries.Folder.SetParcelFolderMutation, 'setFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
+export const withFolderActions = graphqlCompose5(withCreateFolderMutation, withDeleteFolderMutation, withAlterFolderMutation, withAddToFolderMutation, withSetFolderMutation);
 
 export const FolderSelect = graphqlSelect<{}>(Queries.Folder.FoldersSelectQuery);

@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { Scaffold } from '../../../components/Scaffold';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Sidebar } from '../../../components/Sidebar';
-import { withFolders, withCreateFolderMutation, withFolder, withDeleteFolderMutation, withAlterFolderMutation } from '../../../api';
+import { withFolders, withCreateFolderMutation, withFolder, withFolderActions } from '../../../api';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLinkProps } from 'openland-x/XLink';
 import { XLoader } from 'openland-x/XLoader';
@@ -16,7 +16,6 @@ import { XForm } from 'openland-x-forms/XForm';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { TableParcels } from '../../../components/TableParcels';
 import { XEmpty } from 'openland-x/XEmpty';
-import { XButtonMutation } from 'openland-x/XButtonMutation';
 import { XButton } from 'openland-x/XButton';
 
 const SidebarItemsStyle = {
@@ -97,27 +96,25 @@ const CreateFolder = withCreateFolderMutation((props) => {
     );
 });
 
-const RenameFolder = withAlterFolderMutation((props) => {
+const Edit = withFolderActions((props) => {
     return (
         <XModalForm
-            title="Rename folder"
+            title="Edit folder"
             actionName="Rename"
-            target={<XButton text="Rename"/>}
+            target={<XButton text="Edit" />}
             submitMutation={props.alterFolder}
             mutationDirect={true}
+            secondaryActions={[{ actionName: 'Delete', submitMutation: props.deleteFolder, actionStyle: 'danger' }]}
         >
             <XForm.Text
                 field="name"
                 autofocus={true}
+                value={props.folderName}
                 placeholder="Folder name like 'Tower Opportunity' or 'Interesting lots'"
             />
         </XModalForm>
     );
-});
-
-const DeleteFolder = withDeleteFolderMutation((props) => {
-    return <XButtonMutation style="danger" text="Delete" mutation={props.deleteFolder} />;
-});
+}) as React.ComponentType<{ variables: { folderId: string }, folderName: string }>;
 
 const SidebarItemWrapper = Glamorous(Sidebar.Item)({
     ...SidebarItemsStyle,
@@ -175,8 +172,7 @@ const FolderContent = withFolder((props) => {
     return (
         <XVertical flexGrow={1}>
             <XHeader text={props.data.folder.name}>
-                <RenameFolder variables={{ folderId: props.data.folder.id }} />
-                <DeleteFolder variables={{ folderId: props.data.folder.id }} />
+                <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name}/>
             </XHeader>
             {props.data.folder.parcels.pageInfo.itemsCount > 0 && (
                 <TableParcels items={props.data.folder.parcels.edges.map((v) => v.node)} />

@@ -223,6 +223,7 @@ interface XFormController {
 
 interface XFormTextFieldProps {
     field: string;
+    value?: string;
     placeholder?: string;
     autofocus?: boolean;
 }
@@ -236,7 +237,9 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
         super(props, context);
         let xForm = this.context.xForm as XFormController;
         let existing = xForm.readValue(this.props.field);
-        if (typeof existing === 'string') {
+        if (this.props.value !== undefined) {
+            this.state = { value: this.props.value };
+        } else if (typeof existing === 'string') {
             this.state = { value: existing };
         } else if (existing) {
             this.state = { value: existing.toString() };
@@ -428,8 +431,31 @@ export class XFormSubmit extends React.Component<XFormSubmitProps> {
     };
 
     render() {
-        return <XButton {...this.props} onClick={this.context.xForm.submitForm} />;
+        return <XButton {...this.props} onClick={this.context.xForm.submitFormMainAction} />;
     }
+}
+
+export class XFormAction extends React.Component<XButtonProps & XFormActionProps> {
+    static contextTypes = {
+        xForm: PropTypes.object.isRequired
+    };
+
+    submit = () => {
+        this.context.xForm.submitForm(this.props);
+    }
+
+    render() {
+        return <XButton text={this.props.actionName} style={this.props.actionStyle} {...this.props} onClick={this.submit} />;
+    }
+}
+
+export interface XFormActionProps {
+    submitMutation?: MutationFunc<{}>;
+    mutationDirect?: boolean;
+    onSubmit?: (values: any) => void;
+    defaultValues?: { [key: string]: any; };
+    actionName?: string;
+    actionStyle?: 'primary' | 'default' | 'danger';
 }
 
 class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal?: XModalContextValue }, { loading: boolean, error?: string }> {
@@ -458,19 +484,24 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
     writeValue = (name: string, value: any) => {
         this.values[name] = value;
     }
-    submitForm = async () => {
+
+    submitFormMainAction = async () => {
+        this.submitForm(this.props);
+    }
+
+    submitForm = async (action: XFormActionProps) => {
         let vals = Object.assign({}, this.values);
-        if (this.props.onSubmit) {
-            this.props.onSubmit(vals);
+        if (action.onSubmit) {
+            action.onSubmit(vals);
         }
-        if (this.props.submitMutation) {
+        if (action.submitMutation) {
             this.setState({ loading: true, error: undefined });
             let destVars: any = { data: vals };
-            if (this.props.mutationDirect === true) {
+            if (action.mutationDirect === true) {
                 destVars = vals;
             }
             try {
-                await this.props.submitMutation({ variables: destVars });
+                await action.submitMutation({ variables: destVars });
                 if (this.props.autoClose) {
                     if (this.props.modal) {
                         this.props.modal.close();
