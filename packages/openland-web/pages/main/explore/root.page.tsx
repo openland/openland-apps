@@ -164,8 +164,6 @@ const FilterCounterWrapper = Glamorous(XCard)<{ saveActive: boolean }>((props) =
     borderRadius: 6,
     paddingLeft: 18,
     paddingRight: 8,
-    minWidth: 270,
-    width: 325,
     height: 48,
     left: 18,
     top: 84,
