@@ -185,7 +185,31 @@ const FilterCounter = Glamorous.div<{ filtered?: boolean }>((props) => ({
     whiteSpace: 'nowrap'
 }));
 
-class CounterSave extends React.Component<{
+const FolderButtonWithSave = withParcelStats((props) => {
+    return (
+        props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query ? (
+            <FolderButton style="primary" icon={null} placement="bottom" show={(props as any).show} search={props.data.variables as any}
+                handleClose={(props as any).onClose}
+                target={(
+                    <FilterCounterWrapper saveActive={(props as any).show}>
+                        <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                            <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                        </FilterCounter>
+                        <XButton text="Save to Folder" style="primary" onClick={(props as any).onButtonClick} />
+
+                    </FilterCounterWrapper>
+                )} />
+        ) : (
+                <FilterCounterWrapper saveActive={(props as any).show}>
+                    <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                        <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                    </FilterCounter>
+
+                </FilterCounterWrapper>
+            ));
+}) as React.ComponentClass<{show: boolean, variables: any, onButtonClick: () => void, onClose: () => void }>;
+
+class FoundCounterSave extends React.Component<{
     variables: {
         query?: string,
         city: string,
@@ -194,56 +218,22 @@ class CounterSave extends React.Component<{
     }
 }, { show: boolean }> {
 
-    filterComponent = withParcelStats((props) => {
-        return (
-            props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query ? (
-                <FolderButton style="primary" icon={null} placement="bottom" show={(props as any).show} search={props.data.variables as any}
-                    handleClose={() => {
-                        this.setState({ show: false });
-                    }}
-                    target={(
-                        <FilterCounterWrapper saveActive={(props as any).show}>
-                            <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                                <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
-                            </FilterCounter>
-                            <XButton text="Save to Folder" style="primary" onClick={(() => {
-                                this.setState({ show: !(props as any).show });
-                            })} />
-
-                        </FilterCounterWrapper>
-                    )} />
-
-                // <FilterCounterWrapper saveActive={(props as any).show}>
-                //     <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                //         <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
-
-                //     </FilterCounter>
-
-                //         <FolderButton style="primary" icon={null} placement="bottom" search={props.data.variables as any} />                    
-
-                // </FilterCounterWrapper>
-            ) : (
-                    <FilterCounterWrapper saveActive={(props as any).show}>
-                        <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                            <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
-                        </FilterCounter>
-
-                    </FilterCounterWrapper>
-                ));
-    }) as React.ComponentClass<{show: boolean, variables: any}>;
-
     constructor(props: any) {
         super(props);
         this.state = { show: false };
     }
 
-    componentDidUpdate() {
-        console.warn(this);
+    onButtonClick = () => {
+        this.setState({ show: !this.state.show});        
+    }
+
+    onClose = () => {
+        this.setState({ show: false});        
     }
 
     render() {
         return (
-            <this.filterComponent variables={this.props.variables} show={this.state.show}/>
+            <FolderButtonWithSave variables={this.props.variables} show={this.state.show} onButtonClick={this.onButtonClick} onClose={this.onClose}/>
         );
     }
 }
@@ -403,7 +393,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 <XMapContainer>
                                     <XMapContainer2>
                                         <RoutedMapFilters city={city} />
-                                        <CounterSave
+                                        <FoundCounterSave
                                             variables={{
                                                 query: query && JSON.stringify(query),
                                                 city: cityName,
