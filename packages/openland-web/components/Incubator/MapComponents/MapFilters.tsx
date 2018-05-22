@@ -420,7 +420,7 @@ class AreaFiltersContent extends React.Component<XWithRouter> {
 const MapFilterWrapper = Glamorous(XCard)<{ active?: boolean }>((props) => ({
     position: 'absolute',
     top: 18,
-    left: 214,
+    left: 306,
     flexDirection: 'row',
     alignItems: 'center',
     height: 56,

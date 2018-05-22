@@ -70,6 +70,88 @@ const MapSwitcher = Glamorous.div({
     flexDirection: 'row'
 });
 
+const MapSearcher = Glamorous(XMapGeocoder)({
+    zIndex: 2,
+    height: 56,
+    top: 18,
+    left: 165,
+    width: 123,
+    backgroundColor: 'transparent',
+    '& .mapboxgl-ctrl-geocoder.mapboxgl-ctrl': {
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        position: 'relative',
+        paddingLeft: 36,
+        paddingRight: 10,
+        borderLeft: '1px solid #c1c7cf',
+        backgroundImage: 'url(\'/static/img/icons/search-grey.svg\')',
+        backgroundRepeat: 'no-repeat',
+        backgroundPositionY: 'center',
+        backgroundPositionX: 10,
+        backgroundSize: 20,
+        '&:focus-within': {
+            backgroundImage: 'url(\'/static/img/icons/search-purple.svg\')',
+        },
+        '& input': {
+            width: '100%',
+            height: '100%',
+            fontSize: 16,
+            lineHeight: 1.25,
+            letterSpacing: 0.5,
+            color: '#334562'
+        },
+        '& ul.suggestions': {
+            position: 'absolute',
+            top: 65,
+            right: 0,
+            width: 270,
+            backgroundColor: '#fff',
+            borderRadius: 6,
+            boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
+            listStyle: 'none',
+            overflow: 'hidden',
+            // '&::after': {
+            //     position: 'absolute',
+            //     content: `''`,
+            //     display: 'block',
+            //     borderWidth: '0 5px 5px 5px',
+            //     borderColor: 'transparent transparent #fff transparent',
+            // },
+            '& li': {
+                fontSize: 15,
+                fontWeight: 500,
+                lineHeight: 1.33,
+                letterSpacing: 0.5,
+                color: '#334562',
+                height: 48,
+                paddingLeft: 40,
+
+                backgroundImage: 'url(\'/static/img/icons/icon-location-grey.svg\')',
+                backgroundRepeat: 'no-repeat',
+                backgroundPositionY: 'center',
+                backgroundPositionX: 10,
+                backgroundSize: 20,
+
+                '&:hover': {
+                    backgroundColor: '#f8f8fb',
+                    backgroundImage: 'url(\'/static/img/icons/icon-location-purple.svg\')',
+                },
+                '& a': {
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    width: '100%',
+                    height: '100%',
+                    display: 'block',
+                    cursor: 'pointer',
+                    paddingTop: 14
+                }
+            }
+        }
+    }
+});
+
 const FilterCounterWrapper = Glamorous(XCard)({
     border: 'none',
     display: 'flex',
@@ -78,7 +160,7 @@ const FilterCounterWrapper = Glamorous(XCard)({
     position: 'absolute',
     borderRadius: 6,
     paddingLeft: 16,
-    width: 178,
+    width: 270,
     height: 48,
     left: 18,
     top: 84,
@@ -291,7 +373,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                             lastKnownCameraLocation={this.knownCameraLocation}
                                             onCameraLocationChanged={this.handleMap}
                                         >
-                                            <XMapGeocoder city={cityName} bbox={boundingBox} />
+                                            <MapSearcher city={cityName} bbox={boundingBox} />
                                             <ParcelPointSource
                                                 layer="parcels-found"
                                                 query={query}
