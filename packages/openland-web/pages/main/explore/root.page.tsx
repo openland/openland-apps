@@ -2,6 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
+import { FolderButton } from '../../../components/FolderButton';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
 import { XSwitcher } from 'openland-x/XSwitcher';
@@ -160,7 +161,8 @@ const FilterCounterWrapper = Glamorous(XCard)({
     position: 'absolute',
     borderRadius: 6,
     paddingLeft: 16,
-    width: 270,
+    paddingRight: 7,
+    minWidth: 270,
     height: 48,
     left: 18,
     top: 84,
@@ -172,8 +174,9 @@ const FilterCounter = Glamorous.div<{ filtered?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    color: props.filtered ? '#522BFF' : '#334562',
+    color: '#334562',
     fontSize: 14,
+    marginRight: 16,
     fontWeight: 500,
     // userSelect: 'none',
     whiteSpace: 'nowrap'
@@ -183,8 +186,11 @@ const FilterComponent = withParcelStats((props) => {
     return (
         <FilterCounterWrapper>
             <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                <span>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</span>
+                <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
             </FilterCounter>
+            {props.data  && props.data.parcelsStats !== null && props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query && (
+                <FolderButton style="primary" icon={null} placement="bottom" search={props.data.variables as any}/>
+            )}
         </FilterCounterWrapper>
     );
 });

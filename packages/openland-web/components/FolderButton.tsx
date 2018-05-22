@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XButton, XButtonSize, XButtonStyle } from 'openland-x/XButton';
-import { XPopper } from 'openland-x/XPopper';
-import { withFolders, withSetFolderMutation, withCreateFolderMutation } from '../api';
+import { XPopper, Placement } from 'openland-x/XPopper';
+import { withFolders, withSetFolderMutation, withCreateFolderMutation, withCreateFolderFromSearchMutation, withAddToFolderFromSearchMutation } from '../api';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XForm } from 'openland-x-forms/XForm';
@@ -52,7 +52,7 @@ const Loader = Glamorous(XButton)({
 
 });
 
-const ButtonMoveToFolder = withSetFolderMutation((props) => {
+const ButtonMoveParcelToFolder = withSetFolderMutation((props) => {
     return (
         <XModalContext.Consumer>
             {(modal) => (
@@ -70,8 +70,6 @@ const ButtonMoveToFolder = withSetFolderMutation((props) => {
                         <XButton
                             size="small"
                             action={() => props.setFolder({ variables: { parcelId: (props as any).parcelId, folder: null } as any })}
-                            // mutation={props.setFolder}
-                            // variables={{ parcelId: (props as any).parcelId, folder: null }}
                             onSuccess={modal!!.close}
                             text="Remove"
                             style="danger" />
@@ -90,14 +88,55 @@ const ButtonMoveToFolder = withSetFolderMutation((props) => {
     );
 }) as React.ComponentType<{ text: string, parcelId: string, folderId?: string, style?: XButtonStyle, remove?: boolean }>;
 
-const CreateFolder = withCreateFolderMutation((props) => {
+const ButtonMoveSearchResultsToFolder = withAddToFolderFromSearchMutation((props) => {
+    console.warn(props);
+    return (
+        <XModalContext.Consumer>
+            {(modal) => (
+                <FolderEntry
+                    selected={(props as any).remove}
+                    mutation={props.addToFolderFromSearch}
+                    active={!(props as any).remove}
+                    variables={{
+                        query: (props as any).query,
+                        city: (props as any).city,
+                        county: (props as any).county,
+                        folderId: (props as any).folderId,
+                        state: (props as any).state
+                    }}
+                    onSuccess={modal!!.close}>
+                    <FolderEntryContent >
+                        <XIcon icon="folder" />
+                        {(props as any).text}
+                    </FolderEntryContent>
+
+                    <Loader
+                        text="Remove"
+                        size="small"
+                        style="flat" />
+
+                </FolderEntry>
+
+            )}
+        </XModalContext.Consumer>
+    );
+}) as React.ComponentType<{
+    text: string, query?: string | null,
+    state: string,
+    county: string,
+    city: string,
+    folderId: string,
+    style?: XButtonStyle,
+}>;
+
+const CreateFolderComponent = ((mutation: any) => {
     return (
         <XModalForm
             title="Create folder"
             actionName="Create"
             targetQuery="newFolder"
             // target={<XButton icon="add" text="New Folder" style="electric" />}
-            submitMutation={props.createFolder}
+            submitMutation={mutation}
             mutationDirect={true}
         >
             <XForm.Text
@@ -108,6 +147,9 @@ const CreateFolder = withCreateFolderMutation((props) => {
         </XModalForm>
     );
 });
+
+const CreateFolderWithParcels = withCreateFolderMutation(((props) => CreateFolderComponent(props.createFolder)));
+const CreateFolderFromSearch = withCreateFolderFromSearchMutation(((props) => CreateFolderComponent(props.createFolderFromSearch)));
 
 const FolderPopupWrapper = Glamorous.div({
     overflowY: 'scroll',
@@ -134,13 +176,25 @@ const FolderForm = withFolders((props) => {
             <XPopper.Invalidator />
             <FolderPopupWrapper>
                 <AddFolderButton text="Add to new folder" style="electric" query={{ field: 'newFolder', value: 'true' }} autoClose={true} />
-                {props.data.folders && props.data.folders.map((v) => (
-                    <ButtonMoveToFolder key={v.id} parcelId={(props as any).parcelId} text={v.name} folderId={v.id} remove={(props as any).currentFolder && v.id === (props as any).currentFolder.id} />
+                {(props as any).parcelId && props.data.folders && props.data.folders.map((v) => (
+                    <ButtonMoveParcelToFolder key={v.id} parcelId={(props as any).parcelId} text={v.name} folderId={v.id} remove={(props as any).currentFolder && v.id === (props as any).currentFolder.id} />
+                ))}
+
+                {(props as any).search && props.data.folders && props.data.folders.map((v) => (
+                    <ButtonMoveSearchResultsToFolder {...(props as any).search} folderId={v.id} key={v.id} text={v.name} />
                 ))}
             </FolderPopupWrapper>
         </>
     );
-}) as React.ComponentType<{ parcelId: string, size?: XButtonSize, currentFolder?: { id: string, name: string } | null }>;
+}) as React.ComponentType<{
+    parcelId?:
+    string, search?: {
+        query: string,
+        city: string,
+        county: string,
+        state: string
+    }, size?: XButtonSize, currentFolder?: { id: string, name: string } | null
+}>;
 
 const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     position: 'fixed',
@@ -155,7 +209,21 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     // pointerEvents: 'none'
 }));
 
-export class FolderButton extends React.PureComponent<{ folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize, width?: number, menuWidth?: number }, { show: boolean }> {
+export class FolderButton extends React.PureComponent<{
+    folder?: { id: string, name: string } | null, parcelId?: string, search?: {
+        query: string,
+        city: string,
+        county: string,
+        state: string
+    },
+    size?: XButtonSize,
+    width?: number,
+    menuWidth?: number,
+    text?: string,
+    style?: XButtonStyle
+    icon?: string | null,
+    placement?: Placement,
+}, { show: boolean }> {
     constructor(props: { folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize }) {
         super(props);
         this.state = { show: false };
@@ -168,24 +236,37 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
     render() {
         let button;
         if (this.props.folder) {
-            button = <XButton width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} zIndex={11} />;
+
+            button = <XButton width={this.props.width} icon={this.props.icon === null ? undefined : this.props.icon ? this.props.icon : 'folder'} text={this.props.text !== undefined ? this.props.text : this.props.folder.name} style={this.props.style !== undefined ? this.props.style : 'primary'} size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} zIndex={11} />;
         } else {
-            button = <XButton width={this.props.width} icon="add" style={this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} zIndex={11} />;
+            button = <XButton width={this.props.width} icon={this.props.icon === null ? undefined : this.props.icon ? this.props.icon : 'add'} style={this.props.style !== undefined ? this.props.style : this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={this.props.text !== undefined ? this.props.text : 'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} zIndex={11} />;
 
         }
+
         return (
             <>
-                <CreateFolder variables={{ initialParcels: [this.props.parcelId] }} />
+                {this.props.parcelId && (
+                    <CreateFolderWithParcels variables={{ initialParcels: [this.props.parcelId] }} />
+                )}
+
+                {this.props.search && (
+                    <CreateFolderFromSearch variables={{
+                        query: this.props.search.query,
+                        city: this.props.search.city,
+                        county: this.props.search.county,
+                        state: this.props.search.state
+                    }} />
+                )}
                 <Shadow active={this.state.show} />
                 <XPopper
                     show={this.state.show}
                     content={
                         <XModalContext.Provider value={{ close: this.handleClose }}>
-                            <FolderForm parcelId={this.props.parcelId} currentFolder={this.props.folder} />
+                            <FolderForm parcelId={this.props.parcelId} currentFolder={this.props.folder} search={this.props.search}/>
                         </XModalContext.Provider>}
                     padding={10}
                     arrow={null}
-                    placement="top"
+                    placement={this.props.placement  || 'top'}
                     width={this.props.menuWidth}
                     onClickOutside={this.handleClose}
                 >

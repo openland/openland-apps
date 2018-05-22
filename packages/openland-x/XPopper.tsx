@@ -6,7 +6,7 @@ import { XPopperRender, PopperRendererProps } from './popper/XPopperRender';
 import { XPopperArrow } from './popper/XPopperArrow';
 import { XPopperContent } from './popper/XPopperContent';
 
-type Placement = 'auto-start'
+export type Placement = 'auto-start'
     | 'auto'
     | 'auto-end'
     | 'top-start'

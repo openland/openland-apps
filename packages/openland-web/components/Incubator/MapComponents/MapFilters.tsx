@@ -734,7 +734,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                     {...other}
                                 </FiltersContent>
                             )}>
-                            <XButton size="medium" text="Other" />
+                            <XButton size="medium" text="Other" style={otherActive ? 'primary' : 'flat'}/>
                         </FilterButton>
                     </FilterButtonWrapper>
                 </MapFilterWrapper>

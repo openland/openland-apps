@@ -858,6 +858,60 @@ export interface SetParcelFolderMutation {
   },
 };
 
+export interface AddToFolderFromSearchMutationVariables {
+  folderId: string,
+  query?: string | null,
+  state: string,
+  county: string,
+  city: string,
+};
+
+export interface AddToFolderFromSearchMutation {
+  alphaAddToFolderFromSearch: number,
+};
+
+export interface CreateFolderFromSearchMutationVariables {
+  name: string,
+  query?: string | null,
+  state: string,
+  county: string,
+  city: string,
+};
+
+export interface CreateFolderFromSearchMutation {
+  folder:  {
+    __typename: "Folder",
+    id: string,
+    name: string,
+    special: SpecialFolder | null,
+    parcelsCount: number,
+    parcels:  {
+      __typename: "ParcelConnection",
+      edges:  Array< {
+        __typename: "ParcelEdge",
+        node:  {
+          __typename: "Parcel",
+          id: string,
+          folder:  {
+            __typename: "Folder",
+            id: string,
+            name: string,
+          } | null,
+        },
+      } >,
+      pageInfo:  {
+        __typename: "PageInfo",
+        hasNextPage: boolean,
+        hasPreviousPage: boolean,
+        itemsCount: number,
+        pagesCount: number,
+        currentPage: number,
+        openEnded: boolean,
+      },
+    },
+  },
+};
+
 export interface OrganizationsQuery {
   organizations:  Array< {
     __typename: "Organization",
