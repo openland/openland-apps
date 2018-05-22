@@ -199,7 +199,7 @@ class CounterSave extends React.Component<{
             props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query ? (
                 <FolderButton style="primary" icon={null} placement="bottom" show={this.state.show} search={props.data.variables as any}
                     handleClose={() => {
-                        console.warn('boom');
+                        console.warn(this);
                         this.setState({ show: false });
                     }}
                     target={(
