@@ -197,23 +197,23 @@ class CounterSave extends React.Component<{
     filterComponent = withParcelStats((props) => {
         return (
             props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query ? (
-                <FolderButton style="primary" icon={null} placement="bottom" show={this.state.show} search={props.data.variables as any}
+                <FolderButton style="primary" icon={null} placement="bottom" show={(props as any).show} search={props.data.variables as any}
                     handleClose={() => {
                         this.setState({ show: false });
                     }}
                     target={(
-                        <FilterCounterWrapper saveActive={this.state.show}>
+                        <FilterCounterWrapper saveActive={(props as any).show}>
                             <FilterCounter filtered={(props as any).variables.query !== undefined}>
                                 <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
                             </FilterCounter>
                             <XButton text="Save to Folder" style="primary" onClick={(() => {
-                                this.setState({ show: !this.state.show });
+                                this.setState({ show: !(props as any).show });
                             })} />
 
                         </FilterCounterWrapper>
                     )} />
 
-                // <FilterCounterWrapper saveActive={this.state.show}>
+                // <FilterCounterWrapper saveActive={(props as any).show}>
                 //     <FilterCounter filtered={(props as any).variables.query !== undefined}>
                 //         <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
 
@@ -223,14 +223,14 @@ class CounterSave extends React.Component<{
 
                 // </FilterCounterWrapper>
             ) : (
-                    <FilterCounterWrapper saveActive={this.state.show}>
+                    <FilterCounterWrapper saveActive={(props as any).show}>
                         <FilterCounter filtered={(props as any).variables.query !== undefined}>
                             <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
                         </FilterCounter>
 
                     </FilterCounterWrapper>
                 ));
-    });
+    }) as React.ComponentClass<{show: boolean, variables: any}>;
 
     constructor(props: any) {
         super(props);
@@ -243,7 +243,7 @@ class CounterSave extends React.Component<{
 
     render() {
         return (
-            <this.filterComponent variables={this.props.variables} />
+            <this.filterComponent variables={this.props.variables} show={this.state.show}/>
         );
     }
 }
