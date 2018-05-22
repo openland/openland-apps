@@ -26,6 +26,7 @@ const FolderEntry = Glamorous(XMutation)<{ selected?: boolean }>((props) => ({
 
 const FolderEntryContent = Glamorous.div<{ selected?: boolean }>((props) => ({
     flexGrow: 1,
+    maxWidth: '100%',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -35,7 +36,14 @@ const FolderEntryContent = Glamorous.div<{ selected?: boolean }>((props) => ({
     lineHeight: 1.33,
     color: props.selected ? '#654bfa' : '#334562',
     '> i': {
-        padding: 10
+        padding: 10,
+        color: '#BCC3CC'
+    },
+    '> span': {
+        maxWidth: '100%',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis'
     }
 }));
 
@@ -64,7 +72,7 @@ const ButtonMoveParcelToFolder = withSetFolderMutation((props) => {
                     onSuccess={modal!!.close}>
                     <FolderEntryContent selected={(props as any).remove}>
                         <XIcon icon="folder" />
-                        {(props as any).text}
+                        <span>{(props as any).text}</span>
                     </FolderEntryContent>
                     {(props as any).remove && (
                         <XButton
