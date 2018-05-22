@@ -159,6 +159,7 @@ const FilterCounterWrapper = Glamorous(XCard)<{ saveActive: boolean }>((props) =
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     position: 'absolute',
     borderRadius: 6,
     paddingLeft: 18,
