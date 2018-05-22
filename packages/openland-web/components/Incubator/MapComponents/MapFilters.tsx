@@ -280,40 +280,24 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
         }
     }
 
-    queryParam = () => {
+    queryParam = (newValue: any) => {
         let value = undefined;
-        if (this.state.value !== undefined) {
-            if (Array.isArray(this.state.value)) {
-                if (this.state.value.length > 0) {
-                    value = JSON.stringify(this.state.value.map(r => r));
+        if (newValue !== undefined) {
+            if (Array.isArray(newValue)) {
+                if (newValue.length > 0) {
+                    value = JSON.stringify(newValue.map(r => r));
                 }
             } else {
-                value = this.state.value;
+                value = newValue;
             }
 
         }
-        return ({ fieldName: this.props.fieldName, value: value });
+        ApplyFilterWrap.newQueryParams[this.props.fieldName] = value;
     }
 
-    apply = () => {
-        if (this.state.value !== undefined) {
-            if (Array.isArray(this.state.value)) {
-                if (this.state.value.length > 0) {
-                    this.props.router.pushQuery(this.props.fieldName, JSON.stringify(this.state.value.map(r => r)));
-                } else {
-                    this.props.router.pushQuery(this.props.fieldName, undefined);
-                }
-            } else {
-                this.props.router.pushQuery(this.props.fieldName, this.state.value);
-            }
-
-        } else {
-            this.props.router.pushQuery(this.props.fieldName, undefined);
-        }
-        if (this.props.applyButton === undefined || this.props.applyButton) {
+    close = () => {
             FilterButton.closeAll();
         }
-    }
 
     render() {
         let { fieldName, ...other } = this.props;
@@ -333,11 +317,13 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
                         }
 
                         this.setState({ value: value });
+
+                        this.queryParam(value);
                     }}
                     value={this.state.value}
                 />
                 {Boolean(this.props.applyButton === undefined || this.props.applyButton) && (
-                    <XButton style="primary" onClick={this.apply} text="Apply" />
+                    <XButton style="primary" onClick={this.close} text="Apply" />
                 )}
             </XGroup>
         );
@@ -357,10 +343,11 @@ class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?
     handleChange = (value: string) => {
         this.setState({ value: value });
         this.value = value === '' ? undefined : value;
+
+        ApplyFilterWrap.newQueryParams[this.props.searchKey] = this.value;
     }
 
     apply = () => {
-        this.props.router.pushQuery(this.props.searchKey, this.value);
         FilterButton.closeAll();
     }
 
@@ -390,6 +377,7 @@ class AreaFiltersContent extends React.Component<XWithRouter> {
 
     onChange = (area: any) => {
         this.area = area;
+        (ApplyFilterWrap.newQueryParams as any).area = area === undefined ? area : JSON.stringify(this.area);
     }
 
     apply = () => {
@@ -585,7 +573,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     {this.props.city === 'nyc' && (
                         <FilterButtonWrapper key={'filter_ownerName'}>
                             <FilterButton
-                                handler={this.shadowHandler}
+                                handler={this.applyHandler}
                                 fieldName="ownerName"
                                 router={this.props.router}
                                 content={(
@@ -599,7 +587,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     {this.props.city === 'sf' && (
                         <FilterButtonWrapper key={'filter_filterZoning_container'}>
                             <FilterButton
-                                handler={this.shadowHandler}
+                                handler={this.applyHandler}
                                 key={'filter_filterZoning_sf'}
                                 fieldName="filterZoning"
                                 router={this.props.router}
@@ -623,7 +611,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     {this.props.city === 'nyc' && (
                         <FilterButtonWrapper key={'filter_filterZoning_container'}>
                             <FilterButton
-                                handler={this.shadowHandler}
+                                handler={this.applyHandler}
                                 key={'filter_filterZoning_nyc'}
                                 fieldName="filterZoning"
                                 router={this.props.router}
@@ -705,7 +693,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                         <FilterButton
                             fieldName="area"
                             router={this.props.router}
-                            handler={this.shadowHandler}
+                            handler={this.applyHandler}
                             content={
                                 <AreaFiltersContent
                                     router={this.props.router}
