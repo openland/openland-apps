@@ -197,21 +197,31 @@ class CounterSave extends React.Component<{
     filterComponent = withParcelStats((props) => {
         return (
             props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query ? (
-                <FolderButton style="primary" icon={null} placement="bottom" show={this.state.show} search={props.data.variables as any}
-                    handleClose={() => {
-                        this.setState({ show: false });
-                    }}
-                    target={(
-                        <FilterCounterWrapper saveActive={this.state.show}>
-                            <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                                <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
-                            </FilterCounter>
-                            <XButton text="Save to Folder" style="primary" onClick={(() => {
-                                this.setState({ show: !this.state.show });
-                            })} />
+                // <FolderButton style="primary" icon={null} placement="bottom" show={this.state.show} search={props.data.variables as any}
+                //     handleClose={() => {
+                //         this.setState({ show: false });
+                //     }}
+                //     target={(
+                //         <FilterCounterWrapper saveActive={this.state.show}>
+                //             <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                //                 <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                //             </FilterCounter>
+                //             <XButton text="Save to Folder" style="primary" onClick={(() => {
+                //                 this.setState({ show: !this.state.show });
+                //             })} />
 
-                        </FilterCounterWrapper>
-                    )} />
+                //         </FilterCounterWrapper>
+                //     )} />
+
+                <FilterCounterWrapper saveActive={this.state.show}>
+                    <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                        <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+
+                    </FilterCounter>
+
+                        <FolderButton style="primary" icon={null} placement="bottom" search={props.data.variables as any} />                    
+
+                </FilterCounterWrapper>
             ) : (
                     <FilterCounterWrapper saveActive={this.state.show}>
                         <FilterCounter filtered={(props as any).variables.query !== undefined}>
