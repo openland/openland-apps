@@ -235,8 +235,10 @@ interface FolderButtonProps {
 }
 export class FolderButton extends React.PureComponent<FolderButtonProps, { show: boolean }> {
 
-    static getDerivedStateFromProps(nextProps: FolderButtonProps, prevState: { show: boolean }) {
-        return ({ show: nextProps.show !== undefined ? nextProps.show : prevState.show });
+    componentDidUpdate() {
+        if (this.props.show !== undefined && this.props.show !== this.state.show) {
+            this.setState({ show: this.props.show });
+        }
     }
 
     constructor(props: { folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize }) {
@@ -245,12 +247,12 @@ export class FolderButton extends React.PureComponent<FolderButtonProps, { show:
     }
 
     handleClose = () => {
-        
+
         if (this.props.handleClose) {
             this.props.handleClose();
         }
         this.setState({ show: false });
-        
+
     }
 
     switch = () => {

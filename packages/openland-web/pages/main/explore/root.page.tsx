@@ -199,7 +199,6 @@ class CounterSave extends React.Component<{
             props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query ? (
                 <FolderButton style="primary" icon={null} placement="bottom" show={this.state.show} search={props.data.variables as any}
                     handleClose={() => {
-                        console.warn(this);
                         this.setState({ show: false });
                     }}
                     target={(
@@ -208,7 +207,6 @@ class CounterSave extends React.Component<{
                                 <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
                             </FilterCounter>
                             <XButton text="Save to Folder" style="primary" onClick={(() => {
-                                console.warn(this);
                                 this.setState({ show: !this.state.show });
                             })} />
 
