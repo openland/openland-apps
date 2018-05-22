@@ -71,7 +71,7 @@ const MapSwitcher = Glamorous.div({
 });
 
 const MapSearcher = Glamorous(XMapGeocoder)({
-    zIndex: 2,
+    zIndex: 1,
     height: 56,
     top: 18,
     left: 165,
@@ -344,6 +344,14 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 <XMapContainer>
                                     <XMapContainer2>
                                         <RoutedMapFilters city={city} />
+                                        <FilterComponent
+                                            variables={{
+                                                query: query && JSON.stringify(query),
+                                                city: cityName,
+                                                county: countyName,
+                                                state: stateName
+                                            }}
+                                        />
                                         <CitySelector title={cityName}>
                                             <CitySelector.Item
                                                 query={{ field: 'city', value: 'sf' }}
@@ -356,14 +364,6 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                                 label="New York"
                                             />
                                         </CitySelector>
-                                        <FilterComponent
-                                            variables={{
-                                                query: query && JSON.stringify(query),
-                                                city: cityName,
-                                                county: countyName,
-                                                state: stateName
-                                            }}
-                                        />
 
                                         <ParcelMap
                                             mode={this.props.router.query.mode}

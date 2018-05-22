@@ -14,7 +14,7 @@ const MapFilterWrapper = Glamorous(XCard)<{ active: boolean }>((props) => ({
     paddingLeft: 0,
     paddingRight: 0,
     paddingBottom: props.active ? 12 : 0,
-    zIndex: props.active ? 12 : 2,
+    zIndex: props.active ? 12 : 1,
     borderRadius: 6,
     // borderTopRightRadius: 0,
     // borderBottomRightRadius: 0,

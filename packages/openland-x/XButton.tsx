@@ -421,33 +421,33 @@ const ButtomText = Glamorous.span({
     overflow: 'hidden'
 });
 
-const StyledButton = Glamorous.a<
-    {
-        buttonSize?: string,
-        buttonStyle?: string,
-        loading?: boolean,
-        enabled?: boolean,
-        pressed?: boolean,
-        attach?: 'left' | 'right' | 'both'
-    } & XFlexStyles
-    >([
-        (props) => ({ display: 'flex', boxSizing: 'border-box' }),
-        (props) => ({
-            pointerEvents: (props.loading || props.enabled === false) ? 'none' : 'auto',
-            cursor: (props.loading || props.enabled === false) ? 'inherit' : 'pointer',
-            transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease'
-        }),
-        (props) => (props.loading && {
-            '& span': { opacity: 0 }
-        } || {}),
-        (props) => colorStyles(props.buttonStyle, props.enabled !== false && !props.pressed),
-        (props) => colorDisabledStyles(props.buttonStyle, props.enabled === false),
-        (props) => colorPressedStyles(props.buttonStyle, !!props.pressed),
-        (props) => loaderStyles(props.buttonStyle),
-        (props) => sizeStyles(props.buttonSize),
-        (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize),
-        (props) => applyFlex(props)
-    ]);
+interface StyledButtonProps extends XFlexStyles {
+    buttonSize?: string;
+    buttonStyle?: string;
+    loading?: boolean;
+    enabled?: boolean;
+    pressed?: boolean;
+    attach?: 'left' | 'right' | 'both';
+}
+
+const StyledButton = Glamorous.a<StyledButtonProps>([
+    (props) => ({ display: 'flex', boxSizing: 'border-box' }),
+    (props) => ({
+        pointerEvents: (props.loading || props.enabled === false) ? 'none' : 'auto',
+        cursor: (props.loading || props.enabled === false) ? 'inherit' : 'pointer',
+        transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease'
+    }),
+    (props) => (props.loading && {
+        '& span': { opacity: 0 }
+    } || {}),
+    (props) => applyFlex(props),
+    (props) => colorStyles(props.buttonStyle, props.enabled !== false && !props.pressed),
+    (props) => colorDisabledStyles(props.buttonStyle, props.enabled === false),
+    (props) => colorPressedStyles(props.buttonStyle, !!props.pressed),
+    (props) => loaderStyles(props.buttonStyle),
+    (props) => sizeStyles(props.buttonSize),
+    (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize)
+]);
 
 export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
     return (
@@ -466,6 +466,7 @@ export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
             alignSelf={props.alignSelf}
             onClick={props.onClick}
             className={props.className}
+            zIndex={props.zIndex}
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content" additionalText={props.additionalText !== undefined}>
                 <MainContent additionalText={props.additionalText !== undefined}>

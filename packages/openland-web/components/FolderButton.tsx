@@ -151,7 +151,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     visibility: props.active ? 'visible' : 'hidden',
     opacity: props.active ? 1 : 0,
     backgroundColor: 'rgba(0, 0, 0, 0.41)',
-    zIndex: 10,
+    zIndex: 11,
     // pointerEvents: 'none'
 }));
 
@@ -168,9 +168,9 @@ export class FolderButton extends React.PureComponent<{ folder?: { id: string, n
     render() {
         let button;
         if (this.props.folder) {
-            button = <XButton width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} zIndex={10} />;
+            button = <XButton width={this.props.width} icon="folder" text={this.props.folder.name} style="primary" size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} zIndex={11} />;
         } else {
-            button = <XButton width={this.props.width} icon="add" style={this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} zIndex={10} />;
+            button = <XButton width={this.props.width} icon="add" style={this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} zIndex={11} />;
 
         }
         return (
