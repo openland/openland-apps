@@ -458,7 +458,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
 
 class MapFilters extends React.Component<XWithRouter & { city?: string }, { active: boolean }> {
     shadowRequests = new Set();
-    otherFilters: Set<string> = new Set(['isVacant', 'publicOwner', 'compatible', 'filterTransit', 'isOkForTower', 'filterOnSale']);
+    otherFilters: Set<string> = new Set(['isVacant', 'publicOwner', 'compatible', 'filterTransit', 'isOkForTower', 'filterOnSale', 'filterCurrentUse']);
 
     constructor(props: XWithRouter & { city?: string }) {
         super(props);
@@ -528,6 +528,19 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             </FilterCategory>
         );
 
+        sfOther.push(
+            <FilterCategory key={'filter_filterCurrentUse'}>
+                <FilterCategoryTitle>Current Use</FilterCategoryTitle>
+                <XVertical>
+                    <ApplyFilterWrap fieldName="filterCurrentUse" router={this.props.router}>
+                        <XCheckboxGroup
+                            elements={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
+                        />
+                    </ApplyFilterWrap>
+                </XVertical>
+            </FilterCategory>
+        );
+
         let other = [];
 
         other.push(
@@ -569,18 +582,20 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                 <Shadow active={this.state.active} />
 
                 <MapFilterWrapper active={this.state.active}>
-                    <FilterButtonWrapper key={'filter_ownerName'}>
-                        <FilterButton
-                            handler={this.shadowHandler}
-                            fieldName="ownerName"
-                            router={this.props.router}
-                            content={(
-                                <OwnerNameFiltersContent />
-                            )}>
-                            <XButton size="medium" text="Owner name" />
+                    {this.props.city === 'nyc' && (
+                        <FilterButtonWrapper key={'filter_ownerName'}>
+                            <FilterButton
+                                handler={this.shadowHandler}
+                                fieldName="ownerName"
+                                router={this.props.router}
+                                content={(
+                                    <OwnerNameFiltersContent />
+                                )}>
+                                <XButton size="medium" text="Owner name" />
 
-                        </FilterButton>
-                    </FilterButtonWrapper>
+                            </FilterButton>
+                        </FilterButtonWrapper>
+                    )}
                     {this.props.city === 'sf' && (
                         <FilterButtonWrapper key={'filter_filterZoning_container'}>
                             <FilterButton
@@ -683,31 +698,6 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                     <XButton size="medium" />
                                 </FilterButton>
                             </FilterButtonWrapper>
-
-                            <FilterButtonWrapper key={'filter_filterCurrentUse'}>
-                                <FilterButton handler={this.applyHandler}
-                                    fieldName="filterCurrentUse"
-                                    filterTitle="Current Use"
-                                    router={this.props.router}
-                                    valueTitleMap={{
-                                        'PARKING': 'Parking',
-                                        'STORAGE': 'Storage'
-                                    }}
-                                    content={(
-                                        <FiltersContent>
-                                            <XVertical>
-                                                <ApplyFilterWrap fieldName="filterCurrentUse" router={this.props.router}>
-                                                    <XCheckboxGroup
-                                                        divided={true}
-                                                        elements={[{ value: 'PARKING', label: 'Parking' }, { value: 'STORAGE', label: 'Storage' }]}
-                                                    />
-                                                </ApplyFilterWrap>
-                                            </XVertical>
-                                        </FiltersContent>
-                                    )}>
-                                    <XButton size="medium" />
-                                </FilterButton>
-                            </FilterButtonWrapper>
                         </>
                     )}
 
@@ -734,7 +724,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                     {...other}
                                 </FiltersContent>
                             )}>
-                            <XButton size="medium" text="Other" style={otherActive ? 'primary' : 'flat'}/>
+                            <XButton size="medium" text="Other" style={otherActive ? 'primary' : 'flat'} />
                         </FilterButton>
                     </FilterButtonWrapper>
                 </MapFilterWrapper>
