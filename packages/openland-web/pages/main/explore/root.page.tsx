@@ -166,7 +166,7 @@ const FilterCounterWrapper = Glamorous(XCard)<{saveActive: boolean}>((props) => 
     height: 48,
     left: 18,
     top: 84,
-    zIndex: props.saveActive ? 10: 1,
+    zIndex: props.saveActive ? 10 : 1,
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
 }));
 
