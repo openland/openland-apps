@@ -60,11 +60,14 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
 
     handleClose = (self?: any) => {
         let target = (self instanceof FilterButton) ? self : this;
+        let wasShown = this.state.popper;
         target.setState({
             popper: false
         });
         FilterButton.active.delete(target);
-        if (this.props.handler !== undefined) { this.props.handler(false, target); }
+        if (wasShown) {
+            if (this.props.handler !== undefined) { this.props.handler(false, target); }
+        }
     }
 
     modifyProps = (component: any) => {
