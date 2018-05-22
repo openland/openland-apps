@@ -22,7 +22,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { trackEvent } from 'openland-x-analytics';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { XCard } from 'openland-x/XCard';
-import { XButton } from 'openland-x/XButton';
+// import { XButton } from 'openland-x/XButton';
 import { XMapGeocoder } from 'openland-x-map/XMapGeocoder';
 
 const XMapContainer = Glamorous.div({
