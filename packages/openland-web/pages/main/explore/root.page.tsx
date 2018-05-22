@@ -22,6 +22,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { trackEvent } from 'openland-x-analytics';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { XCard } from 'openland-x/XCard';
+import { XButton } from 'openland-x/XButton';
 import { XMapGeocoder } from 'openland-x-map/XMapGeocoder';
 
 const XMapContainer = Glamorous.div({
@@ -153,7 +154,7 @@ const MapSearcher = Glamorous(XMapGeocoder)({
     }
 });
 
-const FilterCounterWrapper = Glamorous(XCard)<{saveActive: boolean}>((props) => ({
+const FilterCounterWrapper = Glamorous(XCard)<{ saveActive: boolean }>((props) => ({
     border: 'none',
     display: 'flex',
     flexDirection: 'row',
@@ -166,7 +167,7 @@ const FilterCounterWrapper = Glamorous(XCard)<{saveActive: boolean}>((props) => 
     height: 48,
     left: 18,
     top: 84,
-    zIndex: props.saveActive ? 10 : 1,
+    zIndex: props.saveActive ? 11 : 1,
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
 }));
 
@@ -189,24 +190,40 @@ class CounterSave extends React.Component<{
         county: string,
         state: string
     }
-}, { saveActive: boolean }> {
+}, { show: boolean }> {
 
     filterComponent = withParcelStats((props) => {
         return (
-            <FilterCounterWrapper saveActive={this.state.saveActive}>
-                <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                    <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
-                </FilterCounter>
-                {props.data && props.data.parcelsStats !== null && props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query && (
-                    <FolderButton style="primary" icon={null} placement="bottom" search={props.data.variables as any} onStateChange={(active) => this.setState({saveActive: active})}/>
-                )}
-            </FilterCounterWrapper>
-        );
+            props.data && props.data.parcelsStats !== null && props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query ? (
+                <FolderButton style="primary" icon={null} placement="bottom" show={this.state.show} search={props.data.variables as any}
+                    handleClose={() => {
+                        console.warn('boom');
+                        this.setState({ show: false });
+                    }}
+                    target={(
+                        <FilterCounterWrapper saveActive={this.state.show}>
+                            <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                                <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                            </FilterCounter>
+                            <XButton text="Save to Folder" style="primary" onClick={(() => {
+                                this.setState({ show: !this.state.show });
+                            })} />
+
+                        </FilterCounterWrapper>
+                    )} />
+            ) : (
+                    <FilterCounterWrapper saveActive={this.state.show}>
+                        <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                            <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                        </FilterCounter>
+
+                    </FilterCounterWrapper>
+                ));
     });
 
     constructor(props: any) {
         super(props);
-        this.state = { saveActive: false };
+        this.state = { show: false };
     }
 
     render() {

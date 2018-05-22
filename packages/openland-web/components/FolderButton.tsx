@@ -207,50 +207,58 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     zIndex: 11,
     // pointerEvents: 'none'
 }));
-
-export class FolderButton extends React.PureComponent<{
-    folder?: { id: string, name: string } | null, parcelId?: string, search?: {
-        query: string,
-        city: string,
-        county: string,
+interface FolderButtonProps {
+    folder?: { id: string, name: string } | null; parcelId?: string; search?: {
+        query: string;
+        city: string;
+        county: string;
         state: string
-    },
-    size?: XButtonSize,
-    width?: number,
-    menuWidth?: number,
-    text?: string,
-    style?: XButtonStyle
-    icon?: string | null,
-    placement?: Placement,
-    onStateChange?: (shown: boolean) => void
-}, { show: boolean }> {
+    };
+    size?: XButtonSize;
+    width?: number;
+    menuWidth?: number;
+    text?: string;
+    style?: XButtonStyle;
+    icon?: string | null;
+    placement?: Placement;
+    target?: any;
+    show?: boolean;
+    handleClose?: () => void;
+}
+export class FolderButton extends React.PureComponent<FolderButtonProps, { show: boolean }> {
+
+    static getDerivedStateFromProps(nextProps: FolderButtonProps, prevState: { show: boolean }) {
+        return ({ show: nextProps.show !== undefined ? nextProps.show : prevState.show });
+    }
+
     constructor(props: { folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize }) {
         super(props);
         this.state = { show: false };
     }
 
     handleClose = () => {
-        this.setState({ show: false });
-        if (this.props.onStateChange) {
-            this.props.onStateChange(false);
+        
+        if (this.props.handleClose) {
+            this.props.handleClose();
         }
+        this.setState({ show: false });
+        
     }
 
     switch = () => {
-        if (this.props.onStateChange) {
-            this.props.onStateChange(!this.state.show);
-        }
         this.setState({ show: !this.state.show });
     }
 
     render() {
-        let button;
-        if (this.props.folder) {
 
-            button = <XButton width={this.props.width} icon={this.props.icon === null ? undefined : this.props.icon ? this.props.icon : 'folder'} text={this.props.text !== undefined ? this.props.text : this.props.folder.name} style={this.props.style !== undefined ? this.props.style : 'primary'} size={this.props.size} onClick={this.switch} zIndex={11} />;
-        } else {
-            button = <XButton width={this.props.width} icon={this.props.icon === null ? undefined : this.props.icon ? this.props.icon : 'add'} style={this.props.style !== undefined ? this.props.style : this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={this.props.text !== undefined ? this.props.text : 'Save to folder'} onClick={this.switch} zIndex={11} />;
+        let target = this.props.target;
+        if (!target) {
+            if (this.props.folder) {
+                target = <XButton width={this.props.width} icon={this.props.icon === null ? undefined : this.props.icon ? this.props.icon : 'folder'} text={this.props.text !== undefined ? this.props.text : this.props.folder.name} style={this.props.style !== undefined ? this.props.style : 'primary'} size={this.props.size} onClick={this.switch} zIndex={11} />;
+            } else {
+                target = <XButton width={this.props.width} icon={this.props.icon === null ? undefined : this.props.icon ? this.props.icon : 'add'} style={this.props.style !== undefined ? this.props.style : this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={this.props.text !== undefined ? this.props.text : 'Save to folder'} onClick={this.switch} zIndex={11} />;
 
+            }
         }
 
         return (
@@ -280,7 +288,7 @@ export class FolderButton extends React.PureComponent<{
                     width={this.props.menuWidth}
                     onClickOutside={this.handleClose}
                 >
-                    {button}
+                    {target}
                 </XPopper>
             </>
         );
