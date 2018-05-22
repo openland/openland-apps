@@ -153,7 +153,7 @@ const MapSearcher = Glamorous(XMapGeocoder)({
     }
 });
 
-const FilterCounterWrapper = Glamorous(XCard)({
+const FilterCounterWrapper = Glamorous(XCard)<{saveActive: boolean}>((props) => ({
     border: 'none',
     display: 'flex',
     flexDirection: 'row',
@@ -166,9 +166,9 @@ const FilterCounterWrapper = Glamorous(XCard)({
     height: 48,
     left: 18,
     top: 84,
-    zIndex: 1,
+    zIndex: props.saveActive ? 10: 1,
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
-});
+}));
 
 const FilterCounter = Glamorous.div<{ filtered?: boolean }>((props) => ({
     display: 'flex',
@@ -182,18 +182,39 @@ const FilterCounter = Glamorous.div<{ filtered?: boolean }>((props) => ({
     whiteSpace: 'nowrap'
 }));
 
-const FilterComponent = withParcelStats((props) => {
-    return (
-        <FilterCounterWrapper>
-            <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
-            </FilterCounter>
-            {props.data  && props.data.parcelsStats !== null && props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query && (
-                <FolderButton style="primary" icon={null} placement="bottom" search={props.data.variables as any}/>
-            )}
-        </FilterCounterWrapper>
-    );
-});
+class CounterSave extends React.Component<{
+    variables: {
+        query?: string,
+        city: string,
+        county: string,
+        state: string
+    }
+}, { saveActive: boolean }> {
+
+    filterComponent = withParcelStats((props) => {
+        return (
+            <FilterCounterWrapper saveActive={this.state.saveActive}>
+                <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                    <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                </FilterCounter>
+                {props.data && props.data.parcelsStats !== null && props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query && (
+                    <FolderButton style="primary" icon={null} placement="bottom" search={props.data.variables as any} onStateChange={(active) => this.setState({saveActive: active})}/>
+                )}
+            </FilterCounterWrapper>
+        );
+    });
+
+    constructor(props: any) {
+        super(props);
+        this.state = { saveActive: false };
+    }
+
+    render() {
+        return (
+            <this.filterComponent variables={this.props.variables} />
+        );
+    }
+}
 
 const DealsSource = withDealsMap((props) => {
     if (props.data.deals) {
@@ -350,7 +371,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 <XMapContainer>
                                     <XMapContainer2>
                                         <RoutedMapFilters city={city} />
-                                        <FilterComponent
+                                        <CounterSave
                                             variables={{
                                                 query: query && JSON.stringify(query),
                                                 city: cityName,

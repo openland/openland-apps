@@ -89,7 +89,6 @@ const ButtonMoveParcelToFolder = withSetFolderMutation((props) => {
 }) as React.ComponentType<{ text: string, parcelId: string, folderId?: string, style?: XButtonStyle, remove?: boolean }>;
 
 const ButtonMoveSearchResultsToFolder = withAddToFolderFromSearchMutation((props) => {
-    console.warn(props);
     return (
         <XModalContext.Consumer>
             {(modal) => (
@@ -223,6 +222,7 @@ export class FolderButton extends React.PureComponent<{
     style?: XButtonStyle
     icon?: string | null,
     placement?: Placement,
+    onStateChange?: (shown: boolean) => void
 }, { show: boolean }> {
     constructor(props: { folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize }) {
         super(props);
@@ -231,15 +231,25 @@ export class FolderButton extends React.PureComponent<{
 
     handleClose = () => {
         this.setState({ show: false });
+        if (this.props.onStateChange) {
+            this.props.onStateChange(false);
+        }
+    }
+
+    switch = () => {
+        if (this.props.onStateChange) {
+            this.props.onStateChange(!this.state.show);
+        }
+        this.setState({ show: !this.state.show });
     }
 
     render() {
         let button;
         if (this.props.folder) {
 
-            button = <XButton width={this.props.width} icon={this.props.icon === null ? undefined : this.props.icon ? this.props.icon : 'folder'} text={this.props.text !== undefined ? this.props.text : this.props.folder.name} style={this.props.style !== undefined ? this.props.style : 'primary'} size={this.props.size} onClick={() => this.setState({ show: !this.state.show })} zIndex={11} />;
+            button = <XButton width={this.props.width} icon={this.props.icon === null ? undefined : this.props.icon ? this.props.icon : 'folder'} text={this.props.text !== undefined ? this.props.text : this.props.folder.name} style={this.props.style !== undefined ? this.props.style : 'primary'} size={this.props.size} onClick={this.switch} zIndex={11} />;
         } else {
-            button = <XButton width={this.props.width} icon={this.props.icon === null ? undefined : this.props.icon ? this.props.icon : 'add'} style={this.props.style !== undefined ? this.props.style : this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={this.props.text !== undefined ? this.props.text : 'Save to folder'} onClick={() => this.setState({ show: !this.state.show })} zIndex={11} />;
+            button = <XButton width={this.props.width} icon={this.props.icon === null ? undefined : this.props.icon ? this.props.icon : 'add'} style={this.props.style !== undefined ? this.props.style : this.state.show === true ? 'flat' : 'electric'} size={this.props.size} text={this.props.text !== undefined ? this.props.text : 'Save to folder'} onClick={this.switch} zIndex={11} />;
 
         }
 
@@ -262,11 +272,11 @@ export class FolderButton extends React.PureComponent<{
                     show={this.state.show}
                     content={
                         <XModalContext.Provider value={{ close: this.handleClose }}>
-                            <FolderForm parcelId={this.props.parcelId} currentFolder={this.props.folder} search={this.props.search}/>
+                            <FolderForm parcelId={this.props.parcelId} currentFolder={this.props.folder} search={this.props.search} />
                         </XModalContext.Provider>}
                     padding={10}
                     arrow={null}
-                    placement={this.props.placement  || 'top'}
+                    placement={this.props.placement || 'top'}
                     width={this.props.menuWidth}
                     onClickOutside={this.handleClose}
                 >
