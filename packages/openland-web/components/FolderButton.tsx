@@ -259,6 +259,10 @@ export class FolderButton extends React.PureComponent<FolderButtonProps, { show:
         this.setState({ show: !this.state.show });
     }
 
+    componentDidUpdate() {
+        console.warn(this);
+    }
+
     render() {
 
         let target = this.props.target;

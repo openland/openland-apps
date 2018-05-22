@@ -22,7 +22,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { trackEvent } from 'openland-x-analytics';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { XCard } from 'openland-x/XCard';
-// import { XButton } from 'openland-x/XButton';
+import { XButton } from 'openland-x/XButton';
 import { XMapGeocoder } from 'openland-x-map/XMapGeocoder';
 
 const XMapContainer = Glamorous.div({
@@ -197,31 +197,31 @@ class CounterSave extends React.Component<{
     filterComponent = withParcelStats((props) => {
         return (
             props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query ? (
-                // <FolderButton style="primary" icon={null} placement="bottom" show={this.state.show} search={props.data.variables as any}
-                //     handleClose={() => {
-                //         this.setState({ show: false });
-                //     }}
-                //     target={(
-                //         <FilterCounterWrapper saveActive={this.state.show}>
-                //             <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                //                 <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
-                //             </FilterCounter>
-                //             <XButton text="Save to Folder" style="primary" onClick={(() => {
-                //                 this.setState({ show: !this.state.show });
-                //             })} />
+                <FolderButton style="primary" icon={null} placement="bottom" show={this.state.show} search={props.data.variables as any}
+                    handleClose={() => {
+                        this.setState({ show: false });
+                    }}
+                    target={(
+                        <FilterCounterWrapper saveActive={this.state.show}>
+                            <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                                <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                            </FilterCounter>
+                            <XButton text="Save to Folder" style="primary" onClick={(() => {
+                                this.setState({ show: !this.state.show });
+                            })} />
 
-                //         </FilterCounterWrapper>
-                //     )} />
+                        </FilterCounterWrapper>
+                    )} />
 
-                <FilterCounterWrapper saveActive={this.state.show}>
-                    <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                        <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                // <FilterCounterWrapper saveActive={this.state.show}>
+                //     <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                //         <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
 
-                    </FilterCounter>
+                //     </FilterCounter>
 
-                        <FolderButton style="primary" icon={null} placement="bottom" search={props.data.variables as any} />                    
+                //         <FolderButton style="primary" icon={null} placement="bottom" search={props.data.variables as any} />                    
 
-                </FilterCounterWrapper>
+                // </FilterCounterWrapper>
             ) : (
                     <FilterCounterWrapper saveActive={this.state.show}>
                         <FilterCounter filtered={(props as any).variables.query !== undefined}>
@@ -235,6 +235,10 @@ class CounterSave extends React.Component<{
     constructor(props: any) {
         super(props);
         this.state = { show: false };
+    }
+
+    componentDidUpdate() {
+        console.warn(this);
     }
 
     render() {
