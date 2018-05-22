@@ -236,6 +236,8 @@ interface FolderButtonProps {
 export class FolderButton extends React.PureComponent<FolderButtonProps, { show: boolean }> {
 
     componentDidUpdate() {
+        console.warn(this);
+        
         if (this.props.show !== undefined && this.props.show !== this.state.show) {
             this.setState({ show: this.props.show });
         }
@@ -257,10 +259,6 @@ export class FolderButton extends React.PureComponent<FolderButtonProps, { show:
 
     switch = () => {
         this.setState({ show: !this.state.show });
-    }
-
-    componentDidUpdate() {
-        console.warn(this);
     }
 
     render() {
