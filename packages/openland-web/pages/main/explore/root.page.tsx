@@ -304,11 +304,8 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         }
         let isVacantSet: boolean | undefined;
         if (this.props.router.query!!.isVacant) {
-            if (JSON.parse(this.props.router.query!!.isVacant) === 'true') {
-                isVacantSet = true;
-            } else {
-                isVacantSet = false;
-            }
+            isVacantSet = JSON.parse(this.props.router.query!!.isVacant);
+            console.warn(isVacantSet);
         }
         if (this.props.router.query!!.compatible) {
             isVacantSet = true;
