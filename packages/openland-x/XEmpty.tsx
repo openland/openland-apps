@@ -19,7 +19,7 @@ export const XCardEmptyIcon = Glamorous(XIcon)({
     marginBottom: 16
 });
 
-export const XCardEmptyContent = Glamorous.div({
+export const XCardEmptyContent = Glamorous.div<{text?: string}>((props) => ({
     display: 'flex',
     alignItems: 'center',
     color: '#6b7c93',
@@ -27,19 +27,19 @@ export const XCardEmptyContent = Glamorous.div({
     lineHeight: '1.6',
     whiteSpace: 'pre',
     '& *::before': {
-        content: ' '
+        content: props.text ? ' ' : undefined
     }
-});
+}));
 
 interface XEmptyProps extends XFlexStyles {
     children?: any;
     icon: string;
-    text: string;
+    text?: string;
 }
 
 export function XEmpty(props: XEmptyProps) {
     return (
-        <XCardEmptyDiv flexBasis={props.flexBasis} flexGrow={props.flexGrow} flexShrink={props.flexShrink} alignSelf={props.alignSelf}>
+        <XCardEmptyDiv flexBasis={props.flexBasis} flexGrow={props.flexGrow} flexShrink={props.flexShrink} alignSelf={props.alignSelf} className={(props as any).className}>
             <XCardEmptyIcon icon={props.icon} />
             <XCardEmptyContent>
                 {props.text}
