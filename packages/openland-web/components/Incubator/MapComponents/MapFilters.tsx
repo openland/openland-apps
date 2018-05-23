@@ -13,6 +13,7 @@ import XStyles from 'openland-x/XStyles';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
 import { XGroup } from 'openland-x/XGroup';
+import { XLink } from 'openland-x/retired/XLink';
 
 const FiltersContent = Glamorous.div<{ visible?: boolean }>((props) => ({
     maxHeight: 'calc(100vh - 150px)',
@@ -202,11 +203,15 @@ class FilterRangeBase extends React.Component<FilterRangeProps & XWithRouter, { 
 }
 
 const FilterCategory = Glamorous.div({
-    borderBottom: '1px solid #d8d8d8',
+    borderBottom: '1px solid rgba(220, 222, 228, 0.6)',
     marginBottom: 18,
+    marginLeft: -20,
+    marginRight: -20,
+    paddingLeft: 20,
+    paddingRight: 20,
     '&:last-child': {
         borderBottom: 'none',
-        marginBottom: 0
+        marginBottom: -20
     }
 });
 
@@ -296,8 +301,8 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
     }
 
     close = () => {
-            FilterButton.closeAll();
-        }
+        FilterButton.closeAll();
+    }
 
     render() {
         let { fieldName, ...other } = this.props;
@@ -443,6 +448,60 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     zIndex: 10,
     // pointerEvents: 'none'
 }));
+
+const FilterFooterContainer = Glamorous.div({
+    borderTop: '1px solid rgba(220, 222, 228, 0.6)',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: -20,
+    marginLeft: -20,
+    marginRight: -20,
+    padding: 8,
+    paddingLeft: 20
+});
+
+const OtherContainer = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+});
+
+const FolterCancelLink = Glamorous(XLink)({
+    color: 'rgba(51, 69, 98, 0.4);'
+});
+
+class FilterFooter extends React.Component<{}> {
+
+    cancel = () => {
+        ApplyFilterWrap.newQueryParams = {};
+        FilterButton.closeAll();
+    }
+
+    apply = () => {
+        FilterButton.closeAll();
+    }
+
+    render() {
+        return (
+            <FilterFooterContainer className={(this.props as any).className}>
+                <FolterCancelLink onClick={this.cancel}>Cancel</FolterCancelLink>
+
+                <XButton text="Apply" style="primary" onClick={this.apply} />
+            </FilterFooterContainer>
+        );
+    }
+}
+
+const OtherFooter = Glamorous(FilterFooter)({
+    color: 'rgba(51, 69, 98, 0.4);',
+    marginTop: 10,
+    marginBottom: -10,
+    marginLeft: -10,
+    marginRight: -10,
+});
 
 class MapFilters extends React.Component<XWithRouter & { city?: string }, { active: boolean }> {
     shadowRequests = new Set();
@@ -645,10 +704,11 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                             <XVertical>
                                                 <ApplyFilterWrap fieldName="filterLandUse" router={this.props.router}>
                                                     <XCheckboxGroup
-                                                        divided={true}
                                                         elements={AllLandUse.map((v) => ({ value: v.label, label: v.label, hint: v.hint }))} />
                                                 </ApplyFilterWrap>
                                             </XVertical>
+                                            <FilterFooter />
+
                                         </FiltersContent>
                                     )}>
                                     <XButton size="medium" />
@@ -672,7 +732,6 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                             <XVertical>
                                                 <ApplyFilterWrap fieldName="filterStories" router={this.props.router}>
                                                     <XCheckboxGroup
-                                                        divided={true}
                                                         elements={[
                                                             { value: '0', label: 'no stories' },
                                                             { value: '1', label: '1 story' },
@@ -681,6 +740,8 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                                             { value: '4', label: '4 stories' }]} />
                                                 </ApplyFilterWrap>
                                             </XVertical>
+                                            <FilterFooter />
+                                            
                                         </FiltersContent>
                                     )}>
                                     <XButton size="medium" />
@@ -708,9 +769,13 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                             fieldName="other"
                             router={this.props.router}
                             content={(
-                                <FiltersContent>
-                                    {...other}
-                                </FiltersContent>
+                                <OtherContainer>
+                                    <FiltersContent >
+                                        {...other}
+                                    </FiltersContent>
+                                    <OtherFooter />
+                                </OtherContainer>
+
                             )}>
                             <XButton size="medium" text="Other" style={otherActive ? 'primary' : 'flat'} />
                         </FilterButton>

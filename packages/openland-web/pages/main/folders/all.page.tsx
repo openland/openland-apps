@@ -83,7 +83,7 @@ const CreateFolder = withCreateFolderMutation((props) => {
         <XModalForm
             title="Create folder"
             actionName="Create"
-            target={(props as any).target  || <CreateFolderButton />}
+            target={(props as any).target || <CreateFolderButton />}
             submitMutation={props.createFolder}
             mutationDirect={true}
         >
@@ -94,7 +94,7 @@ const CreateFolder = withCreateFolderMutation((props) => {
             />
         </XModalForm>
     );
-}) as React.ComponentClass<{target?: any}>;
+}) as React.ComponentClass<{ target?: any }>;
 
 const Edit = withFolderActions((props) => {
     return (
@@ -245,10 +245,9 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
                             <NoFoldersTextContainer>
 
                                 You can organize parcels with folders
-                            {/* <Link query={{ field: 'add', value: 'true' }} >Create new folder</Link> */}
                             <CreateFolder target={(
-                                <NewFolderForPlaceholder />
-                            )}/>
+                                    <NewFolderForPlaceholder />
+                                )} />
                             </NoFoldersTextContainer>
 
                         </EmptyWithMargin>
