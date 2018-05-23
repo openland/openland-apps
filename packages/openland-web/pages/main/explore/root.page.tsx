@@ -2,6 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
+import { FolderButton } from '../../../components/FolderButton';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
 import { XSwitcher } from 'openland-x/XSwitcher';
@@ -21,6 +22,8 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { trackEvent } from 'openland-x-analytics';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { XCard } from 'openland-x/XCard';
+import { XButton } from 'openland-x/XButton';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMapGeocoder } from 'openland-x-map/XMapGeocoder';
 
 const XMapContainer = Glamorous.div({
@@ -70,42 +73,174 @@ const MapSwitcher = Glamorous.div({
     flexDirection: 'row'
 });
 
-const FilterCounterWrapper = Glamorous(XCard)({
+const MapSearcher = Glamorous(XMapGeocoder)({
+    zIndex: 1,
+    height: 56,
+    top: 18,
+    left: 165,
+    width: 178,
+    backgroundColor: 'transparent',
+    '& .mapboxgl-ctrl-geocoder.mapboxgl-ctrl': {
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        position: 'relative',
+        paddingLeft: 36,
+        paddingRight: 10,
+        borderLeft: '1px solid #c1c7cf',
+        backgroundImage: 'url(\'/static/img/icons/search-grey.svg\')',
+        backgroundRepeat: 'no-repeat',
+        backgroundPositionY: 'center',
+        backgroundPositionX: 10,
+        backgroundSize: 20,
+        '&:focus-within': {
+            backgroundImage: 'url(\'/static/img/icons/search-purple.svg\')',
+        },
+        '& input': {
+            width: '100%',
+            height: '100%',
+            fontSize: 16,
+            lineHeight: 1.25,
+            letterSpacing: 0.5,
+            color: '#334562'
+        },
+        '& ul.suggestions': {
+            position: 'absolute',
+            top: 65,
+            right: 0,
+            width: 325,
+            backgroundColor: '#fff',
+            borderRadius: 6,
+            boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
+            listStyle: 'none',
+            overflow: 'hidden',
+            // '&::after': {
+            //     position: 'absolute',
+            //     content: `''`,
+            //     display: 'block',
+            //     borderWidth: '0 5px 5px 5px',
+            //     borderColor: 'transparent transparent #fff transparent',
+            // },
+            '& li': {
+                fontSize: 15,
+                fontWeight: 500,
+                lineHeight: 1.33,
+                letterSpacing: 0.5,
+                color: '#334562',
+                height: 48,
+                paddingLeft: 40,
+
+                backgroundImage: 'url(\'/static/img/icons/icon-location-grey.svg\')',
+                backgroundRepeat: 'no-repeat',
+                backgroundPositionY: 'center',
+                backgroundPositionX: 10,
+                backgroundSize: 20,
+
+                '&:hover': {
+                    backgroundColor: '#f8f8fb',
+                    backgroundImage: 'url(\'/static/img/icons/icon-location-purple.svg\')',
+                },
+                '& a': {
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    width: '100%',
+                    height: '100%',
+                    display: 'block',
+                    cursor: 'pointer',
+                    paddingTop: 14
+                }
+            }
+        }
+    }
+});
+
+const FilterCounterWrapper = Glamorous(XCard)<{ saveActive: boolean }>((props) => ({
     border: 'none',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     position: 'absolute',
     borderRadius: 6,
-    paddingLeft: 16,
-    width: 178,
+    paddingLeft: 18,
+    paddingRight: 8,
     height: 48,
     left: 18,
     top: 84,
-    zIndex: 1,
+    zIndex: props.saveActive ? 11 : 1,
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
-});
+}));
 
 const FilterCounter = Glamorous.div<{ filtered?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    color: props.filtered ? '#522BFF' : '#334562',
+    color: '#334562',
     fontSize: 14,
+    marginRight: 10,
     fontWeight: 500,
     // userSelect: 'none',
     whiteSpace: 'nowrap'
 }));
 
-const FilterComponent = withParcelStats((props) => {
-    return (
-        <FilterCounterWrapper>
-            <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                <span>{props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels found</span>
-            </FilterCounter>
-        </FilterCounterWrapper>
-    );
+const XButtonWithMargin = Glamorous(XButton)({
+    marginLeft: 6
 });
+
+const FolderButtonWithSave = withParcelStats((props) => {
+    return (
+        props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query ? (
+            <FolderButton style="primary" icon={null} placement="bottom" show={(props as any).show} search={props.data.variables as any}
+                handleClose={(props as any).onClose}
+                target={(
+                    <FilterCounterWrapper saveActive={(props as any).show}>
+                        <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                            <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                        </FilterCounter>
+                        <XWithRole role={['feature-customer-kassita']} negate={true}>
+                            <XButtonWithMargin text="Save to Folder" style="primary" onClick={(props as any).onButtonClick} />
+                        </XWithRole>
+                    </FilterCounterWrapper>
+                )} />
+        ) : (
+                <FilterCounterWrapper saveActive={(props as any).show}>
+                    <FilterCounter filtered={(props as any).variables.query !== undefined}>
+                        <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                    </FilterCounter>
+
+                </FilterCounterWrapper>
+            ));
+}) as React.ComponentClass<{ show: boolean, variables: any, onButtonClick: () => void, onClose: () => void }>;
+
+class FoundCounterSave extends React.Component<{
+    variables: {
+        query?: string,
+        city: string,
+        county: string,
+        state: string
+    }
+}, { show: boolean }> {
+
+    constructor(props: any) {
+        super(props);
+        this.state = { show: false };
+    }
+
+    onButtonClick = () => {
+        this.setState({ show: !this.state.show });
+    }
+
+    onClose = () => {
+        this.setState({ show: false });
+    }
+
+    render() {
+        return (
+            <FolderButtonWithSave variables={this.props.variables} show={this.state.show} onButtonClick={this.onButtonClick} onClose={this.onClose} />
+        );
+    }
+}
 
 const DealsSource = withDealsMap((props) => {
     if (props.data.deals) {
@@ -169,11 +304,8 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         }
         let isVacantSet: boolean | undefined;
         if (this.props.router.query!!.isVacant) {
-            if (JSON.parse(this.props.router.query!!.isVacant) === 'true') {
-                isVacantSet = true;
-            } else {
-                isVacantSet = false;
-            }
+            isVacantSet = JSON.parse(this.props.router.query!!.isVacant);
+            console.warn(isVacantSet);
         }
         if (this.props.router.query!!.compatible) {
             isVacantSet = true;
@@ -262,6 +394,14 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 <XMapContainer>
                                     <XMapContainer2>
                                         <RoutedMapFilters city={city} />
+                                        <FoundCounterSave
+                                            variables={{
+                                                query: query && JSON.stringify(query),
+                                                city: cityName,
+                                                county: countyName,
+                                                state: stateName
+                                            }}
+                                        />
                                         <CitySelector title={cityName}>
                                             <CitySelector.Item
                                                 query={{ field: 'city', value: 'sf' }}
@@ -274,14 +414,6 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                                 label="New York"
                                             />
                                         </CitySelector>
-                                        <FilterComponent
-                                            variables={{
-                                                query: query && JSON.stringify(query),
-                                                city: cityName,
-                                                county: countyName,
-                                                state: stateName
-                                            }}
-                                        />
 
                                         <ParcelMap
                                             mode={this.props.router.query.mode}
@@ -291,7 +423,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                             lastKnownCameraLocation={this.knownCameraLocation}
                                             onCameraLocationChanged={this.handleMap}
                                         >
-                                            <XMapGeocoder city={cityName} bbox={boundingBox} />
+                                            <MapSearcher city={cityName} bbox={boundingBox} />
                                             <ParcelPointSource
                                                 layer="parcels-found"
                                                 query={query}

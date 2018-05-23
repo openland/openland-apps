@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XPopper } from 'openland-x/XPopper';
 import { XWithRouter } from 'openland-x-routing/withRouter';
+import { XPopperContent } from 'openland-x/popper/XPopperContent';
 
 const ConfirmWrapper = Glamorous.div({
     display: 'flex',
@@ -15,6 +16,10 @@ interface ConfirmPopoverProps {
     fieldName?: string;
     valueTitleMap?: any;
 }
+
+const PopperContent = Glamorous(XPopperContent)({
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
+});
 
 export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRouter, { popper?: boolean }> {
     static active = new Set();
@@ -60,11 +65,14 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
 
     handleClose = (self?: any) => {
         let target = (self instanceof FilterButton) ? self : this;
+        let wasShown = this.state.popper;
         target.setState({
             popper: false
         });
         FilterButton.active.delete(target);
-        if (this.props.handler !== undefined) { this.props.handler(false, target); }
+        if (wasShown) {
+            if (this.props.handler !== undefined) { this.props.handler(false, target); }
+        }
     }
 
     modifyProps = (component: any) => {
@@ -111,7 +119,7 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
                 show={this.state.popper}
                 padding={26}
                 animation={null}
-                bordered={true}
+                contentContainer={<PopperContent/>}
             >
                 <ConfirmWrapper onMouseDown={this.onMouseDown}>
                     {children}

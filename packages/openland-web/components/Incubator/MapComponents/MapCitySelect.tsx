@@ -7,16 +7,17 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 import XStyles from 'openland-x/XStyles';
 
 const MapFilterWrapper = Glamorous(XCard)<{ active: boolean }>((props) => ({
-    width: 178,
+    width: 325,
     position: 'absolute',
     top: 18,
     left: 18,
     paddingLeft: 0,
     paddingRight: 0,
-    // paddingTop: props.active ? 12 : 0,
     paddingBottom: props.active ? 12 : 0,
     zIndex: props.active ? 12 : 1,
     borderRadius: 6,
+    // borderTopRightRadius: 0,
+    // borderBottomRightRadius: 0,
     border: 'none',
     transition: 'padding .2s',
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
@@ -136,6 +137,11 @@ const CityTitle = Glamorous.div<{ active: boolean }>((props) => ({
         alignItems: 'center',
         userSelect: 'none',
         whiteSpace: 'nowrap',
+
+        fontSize: 15,
+        fontWeight: 500,
+        color: '#334562',
+
         transition: 'all .2s',
         '& .material-icons': {
             marginTop: 3,

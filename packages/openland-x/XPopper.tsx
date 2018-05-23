@@ -6,7 +6,7 @@ import { XPopperRender, PopperRendererProps } from './popper/XPopperRender';
 import { XPopperArrow } from './popper/XPopperArrow';
 import { XPopperContent } from './popper/XPopperContent';
 
-type Placement = 'auto-start'
+export type Placement = 'auto-start'
     | 'auto'
     | 'auto-end'
     | 'top-start'
@@ -38,7 +38,6 @@ interface XPopperProps {
     maxHeight?: number;
     minWidth?: number;
     minHeight?: number;
-    bordered?: boolean;
 
     groupId?: string;
 
@@ -412,7 +411,6 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             maxHeight: this.props.maxHeight,
             minWidth: this.props.minWidth,
             minHeight: this.props.minHeight,
-            bordered: this.props.bordered,
 
             groupId: this.props.groupId,
             animation: this.props.animation,

@@ -35,6 +35,7 @@ class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'def
                         background: '#ffffff',
                         margin: 'auto',
                         padding: 0,
+                        overflow: 'visible',
 
                         // Border/shadow
                         border: 'none',

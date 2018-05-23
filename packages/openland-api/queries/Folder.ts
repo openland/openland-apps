@@ -127,3 +127,39 @@ export const SetParcelFolderMutation = gql`
         }
     }
 `;
+
+export const AddToFolderFromSearchMutation = gql`
+    mutation AddToFolderFromSearch($folderId: ID!, $query: String, $state: String!, $county: String!, $city: String!) {
+        alphaAddToFolderFromSearch(folderId: $folderId, query: $query, state: $state, county: $county, city: $city)
+    }
+`;
+
+export const CreateFolderFromSearchMutation = gql`
+    mutation CreateFolderFromSearch($name: String!, $query: String, $state: String!, $county: String!, $city: String!) {
+        folder: alphaCreateFolderFromSearch(name: $name, query: $query, state: $state, county: $county, city: $city) {
+            id
+            name
+            special
+            parcelsCount
+            parcels {
+                edges {
+                    node {
+                        id
+                        folder {
+                            id
+                            name
+                        }
+                    }
+                }
+                pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                    itemsCount
+                    pagesCount
+                    currentPage
+                    openEnded
+                }
+            }
+        }
+    }
+`;
