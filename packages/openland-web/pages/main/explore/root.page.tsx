@@ -23,6 +23,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { XCard } from 'openland-x/XCard';
 import { XButton } from 'openland-x/XButton';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMapGeocoder } from 'openland-x-map/XMapGeocoder';
 
 const XMapContainer = Glamorous.div({
@@ -177,11 +178,15 @@ const FilterCounter = Glamorous.div<{ filtered?: boolean }>((props) => ({
     alignItems: 'center',
     color: '#334562',
     fontSize: 14,
-    marginRight: 16,
+    marginRight: 10,
     fontWeight: 500,
     // userSelect: 'none',
     whiteSpace: 'nowrap'
 }));
+
+const XButtonWithMargin = Glamorous(XButton)({
+    marginLeft: 6
+});
 
 const FolderButtonWithSave = withParcelStats((props) => {
     return (
@@ -193,8 +198,9 @@ const FolderButtonWithSave = withParcelStats((props) => {
                         <FilterCounter filtered={(props as any).variables.query !== undefined}>
                             <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
                         </FilterCounter>
-                        <XButton text="Save to Folder" style="primary" onClick={(props as any).onButtonClick} />
-
+                        <XWithRole role={['feature-customer-kassita']} negate={true}>
+                            <XButtonWithMargin text="Save to Folder" style="primary" onClick={(props as any).onButtonClick} />
+                        </XWithRole>
                     </FilterCounterWrapper>
                 )} />
         ) : (
@@ -205,7 +211,7 @@ const FolderButtonWithSave = withParcelStats((props) => {
 
                 </FilterCounterWrapper>
             ));
-}) as React.ComponentClass<{show: boolean, variables: any, onButtonClick: () => void, onClose: () => void }>;
+}) as React.ComponentClass<{ show: boolean, variables: any, onButtonClick: () => void, onClose: () => void }>;
 
 class FoundCounterSave extends React.Component<{
     variables: {
@@ -222,16 +228,16 @@ class FoundCounterSave extends React.Component<{
     }
 
     onButtonClick = () => {
-        this.setState({ show: !this.state.show});        
+        this.setState({ show: !this.state.show });
     }
 
     onClose = () => {
-        this.setState({ show: false});        
+        this.setState({ show: false });
     }
 
     render() {
         return (
-            <FolderButtonWithSave variables={this.props.variables} show={this.state.show} onButtonClick={this.onButtonClick} onClose={this.onClose}/>
+            <FolderButtonWithSave variables={this.props.variables} show={this.state.show} onButtonClick={this.onButtonClick} onClose={this.onClose} />
         );
     }
 }
