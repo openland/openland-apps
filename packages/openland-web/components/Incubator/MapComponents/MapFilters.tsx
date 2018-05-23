@@ -425,7 +425,7 @@ const FilterButtonWrapper = Glamorous.div({
     height: '100%',
     paddingLeft: 8,
     paddingRight: 8,
-    borderRight: '1px solid #c1c7cf',
+    borderRight: '1px solid #c1c7cf4d',
     '&:last-child': {
         borderRight: 'none'
     }

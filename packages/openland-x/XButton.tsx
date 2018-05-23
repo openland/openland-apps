@@ -41,48 +41,45 @@ let iconsIndentation = styleResolver({
     }
 });
 
-let borderRadiusStyles = styleResolverWithProps((props: { attach?: 'left' | 'right' | 'both' }) => {
-    return ({
-        'x-large': {
-            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-        },
-        'large': {
-            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-        },
-        'medium': {
-            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-        },
-        'default': {
-            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-        },
-        'small': {
-            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
-            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
-            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
-            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
-        }
-    });
-
-});
+let borderRadiusStyles = styleResolverWithProps((props: { attach?: 'left' | 'right' | 'both' }) => ({
+    'x-large': {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 6,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 6,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 6,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 6,
+    },
+    'large': {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 6,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 6,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 6,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 6,
+    },
+    'medium': {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 5,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 5,
+    },
+    'default': {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
+    },
+    'small': {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+    }
+}));
 
 let sizeStyles = styleResolver({
     'x-large': {
         height: 56,
         lineHeight: '56px',
         fontSize: 18,
-        letterSpacing: 0.6,
+        letterSpacing: -0.4,
         fontWeight: 500,
         '& .button-content': {
             paddingLeft: 32,
@@ -105,7 +102,7 @@ let sizeStyles = styleResolver({
         height: 48,
         lineHeight: '48px',
         fontSize: 18,
-        letterSpacing: 0.6,
+        letterSpacing: -0.4,
         fontWeight: 500,
         '& .button-content': {
             paddingLeft: 26,
@@ -126,7 +123,7 @@ let sizeStyles = styleResolver({
         height: 40,
         lineHeight: '40px',
         fontSize: 15,
-        letterSpacing: 0.5,
+        letterSpacing: -0.2,
         fontWeight: 500,
         '& .button-content': {
             paddingLeft: 20,
@@ -147,7 +144,7 @@ let sizeStyles = styleResolver({
         height: 32,
         lineHeight: '32px',
         fontSize: 14,
-        letterSpacing: 0.4,
+        letterSpacing: -0.2,
         fontWeight: 500,
         '& .button-content': {
             paddingLeft: 14,
@@ -168,7 +165,7 @@ let sizeStyles = styleResolver({
         height: 24,
         lineHeight: '24px',
         fontSize: 12,
-        letterSpacing: 0.4,
+        letterSpacing: -0.3,
         fontWeight: 500,
         '& .button-content': {
             paddingLeft: 10,
@@ -191,6 +188,7 @@ let colorStyles = styleResolver({
     'default': {
         backgroundColor: '#f3f3f5',
         color: '#334562',
+        border: 'solid 1px transparent',
         '&:hover': {
             backgroundColor: '#ecedf0',
             color: '#334562'
@@ -206,8 +204,9 @@ let colorStyles = styleResolver({
     'primary': {
         backgroundColor: '#654bfa',
         color: '#ffffff',
+        border: 'solid 1px transparent',
         '&:hover': {
-            backgroundColor: '#7159f9',
+            backgroundColor: '#816cf9',
             color: '#ffffff'
         },
         '&:active': {
@@ -221,6 +220,7 @@ let colorStyles = styleResolver({
     'danger': {
         backgroundColor: '#d75454',
         color: '#ffffff',
+        border: 'solid 1px transparent',
         '&:hover': {
             backgroundColor: '#ec6262',
             color: '#ffffff'
@@ -235,8 +235,8 @@ let colorStyles = styleResolver({
     },
     'ghost': {
         backgroundColor: '#ffffff',
-        color: '#1f3449',
-        border: 'solid 1px #c2cbde',
+        color: '#334562',
+        border: 'solid 1px #dcdee4',
         '&:hover': {
             backgroundColor: '#f3f3f5',
             color: '#334562'
@@ -254,7 +254,7 @@ let colorStyles = styleResolver({
         color: '#5640d6',
         border: 'solid 1px #654bfa',
         '&:hover': {
-            backgroundColor: '#eeecfa',
+            backgroundColor: 'rgba(238, 236, 250, 0.39)',
         },
         '&:active': {
             backgroundColor: '#eeecfa',
@@ -270,8 +270,7 @@ let colorStyles = styleResolver({
         border: 'solid 1px transparent',
         '&:hover': {
             color: '#334562',
-            backgroundColor: '#f4f6fb',
-            border: 'solid 1px #c2cbde'
+            border: 'solid 1px #dcdee4'
         },
         '&:active': {
             backgroundColor: '#eeecfa',
@@ -303,7 +302,7 @@ let colorDisabledStyles = styleResolver({
     'ghost': {
         backgroundColor: '#ffffff !important',
         color: 'rgba(51, 69, 98, 0.7) !important',
-        border: 'solid 1px #c2cbde !important',
+        border: 'solid 1px #dcdee4 !important',
     },
     'electric': {
         backgroundColor: '#ffffff !important',
@@ -340,8 +339,8 @@ let colorPressedStyles = styleResolver({
     },
     'electric': {
         backgroundColor: '#eeecfa !important',
-        color: '#5640d6 !important',
         border: 'solid 1px transparent !important',
+        color: '#5640d6 !important'
     },
     'flat': {
         backgroundColor: '#eeecfa !important',
