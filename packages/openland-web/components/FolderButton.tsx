@@ -37,7 +37,7 @@ const FolderEntryContent = Glamorous.div<{ selected?: boolean }>((props) => ({
     color: props.selected ? '#654bfa' : '#334562',
     '> i': {
         padding: 10,
-        color: '#BCC3CC'
+        color: props.selected ? '#654bfa' : '#BCC3CC'
     },
     '> span': {
         maxWidth: '100%',
@@ -55,9 +55,11 @@ const Loader = Glamorous(XButton)({
         color: 'transparent',
         backgroundColor: 'transparent',
         borderColor: 'transparent'
-
     },
-
+    '&.parcel-folder-button .loading-icon': {
+        left: 'auto',
+        right: 0
+    }
 });
 
 const ButtonMoveParcelToFolder = withSetFolderMutation((props) => {
@@ -80,17 +82,18 @@ const ButtonMoveParcelToFolder = withSetFolderMutation((props) => {
                             action={() => props.setFolder({ variables: { parcelId: (props as any).parcelId, folder: null } as any })}
                             onSuccess={modal!!.close}
                             text="Remove"
-                            style="danger" />
+                            style="danger"
+                        />
                     )}
                     {!(props as any).remove && (
                         <Loader
+                            className="parcel-folder-button"
                             text="Remove"
                             size="small"
-                            style="flat" />
+                            style="flat"
+                        />
                     )}
-
                 </FolderEntry>
-
             )}
         </XModalContext.Consumer>
     );
@@ -236,7 +239,7 @@ interface FolderButtonProps {
 export class FolderButton extends React.PureComponent<FolderButtonProps, { show: boolean }> {
 
     componentDidUpdate() {
-        
+
         if (this.props.show !== undefined && this.props.show !== this.state.show) {
             this.setState({ show: this.props.show });
         }
