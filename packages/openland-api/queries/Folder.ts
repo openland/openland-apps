@@ -28,20 +28,29 @@ export const FolderQuery = gql`
             name
             special
             parcelsCount
-            parcels {
-                edges {
-                    node {
+        }
+    }
+`;
+
+export const FolderItemsConnectionQuery = gql`
+    query FolderItemsConnection($folderId: ID!, $cursor: String, $page: Int) {
+        items: alphaFolderItems(folderId: $folderId, first: 50, after: $cursor, page: $page) {
+            edges {
+                node {
+                    id
+                    parcel {
                         ...ParcelShort
                     }
                 }
-                pageInfo {
-                    hasNextPage
-                    hasPreviousPage
-                    itemsCount
-                    pagesCount
-                    currentPage
-                    openEnded
-                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+                openEnded
             }
         }
     }

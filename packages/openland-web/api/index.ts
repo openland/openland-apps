@@ -203,5 +203,6 @@ export const withAlterFolderMutation = graphqlMutation(Queries.Folder.AlterFolde
 export const withAddToFolderMutation = graphqlMutation(Queries.Folder.AddToFolderMutation, 'addToFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
 export const withSetFolderMutation = graphqlMutation(Queries.Folder.SetParcelFolderMutation, 'setFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
 export const withFolderActions = graphqlCompose5(withCreateFolderMutation, withDeleteFolderMutation, withAlterFolderMutation, withAddToFolderMutation, withSetFolderMutation);
-
 export const FolderSelect = graphqlSelect<{}>(Queries.Folder.FoldersSelectQuery);
+
+export const withFolderItems = graphqlRouted(Queries.Folder.FolderItemsConnectionQuery, ['folderId', 'page', 'cursor'], true, 'network-only');

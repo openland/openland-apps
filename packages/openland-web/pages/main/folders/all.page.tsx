@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { Scaffold } from '../../../components/Scaffold';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Sidebar } from '../../../components/Sidebar';
-import { withFolders, withCreateFolderMutation, withFolder, withFolderActions } from '../../../api';
+import { withFolders, withCreateFolderMutation, withFolder, withFolderActions, withFolderItems } from '../../../api';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLinkProps } from 'openland-x/XLink';
 import { XLoader } from 'openland-x/XLoader';
@@ -17,6 +17,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { TableParcels } from '../../../components/TableParcels';
 import { XEmpty } from 'openland-x/XEmpty';
 import { XButton } from 'openland-x/XButton';
+import { XFooter } from 'openland-x/XFooter';
 
 const SidebarItemsStyle = {
     height: 40,
@@ -165,6 +166,32 @@ const SidebarItem = (props: SidebarProps) => (
     </SidebarItemWrapper>
 );
 
+const FolderItems = withFolderItems((props) => {
+    if (props.data.loading) {
+        return <XLoader loading={true} />;
+    }
+    return (
+        <>
+            {props.data.items.pageInfo.itemsCount > 0 && (
+                <TableParcels items={props.data.items.edges.map((v) => v.node.parcel)} />
+            )}
+            {props.data.items.pageInfo.itemsCount > 0 && (
+                <XFooter text={props.data.items.pageInfo.itemsCount + ' items'}>
+                    {props.data.items.pageInfo.currentPage > 1 && (
+                        <XButton text="Prev" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }} />
+                    )}
+                    {(props.data.items.pageInfo.currentPage < props.data.items.pageInfo.pagesCount - 1) && (
+                        <XButton text="Next" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage + 1).toString() }} />
+                    )}
+                </XFooter>
+            )}
+            {props.data.items.pageInfo.itemsCount <= 0 && (
+                <XEmpty icon="folder" text="You can find your first parcel at Explore" flexGrow={1} />
+            )}
+        </>
+    );
+});
+
 const FolderContent = withFolder((props) => {
     if (props.data.loading) {
         return <XLoader loading={true} />;
@@ -172,14 +199,15 @@ const FolderContent = withFolder((props) => {
     return (
         <XVertical flexGrow={1}>
             <XHeader text={props.data.folder.name}>
-                <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name}/>
+                <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name} />
             </XHeader>
-            {props.data.folder.parcels.pageInfo.itemsCount > 0 && (
+            <FolderItems />
+            {/* {props.data.folder.parcels.pageInfo.itemsCount > 0 && (
                 <TableParcels items={props.data.folder.parcels.edges.map((v) => v.node)} />
             )}
             {props.data.folder.parcels.pageInfo.itemsCount <= 0 && (
                 <XEmpty icon="folder" text="You can find your first parcel at Explore" flexGrow={1} />
-            )}
+            )} */}
         </XVertical>
     );
 });
