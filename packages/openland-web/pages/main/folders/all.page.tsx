@@ -83,7 +83,7 @@ const CreateFolder = withCreateFolderMutation((props) => {
         <XModalForm
             title="Create folder"
             actionName="Create"
-            target={<CreateFolderButton />}
+            target={(props as any).target  || <CreateFolderButton />}
             submitMutation={props.createFolder}
             mutationDirect={true}
         >
@@ -94,7 +94,7 @@ const CreateFolder = withCreateFolderMutation((props) => {
             />
         </XModalForm>
     );
-});
+}) as React.ComponentClass<{target?: any}>;
 
 const Edit = withFolderActions((props) => {
     return (
@@ -172,7 +172,7 @@ const FolderContent = withFolder((props) => {
     return (
         <XVertical flexGrow={1}>
             <XHeader text={props.data.folder.name}>
-                <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name}/>
+                <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name} />
             </XHeader>
             {props.data.folder.parcels.pageInfo.itemsCount > 0 && (
                 <TableParcels items={props.data.folder.parcels.edges.map((v) => v.node)} />
@@ -184,7 +184,26 @@ const FolderContent = withFolder((props) => {
     );
 });
 
+const NoFoldersTextContainer = Glamorous.div({
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    textAlign: 'start',
+    alignItems: 'center',
+});
+
+const EmptyWithMargin = Glamorous(XEmpty)({
+    flexGrow: 1
+});
+
+const NewFolderForPlaceholder = Glamorous(CreateFolderButton)({
+    '&::after': {
+        display: 'none',
+    }
+});
+
 export default withApp('Folders', 'viewer', withFolders((props) => {
+
     return (
         <>
             <XDocumentHead title={['Folders']} />
@@ -212,8 +231,28 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
                     </Sidebar>
                 </Scaffold.Menu>
                 <Scaffold.Content>
-                    {!props.router.routeQuery.folderId && <XLoader loading={true} />}
-                    {(!props.router.routeQuery.folderId || props.data.folders.map(folder => folder.id).indexOf(props.router.routeQuery.folderId) === -1) && <XPageRedirect path={'/folders/' + props.data.folders[0].id} />}
+                    {!props.router.routeQuery.folderId && props.data.loading && <XLoader loading={true} />}
+                    {!props.data.loading && (!props.router.routeQuery.folderId || props.data.folders.map(folder => folder.id).indexOf(props.router.routeQuery.folderId) === -1) && props.data.folders.length > 0 &&
+                        (
+                            <XPageRedirect path={'/folders/' + props.data.folders[0].id} />
+                        )}
+                    {!props.data.loading && props.router.routeQuery.folderId && props.data.folders.length === 0 && (
+                        <XPageRedirect path={'/folders/'} />
+
+                    )}
+                    {!props.data.loading && !props.router.routeQuery.folderId && props.data.folders && props.data.folders.length <= 0 && (
+                        <EmptyWithMargin icon="folder">
+                            <NoFoldersTextContainer>
+
+                                You can organize parcels with folders
+                            {/* <Link query={{ field: 'add', value: 'true' }} >Create new folder</Link> */}
+                            <CreateFolder target={(
+                                <NewFolderForPlaceholder />
+                            )}/>
+                            </NoFoldersTextContainer>
+
+                        </EmptyWithMargin>
+                    )}
                     {props.router.routeQuery.folderId && <FolderContent variables={{ folderId: props.router.routeQuery.folderId }} />}
                 </Scaffold.Content>
             </Scaffold>
