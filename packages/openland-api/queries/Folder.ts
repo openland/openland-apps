@@ -141,25 +141,6 @@ export const CreateFolderFromSearchMutation = gql`
             name
             special
             parcelsCount
-            parcels {
-                edges {
-                    node {
-                        id
-                        folder {
-                            id
-                            name
-                        }
-                    }
-                }
-                pageInfo {
-                    hasNextPage
-                    hasPreviousPage
-                    itemsCount
-                    pagesCount
-                    currentPage
-                    openEnded
-                }
-            }
         }
     }
 `;
