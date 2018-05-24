@@ -140,12 +140,12 @@ const ButtonMoveSearchResultsToFolder = withAddToFolderFromSearchMutation((props
     style?: XButtonStyle,
 }>;
 
-const CreateFolderComponent = ((mutation: any) => {
+const CreateFolderComponent = ((mutation: any, targetQuery: string) => {
     return (
         <XModalForm
             title="Create folder"
             actionName="Create"
-            targetQuery="newFolder"
+            targetQuery={targetQuery}
             // target={<XButton icon="add" text="New Folder" style="electric" />}
             submitMutation={mutation}
             mutationDirect={true}
@@ -159,8 +159,8 @@ const CreateFolderComponent = ((mutation: any) => {
     );
 });
 
-const CreateFolderWithParcels = withCreateFolderMutation(((props) => CreateFolderComponent(props.createFolder)));
-const CreateFolderFromSearch = withCreateFolderFromSearchMutation(((props) => CreateFolderComponent(props.createFolderFromSearch)));
+const CreateFolderWithParcels = withCreateFolderMutation(((props) => CreateFolderComponent(props.createFolder, 'newFolderFromParcel')));
+const CreateFolderFromSearch = withCreateFolderFromSearchMutation(((props) => CreateFolderComponent(props.createFolderFromSearch, 'newFolderFromSearch')));
 
 const FolderPopupWrapper = Glamorous.div({
     overflowY: 'scroll',
@@ -184,7 +184,7 @@ const FolderForm = withFolders((props) => {
         <>
             <XPopper.Invalidator />
             <FolderPopupWrapper>
-                <AddFolderButton text="Add to new folder" style="electric" query={{ field: 'newFolder', value: 'true' }} autoClose={true} />
+                <AddFolderButton text="Add to new folder" style="electric" query={{ field: (props as any).parcelId ? 'newFolderFromParcel' : 'newFolderFromSearch', value: 'true' }} autoClose={true} />
                 {(props as any).parcelId && props.data.folders && props.data.folders.map((v) => (
                     <ButtonMoveParcelToFolder key={v.id} parcelId={(props as any).parcelId} text={v.name} folderId={v.id} remove={(props as any).currentFolder && v.id === (props as any).currentFolder.id} />
                 ))}
