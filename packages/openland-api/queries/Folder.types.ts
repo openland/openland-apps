@@ -5,6 +5,7 @@ import * as Folder from './Folder';
 export const FoldersQuery = typedQuery<Types.FoldersQuery, {}>(Folder.FoldersQuery);
 export const FoldersSelectQuery = typedQuery<Types.FoldersSelectQuery, {}>(Folder.FoldersSelectQuery);
 export const FolderQuery = typedQuery<Types.FolderQuery, Types.FolderQueryVariables>(Folder.FolderQuery);
+export const FolderItemsConnectionQuery = typedQuery<Types.FolderItemsConnectionQuery, Types.FolderItemsConnectionQueryVariables>(Folder.FolderItemsConnectionQuery);
 
 export const CreateFolderMutation = typedMutation<Types.CreateFolderMutation, Types.CreateFolderMutationVariables>(Folder.CreateFolderMutation);
 export const CreateFolderFromSearchMutation = typedMutation<Types.CreateFolderFromSearchMutation, Types.CreateFolderFromSearchMutationVariables>(Folder.CreateFolderFromSearchMutation);

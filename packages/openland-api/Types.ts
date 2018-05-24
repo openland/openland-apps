@@ -658,11 +658,24 @@ export interface FolderQuery {
     name: string,
     special: SpecialFolder | null,
     parcelsCount: number,
-    parcels:  {
-      __typename: "ParcelConnection",
-      edges:  Array< {
-        __typename: "ParcelEdge",
-        node:  {
+  },
+};
+
+export interface FolderItemsConnectionQueryVariables {
+  folderId: string,
+  cursor?: string | null,
+  page?: number | null,
+};
+
+export interface FolderItemsConnectionQuery {
+  items:  {
+    __typename: "FolderConnection",
+    edges:  Array< {
+      __typename: "FolderEdge",
+      node:  {
+        __typename: "FolderItem",
+        id: string,
+        parcel:  {
           __typename: "Parcel",
           id: string,
           number:  {
@@ -748,16 +761,17 @@ export interface FolderQuery {
             },
           },
         },
-      } >,
-      pageInfo:  {
-        __typename: "PageInfo",
-        hasNextPage: boolean,
-        hasPreviousPage: boolean,
-        itemsCount: number,
-        pagesCount: number,
-        currentPage: number,
-        openEnded: boolean,
       },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
     },
   },
 };

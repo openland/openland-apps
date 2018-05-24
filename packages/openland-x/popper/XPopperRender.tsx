@@ -14,7 +14,6 @@ export interface PopperRendererProps {
     maxHeight?: number;
     minWidth?: number;
     minHeight?: number;
-    bordered?: boolean;
 
     groupId?: string;
 
@@ -252,7 +251,6 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
                             maxHeight: this.props.maxHeight,
                             minWidth: this.props.minWidth,
                             minHeight: this.props.minHeight,
-                            bordered: this.props.bordered,
 
                             children: this.props.content,
 

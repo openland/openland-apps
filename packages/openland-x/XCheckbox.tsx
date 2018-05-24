@@ -128,7 +128,7 @@ export class XCheckbox extends React.Component<XCheckboxProps, { isChecked: bool
     }
 }
 
-interface XCheckboxGroupProps { elements: string[] | { value: string, label: string, hint?: string}[]; selected?: string[]; onChange?: (value: string[]) => void; divided?: boolean; }
+interface XCheckboxGroupProps { elements: string[] | { value: string, label: string, hint?: string }[]; selected?: string[]; onChange?: (value: string[]) => void; divided?: boolean; }
 export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selected?: string[] }> {
 
     static defaultProps = {
@@ -167,14 +167,16 @@ export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selec
             let label = (element as any).label !== undefined ? (element as any).label : element;
             let value = (element as any).value !== undefined ? (element as any).value : element;
             let hint = (element as any).hint !== undefined ? (element as any).hint : undefined;
-            
+
+            let checkboxProps = { key: label + '_' + value, label: label, value: value, checked: this.state.selected && this.selected.has(value), onChange: this.handleChange, hint: hint };
+
             res.push(
                 this.props.divided ? (
                     <Divided key={label + '_' + value} >
-                        <XCheckbox key={label + '_' + value} label={label} value={value} checked={this.state.selected && this.selected.has(value)} onChange={this.handleChange} hint={hint}/>
+                        <XCheckbox {...checkboxProps} />
                     </Divided>
                 ) : (
-                        <XCheckbox key={label + '_' + value} label={label} value={value} checked={this.state.selected && this.selected.has(value)} onChange={this.handleChange} />
+                        <XCheckbox {...checkboxProps} />
                     ));
         }
         return (

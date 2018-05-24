@@ -112,6 +112,8 @@ interface XTableRowProps {
 
 export class XTableRow extends React.Component<XTableRowProps> {
     render() {
+        console.warn(this.props);
+        
         let content: any[] = [];
         for (let i of React.Children.toArray(this.props.children)) {
             if (React.isValidElement(i) && (this.props.path!! || this.props.href!!)) {
@@ -125,7 +127,7 @@ export class XTableRow extends React.Component<XTableRowProps> {
             }
         }
         return (
-            <XTableBodyRowStyle onClick={this.props.onClick} noHover={this.props.noHover}>
+            <XTableBodyRowStyle onClick={this.props.onClick} noHover={this.props.noHover || (!this.props.onClick && !this.props.path && !this.props.href)}>
                 {content}
             </XTableBodyRowStyle>
         );

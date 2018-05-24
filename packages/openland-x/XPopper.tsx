@@ -38,7 +38,6 @@ interface XPopperProps {
     maxHeight?: number;
     minWidth?: number;
     minHeight?: number;
-    bordered?: boolean;
 
     groupId?: string;
 
@@ -412,7 +411,6 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             maxHeight: this.props.maxHeight,
             minWidth: this.props.minWidth,
             minHeight: this.props.minHeight,
-            bordered: this.props.bordered,
 
             groupId: this.props.groupId,
             animation: this.props.animation,
