@@ -76,6 +76,7 @@ const XSwitcherItemStyled = Glamorous(XLink)({
     backgroundColor: '#fff',
     transition: 'all .2s',
     boxSizing: 'content-box',
+    paddingLeft: 15,
     '&.is-active': {
         color: '#4428e1'
     },
@@ -120,7 +121,9 @@ const XSwitcherItemImage = Glamorous.div<{ img: string }>((props) => ({
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundColor: '#fafafc',
-    marginRight: 12
+    marginRight: 12,
+    borderRadius: 6,
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)'
 }));
 
 interface MapStyleSwitcherItemProps extends XLinkProps {
