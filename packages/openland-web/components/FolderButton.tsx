@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { XButton, XButtonSize, XButtonStyle } from 'openland-x/XButton';
 import { XPopper, Placement } from 'openland-x/XPopper';
 import { withFolders, withSetFolderMutation, withCreateFolderMutation, withCreateFolderFromSearchMutation, withAddToFolderFromSearchMutation } from '../api';
@@ -163,9 +164,7 @@ const CreateFolderFromSearch = withCreateFolderFromSearchMutation(((props) => Cr
 
 const FolderPopupWrapper = Glamorous.div({
     overflowY: 'scroll',
-    maxHeight: 300,
-    width: 'calc(100% + 20px)',
-    height: 'calc(100% + 20px)',
+    maxHeight: 'calc(100vh - 350px)',
     marginTop: -10,
     marginBottom: -10,
     marginLeft: -10,
@@ -227,7 +226,6 @@ interface FolderButtonProps {
     };
     size?: XButtonSize;
     width?: number;
-    menuWidth?: number;
     text?: string;
     style?: XButtonStyle;
     icon?: string | null;
@@ -236,7 +234,11 @@ interface FolderButtonProps {
     show?: boolean;
     handleClose?: () => void;
 }
+
 export class FolderButton extends React.PureComponent<FolderButtonProps, { show: boolean }> {
+
+    container?: Element;
+    menuWidth?: number;
 
     componentDidUpdate() {
 
@@ -263,6 +265,19 @@ export class FolderButton extends React.PureComponent<FolderButtonProps, { show:
         this.setState({ show: !this.state.show });
     }
 
+    onTargetCreated = (el: any) => {
+        this.container = el;
+    }
+
+    componentWillUpdate() {
+        if (this.container) {
+            let node = (ReactDOM.findDOMNode(this.container) as any);
+            if (node) {
+                this.menuWidth = node.offsetWidth;
+            }
+        }
+    }
+
     render() {
 
         let target = this.props.target;
@@ -274,6 +289,8 @@ export class FolderButton extends React.PureComponent<FolderButtonProps, { show:
 
             }
         }
+
+        target = React.cloneElement(target, { innerRef: this.onTargetCreated });
 
         return (
             <>
@@ -299,7 +316,7 @@ export class FolderButton extends React.PureComponent<FolderButtonProps, { show:
                     padding={10}
                     arrow={null}
                     placement={this.props.placement || 'top'}
-                    width={this.props.menuWidth}
+                    width={this.menuWidth}
                     onClickOutside={this.handleClose}
                 >
                     {target}

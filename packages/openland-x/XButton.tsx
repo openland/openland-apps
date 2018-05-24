@@ -448,7 +448,7 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
     (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize)
 ]);
 
-export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
+const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
     return (
         <StyledButton
             href={props.href}
@@ -482,3 +482,5 @@ export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
         </StyledButton>
     );
 }));
+
+export const XButton = Glamorous(XButtonRaw)();

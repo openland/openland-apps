@@ -195,7 +195,7 @@ const FolderButtonWithSave = withParcelStats((props) => {
             <FolderButton style="primary" icon={null} placement="bottom" show={(props as any).show} search={props.data.variables as any}
                 handleClose={(props as any).onClose}
                 target={(
-                    <FilterCounterWrapper saveActive={(props as any).show}>
+                    <FilterCounterWrapper saveActive={(props as any).show} >
                         <FilterCounter filtered={(props as any).variables.query !== undefined}>
                             <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
                         </FilterCounter>
@@ -212,7 +212,7 @@ const FolderButtonWithSave = withParcelStats((props) => {
 
                 </FilterCounterWrapper>
             ));
-}) as React.ComponentClass<{ show: boolean, variables: any, onButtonClick: () => void, onClose: () => void }>;
+}) as React.ComponentClass<{ show: boolean, variables: any, onButtonClick: () => void, onClose: () => void}>;
 
 class FoundCounterSave extends React.Component<{
     variables: {
@@ -222,7 +222,7 @@ class FoundCounterSave extends React.Component<{
         state: string
     }
 }, { show: boolean }> {
-
+   
     constructor(props: any) {
         super(props);
         this.state = { show: false };
