@@ -111,9 +111,7 @@ interface XTableRowProps {
 }
 
 export class XTableRow extends React.Component<XTableRowProps> {
-    render() {
-        console.warn(this.props);
-        
+    render() {        
         let content: any[] = [];
         for (let i of React.Children.toArray(this.props.children)) {
             if (React.isValidElement(i) && (this.props.path!! || this.props.href!!)) {
