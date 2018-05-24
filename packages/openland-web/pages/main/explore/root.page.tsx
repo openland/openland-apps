@@ -4,8 +4,9 @@ import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { FolderButton } from '../../../components/FolderButton';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
+import { MapStyleSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
 import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
-import { XSwitcher } from 'openland-x/XSwitcher';
+// import { XSwitcher } from 'openland-x/XSwitcher';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { Scaffold } from '../../../components/Scaffold';
 import { ParcelMap } from '../../../components/ParcelMap';
@@ -446,11 +447,16 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                             />
                                         </ParcelMap>
                                         <MapSwitcher>
-                                            <XSwitcher fieldStyle={true}>
+                                            {/* <XSwitcher fieldStyle={true}>
                                                 <XSwitcher.Item query={{ field: 'mode' }}>{TextMap.map}</XSwitcher.Item>
                                                 <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>{TextMap.satellite}</XSwitcher.Item>
                                                 {city === 'sf' && <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>{TextMap.zoning}</XSwitcher.Item>}
-                                            </XSwitcher>
+                                            </XSwitcher> */}
+                                            <MapStyleSwitcher>
+                                                <MapStyleSwitcher.Item query={{ field: 'mode' }} text={TextMap.map} img="" />
+                                                <MapStyleSwitcher.Item query={{ field: 'mode', value: 'satellite' }} text={TextMap.satellite} img="" />
+                                                {city === 'sf' && <MapStyleSwitcher.Item query={{ field: 'mode', value: 'zoning' }} text={TextMap.zoning} img="" />}
+                                            </MapStyleSwitcher>
                                         </MapSwitcher>
                                     </XMapContainer2>
                                     {this.props.router.query.selectedParcel && <ParcelCard variables={{ parcelId: this.props.router.query!!.selectedParcel }} mapMode={this.props.router.routeQuery.mode} />}
