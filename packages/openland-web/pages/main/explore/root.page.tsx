@@ -261,7 +261,7 @@ const DealsSource = withDealsMap((props) => {
 });
 
 // const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Add to prospecting</XButtonMutation>);
-class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { shadowed: boolean }> {
+class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { shadowed: boolean, mapLoaded?: boolean }> {
 
     knownCameraLocation?: XMapCameraLocation;
 
@@ -374,6 +374,10 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         this.knownCameraLocation = e;
     }
 
+    onMapLoaded = () => {
+        this.setState({ mapLoaded: true });
+    }
+
     render() {
         return (
             <XRoleContext.Consumer>
@@ -395,7 +399,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                     let focus = city === 'sf'
                         ? { latitude: 37.75444398077139, longitude: -122.43963811583545, zoom: 12 }
                         : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
-                    
+
                     let query = this.buildquery();
 
                     return (
@@ -403,27 +407,31 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                             <Scaffold.Content padding={false} bottomOffset={false}>
                                 <XMapContainer>
                                     <XMapContainer2>
-                                        <RoutedMapFilters city={city} />
-                                        <FoundCounterSave
-                                            variables={{
-                                                query: query && JSON.stringify(query),
-                                                city: cityName,
-                                                county: countyName,
-                                                state: stateName
-                                            }}
-                                        />
-                                        <CitySelector title={cityName}>
-                                            <CitySelector.Item
-                                                path="/?city=sf"
-                                                active={city === 'sf'}
-                                                label="San Francisco"
-                                            />
-                                            <CitySelector.Item
-                                                path="/?city=nyc"
-                                                active={city !== 'sf'}
-                                                label="New York"
-                                            />
-                                        </CitySelector>
+                                        {this.state.mapLoaded && (
+                                            <>
+                                                <RoutedMapFilters city={city} />
+                                                <FoundCounterSave
+                                                    variables={{
+                                                        query: query && JSON.stringify(query),
+                                                        city: cityName,
+                                                        county: countyName,
+                                                        state: stateName
+                                                    }}
+                                                />
+                                                <CitySelector title={cityName}>
+                                                    <CitySelector.Item
+                                                        path="/?city=sf"
+                                                        active={city === 'sf'}
+                                                        label="San Francisco"
+                                                    />
+                                                    <CitySelector.Item
+                                                        path="/?city=nyc"
+                                                        active={city !== 'sf'}
+                                                        label="New York"
+                                                    />
+                                                </CitySelector>
+                                            </>
+                                        )}
 
                                         <ParcelMap
                                             mode={this.props.router.query.mode}
@@ -432,6 +440,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                             focusPosition={focus}
                                             lastKnownCameraLocation={cityChanged ? undefined : this.knownCameraLocation}
                                             onCameraLocationChanged={this.handleMap}
+                                            onLoaded={this.onMapLoaded}
                                         >
                                             <MapSearcher city={cityName} bbox={boundingBox} />
 

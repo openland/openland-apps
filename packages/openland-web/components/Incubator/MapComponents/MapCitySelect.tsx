@@ -5,7 +5,6 @@ import { XIcon } from 'openland-x/XIcon';
 import ClickOutside from '../ClickOutside';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import XStyles from 'openland-x/XStyles';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const MapFilterWrapper = Glamorous(XCard)<{ active: boolean }>((props) => ({
     width: 325,
@@ -199,19 +198,14 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { active:
                 <MapFilterWrapper active={this.state.active}>
                     <ClickOutside onClickOutside={this.disable}>
                         <CityTitle onClick={this.activate} active={this.state.active}>
-                            {canUseDOM && (
-                                <>
-                                    <div className="title">
-                                        {this.props.title}
-                                        <XIcon icon="keyboard_arrow_right" />
-                                    </div>
-                                    {children}
-                                </>
-                            )}
-
+                            <div className="title">
+                                {this.props.title}
+                                <XIcon icon="keyboard_arrow_right" />
+                            </div>
+                            {children}
                         </CityTitle>
                         <CitySelectorItemsWrapper open={this.state.active}>
-                            {canUseDOM && items}
+                            {items}
                         </CitySelectorItemsWrapper>
                     </ClickOutside>
                 </MapFilterWrapper>

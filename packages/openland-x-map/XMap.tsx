@@ -22,6 +22,7 @@ export interface XMapProps {
 
     lastKnownCameraLocation?: XMapCameraLocation | null;
     onCameraLocationChanged?: (e: XMapCameraLocation) => void;
+    onLoaded?: () => void;
 }
 
 export interface DataSources {
@@ -160,7 +161,12 @@ export class XMap extends React.Component<XMapProps> {
                 scrollZoom: this.props.scrollZoom !== undefined ? this.props.scrollZoom : true
             });
             mapComponent.addControl(new map.NavigationControl());
-            mapComponent.on('load', () => { this.configureMap(mapComponent); });
+            mapComponent.on('load', () => {
+                this.configureMap(mapComponent);
+                if (this.props.onLoaded) {
+                    this.props.onLoaded();
+                }
+            });
             this.map = mapComponent;
         });
     }
