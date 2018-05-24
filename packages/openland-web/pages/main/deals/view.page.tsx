@@ -93,7 +93,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                             {props.data.deal.extrasTaxBill && area && (<XProperty title="Tax/Sq. Ft."><XMoney value={props.data.deal.extrasTaxBill / area} /></XProperty>)}
                             {props.data.deal.extrasCompany && (<XProperty title="Company">{props.data.deal.extrasCompany}</XProperty>)}
                             {props.data.deal.extrasAttorney && (<XProperty title="Seller's Attorney">{props.data.deal.extrasAttorney}</XProperty>)}
-                            {props.data.deal.extrasReferee && (<XProperty title="Refereee">{props.data.deal.extrasReferee}</XProperty>)}
+                            {props.data.deal.extrasReferee && (<XProperty title="Referee">{props.data.deal.extrasReferee}</XProperty>)}
                         </XPropertyList>
                         <XPropertyList title="Parcel">
                             {props.data.deal.parcel && (<XProperty title="Parcel ID"><XLink path={'/parcels/' + props.data.deal.parcel.id}>{props.data.deal.parcel.number.title}</XLink></XProperty>)}
