@@ -9,7 +9,7 @@ import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api';
 // import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { ParcelMap } from '../../../components/ParcelMap';
-import { XSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
+import { MapStyleSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
 import { RoutedMapFilters } from '../../../components/Incubator/MapComponents/MapFilters';
 import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
@@ -231,10 +231,10 @@ class WrappedContainer extends React.Component<XWithRouter & UserInfoComponentPr
                         />
                     </ParcelMap>
                     <MapSwitcher>
-                        <XSwitcher fieldStyle={true}>
-                            <XSwitcher.Item query={{ field: 'mode' }}>Map</XSwitcher.Item>
-                            <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>Satellite</XSwitcher.Item>
-                        </XSwitcher>
+                        <MapStyleSwitcher>
+                            <MapStyleSwitcher.Item query={{ field: 'mode' }} text="map" img="" />
+                            <MapStyleSwitcher.Item query={{ field: 'mode', value: 'satellite' }} text="Satellite" img="" />
+                        </MapStyleSwitcher>
                     </MapSwitcher>
                 </XMapContainer2>
                 {/* {this.props.router.query!!.selectedParcel && <ParcelCard parcelId={this.props.router.query!!.selectedParcel} />} */}
