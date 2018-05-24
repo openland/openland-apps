@@ -163,7 +163,7 @@ const CreateFolderFromSearch = withCreateFolderFromSearchMutation(((props) => Cr
 
 const FolderPopupWrapper = Glamorous.div({
     overflowY: 'scroll',
-    maxHeight: 'calc(100vh - 100px)',
+    maxHeight: 300,
     width: 'calc(100% + 20px)',
     height: 'calc(100% + 20px)',
     marginTop: -10,

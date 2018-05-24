@@ -1,94 +1,259 @@
 import * as React from 'react';
+// import * as ReactDom from 'react-dom';
 import Glamorous from 'glamorous';
+// import { CSSProperties } from 'glamorous';
+import ClickOutside from '../ClickOutside';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 
-interface XSwitcherProps {
-    alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
-    children: any;
-    fieldStyle?: boolean;
-    flatStyle?: boolean;
-}
+const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    width: '100vw',
+    height: '100vh',
+    visibility: props.active ? 'visible' : 'hidden',
+    opacity: props.active ? 1 : 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.41)',
+    zIndex: 10
+}));
 
-const XSwitcherWrapper = Glamorous.div<XSwitcherProps>((props) => ({
-    display: 'flex',
-    alignSelf: props.alignSelf,
-    paddingTop: props.fieldStyle ? 0 : 3,
-    paddingLeft: props.flatStyle ? 0 : props.fieldStyle ? 0 : 9,
-    paddingRight: props.flatStyle ? 0 : props.fieldStyle ? 0 : 9,
-    paddingBottom: props.fieldStyle ? 0 : 2,
-    borderRadius: 4,
+const XSwitcherWrapper = Glamorous(ClickOutside)<{ active: boolean }>((props) => ({
+    width: 140,
+    position: 'relative',
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
+    borderRadius: 5,
     overflow: 'hidden',
-    boxSizing: 'border-box',
-    backgroundColor: '#ffffff',
-    boxShadow: props.flatStyle ? undefined : '0 0 0 1px rgba(50, 50, 93, .1), 0 2px 5px 0 rgba(50, 50, 93, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent',
+    backgroundColor: '#fff',
+    transition: 'all .2s',
+    maxHeight: props.active ? 200 : 60,
+    zIndex: props.active ? 10 : 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignSelf: 'auto !important',
+    // width: '100%',
+    // opacity: props.active ? 1 : 0
     '& > a': {
-        paddingLeft: props.flatStyle ? undefined : 14,
-        paddingRight: props.flatStyle ? undefined : 14,
-        height: props.fieldStyle ? 32 : undefined,
-        fontWeight: 'normal !important',
-        fontStyle: 'normal !important',
-        fontStretch: 'normal !important',
-        lineHeight: props.fieldStyle ? '2.29 !important' : 1.6,
-        letterSpacing: 'normal !important',
-        textAlign: 'center !important',
-        margin: '0 !important',
-        marginRight: props.flatStyle ? '20px !important' : undefined,
-        color: props.fieldStyle ? '#182642 !important' : '#6b7c93',
-        '&:hover': {
-            backgroundColor: props.fieldStyle ? '#F5F6F8' : undefined
-        },
+        // opacity: props.active ? 1 : 0,
+        zIndex: 0,
         '&.is-active': {
-            color: props.fieldStyle ? '#fff !important' : '#6772e5',
-            backgroundColor: props.fieldStyle ? '#4428e0 !important' : undefined,
-            borderBottom: props.flatStyle ? '2px solid #6772e5' : undefined,
-
-            '&:hover': {
-                backgroundColor: props.fieldStyle ? '#4428e0 !important' : undefined,
-            }
+            // opacity: 1,
+            position: props.active ? undefined : 'absolute',
+            top: props.active ? undefined : 0,
+            left: props.active ? undefined : 0,
+            zIndex: 1
         }
     }
 }));
 
-const XSwitcherItemStyle = Glamorous(XLink)<{ alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center' }>((props) => ({
-    fontSize: 14,
-    fontWeight: 200,
-    cursor: 'pointer',
-    marginRight: 8,
-    alignSelf: props.alignSelf,
-    '&:last-child': {
-        marginRight: 0
-    },
+// const XSwitcherItemStyles = {
+//     display: 'flex',
+//     alignItems: 'center',
+//     height: 60,
+//     width: '100%',
+//     color: '#1f3449',
+//     borderBottom: 'solid 1px rgba(97, 126, 156, 0.2)',
+//     '&.is-active': {
+//         color: '#4428e1'
+//     },
+//     '&:last-child': {
+//         borderBottom: 'none'
+//     },
+//     '& > span': {
+//         maxWidth: '100%',
+//         whiteSpace: 'nowrap',
+//         overflow: 'hidden',
+//         textOverflow: 'ellipsis'
+//     },
+// } as CSSProperties;
+
+const XSwitcherItemStyled = Glamorous(XLink)({
+    display: 'flex',
+    alignItems: 'center',
+    height: 60,
+    width: '100%',
+    color: '#1f3449',
+    borderBottom: 'solid 1px rgba(97, 126, 156, 0.2)',
+    backgroundColor: '#fff',
+    transition: 'all .2s',
+    boxSizing: 'content-box',
     '&.is-active': {
-        fontWeight: 600,
+        color: '#4428e1'
+    },
+    '&:last-child': {
+        borderBottom: 'none'
+    },
+    '& > span': {
+        maxWidth: '100%',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
     }
+});
+
+// const XSwitherTargetStyled = Glamorous(XLink)<{ active: boolean }>((props) => ({
+//     ...XSwitcherItemStyles,
+//     transition: 'all .2s',
+//     opacity: props.active ? 0 : 1,
+//     visibility: props.active ? 'hidden' : 'visible',
+//     pointerEvents: props.active ? 'none' : undefined,
+//     position: 'absolute',
+//     bottom: 0,
+//     left: 0,
+// }));
+
+const OverButton = Glamorous.div<{ active: boolean }>((props) => ({
+    height: 60,
+    width: '100%',
+    visibility: props.active ? 'hidden' : 'visible',
+    pointerEvents: props.active ? 'none' : undefined,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    cursor: 'pointer',
+    zIndex: 2
 }));
 
-interface XSwitcherItemProps extends XLinkProps {
-    children: any;
-    alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
-    count?: string | number;
+const XSwitcherItemImage = Glamorous.div<{ img: string }>((props) => ({
+    width: 32,
+    height: 32,
+    backgroundImage: props.img,
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor: '#fafafc',
+    marginRight: 12
+}));
+
+interface MapStyleSwitcherItemProps extends XLinkProps {
+    text: string;
+    img: string;
 }
 
-function XSwitcherItem(props: XSwitcherItemProps) {
-    const { alignSelf, children, count, ...other } = props;
-    return (
-        <XSwitcherItemStyle alignSelf={props.alignSelf} {...other}>
-            {children}
-            {count !== undefined && <span>{` (${count})`}</span>}
-        </XSwitcherItemStyle>
-    );
-}
-
-export class XSwitcher extends React.Component<XSwitcherProps> {
-
-    static Item = XSwitcherItem;
+class MapStyleSwitcherItem extends React.Component<MapStyleSwitcherItemProps> {
+    static defaultProps = {
+        _isMapStyleItem: true
+    };
 
     render() {
-        const {children, ...other} = this.props;
+        const { text, img, ...other } = this.props;
         return (
-            <XSwitcherWrapper {...other}>
-                {children}
-            </XSwitcherWrapper>
+            <XSwitcherItemStyled {...other}>
+                <XSwitcherItemImage img={this.props.img} />
+                <span>{this.props.text}</span>
+            </XSwitcherItemStyled>
+        );
+    }
+}
+
+// interface MapStyleSwitcherTargetProps extends XLinkProps {
+//     text: string;
+//     img: string;
+//     active: boolean;
+// }
+
+// const MapStyleSwitcherTarget = (props: MapStyleSwitcherTargetProps) => {
+//     const { text, img, ...other } = props;
+//     return (
+//         <XSwitherTargetStyled {...other}>
+//             <XSwitcherItemImage img={props.img} />
+//             <span>{props.text}</span>
+//         </XSwitherTargetStyled>
+//     );
+// };
+
+interface MapStyleSwitcherProps {
+    children: any;
+}
+
+interface MapStyleSwitcherState {
+    active: boolean;
+    // text: string;
+    // img: string;
+}
+
+export class MapStyleSwitcher extends React.Component<MapStyleSwitcherProps, MapStyleSwitcherState> {
+
+    static Item = MapStyleSwitcherItem;
+    // static refs = new Set();
+    // timeout: any;
+
+    constructor(props: MapStyleSwitcherProps) {
+        super(props);
+
+        this.state = {
+            active: false,
+            // text: '',
+            // img: ''
+        };
+    }
+
+    // componentWillUnmount() {
+    //     clearTimeout(this.timeout);
+    // }
+
+    // handleContentRef = (ref: any | null) => {
+    //     MapStyleSwitcher.refs.add(ref);
+
+    //     if (MapStyleSwitcher.refs.size !== 0) {
+    //         this.targetHandler();
+    //     }
+    // }
+
+    activate = () => {
+        this.setState({ active: !this.state.active });
+        // if (MapStyleSwitcher.refs.size !== 0) {
+        //     this.targetHandler();
+        // }
+    }
+
+    disable = () => {
+        this.setState({ active: false });
+        // if (MapStyleSwitcher.refs.size !== 0) {
+        //     this.targetHandler();
+        // }
+    }
+
+    // targetHandler = () => {
+    //     for (let item of MapStyleSwitcher.refs) {
+    //         if (ReactDom.findDOMNode(item).classList.contains('is-active')) {
+    //             this.setState({
+    //                 text: item.props.text,
+    //                 img: item.props.img
+    //             });
+    //         }
+    //     }
+    //     // if (MapStyleSwitcher.refs.size !== 0) {
+    //     //     this.timeout = setTimeout(
+    //     //         () => { this.targetHandler(); },
+    //     //         500
+    //     //     );
+    //     // }
+    // }
+
+    render() {
+
+        let items: any[] = [];
+        let children: any[] = [];
+
+        for (let i of React.Children.toArray(this.props.children)) {
+            if (React.isValidElement(i) && (i.props as any)._isMapStyleItem === true) {
+                items.push(React.cloneElement(i as any, { onClick: this.disable }));
+            } else {
+                children.push(i);
+            }
+        }
+
+        return (
+            <>
+                <Shadow active={this.state.active} />
+                <XSwitcherWrapper onClickOutside={this.disable} active={this.state.active}>
+                    {/* <ClickOutside onClickOutside={this.disable}>
+                        {items}
+                    </ClickOutside> */}
+                    {items}
+                    <OverButton active={this.state.active} onClick={this.activate} />
+                    {/* <MapStyleSwitcherTarget active={this.state.active} text={this.state.text} img={this.state.img} onClick={this.activate} /> */}
+                </XSwitcherWrapper>
+            </>
         );
     }
 }
