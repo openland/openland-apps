@@ -5,6 +5,7 @@ import { graphqlSelect } from 'openland-x-graphql/graphqlSelect';
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
 import { graphqlCompose3, graphqlCompose2, graphqlCompose4, graphqlCompose6, graphqlCompose5 } from 'openland-x-graphql/graphqlCompose';
+import { graphQLMapSearchSource } from 'openland-x-graphql/graphqlMapSearchSource';
 
 //
 // Account
@@ -208,3 +209,5 @@ export const withFolderActions = graphqlCompose5(withCreateFolderMutation, withD
 export const FolderSelect = graphqlSelect<{}>(Queries.Folder.FoldersSelectQuery);
 
 export const withFolderItems = graphqlRouted(Queries.Folder.FolderItemsConnectionQuery, ['folderId', 'page', 'cursor'], true, 'network-only');
+
+export const ParcelMapSearch = graphQLMapSearchSource(Queries.Parcels.ParcelsMapSearchQuery);

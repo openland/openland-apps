@@ -337,6 +337,17 @@ export const ParcelsTileOverlayQuery = gql`
     }
 `;
 
+export const ParcelsMapSearchQuery = gql`
+    query ParcelsMapSearch($box: GeoBox!, $query: String!, $zoom: Int!) {
+        results: alphaParcelMap(box: $box, limit: 5000, query: $query, zoom: $zoom) {
+            ref
+            count
+            lat
+            lon
+        }
+    }
+`;
+
 export const ParcelsPointOverlayQuery = gql`
     query ParcelsPointOverlay($box: GeoBox!, $query: String) {
         tiles: parcelsOverlay(box: $box, limit: 5000, query: $query) {

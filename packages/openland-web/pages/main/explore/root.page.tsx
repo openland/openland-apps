@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { FolderButton } from '../../../components/FolderButton';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { MapStyleSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
-import { ParcelPointSource, withParcelStats, withDealsMap } from '../../../api/';
+import { ParcelPointSource, withParcelStats, withDealsMap, ParcelMapSearch } from '../../../api/';
 // import { XSwitcher } from 'openland-x/XSwitcher';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { Scaffold } from '../../../components/Scaffold';
@@ -212,7 +212,7 @@ const FolderButtonWithSave = withParcelStats((props) => {
 
                 </FilterCounterWrapper>
             ));
-}) as React.ComponentClass<{ show: boolean, variables: any, onButtonClick: () => void, onClose: () => void}>;
+}) as React.ComponentClass<{ show: boolean, variables: any, onButtonClick: () => void, onClose: () => void }>;
 
 class FoundCounterSave extends React.Component<{
     variables: {
@@ -222,7 +222,7 @@ class FoundCounterSave extends React.Component<{
         state: string
     }
 }, { show: boolean }> {
-   
+
     constructor(props: any) {
         super(props);
         this.state = { show: false };
@@ -425,13 +425,20 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                             onCameraLocationChanged={this.handleMap}
                                         >
                                             <MapSearcher city={cityName} bbox={boundingBox} />
+
+                                            <ParcelMapSearch
+                                                layer="parcels-found"
+                                                query={query}
+                                            />
+                                            {/* 
                                             <ParcelPointSource
                                                 layer="parcels-found"
                                                 query={query}
                                                 minZoom={12}
                                                 skip={query === undefined}
                                             />
-                                            <DealsSource />
+                                             */}
+                                            <DealsSource /> 
 
                                             <XMapPointLayer
                                                 source="parcels-found"

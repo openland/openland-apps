@@ -55,9 +55,6 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                 return;
             }
             this.pendingBox = src;
-            if (this.props.skip) {
-                return;
-            }
             this.tryInvokeLoader(this.props);
         }
 

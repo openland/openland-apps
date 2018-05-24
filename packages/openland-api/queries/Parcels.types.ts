@@ -8,6 +8,7 @@ export const ParcelsFavoritesQuery = typedQuery<Types.ParcelsFavoritesQuery, {}>
 export const ParcelsFavoritesCountQuery = typedQuery<Types.ParcelsFavoritesCountQuery, {}>(Parcels.ParcelsFavoritesCountQuery);
 export const ParcelsTileOverlayQuery = typedQuery<Types.ParcelsTileOverlayQuery, Types.ParcelsTileOverlayQueryVariables>(Parcels.ParcelsTileOverlayQuery);
 export const ParcelsPointOverlayQuery = typedQuery<Types.ParcelsPointOverlayQuery, Types.ParcelsPointOverlayQueryVariables>(Parcels.ParcelsPointOverlayQuery);
+export const ParcelsMapSearchQuery = typedQuery<Types.ParcelsMapSearchQuery, Types.ParcelsMapSearchQueryVariables>(Parcels.ParcelsMapSearchQuery);
 
 export const ParcelLikeMutation = typedMutation<Types.ParcelLikeMutation, Types.ParcelLikeMutationVariables>(Parcels.ParcelLikeMutation);
 export const ParcelUnlikeMutation = typedMutation<Types.ParcelUnlikeMutation, Types.ParcelUnlikeMutationVariables>(Parcels.ParcelUnlikeMutation);

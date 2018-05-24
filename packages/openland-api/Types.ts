@@ -899,30 +899,6 @@ export interface CreateFolderFromSearchMutation {
     name: string,
     special: SpecialFolder | null,
     parcelsCount: number,
-    parcels:  {
-      __typename: "ParcelConnection",
-      edges:  Array< {
-        __typename: "ParcelEdge",
-        node:  {
-          __typename: "Parcel",
-          id: string,
-          folder:  {
-            __typename: "Folder",
-            id: string,
-            name: string,
-          } | null,
-        },
-      } >,
-      pageInfo:  {
-        __typename: "PageInfo",
-        hasNextPage: boolean,
-        hasPreviousPage: boolean,
-        itemsCount: number,
-        pagesCount: number,
-        currentPage: number,
-        openEnded: boolean,
-      },
-    },
   },
 };
 
@@ -1730,6 +1706,22 @@ export interface ParcelsTileOverlayQuery {
     // Geometry
     geometry: string | null,
   } > | null,
+};
+
+export interface ParcelsMapSearchQueryVariables {
+  box: GeoBox,
+  query: string,
+  zoom: number,
+};
+
+export interface ParcelsMapSearchQuery {
+  results:  Array< {
+    __typename: "MapPoint",
+    ref: string | null,
+    count: number | null,
+    lat: number,
+    lon: number,
+  } >,
 };
 
 export interface ParcelsPointOverlayQueryVariables {
