@@ -265,6 +265,8 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
     knownCameraLocation?: XMapCameraLocation;
 
+    savedCity?: string | null;
+
     constructor(props: XWithRouter & UserInfoComponentProps) {
         super(props);
         this.state = {
@@ -276,6 +278,8 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
             if (k !== null) {
                 this.knownCameraLocation = JSON.parse(k);
             }
+
+            this.savedCity = sessionStorage.getItem('__explore_city');
         }
     }
 
@@ -378,7 +382,12 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                     if (roles!!.roles.find((v) => v === 'feature-city-nyc-force')) {
                         defaultCity = 'nyc';
                     }
-                    let city = this.props.router.routeQuery.city || defaultCity;
+                    let pendingCity = this.props.router.routeQuery.city || this.savedCity || defaultCity;
+                    let cityChanged = pendingCity !== this.savedCity;
+                    let city = pendingCity;
+                    if (canUseDOM) {
+                        sessionStorage.setItem('__explore_city', city);
+                    }
                     let cityName = city === 'sf' ? 'San Francisco' : 'New York';
                     let countyName = city === 'sf' ? 'San Francisco' : 'New York';
                     let stateName = city === 'sf' ? 'CA' : 'NY';
@@ -386,7 +395,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                     let focus = city === 'sf'
                         ? { latitude: 37.75444398077139, longitude: -122.43963811583545, zoom: 12 }
                         : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
-
+                    
                     let query = this.buildquery();
 
                     return (
@@ -421,7 +430,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                             selectedParcel={this.props.router.query.selectedParcel}
                                             onParcelClick={this.handleClick}
                                             focusPosition={focus}
-                                            lastKnownCameraLocation={this.knownCameraLocation}
+                                            lastKnownCameraLocation={cityChanged ? undefined : this.knownCameraLocation}
                                             onCameraLocationChanged={this.handleMap}
                                         >
                                             <MapSearcher city={cityName} bbox={boundingBox} />
