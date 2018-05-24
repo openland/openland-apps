@@ -23,6 +23,7 @@ const SidebarItemsStyle = {
     height: 40,
     borderRadius: 4,
     display: 'flex',
+    flexShrink: 0,
     alignItems: 'center',
     fontSize: 16,
     fontWeight: 500,
