@@ -190,12 +190,18 @@ const XButtonWithMargin = Glamorous(XButton)({
 });
 
 const FolderButtonWithSave = withParcelStats((props) => {
+    if (!props.data.loading) {
+        (props as any).onStatsLoaded();
+    }
+    if (!(props as any).show) {
+        return null;
+    }
     return (
         props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query ? (
-            <FolderButton style="primary" icon={null} placement="bottom" show={(props as any).show} search={props.data.variables as any}
+            <FolderButton style="primary" icon={null} placement="bottom" show={(props as any).showFolderSelect} search={props.data.variables as any}
                 handleClose={(props as any).onClose}
                 target={(
-                    <FilterCounterWrapper saveActive={(props as any).show} >
+                    <FilterCounterWrapper saveActive={(props as any).showFolderSelect} >
                         <FilterCounter filtered={(props as any).variables.query !== undefined}>
                             <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
                         </FilterCounter>
@@ -205,40 +211,43 @@ const FolderButtonWithSave = withParcelStats((props) => {
                     </FilterCounterWrapper>
                 )} />
         ) : (
-                <FilterCounterWrapper saveActive={(props as any).show}>
+                <FilterCounterWrapper saveActive={(props as any).showFolderSelect}>
                     <FilterCounter filtered={(props as any).variables.query !== undefined}>
                         <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
                     </FilterCounter>
 
                 </FilterCounterWrapper>
             ));
-}) as React.ComponentClass<{ show: boolean, variables: any, onButtonClick: () => void, onClose: () => void }>;
+}) as React.ComponentClass<{ showFolderSelect: boolean, variables: any, onButtonClick: () => void, onClose: () => void, onStatsLoaded: () => void, show: boolean }>;
 
 class FoundCounterSave extends React.Component<{
     variables: {
         query?: string,
         city: string,
         county: string,
-        state: string
-    }
-}, { show: boolean }> {
+        state: string,
+    },
+    onStatsLoaded: () => void,
+    show: boolean
+
+}, { showFolderSelect: boolean }> {
 
     constructor(props: any) {
         super(props);
-        this.state = { show: false };
+        this.state = { showFolderSelect: false };
     }
 
     onButtonClick = () => {
-        this.setState({ show: !this.state.show });
+        this.setState({ showFolderSelect: !this.state.showFolderSelect });
     }
 
     onClose = () => {
-        this.setState({ show: false });
+        this.setState({ showFolderSelect: false });
     }
 
     render() {
         return (
-            <FolderButtonWithSave variables={this.props.variables} show={this.state.show} onButtonClick={this.onButtonClick} onClose={this.onClose} />
+            <FolderButtonWithSave variables={this.props.variables} showFolderSelect={this.state.showFolderSelect} onButtonClick={this.onButtonClick} onClose={this.onClose} onStatsLoaded={this.props.onStatsLoaded} show={this.props.show} />
         );
     }
 }
@@ -261,7 +270,7 @@ const DealsSource = withDealsMap((props) => {
 });
 
 // const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Add to prospecting</XButtonMutation>);
-class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { shadowed: boolean, mapLoaded?: boolean }> {
+class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { shadowed: boolean, mapLoaded?: boolean, parcelStatsLoaded?: boolean }> {
 
     knownCameraLocation?: XMapCameraLocation;
 
@@ -378,6 +387,12 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         this.setState({ mapLoaded: true });
     }
 
+    onStatsLoaded = () => {
+        if (!this.state.parcelStatsLoaded) {
+            this.setState({ parcelStatsLoaded: true });
+        }
+    }
+
     render() {
         return (
             <XRoleContext.Consumer>
@@ -407,17 +422,22 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                             <Scaffold.Content padding={false} bottomOffset={false}>
                                 <XMapContainer>
                                     <XMapContainer2>
-                                        {this.state.mapLoaded && (
+
+                                        <FoundCounterSave
+                                            variables={{
+                                                query: query && JSON.stringify(query),
+                                                city: cityName,
+                                                county: countyName,
+                                                state: stateName
+                                            }}
+                                            show={!!(this.state.mapLoaded)}
+                                            onStatsLoaded={this.onStatsLoaded}
+                                        />
+
+                                        {this.state.mapLoaded && this.state.parcelStatsLoaded && (
                                             <>
                                                 <RoutedMapFilters city={city} />
-                                                <FoundCounterSave
-                                                    variables={{
-                                                        query: query && JSON.stringify(query),
-                                                        city: cityName,
-                                                        county: countyName,
-                                                        state: stateName
-                                                    }}
-                                                />
+
                                                 <CitySelector title={cityName}>
                                                     <CitySelector.Item
                                                         path="/?city=sf"
@@ -456,7 +476,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                                 skip={query === undefined}
                                             />
                                              */}
-                                            <DealsSource /> 
+                                            <DealsSource />
 
                                             <XMapPointLayer
                                                 source="parcels-found"
