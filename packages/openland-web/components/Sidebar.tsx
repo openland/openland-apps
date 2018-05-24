@@ -18,6 +18,7 @@ const SidebarHeader = Glamorous.div({
     paddingRight: XStyles.paddings.large,
     paddingTop: XStyles.paddings.large,
     paddingBottom: XStyles.paddings.large,
+    flexShrink: 0,
 
     fontSize: 18,
     fontWeight: 600,
