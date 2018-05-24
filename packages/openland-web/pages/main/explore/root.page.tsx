@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { FolderButton } from '../../../components/FolderButton';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { MapStyleSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
-import { ParcelPointSource, withParcelStats, withDealsMap, ParcelMapSearch } from '../../../api/';
+import { withParcelStats, withDealsMap, ParcelMapSearch } from '../../../api/';
 // import { XSwitcher } from 'openland-x/XSwitcher';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { Scaffold } from '../../../components/Scaffold';
