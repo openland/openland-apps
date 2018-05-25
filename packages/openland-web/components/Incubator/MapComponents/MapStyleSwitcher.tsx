@@ -77,7 +77,7 @@ const XSwitcherItemStyled = Glamorous(XLink)({
     height: 60,
     width: '100%',
     color: '#1f3449',
-    borderBottom: 'solid 1px rgba(97, 126, 156, 0.2)',
+    borderBottom: 'solid 1px #c1c7cf4d',
     backgroundColor: '#fff',
     transition: 'all .2s',
     boxSizing: 'content-box',
@@ -122,7 +122,7 @@ const OverButton = Glamorous.div<{ active: boolean }>((props) => ({
 const XSwitcherItemImage = Glamorous.div<{ img: string }>((props) => ({
     width: 32,
     height: 32,
-    backgroundImage: props.img,
+    backgroundImage: `url(${props.img})`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundColor: '#fafafc',

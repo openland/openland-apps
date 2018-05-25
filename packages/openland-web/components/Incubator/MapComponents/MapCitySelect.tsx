@@ -114,7 +114,7 @@ const CityTitle = Glamorous.div<{ active: boolean }>((props) => ({
     paddingRight: 16,
     paddingTop: props.active ? 11 : 0,
     paddingBottom: props.active ? 11 : 0,
-    borderBottom: props.active ? '1px solid rgba(96, 124, 156, 0.07)' : '1px solid rgba(0, 0, 0, 0)',
+    borderBottom: props.active ? 'solid 1px #c1c7cf4d' : 'solid 1px transparent',
     transition: 'all .2s',
     display: 'flex',
     alignItems: 'center',

@@ -49,11 +49,17 @@ const XMapContainer2 = Glamorous.div({
         right: 'auto',
         zIndex: 0,
         '& .mapboxgl-ctrl-group': {
-            border: '1px solid rgba(132, 142, 143, 0.1)',
-            boxShadow: 'none',
+            border: 'none',
+            boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
+
+            '& .mapboxgl-ctrl-zoom-in': {
+                borderBottom: 'solid 1px #c1c7cf4d',
+                // backgroundImage: 'url(\'/static/X/zoomin.svg\')'
+            },
 
             '& .mapboxgl-ctrl-zoom-out': {
-                borderBottom: 'none !important'
+                borderBottom: 'none !important',
+                // backgroundImage: 'url(\'/static/X/zoomin.svg\')'
             },
             '& .mapboxgl-ctrl-compass': {
                 display: 'none !important'
@@ -504,9 +510,9 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                                 {city === 'sf' && <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>{TextMap.zoning}</XSwitcher.Item>}
                                             </XSwitcher> */}
                                 <MapStyleSwitcher>
-                                    <MapStyleSwitcher.Item query={{ field: 'mode' }} text={TextMap.map} img="" />
-                                    <MapStyleSwitcher.Item query={{ field: 'mode', value: 'satellite' }} text={TextMap.satellite} img="" />
-                                    {city === 'sf' && <MapStyleSwitcher.Item query={{ field: 'mode', value: 'zoning' }} text={TextMap.zoning} img="" />}
+                                    <MapStyleSwitcher.Item query={{ field: 'mode' }} text={TextMap.map} img="/static/X/Map.png" />
+                                    <MapStyleSwitcher.Item query={{ field: 'mode', value: 'satellite' }} text={TextMap.satellite} img="/static/X/Satellite.png" />
+                                    {city === 'sf' && <MapStyleSwitcher.Item query={{ field: 'mode', value: 'zoning' }} text={TextMap.zoning} img="/static/X/Zoning.png" />}
                                 </MapStyleSwitcher>
                             </MapSwitcher>
                         </XMapContainer2>
