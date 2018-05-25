@@ -26,7 +26,6 @@ import { XCard } from 'openland-x/XCard';
 import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMapGeocoder } from 'openland-x-map/XMapGeocoder';
-import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
