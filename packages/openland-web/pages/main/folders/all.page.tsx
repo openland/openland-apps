@@ -18,6 +18,14 @@ import { TableParcels } from '../../../components/TableParcels';
 import { XEmpty } from 'openland-x/XEmpty';
 import { XButton } from 'openland-x/XButton';
 import { XFooter } from 'openland-x/XFooter';
+// import { FolderTileSource } from '../../../api';
+import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
+import { ParcelMap } from '../../../components/ParcelMap';
+import { XWithRouter } from 'openland-x-routing/withRouter';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XMapCameraLocation } from 'openland-x-map/XMap';
+import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
+import { trackEvent } from 'openland-x-analytics';
 
 const SidebarItemsStyle = {
     height: 40,
@@ -195,6 +203,74 @@ const FolderItems = withFolderItems((props) => {
     );
 });
 
+const MapContainer = Glamorous.div({
+    flexGrow: 1,
+    height: '100vh'
+});
+
+class FolderMap extends React.Component<XWithRouter, {}> {
+    knownCameraLocation?: XMapCameraLocation;
+
+    constructor(props: XWithRouter) {
+        super(props);
+        if (canUseDOM) {
+            let k = sessionStorage.getItem('__folders_location');
+            if (k != null) {
+                this.knownCameraLocation = JSON.parse(k);
+            }
+        }
+    }
+
+    handleMap = (e: XMapCameraLocation) => {
+        sessionStorage.setItem('__folders_location', JSON.stringify(e));
+        this.knownCameraLocation = e;
+    }
+
+    handleParcelClick = (id: string) => {
+        trackEvent('Folder Map view Parcel', { id: id });
+        this.props.router.pushQuery('selectedParcel', id);
+    }
+    handleItemClick = (id: string, item: any) => {
+        if (item.properties && item.properties.parcelId) {
+            this.handleParcelClick(item.properties.parcelId as string);
+        }
+    }
+    render() {
+        return (
+            <>
+                <MapContainer>
+                    <ParcelMap
+                        mode={this.props.router.query.mode}
+                        focusPosition={{ latitude: 40.713919, longitude: -74.002332, zoom: 12 }}
+                        lastKnownCameraLocation={this.knownCameraLocation}
+                        onCameraLocationChanged={this.handleMap}
+                        onParcelClick={this.handleParcelClick}
+                        selectedParcel={this.props.router.routeQuery.selectedParcel}
+                    >
+
+                        {/* <FolderTileSource
+                            layer="folder"
+                            minZoom={12}
+                            query={{
+                                '$and': { folderId: this.props.router.routeQuery.folderId }
+                            }}
+                        /> */}
+
+                        <XMapPointLayer
+                            source="folder"
+                            layer="folder"
+                            minZoom={12}
+                            onClick={this.handleItemClick}
+                            flyToMaxZoom={18}
+                        />
+                    </ParcelMap>
+                </MapContainer>
+                {this.props.router.routeQuery.selectedParcel && <ParcelCard compact={true} variables={{ parcelId: this.props.router.routeQuery.selectedParcel }} />}
+            </>
+        );
+    }
+}
+
 const FolderContent = withFolder((props) => {
     if (props.data.loading) {
         return <XLoader loading={true} />;
@@ -202,9 +278,12 @@ const FolderContent = withFolder((props) => {
     return (
         <XVertical flexGrow={1}>
             <XHeader text={props.data.folder.name}>
+                {/* <XButton text={props.router.routeQuery.mapView !== 'true' ? 'Map view' : 'Table view'} query={{ field: 'mapView', value: props.router.routeQuery.mapView !== 'true' ? 'true' : 'false' }} /> */}
                 <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name} />
             </XHeader>
-            <FolderItems />
+            {props.router.routeQuery.mapView === 'true' && <FolderMap router={props.router} />}
+            {props.router.routeQuery.mapView !== 'true' && <FolderItems />}
+
             {/* {props.data.folder.parcels.pageInfo.itemsCount > 0 && (
                 <TableParcels items={props.data.folder.parcels.edges.map((v) => v.node)} />
             )}

@@ -32,6 +32,13 @@ export enum SpecialFolder {
 }
 
 
+export interface GeoBox {
+  east: number,
+  north: number,
+  west: number,
+  south: number,
+};
+
 export enum OwnerType {
   CITY = "CITY",
   MIXED = "MIXED",
@@ -97,13 +104,6 @@ export enum PermitType {
   GRADE_QUARRY_FILL_EXCAVATE = "GRADE_QUARRY_FILL_EXCAVATE",
 }
 
-
-export interface GeoBox {
-  east: number,
-  north: number,
-  west: number,
-  south: number,
-};
 
 export interface ParcelMetadataInput {
   description?: string | null,
@@ -900,6 +900,27 @@ export interface CreateFolderFromSearchMutation {
     special: SpecialFolder | null,
     parcelsCount: number,
   },
+};
+
+export interface FolderItemsTileOverlayQueryVariables {
+  box: GeoBox,
+  query?: string | null,
+};
+
+export interface FolderItemsTileOverlayQuery {
+  tiles:  Array< {
+    __typename: "FolderItem",
+    id: string,
+    center:  {
+      __typename: "Geo",
+      latitude: number,
+      longitude: number,
+    } | null,
+    parcel:  {
+      __typename: "Parcel",
+      id: string,
+    },
+  } > | null,
 };
 
 export interface OrganizationsQuery {

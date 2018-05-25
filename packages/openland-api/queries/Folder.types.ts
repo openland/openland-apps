@@ -6,6 +6,7 @@ export const FoldersQuery = typedQuery<Types.FoldersQuery, {}>(Folder.FoldersQue
 export const FoldersSelectQuery = typedQuery<Types.FoldersSelectQuery, {}>(Folder.FoldersSelectQuery);
 export const FolderQuery = typedQuery<Types.FolderQuery, Types.FolderQueryVariables>(Folder.FolderQuery);
 export const FolderItemsConnectionQuery = typedQuery<Types.FolderItemsConnectionQuery, Types.FolderItemsConnectionQueryVariables>(Folder.FolderItemsConnectionQuery);
+export const FolderTileOverlayQuery = typedQuery<Types.FolderItemsTileOverlayQuery, Types.FolderItemsTileOverlayQueryVariables>(Folder.FolderItemsTileOverlayQuery);
 
 export const CreateFolderMutation = typedMutation<Types.CreateFolderMutation, Types.CreateFolderMutationVariables>(Folder.CreateFolderMutation);
 export const CreateFolderFromSearchMutation = typedMutation<Types.CreateFolderFromSearchMutation, Types.CreateFolderFromSearchMutationVariables>(Folder.CreateFolderFromSearchMutation);
