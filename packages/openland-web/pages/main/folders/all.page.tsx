@@ -34,6 +34,7 @@ const SidebarItemsStyle = {
     marginRight: 4,
     color: '#334562',
     '& span': {
+        minWidth: 0,
         maxWidth: '100%',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -139,6 +140,7 @@ const SidebarItemWrapper = Glamorous(Sidebar.Item)({
 });
 
 const SidebarItemTitle = Glamorous.div({
+    minWidth: 0,
     maxWidth: '85%',
     display: 'flex',
     alignItems: 'center',

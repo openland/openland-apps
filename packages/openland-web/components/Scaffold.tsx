@@ -33,51 +33,50 @@ const RootContainer = Glamorous.div({
 // Navigation
 //
 
-const NavigationWrapper = Glamorous.div<{ withMenu: boolean }>((props) => ({
+const NavigationWrapper = Glamorous.div((props) => ({
     display: 'flex',
     flexShrink: 0,
-    width: props.withMenu ? 280 : 72,
     order: 1
 }));
 
-const NavigationContainer = Glamorous.div({
+const NavigationContainer = Glamorous.div<{sidebarBorderColor?: string}>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    width: '72px',
-    paddingTop: '8px',
+    width: 72,
+    paddingTop: 8,
     backgroundColor: '#FAFAFC',
     flexShrink: 0,
-    borderRightColor: 'rgba(0,0,0, 0.05)',
+    borderRightColor: props.sidebarBorderColor ? props.sidebarBorderColor : 'rgba(0,0,0, 0.05)',
     borderRightStyle: 'solid',
     borderRightWidth: '1px',
     alignItems: 'center',
     overflowY: 'scroll',
     position: 'sticky',
     top: 0
-});
+}));
 
 const Logo = Glamorous(XPicture)({
-    height: '48px',
-    width: '48px',
-    marginTop: '12px',
-    marginBottom: '12px',
+    height: 48,
+    width: 48,
+    marginTop: 12,
+    marginBottom: 12,
     alignSelf: 'center',
     flexShrink: 0
 });
 
 const NavigationDivider = Glamorous.div({
-    width: '36px',
-    height: '1px',
-    marginTop: '4px',
-    marginBottom: '4px',
+    width: 36,
+    height: 1,
+    marginTop: 4,
+    marginBottom: 4,
     alignSelf: 'center',
     backgroundColor: '#000000',
     opacity: 0.05
 });
 
 const NavigatorIcon = Glamorous(XIcon)({
-    fontSize: '28px',
+    fontSize: 28,
     textAlign: 'center'
 });
 
@@ -86,8 +85,8 @@ const NavigatorItem = Glamorous(XLink)({
     flexDirection: 'column',
     alignSelf: 'stretch',
     alignItems: 'center',
-    paddingTop: '16px',
-    paddingBottom: '16px',
+    paddingTop: 16,
+    paddingBottom: 16,
     flexShrink: 0,
     color: '#000000',
     cursor: 'pointer',
@@ -133,11 +132,11 @@ const BottomNavigation = Glamorous.div({
 
 const AvatarImg = Glamorous.img({
     overflow: 'hidden',
-    borderRadius: '14px',
+    borderRadius: 14,
     // marginLeft: 16,
     // marginRight: 8,
-    width: '36px',
-    height: '36px',
+    width: 36,
+    height: 36,
     boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
     cursor: 'pointer'
 });
@@ -192,17 +191,19 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
 // Content
 //
 
-const ContentView = Glamorous.div<{ withMenu: boolean }>((props) => ({
+const ContentView = Glamorous.div<{noBoxShadow?: boolean}>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
+    overflow: 'hidden',
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
     backgroundColor: '#ffffff',
     flex: 1,
     order: 2,
-    maxWidth: props.withMenu ? 'calc(100% - 280px)' : 'calc(100% - 72px)',
-    boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
+    minWidth: 0,
+    maxWidth: '100%',
+    boxShadow: props.noBoxShadow ? undefined : '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
     position: 'relative',
     zIndex: 0
 }));
@@ -242,13 +243,13 @@ const SearchContent = Glamorous.div({
 
 const SearchInput = Glamorous.input({
     border: 'none',
-    marginTop: '24px',
-    paddingLeft: '24px',
-    paddingRight: '24px',
-    height: '48px',
+    marginTop: 24,
+    paddingLeft: 24,
+    paddingRight: 24,
+    height: 48,
     width: '100%',
     fontWeight: 600,
-    fontSize: '20px',
+    fontSize: 20,
     backgroundColor: 'transparent',
     '::placeholder': {
         color: 'rgb(24, 39, 66, 0.6)'
@@ -322,12 +323,12 @@ const ResultBodyMain = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     opacity: 0.7,
-    marginRight: '8px',
+    marginRight: 8,
     width: 100
 });
 
 const Tilte = Glamorous(XTitle)({
-    paddingLeft: '16px'
+    paddingLeft: 16
 });
 
 let SearchResults = withSearch((props) => {
@@ -440,13 +441,18 @@ class ScaffoldContent extends React.Component<{ padding?: boolean, bottomOffset?
     }
 }
 
-export class Scaffold extends React.Component<{}, { search: boolean, searchText: string }> {
+interface ScaffoldProps {
+    noBoxShadow?: boolean;
+    sidebarBorderColor?: string;
+}
+
+export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, searchText: string }> {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
 
     searchRef: any | null = null;
 
-    constructor(props: {}) {
+    constructor(props: ScaffoldProps) {
         super(props);
         this.state = { search: false, searchText: '' };
     }
@@ -478,7 +484,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
 
         return (
             <RootContainer>
-                <NavigationWrapper withMenu={menu ? true : false}>
+                <NavigationWrapper>
                     <SearchWrapper visible={this.state.search}>
                         <SearchWrapperSticky>
                             <SearchContainer onClick={this.handleSearch} />
@@ -493,7 +499,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                             </SearchContent>
                         </SearchWrapperSticky>
                     </SearchWrapper>
-                    <NavigationContainer>
+                    <NavigationContainer sidebarBorderColor={this.props.sidebarBorderColor}>
                         <XLink path="/">
                             <Logo picture={{ url: '/static/branding/logo_inverted_squared.png', retina: '/static/branding/logo_inverted_squared@2x.png' }} />
                         </XLink>
@@ -599,7 +605,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                     </NavigationContainer>
                     {menu}
                 </NavigationWrapper>
-                <ContentView withMenu={menu ? true : false}>
+                <ContentView noBoxShadow={this.props.noBoxShadow}>
                     {content}
                 </ContentView>
             </RootContainer>

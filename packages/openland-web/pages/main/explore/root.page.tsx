@@ -88,7 +88,7 @@ const MapSearcher = Glamorous(XMapGeocoder)({
         position: 'relative',
         paddingLeft: 36,
         paddingRight: 10,
-        borderLeft: '1px solid #c1c7cf',
+        borderLeft: '1px solid #c1c7cf4d',
         backgroundImage: 'url(\'/static/img/icons/search-grey.svg\')',
         backgroundRepeat: 'no-repeat',
         backgroundPositionY: 'center',
@@ -424,7 +424,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         let query = this.buildquery();
 
         return (
-            <Scaffold>
+            <Scaffold noBoxShadow={true} sidebarBorderColor="#dcdee4cc">
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <XMapContainer>
                         <XMapContainer2>

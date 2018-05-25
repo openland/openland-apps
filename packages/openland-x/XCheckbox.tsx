@@ -1,6 +1,5 @@
 import Glamorous from 'glamorous';
 import XStyles from './XStyles';
-import { XIcon } from './XIcon';
 import * as React from 'react';
 
 const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
@@ -8,9 +7,6 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 14,
-    // '&:last-child': {
-    //     marginBottom: 22,
-    // },
     '> input': {
         display: 'none'
     },
@@ -25,38 +21,6 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            // marginBottom: 3,
-            '> i': {
-                width: 16,
-                height: 16,
-                borderRadius: 3.5,
-                color: '#fff',
-                backgroundColor: props.active ? '#4428e0' : '#fff',
-                border: '1px solid rgba(97, 126, 156, 0.2)',
-                fontSize: 13,
-                lineHeight: '14px',
-                marginRight: 10,
-                paddingLeft: 1
-            },
-            '> div': {
-                width: 16,
-                height: 16,
-                borderRadius: 50,
-                backgroundColor: props.active ? '#4428e0' : '#fff',
-                border: '1px solid rgba(97, 126, 156, 0.2)',
-                marginRight: 10,
-                position: 'relative',
-                '&::after': {
-                    content: props.active ? `''` : undefined,
-                    width: 8,
-                    height: 8,
-                    borderRadius: 50,
-                    backgroundColor: '#ffffff',
-                    position: 'absolute',
-                    top: 3,
-                    left: 3
-                }
-            },
             '> span': {
                 color: '#1f3449'
             },
@@ -71,6 +35,20 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
             color: '#1f3449'
         }
     }
+}));
+
+const CheckIcon = Glamorous.div<{ active?: boolean }>((props) => ({
+    width: 18,
+    height: 18,
+    borderRadius: 3.5,
+    color: '#fff',
+    backgroundColor: props.active ? '#4428e0' : '#fff',
+    backgroundImage: props.active ? 'url(\'/static/img/icons/check-form.svg\')' : 'none',
+    backgroundSize: 12,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    border: '1px solid rgba(97, 126, 156, 0.2)',
+    marginRight: 10,
 }));
 
 const Divided = Glamorous.div({
@@ -118,7 +96,7 @@ export class XCheckbox extends React.Component<XCheckboxProps, { isChecked: bool
                 <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
                 <label htmlFor={id}>
                     <div className="top-content">
-                        <XIcon icon={this.state.isChecked ? 'done' : ''} />
+                        <CheckIcon active={this.state.isChecked} />
                         <span>{this.props.label}</span>
                     </div>
                     {this.props.hint && <div className="bottom-content">{this.props.hint}</div>}

@@ -16,8 +16,6 @@ const MapFilterWrapper = Glamorous(XCard)<{ active: boolean }>((props) => ({
     paddingBottom: props.active ? 12 : 0,
     zIndex: props.active ? 12 : 1,
     borderRadius: 6,
-    // borderTopRightRadius: 0,
-    // borderBottomRightRadius: 0,
     border: 'none',
     transition: 'padding .2s',
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
@@ -51,28 +49,23 @@ const CitySelectorItemLink = Glamorous(XLink)<{ active: boolean }>((props) => ({
     '&:last-child': {
         marginBottom: 0
     },
-    '> div': {
-        width: 16,
-        height: 16,
-        borderRadius: 50,
-        backgroundColor: props.active ? '#4428e0' : '#fff',
-        border: '1px solid rgba(97, 126, 156, 0.2)',
-        marginRight: 10,
-        position: 'relative',
-        '&::after': {
-            content: props.active ? `''` : undefined,
-            width: 8,
-            height: 8,
-            borderRadius: 50,
-            backgroundColor: '#ffffff',
-            position: 'absolute',
-            top: 3,
-            left: 3
-        }
-    },
     '> span': {
         color: '#1f3449'
     }
+}));
+
+const CheckIcon = Glamorous.div<{ active?: boolean }>((props) => ({
+    width: 18,
+    height: 18,
+    borderRadius: 3.5,
+    color: '#fff',
+    backgroundColor: props.active ? '#4428e0' : '#fff',
+    backgroundImage: props.active ? 'url(\'/static/img/icons/check-form.svg\')' : 'none',
+    backgroundSize: 12,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    border: '1px solid rgba(97, 126, 156, 0.2)',
+    marginRight: 10,
 }));
 
 const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
@@ -85,7 +78,6 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     opacity: props.active ? 1 : 0,
     backgroundColor: 'rgba(0, 0, 0, 0.41)',
     zIndex: 10,
-    // pointerEvents: 'none'
 }));
 
 interface CitySelectorItemProps extends XLinkProps {
@@ -103,7 +95,7 @@ export class CitySelectorItem extends React.Component<CitySelectorItemProps> {
 
         return (
             <CitySelectorItemLink {...linkProps} >
-                <div />
+                <CheckIcon active={this.props.active} />
                 <span>{label}</span>
             </CitySelectorItemLink>
         );
@@ -126,12 +118,6 @@ const CityTitle = Glamorous.div<{ active: boolean }>((props) => ({
     transition: 'all .2s',
     display: 'flex',
     alignItems: 'center',
-    // '&:hover .title': {
-    //     color: '#522BFF',
-    //     '& .material-icons': {
-    //         color: '#334562'
-    //     }
-    // },
     '& .title': {
         display: 'flex',
         alignItems: 'center',

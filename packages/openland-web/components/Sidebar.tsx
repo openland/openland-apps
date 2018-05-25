@@ -3,13 +3,13 @@ import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import XStyles from 'openland-x/XStyles';
 
-const SidebarContainer = Glamorous.div({
+const SidebarContainer = Glamorous.div<{width?: number, paddingLeft?: number, paddingRight?: number}>((props) => ({
     display: 'flex',
     flexDirection: 'column',
-    width: 208,
-    paddingRight: 8,
-    paddingLeft: 8
-});
+    width: props.width ? props.width : 208,
+    paddingRight: props.paddingRight ? props.paddingRight : 8,
+    paddingLeft: props.paddingLeft ? props.paddingLeft :  8
+}));
 
 const SidebarHeader = Glamorous.div({
     display: 'flex',
@@ -47,13 +47,13 @@ export const SidebarSubItem = Glamorous(XLink)({
     }
 });
 
-export class Sidebar extends React.Component<{ title: string }> {
+export class Sidebar extends React.Component<{ title: string, width?: number, paddingLeft?: number, paddingRight?: number }> {
     static Item = SidebarItem;
     static Subitem = SidebarSubItem;
 
     render() {
         return (
-            <SidebarContainer>
+            <SidebarContainer width={this.props.width} paddingLeft={this.props.paddingLeft} paddingRight={this.props.paddingRight}>
                 <SidebarHeader>{this.props.title}</SidebarHeader>
                 {this.props.children}
             </SidebarContainer>
