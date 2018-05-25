@@ -82,7 +82,7 @@ const MapSwitcher = Glamorous.div({
 
 const MapSearcher = Glamorous(XMapGeocoder)({
     zIndex: 1,
-    height: 56,
+    height: 52,
     top: 18,
     left: 165,
     width: 178,
@@ -174,7 +174,7 @@ const FilterCounterWrapper = Glamorous(XCard)<{ saveActive: boolean }>((props) =
     paddingRight: 8,
     height: 48,
     left: 18,
-    top: 84,
+    top: 80,
     zIndex: props.saveActive ? 11 : 1,
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
 }));

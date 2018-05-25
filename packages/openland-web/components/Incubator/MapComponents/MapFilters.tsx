@@ -416,7 +416,7 @@ const MapFilterWrapper = Glamorous(XCard)<{ active?: boolean }>((props) => ({
     left: 360,
     flexDirection: 'row',
     alignItems: 'center',
-    height: 56,
+    height: 52,
     borderRadius: 6,
     overflow: 'hidden',
     border: 'none',

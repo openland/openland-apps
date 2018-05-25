@@ -103,7 +103,7 @@ export class CitySelectorItem extends React.Component<CitySelectorItemProps> {
 }
 
 const CityTitle = Glamorous.div<{ active: boolean }>((props) => ({
-    height: 56,
+    height: 52,
     fontSize: 15,
     fontWeight: 500,
     lineHeight: 'normal',
