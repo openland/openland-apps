@@ -57,7 +57,7 @@ const CitySelectorItemLink = Glamorous(XLink)<{ active: boolean }>((props) => ({
 const CheckIcon = Glamorous.div<{ active?: boolean }>((props) => ({
     width: 18,
     height: 18,
-    borderRadius: 3.5,
+    borderRadius: 50,
     color: '#fff',
     backgroundColor: props.active ? '#4428e0' : '#fff',
     backgroundImage: props.active ? 'url(\'/static/img/icons/check-form.svg\')' : 'none',
