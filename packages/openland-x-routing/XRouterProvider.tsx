@@ -57,6 +57,7 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes }> {
             pushQueryParams: this.pushQueryParams,
             replace: this.replace,
             replaceQuery: this.replaceQuery,
+            replaceQueryParams: this.replaceQueryParams,
             resolveLink: this.resolveLink
         };
         return res;
@@ -98,6 +99,15 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes }> {
     }
     replaceQuery = (field: string, value?: string) => {
         this.props.routes.Router.replaceRoute(this.xRouterState.path + '?' + qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value })));
+    }
+
+    replaceQueryParams = (params?: {}) => {
+        let q = qs.stringify(Object.assign({}, this.xRouterState.query, params));
+        if (q !== '') {
+            q = '?' + q;
+        }
+        this.props.routes.Router.replaceRoute(this.xRouterState.path + q);
+
     }
 
     componentWillReceiveProps(nextProps: {}, nextContext: any) {

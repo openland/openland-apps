@@ -14,5 +14,6 @@ export interface XRouter {
     pushQueryParams: (params: {}) => void;
     replace: (path: string) => void;
     replaceQuery: (field: string, value?: string) => void;
+    replaceQueryParams: (params: {}) => void;
     resolveLink: (path: string) => string;
 }

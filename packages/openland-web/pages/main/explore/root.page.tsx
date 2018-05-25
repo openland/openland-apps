@@ -26,6 +26,7 @@ import { XCard } from 'openland-x/XCard';
 import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMapGeocoder } from 'openland-x-map/XMapGeocoder';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -270,13 +271,13 @@ const DealsSource = withDealsMap((props) => {
 });
 
 // const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Add to prospecting</XButtonMutation>);
-class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps, { shadowed: boolean, mapLoaded?: boolean, parcelStatsLoaded?: boolean }> {
+class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps & { roles: { roles: string[]; } | undefined }, { shadowed: boolean, mapLoaded?: boolean, parcelStatsLoaded?: boolean }> {
 
     knownCameraLocation?: XMapCameraLocation;
 
     savedCity?: string | null;
 
-    constructor(props: XWithRouter & UserInfoComponentProps) {
+    constructor(props: XWithRouter & UserInfoComponentProps  & { roles: { roles: string[]; } | undefined }) {
         super(props);
         this.state = {
             shadowed: false
@@ -289,6 +290,10 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
             }
 
             this.savedCity = sessionStorage.getItem('__explore_city');
+
+            if (!this.props.router.routeQuery.city) {
+                this.props.router.replaceQueryParams({ city: this.resolveCity() });
+            }
         }
     }
 
@@ -393,82 +398,84 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         }
     }
 
+    resolveCity = () => {
+        let defaultCity = 'sf';
+        if (this.props.roles!!.roles.find((v) => v === 'feature-city-nyc-force')) {
+            defaultCity = 'nyc';
+        }
+        let pendingCity = this.props.router.routeQuery.city || this.savedCity || defaultCity;
+        return pendingCity;
+    }
+
     render() {
+        let pendingCity = this.resolveCity();
+        let cityChanged = pendingCity !== this.savedCity;
+        let city = pendingCity;
+        if (canUseDOM) {
+            sessionStorage.setItem('__explore_city', city);
+        }
+        let cityName = city === 'sf' ? 'San Francisco' : 'New York';
+        let countyName = city === 'sf' ? 'San Francisco' : 'New York';
+        let stateName = city === 'sf' ? 'CA' : 'NY';
+        let boundingBox = city === 'sf' ? [-123.0137, 37.6040, -122.3549, 37.8324] : [-74.2589, 40.4774, -73.7004, 40.9176];
+        let focus = city === 'sf'
+            ? { latitude: 37.75444398077139, longitude: -122.43963811583545, zoom: 12 }
+            : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
+
+        let query = this.buildquery();
+
         return (
-            <XRoleContext.Consumer>
-                {(roles) => {
-                    let defaultCity = 'sf';
-                    if (roles!!.roles.find((v) => v === 'feature-city-nyc-force')) {
-                        defaultCity = 'nyc';
-                    }
-                    let pendingCity = this.props.router.routeQuery.city || this.savedCity || defaultCity;
-                    let cityChanged = pendingCity !== this.savedCity;
-                    let city = pendingCity;
-                    if (canUseDOM) {
-                        sessionStorage.setItem('__explore_city', city);
-                    }
-                    let cityName = city === 'sf' ? 'San Francisco' : 'New York';
-                    let countyName = city === 'sf' ? 'San Francisco' : 'New York';
-                    let stateName = city === 'sf' ? 'CA' : 'NY';
-                    let boundingBox = city === 'sf' ? [-123.0137, 37.6040, -122.3549, 37.8324] : [-74.2589, 40.4774, -73.7004, 40.9176];
-                    let focus = city === 'sf'
-                        ? { latitude: 37.75444398077139, longitude: -122.43963811583545, zoom: 12 }
-                        : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
+            <Scaffold>
+                <Scaffold.Content padding={false} bottomOffset={false}>
+                    <XMapContainer>
+                        <XMapContainer2>
 
-                    let query = this.buildquery();
+                            <FoundCounterSave
+                                variables={{
+                                    query: query && JSON.stringify(query),
+                                    city: cityName,
+                                    county: countyName,
+                                    state: stateName
+                                }}
+                                show={!!(this.state.mapLoaded)}
+                                onStatsLoaded={this.onStatsLoaded}
+                            />
 
-                    return (
-                        <Scaffold>
-                            <Scaffold.Content padding={false} bottomOffset={false}>
-                                <XMapContainer>
-                                    <XMapContainer2>
+                            {this.state.mapLoaded && this.state.parcelStatsLoaded && (
+                                <>
+                                    <RoutedMapFilters city={city} />
 
-                                        <FoundCounterSave
-                                            variables={{
-                                                query: query && JSON.stringify(query),
-                                                city: cityName,
-                                                county: countyName,
-                                                state: stateName
-                                            }}
-                                            show={!!(this.state.mapLoaded)}
-                                            onStatsLoaded={this.onStatsLoaded}
+                                    <CitySelector title={cityName}>
+                                        <CitySelector.Item
+                                            path="/?city=sf"
+                                            active={city === 'sf'}
+                                            label="San Francisco"
                                         />
+                                        <CitySelector.Item
+                                            path="/?city=nyc"
+                                            active={city !== 'sf'}
+                                            label="New York"
+                                        />
+                                    </CitySelector>
+                                </>
+                            )}
 
-                                        {this.state.mapLoaded && this.state.parcelStatsLoaded && (
-                                            <>
-                                                <RoutedMapFilters city={city} />
+                            <ParcelMap
+                                mode={this.props.router.query.mode}
+                                selectedParcel={this.props.router.query.selectedParcel}
+                                onParcelClick={this.handleClick}
+                                focusPosition={focus}
+                                lastKnownCameraLocation={cityChanged ? undefined : this.knownCameraLocation}
+                                onCameraLocationChanged={this.handleMap}
+                                onLoaded={this.onMapLoaded}
+                            >
+                                <MapSearcher city={cityName} bbox={boundingBox} />
 
-                                                <CitySelector title={cityName}>
-                                                    <CitySelector.Item
-                                                        path="/?city=sf"
-                                                        active={city === 'sf'}
-                                                        label="San Francisco"
-                                                    />
-                                                    <CitySelector.Item
-                                                        path="/?city=nyc"
-                                                        active={city !== 'sf'}
-                                                        label="New York"
-                                                    />
-                                                </CitySelector>
-                                            </>
-                                        )}
-
-                                        <ParcelMap
-                                            mode={this.props.router.query.mode}
-                                            selectedParcel={this.props.router.query.selectedParcel}
-                                            onParcelClick={this.handleClick}
-                                            focusPosition={focus}
-                                            lastKnownCameraLocation={cityChanged ? undefined : this.knownCameraLocation}
-                                            onCameraLocationChanged={this.handleMap}
-                                            onLoaded={this.onMapLoaded}
-                                        >
-                                            <MapSearcher city={cityName} bbox={boundingBox} />
-
-                                            <ParcelMapSearch
-                                                layer="parcels-found"
-                                                query={query}
-                                            />
-                                            {/* 
+                                <ParcelMapSearch
+                                    layer="parcels-found"
+                                    query={query}
+                                />
+                                {/* 
                                             <ParcelPointSource
                                                 layer="parcels-found"
                                                 query={query}
@@ -476,41 +483,38 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                                 skip={query === undefined}
                                             />
                                              */}
-                                            <DealsSource />
+                                <DealsSource />
 
-                                            <XMapPointLayer
-                                                source="parcels-found"
-                                                layer="parcels-found"
-                                                onClick={this.handleClick}
-                                            />
+                                <XMapPointLayer
+                                    source="parcels-found"
+                                    layer="parcels-found"
+                                    onClick={this.handleClick}
+                                />
 
-                                            <XMapPointLayer
-                                                source="deals"
-                                                layer="deals"
-                                                color="#24b47e"
-                                                onClick={this.handleClick}
-                                            />
-                                        </ParcelMap>
-                                        <MapSwitcher>
-                                            {/* <XSwitcher fieldStyle={true}>
+                                <XMapPointLayer
+                                    source="deals"
+                                    layer="deals"
+                                    color="#24b47e"
+                                    onClick={this.handleClick}
+                                />
+                            </ParcelMap>
+                            <MapSwitcher>
+                                {/* <XSwitcher fieldStyle={true}>
                                                 <XSwitcher.Item query={{ field: 'mode' }}>{TextMap.map}</XSwitcher.Item>
                                                 <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>{TextMap.satellite}</XSwitcher.Item>
                                                 {city === 'sf' && <XSwitcher.Item query={{ field: 'mode', value: 'zoning' }}>{TextMap.zoning}</XSwitcher.Item>}
                                             </XSwitcher> */}
-                                            <MapStyleSwitcher>
-                                                <MapStyleSwitcher.Item query={{ field: 'mode' }} text={TextMap.map} img="" />
-                                                <MapStyleSwitcher.Item query={{ field: 'mode', value: 'satellite' }} text={TextMap.satellite} img="" />
-                                                {city === 'sf' && <MapStyleSwitcher.Item query={{ field: 'mode', value: 'zoning' }} text={TextMap.zoning} img="" />}
-                                            </MapStyleSwitcher>
-                                        </MapSwitcher>
-                                    </XMapContainer2>
-                                    {this.props.router.query.selectedParcel && <ParcelCard variables={{ parcelId: this.props.router.query!!.selectedParcel }} mapMode={this.props.router.routeQuery.mode} />}
-                                </XMapContainer>
-                            </Scaffold.Content>
-                        </Scaffold>);
-                }}
-            </XRoleContext.Consumer>
-        );
+                                <MapStyleSwitcher>
+                                    <MapStyleSwitcher.Item query={{ field: 'mode' }} text={TextMap.map} img="" />
+                                    <MapStyleSwitcher.Item query={{ field: 'mode', value: 'satellite' }} text={TextMap.satellite} img="" />
+                                    {city === 'sf' && <MapStyleSwitcher.Item query={{ field: 'mode', value: 'zoning' }} text={TextMap.zoning} img="" />}
+                                </MapStyleSwitcher>
+                            </MapSwitcher>
+                        </XMapContainer2>
+                        {this.props.router.query.selectedParcel && <ParcelCard variables={{ parcelId: this.props.router.query!!.selectedParcel }} mapMode={this.props.router.routeQuery.mode} />}
+                    </XMapContainer>
+                </Scaffold.Content>
+            </Scaffold>);
     }
 }
 
@@ -518,7 +522,15 @@ export default withApp('Explore', 'viewer', withRouter(withUserInfo((props) => {
     return (
         <>
             <XDocumentHead title={[TextPageExplore.title]} />
-            <ParcelCollection {...props} />
+            <XRoleContext.Consumer>
+                {(roles) => {
+                    return (
+                        <ParcelCollection {...props} roles={roles} />
+                    );
+
+                }}
+
+            </XRoleContext.Consumer >
         </>
     );
 })));
