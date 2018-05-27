@@ -21,6 +21,12 @@ routes.add('/404', '/404');
 routes.add('/map', '/main/explore/root');
 
 //
+// Marketplace
+//
+
+routes.add('/marketplace', '/main/marketplace/main');
+
+//
 // Parcels
 //
 

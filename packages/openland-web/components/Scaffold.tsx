@@ -39,7 +39,7 @@ const NavigationWrapper = Glamorous.div((props) => ({
     order: 1
 }));
 
-const NavigationContainer = Glamorous.div<{sidebarBorderColor?: string}>((props) => ({
+const NavigationContainer = Glamorous.div<{ sidebarBorderColor?: string }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
@@ -191,7 +191,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
 // Content
 //
 
-const ContentView = Glamorous.div<{noBoxShadow?: boolean}>((props) => ({
+const ContentView = Glamorous.div<{ noBoxShadow?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
@@ -508,6 +508,18 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             <NavigatorIcon icon={this.state.search ? 'close' : 'search'} />
                         </NavigatorItem>
                         <NavigationDivider />
+                        <XWithRole role={['feature-marketplace']}>
+                            <XTooltip placement="right">
+                                <XTooltip.Target>
+                                    <NavigatorItem path="/marketplace">
+                                        <NavigatorIcon icon="shopping_cart" />
+                                    </NavigatorItem>
+                                </XTooltip.Target>
+                                <XTooltip.Content>
+                                    <strong>{TextAppBar.items.marketplace}</strong>
+                                </XTooltip.Content>
+                            </XTooltip>
+                        </XWithRole>
                         <XTooltip placement="right">
                             <XTooltip.Target>
                                 <NavigatorItem path="/map">
