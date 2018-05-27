@@ -510,7 +510,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                         <NavigationDivider />
                         <XTooltip placement="right">
                             <XTooltip.Target>
-                                <NavigatorItem path="/">
+                                <NavigatorItem path="/map">
                                     <NavigatorIcon icon="explore" />
                                 </NavigatorItem>
                             </XTooltip.Target>

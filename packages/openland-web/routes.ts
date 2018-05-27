@@ -6,13 +6,19 @@ let routes = NRoutes();
 // App Root
 //
 
-routes.add('/', '/main/explore/root');
+routes.add('/', '/root');
 routes.add('/signup', '/signup');
 routes.add('/signin', '/signin');
 routes.add('/activation', '/activation');
 routes.add('/need_info', '/need_info');
 routes.add('/deactivated', '/deactivated');
 routes.add('/404', '/404');
+
+//
+// Map
+//
+
+routes.add('/map', '/main/explore/root');
 
 //
 // Parcels
