@@ -22,7 +22,8 @@ export const withData = (ComposedComponent: React.ComponentType) => {
         serverState: { apollo: { data: any, token?: string } },
         host: string,
         protocol: string,
-        domain: string
+        domain: string,
+        composedInitialProps: any
     }> {
 
         static displayName = `WithData(${getComponentDisplayName(
@@ -70,7 +71,7 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                         <ApolloProvider client={apollo}>
                             <HostNameProvider hostName={host} protocol={protocol}>
                                 <XRouterProvider routes={Routes}>
-                                    <ComposedComponent />
+                                    <ComposedComponent {...composedInitialProps} />
                                 </XRouterProvider>
                             </HostNameProvider>
                         </ApolloProvider>
@@ -111,7 +112,7 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                         <ApolloProvider client={apollo}>
                             <HostNameProvider hostName={host} protocol={protocol}>
                                 <XRouterProvider routes={Routes}>
-                                    <ComposedComponent />
+                                    <ComposedComponent {...composedInitialProps} />
                                 </XRouterProvider>
                             </HostNameProvider>
                         </ApolloProvider>
@@ -133,13 +134,13 @@ export const withData = (ComposedComponent: React.ComponentType) => {
 
             return {
                 serverState,
-                ...composedInitialProps,
+                composedInitialProps,
                 host,
                 protocol
             };
         }
 
-        constructor(props: { serverState: { apollo: { data: any, token?: string } }, host: string, protocol: string, domain: string }) {
+        constructor(props: { serverState: { apollo: { data: any, token?: string } }, host: string, protocol: string, domain: string, composedInitialProps: any }) {
             super(props);
             this.apollo = apolloClient(this.props.serverState.apollo.data, this.props.serverState.apollo.token);
         }
@@ -155,7 +156,7 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                     <ApolloProvider client={this.apollo}>
                         <HostNameProvider hostName={this.props.host} protocol={this.props.protocol}>
                             <XRouterProvider routes={Routes}>
-                                <ComposedComponent />
+                                <ComposedComponent {...this.props.composedInitialProps} />
                             </XRouterProvider>
                         </HostNameProvider>
                     </ApolloProvider>
