@@ -334,7 +334,11 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
             clauses.push({ 'landUse': JSON.parse(this.props.router.query!!.landUse) });
         }
         if (this.props.router.query!!.filterStories) {
-            clauses.push({ 'stories': JSON.parse(this.props.router.query!!.filterStories) });
+            if (JSON.parse(this.props.router.query!!.filterStories).indexOf('4') > -1) {
+                clauses.push({ '$or': [{ 'stories': { gte: 4 } }, { 'stories': JSON.parse(this.props.router.query!!.filterStories) }] });
+            } else {
+                clauses.push({ 'stories': JSON.parse(this.props.router.query!!.filterStories) });
+            }
         }
         if (this.props.router.query!!.ownerName) {
             clauses.push({ 'ownerName': this.props.router.query.ownerName });

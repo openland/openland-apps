@@ -700,7 +700,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                         '1': '1 story',
                                         '2': '2 stories',
                                         '3': '3 stories',
-                                        '4': '4 stories'
+                                        '4': '4 + stories'
                                     }}
                                     content={(
                                         <FiltersContent>
@@ -712,7 +712,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                                             { value: '1', label: '1 story' },
                                                             { value: '2', label: '2 stories' },
                                                             { value: '3', label: '3 stories' },
-                                                            { value: '4', label: '4 stories' }]} />
+                                                            { value: '4', label: '4 + stories' }]} />
                                                 </ApplyFilterWrap>
                                             </XVertical>
                                             <FilterFooter />
