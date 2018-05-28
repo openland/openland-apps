@@ -131,7 +131,7 @@ export class XRadioGroup extends React.Component<XRadioProps, { selected?: strin
         }
         if (this.props.useAnyOption !== false && this.props.anyOptionOrder !== 'before') {
             children.push(
-                <XRadioItem key={'any_option'} label={ this.props.anyOptionName || 'Any'} value={'any_option_value_stub'} checked={this.state.selected === undefined} onChange={this.handleChange} />
+                <XRadioItem key={'any_option'} label={this.props.anyOptionName || 'Any'} value={'any_option_value_stub'} checked={this.state.selected === undefined} onChange={this.handleChange} />
             );
         }
 
