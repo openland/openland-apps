@@ -904,7 +904,7 @@ export interface CreateFolderFromSearchMutation {
 
 export interface FolderItemsTileOverlayQueryVariables {
   box: GeoBox,
-  query?: string | null,
+  folderId: string,
 };
 
 export interface FolderItemsTileOverlayQuery {
