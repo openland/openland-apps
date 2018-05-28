@@ -73,7 +73,7 @@ export class XRadioItem extends React.Component<{ label: string, value?: string,
     }
 }
 
-class XRadioProps { elements?: string[] | { value: string, label: string }[]; selected?: string; onChange?: (value?: string) => void; useAnyOption?: boolean; }
+class XRadioProps { elements?: string[] | { value: string, label: string }[]; selected?: string; onChange?: (value?: string) => void; useAnyOption?: boolean;  anyOptionOrder?: 'before' | 'after'; anyOptionName?: string; }
 export class XRadioGroup extends React.Component<XRadioProps, { selected?: string }> {
     static defaultProps = {
         _isRadioGroup: true
@@ -113,6 +113,12 @@ export class XRadioGroup extends React.Component<XRadioProps, { selected?: strin
             children.push(React.cloneElement(c as any, this.modifyProps(c)));
         }
 
+        if (this.props.useAnyOption !== false && this.props.anyOptionOrder === 'before') {
+            children.push(
+                <XRadioItem key={'any_option'} label={this.props.anyOptionName || 'Any'} value={'any_option_value_stub'} checked={this.state.selected === undefined} onChange={this.handleChange} />
+            );
+        }
+
         if (this.props.elements) {
             for (let element of this.props.elements) {
                 let label = (element as any).label !== undefined ? (element as any).label : element;
@@ -123,9 +129,9 @@ export class XRadioGroup extends React.Component<XRadioProps, { selected?: strin
             }
 
         }
-        if (this.props.useAnyOption !== false) {
+        if (this.props.useAnyOption !== false && this.props.anyOptionOrder !== 'before') {
             children.push(
-                <XRadioItem key={'any_option'} label={'Any'} value={'any_option_value_stub'} checked={this.state.selected === undefined} onChange={this.handleChange} />
+                <XRadioItem key={'any_option'} label={ this.props.anyOptionName || 'Any'} value={'any_option_value_stub'} checked={this.state.selected === undefined} onChange={this.handleChange} />
             );
         }
 

@@ -14,6 +14,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
 import { XGroup } from 'openland-x/XGroup';
 import { XLink } from 'openland-x/retired/XLink';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const FiltersContent = Glamorous.div<{ visible?: boolean }>((props) => ({
     maxHeight: 'calc(100vh - 150px)',
@@ -515,20 +516,20 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
 
         let sfOther = [];
 
-        sfOther.push(
-            <FilterCategory key={'filter_filterOnSale'}>
-                <FilterCategoryTitle>On Sale</FilterCategoryTitle>
-                <ApplyFilterWrap fieldName="filterOnSale" router={this.props.router}>
-                    <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
-                </ApplyFilterWrap>
-            </FilterCategory >
-        );
+        // sfOther.push(
+        //     <FilterCategory key={'filter_filterOnSale'}>
+        //         <FilterCategoryTitle>On Sale</FilterCategoryTitle>
+        //         <ApplyFilterWrap fieldName="filterOnSale" router={this.props.router}>
+        //             <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
+        //         </ApplyFilterWrap>
+        //     </FilterCategory >
+        // );
 
         sfOther.push(
             <FilterCategory key={'filter_isOkForTower'}>
                 <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="isOkForTower" router={this.props.router}>
-                    <XRadioGroup elements={[{ value: 'true', label: 'Yes (90+ height, 0-2 stories now)' }, { value: 'false', label: 'No' }]} />
+                    <XRadioGroup elements={[{ value: 'true', label: 'Yes(90+ height limit, 0-2 stories)' }]} anyOptionName="All" anyOptionOrder="before"/>
                 </ApplyFilterWrap>
             </FilterCategory>
         );
@@ -541,7 +542,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     { value: '243', label: '< 800 feet' },
                     { value: '457', label: '< 1500 feet' },
                     { value: '1220', label: '< 4000 feet' },
-                    { value: '2430', label: '< 8000 feet' }]} />
+                    { value: '2430', label: '< 8000 feet' }]} anyOptionOrder="before" anyOptionName="All"/>
                 </ApplyFilterWrap>
             </FilterCategory>
         );
@@ -566,7 +567,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                 <FilterCategory key={'filter_isVacant'}>
                     <FilterCategoryTitle>Vacant</FilterCategoryTitle>
                     <ApplyFilterWrap fieldName="isVacant" router={this.props.router}>
-                        <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
+                        <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} anyOptionName="All" anyOptionOrder="before"/>
                     </ApplyFilterWrap>
                 </FilterCategory>
             );
@@ -577,20 +578,23 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             <FilterCategory key={'filter_publicOwner'}>
                 <FilterCategoryTitle>Publicly owned</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="publicOwner" router={this.props.router}>
-                    <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
+                    <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}  anyOptionName="All" anyOptionOrder="before"/>
                 </ApplyFilterWrap>
             </FilterCategory>
         );
 
         other.push(
-            <FilterCategory key={'filter_compatible'}>
-                <FilterCategoryTitle>Compatible buildings</FilterCategoryTitle>
-                <XVertical>
-                    <ApplyFilterWrap fieldName="compatible" router={this.props.router}>
-                        <XCheckboxGroup elements={[{ value: 'kasita-1', label: 'Elemynt-1' }, { value: 'kasita-2', label: 'Elemynt-2' }]} />
-                    </ApplyFilterWrap>
-                </XVertical>
-            </FilterCategory>
+            <XWithRole role={'feature-customer-kassita'}>
+                <FilterCategory key={'filter_compatible'}>
+                    <FilterCategoryTitle>Compatible buildings</FilterCategoryTitle>
+                    <XVertical>
+                        <ApplyFilterWrap fieldName="compatible" router={this.props.router}>
+                            <XCheckboxGroup elements={[{ value: 'kasita-1', label: 'Elemynt-1' }, { value: 'kasita-2', label: 'Elemynt-2' }]} />
+                        </ApplyFilterWrap>
+                    </XVertical>
+                </FilterCategory>
+            </XWithRole>
+
         );
 
         if (this.props.city === 'sf') {
