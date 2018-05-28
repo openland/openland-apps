@@ -530,7 +530,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 <strong>{TextAppBar.items.explore}</strong>
                             </XTooltip.Content>
                         </XTooltip>
-                        <XWithRole role={['super-admin', 'software-developer']}>
+                        <XWithRole role={['feature-customer-kassita']} negate={true}>
                             <XTooltip placement="right">
                                 <XTooltip.Target>
                                     <NavigatorItem path="/folders" activateForSubpaths={true}>
