@@ -668,16 +668,16 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
 
                     {this.props.city === 'sf' && (
                         <>
-                            <FilterButtonWrapper key={'filter_filterLandUse'}>
+                            <FilterButtonWrapper key={'filter_landUse'}>
                                 <FilterButton
                                     handler={this.applyHandler}
-                                    fieldName="filterLandUse"
+                                    fieldName="landUse"
                                     router={this.props.router}
                                     filterTitle="Land Use"
                                     content={(
                                         <FiltersContent>
                                             <XVertical>
-                                                <ApplyFilterWrap fieldName="filterLandUse" router={this.props.router}>
+                                                <ApplyFilterWrap fieldName="landUse" router={this.props.router}>
                                                     <XCheckboxGroup
                                                         elements={AllLandUse.map((v) => ({ value: v.label, label: v.label, hint: v.hint }))} />
                                                 </ApplyFilterWrap>
