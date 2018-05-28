@@ -131,6 +131,7 @@ const CityTitle = Glamorous.div<{ active: boolean }>((props) => ({
         transition: 'all .2s',
         '& .material-icons': {
             marginTop: 3,
+            marginLeft: 2,
             fontSize: 15,
             color: '#abbacb',
             opacity: 0.8,

@@ -33,6 +33,7 @@ export const ParcelMap = (props: XMapProps & {
                 layerSource="all_parcels"
 
                 style={{
+                    fillColor: props.mode === 'zoning' ? 'transparent' : undefined,
                     selectedFillOpacity: 0,
                     selectedBorderColor: '#4428E1',
                     selectedBorderWidth: 8,
@@ -53,6 +54,7 @@ export const ParcelMap = (props: XMapProps & {
                 minZoom={props.mode === 'satellite' ? 14 : 12}
                 maxZoom={16}
                 style={{
+                    fillColor: props.mode === 'zoning' ? 'transparent' : undefined,
                     fillOpacity: 0.1,
                     borderOpacity: 0.7,
                     borderColor: props.mode === 'satellite' ? '#ffffff' : '#4428e0',

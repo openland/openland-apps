@@ -86,7 +86,17 @@ const MapSearcher = Glamorous(XMapGeocoder)({
     top: 18,
     left: 165,
     width: 178,
-    backgroundColor: 'transparent',
+    backgroundColor: '#fff',
+    transition: 'all .2s',
+    borderTopRightRadius: 6,
+    borderBottomRightRadius: 6,
+    '&:focus-within': {
+        left: 18,
+        zIndex: 2,
+        borderTopLeftRadius: 6,
+        borderBottomLeftRadius: 6,
+        width: 325
+    },
     '& .mapboxgl-ctrl-geocoder.mapboxgl-ctrl': {
         height: '100%',
         display: 'flex',
@@ -113,7 +123,7 @@ const MapSearcher = Glamorous(XMapGeocoder)({
         },
         '& ul.suggestions': {
             position: 'absolute',
-            top: 65,
+            top: 60,
             right: 0,
             width: 325,
             backgroundColor: '#fff',
@@ -209,7 +219,7 @@ const FolderButtonWithSave = withParcelStats((props) => {
                 target={(
                     <FilterCounterWrapper saveActive={(props as any).showFolderSelect} >
                         <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                            <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                            <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</>} parcels </span>
                         </FilterCounter>
                         <XWithRole role={['feature-customer-kassita']} negate={true}>
                             <XButtonWithMargin text="Save to Folder" style="primary" onClick={(props as any).onButtonClick} />
@@ -219,7 +229,7 @@ const FolderButtonWithSave = withParcelStats((props) => {
         ) : (
                 <FilterCounterWrapper saveActive={(props as any).showFolderSelect}>
                     <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                        <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                        <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</>} parcels </span>
                     </FilterCounter>
 
                 </FilterCounterWrapper>
@@ -282,7 +292,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
     savedCity?: string | null;
 
-    constructor(props: XWithRouter & UserInfoComponentProps  & { roles: { roles: string[]; } | undefined }) {
+    constructor(props: XWithRouter & UserInfoComponentProps & { roles: { roles: string[]; } | undefined }) {
         super(props);
         this.state = {
             shadowed: false
@@ -450,7 +460,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 <>
                                     <RoutedMapFilters city={city} />
 
-                                    <CitySelector title={cityName}>
+                                    <CitySelector title={city === 'sf' ? 'San Francisco' : 'New York City'}>
                                         <CitySelector.Item
                                             path="/?city=sf"
                                             active={city === 'sf'}
@@ -459,7 +469,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                         <CitySelector.Item
                                             path="/?city=nyc"
                                             active={city !== 'sf'}
-                                            label="New York"
+                                            label="New York City"
                                         />
                                     </CitySelector>
                                 </>

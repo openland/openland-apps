@@ -269,6 +269,12 @@ const MenuButtonWrapper = Glamorous.div({
     top: -20
 });
 
+const ParcelLink = Glamorous(XLink)({
+    borderBottom: '1px solid',
+    height: 28,
+    color: '#334562'
+});
+
 const PropertySeparatedDiv = Glamorous(XPropertyList)();
 
 export const ParcelCard = withParcelDirect((props) => (
@@ -277,7 +283,11 @@ export const ParcelCard = withParcelDirect((props) => (
         {props.data && props.data!!.item &&
             <>
                 <XHeader
-                    text={<XLink path={'/parcels/' + props.data.item!!.id}>{props.data.item!!.address || 'No address'}</XLink>}
+                    text={(
+                        <ParcelLink path={'/parcels/' + props.data.item!!.id}>
+                            {props.data.item!!.address || 'No address'}
+                        </ParcelLink>
+                    )}
                     description={<ParcelNumber id={props.data.item!!.number} />}
                     truncateDescription={true}
                     bullet={props.data!!.item!!.extrasOwnerPublic ? 'public' : (props.data!!.item!!.metadata.available ? 'ON SALE' : undefined)}
@@ -381,12 +391,12 @@ export const ParcelCard = withParcelDirect((props) => (
                     {props.data.item!!.extrasImprovementValue !== null &&
                         <PropertyCell title="Improvement Value"><XMoney value={props.data.item!!.extrasImprovementValue!!} /></PropertyCell>
                     }
-                    {props.data.item!!.extrasFixturesValue !== null &&
+                    {/* {props.data.item!!.extrasFixturesValue !== null &&
                         <PropertyCell title="Fixtures Value"><XMoney value={props.data.item!!.extrasFixturesValue!!} /></PropertyCell>
                     }
                     {props.data.item!!.extrasPropertyValue !== null &&
                         <PropertyCell title="Personal Property Value"><XMoney value={props.data.item!!.extrasPropertyValue!!} /></PropertyCell>
-                    }
+                    } */}
                 </PropertySeparatedDiv>
                 {(props.data.item!!.extrasYear !== null
                     || props.data.item!!.extrasUnits !== null
@@ -423,12 +433,12 @@ export const ParcelCard = withParcelDirect((props) => (
                             {props.data.item!!.extrasRooms !== null &&
                                 <PropertyCell title="Rooms Count"><XNumber value={props.data.item!!.extrasRooms} /></PropertyCell>
                             }
-                            {props.data.item!!.extrasBedrooms !== null &&
+                            {/* {props.data.item!!.extrasBedrooms !== null &&
                                 <PropertyCell title="Bedrooms Count"><XNumber value={props.data.item!!.extrasBedrooms} /></PropertyCell>
                             }
                             {props.data.item!!.extrasBathrooms !== null &&
                                 <PropertyCell title="Bathrooms Count"><XNumber value={props.data.item!!.extrasBathrooms} /></PropertyCell>
-                            }
+                            } */}
                         </PropertySeparatedDiv>
                     )}
                 {(props.data.item!!.extrasMetroDistance !== null

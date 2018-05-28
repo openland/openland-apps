@@ -1,9 +1,9 @@
 
 export let AllLandUse = [
-    { label: 'Residental', hint: 'Land with objects suitable for use as living quarters' },
-    { label: 'Commercial', hint: 'The land with the objects used under the commercial institution (Banks, sales outlets and so on)' },
-    { label: 'Industrial', hint: 'Earth with objects of an industrial nature (factories, warehouses and so on)' },
-    { label: 'Public', hint: 'Public places such as parks.' },
+    { label: 'Residential', hint: 'Land with the objects suitable for use as living quarters' },
+    { label: 'Commercial', hint: 'Land with the objects used under a commercial institution' },
+    { label: 'Industrial', hint: 'Land with the objects of an industrial nature' },
+    { label: 'Public', hint: 'Public places such as parks' },
     { label: 'Mixed Use', hint: '' }
 ];
 
