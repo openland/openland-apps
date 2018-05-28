@@ -13,7 +13,7 @@ const AddAccountForm = withSuperAccountAdd((props) => {
     return (
         <XModalForm
             title="Add new organization"
-            target={<XButton text="Add account" />}
+            target={<XButton text="Add organization" />}
             submitMutation={props.add}
             mutationDirect={true}
             actionName="Add">
@@ -26,8 +26,8 @@ const AddAccountForm = withSuperAccountAdd((props) => {
 
 export default withApp('Super Organizations', 'super-admin', withSuperAccounts((props) => {
     return (
-        <DevToolsScaffold title="Accounts">
-            <XHeader text="Accounts" description={props.data.superAccounts.length + ' total'}>
+        <DevToolsScaffold title="Organizations">
+            <XHeader text="Organizations" description={props.data.superAccounts.length + ' total'}>
                 <AddAccountForm />
             </XHeader>
             <XTable>
