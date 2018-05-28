@@ -11,6 +11,7 @@ interface GraphQLTileSourceProps {
     layer: string;
     minZoom?: number;
     query?: any;
+    variables?: any;
     skip?: boolean;
     loaded?: Function;
 }
@@ -102,6 +103,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                                 this.client!!.query<T>({
                                     query: query.document,
                                     variables: {
+                                        ...props.variables,
                                         box: {
                                             south: (y1 + j) * currentTileWidth,
                                             north: (y1 + j + 1) * currentTileWidth,
@@ -109,6 +111,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
                                             east: (x1 + i + 1) * currentTileHeight
                                         },
                                         query: props.query ? JSON.stringify(props.query) : undefined
+                                        
                                     }
                                 })
                             );
@@ -221,7 +224,7 @@ export function graphQLTileSource<T extends { tiles: Array<{ id: string, geometr
         }
 
         componentWillReceiveProps(nextProps: GraphQLTileSourceProps) {
-            if (nextProps.query !== this.props.query) {
+            if (nextProps.query !== this.props.query || nextProps.variables !== this.props.variables) {
                 this.isLoading = false;
                 this.loaded.clear();
                 this.allElements.clear();

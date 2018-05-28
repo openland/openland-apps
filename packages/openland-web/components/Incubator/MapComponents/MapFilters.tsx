@@ -36,41 +36,6 @@ const FilterCategoryTitle = Glamorous.div({
     marginBottom: 18
 });
 
-const FIlterDescriptionWrapper = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 12
-});
-
-const FilterDescription = Glamorous.div({
-    opacity: 0.4,
-    fontSize: 13,
-    lineHeight: 1.23,
-    letterSpacing: -0.1,
-    color: '#1f3449'
-});
-
-const RangeInput = Glamorous.input({
-    width: 180,
-    height: 36,
-    boxSizing: 'border-box',
-    border: '1px solid rgba(97, 126, 156, 0.2)',
-    borderRadius: 3.5,
-    color: '#525f7f',
-    backgroundColor: '#fff',
-    fontSize: 14,
-    lineHeight: 1.6,
-    paddingTop: 2,
-    paddingLeft: 7,
-    paddingRight: 7,
-    paddingBottom: 2,
-    outline: 'none',
-    '&::placeholder': {
-        color: 'rgba(97, 126, 156, 0.4)'
-    }
-});
-
 const FilterRangeDiv = Glamorous.div({
     width: '100%',
     display: 'flex',
@@ -180,22 +145,22 @@ class FilterRangeBase extends React.Component<FilterRangeProps & XWithRouter, { 
     render() {
         return (
             <FilterRangeDiv>
-                <RangeInput
+                <XInput
                     type="text"
                     pattern="[0-9]*"
                     placeholder={this.props.placeholderFrom}
                     onChange={this.handleChangeFrom}
                     value={this.state.from}
-                    onBlur={this.handleBlurFrom}
+                    // onBlur={this.handleBlurFrom}
                 />
                 <FilterRangeSeparator> - </FilterRangeSeparator>
-                <RangeInput
+                <XInput
                     type="text"
                     pattern="[0-9]*"
                     placeholder={this.props.placeholderTo}
                     onChange={this.handleChangeTo}
                     value={this.state.to}
-                    onBlur={this.handleBlurTo}
+                    // onBlur={this.handleBlurTo}
                 />
             </FilterRangeDiv>
         );
@@ -216,7 +181,7 @@ const FilterCategory = Glamorous.div({
 });
 
 const FilterSelector = Glamorous(XSelect)({
-    width: 350
+    width: 250
 });
 
 class ApplyFilterWrap extends React.Component<{ fieldName: string, router: XRouter, children: any }, { value?: string | string[] }> {
@@ -327,13 +292,22 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
                     }}
                     value={this.state.value}
                 />
-                {Boolean(this.props.applyButton === undefined || this.props.applyButton) && (
-                    <XButton style="primary" onClick={this.close} text="Apply" />
-                )}
             </XGroup>
         );
     }
 }
+
+const SelectorNMargin = Glamorous(Selector)({
+    margin: -12,
+    marginBottom: 4,
+    marginTop: -10,
+});
+
+const InlineApplyInputNMargin = Glamorous(XInput)({
+    margin: -12,
+    marginBottom: 4,
+    marginTop: -10,
+});
 
 class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?: string } & XWithRouter, { value: string }> {
     value: string | undefined = undefined;
@@ -358,10 +332,46 @@ class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?
 
     render() {
         return (
-            <XGroup>
-                <XInput onChange={this.handleChange} flexGrow={1} value={this.state.value} placeholder={this.props.placeholder} />
-                <XButton style="primary" onClick={this.apply} text="Apply" />
-            </XGroup>
+            <InlineApplyInputNMargin onChange={this.handleChange} flexGrow={1} value={this.state.value} placeholder={this.props.placeholder} />
+        );
+    }
+}
+
+const FilterFooterContainer = Glamorous.div<{ addBorder?: boolean }>(props => ({
+    borderTop: props.addBorder !== false ? '1px solid rgba(220, 222, 228, 0.6)' : undefined,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: -20,
+    marginLeft: -20,
+    marginRight: -20,
+    padding: 8,
+    paddingLeft: 20
+}));
+
+const FolterCancelLink = Glamorous(XLink)({
+    color: 'rgba(51, 69, 98, 0.4);'
+});
+
+class FilterFooter extends React.Component<{ addBorder?: boolean }> {
+
+    cancel = () => {
+        ApplyFilterWrap.newQueryParams = {};
+        FilterButton.closeAll();
+    }
+
+    apply = () => {
+        FilterButton.closeAll();
+    }
+
+    render() {
+        return (
+            <FilterFooterContainer className={(this.props as any).className} addBorder={this.props.addBorder}>
+                <FolterCancelLink onClick={this.cancel}>Cancel</FolterCancelLink>
+
+                <XButton text="Apply" style="primary" onClick={this.apply} />
+            </FilterFooterContainer>
         );
     }
 }
@@ -369,13 +379,16 @@ class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?
 const OwnerNameFiltersContent = withRouter((props) => (
     <FiltersContent>
         <InlineApplyInput placeholder="Owner name contains" searchKey="ownerName" router={props.router} />
-        <FIlterDescriptionWrapper>
-            <FilterDescription>
-                The land with the objects used under the commercial institution (Banks, sales outlets and so on)
-            </FilterDescription>
-        </FIlterDescriptionWrapper>
+
+        <FilterFooter addBorder={false} />
     </FiltersContent>
 ));
+
+const FilterRangeBaseNMargin = Glamorous.div({
+    margin: -12,
+    marginBottom: 4,
+    marginTop: -10,
+});
 
 class AreaFiltersContent extends React.Component<XWithRouter> {
     area?: any;
@@ -397,14 +410,11 @@ class AreaFiltersContent extends React.Component<XWithRouter> {
     render() {
         return (
             <FiltersContent>
-                <FilterRangeBase placeholderFrom="1000 ft" placeholderTo="1000000 ft" onChange={this.onChange} router={this.props.router} />
-                <FIlterDescriptionWrapper>
-                    <FilterDescription>
-                        The land with the objects used under the
-                        <br />l institution (Banks, sales outlets and so on)
-                    </FilterDescription>
-                    <XButton autoClose={true} style="primary" onClick={this.apply} text="Apply" />
-                </FIlterDescriptionWrapper>
+                <FilterRangeBaseNMargin>
+                    <FilterRangeBase placeholderFrom="1000 ft" placeholderTo="1000000 ft" onChange={this.onChange} router={this.props.router} />
+                </FilterRangeBaseNMargin>
+                <FilterFooter addBorder={false} />
+
             </FiltersContent>
         );
     }
@@ -449,51 +459,12 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     // pointerEvents: 'none'
 }));
 
-const FilterFooterContainer = Glamorous.div({
-    borderTop: '1px solid rgba(220, 222, 228, 0.6)',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: -20,
-    marginLeft: -20,
-    marginRight: -20,
-    padding: 8,
-    paddingLeft: 20
-});
-
 const OtherContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
 });
-
-const FolterCancelLink = Glamorous(XLink)({
-    color: 'rgba(51, 69, 98, 0.4);'
-});
-
-class FilterFooter extends React.Component<{}> {
-
-    cancel = () => {
-        ApplyFilterWrap.newQueryParams = {};
-        FilterButton.closeAll();
-    }
-
-    apply = () => {
-        FilterButton.closeAll();
-    }
-
-    render() {
-        return (
-            <FilterFooterContainer className={(this.props as any).className}>
-                <FolterCancelLink onClick={this.cancel}>Cancel</FolterCancelLink>
-
-                <XButton text="Apply" style="primary" onClick={this.apply} />
-            </FilterFooterContainer>
-        );
-    }
-}
 
 const OtherFooter = Glamorous(FilterFooter)({
     color: 'rgba(51, 69, 98, 0.4);',
@@ -653,13 +624,15 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                 filterTitle="Zoning"
                                 content={(
                                     <FiltersContent visible={true}>
-                                        <Selector
+                                        <SelectorNMargin
                                             router={this.props.router}
                                             fieldName="filterZoning"
                                             options={AllZones.map((v) => ({ value: v, label: v }))}
                                             placeholder="Zoning Code"
                                             multi={true}
                                         />
+                                        <FilterFooter addBorder={false} />
+
                                     </FiltersContent>
                                 )}>
                                 <XButton size="medium" />
@@ -677,13 +650,15 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                 filterTitle="Zoning"
                                 content={(
                                     <FiltersContent visible={true}>
-                                        <Selector
+                                        <SelectorNMargin
                                             router={this.props.router}
                                             fieldName="filterZoning"
                                             options={AllNYCZOnes.map((v) => ({ value: v, label: v }))}
                                             placeholder="Zoning Code"
                                             multi={true}
                                         />
+                                        <FilterFooter addBorder={false} />
+
                                     </FiltersContent>
                                 )}>
                                 <XButton size="medium" />
@@ -741,7 +716,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                                 </ApplyFilterWrap>
                                             </XVertical>
                                             <FilterFooter />
-                                            
+
                                         </FiltersContent>
                                     )}>
                                     <XButton size="medium" />
