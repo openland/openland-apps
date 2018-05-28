@@ -232,6 +232,7 @@ interface FolderButtonProps {
     placement?: Placement;
     target?: any;
     show?: boolean;
+    menuMinWidth?: number;
     handleClose?: () => void;
 }
 
@@ -239,6 +240,7 @@ export class FolderButton extends React.PureComponent<FolderButtonProps, { show:
 
     container?: Element;
     menuWidth?: number;
+    menuMinWidth: number;
 
     componentDidUpdate() {
 
@@ -250,6 +252,7 @@ export class FolderButton extends React.PureComponent<FolderButtonProps, { show:
     constructor(props: { folder?: { id: string, name: string } | null, parcelId: string, size?: XButtonSize }) {
         super(props);
         this.state = { show: false };
+        this.menuMinWidth = this.props.menuMinWidth || 170;
     }
 
     handleClose = () => {
@@ -273,7 +276,7 @@ export class FolderButton extends React.PureComponent<FolderButtonProps, { show:
         if (this.container) {
             let node = (ReactDOM.findDOMNode(this.container) as any);
             if (node) {
-                this.menuWidth = node.offsetWidth;
+                this.menuWidth = node.offsetWidth >= this.menuMinWidth ? node.offsetWidth : this.menuMinWidth;
             }
         }
     }
