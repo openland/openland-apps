@@ -151,7 +151,7 @@ class FilterRangeBase extends React.Component<FilterRangeProps & XWithRouter, { 
                     placeholder={this.props.placeholderFrom}
                     onChange={this.handleChangeFrom}
                     value={this.state.from}
-                    // onBlur={this.handleBlurFrom}
+                // onBlur={this.handleBlurFrom}
                 />
                 <FilterRangeSeparator> - </FilterRangeSeparator>
                 <XInput
@@ -160,7 +160,7 @@ class FilterRangeBase extends React.Component<FilterRangeProps & XWithRouter, { 
                     placeholder={this.props.placeholderTo}
                     onChange={this.handleChangeTo}
                     value={this.state.to}
-                    // onBlur={this.handleBlurTo}
+                // onBlur={this.handleBlurTo}
                 />
             </FilterRangeDiv>
         );
@@ -561,14 +561,17 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
 
         let other = [];
 
-        other.push(
-            <FilterCategory key={'filter_isVacant'}>
-                <FilterCategoryTitle>Vacant</FilterCategoryTitle>
-                <ApplyFilterWrap fieldName="isVacant" router={this.props.router}>
-                    <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
-                </ApplyFilterWrap>
-            </FilterCategory>
-        );
+        if (this.props.city !== 'sf') {
+            other.push(
+                <FilterCategory key={'filter_isVacant'}>
+                    <FilterCategoryTitle>Vacant</FilterCategoryTitle>
+                    <ApplyFilterWrap fieldName="isVacant" router={this.props.router}>
+                        <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
+                    </ApplyFilterWrap>
+                </FilterCategory>
+            );
+
+        }
 
         other.push(
             <FilterCategory key={'filter_publicOwner'}>
