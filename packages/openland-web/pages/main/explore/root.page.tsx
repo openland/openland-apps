@@ -90,12 +90,29 @@ const MapSearcher = Glamorous(XMapGeocoder)({
     transition: 'all .2s',
     borderTopRightRadius: 6,
     borderBottomRightRadius: 6,
+    '&::before': {
+        display: 'block',
+        width: '100vw',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        content: `''`,
+        backgroundColor: 'transparent',
+        visibility: 'hidden',
+        transition: 'all .2s'
+    },
     '&:focus-within': {
         left: 18,
         zIndex: 2,
         borderTopLeftRadius: 6,
         borderBottomLeftRadius: 6,
         width: 325
+    },
+    '&:focus-within::before': {
+        backgroundColor: 'rgba(0, 0, 0, 0.41)',
+        visibility: 'visible',
+        zIndex: 1
     },
     '& .mapboxgl-ctrl-geocoder.mapboxgl-ctrl': {
         height: '100%',
@@ -110,6 +127,9 @@ const MapSearcher = Glamorous(XMapGeocoder)({
         backgroundPositionY: 'center',
         backgroundPositionX: 10,
         backgroundSize: 20,
+        backgroundColor: '#fff',
+        borderRadius: 6,
+        zIndex: 2,
         '&:focus-within': {
             backgroundImage: 'url(\'/static/img/icons/search-purple.svg\')',
         },
@@ -131,13 +151,6 @@ const MapSearcher = Glamorous(XMapGeocoder)({
             boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
             listStyle: 'none',
             overflow: 'hidden',
-            // '&::after': {
-            //     position: 'absolute',
-            //     content: `''`,
-            //     display: 'block',
-            //     borderWidth: '0 5px 5px 5px',
-            //     borderColor: 'transparent transparent #fff transparent',
-            // },
             '& li': {
                 fontSize: 15,
                 fontWeight: 500,
