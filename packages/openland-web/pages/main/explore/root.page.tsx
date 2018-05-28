@@ -282,7 +282,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
     savedCity?: string | null;
 
-    constructor(props: XWithRouter & UserInfoComponentProps  & { roles: { roles: string[]; } | undefined }) {
+    constructor(props: XWithRouter & UserInfoComponentProps & { roles: { roles: string[]; } | undefined }) {
         super(props);
         this.state = {
             shadowed: false
@@ -452,12 +452,12 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
                                     <CitySelector title={cityName}>
                                         <CitySelector.Item
-                                            path="/?city=sf"
+                                            query={{ field: 'city', value: 'sf' }}
                                             active={city === 'sf'}
                                             label="San Francisco"
                                         />
                                         <CitySelector.Item
-                                            path="/?city=nyc"
+                                            query={{ field: 'city', value: 'nyc' }}
                                             active={city !== 'sf'}
                                             label="New York"
                                         />
