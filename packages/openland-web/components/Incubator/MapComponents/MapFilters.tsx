@@ -584,8 +584,8 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
         );
 
         other.push(
-            <XWithRole role={'feature-customer-kassita'}>
-                <FilterCategory key={'filter_compatible'}>
+            <XWithRole role={'feature-customer-kassita'}  key={'filter_compatible'}>
+                <FilterCategory>
                     <FilterCategoryTitle>Compatible buildings</FilterCategoryTitle>
                     <XVertical>
                         <ApplyFilterWrap fieldName="compatible" router={this.props.router}>

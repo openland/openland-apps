@@ -157,7 +157,7 @@ export class MapStyleSwitcher extends React.Component<MapStyleSwitcherProps, {ac
             <>
                 <Shadow active={this.state.active} />
                 <XSwitcherWrapper active={this.state.active}>
-                    <ClickOutside onClickOutside={this.disable} flex>
+                    <ClickOutside onClickOutside={this.disable} flex={true}>
                         {items}
                     </ClickOutside>
                     <OverButton active={this.state.active} onClick={this.activate} />
