@@ -78,6 +78,8 @@ export let XModalBody = Glamorous.div({
 export let XModalHeader = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingLeft: 24,
     paddingRight: 24,
     height: 64,
@@ -107,6 +109,15 @@ export let XModalFooter = Glamorous.div({
     alignItems: 'center'
 });
 
+const XModalCloser = Glamorous(XButton)({
+    width: 28,
+    height: 28,
+    borderRadius: 50,
+    '& i': {
+        marginLeft: -2
+    }
+});
+
 class ModalContentRender extends React.Component<{
     title?: string;
     heading?: any;
@@ -124,12 +135,12 @@ class ModalContentRender extends React.Component<{
         }
         return (
             <Root>
-                {this.props.heading === undefined && this.props.title && <XModalHeader>{this.props.title}</XModalHeader>}
+                {this.props.heading === undefined && this.props.title && <XModalHeader>{this.props.title}<XModalCloser icon="close" autoClose={true} /></XModalHeader>}
                 {this.props.heading === undefined && !this.props.title && <XModalHeaderEmpty />}
                 {this.props.heading !== undefined && this.props.heading}
                 {this.props.body === undefined && <XModalBody>{this.props.children}</XModalBody>}
                 {this.props.body !== undefined && this.props.body}
-                {this.props.footer === undefined && <XModalFooter><XButton text="Close" autoClose={true} /></XModalFooter>}
+                {/* {this.props.footer === undefined && <XModalFooter><XButton text="Close" autoClose={true} /></XModalFooter>} */}
                 {this.props.footer !== undefined && this.props.footer}
             </Root>
         );

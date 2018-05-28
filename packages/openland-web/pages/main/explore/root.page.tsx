@@ -86,7 +86,34 @@ const MapSearcher = Glamorous(XMapGeocoder)({
     top: 18,
     left: 165,
     width: 178,
-    backgroundColor: 'transparent',
+    backgroundColor: '#fff',
+    transition: 'all .2s',
+    borderTopRightRadius: 6,
+    borderBottomRightRadius: 6,
+    '&::before': {
+        display: 'block',
+        width: '100vw',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        content: `''`,
+        backgroundColor: 'transparent',
+        visibility: 'hidden',
+        transition: 'all .2s'
+    },
+    '&:focus-within': {
+        left: 18,
+        zIndex: 2,
+        borderTopLeftRadius: 6,
+        borderBottomLeftRadius: 6,
+        width: 325
+    },
+    '&:focus-within::before': {
+        backgroundColor: 'rgba(0, 0, 0, 0.41)',
+        visibility: 'visible',
+        zIndex: 1
+    },
     '& .mapboxgl-ctrl-geocoder.mapboxgl-ctrl': {
         height: '100%',
         display: 'flex',
@@ -100,6 +127,9 @@ const MapSearcher = Glamorous(XMapGeocoder)({
         backgroundPositionY: 'center',
         backgroundPositionX: 10,
         backgroundSize: 20,
+        backgroundColor: '#fff',
+        borderRadius: 6,
+        zIndex: 2,
         '&:focus-within': {
             backgroundImage: 'url(\'/static/img/icons/search-purple.svg\')',
         },
@@ -113,7 +143,7 @@ const MapSearcher = Glamorous(XMapGeocoder)({
         },
         '& ul.suggestions': {
             position: 'absolute',
-            top: 65,
+            top: 60,
             right: 0,
             width: 325,
             backgroundColor: '#fff',
@@ -121,13 +151,6 @@ const MapSearcher = Glamorous(XMapGeocoder)({
             boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
             listStyle: 'none',
             overflow: 'hidden',
-            // '&::after': {
-            //     position: 'absolute',
-            //     content: `''`,
-            //     display: 'block',
-            //     borderWidth: '0 5px 5px 5px',
-            //     borderColor: 'transparent transparent #fff transparent',
-            // },
             '& li': {
                 fontSize: 15,
                 fontWeight: 500,
@@ -209,7 +232,7 @@ const FolderButtonWithSave = withParcelStats((props) => {
                 target={(
                     <FilterCounterWrapper saveActive={(props as any).showFolderSelect} >
                         <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                            <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                            <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</>} parcels </span>
                         </FilterCounter>
                         <XWithRole role={['feature-customer-kassita']} negate={true}>
                             <XButtonWithMargin text="Save to Folder" style="primary" onClick={(props as any).onButtonClick} />
@@ -219,7 +242,7 @@ const FolderButtonWithSave = withParcelStats((props) => {
         ) : (
                 <FilterCounterWrapper saveActive={(props as any).showFolderSelect}>
                     <FilterCounter filtered={(props as any).variables.query !== undefined}>
-                        <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats}</>} parcels </span>
+                        <span>Found {props.data && props.data!!.parcelsStats !== null && <>{props.data!!.parcelsStats.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</>} parcels </span>
                     </FilterCounter>
 
                 </FilterCounterWrapper>
@@ -450,7 +473,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                 <>
                                     <RoutedMapFilters city={city} />
 
-                                    <CitySelector title={cityName}>
+                                    <CitySelector title={city === 'sf' ? 'San Francisco' : 'New York City'}>
                                         <CitySelector.Item
                                             query={{ field: 'city', value: 'sf' }}
                                             active={city === 'sf'}
@@ -459,7 +482,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                         <CitySelector.Item
                                             query={{ field: 'city', value: 'nyc' }}
                                             active={city !== 'sf'}
-                                            label="New York"
+                                            label="New York City"
                                         />
                                     </CitySelector>
                                 </>
