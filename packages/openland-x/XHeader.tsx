@@ -22,7 +22,7 @@ const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
     textOverflow: props.ellipcise ? 'ellipsis' : undefined,
 }));
 
-const TargetDivStyle = Glamorous(XHorizontal)<{ellipcise?: boolean}>((props) => ({
+const TargetDivStyle = Glamorous(XHorizontal)<{ ellipcise?: boolean }>((props) => ({
     alignItems: 'center',
     overflow: props.ellipcise ? 'hidden' : undefined,
     whiteSpace: props.ellipcise ? 'nowrap' : undefined,
@@ -65,6 +65,18 @@ export class HeaderTargetElement extends React.Component<({ children: any })> {
     }
 }
 
+const Grow = Glamorous.div({
+    flexGrow: 1
+});
+
+const HorizontalOuter = Glamorous(XHorizontal)({
+    alignItems: 'center'
+});
+
+const HorizontalInner = Glamorous(XHorizontal)({
+    padding: 24
+});
+
 export class XHeader extends React.Component<XCardHeaderProps> {
     static defaultProps = {
         _isVerticalPaddingIncluded: true
@@ -84,22 +96,28 @@ export class XHeader extends React.Component<XCardHeaderProps> {
         }
 
         return (
+            <HorizontalOuter>
+                <Grow>
+                    <XCardHeaderDiv appStyle={this.props.style} separated={this.props.separated}>
+                        <XCardTitle appStyle={this.props.style}>
+                            <TargetDivStyle ellipcise={this.props.truncateTitle}>
+                                {target}
+                                {this.props.text}
+                                {this.props.bullet && <XBullet color={this.props.bulletColor || 'green'}>{this.props.bullet}</XBullet>}
+                            </TargetDivStyle>
 
-            <XCardHeaderDiv appStyle={this.props.style} separated={this.props.separated}>
-                <XCardTitle appStyle={this.props.style}>
-                    <TargetDivStyle ellipcise={this.props.truncateTitle}>
-                        {target}
-                        {this.props.text}
-                        {this.props.bullet && <XBullet color={this.props.bulletColor || 'green'}>{this.props.bullet}</XBullet>}
-                    </TargetDivStyle>
-                    <XHorizontal separator="normal">
-                        {content}
-                    </XHorizontal>
-                </XCardTitle>
-                <XCardDescription ellipcise={this.props.truncateDescription}>
-                    {this.props.description}
-                </XCardDescription>
-            </XCardHeaderDiv>
+                        </XCardTitle>
+                        <XCardDescription ellipcise={this.props.truncateDescription}>
+                            {this.props.description}
+                        </XCardDescription>
+
+                    </XCardHeaderDiv>
+                </Grow>
+                <HorizontalInner separator="normal" >
+
+                    {content}
+                </HorizontalInner>
+            </HorizontalOuter>
         );
     }
 }

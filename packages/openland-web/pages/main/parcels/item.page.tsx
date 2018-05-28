@@ -39,6 +39,8 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
     const linksPath = '/parcels/' + props.data.item.id + '/links';
     const notesPath = '/parcels/' + props.data.item.id + '/notes';
     const zoningPath = '/parcels/' + props.data.item.id + '/zoning';
+    const permitsPath = '/parcels/' + props.data.item.id + '/permits';
+    const nearbyTransitPath = '/parcels/' + props.data.item.id + '/nearby_transit';
 
     return (
         <>
@@ -71,9 +73,19 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                     <XProperty>
                         <XSwitcher alignSelf="flex-start" flatStyle={true}>
                             <XSwitcher.Item path={detailsPath} >Parcel</XSwitcher.Item>
+                            {props.data.item.permits.length > 0 && (
+                                <XSwitcher.Item path={permitsPath} count={props.data.item.permits.length}>Building Permits</XSwitcher.Item>
+                            )}
+                            {(props.data.item.extrasMetroDistance !== null
+                                || props.data.item.extrasTrainLocalDistance !== null
+                                || props.data.item.extrasTrainDistance !== null) && (
+                                    <XSwitcher.Item path={nearbyTransitPath} >Nearby Transit</XSwitcher.Item>
+                                )}
                             <XSwitcher.Item path={linksPath} count={props.data.item.links.length}>Links</XSwitcher.Item>
                             <XSwitcher.Item path={notesPath} count={props.data.item.userData && props.data.item.userData.notes && props.data.item.userData.notes.length > 0 ? 1 : undefined}>Notes</XSwitcher.Item>
-                            <XSwitcher.Item path={zoningPath} >Zoning</XSwitcher.Item>
+                            <XWithRole role={['feature-customer-kassita']}>
+                                <XSwitcher.Item path={zoningPath} >Zoning</XSwitcher.Item>
+                            </XWithRole>
                         </XSwitcher>
                     </XProperty>
 
@@ -126,51 +138,71 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                     </XContent>
                                 </>
                             )}
-                            {props.data.item.permits.length > 0 && (
-                                <>
-                                    <XHeader text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} />
-                                    <XTable>
-                                        <XTable.Header>
-                                            <XTable.Cell width={120}>Created</XTable.Cell>
-                                            <XTable.Cell width={150}>Permit ID</XTable.Cell>
-                                            <XTable.Cell width={120}>Permit Type</XTable.Cell>
-                                            <XTable.Cell width={170}>Status</XTable.Cell>
-                                            <XTable.Cell>Description</XTable.Cell>
-                                        </XTable.Header>
-                                        <XTable.Body>
-                                            {props.data.item.permits.map((v) => (
-                                                <XTable.Row key={v.id} href={v.governmentalUrl!!}>
-                                                    <XTable.Cell>{v.createdAt && <XDate value={v.createdAt} />}</XTable.Cell>
-                                                    <XTable.Cell>{v.id}</XTable.Cell>
-                                                    <XTable.Cell>{v.type && <PermitType type={v.type!!} />}</XTable.Cell>
-                                                    <XTable.Cell>
-                                                        {v.status}
-                                                        {v.statusUpdatedAt && ' ('}
-                                                        {v.statusUpdatedAt && <XDate value={v.statusUpdatedAt} />}
-                                                        {v.statusUpdatedAt && ')'}
-                                                    </XTable.Cell>
-                                                    <XTable.Cell>{v.description}</XTable.Cell>
-                                                </XTable.Row>
-                                            ))}
-                                        </XTable.Body>
-                                    </XTable>
-                                </>
-                            )}
+
                         </>)}
 
                     {props.router.path === linksPath && props.data.item.links.length > 0 && (
                         <XPropertyList title="Links">
                             {props.data.item.links.map((v, i) => (
-                                <XProperty key={'link-' + i} title={v.title}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XProperty>
+                                <XProperty key={'link-' + i} title={v.title} width={300}><XLinkExternal href={v.url}>{v.url}</XLinkExternal></XProperty>
                             ))}
                         </XPropertyList>
                     )}
 
                     {props.router.path === zoningPath && props.data.item.extrasZoning && props.data.item.extrasZoning!!.length > 0 &&
                         // <XWithRole role={['super-admin', 'software-developer', 'parcel-zoning-metrics']}>
-                        <ZoningMetrics codes={props.data.item!!.extrasZoning!!} />
-                        // </XWithRole>
+                        <XWithRole role={['feature-customer-kassita']}>
+                            <ZoningMetrics codes={props.data.item!!.extrasZoning!!} />
+                        </XWithRole>
                     }
+
+                    {props.router.path === nearbyTransitPath && (props.data.item.extrasMetroDistance !== null
+                        || props.data.item.extrasTrainLocalDistance !== null
+                        || props.data.item.extrasTrainDistance !== null)
+                        && (
+                            <XPropertyList>
+                                {props.data.item.extrasMetroDistance !== null &&
+                                    <XProperty title="Muni Metro">{props.data.item.extrasMetroDistance} ({props.data.item.extrasMetroStation})</XProperty>
+                                }
+                                {props.data.item.extrasTrainLocalDistance !== null &&
+                                    <XProperty title="BART">{props.data.item.extrasTrainLocalDistance} ({props.data.item.extrasTrainLocalStation})</XProperty>
+                                }
+                                {props.data.item.extrasTrainDistance !== null &&
+                                    <XProperty title="Caltrain">{props.data.item.extrasTrainDistance} ({props.data.item.extrasTrainStation})</XProperty>
+                                }
+                            </XPropertyList>
+                        )}
+
+                    {props.router.path === permitsPath && props.data.item.permits.length > 0 && (
+                        <>
+                            {/* <XHeader text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} /> */}
+                            <XTable>
+                                <XTable.Header>
+                                    <XTable.Cell width={120}>Created</XTable.Cell>
+                                    <XTable.Cell width={150}>Permit ID</XTable.Cell>
+                                    <XTable.Cell width={120}>Permit Type</XTable.Cell>
+                                    <XTable.Cell width={170}>Status</XTable.Cell>
+                                    <XTable.Cell>Description</XTable.Cell>
+                                </XTable.Header>
+                                <XTable.Body>
+                                    {props.data.item.permits.map((v) => (
+                                        <XTable.Row key={v.id} href={v.governmentalUrl!!}>
+                                            <XTable.Cell>{v.createdAt && <XDate value={v.createdAt} />}</XTable.Cell>
+                                            <XTable.Cell>{v.id}</XTable.Cell>
+                                            <XTable.Cell>{v.type && <PermitType type={v.type!!} />}</XTable.Cell>
+                                            <XTable.Cell>
+                                                {v.status}
+                                                {v.statusUpdatedAt && ' ('}
+                                                {v.statusUpdatedAt && <XDate value={v.statusUpdatedAt} />}
+                                                {v.statusUpdatedAt && ')'}
+                                            </XTable.Cell>
+                                            <XTable.Cell>{v.description}</XTable.Cell>
+                                        </XTable.Row>
+                                    ))}
+                                </XTable.Body>
+                            </XTable>
+                        </>
+                    )}
 
                     {props.router.path === notesPath && (
                         <>

@@ -68,9 +68,9 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         {props.item.extrasImprovementValue !== null &&
                             <XProperty title="Improvement Value"><XMoney value={props.item.extrasImprovementValue!!} /></XProperty>
                         }
-                        {props.item.extrasFixturesValue !== null &&
+                        {/* {props.item.extrasFixturesValue !== null &&
                             <XProperty title="Fixtures Value"><XMoney value={props.item.extrasFixturesValue!!} /></XProperty>
-                        }
+                        } */}
                         {props.item.extrasPropertyValue !== null &&
                             <XProperty title="Personal Property Value"><XMoney value={props.item.extrasPropertyValue!!} /></XProperty>
                         }
@@ -141,31 +141,16 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                             {props.item!!.extrasRooms !== null &&
                                 <XProperty title="Rooms Count"><XNumber value={props.item!!.extrasRooms} /></XProperty>
                             }
-                            {props.item!!.extrasBedrooms !== null &&
+                            {/* {props.item!!.extrasBedrooms !== null &&
                                 <XProperty title="Bedrooms Count"><XNumber value={props.item!!.extrasBedrooms} /></XProperty>
-                            }
+                            } */}
                             {props.item!!.extrasBathrooms !== null &&
                                 <XProperty title="Bathrooms Count"><XNumber value={props.item!!.extrasBathrooms} /></XProperty>
                             }
                         </XPropertyList>
                     )}
             </XPropertyColumns>
-            {(props.item.extrasMetroDistance !== null
-                || props.item.extrasTrainLocalDistance !== null
-                || props.item.extrasTrainDistance !== null)
-                && (
-                    <XPropertyList title="Nearby Transit">
-                        {props.item.extrasMetroDistance !== null &&
-                            <XProperty title="Muni Metro">{props.item.extrasMetroDistance} ({props.item.extrasMetroStation})</XProperty>
-                        }
-                        {props.item.extrasTrainLocalDistance !== null &&
-                            <XProperty title="BART">{props.item.extrasTrainLocalDistance} ({props.item.extrasTrainLocalStation})</XProperty>
-                        }
-                        {props.item.extrasTrainDistance !== null &&
-                            <XProperty title="Caltrain">{props.item.extrasTrainDistance} ({props.item.extrasTrainStation})</XProperty>
-                        }
-                    </XPropertyList>
-                )}
+            
         </>
     );
 }
