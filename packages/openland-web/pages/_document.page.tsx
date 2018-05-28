@@ -5,7 +5,7 @@ import { renderStaticOptimized } from 'glamor/server';
 let isProduction = process.env.APP_PRODUCTION === 'true';
 
 export default class StateDocument extends Document {
-    static async getInitialProps(props: { renderPage: () => { html: string } }) {
+    static async getInitialProps(props: { renderPage: () => { html?: string } }) {
         const page = props.renderPage();
         const styles = renderStaticOptimized(() => page.html);
         return { ...page, ...styles };

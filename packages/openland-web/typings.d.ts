@@ -138,7 +138,7 @@ declare module 'glamor/server' {
     }
 
     export function renderStatic(fn: () => string): ServerResult;
-    export function renderStaticOptimized(fn: () => string): ServerResult;
+    export function renderStaticOptimized(fn: () => string | undefined): ServerResult;
 }
 
 declare namespace Humanize {
