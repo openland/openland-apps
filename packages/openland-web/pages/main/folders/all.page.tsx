@@ -13,12 +13,11 @@ import { XHeader } from 'openland-x/XHeader';
 import { XIcon } from 'openland-x/XIcon';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XForm } from 'openland-x-forms/XForm';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { TableParcels } from '../../../components/TableParcels';
 import { XEmpty } from 'openland-x/XEmpty';
 import { XButton } from 'openland-x/XButton';
 import { XFooter } from 'openland-x/XFooter';
-// import { FolderTileSource } from '../../../api';
+import { FolderTileSource } from '../../../api';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { XWithRouter } from 'openland-x-routing/withRouter';
@@ -203,9 +202,20 @@ const FolderItems = withFolderItems((props) => {
     );
 });
 
+const MapContainer2 = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'relative',
+    height: 'calc(100% - 50px)',
+    width: '100%',
+    '& .mapboxgl-ctrl-top-right': {
+        top: '65px !important',
+        right: '6px !important'
+    }
+});
+
 const MapContainer = Glamorous.div({
     flexGrow: 1,
-    height: '100vh'
 });
 
 class FolderMap extends React.Component<XWithRouter, {}> {
@@ -237,7 +247,7 @@ class FolderMap extends React.Component<XWithRouter, {}> {
     }
     render() {
         return (
-            <>
+            <MapContainer2>
                 <MapContainer>
                     <ParcelMap
                         mode={this.props.router.query.mode}
@@ -248,13 +258,13 @@ class FolderMap extends React.Component<XWithRouter, {}> {
                         selectedParcel={this.props.router.routeQuery.selectedParcel}
                     >
 
-                        {/* <FolderTileSource
+                        <FolderTileSource
                             layer="folder"
                             minZoom={12}
                             query={{
-                                '$and': { folderId: this.props.router.routeQuery.folderId }
+                                folderId: this.props.router.routeQuery.folderId,
                             }}
-                        /> */}
+                        />
 
                         <XMapPointLayer
                             source="folder"
@@ -264,9 +274,11 @@ class FolderMap extends React.Component<XWithRouter, {}> {
                             flyToMaxZoom={18}
                         />
                     </ParcelMap>
+
                 </MapContainer>
                 {this.props.router.routeQuery.selectedParcel && <ParcelCard compact={true} variables={{ parcelId: this.props.router.routeQuery.selectedParcel }} />}
-            </>
+
+            </MapContainer2>
         );
     }
 }
@@ -276,21 +288,14 @@ const FolderContent = withFolder((props) => {
         return <XLoader loading={true} />;
     }
     return (
-        <XVertical flexGrow={1}>
+        <>
             <XHeader text={props.data.folder.name}>
-                {/* <XButton text={props.router.routeQuery.mapView !== 'true' ? 'Map view' : 'Table view'} query={{ field: 'mapView', value: props.router.routeQuery.mapView !== 'true' ? 'true' : 'false' }} /> */}
+                <XButton text={props.router.routeQuery.mapView !== 'true' ? 'Map view' : 'Table view'} query={{ field: 'mapView', value: props.router.routeQuery.mapView !== 'true' ? 'true' : 'false' }} />
                 <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name} />
             </XHeader>
             {props.router.routeQuery.mapView === 'true' && <FolderMap router={props.router} />}
             {props.router.routeQuery.mapView !== 'true' && <FolderItems />}
-
-            {/* {props.data.folder.parcels.pageInfo.itemsCount > 0 && (
-                <TableParcels items={props.data.folder.parcels.edges.map((v) => v.node)} />
-            )}
-            {props.data.folder.parcels.pageInfo.itemsCount <= 0 && (
-                <XEmpty icon="folder" text="You can find your first parcel at Explore" flexGrow={1} />
-            )} */}
-        </XVertical>
+        </>
     );
 });
 
@@ -340,7 +345,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
                         <CreateFolder />
                     </Sidebar>
                 </Scaffold.Menu>
-                <Scaffold.Content>
+                <Scaffold.Content padding={false} bottomOffset={props.router.routeQuery.mapView !== 'true'}>
                     {!props.router.routeQuery.folderId && props.data.loading && <XLoader loading={true} />}
                     {!props.data.loading && (!props.router.routeQuery.folderId || props.data.folders.map(folder => folder.id).indexOf(props.router.routeQuery.folderId) === -1) && props.data.folders.length > 0 &&
                         (
