@@ -5,6 +5,8 @@ import { XFlexStyles, applyFlex } from './Flex';
 import { XIcon } from './XIcon';
 
 export interface XInputProps extends XFlexStyles {
+    type?: string;
+    pattern?: string;
     placeholder?: string;
     value?: string;
     icon?: string;
@@ -215,6 +217,8 @@ export class XInput extends React.PureComponent<XInputProps, { inputWrapClass?: 
 
     render() {
         const {
+            type, 
+            pattern,
             placeholder,
             size,
             icon,
@@ -238,6 +242,8 @@ export class XInput extends React.PureComponent<XInputProps, { inputWrapClass?: 
                     format={size}
                     required={required}
                     placeholder={placeholder}
+                    type={type}
+                    pattern={pattern}
                     value={this.state.value}
                     onChange={this.handleChange}
                     autofocus={autofocus}
