@@ -1,9 +1,14 @@
-import { withRouter } from './withRouter';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import * as React from 'react';
+import { withRouter, XWithRouter } from './withRouter';
 
-export const XPageRedirect = withRouter<{ path: string }>(props => {
-    if (canUseDOM) {
-        props.router.push(props.path);
+class Redirector extends React.Component<{ path: string } & XWithRouter> {
+    componentDidMount() {
+        console.warn('Redirect to ' + this.props.path);
+        this.props.router.push(this.props.path);
     }
-    return null;
-});
+    render() {
+        return null;
+    }
+}
+
+export const XPageRedirect = withRouter<{ path: string }>(Redirector);
