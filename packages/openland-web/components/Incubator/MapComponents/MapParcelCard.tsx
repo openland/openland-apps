@@ -80,7 +80,24 @@ const Scrollable = Glamorous.div({
     width: '100%',
     height: '100vh',
     overflowY: 'auto',
-    paddingBottom: 90
+    paddingBottom: 90,
+    '&::-webkit-scrollbar': {
+        WebkitAppearance: 'none'
+    },
+    
+    '&::-webkit-scrollbar:vertical': {
+        width: 11
+    },
+    
+    '&::-webkit-scrollbar:horizontal': {
+        height: 11
+    },
+    
+    '&::-webkit-scrollbar-thumb': {
+        borderRadius: 8,
+        border: '2px solid white', /* should match background, can't be transparent */
+        backgroundColor: 'rgba(0, 0, 0, .5)'
+    }
 });
 
 interface ContainerProps {
