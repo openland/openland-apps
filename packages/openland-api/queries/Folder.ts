@@ -146,8 +146,8 @@ export const CreateFolderFromSearchMutation = gql`
 `;
 
 export const FolderItemsTileOverlayQuery = gql`
-    query FolderItemsTileOverlay($box: GeoBox!, $query: String) {
-        tiles: alphaFolderItemsOverlay(box: $box, limit: 5000, query: $query) {
+    query FolderItemsTileOverlay($box: GeoBox!, $folderId: ID!) {
+        tiles: alphaFolderItemsOverlay(box: $box, limit: 5000, folderId: $folderId) {
             id
             center {
                 latitude

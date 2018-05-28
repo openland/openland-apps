@@ -186,7 +186,7 @@ const FolderItems = withFolderItems((props) => {
                 <TableParcels items={props.data.items.edges.map((v) => v.node.parcel)} />
             )}
             {props.data.items.pageInfo.itemsCount > 0 && (
-                <XFooter text={props.data.items.pageInfo.itemsCount + ' items'}>
+                <XFooter text={'page: ' + props.data.items.pageInfo.currentPage + '  total: ' + props.data.items.pageInfo.itemsCount + ' items'}>
                     {props.data.items.pageInfo.currentPage > 1 && (
                         <XButton text="Prev" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }} />
                     )}
@@ -261,7 +261,7 @@ class FolderMap extends React.Component<XWithRouter, {}> {
                         <FolderTileSource
                             layer="folder"
                             minZoom={12}
-                            query={{
+                            variables={{
                                 folderId: this.props.router.routeQuery.folderId,
                             }}
                         />
@@ -324,7 +324,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
             <XDocumentHead title={['Folders']} />
             <Scaffold>
                 <Scaffold.Menu>
-                    <Sidebar title="Folders">
+                    <Sidebar title="Folders" width={300}>
                         {props.data.folders.map((v) => {
                             const type = v.special;
                             let icon = '';
