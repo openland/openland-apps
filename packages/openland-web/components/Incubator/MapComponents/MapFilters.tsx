@@ -36,21 +36,6 @@ const FilterCategoryTitle = Glamorous.div({
     marginBottom: 18
 });
 
-const FIlterDescriptionWrapper = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 12
-});
-
-const FilterDescription = Glamorous.div({
-    opacity: 0.4,
-    fontSize: 13,
-    lineHeight: 1.23,
-    letterSpacing: -0.1,
-    color: '#1f3449'
-});
-
 const FilterRangeDiv = Glamorous.div({
     width: '100%',
     display: 'flex',
@@ -352,6 +337,45 @@ class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?
     }
 }
 
+const FilterFooterContainer = Glamorous.div<{ addBorder?: boolean }>(props => ({
+    borderTop: props.addBorder !== false ? '1px solid rgba(220, 222, 228, 0.6)' : undefined,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: -20,
+    marginLeft: -20,
+    marginRight: -20,
+    padding: 8,
+    paddingLeft: 20
+}));
+
+const FolterCancelLink = Glamorous(XLink)({
+    color: 'rgba(51, 69, 98, 0.4);'
+});
+
+class FilterFooter extends React.Component<{ addBorder?: boolean }> {
+
+    cancel = () => {
+        ApplyFilterWrap.newQueryParams = {};
+        FilterButton.closeAll();
+    }
+
+    apply = () => {
+        FilterButton.closeAll();
+    }
+
+    render() {
+        return (
+            <FilterFooterContainer className={(this.props as any).className} addBorder={this.props.addBorder}>
+                <FolterCancelLink onClick={this.cancel}>Cancel</FolterCancelLink>
+
+                <XButton text="Apply" style="primary" onClick={this.apply} />
+            </FilterFooterContainer>
+        );
+    }
+}
+
 const OwnerNameFiltersContent = withRouter((props) => (
     <FiltersContent>
         <InlineApplyInput placeholder="Owner name contains" searchKey="ownerName" router={props.router} />
@@ -435,51 +459,12 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     // pointerEvents: 'none'
 }));
 
-const FilterFooterContainer = Glamorous.div<{ addBorder?: boolean }>(props => ({
-    borderTop: props.addBorder !== false ? '1px solid rgba(220, 222, 228, 0.6)' : undefined,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: -20,
-    marginLeft: -20,
-    marginRight: -20,
-    padding: 8,
-    paddingLeft: 20
-}));
-
 const OtherContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
 });
-
-const FolterCancelLink = Glamorous(XLink)({
-    color: 'rgba(51, 69, 98, 0.4);'
-});
-
-class FilterFooter extends React.Component<{ addBorder?: boolean }> {
-
-    cancel = () => {
-        ApplyFilterWrap.newQueryParams = {};
-        FilterButton.closeAll();
-    }
-
-    apply = () => {
-        FilterButton.closeAll();
-    }
-
-    render() {
-        return (
-            <FilterFooterContainer className={(this.props as any).className} addBorder={this.props.addBorder}>
-                <FolterCancelLink onClick={this.cancel}>Cancel</FolterCancelLink>
-
-                <XButton text="Apply" style="primary" onClick={this.apply} />
-            </FilterFooterContainer>
-        );
-    }
-}
 
 const OtherFooter = Glamorous(FilterFooter)({
     color: 'rgba(51, 69, 98, 0.4);',
