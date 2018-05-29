@@ -17,6 +17,7 @@ import { XLink } from 'openland-x/retired/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const FiltersContent = Glamorous.div<{ visible?: boolean }>((props) => ({
+    ...XStyles.scroll,
     maxHeight: 'calc(100vh - 150px)',
     overflowY: props.visible ? undefined : 'scroll',
     width: 'calc(100% + 20px)',
