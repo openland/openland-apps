@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import ClickOutside from '../ClickOutside';
 import { XLink, XLinkProps } from 'openland-x/XLink';
+import { XIcon } from 'openland-x/XIcon';
 
 const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     position: 'fixed',
@@ -16,7 +17,7 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
 }));
 
 const XSwitcherWrapper = Glamorous.div<{ active: boolean }>((props) => ({
-    width: 140,
+    width: 170,
     position: 'relative',
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
     borderRadius: 5,
@@ -57,9 +58,9 @@ const XSwitcherItemStyled = Glamorous(XLink)({
     transition: 'all .2s',
     boxSizing: 'border-box',
     paddingLeft: 15,
-    '&.is-active': {
-        color: '#4428e1'
-    },
+    // '&.is-active': {
+    //     color: '#1f3449'
+    // },
     '&:last-child': {
         borderBottom: 'none'
     },
@@ -80,7 +81,17 @@ const OverButton = Glamorous.div<{ active: boolean }>((props) => ({
     bottom: 0,
     left: 0,
     cursor: 'pointer',
-    zIndex: 2
+    zIndex: 2,
+    '& .material-icons': {
+        position: 'absolute',
+        right: 23,
+        top: 23,
+        // marginLeft: 2,
+        fontSize: 15,
+        color: '#abbacb',
+        opacity: 0.8,
+        transform: 'rotate(270deg)',
+    }
 }));
 
 const XSwitcherItemImage = Glamorous.div<{ img: string }>((props) => ({
@@ -120,7 +131,7 @@ interface MapStyleSwitcherProps {
     children: any;
 }
 
-export class MapStyleSwitcher extends React.Component<MapStyleSwitcherProps, {active: boolean}> {
+export class MapStyleSwitcher extends React.Component<MapStyleSwitcherProps, { active: boolean }> {
 
     static Item = MapStyleSwitcherItem;
 
@@ -160,7 +171,9 @@ export class MapStyleSwitcher extends React.Component<MapStyleSwitcherProps, {ac
                     <ClickOutside onClickOutside={this.disable} flex={true}>
                         {items}
                     </ClickOutside>
-                    <OverButton active={this.state.active} onClick={this.activate} />
+                    <OverButton active={this.state.active} onClick={this.activate} >
+                        <XIcon icon="keyboard_arrow_right" />
+                    </OverButton>
                 </XSwitcherWrapper>
             </>
         );
