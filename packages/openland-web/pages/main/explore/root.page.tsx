@@ -26,6 +26,7 @@ import { XCard } from 'openland-x/XCard';
 import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMapGeocoder } from 'openland-x-map/XMapGeocoder';
+import { XIcon } from 'openland-x/XIcon';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -34,7 +35,7 @@ const XMapContainer = Glamorous.div({
     height: '100vh'
 });
 
-const XMapContainer2 = Glamorous.div({
+const XMapContainer2 = Glamorous.div<{ noParcels: boolean }>((props) => ({
     position: 'relative',
     flexGrow: 1,
     flexShrink: 1,
@@ -50,6 +51,8 @@ const XMapContainer2 = Glamorous.div({
         zIndex: 0,
         '& .mapboxgl-ctrl-group': {
             border: 'none',
+            borderTopRightRadius: props.noParcels ? 0 : undefined,
+            borderBottomRightRadius: props.noParcels ? 0 : undefined,
             boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
 
             '& .mapboxgl-ctrl-zoom-in': {
@@ -69,16 +72,16 @@ const XMapContainer2 = Glamorous.div({
     '& .mapboxgl-ctrl-bottom-left': {
         display: 'none'
     }
-});
+}));
 
-const MapSwitcher = Glamorous.div({
+const MapSwitcher = Glamorous.div<{ noParcels: boolean }>((props) => ({
     position: 'absolute',
     bottom: 18,
-    left: 68,
+    left: 68 + (props.noParcels ? 233 : 0),
 
     display: 'flex',
     flexDirection: 'row'
-});
+}));
 
 const MapSearcher = Glamorous(XMapGeocoder)({
     zIndex: 1,
@@ -298,8 +301,35 @@ const DealsSource = withDealsMap((props) => {
     return null;
 });
 
+const NoParcelsMessage = Glamorous.div({
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: 233,
+    left: 48,
+    bottom: 78,
+    height: 60,
+    zIndex: 0,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    background: 'white',
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
+    color: '#A7B8C4',
+});
+
+const NoParcelsMessageIcon = Glamorous(XIcon)({
+    marginLeft: 14,
+    marginRight: 10,
+});
+
+const NoParcelsMessageText = Glamorous.div({
+    color: '#334562'
+});
+
 // const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Add to prospecting</XButtonMutation>);
-class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps & { roles: { roles: string[]; } | undefined }, { shadowed: boolean, mapLoaded?: boolean, parcelStatsLoaded?: boolean }> {
+class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentProps & { roles: { roles: string[]; } | undefined }, { shadowed: boolean, mapLoaded?: boolean, parcelStatsLoaded?: boolean, zoomToSmallForParcels: boolean }> {
 
     knownCameraLocation?: XMapCameraLocation;
 
@@ -308,7 +338,8 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
     constructor(props: XWithRouter & UserInfoComponentProps & { roles: { roles: string[]; } | undefined }) {
         super(props);
         this.state = {
-            shadowed: false
+            shadowed: false,
+            zoomToSmallForParcels: false,
         };
 
         if (canUseDOM) {
@@ -418,6 +449,11 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
     handleMap = (e: XMapCameraLocation) => {
         sessionStorage.setItem('__explore_location', JSON.stringify(e));
         this.knownCameraLocation = e;
+        console.warn(e.zoom);
+        let zoomToSmallForParcels = e.zoom < 12;
+        if (zoomToSmallForParcels !== this.state.zoomToSmallForParcels) {
+            this.setState({ zoomToSmallForParcels: zoomToSmallForParcels });
+        }
     }
 
     onMapLoaded = () => {
@@ -460,7 +496,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
             <Scaffold noBoxShadow={true} sidebarBorderColor="#dcdee4cc">
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <XMapContainer>
-                        <XMapContainer2>
+                        <XMapContainer2 noParcels={this.state.zoomToSmallForParcels}>
 
                             <FoundCounterSave
                                 variables={{
@@ -530,7 +566,18 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                     onClick={this.handleClick}
                                 />
                             </ParcelMap>
-                            <MapSwitcher>
+
+                            {this.state.zoomToSmallForParcels && (
+                                <NoParcelsMessage>
+                                    <NoParcelsMessageIcon icon="info" />
+                                    <NoParcelsMessageText>
+                                        <span>Zoom in to see parcel grid</span>
+                                    </NoParcelsMessageText>
+
+                                </NoParcelsMessage>
+                            )}
+
+                            <MapSwitcher noParcels={this.state.zoomToSmallForParcels}>
                                 {/* <XSwitcher fieldStyle={true}>
                                                 <XSwitcher.Item query={{ field: 'mode' }}>{TextMap.map}</XSwitcher.Item>
                                                 <XSwitcher.Item query={{ field: 'mode', value: 'satellite' }}>{TextMap.satellite}</XSwitcher.Item>
