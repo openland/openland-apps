@@ -275,14 +275,15 @@ const Title = Glamorous.div<{ marginBottom?: number }>((props) => ({
     marginBottom: props.marginBottom ? props.marginBottom : 11
 }));
 
-const Description = Glamorous.div({
+const Description = Glamorous.div<{ marginBottom?: number }>((props) => ({
     opacity: 0.7,
     fontSize: 16,
     lineHeight: 1.5,
     letterSpacing: 0.5,
     textAlign: 'center',
-    color: '#1f3449'
-});
+    color: '#1f3449',
+    marginBottom: props.marginBottom
+}));
 
 const ButtonsWrapper = Glamorous.div<{ marginTop?: number }>((props) => ({
     marginTop: props.marginTop
@@ -537,7 +538,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                     </>)}
 
                     {this.state.emailSent && (<>
-                        <Title marginBottom={20}>Please, enter activation code</Title>
+                        <Title >Activation code was sent to your email</Title>
+                        <Description marginBottom={20}>Please, enter it below</Description>
                         {this.state.codeError !== '' && <XServiceMessage title={this.state.codeError} />}
                         <ButtonsWrapper>
                             <XInput onChange={this.codeChanged} value={this.state.codeValue} placeholder="XXXXXX" />
