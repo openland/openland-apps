@@ -507,7 +507,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                                         <path fill="#fff" d="M 12.546875 10.238281 L 12.546875 14.058594 L 17.988281 14.058594 C 17.277344 16.375 15.34375 18.03125 12.546875 18.03125 C 9.214844 18.03125 6.511719 15.332031 6.511719 12 C 6.511719 8.667969 9.214844 5.96875 12.546875 5.96875 C 14.042969 5.96875 15.410156 6.515625 16.464844 7.421875 L 19.28125 4.605469 C 17.503906 2.988281 15.140625 2 12.546875 2 C 7.019531 2 2.542969 6.476563 2.542969 12 C 2.542969 17.523438 7.019531 22 12.546875 22 C 20.941406 22 22.792969 14.148438 21.972656 10.253906 Z " />
                                     </g>
                                 </svg>
-                                <span>Signin with Google</span>
+                                <span>Sign in with Google</span>
                             </ImgButton>
                             <Separator />
                             <ImgButton onClick={this.loginWithEmail} className="email">
@@ -517,7 +517,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                                         <path d="M0 0h24v24H0z" />
                                     </g>
                                 </svg>
-                                <span>Signin with Email</span>
+                                <span>Sign in with Email</span>
                             </ImgButton>
                         </ButtonsWrapper>
                     </>)}
