@@ -504,10 +504,12 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             <Logo picture={{ url: '/static/branding/logo_inverted_squared.png', retina: '/static/branding/logo_inverted_squared@2x.png' }} />
                         </XLink>
                         <NavigationDivider />
-                        <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
-                            <NavigatorIcon icon={this.state.search ? 'close' : 'search'} />
-                        </NavigatorItem>
-                        <NavigationDivider />
+                        <XWithRole role={['feature-search-global']}>
+                            <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
+                                <NavigatorIcon icon={this.state.search ? 'close' : 'search'} />
+                            </NavigatorItem>
+                            <NavigationDivider />
+                        </XWithRole>
                         <XWithRole role={['feature-marketplace']}>
                             <XTooltip placement="right">
                                 <XTooltip.Target>
@@ -542,26 +544,31 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 </XTooltip.Content>
                             </XTooltip>
                         </XWithRole>
-                        <XTooltip placement="right">
-                            <XTooltip.Target>
-                                <NavigatorItem path="/prospecting" activateForSubpaths={true}>
-                                    <NavigatorIcon icon="sort" />
-                                </NavigatorItem>
-                            </XTooltip.Target>
-                            <XTooltip.Content>
-                                <strong>{TextAppBar.items.prospecting}</strong>
-                            </XTooltip.Content>
-                        </XTooltip>
-                        <XTooltip placement="right">
-                            <XTooltip.Target>
-                                <NavigatorItem path="/deals" activateForSubpaths={true}>
-                                    <NavigatorIcon icon="business_center" />
-                                </NavigatorItem>
-                            </XTooltip.Target>
-                            <XTooltip.Content>
-                                <strong>{TextAppBar.items.deals}</strong>
-                            </XTooltip.Content>
-                        </XTooltip>
+
+                        <XWithRole role={['feature-prospecting']}>
+                            <XTooltip placement="right">
+                                <XTooltip.Target>
+                                    <NavigatorItem path="/prospecting" activateForSubpaths={true}>
+                                        <NavigatorIcon icon="sort" />
+                                    </NavigatorItem>
+                                </XTooltip.Target>
+                                <XTooltip.Content>
+                                    <strong>{TextAppBar.items.prospecting}</strong>
+                                </XTooltip.Content>
+                            </XTooltip>
+                        </XWithRole>
+                        <XWithRole role={['feature-deals']}>
+                            <XTooltip placement="right">
+                                <XTooltip.Target>
+                                    <NavigatorItem path="/deals" activateForSubpaths={true}>
+                                        <NavigatorIcon icon="business_center" />
+                                    </NavigatorItem>
+                                </XTooltip.Target>
+                                <XTooltip.Content>
+                                    <strong>{TextAppBar.items.deals}</strong>
+                                </XTooltip.Content>
+                            </XTooltip>
+                        </XWithRole>
                         <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
                             <XTooltip placement="right">
                                 <XTooltip.Target>
@@ -577,16 +584,18 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 </XTooltip.Content>
                             </XTooltip>
                         </XWithRole>
-                        <XTooltip placement="right">
-                            <XTooltip.Target>
-                                <NavigatorItem path="/favorites" activateForSubpaths={true}>
-                                    <NavigatorIcon icon="favorite" />
-                                </NavigatorItem>
-                            </XTooltip.Target>
-                            <XTooltip.Content>
-                                <strong>{TextAppBar.items.favorites}</strong>
-                            </XTooltip.Content>
-                        </XTooltip>
+                        <XWithRole role={['feature-favorites']}>
+                            <XTooltip placement="right">
+                                <XTooltip.Target>
+                                    <NavigatorItem path="/favorites" activateForSubpaths={true}>
+                                        <NavigatorIcon icon="favorite" />
+                                    </NavigatorItem>
+                                </XTooltip.Target>
+                                <XTooltip.Content>
+                                    <strong>{TextAppBar.items.favorites}</strong>
+                                </XTooltip.Content>
+                            </XTooltip>
+                        </XWithRole>
                         <BottomNavigation>
                             <XWithRole role={['super-admin', 'software-developer']}>
                                 <XTooltip placement="right" centeredContent={true}>
