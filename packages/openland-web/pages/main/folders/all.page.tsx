@@ -339,7 +339,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
                                     icon = 'folder';
                             }
                             return (
-                                <SidebarItem key={v.id} path={'/folders/' + v.id} icon={icon} title={v.name} counter={v.parcelsCount} />
+                                <SidebarItem key={v.id} path={'/folders/' + v.id + '?mapView=' + props.router.routeQuery.mapView} icon={icon} title={v.name} counter={v.parcelsCount} />
                             );
                         })}
                         <CreateFolder />
