@@ -229,14 +229,14 @@ const MapCardContent = () => (
             <span>Prospecting</span>
         </MapCardTitle>
         <MapCardText marginBottom={42}>
-            Identify best-fit opportunity sites and connect with the owners
+            Identify best-fit opportunity sites and connect with their owners
         </MapCardText>
         <MapCardTitle>
             <XIcon icon="insert_drive_file" />
             <span>Record keeping</span>
         </MapCardTitle>
         <MapCardText marginBottom={42}>
-            Organize all sites you track in a simple system of folders
+            Organize all sites you are working with in a simple system of folders
         </MapCardText>
         <MapCardTitle>
             {/* <Logo width={25} height={25} /> */}
