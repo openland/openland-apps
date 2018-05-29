@@ -6,6 +6,8 @@ export interface SharedStorage {
     writeValue(key: string, value: string | null, expires?: number): void;
 }
 
+const CookiePrefix = 'x-openland-';
+
 class SharedClientStorage implements SharedStorage {
 
     private predefined = new Map<string, string>();
@@ -20,7 +22,7 @@ class SharedClientStorage implements SharedStorage {
             return this.predefined.get(key)!!;
         }
 
-        let res = Cookie.get('statecraft-' + key);
+        let res = Cookie.get(CookiePrefix + key);
         if (res) {
             return res;
         } else {
@@ -31,12 +33,12 @@ class SharedClientStorage implements SharedStorage {
     writeValue(key: string, value: string | null, expires?: number) {
         if (value) {
             if (expires) {
-                Cookie.set('statecraft-' + key, value, { expires: expires / (24 * 60.0 * 60.0) });
+                Cookie.set(CookiePrefix + key, value, { expires: expires / (24 * 60.0 * 60.0) });
             } else {
-                Cookie.set('statecraft-' + key, value);
+                Cookie.set(CookiePrefix + key, value);
             }
         } else {
-            Cookie.remove('statecraft-' + key);
+            Cookie.remove(CookiePrefix + key);
         }
     }
 }
@@ -48,11 +50,10 @@ class SharedServerStorage implements SharedStorage {
 
         this.values.set('host', ctx.req.get('host'));
         this.values.set('protocol', ctx.req.protocol);
-
-        let cookie = ctx.headers.cookie as string;
-        let keys = cookie.split(';').filter((c: string) => c.trim().startsWith('statecraft-'));
+        let cookie = ctx.req.headers.cookie as string;
+        let keys = cookie.split(';').filter((c: string) => c.trim().startsWith(CookiePrefix));
         for (let k of keys) {
-            k = k.substring('statecraft-'.length);
+            k = k.substring(CookiePrefix.length);
             let parts = k.split('=', 2);
             this.values.set(parts[0], parts[1]);
         }

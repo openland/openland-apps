@@ -16,16 +16,20 @@ import { Routes } from '../routes';
 import { RootErrorBoundary } from './RootErrorBoundary';
 import getDataFromTree from 'openland-x-graphql/getDataFromTree';
 import '../globals';
+import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
+import { XStorageProvider } from 'openland-x-routing/XStorageProvider';
+
+interface WithDataProps {
+    serverState: { apollo: { data: any, token?: string } };
+    host: string;
+    protocol: string;
+    domain: string;
+    composedInitialProps: any;
+    storage: SharedStorage;
+}
 
 export const withData = (ComposedComponent: React.ComponentType) => {
-    return class WithData extends React.Component<{
-        serverState: { apollo: { data: any, token?: string } },
-        host: string,
-        protocol: string,
-        domain: string,
-        composedInitialProps: any
-    }> {
-
+    return class WithData extends React.Component<WithDataProps> {
         static displayName = `WithData(${getComponentDisplayName(
             ComposedComponent
         )})`;
@@ -41,12 +45,15 @@ export const withData = (ComposedComponent: React.ComponentType) => {
             let serverState = { apollo: {} };
             let host: string;
             let protocol: string;
+            let storage: SharedStorage;
             if (ctx.req) {
                 host = ctx.req.get('host');
                 protocol = ctx.req.protocol;
+                storage = getServerStorage(ctx);
             } else {
                 host = window.location.host;
                 protocol = window.location.protocol.replace(':', '');
+                storage = getClientStorage();
             }
             // console.warn(ctx.req);
 
@@ -67,14 +74,15 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                 try {
                     // Run all GraphQL queries
                     await getDataFromTree(
-
-                        <ApolloProvider client={apollo}>
-                            <HostNameProvider hostName={host} protocol={protocol}>
-                                <XRouterProvider routes={Routes}>
-                                    <ComposedComponent {...composedInitialProps} />
-                                </XRouterProvider>
-                            </HostNameProvider>
-                        </ApolloProvider>
+                        <XStorageProvider storage={storage}>
+                            <ApolloProvider client={apollo}>
+                                <HostNameProvider hostName={host} protocol={protocol}>
+                                    <XRouterProvider routes={Routes}>
+                                        <ComposedComponent {...composedInitialProps} />
+                                    </XRouterProvider>
+                                </HostNameProvider>
+                            </ApolloProvider>
+                        </XStorageProvider>
                         ,
                         { router: { query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath } });
                 } catch (error) {
@@ -109,13 +117,15 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                 try {
                     // Run all GraphQL queries
                     await getDataFromTree(
-                        <ApolloProvider client={apollo}>
-                            <HostNameProvider hostName={host} protocol={protocol}>
-                                <XRouterProvider routes={Routes}>
-                                    <ComposedComponent {...composedInitialProps} />
-                                </XRouterProvider>
-                            </HostNameProvider>
-                        </ApolloProvider>
+                        <XStorageProvider storage={storage}>
+                            <ApolloProvider client={apollo}>
+                                <HostNameProvider hostName={host} protocol={protocol}>
+                                    <XRouterProvider routes={Routes}>
+                                        <ComposedComponent {...composedInitialProps} />
+                                    </XRouterProvider>
+                                </HostNameProvider>
+                            </ApolloProvider>
+                        </XStorageProvider>
                         ,
                         { router: { query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath } });
                 } catch (error) {
@@ -136,11 +146,12 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                 serverState,
                 composedInitialProps,
                 host,
-                protocol
+                protocol,
+                storage
             };
         }
 
-        constructor(props: { serverState: { apollo: { data: any, token?: string } }, host: string, protocol: string, domain: string, composedInitialProps: any }) {
+        constructor(props: WithDataProps) {
             super(props);
             this.apollo = apolloClient(this.props.serverState.apollo.data, this.props.serverState.apollo.token);
         }
@@ -153,13 +164,15 @@ export const withData = (ComposedComponent: React.ComponentType) => {
         render() {
             return (
                 <RootErrorBoundary>
-                    <ApolloProvider client={this.apollo}>
-                        <HostNameProvider hostName={this.props.host} protocol={this.props.protocol}>
-                            <XRouterProvider routes={Routes}>
-                                <ComposedComponent {...this.props.composedInitialProps} />
-                            </XRouterProvider>
-                        </HostNameProvider>
-                    </ApolloProvider>
+                    <XStorageProvider storage={this.props.storage}>
+                        <ApolloProvider client={this.apollo}>
+                            <HostNameProvider hostName={this.props.host} protocol={this.props.protocol}>
+                                <XRouterProvider routes={Routes}>
+                                    <ComposedComponent {...this.props.composedInitialProps} />
+                                </XRouterProvider>
+                            </HostNameProvider>
+                        </ApolloProvider>
+                    </XStorageProvider>
                 </RootErrorBoundary>
             );
         }
