@@ -121,6 +121,7 @@ const XModalCloser = Glamorous(XButton)({
 class ModalContentRender extends React.Component<{
     title?: string;
     heading?: any;
+    useTopCloser?: boolean;
     body?: any;
     footer?: any;
     customContent?: boolean;
@@ -135,12 +136,12 @@ class ModalContentRender extends React.Component<{
         }
         return (
             <Root>
-                {this.props.heading === undefined && this.props.title && <XModalHeader>{this.props.title}<XModalCloser icon="close" autoClose={true} /></XModalHeader>}
+                {this.props.heading === undefined && this.props.useTopCloser && <XModalHeader>{this.props.title}<XModalCloser icon="close" autoClose={true} /></XModalHeader>}
                 {this.props.heading === undefined && !this.props.title && <XModalHeaderEmpty />}
                 {this.props.heading !== undefined && this.props.heading}
                 {this.props.body === undefined && <XModalBody>{this.props.children}</XModalBody>}
                 {this.props.body !== undefined && this.props.body}
-                {/* {this.props.footer === undefined && <XModalFooter><XButton text="Close" autoClose={true} /></XModalFooter>} */}
+                {this.props.footer === undefined && !this.props.useTopCloser && <XModalFooter><XButton text="Close" autoClose={true} /></XModalFooter>}
                 {this.props.footer !== undefined && this.props.footer}
             </Root>
         );
@@ -155,6 +156,7 @@ export interface XModalProps {
     body?: any;
     footer?: any;
     customContent?: boolean;
+    useTopCloser?: boolean;
 
     // Style
     size?: 'x-large' | 'large' | 'default' | 'small';
@@ -208,6 +210,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                     <ModalRender isOpen={this.state.isOpen} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
                         <ModalContentRender
                             title={this.props.title}
+                            useTopCloser={this.props.useTopCloser}
                             heading={this.props.heading}
                             footer={this.props.footer}
                             body={this.props.body}
@@ -228,6 +231,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                             <ModalRender isOpen={!!router!!.query[q]} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
                                 <ModalContentRender
                                     title={this.props.title}
+                                    useTopCloser={this.props.useTopCloser}
                                     heading={this.props.heading}
                                     footer={this.props.footer}
                                     body={this.props.body}
@@ -245,6 +249,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                 <ModalRender isOpen={this.props.isOpen} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
                     <ModalContentRender
                         title={this.props.title}
+                        useTopCloser={this.props.useTopCloser}
                         heading={this.props.heading}
                         footer={this.props.footer}
                         body={this.props.body}
