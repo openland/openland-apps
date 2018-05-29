@@ -22,7 +22,7 @@ interface NavigableProps {
     // Navigation action
     href?: string;
     path?: string;
-    query?: { field: string, value?: string };
+    query?: { field: string, value?: string, clear?: boolean };
     autoClose?: boolean;
 
     // Activation
@@ -116,7 +116,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                     if (this.props.path) {
                         this.props.__router.push(this.props.path!!);
                     } else if (this.props.query) {
-                        this.props.__router.pushQuery(this.props.query.field, this.props.query.value);
+                        this.props.__router.pushQuery(this.props.query.field, this.props.query.value, this.props.query.clear);
                     }
                 }
             } else if (this.props.href) {

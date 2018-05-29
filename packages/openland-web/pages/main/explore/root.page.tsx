@@ -479,12 +479,12 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
 
                                     <CitySelector title={city === 'sf' ? 'San Francisco' : 'New York City'}>
                                         <CitySelector.Item
-                                            query={{ field: 'city', value: 'sf' }}
+                                            query={{ field: 'city', value: 'sf', clear: true }}
                                             active={city === 'sf'}
                                             label="San Francisco"
                                         />
                                         <CitySelector.Item
-                                            query={{ field: 'city', value: 'nyc' }}
+                                            query={{ field: 'city', value: 'nyc', clear: true }}
                                             active={city !== 'sf'}
                                             label="New York City"
                                         />

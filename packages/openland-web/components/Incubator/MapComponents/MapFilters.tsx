@@ -586,14 +586,16 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
 
         }
 
-        other.push(
-            <FilterCategory key={'filter_publicOwner'}>
-                <FilterCategoryTitle>Publicly owned</FilterCategoryTitle>
-                <ApplyFilterWrap fieldName="publicOwner" router={this.props.router}>
-                    <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} anyOptionName="All" anyOptionOrder="before" />
-                </ApplyFilterWrap>
-            </FilterCategory>
-        );
+        if (this.props.city === 'nyc') {
+            other.push(
+                <FilterCategory key={'filter_publicOwner'}>
+                    <FilterCategoryTitle>Publicly owned</FilterCategoryTitle>
+                    <ApplyFilterWrap fieldName="publicOwner" router={this.props.router}>
+                        <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} anyOptionName="All" anyOptionOrder="before" />
+                    </ApplyFilterWrap>
+                </FilterCategory>
+            );
+        }
 
         other.push(
             <XWithRole role={'feature-customer-kassita'} key={'filter_compatible'}>
