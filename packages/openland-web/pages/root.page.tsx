@@ -27,7 +27,7 @@ export default withAppBase(withUserInfo((props) => {
             <XDocumentHead title="App" titleSocial="Openland - land acquisition platfom" />
             <XTrack event="View Root">
                 <XWithRole role="feature-marketplace">
-                    <XPageRedirect path="/marketplace" />
+                    <XPageRedirect path="/home" />
                 </XWithRole>
                 <XWithRole role="feature-marketplace" negate={true}>
                     <XPageRedirect path="/map" />
