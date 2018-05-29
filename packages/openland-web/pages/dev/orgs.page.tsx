@@ -31,7 +31,7 @@ const XSwitcherMargin = glamorous(XSwitcher)({
     marginLeft: 24
 });
 
-export default withApp('Super Organizations', 'software-developer', withSuperAccounts(withRouter((props) => {
+export default withApp('Super Organizations', 'super-admin', withSuperAccounts(withRouter((props) => {
     
     let orgs = props.data.superAccounts;
     let orgsCurrentTab = orgs.filter((o) => o.state === (props.router.query.orgState || 'ACTIVATED'));
