@@ -97,8 +97,29 @@ const text = {
     } as CSSProperties,
 };
 
+const scroll = {
+    '&::-webkit-scrollbar': {
+        WebkitAppearance: 'none'
+    },
+    
+    '&::-webkit-scrollbar:vertical': {
+        width: 11
+    },
+    
+    '&::-webkit-scrollbar:horizontal': {
+        height: 11
+    },
+    
+    '&::-webkit-scrollbar-thumb': {
+        borderRadius: 8,
+        border: '2px solid white', /* should match background, can't be transparent */
+        backgroundColor: 'rgba(0, 0, 0, .5)'
+    }
+};
+
 export default {
     color,
     text,
-    paddings
+    paddings,
+    scroll
 };

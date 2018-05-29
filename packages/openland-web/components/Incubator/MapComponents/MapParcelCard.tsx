@@ -84,15 +84,15 @@ const Scrollable = Glamorous.div({
     '&::-webkit-scrollbar': {
         WebkitAppearance: 'none'
     },
-    
+
     '&::-webkit-scrollbar:vertical': {
         width: 11
     },
-    
+
     '&::-webkit-scrollbar:horizontal': {
         height: 11
     },
-    
+
     '&::-webkit-scrollbar-thumb': {
         borderRadius: 8,
         border: '2px solid white', /* should match background, can't be transparent */
@@ -204,9 +204,12 @@ const PropertyCellTitle = Glamorous.div<{ width?: number }>((props) => ({
     lineHeight: 1.25,
     letterSpacing: -0.2,
     color: '#1f3449',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap'
+    '& > span': {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        maxWidth: '100%'
+    }
 }));
 
 const PropertyCellValue = Glamorous.div({
@@ -224,7 +227,7 @@ const PropertyCellValue = Glamorous.div({
 
 const PropertyCell = (props: { children: any, title?: string, width?: number, compact?: boolean }) => (
     <PropertyCellContainer>
-        {props.title && (<PropertyCellTitle width={props.width}>{props.title}</PropertyCellTitle>)}
+        {props.title && (<PropertyCellTitle width={props.width}><span>{props.title}</span></PropertyCellTitle>)}
         {React.Children.count(props.children) > 0 && <PropertyCellValue>{props.children}</PropertyCellValue>}
     </PropertyCellContainer>
 );
@@ -280,10 +283,11 @@ const SeparatedDiv = Glamorous(XContent)({
     paddingRight: 18,
 });
 
-const MenuButtonWrapper = Glamorous.div({
-    position: 'absolute',
-    right: -16,
-    top: -20
+const XHeaderTitleWrapper = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: 315
 });
 
 const ParcelLink = Glamorous(XLink)({
@@ -301,32 +305,31 @@ export const ParcelCard = withParcelDirect((props) => (
             <>
                 <XHeader
                     text={(
-                        <ParcelLink path={'/parcels/' + props.data.item!!.id}>
-                            {props.data.item!!.address || 'No address'}
-                        </ParcelLink>
+                        <XHeaderTitleWrapper>
+                            <ParcelLink path={'/parcels/' + props.data.item!!.id}>
+                                {props.data.item!!.address || 'No address'}
+                            </ParcelLink>
+                            <XPopover placement="bottom-start">
+                                <XPopover.Target>
+                                    <DottedMenuButton />
+                                </XPopover.Target>
+                                <XPopover.Content>
+                                    <XButton
+                                        path={'/parcels/' + props.data.item!!.id}
+                                        flexGrow={1}
+                                        flexBasis={0}
+                                        text="Details"
+                                    />
+                                    <XButton query={{ field: 'selectedParcel' }} text="Close" />
+                                </XPopover.Content>
+                            </XPopover>
+                        </XHeaderTitleWrapper>
                     )}
                     description={<ParcelNumber id={props.data.item!!.number} />}
                     truncateDescription={true}
                     bullet={props.data!!.item!!.extrasOwnerPublic ? 'public' : (props.data!!.item!!.metadata.available ? 'ON SALE' : undefined)}
                     style="compact"
-                >
-                    <MenuButtonWrapper>
-                        <XPopover placement="bottom-start">
-                            <XPopover.Target>
-                                <DottedMenuButton />
-                            </XPopover.Target>
-                            <XPopover.Content>
-                                <XButton
-                                    path={'/parcels/' + props.data.item!!.id}
-                                    flexGrow={1}
-                                    flexBasis={0}
-                                    text="Details"
-                                />
-                                <XButton query={{ field: 'selectedParcel' }} text="Close" />
-                            </XPopover.Content>
-                        </XPopover>
-                    </MenuButtonWrapper>
-                </XHeader>
+                />
                 {props.data.item.geometry && !props.data!!.loading && (
                     <SeparatedDiv>
                         <StreetViewDiv>

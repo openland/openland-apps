@@ -229,14 +229,14 @@ const MapCardContent = () => (
             <span>Prospecting</span>
         </MapCardTitle>
         <MapCardText marginBottom={42}>
-            Identify best-fit opportunity sites and connect with the owners
+            Identify best-fit opportunity sites and connect with their owners
         </MapCardText>
         <MapCardTitle>
             <XIcon icon="insert_drive_file" />
             <span>Record keeping</span>
         </MapCardTitle>
         <MapCardText marginBottom={42}>
-            Organize all sites you track in a simple system of folders
+            Organize all sites you are working with in a simple system of folders
         </MapCardText>
         <MapCardTitle>
             {/* <Logo width={25} height={25} /> */}
@@ -275,14 +275,15 @@ const Title = Glamorous.div<{ marginBottom?: number }>((props) => ({
     marginBottom: props.marginBottom ? props.marginBottom : 11
 }));
 
-const Description = Glamorous.div({
+const Description = Glamorous.div<{ marginBottom?: number }>((props) => ({
     opacity: 0.7,
     fontSize: 16,
     lineHeight: 1.5,
     letterSpacing: 0.5,
     textAlign: 'center',
-    color: '#1f3449'
-});
+    color: '#1f3449',
+    marginBottom: props.marginBottom
+}));
 
 const ButtonsWrapper = Glamorous.div<{ marginTop?: number }>((props) => ({
     marginTop: props.marginTop
@@ -507,7 +508,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                                         <path fill="#fff" d="M 12.546875 10.238281 L 12.546875 14.058594 L 17.988281 14.058594 C 17.277344 16.375 15.34375 18.03125 12.546875 18.03125 C 9.214844 18.03125 6.511719 15.332031 6.511719 12 C 6.511719 8.667969 9.214844 5.96875 12.546875 5.96875 C 14.042969 5.96875 15.410156 6.515625 16.464844 7.421875 L 19.28125 4.605469 C 17.503906 2.988281 15.140625 2 12.546875 2 C 7.019531 2 2.542969 6.476563 2.542969 12 C 2.542969 17.523438 7.019531 22 12.546875 22 C 20.941406 22 22.792969 14.148438 21.972656 10.253906 Z " />
                                     </g>
                                 </svg>
-                                <span>Signin with Google</span>
+                                <span>Sign in with Google</span>
                             </ImgButton>
                             <Separator />
                             <ImgButton onClick={this.loginWithEmail} className="email">
@@ -517,7 +518,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                                         <path d="M0 0h24v24H0z" />
                                     </g>
                                 </svg>
-                                <span>Signin with Email</span>
+                                <span>Sign in with Email</span>
                             </ImgButton>
                         </ButtonsWrapper>
                     </>)}
@@ -537,7 +538,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                     </>)}
 
                     {this.state.emailSent && (<>
-                        <Title marginBottom={20}>Please, enter activation code</Title>
+                        <Title >Activation code was sent to your email</Title>
+                        <Description marginBottom={20}>Please, enter it below</Description>
                         {this.state.codeError !== '' && <XServiceMessage title={this.state.codeError} />}
                         <ButtonsWrapper>
                             <XInput onChange={this.codeChanged} value={this.state.codeValue} placeholder="XXXXXX" />
