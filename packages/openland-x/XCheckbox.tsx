@@ -26,7 +26,7 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
             },
         },
         '& .bottom-content': {
-            paddingLeft: 27,
+            paddingLeft: 28,
             width: 245,
             opacity: 0.4,
             fontSize: 13,
