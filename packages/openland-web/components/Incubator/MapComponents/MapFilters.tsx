@@ -380,10 +380,11 @@ class FilterFooter extends React.Component<{ addBorder?: boolean }> {
 const OwnerNameFiltersContent = withRouter((props) => (
     <FiltersContent>
         <InlineApplyInput placeholder="Owner name contains" searchKey="ownerName" router={props.router} />
-
-        <FilterFooter addBorder={false} />
+        {(props as any).addFooter !== false && (
+            <FilterFooter addBorder={false} />
+        )}
     </FiltersContent>
-));
+)) as React.ComponentClass<{ addFooter?: boolean }>;
 
 const FilterRangeBaseNMargin = Glamorous.div({
     margin: -12,
@@ -475,7 +476,7 @@ const OtherFooter = Glamorous(FilterFooter)({
     marginRight: -10,
 });
 
-class MapFilters extends React.Component<XWithRouter & { city?: string }, { active: boolean }> {
+class MapFilters extends React.Component<XWithRouter & { city?: string }, { active: boolean, widthState: 'wide' | 'narrow' }> {
     shadowRequests = new Set();
     otherFilters: Set<string> = new Set(['isVacant', 'publicOwner', 'compatible', 'filterTransit', 'isOkForTower', 'filterOnSale', 'filterCurrentUse']);
 
@@ -484,6 +485,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
 
         this.state = {
             active: false,
+            widthState: window.innerWidth <= 1300 ? 'narrow' : 'wide',
         };
     }
 
@@ -508,11 +510,21 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
         this.shadowHandler(add, caller);
     }
 
+    onResize = () => {
+        this.setState({ widthState: window.innerWidth <= 1300 ? 'narrow' : 'wide' });
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.onResize);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('resize', this.onResize);
+    }
+
     render() {
-        let otherActive = false;
-        for (let fieldKey of Object.keys(this.props.router.query)) {
-            otherActive = otherActive || this.otherFilters.has(fieldKey);
-        }
+
+        this.otherFilters = new Set(['isVacant', 'publicOwner', 'compatible', 'filterTransit', 'isOkForTower', 'filterOnSale', 'filterCurrentUse']);
 
         let sfOther = [];
 
@@ -529,7 +541,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             <FilterCategory key={'filter_isOkForTower'}>
                 <FilterCategoryTitle>Tower opportunity</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="isOkForTower" router={this.props.router}>
-                    <XRadioGroup elements={[{ value: 'true', label: 'Yes(90+ height limit, 0-2 stories)' }]} anyOptionName="All" anyOptionOrder="before"/>
+                    <XRadioGroup elements={[{ value: 'true', label: 'Yes(90+ height limit, 0-2 stories)' }]} anyOptionName="All" anyOptionOrder="before" />
                 </ApplyFilterWrap>
             </FilterCategory>
         );
@@ -542,7 +554,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                     { value: '243', label: '< 800 feet' },
                     { value: '457', label: '< 1500 feet' },
                     { value: '1220', label: '< 4000 feet' },
-                    { value: '2430', label: '< 8000 feet' }]} anyOptionOrder="before" anyOptionName="All"/>
+                    { value: '2430', label: '< 8000 feet' }]} anyOptionOrder="before" anyOptionName="All" />
                 </ApplyFilterWrap>
             </FilterCategory>
         );
@@ -567,7 +579,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                 <FilterCategory key={'filter_isVacant'}>
                     <FilterCategoryTitle>Vacant</FilterCategoryTitle>
                     <ApplyFilterWrap fieldName="isVacant" router={this.props.router}>
-                        <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} anyOptionName="All" anyOptionOrder="before"/>
+                        <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} anyOptionName="All" anyOptionOrder="before" />
                     </ApplyFilterWrap>
                 </FilterCategory>
             );
@@ -578,13 +590,13 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             <FilterCategory key={'filter_publicOwner'}>
                 <FilterCategoryTitle>Publicly owned</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="publicOwner" router={this.props.router}>
-                    <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]}  anyOptionName="All" anyOptionOrder="before"/>
+                    <XRadioGroup elements={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} anyOptionName="All" anyOptionOrder="before" />
                 </ApplyFilterWrap>
             </FilterCategory>
         );
 
         other.push(
-            <XWithRole role={'feature-customer-kassita'}  key={'filter_compatible'}>
+            <XWithRole role={'feature-customer-kassita'} key={'filter_compatible'}>
                 <FilterCategory>
                     <FilterCategoryTitle>Compatible buildings</FilterCategoryTitle>
                     <XVertical>
@@ -597,8 +609,60 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
 
         );
 
+        if (this.state.widthState === 'narrow') {
+
+            if (this.props.city === 'nyc') {
+                other.unshift(
+                    <FilterCategory>
+                        <FilterCategoryTitle>Owner Name</FilterCategoryTitle>
+                        <OwnerNameFiltersContent addFooter={false} />
+                    </FilterCategory>
+                );
+            }
+
+            if (this.props.city === 'sf') {
+                other.unshift(
+                    <FilterCategory>
+                        <FilterCategoryTitle>Stories</FilterCategoryTitle>
+                        <XVertical>
+                            <ApplyFilterWrap fieldName="filterStories" router={this.props.router}>
+                                <XCheckboxGroup
+                                    elements={[
+                                        { value: '0', label: 'no stories' },
+                                        { value: '1', label: '1 story' },
+                                        { value: '2', label: '2 stories' },
+                                        { value: '3', label: '3 stories' },
+                                        { value: '4', label: '4 + stories' }]} />
+                            </ApplyFilterWrap>
+                        </XVertical>
+                    </FilterCategory>
+                );
+
+                other.unshift(
+                    <FilterCategory>
+                        <FilterCategoryTitle>Lans Use</FilterCategoryTitle>
+                        <XVertical >
+                            <ApplyFilterWrap fieldName="landUse" router={this.props.router}>
+                                <XCheckboxGroup
+                                    elements={AllLandUse.map((v) => ({ value: v.label, label: v.label, hint: v.hint }))} />
+                            </ApplyFilterWrap>
+                        </XVertical >
+                    </FilterCategory>
+                );
+            }
+
+            this.otherFilters.add('landUse');
+            this.otherFilters.add('filterStories');
+            this.otherFilters.add('ownerName');
+        }
+
         if (this.props.city === 'sf') {
             other.push(...sfOther);
+        }
+
+        let otherActive = false;
+        for (let fieldKey of Object.keys(this.props.router.query)) {
+            otherActive = otherActive || this.otherFilters.has(fieldKey);
         }
 
         return (
@@ -607,7 +671,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                 <Shadow active={this.state.active} />
 
                 <MapFilterWrapper active={this.state.active}>
-                    {this.props.city === 'nyc' && (
+                    {this.props.city === 'nyc' && this.state.widthState === 'wide' && (
                         <FilterButtonWrapper key={'filter_ownerName'}>
                             <FilterButton
                                 handler={this.applyHandler}
@@ -673,7 +737,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                         </FilterButtonWrapper>
                     )}
 
-                    {this.props.city === 'sf' && (
+                    {this.props.city === 'sf' && this.state.widthState === 'wide' && (
                         <>
                             <FilterButtonWrapper key={'filter_landUse'}>
                                 <FilterButton
