@@ -324,7 +324,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
             <XDocumentHead title={['Folders']} />
             <Scaffold>
                 <Scaffold.Menu>
-                    <Sidebar title="Folders" width={300}>
+                    <Sidebar title="Folders" width={280}>
                         {props.data.folders.map((v) => {
                             const type = v.special;
                             let icon = '';
@@ -339,7 +339,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
                                     icon = 'folder';
                             }
                             return (
-                                <SidebarItem key={v.id} path={'/folders/' + v.id + '?mapView=' + props.router.routeQuery.mapView} icon={icon} title={v.name} counter={v.parcelsCount} />
+                                <SidebarItem key={v.id} path={'/folders/' + v.id + '?mapView=' + !!(props.router.routeQuery.mapView)} icon={icon} title={v.name} counter={v.parcelsCount} />
                             );
                         })}
                         <CreateFolder />
