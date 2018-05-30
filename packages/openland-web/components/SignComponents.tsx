@@ -129,8 +129,12 @@ interface HeaderProps {
 const Header = (props: HeaderProps) => (
     <HeaderStyled>
         <LogoWrapper>
-            <Logo />
-            <LogoTitle>Openland</LogoTitle>
+            <XLink href="https://openland.com">
+                <Logo />
+            </XLink>
+            <XLink href="https://openland.com">
+                <LogoTitle>Openland</LogoTitle>
+            </XLink>
         </LogoWrapper>
         <SignupContainer>
             <SignupStyled>{props.text}</SignupStyled>

@@ -16,7 +16,8 @@ import {
     ButtonsWrapper,
     ImgButton,
     Title,
-    Separator
+    Separator,
+    Description
 } from '../components/SignComponents';
 
 class SignInComponent extends React.Component<{ redirect?: string | null }, {
@@ -124,7 +125,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
                     linkText="Sign Up"
                 >
                     {!this.state.email && (<>
-                        <Title>Sign in to your Openland accoun</Title>
+                        <Title>Sign in to your Openland account</Title>
+                        <Description>Welcome back!</Description>
                         <ButtonsWrapper marginTop={52}>
                             <ImgButton onClick={this.loginWithGoogle} primary={true}>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" width="50px" height="50px">
