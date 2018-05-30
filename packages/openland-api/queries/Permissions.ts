@@ -50,6 +50,15 @@ export const SuperAccountQuery = gql`
     ${UserShort}
 `;
 
+export const SuperAccountRenameMutation = gql`
+    mutation SuperAccountRename($accountId: ID!, $title: String!) {
+        superAccountRename(id: $accountId, title: $title) {
+            id
+            title
+        }
+    }
+`;
+
 export const SuperAccountActivateMutation = gql`
     mutation SuperAccountActivate($accountId: ID!) {
         superAccountActivate(id: $accountId) {

@@ -4,7 +4,8 @@ import { withApp } from '../../components/withApp';
 import {
     withSuperAccount, withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountMemberAdd,
     UserSelect, withSuperAccountFeatureAdd, withSuperAccountFeatureRemove,
-    withSuperAccountMemberRemove
+    withSuperAccountMemberRemove,
+    withSuperAccountRename
 } from '../../api/';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
@@ -82,10 +83,30 @@ const RemoveFeature = withSuperAccountFeatureRemove((props) => {
     );
 });
 
+const Edit = withSuperAccountRename((props) => {
+    return (
+        <XModalForm
+            title="Edit organization"
+            actionName="Rename"
+            target={<XButton text="Edit" />}
+            submitMutation={props.rename}
+            mutationDirect={true}
+        >
+            <XForm.Text
+                field="title"
+                autofocus={true}
+                value={(props as any).orgTitle}
+                placeholder="Organization Name"
+            />
+        </XModalForm>
+    );
+}) as React.ComponentType<{ orgTitle: string }>;
+
 export default withApp('Super Organization', 'super-admin', withSuperAccount((props) => {
     return (
         <DevToolsScaffold title={props.data.superAccount.title}>
             <XHeader text={props.data.superAccount.title} description={'Current State: ' + props.data.superAccount.state}>
+                <Edit orgTitle={props.data.superAccount.title}/>
                 <AddMemberForm />
                 <RemoveMemberForm />
                 {props.data.superAccount.state !== 'ACTIVATED' && <ActivateButton />}

@@ -8,6 +8,7 @@ export const SuperAccountsQuery = typedQuery<Types.SuperAccountsQuery, {}>(Permi
 export const SuperAccountQuery = typedQuery<Types.SuperAccountQuery, Types.SuperAccountQueryVariables>(Permissions.SuperAccountQuery);
 
 export const SuperAccountAddMutation = typedMutation<Types.SuperAccountAddMutation, Types.SuperAccountAddMutationVariables>(Permissions.SuperAccountAddMutation);
+export const SuperAccountRenameMutation = typedMutation<Types.SuperAccountRenameMutation, Types.SuperAccountRenameMutationVariables>(Permissions.SuperAccountRenameMutation);
 export const SuperAccountActivateMutation = typedMutation<Types.SuperAccountActivateMutation, Types.SuperAccountActivateMutationVariables>(Permissions.SuperAccountActivateMutation);
 export const SuperAccountSuspendMutation = typedMutation<Types.SuperAccountSuspendMutation, Types.SuperAccountSuspendMutationVariables>(Permissions.SuperAccountSuspendMutation);
 

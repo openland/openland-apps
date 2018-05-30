@@ -124,6 +124,8 @@ export const withSuperAccount = graphqlRouted(Queries.Permissions.SuperAccountQu
 
 export const withSuperAccountAdd =
     graphqlMutation(Queries.Permissions.SuperAccountAddMutation, 'add', { refetchQueries: [Queries.Permissions.SuperAccountsQuery] });
+export const withSuperAccountRename =
+    graphqlMutation(Queries.Permissions.SuperAccountRenameMutation, 'rename', { params: ['accountId'] });
 export const withSuperAccountActivate =
     graphqlMutation(Queries.Permissions.SuperAccountActivateMutation, 'activate', { params: ['accountId'] });
 export const withSuperAccountSuspend =

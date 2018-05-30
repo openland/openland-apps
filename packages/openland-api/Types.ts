@@ -1927,6 +1927,19 @@ export interface SuperAccountQuery {
   },
 };
 
+export interface SuperAccountRenameMutationVariables {
+  accountId: string,
+  title: string,
+};
+
+export interface SuperAccountRenameMutation {
+  superAccountRename:  {
+    __typename: "SuperAccount",
+    id: string,
+    title: string,
+  },
+};
+
 export interface SuperAccountActivateMutationVariables {
   accountId: string,
 };
