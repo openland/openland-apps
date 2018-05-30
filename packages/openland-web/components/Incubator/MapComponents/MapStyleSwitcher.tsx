@@ -44,6 +44,17 @@ const XSwitcherWrapper = Glamorous.div<{ active: boolean }>((props) => ({
                 // zIndex: 1
             }
         }
+    },
+    '& .material-icons': {
+        position: 'absolute',
+        right: 23,
+        bottom: 23,
+        fontSize: 15,
+        color: '#abbacb',
+        opacity: 0.8,
+        transition: 'all .2s',
+        transform: props.active ? 'rotate(180deg)' : 'rotate(0)',
+        pointerEvents: 'none'
     }
 }));
 
@@ -58,9 +69,6 @@ const XSwitcherItemStyled = Glamorous(XLink)({
     transition: 'all .2s',
     boxSizing: 'border-box',
     paddingLeft: 15,
-    // '&.is-active': {
-    //     color: '#1f3449'
-    // },
     '&:last-child': {
         borderBottom: 'none'
     },
@@ -81,17 +89,7 @@ const OverButton = Glamorous.div<{ active: boolean }>((props) => ({
     bottom: 0,
     left: 0,
     cursor: 'pointer',
-    zIndex: 2,
-    '& .material-icons': {
-        position: 'absolute',
-        right: 23,
-        top: 23,
-        // marginLeft: 2,
-        fontSize: 15,
-        color: '#abbacb',
-        opacity: 0.8,
-        transform: 'rotate(270deg)',
-    }
+    zIndex: 2
 }));
 
 const XSwitcherItemImage = Glamorous.div<{ img: string }>((props) => ({
@@ -171,9 +169,8 @@ export class MapStyleSwitcher extends React.Component<MapStyleSwitcherProps, { a
                     <ClickOutside onClickOutside={this.disable} flex={true}>
                         {items}
                     </ClickOutside>
-                    <OverButton active={this.state.active} onClick={this.activate} >
-                        <XIcon icon="keyboard_arrow_right" />
-                    </OverButton>
+                    <OverButton active={this.state.active} onClick={this.activate} />
+                    <XIcon icon="keyboard_arrow_up" />
                 </XSwitcherWrapper>
             </>
         );
