@@ -72,7 +72,8 @@ const NavigationDivider = Glamorous.div({
     marginBottom: 4,
     alignSelf: 'center',
     backgroundColor: '#000000',
-    opacity: 0.05
+    opacity: 0.05,
+    flexShrink: 0
 });
 
 const NavigatorIcon = Glamorous(XIcon)({
@@ -513,23 +514,35 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                         <XWithRole role={['feature-marketplace']}>
                             <XTooltip placement="right">
                                 <XTooltip.Target>
-                                    <NavigatorItem path="/marketplace">
-                                        <NavigatorIcon icon="shopping_cart" />
+                                    <NavigatorItem path="/home">
+                                        <NavigatorIcon icon="home" />
                                     </NavigatorItem>
                                 </XTooltip.Target>
                                 <XTooltip.Content>
-                                    <strong>{TextAppBar.items.marketplace}</strong>
+                                    <strong>{TextAppBar.items.home}</strong>
+                                </XTooltip.Content>
+                            </XTooltip>
+                        </XWithRole>
+                        <XWithRole role={['feature-marketplace']}>
+                            <XTooltip placement="right">
+                                <XTooltip.Target>
+                                    <NavigatorItem path="/marketplace">
+                                        <NavigatorIcon icon="explore" />
+                                    </NavigatorItem>
+                                </XTooltip.Target>
+                                <XTooltip.Content>
+                                    <strong>{TextAppBar.items.explore}</strong>
                                 </XTooltip.Content>
                             </XTooltip>
                         </XWithRole>
                         <XTooltip placement="right">
                             <XTooltip.Target>
                                 <NavigatorItem path="/map">
-                                    <NavigatorIcon icon="explore" />
+                                    <NavigatorIcon icon="near_me" />
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>
-                                <strong>{TextAppBar.items.explore}</strong>
+                                <strong>{TextAppBar.items.map}</strong>
                             </XTooltip.Content>
                         </XTooltip>
                         <XWithRole role={['feature-customer-kassita']} negate={true}>
@@ -569,7 +582,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 </XTooltip.Content>
                             </XTooltip>
                         </XWithRole>
-                        <XWithRole role={['super-admin', 'software-developer', 'feature-customer-kassita']}>
+                        <XWithRole role={['feature-customer-kassita']}>
                             <XTooltip placement="right">
                                 <XTooltip.Target>
                                     <NavigatorItem path="/reports/urbyn_mho_nyc" activateForSubpaths={true}>

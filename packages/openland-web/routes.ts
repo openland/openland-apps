@@ -22,6 +22,13 @@ routes.add('/map', '/main/explore/root');
 routes.add('/map/', '/main/explore/root');
 
 //
+// Home
+//
+
+routes.add('/home', '/main/home/main');
+routes.add('/home/', '/main/home/main');
+
+//
 // Marketplace
 //
 

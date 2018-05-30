@@ -176,10 +176,63 @@ const SidebarItem = (props: SidebarProps) => (
     </SidebarItemWrapper>
 );
 
+const exportCVS = (folderItems: any[], folderName: string, page: number) => {
+    let wrap = (data: any) => {
+        return '"' + (data !== null && data !== undefined ? data : '') + '"';
+    };
+
+    let parcelNumberFormat = (parcel: {
+        id: {
+            borough: string | null,
+            boroughId: string | null,
+            block: string | null,
+            blockPadded: string | null,
+            lot: string | null,
+            lotPadded: string | null,
+            title: string,
+        },
+        compact?: boolean,
+        city?: string
+    }) => {
+        if (parcel.id.borough && parcel.id.block && parcel.id.lot) {
+            return (parcel.city ? parcel.city : '') + parcel.id.boroughId + '-' + (parcel.id.blockPadded || parcel.id.block + '-' + parcel.id.lotPadded || parcel.id.lot);
+        } else if (parcel.id.block && parcel.id.lot) {
+            return (parcel.city ? parcel.city + ' | ' : '') + (parcel.id.blockPadded || parcel.id.block) + ' - ' + (parcel.id.lotPadded || parcel.id.lot);
+        } else {
+            return (parcel.city ? parcel.city + ' | ' : '') + parcel.id.title;
+        }
+    };
+
+    let csvContent = 'data:text/csv;charset=utf-8,';
+    csvContent += 'City,';
+    csvContent += 'Parcel,';
+    csvContent += 'Address,';
+    csvContent += 'Area,';
+    csvContent += 'Zoning,';
+    csvContent += '\r\n';
+    for (let row of folderItems!!) {
+        csvContent += wrap(row.parcel.city.name) + ',';
+        csvContent += wrap(parcelNumberFormat({ id: row.parcel.number })) + ',';
+        csvContent += wrap(row.parcel.address) + ',';
+        csvContent += wrap(row.parcel.area ? Math.round(row.parcel.area.value * 10.7639) : '') + ',';
+        csvContent += wrap(row.parcel.extrasZoning) + ',';
+        csvContent += '\r\n';
+    }
+
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', folderName + '_' + page + '.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
 const FolderItems = withFolderItems((props) => {
     if (props.data.loading) {
         return <XLoader loading={true} />;
     }
+
     return (
         <>
             {props.data.items.pageInfo.itemsCount > 0 && (
@@ -187,12 +240,15 @@ const FolderItems = withFolderItems((props) => {
             )}
             {props.data.items.pageInfo.itemsCount > 0 && (
                 <XFooter text={'page: ' + props.data.items.pageInfo.currentPage + '  total: ' + props.data.items.pageInfo.itemsCount + ' items'}>
+
                     {props.data.items.pageInfo.currentPage > 1 && (
                         <XButton text="Prev" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }} />
                     )}
                     {(props.data.items.pageInfo.currentPage < props.data.items.pageInfo.pagesCount - 1) && (
                         <XButton text="Next" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage + 1).toString() }} />
                     )}
+                    <XButton text="Export Page" style="primary" onClick={() => exportCVS(props.data.items.edges.map(edge => edge.node), (props as any).folderName, props.data.items.pageInfo.currentPage)} />
+
                 </XFooter>
             )}
             {props.data.items.pageInfo.itemsCount <= 0 && (
@@ -200,7 +256,7 @@ const FolderItems = withFolderItems((props) => {
             )}
         </>
     );
-});
+}) as React.ComponentClass<{folderName: string}>;
 
 const MapContainer2 = Glamorous.div({
     display: 'flex',
@@ -294,7 +350,7 @@ const FolderContent = withFolder((props) => {
                 <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name} />
             </XHeader>
             {props.router.routeQuery.mapView === 'true' && <FolderMap router={props.router} />}
-            {props.router.routeQuery.mapView !== 'true' && <FolderItems />}
+            {props.router.routeQuery.mapView !== 'true' && <FolderItems folderName={props.data.folder.name}/>}
         </>
     );
 });
@@ -324,7 +380,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
             <XDocumentHead title={['Folders']} />
             <Scaffold>
                 <Scaffold.Menu>
-                    <Sidebar title="Folders" width={300}>
+                    <Sidebar title="Folders" width={280}>
                         {props.data.folders.map((v) => {
                             const type = v.special;
                             let icon = '';
@@ -339,7 +395,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
                                     icon = 'folder';
                             }
                             return (
-                                <SidebarItem key={v.id} path={'/folders/' + v.id + '?mapView=' + props.router.routeQuery.mapView} icon={icon} title={v.name} counter={v.parcelsCount} />
+                                <SidebarItem key={v.id} path={'/folders/' + v.id + '?mapView=' + !!(props.router.routeQuery.mapView)} icon={icon} title={v.name} counter={v.parcelsCount} />
                             );
                         })}
                         <CreateFolder />
