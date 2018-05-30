@@ -23,8 +23,7 @@ export function graphqlSelect<V = {}>(query: GraphqlTypedQuery<any, any>) {
                 } else {
                     return { value: v.id, label: v.subtitle ? v.title + ' (' + v.subtitle + ')' : v.title };
                 }
-            }
-            );
+            });
             return {
                 options: opts
             };

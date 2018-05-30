@@ -146,6 +146,13 @@ export enum OpportunitySort {
 }
 
 
+export enum TaskStatus {
+  IN_PROGRESS = "IN_PROGRESS",
+  FAILED = "FAILED",
+  COMPLETED = "COMPLETED",
+}
+
+
 export interface AccountQuery {
   me:  {
     __typename: "User",
@@ -3469,6 +3476,28 @@ export interface SuperCitiesQuery {
     parcelSource: string | null,
     parcelSourceLayer: string | null,
   } >,
+};
+
+export interface RefreshTaskQueryVariables {
+  id: string,
+};
+
+export interface RefreshTaskQuery {
+  alphaRefreshTask:  {
+    __typename: "Task",
+    id: string,
+    status: TaskStatus,
+    result: string | null,
+  },
+};
+
+export interface SampleTaskMutation {
+  superMultiplyValue:  {
+    __typename: "Task",
+    id: string,
+    status: TaskStatus,
+    result: string | null,
+  },
 };
 
 export interface UsersQueryVariables {

@@ -6,6 +6,7 @@ import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
 import { graphqlCompose3, graphqlCompose2, graphqlCompose4, graphqlCompose6, graphqlCompose5 } from 'openland-x-graphql/graphqlCompose';
 import { graphQLMapSearchSource } from 'openland-x-graphql/graphqlMapSearchSource';
+import { graphqlTask } from 'openland-x-graphql/graphqlTask';
 
 //
 // Account
@@ -216,3 +217,5 @@ export const FolderTileSource = graphQLTileSource(Queries.Folder.FolderTileOverl
 export const withFolderItems = graphqlRouted(Queries.Folder.FolderItemsConnectionQuery, ['folderId', 'page', 'cursor'], true, 'network-only');
 
 export const ParcelMapSearch = graphQLMapSearchSource(Queries.Parcels.ParcelsMapSearchQuery);
+
+export const withSampleTask = graphqlTask(Queries.Tasks.SampleTask);

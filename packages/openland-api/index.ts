@@ -15,6 +15,7 @@ import * as Sourcing from './queries/Sourcing.types';
 import * as Debug from './queries/Debug.types';
 import * as SuperCity from './queries/SuperCity.types';
 import * as Folder from './queries/Folder.types';
+import * as Tasks from './queries/Tasks.types';
 
 export let Queries = {
     Area,
@@ -33,5 +34,6 @@ export let Queries = {
     Sourcing,
     Debug,
     SuperCity,
-    Folder
+    Folder,
+    Tasks
 };

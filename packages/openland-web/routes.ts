@@ -169,6 +169,8 @@ routes.add('/ui/popper', '/dev/ui/popper');
 routes.add('/ui/popper/', '/dev/ui/popper');
 routes.add('/ui/links', '/dev/ui/links');
 routes.add('/ui/links/', '/dev/ui/links');
+routes.add('/ui/tasks', '/dev/ui/tasks');
+routes.add('/ui/tasks/', '/dev/ui/tasks');
 
 //
 // Dev Tools

@@ -22,7 +22,7 @@ const buildClient = (initialState?: any, token?: string) => {
             fetch: require('isomorphic-unfetch'),
         }),
         cache: cache,
-        ssrMode: canUseDOM,
+        ssrMode: !canUseDOM,
         connectToDevTools: false
     });
 };
