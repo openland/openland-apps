@@ -39,13 +39,16 @@ const FilterCategoryTitle = Glamorous.div({
 });
 
 const FilterRangeDiv = Glamorous.div({
-    width: '100%',
     display: 'flex',
     alignItems: 'center',
     fontSize: 14,
     fontWeight: 'normal',
     lineHeight: 1.71,
-    color: 'rgba(97, 126, 156, 0.4)'
+    color: 'rgba(97, 126, 156, 0.4)',
+    marginLeft: -12,
+    marginRight: -12,
+    marginBottom: 4,
+    marginTop: -12,
 });
 
 const FilterRangeSeparator = Glamorous.p({
@@ -86,8 +89,7 @@ class FilterRangeBase extends React.Component<FilterRangeProps & XWithRouter, { 
         };
     }
 
-    handleChangeFrom = (e: any) => {
-        let value = e.target.value as string;
+    handleChangeFrom = (value: string) => {
         if (value === '') {
             this.setState({ from: '', fromValue: undefined });
             return;
@@ -101,8 +103,7 @@ class FilterRangeBase extends React.Component<FilterRangeProps & XWithRouter, { 
         }
         this.setState({ from: value, fromValue: nvalue });
     }
-    handleChangeTo = (e: any) => {
-        let value = e.target.value as string;
+    handleChangeTo = (value: string) => {
         if (value === '') {
             this.setState({ to: '', toValue: undefined });
             return;
@@ -302,13 +303,13 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
 const SelectorNMargin = Glamorous(Selector)({
     margin: -12,
     marginBottom: 4,
-    marginTop: -10,
+    marginTop: -12,
 });
 
 const InlineApplyInputNMargin = Glamorous(XInput)({
     margin: -12,
     marginBottom: 4,
-    marginTop: -10,
+    marginTop: -12,
 });
 
 class InlineApplyInput extends React.Component<{ searchKey: string, placeholder?: string } & XWithRouter, { value: string }> {
@@ -353,7 +354,7 @@ const FilterFooterContainer = Glamorous.div<{ addBorder?: boolean }>(props => ({
 }));
 
 const FolterCancelLink = Glamorous(XLink)({
-    color: 'rgba(51, 69, 98, 0.4);'
+    color: 'rgba(51, 69, 98, 0.4)'
 });
 
 class FilterFooter extends React.Component<{ addBorder?: boolean }> {
@@ -379,7 +380,7 @@ class FilterFooter extends React.Component<{ addBorder?: boolean }> {
 }
 
 const OwnerNameFiltersContent = withRouter((props) => (
-    <FiltersContent>
+    <FiltersContent visible={true}>
         <InlineApplyInput placeholder="Owner name contains" searchKey="ownerName" router={props.router} />
         {(props as any).addFooter !== false && (
             <FilterFooter addBorder={false} />
@@ -387,17 +388,12 @@ const OwnerNameFiltersContent = withRouter((props) => (
     </FiltersContent>
 )) as React.ComponentClass<{ addFooter?: boolean }>;
 
-const FilterRangeBaseNMargin = Glamorous.div({
-    margin: -12,
-    marginBottom: 4,
-    marginTop: -10,
-});
-
 class AreaFiltersContent extends React.Component<XWithRouter> {
     area?: any;
 
     onChange = (area: any) => {
         this.area = area;
+        console.warn(area);
         (ApplyFilterWrap.newQueryParams as any).area = area === undefined ? area : JSON.stringify(this.area);
     }
 
@@ -412,10 +408,9 @@ class AreaFiltersContent extends React.Component<XWithRouter> {
 
     render() {
         return (
-            <FiltersContent>
-                <FilterRangeBaseNMargin>
-                    <FilterRangeBase placeholderFrom="1000 ft" placeholderTo="1000000 ft" onChange={this.onChange} router={this.props.router} />
-                </FilterRangeBaseNMargin>
+            <FiltersContent visible={true}>
+                <FilterRangeBase placeholderFrom="1000 ft" placeholderTo="1000000 ft" onChange={this.onChange} router={this.props.router} />
+
                 <FilterFooter addBorder={false} />
 
             </FiltersContent>
@@ -470,7 +465,7 @@ const OtherContainer = Glamorous.div({
 });
 
 const OtherFooter = Glamorous(FilterFooter)({
-    color: 'rgba(51, 69, 98, 0.4);',
+    color: 'rgba(51, 69, 98, 0.4)',
     marginTop: 10,
     marginBottom: -10,
     marginLeft: -10,
@@ -616,7 +611,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
 
             if (this.props.city === 'nyc') {
                 other.unshift(
-                    <FilterCategory>
+                    <FilterCategory key={'owner_name_other'}>
                         <FilterCategoryTitle>Owner Name</FilterCategoryTitle>
                         <OwnerNameFiltersContent addFooter={false} />
                     </FilterCategory>
@@ -625,7 +620,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
 
             if (this.props.city === 'sf') {
                 other.unshift(
-                    <FilterCategory>
+                    <FilterCategory key={'filterStories_other'}>
                         <FilterCategoryTitle>Stories</FilterCategoryTitle>
                         <XVertical>
                             <ApplyFilterWrap fieldName="filterStories" router={this.props.router}>
@@ -642,7 +637,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                 );
 
                 other.unshift(
-                    <FilterCategory>
+                    <FilterCategory key={'landUse_other'}>
                         <FilterCategoryTitle>Lans Use</FilterCategoryTitle>
                         <XVertical >
                             <ApplyFilterWrap fieldName="landUse" router={this.props.router}>

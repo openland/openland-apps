@@ -387,7 +387,6 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         let isVacantSet: boolean | undefined;
         if (this.props.router.query!!.isVacant) {
             isVacantSet = JSON.parse(this.props.router.query!!.isVacant);
-            console.warn(isVacantSet);
         }
         if (this.props.router.query!!.compatible) {
             isVacantSet = true;
@@ -449,7 +448,6 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
     handleMap = (e: XMapCameraLocation) => {
         sessionStorage.setItem('__explore_location', JSON.stringify(e));
         this.knownCameraLocation = e;
-        console.warn(e.zoom);
         let zoomToSmallForParcels = e.zoom < 12;
         if (zoomToSmallForParcels !== this.state.zoomToSmallForParcels) {
             this.setState({ zoomToSmallForParcels: zoomToSmallForParcels });
