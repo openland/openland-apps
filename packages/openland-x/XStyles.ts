@@ -111,9 +111,9 @@ const scroll = {
     },
     
     '&::-webkit-scrollbar-thumb': {
-        borderRadius: 8,
-        border: '2px solid white', /* should match background, can't be transparent */
-        backgroundColor: 'rgba(0, 0, 0, .5)'
+        borderRadius: 6,
+        border: '3px solid white', /* should match background, can't be transparent */
+        backgroundColor: '#c1c7cf66'
     }
 };
 
