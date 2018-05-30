@@ -81,7 +81,9 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                 || props.data.item.extrasTrainDistance !== null) && (
                                     <XSwitcher.Item path={nearbyTransitPath} >Nearby Transit</XSwitcher.Item>
                                 )}
-                            <XSwitcher.Item path={linksPath} count={props.data.item.links.length}>Links</XSwitcher.Item>
+                            {props.data.item.links.length > 0 && (
+                                <XSwitcher.Item path={linksPath} count={props.data.item.links.length}>Links</XSwitcher.Item>
+                            )};
                             <XSwitcher.Item path={notesPath} count={props.data.item.userData && props.data.item.userData.notes && props.data.item.userData.notes.length > 0 ? 1 : undefined}>Notes</XSwitcher.Item>
                             <XWithRole role={['feature-customer-kassita']}>
                                 <XSwitcher.Item path={zoningPath} >Zoning</XSwitcher.Item>
@@ -175,7 +177,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
 
                     {props.router.path === permitsPath && props.data.item.permits.length > 0 && (
                         <>
-                            {/* <XHeader text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} /> */}
+                            <XHeader text="Building Permits for this Parcel" description={props.data.item.permits.length + ' permits'} />
                             <XTable>
                                 <XTable.Header>
                                     <XTable.Cell width={120}>Created</XTable.Cell>

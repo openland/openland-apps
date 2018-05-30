@@ -6,8 +6,8 @@ import ClickOutside from '../ClickOutside';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import XStyles from 'openland-x/XStyles';
 
-const MapFilterWrapper = Glamorous(XCard)<{ active: boolean }>((props) => ({
-    width: 325,
+const MapFilterWrapper = Glamorous(XCard)<{ active: boolean, width?: number }>((props) => ({
+    width: props.width || 325,
     position: 'absolute',
     top: 18,
     left: 18,
@@ -145,6 +145,7 @@ interface ConfirmPopoverProps {
     children: any;
     title?: string;
     count?: string;
+    width?: number;
 }
 
 export class CitySelector extends React.Component<ConfirmPopoverProps, { active: boolean }> {
@@ -182,7 +183,7 @@ export class CitySelector extends React.Component<ConfirmPopoverProps, { active:
         return (
             <>
                 <Shadow active={this.state.active} />
-                <MapFilterWrapper active={this.state.active}>
+                <MapFilterWrapper active={this.state.active} width={this.props.width}>
                     <ClickOutside onClickOutside={this.disable}>
                         <CityTitle onClick={this.activate} active={this.state.active}>
                             <div className="title">

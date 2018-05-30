@@ -23,8 +23,11 @@ import { ParcelMap } from '../../../components/ParcelMap';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XMapCameraLocation } from 'openland-x-map/XMap';
-import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
 import { trackEvent } from 'openland-x-analytics';
+import { XMapImageLayer } from 'openland-x-map/XMapImageLayer';
+import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
+import { XLink } from 'openland-x/retired/XLink';
+import XStyles from 'openland-x/XStyles';
 
 const SidebarItemsStyle = {
     height: 40,
@@ -106,6 +109,11 @@ const CreateFolder = withCreateFolderMutation((props) => {
     );
 }) as React.ComponentClass<{ target?: any }>;
 
+const Title = Glamorous.div({
+    ...XStyles.text.h400,
+    marginBottom: 8
+});
+
 const Edit = withFolderActions((props) => {
     return (
         <XModalForm
@@ -116,6 +124,7 @@ const Edit = withFolderActions((props) => {
             mutationDirect={true}
             secondaryActions={[{ actionName: 'Delete', submitMutation: props.deleteFolder, actionStyle: 'danger' }]}
         >
+            <Title>Folder name</Title>
             <XForm.Text
                 field="name"
                 autofocus={true}
@@ -228,6 +237,10 @@ const exportCVS = (folderItems: any[], folderName: string, page: number) => {
     document.body.removeChild(link);
 };
 
+const MapLink = Glamorous(XLink)({
+    color: '#5640d6'
+});
+
 const FolderItems = withFolderItems((props) => {
     if (props.data.loading) {
         return <XLoader loading={true} />;
@@ -235,10 +248,12 @@ const FolderItems = withFolderItems((props) => {
 
     return (
         <>
+
             {props.data.items.pageInfo.itemsCount > 0 && (
                 <TableParcels items={props.data.items.edges.map((v) => v.node.parcel)} />
             )}
             {props.data.items.pageInfo.itemsCount > 0 && (
+
                 <XFooter text={'page: ' + props.data.items.pageInfo.currentPage + '  total: ' + props.data.items.pageInfo.itemsCount + ' items'}>
 
                     {props.data.items.pageInfo.currentPage > 1 && (
@@ -247,35 +262,98 @@ const FolderItems = withFolderItems((props) => {
                     {(props.data.items.pageInfo.currentPage < props.data.items.pageInfo.pagesCount - 1) && (
                         <XButton text="Next" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage + 1).toString() }} />
                     )}
-                    <XButton text="Export Page" style="primary" onClick={() => exportCVS(props.data.items.edges.map(edge => edge.node), (props as any).folderName, props.data.items.pageInfo.currentPage)} />
 
                 </XFooter>
             )}
             {props.data.items.pageInfo.itemsCount <= 0 && (
-                <XEmpty icon="folder" text="You can find your first parcel at Explore" flexGrow={1} />
+                <XEmpty icon="folder" text="Add parcels from the " flexGrow={1} >
+                    <MapLink path="/map">Map</MapLink>
+                    {' tab'}
+                </XEmpty>
             )}
         </>
     );
-}) as React.ComponentClass<{folderName: string}>;
+}) as React.ComponentClass<{ folderName: string }>;
 
-const MapContainer2 = Glamorous.div({
+const MapContainer2 = Glamorous.div<{ noParcels: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     position: 'relative',
     height: 'calc(100% - 50px)',
     width: '100%',
+
     '& .mapboxgl-ctrl-top-right': {
-        top: '65px !important',
-        right: '6px !important'
+        left: '18px !important',
+        bottom: '18px !important',
+        top: 'auto',
+        right: 'auto',
+        zIndex: 0,
+        '& .mapboxgl-ctrl-group': {
+            border: 'none',
+            borderTopRightRadius: props.noParcels ? 0 : undefined,
+            borderBottomRightRadius: props.noParcels ? 0 : undefined,
+            boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
+
+            '& .mapboxgl-ctrl-zoom-in': {
+                borderBottom: 'solid 1px #c1c7cf4d',
+                // backgroundImage: 'url(\'/static/X/zoomin.svg\')'
+            },
+
+            '& .mapboxgl-ctrl-zoom-out': {
+                borderBottom: 'none !important',
+                // backgroundImage: 'url(\'/static/X/zoomin.svg\')'
+            },
+            '& .mapboxgl-ctrl-compass': {
+                display: 'none !important'
+            }
+        }
+    },
+    '& .mapboxgl-ctrl-bottom-left': {
+        display: 'none'
     }
-});
+}));
 
 const MapContainer = Glamorous.div({
     flexGrow: 1,
 });
 
-class FolderMap extends React.Component<XWithRouter, {}> {
+const NoParcelsMessage = Glamorous.div({
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: 233,
+    left: 48,
+    bottom: 78,
+    height: 60,
+    zIndex: 0,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    background: 'white',
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
+    color: '#A7B8C4',
+    cursor: 'pointer',
+    '> span': {
+        color: '#334562'
+    },
+    ':hover': {
+        color: '#5640d6',
+        '> span': {
+            color: '#5640d6',
+        }
+
+    }
+});
+
+const NoParcelsMessageIcon = Glamorous(XIcon)({
+    marginLeft: 14,
+    marginRight: 10,
+});
+
+class FolderMap extends React.Component<XWithRouter, { zoomToSmallForParcels: boolean, mapLoaded: boolean }> {
     knownCameraLocation?: XMapCameraLocation;
+    map?: mapboxgl.Map;
 
     constructor(props: XWithRouter) {
         super(props);
@@ -285,11 +363,29 @@ class FolderMap extends React.Component<XWithRouter, {}> {
                 this.knownCameraLocation = JSON.parse(k);
             }
         }
+
+        this.state = {
+            zoomToSmallForParcels: false,
+            mapLoaded: false,
+        };
+    }
+
+    onMapLoaded = (map: mapboxgl.Map) => {
+        this.map = map;
+        if (!this.state.mapLoaded) {
+            this.setState({
+                mapLoaded: true
+            });
+        }
     }
 
     handleMap = (e: XMapCameraLocation) => {
         sessionStorage.setItem('__folders_location', JSON.stringify(e));
         this.knownCameraLocation = e;
+        let zoomToSmallForParcels = e.zoom < 12;
+        if (zoomToSmallForParcels !== this.state.zoomToSmallForParcels) {
+            this.setState({ zoomToSmallForParcels: zoomToSmallForParcels });
+        }
     }
 
     handleParcelClick = (id: string) => {
@@ -301,13 +397,25 @@ class FolderMap extends React.Component<XWithRouter, {}> {
             this.handleParcelClick(item.properties.parcelId as string);
         }
     }
+
+    resolveCity = () => {
+        let defaultCity = 'nyc';
+        let pendingCity = this.props.router.routeQuery.city || defaultCity;
+        return pendingCity;
+    }
+
     render() {
+        let city = this.resolveCity();
+        let focus = city === 'sf'
+            ? { latitude: 37.75444398077139, longitude: -122.43963811583545, zoom: 12 }
+            : { latitude: 40.713919, longitude: -74.002332, zoom: 12 };
         return (
-            <MapContainer2>
+            <MapContainer2 noParcels={this.state.zoomToSmallForParcels}>
                 <MapContainer>
                     <ParcelMap
+                        onLoaded={this.onMapLoaded}
                         mode={this.props.router.query.mode}
-                        focusPosition={{ latitude: 40.713919, longitude: -74.002332, zoom: 12 }}
+                        focusPosition={focus}
                         lastKnownCameraLocation={this.knownCameraLocation}
                         onCameraLocationChanged={this.handleMap}
                         onParcelClick={this.handleParcelClick}
@@ -316,20 +424,54 @@ class FolderMap extends React.Component<XWithRouter, {}> {
 
                         <FolderTileSource
                             layer="folder"
-                            minZoom={12}
+                            minZoom={9}
                             variables={{
                                 folderId: this.props.router.routeQuery.folderId,
                             }}
                         />
 
-                        <XMapPointLayer
+                        <XMapImageLayer
                             source="folder"
                             layer="folder"
-                            minZoom={12}
+                            minZoom={9}
                             onClick={this.handleItemClick}
                             flyToMaxZoom={18}
+                            image="/static/img/icons/pin1.png"
+                            clusterColor="#e8bd58"
                         />
                     </ParcelMap>
+
+                    {this.state.mapLoaded && (
+                        <>
+
+                            <CitySelector title={city === 'sf' ? 'San Francisco' : 'New York City'} width={160}>
+                                <CitySelector.Item
+                                    query={{ field: 'city', value: 'sf' }}
+                                    active={city === 'sf'}
+                                    label="San Francisco"
+                                />
+                                <CitySelector.Item
+                                    query={{ field: 'city', value: 'nyc' }}
+                                    active={city !== 'sf'}
+                                    label="New York City"
+                                />
+                            </CitySelector>
+                        </>
+                    )}
+
+                    {this.state.zoomToSmallForParcels && (
+                        <NoParcelsMessage onClick={() => {
+                            if (this.map) {
+                                this.map.jumpTo({
+                                    zoom: 12,
+                                });
+                            }
+                        }}>
+                            <NoParcelsMessageIcon icon="info" />
+                            <span>Zoom in to see parcel grid</span>
+
+                        </NoParcelsMessage>
+                    )}
 
                 </MapContainer>
                 {this.props.router.routeQuery.selectedParcel && <ParcelCard compact={true} variables={{ parcelId: this.props.router.routeQuery.selectedParcel }} />}
@@ -338,6 +480,12 @@ class FolderMap extends React.Component<XWithRouter, {}> {
         );
     }
 }
+
+const ExportButton = withFolderItems((props) => {
+    return (
+        <XButton loading={props.data.loading} text="Export" style="primary" onClick={() => exportCVS(props.data.items.edges.map(edge => edge.node), (props as any).folderName, props.data.items.pageInfo.currentPage)} />
+    );
+}) as React.ComponentClass<{folderName: string}>;
 
 const FolderContent = withFolder((props) => {
     if (props.data.loading) {
@@ -348,9 +496,13 @@ const FolderContent = withFolder((props) => {
             <XHeader text={props.data.folder.name}>
                 <XButton text={props.router.routeQuery.mapView !== 'true' ? 'Map view' : 'Table view'} query={{ field: 'mapView', value: props.router.routeQuery.mapView !== 'true' ? 'true' : 'false' }} />
                 <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name} />
+
+                {props.router.routeQuery.mapView !== 'true' && (
+                    <ExportButton folderName={props.data.folder.name}/>
+            )}
             </XHeader>
             {props.router.routeQuery.mapView === 'true' && <FolderMap router={props.router} />}
-            {props.router.routeQuery.mapView !== 'true' && <FolderItems folderName={props.data.folder.name}/>}
+            {props.router.routeQuery.mapView !== 'true' && <FolderItems folderName={props.data.folder.name} />}
         </>
     );
 });

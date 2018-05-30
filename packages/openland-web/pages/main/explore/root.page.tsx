@@ -317,15 +317,22 @@ const NoParcelsMessage = Glamorous.div({
     background: 'white',
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
     color: '#A7B8C4',
+    cursor: 'pointer',
+    '> span': {
+        color: '#334562'
+    },
+    ':hover': {
+        color: '#5640d6',
+        '> span': {
+            color: '#5640d6',
+        }
+
+    }
 });
 
 const NoParcelsMessageIcon = Glamorous(XIcon)({
     marginLeft: 14,
     marginRight: 10,
-});
-
-const NoParcelsMessageText = Glamorous.div({
-    color: '#334562'
 });
 
 // const AddOpportunitiesButton = withAddFromSearchOpportunity((props) => <XButtonMutation mutation={props.addFromSearch}>Add to prospecting</XButtonMutation>);
@@ -334,6 +341,8 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
     knownCameraLocation?: XMapCameraLocation;
 
     savedCity?: string | null;
+
+    map?: mapboxgl.Map;
 
     constructor(props: XWithRouter & UserInfoComponentProps & { roles: { roles: string[]; } | undefined }) {
         super(props);
@@ -454,7 +463,8 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         }
     }
 
-    onMapLoaded = () => {
+    onMapLoaded = (map: mapboxgl.Map) => {
+        this.map = map;
         this.setState({ mapLoaded: true });
     }
 
@@ -566,11 +576,15 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                             </ParcelMap>
 
                             {this.state.zoomToSmallForParcels && (
-                                <NoParcelsMessage>
+                                <NoParcelsMessage onClick={() => {
+                                    if (this.map) {
+                                        this.map.jumpTo({
+                                            zoom: 12,
+                                        });
+                                    }
+                                }}>
                                     <NoParcelsMessageIcon icon="info" />
-                                    <NoParcelsMessageText>
                                         <span>Zoom in to see parcel grid</span>
-                                    </NoParcelsMessageText>
 
                                 </NoParcelsMessage>
                             )}

@@ -450,9 +450,9 @@ export const ParcelCard = withParcelDirect((props) => (
                             {props.data.item!!.extrasStories !== null &&
                                 <PropertyCell title="Stories Count"><XNumber value={props.data.item!!.extrasStories} /></PropertyCell>
                             }
-                            {props.data.item!!.extrasRooms !== null &&
+                            {/* {props.data.item!!.extrasRooms !== null &&
                                 <PropertyCell title="Rooms Count"><XNumber value={props.data.item!!.extrasRooms} /></PropertyCell>
-                            }
+                            } */}
                             {/* {props.data.item!!.extrasBedrooms !== null &&
                                 <PropertyCell title="Bedrooms Count"><XNumber value={props.data.item!!.extrasBedrooms} /></PropertyCell>
                             }

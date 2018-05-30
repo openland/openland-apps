@@ -6,7 +6,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XPicture } from 'openland-x/XPicture';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
-import { XPopover } from './Incubator/XPopover';
 import { withSearch } from '../api';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XTooltip } from './Incubator/XTooltip';
@@ -17,6 +16,7 @@ import { XLink } from 'openland-x/XLink';
 import { XArea } from 'openland-x-format/XArea';
 import { XList, XListItem } from 'openland-x/XList';
 import { XTitle } from 'openland-x/XTitle';
+import { XPopper } from 'openland-x/XPopper';
 
 //
 // Root
@@ -172,19 +172,35 @@ class XMenu extends React.Component {
     }
 }
 
-let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
-    return (
-        <XPopover placement="right">
-            <XPopover.Target>
-                <AvatarImg src={props.user!!.picture} />
-                {/* <UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv> */}
-            </XPopover.Target>
-            <XPopover.Content>
+class UserPopper extends React.Component<{picture: string}, { show: boolean }> {
+    constructor(props: any) {
+        super(props);
+        this.state = { show: false };
+    }
+
+    switch = () => {
+        this.setState({
+            show: !this.state.show
+        });
+    }
+
+    render() {
+        return (
+            <XPopper placement="right" onClickOutside={this.switch} show={this.state.show}  padding={10} content={(
                 <XMenu>
                     <XMenu.Item path="/auth/logout">{TextGlobal.signOut}</XMenu.Item>
                 </XMenu>
-            </XPopover.Content>
-        </XPopover>
+            )}>
+                <AvatarImg src={this.props.picture} onClick={this.switch}/>
+                {/* <UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv> */}
+            </XPopper>
+        );
+    }
+}
+
+let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
+    return (
+        <UserPopper picture={props.user!!.picture}/>
     );
 });
 
@@ -538,7 +554,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                         <XTooltip placement="right">
                             <XTooltip.Target>
                                 <NavigatorItem path="/map">
-                                    <NavigatorIcon icon="near_me" />
+                                    <NavigatorIcon icon="map" />
                                 </NavigatorItem>
                             </XTooltip.Target>
                             <XTooltip.Content>

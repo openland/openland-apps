@@ -22,7 +22,7 @@ export interface XMapProps {
 
     lastKnownCameraLocation?: XMapCameraLocation | null;
     onCameraLocationChanged?: (e: XMapCameraLocation) => void;
-    onLoaded?: () => void;
+    onLoaded?: (map: mapboxgl.Map) => void;
 }
 
 export interface DataSources {
@@ -164,7 +164,7 @@ export class XMap extends React.Component<XMapProps> {
             mapComponent.on('load', () => {
                 this.configureMap(mapComponent);
                 if (this.props.onLoaded) {
-                    this.props.onLoaded();
+                    this.props.onLoaded(this.map!!);
                 }
             });
             this.map = mapComponent;
