@@ -72,7 +72,8 @@ export let XModalBody = Glamorous.div({
     flexDirection: 'column',
     paddingLeft: 24,
     paddingRight: 24,
-    flexGrow: 1
+    flexGrow: 1,
+    position: 'relative'
 });
 
 export let XModalHeader = Glamorous.div({

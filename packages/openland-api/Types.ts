@@ -3483,7 +3483,7 @@ export interface RefreshTaskQueryVariables {
 };
 
 export interface RefreshTaskQuery {
-  alphaRefreshTask:  {
+  task:  {
     __typename: "Task",
     id: string,
     status: TaskStatus,
@@ -3491,8 +3491,12 @@ export interface RefreshTaskQuery {
   },
 };
 
+export interface SampleTaskMutationVariables {
+  value: number,
+};
+
 export interface SampleTaskMutation {
-  superMultiplyValue:  {
+  task:  {
     __typename: "Task",
     id: string,
     status: TaskStatus,

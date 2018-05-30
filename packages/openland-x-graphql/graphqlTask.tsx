@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import { GraphqlTypedTask } from './typed';
 import { ApolloClient } from 'apollo-client';
 import { RefreshTaskQuery } from 'openland-api/queries/Tasks.types';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 export function graphqlTask<T, V, R>(task: GraphqlTypedTask<T, V, R>) {
     return function <TProps>(WrappedComponent: React.ComponentType<{
@@ -78,7 +79,7 @@ export function graphqlTask<T, V, R>(task: GraphqlTypedTask<T, V, R>) {
             }
 
             private startTask = (args: V) => {
-                if (!this.started && this._isMounted) {
+                if (!this.started && this._isMounted && canUseDOM) {
                     this.started = true;
                     this.setState({ status: 'IN_PROGRESS' });
                     (async () => {

@@ -22,7 +22,7 @@ export let XVerticalSpaceDiv = Glamorous.div<{ separator?: 'large' | 'normal' }>
 export class XVertical extends React.Component<{ separator?: 'large' | 'normal' | 'none', className?: string } & XFlexStyles> {
     render() {
 
-        let { alignSelf, flexGrow, flexShrink, flexBasis } = this.props;
+        let { alignSelf, flexGrow, flexShrink, flexBasis, minHeight, minWidth } = this.props;
 
         if (this.props.separator !== 'none') {
             let elements = React.Children.toArray(this.props.children);
@@ -48,13 +48,13 @@ export class XVertical extends React.Component<{ separator?: 'large' | 'normal' 
                 }
             }
             return (
-                <XVerticalDiv className={this.props.className} alignSelf={alignSelf} flexGrow={flexGrow} flexShrink={flexShrink} flexBasis={flexBasis}>
+                <XVerticalDiv className={this.props.className} alignSelf={alignSelf} flexGrow={flexGrow} flexShrink={flexShrink} flexBasis={flexBasis} minHeight={minHeight} minWidth={minWidth}>
                     {children}
                 </XVerticalDiv>
             );
         } else {
             return (
-                <XVerticalDiv className={this.props.className} alignSelf={alignSelf} flexGrow={flexGrow} flexShrink={flexShrink} flexBasis={flexBasis}>
+                <XVerticalDiv className={this.props.className} alignSelf={alignSelf} flexGrow={flexGrow} flexShrink={flexShrink} flexBasis={flexBasis} minHeight={minHeight} minWidth={minWidth}>
                     {this.props.children}
                 </XVerticalDiv>
             );

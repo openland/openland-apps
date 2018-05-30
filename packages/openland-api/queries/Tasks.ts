@@ -11,8 +11,8 @@ export const RefreshTaskQuery = gql`
 `;
 
 export const SampleTaskMutation = gql`
-    mutation SampleTask {
-        task: superMultiplyValue(value: 10) {
+    mutation SampleTask($value: Int!) {
+        task: superMultiplyValue(value: $value) {
             id
             status
             result
