@@ -51,7 +51,7 @@ class SharedServerStorage implements SharedStorage {
         this.values.set('host', ctx.req.get('host'));
         this.values.set('protocol', ctx.req.protocol);
         let cookie = ctx.req.headers.cookie as string;
-        let keys = cookie.split(';').filter((c: string) => c.trim().startsWith(CookiePrefix));
+        let keys = cookie ? cookie.split(';').filter((c: string) => c.trim().startsWith(CookiePrefix)) : [];
         for (let k of keys) {
             k = k.substring(CookiePrefix.length);
             let parts = k.split('=', 2);
