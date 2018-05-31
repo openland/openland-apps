@@ -137,7 +137,7 @@ class ModalContentRender extends React.Component<{
         }
         return (
             <Root>
-                {this.props.heading === undefined && this.props.useTopCloser && <XModalHeader>{this.props.title}<XModalCloser icon="close" autoClose={true} /></XModalHeader>}
+                {this.props.heading === undefined && (this.props.title || this.props.useTopCloser) && <XModalHeader>{this.props.title}{this.props.useTopCloser && <XModalCloser icon="close" autoClose={true} />}</XModalHeader>}
                 {this.props.heading === undefined && !this.props.title && <XModalHeaderEmpty />}
                 {this.props.heading !== undefined && this.props.heading}
                 {this.props.body === undefined && <XModalBody>{this.props.children}</XModalBody>}
