@@ -4,3 +4,4 @@ import * as Tasks from './Tasks';
 
 export const RefreshTaskQuery = typedQuery<Types.RefreshTaskQuery, Types.RefreshTaskQueryVariables>(Tasks.RefreshTaskQuery);
 export const SampleTask = typedTask<Types.SampleTaskMutation, Types.SampleTaskMutationVariables, { multiplied: number }>(Tasks.SampleTaskMutation);
+export const FolderExportTask = typedTask<Types.FolderExportTaskMutation, Types.FolderExportTaskMutationVariables, { downloadLink: string }>(Tasks.FolderExportTaskMutation);

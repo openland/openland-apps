@@ -19,3 +19,13 @@ export const SampleTaskMutation = gql`
         }
     }
 `;
+
+export const FolderExportTaskMutation = gql`
+    mutation FolderExportTask($folderId: ID!) {
+        task: alphaExportFolder(folderId: $folderId) {
+            id
+            status
+            result
+        }
+    }
+`;

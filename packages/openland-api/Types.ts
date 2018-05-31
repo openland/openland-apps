@@ -3504,6 +3504,19 @@ export interface SampleTaskMutation {
   },
 };
 
+export interface FolderExportTaskMutationVariables {
+  folderId: string,
+};
+
+export interface FolderExportTaskMutation {
+  task:  {
+    __typename: "Task",
+    id: string,
+    status: TaskStatus,
+    result: string | null,
+  },
+};
+
 export interface UsersQueryVariables {
   query: string,
 };
