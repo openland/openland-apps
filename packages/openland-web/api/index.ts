@@ -219,3 +219,4 @@ export const withFolderItems = graphqlRouted(Queries.Folder.FolderItemsConnectio
 export const ParcelMapSearch = graphQLMapSearchSource(Queries.Parcels.ParcelsMapSearchQuery);
 
 export const withSampleTask = graphqlTask(Queries.Tasks.SampleTask);
+export const withFolderExportTask = graphqlTask(Queries.Tasks.FolderExportTask);
