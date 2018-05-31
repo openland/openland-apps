@@ -9,7 +9,8 @@ import { ParcelMap } from './ParcelMap';
 
 const Wrapper = Glamorous(XCard)({
     flexGrow: 1,
-    height: '360px'
+    height: '360px',
+    maxWidth: 'calc(50% - 8px)'
 });
 
 const StreetView = Glamorous(XStreetView)({

@@ -1,18 +1,58 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import Glamorous from 'glamorous';
 
-export class XStreetView extends React.Component<{ className?: string, location: { latitude: number, longitude: number } }, { google?: GoogleMapsLoader.google | null }> {
+interface XStreetViewProps {
+    className?: string;
+    location: {
+        latitude: number,
+        longitude: number
+    };
+}
+
+const EmptyCard = Glamorous.div({
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 15,
+    fontWeight: 500,
+    lineHeight: 1.33,
+    letterSpacing: -0.4,
+    color: '#334562',
+    '& img': {
+        width: 34,
+        marginBottom: 21
+    }
+});
+
+export class XStreetView extends React.Component<XStreetViewProps, { google?: GoogleMapsLoader.google | null, streetFound: boolean }> {
 
     private _isMounted = true;
     private pano: google.maps.StreetViewPanorama | null = null;
 
-    constructor(props: { className?: string, location: { latitude: number, longitude: number } }) {
+    constructor(props: XStreetViewProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            streetFound: false
+        };
     }
 
     render() {
-        return (<div className={this.props.className} />);
+        return (
+            <>
+                {this.state.streetFound && (
+                    <div className={this.props.className} />
+                )}
+                {!this.state.streetFound && (
+                    <EmptyCard>
+                        <img src="/static/X/street-view-man.svg"/>
+                        <span>No street view available for this parcel :(</span>
+                    </EmptyCard>
+                )}
+            </>
+        );
     }
 
     componentDidMount() {
@@ -37,6 +77,9 @@ export class XStreetView extends React.Component<{ className?: string, location:
                                 if (!this._isMounted) {
                                     return;
                                 }
+                                this.setState({
+                                    streetFound: true
+                                });
                                 console.warn('New Panorama');
                                 let node = ReactDOM.findDOMNode(this);
                                 const panorama = new google.maps.StreetViewPanorama(node, { scrollwheel: false });
