@@ -27,7 +27,6 @@ import { trackEvent } from 'openland-x-analytics';
 import { XMapImageLayer } from 'openland-x-map/XMapImageLayer';
 import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
 import { XLink } from 'openland-x/retired/XLink';
-import XStyles from 'openland-x/XStyles';
 
 const SidebarItemsStyle = {
     height: 40,
@@ -109,11 +108,6 @@ const CreateFolder = withCreateFolderMutation((props) => {
     );
 }) as React.ComponentClass<{ target?: any }>;
 
-const Title = Glamorous.div({
-    ...XStyles.text.h400,
-    marginBottom: 8
-});
-
 const Edit = withFolderActions((props) => {
     return (
         <XModalForm
@@ -124,7 +118,6 @@ const Edit = withFolderActions((props) => {
             mutationDirect={true}
             secondaryActions={[{ actionName: 'Delete', submitMutation: props.deleteFolder, actionStyle: 'danger' }]}
         >
-            <Title>Folder name</Title>
             <XForm.Text
                 field="name"
                 autofocus={true}
