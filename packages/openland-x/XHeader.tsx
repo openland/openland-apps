@@ -36,7 +36,8 @@ let XCardHeaderDiv = Glamorous.div<{ appStyle?: 'default' | 'compact', separated
     paddingBottom: XStyles.paddings.large,
     display: 'flex',
     flexDirection: 'column',
-    borderBottom: props.separated ? '1px solid rgba(229, 233, 242, 0.5)' : undefined
+    borderBottom: props.separated ? '1px solid rgba(229, 233, 242, 0.5)' : undefined,
+    flexGrow: 1
 }));
 
 interface XCardHeaderProps {
@@ -65,12 +66,9 @@ export class HeaderTargetElement extends React.Component<({ children: any })> {
     }
 }
 
-const Grow = Glamorous.div({
-    flexGrow: 1
-});
-
 const HorizontalOuter = Glamorous(XHorizontal)({
-    alignItems: 'center'
+    alignItems: 'center',
+
 });
 
 const HorizontalInner = Glamorous(XHorizontal)({
@@ -95,29 +93,38 @@ export class XHeader extends React.Component<XCardHeaderProps> {
             }
         }
 
-        return (
-            <HorizontalOuter>
-                <Grow>
-                    <XCardHeaderDiv appStyle={this.props.style} separated={this.props.separated}>
-                        <XCardTitle appStyle={this.props.style}>
-                            <TargetDivStyle ellipcise={this.props.truncateTitle}>
-                                {target}
-                                {this.props.text}
-                                {this.props.bullet && <XBullet color={this.props.bulletColor || 'green'}>{this.props.bullet}</XBullet>}
-                            </TargetDivStyle>
+        let headerMain = (
+            <XCardHeaderDiv appStyle={this.props.style} separated={this.props.separated}>
+                <XCardTitle appStyle={this.props.style}>
+                    <TargetDivStyle ellipcise={this.props.truncateTitle}>
+                        {target}
+                        {this.props.text}
+                        {this.props.bullet && <XBullet color={this.props.bulletColor || 'green'}>{this.props.bullet}</XBullet>}
+                    </TargetDivStyle>
 
-                        </XCardTitle>
-                        <XCardDescription ellipcise={this.props.truncateDescription}>
-                            {this.props.description}
-                        </XCardDescription>
+                </XCardTitle>
+                <XCardDescription ellipcise={this.props.truncateDescription}>
+                    {this.props.description}
+                </XCardDescription>
 
-                    </XCardHeaderDiv>
-                </Grow>
-                <HorizontalInner separator="normal" >
-
-                    {content}
-                </HorizontalInner>
-            </HorizontalOuter>
+            </XCardHeaderDiv>
         );
+
+        let res = headerMain;
+
+        if (content.length > 0) {
+            res = (
+                <HorizontalOuter>
+                    {headerMain}
+                    {content.length > 0 && (
+                        <HorizontalInner separator="normal" >
+                            {content}
+                        </HorizontalInner>
+                    )}
+                </HorizontalOuter>
+            );
+        }
+
+        return res;
     }
 }
