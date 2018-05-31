@@ -23,24 +23,11 @@ const SampleTask = withSampleTask((props) => {
 const FolderExportTask = withFolderExportTask((props) => {
 
     const exportCVS = (downloadLink: string, folderName: string) => {
-        let wrap = (data: any) => {
-            return '"' + (data !== null && data !== undefined ? data : '') + '"';
-        };
-
-        // TODO remove
-        // foo data
-        let csvContent = 'data:text/csv;charset=utf-8,';
-        csvContent += 'data,';
-        csvContent += '\r\n';
-        csvContent += wrap(downloadLink) + ',';
-        csvContent += '\r\n';
-        var encodedUri = encodeURI(csvContent);
-
+       
         var link = document.createElement('a');
 
         // TODO replace with actual downloadLink
-        link.setAttribute('href', encodedUri);
-        link.setAttribute('download', folderName + '.csv');
+        link.setAttribute('href', downloadLink);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
