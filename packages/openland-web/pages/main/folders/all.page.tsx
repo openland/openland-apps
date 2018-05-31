@@ -27,6 +27,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { XMapImageLayer } from 'openland-x-map/XMapImageLayer';
 import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
 import { XLink } from 'openland-x/retired/XLink';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
 const SidebarItemsStyle = {
     height: 40,
@@ -234,6 +235,19 @@ const MapLink = Glamorous(XLink)({
     color: '#5640d6'
 });
 
+const TableFooterContent = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    color: '#6b7c93',
+    fontSize: '13px',
+    lineHeight: '1.6',
+    whiteSpace: 'pre',
+    '& > div': {
+        display: 'flex',
+        alignItems: 'center',
+    }
+});
+
 const FolderItems = withFolderItems((props) => {
     if (props.data.loading) {
         return <XLoader loading={true} />;
@@ -247,14 +261,21 @@ const FolderItems = withFolderItems((props) => {
             )}
             {props.data.items.pageInfo.itemsCount > 0 && (
 
-                <XFooter text={'page: ' + props.data.items.pageInfo.currentPage + '  total: ' + props.data.items.pageInfo.itemsCount + ' items'}>
+                <XFooter text={props.data.items.pageInfo.itemsCount + (props.data.items.pageInfo.itemsCount === 1 ? ' item' : ' items')}>
 
-                    {props.data.items.pageInfo.currentPage > 1 && (
-                        <XButton text="Prev" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }} />
-                    )}
-                    {(props.data.items.pageInfo.currentPage < props.data.items.pageInfo.pagesCount - 1) && (
-                        <XButton text="Next" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage + 1).toString() }} />
-                    )}
+                    <TableFooterContent>
+                        <XHorizontal>
+                            <div>
+                                <span>page: {props.data.items.pageInfo.currentPage}</span>
+                            </div>
+                            {props.data.items.pageInfo.currentPage > 1 && (
+                                <XButton text="Prev" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }} />
+                            )}
+                            {(props.data.items.pageInfo.currentPage < props.data.items.pageInfo.pagesCount - 1) && (
+                                <XButton text="Next" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage + 1).toString() }} />
+                            )}
+                        </XHorizontal>
+                    </TableFooterContent>
 
                 </XFooter>
             )}
@@ -478,7 +499,7 @@ const ExportButton = withFolderItems((props) => {
     return (
         <XButton loading={props.data.loading} text="Export" style="primary" onClick={() => exportCVS(props.data.items.edges.map(edge => edge.node), (props as any).folderName, props.data.items.pageInfo.currentPage)} />
     );
-}) as React.ComponentClass<{folderName: string}>;
+}) as React.ComponentClass<{ folderName: string }>;
 
 const FolderContent = withFolder((props) => {
     if (props.data.loading) {
@@ -491,8 +512,8 @@ const FolderContent = withFolder((props) => {
                 <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name} />
 
                 {props.router.routeQuery.mapView !== 'true' && (
-                    <ExportButton folderName={props.data.folder.name}/>
-            )}
+                    <ExportButton folderName={props.data.folder.name} />
+                )}
             </XHeader>
             {props.router.routeQuery.mapView === 'true' && <FolderMap router={props.router} />}
             {props.router.routeQuery.mapView !== 'true' && <FolderItems folderName={props.data.folder.name} />}

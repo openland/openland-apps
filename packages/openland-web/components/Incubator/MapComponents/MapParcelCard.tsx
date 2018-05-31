@@ -287,7 +287,7 @@ const XHeaderTitleWrapper = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: 315
+    width: 308
 });
 
 const ParcelLink = Glamorous(XLink)({
