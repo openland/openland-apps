@@ -22,11 +22,8 @@ const SampleTask = withSampleTask((props) => {
 
 const FolderExportTask = withFolderExportTask((props) => {
 
-    const exportCVS = (downloadLink: string, folderName: string) => {
-       
+    const downloadNoTab = (downloadLink: string, folderName: string) => {
         var link = document.createElement('a');
-
-        // TODO replace with actual downloadLink
         link.setAttribute('href', downloadLink);
         document.body.appendChild(link);
         link.click();
@@ -36,7 +33,7 @@ const FolderExportTask = withFolderExportTask((props) => {
     return (
         <>
             {props.task.status !== 'COMPLETED' && <XButton onClick={() => props.task.startTask({ folderId: 'NjZ8Zg' })} text="Export" alignSelf="flex-start" loading={props.task.status === 'IN_PROGRESS'} />}
-            {props.task.status === 'COMPLETED' && <XButton onClick={() => exportCVS(props.task.result!!.downloadLink, 'folder')} text={'Download folder.csv'} alignSelf="flex-start" />}
+            {props.task.status === 'COMPLETED' && <XButton onClick={() => downloadNoTab(props.task.result!!.downloadLink, 'folder')} text={'Download export.csv'} alignSelf="flex-start" />}
         </>
     );
 });

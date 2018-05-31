@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { Scaffold } from '../../../components/Scaffold';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Sidebar } from '../../../components/Sidebar';
-import { withFolders, withCreateFolderMutation, withFolder, withFolderActions, withFolderItems } from '../../../api';
+import { withFolders, withCreateFolderMutation, withFolder, withFolderActions, withFolderItems, withFolderExportTask } from '../../../api';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLinkProps } from 'openland-x/XLink';
 import { XLoader } from 'openland-x/XLoader';
@@ -495,11 +495,23 @@ class FolderMap extends React.Component<XWithRouter, { zoomToSmallForParcels: bo
     }
 }
 
-const ExportButton = withFolderItems((props) => {
+const FolderExportTask = withFolderExportTask((props) => {
+
+    const downloadNoTab = (downloadLink: string, folderName: string) => {
+        var link = document.createElement('a');
+        link.setAttribute('href', downloadLink);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
-        <XButton loading={props.data.loading} text="Export" style="primary" onClick={() => exportCVS(props.data.items.edges.map(edge => edge.node), (props as any).folderName, props.data.items.pageInfo.currentPage)} />
+        <>
+            {props.task.status !== 'COMPLETED' && <XButton onClick={() => props.task.startTask({ folderId: (props as any).folderId })} text="Export" alignSelf="flex-start" loading={props.task.status === 'IN_PROGRESS'} />}
+            {props.task.status === 'COMPLETED' && <XButton onClick={() => downloadNoTab(props.task.result!!.downloadLink, 'folder')} text={'Download export.csv'} alignSelf="flex-start" />}
+        </>
     );
-}) as React.ComponentClass<{ folderName: string }>;
+}) as React.ComponentClass<{folderId: string}>;
 
 const FolderContent = withFolder((props) => {
     if (props.data.loading) {
@@ -512,7 +524,7 @@ const FolderContent = withFolder((props) => {
                 <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name} />
 
                 {props.router.routeQuery.mapView !== 'true' && (
-                    <ExportButton folderName={props.data.folder.name} />
+                    <FolderExportTask folderId={props.data.folder.id}/>
                 )}
             </XHeader>
             {props.router.routeQuery.mapView === 'true' && <FolderMap router={props.router} />}
