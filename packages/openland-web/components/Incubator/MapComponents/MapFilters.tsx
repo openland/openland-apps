@@ -353,8 +353,9 @@ const FilterFooterContainer = Glamorous.div<{ addBorder?: boolean }>(props => ({
     paddingLeft: 20
 }));
 
-const FolterCancelLink = Glamorous(XLink)({
-    color: 'rgba(51, 69, 98, 0.4)'
+const FolderCancelLink = Glamorous(XLink)({
+    color: 'rgba(51, 69, 98, 0.5)',
+    fontWeight: 500
 });
 
 class FilterFooter extends React.Component<{ addBorder?: boolean }> {
@@ -371,7 +372,7 @@ class FilterFooter extends React.Component<{ addBorder?: boolean }> {
     render() {
         return (
             <FilterFooterContainer className={(this.props as any).className} addBorder={this.props.addBorder}>
-                <FolterCancelLink onClick={this.cancel}>Cancel</FolterCancelLink>
+                <FolderCancelLink onClick={this.cancel}>Cancel</FolderCancelLink>
 
                 <XButton text="Apply" style="primary" onClick={this.apply} />
             </FilterFooterContainer>
@@ -436,8 +437,8 @@ const FilterButtonWrapper = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     height: '100%',
-    paddingLeft: 8,
-    paddingRight: 8,
+    paddingLeft: 6,
+    paddingRight: 6,
     borderRight: '1px solid #c1c7cf4d',
     '&:last-child': {
         borderRight: 'none'

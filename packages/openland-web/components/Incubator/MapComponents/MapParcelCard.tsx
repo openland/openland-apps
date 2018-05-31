@@ -291,9 +291,20 @@ const XHeaderTitleWrapper = Glamorous.div({
 });
 
 const ParcelLink = Glamorous(XLink)({
-    borderBottom: '1px solid',
-    height: 28,
-    color: '#334562'
+    color: '#334562',
+    display: 'flex',
+    alignItems: 'center',
+    whiteSpace: 'nowrap',
+    '& img': {
+        width: 14,
+        marginLeft: 5
+    },
+    '& span': {
+        textOverflow: 'ellipsis',
+        maxWidth: 250,
+        minWidth: 0,
+        overflow: 'hidden'
+    }
 });
 
 const PropertySeparatedDiv = Glamorous(XPropertyList)();
@@ -307,7 +318,8 @@ export const ParcelCard = withParcelDirect((props) => (
                     text={(
                         <XHeaderTitleWrapper>
                             <ParcelLink path={'/parcels/' + props.data.item!!.id}>
-                                {props.data.item!!.address || 'No address'}
+                                <span>{props.data.item!!.address || 'No address'}</span>
+                                <img src="/static/X/link.svg"/>
                             </ParcelLink>
                             <XPopover placement="bottom-start">
                                 <XPopover.Target>

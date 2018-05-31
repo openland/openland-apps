@@ -1,5 +1,5 @@
 export const TextMap = {
-    map: 'Map',
+    map: 'Light map',
     satellite: 'Satellite',
     zoning: 'Zoning'
 };

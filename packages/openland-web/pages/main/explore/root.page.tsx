@@ -89,7 +89,7 @@ const MapSearcher = Glamorous(XMapGeocoder)({
     top: 18,
     left: 165,
     width: 178,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     transition: 'all .2s',
     borderTopRightRadius: 6,
     borderBottomRightRadius: 6,
@@ -110,7 +110,8 @@ const MapSearcher = Glamorous(XMapGeocoder)({
         zIndex: 2,
         borderTopLeftRadius: 6,
         borderBottomLeftRadius: 6,
-        width: 325
+        width: 325,
+        backgroundColor: '#fff',
     },
     '&:focus-within::before': {
         backgroundColor: 'rgba(0, 0, 0, 0.41)',
@@ -131,10 +132,14 @@ const MapSearcher = Glamorous(XMapGeocoder)({
         backgroundPositionX: 10,
         backgroundSize: 20,
         backgroundColor: '#fff',
-        borderRadius: 6,
+        borderTopRightRadius: 6,
+        borderBottomRightRadius: 6,
         zIndex: 2,
+        transition: 'all .2s',
         '&:focus-within': {
             backgroundImage: 'url(\'/static/img/icons/search-purple.svg\')',
+            borderTopLeftRadius: 6,
+            borderBottomLeftRadius: 6,
         },
         '& input': {
             width: '100%',
@@ -584,7 +589,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                                     }
                                 }}>
                                     <NoParcelsMessageIcon icon="info" />
-                                        <span>Zoom in to see parcel grid</span>
+                                    <span>Zoom in to see parcel grid</span>
 
                                 </NoParcelsMessage>
                             )}
