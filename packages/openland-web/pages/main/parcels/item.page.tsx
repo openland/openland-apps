@@ -83,7 +83,7 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                 )}
                             {props.data.item.links.length > 0 && (
                                 <XSwitcher.Item path={linksPath} count={props.data.item.links.length}>Links</XSwitcher.Item>
-                            )};
+                            )}
                             <XSwitcher.Item path={notesPath} count={props.data.item.userData && props.data.item.userData.notes && props.data.item.userData.notes.length > 0 ? 1 : undefined}>Notes</XSwitcher.Item>
                             <XWithRole role={['feature-customer-kassita']}>
                                 <XSwitcher.Item path={zoningPath} >Zoning</XSwitcher.Item>
