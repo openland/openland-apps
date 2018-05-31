@@ -179,58 +179,6 @@ const SidebarItem = (props: SidebarProps) => (
     </SidebarItemWrapper>
 );
 
-const exportCVS = (folderItems: any[], folderName: string, page: number) => {
-    let wrap = (data: any) => {
-        return '"' + (data !== null && data !== undefined ? data : '') + '"';
-    };
-
-    let parcelNumberFormat = (parcel: {
-        id: {
-            borough: string | null,
-            boroughId: string | null,
-            block: string | null,
-            blockPadded: string | null,
-            lot: string | null,
-            lotPadded: string | null,
-            title: string,
-        },
-        compact?: boolean,
-        city?: string
-    }) => {
-        if (parcel.id.borough && parcel.id.block && parcel.id.lot) {
-            return (parcel.city ? parcel.city : '') + parcel.id.boroughId + '-' + (parcel.id.blockPadded || parcel.id.block + '-' + parcel.id.lotPadded || parcel.id.lot);
-        } else if (parcel.id.block && parcel.id.lot) {
-            return (parcel.city ? parcel.city + ' | ' : '') + (parcel.id.blockPadded || parcel.id.block) + ' - ' + (parcel.id.lotPadded || parcel.id.lot);
-        } else {
-            return (parcel.city ? parcel.city + ' | ' : '') + parcel.id.title;
-        }
-    };
-
-    let csvContent = 'data:text/csv;charset=utf-8,';
-    csvContent += 'City,';
-    csvContent += 'Parcel,';
-    csvContent += 'Address,';
-    csvContent += 'Area,';
-    csvContent += 'Zoning,';
-    csvContent += '\r\n';
-    for (let row of folderItems!!) {
-        csvContent += wrap(row.parcel.city.name) + ',';
-        csvContent += wrap(parcelNumberFormat({ id: row.parcel.number })) + ',';
-        csvContent += wrap(row.parcel.address) + ',';
-        csvContent += wrap(row.parcel.area ? Math.round(row.parcel.area.value * 10.7639) : '') + ',';
-        csvContent += wrap(row.parcel.extrasZoning) + ',';
-        csvContent += '\r\n';
-    }
-
-    var encodedUri = encodeURI(csvContent);
-    var link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', folderName + '_' + page + '.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-};
-
 const MapLink = Glamorous(XLink)({
     color: '#5640d6'
 });
