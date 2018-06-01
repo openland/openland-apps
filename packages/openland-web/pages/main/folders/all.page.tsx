@@ -213,9 +213,8 @@ const FolderItems = withFolderItems((props) => {
 
                     <TableFooterContent>
                         <XHorizontal>
-                            <div>
-                                <span>page: {props.data.items.pageInfo.currentPage}</span>
-                            </div>
+                            {props.data.items.pageInfo.pagesCount > 1 && <span>page: {props.data.items.pageInfo.currentPage}</span>}
+
                             {props.data.items.pageInfo.currentPage > 1 && (
                                 <XButton text="Prev" query={{ field: 'page', value: (props.data.items.pageInfo.currentPage - 1).toString() }} />
                             )}
@@ -459,7 +458,7 @@ const FolderExportTask = withFolderExportTask((props) => {
             {props.task.status === 'COMPLETED' && <XButton onClick={() => downloadNoTab(props.task.result!!.downloadLink, 'folder')} text={'Download export.csv'} alignSelf="flex-start" />}
         </>
     );
-}) as React.ComponentClass<{folderId: string}>;
+}) as React.ComponentClass<{ folderId: string }>;
 
 const FolderContent = withFolder((props) => {
     if (props.data.loading) {
@@ -472,7 +471,7 @@ const FolderContent = withFolder((props) => {
                 <Edit variables={{ folderId: props.data.folder.id }} folderName={props.data.folder.name} />
 
                 {props.router.routeQuery.mapView !== 'true' && (
-                    <FolderExportTask folderId={props.data.folder.id}/>
+                    <FolderExportTask folderId={props.data.folder.id} />
                 )}
             </XHeader>
             {props.router.routeQuery.mapView === 'true' && <FolderMap router={props.router} />}
