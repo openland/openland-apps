@@ -5,7 +5,6 @@ import { withDeal, withDealAlterCombined, withDealRemove } from '../../../api/';
 import { DealForm } from './components/DealForm';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';
-import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { ProjectTypes } from '../../../components/ProjectTypes';
 import { Text } from '../../../strings';
 import { XHeader } from 'openland-x/XHeader';
@@ -30,6 +29,7 @@ import { XTitle } from 'openland-x/XTitle';
 import { XMapSmall } from 'openland-x-map/XMapSmall';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XPropertyColumns, XPropertyList, XProperty } from 'openland-x/XProperty';
+import { XTooltipHint } from 'openland-x/XTooltipHint';
 
 const DealsForm = withDealAlterCombined((props) => (
     <DealForm
@@ -111,7 +111,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                                 {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed !== true &&
                                     <XProperty title="Compatible buildings">
                                         <XView direction="row">
-                                            <XTooltip marginLeft={0} title={Text.hint_too_complex} />
+                                        <XTooltipHint>{Text.hint_too_complex}</XTooltipHint>
                                             {Text.text_too_complex}
                                         </XView>
                                     </XProperty>
