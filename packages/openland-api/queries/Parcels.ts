@@ -223,6 +223,82 @@ export const ParcelShort = gql`
   ${ParcelID}
 `;
 
+export const ParcelShortNoFolder = gql`
+  fragment ParcelShortNoFolder on Parcel {
+      id
+      number {
+          ...ParcelID
+      }
+
+      address
+      geometry
+
+      area {
+          value
+      }
+      depth {
+          value
+      }
+      front {
+          value
+      }
+
+      extrasZoning
+      extrasLandValue
+      extrasImprovementValue
+      extrasPropertyValue
+      extrasFixturesValue
+      extrasStories
+      extrasUnits
+      extrasRooms
+      extrasBathrooms
+      extrasBedrooms
+      extrasYear
+      extrasVacant
+      extrasNeighborhood
+      extrasBorough
+      extrasMetroDistance
+      extrasMetroStation
+      extrasTrainDistance
+      extrasTrainStation
+      extrasTrainLocalDistance
+      extrasTrainLocalStation
+
+      extrasNearestTransitDistance
+      extrasNearestTransitType
+      extrasNearestTransitStation
+
+      extrasLandUse
+      extrasSalesDate
+      extrasSalesPriorDate
+      extrasRecordationDate
+
+      extrasShapeType
+      extrasShapeSides
+      extrasFitProjects
+      extrasAnalyzed
+
+      extrasUnitCapacity
+      extrasUnitCapacityFar
+      extrasUnitCapacityDencity
+
+      city {
+          id
+          name
+          county {
+              id
+              name
+          }
+          state {
+              id
+              name
+              code
+          }
+      }
+  }
+  ${ParcelID}
+`;
+
 export const BlockShort = gql`
    fragment BlockShort on Block {
         id

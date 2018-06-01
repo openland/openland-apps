@@ -60,7 +60,7 @@ export default withApp('Favorites', 'viewer', withParcelsFavorites((props) => {
                     </XHeader>
                     {(props.data.items.length === 0)
                         ? (
-                            <XEmpty icon="favorite_border" text="You can find your first parcel at">
+                            <XEmpty icon="favorite_border" text="You can find your first parcel at ">
                                 <Link path="/">
                                     Explore page
                                     </Link>

@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { ParcelFull, ParcelShort } from './Parcels';
+import { ParcelFull, ParcelShort, ParcelShortNoFolder } from './Parcels';
 
 export const SourcingQuery = gql`
     query Sourcing($state: OpportunityState, $cursor: String, $page: Int, $sort: OpportunitySort, $query: String) {
@@ -73,6 +73,22 @@ export const SourcingAllQuery = gql`
         }
     }
     ${ParcelShort}
+`;
+
+export const SourcingAllReportQuery = gql`
+    query SourcingAllReport($state: OpportunityState, $query: String) {
+        alphaAllOpportunities(state: $state, query: $query) {
+            id
+            state
+            priority
+            updatedAt
+            parcel {
+                ...ParcelShortNoFolder
+                extrasOwnerName
+            }
+        }
+    }
+    ${ParcelShortNoFolder}
 `;
 
 export const ProspectingCapacityQuery = gql`
