@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import styled from 'react-emotion';
 import { XFlexStyles, applyFlex } from './Flex';
 
 interface XBulletProps extends XFlexStyles {
@@ -25,7 +25,7 @@ let style = {
     }
 };
 
-let XBulletDiv = Glamorous.div<XBulletProps>([
+let XBulletDiv = styled.div<XBulletProps>(
     (props) => ({
         display: 'flex',
         alignSelf: props.alignSelf,
@@ -44,8 +44,8 @@ let XBulletDiv = Glamorous.div<XBulletProps>([
         boxShadow: props.color ? style[props.color].boxShadow : 'inset 0 0 0 1px hsla(0, 0%, 53%, .5)',
         borderRadius: '20px'
     }),
-    (props) => applyFlex(props)
-]);
+    (props) => applyFlex(props) as any
+);
 
 export function XBullet(props: XBulletProps & { children?: any }) {
     return (

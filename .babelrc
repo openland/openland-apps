@@ -1,0 +1,22 @@
+{
+    "presets": ["next/babel"],
+    "plugins": [],
+    "env": {
+        "production": {
+            "plugins": [
+                ["emotion", {
+                    "sourceMap": false,
+                    "hoist": true
+                }]
+            ]
+        },
+        "development": {
+            "plugins": [
+                ["emotion", {
+                    "sourceMap": true,
+                    "autoLabel": true
+                }]
+            ]
+        }
+    }
+}

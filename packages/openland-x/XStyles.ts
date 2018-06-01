@@ -1,4 +1,4 @@
-import { CSSProperties } from 'glamorous';
+import { XStyledCSS } from './XStyled';
 
 function neutral(alpha: number) {
     return 'rgba(0, 0, 0, ' + alpha + ')';
@@ -31,70 +31,70 @@ const text = {
         fontWeight: 500,
         lineHeight: '40px',
         color: neutral(1.0)
-    } as CSSProperties,
+    } as XStyledCSS,
     h800: {
         fontSize: '29px',
         fontWeight: 500,
         lineHeight: '32px',
         color: neutral(1.0)
-    } as CSSProperties,
+    } as XStyledCSS,
     h700: {
         fontSize: '24px',
         fontWeight: 400,
         lineHeight: '28px',
         color: neutral(1.0)
-    } as CSSProperties,
+    } as XStyledCSS,
     h600: {
         fontSize: '20px',
         fontWeight: 400,
         lineHeight: '24px',
         color: neutral(1.0)
-    } as CSSProperties,
+    } as XStyledCSS,
     h500: {
         fontSize: '16px',
         fontWeight: 400,
         lineHeight: '20px',
         color: neutral(1.0)
-    } as CSSProperties,
+    } as XStyledCSS,
     h400: {
         fontSize: '14px',
         fontWeight: 500,
         lineHeight: '20px',
         color: neutral(0.6)
-    } as CSSProperties,
+    } as XStyledCSS,
     h300: {
         fontSize: '12px',
         fontWeight: 500,
         lineHeight: '16px',
         color: neutral(1.0)
-    } as CSSProperties,
+    } as XStyledCSS,
     h200: {
         fontSize: '12px',
         fontWeight: 500,
         lineHeight: '16px',
         color: neutral(0.6)
-    } as CSSProperties,
+    } as XStyledCSS,
     h100: {
         fontSize: '12px',
         fontWeight: 600,
         lineHeight: '16px',
         textTransform: 'uppercase',
         color: neutral(0.6)
-    } as CSSProperties,
+    } as XStyledCSS,
 
     m500: {
         fontSize: '16px',
         fontWeight: 500,
         lineHeight: '20px',
         color: neutral(0.8)
-    } as CSSProperties,
+    } as XStyledCSS,
 
     p: {
         fontSize: '14px',
         fontWeight: 400,
         lineHeight: '18px',
         color: neutral(1.0)
-    } as CSSProperties,
+    } as XStyledCSS,
 };
 
 const scroll = {

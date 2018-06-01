@@ -1,4 +1,4 @@
-import { CSSProperties } from 'glamorous';
+import { XStyledCSS } from './XStyled';
 
 export interface XFlexStyles {
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
@@ -22,7 +22,7 @@ export const applyFlex = (props: XFlexStyles) => ({
     zIndex: props.zIndex,
     minWidth: props.minWidth,
     minHeight: props.minHeight
-} as CSSProperties);
+} as XStyledCSS);
 
 // export function withLayout<TProps>(Wrapped: React.ComponentType<TProps>): React.ComponentType<TProps & XLayoutProps> {
 //     let Converted = Glamorous<XLayoutProps & TProps>(

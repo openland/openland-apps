@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import styled from 'react-emotion';
 
 interface XCardDivProps {
     shadow?: 'none' | 'normal' | 'medium' | 'large';
@@ -8,7 +8,7 @@ interface XCardDivProps {
     borderless?: boolean;
 }
 
-let XCardDiv = Glamorous.div<XCardDivProps>((props) => ({
+let XCardDiv = styled.div<XCardDivProps>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     background: '#ffffff',

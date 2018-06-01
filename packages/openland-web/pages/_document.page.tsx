@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Document, { Head, Main, NextScript, DocumentProps } from 'next/document';
 import { renderStaticOptimized } from 'glamor/server';
+import { extractCritical } from 'emotion-server';
 
 let isProduction = process.env.APP_PRODUCTION === 'true';
 
@@ -8,7 +9,13 @@ export default class StateDocument extends Document {
     static async getInitialProps(props: { renderPage: () => { html?: string } }) {
         const page = props.renderPage();
         const styles = renderStaticOptimized(() => page.html);
-        return { ...page, ...styles };
+        const estyles = extractCritical(page.html);
+        return {
+            ...page,
+            glamCss: styles.css,
+            emoCss: estyles.css,
+            ids: [...estyles.ids, ...styles.ids]
+        };
     }
 
     constructor(props: DocumentProps) {
@@ -34,10 +41,10 @@ export default class StateDocument extends Document {
                     <meta name="msapplication-square150x150logo" content="/static/branding/mstile-150x150.png" />
                     <meta name="msapplication-wide310x150logo" content="/static/branding/mstile-310x150.png" />
                     <meta name="msapplication-square310x310logo" content="/static/branding/mstile-310x310.png" />
-                    
+
                     <link rel="shortcut icon" href="/static/favicon.ico" />
                     <link rel="mask-icon" href="/static/favicon-safari.svg" color="#522BFF" />
-                    
+
                     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png" />
                     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png" />
                     <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96.png" />
@@ -59,7 +66,8 @@ export default class StateDocument extends Document {
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
 
-                    <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
+                    <style dangerouslySetInnerHTML={{ __html: this.props.glamCss }} />
+                    <style dangerouslySetInnerHTML={{ __html: this.props.emoCss }} />
                     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js" />
                     <script dangerouslySetInnerHTML={{ __html: 'window.isProduction=' + isProduction + ';' }} />
 

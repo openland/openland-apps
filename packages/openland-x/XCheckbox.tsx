@@ -1,8 +1,8 @@
-import Glamorous from 'glamorous';
-import XStyles from './XStyles';
 import * as React from 'react';
+import XStyles from './XStyles';
+import styled from 'react-emotion';
 
-const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
+const CheckboxInputDiv = styled.div<{ active: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -37,7 +37,7 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
     }
 }));
 
-const CheckIcon = Glamorous.div<{ active?: boolean }>((props) => ({
+const CheckIcon = styled.div<{ active?: boolean }>((props) => ({
     width: 18,
     height: 18,
     borderRadius: 3.5,
@@ -51,7 +51,7 @@ const CheckIcon = Glamorous.div<{ active?: boolean }>((props) => ({
     marginRight: 10,
 }));
 
-const Divided = Glamorous.div({
+const Divided = styled.div({
     borderBottom: '1px solid #d8d8d8',
     marginBottom: 16,
 

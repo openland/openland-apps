@@ -141,6 +141,10 @@ declare module 'glamor/server' {
     export function renderStaticOptimized(fn: () => string | undefined): ServerResult;
 }
 
+declare module 'emotion-server' {
+    export function extractCritical(body:string|undefined): any;
+}
+
 declare namespace Humanize {
     function relativeTime(timestamp: number): string;
 }
