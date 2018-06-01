@@ -173,6 +173,7 @@ export const withProspectingStats = graphqlRouted(Queries.Sourcing.OpportunitySt
 export const withSourcing = graphqlRouted(Queries.Sourcing.SourcingQuery, ['filter', 'cursor', 'page', 'sort'], false, 'network-only');
 export const withSourcingFirst = graphqlRouted(Queries.Sourcing.SourcingFirstQuery, ['filter', 'cursor', 'page', 'sort'], false, 'network-only');
 export const withSourcingAll = graphqlRouted(Queries.Sourcing.SourcingAllQuery, [], false, 'network-only');
+export const withSourcingAllReport = graphqlRouted(Queries.Sourcing.SourcingAllReportQuery, [], false, 'network-only');
 export const withSourcingCapacity = graphqlRouted(Queries.Sourcing.ProspectingCapacityQuery, [], false, 'network-only');
 export const withAddOpportunity = graphqlMutation(Queries.Sourcing.AddOpportunityMutation, 'add', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
 

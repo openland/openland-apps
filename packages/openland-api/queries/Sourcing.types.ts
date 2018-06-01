@@ -5,6 +5,7 @@ import * as Sourcing from './Sourcing';
 export const SourcingQuery = typedQuery<Types.SourcingQuery, Types.SourcingQueryVariables>(Sourcing.SourcingQuery);
 export const SourcingFirstQuery = typedQuery<Types.SourcingFirstQuery, Types.SourcingFirstQueryVariables>(Sourcing.SourcingFirstQuery);
 export const SourcingAllQuery = typedQuery<Types.SourcingAllQuery, Types.SourcingAllQueryVariables>(Sourcing.SourcingAllQuery);
+export const SourcingAllReportQuery = typedQuery<Types.SourcingAllReportQuery, Types.SourcingAllReportQueryVariables>(Sourcing.SourcingAllReportQuery);
 export const ProspectingCapacityQuery = typedQuery<Types.ProspectingCapacityQuery, Types.ProspectingCapacityQueryVariables>(Sourcing.ProspectingCapacityQuery);
 export const OpportunityQuery = typedQuery<Types.OpportunityQuery, Types.OpportunityQueryVariables>(Sourcing.OpportunityQuery);
 export const OpportunityTileOverlayQuery = typedQuery<Types.OpportunityTileOverlayQuery, Types.OpportunityTileOverlayQueryVariables>(Sourcing.OpportunityTileOverlayQuery);
