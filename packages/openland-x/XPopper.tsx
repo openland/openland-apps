@@ -83,11 +83,12 @@ export const XPopperInvalidator = () => {
     );
 };
 
-export class XPopperGrouped extends React.Component<PopperRendererProps, {currentPopper: XPopperGrouped}> {
+export class XPopperGrouped extends React.Component<PopperRendererProps & { parent: XPopper }, { currentPopper: XPopper }> {
     static activePoppers = new Map<string, Set<XPopperGrouped>>();
+    static currnetPopper = new Map<string, XPopper>();
     prevAnimation?: string;
 
-    private getGroup(groupId: string) {
+    static getGroup(groupId: string) {
         let group = XPopperGrouped.activePoppers[groupId];
         if (group === undefined) {
             group = new Set();
@@ -96,15 +97,14 @@ export class XPopperGrouped extends React.Component<PopperRendererProps, {curren
         return group;
     }
 
-    componentWillReceiveProps(nextProps: PopperRendererProps) {
-        if (this.props.groupId) {
-            let group = this.getGroup(this.props.groupId);
-            if (!this.props.show && nextProps.show) {
-                for (let item of group) {
-                    item.setState({currentPopper: this});
-                }
-            }
+    constructor(props: PopperRendererProps & { parent: XPopper }) {
+        super(props);
+        if (props.groupId) {
+            this.state = {
+                currentPopper: XPopperGrouped.currnetPopper[props.groupId]
+            };
         }
+
     }
 
     componentWillUnmount() {
@@ -114,7 +114,7 @@ export class XPopperGrouped extends React.Component<PopperRendererProps, {curren
                 group = new Set();
                 XPopperGrouped.activePoppers[this.props.groupId] = group;
             }
-            group.delete(this);
+            group.delete(this.props.parent);
 
         }
 
@@ -126,7 +126,7 @@ export class XPopperGrouped extends React.Component<PopperRendererProps, {curren
         let renderProps = { ...this.props };
 
         if (renderProps.groupId) {
-            let group = this.getGroup(renderProps.groupId);
+            let group = XPopperGrouped.getGroup(renderProps.groupId);
 
             if (!renderProps.willHide) {
                 group.add(this);
@@ -134,7 +134,7 @@ export class XPopperGrouped extends React.Component<PopperRendererProps, {curren
                 group.delete(this);
             }
 
-            if (this !== this.state.currentPopper ) {
+            if (this.props.parent !== this.state.currentPopper) {
                 renderProps.show = false;
             }
 
@@ -328,6 +328,14 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                 this._popper.scheduleUpdate();
             }
         });
+
+        if (this.props.groupId) {
+            let group = XPopperGrouped.getGroup(this.props.groupId);
+            XPopperGrouped.currnetPopper[this.props.groupId] = this;
+            for (let item of group) {
+                item.setState({ currentPopper: this });
+            }
+        }
     }
 
     onMouseOutContent = () => {
@@ -448,7 +456,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             <XPopperContext.Provider value={{ invalidate: this.invalidate }}>
                 {target}
                 {((this.state.showPopper || this.props.show === true) && canUseDOM && this.state.ownMounted && ReactDOM.createPortal(
-                    <XPopperGrouped {...renderProps} />,
+                    <XPopperGrouped {...renderProps} parent={this} />,
                     document.body
                 ))}
             </XPopperContext.Provider>
