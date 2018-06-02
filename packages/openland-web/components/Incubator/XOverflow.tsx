@@ -76,24 +76,24 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
         this.refComp = el;
     }
 
-    modifyProps = (component: any) => {
-        if (component.props.onClick === undefined) {
-            return (
-                <div onClick={this.switch} key="xoverflow_component" ref={this.createRef}>
-                    {component}
-                </div>
-            );
-        }
+    // modifyProps = (component: any) => {
+    //     if (component.props.onClick === undefined) {
+    //         return (
+    //             <div onClick={this.switch} key="xoverflow_component" ref={this.createRef}>
+    //                 {component}
+    //             </div>
+    //         );
+    //     }
 
-        return component;
-    }
+    //     return component;
+    // }
 
     render() {
 
         let target: any = [];
 
         for (let c of React.Children.toArray(this.props.children)) {
-            target.push(React.cloneElement(this.modifyProps(c)));
+            target.push(React.cloneElement(c as any, { onClick: this.switch, innerRef: this.createRef }));
         }
 
         return (
