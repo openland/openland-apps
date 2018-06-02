@@ -49,6 +49,7 @@ interface XOverflowProps {
     placement?: Placement;
     show?: boolean;
     content: any;
+    width?: number;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -101,9 +102,10 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                 <XPopper
                     show={this.state.show}
                     content={this.props.content}
-                    padding={20}
+                    padding={10}
+                    arrow={null}
                     placement={this.props.placement || 'auto'}
-                    width={170}
+                    width={this.props.width || 170}
                     onClickOutside={this.handleClose}
                 >
                     {target.length > 0 ? target : (

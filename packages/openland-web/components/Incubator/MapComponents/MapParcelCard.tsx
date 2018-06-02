@@ -294,6 +294,7 @@ export const ParcelCard = withParcelDirect((props) => (
                             </ParcelLink>
                             <XOverflow
                                 placement="bottom"
+                                width={110}
                                 content={(
                                     <>
                                         <XButton
