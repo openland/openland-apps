@@ -25,6 +25,7 @@ import { FolderButton } from '../../FolderButton';
 import { XLink } from 'openland-x/XLink';
 import { XPopper } from 'openland-x/XPopper';
 import { XIcon } from 'openland-x/XIcon';
+import { XOverflow } from '../XOverflow';
 
 const panelWidth = 335;
 
@@ -231,35 +232,6 @@ const PropertyCell = (props: { children: any, title?: string, width?: number, co
     </PropertyCellContainer>
 );
 
-const DottedStyle = Glamorous.div({
-    width: 4,
-    height: 4,
-    borderRadius: 100,
-    backgroundColor: '#abbacb',
-    marginBottom: 2,
-    '&:last-child': {
-        marginBottom: 0,
-    }
-});
-
-const DottedMenuButtonStyle = Glamorous.div({
-    width: 40,
-    height: 40,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-});
-
-const DottedMenuButton = () => (
-    <DottedMenuButtonStyle>
-        <DottedStyle />
-        <DottedStyle />
-        <DottedStyle />
-    </DottedMenuButtonStyle>
-);
-
 const ProspectingWrapper = Glamorous.div({
     position: 'absolute',
     width: '100%',
@@ -320,20 +292,25 @@ export const ParcelCard = withParcelDirect((props) => (
                                 <span>{props.data.item!!.address || 'No address'}</span>
                                 <img src="/static/X/link.svg" />
                             </ParcelLink>
-                            <XPopper placement="bottom-start" content={(
-                                <>
-                                    <XButton
-                                        path={'/parcels/' + props.data.item!!.id}
-                                        flexGrow={1}
-                                        flexBasis={0}
-                                        text="Details"
-                                    />
-                                    <XButton query={{ field: 'selectedParcel' }} text="Close" />
-                                </>
-                            )}>
-                                <DottedMenuButton />
-
-                            </XPopper>
+                            <XOverflow
+                                placement="bottom"
+                                content={(
+                                    <>
+                                        <XButton
+                                            path={'/parcels/' + props.data.item!!.id}
+                                            text="Details"
+                                            style="flat"
+                                            size="medium"
+                                        />
+                                        <XButton
+                                            query={{ field: 'selectedParcel' }}
+                                            text="Close"
+                                            style="flat"
+                                            size="medium"
+                                        />
+                                    </>
+                                )}
+                            />
                         </XHeaderTitleWrapper>
                     )}
                     description={<ParcelNumber id={props.data.item!!.number} />}
@@ -395,18 +372,18 @@ export const ParcelCard = withParcelDirect((props) => (
                     }
                     {/* {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && (
                         <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}> */}
-                            {props.data.item!!.extrasAnalyzed !== true &&
-                                <PropertyCell title="Compatible buildings">
-                                    <XPopper content={Text.hint_too_complex}>
-                                        <XIcon icon="error" />
-                                    </XPopper>
-                                    {Text.text_too_complex}
-                                </PropertyCell>
-                            }
-                            {props.data.item!!.extrasAnalyzed === true && props.data.item!!.extrasFitProjects &&
-                                <PropertyCell title="Compatible buildings"><ProjectTypes types={props.data.item!!.extrasFitProjects!!} /></PropertyCell>
-                            }
-                        {/* </XWithRole>
+                    {props.data.item!!.extrasAnalyzed !== true &&
+                        <PropertyCell title="Compatible buildings">
+                            <XPopper content={Text.hint_too_complex}>
+                                <XIcon icon="error" />
+                            </XPopper>
+                            {Text.text_too_complex}
+                        </PropertyCell>
+                    }
+                    {props.data.item!!.extrasAnalyzed === true && props.data.item!!.extrasFitProjects &&
+                        <PropertyCell title="Compatible buildings"><ProjectTypes types={props.data.item!!.extrasFitProjects!!} /></PropertyCell>
+                    }
+                    {/* </XWithRole>
                     )} */}
                     {props.data.item!!.extrasNeighborhood &&
                         <PropertyCell title="Neighborhood">{props.data.item!!.extrasNeighborhood}</PropertyCell>
