@@ -107,7 +107,7 @@ const DropAreaWrapper = Glamorous.div<{ img?: string, dragOn: boolean, dragUnder
             position: 'absolute',
             top: 0,
             left: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.47)'
+            backgroundColor: props.dragUnder ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.47)'
         }
     },
     '& .material-icons': {
