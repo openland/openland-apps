@@ -132,29 +132,24 @@ const DropAreaWrapper = Glamorous.div<{ img?: string, dragOn: boolean, dragUnder
 }));
 
 interface DropAreaState {
-    file?: any;
+    file: boolean;
     imgPrew: string;
     dragOn: boolean;
     dragUnder: boolean;
 }
 
 class DropArea extends React.Component<{}, DropAreaState> {
-
-    refComp?: Element;
+    file: any;
 
     constructor(props: {}) {
         super(props);
 
         this.state = {
-            file: '',
+            file: false,
             imgPrew: '',
             dragOn: false,
             dragUnder: false
         };
-    }
-
-    createRef = (el: any) => {
-        this.refComp = el;
     }
 
     handleDragOver = () => {
@@ -173,36 +168,40 @@ class DropArea extends React.Component<{}, DropAreaState> {
         e.preventDefault();
 
         let reader = new FileReader();
-        const file = e.dataTransfer.files[0];
+        const userFile = e.dataTransfer.files[0];
+
+        this.file = userFile;
 
         reader.onloadend = () => {
             this.setState({
-                file: file,
+                file: true,
                 imgPrew: reader.result,
                 dragOn: false,
                 dragUnder: false
             });
         };
 
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(userFile);
     }
 
     handleImageChange = (e: any) => {
         e.preventDefault();
 
         let reader = new FileReader();
-        let file = e.target.files[0];
+        let userFile = e.target.files[0];
+
+        this.file = userFile;
 
         reader.onloadend = () => {
             this.setState({
-                file: file,
+                file: true,
                 imgPrew: reader.result,
                 dragOn: false,
                 dragUnder: false
             });
         };
 
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(userFile);
     }
 
     handleWindowDragOverOrDrop = (event: any) => {
@@ -238,7 +237,7 @@ class DropArea extends React.Component<{}, DropAreaState> {
             >
                 <label htmlFor={id}>
                     <XIcon icon="photo_camera" />
-                    <input type="file" id={id} multiple accept="image/*" onChange={this.handleImageChange} ref={this.createRef} />
+                    <input type="file" id={id} multiple accept="image/*" onChange={this.handleImageChange} />
                     <span>Add your profile photo</span>
                 </label>
             </DropAreaWrapper>
