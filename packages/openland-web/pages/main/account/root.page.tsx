@@ -76,11 +76,11 @@ const FormWrapper = Glamorous.div({
     flexDirection: 'column',
 });
 
-const DropAreaWrapper = Glamorous.div<{ img?: string, dragOn: boolean, dragUnder: boolean }>((props) => ({
+const DropAreaWrapper = Glamorous.div<{ img?: string, dragOn: boolean }>((props) => ({
     width: 152,
     height: 152,
     borderRadius: 5,
-    backgroundColor: props.dragUnder ? '#d0d0d0' : '#ffffff',
+    backgroundColor: props.dragOn ? '#d0d0d0' : '#ffffff',
     border: props.dragOn ? '1px solid #986AFE' : 'solid 1px #dcdee4',
     overflow: 'hidden',
     boxShadow: props.dragOn ? '0 0 0 2px rgba(143, 124, 246, 0.2)' : undefined,
@@ -107,11 +107,11 @@ const DropAreaWrapper = Glamorous.div<{ img?: string, dragOn: boolean, dragUnder
             position: 'absolute',
             top: 0,
             left: 0,
-            backgroundColor: props.dragUnder ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.47)'
+            backgroundColor: props.dragOn ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.47)'
         }
     },
     '& .material-icons': {
-        color: props.img || props.dragUnder ? '#fff' : '#dcdee4',
+        color: props.img || props.dragOn ? '#fff' : '#dcdee4',
         fontSize: 30,
         marginBottom: 7,
         zIndex: 1
@@ -123,7 +123,7 @@ const DropAreaWrapper = Glamorous.div<{ img?: string, dragOn: boolean, dragUnder
         lineHeight: 1.29,
         letterSpacing: -0.1,
         textAlign: 'center',
-        color: props.img || props.dragUnder ? '#fff' : 'rgba(51, 69, 98, 0.4)',
+        color: props.img || props.dragOn ? '#fff' : 'rgba(51, 69, 98, 0.4)',
         zIndex: 1
     },
     '& input': {
@@ -135,11 +135,11 @@ interface DropAreaState {
     file: boolean;
     imgPrew: string;
     dragOn: boolean;
-    dragUnder: boolean;
 }
 
 class DropArea extends React.Component<{}, DropAreaState> {
-    file: any;
+
+    static File = new Set();
 
     constructor(props: {}) {
         super(props);
@@ -147,68 +147,66 @@ class DropArea extends React.Component<{}, DropAreaState> {
         this.state = {
             file: false,
             imgPrew: '',
-            dragOn: false,
-            dragUnder: false
+            dragOn: false
         };
     }
 
     handleDragOver = () => {
         this.setState({
-            dragUnder: true
+            dragOn: true
         });
     }
 
     handleDragLeave = () => {
         this.setState({
-            dragUnder: false
+            dragOn: false
         });
     }
 
     handleDrop = (e: any) => {
         e.preventDefault();
 
+        DropArea.File.clear();
+
         let reader = new FileReader();
         const userFile = e.dataTransfer.files[0];
-
-        this.file = userFile;
 
         reader.onloadend = () => {
             this.setState({
                 file: true,
                 imgPrew: reader.result,
-                dragOn: false,
-                dragUnder: false
+                dragOn: false
             });
         };
 
         reader.readAsDataURL(userFile);
+
+        DropArea.File.add(userFile);
     }
 
     handleImageChange = (e: any) => {
         e.preventDefault();
 
+        DropArea.File.clear();
+
         let reader = new FileReader();
         let userFile = e.target.files[0];
-
-        this.file = userFile;
 
         reader.onloadend = () => {
             this.setState({
                 file: true,
                 imgPrew: reader.result,
-                dragOn: false,
-                dragUnder: false
+                dragOn: false
             });
         };
 
         reader.readAsDataURL(userFile);
+
+        DropArea.File.add(userFile);
     }
 
-    handleWindowDragOverOrDrop = (event: any) => {
-        this.setState({
-            dragOn: true
-        });
-        event.preventDefault();
+    handleWindowDragOverOrDrop = (e: any) => {
+        e.preventDefault();
     }
 
     componentDidMount() {
@@ -233,7 +231,6 @@ class DropArea extends React.Component<{}, DropAreaState> {
 
                 img={this.state.imgPrew}
                 dragOn={this.state.dragOn}
-                dragUnder={this.state.dragUnder}
             >
                 <label htmlFor={id}>
                     <XIcon icon="photo_camera" />
