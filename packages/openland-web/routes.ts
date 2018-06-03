@@ -22,6 +22,13 @@ routes.add('/map', '/main/explore/root');
 routes.add('/map/', '/main/explore/root');
 
 //
+// Create account
+//
+
+routes.add('/account', '/main/account/root');
+routes.add('/account/', '/main/account/root');
+
+//
 // Home
 //
 
