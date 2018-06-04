@@ -12,6 +12,8 @@ import { XLoader } from 'openland-x/XLoader';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XModalContextValue, XModalContext } from 'openland-x-modal/XModalContext';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XAvatarUpload, XAvatarUploadProps } from 'openland-x/files/XAvatarUpload';
+import { XImageCrop } from 'openland-x/files/XFileUpload';
 
 let InputsStyle = {
     borderRadius: 4,
@@ -254,6 +256,37 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
     render() {
         return (
             <XInput {...this.props} onChange={this.handleChange} value={this.state.value} />
+        );
+    }
+}
+
+interface XFormAvatarFieldProps extends XAvatarUploadProps {
+    field: string;
+}
+export class XFormAvatarField extends React.Component<XFormAvatarFieldProps, { uuid: string | null, crop?: XImageCrop | null; }> {
+    static contextTypes = {
+        xForm: PropTypes.object.isRequired
+    }; 
+
+    constructor(props: XFormTextFieldProps, context: any) {
+        super(props, context);
+        let xForm = this.context.xForm as XFormController;
+        let existing = xForm.readValue(this.props.field);
+        if (this.props.uuid !== undefined) {
+            this.state = { uuid: this.props.uuid };
+        } else {
+            this.state = { uuid: existing ? existing.uploadId : null};
+        }
+    }
+
+    handleChange = (uuid: string | null, crop: XImageCrop | null) => {
+        let xForm = this.context.xForm as XFormController;
+        this.setState({ uuid: uuid });
+        xForm.writeValue(this.props.field, uuid && crop ? {uploadId: uuid, cropX: crop.left, cropY: crop.top, cropW: crop.width, cropH: crop.height} : undefined);
+    }
+    render() {
+        return (
+            <XAvatarUpload {...this.props} onChanged={this.handleChange} uuid={this.state.uuid} />
         );
     }
 }
@@ -560,6 +593,7 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
     static Boolean = XFormBooleanField;
     static Select = XFormSelectField;
     static Text = XFormTextField;
+    static Avatar = XFormAvatarField;
     static TextArea = XFormTextArea;
     static Submit = XFormSubmit;
 

@@ -10,14 +10,13 @@ import { XLoader } from '../XLoader';
 export interface XAvatarUploadProps {
     crop?: XImageCrop | null;
     uuid?: string | null;
-    onChanged?: (uuid: string | null) => void;
+    onChanged?: (uuid: string | null, crop: XImageCrop | null) => void;
 }
 
 const DropAreaWrapper = Glamorous.div<{ hasImage: boolean }>((props) => ({
     position: 'relative',
-
-    width: 152,
-    height: 152,
+    width: 153,
+    height: 153,
 
     backgroundColor: '#ffffff',
     overflow: 'hidden',
@@ -30,45 +29,13 @@ const DropAreaWrapper = Glamorous.div<{ hasImage: boolean }>((props) => ({
     '&:hover': {
         border: '1px solid #986AFE'
     },
-    // '& label': {
-    //     width: '100%',
-    //     height: '100%',
-    //     display: 'flex',
-    //     flexDirection: 'column',
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    //     cursor: 'pointer',
-    //     position: 'relative',
-    //     '&::after': {
-    //         content: `''`,
-    //         display: 'none',
-    //         width: '100%',
-    //         height: '100%',
-    //         position: 'absolute',
-    //         top: 0,
-    //         left: 0,
-    //         backgroundColor: 'rgba(0, 0, 0, 0.47)'
-    //     }
-    // },
-    '& .material-icons': {
-        color: props.hasImage ? '#fff' : '#dcdee4',
-        fontSize: 30,
-        marginBottom: 7,
-        zIndex: 1
-    },
-    // '& span': {
-    //     display: 'block',
-    //     width: 86,
-    //     fontSize: 14,
-    //     lineHeight: 1.29,
-    //     letterSpacing: -0.1,
-    //     textAlign: 'center',
-    //     color: 'rgba(51, 69, 98, 0.4)',
-    //     zIndex: 1
-    // },
-    // '& input': {
-    //     display: 'none'
-    // }
+
+    display: 'flex',
+    flexDirection: 'column',
+
+    justifyContent: 'center',
+    alignItems: 'stretch',
+  
 }));
 
 const AvatarImage = Glamorous(XCloudImage)({
@@ -79,7 +46,32 @@ const AvatarImage = Glamorous(XCloudImage)({
     bottom: 0
 });
 
+const PlaceholderHoint = Glamorous.div<{ hasImage: boolean }>((props) => ({
+    lineHeight: 1.29,
+    letterSpacing: -0.1,
+    textAlign: 'center',
+}));
+
+const PlaceholderImage = Glamorous(XIcon)<{ hasImage: boolean }>((props) => ({
+    fontSize: 30,
+    marginBottom: 7,
+}));
+
+const Placeholder = Glamorous.div<{ hasImage: boolean }>((props) => ({
+    display: 'flex',
+    flexGrow: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: props.hasImage ? 'rgba(255, 255, 255, 0)' : '#dcdee4',
+    zIndex: 1,
+    '&:hover': {
+        color: props.hasImage ? '#fff' : '#dcdee4',
+    }
+}));
+
 export function XAvatarUpload(props: XAvatarUploadProps) {
+
     return (
         <XFileUpload
             {...props}
@@ -91,14 +83,18 @@ export function XAvatarUpload(props: XAvatarUploadProps) {
                         hasImage={rp.uuid !== null}
                         onClick={rp.doUpload}
                     >
-                        <AvatarImage
+                        {rp.uuid && <AvatarImage
                             width={152}
                             height={152}
                             src={rp.uuid}
                             crop={rp.crop}
                             resize={'fill'}
-                        />
-                        <XIcon icon="photo_camera" />
+                        />}
+
+                        <Placeholder hasImage={rp.uuid !== null}>
+                            <PlaceholderImage icon="photo_camera" hasImage={rp.uuid !== null} />
+                            <PlaceholderHoint hasImage={rp.uuid !== null}><p>{rp.uuid !== null ? 'Change' : 'Add'} your</p><p>profile photo</p></PlaceholderHoint>
+                        </Placeholder>
                         {rp.isLoading && <XLoader loading={rp.isLoading} />}
                     </DropAreaWrapper>
                 );

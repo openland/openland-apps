@@ -1,6 +1,14 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export interface AvatarUpload {
+  uploadId: string,
+  cropX: number,
+  cropY: number,
+  cropW: number,
+  cropH: number,
+};
+
 export enum DealStatus {
   ACTIVE = "ACTIVE",
   CLOSED = "CLOSED",
@@ -185,6 +193,7 @@ export interface AccountQuery {
 export interface SaveProfileMutationVariables {
   firstName: string,
   lastName?: string | null,
+  photo?: AvatarUpload | null,
 };
 
 export interface SaveProfileMutation {

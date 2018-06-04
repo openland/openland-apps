@@ -75,6 +75,9 @@ const FormWrapper = Glamorous.div({
     flexDirection: 'column',
 });
 
+const XAvatarUploadMargin = Glamorous.div({ marginTop: 31, marginLeft: 12 });
+const SubmitMargin = Glamorous(XForm.Submit)({ marginTop: 10 });
+
 const CreateProfileForm = withCreateProfile((props) => {
     return (
         <RootContainer>
@@ -97,8 +100,13 @@ const CreateProfileForm = withCreateProfile((props) => {
                                     <XForm.Text field="lastName" size="medium" placeholder="For example: Lifshits" />
                                 </InputGroup>
                             </FormWrapper>
+                            <XAvatarUploadMargin>
+                                <XForm.Avatar field="photo"/>
+                            </XAvatarUploadMargin>
+
                         </XHorizontal>
-                        <XForm.Submit style="primary" text="Continue" size="medium" alignSelf="flex-end" />
+                        <SubmitMargin style="primary" text="Continue" size="medium" alignSelf="flex-end" />
+
                     </XVertical>
                 </XForm>
             </ContentWrapper>

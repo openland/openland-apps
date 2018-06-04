@@ -35,11 +35,11 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
 
                         <XTitle>Cloud crop</XTitle>
                         <XHorizontal>
-                            <XAvatar crop={{ left: 10, top: 10, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" />
-                            <XAvatar crop={{ left: 10, top: 10, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="x-large" />
-                            <XAvatar crop={{ left: 10, top: 10, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="large" />
-                            <XAvatar crop={{ left: 10, top: 10, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="medium" />
-                            <XAvatar crop={{ left: 10, top: 10, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="small" />
+                            <XAvatar crop={{ left: 0, top: 0, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" />
+                            <XAvatar crop={{ left: 0, top: 0, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="x-large" />
+                            <XAvatar crop={{ left: 0, top: 0, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="large" />
+                            <XAvatar crop={{ left: 0, top: 0, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="medium" />
+                            <XAvatar crop={{ left: 0, top: 0, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="small" />
                         </XHorizontal>
 
                         <XTitle>default</XTitle>
