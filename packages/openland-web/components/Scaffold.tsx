@@ -16,6 +16,7 @@ import { XArea } from 'openland-x-format/XArea';
 import { XList, XListItem } from 'openland-x/XList';
 import { XTitle } from 'openland-x/XTitle';
 import { XPopper } from 'openland-x/XPopper';
+import { XAvatar } from 'openland-x/XAvatar';
 
 //
 // Root
@@ -126,6 +127,7 @@ const BottomNavigation = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
+    alignSelf: 'stretch',
     flexGrow: 1,
     flexShrink: 0
 });
@@ -185,12 +187,12 @@ class UserPopper extends React.Component<{ picture: string | null }, { show: boo
 
     render() {
         return (
-            <XPopper placement="right" showOnHoverContent={false} onClickOutside={this.switch} show={this.state.show} padding={10} content={(
+            <XPopper placement="right" showOnHoverContent={false} onClickOutside={this.switch} show={this.state.show}  padding={25} content={(
                 <XMenu>
                     <XMenu.Item path="/auth/logout">{TextGlobal.signOut}</XMenu.Item>
                 </XMenu>
             )}>
-                <AvatarImg src={this.props.picture ? this.props.picture : undefined} onClick={this.switch} />
+                <XAvatar src={this.props.picture} onClick={this.switch}/>
                 {/* <UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv> */}
             </XPopper>
         );

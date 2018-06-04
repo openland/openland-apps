@@ -35,6 +35,7 @@ export function DevDocsScaffold(props: { title?: string, children?: any, bottomO
                             <Sidebar.Item path="/ui/select">Select</Sidebar.Item>
                             <Sidebar.Item path="/ui/modals">Modals</Sidebar.Item>
                             <Sidebar.Item path="/ui/popper">Popper</Sidebar.Item>
+                            <Sidebar.Item path="/ui/avatar">Avatar</Sidebar.Item>
                             <Sidebar.Item path="/ui/tasks">Tasks</Sidebar.Item>
                             <Sidebar.Item path="/ui/files">Files</Sidebar.Item>
                             <Sidebar.Item>Basic Styles</Sidebar.Item>

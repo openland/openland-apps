@@ -181,6 +181,8 @@ routes.add('/ui/modals', '/dev/ui/modals');
 routes.add('/ui/modals/', '/dev/ui/modals');
 routes.add('/ui/popper', '/dev/ui/popper');
 routes.add('/ui/popper/', '/dev/ui/popper');
+routes.add('/ui/avatar', '/dev/ui/avatar');
+routes.add('/ui/avatar/', '/dev/ui/avatar');
 routes.add('/ui/links', '/dev/ui/links');
 routes.add('/ui/links/', '/dev/ui/links');
 routes.add('/ui/tasks', '/dev/ui/tasks');
