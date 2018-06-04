@@ -181,7 +181,7 @@ class UserPopper extends React.Component<{ picture: string | null }, { show: boo
                     <XMenu.Item path="/auth/logout">{TextGlobal.signOut}</XMenu.Item>
                 </XMenu>
             )}>
-                <XAvatar src={this.props.picture} onClick={this.switch}/>
+                <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch}/>
                 {/* <UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv> */}
             </XPopper>
         );

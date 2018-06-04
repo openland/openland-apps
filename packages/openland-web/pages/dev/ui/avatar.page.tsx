@@ -14,10 +14,35 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
         <DevDocsScaffold title="Avatar">
             <XContent>
                 <XVertical>
-                    <XTitle>Avatar</XTitle>
 
                     <XVertical>
+                        <XTitle>Cloud</XTitle>
+                        <XHorizontal>
+                            <XAvatar cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" />
+                            <XAvatar cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="x-large" />
+                            <XAvatar cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="large" />
+                            <XAvatar cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="medium" />
+                            <XAvatar cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="small" />
+                        </XHorizontal>
 
+                        <XHorizontal>
+                            <XAvatar style="square" cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" />
+                            <XAvatar style="square" cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="x-large" />
+                            <XAvatar style="square" cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="large" />
+                            <XAvatar style="square" cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="medium" />
+                            <XAvatar style="square" cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="small" />
+                        </XHorizontal>
+
+                        <XTitle>Cloud crop</XTitle>
+                        <XHorizontal>
+                            <XAvatar crop={{ left: 10, top: 10, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" />
+                            <XAvatar crop={{ left: 10, top: 10, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="x-large" />
+                            <XAvatar crop={{ left: 10, top: 10, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="large" />
+                            <XAvatar crop={{ left: 10, top: 10, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="medium" />
+                            <XAvatar crop={{ left: 10, top: 10, width: 100, height: 100 }} cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="small" />
+                        </XHorizontal>
+
+                        <XTitle>default</XTitle>
                         <XHorizontal>
                             <XAvatar />
                             <XAvatar src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
@@ -26,14 +51,13 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar style="square" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
 
                             <XGroup>
-                                <XAvatar style="square" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg"/>
+                                <XAvatar style="square" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
                                 <XAvatar style="square" />
-                                <XAvatar style="square" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg"/>
+                                <XAvatar style="square" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
                             </XGroup>
                         </XHorizontal>
 
-                        {/* {/'x-large' | 'large' | 'medium' | 'default' | 'small';} */}
-
+                        <XTitle>x-large</XTitle>
                         <XHorizontal>
                             <XAvatar size="x-large" />
                             <XAvatar src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" size="x-large" />
@@ -42,12 +66,13 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar style="square" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" size="x-large" />
 
                             <XGroup>
-                                <XAvatar style="square" size="x-large" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg"/>
+                                <XAvatar style="square" size="x-large" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
                                 <XAvatar style="square" size="x-large" />
-                                <XAvatar style="square" size="x-large" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg"/>
+                                <XAvatar style="square" size="x-large" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
                             </XGroup>
                         </XHorizontal>
 
+                        <XTitle>large</XTitle>
                         <XHorizontal>
                             <XAvatar size="large" />
                             <XAvatar src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" size="large" />
@@ -56,12 +81,13 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar style="square" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" size="large" />
 
                             <XGroup>
-                                <XAvatar style="square" size="large" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg"/>
+                                <XAvatar style="square" size="large" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
                                 <XAvatar style="square" size="large" />
-                                <XAvatar style="square" size="large" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg"/>
+                                <XAvatar style="square" size="large" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
                             </XGroup>
                         </XHorizontal>
 
+                        <XTitle>medium</XTitle>
                         <XHorizontal>
                             <XAvatar size="medium" />
                             <XAvatar src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" size="medium" />
@@ -70,12 +96,13 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar style="square" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" size="medium" />
 
                             <XGroup>
-                                <XAvatar style="square" size="medium" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg"/>
+                                <XAvatar style="square" size="medium" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
                                 <XAvatar style="square" size="medium" />
-                                <XAvatar style="square" size="medium" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg"/>
+                                <XAvatar style="square" size="medium" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
                             </XGroup>
                         </XHorizontal>
 
+                        <XTitle>small</XTitle>
                         <XHorizontal>
                             <XAvatar size="small" />
                             <XAvatar src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" size="small" />
@@ -84,9 +111,9 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar style="square" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" size="small" />
 
                             <XGroup>
-                                <XAvatar style="square" size="small" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg"/>
+                                <XAvatar style="square" size="small" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
                                 <XAvatar style="square" size="small" />
-                                <XAvatar style="square" size="small" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg"/>
+                                <XAvatar style="square" size="small" src="https://theblueraft.files.wordpress.com/2010/08/aang.jpg" />
                             </XGroup>
                         </XHorizontal>
 

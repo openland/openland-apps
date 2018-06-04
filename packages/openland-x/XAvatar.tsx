@@ -5,6 +5,7 @@ import { makeActionable, ActionableParentProps } from './Actionable';
 import { XFlexStyles, applyFlex } from './Flex';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
 import { XIcon } from './XIcon';
+import { XCloudImage, XImageCrop } from './XCloudImage';
 
 export type XAvatarSize = 'x-large' | 'large' | 'medium' | 'default' | 'small';
 export type XAvatarStyle = 'square' | 'circle';
@@ -16,7 +17,7 @@ export interface XAvatarStyleProps extends XFlexStyles {
     attach?: 'left' | 'right' | 'both';
 }
 
-export type XAvatarProps = ActionableParentProps<NavigableParentProps<XAvatarStyleProps & { src?: string | null }>>;
+export type XAvatarProps = ActionableParentProps<NavigableParentProps<XAvatarStyleProps & { src?: string, cloudImageUuid?: string, crop?: XImageCrop | null, }>>;
 
 let sizeStyles = styleResolver({
     'x-large': {
@@ -121,10 +122,11 @@ const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'rgba(51, 69, 98, 0.3)'
+    color: 'rgba(51, 69, 98, 0.3)',
+    overflow: 'hidden'
 })]);
 
-const Placeholder = Glamorous(XIcon)<{size?: XAvatarSize}>((props) => placeHolderFontStyle(props.size));
+const Placeholder = Glamorous(XIcon)<{ size?: XAvatarSize }>((props) => placeHolderFontStyle(props.size));
 
 const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
@@ -144,10 +146,13 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
         src: props.src || undefined,
     };
 
+    console.warn(props.cloudImageUuid);
+
     return (
         <>
             {props.src && <StyledAvatar {...avatarProps} />}
-            {!props.src && <StyledPlaceholder {...avatarProps} ><Placeholder size={avatarProps.avatarSize}  icon={props.style === 'square' ? 'account_box' : 'account_circle'} /></StyledPlaceholder>}
+            {props.cloudImageUuid && <StyledPlaceholder {...avatarProps} ><XCloudImage crop={props.crop}  resize="fill" src={props.cloudImageUuid} maxWidth={sizeStyles(props.size).width as number} maxHeight={sizeStyles(props.size).height as number}/></StyledPlaceholder>}
+            {!props.src && !props.cloudImageUuid && <StyledPlaceholder {...avatarProps} ><Placeholder size={avatarProps.avatarSize}  icon={props.style === 'square' ? 'account_box' : 'account_circle'} /></StyledPlaceholder>}
         </>
     );
 }));
