@@ -1,6 +1,18 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export interface ImageRefInput {
+  uuid: string,
+  crop?: ImageCrop | null,
+};
+
+export interface ImageCrop {
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+};
+
 export enum DealStatus {
   ACTIVE = "ACTIVE",
   CLOSED = "CLOSED",
@@ -185,6 +197,7 @@ export interface AccountQuery {
 export interface SaveProfileMutationVariables {
   firstName: string,
   lastName?: string | null,
+  photo?: ImageRefInput | null,
 };
 
 export interface SaveProfileMutation {

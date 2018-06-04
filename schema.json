@@ -11526,7 +11526,7 @@
                   "description": "",
                   "type": {
                     "kind": "INPUT_OBJECT",
-                    "name": "AvatarUpload",
+                    "name": "ImageRefInput",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -12916,12 +12916,12 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "AvatarUpload",
+          "name": "ImageRefInput",
           "description": "",
           "fields": null,
           "inputFields": [
             {
-              "name": "uploadId",
+              "name": "uuid",
               "description": "",
               "type": {
                 "kind": "NON_NULL",
@@ -12935,7 +12935,28 @@
               "defaultValue": null
             },
             {
-              "name": "cropX",
+              "name": "crop",
+              "description": "",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "ImageCrop",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "ImageCrop",
+          "description": "",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "x",
               "description": "",
               "type": {
                 "kind": "NON_NULL",
@@ -12949,7 +12970,7 @@
               "defaultValue": null
             },
             {
-              "name": "cropY",
+              "name": "y",
               "description": "",
               "type": {
                 "kind": "NON_NULL",
@@ -12963,7 +12984,7 @@
               "defaultValue": null
             },
             {
-              "name": "cropW",
+              "name": "w",
               "description": "",
               "type": {
                 "kind": "NON_NULL",
@@ -12977,7 +12998,7 @@
               "defaultValue": null
             },
             {
-              "name": "cropH",
+              "name": "h",
               "description": "",
               "type": {
                 "kind": "NON_NULL",
@@ -13941,6 +13962,87 @@
           ],
           "inputFields": null,
           "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "AvatarUpload",
+          "description": "",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "uploadId",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "cropX",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "cropY",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "cropW",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "cropH",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
           "enumValues": null,
           "possibleTypes": null
         },
