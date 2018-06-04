@@ -16,8 +16,8 @@ export const AccountQuery = gql`
 `;
 
 export const SaveProfileMutation = gql`
-    mutation SaveProfile($firstName: String!, $lastName: String, $photo: AvatarUpload) {
-        alphaSaveProfile(firstName: $firstName, lastName: $lastName, photo: $photo)
+    mutation SaveProfile($firstName: String!, $lastName: String) {
+        alphaSaveProfile(firstName: $firstName, lastName: $lastName)
     }
 `;
 
