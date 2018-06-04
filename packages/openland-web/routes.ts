@@ -185,6 +185,8 @@ routes.add('/ui/links', '/dev/ui/links');
 routes.add('/ui/links/', '/dev/ui/links');
 routes.add('/ui/tasks', '/dev/ui/tasks');
 routes.add('/ui/tasks/', '/dev/ui/tasks');
+routes.add('/ui/files', '/dev/ui/files');
+routes.add('/ui/files/', '/dev/ui/files');
 
 //
 // Dev Tools

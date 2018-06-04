@@ -142,7 +142,7 @@ declare module 'glamor/server' {
 }
 
 declare module 'emotion-server' {
-    export function extractCritical(body:string|undefined): any;
+    export function extractCritical(body: string | undefined): any;
 }
 
 declare namespace Humanize {
@@ -184,6 +184,12 @@ declare namespace UploadCare {
         isImage: boolean;
         cdnUrl: string;
         originalUrl: string;
+        crop?: {
+            left: number;
+            top: number;
+            width: number;
+            height: number;
+        }
     }
 
     interface UploadInfo {
@@ -195,6 +201,8 @@ declare namespace UploadCare {
     interface Settings {
         publicKey: string;
         imagesOnly?: boolean;
+        crop?: any
+        imageShrink?: any;
     }
 
     export function openDialog(file: any | null, settings: Settings): Dialog

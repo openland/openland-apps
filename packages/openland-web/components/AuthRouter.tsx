@@ -8,6 +8,7 @@ export const AuthRouter = withUserInfo((props) => {
     if (!props.isLoggedIn) {
         handled = true;
         if (['/signin', '/signup'].indexOf(props.router.path) < 0) {
+            console.warn('NotLoggedIn');
             return <XPageRedirect path="/signin" />;
         }
     }
@@ -18,6 +19,7 @@ export const AuthRouter = withUserInfo((props) => {
         if ([
             '/suspended',
         ].indexOf(props.router.path) < 0) {
+            console.warn('Suspended');
             return <XPageRedirect path="/suspended" />;
         }
     }
@@ -28,6 +30,7 @@ export const AuthRouter = withUserInfo((props) => {
         if ([
             '/createProfile',
         ].indexOf(props.router.path) < 0) {
+            console.warn('NoProfile');
             return <XPageRedirect path="/createProfile" />;
         }
     }
@@ -38,6 +41,7 @@ export const AuthRouter = withUserInfo((props) => {
         if ([
             '/need_info',
         ].indexOf(props.router.path) < 0) {
+            console.warn('NeedInfo');
             return <XPageRedirect path="/need_info" />;
         }
     }
@@ -48,6 +52,7 @@ export const AuthRouter = withUserInfo((props) => {
         if ([
             '/activation',
         ].indexOf(props.router.path) < 0) {
+            console.warn('Activation');
             return <XPageRedirect path="/activation" />;
         }
     }
@@ -63,6 +68,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/signin',
             '/signup'
         ].indexOf(props.router.path) >= 0) {
+            console.warn('Completed');
             return <XPageRedirect path="/" />;
         }
     }
