@@ -22,6 +22,11 @@ routes.add('/map', '/main/explore/root');
 routes.add('/map/', '/main/explore/root');
 
 //
+// Profile
+//
+routes.add('/settings', '/main/settings/profile');
+
+//
 // Home
 //
 

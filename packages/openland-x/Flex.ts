@@ -12,6 +12,20 @@ export interface XFlexStyles {
     zIndex?: number;
 }
 
+export const extractFlexProps = (props: XFlexStyles) => {
+    return {
+        alignSelf: props.alignSelf,
+        flexGrow: props.flexGrow,
+        flexShrink: props.flexShrink,
+        flexBasis: props.flexBasis,
+        width: props.width,
+        height: props.height,
+        minHeight: props.minHeight,
+        minWidth: props.minWidth,
+        zIndex: props.zIndex
+    } as XFlexStyles;
+};
+
 export const applyFlex = (props: XFlexStyles) => ({
     flexGrow: props.flexGrow,
     flexShrink: props.flexShrink,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XFlexStyles, applyFlex } from 'openland-x/Flex';
+import { XFlexStyles, applyFlex, extractFlexProps } from 'openland-x/Flex';
 
 export let XVerticalDiv = Glamorous.div<XFlexStyles>([
     {
@@ -22,7 +22,7 @@ export let XVerticalSpaceDiv = Glamorous.div<{ separator?: 'large' | 'normal' }>
 export class XVertical extends React.Component<{ separator?: 'large' | 'normal' | 'none', className?: string } & XFlexStyles> {
     render() {
 
-        let { alignSelf, flexGrow, flexShrink, flexBasis, minHeight, minWidth } = this.props;
+        let flexProps = extractFlexProps(this.props);
 
         if (this.props.separator !== 'none') {
             let elements = React.Children.toArray(this.props.children);
@@ -48,13 +48,19 @@ export class XVertical extends React.Component<{ separator?: 'large' | 'normal' 
                 }
             }
             return (
-                <XVerticalDiv className={this.props.className} alignSelf={alignSelf} flexGrow={flexGrow} flexShrink={flexShrink} flexBasis={flexBasis} minHeight={minHeight} minWidth={minWidth}>
+                <XVerticalDiv
+                    className={this.props.className}
+                    {...flexProps}
+                >
                     {children}
                 </XVerticalDiv>
             );
         } else {
             return (
-                <XVerticalDiv className={this.props.className} alignSelf={alignSelf} flexGrow={flexGrow} flexShrink={flexShrink} flexBasis={flexBasis} minHeight={minHeight} minWidth={minWidth}>
+                <XVerticalDiv
+                    className={this.props.className}
+                    {...flexProps}
+                >
                     {this.props.children}
                 </XVerticalDiv>
             );
