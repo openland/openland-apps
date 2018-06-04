@@ -2,8 +2,6 @@ import '../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withAppBase } from '../components/withAppBase';
-import { withUserInfo } from '../components/UserInfo';
-import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import {
@@ -14,6 +12,7 @@ import {
     Description,
     Separator
 } from '../components/SignComponents';
+import { AuthRouter } from '../components/AuthRouter';
 
 const TypeformDiv = Glamorous.div({
     position: 'absolute',
@@ -78,8 +77,8 @@ class SignUpComponent extends React.Component<{ url: string }, { email: boolean 
                         <Title>Sign up for Openland</Title>
                         <Description>Get a free account and start exploring</Description>
                         <ButtonsWrapper marginTop={52}>
-                            
-                        <ImgButton onClick={this.signupWithEmail} primary={true}>
+
+                            <ImgButton onClick={this.signupWithEmail} primary={true}>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" width="50px" height="50px">
                                     <g id="surface1">
                                         <path fill="#fff" d="M 12.546875 10.238281 L 12.546875 14.058594 L 17.988281 14.058594 C 17.277344 16.375 15.34375 18.03125 12.546875 18.03125 C 9.214844 18.03125 6.511719 15.332031 6.511719 12 C 6.511719 8.667969 9.214844 5.96875 12.546875 5.96875 C 14.042969 5.96875 15.410156 6.515625 16.464844 7.421875 L 19.28125 4.605469 C 17.503906 2.988281 15.140625 2 12.546875 2 C 7.019531 2 2.542969 6.476563 2.542969 12 C 2.542969 17.523438 7.019531 22 12.546875 22 C 20.941406 22 22.792969 14.148438 21.972656 10.253906 Z " />
@@ -106,27 +105,15 @@ class SignUpComponent extends React.Component<{ url: string }, { email: boolean 
     }
 }
 
-export default withAppBase(withUserInfo((props) => {
-
-    // Do not edit without reason!
-    if (props.isLoggedIn) {
-        if (props.isBlocked) {
-            return <XPageRedirect path="/suspended" />;
-        } else if (props.isCompleted) {
-            return <XPageRedirect path="/" />;
-        } else if (!props.isActivated) {
-            return <XPageRedirect path="/activation" />;
-        } else {
-            return <XPageRedirect path="/need_info" />;
-        }
-    }
-
+export default withAppBase((props) => {
     return (
-        <RootDiv>
-            <XDocumentHead title="Sign Up" />
-            <XTrack event="View Signup">
-                <SignUpComponent url="https://openlandapp.typeform.com/to/RoMP5U" />
-            </XTrack>
-        </RootDiv>
+        <AuthRouter>
+            <RootDiv>
+                <XDocumentHead title="Sign Up" />
+                <XTrack event="View Signup">
+                    <SignUpComponent url="https://openlandapp.typeform.com/to/RoMP5U" />
+                </XTrack>
+            </RootDiv>
+        </AuthRouter>
     );
-}));
+});

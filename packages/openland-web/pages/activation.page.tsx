@@ -2,11 +2,10 @@ import '../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withAppBase } from '../components/withAppBase';
-import { withUserInfo } from '../components/UserInfo';
-import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { XLink } from 'openland-x/XLink';
+import { AuthRouter } from '../components/AuthRouter';
 
 const RootContainer = Glamorous.div({
     display: 'flex',
@@ -141,25 +140,9 @@ const Description = Glamorous.div<{ marginBottom?: number }>((props) => ({
     marginBottom: props.marginBottom
 }));
 
-export default withAppBase(withUserInfo((props) => {
-
-    // Do not edit without reason!
-    if (props.isLoggedIn) {
-        if (props.isBlocked) {
-            return <XPageRedirect path="/suspended" />;
-        } else if (!props.isCompleted) {
-            if (props.isActivated) {
-                return <XPageRedirect path="/need_info" />;
-            }
-        } else {
-            return <XPageRedirect path="/" />;
-        }
-    } else {
-        return <XPageRedirect path="/signin" />;
-    }
-
+export default withAppBase((props) => {
     return (
-        <>
+        <AuthRouter>
             <XDocumentHead title="Activation needed" titleSocial="Openland - land acquisition platfom" />
             <XTrack event="View Activation">
                 <Container>
@@ -171,6 +154,6 @@ export default withAppBase(withUserInfo((props) => {
                     </Description>
                 </Container>
             </XTrack>
-        </>
+        </AuthRouter>
     );
-}));
+});

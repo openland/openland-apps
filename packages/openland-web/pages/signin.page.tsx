@@ -1,17 +1,15 @@
 import '../globals';
 import * as React from 'react';
 import { withAppBase } from '../components/withAppBase';
-import { withUserInfo } from '../components/UserInfo';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XButton } from 'openland-x/XButton';
 import { XInput } from 'openland-x/XInput';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { XTrack } from 'openland-x-analytics/XTrack';
-import { 
+import {
     SignContainer,
     ButtonsWrapper,
     ImgButton,
@@ -19,6 +17,7 @@ import {
     Separator,
     Description
 } from '../components/SignComponents';
+import { AuthRouter } from '../components/AuthRouter';
 
 class SignInComponent extends React.Component<{ redirect?: string | null }, {
 
@@ -182,28 +181,14 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
     }
 }
 
-export default withAppBase(withRouter(withUserInfo((props) => {
-
-    // Do not edit without reason!
-    if (props.isLoggedIn) {
-        if (props.isBlocked) {
-            return <XPageRedirect path="/suspended" />;
-        } else if (props.isCompleted) {
-            return <XPageRedirect path="/" />;
-        } else if (!props.isActivated) {
-            return <XPageRedirect path="/activation" />;
-        } else {
-            return <XPageRedirect path="/need_info" />;
-        }
-    }
-
+export default withAppBase(withRouter((props) => {
     let redirect = props.router.query ? (props.router.query.r ? props.router.query.r : null) : null;
     return (
-        <>
+        <AuthRouter>
             <XDocumentHead title="Sign in" titleSocial="Openland - land acquisition platfom" />
             <XTrack event="View Signin">
                 <SignInComponent redirect={redirect} />
             </XTrack>
-        </>
+        </AuthRouter>
     );
-})));
+}));
