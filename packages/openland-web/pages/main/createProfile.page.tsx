@@ -4,9 +4,9 @@ import Glamorous from 'glamorous';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XButton } from 'openland-x/XButton';
-import { XInput } from 'openland-x/XInput';
 import { withApp } from '../../components/withApp';
+import { XForm } from 'openland-x-forms/XForm';
+import { withSaveProfile } from '../../api';
 
 const RootContainer = Glamorous.div({
     display: 'flex',
@@ -75,46 +75,42 @@ const FormWrapper = Glamorous.div({
     flexDirection: 'column',
 });
 
-class Account extends React.Component {
-    render() {
-        return (
-            <RootContainer>
-                <Logo />
-                <ContentWrapper>
-                    <TextWrapper>
-                        <Title>Hey, what’s your name?</Title>
-                        <Description>Tell us a little about yourself. Fill in the fields below.</Description>
-                    </TextWrapper>
+const CreateProfileForm = withSaveProfile((props) => {
+    return (
+        <RootContainer>
+            <Logo />
+            <ContentWrapper>
+                <TextWrapper>
+                    <Title>Hey, what’s your name?</Title>
+                    <Description>Tell us a little about yourself. Fill in the fields below.</Description>
+                </TextWrapper>
+                <XForm submitMutation={props.saveProfile} mutationDirect={true} onCompleted={() => window.location.href = '/'}>
                     <XVertical>
                         <XHorizontal separator="large">
                             <FormWrapper>
                                 <InputGroup>
                                     <Label>First Name</Label>
-                                    <XInput size="medium" placeholder="For example: Vladimir" />
+                                    <XForm.Text field="firstName" size="medium" placeholder="For example: Steve" />
                                 </InputGroup>
                                 <InputGroup>
                                     <Label>Last Name</Label>
-                                    <XInput size="medium" placeholder="For example: Putin" />
+                                    <XForm.Text field="lastName" size="medium" placeholder="For example: Lifshits" />
                                 </InputGroup>
                             </FormWrapper>
-                            {/* <FormWrapper>
-                                <Label>Photo</Label>
-                                <DropArea />
-                            </FormWrapper> */}
                         </XHorizontal>
-                        <XButton style="primary" text="Continue" size="medium" alignSelf="flex-end" />
+                        <XForm.Submit style="primary" text="Continue" size="medium" alignSelf="flex-end" />
                     </XVertical>
-                </ContentWrapper>
-            </RootContainer>
-        );
-    }
-}
+                </XForm>
+            </ContentWrapper>
+        </RootContainer>
+    );
+});
 
 export default withApp('UI Framework - Account', 'viewer', (props) => {
     return (
         <>
             <XDocumentHead title="Create account" />
-            <Account />
+            <CreateProfileForm />
         </>
     );
 });

@@ -5,7 +5,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { MutationFunc } from 'react-apollo';
 // import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
 import { XButton, XButtonProps } from 'openland-x/XButton';
-import { XInput } from 'openland-x/XInput';
+import { XInput, XInputProps } from 'openland-x/XInput';
 import { XFooter } from 'openland-x/XFooter';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { XLoader } from 'openland-x/XLoader';
@@ -221,11 +221,8 @@ interface XFormController {
     submitForm(): void;
 }
 
-interface XFormTextFieldProps {
+interface XFormTextFieldProps extends XInputProps {
     field: string;
-    value?: string;
-    placeholder?: string;
-    autofocus?: boolean;
 }
 
 export class XFormTextField extends React.Component<XFormTextFieldProps, { value: string }> {
@@ -256,7 +253,7 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
     }
     render() {
         return (
-            <XInput autofocus={this.props.autofocus} placeholder={this.props.placeholder} onChange={this.handleChange} value={this.state.value} />
+            <XInput {...this.props} onChange={this.handleChange} value={this.state.value} />
         );
     }
 }
