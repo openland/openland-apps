@@ -44,8 +44,8 @@ export class UserInfoProvider extends React.Component<{
             account: hasAccount ? this.props.account : null,
             isLoggedIn: this.props.profile.isLoggedIn,
             isProfileCreated: this.props.profile.isProfileCreated && hasUser,
-            isActivated: this.props.profile.isAccountActivated && hasAccount && hasUser,
-            isCompleted: this.props.profile.isCompleted && hasAccount && hasUser,
+            isActivated: this.props.profile.isAccountActivated && hasUser,
+            isCompleted: this.props.profile.isCompleted && hasUser,
             isBlocked: this.props.profile.isBlocked,
         };
     }
