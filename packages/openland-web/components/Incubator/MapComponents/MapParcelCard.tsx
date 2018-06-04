@@ -5,10 +5,8 @@ import { XDimensions } from 'openland-x-format/XDimensions';
 import { XDistance } from 'openland-x-format/XDistance';
 import { XMoney } from 'openland-x-format/XMoney';
 import { XNumber } from 'openland-x-format/XNumber';
-import { XIcon } from '../../../../openland-x/XIcon';
 import { withParcelDirect } from '../../../api';
 import { Text } from '../../../strings';
-import { XTooltip } from '../../Incubator/XTooltip';
 import { OpportunitiButton } from '../../OpportunityButton';
 import { OwnerTypeComponent } from '../../OwnerTypeComponent';
 import { ParcelNumber } from '../../ParcelNumber';
@@ -16,7 +14,6 @@ import { ProjectTypes } from '../../ProjectTypes';
 import { XHeader } from 'openland-x/XHeader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ZoningCode } from '../../ZoningCode';
-import { XPopover } from './XPopover';
 import { XButton } from 'openland-x/XButton';
 import { XContent } from 'openland-x-layout/XContent';
 import { XView } from 'openland-x-layout/XView';
@@ -26,6 +23,9 @@ import { XLoader } from 'openland-x/XLoader';
 import { XPropertyList } from 'openland-x/XProperty';
 import { FolderButton } from '../../FolderButton';
 import { XLink } from 'openland-x/XLink';
+import { XPopper } from 'openland-x/XPopper';
+import { XIcon } from 'openland-x/XIcon';
+import { XOverflow } from '../XOverflow';
 
 const panelWidth = 335;
 
@@ -232,35 +232,6 @@ const PropertyCell = (props: { children: any, title?: string, width?: number, co
     </PropertyCellContainer>
 );
 
-const DottedStyle = Glamorous.div({
-    width: 4,
-    height: 4,
-    borderRadius: 100,
-    backgroundColor: '#abbacb',
-    marginBottom: 2,
-    '&:last-child': {
-        marginBottom: 0,
-    }
-});
-
-const DottedMenuButtonStyle = Glamorous.div({
-    width: 40,
-    height: 40,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-});
-
-const DottedMenuButton = () => (
-    <DottedMenuButtonStyle>
-        <DottedStyle />
-        <DottedStyle />
-        <DottedStyle />
-    </DottedMenuButtonStyle>
-);
-
 const ProspectingWrapper = Glamorous.div({
     position: 'absolute',
     width: '100%',
@@ -319,22 +290,28 @@ export const ParcelCard = withParcelDirect((props) => (
                         <XHeaderTitleWrapper>
                             <ParcelLink path={'/parcels/' + props.data.item!!.id}>
                                 <span>{props.data.item!!.address || 'No address'}</span>
-                                <img src="/static/X/link.svg"/>
+                                <img src="/static/X/link.svg" />
                             </ParcelLink>
-                            <XPopover placement="bottom-start">
-                                <XPopover.Target>
-                                    <DottedMenuButton />
-                                </XPopover.Target>
-                                <XPopover.Content>
-                                    <XButton
-                                        path={'/parcels/' + props.data.item!!.id}
-                                        flexGrow={1}
-                                        flexBasis={0}
-                                        text="Details"
-                                    />
-                                    <XButton query={{ field: 'selectedParcel' }} text="Close" />
-                                </XPopover.Content>
-                            </XPopover>
+                            <XOverflow
+                                placement="bottom"
+                                width={110}
+                                content={(
+                                    <>
+                                        <XButton
+                                            path={'/parcels/' + props.data.item!!.id}
+                                            text="Details"
+                                            style="flat"
+                                            size="medium"
+                                        />
+                                        <XButton
+                                            query={{ field: 'selectedParcel' }}
+                                            text="Close"
+                                            style="flat"
+                                            size="medium"
+                                        />
+                                    </>
+                                )}
+                            />
                         </XHeaderTitleWrapper>
                     )}
                     description={<ParcelNumber id={props.data.item!!.number} />}
@@ -374,11 +351,14 @@ export const ParcelCard = withParcelDirect((props) => (
                         {Boolean(props.data.item!!.area && props.data.item!!.extrasUnitCapacityDencity && props.data.item!!.extrasUnitCapacityFar) &&
                             <PropertyCell title="Unit Capacity">
                                 {props.data.item!!.extrasUnitCapacity}
-                                <XTooltip placement="left" type="info">
-                                    <XTooltip.Content><XArea value={props.data.item!!.area!!.value} />
-                                        {' * ' + props.data.item!!.extrasUnitCapacityFar + '(FAR) / ' + props.data.item!!.extrasUnitCapacityDencity + '(DF)'}
-                                    </XTooltip.Content>
-                                </XTooltip>
+
+                                <XPopper content={(
+                                    <>
+                                        <XArea value={props.data.item!!.area!!.value} />{' * ' + props.data.item!!.extrasUnitCapacityFar + '(FAR) / ' + props.data.item!!.extrasUnitCapacityDencity + '(DF)'}
+                                    </>
+                                )}>
+                                    <XIcon icon="error" />
+                                </XPopper>
                             </PropertyCell>
                         }
                     </XWithRole>
@@ -391,19 +371,21 @@ export const ParcelCard = withParcelDirect((props) => (
                     {props.data.item!!.extrasShapeSides && !props.data.item!!.front && !props.data.item!!.depth && props.data.item!!.extrasShapeSides!!.length > 0 &&
                         <PropertyCell title="Dimensions"> <XDimensions value={props.data.item!!.extrasShapeSides!!} /></PropertyCell>
                     }
-                    {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && (
-                        <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
-                            {props.data.item!!.extrasAnalyzed !== true &&
-                                <PropertyCell title="Compatible buildings">
-                                    <XTooltip title={Text.hint_too_complex} marginLeft={0} />
-                                    {Text.text_too_complex}
-                                </PropertyCell>
-                            }
-                            {props.data.item!!.extrasAnalyzed === true && props.data.item!!.extrasFitProjects &&
-                                <PropertyCell title="Compatible buildings"><ProjectTypes types={props.data.item!!.extrasFitProjects!!} /></PropertyCell>
-                            }
-                        </XWithRole>
-                    )}
+                    {/* {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && (
+                        <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}> */}
+                    {props.data.item!!.extrasAnalyzed !== true &&
+                        <PropertyCell title="Compatible buildings">
+                            <XPopper content={Text.hint_too_complex}>
+                                <XIcon icon="error" />
+                            </XPopper>
+                            {Text.text_too_complex}
+                        </PropertyCell>
+                    }
+                    {props.data.item!!.extrasAnalyzed === true && props.data.item!!.extrasFitProjects &&
+                        <PropertyCell title="Compatible buildings"><ProjectTypes types={props.data.item!!.extrasFitProjects!!} /></PropertyCell>
+                    }
+                    {/* </XWithRole>
+                    )} */}
                     {props.data.item!!.extrasNeighborhood &&
                         <PropertyCell title="Neighborhood">{props.data.item!!.extrasNeighborhood}</PropertyCell>
                     }

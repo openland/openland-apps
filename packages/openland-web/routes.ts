@@ -24,7 +24,15 @@ routes.add('/map/', '/main/explore/root');
 //
 // Profile
 //
+
 routes.add('/settings', '/main/settings/profile');
+
+//
+// Create account
+//
+
+routes.add('/account', '/main/account/root');
+routes.add('/account/', '/main/account/root');
 
 //
 // Home

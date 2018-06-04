@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as Types from 'openland-api/Types';
 import { ZoningCode } from './ZoningCode';
 import { OwnerTypeComponent } from './OwnerTypeComponent';
-import { XTooltip } from './Incubator/XTooltip';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ProjectTypes } from './ProjectTypes';
 import { Text } from '../strings';
@@ -13,6 +12,7 @@ import { XDistance } from 'openland-x-format/XDistance';
 import { XMoney } from 'openland-x-format/XMoney';
 import { XNumber } from 'openland-x-format/XNumber';
 import { XProperty, XPropertyList, XPropertyColumns } from 'openland-x/XProperty';
+import { XTooltipHint } from 'openland-x/XTooltipHint';
 
 export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
     return (
@@ -33,11 +33,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                             {Boolean(props.item.area && props.item.extrasUnitCapacityFar && props.item.extrasUnitCapacityDencity) &&
                                 <XProperty title="Unit Capacity">
                                     {props.item.extrasUnitCapacity}
-                                    <XTooltip placement="right" type="info">
-                                        <XTooltip.Content><XArea value={props.item.area!!.value} />
-                                            {' * ' + props.item.extrasUnitCapacityFar + '(FAR) / ' + props.item.extrasUnitCapacityDencity + '(DF)'}
-                                        </XTooltip.Content>
-                                    </XTooltip>
+                                    <XTooltipHint> <XArea value={props.item!!.area!!.value} />{' * ' + props.item!!.extrasUnitCapacityFar + '(FAR) / ' + props.item!!.extrasUnitCapacityDencity + '(DF)'} </XTooltipHint>
                                 </XProperty>
                             }
                         </XWithRole>
@@ -95,7 +91,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                             <XPropertyList title="Analysis">
                                 {props.item!!.extrasAnalyzed !== true &&
                                     <XProperty title="Compatible buildings">
-                                        <XTooltip title={Text.hint_too_complex} marginLeft={0} />
+                                        <XTooltipHint>{Text.hint_too_complex}</XTooltipHint>
                                         {Text.text_too_complex}
                                     </XProperty>
                                 }
@@ -150,7 +146,7 @@ export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
                         </XPropertyList>
                     )}
             </XPropertyColumns>
-            
+
         </>
     );
 }

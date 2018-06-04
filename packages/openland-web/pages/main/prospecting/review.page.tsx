@@ -24,7 +24,6 @@ import { XDimensions } from 'openland-x-format/XDimensions';
 import { XHeader } from 'openland-x/XHeader';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XSwitcher } from 'openland-x/XSwitcher';
-import { XTooltip } from '../../../components/Incubator/XTooltip';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import '../../../globals';
@@ -40,6 +39,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XForm } from 'openland-x-forms/XForm';
 import { XProperty, XPropertyColumns, XPropertyList } from 'openland-x/XProperty';
 import { trackEvent } from 'openland-x-analytics';
+import { XTooltipHint } from 'openland-x/XTooltipHint';
 
 const OpportunityDescription = (props: { parcel: Types.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
@@ -81,11 +81,8 @@ const OpportunityDescription = (props: { parcel: Types.ParcelFullFragment, parce
                                     {Boolean(props.parcel.area && props.parcel.extrasUnitCapacityFar && props.parcel.extrasUnitCapacityDencity) &&
                                         <XProperty title="Unit Capacity">
                                             {props.parcel.extrasUnitCapacity}
-                                            <XTooltip placement="right" type="info">
-                                                <XTooltip.Content><XArea value={props.parcel.area!!.value} />
-                                                    {' * ' + props.parcel.extrasUnitCapacityFar + '(FAR) / ' + props.parcel.extrasUnitCapacityDencity + '(DF)'}
-                                                </XTooltip.Content>
-                                            </XTooltip>
+                                            <XTooltipHint><XArea value={props.parcel.area!!.value} />{' * ' + props.parcel.extrasUnitCapacityFar + '(FAR) / ' + props.parcel.extrasUnitCapacityDencity + '(DF)'}</XTooltipHint>
+
                                         </XProperty>
                                     }
                                 </XWithRole>
@@ -111,7 +108,7 @@ const OpportunityDescription = (props: { parcel: Types.ParcelFullFragment, parce
                                     <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}>
                                         {props.parcel.extrasAnalyzed !== true &&
                                             <XProperty title="Compatible buildings">
-                                                <XTooltip title={Text.hint_too_complex} marginLeft={0} />
+                                                <XTooltipHint>{Text.hint_too_complex}</XTooltipHint>
                                                 {Text.text_too_complex}
                                             </XProperty>
                                         }
