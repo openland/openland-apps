@@ -103,7 +103,6 @@ const CreateProfileForm = withCreateProfile((props) => {
                             <XAvatarUploadMargin>
                                 <XForm.Avatar field="photo"/>
                             </XAvatarUploadMargin>
-
                         </XHorizontal>
                         <SubmitMargin style="primary" text="Continue" size="medium" alignSelf="flex-end" />
 
