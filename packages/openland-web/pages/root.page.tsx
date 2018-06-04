@@ -8,7 +8,6 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 export default withAppBase(withUserInfo((props) => {
-
     // Do not edit without reason!
     if (props.isLoggedIn) {
         if (props.isBlocked) {
@@ -16,6 +15,8 @@ export default withAppBase(withUserInfo((props) => {
         } else if (!props.isCompleted) {
             if (props.isActivated) {
                 return <XPageRedirect path="/need_info" />;
+            } else {
+                return <XPageRedirect path="/activation" />;
             }
         }
     } else {

@@ -142,7 +142,6 @@ const Description = Glamorous.div<{ marginBottom?: number }>((props) => ({
 }));
 
 export default withAppBase(withUserInfo((props) => {
-
     // Do not edit without reason!
     if (props.isLoggedIn) {
         if (props.isBlocked) {
