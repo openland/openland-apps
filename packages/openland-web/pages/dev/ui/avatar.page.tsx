@@ -92,7 +92,6 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
 
                     </XVertical>
 
-
                 </XVertical>
             </XContent>
         </DevDocsScaffold >

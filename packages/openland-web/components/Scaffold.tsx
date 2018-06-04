@@ -132,17 +132,6 @@ const BottomNavigation = Glamorous.div({
     flexShrink: 0
 });
 
-const AvatarImg = Glamorous.img({
-    overflow: 'hidden',
-    borderRadius: 14,
-    // marginLeft: 16,
-    // marginRight: 8,
-    width: 36,
-    height: 36,
-    boxShadow: '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
-    cursor: 'pointer'
-});
-
 const XMenuItem = Glamorous(XLink)({
     display: 'block',
     textOverflow: 'ellipsis',
