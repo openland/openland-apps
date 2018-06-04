@@ -171,7 +171,7 @@ class XMenu extends React.Component {
     }
 }
 
-class UserPopper extends React.Component<{picture: string}, { show: boolean }> {
+class UserPopper extends React.Component<{ picture: string | null }, { show: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = { show: false };
@@ -185,12 +185,12 @@ class UserPopper extends React.Component<{picture: string}, { show: boolean }> {
 
     render() {
         return (
-            <XPopper placement="right" showOnHoverContent={false} onClickOutside={this.switch} show={this.state.show}  padding={10} content={(
+            <XPopper placement="right" showOnHoverContent={false} onClickOutside={this.switch} show={this.state.show} padding={10} content={(
                 <XMenu>
                     <XMenu.Item path="/auth/logout">{TextGlobal.signOut}</XMenu.Item>
                 </XMenu>
             )}>
-                <AvatarImg src={this.props.picture} onClick={this.switch}/>
+                <AvatarImg src={this.props.picture ? this.props.picture : undefined} onClick={this.switch} />
                 {/* <UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv> */}
             </XPopper>
         );
@@ -199,7 +199,7 @@ class UserPopper extends React.Component<{picture: string}, { show: boolean }> {
 
 let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
     return (
-        <UserPopper picture={props.user!!.picture}/>
+        <UserPopper picture={props.user!!.picture} />
     );
 });
 
