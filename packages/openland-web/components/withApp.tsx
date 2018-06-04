@@ -8,6 +8,7 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 
 export function withApp(name: string, role: string | string[], WrappedComponent: React.ComponentType<{}>) {
     return withAppBase(withUserInfo(withRouter((props) => {
+        console.warn(props);
         if (props.isLoggedIn) {
             if (props.isBlocked) {
                 return (<XPageRedirect path="/suspended" />);

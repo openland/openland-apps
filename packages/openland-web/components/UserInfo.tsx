@@ -42,7 +42,7 @@ export class UserInfoProvider extends React.Component<{
             user: hasUser ? this.props.user : null,
             area: this.props.area !== null && this.props.area !== undefined ? this.props.area : null,
             account: hasAccount ? this.props.account : null,
-            isLoggedIn: this.props.profile.isLoggedIn && hasUser,
+            isLoggedIn: this.props.profile.isLoggedIn,
             isProfileCreated: this.props.profile.isProfileCreated && hasUser,
             isActivated: this.props.profile.isAccountActivated && hasAccount && hasUser,
             isCompleted: this.props.profile.isCompleted && hasAccount && hasUser,
@@ -101,7 +101,7 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
     }
 }
 
-export function withUserInfo<P>(WrappedComponent: React.ComponentType<P & UserInfoComponentProps>): React.ComponentType<P> {
+export function withUserInfo<P>(WrappedComponent: React.ComponentType<P & UserInfoComponentProps & XWithRouter>): React.ComponentType<P> {
     return withRouter<P>((props) => {
         return <UserInfoReceiver render={WrappedComponent} {...props} />;
     });

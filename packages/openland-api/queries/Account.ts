@@ -14,3 +14,9 @@ export const AccountQuery = gql`
     ${MyProfileFull}
     ${AccountShort}
 `;
+
+export const SaveProfileMutation = gql`
+    mutation SaveProfile($firstName: String!, $lastName: String) {
+        alphaSaveProfile(firstName: $firstName, lastName: $lastName)
+    }
+`;

@@ -159,8 +159,8 @@ export interface AccountQuery {
     id: string,
     name: string,
     firstName: string,
-    lastName: string,
-    picture: string,
+    lastName: string | null,
+    picture: string | null,
     email: string,
   } | null,
   myAccount:  {
@@ -180,6 +180,15 @@ export interface AccountQuery {
     __typename: "Permissions",
     roles: Array< string >,
   },
+};
+
+export interface SaveProfileMutationVariables {
+  firstName: string,
+  lastName?: string | null,
+};
+
+export interface SaveProfileMutation {
+  alphaSaveProfile: string,
 };
 
 export interface StateQuery {
@@ -219,8 +228,8 @@ export interface AreaQuery {
     id: string,
     name: string,
     firstName: string,
-    lastName: string,
-    picture: string,
+    lastName: string | null,
+    picture: string | null,
     email: string,
   } | null,
 };
@@ -1890,8 +1899,8 @@ export interface SuperAdminsQuery {
       id: string,
       name: string,
       firstName: string,
-      lastName: string,
-      picture: string,
+      lastName: string | null,
+      picture: string | null,
       email: string,
     },
   } >,
@@ -1921,8 +1930,8 @@ export interface SuperAccountQuery {
       id: string,
       name: string,
       firstName: string,
-      lastName: string,
-      picture: string,
+      lastName: string | null,
+      picture: string | null,
       email: string,
     } >,
     features:  Array< {
@@ -1996,8 +2005,8 @@ export interface SuperAccountMemberAddMutation {
       id: string,
       name: string,
       firstName: string,
-      lastName: string,
-      picture: string,
+      lastName: string | null,
+      picture: string | null,
       email: string,
     } >,
   },
@@ -2017,8 +2026,8 @@ export interface SuperAccountMemberRemoveMutation {
       id: string,
       name: string,
       firstName: string,
-      lastName: string,
-      picture: string,
+      lastName: string | null,
+      picture: string | null,
       email: string,
     } >,
   },
@@ -3083,11 +3092,6 @@ export interface SourcingAllReportQuery {
       extrasUnitCapacity: number | null,
       extrasUnitCapacityFar: number | null,
       extrasUnitCapacityDencity: number | null,
-      folder:  {
-        __typename: "Folder",
-        id: string,
-        name: string,
-      } | null,
       // Addresses
       city:  {
         __typename: "City",
@@ -4041,8 +4045,8 @@ export interface UserShortFragment {
   id: string,
   name: string,
   firstName: string,
-  lastName: string,
-  picture: string,
+  lastName: string | null,
+  picture: string | null,
   email: string,
 };
 

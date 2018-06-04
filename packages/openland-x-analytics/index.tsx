@@ -10,7 +10,7 @@ if (shouldTrack) {
 
 export function trackEvent(event: string, params?: { [key: string]: any }) {
     if (shouldTrack) {
-        
+
         // Forward to mixpanel
         Mixpanel.track(event, params);
 
@@ -22,7 +22,7 @@ export function trackEvent(event: string, params?: { [key: string]: any }) {
 export function trackPage(page?: string) {
     if (shouldTrack) {
         let p = page ? page : document.location.pathname;
-        
+
         // Track in Google Analytics
         ga.pageview(p);
 
@@ -32,7 +32,7 @@ export function trackPage(page?: string) {
     }
 }
 
-export function trackProfile(id: string, firstName: string, lastName: string, email: string) {
+export function trackProfile(id: string, firstName: string, lastName: string | null, email: string) {
     if (shouldTrack) {
 
         // Identify mixpanel

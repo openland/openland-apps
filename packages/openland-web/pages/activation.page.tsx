@@ -163,7 +163,7 @@ export default withAppBase(withUserInfo((props) => {
             <XDocumentHead title="Activation needed" titleSocial="Openland - land acquisition platfom" />
             <XTrack event="View Activation">
                 <Container>
-                    <Title >
+                    <Title>
                         Activation needed
                     </Title>
                     <Description>

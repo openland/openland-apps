@@ -8,8 +8,9 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm';
 import { XContent } from 'openland-x-layout/XContent';
 import { XHeader } from 'openland-x/XHeader';
+import { withSaveProfile } from '../../../api';
 
-export default withApp('Profile', 'viewer', withUserInfo((props) => {
+export default withApp('Profile', 'viewer', withSaveProfile(withUserInfo((props) => {
     return (
         <>
             <XDocumentHead title="Profile" />
@@ -18,7 +19,7 @@ export default withApp('Profile', 'viewer', withUserInfo((props) => {
                     <XHeader text="Your profile"/>
                     <XContent>
                         <XVertical width={400} alignSelf="flex-start">
-                            <XForm defaultValues={{ firstName: props.user!!.firstName, lastName: props.user!!.lastName }}>
+                            <XForm defaultValues={{ firstName: props.user!!.firstName, lastName: props.user!!.lastName }} mutationDirect={true} submitMutation={props.saveProfile}>
                                 <XForm.Text field="firstName" />
                                 <XForm.Text field="lastName" />
                                 <XForm.Footer>
@@ -31,4 +32,4 @@ export default withApp('Profile', 'viewer', withUserInfo((props) => {
             </Scaffold>
         </>
     );
-}));
+})));
