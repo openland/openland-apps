@@ -9,6 +9,7 @@ export interface XImageCrop {
 
 export function XCloudImage(props: {
     src?: string | null,
+    srcPrefix?: string | null,
     srcUrl?: string | null,
     crop?: XImageCrop | null,
     placeholder?: string | null, className?: string,
@@ -17,7 +18,7 @@ export function XCloudImage(props: {
     resize?: 'fill' | 'fit'
 }) {
 
-    if (props.src) {
+    if (props.src || props.srcPrefix) {
         let scale: string | null = null;
         let scaleRetina: string | null = null;
         let scaleWidth = props.width!! ? props.width!! : (props.maxWidth ? props.maxWidth!! : null);
@@ -48,8 +49,8 @@ export function XCloudImage(props: {
                 ops += '-/format/jpeg/-/preview/' + scale + '/-/setfill/ffffff/-/crop/' + scale + '/center/-/progressive/yes/';
                 opsRetina += '-/format/jpeg/-/preview/' + scaleRetina + '/-/setfill/ffffff/-/crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
             }
-            let url = 'https://ucarecdn.com/' + props.src + '/' + ops;
-            let urlRetina = 'https://ucarecdn.com/' + props.src + '/' + opsRetina;
+            let url = props.src ? 'https://ucarecdn.com/' + props.src + '/' + ops : props.srcPrefix + ops;
+            let urlRetina = props.src ? 'https://ucarecdn.com/' + props.src + '/' + opsRetina : props.srcPrefix + opsRetina;
             return (
                 <img src={url}
                     srcSet={urlRetina}

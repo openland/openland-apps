@@ -266,7 +266,7 @@ interface XFormAvatarFieldProps extends XAvatarUploadProps {
 export class XFormAvatarField extends React.Component<XFormAvatarFieldProps, { uuid: string | null, crop?: XImageCrop | null; }> {
     static contextTypes = {
         xForm: PropTypes.object.isRequired
-    }; 
+    };
 
     constructor(props: XFormTextFieldProps, context: any) {
         super(props, context);
@@ -275,14 +275,14 @@ export class XFormAvatarField extends React.Component<XFormAvatarFieldProps, { u
         if (this.props.uuid !== undefined) {
             this.state = { uuid: this.props.uuid };
         } else {
-            this.state = { uuid: existing ? existing.uploadId : null};
+            this.state = { uuid: existing ? existing.uploadId : null };
         }
     }
 
     handleChange = (uuid: string | null, crop: XImageCrop | null) => {
         let xForm = this.context.xForm as XFormController;
         this.setState({ uuid: uuid });
-        xForm.writeValue(this.props.field, uuid && crop ? {uploadId: uuid, cropX: crop.left, cropY: crop.top, cropW: crop.width, cropH: crop.height} : undefined);
+        xForm.writeValue(this.props.field, uuid && crop ? { uuid: uuid, crop: { x: crop.left, y: crop.top, w: crop.width, h: crop.height } } : undefined);
     }
     render() {
         return (

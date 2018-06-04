@@ -151,7 +151,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
     return (
         <>
             {props.src && <StyledAvatar {...avatarProps} />}
-            {props.cloudImageUuid && <StyledPlaceholder {...avatarProps} ><XCloudImage crop={props.crop}  resize="fill" src={props.cloudImageUuid} maxWidth={sizeStyles(props.size).width as number} maxHeight={sizeStyles(props.size).height as number}/></StyledPlaceholder>}
+            {props.cloudImageUuid && <StyledPlaceholder {...avatarProps} ><XCloudImage crop={props.crop}  resize="fill" srcPrefix={props.cloudImageUuid} maxWidth={sizeStyles(props.size).width as number} maxHeight={sizeStyles(props.size).height as number}/></StyledPlaceholder>}
             {!props.src && !props.cloudImageUuid && <StyledPlaceholder {...avatarProps} ><Placeholder size={avatarProps.avatarSize}  icon={props.style === 'square' ? 'account_box' : 'account_circle'} /></StyledPlaceholder>}
         </>
     );
