@@ -23,7 +23,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { XPropertyList } from 'openland-x/XProperty';
 import { FolderButton } from '../../FolderButton';
 import { XLink } from 'openland-x/XLink';
-import { XPopper } from 'openland-x/XPopper';
+import { XTooltipHint } from 'openland-x/XTooltipHint';
 import { XIcon } from 'openland-x/XIcon';
 import { XOverflow } from '../XOverflow';
 
@@ -351,14 +351,7 @@ export const ParcelCard = withParcelDirect((props) => (
                         {Boolean(props.data.item!!.area && props.data.item!!.extrasUnitCapacityDencity && props.data.item!!.extrasUnitCapacityFar) &&
                             <PropertyCell title="Unit Capacity">
                                 {props.data.item!!.extrasUnitCapacity}
-
-                                <XPopper content={(
-                                    <>
-                                        <XArea value={props.data.item!!.area!!.value} />{' * ' + props.data.item!!.extrasUnitCapacityFar + '(FAR) / ' + props.data.item!!.extrasUnitCapacityDencity + '(DF)'}
-                                    </>
-                                )}>
-                                    <XIcon icon="error" />
-                                </XPopper>
+                                <XTooltipHint> <XArea value={props.data.item!!.area!!.value} />{' * ' + props.data.item!!.extrasUnitCapacityFar + '(FAR) / ' + props.data.item!!.extrasUnitCapacityDencity + '(DF)'}</XTooltipHint>
                             </PropertyCell>
                         }
                     </XWithRole>
@@ -375,9 +368,7 @@ export const ParcelCard = withParcelDirect((props) => (
                         <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}> */}
                     {props.data.item!!.extrasAnalyzed !== true &&
                         <PropertyCell title="Compatible buildings">
-                            <XPopper content={Text.hint_too_complex}>
-                                <XIcon icon="error" />
-                            </XPopper>
+                            <XTooltipHint> {Text.hint_too_complex}</XTooltipHint>
                             {Text.text_too_complex}
                         </PropertyCell>
                     }
