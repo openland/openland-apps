@@ -4,7 +4,6 @@ import { XCloudImage } from 'openland-x/XCloudImage';
 import { XFileUpload } from './XFileUpload';
 
 export interface XImageUploadProps {
-    crop?: string;
     uuid?: string | null;
     onChanged?: (uuid: string | null) => void;
 }
