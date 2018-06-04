@@ -3,15 +3,12 @@ import { withUserInfo } from './UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 export const AuthRouter = withUserInfo((props) => {
-
-    console.warn(props);
-
     let handled = false;
     // Redirect to Signup/Signin pages
     if (!props.isLoggedIn) {
         handled = true;
         if (['/signin', '/signup'].indexOf(props.router.path) < 0) {
-            return <XPageRedirect path="/signup" />;
+            return <XPageRedirect path="/signin" />;
         }
     }
 

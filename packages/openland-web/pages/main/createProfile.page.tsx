@@ -6,7 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withApp } from '../../components/withApp';
 import { XForm } from 'openland-x-forms/XForm';
-import { withSaveProfile } from '../../api';
+import { withCreateProfile } from '../../api';
 
 const RootContainer = Glamorous.div({
     display: 'flex',
@@ -75,7 +75,7 @@ const FormWrapper = Glamorous.div({
     flexDirection: 'column',
 });
 
-const CreateProfileForm = withSaveProfile((props) => {
+const CreateProfileForm = withCreateProfile((props) => {
     return (
         <RootContainer>
             <Logo />
@@ -84,7 +84,7 @@ const CreateProfileForm = withSaveProfile((props) => {
                     <Title>Hey, what’s your name?</Title>
                     <Description>Tell us a little about yourself. Fill in the fields below.</Description>
                 </TextWrapper>
-                <XForm submitMutation={props.saveProfile} mutationDirect={true} onCompleted={() => window.location.href = '/'}>
+                <XForm defaultValues={props.data.prefill} submitMutation={props.createProfile} mutationDirect={true} onCompleted={() => window.location.href = '/'}>
                     <XVertical>
                         <XHorizontal separator="large">
                             <FormWrapper>

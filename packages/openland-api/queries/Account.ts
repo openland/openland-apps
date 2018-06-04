@@ -20,3 +20,13 @@ export const SaveProfileMutation = gql`
         alphaSaveProfile(firstName: $firstName, lastName: $lastName)
     }
 `;
+
+export const ProfilePrefillQuery = gql`
+    query ProfilePrefill {
+        prefill: alphaProfilePrefill {
+            firstName
+            lastName
+            picture
+        }
+    }
+`;

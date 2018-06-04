@@ -191,6 +191,15 @@ export interface SaveProfileMutation {
   alphaSaveProfile: string,
 };
 
+export interface ProfilePrefillQuery {
+  prefill:  {
+    __typename: "ProfilePrefill",
+    firstName: string | null,
+    lastName: string | null,
+    picture: string | null,
+  },
+};
+
 export interface StateQuery {
   items:  Array< {
     __typename: "State",

@@ -223,3 +223,6 @@ export const withSampleTask = graphqlTask(Queries.Tasks.SampleTask);
 export const withFolderExportTask = graphqlTask(Queries.Tasks.FolderExportTask);
 
 export const withSaveProfile = graphqlMutation(Queries.Account.SaveProfileMutation, 'saveProfile', { refetchQueries: [Queries.Account.AccountQuery] });
+export const withCreateProfile = graphqlCompose2(
+    graphqlMutation(Queries.Account.SaveProfileMutation, 'createProfile', { refetchQueries: [Queries.Account.AccountQuery] }), 
+    graphqlRouted(Queries.Account.ProfilePrefillQuery));
