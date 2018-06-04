@@ -106,10 +106,10 @@ const CreateProfileForm = withCreateProfile((props) => {
     );
 });
 
-export default withApp('UI Framework - Account', 'viewer', (props) => {
+export default withApp('Create Profile', 'viewer', (props) => {
     return (
         <>
-            <XDocumentHead title="Create account" />
+            <XDocumentHead title="Create profile" />
             <CreateProfileForm />
         </>
     );
