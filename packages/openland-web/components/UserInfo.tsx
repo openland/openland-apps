@@ -20,6 +20,8 @@ export class UserInfoProvider extends React.Component<{
         isActivated: PropTypes.bool.isRequired,
         isProfileCreated: PropTypes.bool.isRequired,
         isCompleted: PropTypes.bool.isRequired,
+        isAccountExists: PropTypes.bool.isRequired,
+        isAccountPicked: PropTypes.bool.isRequired,
         isBlocked: PropTypes.bool.isRequired,
     };
 
@@ -44,6 +46,8 @@ export class UserInfoProvider extends React.Component<{
             account: hasAccount ? this.props.account : null,
             isLoggedIn: this.props.profile.isLoggedIn,
             isProfileCreated: this.props.profile.isProfileCreated && hasUser,
+            isAccountExists: this.props.profile.isAccountExists,
+            isAccountPicked: this.props.profile.isAccountPicked,
             isActivated: this.props.profile.isAccountActivated && hasUser,
             isCompleted: this.props.profile.isCompleted && hasUser,
             isBlocked: this.props.profile.isBlocked,
@@ -56,6 +60,8 @@ export interface UserInfoComponentProps {
     area: Types.AreaShortFragment | null;
     account: Types.AccountShortFragment | null;
     isLoggedIn: boolean;
+    isAccountExists: boolean;
+    isAccountPicked: boolean;
     isActivated: boolean;
     isProfileCreated: boolean;
     isCompleted: boolean;
@@ -71,6 +77,8 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
         isLoggedIn: PropTypes.bool.isRequired,
         isActivated: PropTypes.bool.isRequired,
         isProfileCreated: PropTypes.bool.isRequired,
+        isAccountExists: PropTypes.bool.isRequired,
+        isAccountPicked: PropTypes.bool.isRequired,
         isCompleted: PropTypes.bool.isRequired,
         isBlocked: PropTypes.bool.isRequired,
     };
@@ -82,6 +90,8 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
         var isLoggedIn = this.context.isLoggedIn as boolean;
         var isActivated = this.context.isActivated as boolean;
         var isProfileCreated = this.context.isProfileCreated as boolean;
+        var isAccountExists = this.context.isAccountExists as boolean;
+        var isAccountPicked = this.context.isAccountPicked as boolean;
         var isCompleted = this.context.isCompleted as boolean;
         var isBlocked = this.context.isBlocked as boolean;
         var Wrapped = this.props.render;
@@ -95,6 +105,8 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
                 isProfileCreated={isProfileCreated}
                 isCompleted={isCompleted}
                 isBlocked={isBlocked}
+                isAccountExists={isAccountExists}
+                isAccountPicked={isAccountPicked}
                 {...this.props}
             />
         );

@@ -6,10 +6,13 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 let cachedClient: ApolloClient<NormalizedCacheObject> | undefined = undefined;
 
-const buildClient = (initialState?: any, token?: string) => {
+const buildClient = (initialState?: any, token?: string, org?: string) => {
     var headers: any = {};
     if (token) {
         headers['x-openland-token'] = token;
+    }
+    if (org) {
+        headers['x-openland-org'] = org;
     }
     var cache = new InMemoryCache();
     if (initialState) {
@@ -27,13 +30,13 @@ const buildClient = (initialState?: any, token?: string) => {
     });
 };
 
-export const apolloClient = (initialState?: any, token?: string) => {
+export const apolloClient = (initialState?: any, token?: string, org?: string) => {
     if (canUseDOM) {
         if (!cachedClient) {
-            cachedClient = buildClient(initialState, token);
+            cachedClient = buildClient(initialState, token, org);
         }
         return cachedClient!!;
     } else {
-        return buildClient(initialState, token);
+        return buildClient(initialState, token, org);
     }
 };

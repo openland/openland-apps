@@ -4,6 +4,8 @@ export const MyProfileFull = gql`
         isLoggedIn
         isProfileCreated
         isAccountActivated
+        isAccountExists
+        isAccountPicked
         isCompleted
         isBlocked
     }

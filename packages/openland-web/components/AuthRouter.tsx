@@ -3,6 +3,7 @@ import { withUserInfo } from './UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 export const AuthRouter = withUserInfo((props) => {
+    console.warn(props);
     let handled = false;
     // Redirect to Signup/Signin pages
     if (!props.isLoggedIn) {
@@ -32,6 +33,17 @@ export const AuthRouter = withUserInfo((props) => {
         ].indexOf(props.router.path) < 0) {
             console.warn('NoProfile');
             return <XPageRedirect path="/createProfile" />;
+        }
+    }
+
+    // Redirect to organization picker
+    if (!handled && props.isAccountExists && !props.isAccountPicked) {
+        handled = true;
+        if ([
+            '/pickOrganization'
+        ].indexOf(props.router.path) < 0) {
+            console.warn('NoPickedOrganization');
+            return <XPageRedirect path="/pickOrganization" />;
         }
     }
 
@@ -65,6 +77,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/need_info',
             '/suspended',
             '/createProfile',
+            '/pickOrganization',
             '/signin',
             '/signup'
         ].indexOf(props.router.path) >= 0) {

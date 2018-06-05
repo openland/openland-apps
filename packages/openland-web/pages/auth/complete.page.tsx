@@ -42,6 +42,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
         if (uploaded.ok) {
             let body = (await uploaded.json()) as { ok: boolean, token: string };
             Cookie.remove('statecraft-key');
+            Cookie.remove('x-openland-org');
             Cookie.set('x-openland-token', body.token);
             let path = localStorage.getItem('redirect_path') || '/';
             createHistory({

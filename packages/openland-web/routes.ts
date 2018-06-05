@@ -13,6 +13,7 @@ routes.add('/activation', '/init/activation');
 routes.add('/need_info', '/init/need_info');
 routes.add('/deactivated', '/init/deactivated');
 routes.add('/createProfile', '/init/createProfile');
+routes.add('/pickOrganization', '/init/pickOrganization');
 routes.add('/404', '/404');
 
 //

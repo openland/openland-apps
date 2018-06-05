@@ -185,6 +185,8 @@ export interface AccountQuery {
     isLoggedIn: boolean,
     isProfileCreated: boolean,
     isAccountActivated: boolean,
+    isAccountExists: boolean,
+    isAccountPicked: boolean,
     isCompleted: boolean,
     isBlocked: boolean,
   },
@@ -3701,6 +3703,8 @@ export interface MyProfileFullFragment {
   isLoggedIn: boolean,
   isProfileCreated: boolean,
   isAccountActivated: boolean,
+  isAccountExists: boolean,
+  isAccountPicked: boolean,
   isCompleted: boolean,
   isBlocked: boolean,
 };

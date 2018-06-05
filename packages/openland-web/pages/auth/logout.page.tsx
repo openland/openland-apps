@@ -11,6 +11,7 @@ class LogoutHandler extends React.Component<{}, {}> {
     }
 
     componentDidMount() {
+        Cookie.remove('x-openland-org');
         Cookie.remove('x-openland-token');
         createHistory({
             forceRefresh: true
