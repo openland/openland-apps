@@ -6,7 +6,7 @@ import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../../components/AuthRouter';
-import { withDebugAccounts } from '../../api';
+import { withAllAccounts } from '../../api';
 import { XTable } from 'openland-x/XTable';
 import * as Cookie from 'js-cookie';
 
@@ -15,7 +15,7 @@ function pickOrganization(id: string) {
     window.location.href = '/';
 }
 
-export default withAppBase(withDebugAccounts((props) => {
+export default withAppBase(withAllAccounts((props) => {
     return (
         <AuthRouter>
             <XDocumentHead title="Organization?" titleSocial="Openland - land acquisition platfom" />

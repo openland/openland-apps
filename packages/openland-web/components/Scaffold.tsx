@@ -6,7 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XPicture } from 'openland-x/XPicture';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
-import { withSearch } from '../api';
+import { withSearch, withAllAccounts } from '../api';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';
@@ -17,6 +17,10 @@ import { XList, XListItem } from 'openland-x/XList';
 import { XTitle } from 'openland-x/XTitle';
 import { XPopper } from 'openland-x/XPopper';
 import { XAvatar } from 'openland-x/XAvatar';
+import { XModal } from 'openland-x-modal/XModal';
+import { XLoader } from 'openland-x/XLoader';
+import { XTable } from 'openland-x/XTable';
+import * as Cookie from 'js-cookie';
 
 //
 // Root
@@ -176,12 +180,13 @@ class UserPopper extends React.Component<{ picture: string | null }, { show: boo
 
     render() {
         return (
-            <XPopper placement="right" showOnHoverContent={false} onClickOutside={this.switch} show={this.state.show}  padding={25} content={(
+            <XPopper placement="right" showOnHoverContent={false} onClickOutside={this.switch} show={this.state.show} padding={25} content={(
                 <XMenu>
+                    <XMenu.Item query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenu.Item>
                     <XMenu.Item path="/auth/logout">{TextGlobal.signOut}</XMenu.Item>
                 </XMenu>
             )}>
-                <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch}/>
+                <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} />
                 {/* <UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv> */}
             </XPopper>
         );
@@ -453,6 +458,26 @@ interface ScaffoldProps {
     sidebarBorderColor?: string;
 }
 
+function pickOrganization(id: string) {
+    Cookie.set('x-openland-org', id);
+    window.location.href = '/';
+}
+
+const OrganizationPicker = withAllAccounts((props) => {
+    if (props.data.loading) {
+        return <XLoader loading={true} />;
+    }
+    return (
+        <XTable>
+            <XTable.Body>
+                {props.data.orgs.map((v) => (
+                    <XTable.Row onClick={() => pickOrganization(v.id)}>{v.title}</XTable.Row>
+                ))}
+            </XTable.Body>
+        </XTable>
+    );
+});
+
 export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, searchText: string }> {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
@@ -491,6 +516,9 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
         return (
             <RootContainer>
+                <XModal title="Switch Organization" targetQuery="org">
+                    <OrganizationPicker />
+                </XModal>
                 <NavigationWrapper>
                     <SearchWrapper visible={this.state.search}>
                         <SearchWrapperSticky>

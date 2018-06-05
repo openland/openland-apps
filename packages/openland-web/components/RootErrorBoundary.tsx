@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessagePage } from './MessagePage';
-import { XContent } from 'openland-x-layout/XContent';
 import { trackError } from 'openland-x-analytics';
+import { MessagePageContent } from './MessagePageContent';
 
 export class RootErrorBoundary extends React.Component<{}, { isError: boolean }> {
     constructor(props: {}) {
@@ -18,9 +18,9 @@ export class RootErrorBoundary extends React.Component<{}, { isError: boolean }>
         if (this.state.isError) {
             return (
                 <MessagePage>
-                    <XContent>
-                        Unexpected error
-                    </XContent>
+                    <MessagePageContent title="Ooops!">
+                        Something went wrong. Our engineers already working on the problem.
+                    </MessagePageContent>
                 </MessagePage>
             );
         }

@@ -7,10 +7,9 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTable } from 'openland-x/XTable';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
-import { withDebugAccounts } from '../../api';
+import { withAllAccounts } from '../../api';
 
-export default withApp('Super Debug', ['super-admin', 'software-developer'], withDebugAccounts(withUserInfo((props) => {
-    console.warn(props.data.orgs);
+export default withApp('Super Debug', ['super-admin', 'software-developer'], withAllAccounts(withUserInfo((props) => {
     return (
         <DevToolsScaffold title="Debugging">
             <XHeader text="Your roles" />

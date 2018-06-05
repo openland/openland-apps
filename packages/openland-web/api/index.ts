@@ -224,4 +224,4 @@ export const withFolderExportTask = graphqlTask(Queries.Tasks.FolderExportTask);
 
 export const withSaveProfile = graphqlMutation(Queries.Account.SaveProfileMutation, 'saveProfile', { refetchQueries: [Queries.Account.AccountQuery] });
 export const withCreateProfile = graphqlCompose2(graphqlMutation(Queries.Account.SaveProfileMutation, 'createProfile'), graphqlRouted(Queries.Account.ProfilePrefillQuery));
-export const withDebugAccounts = graphqlRouted(Queries.Debug.DebugOwnAccountsQuery);
+export const withAllAccounts = graphqlRouted(Queries.Debug.DebugOwnAccountsQuery);
