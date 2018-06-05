@@ -1,5 +1,6 @@
 import '../../globals';
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { withAppBase } from '../../components/withAppBase';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withRouter } from 'openland-x-routing/withRouter';
@@ -18,6 +19,12 @@ import {
     Description
 } from '../../components/SignComponents';
 import { AuthRouter } from '../../components/AuthRouter';
+
+const EmptyBlock = Glamorous.div({
+    width: '100%',
+    height: 15,
+    flexShrink: 0
+});
 
 class SignInComponent extends React.Component<{ redirect?: string | null }, {
 
@@ -150,7 +157,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
 
                     {this.state.email && !this.state.emailSent && (<>
                         <Title marginBottom={20}>Sign in with Email</Title>
-                        {this.state.emailError !== '' && <XServiceMessage title={this.state.emailError} />}
+                        {this.state.emailError !== '' && (<><XServiceMessage title="Invalid email" /><EmptyBlock /></>)}
                         <ButtonsWrapper>
                             <XInput onChange={this.emailChanged} value={this.state.emailValue} placeholder="Your work email" />
                         </ButtonsWrapper>
@@ -164,7 +171,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null }, {
 
                     {this.state.emailSent && (<>
                         <Title marginBottom={20}>Please, enter activation code</Title>
-                        {this.state.codeError !== '' && <XServiceMessage title={this.state.codeError} />}
+                        {this.state.codeError !== '' && (<><XServiceMessage title="Invalid activation code" /><EmptyBlock /></>)}
                         <ButtonsWrapper>
                             <XInput onChange={this.codeChanged} value={this.state.codeValue} placeholder="XXXXXX" />
                         </ButtonsWrapper>

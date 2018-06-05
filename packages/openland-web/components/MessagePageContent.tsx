@@ -3,19 +3,20 @@ import Glamorous from 'glamorous';
 import { XContent } from 'openland-x-layout/XContent';
 
 let Title = Glamorous.div({
-    fontSize: 20,
-    lineHeight: 1.6,
-    fontWeight: 600,
-    color: '#182642',
+    fontSize: 28,
+    fontWeight: 500,
+    color: '#1f3449',
+    letterSpacing: 0.9,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 24,
-    marginBottom: 16
+    marginBottom: 15
 });
 
 let Message = Glamorous(XContent)({
-    alignContent: 'center'
+    alignContent: 'center',
+    textAlign: 'center'
 });
 
 export function MessagePageContent(props: { title: string, children?: any }) {
