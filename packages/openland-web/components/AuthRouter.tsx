@@ -90,7 +90,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/suspended',
             '/createProfile',
             '/pickOrganization',
-            // '/addOrganization',
+            '/addOrganization',
             '/signin',
             '/signup'
         ].indexOf(props.router.path) >= 0) {
