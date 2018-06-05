@@ -608,6 +608,15 @@ export interface DebugReadedStatesQuery {
   } >,
 };
 
+export interface DebugOwnAccountsQuery {
+  orgs:  Array< {
+    __typename: "OrganizationAccount",
+    id: string,
+    title: string,
+    photo: string | null,
+  } >,
+};
+
 export interface FeatureFlagsQuery {
   featureFlags:  Array< {
     __typename: "FeatureFlag",

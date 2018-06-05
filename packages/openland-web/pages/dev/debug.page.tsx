@@ -7,8 +7,10 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTable } from 'openland-x/XTable';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
+import { withDebugAccounts } from '../../api';
 
-export default withApp('Super Debug', ['super-admin', 'software-developer'], withUserInfo((props) => {
+export default withApp('Super Debug', ['super-admin', 'software-developer'], withDebugAccounts(withUserInfo((props) => {
+    console.warn(props.data.orgs);
     return (
         <DevToolsScaffold title="Debugging">
             <XHeader text="Your roles" />
@@ -28,7 +30,7 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
                     </XRoleContext.Consumer>
                 </XTable.Body>
             </XTable>
-            <XHeader text="Your Organization" />
+            <XHeader text="Current Organization" />
             <XContent>
                 {props.account && (
                     <>
@@ -36,6 +38,19 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
                     </>
                 )}
             </XContent>
+            <XHeader text="All Organizations" />
+            <XTable>
+                <XTable.Header>
+                    <XTable.Cell>Organization Name</XTable.Cell>
+                </XTable.Header>
+                <XTable.Body>
+                    {props.data.orgs && props.data.orgs.map((v) => (
+                        <XTable.Row>
+                            <XTable.Cell>{v.title}</XTable.Cell>
+                        </XTable.Row>
+                    ))}
+                </XTable.Body>
+            </XTable>
         </DevToolsScaffold>
     );
-}));
+})));
