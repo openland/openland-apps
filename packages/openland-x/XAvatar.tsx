@@ -146,8 +146,6 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
         src: props.src || undefined,
     };
 
-    console.warn(props.cloudImageUuid);
-
     return (
         <>
             {props.src && <StyledAvatar {...avatarProps} />}

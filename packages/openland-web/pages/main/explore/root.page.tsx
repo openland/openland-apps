@@ -493,7 +493,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         let cityChanged = pendingCity !== this.savedCity;
         let city = pendingCity;
         if (canUseDOM) {
-            sessionStorage.setItem('__explore_city', city);
+            sessionStorage.setItem('__explore_city', city);            
         }
         let cityName = city === 'sf' ? 'San Francisco' : 'New York';
         let countyName = city === 'sf' ? 'San Francisco' : 'New York';

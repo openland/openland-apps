@@ -268,7 +268,7 @@ export class XFormAvatarField extends React.Component<XFormAvatarFieldProps, { u
         xForm: PropTypes.object.isRequired
     };
 
-    constructor(props: XFormTextFieldProps, context: any) {
+    constructor(props: XFormAvatarFieldProps, context: any) {
         super(props, context);
         let xForm = this.context.xForm as XFormController;
         let existing = xForm.readValue(this.props.field);

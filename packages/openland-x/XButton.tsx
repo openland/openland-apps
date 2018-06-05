@@ -8,7 +8,7 @@ import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
 
 export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small';
-export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat';
+export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link';
 
 export interface XButtonStyleProps extends XFlexStyles {
     className?: string;
@@ -280,6 +280,17 @@ let colorStyles = styleResolver({
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         }
+    },
+
+    'link': {
+        color: '#765efd',
+        border: 'solid 1px transparent',
+        '&:hover': {
+            textDecoration: 'underline'
+        },
+        '&:focus': {
+            textDecoration: 'underline'
+        }
     }
 });
 
@@ -313,6 +324,9 @@ let colorDisabledStyles = styleResolver({
         backgroundColor: '#ffffff !important',
         color: 'rgba(51, 69, 98, 0.7) !important',
         border: 'solid 1px transparent !important',
+    },
+    'link': {
+        color: 'rgba(51, 69, 98, 0.7) !important',
     }
 });
 
@@ -346,6 +360,8 @@ let colorPressedStyles = styleResolver({
         backgroundColor: '#eeecfa !important',
         border: 'solid 1px transparent !important',
         color: '#5640d6 !important'
+    },
+    'link': {
     }
 });
 
@@ -378,6 +394,11 @@ let loaderStyles = styleResolver({
     'flat': {
         '& svg path': {
             stroke: '#334562 !important'
+        }
+    },
+    'link': {
+        '& svg path': {
+            stroke: '#5640d6 !important'
         }
     }
 });

@@ -1,82 +1,25 @@
 import '../../globals';
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withApp } from '../../components/withApp';
 import { XForm } from 'openland-x-forms/XForm';
 import { withCreateProfile } from '../../api';
-
-const RootContainer = Glamorous.div({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    position: 'relative',
-    backgroundColor: '#fff'
-});
-
-const Logo = Glamorous.div<{ width?: number, height?: number }>((props) => ({
-    width: props.width ? props.width : 45,
-    height: props.height ? props.height : 45,
-    backgroundImage: 'url(\'/static/logo-purple.svg\')',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    position: 'absolute',
-    top: 15,
-    left: 23
-}));
-
-const Title = Glamorous.div({
-    fontSize: 28,
-    fontWeight: 500,
-    letterSpacing: 0.9,
-    color: '#1f3449',
-    marginBottom: 15
-});
-
-const Description = Glamorous.div({
-    opacity: 0.7,
-    fontSize: 17,
-    lineHeight: 1.41,
-    letterSpacing: -0.1,
-    color: '#1f3449'
-});
-
-const TextWrapper = Glamorous.div({
-    marginBottom: 46
-});
-
-const Label = Glamorous.div({
-    fontSize: 15,
-    fontWeight: 500,
-    lineHeight: 1.27,
-    letterSpacing: -0.1,
-    color: '#334562',
-    marginBottom: 12
-});
-
-const InputGroup = Glamorous.div({
-    marginBottom: 26,
-    width: 380,
-    '&:last-child': {
-        marginBottom: 0
-    }
-});
-
-const ContentWrapper = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-});
-
-const FormWrapper = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-});
-
-const XAvatarUploadMargin = Glamorous.div({ marginTop: 31, marginLeft: 12 });
-const SubmitMargin = Glamorous(XForm.Submit)({ marginTop: 10 });
+import {
+    RootContainer,
+    Logo,
+    Title,
+    TextWrapper,
+    Label,
+    InputGroup,
+    ContentWrapper,
+    FormWrapper,
+    Footer,
+    OptionalLabel,
+    PhotoContiner,
+    FieldHeader,
+} from '../../components/CreateProfileComponents';
 
 const CreateProfileForm = withCreateProfile((props) => {
     return (
@@ -84,29 +27,37 @@ const CreateProfileForm = withCreateProfile((props) => {
             <Logo />
             <ContentWrapper>
                 <TextWrapper>
-                    <Title>Hey, what’s your name?</Title>
-                    <Description>Tell us a little about yourself. Fill in the fields below.</Description>
+                    <Title>Set up a user account</Title>
                 </TextWrapper>
                 <XForm defaultValues={props.data.prefill} submitMutation={props.createProfile} mutationDirect={true} onCompleted={() => window.location.href = '/'}>
                     <XVertical>
-                        <XHorizontal separator="large">
+                        <XHorizontal separator="none">
                             <FormWrapper>
                                 <InputGroup>
                                     <Label>First Name</Label>
-                                    <XForm.Text field="firstName" size="medium" placeholder="For example: Steve" />
+                                    <XForm.Text field="firstName" size="medium" placeholder="Jane" />
                                 </InputGroup>
                                 <InputGroup>
                                     <Label>Last Name</Label>
-                                    <XForm.Text field="lastName" size="medium" placeholder="For example: Lifshits" />
+                                    <XForm.Text field="lastName" size="medium" placeholder="Doe" />
+                                </InputGroup>
+                                <InputGroup>
+                                    <FieldHeader><Label>Phone</Label><OptionalLabel>optional</OptionalLabel></FieldHeader>
+                                    <XForm.Text field="phone" size="medium" placeholder="123-456-7890" />
                                 </InputGroup>
                             </FormWrapper>
-                            <XAvatarUploadMargin>
-                                <XForm.Avatar field="photo"/>
-                            </XAvatarUploadMargin>
+                            <PhotoContiner separator="none">
+                                <FieldHeader><Label>Photo</Label><OptionalLabel>optional</OptionalLabel></FieldHeader>
+                                <XForm.Avatar field="photo" />
+                            </PhotoContiner>
                         </XHorizontal>
-                        <SubmitMargin style="primary" text="Continue" size="medium" alignSelf="flex-end" />
+                        <Footer>
+                            <></>
+                            <XForm.Submit style="primary" text="Continue" size="medium" alignSelf="flex-end" />
+                        </Footer>
 
                     </XVertical>
+
                 </XForm>
             </ContentWrapper>
         </RootContainer>

@@ -8,6 +8,7 @@ import { XCloudImage } from '../XCloudImage';
 import { XLoader } from '../XLoader';
 
 export interface XAvatarUploadProps {
+    placeholder?: { add: any, change: any };
     crop?: XImageCrop | null;
     uuid?: string | null;
     onChanged?: (uuid: string | null, crop: XImageCrop | null) => void;
@@ -15,8 +16,8 @@ export interface XAvatarUploadProps {
 
 const DropAreaWrapper = Glamorous.div<{ hasImage: boolean }>((props) => ({
     position: 'relative',
-    width: 153,
-    height: 153,
+    width: 240,
+    height: 240,
 
     backgroundColor: '#ffffff',
     overflow: 'hidden',
@@ -35,7 +36,7 @@ const DropAreaWrapper = Glamorous.div<{ hasImage: boolean }>((props) => ({
 
     justifyContent: 'center',
     alignItems: 'stretch',
-  
+
 }));
 
 const AvatarImage = Glamorous(XCloudImage)({
@@ -77,15 +78,14 @@ export function XAvatarUpload(props: XAvatarUploadProps) {
             {...props}
             cropParams="1:1"
             component={(rp) => {
-                console.warn(rp);
                 return (
                     <DropAreaWrapper
                         hasImage={rp.uuid !== null}
                         onClick={rp.doUpload}
                     >
                         {rp.uuid && <AvatarImage
-                            width={152}
-                            height={152}
+                            width={239}
+                            height={239}
                             src={rp.uuid}
                             crop={rp.crop}
                             resize={'fill'}
@@ -93,7 +93,11 @@ export function XAvatarUpload(props: XAvatarUploadProps) {
 
                         <Placeholder hasImage={rp.uuid !== null}>
                             <PlaceholderImage icon="photo_camera" hasImage={rp.uuid !== null} />
-                            <PlaceholderHoint hasImage={rp.uuid !== null}><p>{rp.uuid !== null ? 'Change' : 'Add'} your</p><p>profile photo</p></PlaceholderHoint>
+                            <PlaceholderHoint hasImage={rp.uuid !== null}>
+                                {props.placeholder && (rp.uuid !== null ? props.placeholder.change : props.placeholder.add)}
+                                {!props.placeholder && (<> <p>{rp.uuid !== null ? 'Change' : 'Add'} your</p> <p>profile photo</p></>)}
+
+                            </PlaceholderHoint>
                         </Placeholder>
                         {rp.isLoading && <XLoader loading={rp.isLoading} />}
                     </DropAreaWrapper>
