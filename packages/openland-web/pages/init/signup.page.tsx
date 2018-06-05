@@ -1,7 +1,7 @@
-import '../globals';
+import '../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withAppBase } from '../components/withAppBase';
+import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import {
@@ -11,8 +11,8 @@ import {
     Title,
     Description,
     Separator
-} from '../components/SignComponents';
-import { AuthRouter } from '../components/AuthRouter';
+} from '../../components/SignComponents';
+import { AuthRouter } from '../../components/AuthRouter';
 
 const TypeformDiv = Glamorous.div({
     position: 'absolute',

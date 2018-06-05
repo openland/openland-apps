@@ -1,11 +1,11 @@
-import '../globals';
+import '../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withAppBase } from '../components/withAppBase';
+import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { XLink } from 'openland-x/XLink';
-import { AuthRouter } from '../components/AuthRouter';
+import { AuthRouter } from '../../components/AuthRouter';
 
 const RootContainer = Glamorous.div({
     display: 'flex',

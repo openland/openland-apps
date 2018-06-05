@@ -1,6 +1,6 @@
-import '../globals';
+import '../../globals';
 import * as React from 'react';
-import { withAppBase } from '../components/withAppBase';
+import { withAppBase } from '../../components/withAppBase';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
@@ -16,8 +16,8 @@ import {
     Title,
     Separator,
     Description
-} from '../components/SignComponents';
-import { AuthRouter } from '../components/AuthRouter';
+} from '../../components/SignComponents';
+import { AuthRouter } from '../../components/AuthRouter';
 
 class SignInComponent extends React.Component<{ redirect?: string | null }, {
 
