@@ -1,11 +1,11 @@
-import '../globals';
+import '../../globals';
 import * as React from 'react';
-import { withAppBase } from '../components/withAppBase';
+import { withAppBase } from '../../components/withAppBase';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { AuthRouter } from '../components/AuthRouter';
+import { AuthRouter } from '../../components/AuthRouter';
 
 export default withAppBase((props) => {
     return (

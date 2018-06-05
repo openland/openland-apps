@@ -6,13 +6,13 @@ let routes = NRoutes();
 // App Root
 //
 
-routes.add('/', '/root');
-routes.add('/signup', '/signup');
-routes.add('/signin', '/signin');
-routes.add('/activation', '/activation');
-routes.add('/need_info', '/need_info');
-routes.add('/deactivated', '/deactivated');
-routes.add('/createProfile', '/main/createProfile');
+routes.add('/', '/init/root');
+routes.add('/signup', '/init/signup');
+routes.add('/signin', '/init/signin');
+routes.add('/activation', '/init/activation');
+routes.add('/need_info', '/init/need_info');
+routes.add('/deactivated', '/init/deactivated');
+routes.add('/createProfile', '/init/createProfile');
 routes.add('/404', '/404');
 
 //
