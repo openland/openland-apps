@@ -257,7 +257,7 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
     handleChange = (val: string) => {
         let xForm = this.context.xForm as XFormController;
         // let val = src.target.value as string;
-        const invalid = this.state.value.length === 0;
+        const invalid = val.length === 0;
         this.setState({ value: val, invalid: invalid });
         xForm.writeValue(this.props.field, val);
         if (invalid && this.props.required) {
@@ -544,7 +544,7 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
     }
 
     submitForm = async (action: XFormActionProps) => {
-        if (this.submitLocks.size === 0) {
+        if (this.submitLocksActive.size === 0) {
             let vals = Object.assign({}, this.values);
             if (action.onSubmit) {
                 action.onSubmit(vals);

@@ -524,7 +524,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
         return (
             <RootContainer>
-                <XModal title="Switch Organization" targetQuery="org">
+                <XModal title={TextGlobal.switch} targetQuery="org">
                     <OrganizationPicker />
                 </XModal>
                 <NavigationWrapper>

@@ -200,6 +200,7 @@ export interface SaveProfileMutationVariables {
   firstName: string,
   lastName?: string | null,
   photo?: ImageRefInput | null,
+  phone?: string | null,
 };
 
 export interface SaveProfileMutation {
@@ -208,7 +209,7 @@ export interface SaveProfileMutation {
 
 export interface CreateOrganizationMutationVariables {
   title: string,
-  site?: string | null,
+  website?: string | null,
   role?: string | null,
   logo?: ImageRefInput | null,
 };
@@ -653,7 +654,8 @@ export interface DebugOwnAccountsQuery {
     __typename: "OrganizationAccount",
     id: string,
     title: string,
-    photo: string | null,
+    logo: string | null,
+    website: string | null,
   } >,
 };
 

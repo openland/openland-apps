@@ -15,9 +15,9 @@ import {
     InputGroup,
     ContentWrapper,
     FormWrapper,
-    // OptionalLabel,
-    // PhotoContiner,
-    // FieldHeader,
+    OptionalLabel,
+    PhotoContiner,
+    FieldHeader,
     Footer,
 } from '../../components/CreateProfileComponents';
 import { XButton } from 'openland-x/XButton';
@@ -40,19 +40,15 @@ const CreateProfileForm = withCreateOrganization(withRouter((props) => {
                                     <Label>Organization name</Label>
                                     <XForm.Text field="title" size="medium" placeholder="Acme Corparation" required={true}/>
                                 </InputGroup>
-                                {/* <InputGroup>
-                                    <Label>Your role</Label>
-                                    <XForm.Text field="lastName" size="medium" placeholder="Property Manager" />
-                                </InputGroup>
                                 <InputGroup>
                                     <FieldHeader><Label>Website</Label><OptionalLabel>optional</OptionalLabel></FieldHeader>
-                                    <XForm.Text field="phone" size="medium" placeholder="http://acme.com/" />
-                                </InputGroup> */}
+                                    <XForm.Text field="website" size="medium" placeholder="http://acme.com/" />
+                                </InputGroup>
                             </FormWrapper>
-                            {/* <PhotoContiner separator="none">
+                            <PhotoContiner separator="none">
                                 <FieldHeader><Label>Logo</Label><OptionalLabel>optional</OptionalLabel></FieldHeader>
-                                <XForm.Avatar field="photo" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} />
-                            </PhotoContiner> */}
+                                <XForm.Avatar field="logo" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} />
+                            </PhotoContiner>
                         </XHorizontal>
                         <Footer>
                             <XButton style="link" text={['/authAddOrganization'].indexOf(props.router.path) > -1 ? 'Skip for now' : 'Cancel'} path="/" onClick={() => sessionStorage.setItem('__organization_add_skipped', 'true')} />
