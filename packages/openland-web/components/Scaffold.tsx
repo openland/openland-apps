@@ -21,6 +21,9 @@ import { XModal } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
 import { XTable } from 'openland-x/XTable';
 import * as Cookie from 'js-cookie';
+import { XForm } from 'openland-x-forms/XForm';
+import { XModalForm } from 'openland-x-modal/XModalForm';
+import { withCreateOrganization } from '../api';
 
 //
 // Root
@@ -183,10 +186,11 @@ class UserPopper extends React.Component<{ picture: string | null }, { show: boo
             <XPopper placement="right" showOnHoverContent={false} onClickOutside={this.switch} show={this.state.show} padding={25} content={(
                 <XMenu>
                     <XMenu.Item query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenu.Item>
+                    <XMenu.Item query={{ field: 'addOrg', value: 'true' }}>{TextGlobal.addOrganization}</XMenu.Item>
                     <XMenu.Item path="/auth/logout">{TextGlobal.signOut}</XMenu.Item>
                 </XMenu>
             )}>
-                <XAvatar src={this.props.picture || undefined} onClick={this.switch}/>
+                <XAvatar src={this.props.picture || undefined} onClick={this.switch} />
                 {/* <UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv> */}
             </XPopper>
         );
@@ -478,6 +482,19 @@ const OrganizationPicker = withAllAccounts((props) => {
     );
 });
 
+const AddOrganizationForm = withCreateOrganization((props) => {
+    return (
+        <XModalForm submitMutation={props.createOrganization} targetQuery="addOrg" mutationDirect={true} actionName="Add" title={TextGlobal.addOrganization}>
+            <XVertical>
+                <XForm.Text field="title" size="medium" placeholder="Title" />
+                {/* <XForm.Text field="site" size="medium" placeholder="website" /> */}
+                {/* <XForm.Avatar field="logo" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} /> */}
+            </XVertical>
+
+        </XModalForm>
+    );
+});
+
 export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, searchText: string }> {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
@@ -518,6 +535,9 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
             <RootContainer>
                 <XModal title="Switch Organization" targetQuery="org">
                     <OrganizationPicker />
+                </XModal>
+                <XModal title="Add Organization" targetQuery="addOrg">
+                    <AddOrganizationForm />
                 </XModal>
                 <NavigationWrapper>
                     <SearchWrapper visible={this.state.search}>
