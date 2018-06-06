@@ -57,7 +57,10 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
 
     loginWithGoogle = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
-        createAuth0Client().authorize({ connection: 'google-oauth2' });
+        createAuth0Client().authorize({
+            connection: 'google-oauth2',
+            state: this.props.redirect ? this.props.redirect : 'none'
+        });
     }
 
     loginWithEmail = (e: React.SyntheticEvent<any>) => {
@@ -190,7 +193,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
 }
 
 export default withAppBase(withRouter((props) => {
-    let redirect = props.router.query ? (props.router.query.r ? props.router.query.r : null) : null;
+    let redirect = props.router.query ? (props.router.query.redirect ? props.router.query.redirect : null) : null;
     return (
         <AuthRouter>
             <XDocumentHead title="Sign in" titleSocial="Openland - land acquisition platfom" />

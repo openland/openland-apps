@@ -1,17 +1,46 @@
 import * as React from 'react';
 import { withUserInfo } from './UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 export const AuthRouter = withUserInfo((props) => {
-    console.warn(props);
+
+    // Compute Redirect Value
+    let redirect = props.router.query.redirect;
+    let redirectPath: string = '/';
+    if (redirect) {
+        redirect = '?redirect=' + encodeURIComponent(redirect);
+        redirectPath = redirect;
+    } else {
+        // For non-init pages - set redirect path
+        if ([
+            '/activation',
+            '/need_info',
+            '/suspended',
+            '/createProfile',
+            '/pickOrganization',
+            '/signin',
+            '/signup'
+        ].indexOf(props.router.path) < 0 && !props.router.path.startsWith('/join/')) {
+            if (props.router.path !== '/') {
+                redirect = '?redirect=' + encodeURIComponent(props.router.path);
+                redirectPath = props.router.path;
+            } else {
+                redirect = '';
+                redirectPath = '/';
+            }
+        } else {
+            redirect = '';
+            redirectPath = '/';
+        }
+    }
+
     let handled = false;
     // Redirect to Signup/Signin pages
     if (!props.isLoggedIn) {
         handled = true;
         if (['/signin', '/signup'].indexOf(props.router.path) < 0) {
             console.warn('NotLoggedIn');
-            return <XPageRedirect path="/signin" />;
+            return <XPageRedirect path={'/signin' + redirect} />;
         }
     }
 
@@ -33,8 +62,19 @@ export const AuthRouter = withUserInfo((props) => {
             '/createProfile',
         ].indexOf(props.router.path) < 0) {
             console.warn('NoProfile');
-            return <XPageRedirect path="/createProfile" />;
+            return <XPageRedirect path={'/createProfile' + redirect} />;
         }
+    }
+
+    // Redirect to Join before account creation/picking if there are was redirect to join
+    if (!handled && redirectPath.startsWith('/join/')) {
+        handled = true;
+        return <XPageRedirect path={redirectPath} />;
+    }
+
+    // Bypass Next steps for join
+    if (!handled && props.router.path.startsWith('/join/')) {
+        handled = true;
     }
 
     // Redirect to organization picker
@@ -44,18 +84,18 @@ export const AuthRouter = withUserInfo((props) => {
             '/pickOrganization'
         ].indexOf(props.router.path) < 0) {
             console.warn('NoPickedOrganization');
-            return <XPageRedirect path="/pickOrganization" />;
+            return <XPageRedirect path={'/pickOrganization' + redirect} />;
         }
     }
 
     // Redirect to organization add
-    if (!handled && !props.isAccountExists && !(canUseDOM && sessionStorage.getItem('__organization_add_skipped'))) {
+    if (!handled && !props.isAccountExists) {
         handled = true;
         if ([
-            '/authAddOrganization',
+            '/createOrganization',
         ].indexOf(props.router.path) < 0) {
             console.warn('NoOrganization');
-            return <XPageRedirect path="/authAddOrganization" />;
+            return <XPageRedirect path="/createOrganization" />;
         }
     }
 
@@ -90,12 +130,12 @@ export const AuthRouter = withUserInfo((props) => {
             '/suspended',
             '/createProfile',
             '/pickOrganization',
-            '/authAddOrganization',
+            // '/createOrganization', // Do not redirect to createOrganization
             '/signin',
             '/signup'
         ].indexOf(props.router.path) >= 0) {
             console.warn('Completed');
-            return <XPageRedirect path="/" />;
+            return <XPageRedirect path={redirectPath} />;
         }
     }
 

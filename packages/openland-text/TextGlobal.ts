@@ -1,5 +1,5 @@
 export const TextGlobal = {
     switch: 'Switch Organization',
-    addOrganization: 'Add Organization',
+    addOrganization: 'Create Organization',
     signOut: 'Sign Out'
 };

@@ -209,6 +209,7 @@ export interface XFormProps {
     completePath?: string;
     onCompleted?: (values: any) => void;
     autoClose?: boolean;
+    keepLoading?: boolean;
 
     //
     // Configuration
@@ -556,7 +557,7 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
                     destVars = vals;
                 }
                 try {
-                    await action.submitMutation({ variables: destVars });
+                    let res = await action.submitMutation({ variables: destVars });
                     if (this.props.autoClose) {
                         if (this.props.modal) {
                             this.props.modal.close();
@@ -566,15 +567,15 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
                         if (this.props.router) {
                             this.props.router.push(this.props.completePath);
                         } else {
-                            this.setState({ loading: false });
+                            this.setState({ loading: this.props.keepLoading !== false });
                         }
                     } else {
-                        this.setState({ loading: false });
+                        this.setState({ loading: this.props.keepLoading !== false });
                     }
-                    this.setState({ loading: false });
+                    this.setState({ loading: this.props.keepLoading !== false });
 
                     if (this.props.onCompleted) {
-                        this.props.onCompleted(vals);
+                        this.props.onCompleted(res);
                     }
                 } catch (v) {
                     this.setState({ loading: false, error: v.toString() });

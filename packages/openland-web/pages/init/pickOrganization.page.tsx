@@ -20,7 +20,7 @@ export default withAppBase(withAllAccounts((props) => {
                         <XTable>
                             <XTable.Body>
                                 {props.data.orgs.map((v) => (
-                                    <XTable.Row onClick={() => switchOrganization(v.id)}>
+                                    <XTable.Row onClick={() => switchOrganization(v.id, props.router.query.redirect)}>
                                         <XTable.Cell>
                                             {v.title}
                                         </XTable.Cell>

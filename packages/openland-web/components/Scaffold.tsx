@@ -189,7 +189,7 @@ class UserPopper extends React.Component<{ picture: string | null }, { show: boo
                 content={(
                     <XMenu>
                         <XMenu.Item query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenu.Item>
-                        <XMenu.Item path="/addOrganization">{TextGlobal.addOrganization}</XMenu.Item>
+                        <XMenu.Item path="/createOrganization">{TextGlobal.addOrganization}</XMenu.Item>
                         <XMenu.Item path="/auth/logout">{TextGlobal.signOut}</XMenu.Item>
                     </XMenu>
                 )}

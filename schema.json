@@ -12142,8 +12142,8 @@
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "OBJECT",
-                  "name": "SuperAccount",
+                  "kind": "SCALAR",
+                  "name": "String",
                   "ofType": null
                 }
               },

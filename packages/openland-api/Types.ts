@@ -215,10 +215,7 @@ export interface CreateOrganizationMutationVariables {
 };
 
 export interface CreateOrganizationMutation {
-  alphaCreateOrganization:  {
-    __typename: "SuperAccount",
-    id: string,
-  },
+  alphaCreateOrganization: string,
 };
 
 export interface AccountInviteInfoQueryVariables {

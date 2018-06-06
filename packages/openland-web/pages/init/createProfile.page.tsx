@@ -29,7 +29,13 @@ const CreateProfileForm = withCreateProfile((props) => {
                 <TextWrapper>
                     <Title>Set up a user account</Title>
                 </TextWrapper>
-                <XForm defaultValues={props.data.prefill} submitMutation={props.createProfile} mutationDirect={true} onCompleted={() => window.location.href = '/'}>
+                <XForm
+                    defaultValues={props.data.prefill}
+                    submitMutation={props.createProfile}
+                    mutationDirect={true}
+                    onCompleted={() => window.location.href = '/'}
+                    keepLoading={true}
+                >
                     <XVertical>
                         <XHorizontal separator="none">
                             <FormWrapper>

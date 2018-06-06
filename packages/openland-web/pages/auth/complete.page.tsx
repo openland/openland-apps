@@ -6,11 +6,12 @@ import createHistory from 'history/createBrowserHistory';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { withData } from '../../components/withData';
-
 interface AuthResult {
     expiresIn: number;
     accessToken: string;
     idToken: string;
+    state: string;
+    appState: string | null;
 }
 
 class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
@@ -44,7 +45,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
             Cookie.remove('statecraft-key');
             Cookie.remove('x-openland-org');
             Cookie.set('x-openland-token', body.token);
-            let path = localStorage.getItem('redirect_path') || '/';
+            let path = auth.state !== 'none' ? auth.state : '/';
             createHistory({
                 forceRefresh: true
             }).replace(path);

@@ -22,8 +22,10 @@ import {
 } from '../../components/CreateProfileComponents';
 import { XButton } from 'openland-x/XButton';
 import { withRouter } from 'next/router';
+import { withUserInfo } from '../../components/UserInfo';
+import { switchOrganization } from '../../utils/switchOrganization';
 
-const CreateProfileForm = withCreateOrganization(withRouter((props) => {
+const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props) => {
 
     return (
         <RootContainer>
@@ -32,13 +34,18 @@ const CreateProfileForm = withCreateOrganization(withRouter((props) => {
                 <TextWrapper>
                     <Title>Add your organization</Title>
                 </TextWrapper>
-                <XForm submitMutation={props.createOrganization} mutationDirect={true} onCompleted={() => window.location.href = '/'}>
+                <XForm
+                    submitMutation={props.createOrganization}
+                    mutationDirect={true}
+                    onCompleted={(src) => { switchOrganization(src.data.alphaCreateOrganization); }}
+                    keepLoading={true}
+                >
                     <XVertical>
                         <XHorizontal separator="none">
                             <FormWrapper>
                                 <InputGroup>
                                     <Label>Organization name</Label>
-                                    <XForm.Text field="title" size="medium" placeholder="Acme Corparation" required={true}/>
+                                    <XForm.Text field="title" size="medium" placeholder="Acme Corparation" required={true} />
                                 </InputGroup>
                                 <InputGroup>
                                     <FieldHeader><Label>Website</Label><OptionalLabel>optional</OptionalLabel></FieldHeader>
@@ -51,8 +58,7 @@ const CreateProfileForm = withCreateOrganization(withRouter((props) => {
                             </PhotoContiner>
                         </XHorizontal>
                         <Footer>
-                            <XButton style="link" text={['/authAddOrganization'].indexOf(props.router.path) > -1 ? 'Skip for now' : 'Cancel'} path="/" onClick={() => sessionStorage.setItem('__organization_add_skipped', 'true')} />
-                            
+                            <XButton style="link" text={props.isAccountExists ? 'Cancel' : 'Skip for now'} path="/" />
                             <XForm.Submit style="primary" text="Continue" size="medium" alignSelf="flex-end" />
                         </Footer>
                     </XVertical>
@@ -60,7 +66,7 @@ const CreateProfileForm = withCreateOrganization(withRouter((props) => {
             </ContentWrapper>
         </RootContainer>
     );
-}));
+})));
 
 export default withApp('Create Profile', 'viewer', (props) => {
     return (
