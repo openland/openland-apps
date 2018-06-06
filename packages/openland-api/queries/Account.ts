@@ -16,14 +16,14 @@ export const AccountQuery = gql`
 `;
 
 export const SaveProfileMutation = gql`
-    mutation SaveProfile($firstName: String!, $lastName: String, $photo: ImageRefInput) {
-        alphaSaveProfile(firstName: $firstName, lastName: $lastName, photo: $photo)
+    mutation SaveProfile($firstName: String!, $lastName: String, $photo: ImageRefInput, $phone: String) {
+        alphaSaveProfile(firstName: $firstName, lastName: $lastName, photo: $photo, phone: $phone)
     }
 `;
 
 export const CreateOrganizationMutation = gql`
-    mutation CreateOrganization($title: String!, $site: String, $role: String, $logo: ImageRefInput) {
-        alphaCreateOrganization(title: $title, site: $site, role: $role, logo: $logo) {
+    mutation CreateOrganization($title: String!, $website: String, $role: String, $logo: ImageRefInput) {
+        alphaCreateOrganization(title: $title, website: $website, role: $role, logo: $logo) {
             id
         }
     }

@@ -52,10 +52,10 @@ export const AuthRouter = withUserInfo((props) => {
     if (!handled && !props.isAccountExists && !(canUseDOM && sessionStorage.getItem('__organization_add_skipped'))) {
         handled = true;
         if ([
-            '/addOrganization',
+            '/authAddOrganization',
         ].indexOf(props.router.path) < 0) {
             console.warn('NoOrganization');
-            return <XPageRedirect path="/addOrganization" />;
+            return <XPageRedirect path="/authAddOrganization" />;
         }
     }
 
@@ -90,7 +90,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/suspended',
             '/createProfile',
             '/pickOrganization',
-            '/addOrganization',
+            '/authAddOrganization',
             '/signin',
             '/signup'
         ].indexOf(props.router.path) >= 0) {
