@@ -400,6 +400,7 @@ let SearchResults = withSearch((props) => {
 //
 
 const MenuView = Glamorous.div({
+    width: '208px',
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#FAFAFC',

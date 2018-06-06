@@ -9,7 +9,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XLink } from 'openland-x/XLink';
 
 const HeaderImage = Glamorous.div({
-    backgroundColor: '#3b345e',
+    backgroundColor: '#5938e8',
     height: '164px',
     marginBottom: '-64px'
 });
@@ -60,8 +60,10 @@ export default withApp('Home', 'viewer', withUserInfo((props) => {
                         <ContainerInner>
                             <XVertical>
                                 <ContainerTitle>Welcome to  Openland!</ContainerTitle>
-                                <HyperButton path="/settings">Complete Your Profile</HyperButton>
-                                <HyperButton>Publish lot</HyperButton>
+                                <HyperButton path="/settings/profile">Complete Your Profile</HyperButton>
+                                <HyperButton path="/settings/invites">Invite partners</HyperButton>
+                                <HyperButton>Publish Opportunity</HyperButton>
+                                <HyperButton>Find Opportunities</HyperButton>
                             </XVertical>
                         </ContainerInner>
                     </Container>

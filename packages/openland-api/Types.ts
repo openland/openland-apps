@@ -220,6 +220,30 @@ export interface CreateOrganizationMutation {
   },
 };
 
+export interface AccountInvitesQuery {
+  invites:  Array< {
+    __typename: "Invite",
+    id: string,
+    key: string,
+  } > | null,
+};
+
+export interface AccountCreateInviteMutation {
+  alphaCreateInvite:  {
+    __typename: "Invite",
+    id: string,
+    key: string,
+  },
+};
+
+export interface AccountDestroyInviteMutationVariables {
+  id: string,
+};
+
+export interface AccountDestroyInviteMutation {
+  alphaDeleteInvite: string,
+};
+
 export interface ProfilePrefillQuery {
   prefill:  {
     __typename: "ProfilePrefill",

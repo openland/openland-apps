@@ -27,10 +27,11 @@ routes.add('/map', '/main/explore/root');
 routes.add('/map/', '/main/explore/root');
 
 //
-// Profile
+// Settings
 //
 
-routes.add('/settings', '/main/settings/profile');
+routes.add('/settings/profile', '/main/settings/profile');
+routes.add('/settings/invites', '/main/settings/invites');
 
 //
 // Create account

@@ -13,25 +13,21 @@ interface NextRoutes {
     findAndGetUrls(nameOrUrl?: string, params?: any): { route: any, urls: { as: string, href: string } };
 }
 
-export class XRouterProvider extends React.Component<{ routes: NextRoutes }> {
+export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostName: string, protocol: string }> {
     static contextTypes = {
-        hostName: PropTypes.string.isRequired,
-        protocol: PropTypes.string.isRequired,
         router: PropTypes.object.isRequired
     };
 
     private xRouterState: XRouter;
 
-    constructor(props: { routes: NextRoutes }, context: any) {
+    constructor(props: { routes: NextRoutes, hostName: string, protocol: string }, context: any) {
         super(props, context);
         this.xRouterState = this.buildState(context);
     }
 
     buildState(context: any) {
         var nRouter = context.router as SingletonRouter;
-        var hostName = context.hostName as string;
-        var protocol = context.protocol as string;
-        var href = protocol + '://' + hostName;
+        var href = this.props.protocol + '://' + this.props.hostName;
         if (nRouter.asPath) {
             href += nRouter.asPath;
         }
@@ -44,8 +40,8 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes }> {
 
         let res: XRouter = {
             href,
-            protocol,
-            hostName,
+            protocol: this.props.protocol,
+            hostName: this.props.hostName,
             path,
             query,
 

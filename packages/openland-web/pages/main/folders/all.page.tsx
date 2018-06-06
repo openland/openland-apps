@@ -507,7 +507,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
             <XDocumentHead title={['Folders']} />
             <Scaffold>
                 <Scaffold.Menu>
-                    <Sidebar title="Folders" width={280}>
+                    <Sidebar title="Folders">
                         {props.data.folders.map((v) => {
                             const type = v.special;
                             let icon = '';

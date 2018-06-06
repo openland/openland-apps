@@ -6,7 +6,6 @@ import Head from 'next/head';
 import { isPageChanged } from 'openland-x-routing/NextRouting';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { HostNameProvider } from 'openland-x-routing/HostNameProvider';
 import { getComponentDisplayName } from 'openland-x-utils/getComponentDisplayName';
 import { trackPage } from 'openland-x-analytics';
 import { apolloClient } from 'openland-x-graphql/apolloClient';
@@ -18,6 +17,7 @@ import getDataFromTree from 'openland-x-graphql/getDataFromTree';
 import '../globals';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 import { XStorageProvider } from 'openland-x-routing/XStorageProvider';
+import { HostNameContext } from 'openland-x-routing/HostNameContext';
 
 interface WithDataProps {
     serverState: { apollo: { data: any, token?: string, org?: string } };
@@ -77,11 +77,11 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                     await getDataFromTree(
                         <XStorageProvider storage={storage}>
                             <ApolloProvider client={apollo}>
-                                <HostNameProvider hostName={host} protocol={protocol}>
-                                    <XRouterProvider routes={Routes}>
+                                <HostNameContext.Provider value={{ hostName: host, protocol: protocol }}>
+                                    <XRouterProvider routes={Routes} hostName={host} protocol={protocol}>
                                         <ComposedComponent {...composedInitialProps} />
                                     </XRouterProvider>
-                                </HostNameProvider>
+                                </HostNameContext.Provider>
                             </ApolloProvider>
                         </XStorageProvider>
                         ,
@@ -121,11 +121,11 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                     await getDataFromTree(
                         <XStorageProvider storage={storage}>
                             <ApolloProvider client={apollo}>
-                                <HostNameProvider hostName={host} protocol={protocol}>
-                                    <XRouterProvider routes={Routes}>
+                                <HostNameContext.Provider value={{ hostName: host, protocol: protocol }}>
+                                    <XRouterProvider routes={Routes} hostName={host} protocol={protocol}>
                                         <ComposedComponent {...composedInitialProps} />
                                     </XRouterProvider>
-                                </HostNameProvider>
+                                </HostNameContext.Provider>
                             </ApolloProvider>
                         </XStorageProvider>
                         ,
@@ -169,11 +169,11 @@ export const withData = (ComposedComponent: React.ComponentType) => {
                 <RootErrorBoundary>
                     <XStorageProvider storage={this.props.storage}>
                         <ApolloProvider client={this.apollo}>
-                            <HostNameProvider hostName={this.props.host} protocol={this.props.protocol}>
-                                <XRouterProvider routes={Routes}>
+                            <HostNameContext.Provider value={{ hostName: this.props.host, protocol: this.props.protocol }}>
+                                <XRouterProvider routes={Routes} hostName={this.props.host} protocol={this.props.protocol}>
                                     <ComposedComponent {...this.props.composedInitialProps} />
                                 </XRouterProvider>
-                            </HostNameProvider>
+                            </HostNameContext.Provider>
                         </ApolloProvider>
                     </XStorageProvider>
                 </RootErrorBoundary>

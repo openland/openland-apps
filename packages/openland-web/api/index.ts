@@ -226,3 +226,7 @@ export const withSaveProfile = graphqlMutation(Queries.Account.SaveProfileMutati
 export const withCreateOrganization = graphqlMutation(Queries.Account.CreateOrganizationMutation, 'createOrganization', { refetchQueries: [Queries.Account.AccountQuery] });
 export const withCreateProfile = graphqlCompose2(graphqlMutation(Queries.Account.SaveProfileMutation, 'createProfile'), graphqlRouted(Queries.Account.ProfilePrefillQuery));
 export const withAllAccounts = graphqlRouted(Queries.Debug.DebugOwnAccountsQuery);
+
+export const withInvites = graphqlRouted(Queries.Account.AccountInvitesQuery);
+export const withInviteCreate = graphqlMutation(Queries.Account.AccountCreateInviteMutation, 'createInvite', { refetchQueries: [Queries.Account.AccountInvitesQuery] });
+export const withInviteDestroy = graphqlMutation(Queries.Account.AccountDestroyInviteMutation, 'destroyInvite', { refetchQueries: [Queries.Account.AccountInvitesQuery] });

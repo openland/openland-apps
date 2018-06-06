@@ -29,6 +29,30 @@ export const CreateOrganizationMutation = gql`
     }
 `;
 
+export const AccountInvitesQuery = gql`
+    query AccountInvites {
+        invites: alphaInvites {
+            id
+            key
+        }
+    }
+`;
+
+export const AccountCreateInviteMutation = gql`
+    mutation AccountCreateInvite {
+        alphaCreateInvite {
+            id
+            key
+        }
+    }
+`;
+
+export const AccountDestroyInviteMutation = gql`
+    mutation AccountDestroyInvite($id: ID!) {
+        alphaDeleteInvite(id: $id)
+    }
+`;
+
 export const ProfilePrefillQuery = gql`
     query ProfilePrefill {
         prefill: alphaProfilePrefill {
