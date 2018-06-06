@@ -20,7 +20,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XModal } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
 import { XTable } from 'openland-x/XTable';
-import * as Cookie from 'js-cookie';
+import { switchOrganization } from '../utils/switchOrganization';
 
 //
 // Root
@@ -466,11 +466,6 @@ interface ScaffoldProps {
     sidebarBorderColor?: string;
 }
 
-function pickOrganization(id: string) {
-    Cookie.set('x-openland-org', id);
-    window.location.href = '/';
-}
-
 const OrganizationPicker = withAllAccounts((props) => {
     if (props.data.loading) {
         return <XLoader loading={true} />;
@@ -479,7 +474,7 @@ const OrganizationPicker = withAllAccounts((props) => {
         <XTable>
             <XTable.Body>
                 {props.data.orgs.map((v) => (
-                    <XTable.Row onClick={() => pickOrganization(v.id)}>{v.title}</XTable.Row>
+                    <XTable.Row onClick={() => switchOrganization(v.id)}>{v.title}</XTable.Row>
                 ))}
             </XTable.Body>
         </XTable>

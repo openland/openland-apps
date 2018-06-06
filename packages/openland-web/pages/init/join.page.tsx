@@ -9,6 +9,7 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../../components/AuthRouter';
 import { withInviteInfo } from '../../api';
 import { XButton } from 'openland-x/XButton';
+import { switchOrganization } from '../../utils/switchOrganization';
 
 const InfoText = Glamorous.div({
     marginBottom: 15
@@ -23,15 +24,22 @@ export default withAppBase(withInviteInfo((props) => {
                     {props.data.invite && (
                         <MessagePageContent title="Join">
                             <InfoText>{props.data.invite.title}</InfoText>
-                            {props.data.invite.joined && <XButton text="Already Joined" enabled={false} style="primary"/>}
-                            {!props.data.invite.joined && <XButton text="Join Organization" style="primary"/>}
+                            {props.data.invite.joined && <XButton text="Go to organization" onClick={() => switchOrganization(props.data.invite!!.orgId)} style="primary" />}
+                            {!props.data.invite.joined &&
+                                <XButton
+                                    text="Join Organization"
+                                    action={async () => {
+                                        await props.doJoin({});
+                                        switchOrganization(props.data.invite!!.orgId);
+                                    }}
+                                    style="primary"
+                                />}
                             {/* <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" /> */}
                         </MessagePageContent>
                     )}
                     {!props.data.invite && (
                         <MessagePageContent title="Join">
                             <InfoText>Unable to find invite</InfoText>
-                            {/* <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" /> */}
                         </MessagePageContent>
                     )}
                 </MessagePage>

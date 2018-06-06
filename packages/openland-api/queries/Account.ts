@@ -34,10 +34,17 @@ export const AccountInviteInfoQuery = gql`
         invite: alphaInviteInfo(key: $inviteKey) {
             id
             key
+            orgId
             title
             photo
             joined
         }
+    }
+`;
+
+export const AccountInviteJoinMutation = gql`
+    mutation AccountInviteJoin($inviteKey: String!) {
+        alphaJoinInvite(key: $inviteKey)
     }
 `;
 

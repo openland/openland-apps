@@ -12,3 +12,4 @@ export const AccountInvitesQuery = typedQuery<Types.AccountInvitesQuery, {}>(Acc
 export const AccountCreateInviteMutation = typedMutation<Types.AccountCreateInviteMutation, {}>(Account.AccountCreateInviteMutation);
 export const AccountDestroyInviteMutation = typedMutation<Types.AccountDestroyInviteMutation, Types.AccountDestroyInviteMutationVariables>(Account.AccountDestroyInviteMutation);
 export const AccountInviteInfoQuery = typedQuery<Types.AccountInviteInfoQuery, Types.AccountInviteInfoQueryVariables>(Account.AccountInviteInfoQuery);
+export const AccountInviteJoinMutation = typedMutation<Types.AccountInviteJoinMutation, Types.AccountInviteJoinMutationVariables>(Account.AccountInviteJoinMutation);

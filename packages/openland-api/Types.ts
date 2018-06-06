@@ -230,10 +230,19 @@ export interface AccountInviteInfoQuery {
     __typename: "InviteInfo",
     id: string,
     key: string,
+    orgId: string,
     title: string,
     photo: string | null,
     joined: boolean,
   } | null,
+};
+
+export interface AccountInviteJoinMutationVariables {
+  inviteKey: string,
+};
+
+export interface AccountInviteJoinMutation {
+  alphaJoinInvite: string,
 };
 
 export interface AccountInvitesQuery {

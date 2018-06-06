@@ -8,12 +8,7 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../../components/AuthRouter';
 import { withAllAccounts } from '../../api';
 import { XTable } from 'openland-x/XTable';
-import * as Cookie from 'js-cookie';
-
-function pickOrganization(id: string) {
-    Cookie.set('x-openland-org', id);
-    window.location.href = '/';
-}
+import { switchOrganization } from '../../utils/switchOrganization';
 
 export default withAppBase(withAllAccounts((props) => {
     return (
@@ -25,7 +20,7 @@ export default withAppBase(withAllAccounts((props) => {
                         <XTable>
                             <XTable.Body>
                                 {props.data.orgs.map((v) => (
-                                    <XTable.Row onClick={() => pickOrganization(v.id)}>
+                                    <XTable.Row onClick={() => switchOrganization(v.id)}>
                                         <XTable.Cell>
                                             {v.title}
                                         </XTable.Cell>
