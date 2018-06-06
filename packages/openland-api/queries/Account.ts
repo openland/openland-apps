@@ -21,6 +21,14 @@ export const SaveProfileMutation = gql`
     }
 `;
 
+export const CreateOrganizationMutation = gql`
+    mutation CreateOrganization($title: String!, $site: String, $role: String, $logo: ImageRefInput) {
+        alphaCreateOrganization(title: $title, site: $site, role: $role, logo: $logo) {
+            id
+        }
+    }
+`;
+
 export const ProfilePrefillQuery = gql`
     query ProfilePrefill {
         prefill: alphaProfilePrefill {

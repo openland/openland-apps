@@ -6,9 +6,7 @@ import { FolderButton } from '../../../components/FolderButton';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { MapStyleSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
 import { withParcelStats, withDealsMap, ParcelMapSearch } from '../../../api/';
-// import { XSwitcher } from 'openland-x/XSwitcher';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
-import { Scaffold } from '../../../components/Scaffold';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { TextPageExplore } from 'openland-text/TextPageExplore';
 import { TextMap } from 'openland-text/TextMap';
@@ -27,6 +25,7 @@ import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMapGeocoder } from 'openland-x-map/XMapGeocoder';
 import { XIcon } from 'openland-x/XIcon';
+import { Scaffold } from '../../../components/Scaffold';
 
 const XMapContainer = Glamorous.div({
     display: 'flex',
@@ -499,7 +498,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         let cityChanged = pendingCity !== this.savedCity;
         let city = pendingCity;
         if (canUseDOM) {
-            sessionStorage.setItem('__explore_city', city);
+            sessionStorage.setItem('__explore_city', city);            
         }
         let cityName = city === 'sf' ? 'San Francisco' : 'New York';
         let countyName = city === 'sf' ? 'San Francisco' : 'New York';

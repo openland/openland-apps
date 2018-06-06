@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { withUserInfo } from './UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 export const AuthRouter = withUserInfo((props) => {
     console.warn(props);
@@ -47,6 +48,17 @@ export const AuthRouter = withUserInfo((props) => {
         }
     }
 
+    // Redirect to organization add
+    if (!handled && !props.isAccountExists && !(canUseDOM && sessionStorage.getItem('__organization_add_skipped'))) {
+        handled = true;
+        if ([
+            '/addOrganization',
+        ].indexOf(props.router.path) < 0) {
+            console.warn('NoOrganization');
+            return <XPageRedirect path="/addOrganization" />;
+        }
+    }
+
     // Redirect to generic 'need more info' page if signup is not completed
     if (!handled && !props.isCompleted) {
         handled = true;
@@ -78,6 +90,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/suspended',
             '/createProfile',
             '/pickOrganization',
+            '/addOrganization',
             '/signin',
             '/signup'
         ].indexOf(props.router.path) >= 0) {

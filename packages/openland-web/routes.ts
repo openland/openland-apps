@@ -14,6 +14,9 @@ routes.add('/need_info', '/init/need_info');
 routes.add('/deactivated', '/init/deactivated');
 routes.add('/createProfile', '/init/createProfile');
 routes.add('/pickOrganization', '/init/pickOrganization');
+routes.add('/createProfile/', '/init/createProfile');
+routes.add('/addOrganization', '/init/addOrganization');
+routes.add('/addOrganization/', '/init/addOrganization');
 routes.add('/404', '/404');
 
 //

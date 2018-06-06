@@ -8,14 +8,14 @@ export let XHorizontalDiv = Glamorous.div({
     position: 'relative'
 });
 
-export let XHorizontalSpaceDiv = Glamorous.div<{ separator?: 'large' | 'normal' }>((props) => ({
-    width: props.separator === 'large' ? 32 : 16,
+export let XHorizontalSpaceDiv = Glamorous.div<{ separator?: 'large' | 'normal' | 'none' }>((props) => ({
+    width: props.separator === 'large' ? 32 : (props.separator === 'normal' || props.separator === undefined) ? 16 : 0,
     alignSelf: 'stretch',
     flexShrink: 0,
     flexGrow: 0
 }));
 
-export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal', className?: string }> {
+export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal' | 'none', className?: string }> {
     render() {
         let elements = React.Children.toArray(this.props.children);
         let children: any[] = [];
@@ -23,7 +23,7 @@ export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal
         let separator = 0;
         for (let el of elements) {
             if (!isFirst) {
-                children.push(<XHorizontalSpaceDiv key={'_separator_' + separator} />);
+                children.push(<XHorizontalSpaceDiv key={'_separator_' + separator} separator={this.props.separator}/>);
                 separator++;
             } else {
                 isFirst = false;

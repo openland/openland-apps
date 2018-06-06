@@ -206,6 +206,20 @@ export interface SaveProfileMutation {
   alphaSaveProfile: string,
 };
 
+export interface CreateOrganizationMutationVariables {
+  title: string,
+  site?: string | null,
+  role?: string | null,
+  logo?: ImageRefInput | null,
+};
+
+export interface CreateOrganizationMutation {
+  alphaCreateOrganization:  {
+    __typename: "SuperAccount",
+    id: string,
+  },
+};
+
 export interface ProfilePrefillQuery {
   prefill:  {
     __typename: "ProfilePrefill",
