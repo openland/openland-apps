@@ -16,23 +16,7 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                 <XVertical>
 
                     <XVertical>
-                        <XTitle>Cloud</XTitle>
-                        <XHorizontal>
-                            <XAvatar src="3a6fc01f-4542-40ea-96c3-191df4d166b8" />
-                            <XAvatar src="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="x-large" />
-                            <XAvatar src="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="large" />
-                            <XAvatar src="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="medium" />
-                            <XAvatar src="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="small" />
-                        </XHorizontal>
-
-                        <XHorizontal>
-                            <XAvatar style="square" cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" />
-                            <XAvatar style="square" cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="x-large" />
-                            <XAvatar style="square" cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="large" />
-                            <XAvatar style="square" cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="medium" />
-                            <XAvatar style="square" cloudImageUuid="3a6fc01f-4542-40ea-96c3-191df4d166b8" size="small" />
-                        </XHorizontal>
-
+                    
                         <XTitle>default</XTitle>
                         <XHorizontal>
                             <XAvatar />
