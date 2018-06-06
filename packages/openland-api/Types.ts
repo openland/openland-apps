@@ -220,6 +220,21 @@ export interface CreateOrganizationMutation {
   },
 };
 
+export interface AccountInviteInfoQueryVariables {
+  inviteKey: string,
+};
+
+export interface AccountInviteInfoQuery {
+  invite:  {
+    __typename: "InviteInfo",
+    id: string,
+    key: string,
+    title: string,
+    photo: string | null,
+    joined: boolean,
+  } | null,
+};
+
 export interface AccountInvitesQuery {
   invites:  Array< {
     __typename: "Invite",

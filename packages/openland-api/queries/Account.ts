@@ -29,6 +29,18 @@ export const CreateOrganizationMutation = gql`
     }
 `;
 
+export const AccountInviteInfoQuery = gql`
+    query AccountInviteInfo($inviteKey: String!) {
+        invite: alphaInviteInfo(key: $inviteKey) {
+            id
+            key
+            title
+            photo
+            joined
+        }
+    }
+`;
+
 export const AccountInvitesQuery = gql`
     query AccountInvites {
         invites: alphaInvites {
