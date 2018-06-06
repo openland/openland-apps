@@ -5,7 +5,7 @@ import { makeActionable, ActionableParentProps } from './Actionable';
 import { XFlexStyles, applyFlex } from './Flex';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
 import { XIcon } from './XIcon';
-import { XCloudImage, XImageCrop } from './XCloudImage';
+import { XCloudImage } from './XCloudImage';
 
 export type XAvatarSize = 'x-large' | 'large' | 'medium' | 'default' | 'small';
 export type XAvatarStyle = 'square' | 'circle';
@@ -17,7 +17,7 @@ export interface XAvatarStyleProps extends XFlexStyles {
     attach?: 'left' | 'right' | 'both';
 }
 
-export type XAvatarProps = ActionableParentProps<NavigableParentProps<XAvatarStyleProps & { src?: string, cloudImageUuid?: string, crop?: XImageCrop | null, }>>;
+export type XAvatarProps = ActionableParentProps<NavigableParentProps<XAvatarStyleProps & { src?: string, cloudImageUuid?: string }>>;
 
 let sizeStyles = styleResolver({
     'x-large': {
@@ -150,9 +150,19 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
     return (
         <>
-            {props.src && <StyledAvatar {...avatarProps} />}
-            {props.cloudImageUuid && <StyledPlaceholder {...avatarProps} ><XCloudImage crop={props.crop}  resize="fill" srcPrefix={props.cloudImageUuid} maxWidth={sizeStyles(props.size).width as number} maxHeight={sizeStyles(props.size).height as number}/></StyledPlaceholder>}
-            {!props.src && !props.cloudImageUuid && <StyledPlaceholder {...avatarProps} ><Placeholder size={avatarProps.avatarSize}  icon={props.style === 'square' ? 'account_box' : 'account_circle'} /></StyledPlaceholder>}
+            {props.src && (
+                <StyledAvatar {...avatarProps} />
+            )}
+            {props.cloudImageUuid && (
+                <StyledPlaceholder {...avatarProps}>
+                    <XCloudImage resize="fill" src={props.cloudImageUuid} maxWidth={sizeStyles(props.size).width as number} maxHeight={sizeStyles(props.size).height as number} />
+                </StyledPlaceholder>
+            )}
+            {!props.src && !props.cloudImageUuid && (
+                <StyledPlaceholder {...avatarProps} >
+                    <Placeholder size={avatarProps.avatarSize} icon={props.style === 'square' ? 'account_box' : 'account_circle'} />
+                </StyledPlaceholder>
+            )}
         </>
     );
 }));

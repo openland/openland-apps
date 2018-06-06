@@ -160,7 +160,7 @@ const hideAnimationLeft = glamor.keyframes({
     }
 });
 
-const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDurationOut: number, animationIn: 'fade' | 'pop',  animationOut: 'fade' | 'pop'}>((props) => ({
+const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDurationOut: number, animationIn: 'fade' | 'pop', animationOut: 'fade' | 'pop' }>((props) => ({
     '.hide': {
         animationDuration: `${props.animationDurationOut}ms`,
         animationFillMode: 'forwards',
@@ -177,37 +177,37 @@ const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDuratio
 
     '[x-placement^="right"]': {
         '.show': {
-            animationName: `${props.animationIn === 'pop' ? showAnimationRight : showAnimation } !important`,
+            animationName: `${props.animationIn === 'pop' ? showAnimationRight : showAnimation} !important`,
         },
         '.hide': {
-            animationName: `${props.animationOut === 'pop' ? hideAnimationRight : hideAnimation } !important`
+            animationName: `${props.animationOut === 'pop' ? hideAnimationRight : hideAnimation} !important`
         }
     },
 
     '[x-placement^="left"]': {
         '.show': {
-            animationName: `${props.animationIn === 'pop' ? showAnimationLeft : showAnimation } !important`,
+            animationName: `${props.animationIn === 'pop' ? showAnimationLeft : showAnimation} !important`,
         },
         '.hide': {
-            animationName: `${props.animationOut === 'pop' ? hideAnimationLeft : hideAnimation } !important`
+            animationName: `${props.animationOut === 'pop' ? hideAnimationLeft : hideAnimation} !important`
         }
     },
 
     '[x-placement^="top"]': {
         '.show': {
-            animationName: `${props.animationIn === 'pop' ? showAnimationTop : showAnimation } !important`,
+            animationName: `${props.animationIn === 'pop' ? showAnimationTop : showAnimation} !important`,
         },
         '.hide': {
-            animationName: `${props.animationOut === 'pop' ? hideAnimationTop : hideAnimation } !important`
+            animationName: `${props.animationOut === 'pop' ? hideAnimationTop : hideAnimation} !important`
         }
     },
 
     '[x-placement^="bottom"]': {
         '.show': {
-            animationName: `${props.animationIn === 'pop' ? showAnimationBottom : showAnimation } !important`,
+            animationName: `${props.animationIn === 'pop' ? showAnimationBottom : showAnimation} !important`,
         },
         '.hide': {
-            animationName: `${props.animationOut === 'pop' ? hideAnimationBottom : hideAnimation } !important`
+            animationName: `${props.animationOut === 'pop' ? hideAnimationBottom : hideAnimation} !important`
         }
     },
 
@@ -237,11 +237,12 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
                     <PopperRoot
                         className={classnames('popper', this.props.animationClass ? this.props.animationClass : this.props.animation === null ? 'static' : this.props.willHide ? 'hide' : 'show')}
                         animationIn={this.props.animationIn ? this.props.animationIn : this.props.animation ? this.props.animation : 'fade'}
-                        animationOut={this.props.animationOut  ? this.props.animationOut : this.props.animation ? this.props.animation : 'fade'}
+                        animationOut={this.props.animationOut ? this.props.animationOut : this.props.animation ? this.props.animation : 'fade'}
                         innerRef={this.props.caputurePopperNode}
                         onMouseOver={this.props.showOnHover ? this.props.onMouseOverContent : undefined}
                         onMouseOut={this.props.showOnHover ? this.props.onMouseOutContent : undefined}
-                        animationDurationIn={animationDurationIn} animationDurationOut={animationDurationOut}
+                        animationDurationIn={animationDurationIn}
+                        animationDurationOut={animationDurationOut}
                     >
 
                         {this.prepareRef(this.props.contentContainer, {

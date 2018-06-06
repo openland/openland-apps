@@ -17,7 +17,8 @@ export const XLink = makeNavigable<{ className?: string }>((props) => {
             href={props.href}
             target={props.hrefTarget}
             onClick={props.onClick}
-            className={className}>
+            className={className}
+        >
             {props.children}
         </a>
     );

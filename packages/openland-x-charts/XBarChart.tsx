@@ -9,10 +9,10 @@ export class XBarChart extends React.Component<{ data: Types.ChartFullFragment, 
 
     render() {
         if (!canUseDOM) {
-            return <div/>;
+            return <div />;
         }
         let data: object[] = this.props.data.labels.map((v, i) => {
-            let row = {name: this.props.data.labels[i]};
+            let row = { name: this.props.data.labels[i] };
             this.props.data.datasets.forEach((d, j) => {
                 row['item-' + j] = d.values[i];
             });
@@ -24,16 +24,18 @@ export class XBarChart extends React.Component<{ data: Types.ChartFullFragment, 
                 <BarChart data={data}>
                     <XAxis dataKey={'name'} />
                     <YAxis
-                        domain={[this.props.minY !== undefined ? this.props.minY!! : 'auto', this.props.maxY !== undefined ? this.props.maxY!! : 'auto']}/>
-                    <CartesianGrid strokeDasharray={'3 3'}/>
-                    <Tooltip/>
+                        domain={[this.props.minY !== undefined ? this.props.minY!! : 'auto', this.props.maxY !== undefined ? this.props.maxY!! : 'auto']}
+                    />
+                    <CartesianGrid strokeDasharray={'3 3'} />
+                    <Tooltip />
                     {this.props.data.datasets.map((v, i) => (
-                        <Bar key={'item-' + i}
-                             dataKey={'item-' + i}
-                             fill={(this.props.defaultColor) ? this.props.defaultColor : colors[i]}
-                             name={v.label}
-                             stackId={this.props.stacked === true ? 'someStackId' : undefined}
-                             label={false}
+                        <Bar
+                            key={'item-' + i}
+                            dataKey={'item-' + i}
+                            fill={(this.props.defaultColor) ? this.props.defaultColor : colors[i]}
+                            name={v.label}
+                            stackId={this.props.stacked === true ? 'someStackId' : undefined}
+                            label={false}
                         />))}
                 </BarChart>
             </ResponsiveContainer>

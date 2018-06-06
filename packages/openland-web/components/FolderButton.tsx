@@ -72,7 +72,8 @@ const ButtonMoveParcelToFolder = withSetFolderMutation((props) => {
                     mutation={props.setFolder}
                     active={!(props as any).remove}
                     variables={{ parcelId: (props as any).parcelId, folderId: (props as any).folderId }}
-                    onSuccess={modal!!.close}>
+                    onSuccess={modal!!.close}
+                >
                     <FolderEntryContent selected={(props as any).remove}>
                         <XIcon icon="folder" />
                         <span>{(props as any).text}</span>
@@ -115,17 +116,17 @@ const ButtonMoveSearchResultsToFolder = withAddToFolderFromSearchMutation((props
                         folderId: (props as any).folderId,
                         state: (props as any).state
                     }}
-                    onSuccess={modal!!.close}>
+                    onSuccess={modal!!.close}
+                >
                     <FolderEntryContent >
                         <XIcon icon="folder" />
                         {(props as any).text}
                     </FolderEntryContent>
-
                     <Loader
                         text="Remove"
                         size="small"
-                        style="flat" />
-
+                        style="flat"
+                    />
                 </FolderEntry>
 
             )}
@@ -302,12 +303,14 @@ export class FolderButton extends React.PureComponent<FolderButtonProps, { show:
                 )}
 
                 {this.props.search && (
-                    <CreateFolderFromSearch variables={{
-                        query: this.props.search.query,
-                        city: this.props.search.city,
-                        county: this.props.search.county,
-                        state: this.props.search.state
-                    }} />
+                    <CreateFolderFromSearch
+                        variables={{
+                            query: this.props.search.query,
+                            city: this.props.search.city,
+                            county: this.props.search.county,
+                            state: this.props.search.state
+                        }}
+                    />
                 )}
                 <Shadow active={this.state.show} />
                 <XPopper

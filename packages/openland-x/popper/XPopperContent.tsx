@@ -43,7 +43,8 @@ export class XPopperContent extends React.PureComponent<{ captureContent?: (arro
                 minWidth={this.props.minWidth}
                 minHeight={this.props.minHeight}
                 width={this.props.width}
-                height={this.props.height}>
+                height={this.props.height}
+            >
                 {this.props.children}
             </ContentDiv>);
     }

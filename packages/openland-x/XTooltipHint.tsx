@@ -34,9 +34,12 @@ export class XTooltipHint extends React.Component<XTooltipProps> {
         }
 
         return (
-            <XPopper showOnHover={true} content={(
-                <Content> {content} </Content>
-            )}>
+            <XPopper
+                showOnHover={true}
+                content={(
+                    <Content> {content} </Content>
+                )}
+            >
                 <TargetContent>
                     <XIcon icon={this.props.type ? this.props.type : 'error'} />
                 </TargetContent>

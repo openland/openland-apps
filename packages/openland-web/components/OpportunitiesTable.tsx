@@ -190,7 +190,8 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                 <ExportModal
                     variables={(props as any).variables}
                     // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic), page: props.router.query.page_hpd ? props.router.query.page_hpd : undefined, first: 10 }}
-                    stage="unit" />
+                    stage="unit"
+                />
                 {/* <_OpportunitiesTable
                     variables={(props as any).variables}
                     // variables={{ state: OpportunityState.APPROVED_INITIAL, query: JSON.stringify(qPublic) }}

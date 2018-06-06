@@ -421,13 +421,15 @@ class FolderMap extends React.Component<XWithRouter, { zoomToSmallForParcels: bo
                     )}
 
                     {this.state.zoomToSmallForParcels && (
-                        <NoParcelsMessage onClick={() => {
-                            if (this.map) {
-                                this.map.jumpTo({
-                                    zoom: 12,
-                                });
-                            }
-                        }}>
+                        <NoParcelsMessage
+                            onClick={() => {
+                                if (this.map) {
+                                    this.map.jumpTo({
+                                        zoom: 12,
+                                    });
+                                }
+                            }}
+                        >
                             <NoParcelsMessageIcon icon="info" />
                             <span>Zoom in to see parcel grid</span>
 
@@ -541,9 +543,7 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
                             <NoFoldersTextContainer>
 
                                 You can organize parcels with folders
-                            <CreateFolder target={(
-                                    <NewFolderForPlaceholder />
-                                )} />
+                            <CreateFolder target={(<NewFolderForPlaceholder />)} />
                             </NoFoldersTextContainer>
 
                         </EmptyWithMargin>

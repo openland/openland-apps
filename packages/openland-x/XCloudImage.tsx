@@ -9,16 +9,15 @@ export interface XImageCrop {
 
 export function XCloudImage(props: {
     src?: string | null,
-    srcPrefix?: string | null,
     srcUrl?: string | null,
-    crop?: XImageCrop | null,
-    placeholder?: string | null, className?: string,
+    placeholder?: string | null,
+    className?: string,
     maxWidth?: number, maxHeight?: number,
     width?: number, height?: number,
     resize?: 'fill' | 'fit'
 }) {
 
-    if (props.src || props.srcPrefix) {
+    if (props.src) {
         let scale: string | null = null;
         let scaleRetina: string | null = null;
         let scaleWidth = props.width!! ? props.width!! : (props.maxWidth ? props.maxWidth!! : null);
@@ -38,10 +37,6 @@ export function XCloudImage(props: {
         if (scale != null && scaleRetina != null) {
             let ops: string = '';
             let opsRetina: string = '';
-            if (props.crop) {
-                ops += `-/crop/${props.crop.width}x${props.crop.height}/${props.crop.left},${props.crop.top}/`;
-                opsRetina += `-/crop/${props.crop.width}x${props.crop.height}/${props.crop.left},${props.crop.top}/`;
-            }
             if (props.resize === 'fill') {
                 ops += '-/format/jpeg/-/scale_crop/' + scale + '/center/-/progressive/yes/';
                 opsRetina += '-/format/jpeg/-/scale_crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
@@ -49,10 +44,11 @@ export function XCloudImage(props: {
                 ops += '-/format/jpeg/-/preview/' + scale + '/-/setfill/ffffff/-/crop/' + scale + '/center/-/progressive/yes/';
                 opsRetina += '-/format/jpeg/-/preview/' + scaleRetina + '/-/setfill/ffffff/-/crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
             }
-            let url = props.src ? 'https://ucarecdn.com/' + props.src + '/' + ops : props.srcPrefix + ops;
-            let urlRetina = props.src ? 'https://ucarecdn.com/' + props.src + '/' + opsRetina : props.srcPrefix + opsRetina;
+            let url = props.src + ops;
+            let urlRetina = props.src + opsRetina;
             return (
-                <img src={url}
+                <img
+                    src={url}
                     srcSet={urlRetina}
                     className={props.className}
                     style={{
@@ -60,41 +56,48 @@ export function XCloudImage(props: {
                         maxHeight: props.maxHeight,
                         width: props.width,
                         height: props.height
-                    }} />
+                    }}
+                />
             );
         } else {
-            let url2 = 'https://ucarecdn.com/' + props.src + '/';
             return (
-                <img src={url2}
+                <img
+                    src={props.src}
                     className={props.className}
                     style={{
                         maxWidth: props.maxWidth,
                         maxHeight: props.maxHeight,
                         width: props.width,
                         height: props.height
-                    }} />
+                    }}
+                />
             );
         }
     } else if (props.srcUrl) {
         return (
-            <img src={props.srcUrl!!}
+            <img
+                src={props.srcUrl!!}
                 className={props.className}
                 style={{
                     maxWidth: props.maxWidth,
                     maxHeight: props.maxHeight,
                     width: props.width,
                     height: props.height
-                }} />
+                }}
+            />
         );
     } else {
         return (
-            <img src={props.placeholder!!} className={props.className}
+            <img
+                src={props.placeholder!!}
+                className={props.className}
                 style={{
                     maxWidth: props.maxWidth,
                     maxHeight: props.maxHeight,
                     width: props.width,
                     height: props.height
-                }} />
+                }}
+            />
         );
     }
 }

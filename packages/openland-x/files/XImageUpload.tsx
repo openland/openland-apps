@@ -26,6 +26,7 @@ export function XImageUpload(props: XImageUploadProps) {
                         )}
                     </div>
                 );
-            }} />
+            }}
+        />
     );
 }

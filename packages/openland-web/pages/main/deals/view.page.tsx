@@ -77,7 +77,8 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                     <XHeader
                         text={props.data.deal.title}
                         description={props.data.deal.parcel ? <ParcelNumber city={props.data.deal.parcel!!.city.name} id={props.data.deal.parcel!!.number} /> : 'unknown parcel'}
-                        bullet={bulletText} bulletColor={bulletColor}
+                        bullet={bulletText}
+                        bulletColor={bulletColor}
                     >
                         <XWithRole role="super-admin">
                             <RemoveButton />
@@ -111,7 +112,7 @@ export default withApp('Deal', 'viewer', withDeal((props) => {
                                 {props.data.deal.parcel && props.data.deal.parcel.extrasAnalyzed !== true &&
                                     <XProperty title="Compatible buildings">
                                         <XView direction="row">
-                                        <XTooltipHint>{Text.hint_too_complex}</XTooltipHint>
+                                            <XTooltipHint>{Text.hint_too_complex}</XTooltipHint>
                                             {Text.text_too_complex}
                                         </XView>
                                     </XProperty>

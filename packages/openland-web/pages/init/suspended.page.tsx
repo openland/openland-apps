@@ -14,11 +14,9 @@ export default withAppBase((props) => {
             <XDocumentHead title="Blocked" titleSocial="Openland - land acquisition platfom" />
             <XTrack event="View Suspended">
                 <MessagePage>
-                    <MessagePageContent
-                        title="Account suspended"
-                    >
+                    <MessagePageContent title="Account suspended">
                         This account has been suspended. Please, contact <XLink href="mailto:support@openland.com">support</XLink> to restore access to your account.
-                </MessagePageContent>
+                    </MessagePageContent>
                 </MessagePage>
             </XTrack>
         </AuthRouter>

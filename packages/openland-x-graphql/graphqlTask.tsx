@@ -108,7 +108,8 @@ export function graphqlTask<T, V, R>(task: GraphqlTypedTask<T, V, R>) {
                             result: this.state.result,
                             status: this.state.status
                         }}
-                        {...this.props} />
+                        {...this.props}
+                    />
                 );
             }
         };

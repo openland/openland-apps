@@ -235,7 +235,12 @@ const FolderButtonWithSave = withParcelStats((props) => {
     }
     return (
         props.data.parcelsStats > 0 && props.data.variables && props.data.variables.query ? (
-            <FolderButton style="primary" icon={null} placement="bottom" show={(props as any).showFolderSelect} search={props.data.variables as any}
+            <FolderButton
+                style="primary"
+                icon={null}
+                placement="bottom"
+                show={(props as any).showFolderSelect}
+                search={props.data.variables as any}
                 handleClose={(props as any).onClose}
                 target={(
                     <FilterCounterWrapper saveActive={(props as any).showFolderSelect} >
@@ -246,7 +251,8 @@ const FolderButtonWithSave = withParcelStats((props) => {
                             <XButtonWithMargin text="Save to Folder" style="primary" onClick={(props as any).onButtonClick} />
                         </XWithRole>
                     </FilterCounterWrapper>
-                )} />
+                )}
+            />
         ) : (
                 <FilterCounterWrapper saveActive={(props as any).showFolderSelect}>
                     <FilterCounter filtered={(props as any).variables.query !== undefined}>
@@ -581,13 +587,15 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
                             </ParcelMap>
 
                             {this.state.zoomToSmallForParcels && (
-                                <NoParcelsMessage onClick={() => {
-                                    if (this.map) {
-                                        this.map.jumpTo({
-                                            zoom: 12,
-                                        });
-                                    }
-                                }}>
+                                <NoParcelsMessage
+                                    onClick={() => {
+                                        if (this.map) {
+                                            this.map.jumpTo({
+                                                zoom: 12,
+                                            });
+                                        }
+                                    }}
+                                >
                                     <NoParcelsMessageIcon icon="info" />
                                     <span>Zoom in to see parcel grid</span>
 

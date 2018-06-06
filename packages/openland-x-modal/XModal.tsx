@@ -254,7 +254,8 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                         heading={this.props.heading}
                         footer={this.props.footer}
                         body={this.props.body}
-                        customContent={this.props.customContent}>
+                        customContent={this.props.customContent}
+                    >
                         {this.props.children}
                     </ModalContentRender>
                 </ModalRender>

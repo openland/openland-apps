@@ -1,6 +1,4 @@
 import * as React from 'react';
-// import { XButton } from 'openland-x/XButton';
-// import { XCloudImage } from 'openland-x/XCloudImage';
 import { XFileUpload, XImageCrop } from './XFileUpload';
 import Glamorous from 'glamorous';
 import { XIcon } from '../XIcon';
@@ -35,7 +33,7 @@ const DropAreaWrapper = Glamorous.div<{ hasImage: boolean }>((props) => ({
 
     justifyContent: 'center',
     alignItems: 'stretch',
-  
+
 }));
 
 const AvatarImage = Glamorous(XCloudImage)({
@@ -70,6 +68,14 @@ const Placeholder = Glamorous.div<{ hasImage: boolean }>((props) => ({
     }
 }));
 
+function prepareSrc(uuid: string, crop: XImageCrop | null) {
+    let res = 'https://uploadcarecdn.com/' + uuid + '/';
+    if (crop) {
+        res += `-/crop/${crop.width}x${crop.height}/${crop.left},${crop.top}/`;
+    }
+    return res;
+}
+
 export function XAvatarUpload(props: XAvatarUploadProps) {
 
     return (
@@ -86,8 +92,7 @@ export function XAvatarUpload(props: XAvatarUploadProps) {
                         {rp.uuid && <AvatarImage
                             width={152}
                             height={152}
-                            src={rp.uuid}
-                            crop={rp.crop}
+                            src={prepareSrc(rp.uuid, rp.crop)}
                             resize={'fill'}
                         />}
 
@@ -98,6 +103,7 @@ export function XAvatarUpload(props: XAvatarUploadProps) {
                         {rp.isLoading && <XLoader loading={rp.isLoading} />}
                     </DropAreaWrapper>
                 );
-            }} />
+            }}
+        />
     );
 }

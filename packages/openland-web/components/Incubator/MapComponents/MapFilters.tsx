@@ -276,7 +276,8 @@ class Selector extends React.Component<XSelectProps & XWithRouter & { fieldName:
         let { fieldName, ...other } = this.props;
         return (
             <XGroup>
-                <FilterSelector {...other}
+                <FilterSelector
+                    {...other}
                     onChange={(v) => {
                         let value = undefined;
                         if (v) {
@@ -547,11 +548,16 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
             <FilterCategory key={'filter_filterTransit'}>
                 <FilterCategoryTitle>Nearest Transit</FilterCategoryTitle>
                 <ApplyFilterWrap fieldName="filterTransit" router={this.props.router}>
-                    <XRadioGroup elements={[{ value: '60', label: '< 200 feet' },
-                    { value: '243', label: '< 800 feet' },
-                    { value: '457', label: '< 1500 feet' },
-                    { value: '1220', label: '< 4000 feet' },
-                    { value: '2430', label: '< 8000 feet' }]} anyOptionOrder="before" anyOptionName="All" />
+                    <XRadioGroup
+                        elements={[
+                            { value: '60', label: '< 200 feet' },
+                            { value: '243', label: '< 800 feet' },
+                            { value: '457', label: '< 1500 feet' },
+                            { value: '1220', label: '< 4000 feet' },
+                            { value: '2430', label: '< 8000 feet' }]}
+                        anyOptionOrder="before"
+                        anyOptionName="All"
+                    />
                 </ApplyFilterWrap>
             </FilterCategory>
         );
@@ -631,7 +637,8 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                         { value: '1', label: '1 story' },
                                         { value: '2', label: '2 stories' },
                                         { value: '3', label: '3 stories' },
-                                        { value: '4', label: '4 + stories' }]} />
+                                        { value: '4', label: '4 + stories' }]}
+                                />
                             </ApplyFilterWrap>
                         </XVertical>
                     </FilterCategory>
@@ -643,7 +650,8 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                         <XVertical >
                             <ApplyFilterWrap fieldName="landUse" router={this.props.router}>
                                 <XCheckboxGroup
-                                    elements={AllLandUse.map((v) => ({ value: v.label, label: v.label, hint: v.hint }))} />
+                                    elements={AllLandUse.map((v) => ({ value: v.label, label: v.label, hint: v.hint }))}
+                                />
                             </ApplyFilterWrap>
                         </XVertical >
                     </FilterCategory>
@@ -678,9 +686,9 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                 router={this.props.router}
                                 content={(
                                     <OwnerNameFiltersContent />
-                                )}>
+                                )}
+                            >
                                 <XButton size="medium" text="Owner name" />
-
                             </FilterButton>
                         </FilterButtonWrapper>
                     )}
@@ -704,7 +712,8 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                         <FilterFooter addBorder={false} />
 
                                     </FiltersContent>
-                                )}>
+                                )}
+                            >
                                 <XButton size="medium" />
                             </FilterButton>
                         </FilterButtonWrapper>
@@ -730,7 +739,8 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                         <FilterFooter addBorder={false} />
 
                                     </FiltersContent>
-                                )}>
+                                )}
+                            >
                                 <XButton size="medium" />
                             </FilterButton>
                         </FilterButtonWrapper>
@@ -749,19 +759,22 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                             <XVertical>
                                                 <ApplyFilterWrap fieldName="landUse" router={this.props.router}>
                                                     <XCheckboxGroup
-                                                        elements={AllLandUse.map((v) => ({ value: v.label, label: v.label, hint: v.hint }))} />
+                                                        elements={AllLandUse.map((v) => ({ value: v.label, label: v.label, hint: v.hint }))}
+                                                    />
                                                 </ApplyFilterWrap>
                                             </XVertical>
                                             <FilterFooter />
 
                                         </FiltersContent>
-                                    )}>
+                                    )}
+                                >
                                     <XButton size="medium" />
                                 </FilterButton>
                             </FilterButtonWrapper>
 
                             <FilterButtonWrapper key={'filter_filterStories'}>
-                                <FilterButton handler={this.applyHandler}
+                                <FilterButton
+                                    handler={this.applyHandler}
                                     fieldName="filterStories"
                                     router={this.props.router}
                                     filterTitle="Stories"
@@ -782,13 +795,15 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                                             { value: '1', label: '1 story' },
                                                             { value: '2', label: '2 stories' },
                                                             { value: '3', label: '3 stories' },
-                                                            { value: '4', label: '4 + stories' }]} />
+                                                            { value: '4', label: '4 + stories' }]}
+                                                    />
                                                 </ApplyFilterWrap>
                                             </XVertical>
                                             <FilterFooter />
 
                                         </FiltersContent>
-                                    )}>
+                                    )}
+                                >
                                     <XButton size="medium" />
                                 </FilterButton>
                             </FilterButtonWrapper>
@@ -804,13 +819,15 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                 <AreaFiltersContent
                                     router={this.props.router}
                                 />
-                            }>
+                            }
+                        >
                             <XButton size="medium" text="Area" />
                         </FilterButton>
                     </FilterButtonWrapper>
 
                     <FilterButtonWrapper key={'filter_other_container'}>
-                        <FilterButton handler={this.applyHandler}
+                        <FilterButton
+                            handler={this.applyHandler}
                             fieldName="other"
                             router={this.props.router}
                             content={(
@@ -821,7 +838,8 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                                     <OtherFooter />
                                 </OtherContainer>
 
-                            )}>
+                            )}
+                        >
                             <XButton size="medium" text="Other" style={otherActive ? 'primary' : 'flat'} />
                         </FilterButton>
                     </FilterButtonWrapper>

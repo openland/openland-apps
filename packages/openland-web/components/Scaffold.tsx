@@ -180,12 +180,19 @@ class UserPopper extends React.Component<{ picture: string | null }, { show: boo
 
     render() {
         return (
-            <XPopper placement="right" showOnHoverContent={false} onClickOutside={this.switch} show={this.state.show} padding={25} content={(
-                <XMenu>
-                    <XMenu.Item query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenu.Item>
-                    <XMenu.Item path="/auth/logout">{TextGlobal.signOut}</XMenu.Item>
-                </XMenu>
-            )}>
+            <XPopper
+                placement="right"
+                showOnHoverContent={false}
+                onClickOutside={this.switch}
+                show={this.state.show}
+                padding={25}
+                content={(
+                    <XMenu>
+                        <XMenu.Item query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenu.Item>
+                        <XMenu.Item path="/auth/logout">{TextGlobal.signOut}</XMenu.Item>
+                    </XMenu>
+                )}
+            >
                 <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} />
                 {/* <UserInfoDiv><AvatarImg src={props.user!!.picture} /> {props.user!!.name}</UserInfoDiv> */}
             </XPopper>
@@ -546,58 +553,78 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             <NavigationDivider />
                         </XWithRole>
                         <XWithRole role={['feature-marketplace']}>
-                            <XPopper placement="right" showOnHoverContent={false} showOnHover={true} groupId="scaffold_tooltip" content={(
-                                <strong>{TextAppBar.items.home}</strong>
-
-                            )}>
-
+                            <XPopper
+                                placement="right"
+                                showOnHoverContent={false}
+                                showOnHover={true}
+                                groupId="scaffold_tooltip"
+                                content={(
+                                    <strong>{TextAppBar.items.home}</strong>
+                                )}
+                            >
                                 <NavigatorItem path="/home">
                                     <NavigatorIcon icon="home" />
                                 </NavigatorItem>
-
                             </XPopper>
                         </XWithRole>
                         <XWithRole role={['feature-marketplace']}>
-                            <XPopper placement="right" showOnHoverContent={false} showOnHover={true} groupId="scaffold_tooltip" content={(
-                                <strong>{TextAppBar.items.explore}</strong>
+                            <XPopper
+                                placement="right"
+                                showOnHoverContent={false}
+                                showOnHover={true}
+                                groupId="scaffold_tooltip"
+                                content={(
+                                    <strong>{TextAppBar.items.explore}</strong>
 
-                            )}>
-
+                                )}
+                            >
                                 <NavigatorItem path="/marketplace">
                                     <NavigatorIcon icon="explore" />
                                 </NavigatorItem>
-
                             </XPopper>
                         </XWithRole>
-                        <XPopper placement="right" showOnHoverContent={false} showOnHover={true} groupId="scaffold_tooltip" content={(
-                            <strong>{TextAppBar.items.map}</strong>
+                        <XPopper
+                            placement="right"
+                            showOnHoverContent={false}
+                            showOnHover={true}
+                            groupId="scaffold_tooltip"
+                            content={(
+                                <strong>{TextAppBar.items.map}</strong>
 
-                        )}>
-
+                            )}
+                        >
                             <NavigatorItem path="/map">
                                 <NavigatorIcon icon="map" />
                             </NavigatorItem>
-
                         </XPopper>
                         <XWithRole role={['feature-customer-kassita']} negate={true}>
-                            <XPopper placement="right" showOnHoverContent={false} showOnHover={true} groupId="scaffold_tooltip" content={(
-                                <strong>{TextAppBar.items.folders}</strong>
+                            <XPopper
+                                placement="right"
+                                showOnHoverContent={false}
+                                showOnHover={true}
+                                groupId="scaffold_tooltip"
+                                content={(
+                                    <strong>{TextAppBar.items.folders}</strong>
 
-                            )}>
-
+                                )}
+                            >
                                 <NavigatorItem path="/folders" activateForSubpaths={true}>
                                     <NavigatorIcon icon="folder" />
                                 </NavigatorItem>
-
                             </XPopper>
                         </XWithRole>
 
                         <XWithRole role={['feature-prospecting']}>
-                            <XPopper placement="right" showOnHoverContent={false} showOnHover={true} groupId="scaffold_tooltip" content={(
-                                <strong>{TextAppBar.items.prospecting}</strong>
+                            <XPopper
+                                placement="right"
+                                showOnHoverContent={false}
+                                showOnHover={true}
+                                groupId="scaffold_tooltip"
+                                content={(
+                                    <strong>{TextAppBar.items.prospecting}</strong>
 
-                            )}>
-
+                                )}
+                            >
                                 <NavigatorItem path="/prospecting" activateForSubpaths={true}>
                                     <NavigatorIcon icon="sort" />
                                 </NavigatorItem>
@@ -605,22 +632,31 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             </XPopper>
                         </XWithRole>
                         <XWithRole role={['feature-deals']}>
-                            <XPopper placement="right" showOnHoverContent={false} showOnHover={true} groupId="scaffold_tooltip" content={(
-                                <strong>{TextAppBar.items.deals}</strong>
+                            <XPopper
+                                placement="right"
+                                showOnHoverContent={false}
+                                showOnHover={true}
+                                groupId="scaffold_tooltip"
+                                content={(
+                                    <strong>{TextAppBar.items.deals}</strong>
 
-                            )}>
-
+                                )}
+                            >
                                 <NavigatorItem path="/deals" activateForSubpaths={true}>
                                     <NavigatorIcon icon="business_center" />
                                 </NavigatorItem>
-
                             </XPopper>
                         </XWithRole>
                         <XWithRole role={['feature-customer-kassita']}>
-                            <XPopper placement="right" showOnHoverContent={false} showOnHover={true} groupId="scaffold_tooltip" content={(
-                                <strong>{TextAppBar.items.reports}</strong>
-
-                            )}>
+                            <XPopper
+                                placement="right"
+                                showOnHoverContent={false}
+                                showOnHover={true}
+                                groupId="scaffold_tooltip"
+                                content={(
+                                    <strong>{TextAppBar.items.reports}</strong>
+                                )}
+                            >
 
                                 <NavigatorItem path="/reports/urbyn_mho_nyc" activateForSubpaths={true}>
                                     <div className="reports">
@@ -632,11 +668,15 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             </XPopper>
                         </XWithRole>
                         <XWithRole role={['feature-favorites']}>
-                            <XPopper placement="right" showOnHoverContent={false} showOnHover={true} groupId="scaffold_tooltip" content={(
-                                <strong>{TextAppBar.items.favorites}</strong>
-
-                            )}>
-
+                            <XPopper
+                                placement="right"
+                                showOnHoverContent={false}
+                                showOnHover={true}
+                                groupId="scaffold_tooltip"
+                                content={(
+                                    <strong>{TextAppBar.items.favorites}</strong>
+                                )}
+                            >
                                 <NavigatorItem path="/favorites" activateForSubpaths={true}>
                                     <NavigatorIcon icon="favorite" />
                                 </NavigatorItem>
@@ -645,25 +685,33 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                         </XWithRole>
                         <BottomNavigation>
                             <XWithRole role={['super-admin', 'software-developer']}>
-                                <XPopper placement="right" showOnHoverContent={false} showOnHover={true} groupId="scaffold_tooltip" content={(
-                                    <strong>{TextAppBar.items.devTools}</strong>
+                                <XPopper
+                                    placement="right"
+                                    showOnHoverContent={false}
+                                    showOnHover={true}
+                                    groupId="scaffold_tooltip"
+                                    content={(
+                                        <strong>{TextAppBar.items.devTools}</strong>
 
-                                )}>
-
+                                    )}
+                                >
                                     <NavigatorItem path="/super" activateForSubpaths={true}>
                                         <NavigatorIcon icon="fingerprint" />
                                     </NavigatorItem>
-
                                 </XPopper>
-                                <XPopper placement="right" showOnHoverContent={false} showOnHover={true} groupId="scaffold_tooltip" content={(
-                                    <strong>{TextAppBar.items.xFramework}</strong>
+                                <XPopper
+                                    placement="right"
+                                    showOnHoverContent={false}
+                                    showOnHover={true}
+                                    groupId="scaffold_tooltip"
+                                    content={(
+                                        <strong>{TextAppBar.items.xFramework}</strong>
 
-                                )}>
-
+                                    )}
+                                >
                                     <NavigatorItem path="/ui" activateForSubpaths={true}>
                                         <NavigatorIcon icon="color_lens" />
                                     </NavigatorItem>
-
                                 </XPopper>
                             </XWithRole>
                             <NavigatorItem>
