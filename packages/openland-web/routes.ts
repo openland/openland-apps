@@ -17,6 +17,8 @@ routes.add('/pickOrganization', '/init/pickOrganization');
 routes.add('/createProfile/', '/init/createProfile');
 routes.add('/addOrganization', '/init/addOrganization');
 routes.add('/addOrganization/', '/init/addOrganization');
+routes.add('/authAddOrganization', '/init/addOrganization');
+routes.add('/authAddOrganization/', '/init/addOrganization');
 routes.add('/404', '/404');
 
 //

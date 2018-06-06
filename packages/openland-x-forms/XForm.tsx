@@ -221,13 +221,15 @@ interface XFormController {
     readValue(name: string): any;
     writeValue(name: string, value: any): void;
     submitForm(): void;
+    addSubmitLock(lock: any): void;
+    removeSubmitLock(lock: any): void;
 }
 
 interface XFormTextFieldProps extends XInputProps {
     field: string;
 }
 
-export class XFormTextField extends React.Component<XFormTextFieldProps, { value: string }> {
+export class XFormTextField extends React.Component<XFormTextFieldProps, { value: string, locking?: boolean, invalid?: boolean }> {
     static contextTypes = {
         xForm: PropTypes.object.isRequired
     };
@@ -245,17 +247,29 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
         } else {
             this.state = { value: '' };
         }
+        const invalid = this.state.value.length === 0;
+        if (invalid && this.props.required) {
+            xForm.addSubmitLock(this);
+        }
+        this.state = { value: this.state.value, invalid: invalid };
     }
 
     handleChange = (val: string) => {
         let xForm = this.context.xForm as XFormController;
         // let val = src.target.value as string;
-        this.setState({ value: val });
+        const invalid = this.state.value.length === 0;
+        this.setState({ value: val, invalid: invalid });
         xForm.writeValue(this.props.field, val);
+        if (invalid && this.props.required) {
+            xForm.addSubmitLock(this);
+        } else {
+            xForm.removeSubmitLock(this);
+        }
     }
+
     render() {
         return (
-            <XInput {...this.props} onChange={this.handleChange} value={this.state.value} />
+            <XInput {...this.props} onChange={this.handleChange} value={this.state.value} required={this.state.locking} invalid={this.state.locking && this.state.invalid} />
         );
     }
 }
@@ -503,10 +517,20 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
     error?: string;
     defaultValues: { [key: string]: any; };
     values: { [key: string]: any; };
-
+    submitLocks = new Set();
+    submitLocksActive = new Set();
     //
     // Callbacks
     //
+
+    addSubmitLock = (lock: any) => {
+        this.submitLocks.add(lock);
+        this.submitLocksActive.add(lock);
+    }
+
+    removeSubmitLock = (lock: any) => {
+        this.submitLocksActive.delete(lock);
+    }
 
     readValue = (name: string) => {
         return this.values[name];
@@ -520,39 +544,45 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
     }
 
     submitForm = async (action: XFormActionProps) => {
-        let vals = Object.assign({}, this.values);
-        if (action.onSubmit) {
-            action.onSubmit(vals);
-        }
-        if (action.submitMutation) {
-            this.setState({ loading: true, error: undefined });
-            let destVars: any = { data: vals };
-            if (action.mutationDirect === true) {
-                destVars = vals;
+        if (this.submitLocks.size === 0) {
+            let vals = Object.assign({}, this.values);
+            if (action.onSubmit) {
+                action.onSubmit(vals);
             }
-            try {
-                await action.submitMutation({ variables: destVars });
-                if (this.props.autoClose) {
-                    if (this.props.modal) {
-                        this.props.modal.close();
-                    }
+            if (action.submitMutation) {
+                this.setState({ loading: true, error: undefined });
+                let destVars: any = { data: vals };
+                if (action.mutationDirect === true) {
+                    destVars = vals;
                 }
-                if (this.props.completePath) {
-                    if (this.props.router) {
-                        this.props.router.push(this.props.completePath);
+                try {
+                    await action.submitMutation({ variables: destVars });
+                    if (this.props.autoClose) {
+                        if (this.props.modal) {
+                            this.props.modal.close();
+                        }
+                    }
+                    if (this.props.completePath) {
+                        if (this.props.router) {
+                            this.props.router.push(this.props.completePath);
+                        } else {
+                            this.setState({ loading: false });
+                        }
                     } else {
                         this.setState({ loading: false });
                     }
-                } else {
                     this.setState({ loading: false });
-                }
-                this.setState({ loading: false });
 
-                if (this.props.onCompleted) {
-                    this.props.onCompleted(vals);
+                    if (this.props.onCompleted) {
+                        this.props.onCompleted(vals);
+                    }
+                } catch (v) {
+                    this.setState({ loading: false, error: v.toString() });
                 }
-            } catch (v) {
-                this.setState({ loading: false, error: v.toString() });
+            }
+        } else {
+            for (let lock of this.submitLocks) {
+                lock.setState({ locking: this.submitLocksActive.has(lock) });
             }
         }
     }
