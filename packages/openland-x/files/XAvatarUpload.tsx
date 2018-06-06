@@ -70,7 +70,7 @@ const Placeholder = Glamorous.div<{ hasImage: boolean }>((props) => ({
 }));
 
 function prepareSrc(uuid: string, crop: XImageCrop | null) {
-    let res = 'https://uploadcarecdn.com/' + uuid + '/';
+    let res = 'https://ucarecdn.com/' + uuid + '/';
     if (crop) {
         res += `-/crop/${crop.width}x${crop.height}/${crop.left},${crop.top}/`;
     }
