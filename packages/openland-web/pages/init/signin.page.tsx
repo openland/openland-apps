@@ -28,6 +28,8 @@ const EmptyBlock = Glamorous.div({
 
 class SignInComponent extends React.Component<{ redirect?: string | null } & XWithRouter, {
 
+    googleStarting: boolean,
+
     email: boolean,
     emailValue: string,
     emailSending: boolean,
@@ -43,6 +45,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
     constructor(props: { redirect?: string | null } & XWithRouter) {
         super(props);
         this.state = {
+            googleStarting: false,
+
             email: false,
             emailValue: '',
             emailSending: false,
@@ -57,6 +61,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
 
     loginWithGoogle = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
+        this.setState({ googleStarting: true });
         createAuth0Client().authorize({
             connection: 'google-oauth2',
             state: this.props.redirect ? this.props.redirect : 'none'
