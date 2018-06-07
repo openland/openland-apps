@@ -111,15 +111,15 @@ export const AuthRouter = withUserInfo((props) => {
     }
 
     // Redirect to activation page if activation pending
-    if (!handled && !props.isActivated) {
-        handled = true;
-        if ([
-            '/activation',
-        ].indexOf(props.router.path) < 0) {
-            console.warn('Activation');
-            return <XPageRedirect path="/activation" />;
-        }
-    }
+    // if (!handled && !props.isActivated) {
+    //     handled = true;
+    //     if ([
+    //         '/activation',
+    //     ].indexOf(props.router.path) < 0) {
+    //         console.warn('Activation');
+    //         return <XPageRedirect path="/activation" />;
+    //     }
+    // }
 
     // Redirect from service pages to the app root
     if (!handled && props.isCompleted) {

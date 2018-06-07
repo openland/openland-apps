@@ -9,6 +9,7 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../../components/AuthRouter';
 import { TextGlobal } from 'openland-text/TextGlobal';
 import { XButton } from 'openland-x/XButton';
+import { InitTexts } from './_text';
 
 const InfoText = Glamorous.div({
     marginBottom: 15
@@ -17,11 +18,11 @@ const InfoText = Glamorous.div({
 export default withAppBase((props) => {
     return (
         <AuthRouter>
-            <XDocumentHead title="Need Info" titleSocial="Openland - land acquisition platfom" />
+            <XDocumentHead title={InitTexts.need_info.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="View Need Info">
                 <MessagePage>
-                    <MessagePageContent title="We need more info">
-                        <InfoText>To continue working with system we need more information from you</InfoText>
+                    <MessagePageContent title={InitTexts.need_info.title}>
+                        <InfoText>{InitTexts.need_info.content}</InfoText>
                         <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center"/>
                     </MessagePageContent>
                 </MessagePage>

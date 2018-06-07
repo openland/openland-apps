@@ -10,6 +10,7 @@ import { AuthRouter } from '../../components/AuthRouter';
 import { withInviteInfo } from '../../api';
 import { XButton } from 'openland-x/XButton';
 import { switchOrganization } from '../../utils/switchOrganization';
+import { InitTexts } from './_text';
 
 const InfoText = Glamorous.div({
     marginBottom: 15
@@ -18,16 +19,16 @@ const InfoText = Glamorous.div({
 export default withAppBase(withInviteInfo((props) => {
     return (
         <AuthRouter>
-            <XDocumentHead title="Join" titleSocial="Openland - land acquisition platfom" />
+            <XDocumentHead title={InitTexts.join.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="Join">
                 <MessagePage>
                     {props.data.invite && (
-                        <MessagePageContent title="Join">
+                        <MessagePageContent title={InitTexts.join.title}>
                             <InfoText>{props.data.invite.title}</InfoText>
-                            {props.data.invite.joined && <XButton text="Go to organization" onClick={() => switchOrganization(props.data.invite!!.orgId)} style="primary" />}
+                            {props.data.invite.joined && <XButton text={InitTexts.join.goButton} onClick={() => switchOrganization(props.data.invite!!.orgId)} style="primary" />}
                             {!props.data.invite.joined &&
                                 <XButton
-                                    text="Join Organization"
+                                    text={InitTexts.join.joinButton}
                                     action={async () => {
                                         await props.doJoin({});
                                         switchOrganization(props.data.invite!!.orgId);
@@ -39,7 +40,7 @@ export default withAppBase(withInviteInfo((props) => {
                     )}
                     {!props.data.invite && (
                         <MessagePageContent title="Join">
-                            <InfoText>Unable to find invite</InfoText>
+                            <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
                         </MessagePageContent>
                     )}
                 </MessagePage>

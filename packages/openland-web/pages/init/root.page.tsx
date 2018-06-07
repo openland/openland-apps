@@ -6,11 +6,12 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { AuthRouter } from '../../components/AuthRouter';
+import { InitTexts } from './_text';
 
 export default withAppBase((props) => {
     return (
         <AuthRouter>
-            <XDocumentHead title="App" titleSocial="Openland - land acquisition platfom" />
+            <XDocumentHead title={InitTexts.rootPageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="View Root">
                 <XWithRole role="feature-marketplace">
                     <XPageRedirect path="/home" />

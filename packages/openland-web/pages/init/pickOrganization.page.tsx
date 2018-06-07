@@ -9,14 +9,15 @@ import { AuthRouter } from '../../components/AuthRouter';
 import { withAllAccounts } from '../../api';
 import { XTable } from 'openland-x/XTable';
 import { switchOrganization } from '../../utils/switchOrganization';
+import { InitTexts } from './_text';
 
 export default withAppBase(withAllAccounts((props) => {
     return (
         <AuthRouter>
-            <XDocumentHead title="Organization?" titleSocial="Openland - land acquisition platfom" />
+            <XDocumentHead title={InitTexts.pick_organization.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="View Pick Organization">
                 <MessagePage>
-                    <MessagePageContent title="Please, pick organization">
+                    <MessagePageContent title={InitTexts.pick_organization.title}>
                         <XTable>
                             <XTable.Body>
                                 {props.data.orgs.map((v) => (

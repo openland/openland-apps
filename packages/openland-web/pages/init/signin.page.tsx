@@ -17,8 +17,9 @@ import {
     Title,
     Separator,
     Description
-} from '../../components/SignComponents';
+} from './components/SignComponents';
 import { AuthRouter } from '../../components/AuthRouter';
+import { InitTexts } from './_text';
 
 const EmptyBlock = Glamorous.div({
     width: '100%',
@@ -135,13 +136,13 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
         return (
             <>
                 <SignContainer
-                    text={signin ? 'Don\'t have an Openland account?' : 'Already have an Openland account?'}
+                    text={signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint}
                     path={signin ? '/signup' : '/signin'}
-                    linkText={signin ? 'Sign up' : 'Sign in'}
+                    linkText={signin ? InitTexts.auth.signup : InitTexts.auth.signin}
                 >
                     {!this.state.email && (<>
-                        <Title>{signin ? 'Sign in to your Openland account' : 'Sign up for Openland'}</Title>
-                        <Description>{signin ? 'Welcome back!' : 'Get a free account and start exploring'}</Description>
+                        <Title>{signin ? InitTexts.auth.signinTitle : InitTexts.auth.signinTitle}</Title>
+                        <Description>{signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.signupTitle}</Description>
                         <ButtonsWrapper marginTop={52}>
                             <ImgButton onClick={this.loginWithGoogle} primary={true}>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" width="50px" height="50px">
@@ -149,7 +150,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
                                         <path fill="#fff" d="M 12.546875 10.238281 L 12.546875 14.058594 L 17.988281 14.058594 C 17.277344 16.375 15.34375 18.03125 12.546875 18.03125 C 9.214844 18.03125 6.511719 15.332031 6.511719 12 C 6.511719 8.667969 9.214844 5.96875 12.546875 5.96875 C 14.042969 5.96875 15.410156 6.515625 16.464844 7.421875 L 19.28125 4.605469 C 17.503906 2.988281 15.140625 2 12.546875 2 C 7.019531 2 2.542969 6.476563 2.542969 12 C 2.542969 17.523438 7.019531 22 12.546875 22 C 20.941406 22 22.792969 14.148438 21.972656 10.253906 Z " />
                                     </g>
                                 </svg>
-                                <span>{'Sign ' + (signin ? 'in' : 'up') + ' with Google'}</span>
+                                <span>{signin ? InitTexts.auth.signinGoogle : InitTexts.auth.signupGoogle}</span>
                             </ImgButton>
                             <Separator />
                             <ImgButton onClick={this.loginWithEmail} className="email">
@@ -159,35 +160,35 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
                                         <path d="M0 0h24v24H0z" />
                                     </g>
                                 </svg>
-                                <span>{'Sign ' + (signin ? 'in' : 'up') + ' with Email'}</span>
+                                <span>{signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}</span>
                             </ImgButton>
                         </ButtonsWrapper>
                     </>)}
 
                     {this.state.email && !this.state.emailSent && (<>
-                        <Title marginBottom={20}>{'Sign ' + (signin ? 'in' : 'up') + ' with Email'}</Title>
-                        {this.state.emailError !== '' && (<><XServiceMessage title="Invalid email" /><EmptyBlock /></>)}
+                        <Title marginBottom={20}>{signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}</Title>
+                        {this.state.emailError !== '' && (<><XServiceMessage title={InitTexts.auth.emailInvalid} /><EmptyBlock /></>)}
                         <ButtonsWrapper>
-                            <XInput onChange={this.emailChanged} value={this.state.emailValue} placeholder="Your work email" />
+                            <XInput onChange={this.emailChanged} value={this.state.emailValue} placeholder={InitTexts.auth.emailPlaceholder} />
                         </ButtonsWrapper>
                         <ButtonsWrapper marginTop={20}>
                             <XHorizontal>
-                                <XButton onClick={this.loginReset} style="ghost" size="medium" alignSelf="stretch" flexGrow={1} text="Reset" />
-                                <XButton onClick={this.loginEmailStart} style="primary" size="medium" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text="Next" />
+                                <XButton onClick={this.loginReset} style="ghost" size="medium" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
+                                <XButton onClick={this.loginEmailStart} style="primary" size="medium" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text={InitTexts.auth.next} />
                             </XHorizontal>
                         </ButtonsWrapper>
                     </>)}
 
                     {this.state.emailSent && (<>
                         <Title marginBottom={20}>Please, enter activation code</Title>
-                        {this.state.codeError !== '' && (<><XServiceMessage title="Invalid activation code" /><EmptyBlock /></>)}
+                        {this.state.codeError !== '' && (<><XServiceMessage title={InitTexts.auth.codeInvalid} /><EmptyBlock /></>)}
                         <ButtonsWrapper>
-                            <XInput onChange={this.codeChanged} value={this.state.codeValue} placeholder="XXXXXX" />
+                            <XInput onChange={this.codeChanged} value={this.state.codeValue} placeholder={InitTexts.auth.codePlaceholder} />
                         </ButtonsWrapper>
                         <ButtonsWrapper marginTop={20}>
                             <XHorizontal>
-                                <XButton onClick={this.loginReset} size="medium" alignSelf="stretch" flexGrow={1} text="Reset" />
-                                <XButton onClick={this.loginCodeStart} size="medium" style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text="Complete" />
+                                <XButton onClick={this.loginReset} size="medium" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
+                                <XButton onClick={this.loginCodeStart} size="medium" style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text={InitTexts.auth.complete} />
                             </XHorizontal>
                         </ButtonsWrapper>
                     </>)}
@@ -199,10 +200,11 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
 
 export default withAppBase(withRouter((props) => {
     let redirect = props.router.query ? (props.router.query.redirect ? props.router.query.redirect : null) : null;
+    const signin = props.router.path.endsWith('signin');
     return (
         <AuthRouter>
-            <XDocumentHead title="Sign in" titleSocial="Openland - land acquisition platfom" />
-            <XTrack event="View Signin">
+            <XDocumentHead title={signin ? InitTexts.auth.signinPageTitle : InitTexts.auth.signupPageTitle} titleSocial={InitTexts.socialPageTitle} />
+            <XTrack event={signin ? 'View Signin' : 'View Signup'}>
                 <SignInComponent redirect={redirect} router={props.router} />
             </XTrack>
         </AuthRouter>

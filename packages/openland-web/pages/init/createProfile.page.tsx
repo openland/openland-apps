@@ -19,7 +19,8 @@ import {
     OptionalLabel,
     PhotoContiner,
     FieldHeader,
-} from '../../components/CreateProfileComponents';
+} from './components/CreateProfileComponents';
+import { InitTexts } from './_text';
 
 const CreateProfileForm = withCreateProfile((props) => {
     return (
@@ -27,7 +28,7 @@ const CreateProfileForm = withCreateProfile((props) => {
             <Logo />
             <ContentWrapper>
                 <TextWrapper>
-                    <Title>Set up a user account</Title>
+                    <Title>{InitTexts.create_profile.title}</Title>
                 </TextWrapper>
                 <XForm
                     defaultValues={props.data.prefill}
@@ -40,30 +41,28 @@ const CreateProfileForm = withCreateProfile((props) => {
                         <XHorizontal separator="none">
                             <FormWrapper>
                                 <InputGroup>
-                                    <Label>First Name</Label>
+                                    <Label>{InitTexts.create_profile.firstName}</Label>
                                     <XForm.Text field="firstName" size="medium" placeholder="Jane" />
                                 </InputGroup>
                                 <InputGroup>
-                                    <Label>Last Name</Label>
+                                    <Label>{InitTexts.create_profile.lastName}</Label>
                                     <XForm.Text field="lastName" size="medium" placeholder="Doe" />
                                 </InputGroup>
                                 <InputGroup>
-                                    <FieldHeader><Label>Phone</Label><OptionalLabel>optional</OptionalLabel></FieldHeader>
+                                    <FieldHeader><Label>{InitTexts.create_profile.phone}</Label><OptionalLabel>{InitTexts.optional}</OptionalLabel></FieldHeader>
                                     <XForm.Text field="phone" size="medium" placeholder="123-456-7890" />
                                 </InputGroup>
                             </FormWrapper>
                             <PhotoContiner separator="none">
-                                <FieldHeader><Label>Photo</Label><OptionalLabel>optional</OptionalLabel></FieldHeader>
+                                <FieldHeader><Label>{InitTexts.create_profile.photo}</Label><OptionalLabel>{InitTexts.optional}</OptionalLabel></FieldHeader>
                                 <XForm.Avatar field="photo" />
                             </PhotoContiner>
                         </XHorizontal>
                         <Footer>
                             <></>
-                            <XForm.Submit style="primary" text="Continue" size="medium" alignSelf="flex-end" />
+                            <XForm.Submit style="primary" text={InitTexts.create_profile.continue} size="medium" alignSelf="flex-end" />
                         </Footer>
-
                     </XVertical>
-
                 </XForm>
             </ContentWrapper>
         </RootContainer>
@@ -73,7 +72,7 @@ const CreateProfileForm = withCreateProfile((props) => {
 export default withApp('Create Profile', 'viewer', (props) => {
     return (
         <>
-            <XDocumentHead title="Create profile" />
+            <XDocumentHead title={InitTexts.create_profile.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <CreateProfileForm />
         </>
     );
