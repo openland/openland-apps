@@ -1,4 +1,3 @@
-import '../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
