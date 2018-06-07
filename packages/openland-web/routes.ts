@@ -11,7 +11,7 @@ routes.add('/signup', '/init/signin');
 routes.add('/signin', '/init/signin');
 routes.add('/activation', '/init/activation');
 routes.add('/need_info', '/init/need_info');
-routes.add('/deactivated', '/init/deactivated');
+routes.add('/suspended', '/init/suspended');
 routes.add('/createProfile', '/init/createProfile');
 routes.add('/pickOrganization', '/init/pickOrganization');
 routes.add('/createProfile/', '/init/createProfile');
