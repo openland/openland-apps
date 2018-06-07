@@ -51,6 +51,34 @@ export interface GeoBox {
   south: number,
 };
 
+export interface OrganizationProfileInput {
+  potentialSites?: Array< RangeInput | null > | null,
+  siteSizes?: Array< RangeInput | null > | null,
+  description?: string | null,
+  twitter?: string | null,
+  facebook?: string | null,
+  developmentModels?: Array< string | null > | null,
+  availability?: Array< string | null > | null,
+  contacts?: Array< ContactPersonInput | null > | null,
+  landUse?: Array< string | null > | null,
+  goodFor?: Array< string | null > | null,
+  specialAttributes?: Array< string | null > | null,
+};
+
+export interface RangeInput {
+  from?: number | null,
+  to?: number | null,
+};
+
+export interface ContactPersonInput {
+  name: string,
+  avatar?: ImageRefInput | null,
+  role?: string | null,
+  email?: string | null,
+  phone?: string | null,
+  link?: string | null,
+};
+
 export enum OwnerType {
   CITY = "CITY",
   MIXED = "MIXED",
@@ -675,7 +703,7 @@ export interface DebugOwnAccountsQuery {
     __typename: "OrganizationAccount",
     id: string,
     title: string,
-    logo: string | null,
+    photo: string | null,
     website: string | null,
   } >,
 };
@@ -1031,6 +1059,57 @@ export interface FolderItemsTileOverlayQuery {
       id: string,
     },
   } > | null,
+};
+
+export interface CurrentOrganizationProfileQuery {
+  alphaCurrentOrganizationProfile:  {
+    __typename: "OrganizationProfile",
+    id: string,
+    iAmOwner: boolean | null,
+    title: string,
+    logo: string | null,
+    website: string | null,
+    // extras
+    potentialSites:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } | null > | null,
+    siteSizes:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } | null > | null,
+    description: string | null,
+    twitter: string | null,
+    facebook: string | null,
+    developmentModels: Array< string | null > | null,
+    availability: Array< string | null > | null,
+    contacts:  Array< {
+      __typename: "ContactPerson",
+      name: string,
+      avatar: string | null,
+      role: string | null,
+      email: string | null,
+      phone: string | null,
+      link: string | null,
+    } | null > | null,
+    landUse: Array< string | null > | null,
+    goodFor: Array< string | null > | null,
+    specialAttributes: Array< string | null > | null,
+  },
+};
+
+export interface EditOrganizationProfileMutationVariables {
+  title?: string | null,
+  website?: string | null,
+  role?: string | null,
+  logo?: ImageRefInput | null,
+  data?: OrganizationProfileInput | null,
+};
+
+export interface EditOrganizationProfileMutation {
+  alphaEditOrganizationProfile: string,
 };
 
 export interface OrganizationsQuery {

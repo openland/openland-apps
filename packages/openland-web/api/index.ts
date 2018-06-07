@@ -233,3 +233,6 @@ export const withInviteDestroy = graphqlMutation(Queries.Account.AccountDestroyI
 export const withInviteInfo = graphqlCompose2(
     graphqlRouted(Queries.Account.AccountInviteInfoQuery, ['inviteKey']),
     graphqlMutation(Queries.Account.AccountInviteJoinMutation, 'doJoin', { params: ['inviteKey'] }));
+
+export const withCurrentOrganizationProfile = graphqlRouted(Queries.OrganizationProfile.CurrentOrganizationProfileQuery);
+export const withEditCurrentOrganizationProfile = graphqlMutation(Queries.OrganizationProfile.EditOrganizationProfilMutation, 'editOrganizationProfile', { refetchQueries: [Queries.OrganizationProfile.CurrentOrganizationProfileQuery] });

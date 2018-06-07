@@ -14,7 +14,7 @@ export const DebugOwnAccountsQuery = gql`
         orgs: alphaAvailableOrganizationAccounts {
             id
             title
-            logo
+            photo
             website
         }
     }    

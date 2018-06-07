@@ -288,20 +288,21 @@ export class XFormAvatarField extends React.Component<XFormAvatarFieldProps, { u
         let xForm = this.context.xForm as XFormController;
         let existing = xForm.readValue(this.props.field);
         if (this.props.uuid !== undefined) {
-            this.state = { uuid: this.props.uuid };
+            this.state = { uuid: this.props.uuid, crop: this.props.crop };
         } else {
-            this.state = { uuid: existing ? existing.uploadId : null };
+            this.state = { uuid: existing ? existing : undefined };
         }
     }
 
     handleChange = (uuid: string | null, crop: XImageCrop | null) => {
         let xForm = this.context.xForm as XFormController;
-        this.setState({ uuid: uuid });
+        this.setState({ uuid: uuid, crop: crop });
         xForm.writeValue(this.props.field, uuid && crop ? { uuid: uuid, crop: { x: crop.left, y: crop.top, w: crop.width, h: crop.height } } : undefined);
     }
     render() {
+        console.warn(this.state);
         return (
-            <XAvatarUpload {...this.props} onChanged={this.handleChange} uuid={this.state.uuid} />
+            <XAvatarUpload {...this.props} onChanged={this.handleChange} uuid={this.state.uuid} crop={this.state.crop} />
         );
     }
 }
@@ -398,6 +399,7 @@ interface XFormSelectFieldProps {
     field: string;
     options?: { value: string, title: string }[];
     component?: any;
+    multi?: boolean;
 }
 
 export class XFormSelectField extends React.Component<XFormSelectFieldProps, { value: string | null }> {
@@ -419,6 +421,8 @@ export class XFormSelectField extends React.Component<XFormSelectFieldProps, { v
                     }
                 }
             }
+        } else if (this.props.component) {
+            this.state = { value: existing };
         } else {
             this.state = { value: null };
         }
@@ -429,9 +433,15 @@ export class XFormSelectField extends React.Component<XFormSelectFieldProps, { v
         if (this.props.component) {
             let val = src ? src.value as string : 'unknown';
             let cval = null;
-            if (val !== 'unknown') {
+
+            if (Array.isArray(src)) {
+                if (src.length > 0) {
+                    cval = src.map(r => r.value);
+                }
+            } else if (val !== 'unknown') {
                 cval = val;
             }
+
             this.setState({ value: src });
             xForm.writeValue(this.props.field, cval);
         } else {
@@ -447,7 +457,12 @@ export class XFormSelectField extends React.Component<XFormSelectFieldProps, { v
     render() {
         let options = undefined;
         if (this.props.options) {
-            options = [{ title: 'Unknown', value: 'unknown' }, ...this.props.options];
+            if (!this.props.multi) {
+                options = [{ title: 'Unknown', value: 'unknown' }, ...this.props.options];
+            } else {
+                options = [...this.props.options];
+
+            }
         }
         let Component = this.props.component ? this.props.component : XFormSelect;
         return (
@@ -455,6 +470,7 @@ export class XFormSelectField extends React.Component<XFormSelectFieldProps, { v
                 options={options}
                 value={this.state.value || 'unknown'}
                 onChange={this.handleChange}
+                multi={this.props.multi}
             />
         );
     }

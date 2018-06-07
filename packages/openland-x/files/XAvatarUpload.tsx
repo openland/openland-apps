@@ -70,6 +70,9 @@ const Placeholder = Glamorous.div<{ hasImage: boolean }>((props) => ({
 }));
 
 function prepareSrc(uuid: string, crop: XImageCrop | null) {
+    if (uuid && uuid.startsWith('https://ucarecdn.com/')) {
+        return uuid;
+    }
     let res = 'https://ucarecdn.com/' + uuid + '/';
     if (crop) {
         res += `-/crop/${crop.width}x${crop.height}/${crop.left},${crop.top}/`;

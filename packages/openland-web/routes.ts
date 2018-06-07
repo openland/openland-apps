@@ -34,6 +34,8 @@ routes.add('/map/', '/main/explore/root');
 
 routes.add('/settings/profile', '/main/settings/profile');
 routes.add('/settings/invites', '/main/settings/invites');
+routes.add('/settings/organizationProfile', '/main/settings/organizationProfile');
+routes.add('/settings/organizationProfile/', '/main/settings/organizationProfile');
 
 //
 // Create account
