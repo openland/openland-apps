@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XFlexStyles, applyFlex } from './Flex';
+import { XFlexStyles, applyFlex } from './basics/Flex';
 
 const AttachRoot = Glamorous.div<XFlexStyles>(
     (props) => ({

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XFlexStyles, applyFlex, extractFlexProps } from 'openland-x/Flex';
+import { XFlexStyles, applyFlex, extractFlexProps } from 'openland-x/basics/Flex';
 
 export let XVerticalDiv = Glamorous.div<XFlexStyles>([
     {

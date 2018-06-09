@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XIcon } from 'openland-x/XIcon';
-import { XFlexStyles, applyFlex } from './Flex';
+import { XFlexStyles, applyFlex } from './basics/Flex';
 
 export const XCardEmptyDiv = Glamorous.div<XFlexStyles>([{
     display: 'flex',

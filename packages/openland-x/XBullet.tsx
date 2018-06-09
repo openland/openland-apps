@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XFlexStyles, applyFlex } from './Flex';
+import { XFlexStyles, applyFlex } from './basics/Flex';
 
 interface XBulletProps extends XFlexStyles {
     color?: 'red' | 'green' | 'blue' | 'yellow';

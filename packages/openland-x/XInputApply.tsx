@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver } from 'openland-x-utils/styleResolver';
-import { XFlexStyles, applyFlex } from './Flex';
+import { XFlexStyles, applyFlex } from './basics/Flex';
 
 export default class ClickOutside extends React.Component<{ onClickOutside: Function, onClick: () => void }> {
     private container: any;

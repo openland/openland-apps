@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
 import { XLoadingCircular } from './XLoadingCircular';
-import { XFlexStyles, applyFlex } from './Flex';
+import { XFlexStyles, applyFlex } from './basics/Flex';
 import { XIcon } from './XIcon';
 import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
