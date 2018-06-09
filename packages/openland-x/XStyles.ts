@@ -1,4 +1,4 @@
-import { XStyledCSS } from './XStyled';
+import { XStyledCSS } from './basics/XStyled';
 
 function neutral(alpha: number) {
     return 'rgba(0, 0, 0, ' + alpha + ')';
