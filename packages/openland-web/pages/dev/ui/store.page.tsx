@@ -7,6 +7,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XStore } from 'openland-x-store/XStore';
 import { XInput } from 'openland-x/XInput';
 import { XTitle } from 'openland-x/XTitle';
+import { XTextArea } from 'openland-x/XTextArea';
 export default withApp('UI Framework - Store', 'viewer', (props) => {
     return (
         <DevDocsScaffold title="Store">
@@ -17,6 +18,7 @@ export default withApp('UI Framework - Store', 'viewer', (props) => {
                             <XTitle>Simple</XTitle>
                             <XInput valueStoreKey="stage" />
                             <XInput valueStoreKey="stage" />
+                            <XTextArea valueStoreKey="stage"/>
                             <XTitle>Invalid</XTitle>
                             <XInput invalidStoreKey="stage" />
                         </XVertical>

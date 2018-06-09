@@ -6,6 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XInput } from 'openland-x/XInput';
 import { XTitle } from 'openland-x/XTitle';
+import { XTextArea } from 'openland-x/XTextArea';
 
 export default withApp('UI Framework - Inputs', 'viewer', (props) => {
     return (
@@ -29,16 +30,20 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
                     <XTitle>Icon & Required</XTitle>
                     <XVertical>
                         <XInput size="large" placeholder="large" icon="star" required={true} alignSelf="flex-start" />
-                        <XInput size="medium" placeholder="medium" icon="star" required={true} alignSelf="flex-start"  />
-                        <XInput size="default" placeholder="default" value="default" icon="star" required={true} alignSelf="flex-start"  />
-                        <XInput size="small" placeholder="small" icon="star" required={true} alignSelf="flex-start"  />
+                        <XInput size="medium" placeholder="medium" icon="star" required={true} alignSelf="flex-start" />
+                        <XInput size="default" placeholder="default" value="default" icon="star" required={true} alignSelf="flex-start" />
+                        <XInput size="small" placeholder="small" icon="star" required={true} alignSelf="flex-start" />
                     </XVertical>
                     <XTitle>Icon & Required & Invalid</XTitle>
                     <XVertical>
                         <XInput size="large" placeholder="large" icon="star" required={true} invalid={true} alignSelf="flex-start" />
-                        <XInput size="medium" placeholder="medium" icon="star" required={true} invalid={true} alignSelf="flex-start"  />
-                        <XInput size="default" placeholder="default" icon="star" required={true} invalid={true} alignSelf="flex-start"  />
-                        <XInput size="small" placeholder="small" value="small" icon="star" required={true} invalid={true} alignSelf="flex-start"  />
+                        <XInput size="medium" placeholder="medium" icon="star" required={true} invalid={true} alignSelf="flex-start" />
+                        <XInput size="default" placeholder="default" icon="star" required={true} invalid={true} alignSelf="flex-start" />
+                        <XInput size="small" placeholder="small" value="small" icon="star" required={true} invalid={true} alignSelf="flex-start" />
+                    </XVertical>
+                    <XTitle>Text Area</XTitle>
+                    <XVertical>
+                        <XTextArea />
                     </XVertical>
                 </XVertical>
             </XContent>
