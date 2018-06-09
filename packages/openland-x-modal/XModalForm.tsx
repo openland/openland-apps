@@ -46,13 +46,13 @@ const FooterSubActions = Glamorous(XModalFooter)({
 
 export class XModalForm extends React.Component<XModalFormProps> {
     render() {
-        let { submitMutation, mutationDirect, onSubmit, defaultValues, ...other } = this.props;
+        let { submitMutation, mutationDirect, onSubmit, prepare, defaultValues, fillValues, ...other } = this.props;
 
         return (
             <XModal {...other} customContent={true}>
                 {this.props.title && <XModalHeader>{this.props.title}</XModalHeader>}
                 {!this.props.title && <XModalHeaderEmpty />}
-                <XForm submitMutation={submitMutation} mutationDirect={mutationDirect} onSubmit={onSubmit} defaultValues={defaultValues} autoClose={true}>
+                <XForm submitMutation={submitMutation} mutationDirect={mutationDirect} onSubmit={onSubmit} prepare={prepare} fillValues={fillValues} defaultValues={defaultValues} autoClose={true}>
                     <XModalBody>
                         {this.props.children}
                     </XModalBody>

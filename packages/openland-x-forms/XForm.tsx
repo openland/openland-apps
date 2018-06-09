@@ -200,6 +200,8 @@ export interface XFormProps {
     submitMutation?: MutationFunc<{}>;
     mutationDirect?: boolean;
     onSubmit?: (values: any) => void;
+    prepare?: (values: any, prepareValues: any) => any;
+    fillValues?: { [key: string]: any; };
 
     //
     // Complete Callbacks
@@ -289,7 +291,7 @@ export class XFormAvatarField extends React.Component<XFormAvatarFieldProps, { u
         if (this.props.uuid !== undefined) {
             this.state = { uuid: this.props.uuid, crop: this.props.crop };
         } else {
-            this.state = { uuid: existing ? existing : undefined };
+            this.state = { uuid: existing ? existing : null };
         }
     }
 
@@ -514,7 +516,8 @@ export interface XFormActionProps {
     mutationDirect?: boolean;
     onSubmit?: (values: any) => void;
     defaultValues?: { [key: string]: any; };
-    actionName?: string;
+    fillValues?: { [key: string]: any; };
+    prepare?: (values: any, prepareValues: any) => any; actionName?: string;
     actionStyle?: 'primary' | 'default' | 'danger';
 }
 
@@ -533,6 +536,8 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
     error?: string;
     defaultValues: { [key: string]: any; };
     values: { [key: string]: any; };
+    fillValues?: { [key: string]: any; };
+    prepareValues: { [key: string]: any; };
     submitLocks = new Set();
     submitLocksActive = new Set();
     //
@@ -549,10 +554,19 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
     }
 
     readValue = (name: string) => {
-        return this.values[name];
+        if (this.fillValues) {
+            return this.fillValues[name];
+        } else {
+            return this.values[name];
+
+        }
     }
     writeValue = (name: string, value: any) => {
-        this.values[name] = value;
+        if (this.props.prepare) {
+            this.prepareValues[name] = value;
+        } else {
+            this.values[name] = value;
+        }
     }
 
     submitFormMainAction = async () => {
@@ -561,6 +575,9 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
 
     submitForm = async (action: XFormActionProps) => {
         if (this.submitLocksActive.size === 0) {
+            if (this.props.prepare) {
+                this.values = this.props.prepare(this.values, this.prepareValues);
+            }
             let vals = Object.assign({}, this.values);
             if (action.onSubmit) {
                 action.onSubmit(vals);
@@ -610,6 +627,8 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
             delete this.defaultValues.__typename;
         }
         this.values = Object.assign({}, this.defaultValues);
+        this.fillValues = props.fillValues ? Object.assign({}, props.fillValues) : undefined;
+        this.prepareValues = Object.assign({}, this.fillValues);
         this.state = { loading: false };
     }
 
