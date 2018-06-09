@@ -36,12 +36,14 @@ export function DevDocsScaffold(props: { title?: string, children?: any, bottomO
                             <Sidebar.Item path="/ui/modals">Modals</Sidebar.Item>
                             <Sidebar.Item path="/ui/popper">Popper</Sidebar.Item>
                             <Sidebar.Item path="/ui/avatar">Avatar</Sidebar.Item>
-                            <Sidebar.Item path="/ui/tasks">Tasks</Sidebar.Item>
                             <Sidebar.Item path="/ui/files">Files</Sidebar.Item>
                             <Sidebar.Item>Basic Styles</Sidebar.Item>
                             <Sidebar.Subitem path="/ui/links">Links</Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/typography">Typography</Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/grid">Grid</Sidebar.Subitem>
+                            <Sidebar.Item>Tools</Sidebar.Item>
+                            <Sidebar.Item path="/ui/tasks">Tasks</Sidebar.Item>
+                            <Sidebar.Item path="/ui/store">Store</Sidebar.Item>
                         </Sidebar>
                     </Scaffold.Menu>
                 )}

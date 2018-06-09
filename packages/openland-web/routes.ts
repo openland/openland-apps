@@ -204,6 +204,8 @@ routes.add('/ui/tasks', '/dev/ui/tasks');
 routes.add('/ui/tasks/', '/dev/ui/tasks');
 routes.add('/ui/files', '/dev/ui/files');
 routes.add('/ui/files/', '/dev/ui/files');
+routes.add('/ui/store', '/dev/ui/store');
+routes.add('/ui/store/', '/dev/ui/store');
 
 //
 // Dev Tools

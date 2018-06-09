@@ -190,14 +190,10 @@ const RequireElement = Glamorous.span({
     top: 'calc(50% - 5px)'
 });
 
-export class XInput extends React.PureComponent<XInputProps, { inputWrapClass?: string, value: string }> {
+export class XInput extends React.PureComponent<XInputProps> {
 
     constructor(props: XInputProps) {
         super(props);
-
-        this.state = {
-            value: this.props.value || ''
-        };
     }
 
     handleRef = (e: any) => {
@@ -207,9 +203,6 @@ export class XInput extends React.PureComponent<XInputProps, { inputWrapClass?: 
     }
 
     handleChange = (e: any) => {
-        this.setState({
-            value: e.target.value
-        });
         if (this.props.onChange) {
             this.props.onChange(e.target.value);
         }
@@ -217,7 +210,7 @@ export class XInput extends React.PureComponent<XInputProps, { inputWrapClass?: 
 
     render() {
         const {
-            type, 
+            type,
             pattern,
             placeholder,
             size,
@@ -230,6 +223,10 @@ export class XInput extends React.PureComponent<XInputProps, { inputWrapClass?: 
             autofocus,
             ...other
         } = this.props;
+        let v = this.props.value;
+        if (v === null) {
+            v = '';
+        }
         return (
             <RootContainer
                 {...other}
@@ -244,7 +241,7 @@ export class XInput extends React.PureComponent<XInputProps, { inputWrapClass?: 
                     placeholder={placeholder}
                     type={type}
                     pattern={pattern}
-                    value={this.state.value}
+                    value={v}
                     onChange={this.handleChange}
                     autofocus={autofocus}
                     innerRef={this.handleRef}

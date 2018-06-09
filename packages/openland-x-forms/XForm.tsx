@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { MutationFunc } from 'react-apollo';
-// import { XDateSinglePicker, XDateRangePicker } from '../Incubator/XDate';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import { XInput, XInputProps } from 'openland-x/XInput';
 import { XFooter } from 'openland-x/XFooter';
@@ -643,10 +642,6 @@ export class XForm extends React.Component<XFormProps, { loading: boolean, error
     static Avatar = XFormAvatarField;
     static TextArea = XFormTextArea;
     static Submit = XFormSubmit;
-
-    static RawInput = XInput;
-    static RawTextarea = XFormTextAreaStyle;
-    static RawSelect = XFormSelect;
 
     constructor(props: XFormProps) {
         super(props);

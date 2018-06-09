@@ -28,6 +28,7 @@
 		"@types/graphql": "^0.11.7",
 		"@types/http-proxy-middleware": "^0.17.2",
 		"@types/js-cookie": "^2.1.0",
+		"@types/jest": "^22.1.3",
 		"@types/lodash-es": "^4.17.0",
 		"@types/mapbox-gl": "^0.43.0",
 		"@types/markdown-it": "^0.0.4",
@@ -87,7 +88,7 @@
 		"mixpanel-browser": "^2.19.0",
 		"morgan": "^1.9.0",
 		"next": "6.0.3",
-		"next-routes": "^1.4.1",
+		"next-routes": "^1.4.2",
 		"nprogress": "^0.2.0",
 		"popper.js": "^1.14.3",
 		"prop-types": "^15.6.0",
@@ -118,7 +119,9 @@
 		"typescript": "2.8.3",
 		"uploadcare-widget": "^3.2.1",
 		"watchman": "^1.0.0",
-		"webpack-bundle-analyzer": "^2.9.1"
+		"webpack-bundle-analyzer": "^2.9.1",
+		"ts-jest": "^22.0.4",
+		"jest": "^22.3.0"
 	},
 	"devDependencies": {
 		"babel-plugin-inline-import-graphql-ast": "^2.1.2",
@@ -139,7 +142,9 @@
 		"dev:local": "nodemon ./packages/openland-web/server.ts",
 		"lint": "NODE_ENV=production ./node_modules/.bin/tslint --project . --config ./tslint.json",
 		"compile": "NODE_ENV=production ./node_modules/.bin/tsc",
-		"test": "yarn lint && yarn compile",
+		"jest": "node ./node_modules/jest/bin/jest.js",
+		"jest:watch": "node ./node_modules/jest/bin/jest.js --watchAll",
+		"test": "yarn lint && yarn jest && yarn compile",
 		"build": "NODE_ENV=production next build ./packages/openland-web",
 		"analyze": "BUNDLE_ANALYZE=both next build ./packages/openland-web",
 		"analyze:web": "BUNDLE_ANALYZE=browser next build ./packages/openland-web",
