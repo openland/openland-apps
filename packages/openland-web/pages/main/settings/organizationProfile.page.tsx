@@ -22,6 +22,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { withRouter } from 'openland-x-routing/withRouter';
+import { XFooter } from 'openland-x/XFooter';
 
 const Root = glamorous(XVertical)({
     alignItems: 'center',
@@ -111,9 +112,9 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                     <XForm.Field title="logo">
                         <XForm.Avatar field="logo" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} />
                     </XForm.Field>
-                    <XForm.Footer>
+                    <XFooter>
                         <XForm.Submit text="Save" />
-                    </XForm.Footer>
+                    </XFooter>
                 </XForm>
 
                 <CenteredTitle title="String extras" />
@@ -127,9 +128,9 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                     <XForm.Field title="facebook">
                         <XForm.Text field="facebook" />
                     </XForm.Field>
-                    <XForm.Footer>
+                    <XFooter>
                         <XForm.Submit text="Save" />
-                    </XForm.Footer>
+                    </XFooter>
                 </XForm>
                 <CenteredTitle title="Tags" />
                 <XForm defaultValues={(props as any).developmentModelsExtras} submitMutation={props.editOrganizationProfile} keepLoading={false}>
@@ -143,9 +144,9 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                             multi={true}
                         />
                     </XForm.Field>
-                    <XForm.Footer>
+                    <XFooter>
                         <XForm.Submit text="Save" />
-                    </XForm.Footer>
+                    </XFooter>
                 </XForm>
 
                 <XForm defaultValues={(props as any).availabilityExtras} submitMutation={props.editOrganizationProfile} keepLoading={false}>
@@ -159,9 +160,9 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                             multi={true}
                         />
                     </XForm.Field>
-                    <XForm.Footer>
+                    <XFooter>
                         <XForm.Submit text="Save" />
-                    </XForm.Footer>
+                    </XFooter>
                 </XForm>
 
                 <XForm defaultValues={(props as any).landUseExtras} submitMutation={props.editOrganizationProfile} keepLoading={false}>
@@ -175,9 +176,9 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                             multi={true}
                         />
                     </XForm.Field>
-                    <XForm.Footer>
+                    <XFooter>
                         <XForm.Submit text="Save" />
-                    </XForm.Footer>
+                    </XFooter>
                 </XForm>
 
                 <XForm defaultValues={(props as any).goodForExtras} submitMutation={props.editOrganizationProfile} keepLoading={false}>
@@ -191,9 +192,9 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                             multi={true}
                         />
                     </XForm.Field>
-                    <XForm.Footer>
+                    <XFooter>
                         <XForm.Submit text="Save" />
-                    </XForm.Footer>
+                    </XFooter>
                 </XForm>
 
                 <XForm defaultValues={(props as any).specialAttributesExtras} submitMutation={props.editOrganizationProfile} keepLoading={false}>
@@ -207,9 +208,9 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                             multi={true}
                         />
                     </XForm.Field>
-                    <XForm.Footer>
+                    <XFooter>
                         <XForm.Submit text="Save" />
-                    </XForm.Footer>
+                    </XFooter>
                 </XForm>
 
                 <CenteredTitle title="Contacts" />

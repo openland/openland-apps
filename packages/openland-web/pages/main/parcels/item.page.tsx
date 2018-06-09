@@ -32,6 +32,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XForm } from 'openland-x-forms/XForm';
 import { XProperty, XPropertyList } from 'openland-x/XProperty';
 import { FolderButton } from '../../../components/FolderButton';
+import { XFooter } from 'openland-x/XFooter';
 
 export default withApp('Parcel', 'viewer', withParcel((props) => {
 
@@ -212,9 +213,9 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
                                 <XContent>
                                     <XForm.TextArea field="notes" placeholder="Notes" />
                                 </XContent>
-                                <XForm.Footer>
+                                <XFooter>
                                     <XForm.Submit style="primary" text="Save" />
-                                </XForm.Footer>
+                                </XFooter>
                             </XForm>
                         </>)}
 

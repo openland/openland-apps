@@ -40,6 +40,7 @@ import { XForm } from 'openland-x-forms/XForm';
 import { XProperty, XPropertyColumns, XPropertyList } from 'openland-x/XProperty';
 import { trackEvent } from 'openland-x-analytics';
 import { XTooltipHint } from 'openland-x/XTooltipHint';
+import { XFooter } from 'openland-x/XFooter';
 
 const OpportunityDescription = (props: { parcel: Types.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
@@ -174,9 +175,9 @@ const OpportunityDescription = (props: { parcel: Types.ParcelFullFragment, parce
                     <XContent>
                         <XForm.TextArea field="notes" placeholder="Notes" />
                     </XContent>
-                    <XForm.Footer>
+                    <XFooter>
                         <XForm.Submit style="primary" text="Save" />
-                    </XForm.Footer>
+                    </XFooter>
                 </XForm>)}
 
             {props.router.query.tab === linksPath && props.parcel.links.length > 0 && (

@@ -5,7 +5,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { MutationFunc } from 'react-apollo';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import { XInput, XInputProps } from 'openland-x/XInput';
-import { XFooter } from 'openland-x/XFooter';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { XLoader } from 'openland-x/XLoader';
 import { XRouter } from 'openland-x-routing/XRouter';
@@ -38,39 +37,6 @@ export const XFormDiv = Glamorous.div({
     marginBottom: 2,
     '&:last-child': {
         marginBottom: 0
-    }
-});
-
-export const XFormTitle = Glamorous.div({
-    fontSize: '16px',
-    lineHeight: '24px',
-    fontWeight: 500,
-    color: '#32325d'
-});
-
-export const XFormDescription = Glamorous.div({
-    fontSize: '14px',
-    lineHeight: '20px',
-    fontWeight: 400,
-    color: '#525f7f'
-});
-
-export const XFormHeaderDiv = Glamorous.div({
-    position: 'relative',
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 20,
-    paddingBottom: 20,
-    backgroundColor: '#f6f9fc',
-    '&::after': {
-        content: `''`,
-        bottom: -1,
-        left: 16,
-        position: 'absolute',
-        right: 16,
-        display: 'block',
-        height: 1,
-        backgroundColor: '#e6ebf1'
     }
 });
 
@@ -165,15 +131,6 @@ export function XFormSelect(props: { options?: any[], value?: string | string[] 
                 <option value={item.value}>{item.title}</option>
             ))}
         </XFormSelectStyle>
-    );
-}
-
-export function XFormHeader(props: { title?: string, description?: string }) {
-    return (
-        <XFormHeaderDiv>
-            <XFormTitle>{props.title}</XFormTitle>
-            {props.description && <XFormDescription>{props.description}</XFormDescription>}
-        </XFormHeaderDiv>
     );
 }
 
@@ -307,38 +264,6 @@ export class XFormAvatarField extends React.Component<XFormAvatarFieldProps, { u
         );
     }
 }
-
-export class XFormTextArea extends React.Component<XFormTextFieldProps, { value: string }> {
-    static contextTypes = {
-        xForm: PropTypes.object.isRequired
-    };
-
-    constructor(props: XFormTextFieldProps, context: any) {
-        super(props, context);
-        let xForm = this.context.xForm as XFormController;
-        let existing = xForm.readValue(this.props.field);
-        if (typeof existing === 'string') {
-            this.state = { value: existing };
-        } else if (existing) {
-            this.state = { value: existing.toString() };
-        } else {
-            this.state = { value: '' };
-        }
-    }
-
-    handleChange = (src: any) => {
-        let xForm = this.context.xForm as XFormController;
-        let val = src.target.value as string;
-        this.setState({ value: val });
-        xForm.writeValue(this.props.field, val);
-    }
-    render() {
-        return (
-            <XFormTextAreaStyle placeholder={this.props.placeholder} onChange={this.handleChange} value={this.state.value} />
-        );
-    }
-}
-
 interface XFormBooleanFieldProps {
     field: string;
 }
@@ -392,6 +317,37 @@ export class XFormBooleanField extends React.Component<XFormBooleanFieldProps, {
                 value={value}
                 onChange={this.handleChange}
             />
+        );
+    }
+}
+
+export class XFormTextArea extends React.Component<XFormTextFieldProps, { value: string }> {
+    static contextTypes = {
+        xForm: PropTypes.object.isRequired
+    };
+
+    constructor(props: XFormTextFieldProps, context: any) {
+        super(props, context);
+        let xForm = this.context.xForm as XFormController;
+        let existing = xForm.readValue(this.props.field);
+        if (typeof existing === 'string') {
+            this.state = { value: existing };
+        } else if (existing) {
+            this.state = { value: existing.toString() };
+        } else {
+            this.state = { value: '' };
+        }
+    }
+
+    handleChange = (src: any) => {
+        let xForm = this.context.xForm as XFormController;
+        let val = src.target.value as string;
+        this.setState({ value: val });
+        xForm.writeValue(this.props.field, val);
+    }
+    render() {
+        return (
+            <XFormTextAreaStyle placeholder={this.props.placeholder} onChange={this.handleChange} value={this.state.value} />
         );
     }
 }
@@ -651,15 +607,12 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
 
 export class XForm extends React.Component<XFormProps, { loading: boolean, error?: string }> {
 
-    static Header = XFormHeader;
-    static Footer = XFooter;
-
     static Field = XFormField;
     static Boolean = XFormBooleanField;
     static Select = XFormSelectField;
     static Text = XFormTextField;
-    static Avatar = XFormAvatarField;
     static TextArea = XFormTextArea;
+    static Avatar = XFormAvatarField;
     static Submit = XFormSubmit;
 
     constructor(props: XFormProps) {

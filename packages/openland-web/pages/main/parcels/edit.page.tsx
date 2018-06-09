@@ -7,6 +7,7 @@ import { Scaffold } from '../../../components/Scaffold';
 import { XButton } from 'openland-x/XButton';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XForm } from 'openland-x-forms/XForm';
+import { XFooter } from 'openland-x/XFooter';
 
 export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetadataForm((props) => {
     return (
@@ -32,10 +33,10 @@ export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetad
                         <XForm.Field title="Current Use">
                             <XForm.Select field="currentUse" options={[{ title: 'Parking', value: 'PARKING' }, { title: 'Public Storage', value: 'STORAGE' }]} />
                         </XForm.Field>
-                        <XForm.Footer>
+                        <XFooter>
                             <XForm.Submit style="primary" text="Save" />
                             <XButton path={'/parcels/' + props.data.item.id} text="Cancel" />
-                        </XForm.Footer>
+                        </XFooter>
                     </XForm>
 
                 </Scaffold.Content>

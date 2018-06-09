@@ -8,6 +8,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { withSaveProfile } from '../../../api';
 import { Navigation } from './Navigation';
 import { XHeader } from 'openland-x/XHeader';
+import { XFooter } from 'openland-x/XFooter';
 
 export default withApp('Profile', 'viewer', withSaveProfile(withUserInfo((props) => {
     return (
@@ -18,9 +19,9 @@ export default withApp('Profile', 'viewer', withSaveProfile(withUserInfo((props)
                     <XForm defaultValues={{ firstName: props.user!!.firstName, lastName: props.user!!.lastName }} mutationDirect={true} submitMutation={props.saveProfile}>
                         <XForm.Text field="firstName" />
                         <XForm.Text field="lastName" />
-                        <XForm.Footer>
+                        <XFooter>
                             <XForm.Submit text="Save" />
-                        </XForm.Footer>
+                        </XFooter>
                     </XForm>
                 </XVertical>
             </XContent>
