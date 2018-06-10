@@ -14,39 +14,12 @@ import { XAvatarUpload, XAvatarUploadProps } from 'openland-x/files/XAvatarUploa
 import { XImageCrop } from 'openland-x/files/XFileUpload';
 import { XTextArea } from 'openland-x/XTextArea';
 
-let InputsStyle = {
-    borderRadius: 4,
-    boxShadow: '0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08)',
-    boxShadowOnFocus: '0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08)',
-    boxShadovNovalid: '0 0 0 1px rgba(226, 89, 80, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08)',
-    color: '#525f7f',
-    backgroundColor: '#fff',
-    placeholderColor: '#8898aa',
-    fontSize: '14px',
-    lineHeight: 1.6,
-    paddingTop: 4,
-    paddingLeft: 7,
-    paddingRight: 7,
-    paddingBottom: 2,
-    outline: 'none',
-};
-
-export const XFormDiv = Glamorous.div({
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    marginBottom: 2,
-    '&:last-child': {
-        marginBottom: 0
-    }
-});
-
 export const XFormSelectStyle = Glamorous.select({
     height: 28,
     boxSizing: 'border-box',
     border: 'none',
     borderRadius: 4,
-    boxShadow: InputsStyle.boxShadow,
+    boxShadow: '0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08)',
     color: '#525f7f',
     backgroundColor: '#fff',
     fontSize: '14px',
@@ -63,7 +36,7 @@ export const XFormSelectStyle = Glamorous.select({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'right',
     '&:focus': {
-        boxShadow: InputsStyle.boxShadowOnFocus
+        boxShadow: '0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08)'
     }
 });
 
