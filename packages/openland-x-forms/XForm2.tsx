@@ -47,7 +47,7 @@ class XFormController extends React.PureComponent<XFormControllerProps, { loadin
         this.contextValue = {
             store: this.props.store,
             submit: (action?: (data: any) => any) => {
-                this.submit(action);
+                return this.submit(action);
             }
         };
     }
@@ -57,7 +57,7 @@ class XFormController extends React.PureComponent<XFormControllerProps, { loadin
             this.contextValue = {
                 store: nextProps.store,
                 submit: (action?: (data: any) => any) => {
-                    this.submit(action);
+                    return this.submit(action);
                 }
             };
         }
