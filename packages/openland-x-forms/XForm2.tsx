@@ -5,72 +5,109 @@ import { XStoreState } from 'openland-x-store/XStoreState';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { storeMerge } from 'openland-x-store/utils/storeMerge';
-import { XButton } from 'openland-x/XButton';
 import { XLoadingBar } from 'openland-x/XLoadingBar';
+import { XFormContextValue, XFormContext } from './XFormContext';
 
 export interface XFormProps {
     defaultData?: any;
     staticData?: any;
-    action: (data: any) => any;
+    defaultAction: (data: any) => any;
 }
 
 interface XFormControllerProps {
     staticData?: any;
-    action: (data: any) => any;
+    defaultAction: (data: any) => any;
     store: XStoreState;
 }
 
 class XFormController extends React.PureComponent<XFormControllerProps, { loading: boolean, error?: string }> {
 
+    // Keep local copy since setState is async
+    private _isLoading = false;
+    private contextValue: XFormContextValue;
+
     constructor(props: XFormControllerProps) {
         super(props);
         this.state = { loading: false };
+        this.contextValue = {
+            store: this.props.store,
+            submit: (action?: (data: any) => any) => {
+                this.submit(action);
+            }
+        };
     }
 
-    submit = async () => {
-        let data = this.props.store.export();
+    componentWillReceiveProps(nextProps: XFormControllerProps) {
+        if (this.props.store !== nextProps.store) {
+            this.contextValue = {
+                store: nextProps.store,
+                submit: (action?: (data: any) => any) => {
+                    this.submit(action);
+                }
+            };
+        }
+    }
+
+    private submit = async (action?: (data: any) => any) => {
+        if (this._isLoading) {
+            return;
+        }
+        let data = this.props.store.export().fields;
         if (this.props.staticData) {
             data = storeMerge(data, this.props.staticData);
         }
-        this.props.store.writeValue('__form_loading', true);
-        this.props.store.writeValue('__form_enabled', false);
+        this._isLoading = true;
+        this.props.store.writeValue('form.loading', true);
+        this.props.store.writeValue('form.enabled', false);
         this.setState({ loading: true, error: undefined });
+        let act = action || this.props.defaultAction;
         try {
-            await this.props.action(data);
+            await act(data);
             this.setState({ loading: false, error: undefined });
         } catch (e) {
             console.warn(e);
             this.setState({ loading: false, error: e.toString() });
         } finally {
-            this.props.store.writeValue('__form_loading', false);
-            this.props.store.writeValue('__form_enabled', true);
+            this._isLoading = false;
+            this.props.store.writeValue('form.loading', false);
+            this.props.store.writeValue('form.enabled', true);
         }
     }
 
     render() {
         return (
-            <XVertical>
-                <XLoadingBar visible={this.state.loading} />
-                {this.state.error && <XServiceMessage title={this.state.error} />}
-                {this.props.children}
-                <XButton text="Submit" alignSelf="flex-start" onClick={this.submit} />
-            </XVertical>
+            <XFormContext.Provider value={this.contextValue}>
+                <XVertical>
+                    <XLoadingBar visible={this.state.loading} />
+                    {this.state.error && <XServiceMessage title={this.state.error} />}
+                    {this.props.children}
+                </XVertical>
+            </XFormContext.Provider>
         );
     }
 }
 
 export class XForm extends React.PureComponent<XFormProps> {
 
+    private defaultData: any;
+
     constructor(props: XFormProps) {
         super(props);
+        this.defaultData = {
+            fields: (this.props.defaultData || {}),
+            form: {
+                enabled: true,
+                loading: false
+            }
+        };
     }
 
     render() {
         return (
-            <XStore defaultData={this.props.defaultData} onChanged={(data) => console.warn(data)}>
+            <XStore defaultData={this.defaultData} onChanged={(data) => console.warn(JSON.stringify(data))}>
                 <XStoreContext.Consumer>
                     {store => (
-                        <XFormController staticData={this.props.staticData} action={this.props.action} store={store!!}>
+                        <XFormController staticData={this.props.staticData} defaultAction={this.props.defaultAction} store={store!!}>
                             {this.props.children}
                         </XFormController>
                     )}

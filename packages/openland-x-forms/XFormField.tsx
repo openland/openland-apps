@@ -11,10 +11,10 @@ const XFormFieldDiv = Glamorous.div({
     paddingRight: 20,
     paddingBottom: 20
 });
-const XFormFieldTitle = Glamorous.div<{ novalid?: boolean }>((props) => ({
+const XFormFieldTitle = Glamorous.div<{ invalid?: boolean }>((props) => ({
     textAlign: 'right',
     flex: '30% 0 0',
-    color: props.novalid ? '#e25950' : '#32325d',
+    color: props.invalid ? '#e25950' : '#32325d',
     lineHeight: 1.6,
     paddingRight: 10,
     paddingTop: 3
@@ -26,22 +26,22 @@ const XFormFieldChildren = Glamorous.div({
     flex: '0 0 55%',
     maxWidth: 340
 });
-const XFormFieldDescription = Glamorous.div<{ novalid?: boolean }>((props) => ({
+const XFormFieldDescription = Glamorous.div<{ invalid?: boolean }>((props) => ({
     marginTop: 5,
-    color: props.novalid ? '#e25950' : '#6b7c93',
+    color: props.invalid ? '#e25950' : '#6b7c93',
     fontWeight: 400,
     fontSize: '13px',
     lineHeight: 1.6
 }));
-export function XFormField(props: { title: string, children: any, description?: string, novalid?: boolean }) {
+export function XFormField(props: { title: string, children: any, description?: string, invalid?: boolean }) {
     return (
         <XFormFieldDiv>
-            <XFormFieldTitle novalid={props.novalid}>{props.title}</XFormFieldTitle>
+            <XFormFieldTitle invalid={props.invalid}>{props.title}</XFormFieldTitle>
             <XFormFieldChildren>
                 <XVertical>
                     {props.children}
                 </XVertical>
-                {props.description && <XFormFieldDescription novalid={props.novalid}>{props.description}</XFormFieldDescription>}
+                {props.description && <XFormFieldDescription invalid={props.invalid}>{props.description}</XFormFieldDescription>}
             </XFormFieldChildren>
         </XFormFieldDiv>
     );
