@@ -8,6 +8,7 @@ import { XButton } from 'openland-x/XButton';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFooter } from 'openland-x/XFooter';
+import { XFormField } from 'openland-x-forms/XFormField';
 
 export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetadataForm((props) => {
     return (
@@ -21,18 +22,18 @@ export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetad
                         submitMutation={props.parcelAlterMetadata}
                         completePath={'/parcels/' + props.data.item.id}
                     >
-                        <XForm.Field title="Description">
+                        <XFormField title="Description">
                             <XForm.Text field="description" />
-                        </XForm.Field>
-                        <XForm.Field title="Is Available to buy?">
+                        </XFormField>
+                        <XFormField title="Is Available to buy?">
                             <XForm.Boolean field="available" />
-                        </XForm.Field>
-                        <XForm.Field title="Is Of For Tower?">
+                        </XFormField>
+                        <XFormField title="Is Of For Tower?">
                             <XForm.Boolean field="isOkForTower" />
-                        </XForm.Field>
-                        <XForm.Field title="Current Use">
+                        </XFormField>
+                        <XFormField title="Current Use">
                             <XForm.Select field="currentUse" options={[{ title: 'Parking', value: 'PARKING' }, { title: 'Public Storage', value: 'STORAGE' }]} />
-                        </XForm.Field>
+                        </XFormField>
                         <XFooter>
                             <XForm.Submit style="primary" text="Save" />
                             <XButton path={'/parcels/' + props.data.item.id} text="Cancel" />

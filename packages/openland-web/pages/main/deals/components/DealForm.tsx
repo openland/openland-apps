@@ -3,6 +3,7 @@ import { MutationFunc } from 'react-apollo';
 import { XForm } from 'openland-x-forms/XForm';
 import { ParcelSelect } from '../../../../api';
 import { XModalForm } from 'openland-x-modal/XModalForm';
+import { XFormField } from 'openland-x-forms/XFormField';
 
 export function DealForm(props: {
     query: string,
@@ -30,29 +31,29 @@ export function DealForm(props: {
 
     return (
         <XModalForm submitMutation={props.mutation} defaultValues={defs} targetQuery={props.query} actionName={props.action} title={props.title}>
-            <XForm.Field title="Deal Name">
+            <XFormField title="Deal Name">
                 <XForm.Text field="title" />
-            </XForm.Field>
+            </XFormField>
 
-            <XForm.Field title="Price">
+            <XFormField title="Price">
                 <XForm.Text field="price" />
-            </XForm.Field>
-            <XForm.Field title="Area">
+            </XFormField>
+            <XFormField title="Area">
                 <XForm.Text field="extrasArea" />
-            </XForm.Field>
-            <XForm.Field title="Tax Bill">
+            </XFormField>
+            <XFormField title="Tax Bill">
                 <XForm.Text field="extrasTaxBill" />
-            </XForm.Field>
-            <XForm.Field title="Parcel">
+            </XFormField>
+            <XFormField title="Parcel">
                 <XForm.Select field="parcelId" component={ParcelSelect} />
-            </XForm.Field>
-            <XForm.Field title="Location">
+            </XFormField>
+            <XFormField title="Location">
                 <XForm.Text field="location" placeholder="ex: Brooklyn" />
-            </XForm.Field>
-            <XForm.Field title="Address">
+            </XFormField>
+            <XFormField title="Address">
                 <XForm.Text field="address" placeholder="100 California St" />
-            </XForm.Field>
-            <XForm.Field title="Status">
+            </XFormField>
+            <XFormField title="Status">
                 <XForm.Select
                     field="status"
                     options={[
@@ -61,28 +62,28 @@ export function DealForm(props: {
                         { value: 'ON_HOLD', title: 'On Hold' },
                     ]}
                 />
-            </XForm.Field>
-            <XForm.Field title="Status Description">
+            </XFormField>
+            <XFormField title="Status Description">
                 <XForm.Text field="statusDescription" placeholder="ex: Waiting for titles" />
-            </XForm.Field>
-            <XForm.Field title="Status Date">
+            </XFormField>
+            <XFormField title="Status Date">
                 <XForm.Text field="statusDate" placeholder="Date of status change" />
-            </XForm.Field>
-            <XForm.Field title="Company">
+            </XFormField>
+            <XFormField title="Company">
                 <XForm.Text field="extrasCompany" />
-            </XForm.Field>
-            <XForm.Field title="Seller's Attorney">
+            </XFormField>
+            <XFormField title="Seller's Attorney">
                 <XForm.Text field="extrasAttorney" />
-            </XForm.Field>
-            <XForm.Field title="Referee">
+            </XFormField>
+            <XFormField title="Referee">
                 <XForm.Text field="extrasReferee" />
-            </XForm.Field>
-            <XForm.Field title="Lot Shape">
+            </XFormField>
+            <XFormField title="Lot Shape">
                 <XForm.Text field="extrasLotShape" />
-            </XForm.Field>
-            <XForm.Field title="Lot Size">
+            </XFormField>
+            <XFormField title="Lot Size">
                 <XForm.Text field="extrasLotSize" />
-            </XForm.Field>
+            </XFormField>
         </XModalForm>
     );
 }

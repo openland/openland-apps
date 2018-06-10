@@ -8,6 +8,7 @@ import { XTable } from 'openland-x/XTable';
 import { XForm } from 'openland-x-forms/XForm';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XModalForm } from 'openland-x-modal/XModalForm';
+import { XFormField } from 'openland-x-forms/XFormField';
 
 const AddSuperAdminForm = withSuperAdminAdd((props) => {
     return (
@@ -18,10 +19,10 @@ const AddSuperAdminForm = withSuperAdminAdd((props) => {
             actionName="Add"
             target={<XButton text="Add New" />}
         >
-            <XForm.Field title="User">
+            <XFormField title="User">
                 <XForm.Select field="userId" component={UserSelect} />
-            </XForm.Field>
-            <XForm.Field title="Role">
+            </XFormField>
+            <XFormField title="Role">
                 <XForm.Select
                     field="role"
                     options={[
@@ -30,7 +31,7 @@ const AddSuperAdminForm = withSuperAdminAdd((props) => {
                         { title: 'Software Developer', value: 'SOFTWARE_DEVELOPER' }
                     ]}
                 />
-            </XForm.Field>
+            </XFormField>
         </XModalForm>
     );
 });
@@ -45,9 +46,9 @@ const RemoveSuperAdminForm = withSuperAdminRemove((props) => {
             actionStyle="danger"
             target={<XButton text="Remove existing" />}
         >
-            <XForm.Field title="User">
+            <XFormField title="User">
                 <XForm.Select field="userId" component={UserSelect} />
-            </XForm.Field>
+            </XFormField>
         </XModalForm>
     );
 });

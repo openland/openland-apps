@@ -8,6 +8,7 @@ import { XTable } from 'openland-x/XTable';
 import { XForm } from 'openland-x-forms/XForm';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XButton } from 'openland-x/XButton';
+import { XFormField } from 'openland-x-forms/XFormField';
 
 const AddFeatureForm = withFeatureFlagAdd((props) => {
     return (
@@ -18,12 +19,12 @@ const AddFeatureForm = withFeatureFlagAdd((props) => {
             actionName="Add"
             target={<XButton text="Add feature" />}
         >
-            <XForm.Field title="Key">
+            <XFormField title="Key">
                 <XForm.Text field="key" placeholder="format: awesome-feature" />
-            </XForm.Field>
-            <XForm.Field title="Title">
+            </XFormField>
+            <XFormField title="Title">
                 <XForm.Text field="title" placeholder="ex. Advanced Feature" />
-            </XForm.Field>
+            </XFormField>
         </XModalForm>
     );
 });

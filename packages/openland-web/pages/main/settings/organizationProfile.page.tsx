@@ -23,6 +23,7 @@ import { XButton } from 'openland-x/XButton';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XFooter } from 'openland-x/XFooter';
+import { XFormField } from 'openland-x-forms/XFormField';
 
 const Root = glamorous(XVertical)({
     alignItems: 'center',
@@ -103,15 +104,15 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
             <MiddleContainer separator="none">
                 <CenteredTitle title="Main Info" />
                 <XForm defaultValues={(props as any).mainVals} mutationDirect={true} submitMutation={props.editOrganizationProfile} keepLoading={false}>
-                    <XForm.Field title="title">
+                    <XFormField title="title">
                         <XForm.Text field="title" />
-                    </XForm.Field>
-                    <XForm.Field title="website">
+                    </XFormField>
+                    <XFormField title="website">
                         <XForm.Text field="website" />
-                    </XForm.Field>
-                    <XForm.Field title="logo">
+                    </XFormField>
+                    <XFormField title="logo">
                         <XForm.Avatar field="logo" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} />
-                    </XForm.Field>
+                    </XFormField>
                     <XFooter>
                         <XForm.Submit text="Save" />
                     </XFooter>
@@ -119,22 +120,22 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
 
                 <CenteredTitle title="String extras" />
                 <XForm defaultValues={(props as any).simpleExtras} submitMutation={props.editOrganizationProfile} keepLoading={false}>
-                    <XForm.Field title="description">
+                    <XFormField title="description">
                         <XForm.Text field="description" />
-                    </XForm.Field>
-                    <XForm.Field title="twitter">
+                    </XFormField>
+                    <XFormField title="twitter">
                         <XForm.Text field="twitter" />
-                    </XForm.Field>
-                    <XForm.Field title="facebook">
+                    </XFormField>
+                    <XFormField title="facebook">
                         <XForm.Text field="facebook" />
-                    </XForm.Field>
+                    </XFormField>
                     <XFooter>
                         <XForm.Submit text="Save" />
                     </XFooter>
                 </XForm>
                 <CenteredTitle title="Tags" />
                 <XForm defaultValues={(props as any).developmentModelsExtras} submitMutation={props.editOrganizationProfile} keepLoading={false}>
-                    <XForm.Field title="Development Models">
+                    <XFormField title="Development Models">
                         <XForm.Select
                             field="developmentModels"
                             options={DevelopmentModelsMap.map(o => {
@@ -143,14 +144,14 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                             component={XSelect}
                             multi={true}
                         />
-                    </XForm.Field>
+                    </XFormField>
                     <XFooter>
                         <XForm.Submit text="Save" />
                     </XFooter>
                 </XForm>
 
                 <XForm defaultValues={(props as any).availabilityExtras} submitMutation={props.editOrganizationProfile} keepLoading={false}>
-                    <XForm.Field title="availability">
+                    <XFormField title="availability">
                         <XForm.Select
                             field="availability"
                             options={AvailabilityMap.map(o => {
@@ -159,14 +160,14 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                             component={XSelect}
                             multi={true}
                         />
-                    </XForm.Field>
+                    </XFormField>
                     <XFooter>
                         <XForm.Submit text="Save" />
                     </XFooter>
                 </XForm>
 
                 <XForm defaultValues={(props as any).landUseExtras} submitMutation={props.editOrganizationProfile} keepLoading={false}>
-                    <XForm.Field title="LandUse">
+                    <XFormField title="LandUse">
                         <XForm.Select
                             field="landUse"
                             options={LandUseMap.map(o => {
@@ -175,14 +176,14 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                             component={XSelect}
                             multi={true}
                         />
-                    </XForm.Field>
+                    </XFormField>
                     <XFooter>
                         <XForm.Submit text="Save" />
                     </XFooter>
                 </XForm>
 
                 <XForm defaultValues={(props as any).goodForExtras} submitMutation={props.editOrganizationProfile} keepLoading={false}>
-                    <XForm.Field title="Good For">
+                    <XFormField title="Good For">
                         <XForm.Select
                             field="goodFor"
                             options={GoodForMap.map(o => {
@@ -191,14 +192,14 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                             component={XSelect}
                             multi={true}
                         />
-                    </XForm.Field>
+                    </XFormField>
                     <XFooter>
                         <XForm.Submit text="Save" />
                     </XFooter>
                 </XForm>
 
                 <XForm defaultValues={(props as any).specialAttributesExtras} submitMutation={props.editOrganizationProfile} keepLoading={false}>
-                    <XForm.Field title="Special Attributes">
+                    <XFormField title="Special Attributes">
                         <XForm.Select
                             field="specialAttributes"
                             options={SpecialAttributesMap.map(o => {
@@ -207,7 +208,7 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                             component={XSelect}
                             multi={true}
                         />
-                    </XForm.Field>
+                    </XFormField>
                     <XFooter>
                         <XForm.Submit text="Save" />
                     </XFooter>

@@ -41,41 +41,6 @@ export const XFormDiv = Glamorous.div({
     }
 });
 
-export const XFormFieldDiv = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    // backgroundColor: '#f6f9fc',
-    paddingTop: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 20
-});
-
-export const XFormFieldTitle = Glamorous.div<{ novalid?: boolean }>((props) => ({
-    textAlign: 'right',
-    flex: '30% 0 0',
-    color: props.novalid ? '#e25950' : '#32325d',
-    lineHeight: 1.6,
-    paddingRight: 10,
-    paddingTop: 3
-}));
-
-export const XFormFieldChildren = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    flex: '0 0 55%',
-    maxWidth: 340
-});
-
-export const XFormFieldDescription = Glamorous.div<{ novalid?: boolean }>((props) => ({
-    marginTop: 5,
-    color: props.novalid ? '#e25950' : '#6b7c93',
-    fontWeight: 400,
-    fontSize: '13px',
-    lineHeight: 1.6
-}));
-
 export const XFormSelectStyle = Glamorous.select({
     height: 28,
     boxSizing: 'border-box',
@@ -109,20 +74,6 @@ export function XFormSelect(props: { options?: any[], value?: string | string[] 
                 <option value={item.value}>{item.title}</option>
             ))}
         </XFormSelectStyle>
-    );
-}
-
-export function XFormField(props: { title: string, children: any, description?: string, novalid?: boolean }) {
-    return (
-        <XFormFieldDiv>
-            <XFormFieldTitle novalid={props.novalid}>{props.title}</XFormFieldTitle>
-            <XFormFieldChildren>
-                <XVertical>
-                    {props.children}
-                </XVertical>
-                {props.description && <XFormFieldDescription novalid={props.novalid}>{props.description}</XFormFieldDescription>}
-            </XFormFieldChildren>
-        </XFormFieldDiv>
     );
 }
 
@@ -585,7 +536,6 @@ class XFormRender extends React.Component<XFormProps & { router?: XRouter, modal
 
 export class XForm extends React.Component<XFormProps, { loading: boolean, error?: string }> {
 
-    static Field = XFormField;
     static Boolean = XFormBooleanField;
     static Select = XFormSelectField;
     static Text = XFormTextField;

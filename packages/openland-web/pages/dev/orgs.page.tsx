@@ -11,6 +11,7 @@ import { XForm } from 'openland-x-forms/XForm';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import glamorous from 'glamorous';
+import { XFormField } from 'openland-x-forms/XFormField';
 
 const AddAccountForm = withSuperAccountAdd((props) => {
     return (
@@ -21,9 +22,9 @@ const AddAccountForm = withSuperAccountAdd((props) => {
             mutationDirect={true}
             actionName="Add"
         >
-            <XForm.Field title="Organization Name">
+            <XFormField title="Organization Name">
                 <XForm.Text field="title" />
-            </XForm.Field>
+            </XFormField>
         </XModalForm>
     );
 });

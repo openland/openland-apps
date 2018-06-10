@@ -13,6 +13,7 @@ import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
 import { XForm } from 'openland-x-forms/XForm';
 import { XModalForm } from 'openland-x-modal/XModalForm';
+import { XFormField } from 'openland-x-forms/XFormField';
 
 const ActivateButton = withSuperAccountActivate((props) => <XButton style="primary" action={() => props.activate({})} text="Activate" />);
 const SuspendButton = withSuperAccountSuspend((props) => <XButton style="danger" action={() => props.suspend({})} text="Suspend" />);
@@ -26,9 +27,9 @@ const AddMemberForm = withSuperAccountMemberAdd((props) => {
             actionName="Add"
             target={<XButton text="Add member" />}
         >
-            <XForm.Field title="User">
+            <XFormField title="User">
                 <XForm.Select field="userId" component={UserSelect} />
-            </XForm.Field>
+            </XFormField>
         </XModalForm>
     );
 });
@@ -43,9 +44,9 @@ const RemoveMemberForm = withSuperAccountMemberRemove((props) => {
             actionName="Remove"
             target={<XButton style="danger" text="Remove member" />}
         >
-            <XForm.Field title="User">
+            <XFormField title="User">
                 <XForm.Select field="userId" component={UserSelect} />
-            </XForm.Field>
+            </XFormField>
         </XModalForm>
     );
 });
@@ -59,9 +60,9 @@ const AddFeature = withSuperAccountFeatureAdd((props) => {
             actionName="Add"
             target={<XButton text="Add feature" />}
         >
-            <XForm.Field title="Feature">
+            <XFormField title="Feature">
                 <XForm.Select field="featureId" options={props.data.featureFlags.map((v) => ({ value: v.id, title: v.title }))} />
-            </XForm.Field>
+            </XFormField>
         </XModalForm>
     );
 });
@@ -76,9 +77,9 @@ const RemoveFeature = withSuperAccountFeatureRemove((props) => {
             actionName="Remove"
             target={<XButton style="danger" text="Remove feature" />}
         >
-            <XForm.Field title="Feature">
+            <XFormField title="Feature">
                 <XForm.Select field="featureId" options={props.data.featureFlags.map((v) => ({ value: v.id, title: v.title }))} />
-            </XForm.Field>
+            </XFormField>
         </XModalForm>
     );
 });
