@@ -1,24 +1,39 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { XStore } from 'openland-x-store/XStore';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { XStoreState } from 'openland-x-store/XStoreState';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { storeMerge } from 'openland-x-store/utils/storeMerge';
-import { XLoadingBar } from 'openland-x/XLoadingBar';
 import { XFormContextValue, XFormContext } from './XFormContext';
+import { XFormError } from './XFormError';
+import { XFormLoadingBar } from './XFormLoadingBar';
 
 export interface XFormProps {
     defaultData?: any;
     staticData?: any;
     defaultAction: (data: any) => any;
+    className?: string;
+    defaultLayout?: boolean;
 }
 
 interface XFormControllerProps {
     staticData?: any;
     defaultAction: (data: any) => any;
     store: XStoreState;
+    className?: string;
+    defaultLayout?: boolean;
 }
+
+const FormContainer = Glamorous.form({
+    display: 'flex',
+    flexDirection: 'column'
+});
+
+const DefaultContainer = Glamorous(XVertical)<{ loading: boolean }>((props) => ({
+    opacity: props.loading ? 0.5 : 1,
+    pointerEvents: props.loading ? 'none' : 'auto'
+}));
 
 class XFormController extends React.PureComponent<XFormControllerProps, { loading: boolean, error?: string }> {
 
@@ -64,9 +79,11 @@ class XFormController extends React.PureComponent<XFormControllerProps, { loadin
         try {
             await act(data);
             this.setState({ loading: false, error: undefined });
+            this.props.store.writeValue('form.error', null);
         } catch (e) {
             console.warn(e);
             this.setState({ loading: false, error: e.toString() });
+            this.props.store.writeValue('form.error', e.toString());
         } finally {
             this._isLoading = false;
             this.props.store.writeValue('form.loading', false);
@@ -77,11 +94,20 @@ class XFormController extends React.PureComponent<XFormControllerProps, { loadin
     render() {
         return (
             <XFormContext.Provider value={this.contextValue}>
-                <XVertical>
-                    <XLoadingBar visible={this.state.loading} />
-                    {this.state.error && <XServiceMessage title={this.state.error} />}
-                    {this.props.children}
-                </XVertical>
+                {this.props.defaultLayout !== false && (
+                    <FormContainer className={this.props.className}>
+                        <XFormLoadingBar />
+                        <DefaultContainer loading={this.state.loading}>
+                            <XFormError />
+                            {this.props.children}
+                        </DefaultContainer>
+                    </FormContainer>
+                )}
+                {this.props.defaultLayout === false && (
+                    <FormContainer className={this.props.className}>
+                        {this.props.children}
+                    </FormContainer>
+                )}
             </XFormContext.Provider>
         );
     }
@@ -107,7 +133,13 @@ export class XForm extends React.PureComponent<XFormProps> {
             <XStore defaultData={this.defaultData} onChanged={(data) => console.warn(JSON.stringify(data))}>
                 <XStoreContext.Consumer>
                     {store => (
-                        <XFormController staticData={this.props.staticData} defaultAction={this.props.defaultAction} store={store!!}>
+                        <XFormController
+                            staticData={this.props.staticData}
+                            defaultAction={this.props.defaultAction}
+                            store={store!!}
+                            className={this.props.className}
+                            defaultLayout={this.props.defaultLayout}
+                        >
                             {this.props.children}
                         </XFormController>
                     )}

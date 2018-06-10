@@ -1,8 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from '../../../components/Scaffold';
 import { XForm } from 'openland-x-forms/XForm';
 import { withEditCurrentOrganizationProfile, withCurrentOrganizationProfile } from '../../../api';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -24,6 +22,7 @@ import { XModalForm } from 'openland-x-modal/XModalForm';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XFooter } from 'openland-x/XFooter';
 import { XFormField } from 'openland-x-forms/XFormField';
+import { Navigation } from './Navigation';
 
 const Root = glamorous(XVertical)({
     alignItems: 'center',
@@ -304,55 +303,50 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
 
 export default withApp('Organization profile edit', 'viewer', withCurrentOrganizationProfile((props) => {
     return (
-        <>
-            <XDocumentHead title={'Edit Organization Profile'} />
-            <Scaffold>
-                <Scaffold.Content>
-                    <ProfileForm
-                        mainVals={{
-                            title: props.data.alphaCurrentOrganizationProfile.title,
-                            website: props.data.alphaCurrentOrganizationProfile.website,
-                            logo: props.data.alphaCurrentOrganizationProfile.logo,
+        <Navigation title="Edit Organization">
+            <ProfileForm
+                mainVals={{
+                    title: props.data.alphaCurrentOrganizationProfile.title,
+                    website: props.data.alphaCurrentOrganizationProfile.website,
+                    logo: props.data.alphaCurrentOrganizationProfile.logo,
 
-                        }}
+                }}
 
-                        simpleExtras={{
-                            description: props.data.alphaCurrentOrganizationProfile.description,
-                            twitter: props.data.alphaCurrentOrganizationProfile.twitter,
-                            facebook: props.data.alphaCurrentOrganizationProfile.facebook,
-                        }}
+                simpleExtras={{
+                    description: props.data.alphaCurrentOrganizationProfile.description,
+                    twitter: props.data.alphaCurrentOrganizationProfile.twitter,
+                    facebook: props.data.alphaCurrentOrganizationProfile.facebook,
+                }}
 
-                        developmentModelsExtras={{
-                            developmentModels: props.data.alphaCurrentOrganizationProfile.developmentModels,
-                        }}
+                developmentModelsExtras={{
+                    developmentModels: props.data.alphaCurrentOrganizationProfile.developmentModels,
+                }}
 
-                        availabilityExtras={{
-                            availability: props.data.alphaCurrentOrganizationProfile.availability,
-                        }}
+                availabilityExtras={{
+                    availability: props.data.alphaCurrentOrganizationProfile.availability,
+                }}
 
-                        landUseExtras={{
-                            landUse: props.data.alphaCurrentOrganizationProfile.landUse,
-                        }}
+                landUseExtras={{
+                    landUse: props.data.alphaCurrentOrganizationProfile.landUse,
+                }}
 
-                        goodForExtras={{
-                            goodFor: props.data.alphaCurrentOrganizationProfile.goodFor,
-                        }}
+                goodForExtras={{
+                    goodFor: props.data.alphaCurrentOrganizationProfile.goodFor,
+                }}
 
-                        specialAttributesExtras={{
-                            specialAttributes: props.data.alphaCurrentOrganizationProfile.specialAttributes,
-                        }}
+                specialAttributesExtras={{
+                    specialAttributes: props.data.alphaCurrentOrganizationProfile.specialAttributes,
+                }}
 
-                        extrasVals={{
-                            siteSizes: props.data.alphaCurrentOrganizationProfile.siteSizes,
-                            potentialSites: props.data.alphaCurrentOrganizationProfile.potentialSites,
-                        }}
+                extrasVals={{
+                    siteSizes: props.data.alphaCurrentOrganizationProfile.siteSizes,
+                    potentialSites: props.data.alphaCurrentOrganizationProfile.potentialSites,
+                }}
 
-                        contactsExtras={{
-                            contacts: props.data.alphaCurrentOrganizationProfile.contacts,
-                        }}
-                    />
-                </Scaffold.Content>
-            </Scaffold>
-        </>
+                contactsExtras={{
+                    contacts: props.data.alphaCurrentOrganizationProfile.contacts,
+                }}
+            />
+        </Navigation>
     );
 }));

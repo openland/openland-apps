@@ -9,11 +9,12 @@ export const Navigation = (props: { title: string, children?: any }) => (
         <Scaffold>
             <Scaffold.Menu>
                 <Sidebar title="Settings">
+                    <Sidebar.Item path="/settings/organization">Organization</Sidebar.Item>
                     <Sidebar.Item path="/settings/profile">Profile</Sidebar.Item>
                     <Sidebar.Item path="/settings/invites">Invites</Sidebar.Item>
                 </Sidebar>
             </Scaffold.Menu>
-            <Scaffold.Content>
+            <Scaffold.Content padding={false} >
                 {props.children}
             </Scaffold.Content>
         </Scaffold>

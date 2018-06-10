@@ -9,6 +9,8 @@ export interface XFlexStyles {
     height?: number;
     minHeight?: number;
     minWidth?: number;
+    maxHeight?: number;
+    maxWidth?: number;
     zIndex?: number;
 }
 
@@ -22,6 +24,8 @@ export const extractFlexProps = (props: XFlexStyles) => {
         height: props.height,
         minHeight: props.minHeight,
         minWidth: props.minWidth,
+        maxHeight: props.maxHeight,
+        maxWidth: props.maxWidth,
         zIndex: props.zIndex
     } as XFlexStyles;
 };
@@ -35,7 +39,9 @@ export const applyFlex = (props: XFlexStyles) => ({
     height: props.height,
     zIndex: props.zIndex,
     minWidth: props.minWidth,
-    minHeight: props.minHeight
+    minHeight: props.minHeight,
+    maxHeight: props.maxHeight,
+    maxWidth: props.maxWidth,
 } as XStyledCSS);
 
 // export function withLayout<TProps>(Wrapped: React.ComponentType<TProps>): React.ComponentType<TProps & XLayoutProps> {

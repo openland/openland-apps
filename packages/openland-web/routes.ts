@@ -39,9 +39,11 @@ routes.add('/map/', '/main/explore/root');
 //
 
 routes.add('/settings/profile', '/main/settings/profile');
+routes.add('/settings/profile/', '/main/settings/profile');
 routes.add('/settings/invites', '/main/settings/invites');
-routes.add('/settings/organizationProfile', '/main/settings/organizationProfile');
-routes.add('/settings/organizationProfile/', '/main/settings/organizationProfile');
+routes.add('/settings/invites/', '/main/settings/invites');
+routes.add('/settings/organization', '/main/settings/organization');
+routes.add('/settings/organization/', '/main/settings/organization');
 
 //
 // Create account
