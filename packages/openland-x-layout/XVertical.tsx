@@ -10,7 +10,7 @@ let VerticalDiv = Glamorous.div<XFlexStyles & { separator?: 'large' | 'normal' |
         position: 'relative',
         ...((props.separator !== 'none') ? {
             '> *': {
-                marginTop: props.separator === 'large' ? '26px' : '8px',
+                marginTop: props.separator === 'large' ? '16px' : '8px',
                 marginBottom: props.separator === 'large' ? '16px' : '8px'
             },
             '>:first-child': {
