@@ -43,9 +43,11 @@ export function DevDocsScaffold(props: { title?: string, children?: any, bottomO
                             <Sidebar.Subitem path="/ui/links">Links</Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/typography">Typography</Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/grid">Grid</Sidebar.Subitem>
+                            <Sidebar.Item>Layout</Sidebar.Item>
+                            <Sidebar.Subitem path="/ui/linear">Linear</Sidebar.Subitem>
                             <Sidebar.Item>Tools</Sidebar.Item>
-                            <Sidebar.Item path="/ui/tasks">Tasks</Sidebar.Item>
-                            <Sidebar.Item path="/ui/store">Store</Sidebar.Item>
+                            <Sidebar.Subitem path="/ui/tasks">Tasks</Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/store">Store</Sidebar.Subitem>
                         </Sidebar>
                     </Scaffold.Menu>
                 )}

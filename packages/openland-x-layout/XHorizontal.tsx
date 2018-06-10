@@ -1,38 +1,34 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XFlexStyles, applyFlex } from 'openland-x/basics/Flex';
 
-export let XHorizontalDiv = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    position: 'relative'
-});
-
-export let XHorizontalSpaceDiv = Glamorous.div<{ separator?: 'large' | 'normal' | 'none' }>((props) => ({
-    width: props.separator === 'large' ? 32 : (props.separator === 'normal' || props.separator === undefined) ? 16 : 0,
-    alignSelf: 'stretch',
-    flexShrink: 0,
-    flexGrow: 0
-}));
-
-export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal' | 'none', className?: string }> {
-    render() {
-        let elements = React.Children.toArray(this.props.children);
-        let children: any[] = [];
-        let isFirst = true;
-        let separator = 0;
-        for (let el of elements) {
-            if (!isFirst) {
-                children.push(<XHorizontalSpaceDiv key={'_separator_' + separator} separator={this.props.separator}/>);
-                separator++;
-            } else {
-                isFirst = false;
+let XHorizontalDiv = Glamorous.div<XFlexStyles & { separator?: 'large' | 'normal' | 'none' }>([
+    (props) => ({
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'stretch',
+        position: 'relative',
+        ...((props.separator !== 'none') ? {
+            '> *': {
+                marginLeft: props.separator === 'large' ? '16px' : '8px',
+                marginRight: props.separator === 'large' ? '16px' : '8px'
+            },
+            '>:first-child': {
+                marginLeft: '0px',
+            },
+            '>:last-child': {
+                marginRight: '0px',
             }
-            children.push(el);
-        }
+        } : {}),
+    }),
+    applyFlex
+]);
+
+export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal' | 'none', className?: string } & XFlexStyles> {
+    render() {
         return (
-            <XHorizontalDiv className={this.props.className}>
-                {children}
+            <XHorizontalDiv {...this.props}>
+                {this.props.children}
             </XHorizontalDiv>
         );
     }
