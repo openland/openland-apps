@@ -3,7 +3,7 @@ export function readValue(data: any, name: string): any {
         let parts = name.split('.');
         let first = parts[0];
         let last = parts.slice(1).join('.');
-        if (!data[first]) {
+        if (data[first] === undefined) {
             return null;
         }
         return readValue(data[first], last);
@@ -11,6 +11,11 @@ export function readValue(data: any, name: string): any {
         if (Array.isArray(data) && name === 'count') {
             return data.length;
         }
-        return data[name] || null;
+        let res = data[name];
+        if (res === undefined) {
+            return null;
+        } else {
+            return res;
+        }
     }
 }

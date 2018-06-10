@@ -206,6 +206,10 @@ routes.add('/ui/files', '/dev/ui/files');
 routes.add('/ui/files/', '/dev/ui/files');
 routes.add('/ui/store', '/dev/ui/store');
 routes.add('/ui/store/', '/dev/ui/store');
+routes.add('/ui/loaders', '/dev/ui/loaders');
+routes.add('/ui/loaders/', '/dev/ui/loaders');
+routes.add('/ui/forms', '/dev/ui/forms');
+routes.add('/ui/forms/', '/dev/ui/forms');
 
 //
 // Dev Tools
