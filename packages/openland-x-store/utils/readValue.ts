@@ -8,6 +8,9 @@ export function readValue(data: any, name: string): any {
         }
         return readValue(data[first], last);
     } else {
+        if (Array.isArray(data) && name === 'count') {
+            return data.length;
+        }
         return data[name] || null;
     }
 }

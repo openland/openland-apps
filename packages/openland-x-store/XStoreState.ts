@@ -10,6 +10,10 @@ export class XStoreState {
         this.data = data;
     }
 
+    reset = () => {
+        this.store.reset();
+    }
+
     readValue = (name: string) => {
         return readValue(this.data, name);
     }

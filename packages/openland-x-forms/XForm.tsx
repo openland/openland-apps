@@ -12,6 +12,7 @@ import { XModalContextValue, XModalContext } from 'openland-x-modal/XModalContex
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XAvatarUpload, XAvatarUploadProps } from 'openland-x/files/XAvatarUpload';
 import { XImageCrop } from 'openland-x/files/XFileUpload';
+import { XTextArea } from 'openland-x/XTextArea';
 
 let InputsStyle = {
     borderRadius: 4,
@@ -74,29 +75,6 @@ export const XFormFieldDescription = Glamorous.div<{ novalid?: boolean }>((props
     fontSize: '13px',
     lineHeight: 1.6
 }));
-
-export const XFormTextAreaStyle = Glamorous.textarea({
-    width: '100%',
-    minHeight: '100px',
-    border: '1px solid #d4dae7',
-    borderRadius: 4,
-    color: '#334562',
-    backgroundColor: '#fff',
-    fontSize: 16,
-    letterSpacing: 0.5,
-    paddingTop: 4,
-    paddingLeft: 7,
-    paddingRight: 7,
-    paddingBottom: 2,
-    outline: 'none',
-    '&:focus': {
-        boxShadow: '0 0 0 2px rgba(143, 124, 246, 0.2)',
-        border: '1px solid #986AFE',
-    },
-    '&::placeholder': {
-        color: '#9d9d9d'
-    }
-});
 
 export const XFormSelectStyle = Glamorous.select({
     height: 28,
@@ -347,7 +325,7 @@ export class XFormTextArea extends React.Component<XFormTextFieldProps, { value:
     }
     render() {
         return (
-            <XFormTextAreaStyle placeholder={this.props.placeholder} onChange={this.handleChange} value={this.state.value} />
+            <XTextArea placeholder={this.props.placeholder} onChange={this.handleChange} value={this.state.value} />
         );
     }
 }
