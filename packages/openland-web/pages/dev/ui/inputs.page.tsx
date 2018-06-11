@@ -41,9 +41,17 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
                         <XInput size="default" placeholder="default" icon="star" required={true} invalid={true} alignSelf="flex-start" />
                         <XInput size="small" placeholder="small" value="small" icon="star" required={true} invalid={true} alignSelf="flex-start" />
                     </XVertical>
+                    <XTitle>Disabled</XTitle>
+                    <XVertical>
+                        <XInput size="large" placeholder="large" disabled={true} alignSelf="flex-start" />
+                        <XInput size="medium" placeholder="medium" value="some text" disabled={true} alignSelf="flex-start" />
+                        <XInput size="default" placeholder="default" disabled={true} alignSelf="flex-start" />
+                        <XInput size="small" placeholder="small" value="some text" disabled={true} alignSelf="flex-start" />
+                    </XVertical>
                     <XTitle>Text Area</XTitle>
                     <XVertical>
                         <XTextArea />
+                        <XTextArea value="disabled" disabled={true}/>
                     </XVertical>
                 </XVertical>
             </XContent>

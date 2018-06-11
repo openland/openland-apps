@@ -1100,6 +1100,49 @@ export interface CurrentOrganizationProfileQuery {
   },
 };
 
+export interface OrganizationProfileQueryVariables {
+  id: string,
+};
+
+export interface OrganizationProfileQuery {
+  alphaOrganizationProfile:  {
+    __typename: "OrganizationProfile",
+    id: string,
+    iAmOwner: boolean | null,
+    title: string,
+    logo: string | null,
+    website: string | null,
+    // extras
+    potentialSites:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } | null > | null,
+    siteSizes:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } | null > | null,
+    description: string | null,
+    twitter: string | null,
+    facebook: string | null,
+    developmentModels: Array< string | null > | null,
+    availability: Array< string | null > | null,
+    contacts:  Array< {
+      __typename: "ContactPerson",
+      name: string,
+      avatar: string | null,
+      role: string | null,
+      email: string | null,
+      phone: string | null,
+      link: string | null,
+    } | null > | null,
+    landUse: Array< string | null > | null,
+    goodFor: Array< string | null > | null,
+    specialAttributes: Array< string | null > | null,
+  } | null,
+};
+
 export interface EditOrganizationProfileMutationVariables {
   title?: string | null,
   website?: string | null,
@@ -3957,6 +4000,43 @@ export interface OrganizationFullFragment {
       } | null,
     } >,
   } >,
+};
+
+export interface OrganizationProfileFragment {
+  __typename: "OrganizationProfile",
+  id: string,
+  iAmOwner: boolean | null,
+  title: string,
+  logo: string | null,
+  website: string | null,
+  // extras
+  potentialSites:  Array< {
+    __typename: string,
+    from: number | null,
+    to: number | null,
+  } | null > | null,
+  siteSizes:  Array< {
+    __typename: string,
+    from: number | null,
+    to: number | null,
+  } | null > | null,
+  description: string | null,
+  twitter: string | null,
+  facebook: string | null,
+  developmentModels: Array< string | null > | null,
+  availability: Array< string | null > | null,
+  contacts:  Array< {
+    __typename: string,
+    name: string,
+    avatar: string | null,
+    role: string | null,
+    email: string | null,
+    phone: string | null,
+    link: string | null,
+  } | null > | null,
+  landUse: Array< string | null > | null,
+  goodFor: Array< string | null > | null,
+  specialAttributes: Array< string | null > | null,
 };
 
 export interface OrganizationShortFragment {

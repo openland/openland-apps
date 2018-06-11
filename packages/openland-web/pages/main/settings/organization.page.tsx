@@ -50,7 +50,7 @@ class ContactPersonComponent extends React.Component<{ contact: ContactPerson, i
         return (
             <XVertical>
                 <XHorizontal>
-                    <XAvatar src={this.props.contact.avatar} />
+                    <XAvatar src={this.props.contact.avatar || undefined} />
                     {this.props.contact.name}
                     <XButton text="edit" query={{ field: 'editContact', value: String(this.props.index) }} />
                     <XButton text="delete" query={{ field: 'deleteContact', value: String(this.props.index) }} />
@@ -97,7 +97,6 @@ function prepareContacts(res: any) {
 }
 
 const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
-    console.warn(props);
     return (
         <Root>
             <MiddleContainer separator="none">

@@ -12,6 +12,7 @@ export interface XInputBasicProps extends XFlexStyles {
     icon?: string;
     required?: boolean;
     invalid?: boolean;
+    disabled?: boolean;
     size?: 'large' | 'medium' | 'default' | 'small';
     attach?: 'left' | 'right' | 'both';
     autofocus?: boolean;
@@ -145,6 +146,7 @@ const RootContainer = Glamorous.div<XInputBasicProps & { invalid?: boolean, form
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
         border: `1px solid ${props.invalid ? '#e26363' : '#d4dae7'}`,
+        opacity: props.disabled ? 0.7 : undefined,
         boxSizing: 'border-box',
         color: '#334562',
         '> .icon': {
@@ -221,6 +223,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
             children,
             onChange,
             autofocus,
+            disabled,
             ...other
         } = this.props;
         let v = this.props.value;
@@ -232,9 +235,11 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                 {...other}
                 format={size}
                 invalid={invalid}
+                disabled={disabled}
             >
                 {icon && <XIcon icon={icon} className="icon" />}
                 <Input
+                    disabled={disabled}
                     icon={icon}
                     format={size}
                     required={required}

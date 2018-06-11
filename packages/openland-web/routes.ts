@@ -65,7 +65,8 @@ routes.add('/home/', '/main/home/main');
 
 routes.add('/marketplace', '/main/marketplace/main');
 routes.add('/marketplace/', '/main/marketplace/main');
-
+routes.add('/marketplace/organization/:organizationId', '/main/marketplace/organization');
+routes.add('/marketplace/organization/:organizationId/', '/main/marketplace/organization');
 //
 // Parcels
 //

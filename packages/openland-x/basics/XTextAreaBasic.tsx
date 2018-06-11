@@ -3,8 +3,9 @@ import Glamorous from 'glamorous';
 import { XFlexStyles, applyFlex, extractFlexProps } from './Flex';
 
 const TextAreaStyled = Glamorous.textarea<XFlexStyles>([
-    {
+    (props: any) => ({
         width: '100%',
+        opacity: props.disabled ? 0.7 : undefined,
         minHeight: '100px',
         border: '1px solid #d4dae7',
         borderRadius: 4,
@@ -24,13 +25,14 @@ const TextAreaStyled = Glamorous.textarea<XFlexStyles>([
         '&::placeholder': {
             color: '#9d9d9d'
         }
-    },
+    }),
     (props) => applyFlex(props)
 ]);
 
 export interface XTextAreaBasicProps extends XFlexStyles {
     placeholder?: string;
     value?: string;
+    disabled?: boolean;
     onChange?: (value: string) => void;
 }
 
@@ -48,6 +50,7 @@ export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps> {
                 placeholder={this.props.placeholder}
                 value={this.props.value}
                 onChange={this.handleChange}
+                disabled={this.props.disabled}
             />
         );
     }
