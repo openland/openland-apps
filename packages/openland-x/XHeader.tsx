@@ -76,10 +76,6 @@ const HorizontalInner = Glamorous(XHorizontal)({
 });
 
 export class XHeader extends React.Component<XCardHeaderProps> {
-    static defaultProps = {
-        _isVerticalPaddingIncluded: true
-    };
-
     static Target = HeaderTargetElement;
 
     render() {

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withUserInfo } from '../../../components/UserInfo';
 import { withInvites, withInviteCreate, withInviteDestroy } from '../../../api';
-import { Navigation } from './Navigation';
+import { Navigation } from './_navigation';
 import { XTable } from 'openland-x/XTable';
 import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';

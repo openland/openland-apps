@@ -236,4 +236,6 @@ export const withInviteInfo = graphqlCompose2(
 
 export const withCurrentOrganizationProfile = graphqlRouted(Queries.OrganizationProfile.CurrentOrganizationProfileQuery);
 export const withOrganizationProfile = graphqlRouted(Queries.OrganizationProfile.OrganizationProfileQuery, ['organizationId']);
-export const withEditCurrentOrganizationProfile = graphqlMutation(Queries.OrganizationProfile.EditOrganizationProfilMutation, 'editOrganizationProfile', { refetchQueries: [Queries.OrganizationProfile.CurrentOrganizationProfileQuery] });
+export const withEditCurrentOrganizationProfile = graphqlCompose2(
+    graphqlMutation(Queries.OrganizationProfile.EditOrganizationProfilMutation, 'editOrganizationProfile', { refetchQueries: [Queries.OrganizationProfile.CurrentOrganizationProfileQuery] }),
+    withCurrentOrganizationProfile);

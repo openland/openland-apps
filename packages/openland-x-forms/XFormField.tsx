@@ -15,7 +15,7 @@ const XFormFieldTitle = Glamorous.div<{ invalid?: boolean }>((props) => ({
     lineHeight: 1.27,
     letterSpacing: -0.1,
     marginBottom: 10,
-    marginLeft: 8
+    marginLeft: 0
 }));
 const XFormFieldChildren = Glamorous.div({
     display: 'flex',

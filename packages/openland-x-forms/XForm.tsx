@@ -127,8 +127,9 @@ export class XFormTextField extends React.Component<XFormTextFieldProps, { value
     }
 
     render() {
+        let { valueStoreKey, invalidStoreKey, enabledStoreKey, field, ...other } = this.props;
         return (
-            <XInput {...this.props} onChange={this.handleChange} value={this.state.value} required={this.state.locking} invalid={this.state.locking && this.state.invalid} />
+            <XInput {...other} onChange={this.handleChange} value={this.state.value} required={this.state.locking} invalid={this.state.locking && this.state.invalid} />
         );
     }
 }

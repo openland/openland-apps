@@ -6,7 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XContent } from 'openland-x-layout/XContent';
 import { withSaveProfile } from '../../../api';
-import { Navigation } from './Navigation';
+import { Navigation } from './_navigation';
 import { XHeader } from 'openland-x/XHeader';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormFieldText } from 'openland-x-forms/XFormFieldText';
@@ -14,6 +14,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XTitle } from 'openland-x/XTitle';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
+import { XFormField } from 'openland-x-forms/XFormField';
 
 export default withApp('Profile', 'viewer', withSaveProfile(withUserInfo((props) => {
     return (
@@ -42,7 +43,9 @@ export default withApp('Profile', 'viewer', withSaveProfile(withUserInfo((props)
                                             <XFormFieldText field="website" title="Web Site" size="medium" />
                                             <XFormFieldText field="location" title="Location" size="medium" />
                                         </XVertical>
-                                        <XAvatarUpload field="photo" />
+                                        <XFormField title="Photo">
+                                            <XAvatarUpload field="photo" />
+                                        </XFormField>
                                     </XHorizontal>
                                 </XVertical>
                             </XFormLoadingContent>
