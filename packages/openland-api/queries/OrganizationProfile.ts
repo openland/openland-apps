@@ -1,39 +1,25 @@
 import gql from 'graphql-tag';
+import { OrganizationProfile } from '../fragments/OrganizationProfile';
 
 export const CurrentOrganizationProfileQuery = gql`
-query CurrentOrganizationProfile {
-    alphaCurrentOrganizationProfile {
-        id
-        iAmOwner
-        title
-        logo
-        website
-        potentialSites{
-            from
-            to
+    query CurrentOrganizationProfile {
+        alphaCurrentOrganizationProfile {
+            ...OrganizationProfile
         }
-        siteSizes{
-            from
-            to
+    }${OrganizationProfile}
+`;
+
+//
+// query FolderItemsConnection($folderId: ID!, $cursor: String, $page: Int) {
+//     items: alphaFolderItems(folderId: $folderId, first: 50, after: $cursor, page: $page) {
+//
+
+export const OrganizationProfileQuery = gql`
+    query OrganizationProfile($id: ID!) {
+        alphaOrganizationProfile(id: $id) {
+            ...OrganizationProfile
         }
-        description
-        twitter
-        facebook
-        developmentModels
-        availability
-        contacts{
-            name
-            avatar
-            role
-            email
-            phone
-            link
-        }
-        landUse
-        goodFor
-        specialAttributes
-    }
-}
+    }${OrganizationProfile}
 `;
 
 export const EditOrganizationProfileMutation = gql`

@@ -87,12 +87,12 @@ export interface Range {
 }
 
 export interface ContactPerson {
-    name: string;
-    avatar?: string;
-    role?: string;
-    email?: string;
-    phone?: string;
-    link?: string;
+    name: string | null;
+    avatar?: string | null;
+    role?: string | null;
+    email?: string | null;
+    phone?: string | null;
+    link?: string | null;
 }
 
 export interface OrganizationExtras {
