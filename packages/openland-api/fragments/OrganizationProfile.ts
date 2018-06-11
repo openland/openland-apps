@@ -3,8 +3,17 @@ export const OrganizationProfile = gql`
     fragment OrganizationProfile on OrganizationProfile {
         id
         iAmOwner
-        title
-        logo
+        name
+        photo
+        photoRef {
+            uuid
+            crop{
+                x
+                y
+                w
+                h
+            }
+        }
         website
         potentialSites{
             from
@@ -14,7 +23,7 @@ export const OrganizationProfile = gql`
             from
             to
         }
-        description
+        about
         twitter
         facebook
         developmentModels

@@ -32,23 +32,23 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                 <XVertical alignSelf="stretch">
                     <XForm
                         defaultData={{
-                            title: props.data.alphaCurrentOrganizationProfile.title,
+                            name: props.data.alphaCurrentOrganizationProfile.name,
                             website: props.data.alphaCurrentOrganizationProfile.website,
-                            logo: props.data.alphaCurrentOrganizationProfile.logo,
+                            photo: props.data.alphaCurrentOrganizationProfile.photoRef,
                             twitter: props.data.alphaCurrentOrganizationProfile.twitter,
                             facebook: props.data.alphaCurrentOrganizationProfile.facebook,
-                            description: props.data.alphaCurrentOrganizationProfile.description,
+                            about: props.data.alphaCurrentOrganizationProfile.about,
                         }}
                         defaultAction={async (data) => {
                             await props.editOrganizationProfile({
                                 variables: {
-                                    title: data.title,
+                                    title: data.name,
                                     website: data.website,
-                                    logo: data.logo,
+                                    logo: data.photoRef,
                                     data: {
                                         twitter: data.twitter,
                                         facebook: data.facebook,
-                                        description: data.description
+                                        about: data.about
                                     }
                                 }
                             });
@@ -60,7 +60,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                 <XHorizontal>
                                     <XVertical flexGrow={1} maxWidth={500}>
                                         <XFormField title="Name">
-                                            <XInput field="title" />
+                                            <XInput field="name" />
                                         </XFormField>
                                         <XFormField title="Web Site">
                                             <XInput field="website" />
@@ -75,11 +75,11 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                             <XInput field="facebook" />
                                         </XFormField>
                                         <XFormField title="About">
-                                            <XTextArea valueStoreKey="fields.description" />
+                                            <XTextArea valueStoreKey="fields.about" />
                                         </XFormField>
                                     </XVertical>
                                     <XFormField title="Photo">
-                                        <XAvatarUpload field="logo" />
+                                        <XAvatarUpload field="photo" />
                                     </XFormField>
                                 </XHorizontal>
                             </XFormLoadingContent>

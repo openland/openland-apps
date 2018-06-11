@@ -3,10 +3,10 @@
 
 export interface ImageRefInput {
   uuid: string,
-  crop?: ImageCrop | null,
+  crop?: ImageCropInput | null,
 };
 
-export interface ImageCrop {
+export interface ImageCropInput {
   x: number,
   y: number,
   w: number,
@@ -54,7 +54,7 @@ export interface GeoBox {
 export interface OrganizationProfileInput {
   potentialSites?: Array< RangeInput | null > | null,
   siteSizes?: Array< RangeInput | null > | null,
-  description?: string | null,
+  about?: string | null,
   twitter?: string | null,
   facebook?: string | null,
   developmentModels?: Array< string | null > | null,
@@ -72,7 +72,7 @@ export interface RangeInput {
 
 export interface ContactPersonInput {
   name: string,
-  avatar?: ImageRefInput | null,
+  photo?: ImageRefInput | null,
   role?: string | null,
   email?: string | null,
   phone?: string | null,
@@ -1066,8 +1066,19 @@ export interface CurrentOrganizationProfileQuery {
     __typename: "OrganizationProfile",
     id: string,
     iAmOwner: boolean | null,
-    title: string,
-    logo: string | null,
+    name: string,
+    photo: string | null,
+    photoRef:  {
+      __typename: "ImageRef",
+      uuid: string,
+      crop:  {
+        __typename: "ImageCrop",
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
     website: string | null,
     // extras
     potentialSites:  Array< {
@@ -1080,7 +1091,7 @@ export interface CurrentOrganizationProfileQuery {
       from: number | null,
       to: number | null,
     } | null > | null,
-    description: string | null,
+    about: string | null,
     twitter: string | null,
     facebook: string | null,
     developmentModels: Array< string | null > | null,
@@ -1109,8 +1120,19 @@ export interface OrganizationProfileQuery {
     __typename: "OrganizationProfile",
     id: string,
     iAmOwner: boolean | null,
-    title: string,
-    logo: string | null,
+    name: string,
+    photo: string | null,
+    photoRef:  {
+      __typename: "ImageRef",
+      uuid: string,
+      crop:  {
+        __typename: "ImageCrop",
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
     website: string | null,
     // extras
     potentialSites:  Array< {
@@ -1123,7 +1145,7 @@ export interface OrganizationProfileQuery {
       from: number | null,
       to: number | null,
     } | null > | null,
-    description: string | null,
+    about: string | null,
     twitter: string | null,
     facebook: string | null,
     developmentModels: Array< string | null > | null,
@@ -4006,8 +4028,19 @@ export interface OrganizationProfileFragment {
   __typename: "OrganizationProfile",
   id: string,
   iAmOwner: boolean | null,
-  title: string,
-  logo: string | null,
+  name: string,
+  photo: string | null,
+  photoRef:  {
+    __typename: string,
+    uuid: string,
+    crop:  {
+      __typename: string,
+      x: number,
+      y: number,
+      w: number,
+      h: number,
+    } | null,
+  } | null,
   website: string | null,
   // extras
   potentialSites:  Array< {
@@ -4020,7 +4053,7 @@ export interface OrganizationProfileFragment {
     from: number | null,
     to: number | null,
   } | null > | null,
-  description: string | null,
+  about: string | null,
   twitter: string | null,
   facebook: string | null,
   developmentModels: Array< string | null > | null,
