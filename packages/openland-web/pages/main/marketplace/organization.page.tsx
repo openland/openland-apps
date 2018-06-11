@@ -48,8 +48,8 @@ const Profile = withOrganizationProfile(withRouter((props) => {
         <XVertical >
             {props.data.alphaOrganizationProfile && (
                 <>
-                    <XAvatar cloudImageUuid={props.data.alphaOrganizationProfile.logo!!} size="x-large" style="square" />
-                    <XInput value={props.data.alphaOrganizationProfile.title} disabled={true} />
+                    <XAvatar cloudImageUuid={props.data.alphaOrganizationProfile.photo!!} size="x-large" style="square" />
+                    <XInput value={props.data.alphaOrganizationProfile.name} disabled={true} />
                     <XInput value={props.data.alphaOrganizationProfile.website || ''} disabled={true} />
                     <XTitle>Contacts</XTitle>
                     <ContactPersons contacts={props.data.alphaOrganizationProfile.contacts!!.filter(c => c !== null) as any} />
