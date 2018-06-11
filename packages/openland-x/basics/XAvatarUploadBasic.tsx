@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { XFileUpload, XImageCrop } from './XFileUpload';
+import { XFileUpload, XImageCrop } from '../files/XFileUpload';
 import Glamorous from 'glamorous';
 import { XIcon } from '../XIcon';
 import { XCloudImage } from '../XCloudImage';
 import { XLoader } from '../XLoader';
 
-export interface XAvatarUploadProps {
+export interface XAvatarUploadBasicProps {
     placeholder?: { add: any, change: any };
     crop?: XImageCrop | null;
     uuid?: string | null;
@@ -80,7 +80,7 @@ function prepareSrc(uuid: string, crop: XImageCrop | null) {
     return res;
 }
 
-export function XAvatarUpload(props: XAvatarUploadProps) {
+export function XAvatarUploadBasic(props: XAvatarUploadBasicProps) {
 
     return (
         <XFileUpload

@@ -109,9 +109,9 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                     <XFormField title="website">
                         <XForm.Text field="website" />
                     </XFormField>
-                    <XFormField title="logo">
+                    {/* <XFormField title="logo">
                         <XForm.Avatar field="logo" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} />
-                    </XFormField>
+                    </XFormField> */}
                     <XFooter>
                         <XForm.Submit text="Save" />
                     </XFooter>
@@ -241,7 +241,7 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                 >
                     <XForm.Text field="name" required={true} />
                     <XForm.Text field="phone" />
-                    <XForm.Avatar field="avatar" />
+                    {/* <XForm.Avatar field="avatar" /> */}
                 </XModalForm>
 
                 <XModalForm
@@ -264,7 +264,7 @@ const ProfileForm = withEditCurrentOrganizationProfile(withRouter((props) => {
                 >
                     <XForm.Text field="name" required={true} />
                     <XForm.Text field="phone" />
-                    <XForm.Avatar field="avatar" />
+                    {/* <XForm.Avatar field="avatar" /> */}
                 </XModalForm>
 
                 <XModalForm

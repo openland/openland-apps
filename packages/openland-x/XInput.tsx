@@ -4,6 +4,7 @@ import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { XStoreState } from 'openland-x-store/XStoreState';
 
 export interface XInputProps extends XInputBasicProps {
+    field?: string;
     valueStoreKey?: string;
     invalidStoreKey?: string;
     enabledStoreKey?: string;
@@ -15,16 +16,16 @@ class XInputStored extends React.PureComponent<XInputProps & { store: XStoreStat
         if (this.props.onChange) {
             this.props.onChange(value);
         }
-        if (this.props.valueStoreKey) {
-            this.props.store.writeValue(this.props.valueStoreKey, value);
+        if (this.props.valueStoreKey || this.props.field) {
+            this.props.store.writeValue(this.props.valueStoreKey || ('fields.' + this.props.field), value);
         }
     }
 
     render() {
-        let { valueStoreKey, invalidStoreKey, enabledStoreKey, store, ...other } = this.props;
+        let { valueStoreKey, invalidStoreKey, enabledStoreKey, store, field, ...other } = this.props;
         let value = this.props.value;
-        if (valueStoreKey) {
-            let existing = store.readValue(valueStoreKey);
+        if (valueStoreKey || field) {
+            let existing = store.readValue(valueStoreKey || ('fields.' + field));
             value = '';
             if (typeof existing === 'string') {
                 value = existing;
@@ -33,8 +34,8 @@ class XInputStored extends React.PureComponent<XInputProps & { store: XStoreStat
             }
         }
         let invalid = this.props.invalid;
-        if (invalidStoreKey) {
-            let invalidVal = store.readValue(invalidStoreKey);
+        if (invalidStoreKey || field) {
+            let invalidVal = store.readValue(invalidStoreKey || ('errors.' + field));
             invalid = invalidVal !== '' && invalidVal !== null && invalidVal !== undefined;
         }
         let enabled = true;
@@ -48,11 +49,12 @@ class XInputStored extends React.PureComponent<XInputProps & { store: XStoreStat
 
 export class XInput extends React.PureComponent<XInputProps> {
     render() {
-        let { valueStoreKey, invalidStoreKey, enabledStoreKey, ...other } = this.props;
-        if (valueStoreKey || invalidStoreKey || enabledStoreKey) {
+        let { valueStoreKey, invalidStoreKey, enabledStoreKey, field, ...other } = this.props;
+        if (valueStoreKey || invalidStoreKey || enabledStoreKey || field) {
             let valueStoreKeyCached = valueStoreKey;
             let invalidStoreKeyCached = invalidStoreKey;
             let enabledStoreKeyCached = enabledStoreKey;
+            let fieldCached = field;
             return (
                 <XStoreContext.Consumer>
                     {store => {
@@ -65,6 +67,7 @@ export class XInput extends React.PureComponent<XInputProps> {
                                 valueStoreKey={valueStoreKeyCached}
                                 invalidStoreKey={invalidStoreKeyCached}
                                 enabledStoreKey={enabledStoreKeyCached}
+                                field={fieldCached}
                                 store={store}
                             />
                         );

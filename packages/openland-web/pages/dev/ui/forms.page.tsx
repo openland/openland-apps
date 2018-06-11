@@ -19,6 +19,7 @@ export default withApp('UI Framework - Loaders', 'viewer', (props) => {
                         defaultAction={async (data) => {
                             console.warn(data);
                             await delay(1500);
+                            throw Error('!');
                         }}
                     >
                         <XFormLoadingGlobal />

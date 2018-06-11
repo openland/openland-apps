@@ -12,20 +12,20 @@ const FooterText = Glamorous.div({
     whiteSpace: 'pre',
 });
 
-let FooterWrapper = Glamorous.div({
+let FooterWrapper = Glamorous.div<{ padding?: boolean }>((props) => ({
     minHeight: 50,
-    paddingLeft: XStyles.paddings.xlarge,
-    paddingRight: XStyles.paddings.xlarge,
+    paddingLeft: props.padding === false ? 0 : XStyles.paddings.xlarge,
+    paddingRight: props.padding === false ? 0 : XStyles.paddings.xlarge,
     paddingTop: XStyles.paddings.large,
     paddingBottom: XStyles.paddings.large,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between'
-});
+}));
 
-export function XFooter(props: { children?: any, text?: string | null }) {
+export function XFooter(props: { children?: any, text?: string | null, padding?: boolean }) {
     return (
-        <FooterWrapper>
+        <FooterWrapper padding={props.padding}>
             <FooterText>
                 {props.text}
             </FooterText>

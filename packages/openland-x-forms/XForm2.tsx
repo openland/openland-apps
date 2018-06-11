@@ -7,7 +7,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { storeMerge } from 'openland-x-store/utils/storeMerge';
 import { XFormContextValue, XFormContext } from './XFormContext';
 import { XFormError } from './XFormError';
-import { XFormLoadingBar } from './XFormLoadingBar';
+import { XFormLoadingContent } from './XFormLoadingContent';
 
 export interface XFormProps {
     defaultData?: any;
@@ -29,11 +29,6 @@ const FormContainer = Glamorous.form({
     display: 'flex',
     flexDirection: 'column'
 });
-
-const DefaultContainer = Glamorous(XVertical)<{ loading: boolean }>((props) => ({
-    opacity: props.loading ? 0.5 : 1,
-    pointerEvents: props.loading ? 'none' : 'auto'
-}));
 
 class XFormController extends React.PureComponent<XFormControllerProps, { loading: boolean, error?: string }> {
 
@@ -96,11 +91,12 @@ class XFormController extends React.PureComponent<XFormControllerProps, { loadin
             <XFormContext.Provider value={this.contextValue}>
                 {this.props.defaultLayout !== false && (
                     <FormContainer className={this.props.className}>
-                        <XFormLoadingBar />
-                        <DefaultContainer loading={this.state.loading}>
-                            <XFormError />
-                            {this.props.children}
-                        </DefaultContainer>
+                        <XFormLoadingContent>
+                            <XVertical>
+                                <XFormError />
+                                {this.props.children}
+                            </XVertical>
+                        </XFormLoadingContent>
                     </FormContainer>
                 )}
                 {this.props.defaultLayout === false && (

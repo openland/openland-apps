@@ -4,7 +4,6 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withApp } from '../../components/withApp';
-import { XForm } from 'openland-x-forms/XForm';
 import { withCreateOrganization } from '../../api';
 import {
     RootContainer,
@@ -25,6 +24,12 @@ import { withRouter } from 'next/router';
 import { withUserInfo } from '../../components/UserInfo';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
+import { XForm } from 'openland-x-forms/XForm2';
+import { delayForewer } from 'openland-x-utils/timer';
+import { XInput } from 'openland-x/XInput';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
+import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 
 const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props) => {
 
@@ -36,31 +41,35 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                     <Title>{InitTexts.create_organization.title}</Title>
                 </TextWrapper>
                 <XForm
-                    submitMutation={props.createOrganization}
-                    mutationDirect={true}
-                    onCompleted={(src) => { switchOrganization(src.data.alphaCreateOrganization); }}
-                    keepLoading={true}
+                    defaultAction={async (data) => {
+                        let res = await props.createOrganization({ variables: data });
+                        switchOrganization(res.data.alphaCreateOrganization);
+                        await delayForewer();
+                    }}
+                    defaultLayout={false}
                 >
                     <XVertical>
-                        <XHorizontal separator="none">
-                            <FormWrapper>
-                                <InputGroup>
-                                    <Label>{InitTexts.create_organization.name}</Label>
-                                    <XForm.Text field="title" size="medium" placeholder={InitTexts.create_organization.namePlaceholder} required={true} />
-                                </InputGroup>
-                                <InputGroup>
-                                    <FieldHeader><Label>{InitTexts.create_organization.website}</Label><OptionalLabel>{InitTexts.optional}</OptionalLabel></FieldHeader>
-                                    <XForm.Text field="website" size="medium" placeholder={InitTexts.create_organization.websitePlaceholder} />
-                                </InputGroup>
-                            </FormWrapper>
-                            <PhotoContiner separator="none">
-                                <FieldHeader><Label>{InitTexts.create_organization.photo}</Label><OptionalLabel>{InitTexts.optional}</OptionalLabel></FieldHeader>
-                                <XForm.Avatar field="logo" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} />
-                            </PhotoContiner>
-                        </XHorizontal>
+                        <XFormLoadingContent>
+                            <XHorizontal separator="none">
+                                <FormWrapper>
+                                    <InputGroup>
+                                        <Label>{InitTexts.create_organization.name}</Label>
+                                        <XInput field="title" size="medium" placeholder={InitTexts.create_organization.namePlaceholder} required={true} />
+                                    </InputGroup>
+                                    <InputGroup>
+                                        <FieldHeader><Label>{InitTexts.create_organization.website}</Label><OptionalLabel>{InitTexts.optional}</OptionalLabel></FieldHeader>
+                                        <XInput field="website" size="medium" placeholder={InitTexts.create_organization.websitePlaceholder} />
+                                    </InputGroup>
+                                </FormWrapper>
+                                <PhotoContiner separator="none">
+                                    <FieldHeader><Label>{InitTexts.create_organization.photo}</Label><OptionalLabel>{InitTexts.optional}</OptionalLabel></FieldHeader>
+                                    <XAvatarUpload field="logo" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} />
+                                </PhotoContiner>
+                            </XHorizontal>
+                        </XFormLoadingContent>
                         <Footer>
                             <XButton style="link" text={props.isAccountExists ? InitTexts.create_organization.cancel : InitTexts.create_organization.skip} path="/" />
-                            <XForm.Submit style="primary" text={InitTexts.create_organization.continue} size="medium" alignSelf="flex-end" />
+                            <XFormSubmit style="primary" text={InitTexts.create_organization.continue} size="medium" alignSelf="flex-end" />
                         </Footer>
                     </XVertical>
                 </XForm>
