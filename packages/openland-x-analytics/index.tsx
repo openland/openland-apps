@@ -32,7 +32,7 @@ export function trackPage(page?: string) {
     }
 }
 
-export function trackProfile(id: string, firstName: string, lastName: string | null, email: string) {
+export function trackProfile(id: string, firstName: string, lastName: string | null, email: string | null) {
     if (shouldTrack) {
 
         // Identify mixpanel

@@ -4,12 +4,15 @@ import { withApp } from '../../../components/withApp';
 import { withEditCurrentOrganizationProfile } from '../../../api';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XTitle } from 'openland-x/XTitle';
+import { XAvatar } from 'openland-x/XAvatar';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
 import {
     DevelopmentModelsMap,
     AvailabilityMap,
     LandUseMap,
     GoodForMap,
     SpecialAttributesMap,
+    ContactPerson
 } from '../../../utils/OrganizationProfileFields';
 import { XSelect } from 'openland-x/XSelect';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -20,9 +23,45 @@ import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XHeader } from 'openland-x/XHeader';
+import { XButton } from 'openland-x/XButton';
 import { XContent } from 'openland-x-layout/XContent';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XTextArea } from 'openland-x/XTextArea';
+import Glamorous from 'glamorous';
+
+const ContactField = Glamorous.div({
+    alignSelf: 'center',
+    fontSize: 15,
+    fontWeight: 500,
+    lineHeight: 1.27,
+    letterSpacing: -0.1,
+    textAlign: 'center',
+    marginLeft: 0,
+});
+
+const CenteredButton = Glamorous(XButton)({
+    alignSelf: 'center'
+});
+class ContactPersonItem extends React.Component<{ contact: ContactPerson, index: number }> {
+    render() {
+        return (
+            <XHorizontal>
+                <XAvatar src={this.props.contact.avatar || undefined} />
+                <ContactField>{this.props.contact.name}</ContactField>
+                <ContactField>{this.props.contact.role}</ContactField>
+                <ContactField>{this.props.contact.phone}</ContactField>
+                <ContactField>{this.props.contact.email}</ContactField>
+                <ContactField>{this.props.contact.link}</ContactField>
+                <CenteredButton text="edit" style="electric" query={{ field: 'editContact', value: String(this.props.index) }} />
+                <CenteredButton text="delete" style="danger" query={{ field: 'deleteContact', value: String(this.props.index) }} />
+            </XHorizontal>
+        );
+    }
+}
+
+const clearContact = (c: any) => {
+    return { ...c, avatarRef: c.avatarRef ? { ...c.avatarRef, crop: { ...c.avatarRef.crop, __typename: undefined }, __typename: undefined } : undefined, __typename: undefined };
+};
 
 export default withApp('Organization profile edit', 'viewer', withEditCurrentOrganizationProfile((props) => {
     return (
@@ -151,6 +190,115 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                             <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
                         </XVertical>
                     </XForm>
+                    {props.data.alphaCurrentOrganizationProfile && props.data.alphaCurrentOrganizationProfile.contacts && (
+                        <>
+                            <XTitle>Contacts</XTitle>
+                            {props.data.alphaCurrentOrganizationProfile.contacts.filter(c => c !== null).map((c, i) => <ContactPersonItem key={i} contact={c!!} index={i} />)}
+                            <XButton query={{ field: 'addContact', value: 'true' }} text="Add Contact" style="primary" alignSelf="flex-start" />
+                        </>
+                    )}
+
+                    {props.data.alphaCurrentOrganizationProfile.contacts && props.data.alphaCurrentOrganizationProfile.contacts[props.router.query.deleteContact] && (
+                        <XModalForm
+                            title="Delete?"
+                            defaultData={{
+                                contacts: props.data.alphaCurrentOrganizationProfile.contacts,
+                            }}
+                            defaultAction={async (data) => {
+                                data.contacts.splice(Number(props.router.query.deleteContact), 1);
+                                await props.editOrganizationProfile({
+                                    variables: {
+                                        data: {
+                                            contacts: data.contacts.map(clearContact)
+                                        }
+                                    }
+                                });
+                            }}
+                            targetQuery="deleteContact"
+                        />
+                    )}
+                    {props.data.alphaCurrentOrganizationProfile.contacts && props.data.alphaCurrentOrganizationProfile.contacts[props.router.query.editContact] && (
+
+                        <XModalForm
+                            title="Edit contact"
+                            defaultData={{
+                                contacts: props.data.alphaCurrentOrganizationProfile.contacts,
+                                name: props.data!!.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.name,
+                                phone: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.phone,
+                                email: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.email,
+                                link: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.link,
+                                avatar: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.avatarRef,
+                            }}
+                            defaultAction={async (data) => {
+                                data.contacts[Number(props.router.query.editContact)] = {
+                                    name: data.name,
+                                    phone: data.phone,
+                                    avatarRef: data.avatar,
+                                    email: data.email,
+                                    link: data.link,
+                                };
+                                await props.editOrganizationProfile({
+
+                                    variables: {
+                                        data: {
+                                            contacts: data.contacts.map(clearContact)
+                                        }
+                                    }
+                                });
+                            }}
+                            targetQuery="editContact"
+                        >
+                            <XFormLoadingContent>
+                                <XVertical>
+                                    <XInput field="name" required={true} placeholder="Name" />
+                                    <XInput field="phone" placeholder="Phone" />
+                                    <XInput field="email" placeholder="Email" />
+                                    <XInput field="link" placeholder="Link" />
+                                    <XAvatarUpload field="avatar" />
+                                </XVertical>
+                            </XFormLoadingContent>
+                        </XModalForm>
+
+                    )}
+
+                    {props.data.alphaCurrentOrganizationProfile && (
+
+                        <XModalForm
+                            title="Add contact"
+                            defaultData={{
+                                contacts: props.data.alphaCurrentOrganizationProfile.contacts || [],
+                            }}
+                            defaultAction={async (data) => {
+                                data.contacts.push({
+                                    name: data.name,
+                                    phone: data.phone,
+                                    avatarRef: data.avatar,
+                                    email: data.email,
+                                    link: data.link,
+                                });
+                                await props.editOrganizationProfile({
+                                    variables: {
+                                        data: {
+                                            contacts: data.contacts.map(clearContact)
+                                        }
+                                    }
+                                });
+                            }}
+                            targetQuery="addContact"
+                        >
+                            <XFormLoadingContent>
+                                <XVertical>
+                                    <XInput field="name" required={true} placeholder="Name" />
+                                    <XInput field="phone" placeholder="Phone" />
+                                    <XInput field="email" placeholder="Email" />
+                                    <XInput field="link" placeholder="Link" />
+                                    <XAvatarUpload field="avatar" />
+                                </XVertical>
+                            </XFormLoadingContent>
+                        </XModalForm>
+
+                    )}
+
                 </XVertical>
             </XContent>
         </Navigation>

@@ -8,6 +8,7 @@ import { storeMerge } from 'openland-x-store/utils/storeMerge';
 import { XFormContextValue, XFormContext } from './XFormContext';
 import { XFormError } from './XFormError';
 import { XFormLoadingContent } from './XFormLoadingContent';
+import { XModalContext, XModalContextValue } from 'openland-x-modal/XModalContext';
 
 export interface XFormProps {
     defaultData?: any;
@@ -15,6 +16,7 @@ export interface XFormProps {
     defaultAction: (data: any) => any;
     className?: string;
     defaultLayout?: boolean;
+    autoClose?: boolean;
 }
 
 interface XFormControllerProps {
@@ -30,7 +32,7 @@ const FormContainer = Glamorous.form({
     flexDirection: 'column'
 });
 
-class XFormController extends React.PureComponent<XFormControllerProps, { loading: boolean, error?: string }> {
+class XFormController extends React.PureComponent<XFormControllerProps & { modal?: XModalContextValue, autoClose?: boolean }, { loading: boolean, error?: string }> {
 
     // Keep local copy since setState is async
     private _isLoading = false;
@@ -73,6 +75,11 @@ class XFormController extends React.PureComponent<XFormControllerProps, { loadin
         let act = action || this.props.defaultAction;
         try {
             await act(data);
+            if (this.props.autoClose) {
+                if (this.props.modal) {
+                    this.props.modal.close();
+                }
+            }
             this.setState({ loading: false, error: undefined });
             this.props.store.writeValue('form.error', null);
         } catch (e) {
@@ -129,15 +136,22 @@ export class XForm extends React.PureComponent<XFormProps> {
             <XStore defaultData={this.defaultData} onChanged={(data) => console.warn(JSON.stringify(data))}>
                 <XStoreContext.Consumer>
                     {store => (
-                        <XFormController
-                            staticData={this.props.staticData}
-                            defaultAction={this.props.defaultAction}
-                            store={store!!}
-                            className={this.props.className}
-                            defaultLayout={this.props.defaultLayout}
-                        >
-                            {this.props.children}
-                        </XFormController>
+                        <XModalContext.Consumer>
+                            {(modal) => (
+                                <XFormController
+                                    staticData={this.props.staticData}
+                                    defaultAction={this.props.defaultAction}
+                                    store={store!!}
+                                    modal={modal}
+                                    autoClose={this.props.autoClose}
+                                    className={this.props.className}
+                                    defaultLayout={this.props.defaultLayout}
+                                >
+                                    {this.props.children}
+                                </XFormController>
+                            )}
+                        </XModalContext.Consumer>
+
                     )}
                 </XStoreContext.Consumer>
             </XStore>

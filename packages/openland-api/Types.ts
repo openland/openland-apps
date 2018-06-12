@@ -72,7 +72,8 @@ export interface RangeInput {
 
 export interface ContactPersonInput {
   name: string,
-  photo?: ImageRefInput | null,
+  avatar?: string | null,
+  avatarRef?: ImageRefInput | null,
   role?: string | null,
   email?: string | null,
   phone?: string | null,
@@ -201,7 +202,7 @@ export interface AccountQuery {
     firstName: string,
     lastName: string | null,
     picture: string | null,
-    email: string,
+    email: string | null,
   } | null,
   myAccount:  {
     __typename: "MyAccount",
@@ -342,7 +343,7 @@ export interface AreaQuery {
     firstName: string,
     lastName: string | null,
     picture: string | null,
-    email: string,
+    email: string | null,
   } | null,
 };
 
@@ -1100,6 +1101,17 @@ export interface CurrentOrganizationProfileQuery {
       __typename: "ContactPerson",
       name: string,
       avatar: string | null,
+      avatarRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
       role: string | null,
       email: string | null,
       phone: string | null,
@@ -1154,6 +1166,17 @@ export interface OrganizationProfileQuery {
       __typename: "ContactPerson",
       name: string,
       avatar: string | null,
+      avatarRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
       role: string | null,
       email: string | null,
       phone: string | null,
@@ -2139,7 +2162,7 @@ export interface SuperAdminsQuery {
       firstName: string,
       lastName: string | null,
       picture: string | null,
-      email: string,
+      email: string | null,
     },
   } >,
 };
@@ -2170,7 +2193,7 @@ export interface SuperAccountQuery {
       firstName: string,
       lastName: string | null,
       picture: string | null,
-      email: string,
+      email: string | null,
     } >,
     features:  Array< {
       __typename: "FeatureFlag",
@@ -2245,7 +2268,7 @@ export interface SuperAccountMemberAddMutation {
       firstName: string,
       lastName: string | null,
       picture: string | null,
-      email: string,
+      email: string | null,
     } >,
   },
 };
@@ -2266,7 +2289,7 @@ export interface SuperAccountMemberRemoveMutation {
       firstName: string,
       lastName: string | null,
       picture: string | null,
-      email: string,
+      email: string | null,
     } >,
   },
 };
@@ -3870,7 +3893,7 @@ export interface UsersQuery {
     __typename: "User",
     id: string,
     title: string,
-    subtitle: string,
+    subtitle: string | null,
   } >,
 };
 
@@ -4062,6 +4085,17 @@ export interface OrganizationProfileFragment {
     __typename: string,
     name: string,
     avatar: string | null,
+    avatarRef:  {
+      __typename: string,
+      uuid: string,
+      crop:  {
+        __typename: string,
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
     role: string | null,
     email: string | null,
     phone: string | null,
@@ -4335,7 +4369,7 @@ export interface UserShortFragment {
   firstName: string,
   lastName: string | null,
   picture: string | null,
-  email: string,
+  email: string | null,
 };
 
 export interface ParcelFullFragment {

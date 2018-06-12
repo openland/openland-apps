@@ -31,6 +31,15 @@ export const OrganizationProfile = gql`
         contacts{
             name
             avatar
+            avatarRef {
+                uuid
+                crop{
+                    x
+                    y
+                    w
+                    h
+                }
+            }
             role
             email
             phone
