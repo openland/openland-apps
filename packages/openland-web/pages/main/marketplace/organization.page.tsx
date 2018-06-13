@@ -207,6 +207,46 @@ const ContactPersons = (props: { contacts: ContactPerson[] }) => (
     </>
 );
 
+const ShowMoreBtn = Glamorous.div({
+    fontSize: 14,
+    fontWeight: 500,
+    color: '#765efd',
+    cursor: 'pointer',
+    marginTop: 12
+});
+
+class AboutContent extends React.Component<{ text: string }, { open: boolean, text: string }> {
+
+    text: string = this.props.text;
+
+    constructor(props: { text: string }) {
+        super(props);
+
+        this.state = {
+            open: this.props.text.length >= 320 ? false : true,
+            text: this.props.text.length >= 320 ? this.props.text.substring(0, 320) + '...' : this.props.text
+        };
+    }
+
+    switcher = () => {
+        this.setState({
+            open: !this.state.open,
+            text: this.text
+        });
+    }
+
+    render() {
+        return (
+            <>
+                <Text>{this.state.text}</Text>
+                {this.state.open !== true && (
+                    <ShowMoreBtn onClick={this.switcher}>Show more</ShowMoreBtn>
+                )}
+            </>
+        );
+    }
+}
+
 const TagItem = Glamorous.div({
     display: 'flex',
     alignItems: 'center'
@@ -437,14 +477,14 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                 </XCardStyled>
                             </XVertical>
                             <XVertical width={270}>
-                                <XCardStyled padding={18}>
-                                    <Title small={true} marginBottom={10}>
-                                        About
-                                    </Title>
-                                    <Text>
-                                        {props.data.alphaOrganizationProfile.about}
-                                    </Text>
-                                </XCardStyled>
+                                {props.data.alphaOrganizationProfile.about && (
+                                    <XCardStyled padding={18}>
+                                        <Title small={true} marginBottom={10}>
+                                            About
+                                        </Title>
+                                        <AboutContent text={props.data.alphaOrganizationProfile.about} />
+                                    </XCardStyled>
+                                )}
                                 <XCardStyled padding={0} paddingTop={18} paddingBottom={20}>
                                     <Title small={true} marginBottom={10} marginLeft={18}>Contacts</Title>
                                     <ContactPersons contacts={props.data.alphaOrganizationProfile.contacts!!.filter(c => c !== null) as any} />
