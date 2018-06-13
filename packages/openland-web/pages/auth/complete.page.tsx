@@ -12,6 +12,7 @@ interface AuthResult {
     idToken: string;
     state: string;
     appState: string | null;
+    idTokenPayload?: { sub: string };
 }
 
 class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
@@ -46,6 +47,9 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
             Cookie.remove('x-openland-org');
             Cookie.set('x-openland-token', body.token);
             let path = auth.state !== 'none' ? auth.state : '/';
+            if (auth.idTokenPayload && auth.idTokenPayload.sub && auth.idTokenPayload.sub.startsWith('email|')) {
+                path = '/';
+            }
             createHistory({
                 forceRefresh: true
             }).replace(path);
