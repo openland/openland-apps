@@ -1999,6 +1999,7 @@ export interface SearchQuery {
 };
 
 export interface ProfileQuery {
+  // Deprecated
   profile:  {
     __typename: "Profile",
     id: string,
@@ -3043,12 +3044,6 @@ export interface UsersQuery {
     title: string,
     subtitle: string | null,
   } >,
-};
-
-export interface AccountShortFragment {
-  __typename: "MyAccount",
-  id: string,
-  title: string,
 };
 
 export interface ChartFullFragment {
