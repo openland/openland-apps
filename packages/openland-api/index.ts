@@ -17,6 +17,7 @@ import * as SuperCity from './queries/SuperCity.types';
 import * as Folder from './queries/Folder.types';
 import * as Tasks from './queries/Tasks.types';
 import * as OrganizationProfile from './queries/OrganizationProfile.types';
+import * as Settings from './queries/Settings.types';
 
 export let Queries = {
     Area,
@@ -38,4 +39,5 @@ export let Queries = {
     Folder,
     Tasks,
     OrganizationProfile,
+    Settings
 };

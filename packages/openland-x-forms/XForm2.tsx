@@ -9,6 +9,7 @@ import { XFormContextValue, XFormContext } from './XFormContext';
 import { XFormError } from './XFormError';
 import { XFormLoadingContent } from './XFormLoadingContent';
 import { XModalContext, XModalContextValue } from 'openland-x-modal/XModalContext';
+import { formatError } from './formatError';
 
 export interface XFormProps {
     defaultData?: any;
@@ -84,8 +85,9 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
             this.props.store.writeValue('form.error', null);
         } catch (e) {
             console.warn(e);
-            this.setState({ loading: false, error: e.toString() });
-            this.props.store.writeValue('form.error', e.toString());
+            let message = formatError(e);
+            this.setState({ loading: false, error: message });
+            this.props.store.writeValue('form.error', message);
         } finally {
             this._isLoading = false;
             this.props.store.writeValue('form.loading', false);

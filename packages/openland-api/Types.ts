@@ -177,6 +177,17 @@ export enum PermitSorting {
 }
 
 
+export interface UpdateProfileInput {
+  firstName?: string | null,
+  lastName?: string | null,
+  photoRef?: ImageRefInput | null,
+  phone?: string | null,
+  email?: string | null,
+  website?: string | null,
+  about?: string | null,
+  location?: string | null,
+};
+
 export enum OpportunitySort {
   DATE_ADDED_ASC = "DATE_ADDED_ASC",
   DATE_ADDED_DESC = "DATE_ADDED_DESC",
@@ -2930,6 +2941,60 @@ export interface SearchQuery {
       } >,
       total: number,
     },
+  },
+};
+
+export interface ProfileQuery {
+  profile:  {
+    __typename: "Profile",
+    id: string,
+    firstName: string | null,
+    lastName: string | null,
+    photoRef:  {
+      __typename: "ImageRef",
+      uuid: string,
+      crop:  {
+        __typename: "ImageCrop",
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
+    email: string | null,
+    phone: string | null,
+    website: string | null,
+    about: string | null,
+    location: string | null,
+  } | null,
+};
+
+export interface ProfileUpdateMutationVariables {
+  input: UpdateProfileInput,
+};
+
+export interface ProfileUpdateMutation {
+  updateProfile:  {
+    __typename: "Profile",
+    id: string,
+    firstName: string | null,
+    lastName: string | null,
+    photoRef:  {
+      __typename: "ImageRef",
+      uuid: string,
+      crop:  {
+        __typename: "ImageCrop",
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
+    email: string | null,
+    phone: string | null,
+    website: string | null,
+    about: string | null,
+    location: string | null,
   },
 };
 
