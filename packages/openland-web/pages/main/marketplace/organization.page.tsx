@@ -7,13 +7,20 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCard } from 'openland-x/XCard';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XInput } from 'openland-x/XInput';
+// import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XSwitcher } from 'openland-x/XSwitcher';
-import { ContactPerson } from '../../../utils/OrganizationProfileFields';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
+import {
+    DevelopmentModelsMap,
+    AvailabilityMap,
+    LandUseMap,
+    GoodForMap,
+    SpecialAttributesMap,
+    ContactPerson
+} from '../../../utils/OrganizationProfileFields';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -88,21 +95,22 @@ const OrganizationName = Glamorous.div({
     fontWeight: 500,
     color: '#fff',
     position: 'absolute',
-    bottom: 90,
+    // bottom: 90,
+    bottom: 80,
     left: 157,
     whiteSpace: 'nowrap'
 });
 
-const OrganizationPlace = Glamorous.div({
-    opacity: 0.7,
-    fontSize: 15,
-    fontWeight: 500,
-    color: '#fff',
-    position: 'absolute',
-    bottom: 66,
-    left: 157,
-    whiteSpace: 'nowrap'
-});
+// const OrganizationPlace = Glamorous.div({
+//     opacity: 0.7,
+//     fontSize: 15,
+//     fontWeight: 500,
+//     color: '#fff',
+//     position: 'absolute',
+//     bottom: 66,
+//     left: 157,
+//     whiteSpace: 'nowrap'
+// });
 
 const Title = Glamorous.div<{ small?: boolean, marginBottom?: number }>((props) => ({
     fontSize: props.small ? 15 : 18,
@@ -122,12 +130,13 @@ const ContactWrapper = Glamorous(XHorizontal)({
     paddingBottom: 12
 });
 
-const Text = Glamorous.div<{ opacity?: number, bold?: boolean }>((props) => ({
+const Text = Glamorous.div<{ opacity?: number, bold?: boolean, upperCase?: boolean }>((props) => ({
     fontSize: 15,
     lineHeight: 1.33,
     color: '#334562',
     opacity: props.opacity,
-    fontWeight: props.bold ? 500 : undefined
+    fontWeight: props.bold ? 500 : undefined,
+    textTransform: props.upperCase ? 'capitalize' : undefined
 }));
 
 class ContactPersonComponent extends React.Component<{ contact: ContactPerson, index: number }> {
@@ -139,8 +148,8 @@ class ContactPersonComponent extends React.Component<{ contact: ContactPerson, i
                     <Text bold={true}>{this.props.contact.name}</Text>
                     <Text opacity={0.8}>{this.props.contact.role}</Text>
                     <Text opacity={0.5}>{this.props.contact.phone}</Text>
-                    <Text>{this.props.contact.email}</Text>
-                    <Text>{this.props.contact.link}</Text>
+                    <Text opacity={0.5}>{this.props.contact.email}</Text>
+                    <Text opacity={0.5}>{this.props.contact.link}</Text>
                 </div>
             </ContactWrapper>
         );
@@ -163,13 +172,41 @@ const TagItem = Glamorous.div({
     alignItems: 'center'
 });
 
-const TagImg = Glamorous.div({
+const TagImg = Glamorous.div<{ img?: string }>((props) => ({
     width: 42,
     height: 42,
     backgroundColor: '#f3f3f5',
     borderRadius: 50,
-    marginRight: 18
-});
+    marginRight: 18,
+    backgroundImage: props.img ? `url(\'/static/img/icons/organization/${props.img}.svg\')` : undefined,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 20,
+    backgroundPosition: 'center',
+    '&.request_for_proposals': {
+        backgroundSize: 20,
+    },
+    '&.joint_venture': {
+        backgroundSize: 19,
+    },
+    '&.ground_lease': {
+        backgroundSize: 20,
+    },
+    '&.sale': {
+        backgroundSize: 10,
+    },
+    '&.option_to_buy': {
+        backgroundSize: 20,
+    },
+    '&.immediate': {
+        backgroundSize: 20,
+    },
+    '&.long_term': {
+        backgroundSize: 17,
+    },
+    '&.near_future': {
+        backgroundSize: 20,
+    },
+}));
 
 const XVerticalStyled = Glamorous(XVertical)<{ borderRight?: boolean, borderBottom?: boolean, padding?: number }>((props) => ({
     borderRight: props.borderRight ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
@@ -236,18 +273,17 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                 <>
                     <Header>
                         <HeaderPicture />
-
                         <HeaderContent>
                             <OrganizationData>
                                 <Avatar cloudImageUuid={props.data.alphaOrganizationProfile.photo!!} size="x-large" style="square" />
-                                <OrganizationName>Port of San Francisco</OrganizationName>
-                                <OrganizationPlace>San Francisco, CA</OrganizationPlace>
+                                <OrganizationName>{props.data.alphaOrganizationProfile.name}</OrganizationName>
+                                {/* <OrganizationPlace>San Francisco, CA</OrganizationPlace> */}
                             </OrganizationData>
                             <SwitcherWrapper flatStyle={true}>
                                 <Switcher path="/marketplace/organization/MXxhY2NvdW50">Development opportunities</Switcher>
-                                <Switcher>Docs</Switcher>
+                                {/* <Switcher>Docs</Switcher>
                                 <Switcher>News</Switcher>
-                                <Switcher>Contacts</Switcher>
+                                <Switcher>Contacts</Switcher> */}
                             </SwitcherWrapper>
                             <XHorizontal>
                                 <XButton style="primary" size="medium" text="Follow" />
@@ -259,17 +295,21 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                     <MainContent>
                         <XHorizontal>
                             <XVertical flexGrow={1}>
-                                <XInput value={props.data.alphaOrganizationProfile.name} disabled={true} />
-                                <XInput value={props.data.alphaOrganizationProfile.website || ''} disabled={true} />
+                                {/* <XInput value={props.data.alphaOrganizationProfile.name} disabled={true} />
+                                <XInput value={props.data.alphaOrganizationProfile.website || ''} disabled={true} /> */}
                                 <XCardStyled padding={0}>
                                     <XHorizontal>
                                         <XVerticalStyled flexGrow={1} borderRight={true} padding={24}>
                                             <Title>Development models</Title>
                                             {props.data.alphaOrganizationProfile.developmentModels && (
                                                 props.data.alphaOrganizationProfile.developmentModels!!.map((s, k) => (
-                                                    <TagItem>
-                                                        <TagImg />
-                                                        <Text bold={true} key={k + '_' + s}>{s}</Text>
+                                                    <TagItem key={k + '_' + s}>
+                                                        <TagImg img={s!} className={s!!} />
+                                                        <Text bold={true} upperCase={true}>
+                                                            {DevelopmentModelsMap.map(i => (
+                                                                i.value === s ? i.label : undefined
+                                                            ))}
+                                                        </Text>
                                                     </TagItem>
                                                 )))
                                             }
@@ -278,9 +318,13 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                             <Title>Availability</Title>
                                             {props.data.alphaOrganizationProfile.availability && (
                                                 props.data.alphaOrganizationProfile.availability!!.map((s, k) => (
-                                                    <TagItem>
-                                                        <TagImg />
-                                                        <Text bold={true} key={k + '_' + s}>{s}</Text>
+                                                    <TagItem key={k + '_' + s}>
+                                                        <TagImg img={s!} className={s!!} />
+                                                        <Text bold={true} upperCase={true}>
+                                                            {AvailabilityMap.map(i => (
+                                                                i.value === s ? i.label : undefined
+                                                            ))}
+                                                        </Text>
                                                     </TagItem>
                                                 )))
                                             }
@@ -298,13 +342,17 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                                 <OpportunitiesTextWrapper>
                                                     <Text bold={true}>Land use</Text>
                                                 </OpportunitiesTextWrapper>
-                                                {props.data.alphaOrganizationProfile.landUse!!.map((s, k) => (
-                                                    <OpportunitiesValueWrapper>
-                                                        <XHorizontal>
-                                                            <OpportunitiesValue key={k + '_' + s}>{s}</OpportunitiesValue>
-                                                        </XHorizontal>
-                                                    </OpportunitiesValueWrapper>
-                                                ))}
+                                                <OpportunitiesValueWrapper>
+                                                    <XHorizontal>
+                                                        {props.data.alphaOrganizationProfile.landUse!!.map((s, k) => (
+                                                            <OpportunitiesValue key={k + '_' + s}>
+                                                                {LandUseMap.map(i => (
+                                                                    i.value === s ? i.label : undefined
+                                                                ))}
+                                                            </OpportunitiesValue>
+                                                        ))}
+                                                    </XHorizontal>
+                                                </OpportunitiesValueWrapper>
                                             </OpportunitiesWrapper>
                                         )}
 
@@ -313,13 +361,17 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                                 <OpportunitiesTextWrapper>
                                                     <Text bold={true}>Good fit for</Text>
                                                 </OpportunitiesTextWrapper>
-                                                {props.data.alphaOrganizationProfile.goodFor!!.map((s, k) => (
-                                                    <OpportunitiesValueWrapper>
-                                                        <XHorizontal>
-                                                            <OpportunitiesValue key={k + '_' + s}>{s}</OpportunitiesValue>
-                                                        </XHorizontal>
-                                                    </OpportunitiesValueWrapper>
-                                                ))}
+                                                <OpportunitiesValueWrapper>
+                                                    <XHorizontal>
+                                                        {props.data.alphaOrganizationProfile.goodFor!!.map((s, k) => (
+                                                            <OpportunitiesValue key={k + '_' + s}>
+                                                                {GoodForMap.map(i => (
+                                                                    i.value === s ? i.label : undefined
+                                                                ))}
+                                                            </OpportunitiesValue>
+                                                        ))}
+                                                    </XHorizontal>
+                                                </OpportunitiesValueWrapper>
                                             </OpportunitiesWrapper>
                                         )}
 
@@ -328,13 +380,17 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                                 <OpportunitiesTextWrapper>
                                                     <Text bold={true}>Special attributes </Text>
                                                 </OpportunitiesTextWrapper>
-                                                {props.data.alphaOrganizationProfile!!.specialAttributes!!.map((s, k) => (
-                                                    <OpportunitiesValueWrapper>
-                                                        <XHorizontal>
-                                                            <OpportunitiesValue key={k + '_' + s}>{s}</OpportunitiesValue>
-                                                        </XHorizontal>
-                                                    </OpportunitiesValueWrapper>
-                                                ))}
+                                                <OpportunitiesValueWrapper>
+                                                    <XHorizontal>
+                                                        {props.data.alphaOrganizationProfile!!.specialAttributes!!.map((s, k) => (
+                                                            <OpportunitiesValue key={k + '_' + s}>
+                                                                {SpecialAttributesMap.map(i => (
+                                                                    i.value === s ? i.label : undefined
+                                                                ))}
+                                                            </OpportunitiesValue>
+                                                        ))}
+                                                    </XHorizontal>
+                                                </OpportunitiesValueWrapper>
                                             </OpportunitiesWrapper>
                                         )}
                                     </div>
@@ -342,16 +398,14 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                 </XCardStyled>
                             </XVertical>
                             <XVertical width={270}>
-                                {/*-About block example-*/}
                                 <XCardStyled padding={18}>
                                     <Title small={true} marginBottom={10}>
                                         About
                                     </Title>
                                     <Text>
-                                        San Francisco Port Authority is continuously looking for qualified real estate developers to apply for its upcoming requests for proposals. Several piers are expected to become available for development in the next 5-10 years.
+                                        {props.data.alphaOrganizationProfile.about}
                                     </Text>
                                 </XCardStyled>
-                                {/*-About block example-*/}
                                 <XCardStyled padding={18}>
                                     <Title small={true} marginBottom={10}>Contacts</Title>
                                     <ContactPersons contacts={props.data.alphaOrganizationProfile.contacts!!.filter(c => c !== null) as any} />
