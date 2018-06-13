@@ -27,3 +27,12 @@ mutation EditOrganizationProfile($title: String, $website: String, $role: String
     alphaEditOrganizationProfile(title: $title, website: $website, role: $role, logo: $logo, extras: $data)
 }
 `;
+
+export const FollowOrganizationMutation = gql`
+mutation FollowOrganization($id: ID!, $follow: Boolean!) {
+    alphaAlterOrganizationFollow(orgId: $id, follow: $follow){
+        id
+        followed
+    }
+}
+`;
