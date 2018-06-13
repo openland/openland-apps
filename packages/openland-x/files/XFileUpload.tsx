@@ -26,28 +26,40 @@ export interface XFileUploadProps {
     onChanged?: (uuid: string | null, crop: XImageCrop | null) => void;
 }
 
-export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: boolean, progress: number, uuid: string | null, crop: XImageCrop | null }> {
+export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: boolean, progress: number, uuid: string | null | undefined, crop: XImageCrop | null | undefined }> {
 
     private isControlled: boolean = false;
 
     constructor(props: XFileUploadProps) {
         super(props);
         this.isControlled = props.uuid !== undefined;
-        this.state = { isLoading: false, uuid: null, crop: null, progress: 0 };
+        this.state = { isLoading: false, uuid: this.props.uuid || null, crop: this.props.crop || null, progress: 0 };
     }
 
-    componentWillUpdate(nextProps: Readonly<XFileUploadProps>, nextState: Readonly<{ isLoading: boolean; uuid: string | null }>, nextContext: any): void {
+    componentWillUpdate(nextProps: Readonly<XFileUploadProps>, nextState: Readonly<{ isLoading: boolean; uuid: string | null | undefined }>, nextContext: any): void {
         if ((nextProps.uuid !== undefined) !== (this.props.uuid !== undefined)) {
             throw 'You can\'t make controlled component to be not controlled';
         }
     }
 
     doUpload = () => {
-        let dialog = UploadCare.openDialog(null, {
+        let uuid = this.state.uuid;
+        let crop = this.state.crop;
+        if (this.isControlled) {
+            uuid = this.props.uuid;
+            crop = this.props.crop;
+        }
+        let uploaded = uuid
+            ? UploadCare.fileFrom(
+                'uploaded',
+                crop ? 'https://ucarecdn.com/' + uuid + `/-/crop/${crop.width}x${crop.height}/${crop.left},${crop.top}/` : uuid)
+            : null;
+        console.warn(uploaded);
+        let dialog = UploadCare.openDialog(uploaded, {
             publicKey: 'b70227616b5eac21ba88',
             imagesOnly: true,
             crop: this.props.cropParams,
-            imageShrink: '1024x1024'
+            imageShrink: '1024x1024',
         });
         dialog.done((r) => {
             this.setState({ isLoading: true, progress: 0 });
@@ -56,14 +68,14 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
             });
             r.done((f) => {
                 console.warn(f);
-                let crop = f.crop ? f.crop : null;
+                let crop2 = f.crop ? f.crop : null;
                 if (this.isControlled) {
                     this.setState({ isLoading: false, progress: 1 });
                 } else {
-                    this.setState({ isLoading: false, progress: 1, uuid: f.uuid, crop: crop });
+                    this.setState({ isLoading: false, progress: 1, uuid: f.uuid, crop: crop2 });
                 }
                 if (this.props.onChanged) {
-                    this.props.onChanged(f.uuid, crop);
+                    this.props.onChanged(f.uuid, crop2);
                 }
             });
         });

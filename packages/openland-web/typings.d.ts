@@ -206,6 +206,7 @@ declare namespace UploadCare {
     }
 
     export function openDialog(file: any | null, settings: Settings): Dialog
+    export function fileFrom(type: any, data: any): any
 }
 
 declare module 'uploadcare-widget' {
