@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
-import { OrganizationProfile } from '../fragments/OrganizationProfile';
 import { OrganizationFull } from '../fragments/OrganizationFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
+import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
 
 export const MyOrganizationQuery = gql`
     query MyOrganization {
@@ -12,6 +12,15 @@ export const MyOrganizationQuery = gql`
     ${OrganizationFull}
 `;
 
+export const MyOrganizationProfileQuery = gql`
+    query MyOrganizationProfile {
+        myOrganizationProfile {
+            ...OrganizationProfileFull
+        }
+    }
+    ${OrganizationProfileFull}
+`;
+
 export const MyOrganizationsQuery = gql`
     query MyOrganizations {
         myOrganizations {
@@ -19,6 +28,15 @@ export const MyOrganizationsQuery = gql`
         }
     }
     ${OrganizationShort}
+`;
+
+export const UpdateOrganizationMutation = gql`
+    mutation UpdateOrganization($input: UpdateOrganizationProfileInput!) {
+        updateOrganizationProfile(input: $input) {
+            ...OrganizationProfileFull
+        }
+    }
+    ${OrganizationProfileFull}
 `;
 
 export const OrganizationQuery = gql`
@@ -37,33 +55,4 @@ export const FollowOrganizationMutation = gql`
             alphaFollowed
         }
     }
-`;
-
-// Deprecated
-
-export const CurrentOrganizationProfileQuery = gql`
-    query CurrentOrganizationProfile {
-        alphaCurrentOrganizationProfile {
-            ...OrganizationProfile
-        }
-    }${OrganizationProfile}
-`;
-
-export const OrganizationProfileQuery = gql`
-    query OrganizationProfile($id: ID!) {
-        alphaOrganizationProfile(id: $id) {
-            ...OrganizationProfile
-        }
-    }${OrganizationProfile}
-`;
-
-//
-// query FolderItemsConnection($folderId: ID!, $cursor: String, $page: Int) {
-//     items: alphaFolderItems(folderId: $folderId, first: 50, after: $cursor, page: $page) {
-//
-
-export const EditOrganizationProfileMutation = gql`
-mutation EditOrganizationProfile($title: String, $website: String, $role: String, $logo: ImageRefInput, $data: AlphaOrganizationProfileInput) {
-    alphaEditOrganizationProfile(title: $title, website: $website, role: $role, logo: $logo, extras: $data)
-}
 `;

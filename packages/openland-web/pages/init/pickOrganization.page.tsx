@@ -6,13 +6,13 @@ import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../../components/AuthRouter';
-import { withAllAccounts } from '../../api';
+import { withMyOrganizations } from '../../api';
 import { XTable } from 'openland-x/XTable';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
 import { withQueryLoader } from '../../components/withQueryLoader';
 
-export default withAppBase(withAllAccounts(withQueryLoader((props) => {
+export default withAppBase(withMyOrganizations(withQueryLoader((props) => {
     return (
         <AuthRouter>
             <XDocumentHead title={InitTexts.pick_organization.pageTitle} titleSocial={InitTexts.socialPageTitle} />

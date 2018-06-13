@@ -9,13 +9,3 @@ export const DebugReadedStatesQuery = gql`
         }
     }
 `;
-export const DebugOwnAccountsQuery = gql`
-    query DebugOwnAccounts {
-        orgs: alphaAvailableOrganizationAccounts {
-            id
-            title
-            photo
-            website
-        }
-    }    
-`;

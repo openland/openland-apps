@@ -1,7 +1,6 @@
 import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { withEditCurrentOrganizationProfile } from '../../../api';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XTitle } from 'openland-x/XTitle';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -28,6 +27,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XTextArea } from 'openland-x/XTextArea';
 import Glamorous from 'glamorous';
+import { withMyOrganizationProfile } from '../../../api';
 
 const ContactField = Glamorous.div({
     alignSelf: 'center',
@@ -63,7 +63,7 @@ const clearContact = (c: any) => {
     return { ...c, avatarRef: c.avatarRef ? { ...c.avatarRef, crop: { ...c.avatarRef.crop, __typename: undefined }, __typename: undefined } : undefined, __typename: undefined };
 };
 
-export default withApp('Organization profile edit', 'viewer', withEditCurrentOrganizationProfile((props) => {
+export default withApp('Organization profile edit', 'viewer', withMyOrganizationProfile((props) => {
     return (
         <Navigation title="Organization profile">
             <XHeader text="Organization profile" />
@@ -71,23 +71,28 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                 <XVertical alignSelf="stretch">
                     <XForm
                         defaultData={{
-                            name: props.data.alphaCurrentOrganizationProfile.name,
-                            website: props.data.alphaCurrentOrganizationProfile.website,
-                            photo: props.data.alphaCurrentOrganizationProfile.photoRef,
-                            twitter: props.data.alphaCurrentOrganizationProfile.twitter,
-                            facebook: props.data.alphaCurrentOrganizationProfile.facebook,
-                            about: props.data.alphaCurrentOrganizationProfile.about,
+                            input: {
+                                name: props.data.myOrganizationProfile!!.name,
+                                website: props.data.myOrganizationProfile!!.website,
+                                photo: props.data.myOrganizationProfile!!.photoRef,
+                                twitter: props.data.myOrganizationProfile!!.twitter,
+                                facebook: props.data.myOrganizationProfile!!.facebook,
+                                about: props.data.myOrganizationProfile!!.about,
+                                location: props.data.myOrganizationProfile!!.location,
+                                photoRef: props.data.myOrganizationProfile!!.photoRef,
+                            }
                         }}
                         defaultAction={async (data) => {
-                            await props.editOrganizationProfile({
+                            await props.updateOrganizaton({
                                 variables: {
-                                    title: data.name,
-                                    website: data.website,
-                                    logo: data.photoRef,
-                                    data: {
-                                        twitter: data.twitter,
-                                        facebook: data.facebook,
-                                        about: data.about
+                                    input: {
+                                        name: data.input.name,
+                                        website: data.input.website,
+                                        photoRef: data.input.photoRef,
+                                        twitter: data.input.twitter,
+                                        facebook: data.input.facebook,
+                                        location: data.input.location,
+                                        about: data.input.about,
                                     }
                                 }
                             });
@@ -99,26 +104,26 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                 <XHorizontal>
                                     <XVertical flexGrow={1} maxWidth={500}>
                                         <XFormField title="Name">
-                                            <XInput field="name" />
+                                            <XInput field="input.name" />
                                         </XFormField>
                                         <XFormField title="Web Site">
-                                            <XInput field="website" />
+                                            <XInput field="input.website" />
                                         </XFormField>
                                         <XFormField title="Location">
-                                            <XInput field="location" />
+                                            <XInput field="input.location" />
                                         </XFormField>
                                         <XFormField title="Twitter">
-                                            <XInput field="twitter" />
+                                            <XInput field="input.twitter" />
                                         </XFormField>
                                         <XFormField title="Facebook">
-                                            <XInput field="facebook" />
+                                            <XInput field="input.facebook" />
                                         </XFormField>
                                         <XFormField title="About">
-                                            <XTextArea valueStoreKey="fields.about" />
+                                            <XTextArea valueStoreKey="fields.input.about" />
                                         </XFormField>
                                     </XVertical>
                                     <XFormField title="Photo">
-                                        <XAvatarUpload field="photo" />
+                                        <XAvatarUpload field="input.photoRef" />
                                     </XFormField>
                                 </XHorizontal>
                             </XFormLoadingContent>
@@ -128,13 +133,27 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                     <XTitle>Opportunities</XTitle>
                     <XForm
                         defaultData={{
-                            developmentModels: props.data.alphaCurrentOrganizationProfile.developmentModels,
-                            availability: props.data.alphaCurrentOrganizationProfile.availability,
-                            landUse: props.data.alphaCurrentOrganizationProfile.landUse,
-                            goodFor: props.data.alphaCurrentOrganizationProfile.goodFor,
-                            specialAttributes: props.data.alphaCurrentOrganizationProfile.specialAttributes,
+                            input: {
+                                alphaDevelopmentModels: props.data.myOrganizationProfile!!.developmentModels,
+                                alphaAvailability: props.data.myOrganizationProfile!!.availability,
+                                alphaLandUse: props.data.myOrganizationProfile!!.landUse,
+                                alphaGoodFor: props.data.myOrganizationProfile!!.goodFor,
+                                alphaSpecialAttributes: props.data.myOrganizationProfile!!.specialAttributes,
+                            }
                         }}
-                        defaultAction={async (data) => { await props.editOrganizationProfile({ variables: { data } }); }}
+                        defaultAction={async (data) => {
+                            await props.updateOrganizaton({
+                                variables: {
+                                    input: {
+                                        alphaDevelopmentModels: data.input.alphaDevelopmentModels,
+                                        alphaAvailability: data.input.alphaAvailability,
+                                        alphaLandUse: data.input.alphaLandUse,
+                                        alphaGoodFor: data.input.alphaGoodFor,
+                                        alphaSpecialAttributes: data.input.alphaSpecialAttributes
+                                    }
+                                }
+                            });
+                        }}
                         defaultLayout={false}
                     >
                         <XVertical maxWidth={500}>
@@ -142,7 +161,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                 <XVertical>
                                     <XFormField title="Development Models">
                                         <XSelect
-                                            field="developmentModels"
+                                            field="input.alphaDevelopmentModels"
                                             options={DevelopmentModelsMap.map(o => {
                                                 return { ...o, title: o.label };
                                             })}
@@ -151,7 +170,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                     </XFormField>
                                     <XFormField title="Availability">
                                         <XSelect
-                                            field="availability"
+                                            field="input.alphaAvailability"
                                             options={AvailabilityMap.map(o => {
                                                 return { ...o, title: o.label };
                                             })}
@@ -160,7 +179,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                     </XFormField>
                                     <XFormField title="Land Use">
                                         <XSelect
-                                            field="landUse"
+                                            field="input.alphaLandUse"
                                             options={LandUseMap.map(o => {
                                                 return { ...o, title: o.label };
                                             })}
@@ -169,7 +188,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                     </XFormField>
                                     <XFormField title="Good For">
                                         <XSelect
-                                            field="goodFor"
+                                            field="input.alphaGoodFor"
                                             options={GoodForMap.map(o => {
                                                 return { ...o, title: o.label };
                                             })}
@@ -178,7 +197,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                     </XFormField>
                                     <XFormField title="Special Attributes">
                                         <XSelect
-                                            field="specialAttributes"
+                                            field="input.alphaSpecialAttributes"
                                             options={SpecialAttributesMap.map(o => {
                                                 return { ...o, title: o.label };
                                             })}
@@ -190,26 +209,23 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                             <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
                         </XVertical>
                     </XForm>
-                    {props.data.alphaCurrentOrganizationProfile && props.data.alphaCurrentOrganizationProfile.contacts && (
-                        <>
-                            <XTitle>Contacts</XTitle>
-                            {props.data.alphaCurrentOrganizationProfile.contacts.filter(c => c !== null).map((c, i) => <ContactPersonItem key={i} contact={c!!} index={i} />)}
-                            <XButton query={{ field: 'addContact', value: 'true' }} text="Add Contact" style="primary" alignSelf="flex-start" />
-                        </>
-                    )}
 
-                    {props.data.alphaCurrentOrganizationProfile.contacts && props.data.alphaCurrentOrganizationProfile.contacts[props.router.query.deleteContact] && (
+                    <XTitle>Contacts</XTitle>
+                    {props.data.myOrganizationProfile!!.contacts.filter(c => c !== null).map((c, i) => <ContactPersonItem key={i} contact={c!!} index={i} />)}
+                    <XButton query={{ field: 'addContact', value: 'true' }} text="Add Contact" style="primary" alignSelf="flex-start" />
+
+                    {props.data.myOrganizationProfile!!.contacts[props.router.query.deleteContact] && (
                         <XModalForm
                             title="Delete?"
-                            submitProps={{text: 'Delete'}}
+                            submitProps={{ text: 'Delete' }}
                             defaultData={{
-                                contacts: props.data.alphaCurrentOrganizationProfile.contacts,
+                                contacts: props.data.myOrganizationProfile!!.contacts,
                             }}
                             defaultAction={async (data) => {
                                 data.contacts.splice(Number(props.router.query.deleteContact), 1);
-                                await props.editOrganizationProfile({
+                                await props.updateOrganizaton({
                                     variables: {
-                                        data: {
+                                        input: {
                                             contacts: data.contacts.map(clearContact)
                                         }
                                     }
@@ -218,18 +234,17 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                             targetQuery="deleteContact"
                         />
                     )}
-                    {props.data.alphaCurrentOrganizationProfile.contacts && props.data.alphaCurrentOrganizationProfile.contacts[props.router.query.editContact] && (
-
+                    {props.data.myOrganizationProfile!!.contacts[props.router.query.editContact] && (
                         <XModalForm
                             title="Edit contact"
                             defaultData={{
-                                contacts: props.data.alphaCurrentOrganizationProfile.contacts,
-                                name: props.data!!.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.name,
-                                phone: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.phone,
-                                email: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.email,
-                                link: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.link,
-                                role: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.role,
-                                avatar: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.avatarRef,
+                                contacts: props.data.myOrganizationProfile!!.contacts,
+                                name: props.data!!.myOrganizationProfile!!.contacts!![props.router.query.editContact]!!.name,
+                                phone: props.data.myOrganizationProfile!!.contacts!![props.router.query.editContact]!!.phone,
+                                email: props.data.myOrganizationProfile!!.contacts!![props.router.query.editContact]!!.email,
+                                link: props.data.myOrganizationProfile!!.contacts!![props.router.query.editContact]!!.link,
+                                position: props.data.myOrganizationProfile!!.contacts!![props.router.query.editContact]!!.position,
+                                photoRef: props.data.myOrganizationProfile!!.contacts!![props.router.query.editContact]!!.photoRef,
                             }}
                             defaultAction={async (data) => {
                                 data.contacts[Number(props.router.query.editContact)] = {
@@ -240,10 +255,9 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                     role: data.role,
                                     link: data.link,
                                 };
-                                await props.editOrganizationProfile({
-
+                                await props.updateOrganizaton({
                                     variables: {
-                                        data: {
+                                        input: {
                                             contacts: data.contacts.map(clearContact)
                                         }
                                     }
@@ -257,56 +271,51 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                     <XInput field="phone" placeholder="Phone" />
                                     <XInput field="email" placeholder="Email" />
                                     <XInput field="link" placeholder="Link" />
-                                    <XInput field="role" placeholder="Role" />
-                                    <XAvatarUpload field="avatar" />
+                                    <XInput field="position" placeholder="Position" />
+                                    <XAvatarUpload field="photoRef" />
                                 </XVertical>
                             </XFormLoadingContent>
                         </XModalForm>
 
                     )}
 
-                    {props.data.alphaCurrentOrganizationProfile && (
-
-                        <XModalForm
-                            title="Add contact"
-                            defaultData={{
-                                contacts: props.data.alphaCurrentOrganizationProfile.contacts || [],
-                            }}
-                            defaultAction={async (data) => {
-                                data.contacts.push({
-                                    name: data.name,
-                                    phone: data.phone,
-                                    avatarRef: data.avatar,
-                                    email: data.email,
-                                    link: data.link,
-                                    role: data.role,
-                                });
-                                await props.editOrganizationProfile({
-                                    variables: {
-                                        data: {
-                                            contacts: data.contacts.map(clearContact)
-                                        }
+                    <XModalForm
+                        title="Add contact"
+                        defaultData={{
+                            contacts: props.data.myOrganizationProfile!!.contacts,
+                        }}
+                        defaultAction={async (data) => {
+                            data.contacts.push({
+                                name: data.name,
+                                phone: data.phone,
+                                avatarRef: data.avatar,
+                                email: data.email,
+                                link: data.link,
+                                role: data.role,
+                            });
+                            await props.updateOrganizaton({
+                                variables: {
+                                    input: {
+                                        contacts: data.contacts.map(clearContact)
                                     }
-                                });
-                            }}
-                            targetQuery="addContact"
-                        >
-                            <XFormLoadingContent>
-                                <XVertical>
-                                    <XInput field="name" required={true} placeholder="Name" />
-                                    <XInput field="phone" placeholder="Phone" />
-                                    <XInput field="email" placeholder="Email" />
-                                    <XInput field="link" placeholder="Link" />
-                                    <XInput field="role" placeholder="Role" />
-                                    <XAvatarUpload field="avatar" />
-                                </XVertical>
-                            </XFormLoadingContent>
-                        </XModalForm>
-
-                    )}
-
+                                }
+                            });
+                        }}
+                        targetQuery="addContact"
+                    >
+                        <XFormLoadingContent>
+                            <XVertical>
+                                <XInput field="name" required={true} placeholder="Name" />
+                                <XInput field="phone" placeholder="Phone" />
+                                <XInput field="email" placeholder="Email" />
+                                <XInput field="link" placeholder="Link" />
+                                <XInput field="position" placeholder="Position" />
+                                <XAvatarUpload field="photoRef" />
+                            </XVertical>
+                        </XFormLoadingContent>
+                    </XModalForm>
                 </XVertical>
             </XContent>
-        </Navigation>
+        </Navigation >
     );
 }));

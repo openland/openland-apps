@@ -16,8 +16,11 @@ export const AccountQuery = gql`
 `;
 
 export const CreateOrganizationMutation = gql`
-    mutation CreateOrganization($title: String!, $website: String, $role: String, $logo: ImageRefInput, $personal: Boolean) {
-        alphaCreateOrganization(title: $title, website: $website, role: $role, logo: $logo, personal: $personal)
+    mutation CreateOrganization($input: CreateOrganizationInput!) {
+        createOrganization(input: $input) {
+            id
+            name
+        }
     }
 `;
 

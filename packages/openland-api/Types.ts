@@ -1,6 +1,13 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export interface CreateOrganizationInput {
+  name: string,
+  website?: string | null,
+  personal: boolean,
+  photoRef?: ImageRefInput | null,
+};
+
 export interface ImageRefInput {
   uuid: string,
   crop?: ImageCropInput | null,
@@ -51,33 +58,36 @@ export interface GeoBox {
   south: number,
 };
 
-export interface AlphaOrganizationProfileInput {
-  potentialSites?: Array< RangeInput | null > | null,
-  siteSizes?: Array< RangeInput | null > | null,
+export interface UpdateOrganizationProfileInput {
+  name?: string | null,
+  photoRef?: ImageRefInput | null,
+  website?: string | null,
   about?: string | null,
   twitter?: string | null,
   facebook?: string | null,
-  developmentModels?: Array< string | null > | null,
-  availability?: Array< string | null > | null,
-  contacts?: Array< AlphaContactPersonInput | null > | null,
-  landUse?: Array< string | null > | null,
-  goodFor?: Array< string | null > | null,
-  specialAttributes?: Array< string | null > | null,
+  location?: string | null,
+  contacts?: Array< ContactPersonInput > | null,
+  alphaPotentialSites?: Array< RangeInput | null > | null,
+  alphaSiteSizes?: Array< RangeInput | null > | null,
+  alphaDevelopmentModels?: Array< string | null > | null,
+  alphaAvailability?: Array< string | null > | null,
+  alphaLandUse?: Array< string | null > | null,
+  alphaGoodFor?: Array< string | null > | null,
+  alphaSpecialAttributes?: Array< string | null > | null,
+};
+
+export interface ContactPersonInput {
+  name: string,
+  photoRef?: ImageRefInput | null,
+  position?: string | null,
+  email?: string | null,
+  phone?: string | null,
+  link?: string | null,
 };
 
 export interface RangeInput {
   from?: number | null,
   to?: number | null,
-};
-
-export interface AlphaContactPersonInput {
-  name: string,
-  avatar?: string | null,
-  avatarRef?: ImageRefInput | null,
-  role?: string | null,
-  email?: string | null,
-  phone?: string | null,
-  link?: string | null,
 };
 
 export enum OwnerType {
@@ -249,15 +259,15 @@ export interface AccountQuery {
 };
 
 export interface CreateOrganizationMutationVariables {
-  title: string,
-  website?: string | null,
-  role?: string | null,
-  logo?: ImageRefInput | null,
-  personal?: boolean | null,
+  input: CreateOrganizationInput,
 };
 
 export interface CreateOrganizationMutation {
-  alphaCreateOrganization: string,
+  createOrganization:  {
+    __typename: "OrganizationProfile",
+    id: string,
+    name: string,
+  },
 };
 
 export interface AccountInviteInfoQueryVariables {
@@ -545,16 +555,6 @@ export interface DebugReadedStatesQuery {
     id: string,
     title: string,
     remaining: number,
-  } >,
-};
-
-export interface DebugOwnAccountsQuery {
-  orgs:  Array< {
-    __typename: "OrganizationAccount",
-    id: string,
-    title: string,
-    photo: string | null,
-    website: string | null,
   } >,
 };
 
@@ -922,6 +922,7 @@ export interface MyOrganizationQuery {
     about: string | null,
     twitter: string | null,
     facebook: string | null,
+    location: string | null,
     contacts:  Array< {
       __typename: "OrganizationContact",
       name: string,
@@ -950,6 +951,64 @@ export interface MyOrganizationQuery {
   } | null,
 };
 
+export interface MyOrganizationProfileQuery {
+  myOrganizationProfile:  {
+    __typename: "OrganizationProfile",
+    id: string,
+    name: string,
+    photoRef:  {
+      __typename: "ImageRef",
+      uuid: string,
+      crop:  {
+        __typename: "ImageCrop",
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
+    website: string | null,
+    about: string | null,
+    twitter: string | null,
+    facebook: string | null,
+    location: string | null,
+    contacts:  Array< {
+      __typename: "OrganizationContact",
+      name: string,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
+      position: string | null,
+      email: string | null,
+      phone: string | null,
+      link: string | null,
+    } >,
+    potentialSites:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } > | null,
+    alpha:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } > | null,
+    developmentModels: Array< string > | null,
+    availability: Array< string > | null,
+    landUse: Array< string > | null,
+    goodFor: Array< string > | null,
+    specialAttributes: Array< string > | null,
+  },
+};
+
 export interface MyOrganizationsQuery {
   myOrganizations:  Array< {
     __typename: "Organization",
@@ -957,6 +1016,68 @@ export interface MyOrganizationsQuery {
     name: string,
     photo: string | null,
   } >,
+};
+
+export interface UpdateOrganizationMutationVariables {
+  input: UpdateOrganizationProfileInput,
+};
+
+export interface UpdateOrganizationMutation {
+  updateOrganizationProfile:  {
+    __typename: "OrganizationProfile",
+    id: string,
+    name: string,
+    photoRef:  {
+      __typename: "ImageRef",
+      uuid: string,
+      crop:  {
+        __typename: "ImageCrop",
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
+    website: string | null,
+    about: string | null,
+    twitter: string | null,
+    facebook: string | null,
+    location: string | null,
+    contacts:  Array< {
+      __typename: "OrganizationContact",
+      name: string,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
+      position: string | null,
+      email: string | null,
+      phone: string | null,
+      link: string | null,
+    } >,
+    potentialSites:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } > | null,
+    alpha:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } > | null,
+    developmentModels: Array< string > | null,
+    availability: Array< string > | null,
+    landUse: Array< string > | null,
+    goodFor: Array< string > | null,
+    specialAttributes: Array< string > | null,
+  },
 };
 
 export interface OrganizationQueryVariables {
@@ -974,6 +1095,7 @@ export interface OrganizationQuery {
     about: string | null,
     twitter: string | null,
     facebook: string | null,
+    location: string | null,
     contacts:  Array< {
       __typename: "OrganizationContact",
       name: string,
@@ -1013,166 +1135,6 @@ export interface FollowOrganizationMutation {
     id: string,
     alphaFollowed: boolean,
   },
-};
-
-export interface CurrentOrganizationProfileQuery {
-  alphaCurrentOrganizationProfile:  {
-    __typename: "AlphaOrganizationProfile",
-    id: string,
-    iAmOwner: boolean,
-    name: string,
-    photo: string | null,
-    personalOrganizationUser:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      firstName: string,
-      lastName: string | null,
-      picture: string | null,
-      email: string | null,
-    } | null,
-    followed: boolean,
-    isCurrent: boolean,
-    photoRef:  {
-      __typename: "ImageRef",
-      uuid: string,
-      crop:  {
-        __typename: "ImageCrop",
-        x: number,
-        y: number,
-        w: number,
-        h: number,
-      } | null,
-    } | null,
-    website: string | null,
-    // extras
-    potentialSites:  Array< {
-      __typename: "Range",
-      from: number | null,
-      to: number | null,
-    } | null > | null,
-    siteSizes:  Array< {
-      __typename: "Range",
-      from: number | null,
-      to: number | null,
-    } | null > | null,
-    about: string | null,
-    twitter: string | null,
-    facebook: string | null,
-    developmentModels: Array< string | null > | null,
-    availability: Array< string | null > | null,
-    contacts:  Array< {
-      __typename: "AlphaContactPerson",
-      name: string,
-      avatar: string | null,
-      avatarRef:  {
-        __typename: "ImageRef",
-        uuid: string,
-        crop:  {
-          __typename: "ImageCrop",
-          x: number,
-          y: number,
-          w: number,
-          h: number,
-        } | null,
-      } | null,
-      role: string | null,
-      email: string | null,
-      phone: string | null,
-      link: string | null,
-    } | null > | null,
-    landUse: Array< string | null > | null,
-    goodFor: Array< string | null > | null,
-    specialAttributes: Array< string | null > | null,
-  },
-};
-
-export interface OrganizationProfileQueryVariables {
-  id: string,
-};
-
-export interface OrganizationProfileQuery {
-  alphaOrganizationProfile:  {
-    __typename: "AlphaOrganizationProfile",
-    id: string,
-    iAmOwner: boolean,
-    name: string,
-    photo: string | null,
-    personalOrganizationUser:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      firstName: string,
-      lastName: string | null,
-      picture: string | null,
-      email: string | null,
-    } | null,
-    followed: boolean,
-    isCurrent: boolean,
-    photoRef:  {
-      __typename: "ImageRef",
-      uuid: string,
-      crop:  {
-        __typename: "ImageCrop",
-        x: number,
-        y: number,
-        w: number,
-        h: number,
-      } | null,
-    } | null,
-    website: string | null,
-    // extras
-    potentialSites:  Array< {
-      __typename: "Range",
-      from: number | null,
-      to: number | null,
-    } | null > | null,
-    siteSizes:  Array< {
-      __typename: "Range",
-      from: number | null,
-      to: number | null,
-    } | null > | null,
-    about: string | null,
-    twitter: string | null,
-    facebook: string | null,
-    developmentModels: Array< string | null > | null,
-    availability: Array< string | null > | null,
-    contacts:  Array< {
-      __typename: "AlphaContactPerson",
-      name: string,
-      avatar: string | null,
-      avatarRef:  {
-        __typename: "ImageRef",
-        uuid: string,
-        crop:  {
-          __typename: "ImageCrop",
-          x: number,
-          y: number,
-          w: number,
-          h: number,
-        } | null,
-      } | null,
-      role: string | null,
-      email: string | null,
-      phone: string | null,
-      link: string | null,
-    } | null > | null,
-    landUse: Array< string | null > | null,
-    goodFor: Array< string | null > | null,
-    specialAttributes: Array< string | null > | null,
-  } | null,
-};
-
-export interface EditOrganizationProfileMutationVariables {
-  title?: string | null,
-  website?: string | null,
-  role?: string | null,
-  logo?: ImageRefInput | null,
-  data?: AlphaOrganizationProfileInput | null,
-};
-
-export interface EditOrganizationProfileMutation {
-  alphaEditOrganizationProfile: string,
 };
 
 export interface BlocksConnectionQueryVariables {
@@ -2103,7 +2065,6 @@ export interface SearchQuery {
 };
 
 export interface ProfileQuery {
-  // Deprecated
   profile:  {
     __typename: "Profile",
     id: string,
@@ -3176,6 +3137,7 @@ export interface OrganizationFullFragment {
   about: string | null,
   twitter: string | null,
   facebook: string | null,
+  location: string | null,
   contacts:  Array< {
     __typename: string,
     name: string,
@@ -3203,23 +3165,10 @@ export interface OrganizationFullFragment {
   specialAttributes: Array< string > | null,
 };
 
-export interface OrganizationProfileFragment {
-  __typename: "AlphaOrganizationProfile",
+export interface OrganizationProfileFullFragment {
+  __typename: "OrganizationProfile",
   id: string,
-  iAmOwner: boolean,
   name: string,
-  photo: string | null,
-  personalOrganizationUser:  {
-    __typename: string,
-    id: string,
-    name: string,
-    firstName: string,
-    lastName: string | null,
-    picture: string | null,
-    email: string | null,
-  } | null,
-  followed: boolean,
-  isCurrent: boolean,
   photoRef:  {
     __typename: string,
     uuid: string,
@@ -3232,27 +3181,14 @@ export interface OrganizationProfileFragment {
     } | null,
   } | null,
   website: string | null,
-  // extras
-  potentialSites:  Array< {
-    __typename: string,
-    from: number | null,
-    to: number | null,
-  } | null > | null,
-  siteSizes:  Array< {
-    __typename: string,
-    from: number | null,
-    to: number | null,
-  } | null > | null,
   about: string | null,
   twitter: string | null,
   facebook: string | null,
-  developmentModels: Array< string | null > | null,
-  availability: Array< string | null > | null,
+  location: string | null,
   contacts:  Array< {
     __typename: string,
     name: string,
-    avatar: string | null,
-    avatarRef:  {
+    photoRef:  {
       __typename: string,
       uuid: string,
       crop:  {
@@ -3263,14 +3199,26 @@ export interface OrganizationProfileFragment {
         h: number,
       } | null,
     } | null,
-    role: string | null,
+    position: string | null,
     email: string | null,
     phone: string | null,
     link: string | null,
-  } | null > | null,
-  landUse: Array< string | null > | null,
-  goodFor: Array< string | null > | null,
-  specialAttributes: Array< string | null > | null,
+  } >,
+  potentialSites:  Array< {
+    __typename: string,
+    from: number | null,
+    to: number | null,
+  } > | null,
+  alpha:  Array< {
+    __typename: string,
+    from: number | null,
+    to: number | null,
+  } > | null,
+  developmentModels: Array< string > | null,
+  availability: Array< string > | null,
+  landUse: Array< string > | null,
+  goodFor: Array< string > | null,
+  specialAttributes: Array< string > | null,
 };
 
 export interface OrganizationShortFragment {

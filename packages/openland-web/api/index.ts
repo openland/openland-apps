@@ -196,10 +196,6 @@ export const ParcelMapSearch = graphQLMapSearchSource(Queries.Parcels.ParcelsMap
 export const withSampleTask = graphqlTask(Queries.Tasks.SampleTask);
 export const withFolderExportTask = graphqlTask(Queries.Tasks.FolderExportTask);
 
-export const withCreateOrganization = graphqlMutation(Queries.Account.CreateOrganizationMutation, 'createOrganization', { refetchQueries: [Queries.Account.AccountQuery] });
-// export const withCreateProfile = graphqlCompose2(graphqlMutation(Queries.Account.SaveProfileMutation, 'createProfile'), graphqlRouted(Queries.Account.ProfilePrefillQuery));
-export const withAllAccounts = graphqlRouted(Queries.Organization.MyOrganizationsQuery);
-
 //
 // Invites
 //
@@ -229,16 +225,15 @@ export const withProfileCreate = graphqlCompose2(
 // Organization
 //
 
+export const withCreateOrganization = graphqlMutation(Queries.Account.CreateOrganizationMutation, 'createOrganization');
+
+export const withMyOrganizations = graphqlRouted(Queries.Organization.MyOrganizationsQuery);
 export const withMyOrganization = graphqlRouted(Queries.Organization.MyOrganizationQuery);
+export const withMyOrganizationProfile = graphqlCompose2(
+    graphqlRouted(Queries.Organization.MyOrganizationProfileQuery),
+    graphqlMutation(Queries.Organization.UpdateOrganizationMutation, 'updateOrganizaton')
+);
 export const withOrganization = graphqlCompose2(
     graphqlRouted(Queries.Organization.OrganizationQuery, { params: ['organizationId'] }),
     graphqlMutation(Queries.Organization.FollowOrganizationMutation, 'followOrganization', { params: ['organizationId'] })
 );
-
-// Deprecated    
-export const withCurrentOrganizationProfile = graphqlRouted(Queries.Organization.CurrentOrganizationProfileQuery);
-export const withOrganizationProfile = graphqlRouted(Queries.Organization.OrganizationProfileQuery, { params: ['organizationId'] });
-export const withEditCurrentOrganizationProfile = graphqlCompose2(
-    graphqlMutation(Queries.Organization.EditOrganizationProfilMutation, 'editOrganizationProfile', { refetchQueries: [Queries.Organization.CurrentOrganizationProfileQuery] }),
-    withCurrentOrganizationProfile);
-export const withFollowOrganization = graphqlMutation(Queries.Organization.FollowOrganizationMutation, 'followOrganization');

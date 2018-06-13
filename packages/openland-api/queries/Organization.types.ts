@@ -7,6 +7,5 @@ export const MyOrganizationQuery = typedQuery<Types.MyOrganizationQuery, {}>(Org
 export const MyOrganizationsQuery = typedQuery<Types.MyOrganizationsQuery, {}>(OrganizationProfile.MyOrganizationsQuery);
 export const FollowOrganizationMutation = typedMutation<Types.FollowOrganizationMutation, Types.FollowOrganizationMutationVariables>(OrganizationProfile.FollowOrganizationMutation);
 
-export const CurrentOrganizationProfileQuery = typedQuery<Types.CurrentOrganizationProfileQuery, {}>(OrganizationProfile.CurrentOrganizationProfileQuery);
-export const OrganizationProfileQuery = typedQuery<Types.OrganizationProfileQuery, Types.OrganizationProfileQueryVariables>(OrganizationProfile.OrganizationProfileQuery);
-export const EditOrganizationProfilMutation = typedMutation<Types.EditOrganizationProfileMutation, Types.EditOrganizationProfileMutationVariables>(OrganizationProfile.EditOrganizationProfileMutation);
+export const MyOrganizationProfileQuery = typedQuery<Types.MyOrganizationProfileQuery, {}>(OrganizationProfile.MyOrganizationProfileQuery);
+export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganizationMutation, Types.UpdateOrganizationMutationVariables>(OrganizationProfile.UpdateOrganizationMutation);

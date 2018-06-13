@@ -1,34 +1,44 @@
 import gql from 'graphql-tag';
-
-export const OrganizationFull = gql`
-    fragment OrganizationFull on Organization {
+export const OrganizationProfileFull = gql`
+    fragment OrganizationProfileFull on OrganizationProfile {
         id
-        isMine
-
         name
-        photo
-
+        photoRef {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
         website
         about
         twitter
         facebook
         location
-        contacts{
+        contacts {
             name
-            photo
+            photoRef {
+                uuid
+                crop{
+                    x
+                    y
+                    w
+                    h
+                }
+            }
             position
             email
             phone
             link
         }
 
-        followed: alphaFollowed
-
         potentialSites: alphaPotentialSites {
             from
             to
         }
-        siteSizes: alphaSiteSizes {
+        alpha: alphaSiteSizes{
             from
             to
         }

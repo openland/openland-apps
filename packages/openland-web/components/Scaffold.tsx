@@ -6,7 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XPicture } from 'openland-x/XPicture';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
-import { withSearch, withAllAccounts } from '../api';
+import { withSearch, withMyOrganizations } from '../api';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';
@@ -466,7 +466,7 @@ interface ScaffoldProps {
     sidebarBorderColor?: string;
 }
 
-const OrganizationPicker = withAllAccounts((props) => {
+const OrganizationPicker = withMyOrganizations((props) => {
     if (props.data.loading) {
         return <XLoader loading={true} />;
     }

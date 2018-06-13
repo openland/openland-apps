@@ -26,6 +26,7 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XFormError } from 'openland-x-forms/XFormError';
+import { sanitizeIamgeRef } from '../../utils/sanitizer';
 
 const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props) => {
 
@@ -38,14 +39,26 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                 </TextWrapper>
                 <XForm
                     defaultAction={async (data) => {
-                        let res = await props.createOrganization({ variables: data });
-                        switchOrganization(res.data.alphaCreateOrganization);
+                        let res = await props.createOrganization({
+                            variables:
+                            {
+                                input: {
+                                    personal: true,
+                                    name: data.input.name,
+                                    website: data.input.website,
+                                    photoRef: sanitizeIamgeRef(data.input.photoRef)
+                                }
+                            }
+                        });
+                        switchOrganization(res.data.createOrganization.id);
                         await delayForewer();
                     }}
                     defaultData={{
-                        title: '',
-                        website: '',
-                        logo: null
+                        input: {
+                            name: '',
+                            website: '',
+                            photoRef: null
+                        }
                     }}
                     defaultLayout={false}
                 >
@@ -54,15 +67,15 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                         <XFormLoadingContent>
                             <XHorizontal separator="large">
                                 <XVertical width={280}>
-                                    <XFormField field="title" title={InitTexts.create_organization.name}>
-                                        <XInput field="title" size="medium" placeholder={InitTexts.create_organization.namePlaceholder} />
+                                    <XFormField field="input.name" title={InitTexts.create_organization.name}>
+                                        <XInput field="input.name" size="medium" placeholder={InitTexts.create_organization.namePlaceholder} />
                                     </XFormField>
-                                    <XFormField field="website" title={InitTexts.create_organization.website} optional={true}>
-                                        <XInput field="website" size="medium" placeholder={InitTexts.create_organization.websitePlaceholder} />
+                                    <XFormField field="input.website" title={InitTexts.create_organization.website} optional={true}>
+                                        <XInput field="input.website" size="medium" placeholder={InitTexts.create_organization.websitePlaceholder} />
                                     </XFormField>
                                 </XVertical>
                                 <XFormField title={InitTexts.create_organization.photo}>
-                                    <XAvatarUpload field="logo" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} size="large" />
+                                    <XAvatarUpload field="input.photoRef" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} size="large" />
                                 </XFormField>
                             </XHorizontal>
                         </XFormLoadingContent>
@@ -72,11 +85,16 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                                 <XFormSubmit
                                     style="link"
                                     text={InitTexts.create_organization.skip}
-                                    action={async (data) => {
-                                        data.personal = true;
-                                        data.title = props.user ? props.user.name : 'Personal Organization';
-                                        let res = await props.createOrganization({ variables: data });
-                                        switchOrganization(res.data.alphaCreateOrganization);
+                                    action={async () => {
+                                        let res = await props.createOrganization({
+                                            variables: {
+                                                input: {
+                                                    personal: true,
+                                                    name: props.user!!.name,
+                                                }
+                                            }
+                                        });
+                                        switchOrganization(res.data.createOrganization.id);
                                         await delayForewer();
                                     }}
                                 />
