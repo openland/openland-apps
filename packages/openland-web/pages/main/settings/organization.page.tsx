@@ -28,6 +28,7 @@ import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XTextArea } from 'openland-x/XTextArea';
 import Glamorous from 'glamorous';
 import { withMyOrganizationProfile } from '../../../api';
+import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 
 const ContactField = Glamorous.div({
     alignSelf: 'center',
@@ -79,7 +80,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                 facebook: props.data.myOrganizationProfile!!.facebook,
                                 about: props.data.myOrganizationProfile!!.about,
                                 location: props.data.myOrganizationProfile!!.location,
-                                photoRef: props.data.myOrganizationProfile!!.photoRef,
+                                photoRef: sanitizeIamgeRef(props.data.myOrganizationProfile!!.photoRef),
                             }
                         }}
                         defaultAction={async (data) => {
@@ -244,7 +245,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                 email: props.data.myOrganizationProfile!!.contacts!![props.router.query.editContact]!!.email,
                                 link: props.data.myOrganizationProfile!!.contacts!![props.router.query.editContact]!!.link,
                                 position: props.data.myOrganizationProfile!!.contacts!![props.router.query.editContact]!!.position,
-                                photoRef: props.data.myOrganizationProfile!!.contacts!![props.router.query.editContact]!!.photoRef,
+                                photoRef: sanitizeIamgeRef(props.data.myOrganizationProfile!!.contacts!![props.router.query.editContact]!!.photoRef),
                             }}
                             defaultAction={async (data) => {
                                 data.contacts[Number(props.router.query.editContact)] = {
