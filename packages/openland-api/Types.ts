@@ -226,13 +226,14 @@ export interface AccountQuery {
     picture: string | null,
     email: string | null,
   } | null,
+  // Deprecated
   myAccount:  {
     __typename: "MyAccount",
     id: string,
     title: string,
   } | null,
-  myProfile:  {
-    __typename: "MyProfile",
+  sessionState:  {
+    __typename: "SessionState",
     isLoggedIn: boolean,
     isProfileCreated: boolean,
     isAccountActivated: boolean,
@@ -3054,17 +3055,6 @@ export interface GeoShortFragment {
   longitude: number,
 };
 
-export interface MyProfileFullFragment {
-  __typename: "MyProfile",
-  isLoggedIn: boolean,
-  isProfileCreated: boolean,
-  isAccountActivated: boolean,
-  isAccountExists: boolean,
-  isAccountPicked: boolean,
-  isCompleted: boolean,
-  isBlocked: boolean,
-};
-
 export interface OrganizationProfileFragment {
   __typename: "OrganizationProfile",
   id: string,
@@ -3133,6 +3123,17 @@ export interface ParcelIDFragment {
   lot: string | null,
   lotPadded: string | null,
   title: string,
+};
+
+export interface SessionStateFullFragment {
+  __typename: "SessionState",
+  isLoggedIn: boolean,
+  isProfileCreated: boolean,
+  isAccountActivated: boolean,
+  isAccountExists: boolean,
+  isAccountPicked: boolean,
+  isCompleted: boolean,
+  isBlocked: boolean,
 };
 
 export interface UserShortFragment {

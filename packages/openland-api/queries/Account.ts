@@ -1,17 +1,17 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
-import { MyProfileFull } from '../fragments/MyProfileFull';
 import { AccountShort } from '../fragments/AccountShort';
+import { SessionStateFull } from '../fragments/SessionStateFull';
 
 export const AccountQuery = gql`
     query Account {
         me { ...UserShort }
         myAccount { ...AccountShort }
-        myProfile { ...MyProfileFull }
+        sessionState { ...SessionStateFull }
         permissions { roles }
     }
     ${UserShort}
-    ${MyProfileFull}
+    ${SessionStateFull}
     ${AccountShort}
 `;
 

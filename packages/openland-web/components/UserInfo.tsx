@@ -8,7 +8,7 @@ import { trackProfile } from 'openland-x-analytics';
 export class UserInfoProvider extends React.Component<{
     user?: Types.UserShortFragment | null,
     account?: Types.AccountShortFragment | null,
-    profile: Types.MyProfileFullFragment,
+    sessionState: Types.SessionStateFullFragment,
     roles: string[]
 } & XWithRouter> implements React.ChildContextProvider<{}> {
     static childContextTypes = {
@@ -41,13 +41,13 @@ export class UserInfoProvider extends React.Component<{
         return {
             user: hasUser ? this.props.user : null,
             account: hasAccount ? this.props.account : null,
-            isLoggedIn: this.props.profile.isLoggedIn,
-            isProfileCreated: this.props.profile.isProfileCreated && hasUser,
-            isAccountExists: this.props.profile.isAccountExists,
-            isAccountPicked: this.props.profile.isAccountPicked,
-            isActivated: this.props.profile.isAccountActivated && hasUser,
-            isCompleted: this.props.profile.isCompleted && hasUser,
-            isBlocked: this.props.profile.isBlocked,
+            isLoggedIn: this.props.sessionState.isLoggedIn,
+            isProfileCreated: this.props.sessionState.isProfileCreated && hasUser,
+            isAccountExists: this.props.sessionState.isAccountExists,
+            isAccountPicked: this.props.sessionState.isAccountPicked,
+            isActivated: this.props.sessionState.isAccountActivated && hasUser,
+            isCompleted: this.props.sessionState.isCompleted && hasUser,
+            isBlocked: this.props.sessionState.isBlocked,
         };
     }
 }
