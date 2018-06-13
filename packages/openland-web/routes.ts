@@ -60,6 +60,13 @@ routes.add('/home', '/main/home/main');
 routes.add('/home/', '/main/home/main');
 
 //
+// Profiles
+//
+
+routes.add('/o/:organizationId', '/main/profile/organization');
+routes.add('/o/:organizationId/', '/main/profile/organization');
+
+//
 // Marketplace
 //
 
