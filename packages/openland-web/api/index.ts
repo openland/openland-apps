@@ -194,6 +194,10 @@ export const withCreateOrganization = graphqlMutation(Queries.Account.CreateOrga
 // export const withCreateProfile = graphqlCompose2(graphqlMutation(Queries.Account.SaveProfileMutation, 'createProfile'), graphqlRouted(Queries.Account.ProfilePrefillQuery));
 export const withAllAccounts = graphqlRouted(Queries.Debug.DebugOwnAccountsQuery);
 
+//
+// Invites
+//
+
 export const withInvites = graphqlRouted(Queries.Account.AccountInvitesQuery);
 export const withInviteCreate = graphqlMutation(Queries.Account.AccountCreateInviteMutation, 'createInvite', { refetchQueries: [Queries.Account.AccountInvitesQuery] });
 export const withInviteDestroy = graphqlMutation(Queries.Account.AccountDestroyInviteMutation, 'destroyInvite', { refetchQueries: [Queries.Account.AccountInvitesQuery] });
@@ -201,12 +205,9 @@ export const withInviteInfo = graphqlCompose2(
     graphqlRouted(Queries.Account.AccountInviteInfoQuery, ['inviteKey']),
     graphqlMutation(Queries.Account.AccountInviteJoinMutation, 'doJoin', { params: ['inviteKey'] }));
 
-export const withCurrentOrganizationProfile = graphqlRouted(Queries.OrganizationProfile.CurrentOrganizationProfileQuery);
-export const withOrganizationProfile = graphqlRouted(Queries.OrganizationProfile.OrganizationProfileQuery, ['organizationId']);
-export const withEditCurrentOrganizationProfile = graphqlCompose2(
-    graphqlMutation(Queries.OrganizationProfile.EditOrganizationProfilMutation, 'editOrganizationProfile', { refetchQueries: [Queries.OrganizationProfile.CurrentOrganizationProfileQuery] }),
-    withCurrentOrganizationProfile);
-export const withFollowOrganization = graphqlMutation(Queries.OrganizationProfile.FollowOrganizationMutation, 'followOrganization');
+//
+// User Profile
+//
 
 export const withProfile = graphqlCompose2(
     graphqlRouted(Queries.Settings.ProfileQuery),
@@ -217,3 +218,18 @@ export const withProfileCreate = graphqlCompose2(
     graphqlMutation(Queries.Settings.ProfileCreateMutation, 'createProfile', { refetchQueries: [Queries.Account.AccountQuery] }),
     graphqlRouted(Queries.Account.ProfilePrefillQuery)
 );
+
+//
+// Organization
+//
+
+export const withMyOrganization = graphqlRouted(Queries.Organization.MyOrganizationQuery);
+export const withOrganization = graphqlRouted(Queries.Organization.OrganizationQuery, ['organizationId']);
+
+// Deprecated    
+export const withCurrentOrganizationProfile = graphqlRouted(Queries.Organization.CurrentOrganizationProfileQuery);
+export const withOrganizationProfile = graphqlRouted(Queries.Organization.OrganizationProfileQuery, ['organizationId']);
+export const withEditCurrentOrganizationProfile = graphqlCompose2(
+    graphqlMutation(Queries.Organization.EditOrganizationProfilMutation, 'editOrganizationProfile', { refetchQueries: [Queries.Organization.CurrentOrganizationProfileQuery] }),
+    withCurrentOrganizationProfile);
+export const withFollowOrganization = graphqlMutation(Queries.Organization.FollowOrganizationMutation, 'followOrganization');

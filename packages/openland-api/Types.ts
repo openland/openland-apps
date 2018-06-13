@@ -911,6 +911,86 @@ export interface FolderItemsTileOverlayQuery {
   } > | null,
 };
 
+export interface MyOrganizationQuery {
+  myOrganization:  {
+    __typename: "Organization",
+    id: string,
+    isMine: boolean,
+    name: string,
+    photo: string | null,
+    website: string | null,
+    about: string | null,
+    twitter: string | null,
+    facebook: string | null,
+    contacts:  Array< {
+      __typename: "OrganizationContact",
+      name: string,
+      photo: string | null,
+      position: string | null,
+      email: string | null,
+      phone: string | null,
+      link: string | null,
+    } >,
+    potentialSites:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } > | null,
+    siteSizes:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } > | null,
+    developmentModels: Array< string > | null,
+    availability: Array< string > | null,
+    landUse: Array< string > | null,
+    goodFor: Array< string > | null,
+    specialAttributes: Array< string > | null,
+  } | null,
+};
+
+export interface OrganizationQueryVariables {
+  id: string,
+};
+
+export interface OrganizationQuery {
+  organization:  {
+    __typename: "Organization",
+    id: string,
+    isMine: boolean,
+    name: string,
+    photo: string | null,
+    website: string | null,
+    about: string | null,
+    twitter: string | null,
+    facebook: string | null,
+    contacts:  Array< {
+      __typename: "OrganizationContact",
+      name: string,
+      photo: string | null,
+      position: string | null,
+      email: string | null,
+      phone: string | null,
+      link: string | null,
+    } >,
+    potentialSites:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } > | null,
+    siteSizes:  Array< {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } > | null,
+    developmentModels: Array< string > | null,
+    availability: Array< string > | null,
+    landUse: Array< string > | null,
+    goodFor: Array< string > | null,
+    specialAttributes: Array< string > | null,
+  } | null,
+};
+
 export interface CurrentOrganizationProfileQuery {
   alphaCurrentOrganizationProfile:  {
     __typename: "AlphaOrganizationProfile",
@@ -3073,6 +3153,42 @@ export interface GeoShortFragment {
   __typename: "Geo",
   latitude: number,
   longitude: number,
+};
+
+export interface OrganizationFullFragment {
+  __typename: "Organization",
+  id: string,
+  isMine: boolean,
+  name: string,
+  photo: string | null,
+  website: string | null,
+  about: string | null,
+  twitter: string | null,
+  facebook: string | null,
+  contacts:  Array< {
+    __typename: string,
+    name: string,
+    photo: string | null,
+    position: string | null,
+    email: string | null,
+    phone: string | null,
+    link: string | null,
+  } >,
+  potentialSites:  Array< {
+    __typename: string,
+    from: number | null,
+    to: number | null,
+  } > | null,
+  siteSizes:  Array< {
+    __typename: string,
+    from: number | null,
+    to: number | null,
+  } > | null,
+  developmentModels: Array< string > | null,
+  availability: Array< string > | null,
+  landUse: Array< string > | null,
+  goodFor: Array< string > | null,
+  specialAttributes: Array< string > | null,
 };
 
 export interface OrganizationProfileFragment {

@@ -12,7 +12,7 @@ import * as Debug from './queries/Debug.types';
 import * as SuperCity from './queries/SuperCity.types';
 import * as Folder from './queries/Folder.types';
 import * as Tasks from './queries/Tasks.types';
-import * as OrganizationProfile from './queries/OrganizationProfile.types';
+import * as Organization from './queries/Organization.types';
 import * as Settings from './queries/Settings.types';
 
 export let Queries = {
@@ -30,6 +30,6 @@ export let Queries = {
     SuperCity,
     Folder,
     Tasks,
-    OrganizationProfile,
+    Organization,
     Settings
 };

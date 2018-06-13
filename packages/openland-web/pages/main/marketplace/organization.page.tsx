@@ -2,15 +2,13 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
-import { withOrganizationProfile, withFollowOrganization } from '../../../api';
+import { withOrganization } from '../../../api';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCard } from 'openland-x/XCard';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XButton } from 'openland-x/XButton';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XLink } from 'openland-x/XLink';
-import { withRouter } from 'openland-x-routing/withRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import {
@@ -343,33 +341,32 @@ const OpportunitiesValue = Glamorous.div({
     padding: '8px 9px'
 });
 
-const Follow = withFollowOrganization((props) => {
-    return (
-        <XButton
-            style="primary"
-            size="medium"
-            text={(props as any).following ? 'Following' : 'Follow'}
-            action={
-                async () => {
-                    await props.followOrganization({ variables: { id: (props as any).id, follow: !(props as any).following } });
-                }
-            }
-        />
-    );
-}) as React.ComponentClass<{ id: string, following: boolean }>;
+// const Follow = withFollowOrganization((props) => {
+//     return (
+//         <XButton
+//             style="primary"
+//             size="medium"
+//             text={(props as any).following ? 'Following' : 'Follow'}
+//             action={
+//                 async () => {
+//                     await props.followOrganization({ variables: { id: (props as any).id, follow: !(props as any).following } });
+//                 }
+//             }
+//         />
+//     );
+// }) as React.ComponentClass<{ id: string, following: boolean }>;
 
-const Profile = withOrganizationProfile(withRouter((props) => {
-    console.warn(props);
+const Profile = withOrganization((props) => {
     return (
         <Root>
-            {props.data.alphaOrganizationProfile && (
+            {props.data.organization && (
                 <>
                     <Header>
                         <HeaderPicture />
                         <HeaderContent>
                             <OrganizationData>
-                                <Avatar cloudImageUuid={props.data.alphaOrganizationProfile.photo!!} size="x-large" style="square" />
-                                <OrganizationName>{props.data.alphaOrganizationProfile.name}</OrganizationName>
+                                <Avatar cloudImageUuid={props.data.organization.photo!!} size="x-large" style="square" />
+                                <OrganizationName>{props.data.organization.name}</OrganizationName>
                                 {/* <OrganizationPlace>San Francisco, CA</OrganizationPlace> */}
                             </OrganizationData>
                             <SwitcherWrapper flatStyle={true}>
@@ -379,7 +376,7 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                 <Switcher>Contacts</Switcher> */}
                             </SwitcherWrapper>
                             <XHorizontal>
-                                {!props.data.alphaOrganizationProfile.isCurrent && <Follow id={props.data.alphaOrganizationProfile.id} following={props.data.alphaOrganizationProfile.followed} />}
+                                {/* {!props.data.organization.isMine && <Follow id={props.data.organization.id} following={props.data.organization.followed} />} */}
                                 {/* <XButton style="primary" size="medium" text="Apply to connect" /> */}
                             </XHorizontal>
                         </HeaderContent>
@@ -391,8 +388,8 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                     <XHorizontal>
                                         <XVerticalStyled flexGrow={1} borderRight={true} padding={24}>
                                             <Title>Development models</Title>
-                                            {props.data.alphaOrganizationProfile.developmentModels && (
-                                                props.data.alphaOrganizationProfile.developmentModels!!.map((s, k) => (
+                                            {props.data.organization.developmentModels && (
+                                                props.data.organization.developmentModels!!.map((s, k) => (
                                                     <TagItem key={k + '_' + s}>
                                                         <TagImg img={s!} className={s!!} />
                                                         <Text bold={true} upperCase={true}>
@@ -406,8 +403,8 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                         </XVerticalStyled>
                                         <XVerticalStyled flexGrow={1} padding={24}>
                                             <Title>Availability</Title>
-                                            {props.data.alphaOrganizationProfile.availability && (
-                                                props.data.alphaOrganizationProfile.availability!!.map((s, k) => (
+                                            {props.data.organization.availability && (
+                                                props.data.organization.availability!!.map((s, k) => (
                                                     <TagItem key={k + '_' + s}>
                                                         <TagImg img={s!} className={s!!} />
                                                         <Text bold={true} upperCase={true}>
@@ -427,14 +424,14 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                     </XVerticalStyled>
 
                                     <div>
-                                        {props.data.alphaOrganizationProfile.landUse && (
+                                        {props.data.organization.landUse && (
                                             <OpportunitiesWrapper>
                                                 <OpportunitiesTextWrapper>
                                                     <Text bold={true}>Land use</Text>
                                                 </OpportunitiesTextWrapper>
                                                 <OpportunitiesValueWrapper>
                                                     <XHorizontal>
-                                                        {props.data.alphaOrganizationProfile.landUse!!.map((s, k) => (
+                                                        {props.data.organization.landUse!!.map((s, k) => (
                                                             <OpportunitiesValue key={k + '_' + s}>
                                                                 {LandUseMap.map(i => (
                                                                     i.value === s ? i.label : undefined
@@ -446,14 +443,14 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                             </OpportunitiesWrapper>
                                         )}
 
-                                        {props.data.alphaOrganizationProfile.goodFor && (
+                                        {props.data.organization.goodFor && (
                                             <OpportunitiesWrapper>
                                                 <OpportunitiesTextWrapper>
                                                     <Text bold={true}>Good fit for</Text>
                                                 </OpportunitiesTextWrapper>
                                                 <OpportunitiesValueWrapper>
                                                     <XHorizontal>
-                                                        {props.data.alphaOrganizationProfile.goodFor!!.map((s, k) => (
+                                                        {props.data.organization.goodFor!!.map((s, k) => (
                                                             <OpportunitiesValue key={k + '_' + s}>
                                                                 {GoodForMap.map(i => (
                                                                     i.value === s ? i.label : undefined
@@ -465,14 +462,14 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                             </OpportunitiesWrapper>
                                         )}
 
-                                        {props.data.alphaOrganizationProfile.specialAttributes && (
+                                        {props.data.organization.specialAttributes && (
                                             <OpportunitiesWrapper>
                                                 <OpportunitiesTextWrapper>
                                                     <Text bold={true}>Special attributes </Text>
                                                 </OpportunitiesTextWrapper>
                                                 <OpportunitiesValueWrapper>
                                                     <XHorizontal>
-                                                        {props.data.alphaOrganizationProfile!!.specialAttributes!!.map((s, k) => (
+                                                        {props.data.organization!!.specialAttributes!!.map((s, k) => (
                                                             <OpportunitiesValue key={k + '_' + s}>
                                                                 {SpecialAttributesMap.map(i => (
                                                                     i.value === s ? i.label : undefined
@@ -488,21 +485,21 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                 </XCardStyled>
                             </XVertical>
                             <XVertical width={270}>
-                                {props.data.alphaOrganizationProfile.about && (
+                                {props.data.organization.about && (
                                     <XCardStyled padding={18}>
                                         <Title small={true} marginBottom={10}>
                                             About
                                         </Title>
-                                        <AboutContent text={props.data.alphaOrganizationProfile.about} />
+                                        <AboutContent text={props.data.organization.about} />
                                     </XCardStyled>
                                 )}
                                 <XCardStyled padding={0} paddingTop={18} paddingBottom={20}>
                                     <Title small={true} marginBottom={10} marginLeft={18}>Contacts</Title>
-                                    <ContactPersons contacts={props.data.alphaOrganizationProfile.contacts!!.filter(c => c !== null) as any} />
+                                    <ContactPersons contacts={props.data.organization.contacts!!.filter(c => c !== null) as any} />
                                     <SocialLinksWrapper>
-                                        {props.data.alphaOrganizationProfile.website && <SocialLink href={props.data.alphaOrganizationProfile.website}>Website</SocialLink>}
-                                        {props.data.alphaOrganizationProfile.facebook && <SocialLinkImg className="fb" href={props.data.alphaOrganizationProfile.facebook} />}
-                                        {props.data.alphaOrganizationProfile.twitter && <SocialLinkImg className="tw" href={props.data.alphaOrganizationProfile.twitter} />}
+                                        {props.data.organization.website && <SocialLink href={props.data.organization.website}>Website</SocialLink>}
+                                        {props.data.organization.facebook && <SocialLinkImg className="fb" href={props.data.organization.facebook} />}
+                                        {props.data.organization.twitter && <SocialLinkImg className="tw" href={props.data.organization.twitter} />}
                                     </SocialLinksWrapper>
                                 </XCardStyled>
                             </XVertical>
@@ -512,18 +509,17 @@ const Profile = withOrganizationProfile(withRouter((props) => {
             )}
         </Root>
     );
-}));
+});
 
-export default withApp('Organization profile edit', 'viewer', withRouter((props) => {
+export default withApp('Organization profile edit', 'viewer', (props) => {
     return (
         <>
             <XDocumentHead title="Organization profile" />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false} >
-                    <Profile variables={{ id: props.router.routeQuery.organizationId }} />
-                    {props.children}
+                    <Profile />
                 </Scaffold.Content>
             </Scaffold>
         </>
     );
-}));
+});
