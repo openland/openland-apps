@@ -931,6 +931,7 @@ export interface MyOrganizationQuery {
       phone: string | null,
       link: string | null,
     } >,
+    followed: boolean,
     potentialSites:  Array< {
       __typename: "Range",
       from: number | null,
@@ -950,7 +951,7 @@ export interface MyOrganizationQuery {
 };
 
 export interface OrganizationQueryVariables {
-  id: string,
+  organizationId: string,
 };
 
 export interface OrganizationQuery {
@@ -973,6 +974,7 @@ export interface OrganizationQuery {
       phone: string | null,
       link: string | null,
     } >,
+    followed: boolean,
     potentialSites:  Array< {
       __typename: "Range",
       from: number | null,
@@ -989,6 +991,19 @@ export interface OrganizationQuery {
     goodFor: Array< string > | null,
     specialAttributes: Array< string > | null,
   } | null,
+};
+
+export interface FollowOrganizationMutationVariables {
+  organizationId: string,
+  follow: boolean,
+};
+
+export interface FollowOrganizationMutation {
+  followOrganization:  {
+    __typename: "Organization",
+    id: string,
+    alphaFollowed: boolean,
+  },
 };
 
 export interface CurrentOrganizationProfileQuery {
@@ -1149,19 +1164,6 @@ export interface EditOrganizationProfileMutationVariables {
 
 export interface EditOrganizationProfileMutation {
   alphaEditOrganizationProfile: string,
-};
-
-export interface FollowOrganizationMutationVariables {
-  id: string,
-  follow: boolean,
-};
-
-export interface FollowOrganizationMutation {
-  alphaAlterOrganizationFollow:  {
-    __typename: "AlphaOrganizationProfile",
-    id: string,
-    followed: boolean,
-  },
 };
 
 export interface BlocksConnectionQueryVariables {
@@ -3174,6 +3176,7 @@ export interface OrganizationFullFragment {
     phone: string | null,
     link: string | null,
   } >,
+  followed: boolean,
   potentialSites:  Array< {
     __typename: string,
     from: number | null,

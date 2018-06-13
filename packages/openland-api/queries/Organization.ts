@@ -18,6 +18,15 @@ export const OrganizationQuery = gql`
     }${OrganizationFull}
 `;
 
+export const FollowOrganizationMutation = gql`
+    mutation FollowOrganization($organizationId: ID!, $follow: Boolean!) {
+        followOrganization: alphaFollowOrganization(id: $organizationId, follow: $follow) {
+            id
+            alphaFollowed
+        }
+    }
+`;
+
 // Deprecated
 
 export const CurrentOrganizationProfileQuery = gql`
@@ -44,14 +53,5 @@ export const OrganizationProfileQuery = gql`
 export const EditOrganizationProfileMutation = gql`
 mutation EditOrganizationProfile($title: String, $website: String, $role: String, $logo: ImageRefInput, $data: AlphaOrganizationProfileInput) {
     alphaEditOrganizationProfile(title: $title, website: $website, role: $role, logo: $logo, extras: $data)
-}
-`;
-
-export const FollowOrganizationMutation = gql`
-mutation FollowOrganization($id: ID!, $follow: Boolean!) {
-    alphaAlterOrganizationFollow(orgId: $id, follow: $follow){
-        id
-        followed
-    }
 }
 `;

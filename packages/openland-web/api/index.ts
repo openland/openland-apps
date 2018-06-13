@@ -18,17 +18,19 @@ export const withAccountQuery = graphqlRouted(Queries.Account.AccountQuery);
 // Permits
 //
 
-export const withPermits = graphqlRouted(Queries.Permits.PermitsConnectionQuery, ['filter', 'cursor', 'page', 'type', 'sort', 'minUnits', 'issuedYear', 'fromPipeline']);
-export const withPermit = graphqlRouted(Queries.Permits.PermitQuery, ['permitId']);
+export const withPermits = graphqlRouted(Queries.Permits.PermitsConnectionQuery, {
+    params: ['filter', 'cursor', 'page', 'type', 'sort', 'minUnits', 'issuedYear', 'fromPipeline']
+});
+export const withPermit = graphqlRouted(Queries.Permits.PermitQuery, { params: ['permitId'] });
 
 //
 // Blocks
 //
 
-export const withBlocks = graphqlRouted(Queries.Parcels.BlocksConnectionQuery, ['page']);
-export const withBlock = graphqlRouted(Queries.Parcels.BlockQuery, ['blockId']);
-export const withParcels = graphqlRouted(Queries.Parcels.ParcelsConnectionQuery, ['page', 'query']);
-export const withParcelRaw = graphqlRouted(Queries.Parcels.ParcelQuery, ['parcelId']);
+export const withBlocks = graphqlRouted(Queries.Parcels.BlocksConnectionQuery, { params: ['page'] });
+export const withBlock = graphqlRouted(Queries.Parcels.BlockQuery, { params: ['blockId'] });
+export const withParcels = graphqlRouted(Queries.Parcels.ParcelsConnectionQuery, { params: ['page', 'query'] });
+export const withParcelRaw = graphqlRouted(Queries.Parcels.ParcelQuery, { params: ['parcelId'] });
 export const withParcelsFavorites = graphqlRouted(Queries.Parcels.ParcelsFavoritesQuery);
 export const withParcelsFavroutesCount = graphqlRouted(Queries.Parcels.ParcelsFavoritesCountQuery);
 
@@ -89,7 +91,7 @@ export const withSuperAdminAdd = graphqlMutation(Queries.Permissions.SuperAdminA
 export const withSuperAdminRemove = graphqlMutation(Queries.Permissions.SuperAdminRemoveMutation, 'remove', { refetchQueries: [Queries.Permissions.SuperAdminsQuery] });
 
 export const withSuperAccounts = graphqlRouted(Queries.Permissions.SuperAccountsQuery);
-export const withSuperAccount = graphqlRouted(Queries.Permissions.SuperAccountQuery, ['accountId']);
+export const withSuperAccount = graphqlRouted(Queries.Permissions.SuperAccountQuery, { params: ['accountId'] });
 
 export const withSuperAccountAdd =
     graphqlMutation(Queries.Permissions.SuperAccountAddMutation, 'add', { refetchQueries: [Queries.Permissions.SuperAccountsQuery] });
@@ -126,7 +128,7 @@ export const CountySelect = graphqlSelect<{ stateId: string }>(Queries.Addressin
 
 export const withDeals = graphqlRouted(Queries.Deals.AllDealsQuery);
 export const withDealsMap = graphqlRouted(Queries.Deals.AllDealsMapQuery);
-export const withDeal = graphqlRouted(Queries.Deals.DealQuery, ['dealId']);
+export const withDeal = graphqlRouted(Queries.Deals.DealQuery, { params: ['dealId'] });
 export const withDealAdd = graphqlMutation(Queries.Deals.AddDealMutation, 'add', { refetchQueries: [Queries.Deals.AllDealsQuery] });
 export const withDealRemove = graphqlMutation(Queries.Deals.RemoveDealMutation, 'remove', { params: ['dealId'], refetchQueries: [Queries.Deals.AllDealsQuery] });
 export const withDealAlter = graphqlMutation(Queries.Deals.AlterDealMutation, 'alter', { params: ['dealId'] });
@@ -138,19 +140,23 @@ export const ParcelSelect = graphqlSelect(Queries.Parcels.ParcelsSearchQuery);
 //
 
 export const withProspectingStats = graphqlRouted(Queries.Sourcing.OpportunityStatsQuery);
-export const withSourcing = graphqlRouted(Queries.Sourcing.SourcingQuery, ['filter', 'cursor', 'page', 'sort'], false, 'network-only');
-export const withSourcingFirst = graphqlRouted(Queries.Sourcing.SourcingFirstQuery, ['filter', 'cursor', 'page', 'sort'], false, 'network-only');
-export const withSourcingAll = graphqlRouted(Queries.Sourcing.SourcingAllQuery, [], false, 'network-only');
-export const withSourcingAllReport = graphqlRouted(Queries.Sourcing.SourcingAllReportQuery, [], false, 'network-only');
-export const withSourcingCapacity = graphqlRouted(Queries.Sourcing.ProspectingCapacityQuery, [], false, 'network-only');
+export const withSourcing = graphqlRouted(Queries.Sourcing.SourcingQuery, {
+    params: ['filter', 'cursor', 'page', 'sort'], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only'
+});
+export const withSourcingFirst = graphqlRouted(Queries.Sourcing.SourcingFirstQuery, {
+    params: ['filter', 'cursor', 'page', 'sort'], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only'
+});
+export const withSourcingAll = graphqlRouted(Queries.Sourcing.SourcingAllQuery, { params: [], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only' });
+export const withSourcingAllReport = graphqlRouted(Queries.Sourcing.SourcingAllReportQuery, { params: [], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only' });
+export const withSourcingCapacity = graphqlRouted(Queries.Sourcing.ProspectingCapacityQuery, { params: [], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only' });
 export const withAddOpportunity = graphqlMutation(Queries.Sourcing.AddOpportunityMutation, 'add', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
 
-export const withNextOpportunity = graphqlRouted(Queries.Sourcing.NextOpportunityQuery, ['initialId', 'sort'], true, 'network-only');
+export const withNextOpportunity = graphqlRouted(Queries.Sourcing.NextOpportunityQuery, { params: ['initialId', 'sort'], notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' });
 export const withApproveOpportunity = graphqlMutation(Queries.Sourcing.ApproveOpportunityMutation, 'approve', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
 export const withRejectOpportunity = graphqlMutation(Queries.Sourcing.RejectOpportunityMutation, 'reject', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
 export const withSnoozeOpportunity = graphqlMutation(Queries.Sourcing.SnoozeOpportunityMutation, 'snooze', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
 export const withResetOpportunity = graphqlMutation(Queries.Sourcing.ResetOpportunityMutation, 'reset', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
-export const withOpportunityByIdGet = graphqlRouted(Queries.Sourcing.OpportunityQuery, ['opportunityId']);
+export const withOpportunityByIdGet = graphqlRouted(Queries.Sourcing.OpportunityQuery, { params: ['opportunityId'] });
 
 export const withOpportunity = graphqlCompose6(withNextOpportunity, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity, withParcelNotes, withResetOpportunity);
 export const withOpportunityById = graphqlCompose4(withOpportunityByIdGet, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity);
@@ -168,7 +174,7 @@ export const OwnersSelect = graphqlSelect<Types.OwnersQueryVariables>(Queries.So
 export const withDebugReaders = graphqlRouted(Queries.Debug.DebugReadedStatesQuery);
 export const withSuperCities = graphqlRouted(Queries.SuperCity.SuperCitiesQuery);
 export const withFolders = graphqlRouted(Queries.Folder.FoldersQuery);
-export const withFolder = graphqlRouted(Queries.Folder.FolderQuery, [], true, 'network-only');
+export const withFolder = graphqlRouted(Queries.Folder.FolderQuery, { params: [], notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' });
 
 export const withCreateFolderMutation = graphqlMutation(Queries.Folder.CreateFolderMutation, 'createFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
 export const withDeleteFolderMutation = graphqlMutation(Queries.Folder.DeleteFolderMutation, 'deleteFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
@@ -183,7 +189,7 @@ export const FolderTileSource = graphQLTileSource(Queries.Folder.FolderTileOverl
     propertiesFactory: (src) => ({ parcelId: src.parcel.id })
 });
 
-export const withFolderItems = graphqlRouted(Queries.Folder.FolderItemsConnectionQuery, ['folderId', 'page', 'cursor'], true, 'network-only');
+export const withFolderItems = graphqlRouted(Queries.Folder.FolderItemsConnectionQuery, { params: ['folderId', 'page', 'cursor'], notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' });
 
 export const ParcelMapSearch = graphQLMapSearchSource(Queries.Parcels.ParcelsMapSearchQuery);
 
@@ -202,7 +208,7 @@ export const withInvites = graphqlRouted(Queries.Account.AccountInvitesQuery);
 export const withInviteCreate = graphqlMutation(Queries.Account.AccountCreateInviteMutation, 'createInvite', { refetchQueries: [Queries.Account.AccountInvitesQuery] });
 export const withInviteDestroy = graphqlMutation(Queries.Account.AccountDestroyInviteMutation, 'destroyInvite', { refetchQueries: [Queries.Account.AccountInvitesQuery] });
 export const withInviteInfo = graphqlCompose2(
-    graphqlRouted(Queries.Account.AccountInviteInfoQuery, ['inviteKey']),
+    graphqlRouted(Queries.Account.AccountInviteInfoQuery, { params: ['inviteKey'] }),
     graphqlMutation(Queries.Account.AccountInviteJoinMutation, 'doJoin', { params: ['inviteKey'] }));
 
 //
@@ -224,11 +230,14 @@ export const withProfileCreate = graphqlCompose2(
 //
 
 export const withMyOrganization = graphqlRouted(Queries.Organization.MyOrganizationQuery);
-export const withOrganization = graphqlRouted(Queries.Organization.OrganizationQuery, ['organizationId']);
+export const withOrganization = graphqlCompose2(
+    graphqlRouted(Queries.Organization.OrganizationQuery, { params: ['organizationId'] }),
+    graphqlMutation(Queries.Organization.FollowOrganizationMutation, 'followOrganization', { params: ['organizationId'] })
+);
 
 // Deprecated    
 export const withCurrentOrganizationProfile = graphqlRouted(Queries.Organization.CurrentOrganizationProfileQuery);
-export const withOrganizationProfile = graphqlRouted(Queries.Organization.OrganizationProfileQuery, ['organizationId']);
+export const withOrganizationProfile = graphqlRouted(Queries.Organization.OrganizationProfileQuery, { params: ['organizationId'] });
 export const withEditCurrentOrganizationProfile = graphqlCompose2(
     graphqlMutation(Queries.Organization.EditOrganizationProfilMutation, 'editOrganizationProfile', { refetchQueries: [Queries.Organization.CurrentOrganizationProfileQuery] }),
     withCurrentOrganizationProfile);

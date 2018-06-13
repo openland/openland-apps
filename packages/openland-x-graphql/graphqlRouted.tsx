@@ -8,26 +8,39 @@ import { GraphqlTypedQuery } from './typed';
 
 export function graphqlRouted<TResult, TVars>(
   query: GraphqlTypedQuery<TResult, TVars>,
-  params: ({ key: string, default?: string } | string)[] = [],
-  notifyOnNetworkStatusChange?: boolean,
-  fetchPolicy?: 'cache-first' | 'cache-and-network' | 'network-only' | 'cache-only' | 'no-cache' | 'standby'
+  options?: {
+    params?: ({ key: string, default?: string } | string)[],
+    notifyOnNetworkStatusChange?: boolean,
+    fetchPolicy?: 'cache-first' | 'cache-and-network' | 'network-only' | 'cache-only' | 'no-cache' | 'standby',
+    throwOnError?: boolean
+  }
 ) {
-  return function (component: React.ComponentType<GraphQLRoutedComponentProps<TResult>>): React.ComponentType<{ variables?: TVars }> {
+  return function (Component: React.ComponentType<GraphQLRoutedComponentProps<TResult>>): React.ComponentType<{ variables?: TVars }> {
     let qlWrapper = graphql<TResult, XWithRouter & { variables?: TVars }, GraphQLRoutedComponentProps<TResult>>(query.document, {
       options: (props: XWithRouter & { variables?: any }) => {
         return {
           variables: {
-            ...prepareParams(params, props.router.routeQuery),
+            ...prepareParams(options && options.params ? options.params : [], props.router.routeQuery),
             ...props.variables
           },
-          notifyOnNetworkStatusChange,
-          fetchPolicy
+          notifyOnNetworkStatusChange: options ? options.notifyOnNetworkStatusChange : undefined,
+          fetchPolicy: options ? options.fetchPolicy : undefined
         };
       }
     });
 
-    let res = withRouter(qlWrapper(component));
-    res.displayName = `withQuery(${getComponentDisplayName(component)})`;
+    let Comp: React.ComponentType<GraphQLRoutedComponentProps<TResult>> = Component;
+    if (options && options.throwOnError) {
+      Comp = function (props: GraphQLRoutedComponentProps<TResult>) {
+        if (props.data.error) {
+          throw props.data.error;
+        }
+        return <Component {...props} />;
+      };
+    }
+    let res = withRouter(qlWrapper(Comp));
+    res.displayName = `withQuery(${getComponentDisplayName(Component)})`;
     return res;
+
   };
 }

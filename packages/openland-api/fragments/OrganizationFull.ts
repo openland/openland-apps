@@ -22,6 +22,8 @@ export const OrganizationFull = gql`
             link
         }
 
+        followed: alphaFollowed
+
         potentialSites: alphaPotentialSites {
             from
             to

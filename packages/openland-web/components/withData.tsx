@@ -166,17 +166,17 @@ export const withData = (ComposedComponent: React.ComponentType) => {
 
         render() {
             return (
-                <RootErrorBoundary>
-                    <XStorageProvider storage={this.props.storage}>
-                        <ApolloProvider client={this.apollo}>
-                            <HostNameContext.Provider value={{ hostName: this.props.host, protocol: this.props.protocol }}>
-                                <XRouterProvider routes={Routes} hostName={this.props.host} protocol={this.props.protocol}>
+                <XStorageProvider storage={this.props.storage}>
+                    <ApolloProvider client={this.apollo}>
+                        <HostNameContext.Provider value={{ hostName: this.props.host, protocol: this.props.protocol }}>
+                            <XRouterProvider routes={Routes} hostName={this.props.host} protocol={this.props.protocol}>
+                                <RootErrorBoundary>
                                     <ComposedComponent {...this.props.composedInitialProps} />
-                                </XRouterProvider>
-                            </HostNameContext.Provider>
-                        </ApolloProvider>
-                    </XStorageProvider>
-                </RootErrorBoundary>
+                                </RootErrorBoundary>
+                            </XRouterProvider>
+                        </HostNameContext.Provider>
+                    </ApolloProvider>
+                </XStorageProvider>
             );
         }
     };
