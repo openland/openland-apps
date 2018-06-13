@@ -2,7 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
-import { withOrganizationProfile } from '../../../api';
+import { withOrganizationProfile, withFollowOrganization } from '../../../api';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCard } from 'openland-x/XCard';
@@ -40,7 +40,6 @@ const Header = Glamorous.div({
 const HeaderPicture = Glamorous.div<{ img?: string }>((props) => ({
     height: 238,
     backgroundColor: '#3b345e',
-    backgroundImage: 'radial-gradient(circle at 47% 85%, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0))'
 }));
 
 const HeaderContent = Glamorous.div({
@@ -305,6 +304,21 @@ const OpportunitiesValue = Glamorous.div({
     padding: '8px 9px'
 });
 
+const Follow = withFollowOrganization((props) => {
+    return (
+        <XButton
+            style="primary"
+            size="medium"
+            text={(props as any).following ? 'Following' : 'Follow'}
+            action={
+                async () => {
+                    await props.followOrganization({ variables: { id: (props as any).id, follow: !(props as any).following } });
+                }
+            }
+        />
+    );
+}) as React.ComponentClass<{ id: string, following: boolean }>;
+
 const Profile = withOrganizationProfile(withRouter((props) => {
     console.warn(props);
     return (
@@ -326,8 +340,8 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                 <Switcher>Contacts</Switcher> */}
                             </SwitcherWrapper>
                             <XHorizontal>
-                                <XButton style="primary" size="medium" text="Follow" />
-                                <XButton style="primary" size="medium" text="Apply to connect" />
+                                {!props.data.alphaOrganizationProfile.isCurrent && <Follow id={props.data.alphaOrganizationProfile.id} following={props.data.alphaOrganizationProfile.followed} />}
+                                {/* <XButton style="primary" size="medium" text="Apply to connect" /> */}
                             </XHorizontal>
                         </HeaderContent>
                     </Header>

@@ -1071,6 +1071,19 @@ export interface EditOrganizationProfileMutation {
   alphaEditOrganizationProfile: string,
 };
 
+export interface FollowOrganizationMutationVariables {
+  id: string,
+  follow: boolean,
+};
+
+export interface FollowOrganizationMutation {
+  alphaAlterOrganizationFollow:  {
+    __typename: "OrganizationProfile",
+    id: string,
+    followed: boolean,
+  },
+};
+
 export interface BlocksConnectionQueryVariables {
   cursor?: string | null,
   page?: number | null,
