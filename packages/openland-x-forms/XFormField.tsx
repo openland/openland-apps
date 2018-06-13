@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
+import { XStoreContext } from 'openland-x-store/XStoreContext';
 
 const XFormFieldDiv = Glamorous.div({
     display: 'flex',
@@ -30,7 +31,38 @@ const XFormFieldDescription = Glamorous.div<{ invalid?: boolean }>((props) => ({
     fontSize: '13px',
     lineHeight: 1.6
 }));
-export function XFormField(props: { title: string, children: any, description?: string, invalid?: boolean }) {
+export function XFormField(props: {
+    field?: string,
+    title: string,
+    description?: string,
+    invalid?: boolean,
+    children: any,
+}) {
+    if (props.field) {
+        return (
+            <XStoreContext.Consumer>
+                {(store) => {
+                    if (!store) {
+                        throw Error('No store available');
+                    }
+                    let errors = store.readValue('errors.' + props.field);
+                    let invalid = errors && errors.length !== 0;
+                    return (
+                        <XFormFieldDiv>
+                            <XFormFieldTitle invalid={invalid}>{props.title}</XFormFieldTitle>
+                            <XFormFieldChildren>
+                                <XVertical>
+                                    {props.children}
+                                </XVertical>
+                                {!invalid && props.description && <XFormFieldDescription invalid={false}>{props.description}</XFormFieldDescription>}
+                                {invalid && <XFormFieldDescription invalid={true}>{errors.join(', ')}</XFormFieldDescription>}
+                            </XFormFieldChildren>
+                        </XFormFieldDiv>
+                    );
+                }}
+            </XStoreContext.Consumer>
+        );
+    }
     return (
         <XFormFieldDiv>
             <XFormFieldTitle invalid={props.invalid}>{props.title}</XFormFieldTitle>

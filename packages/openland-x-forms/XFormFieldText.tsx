@@ -14,7 +14,7 @@ export function XFormFieldText(props: {
     size?: 'large' | 'medium' | 'default' | 'small'
 }) {
     return (
-        <XFormField title={props.title} description={props.description}>
+        <XFormField field={props.field} title={props.title} description={props.description}>
             <FormInput
                 valueStoreKey={'fields.' + props.field}
                 invalidStoreKey={'errors.' + props.field}
