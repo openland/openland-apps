@@ -10,8 +10,9 @@ import { withAllAccounts } from '../../api';
 import { XTable } from 'openland-x/XTable';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
+import { withQueryLoader } from '../../components/withQueryLoader';
 
-export default withAppBase(withAllAccounts((props) => {
+export default withAppBase(withAllAccounts(withQueryLoader((props) => {
     return (
         <AuthRouter>
             <XDocumentHead title={InitTexts.pick_organization.pageTitle} titleSocial={InitTexts.socialPageTitle} />
@@ -20,10 +21,10 @@ export default withAppBase(withAllAccounts((props) => {
                     <MessagePageContent title={InitTexts.pick_organization.title}>
                         <XTable>
                             <XTable.Body>
-                                {props.data.orgs.map((v) => (
+                                {props.data.myOrganizations.map((v) => (
                                     <XTable.Row onClick={() => switchOrganization(v.id, props.router.query.redirect)}>
                                         <XTable.Cell>
-                                            {v.title}
+                                            {v.name}
                                         </XTable.Cell>
                                     </XTable.Row>
                                 ))}
@@ -34,4 +35,4 @@ export default withAppBase(withAllAccounts((props) => {
             </XTrack>
         </AuthRouter>
     );
-}));
+})));

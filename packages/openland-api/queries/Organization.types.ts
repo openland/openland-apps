@@ -4,6 +4,7 @@ import * as OrganizationProfile from './Organization';
 
 export const OrganizationQuery = typedQuery<Types.OrganizationQuery, Types.OrganizationQueryVariables>(OrganizationProfile.OrganizationQuery);
 export const MyOrganizationQuery = typedQuery<Types.MyOrganizationQuery, {}>(OrganizationProfile.MyOrganizationQuery);
+export const MyOrganizationsQuery = typedQuery<Types.MyOrganizationsQuery, {}>(OrganizationProfile.MyOrganizationsQuery);
 export const FollowOrganizationMutation = typedMutation<Types.FollowOrganizationMutation, Types.FollowOrganizationMutationVariables>(OrganizationProfile.FollowOrganizationMutation);
 
 export const CurrentOrganizationProfileQuery = typedQuery<Types.CurrentOrganizationProfileQuery, {}>(OrganizationProfile.CurrentOrganizationProfileQuery);

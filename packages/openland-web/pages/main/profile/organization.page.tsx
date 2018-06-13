@@ -350,163 +350,159 @@ export default withApp('Organization profile edit', 'viewer', withOrganization(w
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false} >
                     <Root>
-                        {props.data.organization && (
-                            <>
-                                <Header>
-                                    <HeaderPicture />
-                                    <HeaderContent>
-                                        <OrganizationData>
-                                            <Avatar cloudImageUuid={props.data.organization.photo!!} size="x-large" style="square" />
-                                            <OrganizationName>{props.data.organization.name}</OrganizationName>
-                                            {/* <OrganizationPlace>San Francisco, CA</OrganizationPlace> */}
-                                        </OrganizationData>
-                                        <SwitcherWrapper flatStyle={true}>
-                                            <Switcher path="/marketplace/organization/MXxhY2NvdW50">Development opportunities</Switcher>
-                                            {/* <Switcher>Docs</Switcher>
+                        <Header>
+                            <HeaderPicture />
+                            <HeaderContent>
+                                <OrganizationData>
+                                    <Avatar cloudImageUuid={props.data.organization.photo!!} size="x-large" style="square" />
+                                    <OrganizationName>{props.data.organization.name}</OrganizationName>
+                                    {/* <OrganizationPlace>San Francisco, CA</OrganizationPlace> */}
+                                </OrganizationData>
+                                <SwitcherWrapper flatStyle={true}>
+                                    <Switcher path="/marketplace/organization/MXxhY2NvdW50">Development opportunities</Switcher>
+                                    {/* <Switcher>Docs</Switcher>
                                 <Switcher>News</Switcher>
                                 <Switcher>Contacts</Switcher> */}
-                                        </SwitcherWrapper>
+                                </SwitcherWrapper>
+                                <XHorizontal>
+                                    {!props.data.organization.isMine && (
+                                        <XButton
+                                            style="primary"
+                                            size="medium"
+                                            text={props.data.organization!!.followed ? 'Following' : 'Follow'}
+                                            action={async () => {
+                                                console.warn(props.data.organization!!.followed);
+                                                await props.followOrganization({ variables: { follow: !props.data.organization!!.followed } });
+                                            }}
+                                        />
+                                    )}
+                                </XHorizontal>
+                            </HeaderContent>
+                        </Header>
+                        <MainContent>
+                            <XHorizontal>
+                                <XVertical flexGrow={1}>
+                                    <XCardStyled padding={0}>
                                         <XHorizontal>
-                                            {!props.data.organization.isMine && (
-                                                <XButton
-                                                    style="primary"
-                                                    size="medium"
-                                                    text={props.data.organization!!.followed ? 'Following' : 'Follow'}
-                                                    action={async () => {
-                                                        console.warn(props.data.organization!!.followed);
-                                                        await props.followOrganization({ variables: { follow: !props.data.organization!!.followed } });
-                                                    }}
-                                                />
-                                            )}
+                                            <XVerticalStyled flexGrow={1} borderRight={true} padding={24}>
+                                                <Title>Development models</Title>
+                                                {props.data.organization.developmentModels && (
+                                                    props.data.organization.developmentModels!!.map((s, k) => (
+                                                        <TagItem key={k + '_' + s}>
+                                                            <TagImg img={s!} className={s!!} />
+                                                            <Text bold={true} upperCase={true}>
+                                                                {DevelopmentModelsMap.map(i => (
+                                                                    i.value === s ? i.label : undefined
+                                                                ))}
+                                                            </Text>
+                                                        </TagItem>
+                                                    )))
+                                                }
+                                            </XVerticalStyled>
+                                            <XVerticalStyled flexGrow={1} padding={24}>
+                                                <Title>Availability</Title>
+                                                {props.data.organization.availability && (
+                                                    props.data.organization.availability!!.map((s, k) => (
+                                                        <TagItem key={k + '_' + s}>
+                                                            <TagImg img={s!} className={s!!} />
+                                                            <Text bold={true} upperCase={true}>
+                                                                {AvailabilityMap.map(i => (
+                                                                    i.value === s ? i.label : undefined
+                                                                ))}
+                                                            </Text>
+                                                        </TagItem>
+                                                    )))
+                                                }
+                                            </XVerticalStyled>
                                         </XHorizontal>
-                                    </HeaderContent>
-                                </Header>
-                                <MainContent>
-                                    <XHorizontal>
-                                        <XVertical flexGrow={1}>
-                                            <XCardStyled padding={0}>
-                                                <XHorizontal>
-                                                    <XVerticalStyled flexGrow={1} borderRight={true} padding={24}>
-                                                        <Title>Development models</Title>
-                                                        {props.data.organization.developmentModels && (
-                                                            props.data.organization.developmentModels!!.map((s, k) => (
-                                                                <TagItem key={k + '_' + s}>
-                                                                    <TagImg img={s!} className={s!!} />
-                                                                    <Text bold={true} upperCase={true}>
-                                                                        {DevelopmentModelsMap.map(i => (
-                                                                            i.value === s ? i.label : undefined
-                                                                        ))}
-                                                                    </Text>
-                                                                </TagItem>
-                                                            )))
-                                                        }
-                                                    </XVerticalStyled>
-                                                    <XVerticalStyled flexGrow={1} padding={24}>
-                                                        <Title>Availability</Title>
-                                                        {props.data.organization.availability && (
-                                                            props.data.organization.availability!!.map((s, k) => (
-                                                                <TagItem key={k + '_' + s}>
-                                                                    <TagImg img={s!} className={s!!} />
-                                                                    <Text bold={true} upperCase={true}>
-                                                                        {AvailabilityMap.map(i => (
-                                                                            i.value === s ? i.label : undefined
-                                                                        ))}
-                                                                    </Text>
-                                                                </TagItem>
-                                                            )))
-                                                        }
-                                                    </XVerticalStyled>
-                                                </XHorizontal>
-                                            </XCardStyled>
-                                            <XCardStyled padding={0}>
-                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                                    <Title marginBottom={24}>Tags</Title>
-                                                </XVerticalStyled>
+                                    </XCardStyled>
+                                    <XCardStyled padding={0}>
+                                        <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
+                                            <Title marginBottom={24}>Tags</Title>
+                                        </XVerticalStyled>
 
-                                                <div>
-                                                    {props.data.organization.landUse && (
-                                                        <OpportunitiesWrapper>
-                                                            <OpportunitiesTextWrapper>
-                                                                <Text bold={true}>Land use</Text>
-                                                            </OpportunitiesTextWrapper>
-                                                            <OpportunitiesValueWrapper>
-                                                                <XHorizontal>
-                                                                    {props.data.organization.landUse!!.map((s, k) => (
-                                                                        <OpportunitiesValue key={k + '_' + s}>
-                                                                            {LandUseMap.map(i => (
-                                                                                i.value === s ? i.label : undefined
-                                                                            ))}
-                                                                        </OpportunitiesValue>
+                                        <div>
+                                            {props.data.organization.landUse && (
+                                                <OpportunitiesWrapper>
+                                                    <OpportunitiesTextWrapper>
+                                                        <Text bold={true}>Land use</Text>
+                                                    </OpportunitiesTextWrapper>
+                                                    <OpportunitiesValueWrapper>
+                                                        <XHorizontal>
+                                                            {props.data.organization.landUse!!.map((s, k) => (
+                                                                <OpportunitiesValue key={k + '_' + s}>
+                                                                    {LandUseMap.map(i => (
+                                                                        i.value === s ? i.label : undefined
                                                                     ))}
-                                                                </XHorizontal>
-                                                            </OpportunitiesValueWrapper>
-                                                        </OpportunitiesWrapper>
-                                                    )}
-
-                                                    {props.data.organization.goodFor && (
-                                                        <OpportunitiesWrapper>
-                                                            <OpportunitiesTextWrapper>
-                                                                <Text bold={true}>Good fit for</Text>
-                                                            </OpportunitiesTextWrapper>
-                                                            <OpportunitiesValueWrapper>
-                                                                <XHorizontal>
-                                                                    {props.data.organization.goodFor!!.map((s, k) => (
-                                                                        <OpportunitiesValue key={k + '_' + s}>
-                                                                            {GoodForMap.map(i => (
-                                                                                i.value === s ? i.label : undefined
-                                                                            ))}
-                                                                        </OpportunitiesValue>
-                                                                    ))}
-                                                                </XHorizontal>
-                                                            </OpportunitiesValueWrapper>
-                                                        </OpportunitiesWrapper>
-                                                    )}
-
-                                                    {props.data.organization.specialAttributes && (
-                                                        <OpportunitiesWrapper>
-                                                            <OpportunitiesTextWrapper>
-                                                                <Text bold={true}>Special attributes </Text>
-                                                            </OpportunitiesTextWrapper>
-                                                            <OpportunitiesValueWrapper>
-                                                                <XHorizontal>
-                                                                    {props.data.organization!!.specialAttributes!!.map((s, k) => (
-                                                                        <OpportunitiesValue key={k + '_' + s}>
-                                                                            {SpecialAttributesMap.map(i => (
-                                                                                i.value === s ? i.label : undefined
-                                                                            ))}
-                                                                        </OpportunitiesValue>
-                                                                    ))}
-                                                                </XHorizontal>
-                                                            </OpportunitiesValueWrapper>
-                                                        </OpportunitiesWrapper>
-                                                    )}
-                                                </div>
-
-                                            </XCardStyled>
-                                        </XVertical>
-                                        <XVertical width={270}>
-                                            {props.data.organization.about && (
-                                                <XCardStyled padding={18}>
-                                                    <Title small={true} marginBottom={10}>
-                                                        About
-                                        </Title>
-                                                    <AboutContent text={props.data.organization.about} />
-                                                </XCardStyled>
+                                                                </OpportunitiesValue>
+                                                            ))}
+                                                        </XHorizontal>
+                                                    </OpportunitiesValueWrapper>
+                                                </OpportunitiesWrapper>
                                             )}
-                                            <XCardStyled padding={0} paddingTop={18} paddingBottom={20}>
-                                                <Title small={true} marginBottom={10} marginLeft={18}>Contacts</Title>
-                                                <ContactPersons contacts={props.data.organization.contacts!!.filter(c => c !== null) as any} />
-                                                <SocialLinksWrapper>
-                                                    {props.data.organization.website && <SocialLink href={props.data.organization.website}>Website</SocialLink>}
-                                                    {props.data.organization.facebook && <SocialLinkImg className="fb" href={props.data.organization.facebook} />}
-                                                    {props.data.organization.twitter && <SocialLinkImg className="tw" href={props.data.organization.twitter} />}
-                                                </SocialLinksWrapper>
-                                            </XCardStyled>
-                                        </XVertical>
-                                    </XHorizontal>
-                                </MainContent>
-                            </>
-                        )}
+
+                                            {props.data.organization.goodFor && (
+                                                <OpportunitiesWrapper>
+                                                    <OpportunitiesTextWrapper>
+                                                        <Text bold={true}>Good fit for</Text>
+                                                    </OpportunitiesTextWrapper>
+                                                    <OpportunitiesValueWrapper>
+                                                        <XHorizontal>
+                                                            {props.data.organization.goodFor!!.map((s, k) => (
+                                                                <OpportunitiesValue key={k + '_' + s}>
+                                                                    {GoodForMap.map(i => (
+                                                                        i.value === s ? i.label : undefined
+                                                                    ))}
+                                                                </OpportunitiesValue>
+                                                            ))}
+                                                        </XHorizontal>
+                                                    </OpportunitiesValueWrapper>
+                                                </OpportunitiesWrapper>
+                                            )}
+
+                                            {props.data.organization.specialAttributes && (
+                                                <OpportunitiesWrapper>
+                                                    <OpportunitiesTextWrapper>
+                                                        <Text bold={true}>Special attributes </Text>
+                                                    </OpportunitiesTextWrapper>
+                                                    <OpportunitiesValueWrapper>
+                                                        <XHorizontal>
+                                                            {props.data.organization!!.specialAttributes!!.map((s, k) => (
+                                                                <OpportunitiesValue key={k + '_' + s}>
+                                                                    {SpecialAttributesMap.map(i => (
+                                                                        i.value === s ? i.label : undefined
+                                                                    ))}
+                                                                </OpportunitiesValue>
+                                                            ))}
+                                                        </XHorizontal>
+                                                    </OpportunitiesValueWrapper>
+                                                </OpportunitiesWrapper>
+                                            )}
+                                        </div>
+
+                                    </XCardStyled>
+                                </XVertical>
+                                <XVertical width={270}>
+                                    {props.data.organization.about && (
+                                        <XCardStyled padding={18}>
+                                            <Title small={true} marginBottom={10}>
+                                                About
+                                        </Title>
+                                            <AboutContent text={props.data.organization.about} />
+                                        </XCardStyled>
+                                    )}
+                                    <XCardStyled padding={0} paddingTop={18} paddingBottom={20}>
+                                        <Title small={true} marginBottom={10} marginLeft={18}>Contacts</Title>
+                                        <ContactPersons contacts={props.data.organization.contacts!!.filter(c => c !== null) as any} />
+                                        <SocialLinksWrapper>
+                                            {props.data.organization.website && <SocialLink href={props.data.organization.website}>Website</SocialLink>}
+                                            {props.data.organization.facebook && <SocialLinkImg className="fb" href={props.data.organization.facebook} />}
+                                            {props.data.organization.twitter && <SocialLinkImg className="tw" href={props.data.organization.twitter} />}
+                                        </SocialLinksWrapper>
+                                    </XCardStyled>
+                                </XVertical>
+                            </XHorizontal>
+                        </MainContent>
                     </Root>
                 </Scaffold.Content>
             </Scaffold>

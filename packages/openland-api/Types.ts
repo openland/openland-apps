@@ -950,6 +950,15 @@ export interface MyOrganizationQuery {
   } | null,
 };
 
+export interface MyOrganizationsQuery {
+  myOrganizations:  Array< {
+    __typename: "Organization",
+    id: string,
+    name: string,
+    photo: string | null,
+  } >,
+};
+
 export interface OrganizationQueryVariables {
   organizationId: string,
 };
@@ -990,7 +999,7 @@ export interface OrganizationQuery {
     landUse: Array< string > | null,
     goodFor: Array< string > | null,
     specialAttributes: Array< string > | null,
-  } | null,
+  },
 };
 
 export interface FollowOrganizationMutationVariables {

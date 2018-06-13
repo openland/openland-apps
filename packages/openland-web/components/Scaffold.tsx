@@ -473,8 +473,8 @@ const OrganizationPicker = withAllAccounts((props) => {
     return (
         <XTable>
             <XTable.Body>
-                {props.data.orgs.map((v) => (
-                    <XTable.Row onClick={() => switchOrganization(v.id)}>{v.title}</XTable.Row>
+                {props.data.myOrganizations.map((v) => (
+                    <XTable.Row onClick={() => switchOrganization(v.id)}>{v.name}</XTable.Row>
                 ))}
             </XTable.Body>
         </XTable>

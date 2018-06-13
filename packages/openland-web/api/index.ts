@@ -198,7 +198,7 @@ export const withFolderExportTask = graphqlTask(Queries.Tasks.FolderExportTask);
 
 export const withCreateOrganization = graphqlMutation(Queries.Account.CreateOrganizationMutation, 'createOrganization', { refetchQueries: [Queries.Account.AccountQuery] });
 // export const withCreateProfile = graphqlCompose2(graphqlMutation(Queries.Account.SaveProfileMutation, 'createProfile'), graphqlRouted(Queries.Account.ProfilePrefillQuery));
-export const withAllAccounts = graphqlRouted(Queries.Debug.DebugOwnAccountsQuery);
+export const withAllAccounts = graphqlRouted(Queries.Organization.MyOrganizationsQuery);
 
 //
 // Invites

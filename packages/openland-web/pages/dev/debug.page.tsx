@@ -8,8 +8,9 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XTable } from 'openland-x/XTable';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { withAllAccounts } from '../../api';
+import { withQueryLoader } from '../../components/withQueryLoader';
 
-export default withApp('Super Debug', ['super-admin', 'software-developer'], withAllAccounts(withUserInfo((props) => {
+export default withApp('Super Debug', ['super-admin', 'software-developer'], withAllAccounts(withQueryLoader(withUserInfo((props) => {
     return (
         <DevToolsScaffold title="Debugging">
             <XHeader text="Your roles" />
@@ -43,13 +44,13 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
                     <XTable.Cell>Organization Name</XTable.Cell>
                 </XTable.Header>
                 <XTable.Body>
-                    {props.data.orgs && props.data.orgs.map((v) => (
+                    {props.data.myOrganizations.map((v) => (
                         <XTable.Row>
-                            <XTable.Cell>{v.title}</XTable.Cell>
+                            <XTable.Cell>{v.name}</XTable.Cell>
                         </XTable.Row>
                     ))}
                 </XTable.Body>
             </XTable>
         </DevToolsScaffold>
     );
-})));
+}))));

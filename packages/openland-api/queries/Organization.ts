@@ -1,13 +1,24 @@
 import gql from 'graphql-tag';
 import { OrganizationProfile } from '../fragments/OrganizationProfile';
 import { OrganizationFull } from '../fragments/OrganizationFull';
+import { OrganizationShort } from '../fragments/OrganizationShort';
 
 export const MyOrganizationQuery = gql`
     query MyOrganization {
         myOrganization {
             ...OrganizationFull
         }
-    }${OrganizationFull}
+    }
+    ${OrganizationFull}
+`;
+
+export const MyOrganizationsQuery = gql`
+    query MyOrganizations {
+        myOrganizations {
+            ...OrganizationShort
+        }
+    }
+    ${OrganizationShort}
 `;
 
 export const OrganizationQuery = gql`
@@ -15,7 +26,8 @@ export const OrganizationQuery = gql`
         organization(id: $organizationId) {
             ...OrganizationFull
         }
-    }${OrganizationFull}
+    }
+    ${OrganizationFull}
 `;
 
 export const FollowOrganizationMutation = gql`
