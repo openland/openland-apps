@@ -226,11 +226,11 @@ export interface AccountQuery {
     picture: string | null,
     email: string | null,
   } | null,
-  // Deprecated
-  myAccount:  {
-    __typename: "MyAccount",
+  organization:  {
+    __typename: "Organization",
     id: string,
-    title: string,
+    name: string,
+    photo: string | null,
   } | null,
   sessionState:  {
     __typename: "SessionState",
@@ -246,17 +246,6 @@ export interface AccountQuery {
     __typename: "Permissions",
     roles: Array< string >,
   },
-};
-
-export interface SaveProfileMutationVariables {
-  firstName: string,
-  lastName?: string | null,
-  photo?: ImageRefInput | null,
-  phone?: string | null,
-};
-
-export interface SaveProfileMutation {
-  alphaSaveProfile: string,
 };
 
 export interface CreateOrganizationMutationVariables {
@@ -324,7 +313,7 @@ export interface ProfilePrefillQuery {
     firstName: string | null,
     lastName: string | null,
     picture: string | null,
-  },
+  } | null,
 };
 
 export interface StateQuery {
@@ -3112,6 +3101,13 @@ export interface OrganizationProfileFragment {
   landUse: Array< string | null > | null,
   goodFor: Array< string | null > | null,
   specialAttributes: Array< string | null > | null,
+};
+
+export interface OrganizationShortFragment {
+  __typename: "Organization",
+  id: string,
+  name: string,
+  photo: string | null,
 };
 
 export interface ParcelIDFragment {

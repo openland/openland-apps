@@ -1,24 +1,18 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
-import { AccountShort } from '../fragments/AccountShort';
 import { SessionStateFull } from '../fragments/SessionStateFull';
+import { OrganizationShort } from '../fragments/OrganizationShort';
 
 export const AccountQuery = gql`
     query Account {
-        me { ...UserShort }
-        myAccount { ...AccountShort }
-        sessionState { ...SessionStateFull }
-        permissions { roles }
+        me: me { ...UserShort }
+        organization: myOrganization { ...OrganizationShort }
+        sessionState: sessionState { ...SessionStateFull }
+        permissions: myPermissions { roles }
     }
     ${UserShort}
     ${SessionStateFull}
-    ${AccountShort}
-`;
-
-export const SaveProfileMutation = gql`
-    mutation SaveProfile($firstName: String!, $lastName: String, $photo: ImageRefInput, $phone: String) {
-        alphaSaveProfile(firstName: $firstName, lastName: $lastName, photo: $photo, phone: $phone)
-    }
+    ${OrganizationShort}
 `;
 
 export const CreateOrganizationMutation = gql`
@@ -72,7 +66,7 @@ export const AccountDestroyInviteMutation = gql`
 
 export const ProfilePrefillQuery = gql`
     query ProfilePrefill {
-        prefill: alphaProfilePrefill {
+        prefill: myProfilePrefill {
             firstName
             lastName
             picture

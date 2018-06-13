@@ -11,10 +11,10 @@ export function withAppBase(WrappedComponent: React.ComponentType<{}>) {
                 <XDocumentHead title={['App']} />
                 <UserInfoProvider
                     router={props.router}
-                    user={props.data.me}
-                    roles={props.data.permissions.roles}
                     sessionState={props.data.sessionState}
-                    account={props.data.myAccount}
+                    user={props.data.me}
+                    organization={props.data.organization}
+                    roles={props.data.permissions.roles}
                 >
                     <WrappedComponent />
                 </UserInfoProvider>
