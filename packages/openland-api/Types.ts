@@ -51,7 +51,7 @@ export interface GeoBox {
   south: number,
 };
 
-export interface OrganizationProfileInput {
+export interface AlphaOrganizationProfileInput {
   potentialSites?: Array< RangeInput | null > | null,
   siteSizes?: Array< RangeInput | null > | null,
   about?: string | null,
@@ -59,7 +59,7 @@ export interface OrganizationProfileInput {
   facebook?: string | null,
   developmentModels?: Array< string | null > | null,
   availability?: Array< string | null > | null,
-  contacts?: Array< ContactPersonInput | null > | null,
+  contacts?: Array< AlphaContactPersonInput | null > | null,
   landUse?: Array< string | null > | null,
   goodFor?: Array< string | null > | null,
   specialAttributes?: Array< string | null > | null,
@@ -70,7 +70,7 @@ export interface RangeInput {
   to?: number | null,
 };
 
-export interface ContactPersonInput {
+export interface AlphaContactPersonInput {
   name: string,
   avatar?: string | null,
   avatarRef?: ImageRefInput | null,
@@ -913,7 +913,7 @@ export interface FolderItemsTileOverlayQuery {
 
 export interface CurrentOrganizationProfileQuery {
   alphaCurrentOrganizationProfile:  {
-    __typename: "OrganizationProfile",
+    __typename: "AlphaOrganizationProfile",
     id: string,
     iAmOwner: boolean,
     name: string,
@@ -958,7 +958,7 @@ export interface CurrentOrganizationProfileQuery {
     developmentModels: Array< string | null > | null,
     availability: Array< string | null > | null,
     contacts:  Array< {
-      __typename: "ContactPerson",
+      __typename: "AlphaContactPerson",
       name: string,
       avatar: string | null,
       avatarRef:  {
@@ -989,7 +989,7 @@ export interface OrganizationProfileQueryVariables {
 
 export interface OrganizationProfileQuery {
   alphaOrganizationProfile:  {
-    __typename: "OrganizationProfile",
+    __typename: "AlphaOrganizationProfile",
     id: string,
     iAmOwner: boolean,
     name: string,
@@ -1034,7 +1034,7 @@ export interface OrganizationProfileQuery {
     developmentModels: Array< string | null > | null,
     availability: Array< string | null > | null,
     contacts:  Array< {
-      __typename: "ContactPerson",
+      __typename: "AlphaContactPerson",
       name: string,
       avatar: string | null,
       avatarRef:  {
@@ -1064,7 +1064,7 @@ export interface EditOrganizationProfileMutationVariables {
   website?: string | null,
   role?: string | null,
   logo?: ImageRefInput | null,
-  data?: OrganizationProfileInput | null,
+  data?: AlphaOrganizationProfileInput | null,
 };
 
 export interface EditOrganizationProfileMutation {
@@ -1078,7 +1078,7 @@ export interface FollowOrganizationMutationVariables {
 
 export interface FollowOrganizationMutation {
   alphaAlterOrganizationFollow:  {
-    __typename: "OrganizationProfile",
+    __typename: "AlphaOrganizationProfile",
     id: string,
     followed: boolean,
   },
@@ -3076,7 +3076,7 @@ export interface GeoShortFragment {
 };
 
 export interface OrganizationProfileFragment {
-  __typename: "OrganizationProfile",
+  __typename: "AlphaOrganizationProfile",
   id: string,
   iAmOwner: boolean,
   name: string,

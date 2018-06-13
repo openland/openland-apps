@@ -1,7 +1,7 @@
 import { UserShort } from '../fragments/UserShort';
 import gql from 'graphql-tag';
 export const OrganizationProfile = gql`
-    fragment OrganizationProfile on OrganizationProfile {
+    fragment OrganizationProfile on AlphaOrganizationProfile {
         id
         iAmOwner
         name

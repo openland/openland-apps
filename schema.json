@@ -2293,7 +2293,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "OrganizationProfile",
+                  "name": "AlphaOrganizationProfile",
                   "ofType": null
                 }
               },
@@ -2321,7 +2321,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "OrganizationProfile",
+                "name": "AlphaOrganizationProfile",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -9024,7 +9024,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "OrganizationProfile",
+          "name": "AlphaOrganizationProfile",
           "description": "",
           "fields": [
             {
@@ -9304,7 +9304,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "ContactPerson",
+                  "name": "AlphaContactPerson",
                   "ofType": null
                 }
               },
@@ -9367,7 +9367,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "ContactPerson",
+          "name": "AlphaContactPerson",
           "description": "",
           "fields": [
             {
@@ -10816,7 +10816,7 @@
                   "description": "",
                   "type": {
                     "kind": "INPUT_OBJECT",
-                    "name": "OrganizationProfileInput",
+                    "name": "AlphaOrganizationProfileInput",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -10872,7 +10872,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "OrganizationProfile",
+                  "name": "AlphaOrganizationProfile",
                   "ofType": null
                 }
               },
@@ -12641,7 +12641,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "OrganizationProfileInput",
+          "name": "AlphaOrganizationProfileInput",
           "description": "",
           "fields": null,
           "inputFields": [
@@ -12739,7 +12739,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "ContactPersonInput",
+                  "name": "AlphaContactPersonInput",
                   "ofType": null
                 }
               },
@@ -12825,7 +12825,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "ContactPersonInput",
+          "name": "AlphaContactPersonInput",
           "description": "",
           "fields": null,
           "inputFields": [

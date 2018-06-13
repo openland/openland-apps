@@ -23,7 +23,7 @@ export const OrganizationProfileQuery = gql`
 `;
 
 export const EditOrganizationProfileMutation = gql`
-mutation EditOrganizationProfile($title: String, $website: String, $role: String, $logo: ImageRefInput, $data: OrganizationProfileInput) {
+mutation EditOrganizationProfile($title: String, $website: String, $role: String, $logo: ImageRefInput, $data: AlphaOrganizationProfileInput) {
     alphaEditOrganizationProfile(title: $title, website: $website, role: $role, logo: $logo, extras: $data)
 }
 `;
