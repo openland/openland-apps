@@ -7,14 +7,12 @@ import { trackProfile } from 'openland-x-analytics';
 
 export class UserInfoProvider extends React.Component<{
     user?: Types.UserShortFragment | null,
-    area?: Types.AreaShortFragment | null,
     account?: Types.AccountShortFragment | null,
     profile: Types.MyProfileFullFragment,
     roles: string[]
 } & XWithRouter> implements React.ChildContextProvider<{}> {
     static childContextTypes = {
         user: PropTypes.object,
-        area: PropTypes.object,
         account: PropTypes.object,
         isLoggedIn: PropTypes.bool.isRequired,
         isActivated: PropTypes.bool.isRequired,
@@ -42,7 +40,6 @@ export class UserInfoProvider extends React.Component<{
         }
         return {
             user: hasUser ? this.props.user : null,
-            area: this.props.area !== null && this.props.area !== undefined ? this.props.area : null,
             account: hasAccount ? this.props.account : null,
             isLoggedIn: this.props.profile.isLoggedIn,
             isProfileCreated: this.props.profile.isProfileCreated && hasUser,
@@ -57,7 +54,6 @@ export class UserInfoProvider extends React.Component<{
 
 export interface UserInfoComponentProps {
     user: Types.UserShortFragment | null;
-    area: Types.AreaShortFragment | null;
     account: Types.AccountShortFragment | null;
     isLoggedIn: boolean;
     isAccountExists: boolean;
@@ -85,7 +81,6 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
 
     render() {
         var user = this.context.user as Types.UserShortFragment | null;
-        var area = this.context.area as Types.AreaShortFragment | null;
         var account = this.context.account as Types.AccountShortFragment | null;
         var isLoggedIn = this.context.isLoggedIn as boolean;
         var isActivated = this.context.isActivated as boolean;
@@ -98,7 +93,6 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
         return (
             <Wrapped
                 user={user}
-                area={area}
                 account={account}
                 isLoggedIn={isLoggedIn}
                 isActivated={isActivated}

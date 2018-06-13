@@ -15,43 +15,11 @@ import { graphqlTask } from 'openland-x-graphql/graphqlTask';
 export const withAccountQuery = graphqlRouted(Queries.Account.AccountQuery);
 
 //
-// Organizations
-//
-
-export const withOrganizations = graphqlRouted(Queries.Organizations.OrganizationsQuery);
-export const withOrganization = graphqlRouted(Queries.Organizations.OrganizationQuery, ['orgId']);
-
-export const withOrganizationAddMutation = graphqlMutation(Queries.Organizations.OrganizationCreateMutation, 'add', {
-    refetchQueries: [Queries.Organizations.OrganizationsQuery]
-});
-export const withOrganizationRemoveMutation = graphqlMutation(Queries.Organizations.OrganizationRemoveMutation, 'remove', {
-    params: ['orgId'],
-    refetchQueries: [Queries.Organizations.OrganizationsQuery]
-});
-export const withOrganizationAlterMutation = graphqlMutation(Queries.Organizations.OrganizationAlterMutation, 'alter', {
-    params: ['orgId']
-});
-
-export const withOrganizationAlter = graphqlCompose3(
-    withOrganization,
-    withOrganizationAlterMutation,
-    withOrganizationRemoveMutation);
-
-//
 // Permits
 //
 
 export const withPermits = graphqlRouted(Queries.Permits.PermitsConnectionQuery, ['filter', 'cursor', 'page', 'type', 'sort', 'minUnits', 'issuedYear', 'fromPipeline']);
 export const withPermit = graphqlRouted(Queries.Permits.PermitQuery, ['permitId']);
-
-//
-// Projects
-//
-
-export const withBuildingProjects = graphqlRouted(Queries.Projects.ProjectsConnectionQuery, ['page', 'minUnits', { key: 'year', default: '2018' }, 'filter']);
-export const withBuildingProject = graphqlRouted(Queries.Projects.ProjectQuery, ['projectId']);
-export const withSFBuildingProjects = graphqlRouted(Queries.Projects.ProjectsSFConnectionQuery, ['page', 'minUnits', 'year', 'filter']);
-export const withSFBuildingProject = graphqlRouted(Queries.Projects.ProjectSFQuery, ['projectId']);
 
 //
 // Blocks

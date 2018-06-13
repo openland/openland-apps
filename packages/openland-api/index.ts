@@ -1,8 +1,4 @@
-import * as Area from './queries/Area.types';
-import * as AreaStats from './queries/AreaStats.types';
-import * as Organizations from './queries/Organizations.types';
 import * as Permits from './queries/Permits.types';
-import * as Projects from './queries/Projects.types';
 import * as Account from './queries/Account.types';
 import * as Parcels from './queries/Parcels.types';
 import * as Search from './queries/Search.types';
@@ -20,11 +16,7 @@ import * as OrganizationProfile from './queries/OrganizationProfile.types';
 import * as Settings from './queries/Settings.types';
 
 export let Queries = {
-    Area,
-    AreaStats,
-    Organizations,
     Permits,
-    Projects,
     Account,
     Parcels,
     Search,
