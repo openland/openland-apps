@@ -3,7 +3,7 @@ import { withUserInfo } from './UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 export const AuthRouter = withUserInfo((props) => {
-
+   
     // Compute Redirect Value
     let redirect = props.router.query.redirect;
     let redirectPath: string = '/';

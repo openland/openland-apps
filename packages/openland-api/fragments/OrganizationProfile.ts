@@ -1,3 +1,4 @@
+import { UserShort } from '../fragments/UserShort';
 import gql from 'graphql-tag';
 export const OrganizationProfile = gql`
     fragment OrganizationProfile on OrganizationProfile {
@@ -5,6 +6,11 @@ export const OrganizationProfile = gql`
         iAmOwner
         name
         photo
+        personalOrganizationUser{
+            ...UserShort
+        }
+        followed
+        isCurrent
         photoRef {
             uuid
             crop{
@@ -49,4 +55,5 @@ export const OrganizationProfile = gql`
         goodFor
         specialAttributes
     }
+    ${UserShort}
 `;
