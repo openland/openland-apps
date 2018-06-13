@@ -3,7 +3,7 @@ export function readValue(data: any, name: string): any {
         let parts = name.split('.');
         let first = parts[0];
         let last = parts.slice(1).join('.');
-        if (data[first] === undefined) {
+        if (data[first] === undefined || data[first] === null) {
             return null;
         }
         return readValue(data[first], last);

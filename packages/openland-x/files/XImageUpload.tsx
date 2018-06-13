@@ -21,7 +21,7 @@ export function XImageUpload(props: XImageUploadProps) {
                         </div>
                         {rp.uuid && (
                             <div style={{ marginTop: 8, width: 200, height: 200 }}>
-                                <XCloudImage src={rp.uuid} maxHeight={200} maxWidth={200} resize="fit" />
+                                <XCloudImage srcCloud={rp.uuid} maxHeight={200} maxWidth={200} resize="fit" />
                             </div>
                         )}
                     </div>

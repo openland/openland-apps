@@ -77,11 +77,16 @@ export const AuthRouter = withUserInfo((props) => {
         handled = true;
     }
 
+    // Bypass create organization
+    if (!handled && props.router.path.startsWith('/createOrganization')) {
+        handled = true;
+    }
+
     // Redirect to organization picker
     if (!handled && props.isAccountExists && !props.isAccountPicked) {
         handled = true;
         if ([
-            '/pickOrganization'
+            '/pickOrganization',
         ].indexOf(props.router.path) < 0) {
             console.warn('NoPickedOrganization');
             return <XPageRedirect path={'/pickOrganization' + redirect} />;

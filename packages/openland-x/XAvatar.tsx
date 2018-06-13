@@ -153,7 +153,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             )}
             {props.cloudImageUuid && (
                 <StyledPlaceholder {...avatarProps}>
-                    <XCloudImage resize="fill" src={props.cloudImageUuid} maxWidth={sizeStyles(props.size).width as number} maxHeight={sizeStyles(props.size).height as number} />
+                    <XCloudImage resize="fill" srcCloud={props.cloudImageUuid} maxWidth={sizeStyles(props.size).width as number} maxHeight={sizeStyles(props.size).height as number} />
                 </StyledPlaceholder>
             )}
             {!props.src && !props.cloudImageUuid && (

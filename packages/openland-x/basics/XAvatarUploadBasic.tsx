@@ -10,12 +10,13 @@ export interface XAvatarUploadBasicProps {
     crop?: XImageCrop | null;
     uuid?: string | null;
     onChanged?: (uuid: string | null, crop: XImageCrop | null) => void;
+    size?: 'normal' | 'large';
 }
 
-const DropAreaWrapper = Glamorous.div<{ hasImage: boolean }>((props) => ({
+const DropAreaWrapper = Glamorous.div<{ hasImage: boolean, avatarSize?: 'normal' | 'large' }>((props) => ({
     position: 'relative',
-    width: 240,
-    height: 240,
+    width: props.avatarSize === 'large' ? 242 : 160,
+    height: props.avatarSize === 'large' ? 242 : 160,
 
     backgroundColor: '#ffffff',
     overflow: 'hidden',
@@ -91,11 +92,12 @@ export function XAvatarUploadBasic(props: XAvatarUploadBasicProps) {
                     <DropAreaWrapper
                         hasImage={rp.uuid !== null}
                         onClick={rp.doUpload}
+                        avatarSize={props.size}
                     >
                         {rp.uuid && <AvatarImage
-                            width={239}
-                            height={239}
-                            src={prepareSrc(rp.uuid, rp.crop)}
+                            width={props.size === 'large' ? 241 : 159}
+                            height={props.size === 'large' ? 241 : 159}
+                            srcCloud={prepareSrc(rp.uuid, rp.crop)}
                             resize={'fill'}
                         />}
 

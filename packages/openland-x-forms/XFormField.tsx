@@ -13,11 +13,15 @@ const XFormFieldTitle = Glamorous.div<{ invalid?: boolean }>((props) => ({
     color: props.invalid ? '#e25950' : '#334562',
     fontSize: 15,
     fontWeight: 500,
-    lineHeight: 1.27,
+    lineHeight: '24px',
     letterSpacing: -0.1,
-    marginBottom: 10,
+    marginBottom: 8,
     marginLeft: 0
 }));
+const OptionalLabel = Glamorous.span({
+    opacity: 0.4,
+    fontWeight: 400
+});
 const XFormFieldChildren = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
@@ -36,6 +40,7 @@ export function XFormField(props: {
     title: string,
     description?: string,
     invalid?: boolean,
+    optional?: boolean,
     children: any,
 }) {
     if (props.field) {
@@ -49,7 +54,7 @@ export function XFormField(props: {
                     let invalid = errors && errors.length !== 0;
                     return (
                         <XFormFieldDiv>
-                            <XFormFieldTitle invalid={invalid}>{props.title}</XFormFieldTitle>
+                            <XFormFieldTitle invalid={invalid}>{props.title}{props.optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>
                             <XFormFieldChildren>
                                 <XVertical>
                                     {props.children}
@@ -65,7 +70,7 @@ export function XFormField(props: {
     }
     return (
         <XFormFieldDiv>
-            <XFormFieldTitle invalid={props.invalid}>{props.title}</XFormFieldTitle>
+            <XFormFieldTitle invalid={props.invalid}>{props.title}{props.optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>
             <XFormFieldChildren>
                 <XVertical>
                     {props.children}

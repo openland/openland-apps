@@ -10,13 +10,7 @@ import {
     Logo,
     Title,
     TextWrapper,
-    Label,
-    InputGroup,
     ContentWrapper,
-    FormWrapper,
-    OptionalLabel,
-    PhotoContiner,
-    FieldHeader,
     Footer,
 } from './components/CreateProfileComponents';
 import { XButton } from 'openland-x/XButton';
@@ -30,6 +24,8 @@ import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
+import { XFormField } from 'openland-x-forms/XFormField';
+import { XFormError } from 'openland-x-forms/XFormError';
 
 const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props) => {
 
@@ -46,25 +42,28 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                         switchOrganization(res.data.alphaCreateOrganization);
                         await delayForewer();
                     }}
+                    defaultData={{
+                        title: '',
+                        website: '',
+                        logo: null
+                    }}
                     defaultLayout={false}
                 >
-                    <XVertical>
+                    <XVertical separator="large">
+                        <XFormError width={472} />
                         <XFormLoadingContent>
-                            <XHorizontal separator="none">
-                                <FormWrapper>
-                                    <InputGroup>
-                                        <Label>{InitTexts.create_organization.name}</Label>
-                                        <XInput field="title" size="medium" placeholder={InitTexts.create_organization.namePlaceholder} required={true} />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <FieldHeader><Label>{InitTexts.create_organization.website}</Label><OptionalLabel>{InitTexts.optional}</OptionalLabel></FieldHeader>
+                            <XHorizontal separator="large">
+                                <XVertical width={280}>
+                                    <XFormField field="title" title={InitTexts.create_organization.name}>
+                                        <XInput field="title" size="medium" placeholder={InitTexts.create_organization.namePlaceholder} />
+                                    </XFormField>
+                                    <XFormField field="website" title={InitTexts.create_organization.website} optional={true}>
                                         <XInput field="website" size="medium" placeholder={InitTexts.create_organization.websitePlaceholder} />
-                                    </InputGroup>
-                                </FormWrapper>
-                                <PhotoContiner separator="none">
-                                    <FieldHeader><Label>{InitTexts.create_organization.photo}</Label><OptionalLabel>{InitTexts.optional}</OptionalLabel></FieldHeader>
-                                    <XAvatarUpload field="logo" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} />
-                                </PhotoContiner>
+                                    </XFormField>
+                                </XVertical>
+                                <XFormField title={InitTexts.create_organization.photo}>
+                                    <XAvatarUpload field="logo" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} size="large" />
+                                </XFormField>
                             </XHorizontal>
                         </XFormLoadingContent>
                         <Footer>
