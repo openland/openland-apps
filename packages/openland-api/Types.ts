@@ -1071,6 +1071,19 @@ export interface EditOrganizationProfileMutation {
   alphaEditOrganizationProfile: string,
 };
 
+export interface FollowOrganizationMutationVariables {
+  id: string,
+  follow: boolean,
+};
+
+export interface FollowOrganizationMutation {
+  alphaAlterOrganizationFollow:  {
+    __typename: "OrganizationProfile",
+    id: string,
+    followed: boolean,
+  },
+};
+
 export interface BlocksConnectionQueryVariables {
   cursor?: string | null,
   page?: number | null,
@@ -1999,6 +2012,7 @@ export interface SearchQuery {
 };
 
 export interface ProfileQuery {
+  // Deprecated
   profile:  {
     __typename: "Profile",
     id: string,
@@ -3043,12 +3057,6 @@ export interface UsersQuery {
     title: string,
     subtitle: string | null,
   } >,
-};
-
-export interface AccountShortFragment {
-  __typename: "MyAccount",
-  id: string,
-  title: string,
 };
 
 export interface ChartFullFragment {

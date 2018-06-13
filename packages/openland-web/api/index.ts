@@ -206,6 +206,7 @@ export const withOrganizationProfile = graphqlRouted(Queries.OrganizationProfile
 export const withEditCurrentOrganizationProfile = graphqlCompose2(
     graphqlMutation(Queries.OrganizationProfile.EditOrganizationProfilMutation, 'editOrganizationProfile', { refetchQueries: [Queries.OrganizationProfile.CurrentOrganizationProfileQuery] }),
     withCurrentOrganizationProfile);
+export const withFollowOrganization = graphqlMutation(Queries.OrganizationProfile.FollowOrganizationMutation, 'followOrganization');
 
 export const withProfile = graphqlCompose2(
     graphqlRouted(Queries.Settings.ProfileQuery),
