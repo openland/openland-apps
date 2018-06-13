@@ -67,7 +67,21 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                             </XHorizontal>
                         </XFormLoadingContent>
                         <Footer>
-                            <XButton style="link" text={props.isAccountExists ? InitTexts.create_organization.cancel : InitTexts.create_organization.skip} path="/" />
+                            {props.isAccountExists && <XButton style="link" text={InitTexts.create_organization.cancel} path="/" />}
+                            {!props.isAccountExists && (
+                                <XFormSubmit
+                                    style="link"
+                                    text={InitTexts.create_organization.skip}
+                                    action={async (data) => {
+                                        data.personal = true;
+                                        data.title = props.user ? props.user.name : 'Personal Organization';
+                                        let res = await props.createOrganization({ variables: data });
+                                        switchOrganization(res.data.alphaCreateOrganization);
+                                        await delayForewer();
+                                    }}
+                                />
+                            )}
+
                             <XFormSubmit style="primary" text={InitTexts.create_organization.continue} size="medium" alignSelf="flex-end" />
                         </Footer>
                     </XVertical>

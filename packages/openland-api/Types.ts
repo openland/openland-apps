@@ -253,6 +253,7 @@ export interface CreateOrganizationMutationVariables {
   website?: string | null,
   role?: string | null,
   logo?: ImageRefInput | null,
+  personal?: boolean | null,
 };
 
 export interface CreateOrganizationMutation {
@@ -917,6 +918,17 @@ export interface CurrentOrganizationProfileQuery {
     iAmOwner: boolean,
     name: string,
     photo: string | null,
+    personalOrganizationUser:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+    } | null,
+    followed: boolean,
+    isCurrent: boolean,
     photoRef:  {
       __typename: "ImageRef",
       uuid: string,
@@ -982,6 +994,17 @@ export interface OrganizationProfileQuery {
     iAmOwner: boolean,
     name: string,
     photo: string | null,
+    personalOrganizationUser:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+    } | null,
+    followed: boolean,
+    isCurrent: boolean,
     photoRef:  {
       __typename: "ImageRef",
       uuid: string,
@@ -3050,6 +3073,17 @@ export interface OrganizationProfileFragment {
   iAmOwner: boolean,
   name: string,
   photo: string | null,
+  personalOrganizationUser:  {
+    __typename: string,
+    id: string,
+    name: string,
+    firstName: string,
+    lastName: string | null,
+    picture: string | null,
+    email: string | null,
+  } | null,
+  followed: boolean,
+  isCurrent: boolean,
   photoRef:  {
     __typename: string,
     uuid: string,

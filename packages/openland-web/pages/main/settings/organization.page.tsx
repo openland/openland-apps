@@ -201,6 +201,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                     {props.data.alphaCurrentOrganizationProfile.contacts && props.data.alphaCurrentOrganizationProfile.contacts[props.router.query.deleteContact] && (
                         <XModalForm
                             title="Delete?"
+                            submitProps={{text: 'Delete'}}
                             defaultData={{
                                 contacts: props.data.alphaCurrentOrganizationProfile.contacts,
                             }}
@@ -227,6 +228,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                 phone: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.phone,
                                 email: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.email,
                                 link: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.link,
+                                role: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.role,
                                 avatar: props.data.alphaCurrentOrganizationProfile.contacts!![props.router.query.editContact]!!.avatarRef,
                             }}
                             defaultAction={async (data) => {
@@ -235,6 +237,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                     phone: data.phone,
                                     avatarRef: data.avatar,
                                     email: data.email,
+                                    role: data.role,
                                     link: data.link,
                                 };
                                 await props.editOrganizationProfile({
@@ -254,6 +257,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                     <XInput field="phone" placeholder="Phone" />
                                     <XInput field="email" placeholder="Email" />
                                     <XInput field="link" placeholder="Link" />
+                                    <XInput field="role" placeholder="Role" />
                                     <XAvatarUpload field="avatar" />
                                 </XVertical>
                             </XFormLoadingContent>
@@ -275,6 +279,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                     avatarRef: data.avatar,
                                     email: data.email,
                                     link: data.link,
+                                    role: data.role,
                                 });
                                 await props.editOrganizationProfile({
                                     variables: {
@@ -292,6 +297,7 @@ export default withApp('Organization profile edit', 'viewer', withEditCurrentOrg
                                     <XInput field="phone" placeholder="Phone" />
                                     <XInput field="email" placeholder="Email" />
                                     <XInput field="link" placeholder="Link" />
+                                    <XInput field="role" placeholder="Role" />
                                     <XAvatarUpload field="avatar" />
                                 </XVertical>
                             </XFormLoadingContent>
