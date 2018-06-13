@@ -81,7 +81,7 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
 
     render() {
         var user = this.context.user as Types.UserShortFragment | null;
-        var organization = this.context.account as Types.OrganizationShortFragment | null;
+        var organization = this.context.organization as Types.OrganizationShortFragment | null;
         var isLoggedIn = this.context.isLoggedIn as boolean;
         var isActivated = this.context.isActivated as boolean;
         var isProfileCreated = this.context.isProfileCreated as boolean;
