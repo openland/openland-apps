@@ -52,7 +52,7 @@ const HyperButton = Glamorous(XLink)({
 export default withApp('Home', 'viewer', withUserInfo((props) => {
     return (
         <>
-            <XDocumentHead title={props.account!!.title} />
+            <XDocumentHead title={props.organization!!.name} />
             <Scaffold>
                 <Scaffold.Content padding={false}>
                     <HeaderImage />

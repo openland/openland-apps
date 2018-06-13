@@ -7,13 +7,13 @@ import { trackProfile } from 'openland-x-analytics';
 
 export class UserInfoProvider extends React.Component<{
     user?: Types.UserShortFragment | null,
-    account?: Types.AccountShortFragment | null,
+    organization?: Types.OrganizationShortFragment | null,
     sessionState: Types.SessionStateFullFragment,
     roles: string[]
 } & XWithRouter> implements React.ChildContextProvider<{}> {
     static childContextTypes = {
         user: PropTypes.object,
-        account: PropTypes.object,
+        organization: PropTypes.object,
         isLoggedIn: PropTypes.bool.isRequired,
         isActivated: PropTypes.bool.isRequired,
         isProfileCreated: PropTypes.bool.isRequired,
@@ -33,14 +33,14 @@ export class UserInfoProvider extends React.Component<{
 
     getChildContext() {
         let hasUser = this.props.user !== null && this.props.user !== undefined;
-        let hasAccount = this.props.account !== null && this.props.account !== undefined;
+        let hasAccount = this.props.organization !== null && this.props.organization !== undefined;
         // Where to put this?
         if (this.props.user) {
             trackProfile(this.props.user.id!!, this.props.user.firstName, this.props.user.lastName, this.props.user.email);
         }
         return {
             user: hasUser ? this.props.user : null,
-            account: hasAccount ? this.props.account : null,
+            organization: hasAccount ? this.props.organization : null,
             isLoggedIn: this.props.sessionState.isLoggedIn,
             isProfileCreated: this.props.sessionState.isProfileCreated && hasUser,
             isAccountExists: this.props.sessionState.isAccountExists,
@@ -54,7 +54,7 @@ export class UserInfoProvider extends React.Component<{
 
 export interface UserInfoComponentProps {
     user: Types.UserShortFragment | null;
-    account: Types.AccountShortFragment | null;
+    organization: Types.OrganizationShortFragment | null;
     isLoggedIn: boolean;
     isAccountExists: boolean;
     isAccountPicked: boolean;
@@ -68,7 +68,7 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
     static contextTypes = {
         user: PropTypes.object,
         area: PropTypes.object,
-        account: PropTypes.object,
+        organization: PropTypes.object,
         roles: PropTypes.arrayOf(PropTypes.string),
         isLoggedIn: PropTypes.bool.isRequired,
         isActivated: PropTypes.bool.isRequired,
@@ -81,7 +81,7 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
 
     render() {
         var user = this.context.user as Types.UserShortFragment | null;
-        var account = this.context.account as Types.AccountShortFragment | null;
+        var organization = this.context.organization as Types.OrganizationShortFragment | null;
         var isLoggedIn = this.context.isLoggedIn as boolean;
         var isActivated = this.context.isActivated as boolean;
         var isProfileCreated = this.context.isProfileCreated as boolean;
@@ -93,7 +93,7 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
         return (
             <Wrapped
                 user={user}
-                account={account}
+                organization={organization}
                 isLoggedIn={isLoggedIn}
                 isActivated={isActivated}
                 isProfileCreated={isProfileCreated}
