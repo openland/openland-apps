@@ -7,7 +7,6 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCard } from 'openland-x/XCard';
 import { XAvatar } from 'openland-x/XAvatar';
-// import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XLink } from 'openland-x/XLink';
@@ -388,8 +387,6 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                     <MainContent>
                         <XHorizontal>
                             <XVertical flexGrow={1}>
-                                {/* <XInput value={props.data.alphaOrganizationProfile.name} disabled={true} />
-                                <XInput value={props.data.alphaOrganizationProfile.website || ''} disabled={true} /> */}
                                 <XCardStyled padding={0}>
                                     <XHorizontal>
                                         <XVerticalStyled flexGrow={1} borderRight={true} padding={24}>
