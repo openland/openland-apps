@@ -10,6 +10,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 // import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XSwitcher } from 'openland-x/XSwitcher';
+import { XLink } from 'openland-x/XLink';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
@@ -112,22 +113,27 @@ const OrganizationName = Glamorous.div({
 //     whiteSpace: 'nowrap'
 // });
 
-const Title = Glamorous.div<{ small?: boolean, marginBottom?: number }>((props) => ({
+const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft?: number }>((props) => ({
     fontSize: props.small ? 15 : 18,
     fontWeight: 500,
     lineHeight: props.small ? 1.33 : 1.11,
     color: '#334562',
-    marginBottom: props.marginBottom
+    marginBottom: props.marginBottom,
+    marginLeft: props.marginLeft,
 }));
 
-const XCardStyled = Glamorous(XCard)<{ padding?: number }>((props) => ({
+const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, paddingBottom?: number }>((props) => ({
     borderRadius: 5,
-    padding: props.padding !== undefined ? props.padding : 24
+    padding: props.padding !== undefined ? props.padding : 24,
+    paddingTop: props.paddingTop,
+    paddingBottom: props.paddingBottom
 }));
 
 const ContactWrapper = Glamorous(XHorizontal)({
     paddingTop: 12,
-    paddingBottom: 12
+    paddingBottom: 12,
+    paddingLeft: 18,
+    paddingRight: 18
 });
 
 const Text = Glamorous.div<{ opacity?: number, bold?: boolean, upperCase?: boolean }>((props) => ({
@@ -139,33 +145,67 @@ const Text = Glamorous.div<{ opacity?: number, bold?: boolean, upperCase?: boole
     textTransform: props.upperCase ? 'capitalize' : undefined
 }));
 
-class ContactPersonComponent extends React.Component<{ contact: ContactPerson, index: number }> {
-    render() {
-        return (
-            <ContactWrapper>
-                <XAvatar src={this.props.contact.avatar || undefined} />
-                <div>
-                    <Text bold={true}>{this.props.contact.name}</Text>
-                    <Text opacity={0.8}>{this.props.contact.role}</Text>
-                    <Text opacity={0.5}>{this.props.contact.phone}</Text>
-                    <Text opacity={0.5}>{this.props.contact.email}</Text>
-                    <Text opacity={0.5}>{this.props.contact.link}</Text>
-                </div>
-            </ContactWrapper>
-        );
-    }
-}
+const SocialLinksWrapper = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: 20,
+    borderTop: '1px solid rgba(220, 222, 228, 0.45)',
+    paddingLeft: 18,
+    paddingRight: 18
+});
 
-class ContactPersons extends React.Component<{ contacts: ContactPerson[] }> {
-    render() {
-        return (
-            <>
-                {!this.props.contacts && 'No contacts'}
-                {this.props.contacts && this.props.contacts.map((person, index) => <ContactPersonComponent key={index + '_' + person.name} contact={person} index={index} />)}
-            </>
-        );
+const SocialLink = Glamorous(XLink)({
+    fontSize: 15,
+    lineHeight: 1.33,
+    color: '#334562',
+    fontWeight: 500,
+    marginRight: 22,
+    '&:hover': {
+        color: '#5640d6'
     }
-}
+});
+
+const SocialLinkImg = Glamorous(XLink)({
+    display: 'block',
+    width: 24,
+    height: 24,
+    backgroundColor: '#d6dadf',
+    borderRadius: 50,
+    marginRight: 10,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 10,
+    backgroundPosition: 'center',
+    '&.fb': {
+        backgroundSize: 7,
+        backgroundImage: 'url(\'/static/img/icons/organization/ic-fb.svg\')',
+    },
+    '&.tw': {
+        backgroundImage: 'url(\'/static/img/icons/organization/ic-twitter.svg\')',
+    },
+    '&:hover': {
+        backgroundColor: '#5640d6'
+    }
+});
+
+const ContactPersonComponent = (props: { contact: ContactPerson, index: number }) => (
+    <ContactWrapper>
+        <XAvatar src={props.contact.avatar || undefined} />
+        <div>
+            <Text bold={true}>{props.contact.name}</Text>
+            <Text opacity={0.8}>{props.contact.role}</Text>
+            <Text opacity={0.5}>{props.contact.phone}</Text>
+            <Text opacity={0.5}>{props.contact.email}</Text>
+            <Text opacity={0.5}>{props.contact.link}</Text>
+        </div>
+    </ContactWrapper>
+);
+
+const ContactPersons = (props: { contacts: ContactPerson[] }) => (
+    <>
+        {!props.contacts && 'No contacts'}
+        {props.contacts && props.contacts.map((person, index) => <ContactPersonComponent key={index + '_' + person.name} contact={person} index={index} />)}
+    </>
+);
 
 const TagItem = Glamorous.div({
     display: 'flex',
@@ -291,7 +331,6 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                             </XHorizontal>
                         </HeaderContent>
                     </Header>
-
                     <MainContent>
                         <XHorizontal>
                             <XVertical flexGrow={1}>
@@ -406,9 +445,14 @@ const Profile = withOrganizationProfile(withRouter((props) => {
                                         {props.data.alphaOrganizationProfile.about}
                                     </Text>
                                 </XCardStyled>
-                                <XCardStyled padding={18}>
-                                    <Title small={true} marginBottom={10}>Contacts</Title>
+                                <XCardStyled padding={0} paddingTop={18} paddingBottom={20}>
+                                    <Title small={true} marginBottom={10} marginLeft={18}>Contacts</Title>
                                     <ContactPersons contacts={props.data.alphaOrganizationProfile.contacts!!.filter(c => c !== null) as any} />
+                                    <SocialLinksWrapper>
+                                        {props.data.alphaOrganizationProfile.website && <SocialLink href={props.data.alphaOrganizationProfile.website}>Website</SocialLink>}
+                                        {props.data.alphaOrganizationProfile.facebook && <SocialLinkImg className="fb" href={props.data.alphaOrganizationProfile.facebook} />}
+                                        {props.data.alphaOrganizationProfile.twitter && <SocialLinkImg className="tw" href={props.data.alphaOrganizationProfile.twitter} />}
+                                    </SocialLinksWrapper>
                                 </XCardStyled>
                             </XVertical>
                         </XHorizontal>
