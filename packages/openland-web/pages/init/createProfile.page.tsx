@@ -34,8 +34,8 @@ const CreateProfileForm = withProfileCreate((props) => {
                 <XForm
                     defaultData={{
                         input: {
-                            firstName: props.data.prefill.firstName || '',
-                            lastName: props.data.prefill.lastName || ''
+                            firstName: (props.data.prefill && props.data.prefill.firstName) || '',
+                            lastName: (props.data.prefill && props.data.prefill.lastName) || ''
                         }
                     }}
                     defaultAction={async (data) => {

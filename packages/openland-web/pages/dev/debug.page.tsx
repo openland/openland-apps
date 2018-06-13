@@ -31,9 +31,9 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
             </XTable>
             <XHeader text="Current Organization" />
             <XContent>
-                {props.account && (
+                {props.organization && (
                     <>
-                        <div>{props.account.title}</div>
+                        <div>{props.organization.name}</div>
                     </>
                 )}
             </XContent>
