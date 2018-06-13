@@ -11,7 +11,7 @@ function prepareObject(name: string) {
     if (index) {
         return [] as any;
     } else {
-        return { __body: true } as any;
+        return {} as any;
     }
 }
 

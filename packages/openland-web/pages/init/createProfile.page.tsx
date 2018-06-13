@@ -4,17 +4,13 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withApp } from '../../components/withApp';
-import { withCreateProfile } from '../../api';
+import { withProfileCreate } from '../../api';
 import {
     RootContainer,
     Logo,
     Title,
     TextWrapper,
-    Label,
-    InputGroup,
     ContentWrapper,
-    OptionalLabel,
-    FieldHeader,
 } from './components/CreateProfileComponents';
 import { InitTexts } from './_text';
 import { XForm } from 'openland-x-forms/XForm2';
@@ -24,8 +20,10 @@ import { XInput } from 'openland-x/XInput';
 import { XFooter } from 'openland-x/XFooter';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
+import { XFormField } from 'openland-x-forms/XFormField';
+import { XFormError } from 'openland-x-forms/XFormError';
 
-const CreateProfileForm = withCreateProfile((props) => {
+const CreateProfileForm = withProfileCreate((props) => {
     return (
         <RootContainer>
             <Logo />
@@ -34,7 +32,12 @@ const CreateProfileForm = withCreateProfile((props) => {
                     <Title>{InitTexts.create_profile.title}</Title>
                 </TextWrapper>
                 <XForm
-                    defaultData={props.data.prefill}
+                    defaultData={{
+                        input: {
+                            firstName: props.data.prefill.firstName || '',
+                            lastName: props.data.prefill.lastName || ''
+                        }
+                    }}
                     defaultAction={async (data) => {
                         await props.createProfile({ variables: data });
                         window.location.href = '/';
@@ -42,28 +45,24 @@ const CreateProfileForm = withCreateProfile((props) => {
                     }}
                     defaultLayout={false}
                 >
-
                     <XVertical>
+                        <XFormError onlyGeneralErrors={true} width={472} />
                         <XFormLoadingContent>
                             <XHorizontal separator="large">
-                                <XVertical separator="none">
-                                    <InputGroup>
-                                        <Label>{InitTexts.create_profile.firstName}</Label>
-                                        <XInput field="firstName" size="medium" placeholder="Jane" />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <Label>{InitTexts.create_profile.lastName}</Label>
-                                        <XInput field="lastName" size="medium" placeholder="Doe" />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <FieldHeader><Label>{InitTexts.create_profile.phone}</Label><OptionalLabel>{InitTexts.optional}</OptionalLabel></FieldHeader>
-                                        <XInput field="phone" size="medium" placeholder="123-456-7890" />
-                                    </InputGroup>
+                                <XVertical width={280}>
+                                    <XFormField field="input.firstName" title={InitTexts.create_profile.firstName}>
+                                        <XInput field="input.firstName" size="medium" placeholder="Jane" />
+                                    </XFormField>
+                                    <XFormField field="input.lastName" title={InitTexts.create_profile.lastName}>
+                                        <XInput field="input.lastName" size="medium" placeholder="Doe" />
+                                    </XFormField>
+                                    <XFormField field="input.phone" title={InitTexts.create_profile.phone} optional={true}>
+                                        <XInput field="input.phone" size="medium" placeholder="123-456-7890" />
+                                    </XFormField>
                                 </XVertical>
-                                <XVertical separator="none">
-                                    <FieldHeader><Label>{InitTexts.create_profile.photo}</Label><OptionalLabel>{InitTexts.optional}</OptionalLabel></FieldHeader>
-                                    <XAvatarUpload field="photo" />
-                                </XVertical>
+                                <XFormField title={InitTexts.create_profile.photo}>
+                                    <XAvatarUpload field="input.photoRef" size="large" />
+                                </XFormField>
                             </XHorizontal>
                         </XFormLoadingContent>
                         <XFooter padding={false}>

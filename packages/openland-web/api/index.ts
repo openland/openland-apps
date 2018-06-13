@@ -222,9 +222,8 @@ export const ParcelMapSearch = graphQLMapSearchSource(Queries.Parcels.ParcelsMap
 export const withSampleTask = graphqlTask(Queries.Tasks.SampleTask);
 export const withFolderExportTask = graphqlTask(Queries.Tasks.FolderExportTask);
 
-export const withSaveProfile = graphqlMutation(Queries.Account.SaveProfileMutation, 'saveProfile', { refetchQueries: [Queries.Account.AccountQuery] });
 export const withCreateOrganization = graphqlMutation(Queries.Account.CreateOrganizationMutation, 'createOrganization', { refetchQueries: [Queries.Account.AccountQuery] });
-export const withCreateProfile = graphqlCompose2(graphqlMutation(Queries.Account.SaveProfileMutation, 'createProfile'), graphqlRouted(Queries.Account.ProfilePrefillQuery));
+// export const withCreateProfile = graphqlCompose2(graphqlMutation(Queries.Account.SaveProfileMutation, 'createProfile'), graphqlRouted(Queries.Account.ProfilePrefillQuery));
 export const withAllAccounts = graphqlRouted(Queries.Debug.DebugOwnAccountsQuery);
 
 export const withInvites = graphqlRouted(Queries.Account.AccountInvitesQuery);
@@ -243,4 +242,9 @@ export const withEditCurrentOrganizationProfile = graphqlCompose2(
 export const withProfile = graphqlCompose2(
     graphqlRouted(Queries.Settings.ProfileQuery),
     graphqlMutation(Queries.Settings.ProfileUpdateMutation, 'updateProfile', { refetchQueries: [Queries.Account.AccountQuery] })
+);
+
+export const withProfileCreate = graphqlCompose2(
+    graphqlMutation(Queries.Settings.ProfileCreateMutation, 'createProfile', { refetchQueries: [Queries.Account.AccountQuery] }),
+    graphqlRouted(Queries.Account.ProfilePrefillQuery)
 );

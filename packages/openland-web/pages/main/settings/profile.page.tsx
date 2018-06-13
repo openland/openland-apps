@@ -42,7 +42,7 @@ export default withApp('Profile', 'viewer', withProfile((props) => {
                         defaultLayout={false}
                     >
                         <XVertical>
-                            <XFormError />
+                            <XFormError onlyGeneralErrors={true} />
                             <XFormLoadingContent>
                                 <XVertical>
                                     <XHorizontal>
@@ -56,7 +56,7 @@ export default withApp('Profile', 'viewer', withProfile((props) => {
                                             <XFormFieldText field="input.website" title="Web Site" size="medium" />
                                             <XFormFieldText field="input.location" title="Location" size="medium" />
                                         </XVertical>
-                                        <XFormField title="Photo">
+                                        <XFormField field="input.photoRef" title="Photo">
                                             <XAvatarUpload field="input.photoRef" />
                                         </XFormField>
                                     </XHorizontal>

@@ -47,3 +47,27 @@ export const ProfileUpdateMutation = gql`
         }
     }
 `;
+
+export const ProfileCreateMutation = gql`
+    mutation ProfileCreate($input: CreateProfileInput!) {
+        createProfile(input: $input) {
+            id
+            firstName
+            lastName
+            photoRef {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
+            email
+            phone
+            website
+            about
+            location
+        }
+    }
+`;

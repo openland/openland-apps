@@ -76,6 +76,5 @@ export const FieldHeader = Glamorous(XHorizontal)({
 
 export const Footer = Glamorous(XHorizontal)({
     justifyContent: 'space-between',
-    marginTop: 10,
-    marginLeft: -14
+    paddingLeft: -14
 });
