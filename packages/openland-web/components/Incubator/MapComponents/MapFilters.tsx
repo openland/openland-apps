@@ -833,7 +833,7 @@ class MapFilters extends React.Component<XWithRouter & { city?: string }, { acti
                             content={(
                                 <OtherContainer>
                                     <FiltersContent >
-                                        {...other}
+                                        {other}
                                     </FiltersContent>
                                     <OtherFooter />
                                 </OtherContainer>

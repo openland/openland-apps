@@ -1,28 +1,36 @@
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
+const withTypescript = require('@zeit/next-typescript')
 const path = require('path');
 
-const config = {
+
+const config = withTypescript({
     pageExtensions: ['page.ts', 'page.tsx'],
     webpack(config, options) {
 
-        // // Page Extensions
-        // if (!config.pageExtensions) {
-        //     config.pageExtensions = ['jsx', 'js']
-        // }
-        // if (config.pageExtensions.indexOf('ts') === -1) {
-        //     config.pageExtensions.unshift('ts')
-        // }
-        // if (config.pageExtensions.indexOf('tsx') === -1) {
-        //     config.pageExtensions.unshift('tsx')
-        // }
-    
+        //     if (!options.defaultLoaders) {
+        //         throw new Error(
+        //           'This plugin is not compatible with Next.js versions below 5.0.0 https://err.sh/next-plugins/upgrade'
+        //         )
+        //     }
 
-        // Enable development sourcemaps
-        if (options.dev) {
-            config.devtool = 'cheap-module-eval-source-map'
-        }
+        //     // // Page Extensions
+        //     // if (!config.pageExtensions) {
+        //     //     config.pageExtensions = ['jsx', 'js']
+        //     // }
+        //     // if (config.pageExtensions.indexOf('ts') === -1) {
+        //     //     config.pageExtensions.unshift('ts')
+        //     // }
+        //     // if (config.pageExtensions.indexOf('tsx') === -1) {
+        //     //     config.pageExtensions.unshift('tsx')
+        //     // }
 
-        // Merge paths
+
+        //     // Enable development sourcemaps
+        //     // if (options.dev) {
+        //     //     config.devtool = 'cheap-module-eval-source-map'
+        //     // }
+
+        //     // Merge paths
         const tsConfig = require("../../tsconfig.json");
         const alias = {};
         for (let key of Object.keys(tsConfig.compilerOptions.paths)) {
@@ -30,10 +38,10 @@ const config = {
         }
         config.resolve.alias = Object.assign({}, config.resolve.alias, alias);
 
-        // Ignore large library from parsing
-        config.module.noParse = /(mapbox-gl)\.js$/
+        //     // Ignore large library from parsing
+        //     config.module.noParse = /(mapbox-gl)\.js$/
 
-        // Typescript
+        //     // Typescript
         const {
             dir,
             defaultLoaders,
@@ -41,35 +49,48 @@ const config = {
             isServer
         } = options
 
-        // Enable resolving of ts
-        config.resolve.extensions.push('.ts', '.tsx')
+        //     // Enable resolving of ts
+        //     config.resolve.extensions.push('.ts', '.tsx')
 
-        // Hot loader
-        if (dev && !isServer) {
-            config.module.rules.push({
-                test: /\.(ts|tsx)$/,
-                loader: 'hot-self-accept-loader',
-                include: [path.join(dir, 'pages')],
-                options: {
-                    extensions: /\.(ts|tsx)$/
-                }
-            })
-        }
+        //     // Hot loader
+        //     if (dev && !isServer) {
+        //         config.module.rules.push({
+        //             test: /\.(ts|tsx)$/,
+        //             loader: 'hot-self-accept-loader',
+        //             include: [path.join(dir, 'pages')],
+        //             options: {
+        //                 extensions: /\.(ts|tsx)$/
+        //             }
+        //         })
+        //     }
 
-        // Loader
+        //     // Loader
+        //     config.module.rules.push({
+        //         test: /\.(ts|tsx)$/,
+        //         include: [dir],
+        //         exclude: /node_modules/,
+        //         use: defaultLoaders.babel
+        //     });
+        // config.module.rules.push({
+        //     test: /\.(ts|tsx)$/,
+        //     include: [path.resolve(dir + '../../../')],
+        //     exclude: /node_modules/,
+        //     use: [
+        //         defaultLoaders.babel,
+        //         {
+        //             loader: 'ts-loader',
+        //             options: {
+        //                 transpileOnly: true
+        //             }
+        //         }
+        //     ]
+        // })
+
         config.module.rules.push({
             test: /\.(ts|tsx)$/,
-            include: [path.resolve(dir + '../../../')],
+            include: [path.resolve(dir + '/../')],
             exclude: /node_modules/,
-            use: [
-                defaultLoaders.babel,
-                {
-                    loader: 'ts-loader',
-                    options: {
-                        transpileOnly: true
-                    }
-                }
-            ]
+            use: defaultLoaders.babel
         })
 
         return config;
@@ -83,6 +104,6 @@ const config = {
     useFileSystemPublicRoutes: false,
     analyzeServer: ["server", "both"].includes(process.env.BUNDLE_ANALYZE),
     analyzeBrowser: ["browser", "both"].includes(process.env.BUNDLE_ANALYZE)
-};
+});
 
-module.exports =  withBundleAnalyzer(config)
+module.exports = withBundleAnalyzer(config)

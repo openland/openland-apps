@@ -10,6 +10,7 @@
 		"yarn": ">=1.0.0"
 	},
 	"dependencies": {
+		"@babel/preset-typescript": "7.0.0-beta.42",
 		"@mapbox/geo-viewport": "^0.2.2",
 		"@mapbox/mapbox-gl-geocoder": "^2.2.0",
 		"@turf/turf": "^5.1.6",
@@ -52,7 +53,7 @@
 		"@types/styled-jsx": "^2.2.1",
 		"@types/supercluster": "^3.0.2",
 		"@zeit/next-bundle-analyzer": "^0.0.4",
-		"@zeit/next-typescript": "^0.0.10",
+		"@zeit/next-typescript": "^1.0.1",
 		"apollo-cache-inmemory": "^1.1.4",
 		"apollo-client": "^2.0.4",
 		"apollo-codegen": "^0.18.3",
@@ -150,7 +151,7 @@
 		"build": "NODE_ENV=production next build ./packages/openland-web",
 		"analyze": "BUNDLE_ANALYZE=both next build ./packages/openland-web",
 		"analyze:web": "BUNDLE_ANALYZE=browser next build ./packages/openland-web",
-		"start": "TS_NODE_PROJECT=tsconfig.prod.json NODE_ENV=production node --inspect -r ts-node/register packages/openland-web/server.ts ",
+		"start": "TS_NODE_PROJECT=tsconfig.prod.json NODE_ENV=production node -r ts-node/register packages/openland-web/server.ts ",
 		"schema": "yarn schema:download && yarn schema:generate",
 		"schema:local": "yarn schema:download:local && yarn schema:generate",
 		"schema:download": "yarn apollo-codegen introspect-schema https://api.statecrafthq.com/api --output schema.json",
