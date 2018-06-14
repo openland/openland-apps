@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import * as qs from 'query-string';
 import { XRouter } from './XRouter';
-import { SingletonRouter } from 'next/router';
+import { RouterProps } from 'next/router';
 import { XRouterContext } from './XRouterContext';
 
 interface NextRoutes {
@@ -26,7 +26,7 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
     }
 
     buildState(context: any) {
-        var nRouter = context.router as SingletonRouter;
+        var nRouter = context.router as RouterProps;
         var href = this.props.protocol + '://' + this.props.hostName;
         if (nRouter.asPath) {
             href += nRouter.asPath;

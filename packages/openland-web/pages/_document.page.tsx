@@ -11,7 +11,7 @@ export default class StateDocument extends Document {
             props.res.setHeader('Link', '</static/loader.css>; rel=preload; as=style');
         }
         const page = props.renderPage();
-        const styles = renderStaticOptimized(() => page.html);
+        const styles = renderStaticOptimized(() => page.html || page.errorHtml);
         return {
             ...page,
             glamCss: styles.css,

@@ -7,7 +7,6 @@ import { Navigation } from './_navigation';
 import { XTable } from 'openland-x/XTable';
 import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
-import { HostNameContext } from 'openland-x-routing/HostNameContext';
 
 export const CreateInviteButton = withInviteCreate((props) => (
     <XButton action={() => props.createInvite({})} text="Create Invite" />
@@ -24,18 +23,14 @@ export default withApp('Invites', 'viewer', withInvites(withUserInfo((props) => 
                 <CreateInviteButton />
             </XHeader>
             <XTable>
-                <HostNameContext.Consumer>
-                    {(hosts) => (
-                        <XTable.Body>
-                            {props.data.invites && props.data.invites.map((v) => (
-                                <XTable.Row>
-                                    <XTable.Cell>{hosts!!.protocol + '://' + hosts!!.hostName + '/join/' + v.key}</XTable.Cell>
-                                    <XTable.Cell><CancelInviteButton variables={{ id: v.id }} /></XTable.Cell>
-                                </XTable.Row>
-                            ))}
-                        </XTable.Body>
-                    )}
-                </HostNameContext.Consumer>
+                <XTable.Body>
+                    {props.data.invites && props.data.invites.map((v) => (
+                        <XTable.Row>
+                            <XTable.Cell>{props.router.protocol + '://' + props.router.hostName + '/join/' + v.key}</XTable.Cell>
+                            <XTable.Cell><CancelInviteButton variables={{ id: v.id }} /></XTable.Cell>
+                        </XTable.Row>
+                    ))}
+                </XTable.Body>
             </XTable>
         </Navigation>
     );
