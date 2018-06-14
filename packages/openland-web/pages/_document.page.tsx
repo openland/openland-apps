@@ -1,32 +1,17 @@
 import * as React from 'react';
 import Document, { Head, Main, NextScript, DocumentProps } from 'next/document';
 import { renderStaticOptimized } from 'glamor/server';
-import { extractCritical } from 'emotion-server';
 
 let isProduction = process.env.APP_PRODUCTION === 'true';
 
-export function currentTime(): number {
-    return new Date().getTime();
-}
-
-export function printElapsed(tag: string, src: number) {
-    let time = currentTime();
-    console.warn(`${tag} in ${time - src} ms`);
-    return time;
-}
-
 export default class StateDocument extends Document {
     static async getInitialProps(props: { renderPage: () => { html?: string } }) {
-        let start = currentTime();
         const page = props.renderPage();
-        printElapsed('renderPage', start);
         const styles = renderStaticOptimized(() => page.html);
-        const estyles = extractCritical(page.html);
         return {
             ...page,
             glamCss: styles.css,
-            emoCss: estyles.css,
-            ids: [...estyles.ids, ...styles.ids]
+            ids: styles.ids
         };
     }
 
@@ -79,7 +64,6 @@ export default class StateDocument extends Document {
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
 
                     <style dangerouslySetInnerHTML={{ __html: this.props.glamCss }} />
-                    <style dangerouslySetInnerHTML={{ __html: this.props.emoCss }} />
                     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js" />
                     <script dangerouslySetInnerHTML={{ __html: 'window.isProduction=' + isProduction + ';' }} />
 
