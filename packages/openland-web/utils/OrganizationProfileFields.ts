@@ -2,8 +2,8 @@ import { XPhotoRef } from 'openland-x/XCloudImage';
 
 export type DevelopmentModels =
     | 'request_for_proposals'
-    | 'joint_venture '
-    | 'ground_lease  '
+    | 'joint_venture'
+    | 'ground_lease'
     | 'sale'
     | 'option_to_buy';
 
