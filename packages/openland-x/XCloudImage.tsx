@@ -38,7 +38,6 @@ export function buildBaseImageUrl(image?: XPhotoRef | null) {
 
 export class XCloudImage extends React.PureComponent<XCloudImageProps> {
     render() {
-        console.warn(this.props.photoRef, buildBaseImageUrl(this.props.photoRef));
         const srcCloud = this.props.srcCloud || buildBaseImageUrl(this.props.photoRef);
         if (srcCloud) {
             let scale: string | null = null;

@@ -60,8 +60,25 @@ class ContactPersonItem extends React.Component<{ contact: ContactPerson, index:
     }
 }
 
-const clearContact = (c: any) => {
-    return { ...c, avatarRef: c.avatarRef ? { ...c.avatarRef, crop: { ...c.avatarRef.crop, __typename: undefined }, __typename: undefined } : undefined, __typename: undefined };
+const clearContact = (c: ContactPerson): ContactPerson => {
+    console.warn(c);
+
+    return {
+        name: c.name,
+        email: c.email,
+        link: c.link,
+        phone: c.phone,
+        role: c.role,
+        photoRef: c.photoRef ? {
+            uuid: c.photoRef.uuid,
+            crop: c.photoRef.crop ? {
+                x: c.photoRef.crop.x,
+                y: c.photoRef.crop.y,
+                w: c.photoRef.crop.w,
+                h: c.photoRef.crop.h
+            } : null
+        } : null
+    };
 };
 
 export default withApp('Organization profile edit', 'viewer', withMyOrganizationProfile((props) => {
@@ -140,9 +157,22 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                 alphaLandUse: props.data.myOrganizationProfile!!.landUse,
                                 alphaGoodFor: props.data.myOrganizationProfile!!.goodFor,
                                 alphaSpecialAttributes: props.data.myOrganizationProfile!!.specialAttributes,
+                                alphaPotentialSites: props.data.myOrganizationProfile!!.potentialSites ? props.data.myOrganizationProfile!!.potentialSites!!.map(range => {
+                                    let rangeStr;
+                                    if ((range.to || Number.MAX_SAFE_INTEGER) <= 5) {
+                                        rangeStr = 'small';
+                                    } else if ((range.from || 0) >= 5 && (range.to || Number.MAX_SAFE_INTEGER) <= 50) {
+                                        rangeStr = 'medium';
+                                    } else {
+                                        rangeStr = 'large';
+                                    }
+                                    return rangeStr;
+                                }) : null,
                             }
                         }}
                         defaultAction={async (data) => {
+                            let potentialSites = data.input.alphaPotentialSites ? data.input.alphaPotentialSites.map((rangeStr: string) => (rangeStr === 'small' ? { from: 0, to: 5 } : rangeStr === 'medium' ? { from: 5, to: 50 } : { from: 50 })) : null;
+                            console.warn(potentialSites);
                             await props.updateOrganizaton({
                                 variables: {
                                     input: {
@@ -150,7 +180,8 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         alphaAvailability: data.input.alphaAvailability,
                                         alphaLandUse: data.input.alphaLandUse,
                                         alphaGoodFor: data.input.alphaGoodFor,
-                                        alphaSpecialAttributes: data.input.alphaSpecialAttributes
+                                        alphaSpecialAttributes: data.input.alphaSpecialAttributes,
+                                        alphaPotentialSites: potentialSites
                                     }
                                 }
                             });
@@ -160,6 +191,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                         <XVertical maxWidth={500}>
                             <XFormLoadingContent>
                                 <XVertical>
+                                    
                                     <XFormField title="Development Models">
                                         <XSelect
                                             field="input.alphaDevelopmentModels"
@@ -178,6 +210,15 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                             multi={true}
                                         />
                                     </XFormField>
+                                     <XFormField title="Potential Sites">
+                                        <XSelect
+                                            field="input.alphaPotentialSites"
+                                            options={[{ label: '0-5 sites', value: 'small' }, { label: '5-50 sites', value: 'medium' }, { label: '50+ sites', value: 'large' }]}
+                                            multi={true}
+                                        />
+
+                                    </XFormField>
+
                                     <XFormField title="Land Use">
                                         <XSelect
                                             field="input.alphaLandUse"
@@ -204,7 +245,9 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                             })}
                                             multi={true}
                                         />
+
                                     </XFormField>
+
                                 </XVertical>
                             </XFormLoadingContent>
                             <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
@@ -251,11 +294,12 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                 data.contacts[Number(props.router.query.editContact)] = {
                                     name: data.name,
                                     phone: data.phone,
-                                    avatarRef: data.avatar,
+                                    photoRef: data.photoRef,
                                     email: data.email,
                                     role: data.role,
                                     link: data.link,
                                 };
+
                                 await props.updateOrganizaton({
                                     variables: {
                                         input: {
@@ -289,7 +333,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                             data.contacts.push({
                                 name: data.name,
                                 phone: data.phone,
-                                avatarRef: data.avatar,
+                                photoRef: data.avatar,
                                 email: data.email,
                                 link: data.link,
                                 role: data.role,
