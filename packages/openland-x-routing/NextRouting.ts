@@ -1,4 +1,4 @@
-import Router from 'next/router';
+import Router, { RouterProps } from 'next/router';
 import * as NProgress from 'nprogress';
 import { trackPage, trackError } from 'openland-x-analytics';
 
@@ -19,7 +19,7 @@ const extracthPath = (src: string) => {
 
 export function isPageChanged() {
     if (previousUrl == null) {
-        previousUrl = Router.asPath ? Router.asPath : null;
+        previousUrl = (Router as any as RouterProps).asPath ? (Router as any as RouterProps).asPath!! : null;
     }
     if (previousUrl == null || currentUrl == null) {
         return true;
@@ -65,11 +65,11 @@ export function stopProgress(src: number) {
     }
 }
 
-Router.onRouteChangeStart = (url) => {
+(Router as any as RouterProps).onRouteChangeStart = (url) => {
 
     // Hotfix Current Url
     if (currentUrl == null) {
-        currentUrl = Router.asPath ? Router.asPath : null;
+        currentUrl = Router.router.asPath ? Router.router.asPath : null;
     }
 
     previousUrl = currentUrl;
@@ -82,7 +82,7 @@ Router.onRouteChangeStart = (url) => {
     startProgress(0);
 };
 
-Router.onRouteChangeComplete = () => {
+(Router as any as RouterProps).onRouteChangeComplete = () => {
     // tslint:disable
     console.log(`Naviating Complete`);
     // tslint:enable
@@ -92,7 +92,7 @@ Router.onRouteChangeComplete = () => {
     trackPage();
 };
 
-Router.onRouteChangeError = (error) => {
+(Router as any as RouterProps).onRouteChangeError = (error) => {
     // Ignore if route canceled
     if ('' + error === 'Error: Route Cancelled') {
         return;
