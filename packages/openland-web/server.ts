@@ -20,6 +20,11 @@ async function start() {
     const server = express();
 
     //
+    // Health
+    //
+    server.get('/status', (req, res) => res.send('Welcome to Openland!'));
+
+    //
     // Enable Loggin
     //
     server.use(Morgan('tiny'));
@@ -62,11 +67,6 @@ async function start() {
     // GraphiQL Sandbox
     //
     server.use('/sandbox', graphiqlExpress({ endpointURL: '/graphql' }));
-
-    //
-    // Health
-    //
-    server.get('/status', (req, res) => res.send('Welcome to Statecraft!'));
 
     //
     // Favicon support endpoint
