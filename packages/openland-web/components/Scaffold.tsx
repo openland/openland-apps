@@ -6,7 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XPicture } from 'openland-x/XPicture';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
-import { withSearch, withMyOrganizations } from '../api';
+import { withSearch } from '../api';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';
@@ -21,6 +21,7 @@ import { XModal } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
 import { XTable } from 'openland-x/XTable';
 import { switchOrganization } from '../utils/switchOrganization';
+import { withMyOrganizations } from '../api/withMyOrganizations';
 
 //
 // Root

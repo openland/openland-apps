@@ -1,6 +1,6 @@
 {
     "presets": ["next/babel"],
-    "plugins": [],
+    "plugins": ["graphql-tag"],
     "env": {
         "production": {
             "plugins": [

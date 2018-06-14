@@ -2,7 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
-import { withOrganization } from '../../../api';
+import { withOrganization } from '../../../api/withOrganization';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCard } from 'openland-x/XCard';

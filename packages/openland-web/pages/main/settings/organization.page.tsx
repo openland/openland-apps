@@ -27,7 +27,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XTextArea } from 'openland-x/XTextArea';
 import Glamorous from 'glamorous';
-import { withMyOrganizationProfile } from '../../../api';
+import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfile';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 
 const ContactField = Glamorous.div({

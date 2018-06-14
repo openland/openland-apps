@@ -8,6 +8,10 @@ import * as Routes from './routes';
 import { graphiqlExpress } from 'apollo-server-express';
 import * as Morgan from 'morgan';
 
+// tslint:disable
+console.log('Starting...');
+// tslint:enable
+
 const port = process.env.PORT ? parseInt(process.env.PORT as string, 10) : 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev: dev, dir: __dirname });

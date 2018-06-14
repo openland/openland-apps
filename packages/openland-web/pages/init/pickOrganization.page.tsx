@@ -6,7 +6,7 @@ import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../../components/AuthRouter';
-import { withMyOrganizations } from '../../api';
+import { withMyOrganizations } from '../../api/withMyOrganizations';
 import { XTable } from 'openland-x/XTable';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';

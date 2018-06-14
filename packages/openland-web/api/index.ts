@@ -9,21 +9,6 @@ import { graphQLMapSearchSource } from 'openland-x-graphql/graphqlMapSearchSourc
 import { graphqlTask } from 'openland-x-graphql/graphqlTask';
 
 //
-// Account
-//
-
-export const withAccountQuery = graphqlRouted(Queries.Account.AccountQuery);
-
-//
-// Permits
-//
-
-export const withPermits = graphqlRouted(Queries.Permits.PermitsConnectionQuery, {
-    params: ['filter', 'cursor', 'page', 'type', 'sort', 'minUnits', 'issuedYear', 'fromPipeline']
-});
-export const withPermit = graphqlRouted(Queries.Permits.PermitQuery, { params: ['permitId'] });
-
-//
 // Blocks
 //
 
@@ -219,21 +204,4 @@ export const withProfile = graphqlCompose2(
 export const withProfileCreate = graphqlCompose2(
     graphqlMutation(Queries.Settings.ProfileCreateMutation, 'createProfile', { refetchQueries: [Queries.Account.AccountQuery] }),
     graphqlRouted(Queries.Account.ProfilePrefillQuery)
-);
-
-//
-// Organization
-//
-
-export const withCreateOrganization = graphqlMutation(Queries.Account.CreateOrganizationMutation, 'createOrganization');
-
-export const withMyOrganizations = graphqlRouted(Queries.Organization.MyOrganizationsQuery);
-export const withMyOrganization = graphqlRouted(Queries.Organization.MyOrganizationQuery);
-export const withMyOrganizationProfile = graphqlCompose2(
-    graphqlRouted(Queries.Organization.MyOrganizationProfileQuery),
-    graphqlMutation(Queries.Organization.UpdateOrganizationMutation, 'updateOrganizaton')
-);
-export const withOrganization = graphqlCompose2(
-    graphqlRouted(Queries.Organization.OrganizationQuery, { params: ['organizationId'] }),
-    graphqlMutation(Queries.Organization.FollowOrganizationMutation, 'followOrganization', { params: ['organizationId'] })
 );
