@@ -187,7 +187,7 @@ const SocialLinkImg = Glamorous(XLink)({
 
 const ContactPersonComponent = (props: { contact: ContactPerson, index: number }) => (
     <ContactWrapper>
-        <XAvatar src={props.contact.avatar || undefined} />
+        <XAvatar cloudImageUuid={props.contact.photo || undefined} />
         <div>
             <Text bold={true}>{props.contact.name}</Text>
             <Text opacity={0.8}>{props.contact.role}</Text>

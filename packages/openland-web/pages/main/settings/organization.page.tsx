@@ -47,7 +47,7 @@ class ContactPersonItem extends React.Component<{ contact: ContactPerson, index:
     render() {
         return (
             <XHorizontal>
-                <XAvatar src={this.props.contact.avatar || undefined} />
+                <XAvatar photoRef={this.props.contact.photoRef || undefined} />
                 <ContactField>{this.props.contact.name}</ContactField>
                 <ContactField>{this.props.contact.role}</ContactField>
                 <ContactField>{this.props.contact.phone}</ContactField>

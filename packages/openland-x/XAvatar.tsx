@@ -5,7 +5,7 @@ import { makeActionable, ActionableParentProps } from './Actionable';
 import { XFlexStyles, applyFlex } from './basics/Flex';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
 import { XIcon } from './XIcon';
-import { XCloudImage } from './XCloudImage';
+import { XCloudImage, XPhotoRef } from './XCloudImage';
 
 export type XAvatarSize = 'x-large' | 'large' | 'medium' | 'default' | 'small';
 export type XAvatarStyle = 'square' | 'circle';
@@ -17,7 +17,7 @@ export interface XAvatarStyleProps extends XFlexStyles {
     attach?: 'left' | 'right' | 'both';
 }
 
-export type XAvatarProps = ActionableParentProps<NavigableParentProps<XAvatarStyleProps & { src?: string, cloudImageUuid?: string }>>;
+export type XAvatarProps = ActionableParentProps<NavigableParentProps<XAvatarStyleProps & { src?: string, cloudImageUuid?: string, photoRef?: XPhotoRef }>>;
 
 let sizeStyles = styleResolver({
     'x-large': {
@@ -151,12 +151,12 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             {props.src && (
                 <StyledAvatar {...avatarProps} />
             )}
-            {props.cloudImageUuid && (
+            {(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps}>
-                    <XCloudImage resize="fill" srcCloud={props.cloudImageUuid} maxWidth={sizeStyles(props.size).width as number} maxHeight={sizeStyles(props.size).height as number} />
+                    <XCloudImage resize="fill" srcCloud={props.cloudImageUuid} photoRef={props.photoRef} maxWidth={sizeStyles(props.size).width as number} maxHeight={sizeStyles(props.size).height as number} />
                 </StyledPlaceholder>
             )}
-            {!props.src && !props.cloudImageUuid && (
+            {!props.src && !(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps} >
                     <Placeholder size={avatarProps.avatarSize} icon={props.style === 'square' ? 'account_box' : 'account_circle'} />
                 </StyledPlaceholder>
