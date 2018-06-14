@@ -1,14 +1,14 @@
 import * as React from 'react';
-import Document, { Head, Main, NextScript, DocumentProps, Context } from 'next/document';
+import Document, { Head, Main, NextScript, DocumentProps, NextDocumentContext } from 'next/document';
 import { renderStaticOptimized } from 'glamor/server';
 
 let isProduction = process.env.APP_PRODUCTION === 'true';
 
 export default class StateDocument extends Document {
-    static async getInitialProps(props: Context) {
+    static async getInitialProps(props: NextDocumentContext) {
         // Link: </assets/css/screen.css?v=5fc240c512>; rel=preload; as=style,<//cdn.bizible.com/scripts/bizible.js>; rel=preload; as=script,</content/images/2016/06/Timeouts-001.png>; rel=preload; as=image,</content/images/2016/06/Timeouts-002.png>; rel=preload; as=image,<//platform.linkedin.com/in.js>; rel=preload; as=script,<https://code.jquery.com/jquery-1.11.3.min.js>; rel=preload; as=script,</assets/js/jquery.fitvids.js?v=5fc240c512>; rel=preload; as=script
-        if (!props.res.headersSent) {
-            props.res.setHeader('Link', '</static/loader.css>; rel=preload; as=style');
+        if (!props.res!!.headersSent) {
+            props.res!!.setHeader('Link', '</static/loader.css>; rel=preload; as=style');
         }
         const page = props.renderPage();
         const styles = renderStaticOptimized(() => page.html || page.errorHtml);
