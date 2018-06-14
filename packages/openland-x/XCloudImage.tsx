@@ -1,14 +1,20 @@
 import * as React from 'react';
 
 export interface XImageCrop {
-    left: number;
-    top: number;
-    width: number;
-    height: number;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+}
+
+export interface XPhotoRef {
+    uuid: string;
+    crop?: XImageCrop | null;
 }
 
 export interface XCloudImageProps {
     srcCloud?: string | null;
+    photoRef?: XPhotoRef | null;
     src?: string | null;
     className?: string;
     maxWidth?: number;
@@ -19,9 +25,22 @@ export interface XCloudImageProps {
     onLoad?: (event: React.SyntheticEvent<HTMLImageElement>) => void;
 }
 
+export function buildBaseImageUrl(image?: XPhotoRef | null) {
+    if (!image) {
+        return null;
+    }
+    let res = 'https://ucarecdn.com/' + image.uuid + '/';
+    if (image.crop) {
+        res += `-/crop/${image.crop.w}x${image.crop.h}/${image.crop.x},${image.crop.y}/`;
+    }
+    return res;
+}
+
 export class XCloudImage extends React.PureComponent<XCloudImageProps> {
     render() {
-        if (this.props.srcCloud) {
+        console.warn(this.props.photoRef, buildBaseImageUrl(this.props.photoRef));
+        const srcCloud = this.props.srcCloud || buildBaseImageUrl(this.props.photoRef);
+        if (srcCloud) {
             let scale: string | null = null;
             let scaleRetina: string | null = null;
             let scaleWidth = this.props.width ? this.props.width : (this.props.maxWidth ? this.props.maxWidth : null);
@@ -48,8 +67,8 @@ export class XCloudImage extends React.PureComponent<XCloudImageProps> {
                     ops += '-/format/jpeg/-/preview/' + scale + '/-/setfill/ffffff/-/crop/' + scale + '/center/-/progressive/yes/';
                     opsRetina += '-/format/jpeg/-/preview/' + scaleRetina + '/-/setfill/ffffff/-/crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
                 }
-                let url = this.props.srcCloud + ops;
-                let urlRetina = this.props.srcCloud + opsRetina;
+                let url = srcCloud + ops;
+                let urlRetina = srcCloud + opsRetina;
                 return (
                     <img
                         src={url}
@@ -67,7 +86,7 @@ export class XCloudImage extends React.PureComponent<XCloudImageProps> {
             } else {
                 return (
                     <img
-                        src={this.props.srcCloud}
+                        src={srcCloud}
                         className={this.props.className}
                         style={{
                             maxWidth: this.props.maxWidth,

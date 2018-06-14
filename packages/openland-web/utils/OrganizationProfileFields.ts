@@ -1,3 +1,5 @@
+import { XPhotoRef } from 'openland-x/XCloudImage';
+
 export type DevelopmentModels =
     | 'request_for_proposals'
     | 'joint_venture '
@@ -88,7 +90,8 @@ export interface Range {
 
 export interface ContactPerson {
     name: string | null;
-    avatar?: string | null;
+    photo?: string | null;
+    photoRef?: XPhotoRef | null;
     role?: string | null;
     email?: string | null;
     phone?: string | null;

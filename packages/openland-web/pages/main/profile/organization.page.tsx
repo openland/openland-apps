@@ -187,7 +187,7 @@ const SocialLinkImg = Glamorous(XLink)({
 
 const ContactPersonComponent = (props: { contact: ContactPerson, index: number }) => (
     <ContactWrapper>
-        <XAvatar src={props.contact.avatar || undefined} />
+        <XAvatar cloudImageUuid={props.contact.photo || undefined} />
         <div>
             <Text bold={true}>{props.contact.name}</Text>
             <Text opacity={0.8}>{props.contact.role}</Text>
@@ -359,7 +359,7 @@ export default withApp('Organization profile edit', 'viewer', withOrganization(w
                                     {/* <OrganizationPlace>San Francisco, CA</OrganizationPlace> */}
                                 </OrganizationData>
                                 <SwitcherWrapper flatStyle={true}>
-                                    <Switcher path="/marketplace/organization/MXxhY2NvdW50">Development opportunities</Switcher>
+                                    <Switcher path={'/o/' + props.data.organization.id}>Development opportunities</Switcher>
                                     {/* <Switcher>Docs</Switcher>
                                 <Switcher>News</Switcher>
                                 <Switcher>Contacts</Switcher> */}
