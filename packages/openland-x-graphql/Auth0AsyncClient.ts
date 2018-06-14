@@ -1,5 +1,7 @@
+import { backoff } from 'openland-x-utils/timer';
+
 export async function createAuth0AsyncClient() {
-    let auth0 = await import('auth0-js');
+    let auth0 = await backoff(async () => await import('auth0-js'));
     return new auth0.WebAuth({
         domain: 'auth.openland.com',
         clientID: 'v3R2Rr6D4LzzcWKHf91jwKJyDnEm4L96',
