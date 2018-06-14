@@ -3,10 +3,11 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import {
     withSuperAccount, withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountMemberAdd,
-    UserSelect, withSuperAccountFeatureAdd, withSuperAccountFeatureRemove,
+    withSuperAccountFeatureAdd, withSuperAccountFeatureRemove,
     withSuperAccountMemberRemove,
     withSuperAccountRename
 } from '../../api/';
+import { UserSelect } from '../../api/UserSelect';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
@@ -107,7 +108,7 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
     return (
         <DevToolsScaffold title={props.data.superAccount.title}>
             <XHeader text={props.data.superAccount.title} description={'Current State: ' + props.data.superAccount.state}>
-                <Edit orgTitle={props.data.superAccount.title}/>
+                <Edit orgTitle={props.data.superAccount.title} />
                 <AddMemberForm />
                 <RemoveMemberForm />
                 {props.data.superAccount.state !== 'ACTIVATED' && <ActivateButton />}

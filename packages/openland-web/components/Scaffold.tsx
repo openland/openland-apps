@@ -6,7 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XPicture } from 'openland-x/XPicture';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
-import { withSearch } from '../api';
+import { withSearch } from '../api/withSearch';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';

@@ -1,7 +1,7 @@
 import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { withParcel } from '../../../api/';
+import { withParcel } from '../../../api/withParcel';
 import { ParcelProperties } from '../../../components/ParcelProperties';
 import { PermitType } from '../../../components/PermitType';
 import { XWithRole } from 'openland-x-permissions/XWithRole';

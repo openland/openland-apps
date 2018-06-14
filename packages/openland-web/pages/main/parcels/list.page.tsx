@@ -1,7 +1,7 @@
 import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { withParcels } from '../../../api/';
+import { withParcels } from '../../../api/withParcels';
 import { TableParcels } from '../../../components/TableParcels';
 import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';

@@ -1,7 +1,10 @@
 import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { withSuperAdmins, UserSelect, withSuperAdminAdd, withSuperAdminRemove } from '../../api/';
+import { withSuperAdmins } from '../../api/withSuperAdmins';
+import { UserSelect } from '../../api/UserSelect';
+import { withSuperAdminAdd } from '../../api/withSuperAdminAdd';
+import { withSuperAdminRemove } from '../../api/withSuperAdminRemove';
 import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';

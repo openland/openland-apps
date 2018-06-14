@@ -4,76 +4,14 @@ import { graphQLTileSource } from 'openland-x-graphql/graphqlTileSource';
 import { graphqlSelect } from 'openland-x-graphql/graphqlSelect';
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { graphqlCompose3, graphqlCompose2, graphqlCompose4, graphqlCompose6, graphqlCompose5 } from 'openland-x-graphql/graphqlCompose';
+import { graphqlCompose2, graphqlCompose4, graphqlCompose6, graphqlCompose5 } from 'openland-x-graphql/graphqlCompose';
 import { graphQLMapSearchSource } from 'openland-x-graphql/graphqlMapSearchSource';
 import { graphqlTask } from 'openland-x-graphql/graphqlTask';
-
-//
-// Blocks
-//
-
-export const withBlocks = graphqlRouted(Queries.Parcels.BlocksConnectionQuery, { params: ['page'] });
-export const withBlock = graphqlRouted(Queries.Parcels.BlockQuery, { params: ['blockId'] });
-export const withParcels = graphqlRouted(Queries.Parcels.ParcelsConnectionQuery, { params: ['page', 'query'] });
-export const withParcelRaw = graphqlRouted(Queries.Parcels.ParcelQuery, { params: ['parcelId'] });
-export const withParcelsFavorites = graphqlRouted(Queries.Parcels.ParcelsFavoritesQuery);
-export const withParcelsFavroutesCount = graphqlRouted(Queries.Parcels.ParcelsFavoritesCountQuery);
-
-// export const withParcelLikeMutations = graphqlCompose2(withParcelLikes, withParcelUnlikes);
-export const withParcelLikes = graphqlMutation(Queries.Parcels.ParcelLikeMutation, 'doLike', {
-    refetchQueries: [Queries.Parcels.ParcelsFavoritesQuery, Queries.Parcels.ParcelsFavoritesCountQuery]
-});
-export const withParcelUnlikes = graphqlMutation(Queries.Parcels.ParcelUnlikeMutation, 'doUnlike', {
-    refetchQueries: [Queries.Parcels.ParcelsFavoritesQuery, Queries.Parcels.ParcelsFavoritesCountQuery]
-});
-
-export const withParcelLikesRouted = graphqlMutation(Queries.Parcels.ParcelLikeMutation, 'doLike', {
-    params: ['parcelId'],
-    refetchQueries: [Queries.Parcels.ParcelsFavoritesQuery, Queries.Parcels.ParcelsFavoritesCountQuery]
-});
-export const withParcelUnlikesRouted = graphqlMutation(Queries.Parcels.ParcelUnlikeMutation, 'doUnlike', {
-    params: ['parcelId'],
-    refetchQueries: [Queries.Parcels.ParcelsFavoritesQuery, Queries.Parcels.ParcelsFavoritesCountQuery]
-});
-
-export const withParcelDirect2 = graphqlRouted(Queries.Parcels.ParcelQuery);
-export const withParcelDirect = graphqlCompose3(withParcelDirect2, withParcelLikes, withParcelUnlikes);
-// export const withParcelLikes = graphqlMutation<{ doLike: MutationFunc<{}> }>(Parcels.ParcelLike, { name: 'doLike' });
-// export const withParcelUnlikes = graphqlMutation<{ doUnlike: MutationFunc<{}> }>(Parcels.ParcelUnlike, { name: 'doUnlike' });
-
-export const ParcelPointSource = graphQLTileSource(Queries.Parcels.ParcelsPointOverlayQuery, { cluster: true });
-
-const ParcelMetadataAlter = graphqlMutation(Queries.Parcels.ParcelAlterMutation, 'parcelAlterMetadata', { params: ['parcelId'] });
-export const withParcelMetadataForm = graphqlCompose2(withParcelRaw, ParcelMetadataAlter);
-export const withParcelNotes = graphqlMutation(Queries.Parcels.ParcelNotesMutation, 'parcelNotes', { params: ['parcelId'] });
-export const withParcel = graphqlCompose4(withParcelRaw, withParcelLikesRouted, withParcelUnlikesRouted, withParcelNotes);
-
-export const withParcelStats = graphqlRouted(Queries.Parcels.ParcelsStatsQuery);
-
-//
-// Pictures
-//
-
-export interface Picture {
-    url: string;
-    retina: string;
-}
-
-//
-// Search
-//
-
-export const withSearch = graphqlRouted(Queries.Search.SearchQuery);
+import { withParcelNotes } from './withParcelNotes';
 
 //
 // Admin
 //
-
-export const withSuperAdmins = graphqlRouted(Queries.Permissions.SuperAdminsQuery);
-export const UserSelect = graphqlSelect(Queries.User.UsersQuery);
-
-export const withSuperAdminAdd = graphqlMutation(Queries.Permissions.SuperAdminAddMutation, 'add', { refetchQueries: [Queries.Permissions.SuperAdminsQuery] });
-export const withSuperAdminRemove = graphqlMutation(Queries.Permissions.SuperAdminRemoveMutation, 'remove', { refetchQueries: [Queries.Permissions.SuperAdminsQuery] });
 
 export const withSuperAccounts = graphqlRouted(Queries.Permissions.SuperAccountsQuery);
 export const withSuperAccount = graphqlRouted(Queries.Permissions.SuperAccountQuery, { params: ['accountId'] });

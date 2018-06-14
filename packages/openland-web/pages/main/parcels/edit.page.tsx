@@ -1,7 +1,7 @@
 import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { withParcelMetadataForm } from '../../../api/';
+import { withParcelMetadataForm } from '../../../api/withParcelMetadataForm';
 import { XHeader } from 'openland-x/XHeader';
 import { Scaffold } from '../../../components/Scaffold';
 import { XButton } from 'openland-x/XButton';

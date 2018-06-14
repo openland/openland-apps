@@ -5,7 +5,8 @@ import { withApp } from '../../../components/withApp';
 import { FolderButton } from '../../../components/FolderButton';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';
 import { MapStyleSwitcher } from '../../../components/Incubator/MapComponents/MapStyleSwitcher';
-import { withParcelStats, withDealsMap, ParcelMapSearch } from '../../../api/';
+import { withDealsMap, ParcelMapSearch } from '../../../api/';
+import { withParcelStats } from '../../../api/withParcelStats';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
 import { ParcelMap } from '../../../components/ParcelMap';
 import { TextPageExplore } from 'openland-text/TextPageExplore';
@@ -498,7 +499,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         let cityChanged = pendingCity !== this.savedCity;
         let city = pendingCity;
         if (canUseDOM) {
-            sessionStorage.setItem('__explore_city', city);            
+            sessionStorage.setItem('__explore_city', city);
         }
         let cityName = city === 'sf' ? 'San Francisco' : 'New York';
         let countyName = city === 'sf' ? 'San Francisco' : 'New York';

@@ -2,7 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
-import { withParcelsFavorites } from '../../../api/';
+import { withParcelsFavorites } from '../../../api/withParcelsFavorites';
 import { TableParcels } from '../../../components/TableParcels';
 import * as Types from 'openland-api/Types';
 import * as FileSaver from 'file-saver';

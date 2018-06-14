@@ -5,7 +5,7 @@ import { XDimensions } from 'openland-x-format/XDimensions';
 import { XDistance } from 'openland-x-format/XDistance';
 import { XMoney } from 'openland-x-format/XMoney';
 import { XNumber } from 'openland-x-format/XNumber';
-import { withParcelDirect } from '../../../api';
+import { withParcelDirect } from '../../../api/withParcelDirect';
 import { Text } from '../../../strings';
 import { OpportunitiButton } from '../../OpportunityButton';
 import { OwnerTypeComponent } from '../../OwnerTypeComponent';
