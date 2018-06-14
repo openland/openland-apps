@@ -2,13 +2,18 @@ import * as React from 'react';
 import { XAvatarUploadBasicProps, XAvatarUploadBasic } from './basics/XAvatarUploadBasic';
 import { XStoreState } from 'openland-x-store/XStoreState';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
-import { XImageCrop } from './files/XFileUpload';
+import { UploadedFile } from './files/XFileUpload';
 
 class XAvatarUploadStored extends React.PureComponent<XAvatarUploadProps & { store: XStoreState }> {
-    handleChange = (uuid: string | null, crop: XImageCrop | null) => {
+    handleChange = (file: UploadedFile | null) => {
         let key = this.props.valueStoreKey || ('fields.' + this.props.field);
-        if (uuid && crop) {
-            this.props.store.writeValue(key, { uuid: uuid, crop: { x: crop.left, y: crop.top, w: crop.width, h: crop.height } });
+        if (file && file.isImage) {
+            if (file.crop) {
+                this.props.store.writeValue(key, { uuid: file.uuid, crop: { x: file.crop.left, y: file.crop.top, w: file.crop.width, h: file.crop.height } });
+            } else {
+                let side = Math.min(file.width!!, file.height!!);
+                this.props.store.writeValue(key, { uuid: file.uuid, crop: { x: (file.width!! - side) / 2, y: (file.height!! - side) / 2, w: side, h: side } });
+            }
         } else {
             this.props.store.writeValue(key, null);
         }
@@ -22,7 +27,7 @@ class XAvatarUploadStored extends React.PureComponent<XAvatarUploadProps & { sto
         let crop = uuid ? (value.crop ? { left: value.crop.x, top: value.crop.y, width: value.crop.w, height: value.crop.h } : null) : null;
 
         return (
-            <XAvatarUploadBasic {...other} onChanged={this.handleChange} uuid={uuid} crop={crop} />
+            <XAvatarUploadBasic {...other} onChanged={this.handleChange} file={{ uuid: uuid, crop: crop, isImage: true, width: null, height: null }} />
         );
     }
 }

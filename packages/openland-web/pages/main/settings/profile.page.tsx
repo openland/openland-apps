@@ -57,7 +57,7 @@ export default withApp('Profile', 'viewer', withProfile((props) => {
                                             <XFormFieldText field="input.location" title="Location" size="medium" />
                                         </XVertical>
                                         <XFormField field="input.photoRef" title="Photo">
-                                            <XAvatarUpload field="input.photoRef" />
+                                            <XAvatarUpload field="input.photoRef"/>
                                         </XFormField>
                                     </XHorizontal>
                                 </XVertical>

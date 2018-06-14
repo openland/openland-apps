@@ -61,7 +61,7 @@ const CreateProfileForm = withProfileCreate((props) => {
                                     </XFormField>
                                 </XVertical>
                                 <XFormField title={InitTexts.create_profile.photo}>
-                                    <XAvatarUpload field="input.photoRef" size="large" />
+                                    <XAvatarUpload field="input.photoRef" size="large" initialUrl={props.data.prefill && props.data.prefill.picture} />
                                 </XFormField>
                             </XHorizontal>
                         </XFormLoadingContent>

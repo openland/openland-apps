@@ -6,8 +6,7 @@ export interface XFileUploadRenderProps {
     doClear: () => void;
     isLoading: boolean;
     progress: number;
-    crop: XImageCrop | null;
-    uuid: string | null;
+    file: UploadedFile | null;
 }
 
 export interface XImageCrop {
@@ -21,40 +20,53 @@ export interface XFileUploadProps {
     component: React.ComponentType<XFileUploadRenderProps>;
     cropParams?: string;
 
-    crop?: XImageCrop | null;
-    uuid?: string | null;
-    onChanged?: (uuid: string | null, crop: XImageCrop | null) => void;
+    file?: UploadedFile | null;
+    onChanged?: (file: UploadedFile | null) => void;
+
+    initialUrl?: string | null;
 }
 
-export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: boolean, progress: number, uuid: string | null | undefined, crop: XImageCrop | null | undefined }> {
+export interface UploadedFile {
+    isImage: boolean;
+    uuid: string;
+    crop: XImageCrop | null;
+    width: number | null;
+    height: number | null;
+}
+
+export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: boolean, progress: number, file: UploadedFile | null | undefined }> {
 
     private isControlled: boolean = false;
 
     constructor(props: XFileUploadProps) {
         super(props);
-        this.isControlled = props.uuid !== undefined;
-        this.state = { isLoading: false, uuid: this.props.uuid || null, crop: this.props.crop || null, progress: 0 };
+        this.isControlled = !!props.file;
+        this.state = { isLoading: false, file: this.props.file, progress: 0 };
     }
 
-    componentWillUpdate(nextProps: Readonly<XFileUploadProps>, nextState: Readonly<{ isLoading: boolean; uuid: string | null | undefined }>, nextContext: any): void {
-        if ((nextProps.uuid !== undefined) !== (this.props.uuid !== undefined)) {
+    componentWillUpdate(nextProps: Readonly<XFileUploadProps>, nextState: Readonly<{ isLoading: boolean; file: UploadedFile | null | undefined }>, nextContext: any): void {
+        if ((!!nextProps.file) !== (!!this.props.file)) {
             throw 'You can\'t make controlled component to be not controlled';
         }
     }
 
-    doUpload = () => {
-        let uuid = this.state.uuid;
-        let crop = this.state.crop;
-        if (this.isControlled) {
-            uuid = this.props.uuid;
-            crop = this.props.crop;
+    componentDidMount() {
+        if (this.props.initialUrl) {
+            let file = UploadCare.fileFrom('url', this.props.initialUrl);
+            this.doStartUpload(file);
         }
-        let uploaded = uuid
+    }
+
+    doUpload = () => {
+        let file = this.state.file;
+        if (this.isControlled) {
+            file = this.props.file;
+        }
+        let uploaded = file
             ? UploadCare.fileFrom(
                 'uploaded',
-                crop ? 'https://ucarecdn.com/' + uuid + `/-/crop/${crop.width}x${crop.height}/${crop.left},${crop.top}/` : uuid)
+                file.crop ? 'https://ucarecdn.com/' + file.uuid + `/-/crop/${file.crop.width}x${file.crop.height}/${file.crop.left},${file.crop.top}/` : file.uuid)
             : null;
-        console.warn(uploaded);
         let dialog = UploadCare.openDialog(uploaded, {
             publicKey: 'b70227616b5eac21ba88',
             imagesOnly: true,
@@ -62,22 +74,31 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
             imageShrink: '1024x1024',
         });
         dialog.done((r) => {
-            this.setState({ isLoading: true, progress: 0 });
-            r.progress((p) => {
-                this.setState({ progress: p.progress });
-            });
-            r.done((f) => {
-                console.warn(f);
-                let crop2 = f.crop ? f.crop : null;
-                if (this.isControlled) {
-                    this.setState({ isLoading: false, progress: 1 });
-                } else {
-                    this.setState({ isLoading: false, progress: 1, uuid: f.uuid, crop: crop2 });
-                }
-                if (this.props.onChanged) {
-                    this.props.onChanged(f.uuid, crop2);
-                }
-            });
+            this.doStartUpload(r);
+        });
+    }
+
+    doStartUpload(file: UploadCare.File) {
+        this.setState({ isLoading: true, progress: 0 });
+        file.progress((p) => {
+            this.setState({ progress: p.progress });
+        });
+        file.done((f) => {
+            let fileu: UploadedFile = {
+                isImage: f.isImage,
+                uuid: f.uuid,
+                crop: f.crop ? f.crop : null,
+                width: f.originalImageInfo && f.originalImageInfo.width || null,
+                height: f.originalImageInfo && f.originalImageInfo.height || null
+            };
+            if (this.isControlled) {
+                this.setState({ isLoading: false, progress: 1 });
+            } else {
+                this.setState({ isLoading: false, progress: 1, file: fileu });
+            }
+            if (this.props.onChanged) {
+                this.props.onChanged(fileu);
+            }
         });
     }
 
@@ -85,21 +106,19 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
         if (this.isControlled) {
             this.setState({ isLoading: false });
         } else {
-            this.setState({ isLoading: false, uuid: null });
+            this.setState({ isLoading: false, file: null });
         }
         if (this.props.onChanged) {
-            this.props.onChanged(null, null);
+            this.props.onChanged(null);
         }
     }
 
     render() {
-        let uuid = this.isControlled ? this.props.uuid : this.state.uuid;
-        let crop = this.isControlled ? this.props.crop : this.state.crop;
+        let file = this.isControlled ? this.props.file : this.state.file;
         let Component = this.props.component;
         return (
             <Component
-                uuid={uuid || null}
-                crop={crop || null}
+                file={file || null}
                 isLoading={this.state.isLoading}
                 doClear={this.doClear}
                 doUpload={this.doUpload}

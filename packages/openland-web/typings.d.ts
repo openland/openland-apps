@@ -190,6 +190,10 @@ declare namespace UploadCare {
             width: number;
             height: number;
         }
+        originalImageInfo?: {
+            width: number;
+            height: number;
+        }
     }
 
     interface UploadInfo {
@@ -206,7 +210,7 @@ declare namespace UploadCare {
     }
 
     export function openDialog(file: any | null, settings: Settings): Dialog
-    export function fileFrom(type: any, data: any): any
+    export function fileFrom(type: any, data: any): File
 }
 
 declare module 'uploadcare-widget' {

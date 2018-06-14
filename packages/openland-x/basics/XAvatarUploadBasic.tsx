@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XFileUpload, XImageCrop } from '../files/XFileUpload';
+import { XFileUpload, XImageCrop, XFileUploadRenderProps, UploadedFile } from '../files/XFileUpload';
 import Glamorous from 'glamorous';
 import { XIcon } from '../XIcon';
 import { XCloudImage } from '../XCloudImage';
@@ -7,10 +7,10 @@ import { XLoader } from '../XLoader';
 
 export interface XAvatarUploadBasicProps {
     placeholder?: { add: any, change: any };
-    crop?: XImageCrop | null;
-    uuid?: string | null;
-    onChanged?: (uuid: string | null, crop: XImageCrop | null) => void;
+    file?: UploadedFile | null;
+    onChanged?: (file: UploadedFile | null) => void;
     size?: 'normal' | 'large';
+    initialUrl?: string | null;
 }
 
 const DropAreaWrapper = Glamorous.div<{ hasImage: boolean, avatarSize?: 'normal' | 'large' }>((props) => ({
@@ -81,38 +81,76 @@ function prepareSrc(uuid: string, crop: XImageCrop | null) {
     return res;
 }
 
-export function XAvatarUploadBasic(props: XAvatarUploadBasicProps) {
+class AvatarRender extends React.PureComponent<
+    XFileUploadRenderProps & { placeholder?: { add: any, change: any }, size?: 'normal' | 'large'; },
+    { srcLoading: boolean }> {
 
-    return (
-        <XFileUpload
-            {...props}
-            cropParams="1:1"
-            component={(rp) => {
-                return (
-                    <DropAreaWrapper
-                        hasImage={rp.uuid !== null}
-                        onClick={rp.doUpload}
-                        avatarSize={props.size}
-                    >
-                        {rp.uuid && <AvatarImage
-                            width={props.size === 'large' ? 241 : 159}
-                            height={props.size === 'large' ? 241 : 159}
-                            srcCloud={prepareSrc(rp.uuid, rp.crop)}
-                            resize={'fill'}
-                        />}
+    constructor(props: XFileUploadRenderProps & { placeholder?: { add: any, change: any }, size?: 'normal' | 'large'; }) {
+        super(props);
+        this.state = { srcLoading: false };
+        // if (props.uuid) {
+        //     this.state = { srcLoading: true };
+        // } else {
+        //     this.state = { srcLoading: false };
+        // }
+    }
 
-                        <Placeholder hasImage={rp.uuid !== null}>
-                            <PlaceholderImage icon="photo_camera" hasImage={rp.uuid !== null} />
-                            <PlaceholderHoint hasImage={rp.uuid !== null}>
-                                {props.placeholder && (rp.uuid !== null ? props.placeholder.change : props.placeholder.add)}
-                                {!props.placeholder && (<> <p>{rp.uuid !== null ? 'Change' : 'Add'} your</p> <p>profile photo</p></>)}
+    componentWillReceiveProps(nextProps: XFileUploadRenderProps) {
+        if (this.props.file !== nextProps.file) {
+            if (nextProps.file) {
+                this.setState({ srcLoading: true });
+            } else {
+                this.setState({ srcLoading: false });
+            }
+        }
+    }
 
-                            </PlaceholderHoint>
-                        </Placeholder>
-                        {rp.isLoading && <XLoader loading={rp.isLoading} />}
-                    </DropAreaWrapper>
-                );
-            }}
-        />
-    );
+    handleOnLoad = () => {
+        this.setState({ srcLoading: false });
+    }
+    render() {
+        let hasImage = this.props.file && this.props.file.isImage || false;
+        return (
+            <DropAreaWrapper
+                hasImage={hasImage}
+                onClick={this.props.doUpload}
+                avatarSize={this.props.size}
+            >
+                {hasImage && <AvatarImage
+                    width={this.props.size === 'large' ? 241 : 159}
+                    height={this.props.size === 'large' ? 241 : 159}
+                    srcCloud={prepareSrc(this.props.file!!.uuid, this.props.file!!.crop)}
+                    resize={'fill'}
+                    onLoad={this.handleOnLoad}
+                />}
+
+                <Placeholder hasImage={hasImage}>
+                    <PlaceholderImage icon="photo_camera" hasImage={hasImage} />
+                    <PlaceholderHoint hasImage={hasImage}>
+                        {this.props.placeholder && (hasImage ? this.props.placeholder.change : this.props.placeholder.add)}
+                        {!this.props.placeholder && (<> <p>{hasImage ? 'Change' : 'Add'} your</p> <p>profile photo</p></>)}
+
+                    </PlaceholderHoint>
+                </Placeholder>
+                {(this.props.isLoading || this.state.srcLoading) && <XLoader loading={this.props.isLoading || this.state.srcLoading} />}
+            </DropAreaWrapper>
+        );
+    }
+}
+
+export class XAvatarUploadBasic extends React.PureComponent<XAvatarUploadBasicProps> {
+    render() {
+        return (
+            <XFileUpload
+                {...this.props}
+                initialUrl={this.props.initialUrl}
+                cropParams="1:1"
+                component={(rp) => {
+                    return (
+                        <AvatarRender {...rp} placeholder={this.props.placeholder} size={this.props.size} />
+                    );
+                }}
+            />
+        );
+    }
 }
