@@ -108,7 +108,7 @@ export const withCreateFolderFromSearchMutation = graphqlMutation(Queries.Folder
 export const withSetFolderMutation = graphqlMutation(Queries.Folder.SetParcelFolderMutation, 'setFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
 export const withFolderActions = graphqlCompose5(withCreateFolderMutation, withDeleteFolderMutation, withAlterFolderMutation, withAddToFolderMutation, withSetFolderMutation);
 export const FolderSelect = graphqlSelect<{}>(Queries.Folder.FoldersSelectQuery);
-export const FolderTileSource = graphQLTileSource(Queries.Folder.FolderTileOverlayQuery, {
+export const FolderTileSource = graphQLTileSource(Queries.Folder.FolderItemsTileOverlayQuery, {
     propertiesFactory: (src) => ({ parcelId: src.parcel.id })
 });
 
@@ -116,8 +116,8 @@ export const withFolderItems = graphqlRouted(Queries.Folder.FolderItemsConnectio
 
 export const ParcelMapSearch = graphQLMapSearchSource(Queries.Parcels.ParcelsMapSearchQuery);
 
-export const withSampleTask = graphqlTask(Queries.Tasks.SampleTask);
-export const withFolderExportTask = graphqlTask(Queries.Tasks.FolderExportTask);
+export const withSampleTask = graphqlTask(Queries.Tasks.SampleTaskMutation);
+export const withFolderExportTask = graphqlTask(Queries.Tasks.FolderExportTaskMutation);
 
 //
 // Invites
