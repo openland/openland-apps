@@ -208,7 +208,7 @@ class XLocationPickerModalBasic extends React.Component<XLocationPickerBaiscProp
                 target={!this.props.targetQuery ? (this.props.target || target) : undefined}
                 body={(
                     <MapContainer2>
-                        <JustMap lastKnownCameraLocation={this.state.value? {latitude: this.state.value.result.center[1], longitude: this.state.value.result.center[0], zoom: 17} : undefined}>
+                        <JustMap lastKnownCameraLocation={this.state.value ? { latitude: this.state.value.result.center[1], longitude: this.state.value.result.center[0], zoom: 17 } : undefined}>
                             <MapSearcher onResult={this.onResult} />
                         </JustMap>
                     </MapContainer2>
@@ -235,7 +235,7 @@ class XLocationPickerStored extends React.PureComponent<XLocationPickerProps & {
         let { valueStoreKey, field, ...other } = this.props;
         let key = this.props.valueStoreKey || ('fields.' + this.props.field);
         let value = this.props.store.readValue(key);
-        
+
         return (
             <XLocationPickerModalBasic {...other} onPicked={this.handleChange} value={value} />
         );

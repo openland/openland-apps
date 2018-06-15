@@ -33,6 +33,9 @@ import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
 import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
 
+const CenteredButton = Glamorous(XButton)({
+    alignSelf: 'center'
+});
 class FeaturedPpportunityField extends React.Component<{ item: FeaturedOpportunity, index: number }> {
     render() {
         return (
@@ -63,9 +66,6 @@ const ContactField = Glamorous.div({
     marginLeft: 0,
 });
 
-const CenteredButton = Glamorous(XButton)({
-    alignSelf: 'center'
-});
 class ContactPersonItem extends React.Component<{ contact: ContactPerson, index: number }> {
     render() {
         return (
