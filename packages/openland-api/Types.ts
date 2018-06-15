@@ -996,7 +996,7 @@ export interface MyOrganizationProfileQuery {
       from: number | null,
       to: number | null,
     } > | null,
-    alpha:  Array< {
+    siteSizes:  Array< {
       __typename: "Range",
       from: number | null,
       to: number | null,
@@ -1067,7 +1067,7 @@ export interface UpdateOrganizationMutation {
       from: number | null,
       to: number | null,
     } > | null,
-    alpha:  Array< {
+    siteSizes:  Array< {
       __typename: "Range",
       from: number | null,
       to: number | null,
@@ -3209,7 +3209,7 @@ export interface OrganizationProfileFullFragment {
     from: number | null,
     to: number | null,
   } > | null,
-  alpha:  Array< {
+  siteSizes:  Array< {
     __typename: string,
     from: number | null,
     to: number | null,
