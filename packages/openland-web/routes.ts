@@ -222,6 +222,8 @@ routes.add('/ui/forms', '/dev/ui/forms');
 routes.add('/ui/forms/', '/dev/ui/forms');
 routes.add('/ui/linear', '/dev/ui/linear');
 routes.add('/ui/linear/', '/dev/ui/linear');
+routes.add('/ui/mapPicker', '/dev/ui/mapPicker');
+routes.add('/ui/mapPicker/', '/dev/ui/mapPicker');
 
 //
 // Dev Tools

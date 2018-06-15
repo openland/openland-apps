@@ -195,7 +195,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         alphaSpecialAttributes: data.input.alphaSpecialAttributes,
                                         alphaPotentialSites: potentialSites,
                                         alphaSiteSizes: siteSizes
-                                        
+
                                     }
                                 }
                             });
