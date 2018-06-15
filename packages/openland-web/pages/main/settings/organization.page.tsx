@@ -161,7 +161,18 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                     let rangeStr;
                                     if ((range.to || Number.MAX_SAFE_INTEGER) <= 5) {
                                         rangeStr = 'small';
-                                    } else if ((range.from || 0) >= 5 && (range.to || Number.MAX_SAFE_INTEGER) <= 50) {
+                                    } else if ((range.to || Number.MAX_SAFE_INTEGER) <= 50) {
+                                        rangeStr = 'medium';
+                                    } else {
+                                        rangeStr = 'large';
+                                    }
+                                    return rangeStr;
+                                }) : null,
+                                alphaSiteSizes: props.data.myOrganizationProfile!!.siteSizes ? props.data.myOrganizationProfile!!.siteSizes!!.map(range => {
+                                    let rangeStr;
+                                    if ((range.to || Number.MAX_SAFE_INTEGER) <= 10000) {
+                                        rangeStr = 'small';
+                                    } else if ((range.to || Number.MAX_SAFE_INTEGER) <= 100000) {
                                         rangeStr = 'medium';
                                     } else {
                                         rangeStr = 'large';
@@ -172,6 +183,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                         }}
                         defaultAction={async (data) => {
                             let potentialSites = data.input.alphaPotentialSites ? data.input.alphaPotentialSites.map((rangeStr: string) => (rangeStr === 'small' ? { from: 0, to: 5 } : rangeStr === 'medium' ? { from: 5, to: 50 } : { from: 50 })) : null;
+                            let siteSizes = data.input.alphaSiteSizes ? data.input.alphaSiteSizes.map((rangeStr: string) => (rangeStr === 'small' ? { from: 0, to: 10000 } : rangeStr === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 })) : null;
                             console.warn(potentialSites);
                             await props.updateOrganizaton({
                                 variables: {
@@ -181,7 +193,9 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         alphaLandUse: data.input.alphaLandUse,
                                         alphaGoodFor: data.input.alphaGoodFor,
                                         alphaSpecialAttributes: data.input.alphaSpecialAttributes,
-                                        alphaPotentialSites: potentialSites
+                                        alphaPotentialSites: potentialSites,
+                                        alphaSiteSizes: siteSizes
+                                        
                                     }
                                 }
                             });
@@ -191,7 +205,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                         <XVertical maxWidth={500}>
                             <XFormLoadingContent>
                                 <XVertical>
-                                    
+
                                     <XFormField title="Development Models">
                                         <XSelect
                                             field="input.alphaDevelopmentModels"
@@ -210,10 +224,18 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                             multi={true}
                                         />
                                     </XFormField>
-                                     <XFormField title="Potential Sites">
+                                    <XFormField title="Potential Sites">
                                         <XSelect
                                             field="input.alphaPotentialSites"
                                             options={[{ label: '0-5 sites', value: 'small' }, { label: '5-50 sites', value: 'medium' }, { label: '50+ sites', value: 'large' }]}
+                                            multi={true}
+                                        />
+
+                                    </XFormField>
+                                    <XFormField title="Site sizes ">
+                                        <XSelect
+                                            field="input.alphaSiteSizes"
+                                            options={[{ label: 'small (up to 10,000 sf)', value: 'small' }, { label: 'medium (10,000 - 100,000 sf)', value: 'medium' }, { label: 'large (100,000 + sf)', value: 'large' }]}
                                             multi={true}
                                         />
 

@@ -38,7 +38,7 @@ export const OrganizationProfileFull = gql`
             from
             to
         }
-        alpha: alphaSiteSizes{
+        siteSizes: alphaSiteSizes{
             from
             to
         }

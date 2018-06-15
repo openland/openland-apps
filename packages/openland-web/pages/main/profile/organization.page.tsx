@@ -432,6 +432,50 @@ export default withApp('Organization profile edit', 'viewer', withOrganization(w
                                         </XVerticalStyled>
 
                                         <div>
+                                            {props.data.organization.potentialSites && (
+                                                <OpportunitiesWrapper>
+                                                    <OpportunitiesTextWrapper>
+                                                        <Text bold={true}>Number of potential sites</Text>
+                                                    </OpportunitiesTextWrapper>
+                                                    <OpportunitiesValueWrapper>
+                                                        <XHorizontal>
+                                                            {props.data.organization.potentialSites!!.map((s, k) => (
+                                                                <OpportunitiesValue key={k + '_' + s}>
+                                                                    {
+                                                                        ((s.to || Number.MAX_SAFE_INTEGER) <= 5) ?
+                                                                            '0-5 sites' :
+                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 50) ?
+                                                                                '5-50 sites' :
+                                                                                '50+ sites'
+                                                                    }
+                                                                </OpportunitiesValue>
+                                                            ))}
+                                                        </XHorizontal>
+                                                    </OpportunitiesValueWrapper>
+                                                </OpportunitiesWrapper>
+                                            )}
+                                            {props.data.organization.siteSizes && (
+                                                <OpportunitiesWrapper>
+                                                    <OpportunitiesTextWrapper>
+                                                        <Text bold={true}>Site sizes</Text>
+                                                    </OpportunitiesTextWrapper>
+                                                    <OpportunitiesValueWrapper>
+                                                        <XHorizontal>
+                                                            {props.data.organization.siteSizes!!.map((s, k) => (
+                                                                <OpportunitiesValue key={k + '_' + s}>
+                                                                    {
+                                                                        ((s.to || Number.MAX_SAFE_INTEGER) <= 10000) ?
+                                                                            'small (up to 10,000 sf)' :
+                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 100000) ?
+                                                                                'medium (10,000 - 100,000 sf)' :
+                                                                                'large (100,000 + sf)'
+                                                                    }
+                                                                </OpportunitiesValue>
+                                                            ))}
+                                                        </XHorizontal>
+                                                    </OpportunitiesValueWrapper>
+                                                </OpportunitiesWrapper>
+                                            )}
                                             {props.data.organization.landUse && (
                                                 <OpportunitiesWrapper>
                                                     <OpportunitiesTextWrapper>
