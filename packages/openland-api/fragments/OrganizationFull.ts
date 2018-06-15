@@ -37,5 +37,14 @@ export const OrganizationFull = gql`
         landUse: alphaLandUse
         goodFor: alphaGoodFor
         specialAttributes: alphaSpecialAttributes
+        featuredOpportunities: alphaDummyFeaturedOpportunities{
+            title
+            location{
+                lat
+                lon
+            }
+            locationTitle
+            tags
+        }
     }
 `;

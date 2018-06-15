@@ -166,7 +166,7 @@ class XLocationPickerModalBasic extends React.Component<XLocationPickerBaiscProp
 
     constructor(props: XLocationPickerProps) {
         super(props);
-        this.state = { value: props.value };
+        this.state = { picked: props.value, value: props.value };
     }
 
     onResult = (res: XMapGeocoderResult) => {
@@ -208,7 +208,7 @@ class XLocationPickerModalBasic extends React.Component<XLocationPickerBaiscProp
                 target={!this.props.targetQuery ? (this.props.target || target) : undefined}
                 body={(
                     <MapContainer2>
-                        <JustMap>
+                        <JustMap lastKnownCameraLocation={this.state.value? {latitude: this.state.value.result.center[1], longitude: this.state.value.result.center[0], zoom: 17} : undefined}>
                             <MapSearcher onResult={this.onResult} />
                         </JustMap>
                     </MapContainer2>

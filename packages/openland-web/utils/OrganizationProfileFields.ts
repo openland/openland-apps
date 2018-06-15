@@ -97,6 +97,12 @@ export interface ContactPerson {
     phone?: string | null;
     link?: string | null;
 }
+export interface FeaturedOpportunity {
+    title: string;
+    location: { lon: number, lat: number, ref?: string, count?: number };
+    locationTitle: string;
+    tags?: string[] | null;
+}
 
 export interface OrganizationExtras {
     potentialSites?: Range[] | null;

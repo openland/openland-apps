@@ -17,11 +17,11 @@ const Container = Glamorous.div({
 
 export interface XMapGeocoderResult {
     result: {
-        id: string;
+        id?: string;
         center: number[];
-        relevance: number;
+        relevance?: number;
         text: string;
-        type: string;
+        type?: string;
         context?: { id?: string, text?: string, short_code?: string, wikidata?: string }[];
         geometry?: { type: string, coordintaes?: number[] };
         matching_place_name?: string;
