@@ -103,6 +103,10 @@ async function doConvert() {
     let root = path.resolve(__dirname + '/../openland-api/queries/');
     let res = fs.readdirSync(root);
     res = res.filter((v) => {
+        // Special Case for Tasks
+        if (v === 'Tasks.ts') {
+            return false;
+        }
         let parts = v.split('.');
         return parts.length === 2 && parts[1] === 'ts';
     });
