@@ -21,6 +21,7 @@ import {
 } from '../../../utils/OrganizationProfileFields';
 import { XButton } from 'openland-x/XButton';
 import { withQueryLoader } from '../../../components/withQueryLoader';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -376,6 +377,15 @@ export default withApp('Organization profile edit', 'viewer', withOrganization(w
                                             }}
                                         />
                                     )}
+                                    <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
+                                        <XButton
+                                            style="primary"
+                                            size="medium"
+                                            icon="edit"
+                                            text="Edit"
+                                            href="/settings/organization"
+                                        />
+                                    </XWithRole>
                                 </XHorizontal>
                             </HeaderContent>
                         </Header>
