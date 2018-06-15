@@ -467,6 +467,26 @@ interface ScaffoldProps {
     sidebarBorderColor?: string;
 }
 
+const Home = withUserInfo((props) => {
+    return (
+        <XWithRole role="feature-marketplace" negate={true}>
+            <XPopper
+                placement="right"
+                showOnHoverContent={false}
+                showOnHover={true}
+                groupId="scaffold_tooltip"
+                content={(
+                    <strong>{TextAppBar.items.home}</strong>
+                )}
+            >
+                <NavigatorItem path={'/o/' + props.organization!!.id}>
+                    <NavigatorIcon icon="home" />
+                </NavigatorItem>
+            </XPopper>
+        </XWithRole>
+    );
+});
+
 const OrganizationPicker = withMyOrganizations((props) => {
     if (props.data.loading) {
         return <XLoader loading={true} />;
@@ -580,6 +600,11 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 </NavigatorItem>
                             </XPopper>
                         </XWithRole>
+
+                        <XWithRole role={['feature-marketplace']} negate={true}>
+                            <Home />
+                        </XWithRole>
+
                         <XPopper
                             placement="right"
                             showOnHoverContent={false}
