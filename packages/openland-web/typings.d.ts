@@ -1,3 +1,8 @@
+declare module '*.handlebars' {
+    const content: string;
+    export = content;
+}
+
 declare module 'react-map-gl' {
     interface StaticMapProps {
         mapboxApiAccessToken: string;

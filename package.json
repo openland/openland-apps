@@ -131,6 +131,7 @@
 		"concurrently": "^3.5.1",
 		"cpx": "^1.5.0",
 		"cross-env": "^5.1.1",
+		"graphql-code-generator": "^0.9.2",
 		"next-awesome-typescript": "^0.2.0",
 		"nodemon": "^1.17.1",
 		"tslint": "^5.8.0",
@@ -157,7 +158,9 @@
 		"schema:local": "yarn schema:download:local && yarn schema:generate",
 		"schema:download": "yarn apollo-codegen introspect-schema https://api.statecrafthq.com/api --output schema.json",
 		"schema:download:local": "yarn apollo-codegen introspect-schema http://localhost:9000/api --output schema.json",
-		"schema:generate": "yarn apollo-codegen generate ./packages/openland-api/*/*.ts --schema schema.json --target typescript --output ./packages/openland-api/Types.ts --addTypename --tag-name gql",
+		"schema:generate": "yarn schema:generate:1 && yarn schema:generate:2",
+		"schema:generate:1": "yarn apollo-codegen generate ./packages/openland-api/*/*.ts --schema schema.json --target typescript --output ./packages/openland-api/Types.ts --addTypename --tag-name gql",
+		"schema:generate:2": " ./node_modules/.bin/ts-node --compilerOptions '{\"module\":\"commonjs\"}' ./packages/openland-x-graphql-gen/generator.ts",
 		"promote": "kubectl set image deployment/openland-web app=`kubectl get deployment openland-web-next -o=jsonpath='{$.spec.template.spec.containers[:1].image}'` && kubectl rollout status deployments openland-web",
 		"favicon-gen": "convert ./packages/openland-web/static/favicon-16.png ./packages/openland-web/static/favicon-32.png ./packages/openland-web/static/favicon-96.png ./packages/openland-web/static/favicon.ico"
 	}

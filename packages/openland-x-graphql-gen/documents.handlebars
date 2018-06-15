@@ -1,0 +1,5 @@
+import * as Types from '../Types';
+
+{{#each operations }}
+export const {{ name }}{{ toPascalCase operationType }} = {{#ifEq operationType 'mutation' }}typedMutation{{else}}typedQuery{{/ifEq}}<Types.{{ name }}{{ toPascalCase operationType }}, {{#if hasVariables}}Types.{{ name }}{{ toPascalCase operationType }}Variables{{else}}{}{{/if}}>(Raw.{{ name }}{{ toPascalCase operationType }});
+{{/each}}

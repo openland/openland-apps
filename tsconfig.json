@@ -72,6 +72,9 @@
       ],
       "openland-x-store": [
         "openland-x-store"
+      ],
+      "openland-x-graphql-gen": [
+        "openland-x-graphql-gen"
       ]
     },
     "importHelpers": true
