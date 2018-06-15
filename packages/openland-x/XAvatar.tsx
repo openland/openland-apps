@@ -41,8 +41,8 @@ let sizeStyles = styleResolver({
         fontSize: 20,
     },
     'small': {
-        height: 32,
-        width: 32,
+        height: 36,
+        width: 36,
         fontSize: 20,
     }
 });
