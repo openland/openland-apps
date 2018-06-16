@@ -76,7 +76,7 @@ async function start() {
         endpointURL: '/graphql',
         subscriptionsEndpoint: url.format({
           host: req!!.get('host'),
-          protocol: console.warn(req) || req!!.protocol === 'https' ? 'wss' : 'ws',
+          protocol: (req!!.header('x-forwarded-proto') === 'https' || req!!.protocol === 'https') ? 'wss' : 'ws',
           pathname: '/graphql'
         })
       })));
