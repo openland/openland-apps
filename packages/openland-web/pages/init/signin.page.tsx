@@ -19,8 +19,7 @@ import {
 } from './components/SignComponents';
 import { AuthRouter } from '../../components/AuthRouter';
 import { InitTexts } from './_text';
-import { createAuth0AsyncClient } from 'openland-x-graphql/Auth0AsyncClient';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 
 const EmptyBlock = Glamorous.div({
     width: '100%',
@@ -44,8 +43,6 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
     codeError: string,
 }> {
 
-    client = canUseDOM ? createAuth0AsyncClient() : null;
-
     constructor(props: { redirect?: string | null } & XWithRouter) {
         super(props);
         this.state = {
@@ -66,12 +63,10 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
     loginWithGoogle = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
         this.setState({ googleStarting: true });
-        (async () => {
-            (await this.client!!).authorize({
-                connection: 'google-oauth2',
-                state: this.props.redirect ? this.props.redirect : 'none'
-            });
-        })();
+        createAuth0Client().authorize({
+            connection: 'google-oauth2',
+            state: this.props.redirect ? this.props.redirect : 'none'
+        });
     }
 
     loginWithEmail = (e: React.SyntheticEvent<any>) => {
@@ -115,30 +110,25 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
     loginEmailStart = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
         this.setState({ emailSending: true, emailError: '', emailSent: false });
-
-        (async () => {
-            (await this.client!!).passwordlessStart({ connection: 'email', send: 'code', email: this.state.emailValue }, (error, v) => {
-                if (error) {
-                    this.setState({ emailSending: false, emailError: error.description!! });
-                } else {
-                    this.setState({ emailSending: false, emailSent: true });
-                }
-            });
-        })();
+        createAuth0Client().passwordlessStart({ connection: 'email', send: 'code', email: this.state.emailValue }, (error, v) => {
+            if (error) {
+                this.setState({ emailSending: false, emailError: error.description!! });
+            } else {
+                this.setState({ emailSending: false, emailSent: true });
+            }
+        });
     }
 
     loginCodeStart = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
         this.setState({ codeSending: true });
-        (async () => {
-            (await this.client!!).passwordlessVerify({ connection: 'email', email: this.state.emailValue, verificationCode: this.state.codeValue }, (error, v) => {
-                if (error) {
-                    this.setState({ codeSending: false, codeError: error.description!! });
-                } else {
-                    // Ignore. Should be redirect to completion page.
-                }
-            });
-        })();
+        createAuth0Client().passwordlessVerify({ connection: 'email', email: this.state.emailValue, verificationCode: this.state.codeValue }, (error, v) => {
+            if (error) {
+                this.setState({ codeSending: false, codeError: error.description!! });
+            } else {
+                // Ignore. Should be redirect to completion page.
+            }
+        });
     }
 
     render() {
