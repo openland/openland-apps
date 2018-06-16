@@ -7,6 +7,7 @@ import { RequestHandler } from 'express';
 import * as Routes from './routes';
 import { graphiqlExpress } from 'apollo-server-express';
 import * as Morgan from 'morgan';
+import * as url from 'url';
 
 // tslint:disable
 console.log('Starting...');
@@ -51,6 +52,7 @@ async function start() {
     server.use('/graphql', proxy({
         changeOrigin: true,
         target: endpoint,
+        ws: true,
         pathRewrite: function (path: string) {
             return '/api';
         }
@@ -70,7 +72,14 @@ async function start() {
     //
     // GraphiQL Sandbox
     //
-    server.use('/sandbox', graphiqlExpress({ endpointURL: '/graphql' }));
+    server.use('/sandbox', graphiqlExpress(req => ({
+        endpointURL: '/graphql',
+        subscriptionsEndpoint: url.format({
+          host: req!!.get('host'),
+          protocol: req!!.protocol === 'https' ? 'wss' : 'ws',
+          pathname: '/graphql'
+        })
+      })));
 
     //
     // Favicon support endpoint
