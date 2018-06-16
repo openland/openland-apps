@@ -1,8 +1,14 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { MessagePage } from './MessagePage';
 import { MessagePageContent } from './MessagePageContent';
+
+const ErrorImg = Glamorous.img({
+    width: 600,
+    height: 361
+});
 
 export class ErrorPage extends React.Component<{ statusCode: number | null | undefined }> {
     render() {
@@ -11,6 +17,7 @@ export class ErrorPage extends React.Component<{ statusCode: number | null | und
                 <XDocumentHead title={this.props.statusCode === 404 ? ['Error 404: Not found!'] : ['Ooops!']} />
                 <XTrack event="View 404">
                     <MessagePage>
+                        <ErrorImg src="/static/img/img-error.png" srcSet="/static/img/img-error@2x.png 2x" />
                         <MessagePageContent
                             title={this.props.statusCode === 404 ? 'Not found!' : 'Ooops!'}
                         >

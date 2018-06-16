@@ -26,7 +26,7 @@ const Logo = Glamorous.div<{ width?: number, height?: number }>((props) => ({
 }));
 
 let Container = Glamorous.div({
-    width: 400
+    // width: 400
 });
 
 let Footer = Glamorous.div({

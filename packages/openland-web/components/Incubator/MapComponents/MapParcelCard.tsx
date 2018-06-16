@@ -78,7 +78,7 @@ const ContainerHiderButton = Glamorous(XButton)({
 
 const Scrollable = Glamorous.div({
     width: '100%',
-    height: '100vh',
+    height: '100%',
     overflowY: 'auto',
     paddingBottom: 90,
     '&::-webkit-scrollbar': {

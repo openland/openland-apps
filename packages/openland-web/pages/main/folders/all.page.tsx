@@ -240,7 +240,7 @@ const MapContainer2 = Glamorous.div<{ noParcels: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     position: 'relative',
-    height: 'calc(100% - 50px)',
+    height: 'calc(100vh - 76px)',
     width: '100%',
 
     '& .mapboxgl-ctrl-top-right': {
