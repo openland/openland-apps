@@ -20,4 +20,4 @@ class LogoutHandler extends React.Component<{}, {}> {
     }
 }
 
-export default withData(LogoutHandler);
+export default withData('LogOut', LogoutHandler);

@@ -12,7 +12,7 @@ import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
 import { withQueryLoader } from '../../components/withQueryLoader';
 
-export default withAppBase(withMyOrganizations(withQueryLoader((props) => {
+export default withAppBase('Pick Org', withMyOrganizations(withQueryLoader((props) => {
     return (
         <AuthRouter>
             <XDocumentHead title={InitTexts.pick_organization.pageTitle} titleSocial={InitTexts.socialPageTitle} />

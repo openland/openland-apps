@@ -8,7 +8,7 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../../components/AuthRouter';
 import { InitTexts } from './_text';
 
-export default withAppBase((props) => {
+export default withAppBase('Suspended', (props) => {
     return (
         <AuthRouter>
             <XDocumentHead title={InitTexts.suspended.pageTitle} titleSocial={InitTexts.socialPageTitle} />

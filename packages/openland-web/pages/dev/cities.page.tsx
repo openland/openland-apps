@@ -7,6 +7,7 @@ import { XHeader } from 'openland-x/XHeader';
 import { XTable } from 'openland-x/XTable';
 
 export default withApp('Super Organizations', 'super-admin', withSuperCities((props) => {
+    console.warn(props);
     return (
         <DevToolsScaffold title="Accounts">
             <XHeader text="Super Cities" description={props.data.superCities.length + ' total'}>{}</XHeader>

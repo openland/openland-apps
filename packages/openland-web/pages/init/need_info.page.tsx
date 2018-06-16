@@ -15,7 +15,7 @@ const InfoText = Glamorous.div({
     marginBottom: 15
 });
 
-export default withAppBase((props) => {
+export default withAppBase('Need Info', (props) => {
     return (
         <AuthRouter>
             <XDocumentHead title={InitTexts.need_info.pageTitle} titleSocial={InitTexts.socialPageTitle} />
@@ -23,7 +23,7 @@ export default withAppBase((props) => {
                 <MessagePage>
                     <MessagePageContent title={InitTexts.need_info.title}>
                         <InfoText>{InitTexts.need_info.content}</InfoText>
-                        <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center"/>
+                        <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" />
                     </MessagePageContent>
                 </MessagePage>
             </XTrack>

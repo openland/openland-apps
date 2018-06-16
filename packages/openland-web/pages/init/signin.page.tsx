@@ -208,7 +208,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
     }
 }
 
-export default withAppBase(withRouter((props) => {
+export default withAppBase('Sign In', withRouter((props) => {
     let redirect = props.router.query ? (props.router.query.redirect ? props.router.query.redirect : null) : null;
     const signin = props.router.path.endsWith('signin');
     return (

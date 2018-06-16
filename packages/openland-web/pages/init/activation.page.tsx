@@ -140,7 +140,7 @@ const Description = Glamorous.div<{ marginBottom?: number }>((props) => ({
     marginBottom: props.marginBottom
 }));
 
-export default withAppBase((props) => {
+export default withAppBase('Activation Needed', (props) => {
     return (
         <AuthRouter>
             <XDocumentHead title="Activation needed" titleSocial="Openland - land acquisition platfom" />

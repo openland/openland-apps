@@ -42,7 +42,7 @@ function isReactElement(
 }
 
 function isComponentClass(Comp: ComponentType<any>): Comp is ComponentClass<any> {
-    return (Comp.prototype && (Comp.prototype.render || Comp.prototype.isReactComponent)); // || Comp.name === 'ProxyFacade');
+    return (Comp.prototype && (Comp.prototype.render || Comp.prototype.isReactComponent)) || Comp.name === 'ProxyFacade';
 }
 
 function providesChildContext(

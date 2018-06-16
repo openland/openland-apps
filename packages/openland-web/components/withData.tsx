@@ -6,7 +6,6 @@ import Head from 'next/head';
 import { isPageChanged } from 'openland-x-routing/NextRouting';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { getComponentDisplayName } from 'openland-x-utils/getComponentDisplayName';
 import { trackPage } from 'openland-x-analytics';
 import { apolloClient } from 'openland-x-graphql/apolloClient';
 import { getToken, getOrg } from 'openland-x-graphql/auth';
@@ -27,11 +26,10 @@ interface WithDataProps {
     storage: SharedStorage;
 }
 
-export const withData = (ComposedComponent: React.ComponentType) => {
+export const withData = (name: String, ComposedComponent: React.ComponentType) => {
+    let componentName = name.split(' ').map((v) => v.trim()).filter((v) => v !== '').join();
     return class WithData extends React.Component<WithDataProps> {
-        static displayName = `WithData(${getComponentDisplayName(
-            ComposedComponent
-        )})`;
+        static displayName = componentName;
         static propTypes = {
             serverState: PropTypes.object.isRequired,
             host: PropTypes.string.isRequired,

@@ -16,7 +16,7 @@ const InfoText = Glamorous.div({
     marginBottom: 15
 });
 
-export default withAppBase(withInviteInfo((props) => {
+export default withAppBase('Join', withInviteInfo((props) => {
     return (
         <AuthRouter>
             <XDocumentHead title={InitTexts.join.pageTitle} titleSocial={InitTexts.socialPageTitle} />

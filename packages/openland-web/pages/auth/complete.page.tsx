@@ -79,4 +79,4 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
     }
 }
 
-export default withData(AuthenticationHandler);
+export default withData('Auth Complete', AuthenticationHandler);

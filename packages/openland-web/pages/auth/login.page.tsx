@@ -26,4 +26,4 @@ class LoginStarter extends React.Component<{}, { error: boolean }> {
     }
 }
 
-export default withData(LoginStarter);
+export default withData('Login', LoginStarter);
