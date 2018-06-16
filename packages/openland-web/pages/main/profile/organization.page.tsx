@@ -21,6 +21,7 @@ import {
 } from '../../../utils/OrganizationProfileFields';
 import { XButton } from 'openland-x/XButton';
 import { withQueryLoader } from '../../../components/withQueryLoader';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -29,7 +30,10 @@ const Root = Glamorous(XVertical)({
 
 const MainContent = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
-    padding: '0 40px'
+    padding: '0 150px',
+    '@media (max-width: 1200px)': {
+        padding: '0 40px',
+    }
 });
 
 const Header = Glamorous.div({
@@ -48,8 +52,12 @@ const HeaderContent = Glamorous.div({
     position: 'relative',
     backgroundColor: '#fff',
     height: 66,
-    paddingRight: 40,
-    paddingLeft: 192
+    paddingRight: 150,
+    paddingLeft: 302,
+    '@media (max-width: 1200px)': {
+        paddingRight: 40,
+        paddingLeft: 192,
+    }
 });
 
 const SwitcherWrapper = Glamorous(XSwitcher)({
@@ -78,7 +86,10 @@ const Switcher = Glamorous(XSwitcher.Item)({
 const OrganizationData = Glamorous.div({
     position: 'absolute',
     bottom: 16,
-    left: 40
+    left: 150,
+    '@media (max-width: 1200px)': {
+        left: 40
+    }
 });
 
 const Avatar = Glamorous(XAvatar)({
@@ -116,6 +127,7 @@ const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft
     fontWeight: 500,
     lineHeight: props.small ? 1.33 : 1.11,
     color: '#334562',
+    letterSpacing: props.small ? -0.1 : -0.4,
     marginBottom: props.marginBottom,
     marginLeft: props.marginLeft,
 }));
@@ -187,7 +199,7 @@ const SocialLinkImg = Glamorous(XLink)({
 
 const ContactPersonComponent = (props: { contact: ContactPerson, index: number }) => (
     <ContactWrapper>
-        <XAvatar cloudImageUuid={props.contact.photo || undefined} />
+        <XAvatar cloudImageUuid={props.contact.photo || undefined} size="small" />
         <div>
             <Text bold={true}>{props.contact.name}</Text>
             <Text opacity={0.8}>{props.contact.role}</Text>
@@ -213,33 +225,34 @@ const ShowMoreBtn = Glamorous.div({
     marginTop: 12
 });
 
-class AboutContent extends React.Component<{ text: string }, { open: boolean, text: string }> {
-
-    text: string = this.props.text;
-
+class AboutContent extends React.Component<{ text: string }, { open: boolean }> {
     constructor(props: { text: string }) {
         super(props);
 
         this.state = {
             open: this.props.text.length >= 320 ? false : true,
-            text: this.props.text.length >= 320 ? this.props.text.substring(0, 320) + '...' : this.props.text
         };
     }
 
     switcher = () => {
-        this.setState({
-            open: !this.state.open,
-            text: this.text
-        });
+        let { open } = this.state;
+
+        this.setState({ open: !open });
     }
 
     render() {
+        let { text } = this.props;
+
+        let { open } = this.state;
+
+        let isBigText = this.props.text.length >= 320;
+        let textToShow = isBigText && !open ? this.props.text.substring(0, 320) + '...' : text;
+        let buttonText = this.state.open ? 'Show minimize' : 'Show more';
+
         return (
             <>
-                <Text>{this.state.text}</Text>
-                {this.state.open !== true && (
-                    <ShowMoreBtn onClick={this.switcher}>Show more</ShowMoreBtn>
-                )}
+                <Text>{textToShow}</Text>
+                {isBigText && <ShowMoreBtn onClick={this.switcher}>{buttonText}</ShowMoreBtn>}
             </>
         );
     }
@@ -314,7 +327,7 @@ const OpportunitiesWrapper = Glamorous.div({
 
 const OpportunitiesTextWrapper = Glamorous.div({
     width: 220,
-    height: 42,
+    height: 45,
     flexShrink: 0,
     display: 'flex',
     alignItems: 'center',
@@ -323,7 +336,7 @@ const OpportunitiesTextWrapper = Glamorous.div({
 });
 
 const OpportunitiesValueWrapper = Glamorous.div({
-    height: 42,
+    height: 45,
     display: 'flex',
     alignItems: 'center',
     flexGrow: 1,
@@ -340,7 +353,8 @@ const OpportunitiesValue = Glamorous.div({
     color: '#5640d6',
     display: 'flex',
     alignItems: 'center',
-    padding: '8px 9px'
+    padding: '8px 9px',
+    marginRight: 11
 });
 
 export default withApp('Organization profile edit', 'viewer', withOrganization(withQueryLoader((props) => {
@@ -376,6 +390,15 @@ export default withApp('Organization profile edit', 'viewer', withOrganization(w
                                             }}
                                         />
                                     )}
+                                    <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
+                                        <XButton
+                                            style="primary"
+                                            size="medium"
+                                            icon="edit"
+                                            text="Edit"
+                                            href="/settings/organization"
+                                        />
+                                    </XWithRole>
                                 </XHorizontal>
                             </HeaderContent>
                         </Header>
@@ -422,21 +445,63 @@ export default withApp('Organization profile edit', 'viewer', withOrganization(w
                                         </XVerticalStyled>
 
                                         <div>
+                                            {props.data.organization.potentialSites && (
+                                                <OpportunitiesWrapper>
+                                                    <OpportunitiesTextWrapper>
+                                                        <Text bold={true}>Number of potential sites</Text>
+                                                    </OpportunitiesTextWrapper>
+                                                    <OpportunitiesValueWrapper>
+                                                        <XHorizontal>
+                                                            {props.data.organization.potentialSites!!.map((s, k) => (
+                                                                <OpportunitiesValue key={k + '_' + s}>
+                                                                    {
+                                                                        ((s.to || Number.MAX_SAFE_INTEGER) <= 5) ?
+                                                                            '0-5 sites' :
+                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 50) ?
+                                                                                '5-50 sites' :
+                                                                                '50+ sites'
+                                                                    }
+                                                                </OpportunitiesValue>
+                                                            ))}
+                                                        </XHorizontal>
+                                                    </OpportunitiesValueWrapper>
+                                                </OpportunitiesWrapper>
+                                            )}
+                                            {props.data.organization.siteSizes && (
+                                                <OpportunitiesWrapper>
+                                                    <OpportunitiesTextWrapper>
+                                                        <Text bold={true}>Site sizes</Text>
+                                                    </OpportunitiesTextWrapper>
+                                                    <OpportunitiesValueWrapper>
+                                                        <XHorizontal>
+                                                            {props.data.organization.siteSizes!!.map((s, k) => (
+                                                                <OpportunitiesValue key={k + '_' + s}>
+                                                                    {
+                                                                        ((s.to || Number.MAX_SAFE_INTEGER) <= 10000) ?
+                                                                            'small (up to 10,000 sf)' :
+                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 100000) ?
+                                                                                'medium (10,000 - 100,000 sf)' :
+                                                                                'large (100,000 + sf)'
+                                                                    }
+                                                                </OpportunitiesValue>
+                                                            ))}
+                                                        </XHorizontal>
+                                                    </OpportunitiesValueWrapper>
+                                                </OpportunitiesWrapper>
+                                            )}
                                             {props.data.organization.landUse && (
                                                 <OpportunitiesWrapper>
                                                     <OpportunitiesTextWrapper>
                                                         <Text bold={true}>Land use</Text>
                                                     </OpportunitiesTextWrapper>
                                                     <OpportunitiesValueWrapper>
-                                                        <XHorizontal>
-                                                            {props.data.organization.landUse!!.map((s, k) => (
-                                                                <OpportunitiesValue key={k + '_' + s}>
-                                                                    {LandUseMap.map(i => (
-                                                                        i.value === s ? i.label : undefined
-                                                                    ))}
-                                                                </OpportunitiesValue>
-                                                            ))}
-                                                        </XHorizontal>
+                                                        {props.data.organization.landUse!!.map((s, k) => (
+                                                            <OpportunitiesValue key={k + '_' + s}>
+                                                                {LandUseMap.map(i => (
+                                                                    i.value === s ? i.label : undefined
+                                                                ))}
+                                                            </OpportunitiesValue>
+                                                        ))}
                                                     </OpportunitiesValueWrapper>
                                                 </OpportunitiesWrapper>
                                             )}
@@ -447,15 +512,13 @@ export default withApp('Organization profile edit', 'viewer', withOrganization(w
                                                         <Text bold={true}>Good fit for</Text>
                                                     </OpportunitiesTextWrapper>
                                                     <OpportunitiesValueWrapper>
-                                                        <XHorizontal>
-                                                            {props.data.organization.goodFor!!.map((s, k) => (
-                                                                <OpportunitiesValue key={k + '_' + s}>
-                                                                    {GoodForMap.map(i => (
-                                                                        i.value === s ? i.label : undefined
-                                                                    ))}
-                                                                </OpportunitiesValue>
-                                                            ))}
-                                                        </XHorizontal>
+                                                        {props.data.organization.goodFor!!.map((s, k) => (
+                                                            <OpportunitiesValue key={k + '_' + s}>
+                                                                {GoodForMap.map(i => (
+                                                                    i.value === s ? i.label : undefined
+                                                                ))}
+                                                            </OpportunitiesValue>
+                                                        ))}
                                                     </OpportunitiesValueWrapper>
                                                 </OpportunitiesWrapper>
                                             )}
@@ -466,15 +529,13 @@ export default withApp('Organization profile edit', 'viewer', withOrganization(w
                                                         <Text bold={true}>Special attributes </Text>
                                                     </OpportunitiesTextWrapper>
                                                     <OpportunitiesValueWrapper>
-                                                        <XHorizontal>
-                                                            {props.data.organization!!.specialAttributes!!.map((s, k) => (
-                                                                <OpportunitiesValue key={k + '_' + s}>
-                                                                    {SpecialAttributesMap.map(i => (
-                                                                        i.value === s ? i.label : undefined
-                                                                    ))}
-                                                                </OpportunitiesValue>
-                                                            ))}
-                                                        </XHorizontal>
+                                                        {props.data.organization!!.specialAttributes!!.map((s, k) => (
+                                                            <OpportunitiesValue key={k + '_' + s}>
+                                                                {SpecialAttributesMap.map(i => (
+                                                                    i.value === s ? i.label : undefined
+                                                                ))}
+                                                            </OpportunitiesValue>
+                                                        ))}
                                                     </OpportunitiesValueWrapper>
                                                 </OpportunitiesWrapper>
                                             )}

@@ -11,7 +11,8 @@ import {
     LandUseMap,
     GoodForMap,
     SpecialAttributesMap,
-    ContactPerson
+    ContactPerson,
+    FeaturedOpportunity
 } from '../../../utils/OrganizationProfileFields';
 import { XSelect } from 'openland-x/XSelect';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -29,6 +30,31 @@ import { XTextArea } from 'openland-x/XTextArea';
 import Glamorous from 'glamorous';
 import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfile';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
+import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
+import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
+
+const CenteredButton = Glamorous(XButton)({
+    alignSelf: 'center'
+});
+class FeaturedPpportunityField extends React.Component<{ item: FeaturedOpportunity, index: number }> {
+    render() {
+        return (
+            <XHorizontal>
+                <XStreetViewModalPreview location={{ latitude: this.props.item.location.lat, longitude: this.props.item.location.lon }} width={170} height={130} />
+
+                <XVertical>
+                    <XTitle >{this.props.item.title}</XTitle>
+                    <XTitle marginTop={0}>{this.props.item.locationTitle}</XTitle>
+                    {(this.props.item.tags || []).join(' ')}
+                    <XHorizontal>
+                        <CenteredButton text="edit" style="electric" query={{ field: 'editFeaturedOpportunity', value: String(this.props.index) }} />
+                        <CenteredButton text="delete" style="danger" query={{ field: 'deleteFeaturedOpportunity', value: String(this.props.index) }} />
+                    </XHorizontal>
+                </XVertical>
+            </XHorizontal>
+        );
+    }
+}
 
 const ContactField = Glamorous.div({
     alignSelf: 'center',
@@ -40,9 +66,6 @@ const ContactField = Glamorous.div({
     marginLeft: 0,
 });
 
-const CenteredButton = Glamorous(XButton)({
-    alignSelf: 'center'
-});
 class ContactPersonItem extends React.Component<{ contact: ContactPerson, index: number }> {
     render() {
         return (
@@ -59,6 +82,15 @@ class ContactPersonItem extends React.Component<{ contact: ContactPerson, index:
         );
     }
 }
+
+const cleanFeaturedOpp = (c: FeaturedOpportunity): FeaturedOpportunity => {
+    return {
+        title: c.title,
+        location: { lat: c.location.lat, lon: c.location.lon },
+        locationTitle: c.locationTitle,
+        tags: c.tags,
+    };
+};
 
 const clearContact = (c: ContactPerson): ContactPerson => {
     console.warn(c);
@@ -161,7 +193,18 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                     let rangeStr;
                                     if ((range.to || Number.MAX_SAFE_INTEGER) <= 5) {
                                         rangeStr = 'small';
-                                    } else if ((range.from || 0) >= 5 && (range.to || Number.MAX_SAFE_INTEGER) <= 50) {
+                                    } else if ((range.to || Number.MAX_SAFE_INTEGER) <= 50) {
+                                        rangeStr = 'medium';
+                                    } else {
+                                        rangeStr = 'large';
+                                    }
+                                    return rangeStr;
+                                }) : null,
+                                alphaSiteSizes: props.data.myOrganizationProfile!!.siteSizes ? props.data.myOrganizationProfile!!.siteSizes!!.map(range => {
+                                    let rangeStr;
+                                    if ((range.to || Number.MAX_SAFE_INTEGER) <= 10000) {
+                                        rangeStr = 'small';
+                                    } else if ((range.to || Number.MAX_SAFE_INTEGER) <= 100000) {
                                         rangeStr = 'medium';
                                     } else {
                                         rangeStr = 'large';
@@ -172,6 +215,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                         }}
                         defaultAction={async (data) => {
                             let potentialSites = data.input.alphaPotentialSites ? data.input.alphaPotentialSites.map((rangeStr: string) => (rangeStr === 'small' ? { from: 0, to: 5 } : rangeStr === 'medium' ? { from: 5, to: 50 } : { from: 50 })) : null;
+                            let siteSizes = data.input.alphaSiteSizes ? data.input.alphaSiteSizes.map((rangeStr: string) => (rangeStr === 'small' ? { from: 0, to: 10000 } : rangeStr === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 })) : null;
                             console.warn(potentialSites);
                             await props.updateOrganizaton({
                                 variables: {
@@ -181,7 +225,9 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         alphaLandUse: data.input.alphaLandUse,
                                         alphaGoodFor: data.input.alphaGoodFor,
                                         alphaSpecialAttributes: data.input.alphaSpecialAttributes,
-                                        alphaPotentialSites: potentialSites
+                                        alphaPotentialSites: potentialSites,
+                                        alphaSiteSizes: siteSizes
+
                                     }
                                 }
                             });
@@ -191,7 +237,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                         <XVertical maxWidth={500}>
                             <XFormLoadingContent>
                                 <XVertical>
-                                    
+
                                     <XFormField title="Development Models">
                                         <XSelect
                                             field="input.alphaDevelopmentModels"
@@ -210,10 +256,18 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                             multi={true}
                                         />
                                     </XFormField>
-                                     <XFormField title="Potential Sites">
+                                    <XFormField title="Potential Sites">
                                         <XSelect
                                             field="input.alphaPotentialSites"
                                             options={[{ label: '0-5 sites', value: 'small' }, { label: '5-50 sites', value: 'medium' }, { label: '50+ sites', value: 'large' }]}
+                                            multi={true}
+                                        />
+
+                                    </XFormField>
+                                    <XFormField title="Site sizes ">
+                                        <XSelect
+                                            field="input.alphaSiteSizes"
+                                            options={[{ label: 'small (up to 10,000 sf)', value: 'small' }, { label: 'medium (10,000 - 100,000 sf)', value: 'medium' }, { label: 'large (100,000 + sf)', value: 'large' }]}
                                             multi={true}
                                         />
 
@@ -359,6 +413,125 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                             </XVertical>
                         </XFormLoadingContent>
                     </XModalForm>
+
+                    <XTitle>Featured Opportunities</XTitle>
+
+                    {props.data.myOrganizationProfile && props.data.myOrganizationProfile.featuredOpportunities && (
+                        props.data.myOrganizationProfile.featuredOpportunities.map((fo, i) => < FeaturedPpportunityField key={'fo_' + i} item={fo} index={i} />)
+                    )}
+
+                    <XButton query={{ field: 'addFeaturedOpportunity', value: 'true' }} text="Add Featured Opportunity" style="primary" alignSelf="flex-start" />
+
+                    <XModalForm
+                        title="Add featured opportunity"
+                        defaultData={{
+                            featuredOpportunities: props.data.myOrganizationProfile!!.featuredOpportunities || [],
+                        }}
+                        defaultAction={async (data) => {
+                            data.featuredOpportunities.push({
+                                title: data.title,
+                                location: data.location ? { lat: data.location.result.center[1], lon: data.location.result.center[0] } : null,
+                                locationTitle: data.location ? data.location.result.place_name || data.location.result.text : null,
+                                tags: data.tags,
+                            });
+                            await props.updateOrganizaton({
+                                variables: {
+                                    input: {
+                                        alphaDummyFeaturedOpportunities: data.featuredOpportunities.map(cleanFeaturedOpp)
+                                    }
+                                }
+                            });
+                        }}
+                        targetQuery="addFeaturedOpportunity"
+                    >
+                        <XFormLoadingContent>
+                            <XVertical>
+                                <XInput field="title" required={true} placeholder="Title" />
+                                <XLocationPickerModal field="location" />
+                                <XSelect
+                                    field="tags"
+                                    placeholder="Tags"
+                                    options={GoodForMap.map(o => {
+                                        return { ...o, title: o.label };
+                                    })}
+                                    multi={true}
+                                />
+                            </XVertical>
+                        </XFormLoadingContent>
+                    </XModalForm>
+
+                    {props.data.myOrganizationProfile!!.featuredOpportunities!![props.router.query.deleteFeaturedOpportunity] && (
+                        <XModalForm
+                            title="Delete?"
+                            submitProps={{ text: 'Delete' }}
+                            defaultData={{
+                                featuredOpportunities: props.data.myOrganizationProfile!!.featuredOpportunities || [],
+                            }}
+                            defaultAction={async (data) => {
+                                data.featuredOpportunities.splice(Number(props.router.query.deleteFeaturedOpportunity), 1);
+                                await props.updateOrganizaton({
+                                    variables: {
+                                        input: {
+                                            alphaDummyFeaturedOpportunities: data.featuredOpportunities.map(cleanFeaturedOpp)
+                                        }
+                                    }
+                                });
+                            }}
+                            targetQuery="deleteFeaturedOpportunity"
+                        />
+                    )}
+                    {props.data.myOrganizationProfile!!.featuredOpportunities!![props.router.query.editFeaturedOpportunity] && (
+                        <XModalForm
+                            title="Edit contact"
+                            defaultData={{
+                                featuredOpportunities: props.data.myOrganizationProfile!!.featuredOpportunities || [],
+                                title: props.data!!.myOrganizationProfile!!.featuredOpportunities!![props.router.query.editFeaturedOpportunity]!!.title,
+                                location: {
+                                    result: {
+                                        text: props.data!!.myOrganizationProfile!!.featuredOpportunities!![props.router.query.editFeaturedOpportunity]!!.locationTitle,
+                                        center: [props.data!!.myOrganizationProfile!!.featuredOpportunities!![props.router.query.editFeaturedOpportunity]!!.location.lon, props.data!!.myOrganizationProfile!!.featuredOpportunities!![props.router.query.editFeaturedOpportunity]!!.location.lat]
+                                    }
+                                },
+                                tags: props.data!!.myOrganizationProfile!!.featuredOpportunities!![props.router.query.editFeaturedOpportunity]!!.tags,
+                            }}
+                            defaultAction={async (data) => {
+                                console.warn(data);
+                                data.featuredOpportunities[Number(props.router.query.editFeaturedOpportunity)] = {
+                                    title: data.title,
+                                    location: data.location ? { lat: data.location.result.center[1], lon: data.location.result.center[0] } : null,
+                                    locationTitle: data.location ? data.location.result.place_name || data.location.result.text : null,
+                                    tags: data.tags,
+                                };
+                                console.warn(data);
+
+                                await props.updateOrganizaton({
+                                    variables: {
+                                        input: {
+                                            alphaDummyFeaturedOpportunities: data.featuredOpportunities.map(cleanFeaturedOpp)
+                                        }
+                                    }
+                                });
+
+                            }}
+                            targetQuery="editFeaturedOpportunity"
+                        >
+                            <XFormLoadingContent>
+                                <XVertical>
+                                    <XInput field="title" required={true} placeholder="Title" />
+                                    <XLocationPickerModal field="location" />
+                                    <XSelect
+                                        field="tags"
+                                        placeholder="Tags"
+                                        options={GoodForMap.map(o => {
+                                            return { ...o, title: o.label };
+                                        })}
+                                        multi={true}
+                                    />
+                                </XVertical>
+                            </XFormLoadingContent>
+                        </XModalForm>
+
+                    )}
                 </XVertical>
             </XContent>
         </Navigation >

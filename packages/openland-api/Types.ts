@@ -74,6 +74,7 @@ export interface UpdateOrganizationProfileInput {
   alphaLandUse?: Array< string | null > | null,
   alphaGoodFor?: Array< string | null > | null,
   alphaSpecialAttributes?: Array< string | null > | null,
+  alphaDummyFeaturedOpportunities?: Array< AlphaDummyFeaturedOpportunityInput > | null,
 };
 
 export interface ContactPersonInput {
@@ -88,6 +89,20 @@ export interface ContactPersonInput {
 export interface RangeInput {
   from?: number | null,
   to?: number | null,
+};
+
+export interface AlphaDummyFeaturedOpportunityInput {
+  title: string,
+  location: MapPointInput,
+  locationTitle: string,
+  tags?: Array< string > | null,
+};
+
+export interface MapPointInput {
+  ref?: string | null,
+  count?: number | null,
+  lat: number,
+  lon: number,
 };
 
 export enum OwnerType {
@@ -948,6 +963,17 @@ export interface MyOrganizationQuery {
     landUse: Array< string > | null,
     goodFor: Array< string > | null,
     specialAttributes: Array< string > | null,
+    featuredOpportunities:  Array< {
+      __typename: "AlphaDummyFeaturedOpportunity",
+      title: string,
+      location:  {
+        __typename: "MapPoint",
+        lat: number,
+        lon: number,
+      },
+      locationTitle: string,
+      tags: Array< string > | null,
+    } > | null,
   } | null,
 };
 
@@ -996,7 +1022,7 @@ export interface MyOrganizationProfileQuery {
       from: number | null,
       to: number | null,
     } > | null,
-    alpha:  Array< {
+    siteSizes:  Array< {
       __typename: "Range",
       from: number | null,
       to: number | null,
@@ -1006,6 +1032,17 @@ export interface MyOrganizationProfileQuery {
     landUse: Array< string > | null,
     goodFor: Array< string > | null,
     specialAttributes: Array< string > | null,
+    featuredOpportunities:  Array< {
+      __typename: "AlphaDummyFeaturedOpportunity",
+      title: string,
+      location:  {
+        __typename: "MapPoint",
+        lat: number,
+        lon: number,
+      },
+      locationTitle: string,
+      tags: Array< string > | null,
+    } > | null,
   },
 };
 
@@ -1067,7 +1104,7 @@ export interface UpdateOrganizationMutation {
       from: number | null,
       to: number | null,
     } > | null,
-    alpha:  Array< {
+    siteSizes:  Array< {
       __typename: "Range",
       from: number | null,
       to: number | null,
@@ -1077,6 +1114,17 @@ export interface UpdateOrganizationMutation {
     landUse: Array< string > | null,
     goodFor: Array< string > | null,
     specialAttributes: Array< string > | null,
+    featuredOpportunities:  Array< {
+      __typename: "AlphaDummyFeaturedOpportunity",
+      title: string,
+      location:  {
+        __typename: "MapPoint",
+        lat: number,
+        lon: number,
+      },
+      locationTitle: string,
+      tags: Array< string > | null,
+    } > | null,
   },
 };
 
@@ -1121,6 +1169,17 @@ export interface OrganizationQuery {
     landUse: Array< string > | null,
     goodFor: Array< string > | null,
     specialAttributes: Array< string > | null,
+    featuredOpportunities:  Array< {
+      __typename: "AlphaDummyFeaturedOpportunity",
+      title: string,
+      location:  {
+        __typename: "MapPoint",
+        lat: number,
+        lon: number,
+      },
+      locationTitle: string,
+      tags: Array< string > | null,
+    } > | null,
   },
 };
 
@@ -3163,6 +3222,17 @@ export interface OrganizationFullFragment {
   landUse: Array< string > | null,
   goodFor: Array< string > | null,
   specialAttributes: Array< string > | null,
+  featuredOpportunities:  Array< {
+    __typename: string,
+    title: string,
+    location:  {
+      __typename: string,
+      lat: number,
+      lon: number,
+    },
+    locationTitle: string,
+    tags: Array< string > | null,
+  } > | null,
 };
 
 export interface OrganizationProfileFullFragment {
@@ -3209,7 +3279,7 @@ export interface OrganizationProfileFullFragment {
     from: number | null,
     to: number | null,
   } > | null,
-  alpha:  Array< {
+  siteSizes:  Array< {
     __typename: string,
     from: number | null,
     to: number | null,
@@ -3219,6 +3289,17 @@ export interface OrganizationProfileFullFragment {
   landUse: Array< string > | null,
   goodFor: Array< string > | null,
   specialAttributes: Array< string > | null,
+  featuredOpportunities:  Array< {
+    __typename: string,
+    title: string,
+    location:  {
+      __typename: string,
+      lat: number,
+      lon: number,
+    },
+    locationTitle: string,
+    tags: Array< string > | null,
+  } > | null,
 };
 
 export interface OrganizationShortFragment {
