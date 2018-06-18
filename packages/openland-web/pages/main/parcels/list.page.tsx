@@ -11,8 +11,9 @@ import { XFooter } from 'openland-x/XFooter';
 import { XLoader } from 'openland-x/XLoader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XVertical } from 'openland-x-layout/XVertical';
+import { withQueryLoader } from '../../../components/withQueryLoader';
 
-const Content = withParcels((props) => {
+const Content = withParcels(withQueryLoader((props) => {
     return (
         <>
             <XDocumentHead title={['Parcels']} />
@@ -38,7 +39,7 @@ const Content = withParcels((props) => {
             </Scaffold>
         </>
     );
-});
+}));
 
 export default withApp('Parcels', 'viewer', withRouter((props) => {
     let city = props.router.query.city || 'nyc';

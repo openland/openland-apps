@@ -12,6 +12,7 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import glamorous from 'glamorous';
 import { XFormField } from 'openland-x-forms/XFormField';
+import { withQueryLoader } from '../../components/withQueryLoader';
 
 const AddAccountForm = withSuperAccountAdd((props) => {
     return (
@@ -33,7 +34,7 @@ const XSwitcherMargin = glamorous(XSwitcher)({
     marginLeft: 24
 });
 
-export default withApp('Super Organizations', 'super-admin', withSuperAccounts(withRouter((props) => {
+export default withApp('Super Organizations', 'super-admin', withSuperAccounts(withQueryLoader(withRouter((props) => {
 
     let orgs = props.data.superAccounts;
     let orgsCurrentTab = orgs.filter((o) => o.state === (props.router.query.orgState || 'ACTIVATED'));
@@ -73,4 +74,4 @@ export default withApp('Super Organizations', 'super-admin', withSuperAccounts(w
 
         </DevToolsScaffold>
     );
-})));
+}))));

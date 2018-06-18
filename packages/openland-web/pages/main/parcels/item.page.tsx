@@ -33,8 +33,9 @@ import { XForm } from 'openland-x-forms/XForm';
 import { XProperty, XPropertyList } from 'openland-x/XProperty';
 import { FolderButton } from '../../../components/FolderButton';
 import { XFooter } from 'openland-x/XFooter';
+import { withQueryLoader } from '../../../components/withQueryLoader';
 
-export default withApp('Parcel', 'viewer', withParcel((props) => {
+export default withApp('Parcel', 'viewer', withParcel(withQueryLoader((props) => {
 
     const detailsPath = '/parcels/' + props.data.item.id;
     const linksPath = '/parcels/' + props.data.item.id + '/links';
@@ -223,4 +224,4 @@ export default withApp('Parcel', 'viewer', withParcel((props) => {
             </Scaffold>
         </>
     );
-}));
+})));

@@ -357,7 +357,7 @@ const OpportunitiesValue = Glamorous.div({
     marginRight: 11
 });
 
-export default withApp('Organization profile edit', 'viewer', withOrganization(withQueryLoader((props) => {
+export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
     return (
         <>
             <XDocumentHead title="Organization profile" />

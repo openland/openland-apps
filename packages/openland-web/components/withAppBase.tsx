@@ -3,9 +3,10 @@ import { withAccountQuery } from './../api/withAccountQuery';
 import { UserInfoProvider } from './UserInfo';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withData } from './withData';
+import { withQueryLoader } from './withQueryLoader';
 
 export function withAppBase(name: string, WrappedComponent: React.ComponentType<{}>) {
-    return withData(name, withAccountQuery((props) => {
+    return withData(name, withAccountQuery(withQueryLoader((props) => {
         return (
             <>
                 <XDocumentHead title={['App']} />
@@ -20,5 +21,5 @@ export function withAppBase(name: string, WrappedComponent: React.ComponentType<
                 </UserInfoProvider>
             </>
         );
-    }));
+    })));
 }

@@ -26,6 +26,8 @@ interface WithDataProps {
     storage: SharedStorage;
 }
 
+const ENABLE_PRELOADING = true;
+
 export const withData = (name: String, ComposedComponent: React.ComponentType) => {
     let componentName = name.split(' ').map((v) => v.trim()).filter((v) => v !== '').join();
     return class WithData extends React.Component<WithDataProps> {
@@ -63,7 +65,7 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
 
             // Run all GraphQL queries in the component tree
             // and extract the resulting data
-            if (!canUseDOM) {
+            if (!canUseDOM && ENABLE_PRELOADING) {
                 const apollo = apolloClient(serverState, token, org);
                 // Provide the `url` prop data in case a GraphQL query uses it
                 // const url = { query: ctx.query, pathname: ctx.pathname }
@@ -107,7 +109,7 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
                         org: org
                     }
                 };
-            } else if (isPageChanged()) {
+            } else if (canUseDOM && isPageChanged() && ENABLE_PRELOADING) {
                 const apollo = apolloClient(serverState, token, org);
                 // Provide the `url` prop data in case a GraphQL query uses it
                 // const url = { query: ctx.query, pathname: ctx.pathname }
@@ -130,6 +132,13 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
                     // Handle them in components via the data.error prop:
                     // http://dev.apollodata.com/react/api-queries.html#graphql-query-data-error
                 }
+                serverState = {
+                    apollo: {
+                        token: token,
+                        org: org
+                    }
+                };
+            } else {
                 serverState = {
                     apollo: {
                         token: token,

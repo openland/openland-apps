@@ -12,6 +12,7 @@ import { XForm } from 'openland-x-forms/XForm';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
+import { withQueryLoader } from '../../components/withQueryLoader';
 
 const AddSuperAdminForm = withSuperAdminAdd((props) => {
     return (
@@ -56,7 +57,7 @@ const RemoveSuperAdminForm = withSuperAdminRemove((props) => {
     );
 });
 
-export default withApp('Super Admins', 'super-admin', withSuperAdmins((props) => {
+export default withApp('Super Admins', 'super-admin', withSuperAdmins(withQueryLoader((props) => {
     return (
         <DevToolsScaffold title="Super Admins">
             <XHeader text="Super Admins" description={props.data.superAdmins.length + ' total'}>
@@ -91,4 +92,4 @@ export default withApp('Super Admins', 'super-admin', withSuperAdmins((props) =>
             </XTable>
         </DevToolsScaffold>
     );
-}));
+})));

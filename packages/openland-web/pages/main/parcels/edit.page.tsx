@@ -9,8 +9,9 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFooter } from 'openland-x/XFooter';
 import { XFormField } from 'openland-x-forms/XFormField';
+import { withQueryLoader } from '../../../components/withQueryLoader';
 
-export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetadataForm((props) => {
+export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetadataForm(withQueryLoader((props) => {
     return (
         <>
             <XDocumentHead title={['Edit Parcel #' + props.data.item.number.title]} />
@@ -44,4 +45,4 @@ export default withApp('Parcel Edit', ['super-admin', 'editor'], withParcelMetad
             </Scaffold>
         </>
     );
-}));
+})));

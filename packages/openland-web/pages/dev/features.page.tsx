@@ -9,6 +9,7 @@ import { XForm } from 'openland-x-forms/XForm';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XButton } from 'openland-x/XButton';
 import { XFormField } from 'openland-x-forms/XFormField';
+import { withQueryLoader } from '../../components/withQueryLoader';
 
 const AddFeatureForm = withFeatureFlagAdd((props) => {
     return (
@@ -29,7 +30,7 @@ const AddFeatureForm = withFeatureFlagAdd((props) => {
     );
 });
 
-export default withApp('Super Features', ['super-admin', 'software-developer'], withFeatureFlags((props) => {
+export default withApp('Super Features', ['super-admin', 'software-developer'], withFeatureFlags(withQueryLoader((props) => {
     return (
         <DevToolsScaffold title="Feature flags">
             <XHeader text="Feature flags">
@@ -51,4 +52,4 @@ export default withApp('Super Features', ['super-admin', 'software-developer'], 
             </XTable>
         </DevToolsScaffold>
     );
-}));
+})));

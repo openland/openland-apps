@@ -41,6 +41,7 @@ import { XProperty, XPropertyColumns, XPropertyList } from 'openland-x/XProperty
 import { trackEvent } from 'openland-x-analytics';
 import { XTooltipHint } from 'openland-x/XTooltipHint';
 import { XFooter } from 'openland-x/XFooter';
+import { withQueryLoader } from '../../../components/withQueryLoader';
 
 const OpportunityDescription = (props: { parcel: Types.ParcelFullFragment, parcelNotes: MutationFunc<{}> } & XWithRouter) => {
     const detailsPath = 'review';
@@ -197,7 +198,7 @@ const OpportunityDescription = (props: { parcel: Types.ParcelFullFragment, parce
     );
 };
 
-const OpportunityInfo = withOpportunity((props) => {
+const OpportunityInfo = withOpportunity(withQueryLoader((props) => {
     let approveText = 'Move to next stage';
     // let hasPublic = props.router.query.public ? true : false;
     let mapUrl: string | undefined = undefined; // '/prospecting/map';
@@ -335,7 +336,7 @@ const OpportunityInfo = withOpportunity((props) => {
             </XVertical>
         </XVertical>
     );
-}) as React.ComponentType<{ variables?: any } & XWithRouter>;
+})) as React.ComponentType<{ variables?: any } & XWithRouter>;
 
 export default withApp('Initial Review', 'viewer', withRouter((props) => {
     let state: 'INCOMING' | 'APPROVED_INITIAL' | 'APPROVED_ZONING' | 'APPROVED' | 'REJECTED' | 'SNOOZED' = 'INCOMING';

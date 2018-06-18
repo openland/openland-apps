@@ -7,6 +7,7 @@ import { Navigation } from './_navigation';
 import { XTable } from 'openland-x/XTable';
 import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
+import { withQueryLoader } from '../../../components/withQueryLoader';
 
 export const CreateInviteButton = withInviteCreate((props) => (
     <XButton action={() => props.createInvite({})} text="Create Invite" />
@@ -16,7 +17,7 @@ export const CancelInviteButton = withInviteDestroy((props) => (
     <XButton action={() => props.destroyInvite({})} text="Cancel" />
 ));
 
-export default withApp('Invites', 'viewer', withInvites(withUserInfo((props) => {
+export default withApp('Invites', 'viewer', withInvites(withQueryLoader(withUserInfo((props) => {
     return (
         <Navigation title="Invites">
             <XHeader text="Invites">
@@ -34,4 +35,4 @@ export default withApp('Invites', 'viewer', withInvites(withUserInfo((props) => 
             </XTable>
         </Navigation>
     );
-})));
+}))));

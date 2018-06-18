@@ -32,6 +32,7 @@ import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfil
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
 import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
+import { withQueryLoader } from '../../../components/withQueryLoader';
 
 const CenteredButton = Glamorous(XButton)({
     alignSelf: 'center'
@@ -113,7 +114,7 @@ const clearContact = (c: ContactPerson): ContactPerson => {
     };
 };
 
-export default withApp('Organization profile edit', 'viewer', withMyOrganizationProfile((props) => {
+export default withApp('Organization profile edit', 'viewer', withMyOrganizationProfile(withQueryLoader((props) => {
     return (
         <Navigation title="Organization profile">
             <XHeader text="Organization profile" />
@@ -536,4 +537,4 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
             </XContent>
         </Navigation >
     );
-}));
+})));

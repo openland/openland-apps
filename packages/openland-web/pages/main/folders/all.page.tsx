@@ -28,6 +28,7 @@ import { XMapImageLayer } from 'openland-x-map/XMapImageLayer';
 import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
 import { XLink } from 'openland-x/retired/XLink';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { withQueryLoader } from '../../../components/withQueryLoader';
 
 const SidebarItemsStyle = {
     height: 40,
@@ -500,7 +501,7 @@ const NewFolderForPlaceholder = Glamorous(CreateFolderButton)({
     }
 });
 
-export default withApp('Folders', 'viewer', withFolders((props) => {
+export default withApp('Folders', 'viewer', withFolders(withQueryLoader((props) => {
 
     return (
         <>
@@ -553,4 +554,4 @@ export default withApp('Folders', 'viewer', withFolders((props) => {
             </Scaffold>
         </>
     );
-}));
+})));

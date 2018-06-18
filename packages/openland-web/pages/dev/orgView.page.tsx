@@ -15,6 +15,7 @@ import { XTable } from 'openland-x/XTable';
 import { XForm } from 'openland-x-forms/XForm';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
+import { withQueryLoader } from '../../components/withQueryLoader';
 
 const ActivateButton = withSuperAccountActivate((props) => <XButton style="primary" action={() => props.activate({})} text="Activate" />);
 const SuspendButton = withSuperAccountSuspend((props) => <XButton style="danger" action={() => props.suspend({})} text="Suspend" />);
@@ -104,7 +105,7 @@ const Edit = withSuperAccountRename((props) => {
     );
 }) as React.ComponentType<{ orgTitle: string }>;
 
-export default withApp('Super Organization', 'super-admin', withSuperAccount((props) => {
+export default withApp('Super Organization', 'super-admin', withSuperAccount(withQueryLoader((props) => {
     return (
         <DevToolsScaffold title={props.data.superAccount.title}>
             <XHeader text={props.data.superAccount.title} description={'Current State: ' + props.data.superAccount.state}>
@@ -149,4 +150,4 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount((pr
             </XTable>
         </DevToolsScaffold>
     );
-}));
+})));

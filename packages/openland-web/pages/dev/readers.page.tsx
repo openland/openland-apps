@@ -5,8 +5,9 @@ import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { withDebugReaders } from '../../api';
 import { XTable } from 'openland-x/XTable';
+import { withQueryLoader } from '../../components/withQueryLoader';
 
-export default withApp('Super Readers', ['super-admin', 'software-developer'], withDebugReaders((props) => {
+export default withApp('Super Readers', ['super-admin', 'software-developer'], withDebugReaders(withQueryLoader((props) => {
     // Auto-refreshing
     props.data.startPolling(5000);
     return (
@@ -28,4 +29,4 @@ export default withApp('Super Readers', ['super-admin', 'software-developer'], w
             </XTable>
         </DevToolsScaffold>
     );
-}));
+})));

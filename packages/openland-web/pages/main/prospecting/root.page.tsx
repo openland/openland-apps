@@ -15,6 +15,7 @@ import { CapacityIndicator } from '../../../components/CapacityIndicator';
 import { XLink } from 'openland-x/XLink';
 import { XEmpty } from 'openland-x/XEmpty';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { withQueryLoader } from '../../../components/withQueryLoader';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -29,7 +30,7 @@ let OwnersSelectStyled = Glamorous.div({
     }
 });
 
-export default withApp('Incoming opportunities', 'viewer', withProspectingStats((props) => {
+export default withApp('Incoming opportunities', 'viewer', withProspectingStats(withQueryLoader((props) => {
     let q = buildProspectingQuery(props.router);
     return (
         <>
@@ -62,4 +63,4 @@ export default withApp('Incoming opportunities', 'viewer', withProspectingStats(
             </ProspectingScaffold>
         </>
     );
-}));
+})));

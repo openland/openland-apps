@@ -5,8 +5,9 @@ import { withSuperCities } from '../../api/';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XHeader } from 'openland-x/XHeader';
 import { XTable } from 'openland-x/XTable';
+import { withQueryLoader } from '../../components/withQueryLoader';
 
-export default withApp('Super Organizations', 'super-admin', withSuperCities((props) => {
+export default withApp('Super Organizations', 'super-admin', withSuperCities(withQueryLoader((props) => {
     console.warn(props);
     return (
         <DevToolsScaffold title="Accounts">
@@ -53,4 +54,4 @@ export default withApp('Super Organizations', 'super-admin', withSuperCities((pr
             </XTable>
         </DevToolsScaffold>
     );
-}));
+})));

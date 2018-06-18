@@ -16,8 +16,9 @@ import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { XFormError } from 'openland-x-forms/XFormError';
+import { withQueryLoader } from '../../../components/withQueryLoader';
 
-export default withApp('Profile', 'viewer', withProfile((props) => {
+export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) => {
     return (
         <Navigation title="Profile">
             <XHeader text="Profile" />
@@ -69,4 +70,4 @@ export default withApp('Profile', 'viewer', withProfile((props) => {
             </XContent>
         </Navigation>
     );
-}));
+})));

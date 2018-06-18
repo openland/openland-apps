@@ -12,6 +12,7 @@ import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XEmpty } from 'openland-x/XEmpty';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { withQueryLoader } from '../../../components/withQueryLoader';
 
 let Link = Glamorous(XLink)({
     color: '#3297d3',
@@ -45,7 +46,7 @@ function exportCSV(items: Types.ParcelShortFragment[]) {
     FileSaver.saveAs(contents, 'favorites.csv');
 }
 
-export default withApp('Favorites', 'viewer', withParcelsFavorites((props) => {
+export default withApp('Favorites', 'viewer', withParcelsFavorites(withQueryLoader((props) => {
     return (
         <>
             <XDocumentHead title={['Favorites']} />
@@ -73,4 +74,4 @@ export default withApp('Favorites', 'viewer', withParcelsFavorites((props) => {
             </Scaffold>
         </>
     );
-}));
+})));
