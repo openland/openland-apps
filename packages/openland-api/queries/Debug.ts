@@ -9,3 +9,9 @@ export const DebugReadedStatesQuery = gql`
         }
     }
 `;
+
+export const DebugSendWelcomeEmailMutation = gql`
+    mutation DebugSendWelcomeEmail {
+        debugSendWelcomeEmail
+    }
+`;

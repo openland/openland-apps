@@ -573,6 +573,10 @@ export interface DebugReadedStatesQuery {
   } >,
 };
 
+export interface DebugSendWelcomeEmailMutation {
+  debugSendWelcomeEmail: string,
+};
+
 export interface FeatureFlagsQuery {
   featureFlags:  Array< {
     __typename: "FeatureFlag",

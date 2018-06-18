@@ -9,6 +9,12 @@ import { XTable } from 'openland-x/XTable';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { withMyOrganizations } from '../../api/withMyOrganizations';
 import { withQueryLoader } from '../../components/withQueryLoader';
+import { withDebugSendWelcomeEmail } from '../../api/withDebugSendWelcomeEmail';
+import { XButton } from 'openland-x/XButton';
+
+export const SendWelcome = withDebugSendWelcomeEmail((props) => {
+    return <XButton action={async () => props.sendWelcome({})} alignSelf="flex-start" text="Send Email" />;
+});
 
 export default withApp('Super Debug', ['super-admin', 'software-developer'], withMyOrganizations(withQueryLoader(withUserInfo((props) => {
     return (
@@ -51,6 +57,10 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
                     ))}
                 </XTable.Body>
             </XTable>
+            <XHeader text="Send welcome email" />
+            <XContent>
+                <SendWelcome />
+            </XContent>
         </DevToolsScaffold>
     );
 }))));
