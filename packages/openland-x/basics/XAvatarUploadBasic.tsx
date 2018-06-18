@@ -109,7 +109,7 @@ class AvatarRender extends React.PureComponent<
         this.setState({ srcLoading: false });
     }
     render() {
-        let hasImage = this.props.file && this.props.file.isImage || false;
+        let hasImage = this.props.file && this.props.file.uuid && this.props.file.isImage || false;
         return (
             <DropAreaWrapper
                 hasImage={hasImage}
