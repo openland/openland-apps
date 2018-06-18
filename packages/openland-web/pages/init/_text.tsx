@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { XLink } from 'openland-x/retired/XLink';
 export const InitTexts = {
-
-    rootPageTitle: 'Openland',
-    socialPageTitle: 'Openland - land acquisition platfom',
+    rootPageTitle: 'Openland | An Open Marketplace for Land',
+    socialPageTitle: 'Openland | An Open Marketplace for Land',
     optional: 'optional',
 
     auth: {
         signinPageTitle: 'Sign in',
-        signinHint: 'Already have an Openland account?',
+        signinHint: 'Already have an account?',
         signin: 'Sign in',
         signinTitle: 'Sign in to your Openland account',
         signinSubtitle: 'Welcome back!',
@@ -24,7 +23,7 @@ export const InitTexts = {
         signupEmail: 'Sign up with Email',
 
         emailInvalid: 'Invalid email',
-        emailPlaceholder: 'Your work email',
+        emailPlaceholder: 'Work email',
         codeInvalid: 'Invalid activation code',
         codePlaceholder: 'XXXXXX',
 
@@ -38,7 +37,7 @@ export const InitTexts = {
         title: 'Join',
         joinButton: 'Join Organization',
         goButton: 'Go to organization',
-        unableToFindInvite: 'Unable to find invite',
+        unableToFindInvite: 'Unable to find your invitation',
     },
 
     create_profile: {
@@ -54,7 +53,7 @@ export const InitTexts = {
     },
 
     create_organization: {
-        pageTitle: 'Create organization',
+        pageTitle: 'Add your organization',
         title: 'Add your organization',
         name: 'Organization name',
         namePlaceholder: 'Acme Corparation',
@@ -67,14 +66,14 @@ export const InitTexts = {
     },
 
     pick_organization: {
-        pageTitle: 'Organization?',
-        title: 'Please, pick organization'
+        pageTitle: 'Select your organization',
+        title: 'Please, select your organization'
     },
 
     need_info: {
-        pageTitle: 'Need Info',
-        title: 'We need more info',
-        content: 'To continue working with system we need more information from you'
+        pageTitle: 'Activation needed',
+        title: 'Activation needed',
+        content: <>We onboard new members in small groups. Contact <XLink href="mailto:support@openland.com">support</XLink> to request an account activation.</> 
     },
 
     suspended: {
