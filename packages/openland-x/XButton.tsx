@@ -91,11 +91,11 @@ let sizeStyles = styleResolver({
             lineHeight: '56px',
         },
         '& .loading-icon': {
-            width: 24,
-            height: 24,
+            width: 56,
+            height: 56,
             lineHeight: 'normal',
-            top: 'calc(50% - 12px)',
-            left: 'calc(50% - 12px)'
+            top: 'calc(50% - 28px)',
+            left: 'calc(50% - 28px)'
         }
     },
     'large': {
@@ -112,11 +112,11 @@ let sizeStyles = styleResolver({
             fontSize: 24
         },
         '& .loading-icon': {
-            width: 21,
-            height: 21,
+            width: 48,
+            height: 48,
             lineHeight: 'normal',
-            top: 'calc(50% - 10.5px)',
-            left: 'calc(50% - 10.5px)'
+            top: 'calc(50% - 24px)',
+            left: 'calc(50% - 24px)'
         }
     },
     'medium': {
@@ -133,11 +133,11 @@ let sizeStyles = styleResolver({
             fontSize: 20
         },
         '& .loading-icon': {
-            width: 18,
-            height: 18,
+            width: 40,
+            height: 40,
             lineHeight: 'normal',
-            top: 'calc(50% - 9px)',
-            left: 'calc(50% - 9px)'
+            top: 'calc(50% - 20px)',
+            left: 'calc(50% - 20px)'
         }
     },
     'default': {
@@ -154,11 +154,11 @@ let sizeStyles = styleResolver({
             fontSize: 16
         },
         '& .loading-icon': {
-            width: 15,
-            height: 15,
+            width: 32,
+            height: 32,
             lineHeight: 'normal',
-            top: 'calc(50% - 7.5px)',
-            left: 'calc(50% - 7.5px)'
+            top: 'calc(50% - 16px)',
+            left: 'calc(50% - 16px)'
         }
     },
     'small': {
@@ -175,11 +175,11 @@ let sizeStyles = styleResolver({
             fontSize: 14
         },
         '& .loading-icon': {
-            width: 14,
-            height: 14,
+            width: 24,
+            height: 24,
             lineHeight: 'normal',
-            top: 'calc(50% - 7px)',
-            left: 'calc(50% - 7px)'
+            top: 'calc(50% - 12px)',
+            left: 'calc(50% - 12px)'
         }
     }
 });
@@ -441,8 +441,8 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
         display: 'flex', boxSizing: 'border-box',
         '& .loading-icon': {
             position: 'absolute',
-            left: 'calc(50% - 10px)',
-            top: 'calc(50% - 10px)',
+            // left: 'calc(50% - 10px)',
+            // top: 'calc(50% - 10px)',
         }
     }),
     (props) => ({
