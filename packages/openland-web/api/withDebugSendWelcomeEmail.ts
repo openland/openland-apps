@@ -1,4 +1,4 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Queries } from 'openland-api';
+import { Debug } from 'openland-api';
 
-export const withDebugSendWelcomeEmail = graphqlMutation(Queries.Debug.DebugSendWelcomeEmailMutation, 'sendWelcome');
+export const withDebugSendWelcomeEmail = graphqlMutation(Debug.DebugSendWelcomeEmailMutation, 'sendWelcome');

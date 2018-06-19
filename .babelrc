@@ -1,6 +1,6 @@
 {
     "presets": ["next/babel", "@zeit/next-typescript/babel"],
-    "plugins": ["graphql-tag", "transform-react-stateless-component-name"],
+    "plugins": ["transform-react-stateless-component-name"],
     "env": {
         "production": {
             "plugins": [

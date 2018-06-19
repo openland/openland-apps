@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Queries } from 'openland-api';
+import { Search } from 'openland-api';
 
-export const withSearch = graphqlRouted(Queries.Search.SearchQuery);
+export const withSearch = graphqlRouted(Search.SearchQuery);

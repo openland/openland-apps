@@ -1,4 +1,4 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Queries } from 'openland-api';
+import { Account } from 'openland-api';
 
-export const withCreateOrganization = graphqlMutation(Queries.Account.CreateOrganizationMutation, 'createOrganization');
+export const withCreateOrganization = graphqlMutation(Account.CreateOrganizationMutation, 'createOrganization');

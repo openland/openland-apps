@@ -1,35 +1,33 @@
-import * as Permits from './queries/Permits.types';
-import * as Account from './queries/Account.types';
-import * as Parcels from './queries/Parcels.types';
-import * as Search from './queries/Search.types';
-import * as Permissions from './queries/Permissions.types';
-import * as Addressing from './queries/Addressing.types';
-import * as Deals from './queries/Deals.types';
-import * as User from './queries/User.types';
-import * as FeatureFlags from './queries/FeatureFlag.types';
-import * as Sourcing from './queries/Sourcing.types';
-import * as Debug from './queries/Debug.types';
-import * as SuperCity from './queries/SuperCity.types';
-import * as Folder from './queries/Folder.types';
-import * as Tasks from './queries/Tasks.types';
-import * as Organization from './queries/Organization.types';
-import * as Settings from './queries/Settings.types';
+import * as PermitsTyped from './queries/Permits.types';
+import * as AccountTyped from './queries/Account.types';
+import * as ParcelsTyped from './queries/Parcels.types';
+import * as SearchTyped from './queries/Search.types';
+import * as PermissionsTyped from './queries/Permissions.types';
+import * as AddressingTyped from './queries/Addressing.types';
+import * as DealsTyped from './queries/Deals.types';
+import * as UserTyped from './queries/User.types';
+import * as FeatureFlagsTyped from './queries/FeatureFlag.types';
+import * as SourcingTyped from './queries/Sourcing.types';
+import * as DebugTyped from './queries/Debug.types';
+import * as SuperCityTyped from './queries/SuperCity.types';
+import * as FolderTyped from './queries/Folder.types';
+import * as TasksTyped from './queries/Tasks.types';
+import * as OrganizationTyped from './queries/Organization.types';
+import * as SettingsTyoped from './queries/Settings.types';
 
-export let Queries = {
-    Permits,
-    Account,
-    Parcels,
-    Search,
-    Permissions,
-    Addressing,
-    Deals,
-    User,
-    FeatureFlags,
-    Sourcing,
-    Debug,
-    SuperCity,
-    Folder,
-    Tasks,
-    Organization,
-    Settings
-};
+export let Permits = PermitsTyped;
+export let Account = AccountTyped;
+export let Parcels = ParcelsTyped;
+export let Search = SearchTyped;
+export let Addressing = AddressingTyped;
+export let Deals = DealsTyped;
+export let User = UserTyped;
+export let FeatureFlags = FeatureFlagsTyped;
+export let Permissions = PermissionsTyped;
+export let Sourcing = SourcingTyped;
+export let Debug = DebugTyped;
+export let SuperCity = SuperCityTyped;
+export let Folder = FolderTyped;
+export let Tasks = TasksTyped;
+export let Organization = OrganizationTyped;
+export let Settings = SettingsTyoped;

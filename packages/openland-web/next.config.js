@@ -1,36 +1,13 @@
+// const webpack = require('webpack');
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withTypescript = require('@zeit/next-typescript')
 const path = require('path');
-
 
 const config = withTypescript({
     pageExtensions: ['page.ts', 'page.tsx'],
     webpack(config, options) {
 
-        //     if (!options.defaultLoaders) {
-        //         throw new Error(
-        //           'This plugin is not compatible with Next.js versions below 5.0.0 https://err.sh/next-plugins/upgrade'
-        //         )
-        //     }
-
-        //     // // Page Extensions
-        //     // if (!config.pageExtensions) {
-        //     //     config.pageExtensions = ['jsx', 'js']
-        //     // }
-        //     // if (config.pageExtensions.indexOf('ts') === -1) {
-        //     //     config.pageExtensions.unshift('ts')
-        //     // }
-        //     // if (config.pageExtensions.indexOf('tsx') === -1) {
-        //     //     config.pageExtensions.unshift('tsx')
-        //     // }
-
-
-        //     // Enable development sourcemaps
-        //     // if (options.dev) {
-        //     //     config.devtool = 'cheap-module-eval-source-map'
-        //     // }
-
-        //     // Merge paths
+        // Merge paths from typescript config
         const tsConfig = require("../../tsconfig.json");
         const alias = {};
         for (let key of Object.keys(tsConfig.compilerOptions.paths)) {
@@ -38,10 +15,10 @@ const config = withTypescript({
         }
         config.resolve.alias = Object.assign({}, config.resolve.alias, alias);
 
-        // Ignore large library from parsing and solve some babel issueses
+        // Ignore large library from parsing and solve some babel issues
         config.module.noParse = /(mapbox-gl)\.js$/
 
-        //     // Typescript
+        // Typescript
         const {
             dir,
             defaultLoaders,
@@ -49,49 +26,41 @@ const config = withTypescript({
             isServer
         } = options
 
-        //     // Enable resolving of ts
-        //     config.resolve.extensions.push('.ts', '.tsx')
-
-        //     // Hot loader
-        //     if (dev && !isServer) {
-        //         config.module.rules.push({
-        //             test: /\.(ts|tsx)$/,
-        //             loader: 'hot-self-accept-loader',
-        //             include: [path.join(dir, 'pages')],
-        //             options: {
-        //                 extensions: /\.(ts|tsx)$/
-        //             }
-        //         })
-        //     }
-
-        //     // Loader
-        //     config.module.rules.push({
-        //         test: /\.(ts|tsx)$/,
-        //         include: [dir],
-        //         exclude: /node_modules/,
-        //         use: defaultLoaders.babel
-        //     });
-        // config.module.rules.push({
-        //     test: /\.(ts|tsx)$/,
-        //     include: [path.resolve(dir + '../../../')],
-        //     exclude: /node_modules/,
-        //     use: [
-        //         defaultLoaders.babel,
-        //         {
-        //             loader: 'ts-loader',
-        //             options: {
-        //                 transpileOnly: true
-        //             }
-        //         }
-        //     ]
-        // })
-
+        // Ask babel to handle typescript files
+        // Modules are not loading by default since root folder is out of scope
         config.module.rules.push({
             test: /\.(ts|tsx)$/,
             include: [path.resolve(dir + '/../')],
             exclude: /node_modules/,
             use: defaultLoaders.babel
         })
+
+        // Disable minification
+        // config.plugins = config.plugins.filter(
+        //     (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
+        // )
+
+        // Creating vendor library
+        // Doesn't work...
+        // if (!isServer) {
+        //     let ex = config.entry;
+        //     config.entry = async () => {
+        //         let res = {
+        //             'vendor.js': ['react-lottie'],
+        //             ...(await ex()),
+        //         };
+        //         console.warn(res);
+        //         return res;
+        //     };
+        //     console.warn(config.plugins);
+
+        //     config.plugins.splice(config.plugins.length - 2, 0, (new webpack.optimize.CommonsChunkPlugin({
+        //         name: 'vendor.js',
+        //         filename: dev ? 'static/commons/vendor.js' : 'static/commons/vendor-[chunkhash].js',
+        //         // minChunks: Infinity,
+        //         children: true
+        //     })));
+        // }
 
         return config;
     },

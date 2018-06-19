@@ -1,6 +1,6 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Queries } from 'openland-api';
+import { Parcels } from 'openland-api';
 
-export const withParcelUnlikes = graphqlMutation(Queries.Parcels.ParcelUnlikeMutation, 'doUnlike', {
-    refetchQueries: [Queries.Parcels.ParcelsFavoritesQuery, Queries.Parcels.ParcelsFavoritesCountQuery]
+export const withParcelUnlikes = graphqlMutation(Parcels.ParcelUnlikeMutation, 'doUnlike', {
+    refetchQueries: [Parcels.ParcelsFavoritesQuery, Parcels.ParcelsFavoritesCountQuery]
 });

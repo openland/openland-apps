@@ -1,4 +1,3 @@
-import { Queries } from 'openland-api';
 import * as Types from 'openland-api/Types';
 import { graphQLTileSource } from 'openland-x-graphql/graphqlTileSource';
 import { graphqlSelect } from 'openland-x-graphql/graphqlSelect';
@@ -8,138 +7,136 @@ import { graphqlCompose2, graphqlCompose4, graphqlCompose6, graphqlCompose5 } fr
 import { graphQLMapSearchSource } from 'openland-x-graphql/graphqlMapSearchSource';
 import { graphqlTask } from 'openland-x-graphql/graphqlTask';
 import { withParcelNotes } from './withParcelNotes';
+import { Permissions, FeatureFlags, Addressing, Deals, Parcels, Sourcing, Debug, SuperCity, Folder, Tasks, Account, Settings } from 'openland-api';
 
 //
 // Admin
 //
 
-export const withSuperAccounts = graphqlRouted(Queries.Permissions.SuperAccountsQuery);
-export const withSuperAccount = graphqlRouted(Queries.Permissions.SuperAccountQuery, { params: ['accountId'] });
-
 export const withSuperAccountAdd =
-    graphqlMutation(Queries.Permissions.SuperAccountAddMutation, 'add', { refetchQueries: [Queries.Permissions.SuperAccountsQuery] });
+    graphqlMutation(Permissions.SuperAccountAddMutation, 'add', { refetchQueries: [Permissions.SuperAccountsQuery] });
 export const withSuperAccountRename =
-    graphqlMutation(Queries.Permissions.SuperAccountRenameMutation, 'rename', { params: ['accountId'] });
+    graphqlMutation(Permissions.SuperAccountRenameMutation, 'rename', { params: ['accountId'] });
 export const withSuperAccountActivate =
-    graphqlMutation(Queries.Permissions.SuperAccountActivateMutation, 'activate', { params: ['accountId'] });
+    graphqlMutation(Permissions.SuperAccountActivateMutation, 'activate', { params: ['accountId'] });
 export const withSuperAccountSuspend =
-    graphqlMutation(Queries.Permissions.SuperAccountSuspendMutation, 'suspend', { params: ['accountId'] });
+    graphqlMutation(Permissions.SuperAccountSuspendMutation, 'suspend', { params: ['accountId'] });
 export const withSuperAccountMemberAdd =
-    graphqlMutation(Queries.Permissions.SuperAccountMemberAddMutation, 'add', { params: ['accountId'] });
+    graphqlMutation(Permissions.SuperAccountMemberAddMutation, 'add', { params: ['accountId'] });
 export const withSuperAccountMemberRemove =
-    graphqlMutation(Queries.Permissions.SuperAccountMemberRemoveMutation, 'remove', { params: ['accountId'] });
+    graphqlMutation(Permissions.SuperAccountMemberRemoveMutation, 'remove', { params: ['accountId'] });
 
-export const withFeatureFlags = graphqlRouted(Queries.FeatureFlags.FeatureFlagsQuery);
-export const withFeatureFlagAdd = graphqlMutation(Queries.FeatureFlags.FeatureFlagAddMutation, 'add', { refetchQueries: [Queries.FeatureFlags.FeatureFlagsQuery] });
+export const withFeatureFlags = graphqlRouted(FeatureFlags.FeatureFlagsQuery);
+export const withFeatureFlagAdd = graphqlMutation(FeatureFlags.FeatureFlagAddMutation, 'add', { refetchQueries: [FeatureFlags.FeatureFlagsQuery] });
 export const withSuperAccountFeatureAdd = graphqlCompose2(
-    graphqlMutation(Queries.FeatureFlags.FeatureFlagEnableMutation, 'add', { params: ['accountId'] }),
+    graphqlMutation(FeatureFlags.FeatureFlagEnableMutation, 'add', { params: ['accountId'] }),
     withFeatureFlags);
 export const withSuperAccountFeatureRemove = graphqlCompose2(
-    graphqlMutation(Queries.FeatureFlags.FeatureFlagDisableMutation, 'remove', { params: ['accountId'] }),
+    graphqlMutation(FeatureFlags.FeatureFlagDisableMutation, 'remove', { params: ['accountId'] }),
     withFeatureFlags);
 
 //
 // Addressing
 //
 
-export const StateSelect = graphqlSelect(Queries.Addressing.StateQuery);
-export const CountySelect = graphqlSelect<{ stateId: string }>(Queries.Addressing.CountyQuery);
+export const StateSelect = graphqlSelect(Addressing.StateQuery);
+export const CountySelect = graphqlSelect<{ stateId: string }>(Addressing.CountyQuery);
 
 //
 // Deals
 //
 
-export const withDeals = graphqlRouted(Queries.Deals.AllDealsQuery);
-export const withDealsMap = graphqlRouted(Queries.Deals.AllDealsMapQuery);
-export const withDeal = graphqlRouted(Queries.Deals.DealQuery, { params: ['dealId'] });
-export const withDealAdd = graphqlMutation(Queries.Deals.AddDealMutation, 'add', { refetchQueries: [Queries.Deals.AllDealsQuery] });
-export const withDealRemove = graphqlMutation(Queries.Deals.RemoveDealMutation, 'remove', { params: ['dealId'], refetchQueries: [Queries.Deals.AllDealsQuery] });
-export const withDealAlter = graphqlMutation(Queries.Deals.AlterDealMutation, 'alter', { params: ['dealId'] });
+export const withDeals = graphqlRouted(Deals.AllDealsQuery);
+export const withDealsMap = graphqlRouted(Deals.AllDealsMapQuery);
+export const withDeal = graphqlRouted(Deals.DealQuery, { params: ['dealId'] });
+export const withDealAdd = graphqlMutation(Deals.AddDealMutation, 'add', { refetchQueries: [Deals.AllDealsQuery] });
+export const withDealRemove = graphqlMutation(Deals.RemoveDealMutation, 'remove', { params: ['dealId'], refetchQueries: [Deals.AllDealsQuery] });
+export const withDealAlter = graphqlMutation(Deals.AlterDealMutation, 'alter', { params: ['dealId'] });
 export const withDealAlterCombined = graphqlCompose2(withDealAlter, withDeal);
-export const ParcelSelect = graphqlSelect(Queries.Parcels.ParcelsSearchQuery);
+export const ParcelSelect = graphqlSelect(Parcels.ParcelsSearchQuery);
 
 //
 // Sourcing
 //
 
-export const withProspectingStats = graphqlRouted(Queries.Sourcing.OpportunityStatsQuery);
-export const withSourcing = graphqlRouted(Queries.Sourcing.SourcingQuery, {
+export const withProspectingStats = graphqlRouted(Sourcing.OpportunityStatsQuery);
+export const withSourcing = graphqlRouted(Sourcing.SourcingQuery, {
     params: ['filter', 'cursor', 'page', 'sort'], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only'
 });
-export const withSourcingFirst = graphqlRouted(Queries.Sourcing.SourcingFirstQuery, {
+export const withSourcingFirst = graphqlRouted(Sourcing.SourcingFirstQuery, {
     params: ['filter', 'cursor', 'page', 'sort'], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only'
 });
-export const withSourcingAll = graphqlRouted(Queries.Sourcing.SourcingAllQuery, { params: [], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only' });
-export const withSourcingAllReport = graphqlRouted(Queries.Sourcing.SourcingAllReportQuery, { params: [], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only' });
-export const withSourcingCapacity = graphqlRouted(Queries.Sourcing.ProspectingCapacityQuery, { params: [], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only' });
-export const withAddOpportunity = graphqlMutation(Queries.Sourcing.AddOpportunityMutation, 'add', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
+export const withSourcingAll = graphqlRouted(Sourcing.SourcingAllQuery, { params: [], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only' });
+export const withSourcingAllReport = graphqlRouted(Sourcing.SourcingAllReportQuery, { params: [], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only' });
+export const withSourcingCapacity = graphqlRouted(Sourcing.ProspectingCapacityQuery, { params: [], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only' });
+export const withAddOpportunity = graphqlMutation(Sourcing.AddOpportunityMutation, 'add', { refetchQueries: [Sourcing.OpportunityStatsQuery] });
 
-export const withNextOpportunity = graphqlRouted(Queries.Sourcing.NextOpportunityQuery, { params: ['initialId', 'sort'], notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' });
-export const withApproveOpportunity = graphqlMutation(Queries.Sourcing.ApproveOpportunityMutation, 'approve', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
-export const withRejectOpportunity = graphqlMutation(Queries.Sourcing.RejectOpportunityMutation, 'reject', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
-export const withSnoozeOpportunity = graphqlMutation(Queries.Sourcing.SnoozeOpportunityMutation, 'snooze', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
-export const withResetOpportunity = graphqlMutation(Queries.Sourcing.ResetOpportunityMutation, 'reset', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
-export const withOpportunityByIdGet = graphqlRouted(Queries.Sourcing.OpportunityQuery, { params: ['opportunityId'] });
+export const withNextOpportunity = graphqlRouted(Sourcing.NextOpportunityQuery, { params: ['initialId', 'sort'], notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' });
+export const withApproveOpportunity = graphqlMutation(Sourcing.ApproveOpportunityMutation, 'approve', { refetchQueries: [Sourcing.OpportunityStatsQuery] });
+export const withRejectOpportunity = graphqlMutation(Sourcing.RejectOpportunityMutation, 'reject', { refetchQueries: [Sourcing.OpportunityStatsQuery] });
+export const withSnoozeOpportunity = graphqlMutation(Sourcing.SnoozeOpportunityMutation, 'snooze', { refetchQueries: [Sourcing.OpportunityStatsQuery] });
+export const withResetOpportunity = graphqlMutation(Sourcing.ResetOpportunityMutation, 'reset', { refetchQueries: [Sourcing.OpportunityStatsQuery] });
+export const withOpportunityByIdGet = graphqlRouted(Sourcing.OpportunityQuery, { params: ['opportunityId'] });
 
 export const withOpportunity = graphqlCompose6(withNextOpportunity, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity, withParcelNotes, withResetOpportunity);
 export const withOpportunityById = graphqlCompose4(withOpportunityByIdGet, withApproveOpportunity, withRejectOpportunity, withSnoozeOpportunity);
-export const withAddFromSearchOpportunity = graphqlMutation(Queries.Sourcing.AddOpportunityFromSearchMutation, 'addFromSearch', { refetchQueries: [Queries.Sourcing.OpportunityStatsQuery] });
-export const SourcingTileSource = graphQLTileSource(Queries.Sourcing.OpportunityTileOverlayQuery, {
+export const withAddFromSearchOpportunity = graphqlMutation(Sourcing.AddOpportunityFromSearchMutation, 'addFromSearch', { refetchQueries: [Sourcing.OpportunityStatsQuery] });
+export const SourcingTileSource = graphQLTileSource(Sourcing.OpportunityTileOverlayQuery, {
     propertiesFactory: (src) => ({ parcelId: src.parcel.id })
 });
 
-export const OwnersSelect = graphqlSelect<Types.OwnersQueryVariables>(Queries.Sourcing.OwnersQuery);
+export const OwnersSelect = graphqlSelect<Types.OwnersQueryVariables>(Sourcing.OwnersQuery);
 
 // export const RejectButton = withRejectOpportunity((props)=>{
 //     return (<XButton></XButton>);
 // });
 
-export const withDebugReaders = graphqlRouted(Queries.Debug.DebugReadedStatesQuery);
-export const withSuperCities = graphqlRouted(Queries.SuperCity.SuperCitiesQuery);
-export const withFolders = graphqlRouted(Queries.Folder.FoldersQuery);
-export const withFolder = graphqlRouted(Queries.Folder.FolderQuery, { params: [], notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' });
+export const withDebugReaders = graphqlRouted(Debug.DebugReadedStatesQuery);
+export const withSuperCities = graphqlRouted(SuperCity.SuperCitiesQuery);
+export const withFolders = graphqlRouted(Folder.FoldersQuery);
+export const withFolder = graphqlRouted(Folder.FolderQuery, { params: [], notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' });
 
-export const withCreateFolderMutation = graphqlMutation(Queries.Folder.CreateFolderMutation, 'createFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
-export const withDeleteFolderMutation = graphqlMutation(Queries.Folder.DeleteFolderMutation, 'deleteFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
-export const withAlterFolderMutation = graphqlMutation(Queries.Folder.AlterFolderMutation, 'alterFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
-export const withAddToFolderMutation = graphqlMutation(Queries.Folder.AddToFolderMutation, 'addToFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
-export const withAddToFolderFromSearchMutation = graphqlMutation(Queries.Folder.AddToFolderFromSearchMutation, 'addToFolderFromSearch', { refetchQueries: [Queries.Folder.FoldersQuery] });
-export const withCreateFolderFromSearchMutation = graphqlMutation(Queries.Folder.CreateFolderFromSearchMutation, 'createFolderFromSearch', { refetchQueries: [Queries.Folder.FoldersQuery] });
-export const withSetFolderMutation = graphqlMutation(Queries.Folder.SetParcelFolderMutation, 'setFolder', { refetchQueries: [Queries.Folder.FoldersQuery] });
+export const withCreateFolderMutation = graphqlMutation(Folder.CreateFolderMutation, 'createFolder', { refetchQueries: [Folder.FoldersQuery] });
+export const withDeleteFolderMutation = graphqlMutation(Folder.DeleteFolderMutation, 'deleteFolder', { refetchQueries: [Folder.FoldersQuery] });
+export const withAlterFolderMutation = graphqlMutation(Folder.AlterFolderMutation, 'alterFolder', { refetchQueries: [Folder.FoldersQuery] });
+export const withAddToFolderMutation = graphqlMutation(Folder.AddToFolderMutation, 'addToFolder', { refetchQueries: [Folder.FoldersQuery] });
+export const withAddToFolderFromSearchMutation = graphqlMutation(Folder.AddToFolderFromSearchMutation, 'addToFolderFromSearch', { refetchQueries: [Folder.FoldersQuery] });
+export const withCreateFolderFromSearchMutation = graphqlMutation(Folder.CreateFolderFromSearchMutation, 'createFolderFromSearch', { refetchQueries: [Folder.FoldersQuery] });
+export const withSetFolderMutation = graphqlMutation(Folder.SetParcelFolderMutation, 'setFolder', { refetchQueries: [Folder.FoldersQuery] });
 export const withFolderActions = graphqlCompose5(withCreateFolderMutation, withDeleteFolderMutation, withAlterFolderMutation, withAddToFolderMutation, withSetFolderMutation);
-export const FolderSelect = graphqlSelect<{}>(Queries.Folder.FoldersSelectQuery);
-export const FolderTileSource = graphQLTileSource(Queries.Folder.FolderItemsTileOverlayQuery, {
+export const FolderSelect = graphqlSelect<{}>(Folder.FoldersSelectQuery);
+export const FolderTileSource = graphQLTileSource(Folder.FolderItemsTileOverlayQuery, {
     propertiesFactory: (src) => ({ parcelId: src.parcel.id })
 });
 
-export const withFolderItems = graphqlRouted(Queries.Folder.FolderItemsConnectionQuery, { params: ['folderId', 'page', 'cursor'], notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' });
+export const withFolderItems = graphqlRouted(Folder.FolderItemsConnectionQuery, { params: ['folderId', 'page', 'cursor'], notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' });
 
-export const ParcelMapSearch = graphQLMapSearchSource(Queries.Parcels.ParcelsMapSearchQuery);
+export const ParcelMapSearch = graphQLMapSearchSource(Parcels.ParcelsMapSearchQuery);
 
-export const withSampleTask = graphqlTask(Queries.Tasks.SampleTaskMutation);
-export const withFolderExportTask = graphqlTask(Queries.Tasks.FolderExportTaskMutation);
+export const withSampleTask = graphqlTask(Tasks.SampleTaskMutation);
+export const withFolderExportTask = graphqlTask(Tasks.FolderExportTaskMutation);
 
 //
 // Invites
 //
 
-export const withInvites = graphqlRouted(Queries.Account.AccountInvitesQuery);
-export const withInviteCreate = graphqlMutation(Queries.Account.AccountCreateInviteMutation, 'createInvite', { refetchQueries: [Queries.Account.AccountInvitesQuery] });
-export const withInviteDestroy = graphqlMutation(Queries.Account.AccountDestroyInviteMutation, 'destroyInvite', { refetchQueries: [Queries.Account.AccountInvitesQuery] });
+export const withInvites = graphqlRouted(Account.AccountInvitesQuery);
+export const withInviteCreate = graphqlMutation(Account.AccountCreateInviteMutation, 'createInvite', { refetchQueries: [Account.AccountInvitesQuery] });
+export const withInviteDestroy = graphqlMutation(Account.AccountDestroyInviteMutation, 'destroyInvite', { refetchQueries: [Account.AccountInvitesQuery] });
 export const withInviteInfo = graphqlCompose2(
-    graphqlRouted(Queries.Account.AccountInviteInfoQuery, { params: ['inviteKey'] }),
-    graphqlMutation(Queries.Account.AccountInviteJoinMutation, 'doJoin', { params: ['inviteKey'] }));
+    graphqlRouted(Account.AccountInviteInfoQuery, { params: ['inviteKey'] }),
+    graphqlMutation(Account.AccountInviteJoinMutation, 'doJoin', { params: ['inviteKey'] }));
 
 //
 // User Profile
 //
 
 export const withProfile = graphqlCompose2(
-    graphqlRouted(Queries.Settings.ProfileQuery),
-    graphqlMutation(Queries.Settings.ProfileUpdateMutation, 'updateProfile', { refetchQueries: [Queries.Account.AccountQuery] })
+    graphqlRouted(Settings.ProfileQuery),
+    graphqlMutation(Settings.ProfileUpdateMutation, 'updateProfile', { refetchQueries: [Account.AccountQuery] })
 );
 
 export const withProfileCreate = graphqlCompose2(
-    graphqlMutation(Queries.Settings.ProfileCreateMutation, 'createProfile', { refetchQueries: [Queries.Account.AccountQuery] }),
-    graphqlRouted(Queries.Account.ProfilePrefillQuery)
+    graphqlMutation(Settings.ProfileCreateMutation, 'createProfile', { refetchQueries: [Account.AccountQuery] }),
+    graphqlRouted(Account.ProfilePrefillQuery)
 );

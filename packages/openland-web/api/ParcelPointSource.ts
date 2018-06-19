@@ -1,4 +1,4 @@
 import { graphQLTileSource } from 'openland-x-graphql/graphqlTileSource';
-import { Queries } from 'openland-api';
+import { Parcels } from 'openland-api';
 
-export const ParcelPointSource = graphQLTileSource(Queries.Parcels.ParcelsPointOverlayQuery, { cluster: true });
+export const ParcelPointSource = graphQLTileSource(Parcels.ParcelsPointOverlayQuery, { cluster: true });

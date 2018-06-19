@@ -1,4 +1,4 @@
 import { graphqlSelect } from 'openland-x-graphql/graphqlSelect';
-import { Queries } from 'openland-api';
+import { User } from 'openland-api';
 
-export const UserSelect = graphqlSelect(Queries.User.UsersQuery);
+export const UserSelect = graphqlSelect(User.UsersQuery);

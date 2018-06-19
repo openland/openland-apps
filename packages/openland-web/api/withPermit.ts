@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Queries } from 'openland-api';
+import { Permits } from 'openland-api';
 
-export const withPermit = graphqlRouted(Queries.Permits.PermitQuery, { params: ['permitId'] });
+export const withPermit = graphqlRouted(Permits.PermitQuery, { params: ['permitId'] });
