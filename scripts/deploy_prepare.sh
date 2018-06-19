@@ -6,7 +6,7 @@ tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
 /tmp/google-cloud-sdk/install.sh -q
 source /tmp/google-cloud-sdk/path.bash.inc
 gcloud -v
-gsutils -v
+gsutil -v
 echo "Installing Kubernetes Tools"
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 chmod +x ./kubectl
