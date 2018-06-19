@@ -7,8 +7,7 @@ pipelines:
         caches:
           - node
         script:
-          - ./scripts/deploy_prepare.sh
-          - export PATH=/tmp/google-cloud-sdk/bin:$PATH
+          - source ./scripts/deploy_prepare.sh
           - gsutil -v
           - yarn install
           - yarn test
@@ -22,8 +21,7 @@ pipelines:
         name: Deploy to Staging
         deployment: staging
         script:
-          - ./scripts/deploy_prepare.sh
-          - export PATH=/tmp/google-cloud-sdk/bin:$PATH
+          - source ./scripts/deploy_prepare.sh
           - ./scripts/deploy_cdn_app.sh
           - ./scripts/deploy_staging.sh
     - step:
@@ -31,8 +29,7 @@ pipelines:
         deployment: production
         trigger: manual
         script:
-          - ./scripts/deploy_prepare.sh
-          - export PATH=/tmp/google-cloud-sdk/bin:$PATH
+          - source ./scripts/deploy_prepare.sh
           - ./scripts/deploy_cdn_app.sh
           - ./scripts/deploy_production.sh
 
