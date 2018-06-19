@@ -8,6 +8,7 @@ pipelines:
           - node
         script:
           - ./scripts/deploy_prepare.sh
+          - echo $PATH
           - gsutil -v
           - yarn install
           - yarn test

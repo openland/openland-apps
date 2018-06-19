@@ -16,3 +16,4 @@ gcloud auth activate-service-account --key-file gcloud-api-key.json
 gcloud --quiet config set project statecraft-188615
 gcloud --quiet config set compute/zone us-west1-a
 gcloud --quiet container clusters get-credentials statekube
+echo $PATH
