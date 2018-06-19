@@ -1,12 +1,12 @@
 import * as React from 'react';
-import * as Turf from '@turf/turf';
+import trufCenter from '@turf/center';
 import Glamorous from 'glamorous';
 import { XStreetViewPreview } from './XStreetViewPreview';
 import { parseGeometry } from 'openland-x-utils/parseGeometry';
 import { CityLocations } from 'openland-x-utils/CityLocations';
 
 function loadCenter(src: string) {
-    let center = Turf.center({ type: 'MultiPolygon', coordinates: parseGeometry(src) });
+    let center = trufCenter({ type: 'MultiPolygon', coordinates: parseGeometry(src) });
     return { latitude: center.geometry!!.coordinates[1], longitude: center.geometry!!.coordinates[0] };
 }
 const StyledStreetViewPreview = Glamorous(XStreetViewPreview)<{ width: number, height: number }>((props) => ({

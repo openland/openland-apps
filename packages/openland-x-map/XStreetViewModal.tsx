@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Turf from '@turf/turf';
+import trufCenter from '@turf/center';
 import Glamorous from 'glamorous';
 import { XButton } from 'openland-x/XButton';
 import { XStreetViewPreview } from './XStreetViewPreview';
@@ -9,7 +9,7 @@ import { CityLocations } from 'openland-x-utils/CityLocations';
 import { XModal } from 'openland-x-modal/XModal';
 
 function loadCenter(src: string) {
-    let center = Turf.center({ type: 'MultiPolygon', coordinates: parseGeometry(src) });
+    let center = trufCenter({ type: 'MultiPolygon', coordinates: parseGeometry(src) });
     return { latitude: center.geometry!!.coordinates[1], longitude: center.geometry!!.coordinates[0] };
 }
 

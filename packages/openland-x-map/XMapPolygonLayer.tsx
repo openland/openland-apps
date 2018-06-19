@@ -1,7 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { XMapSubscriber, DataSources } from './XMap';
-import * as Turf from '@turf/turf';
+import turfUnion from '@turf/union';
+import turfBbox from '@turf/bbox';
 
 interface XMapPolygonLayerStyle {
 
@@ -281,7 +282,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                                 }
                             } else {
                                 let features = this.map!!.queryRenderedFeatures(undefined, { layers: [this.layer + '-fill'], filter: ['==', 'id', this.focusedId] });
-                                let merged = Turf.union(...features as any);
+                                let merged = turfUnion(...features as any);
                                 let source = this.map!!.getSource(this.sourceHover);
                                 if (source.type === 'geojson') {
                                     source.setData({ 'type': 'FeatureCollection', features: [merged] });
@@ -334,7 +335,7 @@ export class XMapPolygonLayer extends React.Component<XMapPolygonLayerProps> {
                 } else {
                     let element = this.datasources!!.findGeoJSONElement(this.source, id);
                     if (element) {
-                        let center = Turf.bbox(element);
+                        let center = turfBbox(element);
                         let params: any = { duration: 300 };
                         if (this.props.flyToPadding !== undefined) {
                             params.padding = this.props.flyToPadding;
