@@ -56,3 +56,89 @@ export const FollowOrganizationMutation = gql`
         }
     }
 `;
+
+export const CreateListingMutation = gql`
+    mutation CreateListing($type: String!, $input: AlphaOrganizationListingInput!) {
+        createListing: alphaOrganizationCreateListing(type: $type, input: $input) {
+            name
+            id
+            name
+            summary
+            specialAttributes
+            status
+            updatedAt
+
+            location{
+                lat
+                lon
+            }
+            locationTitle
+            availability
+            area
+            price
+            dealType
+            shapeAndForm
+            currentUse
+            goodFitFor
+            additionalLinks{
+                text
+                url
+            }
+
+            shortDescription
+            areaRange{
+                from
+                to
+            }
+            geographies
+            landUse
+            unitCapacity
+        }
+    }
+`;
+
+export const EditListingMutation = gql`
+    mutation EditListing($id: ID!, $input: AlphaOrganizationListingInput!) {
+        editListing: alphaOrganizationEditListing(id: $id, input: $input) {
+            name
+            id
+            name
+            summary
+            specialAttributes
+            status
+            updatedAt
+
+            location{
+                lat
+                lon
+            }
+            locationTitle
+            availability
+            area
+            price
+            dealType
+            shapeAndForm
+            currentUse
+            goodFitFor
+            additionalLinks{
+                text
+                url
+            }
+
+            shortDescription
+            areaRange{
+                from
+                to
+            }
+            geographies
+            landUse
+            unitCapacity
+        }
+    }
+`;
+
+export const DeleteListingMutation = gql`
+    mutation DeleteListing($id: ID!) {
+        alphaOrganizationDeleteListing(id: $id)
+    }
+`;

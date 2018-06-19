@@ -12,16 +12,16 @@ import { XLink } from 'openland-x/XLink';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import {
-    DevelopmentModelsMap,
-    AvailabilityMap,
-    LandUseMap,
-    GoodForMap,
-    SpecialAttributesMap,
     ContactPerson
 } from '../../../utils/OrganizationProfileFields';
 import { XButton } from 'openland-x/XButton';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
+import { XInput } from 'openland-x/XInput';
+import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -357,7 +357,61 @@ const OpportunitiesValue = Glamorous.div({
     marginRight: 11
 });
 
+interface DevelopmentOportunity {
+    name: string;
+    id: string;
+    summary: string | null;
+    specialAttributes: string[] | null;
+    status: string | null;
+    updatedAt: string;
+    location: {
+        lat: number;
+        lon: number;
+    } | null;
+    locationTitle: string | null;
+    availability: string | null;
+    area: number | null;
+    price: number | null;
+    dealType: string[] | null;
+    shapeAndForm: string[] | null;
+    currentUse: string[] | null;
+    goodFitFor: string[] | null;
+    additionalLinks: {
+        text: string;
+        url: string;
+    }[] | null;
+}
+
+// interface AquizitionRequest {
+
+// }
+
+class DevelopmentOportunityComponent extends React.Component<{ item: DevelopmentOportunity, orgId: string, index: number }> {
+    render() {
+        return (
+            <XHorizontal>
+                <XStreetViewModalPreview location={{ latitude: this.props.item.location!.lat, longitude: this.props.item.location!.lon }} width={170} height={130} />
+
+                <XVertical>
+                    <Title >{this.props.item.name}</Title>
+                    <Title >{this.props.item.locationTitle}</Title>
+                    {/* {(this.props.item.tags || []).join(' ')} */}
+                    <XWithRole role={['org-' + this.props.orgId + '-admin']}>
+
+                        <XHorizontal>
+                            <XButton text="edit" style="electric" query={{ field: 'editFeaturedOpportunity', value: this.props.item.id }} />
+                            <XButton text="delete" style="danger" query={{ field: 'deleteFeaturedOpportunity', value: this.props.item.id }} />
+                        </XHorizontal>
+                    </XWithRole>
+
+                </XVertical>
+            </XHorizontal>
+        );
+    }
+}
+
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
+    console.warn(props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editFeaturedOpportunity)[0]);
     return (
         <>
             <XDocumentHead title="Organization profile" />
@@ -398,6 +452,15 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             text="Edit"
                                             href="/settings/organization"
                                         />
+                                        <XButton
+                                            query={{ field: 'addDevelopmentOpportunity', value: 'true' }}
+                                            size="medium"
+                                            text="Add DO"
+                                            icon="add"
+                                            style="primary"
+                                            alignSelf="flex-start"
+                                        />
+
                                     </XWithRole>
                                 </XHorizontal>
                             </HeaderContent>
@@ -414,9 +477,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         <TagItem key={k + '_' + s}>
                                                             <TagImg img={s!} className={s!!} />
                                                             <Text bold={true} upperCase={true}>
-                                                                {DevelopmentModelsMap.map(i => (
-                                                                    i.value === s ? i.label : undefined
-                                                                ))}
+                                                                {s}
                                                             </Text>
                                                         </TagItem>
                                                     )))
@@ -429,9 +490,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         <TagItem key={k + '_' + s}>
                                                             <TagImg img={s!} className={s!!} />
                                                             <Text bold={true} upperCase={true}>
-                                                                {AvailabilityMap.map(i => (
-                                                                    i.value === s ? i.label : undefined
-                                                                ))}
+                                                                {s}
                                                             </Text>
                                                         </TagItem>
                                                     )))
@@ -497,9 +556,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     <OpportunitiesValueWrapper>
                                                         {props.data.organization.landUse!!.map((s, k) => (
                                                             <OpportunitiesValue key={k + '_' + s}>
-                                                                {LandUseMap.map(i => (
-                                                                    i.value === s ? i.label : undefined
-                                                                ))}
+                                                                {s}
                                                             </OpportunitiesValue>
                                                         ))}
                                                     </OpportunitiesValueWrapper>
@@ -514,9 +571,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     <OpportunitiesValueWrapper>
                                                         {props.data.organization.goodFor!!.map((s, k) => (
                                                             <OpportunitiesValue key={k + '_' + s}>
-                                                                {GoodForMap.map(i => (
-                                                                    i.value === s ? i.label : undefined
-                                                                ))}
+                                                                {s}
                                                             </OpportunitiesValue>
                                                         ))}
                                                     </OpportunitiesValueWrapper>
@@ -531,9 +586,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     <OpportunitiesValueWrapper>
                                                         {props.data.organization!!.specialAttributes!!.map((s, k) => (
                                                             <OpportunitiesValue key={k + '_' + s}>
-                                                                {SpecialAttributesMap.map(i => (
-                                                                    i.value === s ? i.label : undefined
-                                                                ))}
+                                                                {s}
                                                             </OpportunitiesValue>
                                                         ))}
                                                     </OpportunitiesValueWrapper>
@@ -542,6 +595,126 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </div>
 
                                     </XCardStyled>
+
+                                    <XCardStyled padding={0}>
+                                        <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
+                                            <Title marginBottom={24}>Development opportunities</Title>
+                                        </XVerticalStyled>
+                                        {props.data.organization && props.data.organization.developmentOportunities && (
+                                            props.data.organization.developmentOportunities.map((devop, i) => < DevelopmentOportunityComponent key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
+                                        )}
+                                    </XCardStyled>
+
+                                    {props.router.query.deleteFeaturedOpportunity && (
+                                        <XModalForm
+                                            title="Add Development Opportunity"
+
+                                            defaultAction={async (data) => {
+
+                                                // summary: String!
+                                                // specialAttributes: [String!]
+                                                // status: String
+
+                                                // location: MapPoint
+                                                // locationTitle: String
+                                                // availability: String
+                                                // area: Int
+                                                // price: Int
+                                                // dealType: [String!]
+                                                // shapeAndForm: [String!]
+                                                // currentUse: [String!]
+                                                // goodFitFor: [String!]
+                                                // additionalLinks: [AlphaOrganizationListingLink!]
+                                                await props.createListing({
+                                                    variables: {
+                                                        type: 'development_opportunity',
+                                                        input: {
+                                                            name: data.name,
+                                                            location: data.location ? { lat: data.location.result.center[1], lon: data.location.result.center[0] } : null,
+                                                            locationTitle: data.location ? data.location.result.place_name || data.location.result.text : null,
+                                                        }
+                                                    }
+                                                });
+                                            }}
+                                            targetQuery="addDevelopmentOpportunity"
+                                        >
+                                            <XFormLoadingContent>
+                                                <XVertical>
+                                                    <XInput field="name" required={true} placeholder="Name" />
+                                                    <XLocationPickerModal field="location" />
+                                                </XVertical>
+                                            </XFormLoadingContent>
+                                        </XModalForm>
+                                    )}
+
+                                    <XModalForm
+                                        title="Delete?"
+                                        submitProps={{ text: 'Delete' }}
+                                        defaultAction={async (data) => {
+                                            await props.deleteListing({
+                                                variables: {
+                                                    id: props.router.query.deleteFeaturedOpportunity
+                                                }
+                                            });
+                                        }}
+                                        targetQuery="deleteFeaturedOpportunity"
+                                    />
+                                    {props.router.query.editFeaturedOpportunity && (
+                                        <XModalForm
+                                            title="Edit Development Opportunity"
+
+                                            defaultData={{
+                                                input: {
+                                                    name: props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editFeaturedOpportunity)[0].name,
+                                                    location: {
+                                                        result: {
+                                                            text: props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editFeaturedOpportunity)[0].locationTitle,
+                                                            center: [props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editFeaturedOpportunity)[0].location!.lon, props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editFeaturedOpportunity)[0].location!.lat]
+                                                        }
+                                                    },
+                                                }
+                                            }}
+
+                                            defaultAction={async (data) => {
+
+                                                // summary: String!
+                                                // specialAttributes: [String!]
+                                                // status: String
+
+                                                // location: MapPoint
+                                                // locationTitle: String
+                                                // availability: String
+                                                // area: Int
+                                                // price: Int
+                                                // dealType: [String!]
+                                                // shapeAndForm: [String!]
+                                                // currentUse: [String!]
+                                                // goodFitFor: [String!]
+                                                // additionalLinks: [AlphaOrganizationListingLink!]
+                                                await props.editListing({
+                                                    variables: {
+                                                        id: props.router.query.editFeaturedOpportunity,
+                                                        input: {
+                                                            name: data.input.name,
+
+                                                            location: data.input.location ? { lat: data.input.location.result.center[1], lon: data.input.location.result.center[0] } : null,
+                                                            locationTitle: data.input.location ? data.input.location.result.place_name || data.input.location.result.text : null,
+                                                        }
+                                                    }
+
+                                                });
+                                            }}
+                                            targetQuery="editFeaturedOpportunity"
+                                        >
+                                            <XFormLoadingContent>
+                                                <XVertical>
+                                                    <XInput field="input.name" required={true} placeholder="Name" />
+                                                    <XLocationPickerModal field="input.location" />
+                                                </XVertical>
+                                            </XFormLoadingContent>
+                                        </XModalForm>
+                                    )}
+
                                 </XVertical>
                                 <XVertical width={270}>
                                     {props.data.organization.about && (

@@ -74,7 +74,6 @@ export interface UpdateOrganizationProfileInput {
   alphaLandUse?: Array< string | null > | null,
   alphaGoodFor?: Array< string | null > | null,
   alphaSpecialAttributes?: Array< string | null > | null,
-  alphaDummyFeaturedOpportunities?: Array< AlphaDummyFeaturedOpportunityInput > | null,
 };
 
 export interface ContactPersonInput {
@@ -91,11 +90,26 @@ export interface RangeInput {
   to?: number | null,
 };
 
-export interface AlphaDummyFeaturedOpportunityInput {
-  title: string,
-  location: MapPointInput,
-  locationTitle: string,
-  tags?: Array< string > | null,
+export interface AlphaOrganizationListingInput {
+  name?: string | null,
+  summary?: string | null,
+  specialAttributes?: Array< string > | null,
+  status?: string | null,
+  location?: MapPointInput | null,
+  locationTitle?: string | null,
+  availability?: string | null,
+  area?: number | null,
+  price?: number | null,
+  dealType?: Array< string > | null,
+  shapeAndForm?: Array< string > | null,
+  currentUse?: Array< string > | null,
+  goodFitFor?: Array< string > | null,
+  additionalLinks?: Array< AlphaOrganizationListingLinkInput > | null,
+  shortDescription?: string | null,
+  areaRange?: RangeInput | null,
+  geographies?: Array< string > | null,
+  landUse?: Array< string > | null,
+  unitCapacity?: Array< string > | null,
 };
 
 export interface MapPointInput {
@@ -103,6 +117,11 @@ export interface MapPointInput {
   count?: number | null,
   lat: number,
   lon: number,
+};
+
+export interface AlphaOrganizationListingLinkInput {
+  text: string,
+  url: string,
 };
 
 export enum OwnerType {
@@ -967,16 +986,50 @@ export interface MyOrganizationQuery {
     landUse: Array< string > | null,
     goodFor: Array< string > | null,
     specialAttributes: Array< string > | null,
-    featuredOpportunities:  Array< {
-      __typename: "AlphaDummyFeaturedOpportunity",
-      title: string,
+    developmentOportunities:  Array< {
+      __typename: "AlphaOrganizationListing",
+      name: string,
+      id: string,
+      summary: string | null,
+      specialAttributes: Array< string > | null,
+      status: string | null,
+      updatedAt: string,
       location:  {
         __typename: "MapPoint",
         lat: number,
         lon: number,
-      },
-      locationTitle: string,
-      tags: Array< string > | null,
+      } | null,
+      locationTitle: string | null,
+      availability: string | null,
+      area: number | null,
+      price: number | null,
+      dealType: Array< string > | null,
+      shapeAndForm: Array< string > | null,
+      currentUse: Array< string > | null,
+      goodFitFor: Array< string > | null,
+      additionalLinks:  Array< {
+        __typename: "AlphaOrganizationListingLink",
+        text: string,
+        url: string,
+      } > | null,
+    } > | null,
+    acquisitionRequests:  Array< {
+      __typename: "AlphaOrganizationListing",
+      name: string,
+      id: string,
+      summary: string | null,
+      specialAttributes: Array< string > | null,
+      status: string | null,
+      updatedAt: string,
+      shortDescription: string | null,
+      areaRange:  {
+        __typename: "Range",
+        from: number | null,
+        to: number | null,
+      } | null,
+      geographies: Array< string > | null,
+      landUse: Array< string > | null,
+      unitCapacity: Array< string > | null,
     } > | null,
   } | null,
 };
@@ -1036,16 +1089,50 @@ export interface MyOrganizationProfileQuery {
     landUse: Array< string > | null,
     goodFor: Array< string > | null,
     specialAttributes: Array< string > | null,
-    featuredOpportunities:  Array< {
-      __typename: "AlphaDummyFeaturedOpportunity",
-      title: string,
+    developmentOportunities:  Array< {
+      __typename: "AlphaOrganizationListing",
+      name: string,
+      id: string,
+      summary: string | null,
+      specialAttributes: Array< string > | null,
+      status: string | null,
+      updatedAt: string,
       location:  {
         __typename: "MapPoint",
         lat: number,
         lon: number,
-      },
-      locationTitle: string,
-      tags: Array< string > | null,
+      } | null,
+      locationTitle: string | null,
+      availability: string | null,
+      area: number | null,
+      price: number | null,
+      dealType: Array< string > | null,
+      shapeAndForm: Array< string > | null,
+      currentUse: Array< string > | null,
+      goodFitFor: Array< string > | null,
+      additionalLinks:  Array< {
+        __typename: "AlphaOrganizationListingLink",
+        text: string,
+        url: string,
+      } > | null,
+    } > | null,
+    acquisitionRequests:  Array< {
+      __typename: "AlphaOrganizationListing",
+      name: string,
+      id: string,
+      summary: string | null,
+      specialAttributes: Array< string > | null,
+      status: string | null,
+      updatedAt: string,
+      shortDescription: string | null,
+      areaRange:  {
+        __typename: "Range",
+        from: number | null,
+        to: number | null,
+      } | null,
+      geographies: Array< string > | null,
+      landUse: Array< string > | null,
+      unitCapacity: Array< string > | null,
     } > | null,
   },
 };
@@ -1118,16 +1205,50 @@ export interface UpdateOrganizationMutation {
     landUse: Array< string > | null,
     goodFor: Array< string > | null,
     specialAttributes: Array< string > | null,
-    featuredOpportunities:  Array< {
-      __typename: "AlphaDummyFeaturedOpportunity",
-      title: string,
+    developmentOportunities:  Array< {
+      __typename: "AlphaOrganizationListing",
+      name: string,
+      id: string,
+      summary: string | null,
+      specialAttributes: Array< string > | null,
+      status: string | null,
+      updatedAt: string,
       location:  {
         __typename: "MapPoint",
         lat: number,
         lon: number,
-      },
-      locationTitle: string,
-      tags: Array< string > | null,
+      } | null,
+      locationTitle: string | null,
+      availability: string | null,
+      area: number | null,
+      price: number | null,
+      dealType: Array< string > | null,
+      shapeAndForm: Array< string > | null,
+      currentUse: Array< string > | null,
+      goodFitFor: Array< string > | null,
+      additionalLinks:  Array< {
+        __typename: "AlphaOrganizationListingLink",
+        text: string,
+        url: string,
+      } > | null,
+    } > | null,
+    acquisitionRequests:  Array< {
+      __typename: "AlphaOrganizationListing",
+      name: string,
+      id: string,
+      summary: string | null,
+      specialAttributes: Array< string > | null,
+      status: string | null,
+      updatedAt: string,
+      shortDescription: string | null,
+      areaRange:  {
+        __typename: "Range",
+        from: number | null,
+        to: number | null,
+      } | null,
+      geographies: Array< string > | null,
+      landUse: Array< string > | null,
+      unitCapacity: Array< string > | null,
     } > | null,
   },
 };
@@ -1173,16 +1294,50 @@ export interface OrganizationQuery {
     landUse: Array< string > | null,
     goodFor: Array< string > | null,
     specialAttributes: Array< string > | null,
-    featuredOpportunities:  Array< {
-      __typename: "AlphaDummyFeaturedOpportunity",
-      title: string,
+    developmentOportunities:  Array< {
+      __typename: "AlphaOrganizationListing",
+      name: string,
+      id: string,
+      summary: string | null,
+      specialAttributes: Array< string > | null,
+      status: string | null,
+      updatedAt: string,
       location:  {
         __typename: "MapPoint",
         lat: number,
         lon: number,
-      },
-      locationTitle: string,
-      tags: Array< string > | null,
+      } | null,
+      locationTitle: string | null,
+      availability: string | null,
+      area: number | null,
+      price: number | null,
+      dealType: Array< string > | null,
+      shapeAndForm: Array< string > | null,
+      currentUse: Array< string > | null,
+      goodFitFor: Array< string > | null,
+      additionalLinks:  Array< {
+        __typename: "AlphaOrganizationListingLink",
+        text: string,
+        url: string,
+      } > | null,
+    } > | null,
+    acquisitionRequests:  Array< {
+      __typename: "AlphaOrganizationListing",
+      name: string,
+      id: string,
+      summary: string | null,
+      specialAttributes: Array< string > | null,
+      status: string | null,
+      updatedAt: string,
+      shortDescription: string | null,
+      areaRange:  {
+        __typename: "Range",
+        from: number | null,
+        to: number | null,
+      } | null,
+      geographies: Array< string > | null,
+      landUse: Array< string > | null,
+      unitCapacity: Array< string > | null,
     } > | null,
   },
 };
@@ -1198,6 +1353,102 @@ export interface FollowOrganizationMutation {
     id: string,
     alphaFollowed: boolean,
   },
+};
+
+export interface CreateListingMutationVariables {
+  type: string,
+  input: AlphaOrganizationListingInput,
+};
+
+export interface CreateListingMutation {
+  createListing:  {
+    __typename: "AlphaOrganizationListing",
+    name: string,
+    id: string,
+    summary: string | null,
+    specialAttributes: Array< string > | null,
+    status: string | null,
+    updatedAt: string,
+    location:  {
+      __typename: "MapPoint",
+      lat: number,
+      lon: number,
+    } | null,
+    locationTitle: string | null,
+    availability: string | null,
+    area: number | null,
+    price: number | null,
+    dealType: Array< string > | null,
+    shapeAndForm: Array< string > | null,
+    currentUse: Array< string > | null,
+    goodFitFor: Array< string > | null,
+    additionalLinks:  Array< {
+      __typename: "AlphaOrganizationListingLink",
+      text: string,
+      url: string,
+    } > | null,
+    shortDescription: string | null,
+    areaRange:  {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } | null,
+    geographies: Array< string > | null,
+    landUse: Array< string > | null,
+    unitCapacity: Array< string > | null,
+  },
+};
+
+export interface EditListingMutationVariables {
+  id: string,
+  input: AlphaOrganizationListingInput,
+};
+
+export interface EditListingMutation {
+  editListing:  {
+    __typename: "AlphaOrganizationListing",
+    name: string,
+    id: string,
+    summary: string | null,
+    specialAttributes: Array< string > | null,
+    status: string | null,
+    updatedAt: string,
+    location:  {
+      __typename: "MapPoint",
+      lat: number,
+      lon: number,
+    } | null,
+    locationTitle: string | null,
+    availability: string | null,
+    area: number | null,
+    price: number | null,
+    dealType: Array< string > | null,
+    shapeAndForm: Array< string > | null,
+    currentUse: Array< string > | null,
+    goodFitFor: Array< string > | null,
+    additionalLinks:  Array< {
+      __typename: "AlphaOrganizationListingLink",
+      text: string,
+      url: string,
+    } > | null,
+    shortDescription: string | null,
+    areaRange:  {
+      __typename: "Range",
+      from: number | null,
+      to: number | null,
+    } | null,
+    geographies: Array< string > | null,
+    landUse: Array< string > | null,
+    unitCapacity: Array< string > | null,
+  },
+};
+
+export interface DeleteListingMutationVariables {
+  id: string,
+};
+
+export interface DeleteListingMutation {
+  alphaOrganizationDeleteListing: string,
 };
 
 export interface BlocksConnectionQueryVariables {
@@ -3226,16 +3477,50 @@ export interface OrganizationFullFragment {
   landUse: Array< string > | null,
   goodFor: Array< string > | null,
   specialAttributes: Array< string > | null,
-  featuredOpportunities:  Array< {
+  developmentOportunities:  Array< {
     __typename: string,
-    title: string,
+    name: string,
+    id: string,
+    summary: string | null,
+    specialAttributes: Array< string > | null,
+    status: string | null,
+    updatedAt: string,
     location:  {
       __typename: string,
       lat: number,
       lon: number,
-    },
-    locationTitle: string,
-    tags: Array< string > | null,
+    } | null,
+    locationTitle: string | null,
+    availability: string | null,
+    area: number | null,
+    price: number | null,
+    dealType: Array< string > | null,
+    shapeAndForm: Array< string > | null,
+    currentUse: Array< string > | null,
+    goodFitFor: Array< string > | null,
+    additionalLinks:  Array< {
+      __typename: string,
+      text: string,
+      url: string,
+    } > | null,
+  } > | null,
+  acquisitionRequests:  Array< {
+    __typename: string,
+    name: string,
+    id: string,
+    summary: string | null,
+    specialAttributes: Array< string > | null,
+    status: string | null,
+    updatedAt: string,
+    shortDescription: string | null,
+    areaRange:  {
+      __typename: string,
+      from: number | null,
+      to: number | null,
+    } | null,
+    geographies: Array< string > | null,
+    landUse: Array< string > | null,
+    unitCapacity: Array< string > | null,
   } > | null,
 };
 
@@ -3293,16 +3578,50 @@ export interface OrganizationProfileFullFragment {
   landUse: Array< string > | null,
   goodFor: Array< string > | null,
   specialAttributes: Array< string > | null,
-  featuredOpportunities:  Array< {
+  developmentOportunities:  Array< {
     __typename: string,
-    title: string,
+    name: string,
+    id: string,
+    summary: string | null,
+    specialAttributes: Array< string > | null,
+    status: string | null,
+    updatedAt: string,
     location:  {
       __typename: string,
       lat: number,
       lon: number,
-    },
-    locationTitle: string,
-    tags: Array< string > | null,
+    } | null,
+    locationTitle: string | null,
+    availability: string | null,
+    area: number | null,
+    price: number | null,
+    dealType: Array< string > | null,
+    shapeAndForm: Array< string > | null,
+    currentUse: Array< string > | null,
+    goodFitFor: Array< string > | null,
+    additionalLinks:  Array< {
+      __typename: string,
+      text: string,
+      url: string,
+    } > | null,
+  } > | null,
+  acquisitionRequests:  Array< {
+    __typename: string,
+    name: string,
+    id: string,
+    summary: string | null,
+    specialAttributes: Array< string > | null,
+    status: string | null,
+    updatedAt: string,
+    shortDescription: string | null,
+    areaRange:  {
+      __typename: string,
+      from: number | null,
+      to: number | null,
+    } | null,
+    geographies: Array< string > | null,
+    landUse: Array< string > | null,
+    unitCapacity: Array< string > | null,
   } > | null,
 };
 
