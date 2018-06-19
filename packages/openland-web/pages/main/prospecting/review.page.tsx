@@ -13,7 +13,7 @@ import { Scaffold } from '../../../components/Scaffold';
 import { sourceFromGeometry } from '../../../utils/map';
 import { Text } from '../../../strings';
 import { withApp } from '../../../components/withApp';
-import { withOpportunity } from '../../../api';
+import { withOpportunity } from '../../../api/withOpportunity';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XArea } from 'openland-x-format/XArea';
 import { XMoney } from 'openland-x-format/XMoney';

@@ -1,12 +1,13 @@
 import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import {
-    withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountMemberAdd,
-    withSuperAccountFeatureAdd, withSuperAccountFeatureRemove,
-    withSuperAccountMemberRemove,
-    withSuperAccountRename
-} from '../../api/';
+import { withSuperAccountActivate } from '../../api/withSuperAccountActivate';
+import { withSuperAccountSuspend } from '../../api/withSuperAccountSuspend';
+import { withSuperAccountFeatureAdd } from '../../api/withSuperAccountFeatureAdd';
+import { withSuperAccountFeatureRemove } from '../../api/withSuperAccountFeatureRemove';
+import { withSuperAccountMemberAdd } from '../../api/withSuperAccountMemberAdd';
+import { withSuperAccountMemberRemove } from '../../api/withSuperAccountMemberRemove';
+import { withSuperAccountRename } from '../../api/withSuperAccountRename';
 import { UserSelect } from '../../api/UserSelect';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';

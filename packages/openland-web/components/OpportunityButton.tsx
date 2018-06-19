@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withAddOpportunity } from '../api';
+import { withAddOpportunity } from '../api/withAddOpportunity';
 import { OpportunityState } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 

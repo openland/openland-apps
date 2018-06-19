@@ -7,7 +7,7 @@ import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../../components/AuthRouter';
-import { withInviteInfo } from '../../api';
+import { withInviteInfo } from '../../api/withInviteInfo';
 import { XButton } from 'openland-x/XButton';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';

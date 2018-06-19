@@ -3,7 +3,7 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
-import { withDebugReaders } from '../../api';
+import { withDebugReaders } from '../../api/withDebugReaders';
 import { XTable } from 'openland-x/XTable';
 import { withQueryLoader } from '../../components/withQueryLoader';
 

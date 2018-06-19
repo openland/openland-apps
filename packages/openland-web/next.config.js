@@ -35,10 +35,25 @@ const config = withTypescript({
             use: defaultLoaders.babel
         })
 
+        const ignoredModules = [path.resolve(__dirname + '/../openland-api')]
+        let commons = config.plugins.find((plugin) => (plugin.constructor.name === 'CommonsChunkPlugin'))
+        if (commons) {
+            let ex = commons.minChunks;
+            commons.minChunks = (module, count) => {
+                for(let i of ignoredModules){
+                    if (module.context.startsWith(i)) {
+                        console.warn('ignored: ' + i)
+                        return false;
+                    }
+                }
+                return ex(module, count);
+            }
+        }
+
         // Disable minification
-        // config.plugins = config.plugins.filter(
-        //     (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
-        // )
+        config.plugins = config.plugins.filter(
+            (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
+        )
 
         // Creating vendor library
         // Doesn't work...

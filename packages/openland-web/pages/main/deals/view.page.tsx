@@ -1,7 +1,9 @@
 import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { withDeal, withDealAlterCombined, withDealRemove } from '../../../api/';
+import { withDeal } from '../../../api/withDeal';
+import { withDealAlterCombined } from '../../../api/withDealAlterCombined';
+import { withDealRemove } from '../../../api/withDealRemove';
 import { DealForm } from './components/DealForm';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ParcelMaps } from '../../../components/ParcelMaps';

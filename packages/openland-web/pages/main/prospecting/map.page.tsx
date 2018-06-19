@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { Scaffold } from '../../../components/Scaffold';
 import { ProspectingNavigationMap } from '../../../components/ProspectingNavigation';
-import { SourcingTileSource } from '../../../api';
+import { SourcingTileSource } from '../../../api/SourcingTileSource';
 import { OpportunityState } from 'openland-api/Types';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { ParcelCard } from '../../../components/Incubator/MapComponents/MapParcelCard';

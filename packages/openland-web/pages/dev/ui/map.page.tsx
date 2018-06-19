@@ -3,7 +3,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { withUserInfo, UserInfoComponentProps } from '../../../components/UserInfo';
-import { withDealsMap } from '../../../api';
+import { withDealsMap } from '../../../api/withDealsMap';
 import { ParcelPointSource } from '../../../api/ParcelPointSource';
 import { withParcelStats } from '../../../api/withParcelStats';
 // import { XHorizontal } from '../../../components/X/XHorizontal';

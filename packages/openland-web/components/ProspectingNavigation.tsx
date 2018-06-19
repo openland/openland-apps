@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withProspectingStats } from '../api';
+import { withProspectingStats } from '../api/withProspectingStats';
 import * as qs from 'query-string';
 import { buildProspectingQuery } from './prospectingQuery';
 import { withRouter } from 'openland-x-routing/withRouter';

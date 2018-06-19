@@ -1,7 +1,7 @@
 import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { withSuperAccountAdd } from '../../api/';
+import { withSuperAccountAdd } from '../../api/withSuperAccountAdd';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';

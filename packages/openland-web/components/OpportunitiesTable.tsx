@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { withSourcing, withSourcingAll } from '../api';
+import { withSourcing } from '../api/withSourcing';
+import { withSourcingAll } from '../api/withSourcingAll';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ParcelNumber } from './ParcelNumber';
 import * as Types from 'openland-api/Types';

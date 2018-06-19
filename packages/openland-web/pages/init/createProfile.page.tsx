@@ -4,7 +4,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withApp } from '../../components/withApp';
-import { withProfileCreate } from '../../api';
+import { withProfileCreate } from '../../api/withProfileCreate';
 import {
     RootContainer,
     Logo,

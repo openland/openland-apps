@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withSourcingAllReport as withSourcingAll } from '../api';
+import { withSourcingAllReport as withSourcingAll } from '../api/withSourcingAllReport';
 import { XHeader } from 'openland-x/XHeader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { ParcelNumber } from './ParcelNumber';

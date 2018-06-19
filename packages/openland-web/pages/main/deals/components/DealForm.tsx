@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MutationFunc } from 'react-apollo';
 import { XForm } from 'openland-x-forms/XForm';
-import { ParcelSelect } from '../../../../api';
+import { ParcelSelect } from '../../../../api/ParcelSelect';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 

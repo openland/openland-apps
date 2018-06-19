@@ -4,7 +4,7 @@ import { withApp } from '../../../components/withApp';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XContent } from 'openland-x-layout/XContent';
-import { withProfile } from '../../../api';
+import { withProfile } from '../../../api/withProfile';
 import { Navigation } from './_navigation';
 import { XHeader } from 'openland-x/XHeader';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';

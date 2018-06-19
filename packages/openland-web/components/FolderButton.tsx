@@ -2,7 +2,12 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { XButton, XButtonSize, XButtonStyle } from 'openland-x/XButton';
 import { XPopper, Placement } from 'openland-x/XPopper';
-import { withFolders, withSetFolderMutation, withCreateFolderMutation, withCreateFolderFromSearchMutation, withAddToFolderFromSearchMutation } from '../api';
+import { withFolders } from '../api/withFolders';
+import { withSetFolderMutation } from '../api/withSetFolderMutation';
+import { withCreateFolderMutation } from '../api/withCreateFolderMutation';
+import { withCreateFolderFromSearchMutation } from '../api/withCreateFolderFromSearchMutation';
+import { withAddToFolderFromSearchMutation } from '../api/withAddToFolderFromSearchMutation';
+
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XForm } from 'openland-x-forms/XForm';
