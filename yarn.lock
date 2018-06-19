@@ -1206,13 +1206,6 @@
   dependencies:
     "@turf/helpers" "^5.1.5"
 
-"@turf/union@^5.1.5":
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/@turf/union/-/union-5.1.5.tgz#53285b6094047fc58d96aac0ea90865ec34d454b"
-  dependencies:
-    "@turf/helpers" "^5.1.5"
-    turf-jsts "*"
-
 "@typeform/embed@^0.5.6":
   version "0.5.6"
   resolved "https://registry.yarnpkg.com/@typeform/embed/-/embed-0.5.6.tgz#93f59c63618c921893b1db0816b84b75cade7aef"
@@ -10634,10 +10627,6 @@ tunnel-agent@^0.6.0:
   resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.6.0.tgz#27a5dea06b36b04a0a9966774b290868f0fc40fd"
   dependencies:
     safe-buffer "^5.0.1"
-
-turf-jsts@*:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/turf-jsts/-/turf-jsts-1.2.3.tgz#59757f542afbff9a577bbf411f183b8f48d38aa4"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
