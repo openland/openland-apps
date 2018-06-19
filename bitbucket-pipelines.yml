@@ -7,8 +7,6 @@ pipelines:
         caches:
           - node
         script:
-          - source ./scripts/deploy_prepare.sh
-          - gsutil -v
           - yarn install
           - yarn test
           - yarn build
