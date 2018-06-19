@@ -367,39 +367,25 @@ let colorPressedStyles = styleResolver({
 
 let loaderStyles = styleResolver({
     'default': {
-        '& svg path': {
-            stroke: '#334562 !important'
-        }
+        color: '#334562'
     },
     'primary': {
-        '& svg path': {
-            stroke: '#ffffff !important'
-        }
+        color: '#ffffff'
     },
     'danger': {
-        '& svg path': {
-            stroke: '#ffffff !important'
-        }
+        color: '#ffffff'
     },
     'ghost': {
-        '& svg path': {
-            stroke: '#334562 !important'
-        }
+        color: '#334562'
     },
     'electric': {
-        '& svg path': {
-            stroke: '#5640d6 !important'
-        }
+        color: '#5640d6'
     },
     'flat': {
-        '& svg path': {
-            stroke: '#334562 !important'
-        }
+        color: '#334562'
     },
     'link': {
-        '& svg path': {
-            stroke: '#5640d6 !important'
-        }
+        color: '#5640d6'
     }
 });
 
@@ -451,7 +437,14 @@ interface StyledButtonProps extends XFlexStyles {
 }
 
 const StyledButton = Glamorous.a<StyledButtonProps>([
-    (props) => ({ display: 'flex', boxSizing: 'border-box' }),
+    (props) => ({
+        display: 'flex', boxSizing: 'border-box',
+        '& .loading-icon': {
+            position: 'absolute',
+            left: 'calc(50% - 10px)',
+            top: 'calc(50% - 10px)',
+        }
+    }),
     (props) => ({
         pointerEvents: (props.loading || props.enabled === false) ? 'none' : 'auto',
         cursor: (props.loading || props.enabled === false) ? 'inherit' : 'pointer',
@@ -464,7 +457,6 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
     (props) => colorStyles(props.buttonStyle, props.enabled !== false && !props.pressed),
     (props) => colorDisabledStyles(props.buttonStyle, props.enabled === false),
     (props) => colorPressedStyles(props.buttonStyle, !!props.pressed),
-    (props) => loaderStyles(props.buttonStyle),
     (props) => sizeStyles(props.buttonSize),
     (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize)
 ]);
@@ -493,7 +485,7 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
                     {props.icon && <StyledIcon text={props.text} icon={props.icon} className="icon" />}
                     <ButtomText>{props.text}</ButtomText>
                 </MainContent>
-                {props.loading && <XLoadingCircular inverted={props.style === 'primary' || props.style === 'danger'} className="loading-icon" />}
+                {props.loading && <XLoadingCircular className="loading-icon" color={loaderStyles(props.style).color!! as string} />}
                 {props.additionalText && (
                     <AdditionalContent additionalText={props.additionalText !== undefined}>
                         <ButtomText>{props.additionalText}</ButtomText>

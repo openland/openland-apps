@@ -1,13 +1,17 @@
+import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XAnimation } from './XAnimation';
 
-export const XLoadingCircular = Glamorous<{ inverted?: boolean }>(XAnimation(require('./animations/loading_circular.json')))((props) => ({
+const AnimatedLoader = Glamorous<{ color?: string }>(XAnimation(require('./animations/loading_circular.json')))((props) => ({
     display: 'block',
-    position: 'absolute',
     width: '20px',
     height: '20px',
     lineHeight: '20px',
-    left: 'calc(50% - 10px)',
-    top: 'calc(50% - 10px)',
-    'svg *': { fill: '#ff0000'}
+    '& path': { stroke: props.color || '#ff0000' }
 }));
+
+export class XLoadingCircular extends React.PureComponent<{ color?: string, className?: string }> {
+    render() {
+        return <AnimatedLoader className={this.props.className} color={this.props.color} />;
+    }
+}

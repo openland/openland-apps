@@ -36,7 +36,7 @@ export default withApp('UI Framework - Loaders', 'viewer', (props) => {
                             <XTitle>Loading Bar</XTitle>
                             <Toggler />
                             <XTitle>Circular Bar</XTitle>
-                            <XLoadingCircular inverted={true} />
+                            <XLoadingCircular color="#000000" />
                         </XVertical>
                     </XStore>
                 </XVertical>

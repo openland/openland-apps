@@ -27,13 +27,10 @@ const XCardLoaderDiv = Glamorous.div<XLoaderProps>((props) => ({
         top: 'calc(50% - 15px)',
         left: 'calc(50% - 15px)'
     },
-    '& svg path': {
-        stroke: '#334562 !important'
-    }
 }));
 
 export const XLoader = (props: XLoaderProps) => (
     <XCardLoaderDiv loading={props.loading} height={props.height}>
-        <XLoadingCircular className="loading" />
+        <XLoadingCircular className="loading" color="#334562" />
     </XCardLoaderDiv>
 );
