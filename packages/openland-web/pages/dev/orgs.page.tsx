@@ -1,7 +1,7 @@
 import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { withSuperAccounts, withSuperAccountAdd } from '../../api/';
+import { withSuperAccountAdd } from '../../api/';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
@@ -13,6 +13,7 @@ import { XModalForm } from 'openland-x-modal/XModalForm';
 import glamorous from 'glamorous';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { withQueryLoader } from '../../components/withQueryLoader';
+import { withSuperAccounts } from '../../api/withSuperAccounts';
 
 const AddAccountForm = withSuperAccountAdd((props) => {
     return (

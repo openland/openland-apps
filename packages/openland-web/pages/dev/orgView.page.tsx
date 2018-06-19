@@ -2,7 +2,7 @@ import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import {
-    withSuperAccount, withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountMemberAdd,
+    withSuperAccountActivate, withSuperAccountSuspend, withSuperAccountMemberAdd,
     withSuperAccountFeatureAdd, withSuperAccountFeatureRemove,
     withSuperAccountMemberRemove,
     withSuperAccountRename
@@ -16,6 +16,7 @@ import { XForm } from 'openland-x-forms/XForm';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { withQueryLoader } from '../../components/withQueryLoader';
+import { withSuperAccount } from '../../api/withSuperAccount';
 
 const ActivateButton = withSuperAccountActivate((props) => <XButton style="primary" action={() => props.activate({})} text="Activate" />);
 const SuspendButton = withSuperAccountSuspend((props) => <XButton style="danger" action={() => props.suspend({})} text="Suspend" />);
