@@ -103,7 +103,8 @@ const config = withTypescript({
     // },
     useFileSystemPublicRoutes: false,
     analyzeServer: ["server", "both"].includes(process.env.BUNDLE_ANALYZE),
-    analyzeBrowser: ["browser", "both"].includes(process.env.BUNDLE_ANALYZE)
+    analyzeBrowser: ["browser", "both"].includes(process.env.BUNDLE_ANALYZE),
+    assetPrefix: process.env.CDN_PREFIX ? process.env.CDN_PREFIX : undefined
 });
 
 module.exports = withBundleAnalyzer(config)
