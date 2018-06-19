@@ -1,4 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Account } from 'openland-api';
+import { AccountDestroyInviteMutation } from 'openland-api/AccountDestroyInviteMutation';
+import { AccountInvitesQuery } from 'openland-api/AccountInvitesQuery';
 
-export const withInviteDestroy = graphqlMutation(Account.AccountDestroyInviteMutation, 'destroyInvite', { refetchQueries: [Account.AccountInvitesQuery] });
+export const withInviteDestroy = graphqlMutation(AccountDestroyInviteMutation, 'destroyInvite', { refetchQueries: [AccountInvitesQuery] });

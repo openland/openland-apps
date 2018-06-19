@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Parcels } from 'openland-api';
+import { BlockQuery } from 'openland-api/BlockQuery';
 
-export const withBlock = graphqlRouted(Parcels.BlockQuery, { params: ['blockId'] });
+export const withBlock = graphqlRouted(BlockQuery, { params: ['blockId'] });

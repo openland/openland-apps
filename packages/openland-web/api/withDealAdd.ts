@@ -1,4 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Deals } from 'openland-api';
+import { AllDealsQuery } from 'openland-api/AllDealsQuery';
+import { AddDealMutation } from 'openland-api/AddDealMutation';
 
-export const withDealAdd = graphqlMutation(Deals.AddDealMutation, 'add', { refetchQueries: [Deals.AllDealsQuery] });
+export const withDealAdd = graphqlMutation(AddDealMutation, 'add', { refetchQueries: [AllDealsQuery] });

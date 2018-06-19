@@ -1,4 +1,4 @@
 import { graphqlTask } from 'openland-x-graphql/graphqlTask';
-import { Tasks } from 'openland-api';
+import { FolderExportTaskMutation } from 'openland-api/Tasks';
 
-export const withFolderExportTask = graphqlTask(Tasks.FolderExportTaskMutation);
+export const withFolderExportTask = graphqlTask(FolderExportTaskMutation);

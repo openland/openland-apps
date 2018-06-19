@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Parcels } from 'openland-api';
+import { ParcelsConnectionQuery } from 'openland-api/ParcelsConnectionQuery';
 
-export const withParcels = graphqlRouted(Parcels.ParcelsConnectionQuery, { params: ['page', 'query'] });
+export const withParcels = graphqlRouted(ParcelsConnectionQuery, { params: ['page', 'query'] });

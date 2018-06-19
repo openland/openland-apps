@@ -1,4 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Folder } from 'openland-api';
+import { AddToFolderMutation } from 'openland-api/AddToFolderMutation';
+import { FoldersQuery } from 'openland-api/FoldersQuery';
 
-export const withAddToFolderMutation = graphqlMutation(Folder.AddToFolderMutation, 'addToFolder', { refetchQueries: [Folder.FoldersQuery] });
+export const withAddToFolderMutation = graphqlMutation(AddToFolderMutation, 'addToFolder', { refetchQueries: [FoldersQuery] });

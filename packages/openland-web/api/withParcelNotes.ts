@@ -1,4 +1,4 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Parcels } from 'openland-api';
+import { ParcelNotesMutation } from 'openland-api/ParcelNotesMutation';
 
-export const withParcelNotes = graphqlMutation(Parcels.ParcelNotesMutation, 'parcelNotes', { params: ['parcelId'] });
+export const withParcelNotes = graphqlMutation(ParcelNotesMutation, 'parcelNotes', { params: ['parcelId'] });

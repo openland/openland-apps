@@ -1,4 +1,4 @@
 import { graphqlSelect } from 'openland-x-graphql/graphqlSelect';
-import { Addressing } from 'openland-api';
+import { StateQuery } from 'openland-api/StateQuery';
 
-export const StateSelect = graphqlSelect(Addressing.StateQuery);
+export const StateSelect = graphqlSelect(StateQuery);

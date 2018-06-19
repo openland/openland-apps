@@ -1,9 +1,11 @@
 import { graphqlCompose2 } from 'openland-x-graphql/graphqlCompose';
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Settings, Account } from 'openland-api';
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
+import { ProfileQuery } from 'openland-api/ProfileQuery';
+import { ProfileUpdateMutation } from 'openland-api/ProfileUpdateMutation';
+import { AccountQuery } from 'openland-api/AccountQuery';
 
 export const withProfile = graphqlCompose2(
-    graphqlRouted(Settings.ProfileQuery),
-    graphqlMutation(Settings.ProfileUpdateMutation, 'updateProfile', { refetchQueries: [Account.AccountQuery] })
+    graphqlRouted(ProfileQuery),
+    graphqlMutation(ProfileUpdateMutation, 'updateProfile', { refetchQueries: [AccountQuery] })
 );

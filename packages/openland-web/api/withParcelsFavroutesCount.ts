@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Parcels } from 'openland-api';
+import { ParcelsFavoritesCountQuery } from 'openland-api/ParcelsFavoritesCountQuery';
 
-export const withParcelsFavroutesCount = graphqlRouted(Parcels.ParcelsFavoritesCountQuery);
+export const withParcelsFavroutesCount = graphqlRouted(ParcelsFavoritesCountQuery);

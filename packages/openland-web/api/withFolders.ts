@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Folder } from 'openland-api';
+import { FoldersQuery } from 'openland-api/FoldersQuery';
 
-export const withFolders = graphqlRouted(Folder.FoldersQuery);
+export const withFolders = graphqlRouted(FoldersQuery);

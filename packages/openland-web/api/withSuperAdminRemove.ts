@@ -1,4 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Permissions } from 'openland-api';
+import { SuperAdminRemoveMutation } from 'openland-api/SuperAdminRemoveMutation';
+import { SuperAdminsQuery } from 'openland-api/SuperAdminsQuery';
 
-export const withSuperAdminRemove = graphqlMutation(Permissions.SuperAdminRemoveMutation, 'remove', { refetchQueries: [Permissions.SuperAdminsQuery] });
+export const withSuperAdminRemove = graphqlMutation(SuperAdminRemoveMutation, 'remove', { refetchQueries: [SuperAdminsQuery] });

@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Account } from 'openland-api';
+import { AccountInvitesQuery } from 'openland-api/AccountInvitesQuery';
 
-export const withInvites = graphqlRouted(Account.AccountInvitesQuery);
+export const withInvites = graphqlRouted(AccountInvitesQuery);

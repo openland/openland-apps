@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Folder } from 'openland-api';
+import { FolderQuery } from 'openland-api/FolderQuery';
 
-export const withFolder = graphqlRouted(Folder.FolderQuery, { params: [], notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' });
+export const withFolder = graphqlRouted(FolderQuery, { params: [], notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' });

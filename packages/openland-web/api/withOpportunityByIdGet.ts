@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Sourcing } from 'openland-api';
+import { OpportunityQuery } from 'openland-api/OpportunityQuery';
 
-export const withOpportunityByIdGet = graphqlRouted(Sourcing.OpportunityQuery, { params: ['opportunityId'] });
+export const withOpportunityByIdGet = graphqlRouted(OpportunityQuery, { params: ['opportunityId'] });

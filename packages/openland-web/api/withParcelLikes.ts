@@ -1,6 +1,8 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Parcels } from 'openland-api';
+import { ParcelLikeMutation } from 'openland-api/ParcelLikeMutation';
+import { ParcelsFavoritesQuery } from 'openland-api/ParcelsFavoritesQuery';
+import { ParcelsFavoritesCountQuery } from 'openland-api/ParcelsFavoritesCountQuery';
 
-export const withParcelLikes = graphqlMutation(Parcels.ParcelLikeMutation, 'doLike', {
-    refetchQueries: [Parcels.ParcelsFavoritesQuery, Parcels.ParcelsFavoritesCountQuery]
+export const withParcelLikes = graphqlMutation(ParcelLikeMutation, 'doLike', {
+    refetchQueries: [ParcelsFavoritesQuery, ParcelsFavoritesCountQuery]
 });

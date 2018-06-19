@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Permissions } from 'openland-api';
+import { SuperAdminsQuery } from 'openland-api/SuperAdminsQuery';
 
-export const withSuperAdmins = graphqlRouted(Permissions.SuperAdminsQuery);
+export const withSuperAdmins = graphqlRouted(SuperAdminsQuery);

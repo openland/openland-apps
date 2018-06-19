@@ -1,4 +1,4 @@
 import { graphqlSelect } from 'openland-x-graphql/graphqlSelect';
-import { Parcels } from 'openland-api';
+import { ParcelsSearchQuery } from 'openland-api/ParcelsSearchQuery';
 
-export const ParcelSelect = graphqlSelect(Parcels.ParcelsSearchQuery);
+export const ParcelSelect = graphqlSelect(ParcelsSearchQuery);

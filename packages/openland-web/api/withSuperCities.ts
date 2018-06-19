@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { SuperCity } from 'openland-api';
+import { SuperCitiesQuery } from 'openland-api/SuperCitiesQuery';
 
-export const withSuperCities = graphqlRouted(SuperCity.SuperCitiesQuery);
+export const withSuperCities = graphqlRouted(SuperCitiesQuery);

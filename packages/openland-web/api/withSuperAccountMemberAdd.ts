@@ -1,5 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Permissions } from 'openland-api';
+import { SuperAccountMemberAddMutation } from 'openland-api/SuperAccountMemberAddMutation';
 
 export const withSuperAccountMemberAdd =
-    graphqlMutation(Permissions.SuperAccountMemberAddMutation, 'add', { params: ['accountId'] });
+    graphqlMutation(SuperAccountMemberAddMutation, 'add', { params: ['accountId'] });

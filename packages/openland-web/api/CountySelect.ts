@@ -1,4 +1,4 @@
 import { graphqlSelect } from 'openland-x-graphql/graphqlSelect';
-import { Addressing } from 'openland-api';
+import { CountyQuery } from 'openland-api/CountyQuery';
 
-export const CountySelect = graphqlSelect<{ stateId: string }>(Addressing.CountyQuery);
+export const CountySelect = graphqlSelect<{ stateId: string }>(CountyQuery);

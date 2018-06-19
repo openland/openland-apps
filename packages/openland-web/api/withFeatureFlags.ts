@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { FeatureFlags } from 'openland-api';
+import { FeatureFlagsQuery } from 'openland-api/FeatureFlagsQuery';
 
-export const withFeatureFlags = graphqlRouted(FeatureFlags.FeatureFlagsQuery);
+export const withFeatureFlags = graphqlRouted(FeatureFlagsQuery);

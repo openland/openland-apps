@@ -1,4 +1,4 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Permissions } from 'openland-api';
+import { SuperAccountSuspendMutation } from 'openland-api/SuperAccountSuspendMutation';
 
-export const withSuperAccountSuspend = graphqlMutation(Permissions.SuperAccountSuspendMutation, 'suspend', { params: ['accountId'] });
+export const withSuperAccountSuspend = graphqlMutation(SuperAccountSuspendMutation, 'suspend', { params: ['accountId'] });

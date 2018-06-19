@@ -1,5 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Permissions } from 'openland-api';
+import { SuperAccountMemberRemoveMutation } from 'openland-api/SuperAccountMemberRemoveMutation';
 
 export const withSuperAccountMemberRemove =
-    graphqlMutation(Permissions.SuperAccountMemberRemoveMutation, 'remove', { params: ['accountId'] });
+    graphqlMutation(SuperAccountMemberRemoveMutation, 'remove', { params: ['accountId'] });

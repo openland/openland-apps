@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Sourcing } from 'openland-api';
+import { OpportunityStatsQuery } from 'openland-api/OpportunityStatsQuery';
 
-export const withProspectingStats = graphqlRouted(Sourcing.OpportunityStatsQuery);
+export const withProspectingStats = graphqlRouted(OpportunityStatsQuery);

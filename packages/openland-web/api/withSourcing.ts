@@ -1,6 +1,6 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Sourcing } from 'openland-api';
+import { SourcingQuery } from 'openland-api/SourcingQuery';
 
-export const withSourcing = graphqlRouted(Sourcing.SourcingQuery, {
+export const withSourcing = graphqlRouted(SourcingQuery, {
     params: ['filter', 'cursor', 'page', 'sort'], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only'
 });

@@ -1,4 +1,8 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Sourcing } from 'openland-api';
+import { AddOpportunityFromSearchMutation } from 'openland-api/AddOpportunityFromSearchMutation';
+import { OpportunityStatsQuery } from 'openland-api/OpportunityStatsQuery';
 
-export const withAddFromSearchOpportunity = graphqlMutation(Sourcing.AddOpportunityFromSearchMutation, 'addFromSearch', { refetchQueries: [Sourcing.OpportunityStatsQuery] });
+export const withAddFromSearchOpportunity = graphqlMutation(
+    AddOpportunityFromSearchMutation,
+    'addFromSearch',
+    { refetchQueries: [OpportunityStatsQuery] });

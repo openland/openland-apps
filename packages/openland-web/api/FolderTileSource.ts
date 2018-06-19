@@ -1,6 +1,6 @@
 import { graphQLTileSource } from 'openland-x-graphql/graphqlTileSource';
-import { Folder } from 'openland-api';
+import { FolderItemsTileOverlayQuery } from 'openland-api/FolderItemsTileOverlayQuery';
 
-export const FolderTileSource = graphQLTileSource(Folder.FolderItemsTileOverlayQuery, {
+export const FolderTileSource = graphQLTileSource(FolderItemsTileOverlayQuery, {
     propertiesFactory: (src) => ({ parcelId: src.parcel.id })
 });

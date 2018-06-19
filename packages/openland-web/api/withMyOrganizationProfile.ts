@@ -1,9 +1,10 @@
 import { graphqlCompose2 } from 'openland-x-graphql/graphqlCompose';
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Organization } from 'openland-api';
+import { MyOrganizationProfileQuery } from 'openland-api/MyOrganizationProfileQuery';
+import { UpdateOrganizationMutation } from 'openland-api/UpdateOrganizationMutation';
 
 export const withMyOrganizationProfile = graphqlCompose2(
-    graphqlRouted(Organization.MyOrganizationProfileQuery),
-    graphqlMutation(Organization.UpdateOrganizationMutation, 'updateOrganizaton')
+    graphqlRouted(MyOrganizationProfileQuery),
+    graphqlMutation(UpdateOrganizationMutation, 'updateOrganizaton')
 );

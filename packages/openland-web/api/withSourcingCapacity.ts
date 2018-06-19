@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Sourcing } from 'openland-api';
+import { ProspectingCapacityQuery } from 'openland-api/ProspectingCapacityQuery';
 
-export const withSourcingCapacity = graphqlRouted(Sourcing.ProspectingCapacityQuery, { params: [], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only' });
+export const withSourcingCapacity = graphqlRouted(ProspectingCapacityQuery, { params: [], notifyOnNetworkStatusChange: false, fetchPolicy: 'network-only' });

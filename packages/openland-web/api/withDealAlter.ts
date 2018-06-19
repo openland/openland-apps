@@ -1,4 +1,4 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Deals } from 'openland-api';
+import { AlterDealMutation } from 'openland-api/AlterDealMutation';
 
-export const withDealAlter = graphqlMutation(Deals.AlterDealMutation, 'alter', { params: ['dealId'] });
+export const withDealAlter = graphqlMutation(AlterDealMutation, 'alter', { params: ['dealId'] });

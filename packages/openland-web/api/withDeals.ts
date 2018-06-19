@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Deals } from 'openland-api';
+import { AllDealsQuery } from 'openland-api/AllDealsQuery';
 
-export const withDeals = graphqlRouted(Deals.AllDealsQuery);
+export const withDeals = graphqlRouted(AllDealsQuery);

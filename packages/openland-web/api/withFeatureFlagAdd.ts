@@ -1,4 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { FeatureFlags } from 'openland-api';
+import { FeatureFlagAddMutation } from 'openland-api/FeatureFlagAddMutation';
+import { FeatureFlagsQuery } from 'openland-api/FeatureFlagsQuery';
 
-export const withFeatureFlagAdd = graphqlMutation(FeatureFlags.FeatureFlagAddMutation, 'add', { refetchQueries: [FeatureFlags.FeatureFlagsQuery] });
+export const withFeatureFlagAdd = graphqlMutation(FeatureFlagAddMutation, 'add', { refetchQueries: [FeatureFlagsQuery] });

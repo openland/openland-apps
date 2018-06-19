@@ -1,4 +1,4 @@
 import { graphQLMapSearchSource } from 'openland-x-graphql/graphqlMapSearchSource';
-import { Parcels } from 'openland-api';
+import { ParcelsMapSearchQuery } from 'openland-api/ParcelsMapSearchQuery';
 
-export const ParcelMapSearch = graphQLMapSearchSource(Parcels.ParcelsMapSearchQuery);
+export const ParcelMapSearch = graphQLMapSearchSource(ParcelsMapSearchQuery);

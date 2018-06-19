@@ -1,4 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Sourcing } from 'openland-api';
+import { RejectOpportunityMutation } from 'openland-api/RejectOpportunityMutation';
+import { OpportunityStatsQuery } from 'openland-api/OpportunityStatsQuery';
 
-export const withRejectOpportunity = graphqlMutation(Sourcing.RejectOpportunityMutation, 'reject', { refetchQueries: [Sourcing.OpportunityStatsQuery] });
+export const withRejectOpportunity = graphqlMutation(RejectOpportunityMutation, 'reject', { refetchQueries: [OpportunityStatsQuery] });

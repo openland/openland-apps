@@ -1,4 +1,4 @@
 import { graphqlSelect } from 'openland-x-graphql/graphqlSelect';
-import { Folder } from 'openland-api';
+import { FoldersSelectQuery } from 'openland-api/FoldersSelectQuery';
 
-export const FolderSelect = graphqlSelect<{}>(Folder.FoldersSelectQuery);
+export const FolderSelect = graphqlSelect<{}>(FoldersSelectQuery);

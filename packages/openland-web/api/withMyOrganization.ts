@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Organization } from 'openland-api';
+import { MyOrganizationQuery } from 'openland-api/MyOrganizationQuery';
 
-export const withMyOrganization = graphqlRouted(Organization.MyOrganizationQuery);
+export const withMyOrganization = graphqlRouted(MyOrganizationQuery);

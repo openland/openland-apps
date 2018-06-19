@@ -1,4 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Deals } from 'openland-api';
+import { RemoveDealMutation } from 'openland-api/RemoveDealMutation';
+import { AllDealsQuery } from 'openland-api/AllDealsQuery';
 
-export const withDealRemove = graphqlMutation(Deals.RemoveDealMutation, 'remove', { params: ['dealId'], refetchQueries: [Deals.AllDealsQuery] });
+export const withDealRemove = graphqlMutation(RemoveDealMutation, 'remove', { params: ['dealId'], refetchQueries: [AllDealsQuery] });

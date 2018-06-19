@@ -1,4 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Sourcing } from 'openland-api';
+import { SnoozeOpportunityMutation } from 'openland-api/SnoozeOpportunityMutation';
+import {  OpportunityStatsQuery } from 'openland-api/OpportunityStatsQuery';
 
-export const withSnoozeOpportunity = graphqlMutation(Sourcing.SnoozeOpportunityMutation, 'snooze', { refetchQueries: [Sourcing.OpportunityStatsQuery] });
+export const withSnoozeOpportunity = graphqlMutation(SnoozeOpportunityMutation, 'snooze', { refetchQueries: [OpportunityStatsQuery] });

@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Permissions } from 'openland-api';
+import { SuperAccountsQuery } from 'openland-api/SuperAccountsQuery';
 
-export const withSuperAccounts = graphqlRouted(Permissions.SuperAccountsQuery);
+export const withSuperAccounts = graphqlRouted(SuperAccountsQuery);

@@ -1,4 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { Folder } from 'openland-api';
+import { CreateFolderFromSearchMutation } from 'openland-api/CreateFolderFromSearchMutation';
+import { FoldersQuery } from 'openland-api/FoldersQuery';
 
-export const withCreateFolderFromSearchMutation = graphqlMutation(Folder.CreateFolderFromSearchMutation, 'createFolderFromSearch', { refetchQueries: [Folder.FoldersQuery] });
+export const withCreateFolderFromSearchMutation = graphqlMutation(CreateFolderFromSearchMutation, 'createFolderFromSearch', { refetchQueries: [FoldersQuery] });

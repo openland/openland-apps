@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { Debug } from 'openland-api';
+import { DebugReadedStatesQuery } from 'openland-api/DebugReadedStatesQuery';
 
-export const withDebugReaders = graphqlRouted(Debug.DebugReadedStatesQuery);
+export const withDebugReaders = graphqlRouted(DebugReadedStatesQuery);
