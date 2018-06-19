@@ -51,9 +51,9 @@ const config = withTypescript({
         }
 
         // Disable minification
-        config.plugins = config.plugins.filter(
-            (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
-        )
+        // config.plugins = config.plugins.filter(
+        //     (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
+        // )
 
         // Creating vendor library
         // Doesn't work...
