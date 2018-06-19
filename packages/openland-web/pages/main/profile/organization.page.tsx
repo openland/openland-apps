@@ -605,47 +605,45 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         )}
                                     </XCardStyled>
 
-                                    {props.router.query.deleteFeaturedOpportunity && (
-                                        <XModalForm
-                                            title="Add Development Opportunity"
+                                    <XModalForm
+                                        title="Add Development Opportunity"
 
-                                            defaultAction={async (data) => {
+                                        defaultAction={async (data) => {
 
-                                                // summary: String!
-                                                // specialAttributes: [String!]
-                                                // status: String
+                                            // summary: String!
+                                            // specialAttributes: [String!]
+                                            // status: String
 
-                                                // location: MapPoint
-                                                // locationTitle: String
-                                                // availability: String
-                                                // area: Int
-                                                // price: Int
-                                                // dealType: [String!]
-                                                // shapeAndForm: [String!]
-                                                // currentUse: [String!]
-                                                // goodFitFor: [String!]
-                                                // additionalLinks: [AlphaOrganizationListingLink!]
-                                                await props.createListing({
-                                                    variables: {
-                                                        type: 'development_opportunity',
-                                                        input: {
-                                                            name: data.name,
-                                                            location: data.location ? { lat: data.location.result.center[1], lon: data.location.result.center[0] } : null,
-                                                            locationTitle: data.location ? data.location.result.place_name || data.location.result.text : null,
-                                                        }
+                                            // location: MapPoint
+                                            // locationTitle: String
+                                            // availability: String
+                                            // area: Int
+                                            // price: Int
+                                            // dealType: [String!]
+                                            // shapeAndForm: [String!]
+                                            // currentUse: [String!]
+                                            // goodFitFor: [String!]
+                                            // additionalLinks: [AlphaOrganizationListingLink!]
+                                            await props.createListing({
+                                                variables: {
+                                                    type: 'development_opportunity',
+                                                    input: {
+                                                        name: data.name,
+                                                        location: data.location ? { lat: data.location.result.center[1], lon: data.location.result.center[0] } : null,
+                                                        locationTitle: data.location ? data.location.result.place_name || data.location.result.text : null,
                                                     }
-                                                });
-                                            }}
-                                            targetQuery="addDevelopmentOpportunity"
-                                        >
-                                            <XFormLoadingContent>
-                                                <XVertical>
-                                                    <XInput field="name" required={true} placeholder="Name" />
-                                                    <XLocationPickerModal field="location" />
-                                                </XVertical>
-                                            </XFormLoadingContent>
-                                        </XModalForm>
-                                    )}
+                                                }
+                                            });
+                                        }}
+                                        targetQuery="addDevelopmentOpportunity"
+                                    >
+                                        <XFormLoadingContent>
+                                            <XVertical>
+                                                <XInput field="name" required={true} placeholder="Name" />
+                                                <XLocationPickerModal field="location" />
+                                            </XVertical>
+                                        </XFormLoadingContent>
+                                    </XModalForm>
 
                                     <XModalForm
                                         title="Delete?"
