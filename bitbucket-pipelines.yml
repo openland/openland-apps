@@ -13,6 +13,8 @@ pipelines:
           - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
           - docker build -t openland/web:v${BITBUCKET_BUILD_NUMBER} .
           - docker push openland/web:v${BITBUCKET_BUILD_NUMBER}
+        artifacts:
+          - openland-web/.next/**
     - step:
         name: Deploy to Staging
         deployment: staging

@@ -38,8 +38,8 @@ const config = withTypescript({
         }
         config.resolve.alias = Object.assign({}, config.resolve.alias, alias);
 
-        //     // Ignore large library from parsing
-        //     config.module.noParse = /(mapbox-gl)\.js$/
+        // Ignore large library from parsing and solve some babel issueses
+        config.module.noParse = /(mapbox-gl)\.js$/
 
         //     // Typescript
         const {
