@@ -18,7 +18,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev: dev, dir: __dirname });
 const handle = Routes.getRequestHandler(app);
 const endpoint = process.env.API_ENDPOINT || 'http://localhost:9000';
-const bindHost = dev ? 'localhost' : '0.0.0.0';
+const bindHost = dev ? '0.0.0.0' : '0.0.0.0';
 
 async function start() {
     await app.prepare();

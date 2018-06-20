@@ -6,6 +6,7 @@ import createHistory from 'history/createBrowserHistory';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { withData } from '../../components/withData';
+import fetch from 'isomorphic-unfetch';
 interface AuthResult {
     expiresIn: number;
     accessToken: string;
@@ -36,10 +37,10 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
         let auth = await this.retreiveAuthentication();
         var uploaded = await fetch(API_AUTH_ENDPOINT, {
             method: 'POST',
-            headers: [
-                ['authorization', 'Bearer ' + auth.idToken],
-                ['x-openland-access-token', auth.accessToken]
-            ]
+            headers: {
+                'authorization': 'Bearer ' + auth.idToken,
+                'x-openland-access-token': auth.accessToken
+            }
         });
         if (uploaded.ok) {
             let body = (await uploaded.json()) as { ok: boolean, token: string };
@@ -54,6 +55,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
                 forceRefresh: true
             }).replace(path);
         } else {
+            console.warn(uploaded);
             throw 'Error';
         }
     }
