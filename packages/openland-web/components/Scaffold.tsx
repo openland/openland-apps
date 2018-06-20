@@ -46,8 +46,6 @@ const NavigationWrapper = Glamorous.div((props) => ({
 }));
 
 const NavigationContainer = Glamorous(XScrollView)<{ sidebarBorderColor?: string }>((props) => ({
-    display: 'flex',
-    flexDirection: 'column',
     height: '100vh',
     width: 72,
     paddingTop: 8,
@@ -56,9 +54,13 @@ const NavigationContainer = Glamorous(XScrollView)<{ sidebarBorderColor?: string
     borderRightColor: props.sidebarBorderColor ? props.sidebarBorderColor : 'rgba(0,0,0, 0.05)',
     borderRightStyle: 'solid',
     borderRightWidth: '1px',
-    alignItems: 'center',
     position: 'sticky',
-    top: 0
+    top: 0,
+    '& .simplebar-content': {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    }
 }));
 
 const Logo = Glamorous(XPicture)({
