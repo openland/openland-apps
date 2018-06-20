@@ -167,8 +167,29 @@ class XMenu extends React.Component {
     }
 }
 
-class UserPopper extends React.Component<{ picture: string | null }, { show: boolean }> {
-    constructor(props: any) {
+const ProfileTitleWrapper = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: 5,
+    paddingBottom: 16,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginBottom: 18,
+    marginLeft: -10,
+    width: 'calc(100% + 20px)',
+    borderBottom: '1px solid rgba(220, 222, 228, 0.6)'
+});
+
+const ProfileTitle = Glamorous.div({
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 1.25,
+    color: '#334562',
+    marginLeft: 14
+});
+
+class UserPopper extends React.Component<{ picture: string | null, name?: string }, { show: boolean }> {
+    constructor(props: { picture: string | null, name?: string }) {
         super(props);
         this.state = { show: false };
     }
@@ -179,16 +200,27 @@ class UserPopper extends React.Component<{ picture: string | null }, { show: boo
         });
     }
 
+    closer = () => {
+        this.setState({
+            show: false
+        });
+    }
+
     render() {
         return (
             <XPopper
                 placement="right"
                 showOnHoverContent={false}
-                onClickOutside={this.switch}
+                onClickOutside={this.closer}
                 show={this.state.show}
                 padding={25}
                 content={(
                     <XMenu>
+                        <ProfileTitleWrapper>
+                                <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} />
+                                <ProfileTitle>{this.props.name}</ProfileTitle>
+                        </ProfileTitleWrapper>
+
                         <XMenu.Item query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenu.Item>
                         <XMenu.Item path="/createOrganization">{TextGlobal.addOrganization}</XMenu.Item>
                         <XMenu.Item path="/auth/logout">{TextGlobal.signOut}</XMenu.Item>
@@ -201,11 +233,59 @@ class UserPopper extends React.Component<{ picture: string | null }, { show: boo
     }
 }
 
-let UserProfile = withUserInfo<{ onClick?: any }>((props) => {
-    return (
-        <UserPopper picture={props.user!!.picture} />
-    );
-});
+class OrganizationPopper extends React.Component<{ photo: string | null, name?: string }, { show: boolean }> {
+    constructor(props: { photo: string | null, name?: string }) {
+        super(props);
+        this.state = { show: false };
+    }
+
+    switch = () => {
+        this.setState({
+            show: !this.state.show
+        });
+    }
+
+    closer = () => {
+        this.setState({
+            show: false
+        });
+    }
+
+    render() {
+        return (
+            <XPopper
+                placement="right"
+                showOnHoverContent={false}
+                onClickOutside={this.closer}
+                show={this.state.show}
+                padding={25}
+                content={(
+                    <XMenu>
+                        <ProfileTitleWrapper>
+                                <XAvatar cloudImageUuid={this.props.photo || undefined} onClick={this.switch} />
+                                <ProfileTitle>{this.props.name}</ProfileTitle>
+                        </ProfileTitleWrapper>
+                        <XMenu.Item query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenu.Item>
+                    </XMenu>
+                )}
+            >
+                <XAvatar style="square" cloudImageUuid={this.props.photo || undefined} onClick={this.switch} />
+            </XPopper>
+        );
+    }
+}
+
+let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
+    <XVertical>
+        <UserPopper picture={props.user!!.picture} name={props.user!!.name} />
+        {props.organization && (
+            <>
+                <NavigationDivider />
+                <OrganizationPopper photo={props.organization.photo} name={props.organization.name} />
+            </>
+        )}
+    </XVertical>
+));
 
 //
 // Content

@@ -47,14 +47,49 @@ export const OrganizationProfileFull = gql`
         landUse: alphaLandUse
         goodFor: alphaGoodFor
         specialAttributes: alphaSpecialAttributes
-        featuredOpportunities: alphaDummyFeaturedOpportunities{
-            title
+        developmentOportunities: alphaListingDevelopmentOportunities{
+            name
+            id
+            name
+            summary
+            specialAttributes
+            status
+            updatedAt
+
             location{
                 lat
                 lon
             }
             locationTitle
-            tags
+            availability
+            area
+            price
+            dealType
+            shapeAndForm
+            currentUse
+            goodFitFor
+            additionalLinks{
+                text
+                url
+            }
+        },
+        acquisitionRequests: alphaListingAcquisitionRequests{
+            name
+            id
+            name
+            summary
+            specialAttributes
+            status
+            updatedAt
+
+            shortDescription
+            areaRange{
+                from
+                to
+            }
+            geographies
+            landUse
+            unitCapacity
         }
     }
 `;

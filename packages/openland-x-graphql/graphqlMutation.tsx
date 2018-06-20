@@ -7,6 +7,7 @@ import { GraphqlTypedMutation, GraphqlTypedQuery } from './typed';
 
 export interface MutationParams {
     params?: string[];
+    refetchParams?: string[];
     refetchQueries?: GraphqlTypedQuery<any, any>[];
 }
 
@@ -20,7 +21,7 @@ export function graphqlMutation<TQuery, TVars, TN extends string>(mutation: Grap
                         ...prepareParams(params.params ? params.params : [], props.router.routeQuery),
                         ...props.variables
                     },
-                    refetchQueries: params.refetchQueries ? params.refetchQueries.map((p) => ({ query: p.document })) : []
+                    refetchQueries: params.refetchQueries ? params.refetchQueries.map((p) => ({ query: p.document, variables: { ...prepareParams(params.refetchParams ? params.refetchParams : [], props.router.routeQuery) } })) : []
                 };
             }
         });
