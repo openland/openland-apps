@@ -21,7 +21,7 @@ export class XScrollView extends React.Component<XScrollViewProps> {
                 className={this.props.className}
                 scroll={this.props.scroll || 'vertical'}
                 {...extractFlexProps(this.props)}
-                innerRef={(src) => canUseDOM && this.Simplebar!!.then((v) => new v(src))}
+                innerRef={(src) => canUseDOM && this.Simplebar!!.then((v) => v && new v(src))}
             >
                 {this.props.children}
             </ScrollDiv>
