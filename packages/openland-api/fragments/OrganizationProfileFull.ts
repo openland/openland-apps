@@ -34,6 +34,24 @@ export const OrganizationProfileFull = gql`
             link
         }
 
+        organizationType: alphaOrganizationType
+        lookingFor: alphaLookingFor
+        geographies: alphaGeographies
+        doShapeAndForm: alphaDOShapeAndForm
+        doCurrentUse: alphaDOCurrentUse
+        doGoodFitFor: alphaDOGoodFitFor
+        doSpecialAttributes: alphaDOSpecialAttributes
+        doAvailability: alphaDOAvailability
+        arGeographies: alphaARGeographies
+        arAreaRange: alphaARAreaRange
+        arHeightLimit: alphaARHeightLimit
+        arActivityStatus: alphaARActivityStatus
+        arAquisitionBudget: alphaARAquisitionBudget
+        arAquisitionRate: alphaARAquisitionRate
+        arClosingTime: alphaARClosingTime
+        arSpecialAttributes: alphaARSpecialAttributes
+        arLandUse: alphaARLandUse
+
         potentialSites: alphaPotentialSites {
             from
             to

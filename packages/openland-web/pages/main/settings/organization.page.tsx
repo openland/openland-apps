@@ -5,14 +5,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XTitle } from 'openland-x/XTitle';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import {
-    DevelopmentModelsMap,
-    AvailabilityMap,
-    LandUseMap,
-    GoodForMap,
-    SpecialAttributesMap,
-    ContactPerson,
-} from '../../../utils/OrganizationProfileFields';
+import { ContactPerson } from '../../../utils/OrganizationProfileFields';
 import { XSelect } from 'openland-x/XSelect';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XFormField } from 'openland-x-forms/XFormField';
@@ -100,6 +93,9 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                 about: props.data.myOrganizationProfile!!.about,
                                 location: props.data.myOrganizationProfile!!.location,
                                 photoRef: sanitizeIamgeRef(props.data.myOrganizationProfile!!.photoRef),
+                                organizationType: props.data.myOrganizationProfile!!.organizationType,
+                                lookingFor: props.data.myOrganizationProfile!!.lookingFor,
+                                geographies: props.data.myOrganizationProfile!!.geographies,
                             }
                         }}
                         defaultAction={async (data) => {
@@ -113,6 +109,9 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         facebook: data.input.facebook,
                                         location: data.input.location,
                                         about: data.input.about,
+                                        alphaOrganizationType: data.input.organizationType,
+                                        alphaLookingFor: data.input.lookingFor,
+                                        alphaGeographies: data.input.geographies,
                                     }
                                 }
                             });
@@ -141,6 +140,16 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         <XFormField title="About">
                                             <XTextArea valueStoreKey="fields.input.about" />
                                         </XFormField>
+
+                                        <XFormField title="OrganizationType">
+                                            <XSelect creatable={true} multi={true} valueStoreKey="fields.input.organizationType" />
+                                        </XFormField>
+                                        <XFormField title="LookingFor">
+                                            <XSelect creatable={true} multi={true} valueStoreKey="fields.input.lookingFor" />
+                                        </XFormField>
+                                        <XFormField title="Geographies">
+                                            <XSelect creatable={true} multi={true} valueStoreKey="fields.input.geographies" />
+                                        </XFormField>
                                     </XVertical>
                                     <XFormField title="Photo">
                                         <XAvatarUpload field="input.photoRef" />
@@ -150,54 +159,41 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                             <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
                         </XVertical>
                     </XForm>
-                    <XTitle>Opportunities</XTitle>
+                    <XTitle>Development Opportunities</XTitle>
                     <XForm
                         defaultData={{
                             input: {
-                                alphaDevelopmentModels: props.data.myOrganizationProfile!!.developmentModels,
-                                alphaAvailability: props.data.myOrganizationProfile!!.availability,
-                                alphaLandUse: props.data.myOrganizationProfile!!.landUse,
-                                alphaGoodFor: props.data.myOrganizationProfile!!.goodFor,
-                                alphaSpecialAttributes: props.data.myOrganizationProfile!!.specialAttributes,
-                                alphaPotentialSites: props.data.myOrganizationProfile!!.potentialSites ? props.data.myOrganizationProfile!!.potentialSites!!.map(range => {
-                                    let rangeStr;
-                                    if ((range.to || Number.MAX_SAFE_INTEGER) <= 5) {
-                                        rangeStr = 'small';
-                                    } else if ((range.to || Number.MAX_SAFE_INTEGER) <= 50) {
-                                        rangeStr = 'medium';
-                                    } else {
-                                        rangeStr = 'large';
-                                    }
-                                    return rangeStr;
-                                }) : null,
-                                alphaSiteSizes: props.data.myOrganizationProfile!!.siteSizes ? props.data.myOrganizationProfile!!.siteSizes!!.map(range => {
-                                    let rangeStr;
-                                    if ((range.to || Number.MAX_SAFE_INTEGER) <= 10000) {
-                                        rangeStr = 'small';
-                                    } else if ((range.to || Number.MAX_SAFE_INTEGER) <= 100000) {
-                                        rangeStr = 'medium';
-                                    } else {
-                                        rangeStr = 'large';
-                                    }
-                                    return rangeStr;
-                                }) : null,
+                                doShapeAndForm: props.data.myOrganizationProfile!!.doShapeAndForm,
+                                doCurrentUse: props.data.myOrganizationProfile!!.doCurrentUse,
+                                doGoodFitFor: props.data.myOrganizationProfile!!.doGoodFitFor,
+                                doSpecialAttributes: props.data.myOrganizationProfile!!.doSpecialAttributes,
+                                doAvailability: props.data.myOrganizationProfile!!.doAvailability,
+
+                                // alphaPotentialSites: props.data.myOrganizationProfile!!.potentialSites ? props.data.myOrganizationProfile!!.potentialSites!!.map(range => {
+                                //     let rangeStr;
+                                //     if ((range.to || Number.MAX_SAFE_INTEGER) <= 5) {
+                                //         rangeStr = 'small';
+                                //     } else if ((range.to || Number.MAX_SAFE_INTEGER) <= 50) {
+                                //         rangeStr = 'medium';
+                                //     } else {
+                                //         rangeStr = 'large';
+                                //     }
+                                //     return rangeStr;
+                                // }) : null,
+
                             }
                         }}
                         defaultAction={async (data) => {
-                            let potentialSites = data.input.alphaPotentialSites ? data.input.alphaPotentialSites.map((rangeStr: string) => (rangeStr === 'small' ? { from: 0, to: 5 } : rangeStr === 'medium' ? { from: 5, to: 50 } : { from: 50 })) : null;
-                            let siteSizes = data.input.alphaSiteSizes ? data.input.alphaSiteSizes.map((rangeStr: string) => (rangeStr === 'small' ? { from: 0, to: 10000 } : rangeStr === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 })) : null;
-                            console.warn(potentialSites);
+                            // let potentialSites = data.input.alphaPotentialSites ? data.input.alphaPotentialSites.map((rangeStr: string) => (rangeStr === 'small' ? { from: 0, to: 5 } : rangeStr === 'medium' ? { from: 5, to: 50 } : { from: 50 })) : null;
+                            // console.warn(potentialSites);
                             await props.updateOrganizaton({
                                 variables: {
                                     input: {
-                                        alphaDevelopmentModels: data.input.alphaDevelopmentModels,
-                                        alphaAvailability: data.input.alphaAvailability,
-                                        alphaLandUse: data.input.alphaLandUse,
-                                        alphaGoodFor: data.input.alphaGoodFor,
-                                        alphaSpecialAttributes: data.input.alphaSpecialAttributes,
-                                        alphaPotentialSites: potentialSites,
-                                        alphaSiteSizes: siteSizes
-
+                                        alphaDOShapeAndForm: data.input.doShapeAndForm,
+                                        alphaDOCurrentUse: data.input.doCurrentUse,
+                                        alphaDOGoodFitFor: data.input.doGoodFitFor,
+                                        alphaDOSpecialAttributes: data.input.doSpecialAttributes,
+                                        alphaDOAvailability: data.input.doAvailability,
                                     }
                                 }
                             });
@@ -208,68 +204,169 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                             <XFormLoadingContent>
                                 <XVertical>
 
-                                    <XFormField title="Development Models">
-                                        <XSelect
-                                            field="input.alphaDevelopmentModels"
-                                            options={DevelopmentModelsMap.map(o => {
-                                                return { ...o, title: o.label };
-                                            })}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-                                    <XFormField title="Availability">
-                                        <XSelect
-                                            field="input.alphaAvailability"
-                                            options={AvailabilityMap.map(o => {
-                                                return { ...o, title: o.label };
-                                            })}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-                                    <XFormField title="Potential Sites">
+                                    {/* <XFormField title="Potential Sites">
                                         <XSelect
                                             field="input.alphaPotentialSites"
                                             options={[{ label: '0-5 sites', value: 'small' }, { label: '5-50 sites', value: 'medium' }, { label: '50+ sites', value: 'large' }]}
                                             multi={true}
                                         />
 
-                                    </XFormField>
-                                    <XFormField title="Site sizes ">
+                                    </XFormField> */}
+
+                                    <XFormField title="Shape And Form">
                                         <XSelect
-                                            field="input.alphaSiteSizes"
-                                            options={[{ label: 'small (up to 10,000 sf)', value: 'small' }, { label: 'medium (10,000 - 100,000 sf)', value: 'medium' }, { label: 'large (100,000 + sf)', value: 'large' }]}
+                                            field="input.doShapeAndForm"
+                                            creatable={true}
                                             multi={true}
                                         />
+                                    </XFormField>
 
+                                    <XFormField title="Current Use">
+                                        <XSelect
+                                            field="input.doCurrentUse"
+                                            creatable={true}
+                                            multi={true}
+                                        />
+                                    </XFormField>
+
+                                    <XFormField title="Good Fit For">
+                                        <XSelect
+                                            field="input.doGoodFitFor"
+                                            creatable={true}
+                                            multi={true}
+                                        />
+                                    </XFormField>
+
+                                    <XFormField title="Special Attributes">
+                                        <XSelect
+                                            field="input.doSpecialAttributes"
+                                            creatable={true}
+                                            multi={true}
+                                        />
+                                    </XFormField>
+
+                                    <XFormField title="Availability">
+                                        <XSelect
+                                            field="input.doAvailability"
+                                            creatable={true}
+                                            multi={true}
+                                        />
+                                    </XFormField>
+
+                                </XVertical>
+                            </XFormLoadingContent>
+                            <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
+                        </XVertical>
+                    </XForm>
+
+                    <XTitle>Acquisition requests</XTitle>
+                    <XForm
+                        defaultData={{
+                            input: {
+                                arGeographies: props.data.myOrganizationProfile!!.arGeographies,
+                                arAreaRange: props.data.myOrganizationProfile!!.arAreaRange,
+                                arHeightLimit: props.data.myOrganizationProfile!!.arHeightLimit,
+                                arActivityStatus: props.data.myOrganizationProfile!!.arActivityStatus,
+                                arAquisitionBudget: props.data.myOrganizationProfile!!.arAquisitionBudget,
+                                arAquisitionRate: props.data.myOrganizationProfile!!.arAquisitionRate,
+                                arClosingTime: props.data.myOrganizationProfile!!.arClosingTime,
+                                arSpecialAttributes: props.data.myOrganizationProfile!!.arSpecialAttributes,
+                                arLandUse: props.data.myOrganizationProfile!!.arLandUse,
+                            }
+                        }}
+                        defaultAction={async (data) => {
+                            await props.updateOrganizaton({
+                                variables: {
+                                    input: {
+                                        alphaARGeographies: data.input.arGeographies,
+                                        alphaARAreaRange: data.input.arAreaRange,
+                                        alphaARHeightLimit: data.input.arHeightLimit,
+                                        alphaARActivityStatus: data.input.arActivityStatus,
+                                        alphaARAquisitionBudget: data.input.arAquisitionBudget,
+                                        alphaARAquisitionRate: data.input.arAquisitionRate,
+                                        alphaARClosingTime: data.input.arClosingTime,
+                                        alphaARSpecialAttributes: data.input.arSpecialAttributes,
+                                        alphaARLandUse: data.input.arLandUse,
+                                    }
+                                }
+                            });
+                        }}
+                        defaultLayout={false}
+                    >
+                        <XVertical maxWidth={500}>
+                            <XFormLoadingContent>
+                                <XVertical>
+
+                                    <XFormField title="Geographies">
+                                        <XSelect
+                                            field="input.arGeographies"
+                                            creatable={true}
+                                            multi={true}
+                                        />
+                                    </XFormField>
+
+                                    <XFormField title="Area Range">
+                                        <XSelect
+                                            field="input.arAreaRange"
+                                            creatable={true}
+                                            multi={true}
+                                        />
+                                    </XFormField>
+
+                                    <XFormField title="Height Limit">
+                                        <XSelect
+                                            field="input.arHeightLimit"
+                                            creatable={true}
+                                            multi={true}
+                                        />
+                                    </XFormField>
+
+                                    <XFormField title="Activity Status">
+                                        <XSelect
+                                            field="input.arActivityStatus"
+                                            creatable={true}
+                                            multi={true}
+                                        />
+                                    </XFormField>
+
+                                    <XFormField title="3-year Aquisition Budget">
+                                        <XSelect
+                                            field="input.arAquisitionBudget"
+                                            creatable={true}
+                                            multi={true}
+                                        />
+                                    </XFormField>
+
+                                    <XFormField title="Aquisition Rate">
+                                        <XSelect
+                                            field="input.arAquisitionRate"
+                                            creatable={true}
+                                            multi={true}
+                                        />
+                                    </XFormField>
+
+                                    <XFormField title="Closing Time">
+                                        <XSelect
+                                            field="input.arClosingTime"
+                                            creatable={true}
+                                            multi={true}
+                                        />
+                                    </XFormField>
+
+                                    <XFormField title="Special Attributes">
+                                        <XSelect
+                                            field="input.arSpecialAttributes"
+                                            creatable={true}
+                                            multi={true}
+                                        />
                                     </XFormField>
 
                                     <XFormField title="Land Use">
                                         <XSelect
-                                            field="input.alphaLandUse"
-                                            options={LandUseMap.map(o => {
-                                                return { ...o, title: o.label };
-                                            })}
+                                            field="input.arLandUse"
+                                            creatable={true}
                                             multi={true}
                                         />
-                                    </XFormField>
-                                    <XFormField title="Good For">
-                                        <XSelect
-                                            field="input.alphaGoodFor"
-                                            options={GoodForMap.map(o => {
-                                                return { ...o, title: o.label };
-                                            })}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-                                    <XFormField title="Special Attributes">
-                                        <XSelect
-                                            field="input.alphaSpecialAttributes"
-                                            options={SpecialAttributesMap.map(o => {
-                                                return { ...o, title: o.label };
-                                            })}
-                                            multi={true}
-                                        />
-
                                     </XFormField>
 
                                 </XVertical>
@@ -383,8 +480,6 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                             </XVertical>
                         </XFormLoadingContent>
                     </XModalForm>
-
-                    <XTitle>Featured Opportunities</XTitle>
 
                 </XVertical>
             </XContent>
