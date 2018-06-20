@@ -22,6 +22,24 @@ export const OrganizationFull = gql`
             link
         }
 
+        organizationType: alphaOrganizationType
+        lookingFor: alphaLookingFor
+        geographies: alphaGeographies
+        doShapeAndForm: alphaDOShapeAndForm
+        doCurrentUse: alphaDOCurrentUse
+        doGoodFitFor: alphaDOGoodFitFor
+        doSpecialAttributes: alphaDOSpecialAttributes
+        doAvailability: alphaDOAvailability
+        arGeographies: alphaARGeographies
+        arAreaRange: alphaARAreaRange
+        arHeightLimit: alphaARHeightLimit
+        arActivityStatus: alphaARActivityStatus
+        arAquisitionBudget: alphaARAquisitionBudget
+        arAquisitionRate: alphaARAquisitionRate
+        arClosingTime: alphaARClosingTime
+        arSpecialAttributes: alphaARSpecialAttributes
+        arLandUse: alphaARLandUse
+
         followed: alphaFollowed
 
         potentialSites: alphaPotentialSites {
