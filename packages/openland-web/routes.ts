@@ -65,7 +65,8 @@ routes.add('/home/', '/main/home/main');
 
 routes.add('/o/:organizationId', '/main/profile/organization');
 routes.add('/o/:organizationId/', '/main/profile/organization');
-
+routes.add('/o/:organizationId/listings', '/main/profile/organization');
+routes.add('/o/:organizationId/listings/', '/main/profile/organization');
 //
 // Marketplace
 //

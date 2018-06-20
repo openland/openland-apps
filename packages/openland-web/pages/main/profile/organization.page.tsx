@@ -532,6 +532,9 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
         });
     };
 
+    let rootPath = '/o/' + props.data.organization.id;
+    let lsitingsPath = '/o/' + props.data.organization.id + '/listings';
+
     return (
         <>
             <XDocumentHead title="Organization profile" />
@@ -547,10 +550,9 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     {/* <OrganizationPlace>San Francisco, CA</OrganizationPlace> */}
                                 </OrganizationData>
                                 <SwitcherWrapper flatStyle={true}>
-                                    <Switcher path={'/o/' + props.data.organization.id}>Overview</Switcher>
-                                    {/* <Switcher>Docs</Switcher>
-                                <Switcher>News</Switcher>
-                                <Switcher>Contacts</Switcher> */}
+                                    <Switcher path={rootPath}>Overview</Switcher>
+                                    <Switcher path={lsitingsPath}>{'Listings (' + (((props.data.organization.developmentOportunities && props.data.organization.developmentOportunities.length) || 0) + ((props.data.organization.acquisitionRequests && props.data.organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+
                                 </SwitcherWrapper>
                                 <XHorizontal>
                                     {!props.data.organization.isMine && (
@@ -597,152 +599,173 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                         <MainContent>
                             <XHorizontal>
                                 <XVertical flexGrow={1}>
-                                    <XCardStyled padding={0}>
-                                        <XHorizontal>
-                                            <XVerticalStyled flexGrow={1} borderRight={true} padding={24}>
-                                                <Title>Development models</Title>
-                                                {props.data.organization.developmentModels && (
-                                                    props.data.organization.developmentModels!!.map((s, k) => (
-                                                        <TagItem key={k + '_' + s}>
-                                                            <TagImg img={s!} className={s!!} />
-                                                            <Text bold={true} upperCase={true}>
-                                                                {s}
-                                                            </Text>
-                                                        </TagItem>
-                                                    )))
-                                                }
+                                    {props.router.path === rootPath && (
+                                        <>
+                                            <XCardStyled padding={0}>
+                                                <XHorizontal>
+                                                    <XVerticalStyled flexGrow={1} borderRight={true} padding={24}>
+                                                        <Title>Development models</Title>
+                                                        {props.data.organization.developmentModels && (
+                                                            props.data.organization.developmentModels!!.map((s, k) => (
+                                                                <TagItem key={k + '_' + s}>
+                                                                    <TagImg img={s!} className={s!!} />
+                                                                    <Text bold={true} upperCase={true}>
+                                                                        {s}
+                                                                    </Text>
+                                                                </TagItem>
+                                                            )))
+                                                        }
+                                                    </XVerticalStyled>
+                                                    <XVerticalStyled flexGrow={1} padding={24}>
+                                                        <Title>Availability</Title>
+                                                        {props.data.organization.availability && (
+                                                            props.data.organization.availability!!.map((s, k) => (
+                                                                <TagItem key={k + '_' + s}>
+                                                                    <TagImg img={s!} className={s!!} />
+                                                                    <Text bold={true} upperCase={true}>
+                                                                        {s}
+                                                                    </Text>
+                                                                </TagItem>
+                                                            )))
+                                                        }
+                                                    </XVerticalStyled>
+                                                </XHorizontal>
+                                            </XCardStyled>
+                                            <XCardStyled padding={0}>
+                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
+                                                    <Title marginBottom={24}>Tags</Title>
+                                                </XVerticalStyled>
+
+                                                <div>
+                                                    {props.data.organization.potentialSites && (
+                                                        <OpportunitiesWrapper>
+                                                            <OpportunitiesTextWrapper>
+                                                                <Text bold={true}>Number of potential sites</Text>
+                                                            </OpportunitiesTextWrapper>
+                                                            <OpportunitiesValueWrapper>
+                                                                <XHorizontal>
+                                                                    {props.data.organization.potentialSites!!.map((s, k) => (
+                                                                        <OpportunitiesValue key={k + '_' + s}>
+                                                                            {
+                                                                                ((s.to || Number.MAX_SAFE_INTEGER) <= 5) ?
+                                                                                    '0-5 sites' :
+                                                                                    ((s.to || Number.MAX_SAFE_INTEGER) <= 50) ?
+                                                                                        '5-50 sites' :
+                                                                                        '50+ sites'
+                                                                            }
+                                                                        </OpportunitiesValue>
+                                                                    ))}
+                                                                </XHorizontal>
+                                                            </OpportunitiesValueWrapper>
+                                                        </OpportunitiesWrapper>
+                                                    )}
+                                                    {props.data.organization.siteSizes && (
+                                                        <OpportunitiesWrapper>
+                                                            <OpportunitiesTextWrapper>
+                                                                <Text bold={true}>Site sizes</Text>
+                                                            </OpportunitiesTextWrapper>
+                                                            <OpportunitiesValueWrapper>
+                                                                <XHorizontal>
+                                                                    {props.data.organization.siteSizes!!.map((s, k) => (
+                                                                        <OpportunitiesValue key={k + '_' + s}>
+                                                                            {
+                                                                                ((s.to || Number.MAX_SAFE_INTEGER) <= 10000) ?
+                                                                                    'small (up to 10,000 sf)' :
+                                                                                    ((s.to || Number.MAX_SAFE_INTEGER) <= 100000) ?
+                                                                                        'medium (10,000 - 100,000 sf)' :
+                                                                                        'large (100,000 + sf)'
+                                                                            }
+                                                                        </OpportunitiesValue>
+                                                                    ))}
+                                                                </XHorizontal>
+                                                            </OpportunitiesValueWrapper>
+                                                        </OpportunitiesWrapper>
+                                                    )}
+                                                    {props.data.organization.landUse && (
+                                                        <OpportunitiesWrapper>
+                                                            <OpportunitiesTextWrapper>
+                                                                <Text bold={true}>Land use</Text>
+                                                            </OpportunitiesTextWrapper>
+                                                            <OpportunitiesValueWrapper>
+                                                                {props.data.organization.landUse!!.map((s, k) => (
+                                                                    <OpportunitiesValue key={k + '_' + s}>
+                                                                        {s}
+                                                                    </OpportunitiesValue>
+                                                                ))}
+                                                            </OpportunitiesValueWrapper>
+                                                        </OpportunitiesWrapper>
+                                                    )}
+
+                                                    {props.data.organization.goodFor && (
+                                                        <OpportunitiesWrapper>
+                                                            <OpportunitiesTextWrapper>
+                                                                <Text bold={true}>Good fit for</Text>
+                                                            </OpportunitiesTextWrapper>
+                                                            <OpportunitiesValueWrapper>
+                                                                {props.data.organization.goodFor!!.map((s, k) => (
+                                                                    <OpportunitiesValue key={k + '_' + s}>
+                                                                        {s}
+                                                                    </OpportunitiesValue>
+                                                                ))}
+                                                            </OpportunitiesValueWrapper>
+                                                        </OpportunitiesWrapper>
+                                                    )}
+
+                                                    {props.data.organization.specialAttributes && (
+                                                        <OpportunitiesWrapper>
+                                                            <OpportunitiesTextWrapper>
+                                                                <Text bold={true}>Special attributes </Text>
+                                                            </OpportunitiesTextWrapper>
+                                                            <OpportunitiesValueWrapper>
+                                                                {props.data.organization!!.specialAttributes!!.map((s, k) => (
+                                                                    <OpportunitiesValue key={k + '_' + s}>
+                                                                        {s}
+                                                                    </OpportunitiesValue>
+                                                                ))}
+                                                            </OpportunitiesValueWrapper>
+                                                        </OpportunitiesWrapper>
+                                                    )}
+                                                </div>
+
+                                            </XCardStyled>
+
+                                            <XCardStyled padding={0}>
+                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
+                                                    <Title marginBottom={24}>Development opportunities</Title>
+                                                </XVerticalStyled>
+                                                {props.data.organization && props.data.organization.developmentOportunities && (
+                                                    props.data.organization.developmentOportunities.map((devop, i) => < DevelopmentOportunityComponent key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
+                                                )}
+                                            </XCardStyled>
+
+                                            <XCardStyled padding={0}>
+                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
+                                                    <Title marginBottom={24}>Aquizition Requests</Title>
+                                                </XVerticalStyled>
+                                                {props.data.organization && props.data.organization.acquisitionRequests && (
+                                                    props.data.organization.acquisitionRequests.map((devop, i) => < AquizitionRequestComponent key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
+                                                )}
+                                            </XCardStyled>
+                                        </>
+                                    )}
+
+                                    {props.router.path === lsitingsPath && (
+                                        <XCardStyled padding={0}>
+                                            <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
+                                                <SwitcherWrapper flatStyle={true}>
+                                                    <Switcher query={{ field: 'listingType' }}>Development opportunities</Switcher>
+                                                    <Switcher query={{ field: 'listingType', value: 'ar' }}>Acquisition requests</Switcher>
+
+                                                </SwitcherWrapper>
                                             </XVerticalStyled>
-                                            <XVerticalStyled flexGrow={1} padding={24}>
-                                                <Title>Availability</Title>
-                                                {props.data.organization.availability && (
-                                                    props.data.organization.availability!!.map((s, k) => (
-                                                        <TagItem key={k + '_' + s}>
-                                                            <TagImg img={s!} className={s!!} />
-                                                            <Text bold={true} upperCase={true}>
-                                                                {s}
-                                                            </Text>
-                                                        </TagItem>
-                                                    )))
-                                                }
-                                            </XVerticalStyled>
-                                        </XHorizontal>
-                                    </XCardStyled>
-                                    <XCardStyled padding={0}>
-                                        <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                            <Title marginBottom={24}>Tags</Title>
-                                        </XVerticalStyled>
-
-                                        <div>
-                                            {props.data.organization.potentialSites && (
-                                                <OpportunitiesWrapper>
-                                                    <OpportunitiesTextWrapper>
-                                                        <Text bold={true}>Number of potential sites</Text>
-                                                    </OpportunitiesTextWrapper>
-                                                    <OpportunitiesValueWrapper>
-                                                        <XHorizontal>
-                                                            {props.data.organization.potentialSites!!.map((s, k) => (
-                                                                <OpportunitiesValue key={k + '_' + s}>
-                                                                    {
-                                                                        ((s.to || Number.MAX_SAFE_INTEGER) <= 5) ?
-                                                                            '0-5 sites' :
-                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 50) ?
-                                                                                '5-50 sites' :
-                                                                                '50+ sites'
-                                                                    }
-                                                                </OpportunitiesValue>
-                                                            ))}
-                                                        </XHorizontal>
-                                                    </OpportunitiesValueWrapper>
-                                                </OpportunitiesWrapper>
+                                            {props.router.path === lsitingsPath && props.router.query.listingType === undefined && props.data.organization && props.data.organization.developmentOportunities && (
+                                                props.data.organization.developmentOportunities.map((devop, i) => < DevelopmentOportunityComponent key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
                                             )}
-                                            {props.data.organization.siteSizes && (
-                                                <OpportunitiesWrapper>
-                                                    <OpportunitiesTextWrapper>
-                                                        <Text bold={true}>Site sizes</Text>
-                                                    </OpportunitiesTextWrapper>
-                                                    <OpportunitiesValueWrapper>
-                                                        <XHorizontal>
-                                                            {props.data.organization.siteSizes!!.map((s, k) => (
-                                                                <OpportunitiesValue key={k + '_' + s}>
-                                                                    {
-                                                                        ((s.to || Number.MAX_SAFE_INTEGER) <= 10000) ?
-                                                                            'small (up to 10,000 sf)' :
-                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 100000) ?
-                                                                                'medium (10,000 - 100,000 sf)' :
-                                                                                'large (100,000 + sf)'
-                                                                    }
-                                                                </OpportunitiesValue>
-                                                            ))}
-                                                        </XHorizontal>
-                                                    </OpportunitiesValueWrapper>
-                                                </OpportunitiesWrapper>
+                                            {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && props.data.organization && props.data.organization.acquisitionRequests && (
+                                                props.data.organization.acquisitionRequests.map((devop, i) => < AquizitionRequestComponent key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
                                             )}
-                                            {props.data.organization.landUse && (
-                                                <OpportunitiesWrapper>
-                                                    <OpportunitiesTextWrapper>
-                                                        <Text bold={true}>Land use</Text>
-                                                    </OpportunitiesTextWrapper>
-                                                    <OpportunitiesValueWrapper>
-                                                        {props.data.organization.landUse!!.map((s, k) => (
-                                                            <OpportunitiesValue key={k + '_' + s}>
-                                                                {s}
-                                                            </OpportunitiesValue>
-                                                        ))}
-                                                    </OpportunitiesValueWrapper>
-                                                </OpportunitiesWrapper>
-                                            )}
-
-                                            {props.data.organization.goodFor && (
-                                                <OpportunitiesWrapper>
-                                                    <OpportunitiesTextWrapper>
-                                                        <Text bold={true}>Good fit for</Text>
-                                                    </OpportunitiesTextWrapper>
-                                                    <OpportunitiesValueWrapper>
-                                                        {props.data.organization.goodFor!!.map((s, k) => (
-                                                            <OpportunitiesValue key={k + '_' + s}>
-                                                                {s}
-                                                            </OpportunitiesValue>
-                                                        ))}
-                                                    </OpportunitiesValueWrapper>
-                                                </OpportunitiesWrapper>
-                                            )}
-
-                                            {props.data.organization.specialAttributes && (
-                                                <OpportunitiesWrapper>
-                                                    <OpportunitiesTextWrapper>
-                                                        <Text bold={true}>Special attributes </Text>
-                                                    </OpportunitiesTextWrapper>
-                                                    <OpportunitiesValueWrapper>
-                                                        {props.data.organization!!.specialAttributes!!.map((s, k) => (
-                                                            <OpportunitiesValue key={k + '_' + s}>
-                                                                {s}
-                                                            </OpportunitiesValue>
-                                                        ))}
-                                                    </OpportunitiesValueWrapper>
-                                                </OpportunitiesWrapper>
-                                            )}
-                                        </div>
-
-                                    </XCardStyled>
-
-                                    <XCardStyled padding={0}>
-                                        <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                            <Title marginBottom={24}>Development opportunities</Title>
-                                        </XVerticalStyled>
-                                        {props.data.organization && props.data.organization.developmentOportunities && (
-                                            props.data.organization.developmentOportunities.map((devop, i) => < DevelopmentOportunityComponent key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
-                                        )}
-                                    </XCardStyled>
-
-                                    <XCardStyled padding={0}>
-                                        <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                            <Title marginBottom={24}>Aquizition Requests</Title>
-                                        </XVerticalStyled>
-                                        {props.data.organization && props.data.organization.acquisitionRequests && (
-                                            props.data.organization.acquisitionRequests.map((devop, i) => < AquizitionRequestComponent key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
-                                        )}
-                                    </XCardStyled>
-
+                                        </XCardStyled>
+                                    )}
                                     <XModalForm
                                         title={props.router.query.addListing === 'DO' ? 'Add Development Opportunity' : 'Add Acquisition Requests'}
 
