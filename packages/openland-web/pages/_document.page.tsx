@@ -49,9 +49,9 @@ export default class StateDocument extends Document {
                     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png" />
                     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png" />
                     <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96.png" />
-                    <link rel="icon" type="image/png" sizes="128x128" href="/static/branding/favicon-128.png" />
-                    <link rel="icon" type="image/png" sizes="192x192" href="/static/android-icon-192.png" />
-                    <link rel="icon" type="image/png" sizes="196x196" href="/static/branding/favicon-196x196.png" />
+                    <link rel="icon" type="image/png" sizes="128x128" href="/static/favicon-128.png" />
+                    <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192.png" />
+                    <link rel="icon" type="image/png" sizes="196x196" href="/static/favicon-196.png" />
 
                     <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-icon-57.png" />
                     <link rel="apple-touch-icon" sizes="60x60" href="/static/apple-icon-60.png" />
