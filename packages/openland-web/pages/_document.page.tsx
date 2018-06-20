@@ -35,6 +35,7 @@ export default class StateDocument extends Document {
                     <meta name="format-detection" content="telephone=no" />
                     <meta name="theme-color" content="#000000" />
                     <meta name="application-name" content="Openland" />
+                    <meta name="apple-mobile-web-app-title" content="Openland" />
 
                     <link rel="shortcut icon" href="/static/favicon.ico" />
                     <link rel="mask-icon" href="/static/favicon-safari.svg" color="#522BFF" />
