@@ -27,7 +27,6 @@ class XSelectStored extends React.PureComponent<XSelectProps & { store: XStoreSt
         if (valueStoreKey || field) {
             value = store.readValue(valueStoreKey || ('fields.' + field));
         }
-        console.warn(value);
         return <XSelectBasic {...other} value={(value && this.props.creatable) ? value.map( (v: any) => ({ value: v, label: v })) : value} onChange={this.handleChange} />;
     }
 }
