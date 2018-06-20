@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XFlexStyles, extractFlexProps, applyFlex } from './basics/Flex';
-// import Simplebar from 'simplebar';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 export interface XScrollViewProps extends XFlexStyles {
     className?: string;
@@ -14,9 +14,15 @@ const ScrollDiv = Glamorous.div<{ scroll: 'vertical' | 'horizontal' | 'both' } &
 }), applyFlex]);
 
 export class XScrollView extends React.Component<XScrollViewProps> {
+    Simplebar = canUseDOM ? import('simplebar') : null;
     render() {
         return (
-            <ScrollDiv className={this.props.className} scroll={this.props.scroll || 'vertical'} {...extractFlexProps(this.props)}>
+            <ScrollDiv
+                className={this.props.className}
+                scroll={this.props.scroll || 'vertical'}
+                {...extractFlexProps(this.props)}
+                innerRef={(src) => canUseDOM && this.Simplebar!!.then((v) => new v(src))}
+            >
                 {this.props.children}
             </ScrollDiv>
         );
