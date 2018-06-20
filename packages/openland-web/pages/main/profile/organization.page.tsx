@@ -22,6 +22,9 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XInput } from 'openland-x/XInput';
 import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
+import { ImageRefInput } from 'openland-api/Types';
+import { XSelect } from 'openland-x/XSelect';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -382,10 +385,6 @@ interface DevelopmentOportunity {
     }[] | null;
 }
 
-// interface AquizitionRequest {
-
-// }
-
 class DevelopmentOportunityComponent extends React.Component<{ item: DevelopmentOportunity, orgId: string, index: number }> {
     render() {
         return (
@@ -395,12 +394,52 @@ class DevelopmentOportunityComponent extends React.Component<{ item: Development
                 <XVertical>
                     <Title >{this.props.item.name}</Title>
                     <Title >{this.props.item.locationTitle}</Title>
-                    {/* {(this.props.item.tags || []).join(' ')} */}
                     <XWithRole role={['org-' + this.props.orgId + '-admin']}>
 
                         <XHorizontal>
-                            <XButton text="edit" style="electric" query={{ field: 'editFeaturedOpportunity', value: this.props.item.id }} />
-                            <XButton text="delete" style="danger" query={{ field: 'deleteFeaturedOpportunity', value: this.props.item.id }} />
+                            <XButton text="edit" style="electric" query={{ field: 'editListing', value: this.props.item.id }} />
+                            <XButton text="delete" style="danger" query={{ field: 'deleteListing', value: this.props.item.id }} />
+                        </XHorizontal>
+                    </XWithRole>
+
+                </XVertical>
+            </XHorizontal>
+        );
+    }
+}
+
+interface AquizitionRequest {
+    name: string;
+    id: string;
+    photo: ImageRefInput | null;
+    summary: string | null;
+    specialAttributes: string[] | null;
+    status: string | null;
+    updatedAt: string;
+    shortDescription: string | null;
+    areaRange: {
+        from: number | null;
+        to: number | null;
+    } | null;
+    geographies: string[] | null;
+    landUse: string[] | null;
+    unitCapacity: string[] | null;
+}
+
+class AquizitionRequestComponent extends React.Component<{ item: AquizitionRequest, orgId: string, index: number }> {
+    render() {
+        return (
+            <XHorizontal>
+                <XAvatar photoRef={this.props.item.photo || undefined} />
+                <XVertical>
+                    <Title >{this.props.item.name}</Title>
+                    <Title >{this.props.item.shortDescription}</Title>
+                    {this.props.item.geographies && <Title >{this.props.item.geographies.join(' ')}</Title>}
+                    <XWithRole role={['org-' + this.props.orgId + '-admin']}>
+
+                        <XHorizontal>
+                            <XButton text="edit" style="electric" query={{ field: 'editListing', value: this.props.item.id }} />
+                            <XButton text="delete" style="danger" query={{ field: 'deleteListing', value: this.props.item.id }} />
                         </XHorizontal>
                     </XWithRole>
 
@@ -411,7 +450,88 @@ class DevelopmentOportunityComponent extends React.Component<{ item: Development
 }
 
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
-    console.warn(props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editFeaturedOpportunity)[0]);
+
+    let editDoTarget = props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editListing)[0];
+    let editArTarget = props.data.organization.acquisitionRequests!!.filter((devOp) => devOp.id === props.router.query.editListing)[0];
+    let target = editDoTarget || editArTarget;
+
+    let editCommon;
+    if (editDoTarget || editArTarget) {
+        editCommon = {
+            name: target.name,
+            summary: target.summary,
+            specialAttributes: target.specialAttributes,
+            status: target.status,
+        };
+    }
+
+    let editListingDefaultData;
+    if (editDoTarget) {
+        editListingDefaultData = {
+            input: {
+                ...editCommon,
+                location: {
+                    result: {
+                        text: editDoTarget.locationTitle,
+                        center: [editDoTarget.location!.lon, editDoTarget.location!.lat]
+                    }
+                },
+                locationTitle: target.locationTitle,
+                availability: target.availability,
+                area: target.area,
+                price: target.price,
+                dealType: target.dealType,
+                shapeAndForm: target.shapeAndForm,
+                currentUse: target.currentUse,
+                goodFitFor: target.goodFitFor,
+                // additionalLinks: [AlphaOrganizationListingLink!]
+            }
+        };
+    }
+    if (editArTarget) {
+        editListingDefaultData = {
+            input: {
+                ...editCommon,
+                photo: editArTarget.photo,
+                shortDescription: editArTarget.shortDescription,
+                areaRange: editArTarget.areaRange,
+                geographies: editArTarget.geographies,
+                landUse: editArTarget.landUse,
+                unitCapacity: editArTarget.unitCapacity,
+            }
+        };
+    }
+
+    let editListingDefaultAction = async (data: any) => {
+
+        await props.editListing({
+            variables: {
+                id: target.id,
+                input: {
+                    name: data.input.name,
+
+                    location: data.input.location ? { lat: data.input.location.result.center[1], lon: data.input.location.result.center[0] } : null,
+                    locationTitle: data.input.location ? data.input.location.result.place_name || data.input.location.result.text : null,
+                    availability: data.input.availability,
+                    area: data.input.area,
+                    price: data.input.price,
+                    dealType: data.input.dealType,
+                    shapeAndForm: data.input.shapeAndForm,
+                    currentUse: data.input.currentUse,
+                    goodFitFor: data.input.goodFitFor,
+
+                    photo: data.input.photo,
+                    shortDescription: data.input.shortDescription,
+                    areaRange: data.input.areaRange,
+                    geographies: data.input.geographies,
+                    landUse: data.input.landUse,
+                    unitCapacity: data.input.unitCapacity,
+                }
+            }
+
+        });
+    };
+
     return (
         <>
             <XDocumentHead title="Organization profile" />
@@ -427,7 +547,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     {/* <OrganizationPlace>San Francisco, CA</OrganizationPlace> */}
                                 </OrganizationData>
                                 <SwitcherWrapper flatStyle={true}>
-                                    <Switcher path={'/o/' + props.data.organization.id}>Development opportunities</Switcher>
+                                    <Switcher path={'/o/' + props.data.organization.id}>Overview</Switcher>
                                     {/* <Switcher>Docs</Switcher>
                                 <Switcher>News</Switcher>
                                 <Switcher>Contacts</Switcher> */}
@@ -450,12 +570,21 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             size="medium"
                                             icon="edit"
                                             text="Edit"
-                                            href="/settings/organization"
+                                            path="/settings/organization"
                                         />
                                         <XButton
-                                            query={{ field: 'addDevelopmentOpportunity', value: 'true' }}
+                                            query={{ field: 'addListing', value: 'DO' }}
                                             size="medium"
                                             text="Add DO"
+                                            icon="add"
+                                            style="primary"
+                                            alignSelf="flex-start"
+                                        />
+
+                                        <XButton
+                                            query={{ field: 'addListing', value: 'AR' }}
+                                            size="medium"
+                                            text="Add AR"
                                             icon="add"
                                             style="primary"
                                             alignSelf="flex-start"
@@ -605,42 +734,75 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         )}
                                     </XCardStyled>
 
+                                    <XCardStyled padding={0}>
+                                        <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
+                                            <Title marginBottom={24}>Aquizition Requests</Title>
+                                        </XVerticalStyled>
+                                        {props.data.organization && props.data.organization.acquisitionRequests && (
+                                            props.data.organization.acquisitionRequests.map((devop, i) => < AquizitionRequestComponent key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
+                                        )}
+                                    </XCardStyled>
+
                                     <XModalForm
-                                        title="Add Development Opportunity"
+                                        title={props.router.query.addListing === 'DO' ? 'Add Development Opportunity' : 'Add Acquisition Requests'}
 
                                         defaultAction={async (data) => {
 
-                                            // summary: String!
-                                            // specialAttributes: [String!]
-                                            // status: String
-
-                                            // location: MapPoint
-                                            // locationTitle: String
-                                            // availability: String
-                                            // area: Int
-                                            // price: Int
-                                            // dealType: [String!]
-                                            // shapeAndForm: [String!]
-                                            // currentUse: [String!]
-                                            // goodFitFor: [String!]
-                                            // additionalLinks: [AlphaOrganizationListingLink!]
                                             await props.createListing({
                                                 variables: {
-                                                    type: 'development_opportunity',
+                                                    type: props.router.query.addListing === 'DO' ? 'development_opportunity' : 'acquisition_request',
                                                     input: {
-                                                        name: data.name,
-                                                        location: data.location ? { lat: data.location.result.center[1], lon: data.location.result.center[0] } : null,
-                                                        locationTitle: data.location ? data.location.result.place_name || data.location.result.text : null,
+                                                        name: data.input.name,
+
+                                                        location: data.input.location ? { lat: data.input.location.result.center[1], lon: data.input.location.result.center[0] } : null,
+                                                        locationTitle: data.input.location ? data.input.location.result.place_name || data.input.location.result.text : null,
+                                                        availability: data.input.availability,
+                                                        area: data.input.area,
+                                                        price: data.input.price,
+                                                        dealType: data.input.dealType,
+                                                        shapeAndForm: data.input.shapeAndForm,
+                                                        currentUse: data.input.currentUse,
+                                                        goodFitFor: data.input.goodFitFor,
+
+                                                        photo: data.input.photo,
+                                                        shortDescription: data.input.shortDescription,
+                                                        areaRange: data.input.areaRange,
+                                                        geographies: data.input.geographies,
+                                                        landUse: data.input.landUse,
+                                                        unitCapacity: data.input.unitCapacity,
                                                     }
                                                 }
                                             });
                                         }}
-                                        targetQuery="addDevelopmentOpportunity"
+                                        targetQuery="addListing"
                                     >
                                         <XFormLoadingContent>
                                             <XVertical>
                                                 <XInput field="name" required={true} placeholder="Name" />
-                                                <XLocationPickerModal field="location" />
+                                                {props.router.query.addListing === 'DO' && (
+                                                    <>
+                                                        <XLocationPickerModal field="input.location" />
+                                                        <XInput field="input.availability" placeholder="Availability" />
+                                                        <XInput field="input.area" placeholder="Area" />
+                                                        <XInput field="input.price" placeholder="Price" />
+                                                        <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
+                                                        <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
+                                                        <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
+                                                        <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
+                                                    </>
+                                                )}
+                                                {props.router.query.addListing === 'AR' && (
+                                                    <>
+                                                        <XAvatarUpload field="input.photo" />
+                                                        <XInput field="input.shortDescription" />
+
+                                                        {/* <XSelect AREA RANGE!! /> */}
+
+                                                        <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
+                                                        <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
+                                                        <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
+                                                    </>
+                                                )}
                                             </XVertical>
                                         </XFormLoadingContent>
                                     </XModalForm>
@@ -655,59 +817,44 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 }
                                             });
                                         }}
-                                        targetQuery="deleteFeaturedOpportunity"
+                                        targetQuery="deleteListing"
                                     />
-                                    {props.router.query.editFeaturedOpportunity && (
+                                    {(editDoTarget || editArTarget) && (
                                         <XModalForm
-                                            title="Edit Development Opportunity"
-
-                                            defaultData={{
-                                                input: {
-                                                    name: props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editFeaturedOpportunity)[0].name,
-                                                    location: {
-                                                        result: {
-                                                            text: props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editFeaturedOpportunity)[0].locationTitle,
-                                                            center: [props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editFeaturedOpportunity)[0].location!.lon, props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editFeaturedOpportunity)[0].location!.lat]
-                                                        }
-                                                    },
-                                                }
-                                            }}
-
-                                            defaultAction={async (data) => {
-
-                                                // summary: String!
-                                                // specialAttributes: [String!]
-                                                // status: String
-
-                                                // location: MapPoint
-                                                // locationTitle: String
-                                                // availability: String
-                                                // area: Int
-                                                // price: Int
-                                                // dealType: [String!]
-                                                // shapeAndForm: [String!]
-                                                // currentUse: [String!]
-                                                // goodFitFor: [String!]
-                                                // additionalLinks: [AlphaOrganizationListingLink!]
-                                                await props.editListing({
-                                                    variables: {
-                                                        id: props.router.query.editFeaturedOpportunity,
-                                                        input: {
-                                                            name: data.input.name,
-
-                                                            location: data.input.location ? { lat: data.input.location.result.center[1], lon: data.input.location.result.center[0] } : null,
-                                                            locationTitle: data.input.location ? data.input.location.result.place_name || data.input.location.result.text : null,
-                                                        }
-                                                    }
-
-                                                });
-                                            }}
-                                            targetQuery="editFeaturedOpportunity"
+                                            title={editDoTarget ? 'Edit Development Opportunity' : 'Edit Aquizition Request'}
+                                            defaultData={editListingDefaultData}
+                                            defaultAction={editListingDefaultAction}
+                                            targetQuery="editListing"
                                         >
                                             <XFormLoadingContent>
                                                 <XVertical>
                                                     <XInput field="input.name" required={true} placeholder="Name" />
-                                                    <XLocationPickerModal field="input.location" />
+                                                    {editDoTarget && (
+                                                        <>
+                                                            <XLocationPickerModal field="input.location" />
+                                                            <XInput field="input.availability" placeholder="Availability" />
+                                                            <XInput field="input.area" placeholder="Area" />
+                                                            <XInput field="input.price" placeholder="Price" />
+                                                            <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
+                                                            <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
+                                                            <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
+                                                            <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
+                                                        </>
+                                                    )}
+
+                                                    {editArTarget && (
+                                                        <>
+                                                            <XAvatarUpload field="input.photo" />
+                                                            <XInput field="input.shortDescription" />
+
+                                                            {/* <XSelect AREA RANGE!! /> */}
+
+                                                            <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
+                                                            <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
+                                                            <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
+                                                        </>
+
+                                                    )}
                                                 </XVertical>
                                             </XFormLoadingContent>
                                         </XModalForm>

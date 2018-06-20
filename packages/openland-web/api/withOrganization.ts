@@ -11,6 +11,6 @@ export const withOrganization = graphqlCompose5(
     graphqlRouted(OrganizationQuery, { params: ['organizationId'] }),
     graphqlMutation(FollowOrganizationMutation, 'followOrganization', { params: ['organizationId'] }),
     graphqlMutation(CreateListingMutation, 'createListing', { refetchQueries: [OrganizationQuery], refetchParams: ['organizationId'] }),
-    graphqlMutation(EditListingMutation, 'editListing'),
+    graphqlMutation(EditListingMutation, 'editListing', { refetchQueries: [OrganizationQuery], refetchParams: ['organizationId'] }),
     graphqlMutation(DeleteListingMutation, 'deleteListing', { refetchQueries: [OrganizationQuery], refetchParams: ['organizationId'] })
 );

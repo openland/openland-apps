@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
-import Select, { Async, ReactSelectProps, ReactAsyncSelectProps } from 'react-select';
+import Select, { Async, ReactSelectProps, ReactAsyncSelectProps, Creatable } from 'react-select';
 
 const SelectAnimationFadeIn = glamor.keyframes({
     '0%': { opacity: 0 },
@@ -407,9 +407,11 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
 
 const StyledAsync = Glamorous(Async)(Styles) as React.ComponentType<ReactAsyncSelectProps>; // Some Weird typing problems
 const StyledSelect = Glamorous(Select)(Styles);
+const StyledSelectCreatable = Glamorous(Creatable)(Styles);
 
 export type XSelectBasicProps = ReactSelectProps & {
     attach?: 'left' | 'right' | 'both';
+    creatable?: boolean;
 };
 export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
     attach?: 'left' | 'right' | 'both';
@@ -417,7 +419,7 @@ export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
 
 export function XSelectBasic(props: XSelectBasicProps) {
     return (
-        <StyledSelect {...props} />
+        props.creatable ? <StyledSelectCreatable {...props} /> : <StyledSelect {...props} />
     );
 }
 
