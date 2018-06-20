@@ -2,12 +2,13 @@ import '../init';
 import '../../globals';
 import * as React from 'react';
 import * as Cookie from 'js-cookie';
-import Error from 'next/error';
 import createHistory from 'history/createBrowserHistory';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { withData } from '../../components/withData';
 import fetch from 'isomorphic-unfetch';
+import { ErrorPage } from '../../components/ErrorPage';
+import { trackError } from 'openland-x-analytics';
 interface AuthResult {
     expiresIn: number;
     accessToken: string;
@@ -30,6 +31,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
             // Do nothing
         }).catch((e) => {
             console.warn(e);
+            trackError(e);
             this.setState({ error: true });
         });
     }
@@ -56,6 +58,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
                 forceRefresh: true
             }).replace(path);
         } else {
+            trackError(uploaded);
             console.warn(uploaded);
             throw 'Error';
         }
@@ -63,7 +66,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
 
     render() {
         if (this.state.error) {
-            return <Error statusCode={500} />;
+            return <ErrorPage statusCode={500} />;
         } else {
             return <div />;
         }
