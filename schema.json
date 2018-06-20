@@ -8735,6 +8735,18 @@
               "deprecationReason": null
             },
             {
+              "name": "photo",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ImageRef",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "location",
               "description": "",
               "args": [],
@@ -13393,6 +13405,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "photo",
+              "description": "",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "ImageRefInput",
                 "ofType": null
               },
               "defaultValue": null

@@ -45,7 +45,7 @@ export const OrganizationFull = gql`
             specialAttributes
             status
             updatedAt
-
+            
             location{
                 lat
                 lon
@@ -72,6 +72,15 @@ export const OrganizationFull = gql`
             status
             updatedAt
 
+            photo{
+                uuid
+                crop{
+                    x
+                    y
+                    w
+                    h
+                }
+            }
             shortDescription
             areaRange{
                 from

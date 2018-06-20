@@ -95,6 +95,7 @@ export interface AlphaOrganizationListingInput {
   summary?: string | null,
   specialAttributes?: Array< string > | null,
   status?: string | null,
+  photo?: ImageRefInput | null,
   location?: MapPointInput | null,
   locationTitle?: string | null,
   availability?: string | null,
@@ -1021,6 +1022,17 @@ export interface MyOrganizationQuery {
       specialAttributes: Array< string > | null,
       status: string | null,
       updatedAt: string,
+      photo:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
       shortDescription: string | null,
       areaRange:  {
         __typename: "Range",
@@ -1124,6 +1136,17 @@ export interface MyOrganizationProfileQuery {
       specialAttributes: Array< string > | null,
       status: string | null,
       updatedAt: string,
+      photo:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
       shortDescription: string | null,
       areaRange:  {
         __typename: "Range",
@@ -1240,6 +1263,17 @@ export interface UpdateOrganizationMutation {
       specialAttributes: Array< string > | null,
       status: string | null,
       updatedAt: string,
+      photo:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
       shortDescription: string | null,
       areaRange:  {
         __typename: "Range",
@@ -1329,6 +1363,17 @@ export interface OrganizationQuery {
       specialAttributes: Array< string > | null,
       status: string | null,
       updatedAt: string,
+      photo:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
       shortDescription: string | null,
       areaRange:  {
         __typename: "Range",
@@ -3512,6 +3557,17 @@ export interface OrganizationFullFragment {
     specialAttributes: Array< string > | null,
     status: string | null,
     updatedAt: string,
+    photo:  {
+      __typename: string,
+      uuid: string,
+      crop:  {
+        __typename: string,
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
     shortDescription: string | null,
     areaRange:  {
       __typename: string,
@@ -3613,6 +3669,17 @@ export interface OrganizationProfileFullFragment {
     specialAttributes: Array< string > | null,
     status: string | null,
     updatedAt: string,
+    photo:  {
+      __typename: string,
+      uuid: string,
+      crop:  {
+        __typename: string,
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
     shortDescription: string | null,
     areaRange:  {
       __typename: string,

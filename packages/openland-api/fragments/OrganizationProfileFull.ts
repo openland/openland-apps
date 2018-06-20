@@ -82,6 +82,15 @@ export const OrganizationProfileFull = gql`
             status
             updatedAt
 
+            photo{
+                uuid
+                crop{
+                    x
+                    y
+                    w
+                    h
+                }
+            }
             shortDescription
             areaRange{
                 from
