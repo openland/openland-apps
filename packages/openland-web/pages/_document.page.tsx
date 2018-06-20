@@ -7,9 +7,9 @@ let isProduction = process.env.APP_PRODUCTION === 'true';
 export default class StateDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
         // Link: </assets/css/screen.css?v=5fc240c512>; rel=preload; as=style,<//cdn.bizible.com/scripts/bizible.js>; rel=preload; as=script,</content/images/2016/06/Timeouts-001.png>; rel=preload; as=image,</content/images/2016/06/Timeouts-002.png>; rel=preload; as=image,<//platform.linkedin.com/in.js>; rel=preload; as=script,<https://code.jquery.com/jquery-1.11.3.min.js>; rel=preload; as=script,</assets/js/jquery.fitvids.js?v=5fc240c512>; rel=preload; as=script
-        if (!props.res!!.headersSent) {
-            props.res!!.setHeader('Link', '</static/loader.css>; rel=preload; as=style');
-        }
+        // if (!props.res!!.headersSent) {
+        //     props.res!!.setHeader('Link', '</static/loader.css>; rel=preload; as=style');
+        // }
         const page = props.renderPage();
         const styles = renderStaticOptimized(() => page.html || page.errorHtml);
         return {
@@ -66,7 +66,7 @@ export default class StateDocument extends Document {
                     <meta name="msapplication-square310x310logo" content="/static/ms-icon-square-310.png" />
                     <meta name="msapplication-wide310x150logo" content="/static/ms-icon-wide-310.png" />
 
-                    <link rel="stylesheet" type="text/css" href="/static/loader.css" />
+                    {/* <link rel="stylesheet" type="text/css" href="/static/loader.css" /> */}
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
 
@@ -82,70 +82,8 @@ export default class StateDocument extends Document {
                     {isProduction && <script type="text/javascript" dangerouslySetInnerHTML={{ __html: `window.intercomSettings = { app_id: "n7hi8wya" };` }}>{}</script>}
                     {isProduction && <script dangerouslySetInnerHTML={{ __html: `(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/n7hi8wya';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()` }}>{}</script>}
 
+                    {/* Uploadcare */}
                     <script dangerouslySetInnerHTML={{ __html: 'UPLOADCARE_PUBLIC_KEY = \'b70227616b5eac21ba88\'' }} />
-                    <style>
-                        {`html {
-                            font-style: normal;
-                            font-weight: normal;
-                            font-variant: normal;
-                            font-size: 14px;
-                            line-height: 20px;
-                            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-                            -webkit-text-size-adjust: 100%;
-                            -webkit-font-smoothing: antialiased;
-                            -moz-font-smoothing: antialiased;
-                            -ms-font-smoothing: antialiased;
-                            -o-font-smoothing: antialiased;
-                            -webkit-box-sizing: border-box;
-                            -moz-box-sizing: border-box;
-                        }
-                        body, body * {
-                            margin: 0;
-                            padding: 0;
-                            border: 0;
-                            outline: 0;
-                            font-size: 100%;
-                            vertical-align: baseline;
-                            background: transparent;
-                            text-decoration: none;
-                            box-sizing: border-box;
-                        }
-                        body {
-                            background: #FAFAFC;
-                        }
-                        body.ReactModal__Body--open {
-                            overflow: hidden;
-                        }
-                        input, textarea, button {
-                            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-                        }
-                        input, select { 
-                            vertical-align:middle; 
-                        }
-                        a {
-                            color: inherit;
-                            text-decoration: none;
-                        }
-                        a:hover {
-                            color: #6B50FF;
-                        }
-                        sub, sup { font-size:75%; line-height:0; position:relative; }
-                        sup { top:-0.5em; }
-                        sub { bottom:-0.25em; }
-
-                        .ReactModal__Overlay {
-                            opacity: 0;
-                            overflow-y: auto;
-                        } 
-                        .ReactModal__Overlay--after-open {
-                            opacity: 1;
-                            transition: opacity 300ms;
-                        }  
-                        .ReactModal__Overlay--before-close {
-                            opacity: 0;
-                        }
-                        `}
-                    </style>
                 </Head>
                 <body>
                     <Main />

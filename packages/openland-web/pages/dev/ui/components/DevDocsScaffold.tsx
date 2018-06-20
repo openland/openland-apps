@@ -1,3 +1,4 @@
+import '../../../init';
 import * as React from 'react';
 import { XHeader } from 'openland-x/XHeader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';

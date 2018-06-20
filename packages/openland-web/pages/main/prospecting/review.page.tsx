@@ -1,3 +1,5 @@
+import '../../init';
+import '../../../globals';
 import * as React from 'react';
 import * as Types from 'openland-api/Types';
 import { buildProspectingQuery } from '../../../components/prospectingQuery';
@@ -26,7 +28,6 @@ import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import '../../../globals';
 import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
 import { ZoningCode } from '../../../components/ZoningCode';

@@ -1,3 +1,4 @@
+import '../init';
 import '../../globals';
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
