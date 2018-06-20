@@ -142,8 +142,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
                     linkText={signin ? InitTexts.auth.signup : InitTexts.auth.signin}
                 >
                     {!this.state.email && (<>
-                        <Title>{signin ? InitTexts.auth.signinTitle : InitTexts.auth.signinTitle}</Title>
-                        <Description>{signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.signupTitle}</Description>
+                        <Title>{signin ? InitTexts.auth.signinTitle : InitTexts.auth.signupTitle}</Title>
+                        {signin && <Description>{InitTexts.auth.signinSubtitle}</Description>}
                         <ButtonsWrapper marginTop={52}>
                             <ImgButton onClick={this.loginWithGoogle} primary={true}>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" width="50px" height="50px">
