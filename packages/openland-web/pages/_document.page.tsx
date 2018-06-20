@@ -33,11 +33,11 @@ export default class StateDocument extends Document {
                 <Head>
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
                     <meta name="format-detection" content="telephone=no" />
-                    <meta name="theme-color" content="#000000" />
+                    <meta name="theme-color" content="#6400FF" />
                     <meta name="application-name" content="Openland" />
                     <meta name="apple-mobile-web-app-title" content="Openland" />
 
-                    <link rel="shortcut icon" href="/static/favicon.ico" />
+                    {/* <link rel="shortcut icon" href="/static/favicon.ico" /> */}
                     <link rel="mask-icon" href="/static/favicon-safari.svg" color="#522BFF" />
 
                     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png" />
