@@ -11,6 +11,8 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { XLink } from 'openland-x/XLink';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
+import { sanitizeIamgeRef } from '../../../utils/sanitizer';
+
 import {
     ContactPerson
 } from '../../../utils/OrganizationProfileFields';
@@ -25,6 +27,9 @@ import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
 import { ImageRefInput } from 'openland-api/Types';
 import { XSelect } from 'openland-x/XSelect';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { XFormField } from 'openland-x-forms/XFormField';
+import { XTextArea } from 'openland-x/XTextArea';
+import { XTitle } from 'openland-x/XTitle';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -463,6 +468,10 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
     }
 }
 
+const Field = Glamorous(XFormField)({
+    flex: 1
+});
+
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
 
     let editDoTarget = props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editListing)[0];
@@ -475,7 +484,6 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
             name: target.name,
             summary: target.summary,
             specialAttributes: target.specialAttributes,
-            status: target.status,
         };
     }
 
@@ -503,26 +511,42 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
         };
     }
     if (editArTarget) {
+
+        let areaRange;
+        if (editArTarget.areaRange) {
+            if ((editArTarget.areaRange.to || Number.MAX_SAFE_INTEGER) <= 10000) {
+                areaRange = 'small';
+            } else if ((editArTarget.areaRange.to || Number.MAX_SAFE_INTEGER) <= 100000) {
+                areaRange = 'medium';
+            } else {
+                areaRange = 'large';
+            }
+        }
+
         editListingDefaultData = {
             input: {
                 ...editCommon,
                 photo: editArTarget.photo,
                 shortDescription: editArTarget.shortDescription,
-                areaRange: editArTarget.areaRange,
                 geographies: editArTarget.geographies,
                 landUse: editArTarget.landUse,
                 unitCapacity: editArTarget.unitCapacity,
+                areaRange: areaRange,
             }
         };
     }
 
     let editListingDefaultAction = async (data: any) => {
 
+        let areaRange = data.input.areaRange ? data.input.areaRange === 'small' ? { from: 0, to: 10000 } : data.input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 } : null;
+
         await props.editListing({
             variables: {
                 id: target.id,
                 input: {
                     name: data.input.name,
+                    summary: data.input.summary,
+                    specialAttributes: data.input.specialAttributes,
 
                     location: data.input.location ? { lat: data.input.location.result.center[1], lon: data.input.location.result.center[0] } : null,
                     locationTitle: data.input.location ? data.input.location.result.place_name || data.input.location.result.text : null,
@@ -534,9 +558,9 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     currentUse: data.input.currentUse,
                     goodFitFor: data.input.goodFitFor,
 
-                    photo: data.input.photo,
+                    photo: sanitizeIamgeRef(data.input.photo),
                     shortDescription: data.input.shortDescription,
-                    areaRange: data.input.areaRange,
+                    areaRange: areaRange,
                     geographies: data.input.geographies,
                     landUse: data.input.landUse,
                     unitCapacity: data.input.unitCapacity,
@@ -778,69 +802,127 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             )}
                                         </XCardStyled>
                                     )}
-                                    <XModalForm
-                                        title={props.router.query.addListing === 'DO' ? 'Add Development Opportunity' : 'Add Acquisition Requests'}
+                                    {props.router.query.addListing && (
+                                        <XModalForm
+                                            title={props.router.query.addListing === 'DO' ? 'Create development opportunity' : 'Create acquisition requests'}
 
-                                        defaultAction={async (data) => {
+                                            defaultAction={async (data) => {
+                                                let areaRange = data.input.areaRange ? data.input.areaRange === 'small' ? { from: 0, to: 10000 } : data.input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 } : null;
 
-                                            await props.createListing({
-                                                variables: {
-                                                    type: props.router.query.addListing === 'DO' ? 'development_opportunity' : 'acquisition_request',
-                                                    input: {
-                                                        name: data.input.name,
+                                                await props.createListing({
+                                                    variables: {
+                                                        type: props.router.query.addListing === 'DO' ? 'development_opportunity' : 'acquisition_request',
+                                                        input: {
+                                                            name: data.input.name,
+                                                            summary: data.input.summary,
+                                                            specialAttributes: data.input.specialAttributes,
 
-                                                        location: data.input.location ? { lat: data.input.location.result.center[1], lon: data.input.location.result.center[0] } : null,
-                                                        locationTitle: data.input.location ? data.input.location.result.place_name || data.input.location.result.text : null,
-                                                        availability: data.input.availability,
-                                                        area: data.input.area,
-                                                        price: data.input.price,
-                                                        dealType: data.input.dealType,
-                                                        shapeAndForm: data.input.shapeAndForm,
-                                                        currentUse: data.input.currentUse,
-                                                        goodFitFor: data.input.goodFitFor,
+                                                            location: data.input.location ? { lat: data.input.location.result.center[1], lon: data.input.location.result.center[0] } : null,
+                                                            locationTitle: data.input.location ? data.input.location.result.place_name || data.input.location.result.text : null,
+                                                            availability: data.input.availability,
+                                                            area: data.input.area,
+                                                            price: data.input.price,
+                                                            dealType: data.input.dealType,
+                                                            shapeAndForm: data.input.shapeAndForm,
+                                                            currentUse: data.input.currentUse,
+                                                            goodFitFor: data.input.goodFitFor,
 
-                                                        photo: data.input.photo,
-                                                        shortDescription: data.input.shortDescription,
-                                                        areaRange: data.input.areaRange,
-                                                        geographies: data.input.geographies,
-                                                        landUse: data.input.landUse,
-                                                        unitCapacity: data.input.unitCapacity,
+                                                            photo: data.input.photo,
+                                                            shortDescription: data.input.shortDescription,
+                                                            areaRange: areaRange,
+                                                            geographies: data.input.geographies,
+                                                            landUse: data.input.landUse,
+                                                            unitCapacity: data.input.unitCapacity,
+                                                        }
                                                     }
-                                                }
-                                            });
-                                        }}
-                                        targetQuery="addListing"
-                                    >
-                                        <XFormLoadingContent>
-                                            <XVertical>
-                                                <XInput field="name" required={true} placeholder="Name" />
-                                                {props.router.query.addListing === 'DO' && (
-                                                    <>
-                                                        <XLocationPickerModal field="input.location" />
-                                                        <XInput field="input.availability" placeholder="Availability" />
-                                                        <XInput field="input.area" placeholder="Area" />
-                                                        <XInput field="input.price" placeholder="Price" />
-                                                        <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
-                                                        <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
-                                                        <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
-                                                        <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
-                                                    </>
-                                                )}
-                                                {props.router.query.addListing === 'AR' && (
-                                                    <>
-                                                        <XAvatarUpload field="input.photo" />
-                                                        <XInput field="input.shortDescription" />
+                                                });
+                                            }}
+                                            targetQuery="addListing"
+                                        >
+                                            <XFormLoadingContent>
+                                                <XVertical>
+                                                    {props.router.query.addListing === 'AR' && (
+                                                        <XAvatarUpload field="input.photo" placeholder={{ add: 'Add listing photo', change: 'Change listing photo' }} />
+                                                    )}
 
-                                                        {/* <XSelect AREA RANGE!! /> */}
+                                                    <XFormField title="Name">
+                                                        <XInput field="name" required={true} placeholder="Name" />
+                                                    </XFormField>
+                                                    {props.router.query.addListing === 'DO' && (
+                                                        <>
+                                                            <XFormField title="Full adress">
+                                                                <XLocationPickerModal field="input.location" />
+                                                            </XFormField>
 
-                                                        <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
-                                                        <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
-                                                        <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
-                                                    </>
-                                                )}
-                                            </XVertical>
-                                        </XFormLoadingContent>
-                                    </XModalForm>
+                                                            <XHorizontal>
+                                                                <Field title="Area">
+                                                                    <XInput field="input.area" placeholder="Area" />
+                                                                </Field>
+                                                                <Field title="Price">
+                                                                    <XInput field="input.price" placeholder="Price" />
+                                                                </Field>
+                                                            </XHorizontal>
+
+                                                            <XFormField title="Availability">
+                                                                <XInput field="input.availability" placeholder="Availability" />
+                                                            </XFormField>
+
+                                                            <XFormField title="Summary">
+                                                                <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
+                                                            </XFormField>
+
+                                                            <XTitle>Details</XTitle>
+                                                            <XFormField title="Deal Type">
+                                                                <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
+                                                            </XFormField>
+                                                            <XFormField title="Shape And Form">
+                                                                <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
+                                                            </XFormField>
+                                                            <XFormField title="Current Use">
+                                                                <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
+                                                            </XFormField>
+                                                            <XFormField title="Good Fit For">
+                                                                <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
+                                                            </XFormField>
+                                                            <XFormField title="Special attributes">
+                                                                <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
+                                                            </XFormField></>
+                                                    )}
+                                                    {props.router.query.addListing === 'AR' && (
+                                                        <>
+                                                            <XFormField title="Short description">
+                                                                <XInput field="input.shortDescription" placeholder="Short description" />
+                                                            </XFormField>
+
+                                                            <XFormField title="Summary">
+                                                                <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
+                                                            </XFormField>
+
+                                                            <XTitle>Details</XTitle>
+
+                                                            <XFormField title="Area range">
+                                                                <XSelect field="input.areaRange" placeholder="Area range" options={[{ value: 'small', label: 'up to 10,000 ft²' }, { value: 'medium', label: '10,000 - 100,000 ft²' }, { value: 'large', label: '100,000 ft² +' }]} />
+                                                            </XFormField>
+
+                                                            <XFormField title="Geographies">
+                                                                <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
+                                                            </XFormField>
+                                                            <XFormField title="Land Use">
+                                                                <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
+                                                            </XFormField>
+                                                            <XFormField title="Special attributes">
+                                                                <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
+                                                            </XFormField>
+                                                            <XFormField title="Unit Capacity">
+                                                                <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
+                                                            </XFormField>
+                                                        </>
+                                                    )}
+                                                </XVertical>
+                                            </XFormLoadingContent>
+                                        </XModalForm>
+
+                                    )}
 
                                     <XModalForm
                                         title="Delete?"
@@ -856,38 +938,83 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     />
                                     {(editDoTarget || editArTarget) && (
                                         <XModalForm
-                                            title={editDoTarget ? 'Edit Development Opportunity' : 'Edit Aquizition Request'}
+                                            title={editDoTarget ? 'Edit development opportunity' : 'Edit aquizition request'}
                                             defaultData={editListingDefaultData}
                                             defaultAction={editListingDefaultAction}
                                             targetQuery="editListing"
                                         >
                                             <XFormLoadingContent>
                                                 <XVertical>
-                                                    <XInput field="input.name" required={true} placeholder="Name" />
+                                                    {editArTarget && (
+                                                        <XAvatarUpload field="input.photo" placeholder={{ add: 'Add listing photo', change: 'Change listing photo' }} />
+                                                    )}
+                                                    <XFormField title="Name">
+                                                        <XInput field="input.name" required={true} placeholder="Name" />
+                                                    </XFormField>
                                                     {editDoTarget && (
                                                         <>
-                                                            <XLocationPickerModal field="input.location" />
-                                                            <XInput field="input.availability" placeholder="Availability" />
-                                                            <XInput field="input.area" placeholder="Area" />
-                                                            <XInput field="input.price" placeholder="Price" />
-                                                            <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
-                                                            <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
-                                                            <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
-                                                            <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
+                                                            <XFormField title="Full adress">
+                                                                <XLocationPickerModal field="input.location" />
+                                                            </XFormField>
+                                                            <XHorizontal >
+                                                                <Field title="Area">
+                                                                    <XInput field="input.area" placeholder="Area" />
+                                                                </Field>
+                                                                <Field title="Price">
+                                                                    <XInput field="input.price" placeholder="Price" />
+                                                                </Field>
+                                                            </XHorizontal>
+                                                            <XFormField title="Availability">
+                                                                <XInput field="input.availability" placeholder="Availability" />
+                                                            </XFormField>
+                                                            <XFormField title="Summary">
+                                                                <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
+                                                            </XFormField>
+                                                            <XTitle>Details</XTitle>
+                                                            <XFormField title="Deal Type">
+                                                                <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
+                                                            </XFormField>
+                                                            <XFormField title="Shape And Form">
+                                                                <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
+                                                            </XFormField>
+                                                            <XFormField title="Current Use">
+                                                                <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
+                                                            </XFormField>
+                                                            <XFormField title="Good Fit For">
+                                                                <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
+                                                            </XFormField>
+                                                            <XFormField title="Special attributes">
+                                                                <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
+                                                            </XFormField>
+
                                                         </>
+
                                                     )}
 
                                                     {editArTarget && (
                                                         <>
-                                                            <XAvatarUpload field="input.photo" />
-                                                            <XInput field="input.shortDescription" />
+                                                            <XFormField title="Short description">
+                                                                <XInput field="input.shortDescription" placeholder="Short description" />
+                                                            </XFormField>
 
-                                                            {/* <XSelect AREA RANGE!! /> */}
+                                                            <XTitle>Details</XTitle>
 
-                                                            <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
-                                                            <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
-                                                            <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
-                                                        </>
+                                                            <XFormField title="Area range">
+                                                                <XSelect field="input.areaRange" options={[{ value: 'small', label: 'up to 10,000 ft²' }, { value: 'medium', label: '10,000 - 100,000 ft²' }, { value: 'large', label: '100,000 ft² +' }]} />
+                                                            </XFormField>
+
+                                                            <XFormField title="Geographies">
+                                                                <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
+                                                            </XFormField>
+                                                            <XFormField title="Land Use">
+                                                                <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
+                                                            </XFormField>
+                                                            <XFormField title="Special attributes">
+                                                                <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
+                                                            </XFormField>
+                                                            <XFormField title="Unit Capacity">
+                                                                <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
+                                                            </XFormField></>
 
                                                     )}
                                                 </XVertical>

@@ -2,6 +2,8 @@ import { XStyledCSS } from './XStyled';
 
 export interface XFlexStyles {
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
+    alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
+    justifyContent?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
     flexGrow?: number;
     flexShrink?: number;
     flexBasis?: number;
@@ -16,6 +18,8 @@ export interface XFlexStyles {
 
 export const extractFlexProps = (props: XFlexStyles) => {
     return {
+        alignItems: props.alignItems,
+        justifyContent: props.justifyContent,
         alignSelf: props.alignSelf,
         flexGrow: props.flexGrow,
         flexShrink: props.flexShrink,
@@ -31,6 +35,8 @@ export const extractFlexProps = (props: XFlexStyles) => {
 };
 
 export const applyFlex = (props: XFlexStyles) => ({
+    alignItems: props.alignItems,
+    justifyContent: props.justifyContent,
     flexGrow: props.flexGrow,
     flexShrink: props.flexShrink,
     flexBasis: props.flexBasis,

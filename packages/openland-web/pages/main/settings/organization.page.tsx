@@ -142,13 +142,13 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         </XFormField>
 
                                         <XFormField title="OrganizationType">
-                                            <XSelect creatable={true} multi={true} valueStoreKey="fields.input.organizationType" />
+                                            <XSelect creatable={true} multi={true} field="input.organizationType" />
                                         </XFormField>
                                         <XFormField title="LookingFor">
-                                            <XSelect creatable={true} multi={true} valueStoreKey="fields.input.lookingFor" />
+                                            <XSelect creatable={true} multi={true} field="input.lookingFor" />
                                         </XFormField>
                                         <XFormField title="Geographies">
-                                            <XSelect creatable={true} multi={true} valueStoreKey="fields.input.geographies" />
+                                            <XSelect creatable={true} multi={true} field="input.geographies" />
                                         </XFormField>
                                     </XVertical>
                                     <XFormField title="Photo">

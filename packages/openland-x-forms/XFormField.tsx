@@ -53,7 +53,7 @@ export function XFormField(props: {
                     let errors = store.readValue('errors.' + props.field);
                     let invalid = errors && errors.length !== 0;
                     return (
-                        <XFormFieldDiv>
+                        <XFormFieldDiv className={(props as any).className}>
                             <XFormFieldTitle invalid={invalid}>{props.title}{props.optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>
                             <XFormFieldChildren>
                                 <XVertical>
@@ -69,7 +69,7 @@ export function XFormField(props: {
         );
     }
     return (
-        <XFormFieldDiv>
+        <XFormFieldDiv className={(props as any).className}>
             <XFormFieldTitle invalid={props.invalid}>{props.title}{props.optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>
             <XFormFieldChildren>
                 <XVertical>
