@@ -85,6 +85,7 @@ async function start() {
     // Favicon support endpoint
     //
     server.get('/favicon.ico', (req, res) => res.sendFile(__dirname + '/static/favicon.ico'));
+    server.get('/browserconfig.xml', (req, res) => res.sendFile(__dirname + '/static/browserconfig.xml'));
 
     //
     // Serving static directory
