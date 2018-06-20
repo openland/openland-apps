@@ -63,11 +63,11 @@ const HeaderContent = Glamorous.div({
     }
 });
 
-const SwitcherWrapper = Glamorous(XSwitcher)({
+const SwitcherWrapper = Glamorous(XSwitcher)<{ height?: number }>((props) => ({
     padding: 0,
-    height: '100%',
+    height: props.height ? props.height : '100%',
     borderRadius: 0
-});
+}));
 
 const Switcher = Glamorous(XSwitcher.Item)({
     display: 'flex',
@@ -79,6 +79,7 @@ const Switcher = Glamorous(XSwitcher.Item)({
     lineHeight: 1.33,
     color: '#334562 !important',
     opacity: 0.5,
+    borderBottom: '3px solid transparent !important',
 
     '&.is-active': {
         opacity: 1,
@@ -302,10 +303,20 @@ const TagImg = Glamorous.div<{ img?: string }>((props) => ({
     },
 }));
 
-const XVerticalStyled = Glamorous(XVertical)<{ borderRight?: boolean, borderBottom?: boolean, padding?: number }>((props) => ({
+interface XVerticalStyledProps {
+    borderRight?: boolean;
+    borderBottom?: boolean;
+    padding?: number;
+    paddingLeft?: number;
+    paddingRight?: number;
+}
+
+const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
     borderRight: props.borderRight ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
     borderBottom: props.borderBottom ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
-    padding: props.padding
+    padding: props.padding,
+    paddingLeft: props.paddingLeft,
+    paddingRight: props.paddingRight
 }));
 
 const OpportunitiesWrapper = Glamorous.div({
@@ -330,20 +341,21 @@ const OpportunitiesWrapper = Glamorous.div({
 
 const OpportunitiesTextWrapper = Glamorous.div({
     width: 220,
-    height: 45,
+    height: '100%',
     flexShrink: 0,
     display: 'flex',
     alignItems: 'center',
-    borderRight: '1px solid rgba(220, 222, 228, 0.45)',
     paddingLeft: 24
 });
 
 const OpportunitiesValueWrapper = Glamorous.div({
-    height: 45,
+    minHeight: 35,
     display: 'flex',
     alignItems: 'center',
+    flexWrap: 'wrap',
     flexGrow: 1,
-    padding: '0 24px'
+    padding: '0 24px',
+    borderLeft: '1px solid rgba(220, 222, 228, 0.45)'
 });
 
 const OpportunitiesValue = Glamorous.div({
@@ -357,7 +369,9 @@ const OpportunitiesValue = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     padding: '8px 9px',
-    marginRight: 11
+    marginRight: 11,
+    marginTop: 5,
+    marginBottom: 5,
 });
 
 interface DevelopmentOportunityProps {
@@ -665,19 +679,17 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                                 <Text bold={true}>Site sizes</Text>
                                                             </OpportunitiesTextWrapper>
                                                             <OpportunitiesValueWrapper>
-                                                                <XHorizontal>
-                                                                    {props.data.organization.siteSizes!!.map((s, k) => (
-                                                                        <OpportunitiesValue key={k + '_' + s}>
-                                                                            {
-                                                                                ((s.to || Number.MAX_SAFE_INTEGER) <= 10000) ?
-                                                                                    'small (up to 10,000 sf)' :
-                                                                                    ((s.to || Number.MAX_SAFE_INTEGER) <= 100000) ?
-                                                                                        'medium (10,000 - 100,000 sf)' :
-                                                                                        'large (100,000 + sf)'
-                                                                            }
-                                                                        </OpportunitiesValue>
-                                                                    ))}
-                                                                </XHorizontal>
+                                                                {props.data.organization.siteSizes!!.map((s, k) => (
+                                                                    <OpportunitiesValue key={k + '_' + s}>
+                                                                        {
+                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 10000) ?
+                                                                                'small (up to 10,000 sf)' :
+                                                                                ((s.to || Number.MAX_SAFE_INTEGER) <= 100000) ?
+                                                                                    'medium (10,000 - 100,000 sf)' :
+                                                                                    'large (100,000 + sf)'
+                                                                        }
+                                                                    </OpportunitiesValue>
+                                                                ))}
                                                             </OpportunitiesValueWrapper>
                                                         </OpportunitiesWrapper>
                                                     )}
@@ -751,8 +763,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                     {props.router.path === lsitingsPath && (
                                         <XCardStyled padding={0}>
-                                            <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                                <SwitcherWrapper flatStyle={true}>
+                                            <XVerticalStyled borderBottom={true} flexGrow={1} padding={0} paddingLeft={24} paddingRight={24}>
+                                                <SwitcherWrapper flatStyle={true} height={66}>
                                                     <Switcher query={{ field: 'listingType' }}>Development opportunities</Switcher>
                                                     <Switcher query={{ field: 'listingType', value: 'ar' }}>Acquisition requests</Switcher>
 
