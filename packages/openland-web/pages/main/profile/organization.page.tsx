@@ -22,7 +22,6 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XInput } from 'openland-x/XInput';
 import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
-import { XCloudImage } from 'openland-x/XCloudImage';
 import { ImageRefInput } from 'openland-api/Types';
 import { XSelect } from 'openland-x/XSelect';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
@@ -548,7 +547,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     {/* <OrganizationPlace>San Francisco, CA</OrganizationPlace> */}
                                 </OrganizationData>
                                 <SwitcherWrapper flatStyle={true}>
-                                    <Switcher path={'/o/' + props.data.organization.id}>Development opportunities</Switcher>
+                                    <Switcher path={'/o/' + props.data.organization.id}>Overview</Switcher>
                                     {/* <Switcher>Docs</Switcher>
                                 <Switcher>News</Switcher>
                                 <Switcher>Contacts</Switcher> */}
