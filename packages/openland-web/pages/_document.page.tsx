@@ -37,14 +37,15 @@ export default class StateDocument extends Document {
                     <meta name="application-name" content="Openland" />
                     <meta name="apple-mobile-web-app-title" content="Openland" />
 
+                    {/* ORDER IS IMPORTANT! */}
                     {/* <link rel="shortcut icon" href="/static/favicon.ico" /> */}
                     <link rel="mask-icon" href="/static/favicon-safari.svg" color="#522BFF" />
 
-                    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png" />
+                    <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192.png" />
                     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png" />
+                    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png" />
                     <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96.png" />
                     <link rel="icon" type="image/png" sizes="128x128" href="/static/favicon-128.png" />
-                    <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192.png" />
                     <link rel="icon" type="image/png" sizes="196x196" href="/static/favicon-196.png" />
 
                     <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-icon-57.png" />
