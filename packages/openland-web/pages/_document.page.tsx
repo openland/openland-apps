@@ -36,13 +36,6 @@ export default class StateDocument extends Document {
                     <meta name="theme-color" content="#000000" />
                     <meta name="application-name" content="Openland" />
 
-                    <meta name="msapplication-TileColor" content="#6400FF" />
-                    <meta name="msapplication-TileImage" content="/static/branding/mstile-144x144.png" />
-                    <meta name="msapplication-square70x70logo" content="/static/branding/mstile-70x70.png" />
-                    <meta name="msapplication-square150x150logo" content="/static/branding/mstile-150x150.png" />
-                    <meta name="msapplication-wide310x150logo" content="/static/branding/mstile-310x150.png" />
-                    <meta name="msapplication-square310x310logo" content="/static/branding/mstile-310x310.png" />
-
                     <link rel="shortcut icon" href="/static/favicon.ico" />
                     <link rel="mask-icon" href="/static/favicon-safari.svg" color="#522BFF" />
 
@@ -62,6 +55,15 @@ export default class StateDocument extends Document {
                     <link rel="apple-touch-icon" sizes="144x144" href="/static/apple-icon-144.png" />
                     <link rel="apple-touch-icon" sizes="152x152" href="/static/apple-icon-152.png" />
                     <link rel="apple-touch-icon" sizes="180" href="/static/apple-icon-180.png" />
+
+                    <link rel="manifest" href="/static/manifest.json" />
+
+                    <meta name="msapplication-TileColor" content="#6400FF" />
+                    <meta name="msapplication-TileImage" content="/static/branding/mstile-144x144.png" />
+                    <meta name="msapplication-square70x70logo" content="/static/branding/mstile-70x70.png" />
+                    <meta name="msapplication-square150x150logo" content="/static/branding/mstile-150x150.png" />
+                    <meta name="msapplication-wide310x150logo" content="/static/branding/mstile-310x150.png" />
+                    <meta name="msapplication-square310x310logo" content="/static/branding/mstile-310x310.png" />
 
                     <link rel="stylesheet" type="text/css" href="/static/loader.css" />
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
