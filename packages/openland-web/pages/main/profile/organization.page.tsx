@@ -360,7 +360,7 @@ const OpportunitiesValue = Glamorous.div({
     marginRight: 11
 });
 
-interface DevelopmentOportunity {
+interface DevelopmentOportunityProps {
     name: string;
     id: string;
     summary: string | null;
@@ -385,15 +385,15 @@ interface DevelopmentOportunity {
     }[] | null;
 }
 
-class DevelopmentOportunityComponent extends React.Component<{ item: DevelopmentOportunity, orgId: string, index: number }> {
+class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, index: number }> {
     render() {
         return (
             <XHorizontal>
                 <XStreetViewModalPreview location={{ latitude: this.props.item.location!.lat, longitude: this.props.item.location!.lon }} width={170} height={130} />
 
                 <XVertical>
-                    <Title >{this.props.item.name}</Title>
-                    <Title >{this.props.item.locationTitle}</Title>
+                    <Title>{this.props.item.name}</Title>
+                    <Title>{this.props.item.locationTitle}</Title>
                     <XWithRole role={['org-' + this.props.orgId + '-admin']}>
 
                         <XHorizontal>
@@ -408,7 +408,7 @@ class DevelopmentOportunityComponent extends React.Component<{ item: Development
     }
 }
 
-interface AquizitionRequest {
+interface AquizitionRequestProps {
     name: string;
     id: string;
     photo: ImageRefInput | null;
@@ -426,15 +426,15 @@ interface AquizitionRequest {
     unitCapacity: string[] | null;
 }
 
-class AquizitionRequestComponent extends React.Component<{ item: AquizitionRequest, orgId: string, index: number }> {
+class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, index: number }> {
     render() {
         return (
             <XHorizontal>
                 <XAvatar photoRef={this.props.item.photo || undefined} />
                 <XVertical>
-                    <Title >{this.props.item.name}</Title>
-                    <Title >{this.props.item.shortDescription}</Title>
-                    {this.props.item.geographies && <Title >{this.props.item.geographies.join(' ')}</Title>}
+                    <Title>{this.props.item.name}</Title>
+                    <Title>{this.props.item.shortDescription}</Title>
+                    {this.props.item.geographies && <Title>{this.props.item.geographies.join(' ')}</Title>}
                     <XWithRole role={['org-' + this.props.orgId + '-admin']}>
 
                         <XHorizontal>
@@ -542,7 +542,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                             <HeaderPicture />
                             <HeaderContent>
                                 <OrganizationData>
-                                    <Avatar cloudImageUuid={props.data.organization.photo!!} size="x-large" style="square" />
+                                    <Avatar cloudImageUuid={props.data.organization.photo!!} size="large" style="square" />
                                     <OrganizationName>{props.data.organization.name}</OrganizationName>
                                     {/* <OrganizationPlace>San Francisco, CA</OrganizationPlace> */}
                                 </OrganizationData>
@@ -730,7 +730,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <Title marginBottom={24}>Development opportunities</Title>
                                         </XVerticalStyled>
                                         {props.data.organization && props.data.organization.developmentOportunities && (
-                                            props.data.organization.developmentOportunities.map((devop, i) => < DevelopmentOportunityComponent key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
+                                            props.data.organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
                                         )}
                                     </XCardStyled>
 
@@ -739,7 +739,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <Title marginBottom={24}>Aquizition Requests</Title>
                                         </XVerticalStyled>
                                         {props.data.organization && props.data.organization.acquisitionRequests && (
-                                            props.data.organization.acquisitionRequests.map((devop, i) => < AquizitionRequestComponent key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
+                                            props.data.organization.acquisitionRequests.map((devop, i) => < AquizitionRequest key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
                                         )}
                                     </XCardStyled>
 
