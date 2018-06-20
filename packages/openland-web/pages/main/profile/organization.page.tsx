@@ -507,7 +507,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                 shapeAndForm: target.shapeAndForm,
                 currentUse: target.currentUse,
                 goodFitFor: target.goodFitFor,
-                // additionalLinks: [AlphaOrganizationListingLink!]
+                additionalLinks: target.additionalLinks
             }
         };
     }
@@ -565,6 +565,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     geographies: data.input.geographies,
                     landUse: data.input.landUse,
                     unitCapacity: data.input.unitCapacity,
+                    additionalLinks: data.input.additionalLinks
                 }
             }
 
@@ -987,6 +988,20 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             <XFormField title="Special attributes">
                                                                 <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
                                                             </XFormField>
+                                                            <XTitle>Additional links</XTitle>
+                                                            {editDoTarget.additionalLinks && editDoTarget.additionalLinks.map((link, i) => {
+                                                                return (
+                                                                    <XHorizontal key={'link_' + i} >
+                                                                        <Field title="Link text">
+                                                                            <XInput field={`input.additionalLinks.${i}.text`} placeholder="Link text" />
+                                                                        </Field>
+                                                                        <Field title="Link text">
+                                                                            <XInput field={`input.additionalLinks.${i}.url`} placeholder="Link url" />
+                                                                        </Field>
+                                                                    </XHorizontal>
+                                                                );
+                                                            })}
+                                                            <XButton query={{ field: 'addLink', value: editDoTarget.id }} />
 
                                                         </>
 
@@ -1022,6 +1037,32 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             </XFormLoadingContent>
                                         </XModalForm>
                                     )}
+
+                                    <XModalForm
+                                        title="Add new link"
+                                        defaultAction={async (data) => {
+                                            let additionalLinks = [...((editDoTarget.additionalLinks || []).map(l => ({ text: l.text, url: l.url })))];
+                                            additionalLinks.push({ text: data.text, url: data.url });
+                                            await props.editListing({
+                                                variables: {
+                                                    id: props.router.query.addLink,
+                                                    input: {
+                                                        additionalLinks: additionalLinks
+                                                    }
+                                                }
+                                            });
+                                        }}
+                                        targetQuery="addLink"
+                                    >
+                                        <XHorizontal>
+                                            <Field title="Link text">
+                                                <XInput field="text" placeholder="Link text" />
+                                            </Field>
+                                            <Field title="Link text">
+                                                <XInput field="url" placeholder="Link url" />
+                                            </Field>
+                                        </XHorizontal>
+                                    </XModalForm>
 
                                 </XVertical>
                                 <XVertical width={270}>
