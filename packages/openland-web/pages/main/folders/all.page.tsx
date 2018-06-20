@@ -12,7 +12,7 @@ import { withFolderActions } from '../../../api/withFolderActions';
 import { withFolderItems } from '../../../api/withFolderItems';
 import { withFolderExportTask } from '../../../api/withFolderExportTask';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { XLinkProps } from 'openland-x/XLink';
+import { XLinkProps, XLink } from 'openland-x/XLink';
 import { XLoader } from 'openland-x/XLoader';
 import { XHeader } from 'openland-x/XHeader';
 import { XIcon } from 'openland-x/XIcon';
@@ -31,7 +31,6 @@ import { XMapCameraLocation } from 'openland-x-map/XMap';
 import { trackEvent } from 'openland-x-analytics';
 import { XMapImageLayer } from 'openland-x-map/XMapImageLayer';
 import { CitySelector } from '../../../components/Incubator/MapComponents/MapCitySelect';
-import { XLink } from 'openland-x/retired/XLink';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 

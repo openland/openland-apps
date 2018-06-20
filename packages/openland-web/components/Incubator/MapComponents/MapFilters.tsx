@@ -13,7 +13,7 @@ import XStyles from 'openland-x/XStyles';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
 import { XGroup } from 'openland-x/XGroup';
-import { XLink } from 'openland-x/retired/XLink';
+import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const FiltersContent = Glamorous.div<{ visible?: boolean }>((props) => ({

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XLink } from 'openland-x/retired/XLink';
+import { XLink } from 'openland-x/XLink';
 export const InitTexts = {
     rootPageTitle: 'Openland | An Open Marketplace for Land',
     socialPageTitle: 'Openland | An Open Marketplace for Land',
