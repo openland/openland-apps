@@ -225,6 +225,8 @@ routes.add('/ui/linear', '/dev/ui/linear');
 routes.add('/ui/linear/', '/dev/ui/linear');
 routes.add('/ui/mapPicker', '/dev/ui/mapPicker');
 routes.add('/ui/mapPicker/', '/dev/ui/mapPicker');
+routes.add('/ui/scroll', '/dev/ui/scroll');
+routes.add('/ui/scroll/', '/dev/ui/scroll');
 
 //
 // Dev Tools

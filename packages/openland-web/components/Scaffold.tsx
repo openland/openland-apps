@@ -22,6 +22,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { XTable } from 'openland-x/XTable';
 import { switchOrganization } from '../utils/switchOrganization';
 import { withMyOrganizations } from '../api/withMyOrganizations';
+import { XScrollView } from 'openland-x/XScrollView';
 
 //
 // Root
@@ -44,7 +45,7 @@ const NavigationWrapper = Glamorous.div((props) => ({
     order: 1
 }));
 
-const NavigationContainer = Glamorous.div<{ sidebarBorderColor?: string }>((props) => ({
+const NavigationContainer = Glamorous(XScrollView)<{ sidebarBorderColor?: string }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
@@ -56,7 +57,6 @@ const NavigationContainer = Glamorous.div<{ sidebarBorderColor?: string }>((prop
     borderRightStyle: 'solid',
     borderRightWidth: '1px',
     alignItems: 'center',
-    overflowY: 'scroll',
     position: 'sticky',
     top: 0
 }));
@@ -477,7 +477,7 @@ let SearchResults = withSearch((props) => {
 // Menu
 //
 
-const MenuView = Glamorous.div({
+const MenuView = Glamorous(XScrollView)({
     width: '208px',
     display: 'flex',
     flexDirection: 'column',
@@ -486,7 +486,6 @@ const MenuView = Glamorous.div({
     top: 0,
     left: 72,
     height: '100vh',
-    overflowY: 'scroll'
 });
 
 //

@@ -45,9 +45,9 @@ css.global('input, select', {
 css.global('a', {
     color: 'inherit',
     textDecoration: 'none',
-    '&:hover': {
-        color: '#6B50FF'
-    }
+});
+css.global('a:hover', {
+    color: '#6B50FF'
 });
 css.global('sub, sup', {
     fontSize: '75%',

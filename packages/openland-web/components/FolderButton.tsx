@@ -14,6 +14,7 @@ import { XForm } from 'openland-x-forms/XForm';
 import Glamorous from 'glamorous';
 import { XIcon } from 'openland-x/XIcon';
 import { XMutation } from 'openland-x/XMutation';
+import { XScrollView } from 'openland-x/XScrollView';
 
 const FolderEntry = Glamorous(XMutation)<{ selected?: boolean }>((props) => ({
     display: 'flex',
@@ -168,8 +169,7 @@ const CreateFolderComponent = ((mutation: any, targetQuery: string) => {
 const CreateFolderWithParcels = withCreateFolderMutation(((props) => CreateFolderComponent(props.createFolder, 'newFolderFromParcel')));
 const CreateFolderFromSearch = withCreateFolderFromSearchMutation(((props) => CreateFolderComponent(props.createFolderFromSearch, 'newFolderFromSearch')));
 
-const FolderPopupWrapper = Glamorous.div({
-    overflowY: 'scroll',
+const FolderPopupWrapper = Glamorous(XScrollView)({
     maxHeight: 'calc(100vh - 350px)',
     marginTop: -10,
     marginBottom: -10,
