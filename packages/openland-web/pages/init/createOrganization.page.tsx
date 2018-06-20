@@ -110,7 +110,7 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
     );
 })));
 
-export default withApp('Create Profile', 'viewer', (props) => {
+export default withApp('Create Organization', 'viewer', (props) => {
     return (
         <>
             <XDocumentHead title={InitTexts.create_organization.pageTitle} titleSocial={InitTexts.socialPageTitle} />
