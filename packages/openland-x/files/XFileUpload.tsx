@@ -40,12 +40,12 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
 
     constructor(props: XFileUploadProps) {
         super(props);
-        this.isControlled = !!props.file;
+        this.isControlled = props.file !== undefined;
         this.state = { isLoading: false, file: this.props.file, progress: 0 };
     }
 
     componentWillUpdate(nextProps: Readonly<XFileUploadProps>, nextState: Readonly<{ isLoading: boolean; file: UploadedFile | null | undefined }>, nextContext: any): void {
-        if ((!!nextProps.file) !== (!!this.props.file)) {
+        if ((nextProps.file !== undefined) !== (this.props.file !== undefined)) {
             throw 'You can\'t make controlled component to be not controlled';
         }
     }
