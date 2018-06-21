@@ -12,11 +12,7 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { XLink } from 'openland-x/XLink';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
-import { sanitizeIamgeRef } from '../../../utils/sanitizer';
-
-import {
-    ContactPerson
-} from '../../../utils/OrganizationProfileFields';
+import { ContactPerson } from '../../../utils/OrganizationProfileFields';
 import { XButton } from 'openland-x/XButton';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -31,6 +27,7 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
+import { XOverflow } from '../../../components/Incubator/XOverflow';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -132,7 +129,7 @@ const OrganizationName = Glamorous.div({
 //     whiteSpace: 'nowrap'
 // });
 
-const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft?: number }>((props) => ({
+const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft?: number, marginRight?: number }>((props) => ({
     fontSize: props.small ? 15 : 18,
     fontWeight: 500,
     lineHeight: props.small ? 1.33 : 1.11,
@@ -140,6 +137,7 @@ const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft
     letterSpacing: props.small ? -0.1 : -0.4,
     marginBottom: props.marginBottom,
     marginLeft: props.marginLeft,
+    marginRight: props.marginRight
 }));
 
 const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, paddingBottom?: number }>((props) => ({
@@ -156,13 +154,14 @@ const ContactWrapper = Glamorous(XHorizontal)({
     paddingRight: 18
 });
 
-const Text = Glamorous.div<{ opacity?: number, bold?: boolean, upperCase?: boolean }>((props) => ({
+const Text = Glamorous.div<{ opacity?: number, bold?: boolean, upperCase?: boolean, marginBottom?: number }>((props) => ({
     fontSize: 15,
     lineHeight: 1.33,
     color: '#334562',
     opacity: props.opacity,
     fontWeight: props.bold ? 500 : undefined,
-    textTransform: props.upperCase ? 'capitalize' : undefined
+    textTransform: props.upperCase ? 'capitalize' : undefined,
+    marginBottom: props.marginBottom
 }));
 
 const SocialLinksWrapper = Glamorous.div({
@@ -227,13 +226,14 @@ const ContactPersons = (props: { contacts: ContactPerson[] }) => (
     </>
 );
 
-const ShowMoreBtn = Glamorous.div({
+const ShowMoreBtn = Glamorous.div<{ marginTop?: number, marginBottom?: number }>((props) => ({
     fontSize: 14,
     fontWeight: 500,
     color: '#765efd',
     cursor: 'pointer',
-    marginTop: 12
-});
+    marginTop: props.marginTop,
+    marginBottom: props.marginBottom
+}));
 
 class AboutContent extends React.Component<{ text: string }, { open: boolean }> {
     constructor(props: { text: string }) {
@@ -262,7 +262,7 @@ class AboutContent extends React.Component<{ text: string }, { open: boolean }> 
         return (
             <>
                 <Text>{textToShow}</Text>
-                {isBigText && <ShowMoreBtn onClick={this.switcher}>{buttonText}</ShowMoreBtn>}
+                {isBigText && <ShowMoreBtn onClick={this.switcher} marginTop={12}>{buttonText}</ShowMoreBtn>}
             </>
         );
     }
@@ -325,6 +325,24 @@ const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
     paddingRight: props.paddingRight
 }));
 
+interface XHorizontalStyledProps {
+    borderRight?: boolean;
+    borderBottom?: boolean;
+    padding?: number;
+    paddingLeft?: number;
+    paddingRight?: number;
+    paddingBottom?: number;
+}
+
+const XHorizontalStyled = Glamorous(XHorizontal)<XHorizontalStyledProps>((props) => ({
+    borderRight: props.borderRight ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    borderBottom: props.borderBottom ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    padding: props.padding,
+    paddingLeft: props.paddingLeft,
+    paddingRight: props.paddingRight,
+    paddingBottom: props.paddingBottom
+}));
+
 const OpportunitiesWrapper = Glamorous.div({
     width: '100%',
     display: 'flex',
@@ -354,15 +372,15 @@ const OpportunitiesTextWrapper = Glamorous.div({
     paddingLeft: 24
 });
 
-const OpportunitiesValueWrapper = Glamorous.div({
+const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean }>((props) => ({
     minHeight: 35,
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'wrap',
     flexGrow: 1,
     padding: '0 24px',
-    borderLeft: '1px solid rgba(220, 222, 228, 0.45)'
-});
+    borderLeft: props.bordered ? '1px solid rgba(220, 222, 228, 0.45)' : undefined
+}));
 
 const OpportunitiesValue = Glamorous.div({
     height: 32,
@@ -405,25 +423,135 @@ interface DevelopmentOportunityProps {
     }[] | null;
 }
 
-class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, index: number }> {
+const TagedRow = (props: { title: string, items: string[], bordered?: boolean }) => (
+    <OpportunitiesWrapper>
+        <OpportunitiesTextWrapper>
+            <Text bold={true}>{props.title}</Text>
+        </OpportunitiesTextWrapper>
+        <OpportunitiesValueWrapper bordered={props.bordered}>
+            {props.items.map((s, k) => (
+                <OpportunitiesValue key={k + '_' + s}>
+                    {s}
+                </OpportunitiesValue>
+            ))}
+        </OpportunitiesValueWrapper>
+    </OpportunitiesWrapper>
+);
+
+const DevelopmentOportunityCard = Glamorous.div({
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
+});
+
+const ContentHider = Glamorous.div<{ hidden?: boolean }>((props) => ({
+    overflow: 'hidden',
+    maxHeight: props.hidden ? '0px' : '600px',
+    transition: 'all .2s'
+}));
+
+class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, index: number }, { hidden: boolean }> {
+    constructor(props: { item: DevelopmentOportunityProps, orgId: string, index: number }) {
+        super(props);
+
+        this.state = {
+            hidden: true
+        };
+    }
+
+    switcher = () => {
+        let { hidden } = this.state;
+
+        this.setState({ hidden: !hidden });
+    }
+
     render() {
+
+        const { item } = this.props;
+
+        let buttonText = this.state.hidden ? 'Show full information' : 'Hide full information';
+
         return (
-            <XHorizontal>
-                <XStreetViewModalPreview location={{ latitude: this.props.item.location!.lat, longitude: this.props.item.location!.lon }} width={170} height={130} />
+            <DevelopmentOportunityCard>
+                <XHorizontalStyled justifyContent="space-between" padding={24} paddingBottom={0}>
+                    <XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={160} height={120} />
+                    <XHorizontal flexGrow={1}>
+                        <div style={{ flexGrow: 1 }}>
+                            <XHorizontal justifyContent="space-between" alignItems="center">
+                                <Title marginBottom={8}>{item.name}</Title>
+                                <XWithRole role={['org-' + this.props.orgId + '-admin']}>
+                                    <XOverflow
+                                        placement="bottom"
+                                        content={(
+                                            <>
+                                                <XButton text="edit" style="electric" query={{ field: 'editListing', value: item.id }} />
+                                                <XButton text="delete" style="danger" query={{ field: 'deleteListing', value: item.id }} />
+                                            </>
+                                        )}
+                                    />
+                                </XWithRole>
+                            </XHorizontal>
+                            <Text opacity={0.5} marginBottom={14}>{item.locationTitle}</Text>
+                            <XHorizontal separator="large">
+                                {item.area && (
+                                    <Title small={true}>{`Area: ${item.area} ft²`}</Title>
+                                )}
+                                {item.price && (
+                                    <Title small={true}>{`Price: $${item.price}`}</Title>
+                                )}
+                            </XHorizontal>
+                        </div>
+                    </XHorizontal>
+                </XHorizontalStyled>
 
-                <XVertical>
-                    <Title>{this.props.item.name}</Title>
-                    <Title>{this.props.item.locationTitle}</Title>
-                    <XWithRole role={['org-' + this.props.orgId + '-admin']}>
+                <ContentHider hidden={this.state.hidden}>
+                    <XVertical>
+                        <div>
+                            {item.summary && (
+                                <OpportunitiesWrapper>
+                                    <OpportunitiesTextWrapper>
+                                        <Text bold={true}>Summary</Text>
+                                    </OpportunitiesTextWrapper>
+                                    <OpportunitiesValueWrapper>
+                                        <Text>
+                                            {item.summary}
+                                        </Text>
+                                    </OpportunitiesValueWrapper>
+                                </OpportunitiesWrapper>
+                            )}
+                            {item.availability && (
+                                <OpportunitiesWrapper>
+                                    <OpportunitiesTextWrapper>
+                                        <Text bold={true}>Availability</Text>
+                                    </OpportunitiesTextWrapper>
+                                    <OpportunitiesValueWrapper>
+                                        <Text>
+                                            {item.availability}
+                                        </Text>
+                                    </OpportunitiesValueWrapper>
+                                </OpportunitiesWrapper>
+                            )}
+                            {item.dealType && (
+                                <TagedRow title="Deal type" items={item.dealType} />
+                            )}
+                            {item.shapeAndForm && (
+                                <TagedRow title="Shape and form" items={item.shapeAndForm} />
+                            )}
+                            {item.currentUse && (
+                                <TagedRow title="Current use" items={item.currentUse} />
+                            )}
+                            {item.goodFitFor && (
+                                <TagedRow title="Good fit for" items={item.goodFitFor} />
+                            )}
+                            {item.specialAttributes && (
+                                <TagedRow title="Special attributes" items={item.specialAttributes} />
+                            )}
+                        </div>
+                    </XVertical>
+                </ContentHider>
 
-                        <XHorizontal>
-                            <XButton text="edit" style="electric" query={{ field: 'editListing', value: this.props.item.id }} />
-                            <XButton text="delete" style="danger" query={{ field: 'deleteListing', value: this.props.item.id }} />
-                        </XHorizontal>
-                    </XWithRole>
-
-                </XVertical>
-            </XHorizontal>
+                <XHorizontal justifyContent="center">
+                    <ShowMoreBtn onClick={this.switcher} marginTop={this.state.hidden ? -20 : 0} marginBottom={15}>{buttonText}</ShowMoreBtn>
+                </XHorizontal>
+            </DevelopmentOportunityCard>
         );
     }
 }
@@ -446,25 +574,86 @@ interface AquizitionRequestProps {
     unitCapacity: string[] | null;
 }
 
-class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, index: number }> {
+class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, index: number }, { hidden: boolean }> {
+    constructor(props: { item: AquizitionRequestProps, orgId: string, index: number }) {
+        super(props);
+
+        this.state = {
+            hidden: true
+        };
+    }
+
+    switcher = () => {
+        let { hidden } = this.state;
+
+        this.setState({ hidden: !hidden });
+    }
     render() {
+
+        const { item } = this.props;
+
+        let buttonText = this.state.hidden ? 'Show full information' : 'Hide full information';
+
         return (
-            <XHorizontal>
-                <XAvatar photoRef={this.props.item.photo || undefined} />
-                <XVertical>
-                    <Title>{this.props.item.name}</Title>
-                    <Title>{this.props.item.shortDescription}</Title>
-                    {this.props.item.geographies && <Title>{this.props.item.geographies.join(' ')}</Title>}
-                    <XWithRole role={['org-' + this.props.orgId + '-admin']}>
+            <DevelopmentOportunityCard>
+                <XHorizontalStyled justifyContent="space-between" padding={24} paddingBottom={0}>
+                    <XAvatar photoRef={item.photo || undefined} size="large" style="square" />
+                    <XHorizontal flexGrow={1}>
+                        <div style={{ flexGrow: 1 }}>
+                            <XHorizontal justifyContent="space-between" alignItems="center">
+                                <Title marginBottom={8}>{item.name}</Title>
+                                <XWithRole role={['org-' + this.props.orgId + '-admin']}>
+                                    <XOverflow
+                                        placement="bottom"
+                                        content={(
+                                            <>
+                                                <XButton text="edit" style="electric" query={{ field: 'editListing', value: item.id }} />
+                                                <XButton text="delete" style="danger" query={{ field: 'deleteListing', value: item.id }} />
+                                            </>
+                                        )}
+                                    />
+                                </XWithRole>
+                            </XHorizontal>
+                            <Text opacity={0.5} marginBottom={14}>{item.shortDescription}</Text>
+                        </div>
+                    </XHorizontal>
+                </XHorizontalStyled>
 
-                        <XHorizontal>
-                            <XButton text="edit" style="electric" query={{ field: 'editListing', value: this.props.item.id }} />
-                            <XButton text="delete" style="danger" query={{ field: 'deleteListing', value: this.props.item.id }} />
-                        </XHorizontal>
-                    </XWithRole>
+                <ContentHider hidden={this.state.hidden}>
+                    <XVertical>
+                        <div>
+                            {item.summary && (
+                                <OpportunitiesWrapper>
+                                    <OpportunitiesTextWrapper>
+                                        <Text bold={true}>Summary</Text>
+                                    </OpportunitiesTextWrapper>
+                                    <OpportunitiesValueWrapper>
+                                        <Text>
+                                            {item.summary}
+                                        </Text>
+                                    </OpportunitiesValueWrapper>
+                                </OpportunitiesWrapper>
+                            )}
+                            {item.geographies && (
+                                <TagedRow title="Geographies" items={item.geographies} />
+                            )}
+                            {item.landUse && (
+                                <TagedRow title="Land use" items={item.landUse} />
+                            )}
+                            {item.specialAttributes && (
+                                <TagedRow title="Special attributes" items={item.specialAttributes} />
+                            )}
+                            {item.unitCapacity && (
+                                <TagedRow title="Unit capacity" items={item.unitCapacity} />
+                            )}
+                        </div>
+                    </XVertical>
+                </ContentHider>
 
-                </XVertical>
-            </XHorizontal>
+                <XHorizontal justifyContent="center">
+                    <ShowMoreBtn onClick={this.switcher} marginTop={this.state.hidden ? -20 : 0} marginBottom={15}>{buttonText}</ShowMoreBtn>
+                </XHorizontal>
+            </DevelopmentOportunityCard>
         );
     }
 }
@@ -539,36 +728,34 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
     let editListingDefaultAction = async (data: any) => {
 
-        let areaRange = data.input.areaRange ? data.input.areaRange === 'small' ? { from: 0, to: 10000 } : data.input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 } : null;
-
+        let input = data.input || {};
+        let areaRange = input.areaRange === undefined ? null : input.areaRange === 'small' ? { from: 0, to: 10000 } : input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 };
         await props.editListing({
             variables: {
                 id: target.id,
                 input: {
-                    name: data.input.name,
-                    summary: data.input.summary,
-                    specialAttributes: data.input.specialAttributes,
+                    name: input.name || '',
+                    summary: input.summary,
+                    specialAttributes: input.specialAttributes,
 
-                    location: data.input.location ? { lat: data.input.location.result.center[1], lon: data.input.location.result.center[0] } : null,
-                    locationTitle: data.input.location ? data.input.location.result.place_name || data.input.location.result.text : null,
-                    availability: data.input.availability,
-                    area: data.input.area,
-                    price: data.input.price,
-                    dealType: data.input.dealType,
-                    shapeAndForm: data.input.shapeAndForm,
-                    currentUse: data.input.currentUse,
-                    goodFitFor: data.input.goodFitFor,
+                    location: input.location ? { lat: input.location.result.center[1], lon: input.location.result.center[0] } : null,
+                    locationTitle: input.location ? (input.location.result.place_name || input.location.result.text) : '',
+                    availability: input.availability,
+                    area: input.area,
+                    price: input.price,
+                    dealType: input.dealType,
+                    shapeAndForm: input.shapeAndForm,
+                    currentUse: input.currentUse,
+                    goodFitFor: input.goodFitFor,
 
-                    photo: sanitizeIamgeRef(data.input.photo),
-                    shortDescription: data.input.shortDescription,
+                    photo: input.photo,
+                    shortDescription: input.shortDescription,
                     areaRange: areaRange,
-                    geographies: data.input.geographies,
-                    landUse: data.input.landUse,
-                    unitCapacity: data.input.unitCapacity,
-                    additionalLinks: data.input.additionalLinks
+                    geographies: input.geographies,
+                    landUse: input.landUse,
+                    unitCapacity: input.unitCapacity,
                 }
             }
-
         });
     };
 
@@ -682,20 +869,18 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             <OpportunitiesTextWrapper>
                                                                 <Text bold={true}>Number of potential sites</Text>
                                                             </OpportunitiesTextWrapper>
-                                                            <OpportunitiesValueWrapper>
-                                                                <XHorizontal>
-                                                                    {props.data.organization.potentialSites!!.map((s, k) => (
-                                                                        <OpportunitiesValue key={k + '_' + s}>
-                                                                            {
-                                                                                ((s.to || Number.MAX_SAFE_INTEGER) <= 5) ?
-                                                                                    '0-5 sites' :
-                                                                                    ((s.to || Number.MAX_SAFE_INTEGER) <= 50) ?
-                                                                                        '5-50 sites' :
-                                                                                        '50+ sites'
-                                                                            }
-                                                                        </OpportunitiesValue>
-                                                                    ))}
-                                                                </XHorizontal>
+                                                            <OpportunitiesValueWrapper bordered={true}>
+                                                                {props.data.organization.potentialSites!!.map((s, k) => (
+                                                                    <OpportunitiesValue key={k + '_' + s}>
+                                                                        {
+                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 5) ?
+                                                                                '0-5 sites' :
+                                                                                ((s.to || Number.MAX_SAFE_INTEGER) <= 50) ?
+                                                                                    '5-50 sites' :
+                                                                                    '50+ sites'
+                                                                        }
+                                                                    </OpportunitiesValue>
+                                                                ))}
                                                             </OpportunitiesValueWrapper>
                                                         </OpportunitiesWrapper>
                                                     )}
@@ -704,7 +889,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             <OpportunitiesTextWrapper>
                                                                 <Text bold={true}>Site sizes</Text>
                                                             </OpportunitiesTextWrapper>
-                                                            <OpportunitiesValueWrapper>
+                                                            <OpportunitiesValueWrapper bordered={true}>
                                                                 {props.data.organization.siteSizes!!.map((s, k) => (
                                                                     <OpportunitiesValue key={k + '_' + s}>
                                                                         {
@@ -720,69 +905,18 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         </OpportunitiesWrapper>
                                                     )}
                                                     {props.data.organization.landUse && (
-                                                        <OpportunitiesWrapper>
-                                                            <OpportunitiesTextWrapper>
-                                                                <Text bold={true}>Land use</Text>
-                                                            </OpportunitiesTextWrapper>
-                                                            <OpportunitiesValueWrapper>
-                                                                {props.data.organization.landUse!!.map((s, k) => (
-                                                                    <OpportunitiesValue key={k + '_' + s}>
-                                                                        {s}
-                                                                    </OpportunitiesValue>
-                                                                ))}
-                                                            </OpportunitiesValueWrapper>
-                                                        </OpportunitiesWrapper>
+                                                        <TagedRow title="Land use" items={props.data.organization.landUse} bordered={true} />
                                                     )}
 
                                                     {props.data.organization.goodFor && (
-                                                        <OpportunitiesWrapper>
-                                                            <OpportunitiesTextWrapper>
-                                                                <Text bold={true}>Good fit for</Text>
-                                                            </OpportunitiesTextWrapper>
-                                                            <OpportunitiesValueWrapper>
-                                                                {props.data.organization.goodFor!!.map((s, k) => (
-                                                                    <OpportunitiesValue key={k + '_' + s}>
-                                                                        {s}
-                                                                    </OpportunitiesValue>
-                                                                ))}
-                                                            </OpportunitiesValueWrapper>
-                                                        </OpportunitiesWrapper>
+                                                        <TagedRow title="Good fit for" items={props.data.organization.goodFor} bordered={true} />
                                                     )}
 
                                                     {props.data.organization.specialAttributes && (
-                                                        <OpportunitiesWrapper>
-                                                            <OpportunitiesTextWrapper>
-                                                                <Text bold={true}>Special attributes </Text>
-                                                            </OpportunitiesTextWrapper>
-                                                            <OpportunitiesValueWrapper>
-                                                                {props.data.organization!!.specialAttributes!!.map((s, k) => (
-                                                                    <OpportunitiesValue key={k + '_' + s}>
-                                                                        {s}
-                                                                    </OpportunitiesValue>
-                                                                ))}
-                                                            </OpportunitiesValueWrapper>
-                                                        </OpportunitiesWrapper>
+                                                        <TagedRow title="Special attributes" items={props.data.organization.specialAttributes} bordered={true} />
                                                     )}
                                                 </div>
 
-                                            </XCardStyled>
-
-                                            <XCardStyled padding={0}>
-                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                                    <Title marginBottom={24}>Development opportunities</Title>
-                                                </XVerticalStyled>
-                                                {props.data.organization && props.data.organization.developmentOportunities && (
-                                                    props.data.organization.developmentOportunities.map((devop, i) => < DevelopmentOportunity key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
-                                                )}
-                                            </XCardStyled>
-
-                                            <XCardStyled padding={0}>
-                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                                    <Title marginBottom={24}>Aquizition Requests</Title>
-                                                </XVerticalStyled>
-                                                {props.data.organization && props.data.organization.acquisitionRequests && (
-                                                    props.data.organization.acquisitionRequests.map((devop, i) => < AquizitionRequest key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
-                                                )}
                                             </XCardStyled>
                                         </>
                                     )}
@@ -809,32 +943,32 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             title={props.router.query.addListing === 'DO' ? 'Create development opportunity' : 'Create acquisition requests'}
 
                                             defaultAction={async (data) => {
-                                                let areaRange = data.input.areaRange ? data.input.areaRange === 'small' ? { from: 0, to: 10000 } : data.input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 } : null;
-
+                                                let input = data.input || {};
+                                                let areaRange = input.areaRange === undefined ? null : input.areaRange === 'small' ? { from: 0, to: 10000 } : input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 };
                                                 await props.createListing({
                                                     variables: {
                                                         type: props.router.query.addListing === 'DO' ? 'development_opportunity' : 'acquisition_request',
                                                         input: {
-                                                            name: data.input.name,
-                                                            summary: data.input.summary,
-                                                            specialAttributes: data.input.specialAttributes,
+                                                            name: input.name || '',
+                                                            summary: input.summary,
+                                                            specialAttributes: input.specialAttributes,
 
-                                                            location: data.input.location ? { lat: data.input.location.result.center[1], lon: data.input.location.result.center[0] } : null,
-                                                            locationTitle: data.input.location ? data.input.location.result.place_name || data.input.location.result.text : null,
-                                                            availability: data.input.availability,
-                                                            area: data.input.area,
-                                                            price: data.input.price,
-                                                            dealType: data.input.dealType,
-                                                            shapeAndForm: data.input.shapeAndForm,
-                                                            currentUse: data.input.currentUse,
-                                                            goodFitFor: data.input.goodFitFor,
+                                                            location: input.location ? { lat: input.location.result.center[1], lon: input.location.result.center[0] } : null,
+                                                            locationTitle: input.location ? (input.location.result.place_name || input.location.result.text) : '',
+                                                            availability: input.availability,
+                                                            area: input.area,
+                                                            price: input.price,
+                                                            dealType: input.dealType,
+                                                            shapeAndForm: input.shapeAndForm,
+                                                            currentUse: input.currentUse,
+                                                            goodFitFor: input.goodFitFor,
 
-                                                            photo: data.input.photo,
-                                                            shortDescription: data.input.shortDescription,
+                                                            photo: input.photo,
+                                                            shortDescription: input.shortDescription,
                                                             areaRange: areaRange,
-                                                            geographies: data.input.geographies,
-                                                            landUse: data.input.landUse,
-                                                            unitCapacity: data.input.unitCapacity,
+                                                            geographies: input.geographies,
+                                                            landUse: input.landUse,
+                                                            unitCapacity: input.unitCapacity,
                                                         }
                                                     }
                                                 });
@@ -848,7 +982,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     )}
 
                                                     <XFormField title="Name">
-                                                        <XInput field="name" required={true} placeholder="Name" />
+                                                        <XInput field="input.name" required={true} placeholder="Name" />
                                                     </XFormField>
                                                     {props.router.query.addListing === 'DO' && (
                                                         <>
@@ -932,7 +1066,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         defaultAction={async (data) => {
                                             await props.deleteListing({
                                                 variables: {
-                                                    id: props.router.query.deleteFeaturedOpportunity
+                                                    id: props.router.query.deleteListing
                                                 }
                                             });
                                         }}
@@ -1065,7 +1199,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     </XModalForm>
 
                                 </XVertical>
-                                <XVertical width={270}>
+                                <XVertical width={270} flexShrink={0}>
                                     {props.data.organization.about && (
                                         <XCardStyled padding={18}>
                                             <Title small={true} marginBottom={10}>
