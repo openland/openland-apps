@@ -24,7 +24,6 @@ import Glamorous from 'glamorous';
 import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfile';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { withQueryLoader } from '../../../components/withQueryLoader';
-
 const CenteredButton = Glamorous(XButton)({
     alignSelf: 'center'
 });
@@ -169,24 +168,9 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                 doGoodFitFor: props.data.myOrganizationProfile!!.doGoodFitFor,
                                 doSpecialAttributes: props.data.myOrganizationProfile!!.doSpecialAttributes,
                                 doAvailability: props.data.myOrganizationProfile!!.doAvailability,
-
-                                // alphaPotentialSites: props.data.myOrganizationProfile!!.potentialSites ? props.data.myOrganizationProfile!!.potentialSites!!.map(range => {
-                                //     let rangeStr;
-                                //     if ((range.to || Number.MAX_SAFE_INTEGER) <= 5) {
-                                //         rangeStr = 'small';
-                                //     } else if ((range.to || Number.MAX_SAFE_INTEGER) <= 50) {
-                                //         rangeStr = 'medium';
-                                //     } else {
-                                //         rangeStr = 'large';
-                                //     }
-                                //     return rangeStr;
-                                // }) : null,
-
                             }
                         }}
                         defaultAction={async (data) => {
-                            // let potentialSites = data.input.alphaPotentialSites ? data.input.alphaPotentialSites.map((rangeStr: string) => (rangeStr === 'small' ? { from: 0, to: 5 } : rangeStr === 'medium' ? { from: 5, to: 50 } : { from: 50 })) : null;
-                            // console.warn(potentialSites);
                             await props.updateOrganizaton({
                                 variables: {
                                     input: {
@@ -204,16 +188,6 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                         <XVertical maxWidth={500}>
                             <XFormLoadingContent>
                                 <XVertical>
-
-                                    {/* <XFormField title="Potential Sites">
-                                        <XSelect
-                                            field="input.alphaPotentialSites"
-                                            options={[{ label: '0-5 sites', value: 'small' }, { label: '5-50 sites', value: 'medium' }, { label: '50+ sites', value: 'large' }]}
-                                            multi={true}
-                                        />
-
-                                    </XFormField> */}
-
                                     <XFormField title="Shape And Form">
                                         <XSelect
                                             field="input.doShapeAndForm"
