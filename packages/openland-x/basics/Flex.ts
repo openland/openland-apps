@@ -3,7 +3,7 @@ import { XStyledCSS } from './XStyled';
 export interface XFlexStyles {
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
     alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
-    justifyContent?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
+    justifyContent?: 'stretch' | 'flex-start' | 'flex-end' | 'center' | 'space-between';
     flexGrow?: number;
     flexShrink?: number;
     flexBasis?: number;
