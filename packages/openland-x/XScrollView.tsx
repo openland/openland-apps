@@ -9,21 +9,43 @@ export interface XScrollViewProps extends XFlexStyles {
 }
 
 const ScrollDiv = Glamorous.div<{ scroll: 'vertical' | 'horizontal' | 'both' } & XFlexStyles>([(props) => ({
+    display: 'flex',
     overflowX: props.scroll === 'horizontal' || props.scroll === 'both' ? 'scroll' : 'hidden',
     overflowY: props.scroll === 'vertical' || props.scroll === 'both' ? 'scroll' : 'hidden'
 }), applyFlex]);
 
 export class XScrollView extends React.Component<XScrollViewProps> {
-    Simplebar = canUseDOM ? import('simplebar') : null;
+    Simplebar = canUseDOM ? require('simplebar') : null;
+
+    handleRef = (el: any) => {
+        console.warn(el);
+        console.warn(el.childNodes.length);
+        if (canUseDOM && el) {
+            // tslint:disable
+            new this.Simplebar(el);
+            // tslint:enable
+        }
+    }
+
     render() {
         return (
             <ScrollDiv
                 className={this.props.className}
                 scroll={this.props.scroll || 'vertical'}
                 {...extractFlexProps(this.props)}
-                innerRef={(src) => canUseDOM && this.Simplebar!!.then((v) => src && new v(src))}
+                innerRef={this.handleRef}
             >
-                {this.props.children}
+                <div className="simplebar-track vertical">
+                    <div className="simplebar-scrollbar" />
+                </div>
+                <div className="simplebar-track horizontal">
+                    <div className="simplebar-scrollbar" />
+                </div>
+                <div className="simplebar-scroll-content">
+                    <div className="simplebar-content">
+                        {this.props.children}
+                    </div>
+                </div>
             </ScrollDiv>
         );
     }
