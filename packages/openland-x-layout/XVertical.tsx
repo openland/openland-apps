@@ -2,11 +2,11 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XFlexStyles, applyFlex } from 'openland-x/basics/Flex';
 
-let VerticalDiv = Glamorous.div<XFlexStyles & { separator?: 'large' | 'normal' | 'none' }>([
+let VerticalDiv = Glamorous.div<XFlexStyles & { separator?: 'large' | 'normal' | 'none', alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center' }>([
     (props) => ({
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'stretch',
+        alignItems: props.alignItems || 'stretch',
         position: 'relative',
         ...((props.separator !== 'none') ? {
             '> *': {
@@ -24,7 +24,7 @@ let VerticalDiv = Glamorous.div<XFlexStyles & { separator?: 'large' | 'normal' |
     applyFlex
 ]);
 
-export class XVertical extends React.Component<{ separator?: 'large' | 'normal' | 'none', className?: string } & XFlexStyles> {
+export class XVertical extends React.Component<{ separator?: 'large' | 'normal' | 'none', alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center', className?: string } & XFlexStyles> {
     render() {
         return (
             <VerticalDiv {...this.props}>
