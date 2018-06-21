@@ -16,6 +16,12 @@ describe('writeValue', () => {
         writeValue(src, 'something.0.val', 'value');
         expect(src.something[0].val).toBe('value');
     });
+    it('Should extend array correctly', () => {
+        let src: any = {};
+        writeValue(src, 'something.0.val', 'value');
+        writeValue(src, 'something.1.val', 'value2');
+        expect(src.something[1].val).toBe('value2');
+    });
     it('Should create inner empty array correctly', () => {
         let src: any = {};
         writeValue(src, 'something.0.0.val', 'value');

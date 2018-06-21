@@ -8,7 +8,7 @@ import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
 
 export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small';
-export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link';
+export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link' | 'link_danger';
 
 export interface XButtonStyleProps extends XFlexStyles {
     className?: string;
@@ -291,6 +291,18 @@ let colorStyles = styleResolver({
         '&:focus': {
             textDecoration: 'underline'
         }
+    },
+
+    'link_danger': {
+        color: '#d75454',
+        border: 'solid 1px transparent',
+        '&:hover': {
+            color: '#ec6262',
+            textDecoration: 'underline'
+        },
+        '&:focus': {
+            textDecoration: 'underline'
+        }
     }
 });
 
@@ -327,6 +339,9 @@ let colorDisabledStyles = styleResolver({
     },
     'link': {
         color: 'rgba(51, 69, 98, 0.7) !important',
+    },
+    'link_danger': {
+        color: '#e28787 !important',
     }
 });
 
@@ -362,6 +377,8 @@ let colorPressedStyles = styleResolver({
         color: '#5640d6 !important'
     },
     'link': {
+    },
+    'link_danger': {
     }
 });
 

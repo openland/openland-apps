@@ -32,9 +32,10 @@ export function writeValue(data: any, name: string, value: any) {
             writeValue(data[index], last, value);
         } else {
             checkName(first);
+            console.warn(first, last, value);
             if (!data[first]) {
                 data[first] = prepareObject(last);
-            } else if (Array.isArray(data[first])) {
+            } else if (last.indexOf('.') < 0 && Array.isArray(data[first])) {
                 throw Error('Trying to write struct value to the array');
             }
             writeValue(data[first], last, value);

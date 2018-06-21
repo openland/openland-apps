@@ -9,14 +9,16 @@ const XFormFieldDiv = Glamorous.div({
     // backgroundColor: '#f6f9fc',
 });
 
-const XFormFieldTitle = Glamorous.div<{ invalid?: boolean }>((props) => ({
+export const XFormFieldTitle = Glamorous.div<{ invalid?: boolean }>((props) => ({
     color: props.invalid ? '#e25950' : '#334562',
     fontSize: 15,
     fontWeight: 500,
     lineHeight: '24px',
     letterSpacing: -0.1,
-    marginBottom: 8,
-    marginLeft: 0
+    height: 32,
+    paddingTop: 4,
+    marginLeft: 0,
+    flexGrow: 1,
 }));
 const OptionalLabel = Glamorous.span({
     opacity: 0.4,

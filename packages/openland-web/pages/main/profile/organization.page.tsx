@@ -24,10 +24,11 @@ import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
 import { ImageRefInput } from 'openland-api/Types';
 import { XSelect } from 'openland-x/XSelect';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
-import { XFormField } from 'openland-x-forms/XFormField';
+import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
+import { XStoreContext } from 'openland-x-store/XStoreContext';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -662,6 +663,15 @@ const Field = Glamorous(XFormField)({
     flex: 1
 });
 
+const DelLinkBtn = Glamorous(XButton)({
+    marginRight: -24,
+});
+
+const AddLinkBtn = Glamorous(XButton)({
+    marginLeft: -14,
+    marginTop: -8,
+});
+
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
 
     let editDoTarget = props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editListing)[0];
@@ -747,6 +757,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     shapeAndForm: input.shapeAndForm,
                     currentUse: input.currentUse,
                     goodFitFor: input.goodFitFor,
+                    additionalLinks: input.additionalLinks.map((l: any) => ({ text: l.text, url: l.url })),
 
                     photo: input.photo,
                     shortDescription: input.shortDescription,
@@ -1123,20 +1134,55 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                                 <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
                                                             </XFormField>
                                                             <XTitle>Additional links</XTitle>
-                                                            {editDoTarget.additionalLinks && editDoTarget.additionalLinks.map((link, i) => {
-                                                                return (
-                                                                    <XHorizontal key={'link_' + i} >
-                                                                        <Field title="Link text">
-                                                                            <XInput field={`input.additionalLinks.${i}.text`} placeholder="Link text" />
-                                                                        </Field>
-                                                                        <Field title="Link text">
-                                                                            <XInput field={`input.additionalLinks.${i}.url`} placeholder="Link url" />
-                                                                        </Field>
-                                                                    </XHorizontal>
-                                                                );
-                                                            })}
-                                                            <XButton query={{ field: 'addLink', value: editDoTarget.id }} />
 
+                                                            <XStoreContext.Consumer>
+                                                                {(store) => {
+                                                                    return (((store && store.readValue('fields.input.additionalLinks')) || []).map((link: any, i: number) => {
+                                                                        return (
+                                                                            <XHorizontal key={'link_' + i} >
+                                                                                <Field title="Link text">
+                                                                                    <XInput field={`input.additionalLinks.${i}.text`} placeholder="Link text" />
+                                                                                </Field>
+                                                                                <XVertical separator="none" flexGrow={1}>
+                                                                                    <XHorizontal >
+                                                                                        <XFormFieldTitle>Link text</XFormFieldTitle>
+                                                                                        <DelLinkBtn
+                                                                                            style="link_danger"
+                                                                                            text="Delete"
+                                                                                            onClick={() => {
+                                                                                                if (store) {
+                                                                                                    let links: any[] = store.readValue('fields.input.additionalLinks') || [];
+                                                                                                    links.splice(i, 1);
+                                                                                                    store.writeValue('fields.input.additionalLinks', links);
+                                                                                                }
+
+                                                                                            }}
+                                                                                        />
+                                                                                        <div />
+                                                                                    </XHorizontal>
+                                                                                    <XInput field={`input.additionalLinks.${i}.url`} placeholder="Link url" />
+                                                                                </XVertical>
+                                                                            </XHorizontal>
+                                                                        );
+                                                                    }));
+                                                                }}
+                                                            </XStoreContext.Consumer>
+                                                            <XStoreContext.Consumer>
+                                                                {(store) => {
+                                                                    return <AddLinkBtn
+                                                                        onClick={() => {
+                                                                            if (store) {
+                                                                                let links = store.readValue('fields.input.additionalLinks') || [];
+                                                                                links.push({ text: '', url: '' });
+                                                                                store.writeValue('fields.input.additionalLinks', links);
+                                                                            }
+                                                                        }}
+                                                                        text="Add another link"
+                                                                        style="link"
+                                                                        alignSelf="flex-start"
+                                                                    />;
+                                                                }}
+                                                            </XStoreContext.Consumer>
                                                         </>
 
                                                     )}
