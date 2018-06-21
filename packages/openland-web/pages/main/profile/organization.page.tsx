@@ -729,36 +729,34 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
     let editListingDefaultAction = async (data: any) => {
 
-        let areaRange = data.input.areaRange ? data.input.areaRange === 'small' ? { from: 0, to: 10000 } : data.input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 } : null;
-
+        let input = data.input || {};
+        let areaRange = input.areaRange === undefined ? null : input.areaRange === 'small' ? { from: 0, to: 10000 } : input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 };
         await props.editListing({
             variables: {
                 id: target.id,
                 input: {
-                    name: data.input.name,
-                    summary: data.input.summary,
-                    specialAttributes: data.input.specialAttributes,
+                    name: input.name || '',
+                    summary: input.summary,
+                    specialAttributes: input.specialAttributes,
 
-                    location: data.input.location ? { lat: data.input.location.result.center[1], lon: data.input.location.result.center[0] } : null,
-                    locationTitle: data.input.location ? data.input.location.result.place_name || data.input.location.result.text : null,
-                    availability: data.input.availability,
-                    area: data.input.area,
-                    price: data.input.price,
-                    dealType: data.input.dealType,
-                    shapeAndForm: data.input.shapeAndForm,
-                    currentUse: data.input.currentUse,
-                    goodFitFor: data.input.goodFitFor,
+                    location: input.location ? { lat: input.location.result.center[1], lon: input.location.result.center[0] } : null,
+                    locationTitle: input.location ? (input.location.result.place_name || input.location.result.text) : '',
+                    availability: input.availability,
+                    area: input.area,
+                    price: input.price,
+                    dealType: input.dealType,
+                    shapeAndForm: input.shapeAndForm,
+                    currentUse: input.currentUse,
+                    goodFitFor: input.goodFitFor,
 
-                    photo: sanitizeIamgeRef(data.input.photo),
-                    shortDescription: data.input.shortDescription,
+                    photo: input.photo,
+                    shortDescription: input.shortDescription,
                     areaRange: areaRange,
-                    geographies: data.input.geographies,
-                    landUse: data.input.landUse,
-                    unitCapacity: data.input.unitCapacity,
-                    additionalLinks: data.input.additionalLinks
+                    geographies: input.geographies,
+                    landUse: input.landUse,
+                    unitCapacity: input.unitCapacity,
                 }
             }
-
         });
     };
 
@@ -946,32 +944,32 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             title={props.router.query.addListing === 'DO' ? 'Create development opportunity' : 'Create acquisition requests'}
 
                                             defaultAction={async (data) => {
-                                                let areaRange = data.input.areaRange ? data.input.areaRange === 'small' ? { from: 0, to: 10000 } : data.input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 } : null;
-
+                                                let input = data.input || {};
+                                                let areaRange = input.areaRange === undefined ? null : input.areaRange === 'small' ? { from: 0, to: 10000 } : input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 };
                                                 await props.createListing({
                                                     variables: {
                                                         type: props.router.query.addListing === 'DO' ? 'development_opportunity' : 'acquisition_request',
                                                         input: {
-                                                            name: data.input.name,
-                                                            summary: data.input.summary,
-                                                            specialAttributes: data.input.specialAttributes,
+                                                            name: input.name || '',
+                                                            summary: input.summary,
+                                                            specialAttributes: input.specialAttributes,
 
-                                                            location: data.input.location ? { lat: data.input.location.result.center[1], lon: data.input.location.result.center[0] } : null,
-                                                            locationTitle: data.input.location ? data.input.location.result.place_name || data.input.location.result.text : null,
-                                                            availability: data.input.availability,
-                                                            area: data.input.area,
-                                                            price: data.input.price,
-                                                            dealType: data.input.dealType,
-                                                            shapeAndForm: data.input.shapeAndForm,
-                                                            currentUse: data.input.currentUse,
-                                                            goodFitFor: data.input.goodFitFor,
+                                                            location: input.location ? { lat: input.location.result.center[1], lon: input.location.result.center[0] } : null,
+                                                            locationTitle: input.location ? (input.location.result.place_name || input.location.result.text) : '',
+                                                            availability: input.availability,
+                                                            area: input.area,
+                                                            price: input.price,
+                                                            dealType: input.dealType,
+                                                            shapeAndForm: input.shapeAndForm,
+                                                            currentUse: input.currentUse,
+                                                            goodFitFor: input.goodFitFor,
 
-                                                            photo: data.input.photo,
-                                                            shortDescription: data.input.shortDescription,
+                                                            photo: input.photo,
+                                                            shortDescription: input.shortDescription,
                                                             areaRange: areaRange,
-                                                            geographies: data.input.geographies,
-                                                            landUse: data.input.landUse,
-                                                            unitCapacity: data.input.unitCapacity,
+                                                            geographies: input.geographies,
+                                                            landUse: input.landUse,
+                                                            unitCapacity: input.unitCapacity,
                                                         }
                                                     }
                                                 });
@@ -985,7 +983,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     )}
 
                                                     <XFormField title="Name">
-                                                        <XInput field="name" required={true} placeholder="Name" />
+                                                        <XInput field="input.name" required={true} placeholder="Name" />
                                                     </XFormField>
                                                     {props.router.query.addListing === 'DO' && (
                                                         <>
@@ -1069,7 +1067,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         defaultAction={async (data) => {
                                             await props.deleteListing({
                                                 variables: {
-                                                    id: props.router.query.deleteFeaturedOpportunity
+                                                    id: props.router.query.deleteListing
                                                 }
                                             });
                                         }}
