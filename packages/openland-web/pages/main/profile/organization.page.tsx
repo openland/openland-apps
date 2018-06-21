@@ -731,6 +731,15 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
     let cardCount = 0;
 
+    let cardFilter = (cb: () => any) => {
+        cardCount++;
+        if (cardCount <= 3) {
+            return cb();
+        } else {
+            return;
+        }
+    };
+
     return (
         <>
             <XDocumentHead title="Organization profile" />
@@ -900,26 +909,14 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     )}
                                                 </div>
                                                 {organization.developmentOportunities && (
-                                                    organization.developmentOportunities.map((devop, i) => {
-                                                        cardCount++;
-
-                                                        if (cardCount <= 3) {
-                                                            return (
-                                                                <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} index={i} />
-                                                            );
-                                                        }
-                                                    })
+                                                    organization.developmentOportunities.map((devop, i) => (
+                                                        cardFilter(() => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} index={i} />)
+                                                    ))
                                                 )}
                                                 {organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => {
-                                                        cardCount++;
-
-                                                        if (cardCount <= 3) {
-                                                            return (
-                                                                <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} index={i} />
-                                                            );
-                                                        }
-                                                    })
+                                                    organization.acquisitionRequests.map((devop, i) => (
+                                                        cardFilter(() => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} index={i} />)
+                                                    ))
                                                 )}
                                                 {(organization.developmentOportunities!!.length + organization.acquisitionRequests!!.length) > 3 && (
                                                     <XHorizontal justifyContent="center">
