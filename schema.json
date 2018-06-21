@@ -8478,6 +8478,26 @@
               "deprecationReason": null
             },
             {
+              "name": "alphaListingsAll",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AlphaOrganizationListing",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "alphaDummyFeaturedOpportunities",
               "description": "",
               "args": [],
@@ -9769,6 +9789,26 @@
             },
             {
               "name": "alphaListingAcquisitionRequests",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AlphaOrganizationListing",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "alphaListingsAll",
               "description": "",
               "args": [],
               "type": {
