@@ -1,25 +1,114 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { css } from 'glamor';
 import { XFlexStyles, extractFlexProps, applyFlex } from './basics/Flex';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
+//
+// Styles
+//
+
+css.global('.simplebar-scroll-content', {
+    overflowX: 'hidden!important',
+    overflowY: 'scroll',
+    boxSizing: 'content-box!important',
+    maxHeight: 'inherit!important',
+    minWidth: '100%!important'
+});
+
+css.global('.simplebar-content', {
+    display: 'flex',
+    flexDirection: 'column',
+    overflowX: 'scroll',
+    overflowY: 'hidden!important',
+    boxSizing: 'border-box!important',
+    minHeight: '100%!important'
+});
+
+css.global('.simplebar-track', {
+    zIndex: 1,
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    width: '11px'
+});
+
+css.global('.simplebar-scrollbar', {
+    position: 'absolute',
+    right: '2px',
+    width: '7px',
+    minHeight: '10px'
+});
+
+css.global('.simplebar-scrollbar:before', {
+    position: 'absolute',
+    content: '""',
+    background: 'black',
+    borderRadius: '7px',
+    left: 0,
+    right: 0,
+    opacity: 0,
+    transition: 'opacity 0.2s linear'
+});
+
+css.global('.simplebar-track:hover .simplebar-scrollbar:before', {
+    opacity: 0.5,
+    transition: 'opacity 0 linear'
+});
+
+css.global('.simplebar-track .simplebar-scrollbar.visible:before', {
+    opacity: 0.5,
+    transition: 'opacity 0 linear'
+});
+
+css.global('.simplebar-track.vertical', {
+    top: 0
+});
+
+css.global('.simplebar-track.vertical .simplebar-scrollbar:before', {
+    top: 2,
+    bottom: 2
+});
+
+css.global('.simplebar-track.horizontal', {
+    left: 0,
+    width: 'auto',
+    height: '11px'
+});
+
+css.global('.simplebar-track.horizontal .simplebar-scrollbar:before', {
+    height: '100%',
+    left: 2,
+    right: 2
+});
+
+css.global('.horizontal.simplebar-track .simplebar-scrollbar', {
+    right: 'auto',
+    top: 2,
+    height: 7,
+    minHeight: 0,
+    minWidth: 10,
+    width: 'auto'
+});
+
 export interface XScrollViewProps extends XFlexStyles {
+    flexDirection?: 'row' | 'column';
     className?: string;
-    scroll?: 'vertical' | 'horizontal' | 'both';
 }
 
-const ScrollDiv = Glamorous.div<{ scroll: 'vertical' | 'horizontal' | 'both' } & XFlexStyles>([(props) => ({
+const ScrollDiv = Glamorous.div<XFlexStyles>([{
     display: 'flex',
-    overflowX: props.scroll === 'horizontal' || props.scroll === 'both' ? 'scroll' : 'hidden',
-    overflowY: props.scroll === 'vertical' || props.scroll === 'both' ? 'scroll' : 'hidden'
-}), applyFlex]);
+    position: 'relative',
+    zIndex: 0,
+    overflow: 'hidden!important',
+    maxHeight: 'inherit',
+    WebkitOverflowScrolling: 'touch', /* Trigger native scrolling for mobile, if not supported, plugin is used. */
+}, applyFlex]);
 
 export class XScrollView extends React.Component<XScrollViewProps> {
     Simplebar = canUseDOM ? require('simplebar') : null;
 
     handleRef = (el: any) => {
-        console.warn(el);
-        console.warn(el.childNodes.length);
         if (canUseDOM && el) {
             // tslint:disable
             new this.Simplebar(el);
@@ -31,7 +120,6 @@ export class XScrollView extends React.Component<XScrollViewProps> {
         return (
             <ScrollDiv
                 className={this.props.className}
-                scroll={this.props.scroll || 'vertical'}
                 {...extractFlexProps(this.props)}
                 innerRef={this.handleRef}
             >

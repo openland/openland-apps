@@ -67,8 +67,6 @@ export default class StateDocument extends Document {
                     <meta name="msapplication-square310x310logo" content="/static/ms-icon-square-310.png" />
                     <meta name="msapplication-wide310x150logo" content="/static/ms-icon-wide-310.png" />
 
-                    {/* <link rel="stylesheet" type="text/css" href="/static/loader.css" /> */}
-                    <link rel="stylesheet" type="text/css" href="/static/simplebar.css" />
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
 

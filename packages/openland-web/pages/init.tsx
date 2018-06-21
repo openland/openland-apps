@@ -1,7 +1,10 @@
 import { rehydrate, css, keyframes } from 'glamor';
 
 if (typeof window !== 'undefined') {
-    rehydrate((window as any).__NEXT_DATA__.ids);
+    if ((window as any).__NEXT_DATA__.ids) {
+        rehydrate((window as any).__NEXT_DATA__.ids);
+        (window as any).__NEXT_DATA__.ids = undefined;
+    }
 }
 
 // Normalize
@@ -81,7 +84,7 @@ css.global('.ReactModal__Overlay--before-close', {
     opacity: 0,
 });
 
-// Loader
+// Global Loader
 
 css.global('#nprogress', {
     pointerEvents: 'none'
@@ -136,27 +139,3 @@ css.global('#nprogress .spinner-icon', {
     borderRadius: '50%',
     animation: `${progressAnimation} 400ms linear infinite`
 });
-
-//   #nprogress .spinner-icon {
-//     width: 18px;
-//     height: 18px;
-//     box-sizing: border-box;
-
-//     border: solid 2px transparent;
-//     border-top-color: #29d;
-//     border-left-color: #29d;
-//     border-radius: 50%;
-
-//     -webkit-animation: nprogress-spinner 400ms linear infinite;
-//             animation: nprogress-spinner 400ms linear infinite;
-//   }
-
-//   .nprogress-custom-parent {
-//     overflow: hidden;
-//     position: relative;
-//   }
-
-//   .nprogress-custom-parent #nprogress .spinner,
-//   .nprogress-custom-parent #nprogress .bar {
-//     position: absolute;
-//   }
