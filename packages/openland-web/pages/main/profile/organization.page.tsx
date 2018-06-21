@@ -227,12 +227,13 @@ const ContactPersons = (props: { contacts: ContactPerson[] }) => (
     </>
 );
 
-const ShowMoreBtn = Glamorous.div<{ marginTop?: number }>((props) => ({
+const ShowMoreBtn = Glamorous.div<{ marginTop?: number, marginBottom?: number }>((props) => ({
     fontSize: 14,
     fontWeight: 500,
     color: '#765efd',
     cursor: 'pointer',
-    marginTop: props.marginTop
+    marginTop: props.marginTop,
+    marginBottom: props.marginBottom
 }));
 
 class AboutContent extends React.Component<{ text: string }, { open: boolean }> {
@@ -549,7 +550,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                 </ContentHider>
 
                 <XHorizontal justifyContent="center">
-                    <ShowMoreBtn onClick={this.switcher} marginTop={-10}>{buttonText}</ShowMoreBtn>
+                    <ShowMoreBtn onClick={this.switcher} marginTop={this.state.hidden ? -20 : 0} marginBottom={15}>{buttonText}</ShowMoreBtn>
                 </XHorizontal>
             </DevelopmentOportunityCard>
         );
@@ -651,7 +652,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                 </ContentHider>
 
                 <XHorizontal justifyContent="center">
-                    <ShowMoreBtn onClick={this.switcher} marginTop={-10}>{buttonText}</ShowMoreBtn>
+                    <ShowMoreBtn onClick={this.switcher} marginTop={this.state.hidden ? -20 : 0} marginBottom={15}>{buttonText}</ShowMoreBtn>
                 </XHorizontal>
             </DevelopmentOportunityCard>
         );
