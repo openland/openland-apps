@@ -480,12 +480,12 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                             </XHorizontal>
                             {this.props.showType && <Text opacity={0.5}>Development oportunity</Text>}
                             <Text opacity={0.5}>{item.locationTitle}</Text>
-                            <XHorizontal separator="large">
+                            <XHorizontal separator="large" flexGrow={full ? 1 : undefined} alignItems={full ? 'flex-end' : undefined}>
                                 {item.area && (
-                                    <Text opacity={0.5}>{`Area: ${item.area} ft²`}</Text>
+                                    <Text opacity={!full ? 0.5 : undefined} bold={full ? true : undefined} marginTop={3}>{`Area: ${item.area} ft²`}</Text>
                                 )}
                                 {item.price && (
-                                    <Text opacity={0.5} marginTop={3}>{`Price: $${item.price}`}</Text>
+                                    <Text opacity={!full ? 0.5 : undefined} bold={full ? true : undefined} marginTop={3}>{`Price: $${item.price}`}</Text>
                                 )}
                             </XHorizontal>
                             {!full && (
