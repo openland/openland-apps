@@ -31,7 +31,7 @@ import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { DateFormater } from 'openland-x-format/XDate';
-import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder } from './placeholders';
+import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder } from './placeholders';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import PlaceholderAR from './img_placeholder_ar.svg';
@@ -956,24 +956,27 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     <Title marginBottom={24}>Development opportunities</Title>
                                                 </XVerticalStyled>
 
-                                                <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
-                                                    {organization.doShapeAndForm && (
-                                                        <TagRowMap title="Shape and form" items={organization.doShapeAndForm} bordered={true} />
-                                                    )}
-                                                    {organization.doCurrentUse && (
-                                                        <TagRowMap title="Current use" items={organization.doCurrentUse} bordered={true} />
-                                                    )}
-                                                    {organization.doGoodFitFor && (
-                                                        <TagRowMap title="Good fit for  " items={organization.doGoodFitFor} bordered={true} />
-                                                    )}
-                                                    {organization.doSpecialAttributes && (
-                                                        <TagRowMap title="Special attributes" items={organization.doSpecialAttributes} bordered={true} />
-                                                    )}
-                                                    {organization.doAvailability && (
-                                                        <TagRowMap title="Availability " items={organization.doAvailability} bordered={true} />
-                                                    )}
+                                                {(organization.doShapeAndForm || organization.doCurrentUse || organization.doGoodFitFor || organization.doSpecialAttributes || organization.doAvailability) && (
+                                                    <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
+                                                        {organization.doShapeAndForm && (
+                                                            <TagRowMap title="Shape and form" items={organization.doShapeAndForm} bordered={true} />
+                                                        )}
+                                                        {organization.doCurrentUse && (
+                                                            <TagRowMap title="Current use" items={organization.doCurrentUse} bordered={true} />
+                                                        )}
+                                                        {organization.doGoodFitFor && (
+                                                            <TagRowMap title="Good fit for  " items={organization.doGoodFitFor} bordered={true} />
+                                                        )}
+                                                        {organization.doSpecialAttributes && (
+                                                            <TagRowMap title="Special attributes" items={organization.doSpecialAttributes} bordered={true} />
+                                                        )}
+                                                        {organization.doAvailability && (
+                                                            <TagRowMap title="Availability " items={organization.doAvailability} bordered={true} />
+                                                        )}
 
-                                                </div>
+                                                    </div>
+                                                )}
+
                                                 {organization.developmentOportunities && (
                                                     organization.developmentOportunities.map((devop, i) => (
                                                         cardFilter(() => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} />, cardCountAR)
@@ -991,35 +994,37 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     <Title marginBottom={24}>Acquisition requests</Title>
                                                 </XVerticalStyled>
 
-                                                <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
-                                                    {organization.arGeographies && (
-                                                        <TagRowMap title="Geographies" items={organization.arGeographies} bordered={true} />
-                                                    )}
-                                                    {organization.arAreaRange && (
-                                                        <TagRowMap title="Area range" items={organization.arAreaRange} bordered={true} />
-                                                    )}
-                                                    {organization.arHeightLimit && (
-                                                        <TagRowMap title="Height limit" items={organization.arHeightLimit} bordered={true} />
-                                                    )}
-                                                    {organization.arLandUse && (
-                                                        <TagRowMap title="Land use" items={organization.arLandUse} bordered={true} />
-                                                    )}
-                                                    {organization.arSpecialAttributes && (
-                                                        <TagRowMap title="Special attributes " items={organization.arSpecialAttributes} bordered={true} />
-                                                    )}
-                                                    {organization.arActivityStatus && (
-                                                        <TagRowMap title="Activity status" items={organization.arActivityStatus} bordered={true} />
-                                                    )}
-                                                    {organization.arAquisitionBudget && (
-                                                        <TagRowMap title="3-year aquisition budget" items={organization.arAquisitionBudget} bordered={true} />
-                                                    )}
-                                                    {organization.arAquisitionRate && (
-                                                        <TagRowMap title="Aquisition rate" items={organization.arAquisitionRate} bordered={true} />
-                                                    )}
-                                                    {organization.arClosingTime && (
-                                                        <TagRowMap title="Closing time" items={organization.arClosingTime} bordered={true} />
-                                                    )}
-                                                </div>
+                                                {(organization.arGeographies || organization.arAreaRange || organization.arHeightLimit || organization.arLandUse || organization.arSpecialAttributes || organization.arActivityStatus || organization.arAquisitionBudget || organization.arAquisitionRate || organization.arClosingTime) && (
+                                                    <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
+                                                        {organization.arGeographies && (
+                                                            <TagRowMap title="Geographies" items={organization.arGeographies} bordered={true} />
+                                                        )}
+                                                        {organization.arAreaRange && (
+                                                            <TagRowMap title="Area range" items={organization.arAreaRange} bordered={true} />
+                                                        )}
+                                                        {organization.arHeightLimit && (
+                                                            <TagRowMap title="Height limit" items={organization.arHeightLimit} bordered={true} />
+                                                        )}
+                                                        {organization.arLandUse && (
+                                                            <TagRowMap title="Land use" items={organization.arLandUse} bordered={true} />
+                                                        )}
+                                                        {organization.arSpecialAttributes && (
+                                                            <TagRowMap title="Special attributes " items={organization.arSpecialAttributes} bordered={true} />
+                                                        )}
+                                                        {organization.arActivityStatus && (
+                                                            <TagRowMap title="Activity status" items={organization.arActivityStatus} bordered={true} />
+                                                        )}
+                                                        {organization.arAquisitionBudget && (
+                                                            <TagRowMap title="3-year aquisition budget" items={organization.arAquisitionBudget} bordered={true} />
+                                                        )}
+                                                        {organization.arAquisitionRate && (
+                                                            <TagRowMap title="Aquisition rate" items={organization.arAquisitionRate} bordered={true} />
+                                                        )}
+                                                        {organization.arClosingTime && (
+                                                            <TagRowMap title="Closing time" items={organization.arClosingTime} bordered={true} />
+                                                        )}
+                                                    </div>
+                                                )}
 
                                                 {organization.acquisitionRequests && (
                                                     organization.acquisitionRequests.map((devop, i) => (
@@ -1331,15 +1336,34 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <AboutContent text={organization.about} />
                                         </XCardStyled>
                                     )}
-                                    <XCardStyled padding={0} paddingTop={18} paddingBottom={20}>
-                                        <Title small={true} marginBottom={10} marginLeft={18}>Contacts</Title>
-                                        <ContactPersons contacts={organization.contacts!!.filter(c => c !== null) as any} />
-                                        <SocialLinksWrapper>
-                                            {organization.website && <SocialLink href={organization.website}>Website</SocialLink>}
-                                            {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
-                                            {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
-                                        </SocialLinksWrapper>
-                                    </XCardStyled>
+                                    <XWithRole role={['org-' + organization.id + '-admin']}>
+                                        {!organization.about && (
+                                            <AboutPlaceholder />
+                                        )}
+                                    </XWithRole>
+
+                                    {((organization.contacts || []).length || organization.website || organization.facebook || organization.twitter) && (
+                                        <XCardStyled padding={0} paddingTop={18} paddingBottom={20}>
+                                            <Title small={true} marginBottom={10} marginLeft={18}>Contacts</Title>
+                                            <ContactPersons contacts={organization.contacts!!.filter(c => c !== null) as any} />
+                                            <SocialLinksWrapper>
+                                                {organization.website && <SocialLink href={organization.website}>Website</SocialLink>}
+                                                {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
+                                                {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
+                                            </SocialLinksWrapper>
+                                        </XCardStyled>
+                                    )}
+                                    <XWithRole role={['org-' + organization.id + '-admin']}>
+                                        {!((organization.contacts || []).length || organization.website || organization.facebook || organization.twitter) && (
+                                            <XCardStyled padding={18}>
+                                                <XVertical>
+                                                    {!(organization.website || organization.facebook || organization.twitter) && <SocialPlaceholder />}
+                                                    {!(organization.contacts || []).length && <ContactPlaceholder />}
+                                                </XVertical>
+                                            </XCardStyled>
+                                        )}
+                                    </XWithRole>
+
                                 </XVertical>
                             </XHorizontal>
                         </MainContent>

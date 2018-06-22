@@ -77,6 +77,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
 
         onClick: React.MouseEventHandler<any> = (e) => {
 
+            // Anchors are handled by default - no need to preventDefault
             if (this.props.anchor) {
                 return;
             }

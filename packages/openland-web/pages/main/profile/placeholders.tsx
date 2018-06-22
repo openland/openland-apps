@@ -14,6 +14,12 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import XStyles from 'openland-x/XStyles';
 import { XIcon } from 'openland-x/XIcon';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import PlaceholderAbout from './placeholder_about.svg';
+import PlaceholderSocial from './placeholder_social.svg';
+import { XTextArea } from 'openland-x/XTextArea';
+import { XInput } from 'openland-x/XInput';
+import PlaceholderContact from './placeholder_contact.svg';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 
 const Placeholder = Glamorous(XCard)({
     backgroundColor: '#654bfa',
@@ -545,4 +551,152 @@ export const NewsPlaceholder = withMyOrganizationProfile((props) => {
         />
 
     ) : null);
+});
+
+const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, paddingBottom?: number }>((props) => ({
+    borderRadius: 5,
+    padding: props.padding !== undefined ? props.padding : 24,
+    paddingTop: props.paddingTop,
+    paddingBottom: props.paddingBottom
+}));
+
+const Text = Glamorous.div((props) => ({
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: 15,
+    lineHeight: 1.33,
+    color: '#334562',
+}));
+
+export const AboutPlaceholder = withMyOrganizationProfile((props) => {
+    return (
+        <XModalForm
+            defaultData={{
+                input: {
+                    about: props.data.myOrganizationProfile!!.about,
+                }
+            }}
+            defaultAction={async (data) => {
+                await props.updateOrganizaton({
+                    variables: {
+                        input: {
+                            about: data.input.about,
+                        }
+                    }
+                });
+            }}
+            target={(
+                <div style={{ cursor: 'pointer' }}>
+                    <XCardStyled padding={18}>
+                        <XHorizontal>
+                            <PlaceholderAbout /> <Text marginWidth={18}>Add an intro paragraph</Text>
+                        </XHorizontal>
+                    </XCardStyled>
+                </div>
+            )}
+        >
+            <XVertical>
+                <XFormLoadingContent>
+                    <XFormField title="About">
+                        <XTextArea valueStoreKey="fields.input.about" />
+                    </XFormField>
+                </XFormLoadingContent>
+            </XVertical>
+        </XModalForm>
+
+    );
+});
+
+export const SocialPlaceholder = withMyOrganizationProfile((props) => {
+    return (
+        <XModalForm
+            defaultData={{
+                input: {
+                    website: props.data.myOrganizationProfile!!.website,
+                    twitter: props.data.myOrganizationProfile!!.twitter,
+                    facebook: props.data.myOrganizationProfile!!.facebook,
+                }
+            }}
+            defaultAction={async (data) => {
+                await props.updateOrganizaton({
+                    variables: {
+                        input: {
+                            website: data.input.website,
+                            twitter: data.input.twitter,
+                            facebook: data.input.facebook,
+                        }
+                    }
+                });
+            }}
+            target={(
+                <div style={{ cursor: 'pointer' }}>
+                    <XHorizontal>
+                        <PlaceholderSocial /> <Text marginWidth={18}>Add social links</Text>
+                    </XHorizontal>
+                </div>
+            )}
+        >
+            <XVertical>
+                <XFormLoadingContent>
+                    <XFormField title="Web Site">
+                        <XInput field="input.website" />
+                    </XFormField>
+                    <XFormField title="Twitter">
+                        <XInput field="input.twitter" />
+                    </XFormField>
+                    <XFormField title="Facebook">
+                        <XInput field="input.facebook" />
+                    </XFormField>
+                </XFormLoadingContent>
+            </XVertical>
+        </XModalForm>
+
+    );
+});
+
+export const ContactPlaceholder = withMyOrganizationProfile((props) => {
+    return (
+        <XModalForm
+            title="Add contact"
+            defaultData={{
+                contacts: props.data.myOrganizationProfile!!.contacts,
+            }}
+            defaultAction={async (data) => {
+                data.contacts.push({
+                    name: data.name,
+                    phone: data.phone,
+                    photoRef: data.avatar,
+                    email: data.email,
+                    link: data.link,
+                    role: data.role,
+                });
+                await props.updateOrganizaton({
+                    variables: {
+                        input: {
+                            contacts: data.contacts
+                        }
+                    }
+                });
+            }}
+            target={(
+                <div style={{ cursor: 'pointer' }}>
+                    <XHorizontal>
+                        <PlaceholderContact /> <Text marginWidth={18}>Add contacts</Text>
+                    </XHorizontal>
+                </div>
+            )}
+        >
+            <XFormLoadingContent>
+                <XVertical>
+                    <XInput field="name" required={true} placeholder="Name" />
+                    <XInput field="phone" placeholder="Phone" />
+                    <XInput field="email" placeholder="Email" />
+                    <XInput field="link" placeholder="Link" />
+                    <XInput field="position" placeholder="Position" />
+                    <XAvatarUpload field="photoRef" />
+                </XVertical>
+            </XFormLoadingContent>
+        </XModalForm>
+
+    );
 });
