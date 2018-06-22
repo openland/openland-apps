@@ -34,6 +34,7 @@ import { DateFormater } from 'openland-x-format/XDate';
 import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder } from './placeholders';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
+import PlaceholderAR from './img_placeholder_ar.svg';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -589,11 +590,13 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
         return (
             <DevelopmentOportunityCard>
                 <XHorizontalStyled justifyContent="space-between" padding={24}>
+
                     {item.photo && (
                         <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
                     )}
                     {!item.photo && (
-                        <img src={'/static/img/icons/organization/profile/img_placeholder_ar.svg'} />
+                        <PlaceholderAR />
+                        // <img src={require('./img_placeholder_ar.svg')} />
                     )}
                     {/* <XAvatar photoRef={item.photo || undefined} size="large" style="square" /> */}
                     <XHorizontal flexGrow={1}>

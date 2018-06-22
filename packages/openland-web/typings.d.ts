@@ -3,6 +3,11 @@ declare module '*.handlebars' {
     export = content;
 }
 
+declare module '*.svg' {
+    const content: React.ComponentClass<React.SVGProps<SVGSVGElement>>;
+    export default content;
+}
+
 declare module 'react-map-gl' {
     interface StaticMapProps {
         mapboxApiAccessToken: string;

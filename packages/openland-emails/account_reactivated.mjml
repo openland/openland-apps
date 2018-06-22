@@ -11,7 +11,7 @@
       <mj-column>
         <mj-text>
           {{userWelcome}} <br/> <br/> 
-          Organization {{organizationName}} was activated by Openland staff! If you have any questions, please, feel free to reply to this email. <br/> <br/> 
+          Organization <strong>{{organizationName}}</strong> was <strong>activated</strong> by Openland staff! If you have any questions, please, feel free to reply to this email. <br/> <br/> 
           Good luck with Openland! <br/>
           -- Openland Team
         </mj-text>

@@ -11,8 +11,7 @@
       <mj-column>
         <mj-text>
           {{userWelcome}} <br/> <br/> 
-          Organization {{organizationName}} was deactivated by Openland staff. If you have any questions, please, feel free to reply to this email. <br/> <br/> 
-          
+          Organization <strong>{{organizationName}}</strong> was <strong>deactivated</strong> by Openland staff. If you have any questions, please, feel free to reply to this email. <br/> <br/> 
           Good luck! <br/>
           -- Openland Team
         </mj-text>

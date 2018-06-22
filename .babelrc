@@ -1,6 +1,6 @@
 {
     "presets": ["next/babel", "@zeit/next-typescript/babel"],
-    "plugins": ["transform-react-stateless-component-name"],
+    "plugins": ["transform-react-stateless-component-name", "inline-react-svg"],
     "env": {
         "production": {
             "plugins": [
