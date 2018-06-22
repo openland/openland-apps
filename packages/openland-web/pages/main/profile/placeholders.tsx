@@ -29,12 +29,10 @@ const PlaceholderText = Glamorous.label({
     ...XStyles.text.h500
 });
 
-const PlaceholderIcon = Glamorous(XIcon)({
+const PlaceholderIcon = Glamorous.img((props) => ({
     width: 60,
     height: 60,
-    fontSize: 60,
-    color: '#654bfa'
-});
+}));
 
 const Close = Glamorous(XIcon)({
     width: 16,
@@ -53,7 +51,8 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
     return ((!props.data.myOrganizationProfile.organizationType && !props.data.myOrganizationProfile.geographies && !props.data.myOrganizationProfile.lookingFor) ? (
         <Placeholder>
             <XHorizontal>
-                <PlaceholderIcon icon="info" />
+
+                <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_overview.svg'} />
                 <XVertical maxWidth={452}>
                     <PlaceholderText>Share your organization type, geographies of operation, and what are you looking for</PlaceholderText>
 
@@ -153,7 +152,7 @@ export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
                             />
                             <XVertical>
                                 <XHorizontal>
-                                    <PlaceholderIcon icon="domain" />
+                                    <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
                                     <XVertical maxWidth={452}>
                                         <PlaceholderText>Do you own development sites?</PlaceholderText>
                                         <XModalForm
@@ -268,7 +267,8 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                             />
                             <XVertical>
                                 <XHorizontal>
-                                    <PlaceholderIcon icon="search" />
+
+                                    <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_ar.svg'} />
                                     <XVertical maxWidth={452}>
                                         <PlaceholderText>Are you intrested in land aquisition?</PlaceholderText>
                                         <XModalForm
@@ -400,6 +400,94 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
             ) : null);
 });
 
+export const DOAROverviewPlaceholder = withMyOrganizationProfile((props) => {
+    return (
+        (!props.data.myOrganizationProfile.doShapeAndForm &&
+            !props.data.myOrganizationProfile.doCurrentUse &&
+            !props.data.myOrganizationProfile.doGoodFitFor &&
+            !props.data.myOrganizationProfile.doSpecialAttributes &&
+            !props.data.myOrganizationProfile.doAvailability) ||
+            !(!props.data.myOrganizationProfile.arGeographies &&
+                !props.data.myOrganizationProfile.arAreaRange &&
+                !props.data.myOrganizationProfile.arHeightLimit &&
+                !props.data.myOrganizationProfile.arActivityStatus &&
+                !props.data.myOrganizationProfile.arAquisitionBudget &&
+                !props.data.myOrganizationProfile.arAquisitionRate &&
+                !props.data.myOrganizationProfile.arClosingTime &&
+                !props.data.myOrganizationProfile.arSpecialAttributes &&
+                !props.data.myOrganizationProfile.arLandUse) ? <XHorizontal><DOOverviewPlaceholder /><AROverviewPlaceholder /></XHorizontal> : null);
+});
+
+export const DOListingPlaceholder = withMyOrganizationProfile((props) => {
+    return (
+        (
+            !(props.data.myOrganizationProfile.developmentOportunities || []).length
+        ) ? (
+                <Closable
+                    key="DOListingPlaceholder"
+                    content={close => (
+                        <Placeholder>
+                            <Close
+                                icon="close"
+                                onClick={close}
+                            />
+                            <XVertical>
+                                <XHorizontal>
+
+                                    <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
+                                    <XVertical maxWidth={452}>
+                                        <PlaceholderText>Do you own development sites?</PlaceholderText>
+                                        <XButton query={{ field: 'addListing', value: 'DO' }} text="Add an development opportunity" />
+                                    </XVertical>
+
+                                </XHorizontal>
+                            </XVertical>
+
+                        </Placeholder>
+                    )}
+                />
+
+            ) : null);
+});
+
+export const ARListingPlaceholder = withMyOrganizationProfile((props) => {
+    return (
+        (
+            !(props.data.myOrganizationProfile.acquisitionRequests || []).length
+        ) ? (
+                <Closable
+                    key="ArListingPlaceholder"
+                    content={close => (
+                        <Placeholder>
+                            <Close
+                                icon="close"
+                                onClick={close}
+                            />
+                            <XVertical>
+                                <XHorizontal>
+
+                                    <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_ar.svg'} />
+                                    <XVertical maxWidth={452}>
+                                        <PlaceholderText>Do you own development sites?</PlaceholderText>
+                                        <XButton query={{ field: 'addListing', value: 'AR' }} text="Add an acquisition request" />
+                                    </XVertical>
+
+                                </XHorizontal>
+                            </XVertical>
+
+                        </Placeholder>
+                    )}
+                />
+
+            ) : null);
+});
+
+export const DOARListingPlaceholder = withMyOrganizationProfile((props) => {
+    return (
+        (!(props.data.myOrganizationProfile.developmentOportunities || []).length) ||
+            (!(props.data.myOrganizationProfile.acquisitionRequests || []).length) ? <XHorizontal><DOListingPlaceholder /><ARListingPlaceholder /></XHorizontal> : null);
+});
+
 export const NewsPlaceholder = withMyOrganizationProfile((props) => {
     return (props.data.myOrganizationProfile.developmentOportunities ? (
         <Closable
@@ -414,7 +502,8 @@ export const NewsPlaceholder = withMyOrganizationProfile((props) => {
                     />
                     <XVertical>
                         <XHorizontal>
-                            <PlaceholderIcon icon="subject" />
+
+                                    <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
                             <XVertical maxWidth={452}>
                                 <PlaceholderText>Share your recent press coverage</PlaceholderText>
                                 <PlaceholderButton

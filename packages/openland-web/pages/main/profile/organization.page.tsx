@@ -31,7 +31,7 @@ import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { DateFormater } from 'openland-x-format/XDate';
-import { OverviewPlaceholder, DOOverviewPlaceholder, AROverviewPlaceholder } from './placeholders';
+import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder } from './placeholders';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -762,16 +762,16 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
             </XStoreContext.Consumer>
             <XStoreContext.Consumer>
                 {(store) => {
+                    let links = store ? store.readValue('fields.input.additionalLinks') || [] : [];
                     return (
                         <AddLinkBtn
                             onClick={() => {
                                 if (store) {
-                                    let links = store.readValue('fields.input.additionalLinks') || [];
                                     links.push({ text: '', url: '' });
                                     store.writeValue('fields.input.additionalLinks', links);
                                 }
                             }}
-                            text="Add another link"
+                            text={`Add${links.length === 0 ? '' : ' another'} link`}
                             style="link"
                             alignSelf="flex-start"
                         />
@@ -894,22 +894,20 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                         </Header>
 
                         <MainContent>
-                            <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
-                                {props.router.path === rootPath && (
-                                    <>
-                                        <OverviewPlaceholder />
-                                        <XHorizontal>
-                                            <DOOverviewPlaceholder />
-                                            <AROverviewPlaceholder />
-                                        </XHorizontal>
-                                    </>
-                                )}
 
-                            </XWithRole>
                             <XHorizontal>
                                 <XVertical flexGrow={1}>
+                                    <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
+                                        {props.router.path === rootPath && (
+                                            <>
+                                                <OverviewPlaceholder />
+                                                <DOAROverviewPlaceholder />
+                                            </>
+                                        )}
+                                    </XWithRole>
                                     {props.router.path === rootPath && (
                                         <>
+
                                             {(organization.organizationType || organization.lookingFor || organization.geographies) && (
                                                 <XCardStyled padding={0}>
                                                     {organization.organizationType && (
@@ -1010,32 +1008,39 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     )}
 
                                     {props.router.path === lsitingsPath && (
-                                        <XCardStyled padding={0}>
-                                            <XVerticalStyled borderBottom={true} flexGrow={1} padding={0} paddingLeft={24} paddingRight={24}>
-                                                <SwitcherWrapper flatStyle={true} height={66}>
-                                                    <Switcher query={{ field: 'listingType' }}>Development opportunities</Switcher>
-                                                    <Switcher query={{ field: 'listingType', value: 'ar' }}>Acquisition requests</Switcher>
+                                        <>
+                                            <DOARListingPlaceholder />
+                                            <XCardStyled padding={0}>
+                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={0} paddingLeft={24} paddingRight={24}>
+                                                    <SwitcherWrapper flatStyle={true} height={66}>
+                                                        <Switcher query={{ field: 'listingType' }}>Development opportunities</Switcher>
+                                                        <Switcher query={{ field: 'listingType', value: 'ar' }}>Acquisition requests</Switcher>
 
-                                                </SwitcherWrapper>
-                                            </XVerticalStyled>
-                                            {props.router.path === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
-                                                organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
-                                            )}
-                                            {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
-                                            )}
-                                        </XCardStyled>
+                                                    </SwitcherWrapper>
+                                                </XVerticalStyled>
+                                                {props.router.path === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
+                                                    organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                )}
+                                                {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
+                                                    organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                )}
+                                            </XCardStyled>
+                                            ></>
                                     )}
 
                                     {props.router.path === lsitingsAllPath && (
-                                        <XCardStyled padding={0}>
-                                            {props.router.path === lsitingsAllPath && organization && organization.listingsAll && (
-                                                organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} /> : < AquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} />)
-                                            )}
-                                            {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
-                                            )}
-                                        </XCardStyled>
+                                        <>
+                                            <DOARListingPlaceholder />
+                                            <XCardStyled padding={0}>
+                                                {props.router.path === lsitingsAllPath && organization && organization.listingsAll && (
+                                                    organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} /> : < AquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} />)
+                                                )}
+                                                {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
+                                                    organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                )}
+                                            </XCardStyled>
+                                        </>
+
                                     )}
 
                                     {props.router.query.addListing && (
