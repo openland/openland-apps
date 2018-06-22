@@ -34,7 +34,7 @@ export function writeValue(data: any, name: string, value: any) {
             checkName(first);
             if (!data[first]) {
                 data[first] = prepareObject(last);
-            } else if (Array.isArray(data[first])) {
+            } else if (last.indexOf('.') < 0 && Array.isArray(data[first])) {
                 throw Error('Trying to write struct value to the array');
             }
             writeValue(data[first], last, value);

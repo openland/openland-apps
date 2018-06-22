@@ -118,5 +118,50 @@ export const OrganizationProfileFull = gql`
             landUse
             unitCapacity
         }
+
+        listingsAll: alphaListingsAll{
+            id
+            name
+            type
+            summary
+            specialAttributes
+            status
+            updatedAt
+            
+            location{
+                lat
+                lon
+            }
+            locationTitle
+            availability
+            area
+            price
+            dealType
+            shapeAndForm
+            currentUse
+            goodFitFor
+            additionalLinks{
+                text
+                url
+            }
+
+            photo{
+                uuid
+                crop{
+                    x
+                    y
+                    w
+                    h
+                }
+            }
+            shortDescription
+            areaRange{
+                from
+                to
+            }
+            geographies
+            landUse
+            unitCapacity
+        }
     }
 `;

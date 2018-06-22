@@ -58,7 +58,6 @@ export const OrganizationFull = gql`
         developmentOportunities: alphaListingDevelopmentOportunities{
             name
             id
-            name
             summary
             specialAttributes
             status
@@ -89,6 +88,51 @@ export const OrganizationFull = gql`
             specialAttributes
             status
             updatedAt
+
+            photo{
+                uuid
+                crop{
+                    x
+                    y
+                    w
+                    h
+                }
+            }
+            shortDescription
+            areaRange{
+                from
+                to
+            }
+            geographies
+            landUse
+            unitCapacity
+        }
+
+        listingsAll: alphaListingsAll{
+            id
+            name
+            type
+            summary
+            specialAttributes
+            status
+            updatedAt
+            
+            location{
+                lat
+                lon
+            }
+            locationTitle
+            availability
+            area
+            price
+            dealType
+            shapeAndForm
+            currentUse
+            goodFitFor
+            additionalLinks{
+                text
+                url
+            }
 
             photo{
                 uuid

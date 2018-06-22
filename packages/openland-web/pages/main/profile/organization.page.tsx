@@ -8,6 +8,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCard } from 'openland-x/XCard';
 import { XAvatar } from 'openland-x/XAvatar';
+import { XCloudImage } from 'openland-x/XCloudImage';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XLink } from 'openland-x/XLink';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
@@ -24,10 +25,15 @@ import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
 import { ImageRefInput } from 'openland-api/Types';
 import { XSelect } from 'openland-x/XSelect';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
-import { XFormField } from 'openland-x-forms/XFormField';
+import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
+import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { DateFormater } from 'openland-x-format/XDate';
+import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder } from './placeholders';
+import { XIcon } from 'openland-x/XIcon';
+import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -43,26 +49,12 @@ const MainContent = Glamorous(XVertical)({
 });
 
 const Header = Glamorous.div({
-    borderBottom: '1px solid rgba(220, 222, 228, 0.4)'
-});
-
-const HeaderPicture = Glamorous.div<{ img?: string }>((props) => ({
-    height: 238,
-    backgroundColor: '#3b345e',
-}));
-
-const HeaderContent = Glamorous.div({
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    position: 'relative',
     backgroundColor: '#fff',
-    height: 66,
-    paddingRight: 150,
-    paddingLeft: 302,
+    borderBottom: '1px solid rgba(220, 222, 228, 0.4)',
+    padding: '0 150px',
     '@media (max-width: 1200px)': {
-        paddingRight: 40,
-        paddingLeft: 192,
+        padding: '0 40px',
     }
 });
 
@@ -90,44 +82,31 @@ const Switcher = Glamorous(XSwitcher.Item)({
     }
 });
 
-const OrganizationData = Glamorous.div({
-    position: 'absolute',
-    bottom: 16,
-    left: 150,
-    '@media (max-width: 1200px)': {
-        left: 40
-    }
+const AvatarWrapper = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    paddingBottom: 23,
+    paddingTop: 20,
+    marginRight: 24
 });
 
 const Avatar = Glamorous(XAvatar)({
-    width: 136,
-    height: 136,
-    borderRadius: 10,
-    border: 'solid 1px rgba(0, 0, 0, 0.07)',
-    boxShadow: 'none'
+    width: 110,
+    height: 110,
+    borderRadius: 8,
+    boxShadow: 'none',
+    '> img': {
+        width: '100% !important',
+        height: '100% !important'
+    }
 });
 
 const OrganizationName = Glamorous.div({
     fontSize: 22,
     fontWeight: 500,
-    color: '#fff',
-    position: 'absolute',
-    // bottom: 90,
-    bottom: 80,
-    left: 157,
+    color: '#334562',
     whiteSpace: 'nowrap'
 });
-
-// const OrganizationPlace = Glamorous.div({
-//     opacity: 0.7,
-//     fontSize: 15,
-//     fontWeight: 500,
-//     color: '#fff',
-//     position: 'absolute',
-//     bottom: 66,
-//     left: 157,
-//     whiteSpace: 'nowrap'
-// });
 
 const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft?: number, marginRight?: number }>((props) => ({
     fontSize: props.small ? 15 : 18,
@@ -154,14 +133,26 @@ const ContactWrapper = Glamorous(XHorizontal)({
     paddingRight: 18
 });
 
-const Text = Glamorous.div<{ opacity?: number, bold?: boolean, upperCase?: boolean, marginBottom?: number }>((props) => ({
-    fontSize: 15,
-    lineHeight: 1.33,
+interface TextProps {
+    opacity?: number;
+    bold?: boolean;
+    upperCase?: boolean;
+    marginBottom?: number;
+    marginTop?: number;
+    small?: boolean;
+}
+
+const Text = Glamorous.div<TextProps>((props) => ({
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: props.small ? 14 : 15,
+    lineHeight: props.small ? 1.43 : 1.33,
     color: '#334562',
     opacity: props.opacity,
     fontWeight: props.bold ? 500 : undefined,
     textTransform: props.upperCase ? 'capitalize' : undefined,
-    marginBottom: props.marginBottom
+    marginBottom: props.marginBottom,
+    marginTop: props.marginTop
 }));
 
 const SocialLinksWrapper = Glamorous.div({
@@ -268,53 +259,14 @@ class AboutContent extends React.Component<{ text: string }, { open: boolean }> 
     }
 }
 
-const TagItem = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center'
-});
-
-const TagImg = Glamorous.div<{ img?: string }>((props) => ({
-    width: 42,
-    height: 42,
-    backgroundColor: '#f3f3f5',
-    borderRadius: 50,
-    marginRight: 18,
-    backgroundImage: props.img ? `url(\'/static/img/icons/organization/${props.img}.svg\')` : undefined,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 20,
-    backgroundPosition: 'center',
-    '&.request_for_proposals': {
-        backgroundSize: 20,
-    },
-    '&.joint_venture': {
-        backgroundSize: 19,
-    },
-    '&.ground_lease': {
-        backgroundSize: 20,
-    },
-    '&.sale': {
-        backgroundSize: 10,
-    },
-    '&.option_to_buy': {
-        backgroundSize: 20,
-    },
-    '&.immediate': {
-        backgroundSize: 20,
-    },
-    '&.long_term': {
-        backgroundSize: 17,
-    },
-    '&.near_future': {
-        backgroundSize: 20,
-    },
-}));
-
 interface XVerticalStyledProps {
     borderRight?: boolean;
     borderBottom?: boolean;
     padding?: number;
     paddingLeft?: number;
     paddingRight?: number;
+    paddingTop?: number;
+    paddingBottom?: number;
 }
 
 const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
@@ -322,7 +274,9 @@ const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
     borderBottom: props.borderBottom ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
     padding: props.padding,
     paddingLeft: props.paddingLeft,
-    paddingRight: props.paddingRight
+    paddingRight: props.paddingRight,
+    paddingTop: props.paddingTop,
+    paddingBottom: props.paddingBottom
 }));
 
 interface XHorizontalStyledProps {
@@ -331,7 +285,9 @@ interface XHorizontalStyledProps {
     padding?: number;
     paddingLeft?: number;
     paddingRight?: number;
+    paddingTop?: number;
     paddingBottom?: number;
+    marginTop?: number;
 }
 
 const XHorizontalStyled = Glamorous(XHorizontal)<XHorizontalStyledProps>((props) => ({
@@ -340,37 +296,48 @@ const XHorizontalStyled = Glamorous(XHorizontal)<XHorizontalStyledProps>((props)
     padding: props.padding,
     paddingLeft: props.paddingLeft,
     paddingRight: props.paddingRight,
-    paddingBottom: props.paddingBottom
+    paddingTop: props.paddingTop,
+    paddingBottom: props.paddingBottom,
+    marginTop: props.marginTop
 }));
 
-const OpportunitiesWrapper = Glamorous.div({
+const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number }>((props) => ({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
+    marginBottom: props.marginBottom ? props.marginBottom : undefined,
     '&:first-child': {
         '& > div': {
-            height: 50,
+            minHeight: 50,
             paddingTop: 18,
-            paddingBottom: 5
+            // paddingBottom: 5
         }
     },
     '&:last-child': {
         '& > div': {
-            height: 50,
+            minHeight: 50,
             paddingBottom: 18,
-            paddingTop: 5
+            // paddingTop: 5
+        }
+    },
+    '&:only-child': {
+        '& > div': {
+            height: 'auto',
+            paddingBottom: 'unset',
+            paddingTop: 'unset'
         }
     }
-});
+}));
 
-const OpportunitiesTextWrapper = Glamorous.div({
-    width: 220,
+const OpportunitiesTextWrapper = Glamorous.div<{ width?: number, alignSelf?: string }>((props) => ({
+    width: props.width ? props.width : 220,
     height: '100%',
     flexShrink: 0,
     display: 'flex',
     alignItems: 'center',
+    alignSelf: props.alignSelf ? props.alignSelf : undefined,
     paddingLeft: 24
-});
+}));
 
 const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean }>((props) => ({
     minHeight: 35,
@@ -385,11 +352,11 @@ const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean }>((props) 
 const OpportunitiesValue = Glamorous.div({
     height: 32,
     borderRadius: 4,
-    backgroundColor: '#eeecfa',
+    backgroundColor: '#edf3fe',
     fontSize: 14,
     fontWeight: 500,
     lineHeight: 1.14,
-    color: '#5640d6',
+    color: '#4285f4',
     display: 'flex',
     alignItems: 'center',
     padding: '8px 9px',
@@ -423,9 +390,16 @@ interface DevelopmentOportunityProps {
     }[] | null;
 }
 
-const TagedRow = (props: { title: string, items: string[], bordered?: boolean }) => (
+interface TagRowMapProps {
+    title: string;
+    items: string[];
+    bordered?: boolean;
+    titleWidth?: number;
+}
+
+const TagRowMap = (props: TagRowMapProps) => (
     <OpportunitiesWrapper>
-        <OpportunitiesTextWrapper>
+        <OpportunitiesTextWrapper width={props.titleWidth}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered}>
@@ -438,123 +412,144 @@ const TagedRow = (props: { title: string, items: string[], bordered?: boolean })
     </OpportunitiesWrapper>
 );
 
+interface TagRowProps {
+    children?: any;
+    title: string;
+    text?: string;
+    bordered?: boolean;
+    titleWidth?: number;
+    isTextStyle?: boolean;
+    isTagStyle?: boolean;
+}
+
+const TagRow = (props: TagRowProps) => (
+    <OpportunitiesWrapper marginBottom={props.isTextStyle ? 13 : undefined}>
+        <OpportunitiesTextWrapper width={props.titleWidth} alignSelf={props.isTextStyle ? 'flex-start' : undefined}>
+            <Text bold={true}>{props.title}</Text>
+        </OpportunitiesTextWrapper>
+        <OpportunitiesValueWrapper bordered={props.bordered}>
+            {props.isTextStyle && (
+                <Text>
+                    {props.text}
+                </Text>
+            )}
+            {props.isTagStyle && (
+                <OpportunitiesValue>
+                    {props.text}
+                </OpportunitiesValue>
+            )}
+            {props.children}
+        </OpportunitiesValueWrapper>
+    </OpportunitiesWrapper>
+);
+
 const DevelopmentOportunityCard = Glamorous.div({
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
 });
 
-const ContentHider = Glamorous.div<{ hidden?: boolean }>((props) => ({
-    overflow: 'hidden',
-    maxHeight: props.hidden ? '0px' : '600px',
-    transition: 'all .2s'
-}));
+const StatusDot = Glamorous.div({
+    width: 6,
+    height: 6,
+    borderRadius: 50,
+    backgroundColor: '#50d25e',
+    marginRight: 6
+});
 
-class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, index: number }, { hidden: boolean }> {
-    constructor(props: { item: DevelopmentOportunityProps, orgId: string, index: number }) {
-        super(props);
-
-        this.state = {
-            hidden: true
-        };
-    }
-
-    switcher = () => {
-        let { hidden } = this.state;
-
-        this.setState({ hidden: !hidden });
-    }
-
+class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, full?: boolean, showType?: boolean }> {
     render() {
 
-        const { item } = this.props;
-
-        let buttonText = this.state.hidden ? 'Show full information' : 'Hide full information';
+        const { item, full } = this.props;
 
         return (
             <DevelopmentOportunityCard>
-                <XHorizontalStyled justifyContent="space-between" padding={24} paddingBottom={0}>
-                    <XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={160} height={120} />
+                <XHorizontalStyled justifyContent="space-between" padding={24}>
+                    {item.location && (
+                        <XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} />
+                    )}
+                    {!item.location && (
+                        <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} />
+                    )}
                     <XHorizontal flexGrow={1}>
-                        <div style={{ flexGrow: 1 }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
-                                <Title marginBottom={8}>{item.name}</Title>
+                                <Title marginBottom={4}>{item.name}</Title>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
                                         placement="bottom"
                                         content={(
                                             <>
-                                                <XButton text="edit" style="electric" query={{ field: 'editListing', value: item.id }} />
-                                                <XButton text="delete" style="danger" query={{ field: 'deleteListing', value: item.id }} />
+                                                <XButton text="edit" style="flat" query={{ field: 'editListing', value: item.id }} />
+                                                <XButton text="delete" style="flat" query={{ field: 'deleteListing', value: item.id }} />
                                             </>
                                         )}
                                     />
                                 </XWithRole>
                             </XHorizontal>
-                            <Text opacity={0.5} marginBottom={14}>{item.locationTitle}</Text>
-                            <XHorizontal separator="large">
+                            {this.props.showType && <Text opacity={0.5}>Development oportunity</Text>}
+                            <Text opacity={0.5}>{item.locationTitle}</Text>
+                            <XHorizontal separator="large" flexGrow={full ? 1 : undefined} alignItems={full ? 'flex-end' : undefined}>
                                 {item.area && (
-                                    <Title small={true}>{`Area: ${item.area} ft²`}</Title>
+                                    <Text opacity={!full ? 0.5 : undefined} bold={full ? true : undefined} marginTop={3}>{`Area: ${item.area} ft²`}</Text>
                                 )}
                                 {item.price && (
-                                    <Title small={true}>{`Price: $${item.price}`}</Title>
+                                    <Text opacity={!full ? 0.5 : undefined} bold={full ? true : undefined} marginTop={3}>{`Price: $${item.price}`}</Text>
                                 )}
                             </XHorizontal>
+                            {(!full && item.location) && (
+                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                    <Text><StatusDot />Open</Text>
+                                    <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
+                                </XHorizontalStyled>
+                            )}
+                            {(!full && !item.location) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
+
                         </div>
                     </XHorizontal>
                 </XHorizontalStyled>
 
-                <ContentHider hidden={this.state.hidden}>
-                    <XVertical>
+                {full && (
+                    <XVerticalStyled paddingBottom={24}>
                         <div>
                             {item.summary && (
-                                <OpportunitiesWrapper>
-                                    <OpportunitiesTextWrapper>
-                                        <Text bold={true}>Summary</Text>
-                                    </OpportunitiesTextWrapper>
-                                    <OpportunitiesValueWrapper>
-                                        <Text>
-                                            {item.summary}
-                                        </Text>
-                                    </OpportunitiesValueWrapper>
-                                </OpportunitiesWrapper>
+                                <TagRow title="Summary" text={item.summary} titleWidth={178} isTextStyle={true} />
                             )}
                             {item.availability && (
-                                <OpportunitiesWrapper>
-                                    <OpportunitiesTextWrapper>
-                                        <Text bold={true}>Availability</Text>
-                                    </OpportunitiesTextWrapper>
-                                    <OpportunitiesValueWrapper>
-                                        <Text>
-                                            {item.availability}
-                                        </Text>
-                                    </OpportunitiesValueWrapper>
-                                </OpportunitiesWrapper>
+                                <TagRow title="Availability" text={item.availability} titleWidth={178} isTextStyle={true} />
                             )}
                             {item.dealType && (
-                                <TagedRow title="Deal type" items={item.dealType} />
+                                <TagRowMap title="Deal type" items={item.dealType} titleWidth={178} />
                             )}
                             {item.shapeAndForm && (
-                                <TagedRow title="Shape and form" items={item.shapeAndForm} />
+                                <TagRowMap title="Shape and form" items={item.shapeAndForm} titleWidth={178} />
                             )}
                             {item.currentUse && (
-                                <TagedRow title="Current use" items={item.currentUse} />
+                                <TagRowMap title="Current use" items={item.currentUse} titleWidth={178} />
                             )}
                             {item.goodFitFor && (
-                                <TagedRow title="Good fit for" items={item.goodFitFor} />
+                                <TagRowMap title="Good fit for" items={item.goodFitFor} titleWidth={178} />
                             )}
                             {item.specialAttributes && (
-                                <TagedRow title="Special attributes" items={item.specialAttributes} />
+                                <TagRowMap title="Special attributes" items={item.specialAttributes} titleWidth={178} />
                             )}
-                        </div>
-                    </XVertical>
-                </ContentHider>
 
-                <XHorizontal justifyContent="center">
-                    <ShowMoreBtn onClick={this.switcher} marginTop={this.state.hidden ? -20 : 0} marginBottom={15}>{buttonText}</ShowMoreBtn>
-                </XHorizontal>
+                            <TagRow title="Status" titleWidth={178}>
+                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                    <Text><StatusDot />Open</Text>
+                                    <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
+                                </XHorizontalStyled>
+                            </TagRow>
+                        </div>
+                    </XVerticalStyled>
+                )}
+
             </DevelopmentOportunityCard>
         );
     }
 }
+
+const AquizitionRequestPhoto = Glamorous(XCloudImage)({
+    borderRadius: 4
+});
 
 interface AquizitionRequestProps {
     name: string;
@@ -574,85 +569,93 @@ interface AquizitionRequestProps {
     unitCapacity: string[] | null;
 }
 
-class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, index: number }, { hidden: boolean }> {
-    constructor(props: { item: AquizitionRequestProps, orgId: string, index: number }) {
-        super(props);
+const Thousander = (num: number) => (
+    Math.round(num).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+);
 
-        this.state = {
-            hidden: true
-        };
-    }
+const Lock = Glamorous(XIcon)({
+    width: 14,
+    height: 14,
+    fontSize: 14,
+    marginRight: 8
+});
 
-    switcher = () => {
-        let { hidden } = this.state;
+class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean }> {
 
-        this.setState({ hidden: !hidden });
-    }
     render() {
 
-        const { item } = this.props;
-
-        let buttonText = this.state.hidden ? 'Show full information' : 'Hide full information';
+        const { item, full } = this.props;
 
         return (
             <DevelopmentOportunityCard>
-                <XHorizontalStyled justifyContent="space-between" padding={24} paddingBottom={0}>
-                    <XAvatar photoRef={item.photo || undefined} size="large" style="square" />
+                <XHorizontalStyled justifyContent="space-between" padding={24}>
+                    {item.photo && (
+                        <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
+                    )}
+                    {!item.photo && (
+                        <img src={'/static/img/icons/organization/profile/img_placeholder_ar.svg'} />
+                    )}
+                    {/* <XAvatar photoRef={item.photo || undefined} size="large" style="square" /> */}
                     <XHorizontal flexGrow={1}>
-                        <div style={{ flexGrow: 1 }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
-                                <Title marginBottom={8}>{item.name}</Title>
+                                <Title marginBottom={4}>{item.name}</Title>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
                                         placement="bottom"
                                         content={(
                                             <>
-                                                <XButton text="edit" style="electric" query={{ field: 'editListing', value: item.id }} />
-                                                <XButton text="delete" style="danger" query={{ field: 'deleteListing', value: item.id }} />
+                                                <XButton text="edit" style="flat" query={{ field: 'editListing', value: item.id }} />
+                                                <XButton text="delete" style="flat" query={{ field: 'deleteListing', value: item.id }} />
                                             </>
                                         )}
                                     />
                                 </XWithRole>
                             </XHorizontal>
-                            <Text opacity={0.5} marginBottom={14}>{item.shortDescription}</Text>
+                            {this.props.showType && <Text opacity={0.5}>Aquizition request</Text>}
+                            <Text opacity={0.5}>{item.shortDescription}</Text>
+                            {item.areaRange && <Text opacity={0.5} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
+                            {(!full && item.areaRange) && (
+                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                    <Text><StatusDot />Open</Text>
+                                    <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
+                                </XHorizontalStyled>
+                            )}
+                            {(!full && !item.areaRange) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
                         </div>
                     </XHorizontal>
                 </XHorizontalStyled>
-
-                <ContentHider hidden={this.state.hidden}>
+                {full && (
                     <XVertical>
                         <div>
                             {item.summary && (
-                                <OpportunitiesWrapper>
-                                    <OpportunitiesTextWrapper>
-                                        <Text bold={true}>Summary</Text>
-                                    </OpportunitiesTextWrapper>
-                                    <OpportunitiesValueWrapper>
-                                        <Text>
-                                            {item.summary}
-                                        </Text>
-                                    </OpportunitiesValueWrapper>
-                                </OpportunitiesWrapper>
+                                <TagRow title="Summary" text={item.summary} titleWidth={178} isTextStyle={true} />
+                            )}
+                            {item.areaRange && (
+                                <TagRow title="Area range" text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} titleWidth={178} isTagStyle={true} />
                             )}
                             {item.geographies && (
-                                <TagedRow title="Geographies" items={item.geographies} />
+                                <TagRowMap title="Geographies" items={item.geographies} titleWidth={178} />
                             )}
                             {item.landUse && (
-                                <TagedRow title="Land use" items={item.landUse} />
+                                <TagRowMap title="Land use" items={item.landUse} titleWidth={178} />
                             )}
                             {item.specialAttributes && (
-                                <TagedRow title="Special attributes" items={item.specialAttributes} />
+                                <TagRowMap title="Special attributes" items={item.specialAttributes} titleWidth={178} />
                             )}
                             {item.unitCapacity && (
-                                <TagedRow title="Unit capacity" items={item.unitCapacity} />
+                                <TagRowMap title="Unit capacity" items={item.unitCapacity} titleWidth={178} />
                             )}
+                            <TagRow title="Status" titleWidth={178}>
+                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                    <Text><StatusDot />Open</Text>
+                                    <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
+                                </XHorizontalStyled>
+                            </TagRow>
                         </div>
                     </XVertical>
-                </ContentHider>
+                )}
 
-                <XHorizontal justifyContent="center">
-                    <ShowMoreBtn onClick={this.switcher} marginTop={this.state.hidden ? -20 : 0} marginBottom={15}>{buttonText}</ShowMoreBtn>
-                </XHorizontal>
             </DevelopmentOportunityCard>
         );
     }
@@ -660,6 +663,24 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
 
 const Field = Glamorous(XFormField)({
     flex: 1
+});
+
+const DelLinkBtn = Glamorous(XButton)({
+    marginRight: -24,
+});
+
+const AddLinkBtn = Glamorous(XButton)({
+    marginLeft: -14,
+    marginTop: -8,
+});
+
+const ShowListingLink = Glamorous(XLink)({
+    fontSize: 14,
+    fontWeight: 500,
+    color: '#765efd',
+    cursor: 'pointer',
+    marginBottom: 23,
+    marginTop: 20
 });
 
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
@@ -696,7 +717,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                 shapeAndForm: target.shapeAndForm,
                 currentUse: target.currentUse,
                 goodFitFor: target.goodFitFor,
-                additionalLinks: target.additionalLinks
+                additionalLinks: target.additionalLinks || []
             }
         };
     }
@@ -716,7 +737,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
         editListingDefaultData = {
             input: {
                 ...editCommon,
-                photo: editArTarget.photo,
+                photo: sanitizeIamgeRef(editArTarget.photo),
                 shortDescription: editArTarget.shortDescription,
                 geographies: editArTarget.geographies,
                 landUse: editArTarget.landUse,
@@ -725,6 +746,61 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
             }
         };
     }
+
+    let linksElements = (
+        <>
+            <XStoreContext.Consumer>
+                {(store) => {
+                    return (((store && store.readValue('fields.input.additionalLinks')) || []).map((link: any, i: number) => {
+                        return (
+                            <XHorizontal key={'link_' + i} >
+                                <Field title="Link text">
+                                    <XInput field={`input.additionalLinks.${i}.text`} placeholder="Link text" />
+                                </Field>
+                                <XVertical separator="none" flexGrow={1}>
+                                    <XHorizontal >
+                                        <XFormFieldTitle>Link text</XFormFieldTitle>
+                                        <DelLinkBtn
+                                            style="link_danger"
+                                            text="Delete"
+                                            onClick={() => {
+                                                if (store) {
+                                                    let links: any[] = store.readValue('fields.input.additionalLinks') || [];
+                                                    links.splice(i, 1);
+                                                    store.writeValue('fields.input.additionalLinks', links);
+                                                }
+
+                                            }}
+                                        />
+                                        <div />
+                                    </XHorizontal>
+                                    <XInput field={`input.additionalLinks.${i}.url`} placeholder="Link url" />
+                                </XVertical>
+                            </XHorizontal>
+                        );
+                    }));
+                }}
+            </XStoreContext.Consumer>
+            <XStoreContext.Consumer>
+                {(store) => {
+                    let links = store ? store.readValue('fields.input.additionalLinks') || [] : [];
+                    return (
+                        <AddLinkBtn
+                            onClick={() => {
+                                if (store) {
+                                    links.push({ text: '', url: '' });
+                                    store.writeValue('fields.input.additionalLinks', links);
+                                }
+                            }}
+                            text={`Add${links.length === 0 ? '' : ' another'} link`}
+                            style="link"
+                            alignSelf="flex-start"
+                        />
+                    );
+                }}
+            </XStoreContext.Consumer>
+        </>
+    );
 
     let editListingDefaultAction = async (data: any) => {
 
@@ -747,6 +823,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     shapeAndForm: input.shapeAndForm,
                     currentUse: input.currentUse,
                     goodFitFor: input.goodFitFor,
+                    additionalLinks: (input.additionalLinks || []).map((l: any) => ({ text: l.text, url: l.url })),
 
                     photo: input.photo,
                     shortDescription: input.shortDescription,
@@ -761,6 +838,21 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
     let rootPath = '/o/' + props.data.organization.id;
     let lsitingsPath = '/o/' + props.data.organization.id + '/listings';
+    let lsitingsAllPath = '/o/' + props.data.organization.id + '/listings/all';
+
+    const { organization } = props.data;
+
+    let cardCountDO = 0;
+    let cardCountAR = 0;
+
+    let cardFilter = (cb: () => any, counter: number) => {
+        counter++;
+        if (counter <= 3) {
+            return cb();
+        } else {
+            return;
+        }
+    };
 
     return (
         <>
@@ -769,175 +861,209 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                 <Scaffold.Content padding={false} bottomOffset={false} >
                     <Root>
                         <Header>
-                            <HeaderPicture />
-                            <HeaderContent>
-                                <OrganizationData>
-                                    <Avatar cloudImageUuid={props.data.organization.photo!!} size="large" style="square" />
-                                    <OrganizationName>{props.data.organization.name}</OrganizationName>
-                                    {/* <OrganizationPlace>San Francisco, CA</OrganizationPlace> */}
-                                </OrganizationData>
-                                <SwitcherWrapper flatStyle={true}>
+                            <AvatarWrapper>
+                                <Avatar cloudImageUuid={organization.photo!!} size="large" style="square" />
+                            </AvatarWrapper>
+                            <XVerticalStyled flexShrink={0} flexGrow={1} justifyContent="space-between" paddingTop={35}>
+                                <OrganizationName>{organization.name}</OrganizationName>
+                                <SwitcherWrapper flatStyle={true} height={60}>
                                     <Switcher path={rootPath}>Overview</Switcher>
-                                    <Switcher path={lsitingsPath}>{'Listings (' + (((props.data.organization.developmentOportunities && props.data.organization.developmentOportunities.length) || 0) + ((props.data.organization.acquisitionRequests && props.data.organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
-
+                                    <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                    <Switcher path={lsitingsAllPath}>{'All listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
                                 </SwitcherWrapper>
-                                <XHorizontal>
-                                    {!props.data.organization.isMine && (
-                                        <XButton
-                                            style="primary"
-                                            size="medium"
-                                            text={props.data.organization!!.followed ? 'Following' : 'Follow'}
-                                            action={async () => {
-                                                console.warn(props.data.organization!!.followed);
-                                                await props.followOrganization({ variables: { follow: !props.data.organization!!.followed } });
-                                            }}
-                                        />
-                                    )}
-                                    <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
-                                        <XButton
-                                            style="primary"
-                                            size="medium"
-                                            icon="edit"
-                                            text="Edit"
-                                            path="/settings/organization"
-                                        />
-                                        <XButton
-                                            query={{ field: 'addListing', value: 'DO' }}
-                                            size="medium"
-                                            text="Add DO"
-                                            icon="add"
-                                            style="primary"
-                                            alignSelf="flex-start"
-                                        />
+                            </XVerticalStyled>
+                            <XHorizontalStyled paddingTop={20}>
+                                {!organization.isMine && (
+                                    <XButton
+                                        style="primary"
+                                        size="medium"
+                                        text={organization!!.followed ? 'Following' : 'Follow'}
+                                        action={async () => {
+                                            console.warn(organization!!.followed);
+                                            await props.followOrganization({ variables: { follow: !organization!!.followed } });
+                                        }}
+                                    />
+                                )}
+                                <XWithRole role={['org-' + organization.id + '-admin']}>
+                                    <XButton
+                                        style="primary"
+                                        size="medium"
+                                        icon="edit"
+                                        text="Edit"
+                                        path="/settings/organization"
+                                    />
+                                    <XButton
+                                        query={{ field: 'addListing', value: 'DO' }}
+                                        size="medium"
+                                        text="Add DO"
+                                        icon="add"
+                                        style="primary"
+                                        alignSelf="flex-start"
+                                    />
 
-                                        <XButton
-                                            query={{ field: 'addListing', value: 'AR' }}
-                                            size="medium"
-                                            text="Add AR"
-                                            icon="add"
-                                            style="primary"
-                                            alignSelf="flex-start"
-                                        />
+                                    <XButton
+                                        query={{ field: 'addListing', value: 'AR' }}
+                                        size="medium"
+                                        text="Add AR"
+                                        icon="add"
+                                        style="primary"
+                                        alignSelf="flex-start"
+                                    />
 
-                                    </XWithRole>
-                                </XHorizontal>
-                            </HeaderContent>
+                                </XWithRole>
+                            </XHorizontalStyled>
                         </Header>
+
                         <MainContent>
+
                             <XHorizontal>
                                 <XVertical flexGrow={1}>
+                                    <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
+                                        {props.router.path === rootPath && (
+                                            <>
+                                                <OverviewPlaceholder />
+                                                <DOAROverviewPlaceholder />
+                                            </>
+                                        )}
+                                    </XWithRole>
                                     {props.router.path === rootPath && (
                                         <>
-                                            <XCardStyled padding={0}>
-                                                <XHorizontal>
-                                                    <XVerticalStyled flexGrow={1} borderRight={true} padding={24}>
-                                                        <Title>Development models</Title>
-                                                        {props.data.organization.developmentModels && (
-                                                            props.data.organization.developmentModels!!.map((s, k) => (
-                                                                <TagItem key={k + '_' + s}>
-                                                                    <TagImg img={s!} className={s!!} />
-                                                                    <Text bold={true} upperCase={true}>
-                                                                        {s}
-                                                                    </Text>
-                                                                </TagItem>
-                                                            )))
-                                                        }
-                                                    </XVerticalStyled>
-                                                    <XVerticalStyled flexGrow={1} padding={24}>
-                                                        <Title>Availability</Title>
-                                                        {props.data.organization.availability && (
-                                                            props.data.organization.availability!!.map((s, k) => (
-                                                                <TagItem key={k + '_' + s}>
-                                                                    <TagImg img={s!} className={s!!} />
-                                                                    <Text bold={true} upperCase={true}>
-                                                                        {s}
-                                                                    </Text>
-                                                                </TagItem>
-                                                            )))
-                                                        }
-                                                    </XVerticalStyled>
-                                                </XHorizontal>
-                                            </XCardStyled>
+
+                                            {(organization.organizationType || organization.lookingFor || organization.geographies) && (
+                                                <XCardStyled padding={0}>
+                                                    {organization.organizationType && (
+                                                        <TagRowMap title="Organization type" items={organization.organizationType} bordered={true} />
+                                                    )}
+                                                    {organization.lookingFor && (
+                                                        <TagRowMap title="Looking for" items={organization.lookingFor} bordered={true} />
+                                                    )}
+                                                    {organization.geographies && (
+                                                        <TagRowMap title="Geographies" items={organization.geographies} bordered={true} />
+                                                    )}
+
+                                                </XCardStyled>
+                                            )}
+
                                             <XCardStyled padding={0}>
                                                 <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                                    <Title marginBottom={24}>Tags</Title>
+                                                    <Title marginBottom={24}>Development opportunities</Title>
                                                 </XVerticalStyled>
 
-                                                <div>
-                                                    {props.data.organization.potentialSites && (
-                                                        <OpportunitiesWrapper>
-                                                            <OpportunitiesTextWrapper>
-                                                                <Text bold={true}>Number of potential sites</Text>
-                                                            </OpportunitiesTextWrapper>
-                                                            <OpportunitiesValueWrapper bordered={true}>
-                                                                {props.data.organization.potentialSites!!.map((s, k) => (
-                                                                    <OpportunitiesValue key={k + '_' + s}>
-                                                                        {
-                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 5) ?
-                                                                                '0-5 sites' :
-                                                                                ((s.to || Number.MAX_SAFE_INTEGER) <= 50) ?
-                                                                                    '5-50 sites' :
-                                                                                    '50+ sites'
-                                                                        }
-                                                                    </OpportunitiesValue>
-                                                                ))}
-                                                            </OpportunitiesValueWrapper>
-                                                        </OpportunitiesWrapper>
+                                                <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
+                                                    {organization.doShapeAndForm && (
+                                                        <TagRowMap title="Shape and form" items={organization.doShapeAndForm} bordered={true} />
                                                     )}
-                                                    {props.data.organization.siteSizes && (
-                                                        <OpportunitiesWrapper>
-                                                            <OpportunitiesTextWrapper>
-                                                                <Text bold={true}>Site sizes</Text>
-                                                            </OpportunitiesTextWrapper>
-                                                            <OpportunitiesValueWrapper bordered={true}>
-                                                                {props.data.organization.siteSizes!!.map((s, k) => (
-                                                                    <OpportunitiesValue key={k + '_' + s}>
-                                                                        {
-                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 10000) ?
-                                                                                'small (up to 10,000 sf)' :
-                                                                                ((s.to || Number.MAX_SAFE_INTEGER) <= 100000) ?
-                                                                                    'medium (10,000 - 100,000 sf)' :
-                                                                                    'large (100,000 + sf)'
-                                                                        }
-                                                                    </OpportunitiesValue>
-                                                                ))}
-                                                            </OpportunitiesValueWrapper>
-                                                        </OpportunitiesWrapper>
+                                                    {organization.doCurrentUse && (
+                                                        <TagRowMap title="Current use" items={organization.doCurrentUse} bordered={true} />
                                                     )}
-                                                    {props.data.organization.landUse && (
-                                                        <TagedRow title="Land use" items={props.data.organization.landUse} bordered={true} />
+                                                    {organization.doGoodFitFor && (
+                                                        <TagRowMap title="Good fit for  " items={organization.doGoodFitFor} bordered={true} />
+                                                    )}
+                                                    {organization.doSpecialAttributes && (
+                                                        <TagRowMap title="Special attributes" items={organization.doSpecialAttributes} bordered={true} />
+                                                    )}
+                                                    {organization.doAvailability && (
+                                                        <TagRowMap title="Availability " items={organization.doAvailability} bordered={true} />
                                                     )}
 
-                                                    {props.data.organization.goodFor && (
-                                                        <TagedRow title="Good fit for" items={props.data.organization.goodFor} bordered={true} />
-                                                    )}
+                                                </div>
+                                                {organization.developmentOportunities && (
+                                                    organization.developmentOportunities.map((devop, i) => (
+                                                        cardFilter(() => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} />, cardCountAR)
+                                                    ))
+                                                )}
+                                                <XHorizontal justifyContent="center">
+                                                    <ShowListingLink path={lsitingsPath}>
+                                                        View all ({organization.developmentOportunities!!.length}) >
+                                                        </ShowListingLink>
+                                                </XHorizontal>
+                                            </XCardStyled>
 
-                                                    {props.data.organization.specialAttributes && (
-                                                        <TagedRow title="Special attributes" items={props.data.organization.specialAttributes} bordered={true} />
+                                            <XCardStyled padding={0}>
+                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
+                                                    <Title marginBottom={24}>Acquisition requests</Title>
+                                                </XVerticalStyled>
+
+                                                <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
+                                                    {organization.arGeographies && (
+                                                        <TagRowMap title="Geographies" items={organization.arGeographies} bordered={true} />
+                                                    )}
+                                                    {organization.arAreaRange && (
+                                                        <TagRowMap title="Area range" items={organization.arAreaRange} bordered={true} />
+                                                    )}
+                                                    {organization.arHeightLimit && (
+                                                        <TagRowMap title="Height limit" items={organization.arHeightLimit} bordered={true} />
+                                                    )}
+                                                    {organization.arLandUse && (
+                                                        <TagRowMap title="Land use" items={organization.arLandUse} bordered={true} />
+                                                    )}
+                                                    {organization.arSpecialAttributes && (
+                                                        <TagRowMap title="Special attributes " items={organization.arSpecialAttributes} bordered={true} />
+                                                    )}
+                                                    {organization.arActivityStatus && (
+                                                        <TagRowMap title="Activity status" items={organization.arActivityStatus} bordered={true} />
+                                                    )}
+                                                    {organization.arAquisitionBudget && (
+                                                        <TagRowMap title="3-year aquisition budget" items={organization.arAquisitionBudget} bordered={true} />
+                                                    )}
+                                                    {organization.arAquisitionRate && (
+                                                        <TagRowMap title="Aquisition rate" items={organization.arAquisitionRate} bordered={true} />
+                                                    )}
+                                                    {organization.arClosingTime && (
+                                                        <TagRowMap title="Closing time" items={organization.arClosingTime} bordered={true} />
                                                     )}
                                                 </div>
 
+                                                {organization.acquisitionRequests && (
+                                                    organization.acquisitionRequests.map((devop, i) => (
+                                                        cardFilter(() => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} />, cardCountDO)
+                                                    ))
+                                                )}
+                                                <XHorizontal justifyContent="center">
+                                                    <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
+                                                        View all ({organization.acquisitionRequests!!.length})
+                                                        </ShowListingLink>
+                                                </XHorizontal>
                                             </XCardStyled>
                                         </>
                                     )}
 
                                     {props.router.path === lsitingsPath && (
-                                        <XCardStyled padding={0}>
-                                            <XVerticalStyled borderBottom={true} flexGrow={1} padding={0} paddingLeft={24} paddingRight={24}>
-                                                <SwitcherWrapper flatStyle={true} height={66}>
-                                                    <Switcher query={{ field: 'listingType' }}>Development opportunities</Switcher>
-                                                    <Switcher query={{ field: 'listingType', value: 'ar' }}>Acquisition requests</Switcher>
+                                        <>
+                                            <DOARListingPlaceholder />
+                                            <XCardStyled padding={0}>
+                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={0} paddingLeft={24} paddingRight={24}>
+                                                    <SwitcherWrapper flatStyle={true} height={66}>
+                                                        <Switcher query={{ field: 'listingType' }}>Development opportunities</Switcher>
+                                                        <Switcher query={{ field: 'listingType', value: 'ar' }}>Acquisition requests</Switcher>
 
-                                                </SwitcherWrapper>
-                                            </XVerticalStyled>
-                                            {props.router.path === lsitingsPath && props.router.query.listingType === undefined && props.data.organization && props.data.organization.developmentOportunities && (
-                                                props.data.organization.developmentOportunities.map((devop, i) => < DevelopmentOportunity key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
-                                            )}
-                                            {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && props.data.organization && props.data.organization.acquisitionRequests && (
-                                                props.data.organization.acquisitionRequests.map((devop, i) => < AquizitionRequest key={'do_' + i} orgId={props.data.organization.id} item={devop} index={i} />)
-                                            )}
-                                        </XCardStyled>
+                                                    </SwitcherWrapper>
+                                                </XVerticalStyled>
+                                                {props.router.path === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
+                                                    organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                )}
+                                                {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
+                                                    organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                )}
+                                            </XCardStyled>
+                                        </>
                                     )}
+
+                                    {props.router.path === lsitingsAllPath && (
+                                        <>
+                                            <DOARListingPlaceholder />
+                                            <XCardStyled padding={0}>
+                                                {props.router.path === lsitingsAllPath && organization && organization.listingsAll && (
+                                                    organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} /> : < AquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} />)
+                                                )}
+                                                {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
+                                                    organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                )}
+                                            </XCardStyled>
+                                        </>
+
+                                    )}
+
                                     {props.router.query.addListing && (
                                         <XModalForm
                                             title={props.router.query.addListing === 'DO' ? 'Create development opportunity' : 'Create acquisition requests'}
@@ -1022,7 +1148,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             </XFormField>
                                                             <XFormField title="Special attributes">
                                                                 <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
-                                                            </XFormField></>
+                                                            </XFormField>
+                                                            <XTitle>Additional links</XTitle>
+                                                            {linksElements}
+                                                        </>
                                                     )}
                                                     {props.router.query.addListing === 'AR' && (
                                                         <>
@@ -1123,20 +1252,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                                 <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
                                                             </XFormField>
                                                             <XTitle>Additional links</XTitle>
-                                                            {editDoTarget.additionalLinks && editDoTarget.additionalLinks.map((link, i) => {
-                                                                return (
-                                                                    <XHorizontal key={'link_' + i} >
-                                                                        <Field title="Link text">
-                                                                            <XInput field={`input.additionalLinks.${i}.text`} placeholder="Link text" />
-                                                                        </Field>
-                                                                        <Field title="Link text">
-                                                                            <XInput field={`input.additionalLinks.${i}.url`} placeholder="Link url" />
-                                                                        </Field>
-                                                                    </XHorizontal>
-                                                                );
-                                                            })}
-                                                            <XButton query={{ field: 'addLink', value: editDoTarget.id }} />
-
+                                                            {linksElements}
                                                         </>
 
                                                     )}
@@ -1164,8 +1280,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             </XFormField>
                                                             <XFormField title="Unit Capacity">
                                                                 <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
-                                                            </XFormField></>
-
+                                                            </XFormField>
+                                                        </>
                                                     )}
                                                 </XVertical>
                                             </XFormLoadingContent>
@@ -1200,21 +1316,21 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                 </XVertical>
                                 <XVertical width={270} flexShrink={0}>
-                                    {props.data.organization.about && (
+                                    {organization.about && (
                                         <XCardStyled padding={18}>
                                             <Title small={true} marginBottom={10}>
                                                 About
                                         </Title>
-                                            <AboutContent text={props.data.organization.about} />
+                                            <AboutContent text={organization.about} />
                                         </XCardStyled>
                                     )}
                                     <XCardStyled padding={0} paddingTop={18} paddingBottom={20}>
                                         <Title small={true} marginBottom={10} marginLeft={18}>Contacts</Title>
-                                        <ContactPersons contacts={props.data.organization.contacts!!.filter(c => c !== null) as any} />
+                                        <ContactPersons contacts={organization.contacts!!.filter(c => c !== null) as any} />
                                         <SocialLinksWrapper>
-                                            {props.data.organization.website && <SocialLink href={props.data.organization.website}>Website</SocialLink>}
-                                            {props.data.organization.facebook && <SocialLinkImg className="fb" href={props.data.organization.facebook} />}
-                                            {props.data.organization.twitter && <SocialLinkImg className="tw" href={props.data.organization.twitter} />}
+                                            {organization.website && <SocialLink href={organization.website}>Website</SocialLink>}
+                                            {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
+                                            {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
                                         </SocialLinksWrapper>
                                     </XCardStyled>
                                 </XVertical>
