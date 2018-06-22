@@ -31,7 +31,7 @@ import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { DateFormater } from 'openland-x-format/XDate';
-import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder } from './placeholders';
+import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder } from './placeholders';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import PlaceholderAR from './img_placeholder_ar.svg';
@@ -873,6 +873,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                             </AvatarWrapper>
                             <XVerticalStyled flexShrink={0} flexGrow={1} justifyContent="space-between" paddingTop={35}>
                                 <OrganizationName>{organization.name}</OrganizationName>
+                                {organization.location && <Text opacity={0.5}>{organization.location}</Text>}
+                                <XWithRole role={['org-' + organization.id + '-admin']}>
+                                    {!organization.location && <LocationPlaceholder />}
+                                </XWithRole>
                                 <SwitcherWrapper flatStyle={true} height={60}>
                                     <Switcher path={rootPath}>Overview</Switcher>
                                     <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>

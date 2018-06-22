@@ -20,6 +20,8 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
 import PlaceholderContact from './placeholder_contact.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { XForm } from 'openland-x-forms/XForm2';
+import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 
 const Placeholder = Glamorous(XCard)({
     backgroundColor: '#654bfa',
@@ -560,7 +562,8 @@ const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, pa
     paddingBottom: props.paddingBottom
 }));
 
-const Text = Glamorous.div((props) => ({
+const Text = Glamorous.div<{ opacity?: number }>((props) => ({
+    opacity: props.opacity,
     display: 'flex',
     alignItems: 'center',
     fontSize: 15,
@@ -698,5 +701,64 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
             </XFormLoadingContent>
         </XModalForm>
 
+    );
+});
+
+export const LocationPlaceholder = withMyOrganizationProfile((props) => {
+    return (
+        <XModalForm
+            defaultData={{
+                input: {
+                    location: props.data.myOrganizationProfile!!.location,
+                }
+            }}
+            defaultAction={async (data) => {
+                await props.updateOrganizaton({
+                    variables: {
+                        input: {
+                            location: data.input.location,
+                        }
+                    }
+                });
+            }}
+            target={(
+                <div style={{ cursor: 'pointer' }}>
+                    <Text opacity={0.5}>+ Add location</Text>
+                </div>
+            )}
+        >
+            <XVertical>
+                <XFormLoadingContent>
+                    <XFormField title="Location">
+                        <XInput field="input.location" />
+                    </XFormField>
+                </XFormLoadingContent>
+            </XVertical>
+        </XModalForm>
+
+    );
+});
+
+export const AvatartPlaceholder = withMyOrganizationProfile((props) => {
+    return (
+        <XForm
+            defaultData={{
+                input: {
+                    photoRef: sanitizeIamgeRef(props.data.myOrganizationProfile!!.photoRef),
+                }
+            }}
+            defaultAction={async (data) => {
+                await props.updateOrganizaton({
+                    variables: {
+                        input: {
+                            photoRef: data.input.photoRef,
+                        }
+                    }
+                });
+            }}
+            defaultLayout={false}
+        >
+            <XAvatarUpload field="input.photoRef" />
+        </XForm>
     );
 });
