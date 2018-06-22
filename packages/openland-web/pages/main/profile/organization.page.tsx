@@ -951,7 +951,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                                 <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
                                                     {organization.doShapeAndForm && (
-                                                        <TagRowMap title="Geographies" items={organization.doShapeAndForm} bordered={true} />
+                                                        <TagRowMap title="Shape and form" items={organization.doShapeAndForm} bordered={true} />
                                                     )}
                                                     {organization.doCurrentUse && (
                                                         <TagRowMap title="Current use" items={organization.doCurrentUse} bordered={true} />
