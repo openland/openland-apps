@@ -16,6 +16,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const Placeholder = Glamorous(XCard)({
+    backgroundColor: '#654bfa',
     padding: 34,
     flex: 1,
 });
@@ -24,9 +25,10 @@ const PlaceholderButton = Glamorous(XButton)({
     marginLeft: 16
 });
 
-const PlaceholderText = Glamorous.label({
+const PlaceholderText = Glamorous.span({
     marginLeft: 16,
-    ...XStyles.text.h500
+    ...XStyles.text.h500,
+    color: '#ffffff'
 });
 
 const PlaceholderIcon = Glamorous.img((props) => ({
@@ -51,12 +53,12 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
     return ((!props.data.myOrganizationProfile.organizationType && !props.data.myOrganizationProfile.geographies && !props.data.myOrganizationProfile.lookingFor) ? (
         <Placeholder>
             <XHorizontal>
-
                 <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_overview.svg'} />
                 <XVertical>
                     <PlaceholderText>Your account has been created - now it will be easier to connect with real estate companies. To make most of it we recommend to share more information about your company. </PlaceholderText>
 
                     <XModalForm
+                        title="Organization Profile"
                         defaultData={{
                             input: {
                                 organizationType: props.data.myOrganizationProfile!!.organizationType,
@@ -86,13 +88,34 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                         <XVertical>
                             <XFormLoadingContent>
                                 <XVertical flexGrow={1} maxWidth={500}>
-                                    <XFormField title="OrganizationType">
-                                        <XSelect creatable={true} multi={true} field="input.organizationType" />
+                                    <XFormField
+                                        title="What's type of your entity?"
+                                        description="Are you corporation, non profit or public entity?"
+                                        field="input.organizationType"
+                                    >
+                                        <XSelect
+                                            creatable={true}
+                                            multi={false}
+                                            field="input.organizationType"
+                                            options={[
+                                                { value: 'Public', label: 'Public', },
+                                                { value: 'Corporation', label: 'Corporation' },
+                                                { value: 'Nonprofit Corporation', label: 'Nonprofit Corporation' }
+                                            ]}
+                                        />
                                     </XFormField>
-                                    <XFormField title="LookingFor">
+                                    <XFormField
+                                        title="What are you looking for?"
+                                        description="Tell us more about your goals. What you are struggling to find?"
+                                        field="input.lookingFor"
+                                    >
                                         <XSelect creatable={true} multi={true} field="input.lookingFor" />
                                     </XFormField>
-                                    <XFormField title="Geographies">
+                                    <XFormField
+                                        title="Where are you looking for deals?"
+                                        description="Whole US? Specific state or city?"
+                                        field="input.geographies"
+                                    >
                                         <XSelect creatable={true} multi={true} field="input.geographies" />
                                     </XFormField>
                                 </XVertical>
@@ -503,7 +526,7 @@ export const NewsPlaceholder = withMyOrganizationProfile((props) => {
                     <XVertical>
                         <XHorizontal>
 
-                                    <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
+                            <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
                             <XVertical maxWidth={452}>
                                 <PlaceholderText>Share your recent press coverage</PlaceholderText>
                                 <PlaceholderButton
