@@ -22,6 +22,7 @@ interface NavigableProps {
     // Navigation action
     href?: string;
     path?: string;
+    anchor?: string;
     query?: { field: string, value?: string, clear?: boolean };
     autoClose?: boolean;
 
@@ -75,6 +76,10 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
         }
 
         onClick: React.MouseEventHandler<any> = (e) => {
+
+            if (this.props.anchor) {
+                return;
+            }
 
             // Ignore if disabled
             if (this.props.enabled === false) {
@@ -134,7 +139,9 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             let isActive = this.resolveIsActive();
 
             // Resolving Url
-            if (this.props.path) {
+            if (this.props.anchor) {
+                linkHref = this.props.anchor!;
+            } else if (this.props.path) {
                 linkHref = this.props.__router.resolveLink(this.props.path!!);
             } else if (this.props.query) {
                 let linkPath = resolveActionPath(this.props, this.props.__router);

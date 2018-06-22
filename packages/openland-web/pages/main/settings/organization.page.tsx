@@ -159,7 +159,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                             <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
                         </XVertical>
                     </XForm>
-                    <XTitle>Development Opportunities</XTitle>
+                    <XTitle id="do">Development Opportunities</XTitle>
                     <XForm
                         defaultData={{
                             input: {
@@ -234,7 +234,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                         </XVertical>
                     </XForm>
 
-                    <XTitle>Acquisition requests</XTitle>
+                    <XTitle id="ar">Acquisition requests</XTitle>
                     <XForm
                         defaultData={{
                             input: {
@@ -350,7 +350,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                         </XVertical>
                     </XForm>
 
-                    <XTitle>Contacts</XTitle>
+                    <XTitle id="contacts">Contacts</XTitle>
                     {props.data.myOrganizationProfile!!.contacts.filter(c => c !== null).map((c, i) => <ContactPersonItem key={i} contact={c!!} index={i} />)}
                     <XButton query={{ field: 'addContact', value: 'true' }} text="Add Contact" style="primary" alignSelf="flex-start" />
 

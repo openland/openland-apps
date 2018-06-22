@@ -686,6 +686,10 @@ const ShowListingLink = Glamorous(XLink)({
     marginTop: 20
 });
 
+const FormFieldTitle = Glamorous(XFormFieldTitle)({
+    flexGrow: 1
+});
+
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
 
     let editDoTarget = props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editListing)[0];
@@ -706,12 +710,12 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
         editListingDefaultData = {
             input: {
                 ...editCommon,
-                location: {
+                location: editDoTarget.location ? {
                     result: {
                         text: editDoTarget.locationTitle,
                         center: [editDoTarget.location!.lon, editDoTarget.location!.lat]
                     }
-                },
+                } : undefined,
                 locationTitle: target.locationTitle,
                 availability: target.availability,
                 area: target.area,
@@ -762,7 +766,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 </Field>
                                 <XVertical separator="none" flexGrow={1}>
                                     <XHorizontal >
-                                        <XFormFieldTitle>Link text</XFormFieldTitle>
+                                        <FormFieldTitle>Link text</FormFieldTitle>
                                         <DelLinkBtn
                                             style="link_danger"
                                             text="Delete"

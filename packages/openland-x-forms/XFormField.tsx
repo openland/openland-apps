@@ -18,7 +18,6 @@ export const XFormFieldTitle = Glamorous.div<{ invalid?: boolean }>((props) => (
     height: 32,
     paddingTop: 4,
     marginLeft: 0,
-    flexGrow: 1,
 }));
 const OptionalLabel = Glamorous.span({
     opacity: 0.4,
