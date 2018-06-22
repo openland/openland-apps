@@ -34,3 +34,17 @@ export function XDate(props: { value: string, format?: 'date' | 'humanize' | 'hu
         );
     }
 }
+
+export const DateFormater = (time: string) => {
+    const date = new Date(time);
+
+    let year = date.getFullYear();
+
+    let month = (1 + date.getMonth()).toString();
+    month = months[month];
+
+    let day = date.getDate().toString();
+    day = day.length > 1 ? day : '0' + day;
+
+    return month + ' ' + day + ',' + year;
+};

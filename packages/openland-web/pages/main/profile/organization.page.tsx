@@ -30,6 +30,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { DateFormater } from 'openland-x-format/XDate';
 import { OverviewPlaceholder, DOOverviewPlaceholder, AROverviewPlaceholder } from './placeholders';
 
 const Root = Glamorous(XVertical)({
@@ -130,14 +131,26 @@ const ContactWrapper = Glamorous(XHorizontal)({
     paddingRight: 18
 });
 
-const Text = Glamorous.div<{ opacity?: number, bold?: boolean, upperCase?: boolean, marginBottom?: number }>((props) => ({
-    fontSize: 15,
-    lineHeight: 1.33,
+interface TextProps {
+    opacity?: number;
+    bold?: boolean;
+    upperCase?: boolean;
+    marginBottom?: number;
+    marginTop?: number;
+    small?: boolean;
+}
+
+const Text = Glamorous.div<TextProps>((props) => ({
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: props.small ? 14 : 15,
+    lineHeight: props.small ? 1.43 : 1.33,
     color: '#334562',
     opacity: props.opacity,
     fontWeight: props.bold ? 500 : undefined,
     textTransform: props.upperCase ? 'capitalize' : undefined,
-    marginBottom: props.marginBottom
+    marginBottom: props.marginBottom,
+    marginTop: props.marginTop
 }));
 
 const SocialLinksWrapper = Glamorous.div({
@@ -272,6 +285,7 @@ interface XHorizontalStyledProps {
     paddingRight?: number;
     paddingTop?: number;
     paddingBottom?: number;
+    marginTop?: number;
 }
 
 const XHorizontalStyled = Glamorous(XHorizontal)<XHorizontalStyledProps>((props) => ({
@@ -281,25 +295,27 @@ const XHorizontalStyled = Glamorous(XHorizontal)<XHorizontalStyledProps>((props)
     paddingLeft: props.paddingLeft,
     paddingRight: props.paddingRight,
     paddingTop: props.paddingTop,
-    paddingBottom: props.paddingBottom
+    paddingBottom: props.paddingBottom,
+    marginTop: props.marginTop
 }));
 
-const OpportunitiesWrapper = Glamorous.div({
+const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number }>((props) => ({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
+    marginBottom: props.marginBottom ? props.marginBottom : undefined,
     '&:first-child': {
         '& > div': {
-            height: 50,
+            minHeight: 50,
             paddingTop: 18,
-            paddingBottom: 5
+            // paddingBottom: 5
         }
     },
     '&:last-child': {
         '& > div': {
-            height: 50,
+            minHeight: 50,
             paddingBottom: 18,
-            paddingTop: 5
+            // paddingTop: 5
         }
     },
     '&:only-child': {
@@ -309,16 +325,17 @@ const OpportunitiesWrapper = Glamorous.div({
             paddingTop: 'unset'
         }
     }
-});
+}));
 
-const OpportunitiesTextWrapper = Glamorous.div({
-    width: 220,
+const OpportunitiesTextWrapper = Glamorous.div<{ width?: number, alignSelf?: string }>((props) => ({
+    width: props.width ? props.width : 220,
     height: '100%',
     flexShrink: 0,
     display: 'flex',
     alignItems: 'center',
+    alignSelf: props.alignSelf ? props.alignSelf : undefined,
     paddingLeft: 24
-});
+}));
 
 const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean }>((props) => ({
     minHeight: 35,
@@ -371,9 +388,16 @@ interface DevelopmentOportunityProps {
     }[] | null;
 }
 
-const TagRowMap = (props: { title: string, items: string[], bordered?: boolean }) => (
+interface TagRowMapProps {
+    title: string;
+    items: string[];
+    bordered?: boolean;
+    titleWidth?: number;
+}
+
+const TagRowMap = (props: TagRowMapProps) => (
     <OpportunitiesWrapper>
-        <OpportunitiesTextWrapper>
+        <OpportunitiesTextWrapper width={props.titleWidth}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered}>
@@ -386,15 +410,33 @@ const TagRowMap = (props: { title: string, items: string[], bordered?: boolean }
     </OpportunitiesWrapper>
 );
 
-const TagRow = (props: { title: string, text: string, bordered?: boolean }) => (
-    <OpportunitiesWrapper>
-        <OpportunitiesTextWrapper>
+interface TagRowProps {
+    children?: any;
+    title: string;
+    text?: string;
+    bordered?: boolean;
+    titleWidth?: number;
+    isTextStyle?: boolean;
+    isTagStyle?: boolean;
+}
+
+const TagRow = (props: TagRowProps) => (
+    <OpportunitiesWrapper marginBottom={props.isTextStyle ? 13 : undefined}>
+        <OpportunitiesTextWrapper width={props.titleWidth} alignSelf={props.isTextStyle ? 'flex-start' : undefined}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered}>
-            <Text>
-                {props.text}
-            </Text>
+            {props.isTextStyle && (
+                <Text>
+                    {props.text}
+                </Text>
+            )}
+            {props.isTagStyle && (
+                <OpportunitiesValue>
+                    {props.text}
+                </OpportunitiesValue>
+            )}
+            {props.children}
         </OpportunitiesValueWrapper>
     </OpportunitiesWrapper>
 );
@@ -403,17 +445,26 @@ const DevelopmentOportunityCard = Glamorous.div({
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
 });
 
+const StatusDot = Glamorous.div({
+    width: 6,
+    height: 6,
+    borderRadius: 50,
+    backgroundColor: '#50d25e',
+    marginRight: 6
+});
+
 class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, full?: boolean, showType?: boolean }> {
     render() {
 
-        const { item } = this.props;
+        const { item, full } = this.props;
 
         return (
             <DevelopmentOportunityCard>
+                {console.log('DO - ', this.props)}
                 <XHorizontalStyled justifyContent="space-between" padding={24}>
-                    <XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={133} height={100} />
+                    <XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} />
                     <XHorizontal flexGrow={1}>
-                        <div style={{ flexGrow: 1 }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
                                 <Title marginBottom={4}>{item.name}</Title>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
@@ -435,37 +486,49 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                     <Text opacity={0.5}>{`Area: ${item.area} ft²`}</Text>
                                 )}
                                 {item.price && (
-                                    <Text opacity={0.5}>{`Price: $${item.price}`}</Text>
+                                    <Text opacity={0.5} marginTop={3}>{`Price: $${item.price}`}</Text>
                                 )}
                             </XHorizontal>
+                            {!full && (
+                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                    <Text><StatusDot />Open</Text>
+                                    <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
+                                </XHorizontalStyled>
+                            )}
                         </div>
                     </XHorizontal>
                 </XHorizontalStyled>
 
-                {this.props.full && (
+                {full && (
                     <XVerticalStyled paddingBottom={24}>
                         <div>
                             {item.summary && (
-                                <TagRow title="Summary" text={item.summary} />
+                                <TagRow title="Summary" text={item.summary} titleWidth={178} isTextStyle={true} />
                             )}
                             {item.availability && (
-                                <TagRow title="Availability" text={item.availability} />
+                                <TagRow title="Availability" text={item.availability} titleWidth={178} isTextStyle={true} />
                             )}
                             {item.dealType && (
-                                <TagRowMap title="Deal type" items={item.dealType} />
+                                <TagRowMap title="Deal type" items={item.dealType} titleWidth={178} />
                             )}
                             {item.shapeAndForm && (
-                                <TagRowMap title="Shape and form" items={item.shapeAndForm} />
+                                <TagRowMap title="Shape and form" items={item.shapeAndForm} titleWidth={178} />
                             )}
                             {item.currentUse && (
-                                <TagRowMap title="Current use" items={item.currentUse} />
+                                <TagRowMap title="Current use" items={item.currentUse} titleWidth={178} />
                             )}
                             {item.goodFitFor && (
-                                <TagRowMap title="Good fit for" items={item.goodFitFor} />
+                                <TagRowMap title="Good fit for" items={item.goodFitFor} titleWidth={178} />
                             )}
                             {item.specialAttributes && (
-                                <TagRowMap title="Special attributes" items={item.specialAttributes} />
+                                <TagRowMap title="Special attributes" items={item.specialAttributes} titleWidth={178} />
                             )}
+                            <TagRow title="Status" titleWidth={178}>
+                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                    <Text><StatusDot />Open</Text>
+                                    <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
+                                </XHorizontalStyled>
+                            </TagRow>
                         </div>
                     </XVerticalStyled>
                 )}
@@ -497,19 +560,24 @@ interface AquizitionRequestProps {
     unitCapacity: string[] | null;
 }
 
+const Thousander = (num: number) => (
+    Math.round(num).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+);
+
 class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean }> {
 
     render() {
 
-        const { item } = this.props;
+        const { item, full } = this.props;
 
         return (
             <DevelopmentOportunityCard>
+                {console.log('AR - ', this.props)}
                 <XHorizontalStyled justifyContent="space-between" padding={24}>
-                    <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={133} height={100} />
+                    <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
                     {/* <XAvatar photoRef={item.photo || undefined} size="large" style="square" /> */}
                     <XHorizontal flexGrow={1}>
-                        <div style={{ flexGrow: 1 }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
                                 <Title marginBottom={4}>{item.name}</Title>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
@@ -525,28 +593,46 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                 </XWithRole>
                             </XHorizontal>
                             {this.props.showType && <Text opacity={0.5}>Aquizition request</Text>}
-                            <Text opacity={0.5} marginBottom={14}>{item.shortDescription}</Text>
+                            <Text opacity={0.5}>{item.shortDescription}</Text>
+                            {(!full && item.areaRange) && (
+                                <>
+                                    <Text opacity={0.5} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>
+                                    <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                        <Text><StatusDot />Open</Text>
+                                        <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
+                                    </XHorizontalStyled>
+                                </>
+                            )}
                         </div>
                     </XHorizontal>
                 </XHorizontalStyled>
-                {this.props.full && (
+                {full && (
                     <XVertical>
                         <div>
                             {item.summary && (
-                                <TagRow title="Summary" text={item.summary} />
+                                <TagRow title="Summary" text={item.summary} titleWidth={178} isTextStyle={true} />
+                            )}
+                            {item.areaRange && (
+                                <TagRow title="Area range" text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} titleWidth={178} isTagStyle={true} />
                             )}
                             {item.geographies && (
-                                <TagRowMap title="Geographies" items={item.geographies} />
+                                <TagRowMap title="Geographies" items={item.geographies} titleWidth={178} />
                             )}
                             {item.landUse && (
-                                <TagRowMap title="Land use" items={item.landUse} />
+                                <TagRowMap title="Land use" items={item.landUse} titleWidth={178} />
                             )}
                             {item.specialAttributes && (
-                                <TagRowMap title="Special attributes" items={item.specialAttributes} />
+                                <TagRowMap title="Special attributes" items={item.specialAttributes} titleWidth={178} />
                             )}
                             {item.unitCapacity && (
-                                <TagRowMap title="Unit capacity" items={item.unitCapacity} />
+                                <TagRowMap title="Unit capacity" items={item.unitCapacity} titleWidth={178} />
                             )}
+                            <TagRow title="Status" titleWidth={178}>
+                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                    <Text><StatusDot />Open</Text>
+                                    <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
+                                </XHorizontalStyled>
+                            </TagRow>
                         </div>
                     </XVertical>
                 )}
@@ -935,10 +1021,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 </SwitcherWrapper>
                                             </XVerticalStyled>
                                             {props.router.path === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
-                                                organization.developmentOportunities.map((devop, i) => < DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                             )}
                                             {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                organization.acquisitionRequests.map((devop, i) => < AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                             )}
                                         </XCardStyled>
                                     )}
@@ -946,10 +1032,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     {props.router.path === lsitingsAllPath && (
                                         <XCardStyled padding={0}>
                                             {props.router.path === lsitingsAllPath && organization && organization.listingsAll && (
-                                                organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? < DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} /> : < AquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} />)
+                                                organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} /> : < AquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} />)
                                             )}
                                             {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                organization.acquisitionRequests.map((devop, i) => < AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                             )}
                                         </XCardStyled>
                                     )}
