@@ -403,7 +403,7 @@ const DevelopmentOportunityCard = Glamorous.div({
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
 });
 
-class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, index: number }> {
+class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, full?: boolean, showType?: boolean }> {
     render() {
 
         const { item } = this.props;
@@ -428,6 +428,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                     />
                                 </XWithRole>
                             </XHorizontal>
+                            {this.props.showType && <Text opacity={0.5}>Development oportunity</Text>}
                             <Text opacity={0.5}>{item.locationTitle}</Text>
                             <XHorizontal separator="large">
                                 {item.area && (
@@ -441,31 +442,34 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                     </XHorizontal>
                 </XHorizontalStyled>
 
-                <XVerticalStyled paddingBottom={24}>
-                    <div>
-                        {item.summary && (
-                            <TagRow title="Summary" text={item.summary} />
-                        )}
-                        {item.availability && (
-                            <TagRow title="Availability" text={item.availability} />
-                        )}
-                        {item.dealType && (
-                            <TagRowMap title="Deal type" items={item.dealType} />
-                        )}
-                        {item.shapeAndForm && (
-                            <TagRowMap title="Shape and form" items={item.shapeAndForm} />
-                        )}
-                        {item.currentUse && (
-                            <TagRowMap title="Current use" items={item.currentUse} />
-                        )}
-                        {item.goodFitFor && (
-                            <TagRowMap title="Good fit for" items={item.goodFitFor} />
-                        )}
-                        {item.specialAttributes && (
-                            <TagRowMap title="Special attributes" items={item.specialAttributes} />
-                        )}
-                    </div>
-                </XVerticalStyled>
+                {this.props.full && (
+                    <XVerticalStyled paddingBottom={24}>
+                        <div>
+                            {item.summary && (
+                                <TagRow title="Summary" text={item.summary} />
+                            )}
+                            {item.availability && (
+                                <TagRow title="Availability" text={item.availability} />
+                            )}
+                            {item.dealType && (
+                                <TagRowMap title="Deal type" items={item.dealType} />
+                            )}
+                            {item.shapeAndForm && (
+                                <TagRowMap title="Shape and form" items={item.shapeAndForm} />
+                            )}
+                            {item.currentUse && (
+                                <TagRowMap title="Current use" items={item.currentUse} />
+                            )}
+                            {item.goodFitFor && (
+                                <TagRowMap title="Good fit for" items={item.goodFitFor} />
+                            )}
+                            {item.specialAttributes && (
+                                <TagRowMap title="Special attributes" items={item.specialAttributes} />
+                            )}
+                        </div>
+                    </XVerticalStyled>
+                )}
+
             </DevelopmentOportunityCard>
         );
     }
@@ -493,7 +497,7 @@ interface AquizitionRequestProps {
     unitCapacity: string[] | null;
 }
 
-class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, index: number }> {
+class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean }> {
 
     render() {
 
@@ -520,30 +524,33 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                     />
                                 </XWithRole>
                             </XHorizontal>
+                            {this.props.showType && <Text opacity={0.5}>Aquizition request</Text>}
                             <Text opacity={0.5} marginBottom={14}>{item.shortDescription}</Text>
                         </div>
                     </XHorizontal>
                 </XHorizontalStyled>
+                {this.props.full && (
+                    <XVertical>
+                        <div>
+                            {item.summary && (
+                                <TagRow title="Summary" text={item.summary} />
+                            )}
+                            {item.geographies && (
+                                <TagRowMap title="Geographies" items={item.geographies} />
+                            )}
+                            {item.landUse && (
+                                <TagRowMap title="Land use" items={item.landUse} />
+                            )}
+                            {item.specialAttributes && (
+                                <TagRowMap title="Special attributes" items={item.specialAttributes} />
+                            )}
+                            {item.unitCapacity && (
+                                <TagRowMap title="Unit capacity" items={item.unitCapacity} />
+                            )}
+                        </div>
+                    </XVertical>
+                )}
 
-                <XVertical>
-                    <div>
-                        {item.summary && (
-                            <TagRow title="Summary" text={item.summary} />
-                        )}
-                        {item.geographies && (
-                            <TagRowMap title="Geographies" items={item.geographies} />
-                        )}
-                        {item.landUse && (
-                            <TagRowMap title="Land use" items={item.landUse} />
-                        )}
-                        {item.specialAttributes && (
-                            <TagRowMap title="Special attributes" items={item.specialAttributes} />
-                        )}
-                        {item.unitCapacity && (
-                            <TagRowMap title="Unit capacity" items={item.unitCapacity} />
-                        )}
-                    </div>
-                </XVertical>
             </DevelopmentOportunityCard>
         );
     }
@@ -605,7 +612,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                 shapeAndForm: target.shapeAndForm,
                 currentUse: target.currentUse,
                 goodFitFor: target.goodFitFor,
-                additionalLinks: target.additionalLinks
+                additionalLinks: target.additionalLinks || []
             }
         };
     }
@@ -726,14 +733,16 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
     let rootPath = '/o/' + props.data.organization.id;
     let lsitingsPath = '/o/' + props.data.organization.id + '/listings';
+    let lsitingsAllPath = '/o/' + props.data.organization.id + '/listings/all';
 
     const { organization } = props.data;
 
-    let cardCount = 0;
+    let cardCountDO = 0;
+    let cardCountAR = 0;
 
-    let cardFilter = (cb: () => any) => {
-        cardCount++;
-        if (cardCount <= 3) {
+    let cardFilter = (cb: () => any, counter: number) => {
+        counter++;
+        if (counter <= 3) {
             return cb();
         } else {
             return;
@@ -755,6 +764,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 <SwitcherWrapper flatStyle={true} height={60}>
                                     <Switcher path={rootPath}>Overview</Switcher>
                                     <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                    <Switcher path={lsitingsAllPath}>{'All listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
                                 </SwitcherWrapper>
                             </XVerticalStyled>
                             <XHorizontalStyled paddingTop={20}>
@@ -811,67 +821,54 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 <XVertical flexGrow={1}>
                                     {props.router.path === rootPath && (
                                         <>
+                                            {(organization.organizationType || organization.lookingFor || organization.geographies) && (
+                                                <XCardStyled padding={0}>
+                                                    {organization.organizationType && (
+                                                        <TagRowMap title="Organization type" items={organization.organizationType} bordered={true} />
+                                                    )}
+                                                    {organization.lookingFor && (
+                                                        <TagRowMap title="Looking for" items={organization.lookingFor} bordered={true} />
+                                                    )}
+                                                    {organization.geographies && (
+                                                        <TagRowMap title="Geographies" items={organization.geographies} bordered={true} />
+                                                    )}
+
+                                                </XCardStyled>
+                                            )}
+
                                             <XCardStyled padding={0}>
-                                                {organization.organizationType && (
-                                                    <TagRowMap title="Organization type" items={organization.organizationType} bordered={true} />
-                                                )}
-                                                {organization.lookingFor && (
-                                                    <TagRowMap title="Looking for" items={organization.lookingFor} bordered={true} />
-                                                )}
-                                                {organization.geographies && (
-                                                    <TagRowMap title="Geographies" items={organization.geographies} bordered={true} />
-                                                )}
-                                                {organization.potentialSites && (
-                                                    <OpportunitiesWrapper>
-                                                        <OpportunitiesTextWrapper>
-                                                            <Text bold={true}>Number of potential sites</Text>
-                                                        </OpportunitiesTextWrapper>
-                                                        <OpportunitiesValueWrapper bordered={true}>
-                                                            {organization.potentialSites!!.map((s, k) => (
-                                                                <OpportunitiesValue key={k + '_' + s}>
-                                                                    {
-                                                                        ((s.to || Number.MAX_SAFE_INTEGER) <= 5) ?
-                                                                            '0-5 sites' :
-                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 50) ?
-                                                                                '5-50 sites' :
-                                                                                '50+ sites'
-                                                                    }
-                                                                </OpportunitiesValue>
-                                                            ))}
-                                                        </OpportunitiesValueWrapper>
-                                                    </OpportunitiesWrapper>
-                                                )}
-                                                {organization.siteSizes && (
-                                                    <OpportunitiesWrapper>
-                                                        <OpportunitiesTextWrapper>
-                                                            <Text bold={true}>Site sizes</Text>
-                                                        </OpportunitiesTextWrapper>
-                                                        <OpportunitiesValueWrapper bordered={true}>
-                                                            {organization.siteSizes!!.map((s, k) => (
-                                                                <OpportunitiesValue key={k + '_' + s}>
-                                                                    {
-                                                                        ((s.to || Number.MAX_SAFE_INTEGER) <= 10000) ?
-                                                                            'small (up to 10,000 sf)' :
-                                                                            ((s.to || Number.MAX_SAFE_INTEGER) <= 100000) ?
-                                                                                'medium (10,000 - 100,000 sf)' :
-                                                                                'large (100,000 + sf)'
-                                                                    }
-                                                                </OpportunitiesValue>
-                                                            ))}
-                                                        </OpportunitiesValueWrapper>
-                                                    </OpportunitiesWrapper>
-                                                )}
-                                                {organization.landUse && (
-                                                    <TagRowMap title="Land use" items={organization.landUse} bordered={true} />
-                                                )}
+                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
+                                                    <Title marginBottom={24}>Development opportunities</Title>
+                                                </XVerticalStyled>
 
-                                                {organization.goodFor && (
-                                                    <TagRowMap title="Good fit for" items={organization.goodFor} bordered={true} />
-                                                )}
+                                                <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
+                                                    {organization.doShapeAndForm && (
+                                                        <TagRowMap title="Geographies" items={organization.doShapeAndForm} bordered={true} />
+                                                    )}
+                                                    {organization.doCurrentUse && (
+                                                        <TagRowMap title="Current use" items={organization.doCurrentUse} bordered={true} />
+                                                    )}
+                                                    {organization.doGoodFitFor && (
+                                                        <TagRowMap title="Good fit for  " items={organization.doGoodFitFor} bordered={true} />
+                                                    )}
+                                                    {organization.doSpecialAttributes && (
+                                                        <TagRowMap title="Special attributes" items={organization.doSpecialAttributes} bordered={true} />
+                                                    )}
+                                                    {organization.doAvailability && (
+                                                        <TagRowMap title="Availability " items={organization.doAvailability} bordered={true} />
+                                                    )}
 
-                                                {organization.specialAttributes && (
-                                                    <TagRowMap title="Special attributes" items={organization.specialAttributes} bordered={true} />
+                                                </div>
+                                                {organization.developmentOportunities && (
+                                                    organization.developmentOportunities.map((devop, i) => (
+                                                        cardFilter(() => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} />, cardCountAR)
+                                                    ))
                                                 )}
+                                                <XHorizontal justifyContent="center">
+                                                    <ShowListingLink path={lsitingsPath}>
+                                                        View all ({organization.developmentOportunities!!.length}) >
+                                                        </ShowListingLink>
+                                                </XHorizontal>
                                             </XCardStyled>
 
                                             <XCardStyled padding={0}>
@@ -908,23 +905,17 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         <TagRowMap title="Closing time" items={organization.arClosingTime} bordered={true} />
                                                     )}
                                                 </div>
-                                                {organization.developmentOportunities && (
-                                                    organization.developmentOportunities.map((devop, i) => (
-                                                        cardFilter(() => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} index={i} />)
-                                                    ))
-                                                )}
+
                                                 {organization.acquisitionRequests && (
                                                     organization.acquisitionRequests.map((devop, i) => (
-                                                        cardFilter(() => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} index={i} />)
+                                                        cardFilter(() => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} />, cardCountDO)
                                                     ))
                                                 )}
-                                                {(organization.developmentOportunities!!.length + organization.acquisitionRequests!!.length) > 3 && (
-                                                    <XHorizontal justifyContent="center">
-                                                        <ShowListingLink path={lsitingsPath}>
-                                                            View all ({organization.developmentOportunities!!.length + organization.acquisitionRequests!!.length}) >
+                                                <XHorizontal justifyContent="center">
+                                                    <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
+                                                        View all ({organization.acquisitionRequests!!.length}) >
                                                         </ShowListingLink>
-                                                    </XHorizontal>
-                                                )}
+                                                </XHorizontal>
                                             </XCardStyled>
                                         </>
                                     )}
@@ -939,13 +930,25 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 </SwitcherWrapper>
                                             </XVerticalStyled>
                                             {props.router.path === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
-                                                organization.developmentOportunities.map((devop, i) => < DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} index={i} />)
+                                                organization.developmentOportunities.map((devop, i) => < DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                             )}
                                             {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                organization.acquisitionRequests.map((devop, i) => < AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} index={i} />)
+                                                organization.acquisitionRequests.map((devop, i) => < AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                             )}
                                         </XCardStyled>
                                     )}
+
+                                    {props.router.path === lsitingsAllPath && (
+                                        <XCardStyled padding={0}>
+                                            {props.router.path === lsitingsAllPath && organization && organization.listingsAll && (
+                                                organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? < DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} /> : < AquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} />)
+                                            )}
+                                            {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
+                                                organization.acquisitionRequests.map((devop, i) => < AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                            )}
+                                        </XCardStyled>
+                                    )}
+
                                     {props.router.query.addListing && (
                                         <XModalForm
                                             title={props.router.query.addListing === 'DO' ? 'Create development opportunity' : 'Create acquisition requests'}

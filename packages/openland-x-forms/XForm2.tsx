@@ -85,6 +85,7 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
             this.props.store.writeValue('form.error', null);
             this.props.store.writeValue('errors', null);
         } catch (e) {
+            console.warn(e);
             this.props.store.writeValue('errors', null);
             let message = formatError(e);
             let fields = exportWrongFields(e);
