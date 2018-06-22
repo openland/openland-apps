@@ -460,7 +460,6 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
 
         return (
             <DevelopmentOportunityCard>
-                {console.log('DO - ', this.props)}
                 <XHorizontalStyled justifyContent="space-between" padding={24}>
                     <XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} />
                     <XHorizontal flexGrow={1}>
@@ -572,7 +571,6 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
 
         return (
             <DevelopmentOportunityCard>
-                {console.log('AR - ', this.props)}
                 <XHorizontalStyled justifyContent="space-between" padding={24}>
                     <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
                     {/* <XAvatar photoRef={item.photo || undefined} size="large" style="square" /> */}
