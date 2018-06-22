@@ -455,6 +455,13 @@ const StatusDot = Glamorous.div({
     marginRight: 6
 });
 
+const Lock = Glamorous(XIcon)({
+    width: 14,
+    height: 14,
+    fontSize: 14,
+    marginRight: 8
+});
+
 class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, full?: boolean, showType?: boolean }> {
     render() {
 
@@ -572,13 +579,6 @@ interface AquizitionRequestProps {
 const Thousander = (num: number) => (
     Math.round(num).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 );
-
-const Lock = Glamorous(XIcon)({
-    width: 14,
-    height: 14,
-    fontSize: 14,
-    marginRight: 8
-});
 
 class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean }> {
 
