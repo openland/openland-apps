@@ -53,8 +53,8 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
             <XHorizontal>
 
                 <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_overview.svg'} />
-                <XVertical maxWidth={452}>
-                    <PlaceholderText>Share your organization type, geographies of operation, and what are you looking for</PlaceholderText>
+                <XVertical>
+                    <PlaceholderText>Your account has been created - now it will be easier to connect with real estate companies. To make most of it we recommend to share more information about your company. </PlaceholderText>
 
                     <XModalForm
                         defaultData={{
@@ -79,7 +79,7 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                             onClick={() => {
                                 //
                             }}
-                            text="Add organization overview"
+                            text="Improve Profile"
                             alignSelf="flex-start"
                         />}
                     >
