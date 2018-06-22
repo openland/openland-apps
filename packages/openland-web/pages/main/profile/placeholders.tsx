@@ -134,7 +134,7 @@ class Closable extends React.Component<{ key: string, content: (closeCallback: (
     }
 }
 
-export const DOPlaceholder = withMyOrganizationProfile((props) => {
+export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
     return (
         (
             !props.data.myOrganizationProfile.doShapeAndForm &&
@@ -244,7 +244,7 @@ export const DOPlaceholder = withMyOrganizationProfile((props) => {
             ) : null);
 });
 
-export const ARPlaceholder = withMyOrganizationProfile((props) => {
+export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
     return (
         (
             !props.data.myOrganizationProfile.arGeographies &&

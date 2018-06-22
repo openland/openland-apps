@@ -30,7 +30,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
-import { OverviewPlaceholder, DOPlaceholder, ARPlaceholder } from './placeholders';
+import { OverviewPlaceholder, DOOverviewPlaceholder, AROverviewPlaceholder } from './placeholders';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -811,11 +811,16 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                         <MainContent>
                             <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
-                                <OverviewPlaceholder />
-                                <XHorizontal>
-                                    <ARPlaceholder />
-                                    <DOPlaceholder />
-                                </XHorizontal>
+                                {props.router.path === rootPath && (
+                                    <>
+                                        <OverviewPlaceholder />
+                                        <XHorizontal>
+                                            <DOOverviewPlaceholder />
+                                            <AROverviewPlaceholder />
+                                        </XHorizontal>
+                                    </>
+                                )}
+
                             </XWithRole>
                             <XHorizontal>
                                 <XVertical flexGrow={1}>
