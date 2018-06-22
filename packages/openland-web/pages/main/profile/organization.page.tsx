@@ -32,6 +32,8 @@ import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { DateFormater } from 'openland-x-format/XDate';
 import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder } from './placeholders';
+import { XIcon } from 'openland-x/XIcon';
+import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -461,7 +463,12 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
         return (
             <DevelopmentOportunityCard>
                 <XHorizontalStyled justifyContent="space-between" padding={24}>
-                    <XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} />
+                    {item.location && (
+                        <XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} />
+                    )}
+                    {!item.location && (
+                        <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} />
+                    )}
                     <XHorizontal flexGrow={1}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
@@ -488,12 +495,14 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                     <Text opacity={!full ? 0.5 : undefined} bold={full ? true : undefined} marginTop={3}>{`Price: $${item.price}`}</Text>
                                 )}
                             </XHorizontal>
-                            {!full && (
+                            {(!full && item.location) && (
                                 <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
                                     <Text><StatusDot />Open</Text>
                                     <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
                                 </XHorizontalStyled>
                             )}
+                            {(!full && !item.location) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
+
                         </div>
                     </XHorizontal>
                 </XHorizontalStyled>
@@ -522,6 +531,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                             {item.specialAttributes && (
                                 <TagRowMap title="Special attributes" items={item.specialAttributes} titleWidth={178} />
                             )}
+
                             <TagRow title="Status" titleWidth={178}>
                                 <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
                                     <Text><StatusDot />Open</Text>
@@ -563,6 +573,13 @@ const Thousander = (num: number) => (
     Math.round(num).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 );
 
+const Lock = Glamorous(XIcon)({
+    width: 14,
+    height: 14,
+    fontSize: 14,
+    marginRight: 8
+});
+
 class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean }> {
 
     render() {
@@ -572,7 +589,12 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
         return (
             <DevelopmentOportunityCard>
                 <XHorizontalStyled justifyContent="space-between" padding={24}>
-                    <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
+                    {item.photo && (
+                        <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
+                    )}
+                    {!item.photo && (
+                        <img src={'/static/img/icons/organization/profile/img_placeholder_ar.svg'} />
+                    )}
                     {/* <XAvatar photoRef={item.photo || undefined} size="large" style="square" /> */}
                     <XHorizontal flexGrow={1}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
@@ -592,15 +614,14 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                             </XHorizontal>
                             {this.props.showType && <Text opacity={0.5}>Aquizition request</Text>}
                             <Text opacity={0.5}>{item.shortDescription}</Text>
+                            {item.areaRange && <Text opacity={0.5} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
                             {(!full && item.areaRange) && (
-                                <>
-                                    <Text opacity={0.5} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>
-                                    <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
-                                        <Text><StatusDot />Open</Text>
-                                        <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
-                                    </XHorizontalStyled>
-                                </>
+                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                    <Text><StatusDot />Open</Text>
+                                    <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
+                                </XHorizontalStyled>
                             )}
+                            {(!full && !item.areaRange) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
                         </div>
                     </XHorizontal>
                 </XHorizontalStyled>
@@ -716,7 +737,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
         editListingDefaultData = {
             input: {
                 ...editCommon,
-                photo: editArTarget.photo,
+                photo: sanitizeIamgeRef(editArTarget.photo),
                 shortDescription: editArTarget.shortDescription,
                 geographies: editArTarget.geographies,
                 landUse: editArTarget.landUse,
@@ -802,7 +823,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     shapeAndForm: input.shapeAndForm,
                     currentUse: input.currentUse,
                     goodFitFor: input.goodFitFor,
-                    additionalLinks: input.additionalLinks.map((l: any) => ({ text: l.text, url: l.url })),
+                    additionalLinks: (input.additionalLinks || []).map((l: any) => ({ text: l.text, url: l.url })),
 
                     photo: input.photo,
                     shortDescription: input.shortDescription,
@@ -1000,7 +1021,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 )}
                                                 <XHorizontal justifyContent="center">
                                                     <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
-                                                        View all ({organization.acquisitionRequests!!.length}) >
+                                                        View all ({organization.acquisitionRequests!!.length})
                                                         </ShowListingLink>
                                                 </XHorizontal>
                                             </XCardStyled>
@@ -1025,7 +1046,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                 )}
                                             </XCardStyled>
-                                            ></>
+                                        </>
                                     )}
 
                                     {props.router.path === lsitingsAllPath && (

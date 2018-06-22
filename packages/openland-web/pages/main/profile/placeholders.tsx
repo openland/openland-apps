@@ -407,7 +407,7 @@ export const DOAROverviewPlaceholder = withMyOrganizationProfile((props) => {
             !props.data.myOrganizationProfile.doGoodFitFor &&
             !props.data.myOrganizationProfile.doSpecialAttributes &&
             !props.data.myOrganizationProfile.doAvailability) ||
-            !(!props.data.myOrganizationProfile.arGeographies &&
+            (!props.data.myOrganizationProfile.arGeographies &&
                 !props.data.myOrganizationProfile.arAreaRange &&
                 !props.data.myOrganizationProfile.arHeightLimit &&
                 !props.data.myOrganizationProfile.arActivityStatus &&
