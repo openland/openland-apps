@@ -50,6 +50,8 @@ interface XOverflowProps {
     show?: boolean;
     content: any;
     width?: number;
+    target?: any;
+    shadow?: boolean;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -90,15 +92,17 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
 
     render() {
 
-        let target: any = [];
+        const { target, shadow } = this.props;
 
-        for (let c of React.Children.toArray(this.props.children)) {
-            target.push(React.cloneElement(c as any, { onClick: this.switch, innerRef: this.createRef }));
+        let targetElement: any;
+
+        if (target !== undefined) {
+            targetElement = React.cloneElement(target as any, { onClick: this.switch, innerRef: this.createRef });
         }
 
         return (
             <>
-                <Shadow active={this.state.show} />
+                {shadow && <Shadow active={this.state.show} />}
                 <XPopper
                     show={this.state.show}
                     content={this.props.content}
@@ -108,7 +112,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                     width={this.props.width || 170}
                     onClickOutside={this.handleClose}
                 >
-                    {target.length > 0 ? target : (
+                    {targetElement ? targetElement : (
                         <DottedMenuButtonStyle onClick={this.switch} active={this.state.show} innerRef={this.createRef}>
                             <DottedStyle />
                             <DottedStyle />

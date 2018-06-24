@@ -541,7 +541,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                             )}
 
                             <TagRow title="Status" titleWidth={178}>
-                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                <XHorizontalStyled flexGrow={1} alignItems="flex-end">
                                     <Text><StatusDot />Open</Text>
                                     <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
                                 </XHorizontalStyled>
@@ -650,7 +650,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                 <TagRowMap title="Unit capacity" items={item.unitCapacity} titleWidth={178} />
                             )}
                             <TagRow title="Status" titleWidth={178}>
-                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                <XHorizontalStyled flexGrow={1} alignItems="flex-end">
                                     <Text><StatusDot />Open</Text>
                                     <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
                                 </XHorizontalStyled>
@@ -903,22 +903,28 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         text="Edit"
                                         path="/settings/organization"
                                     />
-                                    <XButton
-                                        query={{ field: 'addListing', value: 'DO' }}
-                                        size="medium"
-                                        text="Add DO"
-                                        icon="add"
-                                        style="primary"
-                                        alignSelf="flex-start"
-                                    />
+                                    <XOverflow
+                                        placement="bottom"
+                                        target={<XButton style="primary" size="medium" text="Add a listing"/>}
+                                        content={
+                                            <>
+                                                <XButton
+                                                    query={{ field: 'addListing', value: 'DO' }}
+                                                    size="medium"
+                                                    text="Add DO"
+                                                    icon="add"
+                                                    style="flat"
+                                                />
 
-                                    <XButton
-                                        query={{ field: 'addListing', value: 'AR' }}
-                                        size="medium"
-                                        text="Add AR"
-                                        icon="add"
-                                        style="primary"
-                                        alignSelf="flex-start"
+                                                <XButton
+                                                    query={{ field: 'addListing', value: 'AR' }}
+                                                    size="medium"
+                                                    text="Add AR"
+                                                    icon="add"
+                                                    style="flat"
+                                                />
+                                            </>
+                                        }
                                     />
 
                                 </XWithRole>
@@ -1082,6 +1088,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                     {props.router.query.addListing && (
                                         <XModalForm
+                                            fixedFooter={true}
                                             title={props.router.query.addListing === 'DO' ? 'Create development opportunity' : 'Create acquisition requests'}
 
                                             defaultAction={async (data) => {
@@ -1219,6 +1226,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     />
                                     {(editDoTarget || editArTarget) && (
                                         <XModalForm
+                                            fixedFooter={true}
                                             title={editDoTarget ? 'Edit development opportunity' : 'Edit aquizition request'}
                                             defaultData={editListingDefaultData}
                                             defaultAction={editListingDefaultAction}

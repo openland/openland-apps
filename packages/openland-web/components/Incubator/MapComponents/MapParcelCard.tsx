@@ -293,6 +293,7 @@ export const ParcelCard = withParcelDirect((props) => (
                                 <img src="/static/X/link.svg" />
                             </ParcelLink>
                             <XOverflow
+                                shadow={true}
                                 placement="bottom"
                                 width={110}
                                 content={(

@@ -23,14 +23,20 @@ export interface XModalFormProps extends XFormProps {
     target?: React.ReactElement<any>;
     targetQuery?: string;
 
+    fixedFooter?: boolean;
+
 }
 
-const Footer = Glamorous.div({
+const Footer = Glamorous.div<{fixed?: boolean}>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center'
-});
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    position: props.fixed ? 'sticky' : undefined,
+    bottom: props.fixed ? 0 : undefined,
+    boxShadow: props.fixed ? '2px 2px 8px 0 rgba(0, 0, 0, 0.22)' : undefined
+}));
 
 export class XModalForm extends React.Component<XModalFormProps> {
     render() {
@@ -44,8 +50,8 @@ export class XModalForm extends React.Component<XModalFormProps> {
                     <XModalBody>
                         {this.props.children}
                     </XModalBody>
-                    <Footer>
 
+                    <Footer fixed={this.props.fixedFooter}>
                         <XModalFooter>
                             <XHorizontal>
                                 <XFormSubmit style={'primary'} text={'Save'} {...submitProps} />
