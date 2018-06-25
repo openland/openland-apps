@@ -20,7 +20,6 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
 import PlaceholderContact from './placeholder_contact.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
-import { XForm } from 'openland-x-forms/XForm2';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 
 const Placeholder = Glamorous(XCard)({
@@ -770,7 +769,7 @@ export const AvatartPlaceholder = withMyOrganizationProfile((props) => {
         <XModalForm
             defaultData={{
                 input: {
-                    photoRef: props.data.myOrganizationProfile!!.photoRef,
+                    photoRef: sanitizeIamgeRef(props.data.myOrganizationProfile!!.photoRef),
                 }
             }}
             defaultAction={async (data) => {

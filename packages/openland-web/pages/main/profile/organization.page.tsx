@@ -35,7 +35,6 @@ import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, A
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import PlaceholderAR from './img_placeholder_ar.svg';
-import { negate } from 'lodash-es';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
