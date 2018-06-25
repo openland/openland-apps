@@ -832,7 +832,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     shapeAndForm: input.shapeAndForm,
                     currentUse: input.currentUse,
                     goodFitFor: input.goodFitFor,
-                    additionalLinks: (input.additionalLinks || []).map((l: any) => ({ text: l.text, url: l.url })),
+                    additionalLinks: (input.additionalLinks || []).filter((l: any) => l.text || l.url).map((l: any) => ({ text: l.text, url: l.url })),
 
                     photo: input.photo,
                     shortDescription: input.shortDescription,
