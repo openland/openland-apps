@@ -31,10 +31,11 @@ import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { DateFormater } from 'openland-x-format/XDate';
-import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder } from './placeholders';
+import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder, AvatartPlaceholder } from './placeholders';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import PlaceholderAR from './img_placeholder_ar.svg';
+import { negate } from 'lodash-es';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -606,6 +607,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                 <Title marginBottom={4}>{item.name}</Title>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
+                                        marginRight={138}
                                         placement="bottom"
                                         content={(
                                             <>
@@ -862,6 +864,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
         }
     };
 
+    let hasLogo = !!(organization.photo);
+
     return (
         <>
             <XDocumentHead title="Organization profile" />
@@ -870,8 +874,21 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     <Root>
                         <Header>
                             <AvatarWrapper>
-                                <Avatar cloudImageUuid={organization.photo!!} size="large" style="square" />
+                                {hasLogo && (
+                                    <Avatar cloudImageUuid={organization.photo!!} size="large" style="square" />
+                                )}
+                                {!hasLogo && (
+                                    <>
+                                        <XWithRole role={['org-' + organization.id + '-admin']} >
+                                            <AvatartPlaceholder />
+                                        </XWithRole>
+                                        <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
+                                            <Avatar cloudImageUuid={organization.photo!!} size="large" style="square" />
+                                        </XWithRole>
+                                    </>
+                                )}
                             </AvatarWrapper>
+
                             <XVerticalStyled flexShrink={0} flexGrow={1} justifyContent="space-between" paddingTop={35}>
                                 <OrganizationName>{organization.name}</OrganizationName>
                                 {organization.location && <Text opacity={0.5}>{organization.location}</Text>}
@@ -908,7 +925,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         placement="bottom"
                                         width={220}
                                         marginRight={88}
-                                        target={<XButton style="primary" size="medium" text="Add a listing"/>}
+                                        target={<XButton style="primary" size="medium" text="Add a listing" />}
                                         content={
                                             <>
                                                 <XButton

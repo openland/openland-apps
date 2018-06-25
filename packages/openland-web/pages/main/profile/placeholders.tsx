@@ -739,12 +739,38 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
     );
 });
 
+const LogoPlaceholder = Glamorous(XVertical)({
+    cursor: 'pointer',
+    width: 110,
+    height: 110,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    border: 'solid 0.8px rgba(0, 0, 0, 0.07)',
+    borderRadius: 8,
+});
+
+const PlaceholderAvatarText = Glamorous.span({
+    ...XStyles.text.h400,
+    color: 'rgba(51, 69, 98, 0.5)',
+    letterSpacing: 0.4
+});
+
+const LogoPlaceholderIcon = Glamorous(XIcon)({
+    color: '#654bfa',
+    opacity: 0.6,
+    fontSize: 30,
+    width: 30,
+    height: 30,
+
+});
+
 export const AvatartPlaceholder = withMyOrganizationProfile((props) => {
     return (
-        <XForm
+        <XModalForm
             defaultData={{
                 input: {
-                    photoRef: sanitizeIamgeRef(props.data.myOrganizationProfile!!.photoRef),
+                    photoRef: props.data.myOrganizationProfile!!.photoRef,
                 }
             }}
             defaultAction={async (data) => {
@@ -756,9 +782,20 @@ export const AvatartPlaceholder = withMyOrganizationProfile((props) => {
                     }
                 });
             }}
-            defaultLayout={false}
+            target={(
+                <LogoPlaceholder separator="none">
+                    <LogoPlaceholderIcon icon="photo_camera" />
+                    <PlaceholderAvatarText><p>Add your</p><p>profile logo</p></PlaceholderAvatarText>
+                </LogoPlaceholder>
+            )}
         >
-            <XAvatarUpload field="input.photoRef" />
-        </XForm>
+            <XVertical>
+                <XFormLoadingContent>
+                    <XFormField title="Logo">
+                        <XAvatarUpload field="input.photoRef" />
+                    </XFormField>
+                </XFormLoadingContent>
+            </XVertical>
+        </XModalForm>
     );
 });
