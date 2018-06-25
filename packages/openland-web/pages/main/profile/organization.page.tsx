@@ -36,7 +36,6 @@ import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import PlaceholderAR from './img_placeholder_ar.svg';
 import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
-import { XAxis } from 'recharts';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
