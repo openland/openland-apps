@@ -36,6 +36,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import PlaceholderAR from './img_placeholder_ar.svg';
 import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
+import { XAxis } from 'recharts';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -672,7 +673,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
 
         return (
             <DevelopmentOportunityCard>
-                <XHorizontalStyled justifyContent="space-between"separator={12} padding={24}>
+                <XHorizontalStyled justifyContent="space-between" separator={12} padding={24}>
 
                     {item.photo && (
                         <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
@@ -772,6 +773,17 @@ const ShowListingLink = Glamorous(XLink)({
 
 const FormFieldTitle = Glamorous(XFormFieldTitle)({
     flexGrow: 1
+});
+
+const ViewAllIcon = Glamorous(XIcon)({
+    width: 22,
+    height: 22,
+    fontSize: 22,
+    color: '#654bfa',
+    opacity: 0.5,
+    textAlign: 'end',
+    marginBottom: 23,
+    marginTop: 20
 });
 
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
@@ -981,8 +993,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 <div style={{ marginTop: 16 }}>
                                     <SwitcherWrapper flatStyle={true} height={60}>
                                         <Switcher path={rootPath}>Overview</Switcher>
-                                        <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
-                                        <Switcher path={lsitingsAllPath}>{'All listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                        {/* <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher> */}
+                                        <Switcher path={lsitingsAllPath}>{'All Listings (' + ((organization.listingsAll && organization.listingsAll.length) || 0) + ')'}</Switcher>
                                     </SwitcherWrapper>
                                 </div >
                             </XVerticalStyled>
@@ -1085,10 +1097,11 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         cardFilter(() => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} />, cardCountAR)
                                                     ))
                                                 )}
-                                                <XHorizontal justifyContent="center">
-                                                    <ShowListingLink path={lsitingsPath}>
-                                                        View all ({organization.developmentOportunities!!.length}) >
-                                                        </ShowListingLink>
+                                                <XHorizontal justifyContent="center" alignItems="center" separator="none">
+                                                    <ShowListingLink path={lsitingsAllPath}>
+                                                        View all ({(organization.listingsAll && organization.listingsAll.length) || 0})
+                                                    </ShowListingLink>
+                                                    <ViewAllIcon icon="keyboard_arrow_right" />
                                                 </XHorizontal>
                                             </XCardStyled>
 
@@ -1134,10 +1147,11 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         cardFilter(() => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} />, cardCountDO)
                                                     ))
                                                 )}
-                                                <XHorizontal justifyContent="center">
-                                                    <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
-                                                        View all ({organization.acquisitionRequests!!.length})
-                                                        </ShowListingLink>
+                                                <XHorizontal justifyContent="center" alignItems="center" separator="none">
+                                                    <ShowListingLink path={lsitingsAllPath}>
+                                                        View all ({(organization.listingsAll && organization.listingsAll.length) || 0})
+                                                    </ShowListingLink>
+                                                    <ViewAllIcon icon="keyboard_arrow_right" />
                                                 </XHorizontal>
                                             </XCardStyled>
                                         </>
