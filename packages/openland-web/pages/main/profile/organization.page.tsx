@@ -1020,9 +1020,6 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 )}
                                 <XWithRole role={['org-' + organization.id + '-admin']}>
                                     <XButton
-                                        style="primary"
-                                        size="medium"
-                                        icon="edit"
                                         text="Edit"
                                         path="/settings/organization"
                                     />
@@ -1030,7 +1027,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         placement="bottom"
                                         width={220}
                                         marginRight={88}
-                                        target={<XButton style="primary" size="medium" text="Add a listing" />}
+                                        target={<XButton style="primary" text="Add a listing" />}
                                         content={
                                             <>
                                                 <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>Development opportunity</XOverflow.Item>
