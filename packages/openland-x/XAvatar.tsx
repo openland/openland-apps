@@ -158,7 +158,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             )}
             {!props.src && !(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps} >
-                    <Placeholder size={avatarProps.avatarSize} icon={props.style === 'square' ? 'account_box' : 'account_circle'} />
+                    <Placeholder size={avatarProps.avatarSize} icon={props.style === 'square' ? 'domain' : 'account_circle'} />
                 </StyledPlaceholder>
             )}
         </>
