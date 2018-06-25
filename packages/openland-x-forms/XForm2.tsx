@@ -90,11 +90,17 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
             let message = formatError(e);
             let fields = exportWrongFields(e);
             this.setState({ loading: false, error: message });
-            this.props.store.writeValue('form.error', message);
-            this.props.store.writeValue('form.error_fields', fields.length !== 0);
-            for (let f of fields) {
-                this.props.store.writeValue('errors.' + f.key, f.messages);
+            // writeValue can throw exception for wrong field name
+            try {
+                this.props.store.writeValue('form.error', message);
+                this.props.store.writeValue('form.error_fields', fields.length !== 0);
+                for (let f of fields) {
+                    this.props.store.writeValue('errors.' + f.key, f.messages);
+                }
+            } catch (e) {
+                console.warn(e);
             }
+
         } finally {
             this._isLoading = false;
             this.props.store.writeValue('form.loading', false);
@@ -103,6 +109,7 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
     }
 
     render() {
+        console.warn(this.state);
         return (
             <XFormContext.Provider value={this.contextValue}>
                 {this.props.defaultLayout !== false && (
