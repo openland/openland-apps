@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XFlexStyles, applyFlex } from 'openland-x/basics/Flex';
 
-let XHorizontalDiv = Glamorous.div<XFlexStyles & { separator?: 'large' | 'normal' | 'none', alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center' }>([
+let XHorizontalDiv = Glamorous.div<XFlexStyles & { separator?: 'large' | 'normal' | 'none' | number, alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center' }>([
     (props) => ({
         display: 'flex',
         flexDirection: 'row',
@@ -10,8 +10,8 @@ let XHorizontalDiv = Glamorous.div<XFlexStyles & { separator?: 'large' | 'normal
         position: 'relative',
         ...((props.separator !== 'none') ? {
             '> *': {
-                marginLeft: props.separator === 'large' ? '16px' : '8px',
-                marginRight: props.separator === 'large' ? '16px' : '8px'
+                marginLeft: (typeof props.separator === 'number') ? props.separator : props.separator === 'large' ? '16px' : '8px',
+                marginRight: (typeof props.separator === 'number') ? props.separator : props.separator === 'large' ? '16px' : '8px'
             },
             '>:first-child': {
                 marginLeft: '0px',
@@ -24,7 +24,7 @@ let XHorizontalDiv = Glamorous.div<XFlexStyles & { separator?: 'large' | 'normal
     applyFlex
 ]);
 
-export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal' | 'none', className?: string, alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center' } & XFlexStyles> {
+export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal' | 'none' | number, className?: string, alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center' } & XFlexStyles> {
     render() {
         return (
             <XHorizontalDiv {...this.props}>

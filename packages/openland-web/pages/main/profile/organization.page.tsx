@@ -344,7 +344,7 @@ const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number, marginTop?: 
 }));
 
 const OpportunitiesTextWrapper = Glamorous.div<{ width?: number, alignSelf?: string }>((props) => ({
-    width: props.width ? props.width : 220,
+    width: props.width ? props.width : 227,
     height: '100%',
     flexShrink: 0,
     display: 'flex',
@@ -525,7 +525,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
 
         return (
             <DevelopmentOportunityCard>
-                <XHorizontalStyled justifyContent="space-between" padding={24}>
+                <XHorizontalStyled justifyContent="space-between" separator={12} padding={24}>
                     {item.location && (
                         <XStreetViewModal
                             location={{ latitude: item.location!.lat, longitude: item.location!.lon }}
@@ -663,7 +663,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
 
         return (
             <DevelopmentOportunityCard>
-                <XHorizontalStyled justifyContent="space-between" padding={24}>
+                <XHorizontalStyled justifyContent="space-between"separator={12} padding={24}>
 
                     {item.photo && (
                         <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
