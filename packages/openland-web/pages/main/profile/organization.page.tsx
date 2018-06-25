@@ -541,7 +541,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                 <ListingTitle>{item.name}</ListingTitle>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
-                                        marginRight={138}
+                                        marginRight={60}
                                         placement="bottom"
                                         content={(
                                             <>
@@ -679,7 +679,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                 <ListingTitle>{item.name}</ListingTitle>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
-                                        marginRight={138}
+                                        marginRight={60}
                                         placement="bottom"
                                         content={(
                                             <>
