@@ -298,18 +298,8 @@ export const ParcelCard = withParcelDirect((props) => (
                                 width={110}
                                 content={(
                                     <>
-                                        <XButton
-                                            path={'/parcels/' + props.data.item!!.id}
-                                            text="Details"
-                                            style="flat"
-                                            size="medium"
-                                        />
-                                        <XButton
-                                            query={{ field: 'selectedParcel' }}
-                                            text="Close"
-                                            style="flat"
-                                            size="medium"
-                                        />
+                                        <XOverflow.Item path={'/parcels/' + props.data.item!!.id}>Details</XOverflow.Item>
+                                        <XOverflow.Item query={{ field: 'selectedParcel' }}>Close</XOverflow.Item>
                                     </>
                                 )}
                             />

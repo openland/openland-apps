@@ -534,8 +534,8 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                         placement="bottom"
                                         content={(
                                             <>
-                                                <XButton text="edit" style="flat" query={{ field: 'editListing', value: item.id }} />
-                                                <XButton text="delete" style="flat" query={{ field: 'deleteListing', value: item.id }} />
+                                                <XOverflow.Item query={{ field: 'editListing', value: item.id }}>Edit</XOverflow.Item>
+                                                <XOverflow.Item query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
                                             </>
                                         )}
                                     />
@@ -672,8 +672,8 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                         placement="bottom"
                                         content={(
                                             <>
-                                                <XButton text="edit" style="flat" query={{ field: 'editListing', value: item.id }} />
-                                                <XButton text="delete" style="flat" query={{ field: 'deleteListing', value: item.id }} />
+                                                <XOverflow.Item query={{ field: 'editListing', value: item.id }}>Edit</XOverflow.Item>
+                                                <XOverflow.Item query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
                                             </>
                                         )}
                                     />
@@ -989,19 +989,9 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         target={<XButton style="primary" size="medium" text="Add a listing" />}
                                         content={
                                             <>
-                                                <XButton
-                                                    query={{ field: 'addListing', value: 'DO' }}
-                                                    size="medium"
-                                                    text="Development opportunity"
-                                                    style="flat"
-                                                />
+                                                <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>Development opportunity</XOverflow.Item>
 
-                                                <XButton
-                                                    query={{ field: 'addListing', value: 'AR' }}
-                                                    size="medium"
-                                                    text="Aquisition request"
-                                                    style="flat"
-                                                />
+                                                <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>Aquisition request</XOverflow.Item>
                                             </>
                                         }
                                     />

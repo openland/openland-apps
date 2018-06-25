@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XPopper, Placement } from 'openland-x/XPopper';
+import { XLink } from 'openland-x/XLink';
 
 const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     position: 'fixed',
@@ -46,6 +47,26 @@ const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean }>((props) => ({
     zIndex: props.active ? 11 : undefined
 }));
 
+const XOverflowItem = Glamorous(XLink)({
+    display: 'flex',
+    alignItems: 'center',
+    height: 40,
+    fontSize: 15,
+    fontWeight: 500,
+    lineHeight: 1.33,
+    letterSpacing: -0.2,
+    color: '#334562',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 18,
+    paddingRight: 18
+});
+
+const XOverflowContent = Glamorous.div({
+    marginLeft: -10,
+    width: 'calc(100% + 20px)'
+});
+
 interface XOverflowProps {
     placement?: Placement;
     show?: boolean;
@@ -60,6 +81,8 @@ interface XOverflowProps {
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
+
+    static Item = XOverflowItem;
 
     refComp?: Element;
 
@@ -110,10 +133,10 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                 {shadow && <Shadow active={this.state.show} />}
                 <XPopper
                     show={this.state.show}
-                    content={this.props.content}
+                    content={<XOverflowContent>{this.props.content}</XOverflowContent>}
                     arrow={null}
                     placement={this.props.placement || 'auto'}
-                    width={this.props.width || 170}
+                    width={this.props.width}
                     onClickOutside={this.handleClose}
                     marginLeft={this.props.marginLeft}
                     marginRight={this.props.marginRight}
