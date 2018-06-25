@@ -31,6 +31,7 @@ const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean }>((props) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    flexShrink: 0,
     cursor: 'pointer',
     borderRadius: 5,
     backgroundColor: props.active ? '#654bfa' : 'transparent',
