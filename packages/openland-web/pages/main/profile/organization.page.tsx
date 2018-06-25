@@ -871,7 +871,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 </Field>
                                 <XVertical separator="none" flexGrow={1}>
                                     <XHorizontal >
-                                        <FormFieldTitle>Link text</FormFieldTitle>
+                                        <FormFieldTitle>Link URL</FormFieldTitle>
                                         <DelLinkBtn
                                             style="link_danger"
                                             text="Delete"
@@ -881,7 +881,6 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     links.splice(i, 1);
                                                     store.writeValue('fields.input.additionalLinks', links);
                                                 }
-
                                             }}
                                         />
                                         <div />
