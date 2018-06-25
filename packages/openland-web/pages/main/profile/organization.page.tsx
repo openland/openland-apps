@@ -1092,7 +1092,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                                 {organization.developmentOportunities && (
                                                     organization.developmentOportunities.map((devop, i) => (
-                                                        cardFilter(() => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} />, cardCountAR)
+                                                        cardFilter(() => <DevelopmentOportunity key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountAR)
                                                     ))
                                                 )}
                                                 <XHorizontal justifyContent="center" alignItems="center" separator="none">
@@ -1142,7 +1142,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                                 {organization.acquisitionRequests && (
                                                     organization.acquisitionRequests.map((devop, i) => (
-                                                        cardFilter(() => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} />, cardCountDO)
+                                                        cardFilter(() => <AquizitionRequest key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountDO)
                                                     ))
                                                 )}
                                                 <XHorizontal justifyContent="center" alignItems="center" separator="none">
