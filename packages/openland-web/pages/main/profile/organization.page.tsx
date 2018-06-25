@@ -525,11 +525,12 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                 <XHorizontalStyled justifyContent="space-between" padding={24}>
                     {item.location && (
                         <XStreetViewModal
+                            location={{ latitude: item.location!.lat, longitude: item.location!.lon }}
                             target={<ClickableXStreetViewModalPreview><XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} /></ClickableXStreetViewModalPreview>}
                         />
                     )}
                     {!item.location && (
-                        <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} style={{width: full ? 160 : 133, height: full ? 120 : 100}} />
+                        <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
@@ -603,7 +604,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                         {item.additionalLinks!!.map((s, k) => (
                                             <AdditionalLink key={k + '_' + s} href={s.url}>
                                                 <span>{s.text}</span>
-                                                <XIcon icon="launch"/>
+                                                <XIcon icon="launch" />
                                             </AdditionalLink>
                                         ))}
                                     </OpportunitiesValueWrapper>
@@ -665,7 +666,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                         <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
                     )}
                     {!item.photo && (
-                        <PlaceholderAR style={{width: full ? 160 : 133, height: full ? 120 : 100}}/>
+                        <PlaceholderAR style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                         // <img src={require('./img_placeholder_ar.svg')} />
                     )}
                     {/* <XAvatar photoRef={item.photo || undefined} size="large" style="square" /> */}
