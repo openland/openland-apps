@@ -107,7 +107,10 @@ const OrganizationName = Glamorous.div({
     fontSize: 22,
     fontWeight: 500,
     color: '#334562',
-    whiteSpace: 'nowrap'
+    whiteSpace: 'nowrap',
+    maxWidth: 400,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
 });
 
 const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft?: number, marginRight?: number }>((props) => ({
