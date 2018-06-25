@@ -31,10 +31,11 @@ import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { DateFormater } from 'openland-x-format/XDate';
-import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder } from './placeholders';
+import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder, AvatartPlaceholder } from './placeholders';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import PlaceholderAR from './img_placeholder_ar.svg';
+import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -503,6 +504,10 @@ const ListingTitle = Glamorous.div({
     marginBottom: 4
 });
 
+const ClickableXStreetViewModalPreview = Glamorous.div({
+    cursor: 'pointer'
+});
+
 class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, full?: boolean, showType?: boolean }> {
     render() {
 
@@ -512,7 +517,9 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
             <DevelopmentOportunityCard>
                 <XHorizontalStyled justifyContent="space-between" padding={24}>
                     {item.location && (
-                        <XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} />
+                        <XStreetViewModal
+                            target={<ClickableXStreetViewModalPreview><XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} /></ClickableXStreetViewModalPreview>}
+                        />
                     )}
                     {!item.location && (
                         <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} style={{width: full ? 160 : 133, height: full ? 120 : 100}} />
@@ -661,6 +668,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                 <ListingTitle>{item.name}</ListingTitle>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
+                                        marginRight={138}
                                         placement="bottom"
                                         content={(
                                             <>
@@ -886,7 +894,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     shapeAndForm: input.shapeAndForm,
                     currentUse: input.currentUse,
                     goodFitFor: input.goodFitFor,
-                    additionalLinks: (input.additionalLinks || []).map((l: any) => ({ text: l.text, url: l.url })),
+                    additionalLinks: (input.additionalLinks || []).filter((l: any) => l.text || l.url).map((l: any) => ({ text: l.text, url: l.url })),
 
                     photo: input.photo,
                     shortDescription: input.shortDescription,
@@ -917,6 +925,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
         }
     };
 
+    let hasLogo = !!(organization.photo);
+
     return (
         <>
             <XDocumentHead title="Organization profile" />
@@ -925,8 +935,21 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     <Root>
                         <Header>
                             <AvatarWrapper>
-                                <Avatar cloudImageUuid={organization.photo!!} size="large" style="square" />
+                                {hasLogo && (
+                                    <Avatar cloudImageUuid={organization.photo!!} size="large" style="square" />
+                                )}
+                                {!hasLogo && (
+                                    <>
+                                        <XWithRole role={['org-' + organization.id + '-admin']} >
+                                            <AvatartPlaceholder />
+                                        </XWithRole>
+                                        <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
+                                            <Avatar cloudImageUuid={organization.photo!!} size="large" style="square" />
+                                        </XWithRole>
+                                    </>
+                                )}
                             </AvatarWrapper>
+
                             <XVerticalStyled flexShrink={0} flexGrow={1} justifyContent="space-between" paddingTop={35}>
                                 <OrganizationName>{organization.name}</OrganizationName>
                                 {organization.location && <Text opacity={0.5}>{organization.location}</Text>}
