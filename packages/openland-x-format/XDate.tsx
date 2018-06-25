@@ -46,5 +46,5 @@ export const DateFormater = (time: string) => {
     let day = date.getDate().toString();
     day = day.length > 1 ? day : '0' + day;
 
-    return month + ' ' + day + ',' + year;
+    return month + ' ' + day + ', ' + year;
 };

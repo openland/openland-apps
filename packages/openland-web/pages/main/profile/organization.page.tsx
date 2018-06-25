@@ -151,6 +151,7 @@ const Text = Glamorous.div<TextProps>((props) => ({
     color: '#334562',
     opacity: props.opacity,
     fontWeight: props.bold ? 500 : undefined,
+    letterSpacing: props.bold ? -0.3 : undefined,
     textTransform: props.upperCase ? 'capitalize' : undefined,
     marginBottom: props.marginBottom,
     marginTop: props.marginTop
@@ -249,7 +250,7 @@ class AboutContent extends React.Component<{ text: string }, { open: boolean }> 
 
         let isBigText = this.props.text.length >= 320;
         let textToShow = isBigText && !open ? this.props.text.substring(0, 320) + '...' : text;
-        let buttonText = this.state.open ? 'Show minimize' : 'Show more';
+        let buttonText = this.state.open ? 'Show less' : 'Show more';
 
         return (
             <>
@@ -268,6 +269,7 @@ interface XVerticalStyledProps {
     paddingRight?: number;
     paddingTop?: number;
     paddingBottom?: number;
+    maxwidth?: string | number;
 }
 
 const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
@@ -277,7 +279,8 @@ const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
     paddingLeft: props.paddingLeft,
     paddingRight: props.paddingRight,
     paddingTop: props.paddingTop,
-    paddingBottom: props.paddingBottom
+    paddingBottom: props.paddingBottom,
+    maxWidth: props.maxwidth
 }));
 
 interface XHorizontalStyledProps {
@@ -289,6 +292,7 @@ interface XHorizontalStyledProps {
     paddingTop?: number;
     paddingBottom?: number;
     marginTop?: number;
+    maxwidth?: string | number;
 }
 
 const XHorizontalStyled = Glamorous(XHorizontal)<XHorizontalStyledProps>((props) => ({
@@ -299,26 +303,26 @@ const XHorizontalStyled = Glamorous(XHorizontal)<XHorizontalStyledProps>((props)
     paddingRight: props.paddingRight,
     paddingTop: props.paddingTop,
     paddingBottom: props.paddingBottom,
-    marginTop: props.marginTop
+    marginTop: props.marginTop,
+    maxWidth: props.maxwidth
 }));
 
-const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number }>((props) => ({
+const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number, marginTop?: number }>((props) => ({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
     marginBottom: props.marginBottom ? props.marginBottom : undefined,
+    marginTop: props.marginTop ? props.marginTop : undefined,
     '&:first-child': {
         '& > div': {
             minHeight: 50,
-            paddingTop: 18,
-            // paddingBottom: 5
+            paddingTop: 18
         }
     },
     '&:last-child': {
         '& > div': {
             minHeight: 50,
-            paddingBottom: 18,
-            // paddingTop: 5
+            paddingBottom: 18
         }
     },
     '&:only-child': {
@@ -463,6 +467,42 @@ const Lock = Glamorous(XIcon)({
     marginRight: 8
 });
 
+const AdditionalLink = Glamorous(XLink)({
+    borderRadius: 4,
+    backgroundColor: 'rgba(244, 245, 247, 0.7)',
+    display: 'flex',
+    alignItems: 'center',
+    color: '#334562',
+    fontSize: 15,
+    fontWeight: 500,
+    lineHeight: 1.33,
+    letterSpacing: -0.2,
+    padding: '6px 10px',
+    marginRight: 11,
+    '& > span': {
+        marginRight: 8
+    },
+    '& > i': {
+        fontSize: 20,
+        color: '#bcc3cc'
+    },
+    '&:hover': {
+        backgroundColor: 'rgb(236, 237, 240)',
+        color: '#334562',
+    }
+});
+
+const ListingTitle = Glamorous.div({
+    fontSize: 20,
+    fontWeight: 500,
+    letterSpacing: -0.2,
+    color: '#334562',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    marginBottom: 4
+});
+
 class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, full?: boolean, showType?: boolean }> {
     render() {
 
@@ -475,12 +515,12 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                         <XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} />
                     )}
                     {!item.location && (
-                        <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} />
+                        <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} style={{width: full ? 160 : 133, height: full ? 120 : 100}} />
                     )}
-                    <XHorizontal flexGrow={1}>
-                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                    <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
-                                <Title marginBottom={4}>{item.name}</Title>
+                                <ListingTitle>{item.name}</ListingTitle>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
                                         marginRight={138}
@@ -495,25 +535,25 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                 </XWithRole>
                             </XHorizontal>
                             {this.props.showType && <Text opacity={0.5}>Development oportunity</Text>}
-                            <Text opacity={0.5}>{item.locationTitle}</Text>
+                            <Text opacity={0.5} bold={true}>{item.locationTitle}</Text>
                             <XHorizontal separator="large" flexGrow={full ? 1 : undefined} alignItems={full ? 'flex-end' : undefined}>
                                 {item.area && (
-                                    <Text opacity={!full ? 0.5 : undefined} bold={full ? true : undefined} marginTop={3}>{`Area: ${item.area} ft²`}</Text>
+                                    <Text bold={true} marginTop={3}>{`Area: ${item.area} ft²`}</Text>
                                 )}
                                 {item.price && (
-                                    <Text opacity={!full ? 0.5 : undefined} bold={full ? true : undefined} marginTop={3}>{`Price: $${item.price}`}</Text>
+                                    <Text bold={true} marginTop={3}>{`Price: $${item.price}`}</Text>
                                 )}
                             </XHorizontal>
                             {(!full && item.location) && (
-                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                <XHorizontalStyled marginTop={10}>
                                     <Text><StatusDot />Open</Text>
-                                    <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
+                                    <Text opacity={0.5} small={true} marginBottom={-1}>Last updated: {DateFormater(item.updatedAt)}</Text>
                                 </XHorizontalStyled>
                             )}
                             {(!full && !item.location) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
 
                         </div>
-                    </XHorizontal>
+                    </XHorizontalStyled>
                 </XHorizontalStyled>
 
                 {full && (
@@ -539,6 +579,21 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                             )}
                             {item.specialAttributes && (
                                 <TagRowMap title="Special attributes" items={item.specialAttributes} titleWidth={178} />
+                            )}
+                            {item.additionalLinks!!.length > 0 && (
+                                <OpportunitiesWrapper marginTop={10} marginBottom={10}>
+                                    <OpportunitiesTextWrapper width={178}>
+                                        <Text bold={true}>Additional links</Text>
+                                    </OpportunitiesTextWrapper>
+                                    <OpportunitiesValueWrapper>
+                                        {item.additionalLinks!!.map((s, k) => (
+                                            <AdditionalLink key={k + '_' + s} href={s.url}>
+                                                <span>{s.text}</span>
+                                                <XIcon icon="launch"/>
+                                            </AdditionalLink>
+                                        ))}
+                                    </OpportunitiesValueWrapper>
+                                </OpportunitiesWrapper>
                             )}
 
                             <TagRow title="Status" titleWidth={178}>
@@ -596,14 +651,14 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                         <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
                     )}
                     {!item.photo && (
-                        <PlaceholderAR />
+                        <PlaceholderAR style={{width: full ? 160 : 133, height: full ? 120 : 100}}/>
                         // <img src={require('./img_placeholder_ar.svg')} />
                     )}
                     {/* <XAvatar photoRef={item.photo || undefined} size="large" style="square" /> */}
-                    <XHorizontal flexGrow={1}>
-                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                    <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
-                                <Title marginBottom={4}>{item.name}</Title>
+                                <ListingTitle>{item.name}</ListingTitle>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
                                         placement="bottom"
@@ -617,17 +672,17 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                 </XWithRole>
                             </XHorizontal>
                             {this.props.showType && <Text opacity={0.5}>Aquizition request</Text>}
-                            <Text opacity={0.5}>{item.shortDescription}</Text>
-                            {item.areaRange && <Text opacity={0.5} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
+                            <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>
+                            {item.areaRange && <Text opacity={0.5} bold={true} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
                             {(!full && item.areaRange) && (
-                                <XHorizontalStyled marginTop={8} flexGrow={1} alignItems="flex-end">
+                                <XHorizontalStyled marginTop={10}>
                                     <Text><StatusDot />Open</Text>
-                                    <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
+                                    <Text opacity={0.5} small={true} marginBottom={-1}>Last updated: {DateFormater(item.updatedAt)}</Text>
                                 </XHorizontalStyled>
                             )}
                             {(!full && !item.areaRange) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
                         </div>
-                    </XHorizontal>
+                    </XHorizontalStyled>
                 </XHorizontalStyled>
                 {full && (
                     <XVertical>
@@ -908,7 +963,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         placement="bottom"
                                         width={220}
                                         marginRight={88}
-                                        target={<XButton style="primary" size="medium" text="Add a listing"/>}
+                                        target={<XButton style="primary" size="medium" text="Add a listing" />}
                                         content={
                                             <>
                                                 <XButton
@@ -935,7 +990,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                         <MainContent>
 
                             <XHorizontal>
-                                <XVertical flexGrow={1}>
+                                <XVerticalStyled flexGrow={1} maxwidth="calc(100% - 286px)">
                                     <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
                                         {props.router.path === rootPath && (
                                             <>
@@ -1339,7 +1394,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </XHorizontal>
                                     </XModalForm>
 
-                                </XVertical>
+                                </XVerticalStyled>
                                 <XVertical width={270} flexShrink={0}>
                                     {organization.about && (
                                         <XCardStyled padding={18}>
