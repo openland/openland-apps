@@ -570,6 +570,32 @@ const Home = withUserInfo((props) => {
     );
 });
 
+const AddListingContainer = Glamorous(XVertical)({
+    padding: 8
+});
+
+const AddListing = withUserInfo((props) => {
+    return (
+        <XPopper
+
+            placement="right"
+            showOnHover={true}
+            groupId="scaffold_tooltip"
+            content={(
+                <AddListingContainer separator={11}  >
+                    <strong>{TextAppBar.items.addListing}</strong>
+                    <XLink path={'/o/' + props.organization!!.id + '?addListing=DO'}>Development opportunity</XLink>
+                    <XLink path={'/o/' + props.organization!!.id + '?addListing=AR'}>Aquisition request</XLink>
+                </AddListingContainer>
+            )}
+        >
+            <NavigatorItem>
+                <NavigatorIcon icon="add" />
+            </NavigatorItem>
+        </XPopper>
+    );
+});
+
 const OrganizationPicker = withMyOrganizations((props) => {
     if (props.data.loading) {
         return <XLoader loading={true} />;
@@ -687,6 +713,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
                             <XWithRole role={['feature-marketplace']} negate={true}>
                                 <Home />
+                                <AddListing />
                             </XWithRole>
 
                             <XPopper

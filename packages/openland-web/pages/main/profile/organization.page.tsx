@@ -992,8 +992,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 <div style={{ marginTop: 16 }}>
                                     <SwitcherWrapper flatStyle={true} height={60}>
                                         <Switcher path={rootPath}>Overview</Switcher>
-                                        {/* <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher> */}
-                                        <Switcher path={lsitingsAllPath}>{'All Listings (' + ((organization.listingsAll && organization.listingsAll.length) || 0) + ')'}</Switcher>
+                                        <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                        {/* <Switcher path={lsitingsAllPath}>{'All Listings (' + ((organization.listingsAll && organization.listingsAll.length) || 0) + ')'}</Switcher> */}
                                     </SwitcherWrapper>
                                 </div >
                             </XVerticalStyled>
@@ -1025,7 +1025,6 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         content={
                                             <>
                                                 <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>Development opportunity</XOverflow.Item>
-
                                                 <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>Aquisition request</XOverflow.Item>
                                             </>
                                         }
@@ -1097,8 +1096,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     ))
                                                 )}
                                                 <XHorizontal justifyContent="center" alignItems="center" separator="none">
-                                                    <ShowListingLink path={lsitingsAllPath}>
-                                                        View all ({(organization.listingsAll && organization.listingsAll.length) || 0})
+                                                    <ShowListingLink path={lsitingsPath}>
+                                                        View all ({(organization.developmentOportunities && organization.developmentOportunities.length) || 0})
                                                     </ShowListingLink>
                                                     <ViewAllIcon icon="keyboard_arrow_right" />
                                                 </XHorizontal>
@@ -1147,8 +1146,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     ))
                                                 )}
                                                 <XHorizontal justifyContent="center" alignItems="center" separator="none">
-                                                    <ShowListingLink path={lsitingsAllPath}>
-                                                        View all ({(organization.listingsAll && organization.listingsAll.length) || 0})
+                                                    <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
+                                                        View all ({(organization.acquisitionRequests && organization.acquisitionRequests.length) || 0})
                                                     </ShowListingLink>
                                                     <ViewAllIcon icon="keyboard_arrow_right" />
                                                 </XHorizontal>
