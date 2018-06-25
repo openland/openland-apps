@@ -13,15 +13,15 @@ function loadCenter(src: string) {
     return { latitude: center.geometry!!.coordinates[1], longitude: center.geometry!!.coordinates[0] };
 }
 
-export function XStreetViewModal(props: { geometry: string }) {
+export function XStreetViewModal(props: { geometry?: string, location?: { latitude: number, longitude: number }, target?: any }) {
     return (
         <XModal
             title="Street View"
             size="x-large"
             closeOnClick={false}
             useTopCloser={true}
-            target={<XButton text="Street View" style="flat" />}
-            body={<XStreetViewFullScreen location={loadCenter(props.geometry)} />}
+            target={props.target || <XButton text="Street View" style="flat" />}
+            body={<XStreetViewFullScreen location={props.geometry ? loadCenter(props.geometry) : props.location!} />}
         />
     );
 }

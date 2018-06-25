@@ -35,6 +35,7 @@ import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, A
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import PlaceholderAR from './img_placeholder_ar.svg';
+import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -463,6 +464,10 @@ const Lock = Glamorous(XIcon)({
     marginRight: 8
 });
 
+const ClickableXStreetViewModalPreview = Glamorous.div({
+    cursor: 'pointer'
+});
+
 class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, full?: boolean, showType?: boolean }> {
     render() {
 
@@ -472,7 +477,10 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
             <DevelopmentOportunityCard>
                 <XHorizontalStyled justifyContent="space-between" padding={24}>
                     {item.location && (
-                        <XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} />
+                        <XStreetViewModal
+                            target={<ClickableXStreetViewModalPreview><XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} /></ClickableXStreetViewModalPreview>}
+                            location={{ latitude: item.location!.lat, longitude: item.location!.lon }}
+                        />
                     )}
                     {!item.location && (
                         <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} />
