@@ -784,6 +784,17 @@ const FormFieldTitle = Glamorous(XFormFieldTitle)({
     flexGrow: 1
 });
 
+const ViewAllIcon = Glamorous(XIcon)({
+    width: 22,
+    height: 22,
+    fontSize: 22,
+    color: '#654bfa',
+    opacity: 0.5,
+    textAlign: 'end',
+    marginBottom: 23,
+    marginTop: 20
+});
+
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
 
     let editDoTarget = props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editListing)[0];
@@ -992,7 +1003,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     <SwitcherWrapper flatStyle={true} height={60}>
                                         <Switcher path={rootPath}>Overview</Switcher>
                                         <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
-                                        <Switcher path={lsitingsAllPath}>{'All listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                        {/* <Switcher path={lsitingsAllPath}>{'All Listings (' + ((organization.listingsAll && organization.listingsAll.length) || 0) + ')'}</Switcher> */}
                                     </SwitcherWrapper>
                                 </div >
                             </XVerticalStyled>
@@ -1024,7 +1035,6 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         content={
                                             <>
                                                 <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>Development opportunity</XOverflow.Item>
-
                                                 <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>Aquisition request</XOverflow.Item>
                                             </>
                                         }
@@ -1092,13 +1102,14 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                                 {organization.developmentOportunities && (
                                                     organization.developmentOportunities.map((devop, i) => (
-                                                        cardFilter(() => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} />, cardCountAR)
+                                                        cardFilter(() => <DevelopmentOportunity key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountAR)
                                                     ))
                                                 )}
-                                                <XHorizontal justifyContent="center">
+                                                <XHorizontal justifyContent="center" alignItems="center" separator="none">
                                                     <ShowListingLink path={lsitingsPath}>
-                                                        View all ({organization.developmentOportunities!!.length}) >
-                                                        </ShowListingLink>
+                                                        View all ({(organization.developmentOportunities && organization.developmentOportunities.length) || 0})
+                                                    </ShowListingLink>
+                                                    <ViewAllIcon icon="keyboard_arrow_right" />
                                                 </XHorizontal>
                                             </XCardStyled>
 
@@ -1141,13 +1152,14 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                                 {organization.acquisitionRequests && (
                                                     organization.acquisitionRequests.map((devop, i) => (
-                                                        cardFilter(() => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} />, cardCountDO)
+                                                        cardFilter(() => <AquizitionRequest key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountDO)
                                                     ))
                                                 )}
-                                                <XHorizontal justifyContent="center">
+                                                <XHorizontal justifyContent="center" alignItems="center" separator="none">
                                                     <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
-                                                        View all ({organization.acquisitionRequests!!.length})
-                                                        </ShowListingLink>
+                                                        View all ({(organization.acquisitionRequests && organization.acquisitionRequests.length) || 0})
+                                                    </ShowListingLink>
+                                                    <ViewAllIcon icon="keyboard_arrow_right" />
                                                 </XHorizontal>
                                             </XCardStyled>
                                         </>
