@@ -32,6 +32,10 @@ interface XPopperProps {
     onClickOutside?: () => void;
 
     padding?: number;
+    marginLeft?: number;
+    marginRight?: number;
+    marginTop?: number;
+    marginBottom?: number;
     width?: number;
     height?: number;
     maxWidth?: number;
@@ -431,6 +435,10 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             maxHeight: this.props.maxHeight,
             minWidth: this.props.minWidth,
             minHeight: this.props.minHeight,
+            marginLeft: this.props.marginLeft,
+            marginRight: this.props.marginRight,
+            marginTop: this.props.marginTop,
+            marginBotto: this.props.marginBottom,
 
             groupId: this.props.groupId,
             animation: this.props.animation,

@@ -15,6 +15,11 @@ export interface PopperRendererProps {
     minWidth?: number;
     minHeight?: number;
 
+    marginLeft?: number;
+    marginRight?: number;
+    marginTop?: number;
+    marginBottom?: number;
+
     groupId?: string;
 
     animation?: 'fade' | 'pop' | null;
@@ -160,7 +165,20 @@ const hideAnimationLeft = glamor.keyframes({
     }
 });
 
-const PopperRoot = Glamorous.div<{ animationDurationIn: number, animationDurationOut: number, animationIn: 'fade' | 'pop', animationOut: 'fade' | 'pop' }>((props) => ({
+const PopperRoot = Glamorous.div<{
+    animationDurationIn: number,
+    animationDurationOut: number,
+    animationIn: 'fade' | 'pop',
+    animationOut: 'fade' | 'pop',
+    marginLeft?: number,
+    marginRight?: number,
+    marginTop?: number,
+    marginBottom?: number,
+}>((props) => ({
+    marginLeft: props.marginLeft,
+    marginRight: props.marginRight,
+    marginTop: props.marginTop,
+    marginBottom: props.marginBottom,
     '.hide': {
         animationDuration: `${props.animationDurationOut}ms`,
         animationFillMode: 'forwards',
@@ -243,6 +261,10 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
                         onMouseOut={this.props.showOnHover ? this.props.onMouseOutContent : undefined}
                         animationDurationIn={animationDurationIn}
                         animationDurationOut={animationDurationOut}
+                        marginLeft={this.props.marginLeft}
+                        marginRight={this.props.marginRight}
+                        marginTop={this.props.marginTop}
+                        marginBottom={this.props.marginBottom}
                     >
 
                         {this.prepareRef(this.props.contentContainer, {

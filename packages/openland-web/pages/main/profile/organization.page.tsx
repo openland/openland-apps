@@ -483,6 +483,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                 <Title marginBottom={4}>{item.name}</Title>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
+                                        marginRight={138}
                                         placement="bottom"
                                         content={(
                                             <>
@@ -905,22 +906,22 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     />
                                     <XOverflow
                                         placement="bottom"
+                                        width={220}
+                                        marginRight={88}
                                         target={<XButton style="primary" size="medium" text="Add a listing"/>}
                                         content={
                                             <>
                                                 <XButton
                                                     query={{ field: 'addListing', value: 'DO' }}
                                                     size="medium"
-                                                    text="Add DO"
-                                                    icon="add"
+                                                    text="Development opportunity"
                                                     style="flat"
                                                 />
 
                                                 <XButton
                                                     query={{ field: 'addListing', value: 'AR' }}
                                                     size="medium"
-                                                    text="Add AR"
-                                                    icon="add"
+                                                    text="Aquisition request"
                                                     style="flat"
                                                 />
                                             </>
