@@ -44,7 +44,7 @@ const Root = Glamorous(XVertical)({
 
 const MainContent = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
-    padding: '0 150px',
+    padding: '0 184px',
     '@media (max-width: 1200px)': {
         padding: '0 40px',
     }
@@ -54,7 +54,7 @@ const Header = Glamorous.div({
     display: 'flex',
     backgroundColor: '#fff',
     borderBottom: '1px solid rgba(220, 222, 228, 0.4)',
-    padding: '0 150px',
+    padding: '0 184px',
     '@media (max-width: 1200px)': {
         padding: '0 40px',
     }
@@ -87,7 +87,6 @@ const Switcher = Glamorous(XSwitcher.Item)({
 const AvatarWrapper = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
-    paddingBottom: 23,
     paddingTop: 20,
     marginRight: 24
 });
@@ -320,7 +319,13 @@ const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number, marginTop?: 
     '&:first-child': {
         '& > div': {
             minHeight: 50,
-            paddingTop: 18
+            paddingTop: 15,
+            '&:first-child': {
+                '& > div': {
+                    paddingTop: 8,
+
+                }
+            }
         }
     },
     '&:last-child': {
@@ -345,7 +350,9 @@ const OpportunitiesTextWrapper = Glamorous.div<{ width?: number, alignSelf?: str
     display: 'flex',
     alignItems: 'center',
     alignSelf: props.alignSelf ? props.alignSelf : undefined,
-    paddingLeft: 24
+    paddingLeft: 24,
+    paddingTop: 12,
+
 }));
 
 const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean }>((props) => ({
@@ -408,7 +415,7 @@ interface TagRowMapProps {
 
 const TagRowMap = (props: TagRowMapProps) => (
     <OpportunitiesWrapper>
-        <OpportunitiesTextWrapper width={props.titleWidth}>
+        <OpportunitiesTextWrapper width={props.titleWidth} alignSelf="flex-start">
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered}>
@@ -521,11 +528,12 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                 <XHorizontalStyled justifyContent="space-between" padding={24}>
                     {item.location && (
                         <XStreetViewModal
+                            location={{ latitude: item.location!.lat, longitude: item.location!.lon }}
                             target={<ClickableXStreetViewModalPreview><XStreetViewModalPreview location={{ latitude: item.location!.lat, longitude: item.location!.lon }} width={full ? 160 : 133} height={full ? 120 : 100} /></ClickableXStreetViewModalPreview>}
                         />
                     )}
                     {!item.location && (
-                        <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} style={{width: full ? 160 : 133, height: full ? 120 : 100}} />
+                        <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
@@ -599,7 +607,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                         {item.additionalLinks!!.map((s, k) => (
                                             <AdditionalLink key={k + '_' + s} href={s.url}>
                                                 <span>{s.text}</span>
-                                                <XIcon icon="launch"/>
+                                                <XIcon icon="launch" />
                                             </AdditionalLink>
                                         ))}
                                     </OpportunitiesValueWrapper>
@@ -661,7 +669,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                         <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
                     )}
                     {!item.photo && (
-                        <PlaceholderAR style={{width: full ? 160 : 133, height: full ? 120 : 100}}/>
+                        <PlaceholderAR style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                         // <img src={require('./img_placeholder_ar.svg')} />
                     )}
                     {/* <XAvatar photoRef={item.photo || undefined} size="large" style="square" /> */}
@@ -953,17 +961,21 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 )}
                             </AvatarWrapper>
 
-                            <XVerticalStyled flexShrink={0} flexGrow={1} justifyContent="space-between" paddingTop={35}>
+                            <XVerticalStyled flexShrink={0} flexGrow={1} separator="none" paddingTop={35}>
                                 <OrganizationName>{organization.name}</OrganizationName>
-                                {organization.location && <Text opacity={0.5}>{organization.location}</Text>}
-                                <XWithRole role={['org-' + organization.id + '-admin']}>
-                                    {!organization.location && <LocationPlaceholder />}
-                                </XWithRole>
-                                <SwitcherWrapper flatStyle={true} height={60}>
-                                    <Switcher path={rootPath}>Overview</Switcher>
-                                    <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
-                                    <Switcher path={lsitingsAllPath}>{'All listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
-                                </SwitcherWrapper>
+                                <div style={{ marginTop: 4 }}>
+                                    {organization.location && <Text opacity={0.5}>{organization.location}</Text>}
+                                    <XWithRole role={['org-' + organization.id + '-admin']}>
+                                        {!organization.location && <LocationPlaceholder />}
+                                    </XWithRole>
+                                </div>
+                                <div style={{ marginTop: 16 }}>
+                                    <SwitcherWrapper flatStyle={true} height={60}>
+                                        <Switcher path={rootPath}>Overview</Switcher>
+                                        <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                        <Switcher path={lsitingsAllPath}>{'All listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                    </SwitcherWrapper>
+                                </div >
                             </XVerticalStyled>
                             <XHorizontalStyled paddingTop={20}>
                                 {!organization.isMine && (
