@@ -343,7 +343,14 @@ const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number, marginTop?: 
     }
 }));
 
-const OpportunitiesTextWrapper = Glamorous.div<{ width?: number, alignSelf?: string }>((props) => ({
+interface OpportunitiesTextWrapperProps {
+    width?: number;
+    alignSelf?: string;
+    paddingTop?: number;
+    paddingBottom?: number;
+}
+
+const OpportunitiesTextWrapper = Glamorous.div<OpportunitiesTextWrapperProps>((props) => ({
     width: props.width ? props.width : 227,
     height: '100%',
     flexShrink: 0,
@@ -351,8 +358,8 @@ const OpportunitiesTextWrapper = Glamorous.div<{ width?: number, alignSelf?: str
     alignItems: 'center',
     alignSelf: props.alignSelf ? props.alignSelf : undefined,
     paddingLeft: 24,
-    paddingTop: 12,
-
+    paddingTop: props.paddingTop ? props.paddingTop : 12,
+    paddingBottom: props.paddingBottom ? props.paddingBottom : 12
 }));
 
 const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean }>((props) => ({
@@ -490,6 +497,8 @@ const AdditionalLink = Glamorous(XLink)({
     letterSpacing: -0.2,
     padding: '6px 10px',
     marginRight: 11,
+    marginTop: 5,
+    marginBottom: 5,
     '& > span': {
         marginRight: 8
     },
@@ -600,7 +609,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                             )}
                             {item.additionalLinks!!.length > 0 && (
                                 <OpportunitiesWrapper marginTop={10} marginBottom={10}>
-                                    <OpportunitiesTextWrapper width={178}>
+                                    <OpportunitiesTextWrapper width={178} paddingBottom={0}>
                                         <Text bold={true}>Additional links</Text>
                                     </OpportunitiesTextWrapper>
                                     <OpportunitiesValueWrapper>
@@ -615,7 +624,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                             )}
 
                             <TagRow title="Status" titleWidth={178}>
-                                <XHorizontalStyled flexGrow={1} alignItems="flex-end">
+                                <XHorizontalStyled flexGrow={1} alignItems="flex-end" paddingTop={12}>
                                     <Text><StatusDot />Open</Text>
                                     <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
                                 </XHorizontalStyled>
@@ -725,7 +734,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                 <TagRowMap title="Unit capacity" items={item.unitCapacity} titleWidth={178} />
                             )}
                             <TagRow title="Status" titleWidth={178}>
-                                <XHorizontalStyled flexGrow={1} alignItems="flex-end">
+                                <XHorizontalStyled flexGrow={1} alignItems="flex-end" paddingTop={12}>
                                     <Text><StatusDot />Open</Text>
                                     <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
                                 </XHorizontalStyled>
