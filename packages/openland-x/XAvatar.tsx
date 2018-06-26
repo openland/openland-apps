@@ -146,9 +146,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
         src: props.src || undefined,
         enabled: !!(props.onClick)
     };
-
-    console.warn(props.onClick);
-
+    
     return (
         <>
             {props.src && (

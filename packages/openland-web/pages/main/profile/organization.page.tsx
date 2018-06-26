@@ -36,6 +36,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import PlaceholderAR from './img_placeholder_ar.svg';
 import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
+import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 
 const Root = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
@@ -536,35 +537,35 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
             <XVerticalStyled marginTop={10}>
                 <div>
                     {item.area && (
-                        <TagRow title="Area" titleWidth={150}>
+                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitileArea} titleWidth={150}>
                             <Text marginTop={3} fontWeight={600}>{`${item.area} ft²`}</Text>
                         </TagRow>
                     )}
                     {item.price && (
-                        <TagRow title="Price" titleWidth={150} isTextStyle={true}>
+                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitilePrice} titleWidth={150} isTextStyle={true}>
                             <Text marginTop={3} fontWeight={600}>{`$${item.price}`}</Text>
                         </TagRow>
                     )}
                     {item.summary && (
-                        <TagRow title="Summary" text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} />
+                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitileSummary} text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} />
                     )}
                     {item.availability && (
-                        <TagRow title="Availability" text={item.availability} titleWidth={150} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} />
+                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitileAvailability} text={item.availability} titleWidth={150} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} />
                     )}
                     {item.dealType && (
-                        <TagRowMap title="Deal type" items={item.dealType} titleWidth={150} />
+                        <TagRowMap title={TextOrganizationProfile.listingDoTagRowTitileDealType} items={item.dealType} titleWidth={150} />
                     )}
                     {item.shapeAndForm && (
-                        <TagRowMap title="Shape and form" items={item.shapeAndForm} titleWidth={150} />
+                        <TagRowMap title={TextOrganizationProfile.listingDoTagRowTitileShapeAndForm} items={item.shapeAndForm} titleWidth={150} />
                     )}
                     {item.currentUse && (
-                        <TagRowMap title="Current use" items={item.currentUse} titleWidth={150} />
+                        <TagRowMap title={TextOrganizationProfile.listingDoTagRowTitileCurrentUse} items={item.currentUse} titleWidth={150} />
                     )}
                     {item.goodFitFor && (
-                        <TagRowMap title="Good fit for" items={item.goodFitFor} titleWidth={150} />
+                        <TagRowMap title={TextOrganizationProfile.listingDoTagRowTitileGoodFitFor} items={item.goodFitFor} titleWidth={150} />
                     )}
                     {item.specialAttributes && (
-                        <TagRowMap title="Special attributes" items={item.specialAttributes} titleWidth={150} />
+                        <TagRowMap title={TextOrganizationProfile.listingDoTagRowTitileSpecialAttributes} items={item.specialAttributes} titleWidth={150} />
                     )}
                     {item.additionalLinks!!.length > 0 && (
                         <OpportunitiesWrapper>
@@ -610,17 +611,17 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                         placement="bottom"
                                         content={(
                                             <>
-                                                <XOverflow.Item query={{ field: 'editListing', value: item.id }}>Edit</XOverflow.Item>
-                                                {item.locationTitle && < XOverflow.Item href={`https://www.google.com/maps/place/${item.locationTitle}`}>Google map</XOverflow.Item>}
-                                                {(!item.locationTitle && item.location) && < XOverflow.Item href={`https://www.google.com/maps/place/${item.location.lat},${item.location.lon}`}>Google map</XOverflow.Item>}
-                                                {item.location && < XOverflow.Item href={`https://www.google.com/maps?cbll=${item.location.lat},${item.location.lon}&cbp=12,90,0,0,5&layer=c`}>Street view</XOverflow.Item>}
-                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
+                                                <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowEdit}</XOverflow.Item>
+                                                {item.locationTitle && < XOverflow.Item href={`https://www.google.com/maps/place/${item.locationTitle}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XOverflow.Item>}
+                                                {(!item.locationTitle && item.location) && < XOverflow.Item href={`https://www.google.com/maps/place/${item.location.lat},${item.location.lon}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XOverflow.Item>}
+                                                {item.location && < XOverflow.Item href={`https://www.google.com/maps?cbll=${item.location.lat},${item.location.lon}&cbp=12,90,0,0,5&layer=c`}>{TextOrganizationProfile.listingDoOwerflowStreetView}</XOverflow.Item>}
+                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowDelete}</XOverflow.Item>
                                             </>
                                         )}
                                     />
                                 </XWithRole>
                             </XHorizontalStyled>
-                            {this.props.showType && <Text opacity={0.5}>Development oportunity</Text>}
+                            {this.props.showType && <Text opacity={0.5}>{TextOrganizationProfile.listingDoTagRowTitileDealType}</Text>}
                             {item.locationTitle && <Text opacity={0.5} bold={true}>{item.locationTitle}</Text>}
                             {(item.area || item.price) && (
                                 <XHorizontal separator="large" flexGrow={full ? 1 : undefined} alignItems={full ? 'flex-end' : undefined}>
@@ -637,7 +638,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                 </XHorizontal>
                             )}
 
-                            {(!full && !item.location) && <Text opacity={0.5} marginTop={5} bold={true}><Lock icon="locked" />Details and location on request</Text>}
+                            {(!full && !item.location) && <Text opacity={0.5} marginTop={5} bold={true}><Lock icon="locked" />{TextOrganizationProfile.listingDoLocked}</Text>}
 
                             {full && FullContent}
                         </div>
@@ -684,22 +685,22 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
             <XVerticalStyled marginTop={14}>
                 <div>
                     {item.summary && (
-                        <TagRow title="Summary" text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
+                        <TagRow title={TextOrganizationProfile.listingArTagRowSummary} text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
                     )}
                     {item.areaRange && (
-                        <TagRow title="Area range" text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} titleWidth={150} isTagStyle={true} />
+                        <TagRow title={TextOrganizationProfile.listingArTagRowAreaRange} text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} titleWidth={150} isTagStyle={true} />
                     )}
                     {item.geographies && (
-                        <TagRowMap title="Geographies" items={item.geographies} titleWidth={150} />
+                        <TagRowMap title={TextOrganizationProfile.listingArTagRowGeographies} items={item.geographies} titleWidth={150} />
                     )}
                     {item.landUse && (
-                        <TagRowMap title="Land use" items={item.landUse} titleWidth={150} />
+                        <TagRowMap title={TextOrganizationProfile.listingArTagRowLandUse} items={item.landUse} titleWidth={150} />
                     )}
                     {item.specialAttributes && (
-                        <TagRowMap title="Special attributes" items={item.specialAttributes} titleWidth={150} />
+                        <TagRowMap title={TextOrganizationProfile.listingArTagRowSpecialAttributes} items={item.specialAttributes} titleWidth={150} />
                     )}
                     {item.unitCapacity && (
-                        <TagRowMap title="Unit capacity" items={item.unitCapacity} titleWidth={150} />
+                        <TagRowMap title={TextOrganizationProfile.listingArTagRowUnitCapacity} items={item.unitCapacity} titleWidth={150} />
                     )}
                 </div>
             </XVerticalStyled>
@@ -728,18 +729,18 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                                         placement="bottom"
                                         content={(
                                             <>
-                                                <XOverflow.Item query={{ field: 'editListing', value: item.id }}>Edit</XOverflow.Item>
-                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
+                                                <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XOverflow.Item>
+                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XOverflow.Item>
                                             </>
                                         )}
                                     />
                                 </XWithRole>
                             </XHorizontalStyled>
-                            {this.props.showType && <Text opacity={0.5}>Acquizition request</Text>}
+                            {this.props.showType && <Text opacity={0.5}>{TextOrganizationProfile.listingArType}</Text>}
                             <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>
                             {(!full && item.areaRange) && <Text opacity={0.5} bold={true} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
 
-                            {(!full && !item.areaRange) && <Text opacity={0.5} marginTop={8}> <Lock icon="locked" />Details and location on request</Text>}
+                            {(!full && !item.areaRange) && <Text opacity={0.5} marginTop={8}> <Lock icon="locked" />{TextOrganizationProfile.listingArLocked}</Text>}
 
                             {full && FullContent}
                         </div>
@@ -858,15 +859,15 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     return (((store && store.readValue('fields.input.additionalLinks')) || []).map((link: any, i: number) => {
                         return (
                             <XHorizontal key={'link_' + i} >
-                                <Field title="Link text">
-                                    <XInput field={`input.additionalLinks.${i}.text`} placeholder="Link text" />
+                                <Field title={TextOrganizationProfile.listingEditDoLinkTextTitle}>
+                                    <XInput field={`input.additionalLinks.${i}.text`} placeholder={TextOrganizationProfile.listingEditDoLinkTextPlaceholder} />
                                 </Field>
                                 <XVertical separator="none" flexGrow={1}>
                                     <XHorizontal >
-                                        <FormFieldTitle>Link URL</FormFieldTitle>
+                                        <FormFieldTitle>{TextOrganizationProfile.listingEditDoLinkUrlTitle}</FormFieldTitle>
                                         <DelLinkBtn
                                             style="link_danger"
-                                            text="Delete"
+                                            text={TextOrganizationProfile.listingEditDoLinkDelete}
                                             onClick={() => {
                                                 if (store) {
                                                     let links: any[] = store.readValue('fields.input.additionalLinks') || [];
@@ -877,7 +878,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         />
                                         <div />
                                     </XHorizontal>
-                                    <XInput field={`input.additionalLinks.${i}.url`} placeholder="Link url" />
+                                    <XInput field={`input.additionalLinks.${i}.url`} placeholder={TextOrganizationProfile.listingEditDoLinkUrlPlaceholder} />
                                 </XVertical>
                             </XHorizontal>
                         );
@@ -895,7 +896,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     store.writeValue('fields.input.additionalLinks', links);
                                 }
                             }}
-                            text={`Add${links.length === 0 ? '' : ' another'} link`}
+                            text={links.length === 0 ? TextOrganizationProfile.listingEditDoLinkAddFirst : TextOrganizationProfile.listingEditDoLinkAdd}
                             style="link"
                             alignSelf="flex-start"
                         />
@@ -961,7 +962,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
     return (
         <>
-            <XDocumentHead title="Organization profile" />
+            <XDocumentHead title={TextOrganizationProfile.pageTitle} />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false} >
                     <Root>
@@ -992,8 +993,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 </div>
                                 <div style={{ marginTop: 16 }}>
                                     <SwitcherWrapper flatStyle={true} height={60} smallText={true}>
-                                        <Switcher path={rootPath}>Overview</Switcher>
-                                        <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                        <Switcher path={rootPath}>{TextOrganizationProfile.headerTabOverview}</Switcher>
+                                        <Switcher path={lsitingsPath}>{TextOrganizationProfile.headerTabListings + ' (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
                                         {/* <Switcher path={lsitingsAllPath}>{'All Listings (' + ((organization.listingsAll && organization.listingsAll.length) || 0) + ')'}</Switcher> */}
                                     </SwitcherWrapper>
                                 </div >
@@ -1002,7 +1003,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 {!organization.isMine && (
                                     <XButton
                                         style={organization!!.followed ? 'primary' : 'electric'}
-                                        text={organization!!.followed ? 'Following' : 'Follow'}
+                                        text={organization!!.followed ? TextOrganizationProfile.headerButtonFollowUnFollow : TextOrganizationProfile.headerButtonFollowFollow}
                                         action={async () => {
                                             console.warn(organization!!.followed);
                                             await props.followOrganization({ variables: { follow: !organization!!.followed } });
@@ -1011,18 +1012,18 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 )}
                                 <XWithRole role={['org-' + organization.id + '-admin']}>
                                     <XButton
-                                        text="Edit"
+                                        text={TextOrganizationProfile.headerButtonEdit}
                                         path="/settings/organization"
                                     />
                                     <XOverflow
                                         placement="bottom"
                                         width={220}
                                         marginRight={88}
-                                        target={<XButton style="primary" text="Add a listing" />}
+                                        target={<XButton style="primary" text={TextOrganizationProfile.headerButtonAddListing} />}
                                         content={
                                             <>
-                                                <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>Development opportunity</XOverflow.Item>
-                                                <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>Aquisition request</XOverflow.Item>
+                                                <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>text={TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
+                                                <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>text={TextOrganizationProfile.headerButtonAddListingAR}</XOverflow.Item>
                                             </>
                                         }
                                     />
@@ -1049,13 +1050,13 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             {(organization.organizationType || organization.lookingFor || organization.geographies) && (
                                                 <XCardStyled padding={0}>
                                                     {organization.organizationType && (
-                                                        <TagRowMap title="Organization type" items={organization.organizationType} bordered={true} paddingLeft={24} />
+                                                        <TagRowMap title={TextOrganizationProfile.overviewOrganizationTypeTitle} items={organization.organizationType} bordered={true} paddingLeft={24} />
                                                     )}
                                                     {organization.lookingFor && (
-                                                        <TagRowMap title="Looking for" items={organization.lookingFor} bordered={true} paddingLeft={24} />
+                                                        <TagRowMap title={TextOrganizationProfile.overviewOrganizationLookingForTitle} items={organization.lookingFor} bordered={true} paddingLeft={24} />
                                                     )}
                                                     {organization.geographies && (
-                                                        <TagRowMap title="Geographies" items={organization.geographies} bordered={true} paddingLeft={24} />
+                                                        <TagRowMap title={TextOrganizationProfile.overviewOrganizationGeographiesTitle} items={organization.geographies} bordered={true} paddingLeft={24} />
                                                     )}
 
                                                 </XCardStyled>
@@ -1063,25 +1064,25 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                             <XCardStyled padding={0}>
                                                 <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                                    <Title marginBottom={24}>Development opportunities</Title>
+                                                    <Title marginBottom={24}>{TextOrganizationProfile.overviewDOTitle}</Title>
                                                 </XVerticalStyled>
 
                                                 {(organization.doShapeAndForm || organization.doCurrentUse || organization.doGoodFitFor || organization.doSpecialAttributes || organization.doAvailability) && (
                                                     <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
                                                         {organization.doShapeAndForm && (
-                                                            <TagRowMap title="Shape and form" items={organization.doShapeAndForm} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowShapeAndFormTitle} items={organization.doShapeAndForm} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.doCurrentUse && (
-                                                            <TagRowMap title="Current use" items={organization.doCurrentUse} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowCurrentUseTitle} items={organization.doCurrentUse} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.doGoodFitFor && (
-                                                            <TagRowMap title="Good fit for  " items={organization.doGoodFitFor} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowGoodFitForTitle} items={organization.doGoodFitFor} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.doSpecialAttributes && (
-                                                            <TagRowMap title="Special attributes" items={organization.doSpecialAttributes} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowSpecialAttributesTitle} items={organization.doSpecialAttributes} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.doAvailability && (
-                                                            <TagRowMap title="Availability " items={organization.doAvailability} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowAvailabilityTitle} items={organization.doAvailability} bordered={true} paddingLeft={24} />
                                                         )}
 
                                                     </div>
@@ -1102,37 +1103,37 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                             <XCardStyled padding={0}>
                                                 <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                                    <Title marginBottom={24}>Acquisition requests</Title>
+                                                    <Title marginBottom={24}>{TextOrganizationProfile.overviewArTitle}</Title>
                                                 </XVerticalStyled>
 
                                                 {(organization.arGeographies || organization.arAreaRange || organization.arHeightLimit || organization.arLandUse || organization.arSpecialAttributes || organization.arActivityStatus || organization.arAquisitionBudget || organization.arAquisitionRate || organization.arClosingTime) && (
                                                     <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
                                                         {organization.arGeographies && (
-                                                            <TagRowMap title="Geographies" items={organization.arGeographies} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowGeographiesTitle} items={organization.arGeographies} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.arAreaRange && (
-                                                            <TagRowMap title="Area range" items={organization.arAreaRange} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowAreaRangeTitle} items={organization.arAreaRange} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.arHeightLimit && (
-                                                            <TagRowMap title="Height limit" items={organization.arHeightLimit} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowHeightLimitTitle} items={organization.arHeightLimit} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.arLandUse && (
-                                                            <TagRowMap title="Land use" items={organization.arLandUse} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowLandUseTitle} items={organization.arLandUse} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.arSpecialAttributes && (
-                                                            <TagRowMap title="Special attributes " items={organization.arSpecialAttributes} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowSpecialAttributesTitle} items={organization.arSpecialAttributes} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.arActivityStatus && (
-                                                            <TagRowMap title="Activity status" items={organization.arActivityStatus} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowActivityStatusTitle} items={organization.arActivityStatus} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.arAquisitionBudget && (
-                                                            <TagRowMap title="3-year aquisition budget" items={organization.arAquisitionBudget} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowAquisitionBudgetTitle} items={organization.arAquisitionBudget} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.arAquisitionRate && (
-                                                            <TagRowMap title="Aquisition rate" items={organization.arAquisitionRate} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowAquisitionRateTitle} items={organization.arAquisitionRate} bordered={true} paddingLeft={24} />
                                                         )}
                                                         {organization.arClosingTime && (
-                                                            <TagRowMap title="Closing time" items={organization.arClosingTime} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowClosingTimeTitle} items={organization.arClosingTime} bordered={true} paddingLeft={24} />
                                                         )}
                                                     </div>
                                                 )}
@@ -1158,8 +1159,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <XCardStyled padding={0}>
                                                 <XVerticalStyled flexGrow={1} padding={0} paddingLeft={24} paddingRight={24}>
                                                     <SwitcherWrapper flatStyle={true} height={66}>
-                                                        <Switcher query={{ field: 'listingType' }}>Development opportunities</Switcher>
-                                                        <Switcher query={{ field: 'listingType', value: 'ar' }}>Acquisition requests</Switcher>
+                                                        <Switcher query={{ field: 'listingType' }}>{TextOrganizationProfile.listingsDoTabTitle}</Switcher>
+                                                        <Switcher query={{ field: 'listingType', value: 'ar' }}>{TextOrganizationProfile.listingsArTabTitle}</Switcher>
 
                                                     </SwitcherWrapper>
                                                 </XVerticalStyled>
@@ -1193,7 +1194,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     {props.router.query.addListing && (
                                         <XModalForm
                                             scrollableContent={true}
-                                            title={props.router.query.addListing === 'DO' ? 'Create development opportunity' : 'Create acquisition requests'}
+                                            title={props.router.query.addListing === 'DO' ? TextOrganizationProfile.listingCreateDoTitle : TextOrganizationProfile.listingCreateArTitle}
 
                                             defaultAction={async (data) => {
                                                 let input = data.input || {};
@@ -1416,32 +1417,6 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             </XFormLoadingContent>
                                         </XModalForm>
                                     )}
-
-                                    <XModalForm
-                                        title="Add new link"
-                                        defaultAction={async (data) => {
-                                            let additionalLinks = [...((editDoTarget.additionalLinks || []).map(l => ({ text: l.text, url: l.url })))];
-                                            additionalLinks.push({ text: data.text, url: data.url });
-                                            await props.editListing({
-                                                variables: {
-                                                    id: props.router.query.addLink,
-                                                    input: {
-                                                        additionalLinks: additionalLinks
-                                                    }
-                                                }
-                                            });
-                                        }}
-                                        targetQuery="addLink"
-                                    >
-                                        <XHorizontal>
-                                            <Field title="Link text">
-                                                <XInput field="text" placeholder="Link text" />
-                                            </Field>
-                                            <Field title="Link text">
-                                                <XInput field="url" placeholder="Link url" />
-                                            </Field>
-                                        </XHorizontal>
-                                    </XModalForm>
 
                                 </XVerticalStyled>
                                 {props.router.path === rootPath && (
