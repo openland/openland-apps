@@ -112,6 +112,11 @@ async function start() {
 
 // Hack for handling Ctrl-C
 process.on('SIGINT', function () {
+    console.warn('Exiting: received SIGINT');
+    process.exit();
+});
+process.on('SIGTERM', function () {
+    console.warn('Exiting: received SIGTERM');
     process.exit();
 });
 
