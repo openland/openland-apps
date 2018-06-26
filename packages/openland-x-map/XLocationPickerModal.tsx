@@ -203,6 +203,7 @@ class XLocationPickerModalBasic extends React.Component<XLocationPickerBaiscProp
                 targetQuery="pick"
                 size="x-large"
                 useTopCloser={true}
+                bodyNoPadding={true}
                 title={this.state.value ? (this.state.value.result.place_name || this.state.value.result.text) : this.props.headerText || 'Search for adress'}
                 target={!this.props.targetQuery ? (this.props.target || target) : undefined}
                 body={(

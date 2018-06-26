@@ -123,16 +123,17 @@ const XModalCloser = Glamorous(XButton)({
     }
 });
 
-export const XModalBodyContainer = Glamorous.div({
+export const XModalBodyContainer = Glamorous.div(props => ({
     paddingTop: 18,
     paddingBottom: 24,
-});
+}));
 
 class ModalContentRender extends React.Component<{
     title?: string;
     heading?: any;
     useTopCloser?: boolean;
     body?: any;
+    bodyNoPadding?: boolean;
     footer?: any;
     customContent?: boolean;
     scrollableContent?: boolean;
@@ -145,12 +146,20 @@ class ModalContentRender extends React.Component<{
                 </Root>
             );
         }
+        console.warn(this.props.customContent);
         let body = (
-            <XModalBodyContainer>
+            <>
                 {this.props.body === undefined && <XModalBody>{this.props.children}</XModalBody>}
                 {this.props.body !== undefined && this.props.body}
-            </XModalBodyContainer>
+            </>
         );
+        if (!this.props.bodyNoPadding) {
+            body = (
+                <XModalBodyContainer>
+                    {body}
+                </XModalBodyContainer>
+            );
+        }
         if (this.props.scrollableContent) {
             body = (
                 <div style={{ maxHeight: '70vh', overflowY: 'scroll' }}>
@@ -178,6 +187,7 @@ export interface XModalProps {
     title?: string;
     heading?: any;
     body?: any;
+    bodyNoPadding?: boolean;
     footer?: any;
     customContent?: boolean;
     useTopCloser?: boolean;
@@ -240,6 +250,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                             heading={this.props.heading}
                             footer={this.props.footer}
                             body={this.props.body}
+                            bodyNoPadding={this.props.bodyNoPadding}
                             customContent={this.props.customContent}
                         >
                             {this.props.children}
@@ -262,6 +273,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                                     heading={this.props.heading}
                                     footer={this.props.footer}
                                     body={this.props.body}
+                                    bodyNoPadding={this.props.bodyNoPadding}
                                     customContent={this.props.customContent}
                                 >
                                     {this.props.children}

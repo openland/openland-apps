@@ -637,7 +637,10 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                         content={(
                                             <>
                                                 <XOverflow.Item query={{ field: 'editListing', value: item.id }}>Edit</XOverflow.Item>
-                                                <XOverflow.Item query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
+                                                {item.locationTitle && < XOverflow.Item href={`https://www.google.com/maps/place/${item.locationTitle}`}>Google map</XOverflow.Item>}
+                                                {(!item.locationTitle && item.location) && < XOverflow.Item href={`https://www.google.com/maps/place/${item.location.lat},${item.location.lon}`}>Google map</XOverflow.Item>}
+                                                {item.location && < XOverflow.Item href={`https://www.google.com/maps?cbll=${item.location.lat},${item.location.lon}&cbp=12,90,0,0,5&layer=c`}>Street view</XOverflow.Item>}
+                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
                                             </>
                                         )}
                                     />
@@ -671,7 +674,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                         </div>
                     </XHorizontalStyled>
                 </XHorizontalStyled>
-            </DevelopmentOportunityCard>
+            </DevelopmentOportunityCard >
         );
     }
 }
@@ -765,7 +768,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                                         content={(
                                             <>
                                                 <XOverflow.Item query={{ field: 'editListing', value: item.id }}>Edit</XOverflow.Item>
-                                                <XOverflow.Item query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
+                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
                                             </>
                                         )}
                                     />
@@ -1276,7 +1279,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     )}
 
                                                     <XFormField title="Name" field="input.name" >
-                                                        <XInput field="input.name"  placeholder="Name" />
+                                                        <XInput field="input.name" placeholder="Name" />
                                                     </XFormField>
                                                     {props.router.query.addListing === 'DO' && (
                                                         <>
@@ -1285,10 +1288,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             </XFormField>
 
                                                             <XHorizontal>
-                                                                <Field field="input.area"  optional={true} title="Area">
+                                                                <Field field="input.area" optional={true} title="Area">
                                                                     <XInput field="input.area" placeholder="Area" />
                                                                 </Field>
-                                                                <Field field="input.price"  optional={true} title="Price">
+                                                                <Field field="input.price" optional={true} title="Price">
                                                                     <XInput field="input.price" placeholder="Price" />
                                                                 </Field>
                                                             </XHorizontal>
