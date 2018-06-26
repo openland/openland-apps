@@ -676,11 +676,11 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
     }
 }
 
-const AquizitionRequestPhoto = Glamorous(XCloudImage)({
+const AcquizitionRequestPhoto = Glamorous(XCloudImage)({
     borderRadius: 4
 });
 
-interface AquizitionRequestProps {
+interface AcquizitionRequestProps {
     name: string;
     id: string;
     photo: ImageRefInput | null;
@@ -702,7 +702,7 @@ const Thousander = (num: number) => (
     Math.round(num).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 );
 
-class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean }> {
+class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean }> {
 
     render() {
 
@@ -744,7 +744,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                 <XHorizontalStyled justifyContent="space-between" separator={12} padding={24}>
 
                     {item.photo && (
-                        <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
+                        <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
                     )}
                     {!item.photo && (
                         <PlaceholderAR style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
@@ -771,7 +771,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                     />
                                 </XWithRole>
                             </XHorizontal>
-                            {this.props.showType && <Text opacity={0.5}>Aquizition request</Text>}
+                            {this.props.showType && <Text opacity={0.5}>Acquizition request</Text>}
                             <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>
                             {item.areaRange && <Text opacity={0.5} bold={true} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
                             {/* {(!full && item.areaRange) && (
@@ -1180,7 +1180,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                                 {organization.acquisitionRequests && (
                                                     organization.acquisitionRequests.map((devop, i) => (
-                                                        cardFilter(() => <AquizitionRequest key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountDO)
+                                                        cardFilter(() => <AcquizitionRequest key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountDO)
                                                     ))
                                                 )}
                                                 <XHorizontal justifyContent="center" alignItems="center" separator="none">
@@ -1210,7 +1210,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                 )}
                                                 {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                 )}
                                             </XVertical>
                                         </>
@@ -1221,10 +1221,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <DOARListingPlaceholder />
                                             <XVertical>
                                                 {props.router.path === lsitingsAllPath && organization && organization.listingsAll && (
-                                                    organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} /> : < AquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} />)
+                                                    organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} /> : < AcquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} />)
                                                 )}
                                                 {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                 )}
                                             </XVertical>
                                         </>
@@ -1233,7 +1233,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                     {props.router.query.addListing && (
                                         <XModalForm
-                                            fixedFooter={true}
+                                            scrollableContent={true}
                                             title={props.router.query.addListing === 'DO' ? 'Create development opportunity' : 'Create acquisition requests'}
 
                                             defaultAction={async (data) => {
@@ -1371,8 +1371,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     />
                                     {(editDoTarget || editArTarget) && (
                                         <XModalForm
-                                            fixedFooter={true}
-                                            title={editDoTarget ? 'Edit development opportunity' : 'Edit aquizition request'}
+                                            scrollableContent={true}
+                                            title={editDoTarget ? 'Edit development opportunity' : 'Edit acquizition request'}
                                             defaultData={editListingDefaultData}
                                             defaultAction={editListingDefaultAction}
                                             targetQuery="editListing"
