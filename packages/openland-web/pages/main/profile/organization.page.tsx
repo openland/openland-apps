@@ -1031,7 +1031,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 </div >
                             </XVerticalStyled>
                             <XHorizontalStyled paddingTop={20}>
-                                {true && (
+                                {!organization.isMine  && (
                                     <XButton
                                         style={organization!!.followed ? 'primary' : 'electric'}
                                         text={organization!!.followed ? 'Following' : 'Follow'}
