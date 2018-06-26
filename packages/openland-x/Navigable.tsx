@@ -162,14 +162,14 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             let {
                 href, path, query, autoClose, activateForSubpaths, active, enabled, onClick, ...other
             } = this.props as any;
-
+            console.warn(this.props.onClick);
             return (
                 <Wrapped
                     href={linkHref}
                     hrefTarget={target}
                     active={isActive}
                     enabled={this.props.enabled !== false}
-                    onClick={this.onClick}
+                    onClick={(this.props.href || this.props.path || this.props.query || this.props.anchor) ? this.onClick : this.props.onClick}
                     {...other}
                 >
                     {this.props.children}
