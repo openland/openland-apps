@@ -60,20 +60,29 @@ const Header = Glamorous.div({
     }
 });
 
-const SwitcherWrapper = Glamorous(XSwitcher)<{ height?: number }>((props) => ({
+const SwitcherWrapper = Glamorous(XSwitcher)<{ height?: number, smallText?: boolean }>((props) => ({
     padding: 0,
     height: props.height ? props.height : '100%',
-    borderRadius: 0
+    borderRadius: 0,
+    '& > a': {
+        marginRight: '30px !important',
+        fontSize: props.smallText ? 15 : 16,
+        fontWeight: 500,
+        lineHeight: props.smallText ? 1.33 : 1.25,
+        letterSpacing: props.smallText ? -0.3 : -0.6,
+        '&.is-active': {
+            fontWeight: 500
+        },
+        '&:last-child': {
+            marginRight: 0
+        }
+    }
 }));
 
 const Switcher = Glamorous(XSwitcher.Item)({
     display: 'flex',
     alignItems: 'center',
     padding: '0 5px',
-
-    fontSize: 15,
-    fontSeight: 500,
-    lineHeight: 1.33,
     color: '#334562 !important',
     opacity: 0.5,
     borderBottom: '3px solid transparent !important',
@@ -140,6 +149,7 @@ const ContactWrapper = Glamorous(XHorizontal)({
 interface TextProps {
     opacity?: number;
     bold?: boolean;
+    fontWeight?: any;
     upperCase?: boolean;
     marginBottom?: number;
     marginTop?: number;
@@ -153,7 +163,7 @@ const Text = Glamorous.div<TextProps>((props) => ({
     lineHeight: props.small ? 1.43 : 1.33,
     color: '#334562',
     opacity: props.opacity,
-    fontWeight: props.bold ? 500 : undefined,
+    fontWeight: props.fontWeight !== undefined ? props.fontWeight : props.bold ? 500 : undefined,
     letterSpacing: props.bold ? -0.3 : undefined,
     textTransform: props.upperCase ? 'capitalize' : undefined,
     marginBottom: props.marginBottom,
@@ -544,6 +554,16 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
         const FullContent = (
             <XVerticalStyled>
                 <div>
+                    {item.area && (
+                        <TagRow title="Area" titleWidth={150}>
+                            <Text marginTop={3} fontWeight={600}>{`${item.area} ft²`}</Text>
+                        </TagRow>
+                    )}
+                    {item.price && (
+                        <TagRow title="Price" titleWidth={150}>
+                            <Text marginTop={3} fontWeight={600}>{`$${item.price}`}</Text>
+                        </TagRow>
+                    )}
                     <TagRow title="Status" titleWidth={150}>
                         <XHorizontalStyled flexGrow={1} alignItems="flex-end">
                             <Text><StatusDot />Open</Text>
@@ -622,11 +642,15 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                             {this.props.showType && <Text opacity={0.5}>Development oportunity</Text>}
                             <Text opacity={0.5} bold={true}>{item.locationTitle}</Text>
                             <XHorizontal separator="large" flexGrow={full ? 1 : undefined} alignItems={full ? 'flex-end' : undefined}>
-                                {item.area && (
-                                    <Text bold={true} marginTop={3}>{`Area: ${item.area} ft²`}</Text>
-                                )}
-                                {item.price && (
-                                    <Text bold={true} marginTop={3}>{`Price: $${item.price}`}</Text>
+                                {!full && (
+                                    <>
+                                        {item.area && (
+                                            <Text marginTop={3} fontWeight={600}>{`Area: ${item.area} ft²`}</Text>
+                                        )}
+                                        {item.price && (
+                                            <Text marginTop={3} fontWeight={600}>{`Price: $${item.price}`}</Text>
+                                        )}
+                                    </>
                                 )}
                             </XHorizontal>
                             {(!full && item.location) && (
@@ -691,7 +715,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                         <TagRow title="Summary" text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
                     )}
                     {item.areaRange && (
-                        <TagRow title="Area range" text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} titleWidth={150} isTagStyle={true} titlePaddingTop={0}/>
+                        <TagRow title="Area range" text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} titleWidth={150} isTagStyle={true} titlePaddingTop={0} />
                     )}
                     {item.geographies && (
                         <TagRowMap title="Geographies" items={item.geographies} titleWidth={150} />
@@ -992,14 +1016,14 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                             <XVerticalStyled flexShrink={0} flexGrow={1} separator="none" paddingTop={35}>
                                 <OrganizationName>{organization.name}</OrganizationName>
-                                <div style={{ marginTop: 4 }}>
-                                    {organization.location && <Text opacity={0.5}>{organization.location}</Text>}
+                                <div style={{ marginTop: 5 }}>
+                                    {organization.location && <Text opacity={0.5} bold={true}>{organization.location}</Text>}
                                     <XWithRole role={['org-' + organization.id + '-admin']}>
                                         {!organization.location && <LocationPlaceholder />}
                                     </XWithRole>
                                 </div>
                                 <div style={{ marginTop: 16 }}>
-                                    <SwitcherWrapper flatStyle={true} height={60}>
+                                    <SwitcherWrapper flatStyle={true} height={60} smallText={true}>
                                         <Switcher path={rootPath}>Overview</Switcher>
                                         <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
                                         {/* <Switcher path={lsitingsAllPath}>{'All Listings (' + ((organization.listingsAll && organization.listingsAll.length) || 0) + ')'}</Switcher> */}
