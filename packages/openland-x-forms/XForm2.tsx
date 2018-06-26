@@ -115,7 +115,7 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
                 {this.props.defaultLayout !== false && (
                     <FormContainer className={this.props.className}>
                         <XFormLoadingContent>
-                            <XVertical>
+                            <XVertical separator="none">
                                 <XFormError />
                                 {this.props.children}
                             </XVertical>

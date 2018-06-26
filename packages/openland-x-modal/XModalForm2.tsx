@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { XModal, XModalFooter, XModalHeader, XModalBody, XModalHeaderEmpty } from './XModal';
+import { XModal, XModalFooter, XModalHeader, XModalHeaderEmpty, XModalBodyContainer } from './XModal';
 import { XForm, XFormProps } from 'openland-x-forms/XForm2';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import Glamorous from 'glamorous';
 import { XFormSubmit, XFormSubmitProps } from 'openland-x-forms/XFormSubmit';
+import glamorous from 'glamorous';
 
 export interface XModalFormProps extends XFormProps {
 
@@ -23,41 +23,53 @@ export interface XModalFormProps extends XFormProps {
     target?: React.ReactElement<any>;
     targetQuery?: string;
 
-    fixedFooter?: boolean;
+    scrollableContent?: boolean;
 
 }
+const Footer = glamorous(XModalFooter)({
+    marginTop: 0,
 
-const Footer = Glamorous.div<{fixed?: boolean}>((props) => ({
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    position: props.fixed ? 'sticky' : undefined,
-    bottom: props.fixed ? 0 : undefined,
-    boxShadow: props.fixed ? '2px 2px 8px 0 rgba(0, 0, 0, 0.22)' : undefined
-}));
+});
+
+const BodyPadding = glamorous.div({
+    paddingLeft: 24,
+    paddingRight: 24,
+
+});
+
+const ModalBodyContainer = glamorous(XModalBodyContainer)({
+    maxHeight: '70vh',
+    overflowY: 'scroll',
+    marginBottom: 0,
+
+});
 
 export class XModalForm extends React.Component<XModalFormProps> {
     render() {
         let { defaultData, staticData, defaultAction, defaultLayout, submitProps, ...other } = this.props;
+        let body = this.props.children;
+        if (this.props.scrollableContent) {
+            body = (
+                <ModalBodyContainer >
+                    <BodyPadding>
+                        {body}
+                    </BodyPadding>
+                </ModalBodyContainer>
 
+            );
+        }
         return (
-            <XModal {...other} customContent={true}>
+            <XModal {...other} customContent={true} scrollableContent={this.props.scrollableContent}>
                 {this.props.title && <XModalHeader>{this.props.title}</XModalHeader>}
                 {!this.props.title && <XModalHeaderEmpty />}
                 <XForm defaultData={defaultData} staticData={staticData} defaultAction={defaultAction} autoClose={true}>
-                    <XModalBody>
-                        {this.props.children}
-                    </XModalBody>
+                    {body}
 
-                    <Footer fixed={this.props.fixedFooter}>
-                        <XModalFooter>
-                            <XHorizontal>
-                                <XFormSubmit style={'primary'} text={'Save'} {...submitProps} />
-                                <XButton text="Cancel" autoClose={true} />
-                            </XHorizontal>
-                        </XModalFooter>
+                    <Footer>
+                        <XHorizontal>
+                            <XFormSubmit style={'primary'} text={'Save'} {...submitProps} />
+                            <XButton text="Cancel" autoClose={true} />
+                        </XHorizontal>
                     </Footer>
                 </XForm>
             </XModal>

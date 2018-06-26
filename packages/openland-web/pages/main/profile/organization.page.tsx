@@ -606,7 +606,10 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                         content={(
                                             <>
                                                 <XOverflow.Item query={{ field: 'editListing', value: item.id }}>Edit</XOverflow.Item>
-                                                <XOverflow.Item query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
+                                                {item.locationTitle && < XOverflow.Item href={`https://www.google.com/maps/place/${item.locationTitle}`}>Google map</XOverflow.Item>}
+                                                {(!item.locationTitle && item.location) && < XOverflow.Item href={`https://www.google.com/maps/place/${item.location.lat},${item.location.lon}`}>Google map</XOverflow.Item>}
+                                                {item.location && < XOverflow.Item href={`https://www.google.com/maps?cbll=${item.location.lat},${item.location.lon}&cbp=12,90,0,0,5&layer=c`}>Street view</XOverflow.Item>}
+                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
                                             </>
                                         )}
                                     />
@@ -635,16 +638,16 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                         </div>
                     </XHorizontalStyled>
                 </XHorizontalStyled>
-            </DevelopmentOportunityCard>
+            </DevelopmentOportunityCard >
         );
     }
 }
 
-const AquizitionRequestPhoto = Glamorous(XCloudImage)({
+const AcquizitionRequestPhoto = Glamorous(XCloudImage)({
     borderRadius: 4
 });
 
-interface AquizitionRequestProps {
+interface AcquizitionRequestProps {
     name: string;
     id: string;
     photo: ImageRefInput | null;
@@ -666,7 +669,7 @@ const Thousander = (num: number) => (
     Math.round(num).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 );
 
-class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean, isSoloComponent?: boolean }> {
+class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean, isSoloComponent?: boolean }> {
 
     render() {
 
@@ -702,7 +705,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                 <XHorizontalStyled justifyContent="space-between" separator={12} padding={24}>
 
                     {item.photo && (
-                        <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
+                        <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
                     )}
                     {!item.photo && (
                         <PlaceholderAR style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
@@ -721,13 +724,13 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                         content={(
                                             <>
                                                 <XOverflow.Item query={{ field: 'editListing', value: item.id }}>Edit</XOverflow.Item>
-                                                <XOverflow.Item query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
+                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
                                             </>
                                         )}
                                     />
                                 </XWithRole>
                             </XHorizontalStyled>
-                            {this.props.showType && <Text opacity={0.5}>Aquizition request</Text>}
+                            {this.props.showType && <Text opacity={0.5}>Acquizition request</Text>}
                             <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>
                             {item.areaRange && <Text opacity={0.5} bold={true} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
 
@@ -1131,7 +1134,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                                 {organization.acquisitionRequests && (
                                                     organization.acquisitionRequests.map((devop, i) => (
-                                                        cardFilter(() => <AquizitionRequest key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountDO)
+                                                        cardFilter(() => <AcquizitionRequest key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountDO)
                                                     ))
                                                 )}
                                                 <XHorizontal justifyContent="center" alignItems="center" separator="none">
@@ -1161,7 +1164,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
                                                 )}
                                                 {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
+                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
                                                 )}
                                             </XVertical>
                                         </>
@@ -1172,10 +1175,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <DOARListingPlaceholder />
                                             <XVertical>
                                                 {props.router.path === lsitingsAllPath && organization && organization.listingsAll && (
-                                                    organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} isSoloComponent={true} /> : < AquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} isSoloComponent={true} />)
+                                                    organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} isSoloComponent={true} /> : < AcquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} isSoloComponent={true} />)
                                                 )}
                                                 {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
+                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
                                                 )}
                                             </XVertical>
                                         </>
@@ -1184,7 +1187,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                     {props.router.query.addListing && (
                                         <XModalForm
-                                            fixedFooter={true}
+                                            scrollableContent={true}
                                             title={props.router.query.addListing === 'DO' ? 'Create development opportunity' : 'Create acquisition requests'}
 
                                             defaultAction={async (data) => {
@@ -1226,46 +1229,46 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         <XAvatarUpload field="input.photo" placeholder={{ add: 'Add listing photo', change: 'Change listing photo' }} />
                                                     )}
 
-                                                    <XFormField title="Name">
-                                                        <XInput field="input.name" required={true} placeholder="Name" />
+                                                    <XFormField title="Name" field="input.name" >
+                                                        <XInput field="input.name" placeholder="Name" />
                                                     </XFormField>
                                                     {props.router.query.addListing === 'DO' && (
                                                         <>
-                                                            <XFormField title="Full adress">
+                                                            <XFormField field="input.location" optional={true} title="Full adress">
                                                                 <XLocationPickerModal field="input.location" />
                                                             </XFormField>
 
                                                             <XHorizontal>
-                                                                <Field title="Area">
+                                                                <Field field="input.area" optional={true} title="Area">
                                                                     <XInput field="input.area" placeholder="Area" />
                                                                 </Field>
-                                                                <Field title="Price">
+                                                                <Field field="input.price" optional={true} title="Price">
                                                                     <XInput field="input.price" placeholder="Price" />
                                                                 </Field>
                                                             </XHorizontal>
 
-                                                            <XFormField title="Availability">
+                                                            <XFormField field="input.availability" optional={true} title="Availability">
                                                                 <XInput field="input.availability" placeholder="Availability" />
                                                             </XFormField>
 
-                                                            <XFormField title="Summary">
+                                                            <XFormField optional={true} title="Summary" field="fields.input.summary" >
                                                                 <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
                                                             </XFormField>
 
                                                             <XTitle>Details</XTitle>
-                                                            <XFormField title="Deal Type">
+                                                            <XFormField field="input.dealType" optional={true} title="Deal Type">
                                                                 <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
                                                             </XFormField>
-                                                            <XFormField title="Shape And Form">
+                                                            <XFormField field="input.shapeAndForm" optional={true} title="Shape And Form">
                                                                 <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
                                                             </XFormField>
-                                                            <XFormField title="Current Use">
+                                                            <XFormField field="input.currentUse" optional={true} title="Current Use">
                                                                 <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
                                                             </XFormField>
-                                                            <XFormField title="Good Fit For">
+                                                            <XFormField field="input.goodFitFor" optional={true} title="Good Fit For">
                                                                 <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
+                                                            <XFormField field="input.specialAttributes" optional={true} title="Special attributes">
                                                                 <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
                                                             </XFormField>
                                                             <XTitle>Additional links</XTitle>
@@ -1274,30 +1277,30 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     )}
                                                     {props.router.query.addListing === 'AR' && (
                                                         <>
-                                                            <XFormField title="Short description">
+                                                            <XFormField field="input.shortDescription" optional={true} title="Short description">
                                                                 <XInput field="input.shortDescription" placeholder="Short description" />
                                                             </XFormField>
 
-                                                            <XFormField title="Summary">
+                                                            <XFormField optional={true} title="Summary" field="fields.input.summary">
                                                                 <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
                                                             </XFormField>
 
                                                             <XTitle>Details</XTitle>
 
-                                                            <XFormField title="Area range">
+                                                            <XFormField field="input.areaRange" optional={true} title="Area range">
                                                                 <XSelect field="input.areaRange" placeholder="Area range" options={[{ value: 'small', label: 'up to 10,000 ft²' }, { value: 'medium', label: '10,000 - 100,000 ft²' }, { value: 'large', label: '100,000 ft² +' }]} />
                                                             </XFormField>
 
-                                                            <XFormField title="Geographies">
+                                                            <XFormField field="input.geographies" optional={true} title="Geographies">
                                                                 <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
                                                             </XFormField>
-                                                            <XFormField title="Land Use">
+                                                            <XFormField field="input.landUse" optional={true} title="Land Use">
                                                                 <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
+                                                            <XFormField field="input.specialAttributes" optional={true} title="Special attributes">
                                                                 <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
                                                             </XFormField>
-                                                            <XFormField title="Unit Capacity">
+                                                            <XFormField field="input.unitCapacity" optional={true} title="Unit Capacity">
                                                                 <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
                                                             </XFormField>
                                                         </>
@@ -1322,8 +1325,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     />
                                     {(editDoTarget || editArTarget) && (
                                         <XModalForm
-                                            fixedFooter={true}
-                                            title={editDoTarget ? 'Edit development opportunity' : 'Edit aquizition request'}
+                                            scrollableContent={true}
+                                            title={editDoTarget ? 'Edit development opportunity' : 'Edit acquizition request'}
                                             defaultData={editListingDefaultData}
                                             defaultAction={editListingDefaultAction}
                                             targetQuery="editListing"
@@ -1333,73 +1336,74 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     {editArTarget && (
                                                         <XAvatarUpload field="input.photo" placeholder={{ add: 'Add listing photo', change: 'Change listing photo' }} />
                                                     )}
-                                                    <XFormField title="Name">
-                                                        <XInput field="input.name" required={true} placeholder="Name" />
+                                                    <XFormField title="Name" field="input.name">
+                                                        <XInput field="input.name" placeholder="Name" />
                                                     </XFormField>
                                                     {editDoTarget && (
                                                         <>
-                                                            <XFormField title="Full adress">
+                                                            <XFormField title="Full adress" field="input.location" >
                                                                 <XLocationPickerModal field="input.location" />
                                                             </XFormField>
                                                             <XHorizontal >
-                                                                <Field title="Area">
+                                                                <Field title="Area" field="input.area" optional={true}>
                                                                     <XInput field="input.area" placeholder="Area" />
                                                                 </Field>
-                                                                <Field title="Price">
+                                                                <Field title="Price" field="input.price" optional={true}>
                                                                     <XInput field="input.price" placeholder="Price" />
                                                                 </Field>
                                                             </XHorizontal>
-                                                            <XFormField title="Availability">
-                                                                <XInput field="input.availability" placeholder="Availability" />
+                                                            <XFormField field="input.availability" optional={true} title="Availability">
+                                                                <XInput placeholder="Availability" />
                                                             </XFormField>
-                                                            <XFormField title="Summary">
+                                                            <XFormField title="Summary" field="fields.input.summary" optional={true}>
                                                                 <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
                                                             </XFormField>
                                                             <XTitle>Details</XTitle>
-                                                            <XFormField title="Deal Type">
-                                                                <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
+                                                            <XFormField title="Deal Type" field="input.dealType" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Deal Type" />
                                                             </XFormField>
-                                                            <XFormField title="Shape And Form">
-                                                                <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
+                                                            <XFormField title="Shape And Form" field="input.shapeAndForm" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Shape And Form" />
                                                             </XFormField>
-                                                            <XFormField title="Current Use">
-                                                                <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
+                                                            <XFormField title="Current Use" field="input.currentUse" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Current Use" />
                                                             </XFormField>
-                                                            <XFormField title="Good Fit For">
-                                                                <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
+                                                            <XFormField title="Good Fit For" field="input.goodFitFor" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Good Fit For" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
-                                                                <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
+                                                            <XFormField title="Special attributes" field="input.specialAttributes" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Special attributes" />
                                                             </XFormField>
-                                                            <XTitle>Additional links</XTitle>
-                                                            {linksElements}
+                                                            <XFormField title="Additional links" field="input.additionalLinks" optional={true} showErrors={false}>
+                                                                {linksElements}
+                                                            </XFormField>
                                                         </>
 
                                                     )}
 
                                                     {editArTarget && (
                                                         <>
-                                                            <XFormField title="Short description">
-                                                                <XInput field="input.shortDescription" placeholder="Short description" />
+                                                            <XFormField field="input.shortDescription" optional={true} title="Short description">
+                                                                <XInput placeholder="Short description" />
                                                             </XFormField>
 
                                                             <XTitle>Details</XTitle>
 
-                                                            <XFormField title="Area range">
-                                                                <XSelect field="input.areaRange" options={[{ value: 'small', label: 'up to 10,000 ft²' }, { value: 'medium', label: '10,000 - 100,000 ft²' }, { value: 'large', label: '100,000 ft² +' }]} />
+                                                            <XFormField field="input.areaRange" optional={true} title="Area range">
+                                                                <XSelect options={[{ value: 'small', label: 'up to 10,000 ft²' }, { value: 'medium', label: '10,000 - 100,000 ft²' }, { value: 'large', label: '100,000 ft² +' }]} />
                                                             </XFormField>
 
-                                                            <XFormField title="Geographies">
-                                                                <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
+                                                            <XFormField field="input.geographies" optional={true} title="Geographies">
+                                                                <XSelect creatable={true} multi={true} placeholder="Geographies" />
                                                             </XFormField>
-                                                            <XFormField title="Land Use">
-                                                                <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
+                                                            <XFormField field="input.landUse" optional={true} title="Land Use">
+                                                                <XSelect creatable={true} multi={true} placeholder="Land Use" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
-                                                                <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
+                                                            <XFormField field="input.specialAttributes" optional={true} title="Special attributes">
+                                                                <XSelect creatable={true} multi={true} placeholder="Special attributes" />
                                                             </XFormField>
-                                                            <XFormField title="Unit Capacity">
-                                                                <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
+                                                            <XFormField field="input.unitCapacity" optional={true} title="Unit Capacity">
+                                                                <XSelect creatable={true} multi={true} placeholder="Unit Capacity" />
                                                             </XFormField>
                                                         </>
                                                     )}

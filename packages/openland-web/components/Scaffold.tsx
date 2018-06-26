@@ -191,6 +191,7 @@ const ProfileSubTitle = Glamorous(XLink)({
     color: '#334562',
     marginLeft: 14,
     opacity: 0.5,
+    letterSpacing: '-0.3px',
 });
 
 const MenuItem = Glamorous(XLink)<{ isTitle?: boolean, opacity?: number }>((props) => ({
@@ -200,7 +201,7 @@ const MenuItem = Glamorous(XLink)<{ isTitle?: boolean, opacity?: number }>((prop
     color: '#334562',
     opacity: props.opacity,
     fontWeight: props.isTitle ? 600 : 500,
-    letterSpacing: '0.5px',
+    letterSpacing: '-0.4px',
     display: 'block',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
@@ -221,6 +222,10 @@ const MenuTitle = Glamorous(XLink)<{ opacity?: number }>((props) => ({
     whiteSpace: 'nowrap',
     borderRadius: 4,
 }));
+
+const ProfileTitleContainer = Glamorous(XHorizontal)({
+    marginBottom: 12
+});
 
 class UserPopper extends React.Component<{ picture: string | null, name?: string, logo?: string | null, organizationName?: string, organizationId?: string }, { show: boolean }> {
     constructor(props: { picture: string | null, name?: string }) {
@@ -251,25 +256,25 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                 content={(
                     <XMenu>
                         <XVertical separator={10}>
-                            <XHorizontal separator="none" alignItems="center">
+                            <ProfileTitleContainer separator="none" alignItems="center">
                                 <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} />
                                 <ProfileTitle>{this.props.name}</ProfileTitle>
-                            </XHorizontal>
+                            </ProfileTitleContainer>
 
                             <MenuItem path="/settings/profile">{TextGlobal.editProfile}</MenuItem>
                             <MenuItem path="/auth/logout">{TextGlobal.signOut}</MenuItem>
 
                             {this.props.organizationId && (
                                 <>
-                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginLeft: -18, marginRight: -18, marginBottom: 12 }} />
+                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginLeft: -18, marginRight: -18}} />
 
-                                    <XHorizontal separator="none">
+                                    <ProfileTitleContainer separator="none">
                                         <XAvatar cloudImageUuid={this.props.logo || undefined} onClick={this.switch} style="square" />
                                         <XVertical separator={1}>
                                             <MenuItem isTitle={true} path={'/o/' + this.props.organizationId}>{this.props.organizationName}</MenuItem>
                                             <ProfileSubTitle path={'/o/' + this.props.organizationId}>{TextGlobal.viewProfile}</ProfileSubTitle>
                                         </XVertical>
-                                    </XHorizontal>
+                                    </ProfileTitleContainer>
                                     <MenuItem path="/settings/organization">{TextGlobal.editProfile}</MenuItem>
                                     <MenuItem query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</MenuItem>
                                     <MenuItem path="/createOrganization">{TextGlobal.addOrganization}</MenuItem>
