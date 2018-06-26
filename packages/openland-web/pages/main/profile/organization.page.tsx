@@ -94,6 +94,8 @@ interface XVerticalStyledProps {
     paddingRight?: number;
     paddingTop?: number;
     paddingBottom?: number;
+    marginTop?: number;
+    marginBottom?: number;
     maxwidth?: string | number;
 }
 
@@ -105,6 +107,8 @@ const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
     paddingRight: props.paddingRight,
     paddingTop: props.paddingTop,
     paddingBottom: props.paddingBottom,
+    marginTop: props.marginTop,
+    marginBottom: props.marginBottom,
     maxWidth: props.maxwidth
 }));
 
@@ -191,6 +195,7 @@ interface TextProps {
     opacity?: number;
     bold?: boolean;
     fontWeight?: any;
+    lineHeight?: number;
     upperCase?: boolean;
     marginBottom?: number;
     marginTop?: number;
@@ -201,7 +206,7 @@ const Text = Glamorous.div<TextProps>((props) => ({
     display: 'flex',
     alignItems: 'center',
     fontSize: props.small ? 14 : 15,
-    lineHeight: props.small ? 1.43 : 1.33,
+    lineHeight: props.lineHeight !== undefined ? props.lineHeight : props.small ? 1.43 : 1.33,
     color: '#334562',
     opacity: props.opacity,
     fontWeight: props.fontWeight !== undefined ? props.fontWeight : props.bold ? 500 : undefined,
@@ -443,7 +448,7 @@ const TagRow = (props: TagRowProps) => (
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered}>
             {props.isTextStyle && (
-                <Text>
+                <Text lineHeight={1.53}>
                     {props.text}
                 </Text>
             )}
@@ -510,7 +515,7 @@ const ListingTitleWrapper = Glamorous.div({
 const ListingTitle = Glamorous.div({
     fontSize: 20,
     fontWeight: 500,
-    letterSpacing: -0.2,
+    letterSpacing: 0.5,
     color: '#334562',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -528,7 +533,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
         const { item, full } = this.props;
 
         const FullContent = (
-            <XVerticalStyled>
+            <XVerticalStyled marginTop={10}>
                 <div>
                     {item.area && (
                         <TagRow title="Area" titleWidth={150}>
@@ -536,7 +541,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                         </TagRow>
                     )}
                     {item.price && (
-                        <TagRow title="Price" titleWidth={150}>
+                        <TagRow title="Price" titleWidth={150} isTextStyle={true}>
                             <Text marginTop={3} fontWeight={600}>{`$${item.price}`}</Text>
                         </TagRow>
                     )}
@@ -676,7 +681,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
         const { item, full } = this.props;
 
         const FullContent = (
-            <XVertical>
+            <XVerticalStyled marginTop={14}>
                 <div>
                     {item.summary && (
                         <TagRow title="Summary" text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
@@ -697,7 +702,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                         <TagRowMap title="Unit capacity" items={item.unitCapacity} titleWidth={150} />
                     )}
                 </div>
-            </XVertical>
+            </XVerticalStyled>
         );
 
         return (
@@ -712,7 +717,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
-                            <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 8 : 4}>
+                            <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={4}>
                                 <ListingTitleWrapper>
                                     <ListingTitle>{item.name}</ListingTitle>
                                     <Text opacity={0.5} small={true} marginBottom={-1}>{DateFormater(item.updatedAt)}</Text>
@@ -732,7 +737,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                             </XHorizontalStyled>
                             {this.props.showType && <Text opacity={0.5}>Acquizition request</Text>}
                             <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>
-                            {item.areaRange && <Text opacity={0.5} bold={true} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
+                            {(!full && item.areaRange) && <Text opacity={0.5} bold={true} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
 
                             {(!full && !item.areaRange) && <Text opacity={0.5} marginTop={8}> <Lock icon="locked" />Details and location on request</Text>}
 
