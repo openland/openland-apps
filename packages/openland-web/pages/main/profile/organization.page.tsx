@@ -1031,10 +1031,9 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 </div >
                             </XVerticalStyled>
                             <XHorizontalStyled paddingTop={20}>
-                                {!organization.isMine && (
+                                {true && (
                                     <XButton
-                                        style="primary"
-                                        size="medium"
+                                        style={organization!!.followed ? 'primary' : 'electric'}
                                         text={organization!!.followed ? 'Following' : 'Follow'}
                                         action={async () => {
                                             console.warn(organization!!.followed);
