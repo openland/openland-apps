@@ -2,6 +2,8 @@
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withTypescript = require('@zeit/next-typescript')
 const path = require('path');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const StatsPlugin = require('stats-webpack-plugin');
 
 const config = withTypescript({
     pageExtensions: ['page.ts', 'page.tsx'],
@@ -35,10 +37,45 @@ const config = withTypescript({
             use: defaultLoaders.babel
         })
 
+        // Disable babel cache
+        // defaultLoaders.babel.options.cacheDirectory = false
+
+        // Enable profiling
+        // if (!isServer) {
+        //     config.profile = true;
+        //     config.plugins.push(new StatsPlugin('stats-client.json', {
+        //         chunkModules: false,
+        //         assets: false,
+        //         chunks: false,
+        //         reasons: true
+        //         // exclude: [/node_modules[\\\/]react/]
+        //     }));
+        // }
+
         // Disable minification
         // config.plugins = config.plugins.filter(
         //     (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
         // )
+
+        // Enable uglify cache
+        let uglify = config.plugins.find((plugin) => (plugin.constructor.name === 'UglifyJsPlugin'))
+        if (uglify) {
+            uglify.options.cache = true;
+        }
+
+        // Hard Source
+        // if (!isServer) {
+        //     config.plugins.unshift(new HardSourceWebpackPlugin({
+        //         cacheDirectory: 'node_modules/.cache/hard-source-client/[confighash]',
+        //     }))
+        // } else {
+        //     config.plugins.unshift(new HardSourceWebpackPlugin({
+        //         cacheDirectory: 'node_modules/.cache/hard-source-server/[confighash]',
+        //     }))
+        // }
+
+        // Print Stats
+
 
         // Creating vendor library
         // Doesn't work...
