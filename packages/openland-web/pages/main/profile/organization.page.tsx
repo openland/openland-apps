@@ -60,20 +60,29 @@ const Header = Glamorous.div({
     }
 });
 
-const SwitcherWrapper = Glamorous(XSwitcher)<{ height?: number }>((props) => ({
+const SwitcherWrapper = Glamorous(XSwitcher)<{ height?: number, smallText?: boolean }>((props) => ({
     padding: 0,
     height: props.height ? props.height : '100%',
-    borderRadius: 0
+    borderRadius: 0,
+    '& > a': {
+        marginRight: '30px !important',
+        fontSize: props.smallText ? 15 : 16,
+        fontWeight: 500,
+        lineHeight: props.smallText ? 1.33 : 1.25,
+        letterSpacing: props.smallText ? -0.3 : -0.6,
+        '&.is-active': {
+            fontWeight: 500
+        },
+        '&:last-child': {
+            marginRight: 0
+        }
+    }
 }));
 
 const Switcher = Glamorous(XSwitcher.Item)({
     display: 'flex',
     alignItems: 'center',
     padding: '0 5px',
-
-    fontSize: 15,
-    fontSeight: 500,
-    lineHeight: 1.33,
     color: '#334562 !important',
     opacity: 0.5,
     borderBottom: '3px solid transparent !important',
@@ -140,6 +149,7 @@ const ContactWrapper = Glamorous(XHorizontal)({
 interface TextProps {
     opacity?: number;
     bold?: boolean;
+    fontWeight?: any;
     upperCase?: boolean;
     marginBottom?: number;
     marginTop?: number;
@@ -153,7 +163,7 @@ const Text = Glamorous.div<TextProps>((props) => ({
     lineHeight: props.small ? 1.43 : 1.33,
     color: '#334562',
     opacity: props.opacity,
-    fontWeight: props.bold ? 500 : undefined,
+    fontWeight: props.fontWeight !== undefined ? props.fontWeight : props.bold ? 500 : undefined,
     letterSpacing: props.bold ? -0.3 : undefined,
     textTransform: props.upperCase ? 'capitalize' : undefined,
     marginBottom: props.marginBottom,
@@ -479,14 +489,6 @@ const DevelopmentOportunityCard = Glamorous.div({
     backgroundColor: '#fff'
 });
 
-const StatusDot = Glamorous.div({
-    width: 6,
-    height: 6,
-    borderRadius: 50,
-    backgroundColor: '#50d25e',
-    marginRight: 6
-});
-
 const Lock = Glamorous(XIcon)({
     width: 14,
     height: 14,
@@ -521,6 +523,15 @@ const AdditionalLink = Glamorous(XLink)({
     }
 });
 
+const ListingTitleWrapper = Glamorous.div({
+    flexGrow: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+    maxWidth: 'calc(100% - 60px)'
+});
+
 const ListingTitle = Glamorous.div({
     fontSize: 20,
     fontWeight: 500,
@@ -529,7 +540,7 @@ const ListingTitle = Glamorous.div({
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    marginBottom: 4
+    maxWidth: 'calc(100% - 120px)'
 });
 
 const ClickableXStreetViewModalPreview = Glamorous.div({
@@ -544,12 +555,22 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
         const FullContent = (
             <XVerticalStyled>
                 <div>
-                    <TagRow title="Status" titleWidth={150}>
+                    {item.area && (
+                        <TagRow title="Area" titleWidth={150}>
+                            <Text marginTop={3} fontWeight={600}>{`${item.area} ft²`}</Text>
+                        </TagRow>
+                    )}
+                    {item.price && (
+                        <TagRow title="Price" titleWidth={150}>
+                            <Text marginTop={3} fontWeight={600}>{`$${item.price}`}</Text>
+                        </TagRow>
+                    )}
+                    {/* <TagRow title="Status" titleWidth={150}>
                         <XHorizontalStyled flexGrow={1} alignItems="flex-end">
                             <Text><StatusDot />Open</Text>
                             <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
                         </XHorizontalStyled>
-                    </TagRow>
+                    </TagRow> */}
                     {item.summary && (
                         <TagRow title="Summary" text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
                     )}
@@ -602,10 +623,13 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                     {!item.location && (
                         <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                     )}
-                    <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
+                    <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 184px)' : 'calc(100% - 157px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
-                                <ListingTitle>{item.name}</ListingTitle>
+                                <ListingTitleWrapper>
+                                    <ListingTitle>{item.name}</ListingTitle>
+                                    <Text opacity={0.5} small={true} marginBottom={-1}>{DateFormater(item.updatedAt)}</Text>
+                                </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
                                         marginRight={60}
@@ -620,21 +644,27 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                 </XWithRole>
                             </XHorizontal>
                             {this.props.showType && <Text opacity={0.5}>Development oportunity</Text>}
-                            <Text opacity={0.5} bold={true}>{item.locationTitle}</Text>
-                            <XHorizontal separator="large" flexGrow={full ? 1 : undefined} alignItems={full ? 'flex-end' : undefined}>
-                                {item.area && (
-                                    <Text bold={true} marginTop={3}>{`Area: ${item.area} ft²`}</Text>
-                                )}
-                                {item.price && (
-                                    <Text bold={true} marginTop={3}>{`Price: $${item.price}`}</Text>
-                                )}
-                            </XHorizontal>
-                            {(!full && item.location) && (
+                            {item.locationTitle && <Text opacity={0.5} bold={true}>{item.locationTitle}</Text>}
+                            {(item.area || item.price) && (
+                                <XHorizontal separator="large" flexGrow={full ? 1 : undefined} alignItems={full ? 'flex-end' : undefined}>
+                                    {!full && (
+                                        <>
+                                            {item.area && (
+                                                <Text marginTop={3} fontWeight={600}>{`Area: ${item.area} ft²`}</Text>
+                                            )}
+                                            {item.price && (
+                                                <Text marginTop={3} fontWeight={600}>{`Price: $${item.price}`}</Text>
+                                            )}
+                                        </>
+                                    )}
+                                </XHorizontal>
+                            )}
+                            {/* {(!full && item.location) && (
                                 <XHorizontalStyled marginTop={10}>
                                     <Text><StatusDot />Open</Text>
                                     <Text opacity={0.5} small={true} marginBottom={-1}>Last updated: {DateFormater(item.updatedAt)}</Text>
                                 </XHorizontalStyled>
-                            )}
+                            )} */}
                             {(!full && !item.location) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
 
                             {full && FullContent}
@@ -646,11 +676,11 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
     }
 }
 
-const AquizitionRequestPhoto = Glamorous(XCloudImage)({
+const AcquizitionRequestPhoto = Glamorous(XCloudImage)({
     borderRadius: 4
 });
 
-interface AquizitionRequestProps {
+interface AcquizitionRequestProps {
     name: string;
     id: string;
     photo: ImageRefInput | null;
@@ -672,7 +702,7 @@ const Thousander = (num: number) => (
     Math.round(num).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 );
 
-class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean }> {
+class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean }> {
 
     render() {
 
@@ -681,17 +711,17 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
         const FullContent = (
             <XVertical>
                 <div>
-                    <TagRow title="Status" titleWidth={150}>
+                    {/* <TagRow title="Status" titleWidth={150}>
                         <XHorizontalStyled flexGrow={1} alignItems="flex-end">
                             <Text><StatusDot />Open</Text>
                             <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
                         </XHorizontalStyled>
-                    </TagRow>
+                    </TagRow> */}
                     {item.summary && (
                         <TagRow title="Summary" text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
                     )}
                     {item.areaRange && (
-                        <TagRow title="Area range" text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} titleWidth={150} isTagStyle={true} titlePaddingTop={0}/>
+                        <TagRow title="Area range" text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} titleWidth={150} isTagStyle={true} titlePaddingTop={0} />
                     )}
                     {item.geographies && (
                         <TagRowMap title="Geographies" items={item.geographies} titleWidth={150} />
@@ -714,7 +744,7 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                 <XHorizontalStyled justifyContent="space-between" separator={12} padding={24}>
 
                     {item.photo && (
-                        <AquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
+                        <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
                     )}
                     {!item.photo && (
                         <PlaceholderAR style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
@@ -724,7 +754,10 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
-                                <ListingTitle>{item.name}</ListingTitle>
+                                <ListingTitleWrapper>
+                                    <ListingTitle>{item.name}</ListingTitle>
+                                    <Text opacity={0.5} small={true} marginBottom={-1}>{DateFormater(item.updatedAt)}</Text>
+                                </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
                                         marginRight={60}
@@ -738,15 +771,15 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                                     />
                                 </XWithRole>
                             </XHorizontal>
-                            {this.props.showType && <Text opacity={0.5}>Aquizition request</Text>}
+                            {this.props.showType && <Text opacity={0.5}>Acquizition request</Text>}
                             <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>
                             {item.areaRange && <Text opacity={0.5} bold={true} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
-                            {(!full && item.areaRange) && (
+                            {/* {(!full && item.areaRange) && (
                                 <XHorizontalStyled marginTop={10}>
                                     <Text><StatusDot />Open</Text>
                                     <Text opacity={0.5} small={true} marginBottom={-1}>Last updated: {DateFormater(item.updatedAt)}</Text>
                                 </XHorizontalStyled>
-                            )}
+                            )} */}
                             {(!full && !item.areaRange) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
 
                             {full && FullContent}
@@ -992,14 +1025,14 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                             <XVerticalStyled flexShrink={0} flexGrow={1} separator="none" paddingTop={35}>
                                 <OrganizationName>{organization.name}</OrganizationName>
-                                <div style={{ marginTop: 4 }}>
-                                    {organization.location && <Text opacity={0.5}>{organization.location}</Text>}
+                                <div style={{ marginTop: 5 }}>
+                                    {organization.location && <Text opacity={0.5} bold={true}>{organization.location}</Text>}
                                     <XWithRole role={['org-' + organization.id + '-admin']}>
                                         {!organization.location && <LocationPlaceholder />}
                                     </XWithRole>
                                 </div>
                                 <div style={{ marginTop: 16 }}>
-                                    <SwitcherWrapper flatStyle={true} height={60}>
+                                    <SwitcherWrapper flatStyle={true} height={60} smallText={true}>
                                         <Switcher path={rootPath}>Overview</Switcher>
                                         <Switcher path={lsitingsPath}>{'Listings (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
                                         {/* <Switcher path={lsitingsAllPath}>{'All Listings (' + ((organization.listingsAll && organization.listingsAll.length) || 0) + ')'}</Switcher> */}
@@ -1007,10 +1040,9 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 </div >
                             </XVerticalStyled>
                             <XHorizontalStyled paddingTop={20}>
-                                {!organization.isMine && (
+                                {!organization.isMine  && (
                                     <XButton
-                                        style="primary"
-                                        size="medium"
+                                        style={organization!!.followed ? 'primary' : 'electric'}
                                         text={organization!!.followed ? 'Following' : 'Follow'}
                                         action={async () => {
                                             console.warn(organization!!.followed);
@@ -1148,7 +1180,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                                 {organization.acquisitionRequests && (
                                                     organization.acquisitionRequests.map((devop, i) => (
-                                                        cardFilter(() => <AquizitionRequest key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountDO)
+                                                        cardFilter(() => <AcquizitionRequest key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountDO)
                                                     ))
                                                 )}
                                                 <XHorizontal justifyContent="center" alignItems="center" separator="none">
@@ -1178,7 +1210,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                 )}
                                                 {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                 )}
                                             </XVertical>
                                         </>
@@ -1189,10 +1221,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <DOARListingPlaceholder />
                                             <XVertical>
                                                 {props.router.path === lsitingsAllPath && organization && organization.listingsAll && (
-                                                    organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} /> : < AquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} />)
+                                                    organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} /> : < AcquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} />)
                                                 )}
                                                 {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                 )}
                                             </XVertical>
                                         </>
@@ -1201,7 +1233,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                     {props.router.query.addListing && (
                                         <XModalForm
-                                            fixedFooter={true}
+                                            scrollableContent={true}
                                             title={props.router.query.addListing === 'DO' ? 'Create development opportunity' : 'Create acquisition requests'}
 
                                             defaultAction={async (data) => {
@@ -1339,8 +1371,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     />
                                     {(editDoTarget || editArTarget) && (
                                         <XModalForm
-                                            fixedFooter={true}
-                                            title={editDoTarget ? 'Edit development opportunity' : 'Edit aquizition request'}
+                                            scrollableContent={true}
+                                            title={editDoTarget ? 'Edit development opportunity' : 'Edit acquizition request'}
                                             defaultData={editListingDefaultData}
                                             defaultAction={editListingDefaultAction}
                                             targetQuery="editListing"

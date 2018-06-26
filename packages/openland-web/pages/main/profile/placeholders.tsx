@@ -22,21 +22,28 @@ import PlaceholderContact from './placeholder_contact.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 
-const Placeholder = Glamorous(XCard)({
-    backgroundColor: '#654bfa',
-    padding: 34,
+const Placeholder = Glamorous(XCard)<{ accent?: boolean }>(props => ({
+    backgroundColor: props.accent ? '#654bfa' : '#fff',
+    padding: 33,
+    minHeight: 171,
     flex: 1,
-});
+    justifyContent: 'center',
+    position: 'relative',
+    borderRadius: 5
+}));
 
 const PlaceholderButton = Glamorous(XButton)({
     marginLeft: 16
 });
 
-const PlaceholderText = Glamorous.span({
+const PlaceholderText = Glamorous.span<{ accent?: boolean }>(props => ({
     marginLeft: 16,
-    ...XStyles.text.h500,
-    color: '#ffffff'
-});
+    fontSize: '18px',
+    lineHeight: 1.44,
+    letterSpacing: '-0.1px',
+    marginTop: -20,
+    color: props.accent ? '#ffffff' : '#334562'
+}));
 
 const PlaceholderIcon = Glamorous.img((props) => ({
     width: 60,
@@ -47,22 +54,24 @@ const Close = Glamorous(XIcon)({
     width: 16,
     height: 16,
     fontSize: 16,
+    top: 8,
+    right: 8,
     color: '#cfcfcf',
     alignSelf: 'flex-end',
-    marginTop: -24,
-    marginRight: -24,
     marginBottom: 8,
-    cursor: 'pointer'
+    cursor: 'pointer',
+    position: 'absolute',
 });
 
 export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
 
     return ((!props.data.myOrganizationProfile.organizationType && !props.data.myOrganizationProfile.geographies && !props.data.myOrganizationProfile.lookingFor) ? (
-        <Placeholder>
+        <Placeholder accent={true}>
             <XHorizontal>
                 <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_overview.svg'} />
                 <XVertical>
-                    <PlaceholderText>Your account has been created - now it will be easier to connect with real estate companies. To make most of it we recommend to share more information about your company. </PlaceholderText>
+                    {/* <PlaceholderText accent={true}>Your account has been created - now it will be easier to connect with real estate companies. To make most of it we recommend to share more information about your company. </PlaceholderText> */}
+                    <PlaceholderText accent={true}><p>Share your organization type, geographies of operation,</p><p>and what are you looking for</p></PlaceholderText>
 
                     <XModalForm
                         title="Organization Profile"
@@ -209,6 +218,7 @@ export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                 });
                                             }}
                                             target={<PlaceholderButton
+                                                style="primary"
                                                 text="Describe your portfolio"
                                                 alignSelf="flex-start"
                                             />}
@@ -333,6 +343,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                 });
                                             }}
                                             target={<PlaceholderButton
+                                                style="primary"
                                                 text="Share your criteria"
                                                 alignSelf="flex-start"
                                             />}
@@ -537,6 +548,7 @@ export const NewsPlaceholder = withMyOrganizationProfile((props) => {
                             <XVertical maxWidth={452}>
                                 <PlaceholderText>Share your recent press coverage</PlaceholderText>
                                 <PlaceholderButton
+                                    style="primary"
                                     onClick={() => {
                                         //
                                     }}

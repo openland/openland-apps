@@ -6,7 +6,7 @@ import { XRouter } from 'openland-x-routing/XRouter';
 import { XButton } from 'openland-x/XButton';
 import { XModalContext } from './XModalContext';
 
-class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'default' | 'small', isOpen: boolean, closeOnClick?: boolean, onCloseRequest: () => void; }> {
+class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'default' | 'small', scrollableContent?: boolean, isOpen: boolean, closeOnClick?: boolean, onCloseRequest: () => void; }> {
 
     render() {
 
@@ -44,7 +44,7 @@ class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'def
 
                         // Sizes
                         width: this.props.size !== 'x-large' ? width : 'calc(100% - 128px)',
-                        top: this.props.size !== 'x-large' ? 96 : 64,
+                        top: (this.props.size !== 'x-large' && !this.props.scrollableContent) ? 96 : 64,
                         left: this.props.size !== 'x-large' ? '50%' : 64,
                         right: this.props.size !== 'x-large' ? 'auto' : 64,
                         bottom: this.props.size !== 'x-large' ? 'auto' : 64,
@@ -83,10 +83,13 @@ export let XModalHeader = Glamorous.div({
     justifyContent: 'space-between',
     paddingLeft: 24,
     paddingRight: 24,
-    height: 64,
+    height: 68,
+    letterSpacing: '-0.4px',
     lineHeight: '64px',
     fontSize: '18px',
-    fontWeight: 'bold'
+    fontWeight: 500,
+    color: '1f3449',
+    borderBottom: '1px solid rgba(220, 222, 228, 0.6)'
 });
 
 export let XModalHeaderEmpty = Glamorous.div({
@@ -107,7 +110,8 @@ export let XModalFooter = Glamorous.div({
     paddingRight: 24,
     height: 64,
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderTop: '1px solid rgba(220, 222, 228, 0.6)'
 });
 
 const XModalCloser = Glamorous(XButton)({
@@ -119,6 +123,11 @@ const XModalCloser = Glamorous(XButton)({
     }
 });
 
+export const XModalBodyContainer = Glamorous.div({
+    paddingTop: 18,
+    paddingBottom: 24,
+});
+
 class ModalContentRender extends React.Component<{
     title?: string;
     heading?: any;
@@ -126,6 +135,7 @@ class ModalContentRender extends React.Component<{
     body?: any;
     footer?: any;
     customContent?: boolean;
+    scrollableContent?: boolean;
 }> {
     render() {
         if (this.props.customContent) {
@@ -135,13 +145,26 @@ class ModalContentRender extends React.Component<{
                 </Root>
             );
         }
+        let body = (
+            <XModalBodyContainer>
+                {this.props.body === undefined && <XModalBody>{this.props.children}</XModalBody>}
+                {this.props.body !== undefined && this.props.body}
+            </XModalBodyContainer>
+        );
+        if (this.props.scrollableContent) {
+            body = (
+                <div style={{ maxHeight: '70vh', overflowY: 'scroll' }}>
+                    {body}
+                </div>
+
+            );
+        }
         return (
             <Root>
                 {this.props.heading === undefined && (this.props.title || this.props.useTopCloser) && <XModalHeader>{this.props.title}{this.props.useTopCloser && <XModalCloser icon="close" autoClose={true} />}</XModalHeader>}
                 {this.props.heading === undefined && !this.props.title && <XModalHeaderEmpty />}
                 {this.props.heading !== undefined && this.props.heading}
-                {this.props.body === undefined && <XModalBody>{this.props.children}</XModalBody>}
-                {this.props.body !== undefined && this.props.body}
+                {body}
                 {this.props.footer === undefined && !this.props.useTopCloser && <XModalFooter><XButton text="Close" autoClose={true} /></XModalFooter>}
                 {this.props.footer !== undefined && this.props.footer}
             </Root>
@@ -158,6 +181,7 @@ export interface XModalProps {
     footer?: any;
     customContent?: boolean;
     useTopCloser?: boolean;
+    scrollableContent?: boolean;
 
     // Style
     size?: 'x-large' | 'large' | 'default' | 'small';
@@ -208,8 +232,9 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
             return (
                 <>
                     {TargetClone}
-                    <ModalRender isOpen={this.state.isOpen} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
+                    <ModalRender scrollableContent={this.props.scrollableContent} isOpen={this.state.isOpen} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
                         <ModalContentRender
+                            scrollableContent={this.props.scrollableContent}
                             title={this.props.title}
                             useTopCloser={this.props.useTopCloser}
                             heading={this.props.heading}
@@ -229,8 +254,9 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                     {(router) => {
                         this.lastRouter = router;
                         return (
-                            <ModalRender isOpen={!!router!!.query[q]} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
+                            <ModalRender scrollableContent={this.props.scrollableContent} isOpen={!!router!!.query[q]} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
                                 <ModalContentRender
+                                    scrollableContent={this.props.scrollableContent}
                                     title={this.props.title}
                                     useTopCloser={this.props.useTopCloser}
                                     heading={this.props.heading}
@@ -247,8 +273,9 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
             );
         } else if (this.props.isOpen !== undefined) {
             return (
-                <ModalRender isOpen={this.props.isOpen} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
+                <ModalRender scrollableContent={this.props.scrollableContent} isOpen={this.props.isOpen} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
                     <ModalContentRender
+                        scrollableContent={this.props.scrollableContent}
                         title={this.props.title}
                         useTopCloser={this.props.useTopCloser}
                         heading={this.props.heading}
