@@ -2,8 +2,9 @@
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withTypescript = require('@zeit/next-typescript')
 const path = require('path');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
-const StatsPlugin = require('stats-webpack-plugin');
+// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+// const StatsPlugin = require('stats-webpack-plugin');
+// const HappyPack = require('happypack');
 
 const config = withTypescript({
     pageExtensions: ['page.ts', 'page.tsx'],
@@ -34,8 +35,17 @@ const config = withTypescript({
             test: /\.(ts|tsx)$/,
             include: [path.resolve(dir + '/../')],
             exclude: /node_modules/,
-            use: defaultLoaders.babel
+            use: defaultLoaders.babel,
         })
+
+        if (dev && !isServer) {
+            config.module.rules.push({
+                test: /\.(ts|tsx)$/,
+                include: defaultLoaders.hotSelfAccept.options.include,
+                exclude: /node_modules/,
+                use: defaultLoaders.hotSelfAccept
+            })
+        }
 
         // Disable babel cache
         // defaultLoaders.babel.options.cacheDirectory = false
@@ -52,6 +62,9 @@ const config = withTypescript({
         //     }));
         // }
 
+        // Enable debug
+        // config.debug = true;
+
         // Disable minification
         // config.plugins = config.plugins.filter(
         //     (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
@@ -65,17 +78,40 @@ const config = withTypescript({
 
         // Hard Source
         // if (!isServer) {
-        //     config.plugins.unshift(new HardSourceWebpackPlugin({
+        //     config.plugins.push(new HardSourceWebpackPlugin({
         //         cacheDirectory: 'node_modules/.cache/hard-source-client/[confighash]',
+        //         info: {
+        //             // mode: 'none',
+        //             level: 'debug',
+        //         }
         //     }))
         // } else {
-        //     config.plugins.unshift(new HardSourceWebpackPlugin({
+        //     config.plugins.push(new HardSourceWebpackPlugin({
         //         cacheDirectory: 'node_modules/.cache/hard-source-server/[confighash]',
+        //         info: {
+        //             // mode: 'none',
+        //             level: 'debug',
+        //         }
         //     }))
         // }
 
-        // Print Stats
+        // Happy Pack
+        // config.module.rules = config.module.rules.map((v) => {
+        //     if (v.use === defaultLoaders.babel) {
+        //         return {
+        //             ...v,
+        //             use: {
+        //                 ...v.use,
+        //                 loader: 'happypack/loader',
+        //             }
+        //         };
+        //     }
 
+        //     return v;
+        // })
+        // config.plugins.push(new HappyPack({
+        //     loaders: [defaultLoaders.babel.loader]
+        // }));
 
         // Creating vendor library
         // Doesn't work...
