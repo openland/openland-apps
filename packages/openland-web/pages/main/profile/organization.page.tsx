@@ -531,6 +531,15 @@ const AdditionalLink = Glamorous(XLink)({
     }
 });
 
+const ListingTitleWrapper = Glamorous.div({
+    flexGrow: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+    maxWidth: 'calc(100% - 60px)'
+});
+
 const ListingTitle = Glamorous.div({
     fontSize: 20,
     fontWeight: 500,
@@ -539,7 +548,7 @@ const ListingTitle = Glamorous.div({
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    marginBottom: 4
+    maxWidth: 'calc(100% - 120px)'
 });
 
 const ClickableXStreetViewModalPreview = Glamorous.div({
@@ -564,12 +573,12 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                             <Text marginTop={3} fontWeight={600}>{`$${item.price}`}</Text>
                         </TagRow>
                     )}
-                    <TagRow title="Status" titleWidth={150}>
+                    {/* <TagRow title="Status" titleWidth={150}>
                         <XHorizontalStyled flexGrow={1} alignItems="flex-end">
                             <Text><StatusDot />Open</Text>
                             <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
                         </XHorizontalStyled>
-                    </TagRow>
+                    </TagRow> */}
                     {item.summary && (
                         <TagRow title="Summary" text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
                     )}
@@ -622,10 +631,13 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                     {!item.location && (
                         <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                     )}
-                    <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
+                    <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 184px)' : 'calc(100% - 157px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
-                                <ListingTitle>{item.name}</ListingTitle>
+                                <ListingTitleWrapper>
+                                    <ListingTitle>{item.name}</ListingTitle>
+                                    <Text opacity={0.5} small={true} marginBottom={-1}>{DateFormater(item.updatedAt)}</Text>
+                                </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
                                         marginRight={60}
@@ -640,25 +652,27 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                 </XWithRole>
                             </XHorizontal>
                             {this.props.showType && <Text opacity={0.5}>Development oportunity</Text>}
-                            <Text opacity={0.5} bold={true}>{item.locationTitle}</Text>
-                            <XHorizontal separator="large" flexGrow={full ? 1 : undefined} alignItems={full ? 'flex-end' : undefined}>
-                                {!full && (
-                                    <>
-                                        {item.area && (
-                                            <Text marginTop={3} fontWeight={600}>{`Area: ${item.area} ft²`}</Text>
-                                        )}
-                                        {item.price && (
-                                            <Text marginTop={3} fontWeight={600}>{`Price: $${item.price}`}</Text>
-                                        )}
-                                    </>
-                                )}
-                            </XHorizontal>
-                            {(!full && item.location) && (
+                            {item.locationTitle && <Text opacity={0.5} bold={true}>{item.locationTitle}</Text>}
+                            {(item.area || item.price) && (
+                                <XHorizontal separator="large" flexGrow={full ? 1 : undefined} alignItems={full ? 'flex-end' : undefined}>
+                                    {!full && (
+                                        <>
+                                            {item.area && (
+                                                <Text marginTop={3} fontWeight={600}>{`Area: ${item.area} ft²`}</Text>
+                                            )}
+                                            {item.price && (
+                                                <Text marginTop={3} fontWeight={600}>{`Price: $${item.price}`}</Text>
+                                            )}
+                                        </>
+                                    )}
+                                </XHorizontal>
+                            )}
+                            {/* {(!full && item.location) && (
                                 <XHorizontalStyled marginTop={10}>
                                     <Text><StatusDot />Open</Text>
                                     <Text opacity={0.5} small={true} marginBottom={-1}>Last updated: {DateFormater(item.updatedAt)}</Text>
                                 </XHorizontalStyled>
-                            )}
+                            )} */}
                             {(!full && !item.location) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
 
                             {full && FullContent}
@@ -705,12 +719,12 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
         const FullContent = (
             <XVertical>
                 <div>
-                    <TagRow title="Status" titleWidth={150}>
+                    {/* <TagRow title="Status" titleWidth={150}>
                         <XHorizontalStyled flexGrow={1} alignItems="flex-end">
                             <Text><StatusDot />Open</Text>
                             <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
                         </XHorizontalStyled>
-                    </TagRow>
+                    </TagRow> */}
                     {item.summary && (
                         <TagRow title="Summary" text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
                     )}
@@ -748,7 +762,10 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
-                                <ListingTitle>{item.name}</ListingTitle>
+                                <ListingTitleWrapper>
+                                    <ListingTitle>{item.name}</ListingTitle>
+                                    <Text opacity={0.5} small={true} marginBottom={-1}>{DateFormater(item.updatedAt)}</Text>
+                                </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
                                         marginRight={60}
@@ -765,12 +782,12 @@ class AquizitionRequest extends React.Component<{ item: AquizitionRequestProps, 
                             {this.props.showType && <Text opacity={0.5}>Aquizition request</Text>}
                             <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>
                             {item.areaRange && <Text opacity={0.5} bold={true} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
-                            {(!full && item.areaRange) && (
+                            {/* {(!full && item.areaRange) && (
                                 <XHorizontalStyled marginTop={10}>
                                     <Text><StatusDot />Open</Text>
                                     <Text opacity={0.5} small={true} marginBottom={-1}>Last updated: {DateFormater(item.updatedAt)}</Text>
                                 </XHorizontalStyled>
-                            )}
+                            )} */}
                             {(!full && !item.areaRange) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
 
                             {full && FullContent}
