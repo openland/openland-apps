@@ -94,7 +94,7 @@ export function makeActionable<T>(Wrapped: React.ComponentType<T & ActionableChi
                 <Wrapped
                     loading={isLoading}
                     enabled={this.props.enabled !== false}
-                    onClick={this.onClick}
+                    onClick={action ? this.onClick : this.props.onClick}
                     {...other}
                 >
                     {this.props.children}

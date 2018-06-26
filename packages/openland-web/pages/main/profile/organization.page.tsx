@@ -60,6 +60,58 @@ const Header = Glamorous.div({
     }
 });
 
+interface XHorizontalStyledProps {
+    borderRight?: boolean;
+    borderBottom?: boolean;
+    padding?: number;
+    paddingLeft?: number;
+    paddingRight?: number;
+    paddingTop?: number;
+    paddingBottom?: number;
+    marginTop?: number;
+    marginBottom?: number;
+    maxwidth?: string | number;
+}
+
+const XHorizontalStyled = Glamorous(XHorizontal)<XHorizontalStyledProps>((props) => ({
+    borderRight: props.borderRight ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    borderBottom: props.borderBottom ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    padding: props.padding,
+    paddingLeft: props.paddingLeft,
+    paddingRight: props.paddingRight,
+    paddingTop: props.paddingTop,
+    paddingBottom: props.paddingBottom,
+    marginTop: props.marginTop,
+    marginBottom: props.marginBottom,
+    maxWidth: props.maxwidth
+}));
+
+interface XVerticalStyledProps {
+    borderRight?: boolean;
+    borderBottom?: boolean;
+    padding?: number;
+    paddingLeft?: number;
+    paddingRight?: number;
+    paddingTop?: number;
+    paddingBottom?: number;
+    marginTop?: number;
+    marginBottom?: number;
+    maxwidth?: string | number;
+}
+
+const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
+    borderRight: props.borderRight ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    borderBottom: props.borderBottom ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    padding: props.padding,
+    paddingLeft: props.paddingLeft,
+    paddingRight: props.paddingRight,
+    paddingTop: props.paddingTop,
+    paddingBottom: props.paddingBottom,
+    marginTop: props.marginTop,
+    marginBottom: props.marginBottom,
+    maxWidth: props.maxwidth
+}));
+
 const SwitcherWrapper = Glamorous(XSwitcher)<{ height?: number, smallText?: boolean }>((props) => ({
     padding: 0,
     height: props.height ? props.height : '100%',
@@ -139,17 +191,11 @@ const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, pa
     paddingBottom: props.paddingBottom
 }));
 
-const ContactWrapper = Glamorous(XHorizontal)({
-    paddingTop: 12,
-    paddingBottom: 12,
-    paddingLeft: 18,
-    paddingRight: 18
-});
-
 interface TextProps {
     opacity?: number;
     bold?: boolean;
     fontWeight?: any;
+    lineHeight?: number;
     upperCase?: boolean;
     marginBottom?: number;
     marginTop?: number;
@@ -160,7 +206,7 @@ const Text = Glamorous.div<TextProps>((props) => ({
     display: 'flex',
     alignItems: 'center',
     fontSize: props.small ? 14 : 15,
-    lineHeight: props.small ? 1.43 : 1.33,
+    lineHeight: props.lineHeight !== undefined ? props.lineHeight : props.small ? 1.43 : 1.33,
     color: '#334562',
     opacity: props.opacity,
     fontWeight: props.fontWeight !== undefined ? props.fontWeight : props.bold ? 500 : undefined,
@@ -213,7 +259,12 @@ const SocialLinkImg = Glamorous(XLink)({
 });
 
 const ContactPersonComponent = (props: { contact: ContactPerson, index: number }) => (
-    <ContactWrapper>
+    <XHorizontalStyled
+        paddingTop={12}
+        paddingBottom={12}
+        paddingLeft={18}
+        paddingRight={18}
+    >
         <XAvatar cloudImageUuid={props.contact.photo || undefined} size="small" />
         <div>
             <Text bold={true}>{props.contact.name}</Text>
@@ -222,7 +273,7 @@ const ContactPersonComponent = (props: { contact: ContactPerson, index: number }
             <Text opacity={0.5}>{props.contact.email}</Text>
             <Text opacity={0.5}>{props.contact.link}</Text>
         </div>
-    </ContactWrapper>
+    </XHorizontalStyled>
 );
 
 const ContactPersons = (props: { contacts: ContactPerson[] }) => (
@@ -274,88 +325,15 @@ class AboutContent extends React.Component<{ text: string }, { open: boolean }> 
     }
 }
 
-interface XVerticalStyledProps {
-    borderRight?: boolean;
-    borderBottom?: boolean;
-    padding?: number;
-    paddingLeft?: number;
-    paddingRight?: number;
-    paddingTop?: number;
-    paddingBottom?: number;
-    maxwidth?: string | number;
-}
-
-const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
-    borderRight: props.borderRight ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
-    borderBottom: props.borderBottom ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
-    padding: props.padding,
-    paddingLeft: props.paddingLeft,
-    paddingRight: props.paddingRight,
-    paddingTop: props.paddingTop,
-    paddingBottom: props.paddingBottom,
-    maxWidth: props.maxwidth
-}));
-
-interface XHorizontalStyledProps {
-    borderRight?: boolean;
-    borderBottom?: boolean;
-    padding?: number;
-    paddingLeft?: number;
-    paddingRight?: number;
-    paddingTop?: number;
-    paddingBottom?: number;
-    marginTop?: number;
-    maxwidth?: string | number;
-}
-
-const XHorizontalStyled = Glamorous(XHorizontal)<XHorizontalStyledProps>((props) => ({
-    borderRight: props.borderRight ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
-    borderBottom: props.borderBottom ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
-    padding: props.padding,
-    paddingLeft: props.paddingLeft,
-    paddingRight: props.paddingRight,
-    paddingTop: props.paddingTop,
-    paddingBottom: props.paddingBottom,
-    marginTop: props.marginTop,
-    maxWidth: props.maxwidth
-}));
-
-const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number, marginTop?: number }>((props) => ({
+const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number }>((props) => ({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    marginBottom: props.marginBottom ? props.marginBottom : undefined,
-    marginTop: props.marginTop ? props.marginTop : undefined,
-    '&:first-child': {
-        '& > div': {
-            minHeight: 50,
-            paddingTop: 15,
-            '&:first-child': {
-                '& > div': {
-                    paddingTop: 8,
-
-                }
-            }
-        }
-    },
-    '&:last-child': {
-        '& > div': {
-            minHeight: 50,
-            paddingBottom: 18
-        }
-    },
-    '&:only-child': {
-        '& > div': {
-            height: 'auto',
-            paddingBottom: 'unset',
-            paddingTop: 'unset'
-        }
-    }
+    marginBottom: props.marginBottom
 }));
 
 interface OpportunitiesTextWrapperProps {
     width?: number;
-    alignSelf?: string;
     paddingTop?: number;
     paddingBottom?: number;
     paddingLeft?: number;
@@ -368,7 +346,7 @@ const OpportunitiesTextWrapper = Glamorous.div<OpportunitiesTextWrapperProps>((p
     flexShrink: 0,
     display: 'flex',
     alignItems: 'center',
-    alignSelf: props.alignSelf ? props.alignSelf : undefined,
+    alignSelf: 'flex-start',
     paddingLeft: props.paddingLeft,
     paddingRight: props.paddingRight,
     paddingTop: props.paddingTop !== undefined ? props.paddingTop : 12,
@@ -376,7 +354,6 @@ const OpportunitiesTextWrapper = Glamorous.div<OpportunitiesTextWrapperProps>((p
 }));
 
 const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean }>((props) => ({
-    minHeight: 35,
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'wrap',
@@ -389,6 +366,7 @@ const OpportunitiesValue = Glamorous.div({
     height: 32,
     borderRadius: 4,
     backgroundColor: '#edf3fe',
+    whiteSpace: 'nowrap',
     fontSize: 14,
     fontWeight: 500,
     lineHeight: 1.14,
@@ -397,8 +375,8 @@ const OpportunitiesValue = Glamorous.div({
     alignItems: 'center',
     padding: '8px 9px',
     marginRight: 11,
-    marginTop: 5,
-    marginBottom: 5,
+    marginTop: 8,
+    marginBottom: 8,
 });
 
 interface DevelopmentOportunityProps {
@@ -437,7 +415,7 @@ interface TagRowMapProps {
 
 const TagRowMap = (props: TagRowMapProps) => (
     <OpportunitiesWrapper>
-        <OpportunitiesTextWrapper width={props.titleWidth} alignSelf="flex-start" paddingLeft={props.paddingLeft} paddingTop={props.titlePaddingTop}>
+        <OpportunitiesTextWrapper width={props.titleWidth} paddingLeft={props.paddingLeft} paddingTop={props.titlePaddingTop}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered}>
@@ -460,16 +438,17 @@ interface TagRowProps {
     isTagStyle?: boolean;
     paddingLeft?: number;
     titlePaddingTop?: number;
+    titlePaddingBottom?: number;
 }
 
 const TagRow = (props: TagRowProps) => (
-    <OpportunitiesWrapper marginBottom={props.isTextStyle ? 13 : undefined}>
-        <OpportunitiesTextWrapper width={props.titleWidth} alignSelf={props.isTextStyle ? 'flex-start' : undefined} paddingLeft={props.paddingLeft} paddingTop={props.titlePaddingTop}>
+    <OpportunitiesWrapper marginBottom={props.isTextStyle ? 10 : undefined}>
+        <OpportunitiesTextWrapper width={props.titleWidth} paddingLeft={props.paddingLeft} paddingTop={props.titlePaddingTop} paddingBottom={props.titlePaddingBottom}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered}>
             {props.isTextStyle && (
-                <Text>
+                <Text lineHeight={1.53}>
                     {props.text}
                 </Text>
             )}
@@ -483,17 +462,19 @@ const TagRow = (props: TagRowProps) => (
     </OpportunitiesWrapper>
 );
 
-const DevelopmentOportunityCard = Glamorous.div({
-    border: '1px solid rgba(220, 222, 228, 0.45)',
+const DevelopmentOportunityCard = Glamorous.div<{ border?: boolean }>((props) => ({
+    border: props.border ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     borderRadius: 4,
     backgroundColor: '#fff'
-});
+}));
 
 const Lock = Glamorous(XIcon)({
     width: 14,
     height: 14,
-    fontSize: 14,
-    marginRight: 8
+    fontSize: 16,
+    marginRight: 8,
+    marginTop: -1
 });
 
 const AdditionalLink = Glamorous(XLink)({
@@ -528,14 +509,13 @@ const ListingTitleWrapper = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 4,
     maxWidth: 'calc(100% - 60px)'
 });
 
 const ListingTitle = Glamorous.div({
     fontSize: 20,
     fontWeight: 500,
-    letterSpacing: -0.2,
+    letterSpacing: 0.5,
     color: '#334562',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -547,13 +527,13 @@ const ClickableXStreetViewModalPreview = Glamorous.div({
     cursor: 'pointer'
 });
 
-class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, full?: boolean, showType?: boolean }> {
+class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, full?: boolean, showType?: boolean, isSoloComponent?: boolean }> {
     render() {
 
         const { item, full } = this.props;
 
         const FullContent = (
-            <XVerticalStyled>
+            <XVerticalStyled marginTop={10}>
                 <div>
                     {item.area && (
                         <TagRow title="Area" titleWidth={150}>
@@ -561,21 +541,15 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                         </TagRow>
                     )}
                     {item.price && (
-                        <TagRow title="Price" titleWidth={150}>
+                        <TagRow title="Price" titleWidth={150} isTextStyle={true}>
                             <Text marginTop={3} fontWeight={600}>{`$${item.price}`}</Text>
                         </TagRow>
                     )}
-                    {/* <TagRow title="Status" titleWidth={150}>
-                        <XHorizontalStyled flexGrow={1} alignItems="flex-end">
-                            <Text><StatusDot />Open</Text>
-                            <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
-                        </XHorizontalStyled>
-                    </TagRow> */}
                     {item.summary && (
-                        <TagRow title="Summary" text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
+                        <TagRow title="Summary" text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} />
                     )}
                     {item.availability && (
-                        <TagRow title="Availability" text={item.availability} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
+                        <TagRow title="Availability" text={item.availability} titleWidth={150} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} />
                     )}
                     {item.dealType && (
                         <TagRowMap title="Deal type" items={item.dealType} titleWidth={150} />
@@ -593,8 +567,8 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                         <TagRowMap title="Special attributes" items={item.specialAttributes} titleWidth={150} />
                     )}
                     {item.additionalLinks!!.length > 0 && (
-                        <OpportunitiesWrapper marginTop={10} marginBottom={10}>
-                            <OpportunitiesTextWrapper width={150} paddingBottom={0} paddingTop={0}>
+                        <OpportunitiesWrapper>
+                            <OpportunitiesTextWrapper width={150}>
                                 <Text bold={true}>Additional links</Text>
                             </OpportunitiesTextWrapper>
                             <OpportunitiesValueWrapper>
@@ -612,7 +586,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
         );
 
         return (
-            <DevelopmentOportunityCard>
+            <DevelopmentOportunityCard border={this.props.isSoloComponent}>
                 <XHorizontalStyled justifyContent="space-between" separator={12} padding={24}>
                     {item.location && (
                         <XStreetViewModal
@@ -625,7 +599,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 184px)' : 'calc(100% - 157px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
-                            <XHorizontal justifyContent="space-between" alignItems="center">
+                            <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 8 : 4}>
                                 <ListingTitleWrapper>
                                     <ListingTitle>{item.name}</ListingTitle>
                                     <Text opacity={0.5} small={true} marginBottom={-1}>{DateFormater(item.updatedAt)}</Text>
@@ -637,12 +611,15 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                         content={(
                                             <>
                                                 <XOverflow.Item query={{ field: 'editListing', value: item.id }}>Edit</XOverflow.Item>
-                                                <XOverflow.Item query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
+                                                {item.locationTitle && < XOverflow.Item href={`https://www.google.com/maps/place/${item.locationTitle}`}>Google map</XOverflow.Item>}
+                                                {(!item.locationTitle && item.location) && < XOverflow.Item href={`https://www.google.com/maps/place/${item.location.lat},${item.location.lon}`}>Google map</XOverflow.Item>}
+                                                {item.location && < XOverflow.Item href={`https://www.google.com/maps?cbll=${item.location.lat},${item.location.lon}&cbp=12,90,0,0,5&layer=c`}>Street view</XOverflow.Item>}
+                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
                                             </>
                                         )}
                                     />
                                 </XWithRole>
-                            </XHorizontal>
+                            </XHorizontalStyled>
                             {this.props.showType && <Text opacity={0.5}>Development oportunity</Text>}
                             {item.locationTitle && <Text opacity={0.5} bold={true}>{item.locationTitle}</Text>}
                             {(item.area || item.price) && (
@@ -650,28 +627,23 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                     {!full && (
                                         <>
                                             {item.area && (
-                                                <Text marginTop={3} fontWeight={600}>{`Area: ${item.area} ft²`}</Text>
+                                                <Text marginTop={5} fontWeight={600}>{`Area: ${item.area} ft²`}</Text>
                                             )}
                                             {item.price && (
-                                                <Text marginTop={3} fontWeight={600}>{`Price: $${item.price}`}</Text>
+                                                <Text marginTop={5} fontWeight={600}>{`Price: $${item.price}`}</Text>
                                             )}
                                         </>
                                     )}
                                 </XHorizontal>
                             )}
-                            {/* {(!full && item.location) && (
-                                <XHorizontalStyled marginTop={10}>
-                                    <Text><StatusDot />Open</Text>
-                                    <Text opacity={0.5} small={true} marginBottom={-1}>Last updated: {DateFormater(item.updatedAt)}</Text>
-                                </XHorizontalStyled>
-                            )} */}
-                            {(!full && !item.location) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
+
+                            {(!full && !item.location) && <Text opacity={0.5} marginTop={5} bold={true}><Lock icon="locked" />Details and location on request</Text>}
 
                             {full && FullContent}
                         </div>
                     </XHorizontalStyled>
                 </XHorizontalStyled>
-            </DevelopmentOportunityCard>
+            </DevelopmentOportunityCard >
         );
     }
 }
@@ -702,26 +674,20 @@ const Thousander = (num: number) => (
     Math.round(num).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 );
 
-class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean }> {
+class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean, isSoloComponent?: boolean }> {
 
     render() {
 
         const { item, full } = this.props;
 
         const FullContent = (
-            <XVertical>
+            <XVerticalStyled marginTop={14}>
                 <div>
-                    {/* <TagRow title="Status" titleWidth={150}>
-                        <XHorizontalStyled flexGrow={1} alignItems="flex-end">
-                            <Text><StatusDot />Open</Text>
-                            <Text opacity={0.5} small={true}>Last updated: {DateFormater(item.updatedAt)}</Text>
-                        </XHorizontalStyled>
-                    </TagRow> */}
                     {item.summary && (
                         <TagRow title="Summary" text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
                     )}
                     {item.areaRange && (
-                        <TagRow title="Area range" text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} titleWidth={150} isTagStyle={true} titlePaddingTop={0} />
+                        <TagRow title="Area range" text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} titleWidth={150} isTagStyle={true} />
                     )}
                     {item.geographies && (
                         <TagRowMap title="Geographies" items={item.geographies} titleWidth={150} />
@@ -736,11 +702,11 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                         <TagRowMap title="Unit capacity" items={item.unitCapacity} titleWidth={150} />
                     )}
                 </div>
-            </XVertical>
+            </XVerticalStyled>
         );
 
         return (
-            <DevelopmentOportunityCard>
+            <DevelopmentOportunityCard border={this.props.isSoloComponent}>
                 <XHorizontalStyled justifyContent="space-between" separator={12} padding={24}>
 
                     {item.photo && (
@@ -748,12 +714,10 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                     )}
                     {!item.photo && (
                         <PlaceholderAR style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
-                        // <img src={require('./img_placeholder_ar.svg')} />
                     )}
-                    {/* <XAvatar photoRef={item.photo || undefined} size="large" style="square" /> */}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
-                            <XHorizontal justifyContent="space-between" alignItems="center">
+                            <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={4}>
                                 <ListingTitleWrapper>
                                     <ListingTitle>{item.name}</ListingTitle>
                                     <Text opacity={0.5} small={true} marginBottom={-1}>{DateFormater(item.updatedAt)}</Text>
@@ -765,22 +729,17 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                                         content={(
                                             <>
                                                 <XOverflow.Item query={{ field: 'editListing', value: item.id }}>Edit</XOverflow.Item>
-                                                <XOverflow.Item query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
+                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>Delete</XOverflow.Item>
                                             </>
                                         )}
                                     />
                                 </XWithRole>
-                            </XHorizontal>
+                            </XHorizontalStyled>
                             {this.props.showType && <Text opacity={0.5}>Acquizition request</Text>}
                             <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>
-                            {item.areaRange && <Text opacity={0.5} bold={true} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
-                            {/* {(!full && item.areaRange) && (
-                                <XHorizontalStyled marginTop={10}>
-                                    <Text><StatusDot />Open</Text>
-                                    <Text opacity={0.5} small={true} marginBottom={-1}>Last updated: {DateFormater(item.updatedAt)}</Text>
-                                </XHorizontalStyled>
-                            )} */}
-                            {(!full && !item.areaRange) && <Text opacity={0.5} marginTop={3}> <Lock icon="locked" />Details and location on request</Text>}
+                            {(!full && item.areaRange) && <Text opacity={0.5} bold={true} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
+
+                            {(!full && !item.areaRange) && <Text opacity={0.5} marginTop={8}> <Lock icon="locked" />Details and location on request</Text>}
 
                             {full && FullContent}
                         </div>
@@ -1040,7 +999,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 </div >
                             </XVerticalStyled>
                             <XHorizontalStyled paddingTop={20}>
-                                {!organization.isMine  && (
+                                {!organization.isMine && (
                                     <XButton
                                         style={organization!!.followed ? 'primary' : 'electric'}
                                         text={organization!!.followed ? 'Following' : 'Follow'}
@@ -1207,10 +1166,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             </XCardStyled>
                                             <XVertical>
                                                 {props.router.path === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
-                                                    organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                    organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
                                                 )}
                                                 {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
                                                 )}
                                             </XVertical>
                                         </>
@@ -1221,10 +1180,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <DOARListingPlaceholder />
                                             <XVertical>
                                                 {props.router.path === lsitingsAllPath && organization && organization.listingsAll && (
-                                                    organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} /> : < AcquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} />)
+                                                    organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} isSoloComponent={true} /> : < AcquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} isSoloComponent={true} />)
                                                 )}
                                                 {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
                                                 )}
                                             </XVertical>
                                         </>
@@ -1275,46 +1234,46 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         <XAvatarUpload field="input.photo" placeholder={{ add: 'Add listing photo', change: 'Change listing photo' }} />
                                                     )}
 
-                                                    <XFormField title="Name">
-                                                        <XInput field="input.name" required={true} placeholder="Name" />
+                                                    <XFormField title="Name" field="input.name" >
+                                                        <XInput field="input.name" placeholder="Name" />
                                                     </XFormField>
                                                     {props.router.query.addListing === 'DO' && (
                                                         <>
-                                                            <XFormField title="Full adress">
+                                                            <XFormField field="input.location" optional={true} title="Full adress">
                                                                 <XLocationPickerModal field="input.location" />
                                                             </XFormField>
 
                                                             <XHorizontal>
-                                                                <Field title="Area">
+                                                                <Field field="input.area" optional={true} title="Area">
                                                                     <XInput field="input.area" placeholder="Area" />
                                                                 </Field>
-                                                                <Field title="Price">
+                                                                <Field field="input.price" optional={true} title="Price">
                                                                     <XInput field="input.price" placeholder="Price" />
                                                                 </Field>
                                                             </XHorizontal>
 
-                                                            <XFormField title="Availability">
+                                                            <XFormField field="input.availability" optional={true} title="Availability">
                                                                 <XInput field="input.availability" placeholder="Availability" />
                                                             </XFormField>
 
-                                                            <XFormField title="Summary">
+                                                            <XFormField optional={true} title="Summary" field="fields.input.summary" >
                                                                 <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
                                                             </XFormField>
 
                                                             <XTitle>Details</XTitle>
-                                                            <XFormField title="Deal Type">
+                                                            <XFormField field="input.dealType" optional={true} title="Deal Type">
                                                                 <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
                                                             </XFormField>
-                                                            <XFormField title="Shape And Form">
+                                                            <XFormField field="input.shapeAndForm" optional={true} title="Shape And Form">
                                                                 <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
                                                             </XFormField>
-                                                            <XFormField title="Current Use">
+                                                            <XFormField field="input.currentUse" optional={true} title="Current Use">
                                                                 <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
                                                             </XFormField>
-                                                            <XFormField title="Good Fit For">
+                                                            <XFormField field="input.goodFitFor" optional={true} title="Good Fit For">
                                                                 <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
+                                                            <XFormField field="input.specialAttributes" optional={true} title="Special attributes">
                                                                 <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
                                                             </XFormField>
                                                             <XTitle>Additional links</XTitle>
@@ -1323,30 +1282,30 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     )}
                                                     {props.router.query.addListing === 'AR' && (
                                                         <>
-                                                            <XFormField title="Short description">
+                                                            <XFormField field="input.shortDescription" optional={true} title="Short description">
                                                                 <XInput field="input.shortDescription" placeholder="Short description" />
                                                             </XFormField>
 
-                                                            <XFormField title="Summary">
+                                                            <XFormField optional={true} title="Summary" field="fields.input.summary">
                                                                 <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
                                                             </XFormField>
 
                                                             <XTitle>Details</XTitle>
 
-                                                            <XFormField title="Area range">
+                                                            <XFormField field="input.areaRange" optional={true} title="Area range">
                                                                 <XSelect field="input.areaRange" placeholder="Area range" options={[{ value: 'small', label: 'up to 10,000 ft²' }, { value: 'medium', label: '10,000 - 100,000 ft²' }, { value: 'large', label: '100,000 ft² +' }]} />
                                                             </XFormField>
 
-                                                            <XFormField title="Geographies">
+                                                            <XFormField field="input.geographies" optional={true} title="Geographies">
                                                                 <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
                                                             </XFormField>
-                                                            <XFormField title="Land Use">
+                                                            <XFormField field="input.landUse" optional={true} title="Land Use">
                                                                 <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
+                                                            <XFormField field="input.specialAttributes" optional={true} title="Special attributes">
                                                                 <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
                                                             </XFormField>
-                                                            <XFormField title="Unit Capacity">
+                                                            <XFormField field="input.unitCapacity" optional={true} title="Unit Capacity">
                                                                 <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
                                                             </XFormField>
                                                         </>
@@ -1382,73 +1341,74 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     {editArTarget && (
                                                         <XAvatarUpload field="input.photo" placeholder={{ add: 'Add listing photo', change: 'Change listing photo' }} />
                                                     )}
-                                                    <XFormField title="Name">
-                                                        <XInput field="input.name" required={true} placeholder="Name" />
+                                                    <XFormField title="Name" field="input.name">
+                                                        <XInput field="input.name" placeholder="Name" />
                                                     </XFormField>
                                                     {editDoTarget && (
                                                         <>
-                                                            <XFormField title="Full adress">
+                                                            <XFormField title="Full adress" field="input.location" >
                                                                 <XLocationPickerModal field="input.location" />
                                                             </XFormField>
                                                             <XHorizontal >
-                                                                <Field title="Area">
+                                                                <Field title="Area" field="input.area" optional={true}>
                                                                     <XInput field="input.area" placeholder="Area" />
                                                                 </Field>
-                                                                <Field title="Price">
+                                                                <Field title="Price" field="input.price" optional={true}>
                                                                     <XInput field="input.price" placeholder="Price" />
                                                                 </Field>
                                                             </XHorizontal>
-                                                            <XFormField title="Availability">
-                                                                <XInput field="input.availability" placeholder="Availability" />
+                                                            <XFormField field="input.availability" optional={true} title="Availability">
+                                                                <XInput placeholder="Availability" />
                                                             </XFormField>
-                                                            <XFormField title="Summary">
+                                                            <XFormField title="Summary" field="fields.input.summary" optional={true}>
                                                                 <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
                                                             </XFormField>
                                                             <XTitle>Details</XTitle>
-                                                            <XFormField title="Deal Type">
-                                                                <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
+                                                            <XFormField title="Deal Type" field="input.dealType" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Deal Type" />
                                                             </XFormField>
-                                                            <XFormField title="Shape And Form">
-                                                                <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
+                                                            <XFormField title="Shape And Form" field="input.shapeAndForm" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Shape And Form" />
                                                             </XFormField>
-                                                            <XFormField title="Current Use">
-                                                                <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
+                                                            <XFormField title="Current Use" field="input.currentUse" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Current Use" />
                                                             </XFormField>
-                                                            <XFormField title="Good Fit For">
-                                                                <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
+                                                            <XFormField title="Good Fit For" field="input.goodFitFor" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Good Fit For" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
-                                                                <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
+                                                            <XFormField title="Special attributes" field="input.specialAttributes" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Special attributes" />
                                                             </XFormField>
-                                                            <XTitle>Additional links</XTitle>
-                                                            {linksElements}
+                                                            <XFormField title="Additional links" field="input.additionalLinks" optional={true} showErrors={false}>
+                                                                {linksElements}
+                                                            </XFormField>
                                                         </>
 
                                                     )}
 
                                                     {editArTarget && (
                                                         <>
-                                                            <XFormField title="Short description">
-                                                                <XInput field="input.shortDescription" placeholder="Short description" />
+                                                            <XFormField field="input.shortDescription" optional={true} title="Short description">
+                                                                <XInput placeholder="Short description" />
                                                             </XFormField>
 
                                                             <XTitle>Details</XTitle>
 
-                                                            <XFormField title="Area range">
-                                                                <XSelect field="input.areaRange" options={[{ value: 'small', label: 'up to 10,000 ft²' }, { value: 'medium', label: '10,000 - 100,000 ft²' }, { value: 'large', label: '100,000 ft² +' }]} />
+                                                            <XFormField field="input.areaRange" optional={true} title="Area range">
+                                                                <XSelect options={[{ value: 'small', label: 'up to 10,000 ft²' }, { value: 'medium', label: '10,000 - 100,000 ft²' }, { value: 'large', label: '100,000 ft² +' }]} />
                                                             </XFormField>
 
-                                                            <XFormField title="Geographies">
-                                                                <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
+                                                            <XFormField field="input.geographies" optional={true} title="Geographies">
+                                                                <XSelect creatable={true} multi={true} placeholder="Geographies" />
                                                             </XFormField>
-                                                            <XFormField title="Land Use">
-                                                                <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
+                                                            <XFormField field="input.landUse" optional={true} title="Land Use">
+                                                                <XSelect creatable={true} multi={true} placeholder="Land Use" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
-                                                                <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
+                                                            <XFormField field="input.specialAttributes" optional={true} title="Special attributes">
+                                                                <XSelect creatable={true} multi={true} placeholder="Special attributes" />
                                                             </XFormField>
-                                                            <XFormField title="Unit Capacity">
-                                                                <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
+                                                            <XFormField field="input.unitCapacity" optional={true} title="Unit Capacity">
+                                                                <XSelect creatable={true} multi={true} placeholder="Unit Capacity" />
                                                             </XFormField>
                                                         </>
                                                     )}

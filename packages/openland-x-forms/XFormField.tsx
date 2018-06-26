@@ -42,6 +42,7 @@ export function XFormField(props: {
     description?: string,
     invalid?: boolean,
     optional?: boolean,
+    showErrors?: boolean,
     children: any,
 }) {
     if (props.field) {
@@ -61,7 +62,7 @@ export function XFormField(props: {
                                     {props.children}
                                 </XVertical>
                                 {!invalid && props.description && <XFormFieldDescription invalid={false}>{props.description}</XFormFieldDescription>}
-                                {invalid && <XFormFieldDescription invalid={true}>{errors.join(', ')}</XFormFieldDescription>}
+                                {invalid && props.showErrors !== false && <XFormFieldDescription invalid={true}>{errors.join(', ')}</XFormFieldDescription>}
                             </XFormFieldChildren>
                         </XFormFieldDiv>
                     );

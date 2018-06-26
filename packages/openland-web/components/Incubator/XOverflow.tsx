@@ -47,7 +47,7 @@ const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean }>((props) => ({
     zIndex: props.active ? 11 : undefined
 }));
 
-const XOverflowItem = Glamorous(XLink)({
+const XOverflowItem = Glamorous(XLink)<{ color?: string }>(props => ({
     display: 'flex',
     alignItems: 'center',
     height: 40,
@@ -55,12 +55,12 @@ const XOverflowItem = Glamorous(XLink)({
     fontWeight: 500,
     lineHeight: 1.33,
     letterSpacing: -0.2,
-    color: '#334562',
+    color: props.color || '#334562',
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 18,
     paddingRight: 18
-});
+}));
 
 const XOverflowContent = Glamorous.div({
     marginLeft: -10,
