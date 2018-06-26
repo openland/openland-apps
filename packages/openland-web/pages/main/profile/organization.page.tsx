@@ -1040,7 +1040,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 </div >
                             </XVerticalStyled>
                             <XHorizontalStyled paddingTop={20}>
-                                {!organization.isMine  && (
+                                {!organization.isMine && (
                                     <XButton
                                         style={organization!!.followed ? 'primary' : 'electric'}
                                         text={organization!!.followed ? 'Following' : 'Follow'}
@@ -1275,46 +1275,46 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         <XAvatarUpload field="input.photo" placeholder={{ add: 'Add listing photo', change: 'Change listing photo' }} />
                                                     )}
 
-                                                    <XFormField title="Name">
-                                                        <XInput field="input.name" required={true} placeholder="Name" />
+                                                    <XFormField title="Name" field="input.name" >
+                                                        <XInput field="input.name"  placeholder="Name" />
                                                     </XFormField>
                                                     {props.router.query.addListing === 'DO' && (
                                                         <>
-                                                            <XFormField title="Full adress">
+                                                            <XFormField field="input.location" optional={true} title="Full adress">
                                                                 <XLocationPickerModal field="input.location" />
                                                             </XFormField>
 
                                                             <XHorizontal>
-                                                                <Field title="Area">
+                                                                <Field field="input.area"  optional={true} title="Area">
                                                                     <XInput field="input.area" placeholder="Area" />
                                                                 </Field>
-                                                                <Field title="Price">
+                                                                <Field field="input.price"  optional={true} title="Price">
                                                                     <XInput field="input.price" placeholder="Price" />
                                                                 </Field>
                                                             </XHorizontal>
 
-                                                            <XFormField title="Availability">
+                                                            <XFormField field="input.availability" optional={true} title="Availability">
                                                                 <XInput field="input.availability" placeholder="Availability" />
                                                             </XFormField>
 
-                                                            <XFormField title="Summary">
+                                                            <XFormField optional={true} title="Summary" field="fields.input.summary" >
                                                                 <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
                                                             </XFormField>
 
                                                             <XTitle>Details</XTitle>
-                                                            <XFormField title="Deal Type">
+                                                            <XFormField field="input.dealType" optional={true} title="Deal Type">
                                                                 <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
                                                             </XFormField>
-                                                            <XFormField title="Shape And Form">
+                                                            <XFormField field="input.shapeAndForm" optional={true} title="Shape And Form">
                                                                 <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
                                                             </XFormField>
-                                                            <XFormField title="Current Use">
+                                                            <XFormField field="input.currentUse" optional={true} title="Current Use">
                                                                 <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
                                                             </XFormField>
-                                                            <XFormField title="Good Fit For">
+                                                            <XFormField field="input.goodFitFor" optional={true} title="Good Fit For">
                                                                 <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
+                                                            <XFormField field="input.specialAttributes" optional={true} title="Special attributes">
                                                                 <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
                                                             </XFormField>
                                                             <XTitle>Additional links</XTitle>
@@ -1323,30 +1323,30 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     )}
                                                     {props.router.query.addListing === 'AR' && (
                                                         <>
-                                                            <XFormField title="Short description">
+                                                            <XFormField field="input.shortDescription" optional={true} title="Short description">
                                                                 <XInput field="input.shortDescription" placeholder="Short description" />
                                                             </XFormField>
 
-                                                            <XFormField title="Summary">
+                                                            <XFormField optional={true} title="Summary" field="fields.input.summary">
                                                                 <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
                                                             </XFormField>
 
                                                             <XTitle>Details</XTitle>
 
-                                                            <XFormField title="Area range">
+                                                            <XFormField field="input.areaRange" optional={true} title="Area range">
                                                                 <XSelect field="input.areaRange" placeholder="Area range" options={[{ value: 'small', label: 'up to 10,000 ft²' }, { value: 'medium', label: '10,000 - 100,000 ft²' }, { value: 'large', label: '100,000 ft² +' }]} />
                                                             </XFormField>
 
-                                                            <XFormField title="Geographies">
+                                                            <XFormField field="input.geographies" optional={true} title="Geographies">
                                                                 <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
                                                             </XFormField>
-                                                            <XFormField title="Land Use">
+                                                            <XFormField field="input.landUse" optional={true} title="Land Use">
                                                                 <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
+                                                            <XFormField field="input.specialAttributes" optional={true} title="Special attributes">
                                                                 <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
                                                             </XFormField>
-                                                            <XFormField title="Unit Capacity">
+                                                            <XFormField field="input.unitCapacity" optional={true} title="Unit Capacity">
                                                                 <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
                                                             </XFormField>
                                                         </>
@@ -1382,73 +1382,74 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     {editArTarget && (
                                                         <XAvatarUpload field="input.photo" placeholder={{ add: 'Add listing photo', change: 'Change listing photo' }} />
                                                     )}
-                                                    <XFormField title="Name">
-                                                        <XInput field="input.name" required={true} placeholder="Name" />
+                                                    <XFormField title="Name" field="input.name">
+                                                        <XInput field="input.name" placeholder="Name" />
                                                     </XFormField>
                                                     {editDoTarget && (
                                                         <>
-                                                            <XFormField title="Full adress">
+                                                            <XFormField title="Full adress" field="input.location" >
                                                                 <XLocationPickerModal field="input.location" />
                                                             </XFormField>
                                                             <XHorizontal >
-                                                                <Field title="Area">
+                                                                <Field title="Area" field="input.area" optional={true}>
                                                                     <XInput field="input.area" placeholder="Area" />
                                                                 </Field>
-                                                                <Field title="Price">
+                                                                <Field title="Price" field="input.price" optional={true}>
                                                                     <XInput field="input.price" placeholder="Price" />
                                                                 </Field>
                                                             </XHorizontal>
-                                                            <XFormField title="Availability">
-                                                                <XInput field="input.availability" placeholder="Availability" />
+                                                            <XFormField field="input.availability" optional={true} title="Availability">
+                                                                <XInput placeholder="Availability" />
                                                             </XFormField>
-                                                            <XFormField title="Summary">
+                                                            <XFormField title="Summary" field="fields.input.summary" optional={true}>
                                                                 <XTextArea valueStoreKey="fields.input.summary" placeholder="Summary" />
                                                             </XFormField>
                                                             <XTitle>Details</XTitle>
-                                                            <XFormField title="Deal Type">
-                                                                <XSelect creatable={true} multi={true} field="input.dealType" placeholder="Deal Type" />
+                                                            <XFormField title="Deal Type" field="input.dealType" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Deal Type" />
                                                             </XFormField>
-                                                            <XFormField title="Shape And Form">
-                                                                <XSelect creatable={true} multi={true} field="input.shapeAndForm" placeholder="Shape And Form" />
+                                                            <XFormField title="Shape And Form" field="input.shapeAndForm" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Shape And Form" />
                                                             </XFormField>
-                                                            <XFormField title="Current Use">
-                                                                <XSelect creatable={true} multi={true} field="input.currentUse" placeholder="Current Use" />
+                                                            <XFormField title="Current Use" field="input.currentUse" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Current Use" />
                                                             </XFormField>
-                                                            <XFormField title="Good Fit For">
-                                                                <XSelect creatable={true} multi={true} field="input.goodFitFor" placeholder="Good Fit For" />
+                                                            <XFormField title="Good Fit For" field="input.goodFitFor" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Good Fit For" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
-                                                                <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
+                                                            <XFormField title="Special attributes" field="input.specialAttributes" optional={true}>
+                                                                <XSelect creatable={true} multi={true} placeholder="Special attributes" />
                                                             </XFormField>
-                                                            <XTitle>Additional links</XTitle>
-                                                            {linksElements}
+                                                            <XFormField title="Additional links" field="input.additionalLinks" optional={true} showErrors={false}>
+                                                                {linksElements}
+                                                            </XFormField>
                                                         </>
 
                                                     )}
 
                                                     {editArTarget && (
                                                         <>
-                                                            <XFormField title="Short description">
-                                                                <XInput field="input.shortDescription" placeholder="Short description" />
+                                                            <XFormField field="input.shortDescription" optional={true} title="Short description">
+                                                                <XInput placeholder="Short description" />
                                                             </XFormField>
 
                                                             <XTitle>Details</XTitle>
 
-                                                            <XFormField title="Area range">
-                                                                <XSelect field="input.areaRange" options={[{ value: 'small', label: 'up to 10,000 ft²' }, { value: 'medium', label: '10,000 - 100,000 ft²' }, { value: 'large', label: '100,000 ft² +' }]} />
+                                                            <XFormField field="input.areaRange" optional={true} title="Area range">
+                                                                <XSelect options={[{ value: 'small', label: 'up to 10,000 ft²' }, { value: 'medium', label: '10,000 - 100,000 ft²' }, { value: 'large', label: '100,000 ft² +' }]} />
                                                             </XFormField>
 
-                                                            <XFormField title="Geographies">
-                                                                <XSelect creatable={true} multi={true} field="input.geographies" placeholder="Geographies" />
+                                                            <XFormField field="input.geographies" optional={true} title="Geographies">
+                                                                <XSelect creatable={true} multi={true} placeholder="Geographies" />
                                                             </XFormField>
-                                                            <XFormField title="Land Use">
-                                                                <XSelect creatable={true} multi={true} field="input.landUse" placeholder="Land Use" />
+                                                            <XFormField field="input.landUse" optional={true} title="Land Use">
+                                                                <XSelect creatable={true} multi={true} placeholder="Land Use" />
                                                             </XFormField>
-                                                            <XFormField title="Special attributes">
-                                                                <XSelect creatable={true} multi={true} field="input.specialAttributes" placeholder="Special attributes" />
+                                                            <XFormField field="input.specialAttributes" optional={true} title="Special attributes">
+                                                                <XSelect creatable={true} multi={true} placeholder="Special attributes" />
                                                             </XFormField>
-                                                            <XFormField title="Unit Capacity">
-                                                                <XSelect creatable={true} multi={true} field="input.unitCapacity" placeholder="Unit Capacity" />
+                                                            <XFormField field="input.unitCapacity" optional={true} title="Unit Capacity">
+                                                                <XSelect creatable={true} multi={true} placeholder="Unit Capacity" />
                                                             </XFormField>
                                                         </>
                                                     )}
