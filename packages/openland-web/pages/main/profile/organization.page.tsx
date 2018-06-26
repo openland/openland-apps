@@ -489,14 +489,6 @@ const DevelopmentOportunityCard = Glamorous.div({
     backgroundColor: '#fff'
 });
 
-const StatusDot = Glamorous.div({
-    width: 6,
-    height: 6,
-    borderRadius: 50,
-    backgroundColor: '#50d25e',
-    marginRight: 6
-});
-
 const Lock = Glamorous(XIcon)({
     width: 14,
     height: 14,
