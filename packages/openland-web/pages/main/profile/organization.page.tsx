@@ -196,6 +196,7 @@ interface TextProps {
     opacity?: number;
     bold?: boolean;
     fontWeight?: any;
+    letterSpacing?: number;
     lineHeight?: number;
     upperCase?: boolean;
     marginBottom?: number;
@@ -211,7 +212,7 @@ const Text = Glamorous.div<TextProps>((props) => ({
     color: '#334562',
     opacity: props.opacity,
     fontWeight: props.fontWeight !== undefined ? props.fontWeight : props.bold ? 500 : undefined,
-    letterSpacing: props.bold ? -0.3 : undefined,
+    letterSpacing: props.letterSpacing !== undefined ? props.letterSpacing : props.bold ? -0.3 : undefined,
     textTransform: props.upperCase ? 'capitalize' : undefined,
     marginBottom: props.marginBottom,
     marginTop: props.marginTop
@@ -319,7 +320,7 @@ class AboutContent extends React.Component<{ text: string }, { open: boolean }> 
 
         return (
             <>
-                <Text>{textToShow}</Text>
+                <Text lineHeight={1.34} letterSpacing={-0.2}>{textToShow}</Text>
                 {isBigText && <ShowMoreBtn onClick={this.switcher} marginTop={12}>{buttonText}</ShowMoreBtn>}
             </>
         );
@@ -330,7 +331,27 @@ const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number }>((props) =>
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    marginBottom: props.marginBottom
+    marginBottom: props.marginBottom,
+    '&:first-child': {
+        '& > div': {
+            '&:first-child': {
+                paddingTop: 24
+            },
+            '&:last-child': {
+                paddingTop: 16
+            }
+        }
+    },
+    '&:last-child': {
+        '& > div': {
+            '&:first-child': {
+                paddingBottom: 24
+            },
+            '&:last-child': {
+                paddingBottom: 16
+            }
+        }
+    },
 }));
 
 interface OpportunitiesTextWrapperProps {
@@ -342,7 +363,7 @@ interface OpportunitiesTextWrapperProps {
 }
 
 const OpportunitiesTextWrapper = Glamorous.div<OpportunitiesTextWrapperProps>((props) => ({
-    width: props.width ? props.width : 227,
+    width: props.width ? props.width : 226,
     height: '100%',
     flexShrink: 0,
     display: 'flex',
@@ -350,8 +371,8 @@ const OpportunitiesTextWrapper = Glamorous.div<OpportunitiesTextWrapperProps>((p
     alignSelf: 'flex-start',
     paddingLeft: props.paddingLeft,
     paddingRight: props.paddingRight,
-    paddingTop: props.paddingTop !== undefined ? props.paddingTop : 12,
-    paddingBottom: props.paddingBottom !== undefined ? props.paddingBottom : 12
+    paddingTop: props.paddingTop !== undefined ? props.paddingTop : 10,
+    paddingBottom: props.paddingBottom !== undefined ? props.paddingBottom : undefined
 }));
 
 const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean }>((props) => ({
@@ -359,12 +380,12 @@ const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean }>((props) 
     alignItems: 'center',
     flexWrap: 'wrap',
     flexGrow: 1,
-    padding: '0 24px',
+    padding: '0 25px',
     borderLeft: props.bordered ? '1px solid rgba(220, 222, 228, 0.45)' : undefined
 }));
 
 const OpportunitiesValue = Glamorous.div({
-    height: 32,
+    height: 30,
     borderRadius: 4,
     backgroundColor: '#edf3fe',
     whiteSpace: 'nowrap',
@@ -375,9 +396,9 @@ const OpportunitiesValue = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     padding: '8px 9px',
-    marginRight: 11,
-    marginTop: 8,
-    marginBottom: 8,
+    marginRight: 8,
+    marginTop: 4,
+    marginBottom: 4,
 });
 
 interface DevelopmentOportunityProps {
@@ -440,10 +461,11 @@ interface TagRowProps {
     paddingLeft?: number;
     titlePaddingTop?: number;
     titlePaddingBottom?: number;
+    marginBottom?: number;
 }
 
 const TagRow = (props: TagRowProps) => (
-    <OpportunitiesWrapper marginBottom={props.isTextStyle ? 10 : undefined}>
+    <OpportunitiesWrapper marginBottom={props.marginBottom}>
         <OpportunitiesTextWrapper width={props.titleWidth} paddingLeft={props.paddingLeft} paddingTop={props.titlePaddingTop} paddingBottom={props.titlePaddingBottom}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
@@ -537,20 +559,20 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
             <XVerticalStyled marginTop={10}>
                 <div>
                     {item.area && (
-                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitileArea} titleWidth={150}>
-                            <Text marginTop={3} fontWeight={600}>{`${item.area} ft²`}</Text>
+                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitileArea} titleWidth={150} marginBottom={10}>
+                            <Text marginTop={5} fontWeight={600}>{`${item.area} ft²`}</Text>
                         </TagRow>
                     )}
                     {item.price && (
-                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitilePrice} titleWidth={150} isTextStyle={true}>
-                            <Text marginTop={3} fontWeight={600}>{`$${item.price}`}</Text>
+                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitilePrice} titleWidth={150} marginBottom={18}>
+                            <Text marginTop={5} fontWeight={600}>{`$${item.price}`}</Text>
                         </TagRow>
                     )}
                     {item.summary && (
-                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitileSummary} text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} />
+                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitileSummary} text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} marginBottom={14} />
                     )}
                     {item.availability && (
-                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitileAvailability} text={item.availability} titleWidth={150} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} />
+                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitileAvailability} text={item.availability} titleWidth={150} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} marginBottom={14} />
                     )}
                     {item.dealType && (
                         <TagRowMap title={TextOrganizationProfile.listingDoTagRowTitileDealType} items={item.dealType} titleWidth={150} />
@@ -588,7 +610,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
 
         return (
             <DevelopmentOportunityCard border={this.props.isSoloComponent}>
-                <XHorizontalStyled justifyContent="space-between" separator={12} padding={24}>
+                <XHorizontalStyled justifyContent="space-between" separator={12} padding={24} paddingBottom={full ? 0 : 24}>
                     {item.location && (
                         <XStreetViewModal
                             location={{ latitude: item.location!.lat, longitude: item.location!.lon }}
@@ -685,7 +707,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
             <XVerticalStyled marginTop={14}>
                 <div>
                     {item.summary && (
-                        <TagRow title={TextOrganizationProfile.listingArTagRowSummary} text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} />
+                        <TagRow title={TextOrganizationProfile.listingArTagRowSummary} text={item.summary} titleWidth={150} isTextStyle={true} titlePaddingTop={0} marginBottom={14} />
                     )}
                     {item.areaRange && (
                         <TagRow title={TextOrganizationProfile.listingArTagRowAreaRange} text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} titleWidth={150} isTagStyle={true} />
@@ -1422,7 +1444,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     <XVertical width={270} flexShrink={0}>
                                         {organization.about && (
                                             <XCardStyled padding={18}>
-                                                <Title small={true} marginBottom={10}>
+                                                <Title small={true} marginBottom={12}>
                                                     About
                                         </Title>
                                                 <AboutContent text={organization.about} />
