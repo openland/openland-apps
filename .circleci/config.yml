@@ -13,7 +13,8 @@ jobs:
             - node-modules-{{ .Branch }}
       - run: yarn install
       - run: yarn test
-      - run: yarn build
+      - run: docker build -f Dockerfile.runner .
+      - run: docker bui
       - save_cache:
           key: node-modules-{{ .Branch }}
           paths:
