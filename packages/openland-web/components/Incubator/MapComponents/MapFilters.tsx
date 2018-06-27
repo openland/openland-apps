@@ -395,7 +395,6 @@ class AreaFiltersContent extends React.Component<XWithRouter> {
 
     onChange = (area: any) => {
         this.area = area;
-        console.warn(area);
         (ApplyFilterWrap.newQueryParams as any).area = area === undefined ? area : JSON.stringify(this.area);
     }
 

@@ -56,7 +56,6 @@ class ContactPersonItem extends React.Component<{ contact: ContactPerson, index:
 }
 
 const clearContact = (c: ContactPerson): ContactPerson => {
-    console.warn(c);
 
     return {
         name: c.name,
