@@ -19,21 +19,21 @@ jobs:
           key: v1-npm-deps-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
-      - persist_to_workspace:
-          root: /tmp
-          paths: 
-            - sources
   test:
     <<: *defaults
     steps:
-     - attach_workspace:
-          at: /tmp/
-     - run: yarn test
+      - restore_cache:
+          keys:
+            - v1-npm-deps-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - run: yarn test
   bundle:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: /tmp/
+      - restore_cache:
+          keys:
+            - v1-npm-deps-{{ checksum "yarn.lock" }}
+      - run: yarn install
       - run: yarn bundle
       - persist_to_workspace:
           root: /tmp
@@ -44,6 +44,9 @@ jobs:
   publish_cdn:
     <<: *defaults
     steps:
+      - restore_cache:
+          keys:
+            - v1-npm-deps-{{ checksum "yarn.lock" }}
       - attach_workspace:
           at: /tmp/
       - run: source ./scripts/deploy_prepare.sh && ./scripts/deploy_cdn_app.sh
