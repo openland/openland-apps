@@ -29,19 +29,23 @@ jobs:
      - attach_workspace:
           at: /tmp/
      - run: yarn test
-#   bundle:
-#     <<: *defaults
-#     steps:
-#      - run: yarn bundle
-#      - persist_to_workspace:
-#           root: /build
-#           paths: 
-#             - sources
-#   publish_cdn:
-#     <<: *defaults
-#     steps:
-#       - run: source ./scripts/deploy_prepare.sh
-#       - run: ./scripts/deploy_cdn_app.sh
+  bundle:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/
+      - run: yarn bundle
+      - persist_to_workspace:
+          root: /build
+          paths: 
+            - sources
+  publish_cdn:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/
+      - run: source ./scripts/deploy_prepare.sh
+      - run: ./scripts/deploy_cdn_app.sh
 #   publish_docker:
 #     <<: *defaults
 #     steps:
@@ -60,3 +64,10 @@ workflows:
       - test:
           requires: 
             - prepare
+      - bundle:
+          requires: 
+            - prepare
+      - publish_cdn:
+          requires: 
+            - bundle
+            - test

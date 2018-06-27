@@ -164,7 +164,7 @@
 		"jest": "node ./node_modules/jest/bin/jest.js",
 		"jest:watch": "node ./node_modules/jest/bin/jest.js --watchAll",
 		"test": "yarn lint && yarn jest && yarn test:ts",
-		"test:ts": "NODE_ENV=production ./node_modules/.bin/tsc --noemit",
+		"test:ts": "NODE_ENV=production ./node_modules/.bin/tsc -p tsconfig.json --noemit",
 
 		"bundle:app": "NODE_ENV=production next build ./packages/openland-web",
 		"bundle:server": "NODE_ENV=production ./node_modules/.bin/tsc -p tsconfig.server.json",
