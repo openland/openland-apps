@@ -1021,8 +1021,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         target={<XButton style="primary" text={TextOrganizationProfile.headerButtonAddListing} />}
                                         content={
                                             <>
-                                                <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>text={TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
-                                                <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>text={TextOrganizationProfile.headerButtonAddListingAR}</XOverflow.Item>
+                                                <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>{TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
+                                                <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>{TextOrganizationProfile.headerButtonAddListingAR}</XOverflow.Item>
                                             </>
                                         }
                                     />
