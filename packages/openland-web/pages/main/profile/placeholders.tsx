@@ -24,8 +24,8 @@ import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 
 const Placeholder = Glamorous(XCard)<{ accent?: boolean }>(props => ({
     backgroundColor: props.accent ? '#654bfa' : '#fff',
-    padding: 33,
-    minHeight: 171,
+    padding: 32,
+    minHeight: 165,
     flex: 1,
     justifyContent: 'center',
     position: 'relative',
@@ -602,7 +602,7 @@ export const AboutPlaceholder = withMyOrganizationProfile((props) => {
             target={(
                 <div style={{ cursor: 'pointer' }}>
                     <XCardStyled padding={18}>
-                        <XHorizontal>
+                        <XHorizontal alignItems="center">
                             <PlaceholderAbout /> <Text marginWidth={18}>Add an intro paragraph</Text>
                         </XHorizontal>
                     </XCardStyled>
@@ -644,7 +644,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
             }}
             target={(
                 <div style={{ cursor: 'pointer' }}>
-                    <XHorizontal>
+                    <XHorizontal alignItems="center">
                         <PlaceholderSocial /> <Text marginWidth={18}>Add social links</Text>
                     </XHorizontal>
                 </div>
@@ -694,7 +694,7 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
             }}
             target={(
                 <div style={{ cursor: 'pointer' }}>
-                    <XHorizontal>
+                    <XHorizontal alignItems="center">
                         <PlaceholderContact /> <Text marginWidth={18}>Add contacts</Text>
                     </XHorizontal>
                 </div>
@@ -759,12 +759,13 @@ const LogoPlaceholder = Glamorous(XVertical)({
     textAlign: 'center',
     border: 'solid 0.8px rgba(0, 0, 0, 0.07)',
     borderRadius: 8,
+    marginTop: -20
 });
 
 const PlaceholderAvatarText = Glamorous.span({
     ...XStyles.text.h400,
     color: 'rgba(51, 69, 98, 0.5)',
-    letterSpacing: 0.4
+    letterSpacing: '-0.5px'
 });
 
 const LogoPlaceholderIcon = Glamorous(XIcon)({

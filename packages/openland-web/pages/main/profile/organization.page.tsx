@@ -39,6 +39,7 @@ import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 
 const Root = Glamorous(XVertical)({
+    minHeight: '100%',
     backgroundColor: '#f9fafb',
     paddingBottom: 80
 });
@@ -1356,21 +1357,23 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     {props.router.path === lsitingsPath && (
                                         <>
                                             <DOARListingPlaceholder />
-                                            <ListingsWrap separator="none">
-                                                <XVerticalStyled flexGrow={1} padding={0} paddingLeft={24} paddingRight={24} paddingTop={6}>
-                                                    <SwitcherWrapper flatStyle={true} height={58}>
-                                                        <Switcher query={{ field: 'listingType' }}>{TextOrganizationProfile.listingsDoTabTitle}</Switcher>
-                                                        <Switcher query={{ field: 'listingType', value: 'ar' }}>{TextOrganizationProfile.listingsArTabTitle}</Switcher>
+                                            {((organization.developmentOportunities || []).length > 0 || (organization.acquisitionRequests || []).length > 0) && (
+                                                <ListingsWrap separator="none">
+                                                    <XVerticalStyled flexGrow={1} padding={0} paddingLeft={24} paddingRight={24} paddingTop={6}>
+                                                        <SwitcherWrapper flatStyle={true} height={58}>
+                                                            {(organization.developmentOportunities || []).length > 0 && <Switcher query={{ field: 'listingType' }}>{TextOrganizationProfile.listingsDoTabTitle}</Switcher>}
+                                                            {(organization.acquisitionRequests || []).length > 0 && <Switcher query={{ field: 'listingType', value: 'ar' }}>{TextOrganizationProfile.listingsArTabTitle}</Switcher>}
 
-                                                    </SwitcherWrapper>
-                                                </XVerticalStyled>
-                                                {props.router.path === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
-                                                    organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
-                                                )}
-                                                {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
-                                                )}
-                                            </ListingsWrap>
+                                                        </SwitcherWrapper>
+                                                    </XVerticalStyled>
+                                                    {props.router.path === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
+                                                        organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                    )}
+                                                    {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
+                                                        organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
+                                                    )}
+                                                </ListingsWrap>
+                                            )}
                                         </>
                                     )}
 
@@ -1492,8 +1495,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             {!((organization.contacts || []).length || organization.website || organization.facebook || organization.twitter) && (
                                                 <XCardStyled padding={18}>
                                                     <XVertical>
-                                                        {!(organization.website || organization.facebook || organization.twitter) && <SocialPlaceholder />}
                                                         {!(organization.contacts || []).length && <ContactPlaceholder />}
+                                                        {!(organization.website || organization.facebook || organization.twitter) && <SocialPlaceholder />}
                                                     </XVertical>
                                                 </XCardStyled>
                                             )}
