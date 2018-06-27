@@ -37,7 +37,7 @@ const config = {
         // Ask babel to handle typescript files
         // Modules are not loading by default since root folder is out of scope
         let tsLoader = defaultLoaders.babel;
-        if (!isServer) {
+        if (!isServer && !dev) {
             tsLoader = [{
                     loader: 'cache-loader',
                     options: {
