@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { findChild } from './utils';
-// import { XScrollView } from './X/XScrollView';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XPicture } from 'openland-x/XPicture';
 import { XIcon } from 'openland-x/XIcon';
@@ -266,7 +265,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
 
                             {this.props.organizationId && (
                                 <>
-                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginLeft: -18, marginRight: -18}} />
+                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginLeft: -18, marginRight: -18 }} />
 
                                     <ProfileTitleContainer separator="none">
                                         <XAvatar cloudImageUuid={this.props.logo || undefined} style="square" />
@@ -293,8 +292,13 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
 
 let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
     <XVertical>
-        <UserPopper picture={props.user!!.picture} name={props.user!!.name} logo={props.organization ? props.organization.photo : undefined} organizationName={props.organization ? props.organization.name : undefined} organizationId={props.organization ? props.organization.id : undefined} />
-
+        <UserPopper
+            picture={props.user!!.picture}
+            name={props.user!!.name}
+            logo={props.organization ? props.organization.photo : undefined}
+            organizationName={props.organization ? props.organization.name : undefined}
+            organizationId={props.organization ? props.organization.id : undefined}
+        />
     </XVertical>
 ));
 
@@ -581,27 +585,54 @@ const AddListingContainer = Glamorous(XVertical)({
     padding: 8
 });
 
-const AddListing = withUserInfo((props) => {
-    return (
-        <XPopper
-            marginTop={80}
-            placement="right"
-            showOnHover={true}
-            groupId="scaffold_tooltip"
-            content={(
-                <AddListingContainer separator={11}  >
-                    <MenuTitle >{TextAppBar.items.addListing}</MenuTitle>
-                    <MenuItem path={'/o/' + props.organization!!.id + '?addListing=DO'}>Development opportunity</MenuItem>
-                    <MenuItem path={'/o/' + props.organization!!.id + '?addListing=AR'}>Aquisition request</MenuItem>
-                </AddListingContainer>
-            )}
-        >
-            <NavigatorItem>
-                <NavigatorIcon icon="add" />
-            </NavigatorItem>
-        </XPopper>
-    );
-});
+class AddListingPopper extends React.Component<{ organizationId: string }, { show?: boolean }> {
+    constructor(props: { organizationId: string }) {
+        super(props);
+
+        this.state = {
+            show: false
+        };
+    }
+
+    switch = () => {
+        this.setState({
+            show: !this.state.show
+        });
+    }
+
+    closer = () => {
+        this.setState({
+            show: false
+        });
+    }
+
+    render() {
+        return (
+            <XPopper
+                placement="right"
+                showOnHoverContent={false}
+                onClickOutside={this.closer}
+                show={this.state.show}
+                marginTop={80}
+                content={(
+                    <AddListingContainer separator={11}>
+                        <MenuTitle >{TextAppBar.items.addListing}</MenuTitle>
+                        <MenuItem path={'/o/' + this.props.organizationId + '?addListing=DO'}>Development opportunity</MenuItem>
+                        <MenuItem path={'/o/' + this.props.organizationId + '?addListing=AR'}>Aquisition request</MenuItem>
+                    </AddListingContainer>
+                )}
+            >
+                <NavigatorItem onClick={this.switch}>
+                    <NavigatorIcon icon="add" />
+                </NavigatorItem>
+            </XPopper>
+        );
+    }
+}
+
+const AddListing = withUserInfo((props) => (
+    <AddListingPopper organizationId={props.organization!!.id} />
+));
 
 const OrganizationPicker = withMyOrganizations((props) => {
     if (props.data.loading) {
