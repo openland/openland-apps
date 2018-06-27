@@ -37,8 +37,23 @@ jobs:
             export BUILD_ID_8=$(($CIRCLE_PREVIOUS_BUILD_NUM-8)) && 
             export BUILD_ID_9=$(($CIRCLE_PREVIOUS_BUILD_NUM-9)) && 
             echo $BUILD_ID_1 $BUILD_ID_2 $BUILD_ID_3 $BUILD_ID_4 $BUILD_ID_5 $BUILD_ID_6 $BUILD_ID_7 $BUILD_ID_8 $BUILD_ID_9
+      - restore_cache:
+          keys:
+            - v1-babel-cache-{{ .Environment.BUILD_ID_1 }}
+            - v1-babel-cache-{{ .Environment.BUILD_ID_2 }}
+            - v1-babel-cache-{{ .Environment.BUILD_ID_3 }}
+            - v1-babel-cache-{{ .Environment.BUILD_ID_4 }}
+            - v1-babel-cache-{{ .Environment.BUILD_ID_5 }}
+            - v1-babel-cache-{{ .Environment.BUILD_ID_6 }}
+            - v1-babel-cache-{{ .Environment.BUILD_ID_7 }}
+            - v1-babel-cache-{{ .Environment.BUILD_ID_8 }}
+            - v1-babel-cache-{{ .Environment.BUILD_ID_9 }}
       - run: yarn bundle
       - run: yarn install --production
+      - save_cache:
+          key: v1-babel-cache-{{ .Environment.CIRCLE_PREVIOUS_BUILD_NUM }}
+          paths:
+            - "node_modules/.cache"
       - persist_to_workspace:
           root: /tmp
           paths: 
