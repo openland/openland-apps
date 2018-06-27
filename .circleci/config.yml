@@ -87,7 +87,8 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/
-      - run: source ./scripts/deploy_prepare.sh && ./scripts/deploy_staging_ci.sh
+      - run: ./scripts/deploy_prepare.sh
+      - run: ./scripts/deploy_staging_ci.sh
       
 workflows:
   version: 2
