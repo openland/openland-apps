@@ -532,7 +532,7 @@ const ListingTitleWrapper = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    maxWidth: 'calc(100% - 60px)'
+    maxWidth: 'calc(100% - 48px)'
 });
 
 const ListingTitle = Glamorous.div({
@@ -629,7 +629,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                 </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
-                                        marginRight={60}
+                                        marginRight={item.location ? 100 : 60}
                                         placement="bottom"
                                         content={(
                                             <>
@@ -645,22 +645,21 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                             </XHorizontalStyled>
                             {this.props.showType && <Text opacity={0.5}>{TextOrganizationProfile.listingDoTagRowTitileDealType}</Text>}
                             {item.locationTitle && <Text opacity={0.5} bold={true}>{item.locationTitle}</Text>}
+                            {(!full && !item.location) && <Text opacity={0.5} marginTop={5} bold={true}><Lock icon="locked" />{TextOrganizationProfile.listingDoLocked}</Text>}
                             {(item.area || item.price) && (
                                 <XHorizontal separator="large" flexGrow={full ? 1 : undefined} alignItems={full ? 'flex-end' : undefined}>
                                     {!full && (
                                         <>
                                             {item.area && (
-                                                <Text marginTop={5} fontWeight={600}>{`Area: ${item.area} ft²`}</Text>
+                                                <Text marginTop={10} bold={true} opacity={0.7} lineHeight={1.53}>{`Area: ${item.area} ft²`}</Text>
                                             )}
                                             {item.price && (
-                                                <Text marginTop={5} fontWeight={600}>{`Price: $${item.price}`}</Text>
+                                                <Text marginTop={10} bold={true} opacity={0.7} lineHeight={1.53}>{`Price: $${item.price}`}</Text>
                                             )}
                                         </>
                                     )}
                                 </XHorizontal>
                             )}
-
-                            {(!full && !item.location) && <Text opacity={0.5} marginTop={5} bold={true}><Lock icon="locked" />{TextOrganizationProfile.listingDoLocked}</Text>}
 
                             {full && FullContent}
                         </div>
@@ -760,9 +759,9 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                             </XHorizontalStyled>
                             {this.props.showType && <Text opacity={0.5}>{TextOrganizationProfile.listingArType}</Text>}
                             <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>
-                            {(!full && item.areaRange) && <Text opacity={0.5} bold={true} marginTop={3}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
+                            {(!full && item.areaRange) && <Text opacity={0.7} bold={true} marginTop={10} lineHeight={1.53}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
 
-                            {(!full && !item.areaRange) && <Text opacity={0.5} marginTop={8}> <Lock icon="locked" />{TextOrganizationProfile.listingArLocked}</Text>}
+                            {(!full && !item.areaRange) && <Text opacity={0.5} bold={true} marginTop={10}> <Lock icon="locked" />{TextOrganizationProfile.listingArLocked}</Text>}
 
                             {full && FullContent}
                         </div>

@@ -67,6 +67,7 @@ const Placeholder = Glamorous.div<{ hasImage: boolean }>((props) => ({
     zIndex: 1,
     '&:hover': {
         color: props.hasImage ? '#fff' : '#dcdee4',
+        backgroundColor: 'rgba(0, 0, 0, 0.47)'
     }
 }));
 
