@@ -156,10 +156,10 @@ export interface XLocationPickerBaiscProps {
     headerText?: string;
     confirmText?: string;
     clearText?: string;
-    callToActionText?: string;
     target?: any;
     targetQuery?: string;
     value?: XMapGeocoderResult;
+    placeholder?: string;
 }
 
 class XLocationPickerModalBasic extends React.Component<XLocationPickerBaiscProps, { value?: XMapGeocoderResult, picked?: XMapGeocoderResult }> {
@@ -197,7 +197,7 @@ class XLocationPickerModalBasic extends React.Component<XLocationPickerBaiscProp
     }
 
     render() {
-        let target = <XInput placeholder={(this.props.callToActionText || 'Adress')} value={this.state.picked ? (this.state.picked.result.place_name || this.state.picked.result.text) : ''} />;
+        let target = <XInput placeholder={(this.props.placeholder || 'Adress')} value={this.state.picked ? (this.state.picked.result.place_name || this.state.picked.result.text) : ''} />;
         return (
             <XModal
                 targetQuery="pick"
@@ -249,7 +249,7 @@ export interface XLocationPickerProps extends XLocationPickerBaiscProps {
 
 export class XLocationPickerModal extends React.PureComponent<XLocationPickerProps> {
     render() {
-        let { valueStoreKey, field, ...other } = this.props;
+        let { valueStoreKey, field, placeholder, ...other } = this.props;
         if (valueStoreKey || field) {
             let valueStoreKeyCached = valueStoreKey;
             let fieldCached = field;
@@ -265,6 +265,7 @@ export class XLocationPickerModal extends React.PureComponent<XLocationPickerPro
                                 valueStoreKey={valueStoreKeyCached}
                                 field={fieldCached}
                                 store={store}
+                                placeholder={this.props.placeholder}
                             />
                         );
                     }}
