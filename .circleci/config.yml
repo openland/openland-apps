@@ -27,15 +27,15 @@ jobs:
             - v1-npm-deps-{{ checksum "yarn.lock" }}
       - run: yarn install
       - run: >
-            export BUILD_ID_1=expr $CIRCLE_PREVIOUS_BUILD_NUM - 1
-            export BUILD_ID_2=expr $CIRCLE_PREVIOUS_BUILD_NUM - 2
-            export BUILD_ID_3=expr $CIRCLE_PREVIOUS_BUILD_NUM - 3
-            export BUILD_ID_4=expr $CIRCLE_PREVIOUS_BUILD_NUM - 4
-            export BUILD_ID_5=expr $CIRCLE_PREVIOUS_BUILD_NUM - 5
-            export BUILD_ID_6=expr $CIRCLE_PREVIOUS_BUILD_NUM - 6
-            export BUILD_ID_7=expr $CIRCLE_PREVIOUS_BUILD_NUM - 7
-            export BUILD_ID_8=expr $CIRCLE_PREVIOUS_BUILD_NUM - 8
-            export BUILD_ID_9=expr $CIRCLE_PREVIOUS_BUILD_NUM - 9
+            export BUILD_ID_1=$(($CIRCLE_PREVIOUS_BUILD_NUM-1)) && 
+            export BUILD_ID_2=$(($CIRCLE_PREVIOUS_BUILD_NUM-2)) && 
+            export BUILD_ID_3=$(($CIRCLE_PREVIOUS_BUILD_NUM-3)) && 
+            export BUILD_ID_4=$(($CIRCLE_PREVIOUS_BUILD_NUM-4)) && 
+            export BUILD_ID_5=$(($CIRCLE_PREVIOUS_BUILD_NUM-5)) && 
+            export BUILD_ID_6=$(($CIRCLE_PREVIOUS_BUILD_NUM-6)) && 
+            export BUILD_ID_7=$(($CIRCLE_PREVIOUS_BUILD_NUM-7)) && 
+            export BUILD_ID_8=$(($CIRCLE_PREVIOUS_BUILD_NUM-8)) && 
+            export BUILD_ID_9=$(($CIRCLE_PREVIOUS_BUILD_NUM-9)) && 
             echo $BUILD_ID_1 $BUILD_ID_2 $BUILD_ID_3 $BUILD_ID_4 $BUILD_ID_5 $BUILD_ID_6 $BUILD_ID_7 $BUILD_ID_8 $BUILD_ID_9
       - run: yarn bundle
       - run: yarn install --production
