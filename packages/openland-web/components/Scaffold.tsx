@@ -23,7 +23,6 @@ import { switchOrganization } from '../utils/switchOrganization';
 import { withMyOrganizations } from '../api/withMyOrganizations';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XMenuVertical, XMenuItem } from './Incubator/XOverflow';
 
