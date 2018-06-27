@@ -85,6 +85,8 @@ jobs:
   deploy:
     <<: *defaults
     steps:
+      - attach_workspace:
+          at: /tmp/
       - run: source ./scripts/deploy_prepare.sh && ./scripts/deploy_staging_ci.sh
       
 workflows:
