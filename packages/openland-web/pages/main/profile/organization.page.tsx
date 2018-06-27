@@ -179,7 +179,7 @@ const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft
     fontWeight: 500,
     lineHeight: props.small ? 1.33 : 1.11,
     color: '#334562',
-    letterSpacing: props.small ? -0.1 : -0.4,
+    letterSpacing: props.small ? -0.5 : -0.4,
     marginBottom: props.marginBottom,
     marginLeft: props.marginLeft,
     marginRight: props.marginRight
@@ -1463,7 +1463,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 {props.router.path === rootPath && (
                                     <XVertical width={270} flexShrink={0}>
                                         {organization.about && (
-                                            <XCardStyled padding={18}>
+                                            <XCardStyled padding={18} paddingBottom={24} paddingTop={16}>
                                                 <Title small={true} marginBottom={12}>
                                                     {TextOrganizationProfile.additionalInfoAbout}
                                                 </Title>
@@ -1477,7 +1477,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </XWithRole>
 
                                         {((organization.contacts || []).length || organization.website || organization.facebook || organization.twitter) && (
-                                            <XCardStyled padding={0} paddingTop={18} paddingBottom={20}>
+                                            <XCardStyled padding={0} paddingTop={16} paddingBottom={20}>
                                                 <Title small={true} marginBottom={10} marginLeft={18}>{TextOrganizationProfile.additionalInfoContacts}</Title>
                                                 <ContactPersons contacts={organization.contacts!!.filter(c => c !== null) as any} />
                                                 <SocialLinksWrapper>
