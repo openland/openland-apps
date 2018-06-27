@@ -36,7 +36,7 @@ jobs:
           at: /tmp/
       - run: yarn bundle
       - persist_to_workspace:
-          root: /build
+          root: /tmp
           paths: 
             - sources
   publish_cdn:
@@ -46,15 +46,17 @@ jobs:
           at: /tmp/
       - run: source ./scripts/deploy_prepare.sh
       - run: ./scripts/deploy_cdn_app.sh
-#   publish_docker:
-#     <<: *defaults
-#     steps:
-#       - setup_remote_docker:
-#           docker_layer_caching: true
-#       - run: yarn install --production
-#       - run: docker build -f Dockerfile.runner -t openland/web:test-$CIRCLE_BRANCH .
-#       - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-#       - run: docker push openland/web:test-$CIRCLE_BRANCH
+  publish_docker:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: yarn install --production
+      - run: docker build -f Dockerfile.runner -t openland/web:test-$CIRCLE_BRANCH .
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - run: docker push openland/web:test-$CIRCLE_BRANCH
 
 workflows:
   version: 2
