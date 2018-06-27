@@ -119,5 +119,9 @@ process.on('SIGTERM', function () {
     console.warn('Exiting: received SIGTERM');
     process.exit();
 });
+process.on('SIGKILL', function () {
+    console.warn('Exiting: received SIGKILL');
+    process.exit();
+});
 
 start();
