@@ -1005,7 +1005,6 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         style={organization!!.followed ? 'primary' : 'electric'}
                                         text={organization!!.followed ? TextOrganizationProfile.headerButtonFollowUnFollow : TextOrganizationProfile.headerButtonFollowFollow}
                                         action={async () => {
-                                            console.warn(organization!!.followed);
                                             await props.followOrganization({ variables: { follow: !organization!!.followed } });
                                         }}
                                     />

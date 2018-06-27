@@ -162,7 +162,6 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             let {
                 href, path, query, autoClose, activateForSubpaths, active, enabled, onClick, ...other
             } = this.props as any;
-            console.warn(this.props.onClick);
             return (
                 <Wrapped
                     href={linkHref}
