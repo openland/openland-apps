@@ -95,15 +95,17 @@ const config = {
         // }
 
         // New Uglify
-        config.plugins.push(new NewUglify({
-            parallel: true,
-            sourceMap: false,
-            uglifyOptions: {
-                mangle: {
-                    safari10: true
+        if (!isServer && !dev) {
+            config.plugins.push(new NewUglify({
+                parallel: true,
+                sourceMap: false,
+                uglifyOptions: {
+                    mangle: {
+                        safari10: true
+                    }
                 }
-            }
-        }));
+            }));
+        }
 
         // Hard Source
         // Not working for client
