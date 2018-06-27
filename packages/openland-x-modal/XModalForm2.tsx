@@ -34,10 +34,13 @@ const Footer = glamorous(XModalFooter)({
 const BodyPadding = glamorous.div({
     paddingLeft: 24,
     paddingRight: 24,
-
+    paddingTop: 18,
+    paddingBottom: 24,
 });
 
 const ModalBodyContainer = glamorous(XModalBodyContainer)({
+    paddingTop: 0,
+    paddingBottom: 0,
     maxHeight: '70vh',
     overflowY: 'scroll',
     marginBottom: 0,
@@ -47,19 +50,21 @@ const ModalBodyContainer = glamorous(XModalBodyContainer)({
 export class XModalForm extends React.Component<XModalFormProps> {
     render() {
         let { defaultData, staticData, defaultAction, defaultLayout, submitProps, ...other } = this.props;
-        let body = this.props.children;
+        let body = (
+            <BodyPadding>
+                {this.props.children}
+            </BodyPadding>
+        );
         if (this.props.scrollableContent) {
             body = (
                 <ModalBodyContainer >
-                    <BodyPadding>
-                        {body}
-                    </BodyPadding>
+                    {body}
                 </ModalBodyContainer>
 
             );
         }
         return (
-            <XModal {...other} customContent={true} scrollableContent={this.props.scrollableContent}>
+            <XModal {...other} customContent={true} scrollableContent={this.props.scrollableContent} >
                 {this.props.title && <XModalHeader>{this.props.title}</XModalHeader>}
                 {!this.props.title && <XModalHeaderEmpty />}
                 <XForm defaultData={defaultData} staticData={staticData} defaultAction={defaultAction} autoClose={true}>
