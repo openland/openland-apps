@@ -49,7 +49,7 @@ jobs:
             - v1-npm-deps-{{ checksum "yarn.lock" }}
       - attach_workspace:
           at: /tmp/
-      - run: source ./scripts/deploy_prepare.sh && ./scripts/deploy_cdn_app.sh
+      - run: source ./scripts/deploy_prepare.sh && ./scripts/deploy_cdn_app_ci.sh
   publish_docker:
     <<: *defaults
     steps:
