@@ -97,6 +97,7 @@ const config = {
         // New Uglify
         if (!isServer && !dev) {
             config.plugins.push(new NewUglify({
+                cache: true,
                 parallel: true,
                 sourceMap: false,
                 uglifyOptions: {
