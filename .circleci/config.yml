@@ -44,6 +44,7 @@ jobs:
             - sources/dist
             - sources/node_modules
             - sources/package.json
+            - sources/Dockerfile.runner
   publish_cdn:
     <<: *defaults
     steps:
