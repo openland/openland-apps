@@ -185,7 +185,7 @@ const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft
     marginRight: props.marginRight
 }));
 
-const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, paddingBottom?: number}>((props) => ({
+const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, paddingBottom?: number }>((props) => ({
     borderRadius: 5,
     padding: props.padding !== undefined ? props.padding : 24,
     paddingTop: props.paddingTop,
@@ -629,7 +629,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                 </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
-                                        marginRight={item.location ? 100 : 60}
+                                        marginRight={item.location ? 100 : 61}
                                         placement="bottom"
                                         content={(
                                             <>
@@ -746,7 +746,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                                 </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
-                                        marginRight={60}
+                                        marginRight={61}
                                         placement="bottom"
                                         content={(
                                             <>
@@ -1038,7 +1038,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     <XOverflow
                                         placement="bottom"
                                         width={220}
-                                        marginRight={88}
+                                        marginRight={110}
                                         target={<XButton style="primary" text={TextOrganizationProfile.headerButtonAddListing} />}
                                         content={
                                             <>
