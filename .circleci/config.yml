@@ -14,7 +14,9 @@ jobs:
       - run: yarn install
       - run: yarn test
       - run: yarn build
-      - run: docker build -f Dockerfile.runner .
+      - run: docker build -f Dockerfile.runner -t openland/web:test-$CIRCLE_BRANCH .
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - run: docker push openland/web:test-$CIRCLE_BRANCH
       - save_cache:
           key: node-modules-{{ .Branch }}
           paths:
