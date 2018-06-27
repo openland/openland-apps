@@ -46,7 +46,7 @@ const Root = Glamorous(XVertical)({
 const MainContent = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
     padding: '0 184px',
-    '@media (max-width: 1200px)': {
+    '@media (max-width: 1300px)': {
         padding: '0 40px',
     }
 });
@@ -56,7 +56,7 @@ const Header = Glamorous.div({
     backgroundColor: '#fff',
     borderBottom: '1px solid rgba(220, 222, 228, 0.4)',
     padding: '0 184px',
-    '@media (max-width: 1200px)': {
+    '@media (max-width: 1300px)': {
         padding: '0 40px',
     }
 });
