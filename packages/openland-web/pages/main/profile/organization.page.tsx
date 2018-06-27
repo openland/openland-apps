@@ -327,7 +327,7 @@ class AboutContent extends React.Component<{ text: string }, { open: boolean }> 
     }
 }
 
-const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number }>((props) => ({
+const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number, isOnlyTagComponent?: boolean }>((props) => ({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
@@ -335,10 +335,10 @@ const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number }>((props) =>
     '&:first-child': {
         '& > div': {
             '&:first-child': {
-                paddingTop: 24
+                paddingTop: props.isOnlyTagComponent ? 24 : undefined
             },
             '&:last-child': {
-                paddingTop: 16
+                paddingTop: props.isOnlyTagComponent ? 16 : undefined
             }
         }
     },
@@ -375,13 +375,14 @@ const OpportunitiesTextWrapper = Glamorous.div<OpportunitiesTextWrapperProps>((p
     paddingBottom: props.paddingBottom !== undefined ? props.paddingBottom : undefined
 }));
 
-const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean }>((props) => ({
+const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean, paddingTop?: number }>((props) => ({
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'wrap',
     flexGrow: 1,
     padding: '0 25px',
-    borderLeft: props.bordered ? '1px solid rgba(220, 222, 228, 0.45)' : undefined
+    borderLeft: props.bordered ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    paddingTop: props.paddingTop ? `${props.paddingTop}px !important` : undefined
 }));
 
 const OpportunitiesValue = Glamorous.div({
@@ -433,10 +434,11 @@ interface TagRowMapProps {
     titleWidth?: number;
     paddingLeft?: number;
     titlePaddingTop?: number;
+    isOnlyTagComponent?: boolean;
 }
 
 const TagRowMap = (props: TagRowMapProps) => (
-    <OpportunitiesWrapper>
+    <OpportunitiesWrapper isOnlyTagComponent={props.isOnlyTagComponent}>
         <OpportunitiesTextWrapper width={props.titleWidth} paddingLeft={props.paddingLeft} paddingTop={props.titlePaddingTop}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
@@ -460,6 +462,7 @@ interface TagRowProps {
     isTagStyle?: boolean;
     paddingLeft?: number;
     titlePaddingTop?: number;
+    valuePaddingTop?: number;
     titlePaddingBottom?: number;
     marginBottom?: number;
 }
@@ -469,7 +472,7 @@ const TagRow = (props: TagRowProps) => (
         <OpportunitiesTextWrapper width={props.titleWidth} paddingLeft={props.paddingLeft} paddingTop={props.titlePaddingTop} paddingBottom={props.titlePaddingBottom}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
-        <OpportunitiesValueWrapper bordered={props.bordered}>
+        <OpportunitiesValueWrapper bordered={props.bordered} paddingTop={props.valuePaddingTop}>
             {props.isTextStyle && (
                 <Text lineHeight={1.53}>
                     {props.text}
@@ -559,12 +562,12 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
             <XVerticalStyled marginTop={10}>
                 <div>
                     {item.area && (
-                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitileArea} titleWidth={150} marginBottom={10}>
+                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitileArea} titleWidth={150} marginBottom={10} valuePaddingTop={7}>
                             <Text marginTop={5} fontWeight={600}>{`${item.area} ft²`}</Text>
                         </TagRow>
                     )}
                     {item.price && (
-                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitilePrice} titleWidth={150} marginBottom={18}>
+                        <TagRow title={TextOrganizationProfile.listingDoTagRowTitilePrice} titleWidth={150} marginBottom={18} valuePaddingTop={7}>
                             <Text marginTop={5} fontWeight={600}>{`$${item.price}`}</Text>
                         </TagRow>
                     )}
@@ -1179,13 +1182,13 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             {(organization.organizationType || organization.lookingFor || organization.geographies) && (
                                                 <XCardStyled padding={0}>
                                                     {organization.organizationType && (
-                                                        <TagRowMap title={TextOrganizationProfile.overviewOrganizationTypeTitle} items={organization.organizationType} bordered={true} paddingLeft={24} />
+                                                        <TagRowMap title={TextOrganizationProfile.overviewOrganizationTypeTitle} items={organization.organizationType} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                     )}
                                                     {organization.lookingFor && (
-                                                        <TagRowMap title={TextOrganizationProfile.overviewOrganizationLookingForTitle} items={organization.lookingFor} bordered={true} paddingLeft={24} />
+                                                        <TagRowMap title={TextOrganizationProfile.overviewOrganizationLookingForTitle} items={organization.lookingFor} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                     )}
                                                     {organization.geographies && (
-                                                        <TagRowMap title={TextOrganizationProfile.overviewOrganizationGeographiesTitle} items={organization.geographies} bordered={true} paddingLeft={24} />
+                                                        <TagRowMap title={TextOrganizationProfile.overviewOrganizationGeographiesTitle} items={organization.geographies} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                     )}
 
                                                 </XCardStyled>
@@ -1199,19 +1202,19 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 {(organization.doShapeAndForm || organization.doCurrentUse || organization.doGoodFitFor || organization.doSpecialAttributes || organization.doAvailability) && (
                                                     <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
                                                         {organization.doShapeAndForm && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowShapeAndFormTitle} items={organization.doShapeAndForm} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowShapeAndFormTitle} items={organization.doShapeAndForm} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.doCurrentUse && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowCurrentUseTitle} items={organization.doCurrentUse} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowCurrentUseTitle} items={organization.doCurrentUse} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.doGoodFitFor && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowGoodFitForTitle} items={organization.doGoodFitFor} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowGoodFitForTitle} items={organization.doGoodFitFor} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.doSpecialAttributes && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowSpecialAttributesTitle} items={organization.doSpecialAttributes} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowSpecialAttributesTitle} items={organization.doSpecialAttributes} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.doAvailability && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowAvailabilityTitle} items={organization.doAvailability} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewDOTagRowAvailabilityTitle} items={organization.doAvailability} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
 
                                                     </div>
@@ -1238,31 +1241,31 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 {(organization.arGeographies || organization.arAreaRange || organization.arHeightLimit || organization.arLandUse || organization.arSpecialAttributes || organization.arActivityStatus || organization.arAquisitionBudget || organization.arAquisitionRate || organization.arClosingTime) && (
                                                     <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
                                                         {organization.arGeographies && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowGeographiesTitle} items={organization.arGeographies} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowGeographiesTitle} items={organization.arGeographies} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.arAreaRange && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowAreaRangeTitle} items={organization.arAreaRange} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowAreaRangeTitle} items={organization.arAreaRange} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.arHeightLimit && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowHeightLimitTitle} items={organization.arHeightLimit} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowHeightLimitTitle} items={organization.arHeightLimit} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.arLandUse && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowLandUseTitle} items={organization.arLandUse} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowLandUseTitle} items={organization.arLandUse} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.arSpecialAttributes && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowSpecialAttributesTitle} items={organization.arSpecialAttributes} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowSpecialAttributesTitle} items={organization.arSpecialAttributes} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.arActivityStatus && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowActivityStatusTitle} items={organization.arActivityStatus} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowActivityStatusTitle} items={organization.arActivityStatus} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.arAquisitionBudget && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowAquisitionBudgetTitle} items={organization.arAquisitionBudget} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowAquisitionBudgetTitle} items={organization.arAquisitionBudget} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.arAquisitionRate && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowAquisitionRateTitle} items={organization.arAquisitionRate} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowAquisitionRateTitle} items={organization.arAquisitionRate} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                         {organization.arClosingTime && (
-                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowClosingTimeTitle} items={organization.arClosingTime} bordered={true} paddingLeft={24} />
+                                                            <TagRowMap title={TextOrganizationProfile.overviewArTagRowClosingTimeTitle} items={organization.arClosingTime} bordered={true} paddingLeft={24} isOnlyTagComponent={true} />
                                                         )}
                                                     </div>
                                                 )}
