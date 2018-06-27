@@ -168,7 +168,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                     hrefTarget={target}
                     active={isActive}
                     enabled={this.props.enabled !== false}
-                    onClick={(this.props.href || this.props.path || this.props.query || this.props.anchor) ? this.onClick : this.props.onClick}
+                    onClick={(this.props.href || this.props.path || this.props.query || this.props.autoClose || this.props.anchor) ? this.onClick : onClick}
                     {...other}
                 >
                     {this.props.children}
