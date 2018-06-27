@@ -1,26 +1,81 @@
 version: 2
+
+defaults: &defaults
+  working_directory: /build/sources
+  docker:
+    - image: circleci/node:8.9.4
 jobs:
-  build:
+  prepare:
+    working_directory: /build/sources
     docker:
       - image: circleci/node:8.9.4
-    working_directory: ~/repo
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
       - restore_cache:
           keys:
-            - node-modules-{{ .Branch }}
+            - v1-npm-deps-{{ checksum "yarn.lock" }}
       - run: yarn install
-      - run: yarn test
-      - run: yarn bundle
       - save_cache:
-          key: node-modules-{{ .Branch }}
+          key: v1-npm-deps-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
-      - run: yarn install --production
-      - run: docker build -f Dockerfile.runner -t openland/web:test-$CIRCLE_BRANCH .
-      - run: source ./scripts/deploy_prepare.sh
-      - run: ./scripts/deploy_cdn_app.sh
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - run: docker push openland/web:test-$CIRCLE_BRANCH
+      - persist_to_workspace:
+          root: /build
+          paths: 
+            - sources
+  test:
+    <<: *defaults
+    steps:
+     - attach_workspace:
+          at: /build/
+     - run: yarn test
+#   bundle:
+#     <<: *defaults
+#     steps:
+#      - run: yarn bundle
+#      - persist_to_workspace:
+#           root: /build
+#           paths: 
+#             - sources
+#   publish_cdn:
+#     <<: *defaults
+#     steps:
+#       - run: source ./scripts/deploy_prepare.sh
+#       - run: ./scripts/deploy_cdn_app.sh
+#   publish_docker:
+#     <<: *defaults
+#     steps:
+#       - setup_remote_docker:
+#           docker_layer_caching: true
+#       - run: yarn install --production
+#       - run: docker build -f Dockerfile.runner -t openland/web:test-$CIRCLE_BRANCH .
+#       - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+#       - run: docker push openland/web:test-$CIRCLE_BRANCH
+
+# workflows:
+#   version: 2
+#   prepare:
+#     jobs:
+#       - prepare
+#   test:
+#     jobs:
+#       - test:
+#           requires: 
+#             - prepare
+#   bundle:
+#     jobs:
+#       - bundle:
+#           requires: 
+#             - prepare
+#   publish_cdn:
+#     jobs:
+#       - publish_cdn:
+#           requires: 
+#             - bundle
+#             - test
+#   publish_docker:
+#      jobs: 
+#       - publish_docker:
+#           requires: 
+#             - bundle
+#             - test
