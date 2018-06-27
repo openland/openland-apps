@@ -26,6 +26,8 @@ jobs:
           keys:
             - v1-npm-deps-{{ checksum "yarn.lock" }}
       - run: yarn install
+      - run: "echo \"Previous: $CIRCLE_PREVIOUS_BUILD_NUM\""
+      - run: "echo \"Current: $CIRCLE_BUILD_NUM\""
       - run: yarn bundle
       - run: yarn install --production
       - persist_to_workspace:
