@@ -103,12 +103,12 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         display: 'table',
         borderSpacing: 0,
         borderCollapse: 'separate',
-        height: 28,
+        height: 38,
         outline: 'none',
         overflow: 'hidden',
         position: 'relative',
         width: '100%',
-        minHeight: 32
+        minHeight: 38
     },
     '& .Select-control:hover': {
         // boxShadow: '0 1px 0 rgba(0, 0, 0, .06)'
@@ -119,7 +119,8 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
     },
     '&.Select--single > .Select-control .Select-value, .Select-placeholder': {
         bottom: 0,
-        color: 'rgba(51, 69, 98, 0.25)',
+        // color: 'rgba(51, 69, 98, 0.25)',
+        color: 'rgb(157, 157, 157)',
         fontSize: 14,
         // color: '#C1CAD2',
         left: 0,
@@ -134,15 +135,15 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
-        fontWeight: 500,
+        // fontWeight: 500,
     },
     '&.Select--single > .Select-control .Select-value': {
         // paddingTop: 'calc(5% - 10px)'
-        marginTop: 5
+        marginTop: 8
     },
     '& .Select-placeholder': {
         // paddingTop: 'calc(5% - 8px)'
-        marginTop: 5
+        marginTop: 8
     },
     '& .Select-input': {
         height: 28,
@@ -172,7 +173,7 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         fontWeight: 500,
         alignSelf: 'center',
         verticalAlign: 'middle',
-        marginTop: 6
+        marginTop: 9
     },
     '&.is-focused .Select-input > input': {
         cursor: 'text'
@@ -255,7 +256,7 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
     },
     '&.Select--multi .Select-multi-value-wrapper .Select-placeholder': {
         // paddingTop: 'calc(5% - 10px)'
-        marginTop: 5
+        marginTop: 8
     },
     '&.Select .Select-aria-only': {
         position: 'absolute',

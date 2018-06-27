@@ -10,6 +10,8 @@ export const TextAppBar = {
         favorites: 'Favorites',
         folders: 'Folders',
         devTools: 'DevTools',
-        xFramework: 'X Framework'
+        xFramework: 'X Framework',
+        addDevelopmentOpportunity: 'New development opportunity',
+        addAquisitionRequest: 'New aquisition request',
     }
 };

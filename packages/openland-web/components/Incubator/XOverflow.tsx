@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XPopper, Placement } from 'openland-x/XPopper';
 import { XLink } from 'openland-x/XLink';
+import { XPopperContent } from 'openland-x/popper/XPopperContent';
 
 const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     position: 'fixed',
@@ -47,25 +48,27 @@ const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean }>((props) => ({
     zIndex: props.active ? 11 : undefined
 }));
 
-const XOverflowItem = Glamorous(XLink)<{ color?: string }>(props => ({
-    display: 'flex',
-    alignItems: 'center',
-    height: 40,
-    fontSize: 15,
-    fontWeight: 500,
-    lineHeight: 1.33,
-    letterSpacing: -0.2,
-    color: props.color || '#334562',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 18,
-    paddingRight: 18
-}));
-
-const XOverflowContent = Glamorous.div({
-    marginLeft: -10,
-    width: 'calc(100% + 20px)'
+export const XMenuVertical = Glamorous(XPopperContent)({
+    padding: 0,
+    paddingTop: 8,
+    paddingBottom: 8,
 });
+
+export const XMenuItem = Glamorous(XLink)<{ style?: 'danger' | 'default' }>((props) => ({
+    height: 40,
+    paddingLeft: '18px',
+    paddingRight: '18px',
+    fontSize: '15px',
+    lineHeight: '40px',
+    color: props.style === 'danger' ? '#d75454' : '#334562',
+    fontWeight: 500,
+    display: 'block',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    ':hover': {
+        backgroundColor: '#f8f8fb'
+    }
+}));
 
 interface XOverflowProps {
     placement?: Placement;
@@ -82,7 +85,7 @@ interface XOverflowProps {
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
 
-    static Item = XOverflowItem;
+    static Item = XMenuItem;
 
     refComp?: Element;
 
@@ -133,7 +136,8 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                 {shadow && <Shadow active={this.state.show} />}
                 <XPopper
                     show={this.state.show}
-                    content={<XOverflowContent>{this.props.content}</XOverflowContent>}
+                    contentContainer={<XMenuVertical />}
+                    content={this.props.content}
                     arrow={null}
                     placement={this.props.placement || 'auto'}
                     width={this.props.width}
