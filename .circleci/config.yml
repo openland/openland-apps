@@ -13,11 +13,14 @@ jobs:
             - node-modules-{{ .Branch }}
       - run: yarn install
       - run: yarn test
-      - run: yarn build
-      - run: docker build -f Dockerfile.runner -t openland/web:test-$CIRCLE_BRANCH .
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - run: docker push openland/web:test-$CIRCLE_BRANCH
+      - run: yarn bundle
       - save_cache:
           key: node-modules-{{ .Branch }}
           paths:
             - "node_modules"
+      - run: yarn install --production
+      - run: docker build -f Dockerfile.runner -t openland/web:test-$CIRCLE_BRANCH .
+      - run: source ./scripts/deploy_prepare.sh
+      - run: ./scripts/deploy_cdn_app.sh
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - run: docker push openland/web:test-$CIRCLE_BRANCH

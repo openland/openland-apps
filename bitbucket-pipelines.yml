@@ -9,7 +9,7 @@ pipelines:
         script:
           - yarn install
           - yarn test
-          - yarn build
+          - yarn bundle
           - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
           - docker build -f Dockerfile.runner -t openland/web:v${BITBUCKET_BUILD_NUMBER} .
           - docker push openland/web:v${BITBUCKET_BUILD_NUMBER}

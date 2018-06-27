@@ -1,10 +1,11 @@
 FROM node:8.9.4-alpine
 
-# Create app directory
-WORKDIR /build
+ENV NODE_ENV=production
 
-COPY package.json ./
-COPY . .
+WORKDIR /app
+COPY package.json /app/
+COPY node_modules/ /app/node_modules/
+COPY dist/ /app/
 
 EXPOSE 3000
-CMD [ "yarn", "start" ]
+CMD [ "node", "server.js" ]
