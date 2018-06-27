@@ -119,7 +119,8 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
     },
     '&.Select--single > .Select-control .Select-value, .Select-placeholder': {
         bottom: 0,
-        color: 'rgba(51, 69, 98, 0.25)',
+        // color: 'rgba(51, 69, 98, 0.25)',
+        color: 'rgb(157, 157, 157)',
         fontSize: 14,
         // color: '#C1CAD2',
         left: 0,
@@ -134,7 +135,7 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
-        fontWeight: 500,
+        // fontWeight: 500,
     },
     '&.Select--single > .Select-control .Select-value': {
         // paddingTop: 'calc(5% - 10px)'
