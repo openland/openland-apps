@@ -52,30 +52,11 @@ jobs:
 #       - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 #       - run: docker push openland/web:test-$CIRCLE_BRANCH
 
-# workflows:
-#   version: 2
-#   prepare:
-#     jobs:
-#       - prepare
-#   test:
-#     jobs:
-#       - test:
-#           requires: 
-#             - prepare
-#   bundle:
-#     jobs:
-#       - bundle:
-#           requires: 
-#             - prepare
-#   publish_cdn:
-#     jobs:
-#       - publish_cdn:
-#           requires: 
-#             - bundle
-#             - test
-#   publish_docker:
-#      jobs: 
-#       - publish_docker:
-#           requires: 
-#             - bundle
-#             - test
+workflows:
+  version: 2
+  default:
+    jobs:
+      - prepare
+      - test:
+          requires: 
+            - prepare
