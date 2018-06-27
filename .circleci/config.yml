@@ -1,12 +1,12 @@
 version: 2
 
 defaults: &defaults
-  working_directory: /build/sources
+  working_directory: /tmp/sources
   docker:
     - image: circleci/node:8.9.4
 jobs:
   prepare:
-    working_directory: /build/sources
+    working_directory: /tmp/sources
     docker:
       - image: circleci/node:8.9.4
     steps:
@@ -20,14 +20,14 @@ jobs:
           paths:
             - "node_modules"
       - persist_to_workspace:
-          root: /build
+          root: /tmp
           paths: 
             - sources
   test:
     <<: *defaults
     steps:
      - attach_workspace:
-          at: /build/
+          at: /tmp/
      - run: yarn test
 #   bundle:
 #     <<: *defaults
