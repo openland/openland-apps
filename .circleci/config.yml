@@ -18,6 +18,11 @@ jobs:
           paths:
             - "node_modules"
       - run: yarn test
+      - run: yarn install --production
+      - persist_to_workspace:
+          root: /tmp
+          paths: 
+            - sources/node_modules
   bundle:
     <<: *defaults
     steps:
@@ -54,13 +59,11 @@ jobs:
           key: v1-babel-cache-{{ checksum ".build_0" }}
           paths:
             - "node_modules/.cache"
-      - run: yarn install --production
       - persist_to_workspace:
           root: /tmp
           paths: 
             - sources/scripts
             - sources/dist
-            - sources/node_modules
             - sources/package.json
             - sources/Dockerfile.runner
   publish_cdn:
