@@ -49,6 +49,7 @@ jobs:
             - v1-babel-cache-{{ checksum ".build_8" }}
             - v1-babel-cache-{{ checksum ".build_9" }}
       - run: yarn bundle
+      - run: "cd ./node_modules/.cache && ls"
       - save_cache:
           key: v1-babel-cache-{{ checksum ".build_0" }}
           paths:
