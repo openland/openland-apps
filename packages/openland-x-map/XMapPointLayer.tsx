@@ -48,7 +48,7 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
         let minZoom = this.props.minZoom !== undefined ? this.props.minZoom : 0;
         this.map.addLayer({
             'id': this.layer + '-cluster',
-            'type': 'person',
+            'type': 'circle',
             'source': this.source,
             'layout': {},
             'paint': {
@@ -82,7 +82,7 @@ export class XMapPointLayer extends React.Component<XMapPointLayerProps> {
 
         this.map.addLayer({
             'id': this.layer,
-            'type': 'person',
+            'type': 'circle',
             'source': this.source,
             'layout': {},
             'paint': {

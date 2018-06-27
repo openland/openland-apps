@@ -71,7 +71,7 @@ export class XMapImageLayer extends React.Component<XMapImageProps> {
 
         this.map.addLayer({
             'id': this.layer + '-cluster',
-            'type': 'person',
+            'type': 'circle',
             'source': this.source,
             'layout': {},
             'paint': {
