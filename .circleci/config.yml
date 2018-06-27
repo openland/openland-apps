@@ -44,8 +44,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/
-      - run: source ./scripts/deploy_prepare.sh
-      - run: ./scripts/deploy_cdn_app.sh
+      - run: source ./scripts/deploy_prepare.sh && ./scripts/deploy_cdn_app.sh
   publish_docker:
     <<: *defaults
     steps:
@@ -70,6 +69,10 @@ workflows:
           requires: 
             - prepare
       - publish_cdn:
+          requires: 
+            - bundle
+            - test
+      - publish_docker:
           requires: 
             - bundle
             - test
