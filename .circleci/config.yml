@@ -40,6 +40,7 @@ jobs:
       - persist_to_workspace:
           root: /tmp
           paths: 
+            - sources/scripts
             - sources/dist
             - sources/node_modules
             - sources/package.json
