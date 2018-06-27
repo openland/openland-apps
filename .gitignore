@@ -25,3 +25,4 @@ src/.next
 lib
 packages/openland-web/.next
 .cache-loader
+dist
