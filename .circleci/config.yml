@@ -5,10 +5,8 @@ defaults: &defaults
   docker:
     - image: circleci/node:8.9.4
 jobs:
-  prepare:
-    working_directory: /tmp/sources
-    docker:
-      - image: circleci/node:8.9.4
+  test:
+    <<: *defaults
     steps:
       - checkout
       - restore_cache:
@@ -19,14 +17,6 @@ jobs:
           key: v1-npm-deps-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
-  test:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-npm-deps-{{ checksum "yarn.lock" }}
-      - run: yarn install
       - run: yarn test
   bundle:
     <<: *defaults
@@ -66,13 +56,8 @@ workflows:
   version: 2
   default:
     jobs:
-      - prepare
-      - test:
-          requires: 
-            - prepare
-      - bundle:
-          requires: 
-            - prepare
+      - test
+      - bundle
       - publish_cdn:
           requires: 
             - bundle
