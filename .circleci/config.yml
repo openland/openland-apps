@@ -1,26 +1,109 @@
 version: 2
+
+defaults: &defaults
+  working_directory: /tmp/sources
+  docker:
+    - image: circleci/node:8.9.4
 jobs:
-  build:
-    docker:
-      - image: circleci/node:8.9.4
-    working_directory: ~/repo
+  test:
+    <<: *defaults
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
       - restore_cache:
           keys:
-            - node-modules-{{ .Branch }}
+            - v1-npm-deps-{{ checksum "yarn.lock" }}
       - run: yarn install
-      - run: yarn test
-      - run: yarn bundle
       - save_cache:
-          key: node-modules-{{ .Branch }}
+          key: v1-npm-deps-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
-      - run: yarn install --production
-      - run: docker build -f Dockerfile.runner -t openland/web:test-$CIRCLE_BRANCH .
-      - run: source ./scripts/deploy_prepare.sh
-      - run: ./scripts/deploy_cdn_app.sh
+      - run: yarn test
+      # - run: yarn install --production
+      - persist_to_workspace:
+          root: /tmp
+          paths: 
+            - sources/node_modules
+  bundle:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-npm-deps-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - run: >
+            echo $CIRCLE_PREVIOUS_BUILD_NUM > .build_0 && 
+            echo $(($CIRCLE_PREVIOUS_BUILD_NUM-1)) > .build_1 && 
+            echo $(($CIRCLE_PREVIOUS_BUILD_NUM-2)) > .build_2 && 
+            echo $(($CIRCLE_PREVIOUS_BUILD_NUM-3)) > .build_3 && 
+            echo $(($CIRCLE_PREVIOUS_BUILD_NUM-4)) > .build_4 && 
+            echo $(($CIRCLE_PREVIOUS_BUILD_NUM-5)) > .build_5 && 
+            echo $(($CIRCLE_PREVIOUS_BUILD_NUM-6)) > .build_6 && 
+            echo $(($CIRCLE_PREVIOUS_BUILD_NUM-7)) > .build_7 && 
+            echo $(($CIRCLE_PREVIOUS_BUILD_NUM-8)) > .build_8 && 
+            echo $(($CIRCLE_PREVIOUS_BUILD_NUM-9)) > .build_9
+      - restore_cache:
+          keys:
+            - v1-babel-cache-{{ checksum ".build_1" }}
+            - v1-babel-cache-{{ checksum ".build_2" }}
+            - v1-babel-cache-{{ checksum ".build_3" }}
+            - v1-babel-cache-{{ checksum ".build_4" }}
+            - v1-babel-cache-{{ checksum ".build_5" }}
+            - v1-babel-cache-{{ checksum ".build_6" }}
+            - v1-babel-cache-{{ checksum ".build_7" }}
+            - v1-babel-cache-{{ checksum ".build_8" }}
+            - v1-babel-cache-{{ checksum ".build_9" }}
+      - run: yarn bundle
+      - run: "cd ./node_modules/.cache && ls"
+      - save_cache:
+          key: v1-babel-cache-{{ checksum ".build_0" }}
+          paths:
+            - "node_modules/.cache"
+      - persist_to_workspace:
+          root: /tmp
+          paths: 
+            - sources/scripts
+            - sources/dist
+            - sources/package.json
+            - sources/Dockerfile.runner
+  publish_cdn:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/
+      - run: source ./scripts/deploy_prepare.sh && ./scripts/deploy_cdn_app_ci.sh
+  publish_docker:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: docker build -f Dockerfile.runner -t openland/web:git-${CIRCLE_SHA1} .
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - run: docker push openland/web:test-$CIRCLE_BRANCH
+      - run: docker push openland/web:git-${CIRCLE_SHA1}
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /tmp/
+      - run: source ./scripts/deploy_prepare.sh && ./scripts/deploy_staging_ci.sh
+      
+workflows:
+  version: 2
+  default:
+    jobs:
+      - test
+      - bundle
+      - publish_cdn:
+          requires: 
+            - bundle
+            - test
+      - publish_docker:
+          requires: 
+            - bundle
+            - test
+      - deploy:
+          requires:
+            - publish_docker
+            - publish_cdn
