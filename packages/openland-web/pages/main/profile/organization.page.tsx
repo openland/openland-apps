@@ -592,7 +592,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                     {item.specialAttributes && (
                         <TagRowMap title={TextOrganizationProfile.listingDoTagRowTitileSpecialAttributes} items={item.specialAttributes} titleWidth={150} />
                     )}
-                    {item.additionalLinks!!.length > 0 && (
+                    {item.additionalLinks && item.additionalLinks!!.length > 0 && (
                         <OpportunitiesWrapper>
                             <OpportunitiesTextWrapper width={150}>
                                 <Text bold={true}>Additional links</Text>
