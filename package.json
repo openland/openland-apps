@@ -69,6 +69,7 @@
 		"babel-plugin-emotion": "^9.1.2",
 		"babel-plugin-inline-react-svg": "^0.5.2",
 		"babel-plugin-transform-define": "^1.3.0",
+		"cache-loader": "^1.2.2",
 		"chart.js": "^2.7.1",
 		"classnames": "^2.2.5",
 		"compression": "^1.7.1",
@@ -137,7 +138,8 @@
 		"uploadcare-widget": "^3.2.1",
 		"url": "^0.11.0",
 		"watchman": "^1.0.0",
-		"webpack-bundle-analyzer": "^2.9.1"
+		"webpack-bundle-analyzer": "^2.9.1",
+		"uglifyjs-webpack-plugin": "1.2.0"
 	},
 	"devDependencies": {
 		"babel-plugin-graphql-tag": "^1.6.0",
@@ -159,13 +161,14 @@
 	"scripts": {
 		"dev": "API_ENDPOINT=\"https://api.statecrafthq.com\" nodemon ./packages/openland-web/server.ts",
 		"dev:local": "nodemon ./packages/openland-web/server.ts",
-		"dev:inspect": "node --inspect -r ts-node/register ./packages/openland-web/server.ts",
+		"dev:inspect": "TS_NODE_PROJECT=tsconfig.prod.json node --inspect -r ts-node/register ./packages/openland-web/server.ts",
 		"lint": "NODE_ENV=production ./node_modules/.bin/tslint --project . --config ./tslint.json",
 		"compile": "NODE_ENV=production ./node_modules/.bin/tsc",
 		"jest": "node ./node_modules/jest/bin/jest.js",
 		"jest:watch": "node ./node_modules/jest/bin/jest.js --watchAll",
 		"test": "yarn lint && yarn jest && yarn compile",
 		"build": "NODE_ENV=production next build ./packages/openland-web",
+		"build:inspect": "NODE_ENV=production next build ./packages/openland-web --inspect",
 		"analyze": "NODE_ENV=production BUNDLE_ANALYZE=both next build ./packages/openland-web",
 		"analyze:web": "NODE_ENV=production BUNDLE_ANALYZE=browser next build ./packages/openland-web",
 		"analyze:server": "NODE_ENV=production BUNDLE_ANALYZE=server next build ./packages/openland-web",

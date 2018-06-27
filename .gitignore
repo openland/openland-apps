@@ -24,3 +24,4 @@ src/.next
 .vscode
 lib
 packages/openland-web/.next
+.cache-loader

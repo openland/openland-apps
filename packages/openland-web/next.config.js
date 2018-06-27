@@ -1,14 +1,19 @@
 // const webpack = require('webpack');
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
-const withTypescript = require('@zeit/next-typescript')
 const path = require('path');
-// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 // const StatsPlugin = require('stats-webpack-plugin');
 // const HappyPack = require('happypack');
+const NewUglify = require('uglifyjs-webpack-plugin');
 
-const config = withTypescript({
+const config = {
     pageExtensions: ['page.ts', 'page.tsx'],
     webpack(config, options) {
+
+        const cacheDir = path.resolve(__dirname + '/../../node_modules/.cache');
+
+        // wat?
+        config.resolve.extensions.push('.ts', '.tsx')
 
         // Merge paths from typescript config
         const tsConfig = require("../../tsconfig.json");
@@ -19,7 +24,7 @@ const config = withTypescript({
         config.resolve.alias = Object.assign({}, config.resolve.alias, alias);
 
         // Ignore large library from parsing and solve some babel issues
-        config.module.noParse = /(mapbox-gl)\.js$/
+        config.module.noParse = [/(mapbox-gl)\.js$/, /(jquery)\.js$/]
 
         // Typescript
         const {
@@ -31,11 +36,22 @@ const config = withTypescript({
 
         // Ask babel to handle typescript files
         // Modules are not loading by default since root folder is out of scope
+        let tsLoader = defaultLoaders.babel;
+        if (!isServer) {
+            tsLoader = [{
+                    loader: 'cache-loader',
+                    options: {
+                        cacheDirectory: cacheDir + '/cache-loader'
+                    }
+                },
+                defaultLoaders.babel
+            ];
+        }
         config.module.rules.push({
             test: /\.(ts|tsx)$/,
             include: [path.resolve(dir + '/../')],
             exclude: /node_modules/,
-            use: defaultLoaders.babel,
+            use: tsLoader,
         })
 
         if (dev && !isServer) {
@@ -62,40 +78,53 @@ const config = withTypescript({
         //     }));
         // }
 
-        // Enable debug
-        // config.debug = true;
-
-        // Disable minification
+        // Disable hoisting
         // config.plugins = config.plugins.filter(
-        //     (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
+        //     (plugin) => (plugin.constructor.name !== 'ModuleConcatenationPlugin')
         // )
 
-        // Enable uglify cache
-        let uglify = config.plugins.find((plugin) => (plugin.constructor.name === 'UglifyJsPlugin'))
-        if (uglify) {
-            uglify.options.cache = true;
-        }
+        // Disable uglify
+        config.plugins = config.plugins.filter(
+            (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
+        )
 
-        // Hard Source
-        // if (!isServer) {
-        //     config.plugins.push(new HardSourceWebpackPlugin({
-        //         cacheDirectory: 'node_modules/.cache/hard-source-client/[confighash]',
-        //         info: {
-        //             // mode: 'none',
-        //             level: 'debug',
-        //         }
-        //     }))
-        // } else {
-        //     config.plugins.push(new HardSourceWebpackPlugin({
-        //         cacheDirectory: 'node_modules/.cache/hard-source-server/[confighash]',
-        //         info: {
-        //             // mode: 'none',
-        //             level: 'debug',
-        //         }
-        //     }))
+        // Enable uglify cache
+        // let uglify = config.plugins.find((plugin) => (plugin.constructor.name === 'UglifyJsPlugin'))
+        // if (uglify) {
+        //     uglify.options.cache = true;
         // }
 
-        // Happy Pack
+        // New Uglify
+        config.plugins.push(new NewUglify({
+            parallel: true,
+            sourceMap: false,
+            uglifyOptions: {
+                mangle: {
+                    safari10: true
+                }
+            }
+        }));
+
+        // Hard Source
+        // Not working for client
+        // if (!isServer) {
+        //     config.plugins.unshift(new HardSourceWebpackPlugin({
+        //         cacheDirectory: hs + '/client/[confighash]',
+        //         info: {
+        //             // mode: 'none',
+        //             level: 'debug',
+        //         }
+        //     }))
+        if (isServer && !dev) {
+            config.plugins.unshift(new HardSourceWebpackPlugin({
+                cacheDirectory: cacheDir + '/hard-source/server/[confighash]',
+                info: {
+                    level: 'error',
+                }
+            }))
+        }
+
+        // Happy Pack (no improvements)
         // config.module.rules = config.module.rules.map((v) => {
         //     if (v.use === defaultLoaders.babel) {
         //         return {
@@ -113,8 +142,7 @@ const config = withTypescript({
         //     loaders: [defaultLoaders.babel.loader]
         // }));
 
-        // Creating vendor library
-        // Doesn't work...
+        // Creating vendor library (not working)
         // if (!isServer) {
         //     let ex = config.entry;
         //     config.entry = async () => {
@@ -137,16 +165,10 @@ const config = withTypescript({
 
         return config;
     },
-    // typescriptLoaderOptions: {
-    //     transpileOnly: true,
-    //     context: path.resolve(__dirname + '../../../'),
-    //     configFile: path.resolve(__dirname + '../../../tsconfig.json')
-    //     // configFile: 'tsconfig.json'
-    // },
     useFileSystemPublicRoutes: false,
     analyzeServer: ["server", "both"].includes(process.env.BUNDLE_ANALYZE),
     analyzeBrowser: ["browser", "both"].includes(process.env.BUNDLE_ANALYZE),
     assetPrefix: process.env.CDN_PREFIX ? process.env.CDN_PREFIX : undefined
-});
+};
 
 module.exports = withBundleAnalyzer(config)
