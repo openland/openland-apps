@@ -561,7 +561,7 @@ const AddListingContent = withUserInfo((props) => {
     );
 });
 
-class AddListing extends React.Component<{}, { show?: boolean }> {
+class AddMenu extends React.Component<{}, { show?: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = { show: false };
@@ -569,6 +569,12 @@ class AddListing extends React.Component<{}, { show?: boolean }> {
     switch = () => {
         this.setState({
             show: !this.state.show
+        });
+    }
+
+    closer = () => {
+        this.setState({
+            show: false
         });
     }
 
@@ -582,7 +588,7 @@ class AddListing extends React.Component<{}, { show?: boolean }> {
                 show={this.state.show}
                 padding={0}
                 content={<AddListingContent />}
-                onClickOutside={this.switch}
+                onClickOutside={this.closer}
             >
                 <NavigatorItem onClick={this.switch}>
                     <NavigatorIcon icon="add" />
@@ -813,7 +819,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             </XWithRole>
                             <BottomNavigation>
                                 <XWithRole role={['feature-marketplace']} negate={true}>
-                                    <AddListing />
+                                    <AddMenu />
                                 </XWithRole>
                                 <XWithRole role={['super-admin', 'software-developer']}>
                                     <XPopper
