@@ -38,7 +38,9 @@ jobs:
       - persist_to_workspace:
           root: /tmp
           paths: 
-            - sources
+            - sources/dist
+            - sources/node_modules
+            - sources/package.json
   publish_cdn:
     <<: *defaults
     steps:
