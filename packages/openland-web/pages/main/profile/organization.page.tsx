@@ -555,6 +555,7 @@ const ListingTitleWrapper = Glamorous.div({
 });
 
 const ListingTitle = Glamorous.div({
+    height: 22,
     fontSize: 20,
     fontWeight: 500,
     letterSpacing: 0.5,
@@ -644,7 +645,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                             <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 8 : 0}>
                                 <ListingTitleWrapper>
                                     <ListingTitle>{item.name}</ListingTitle>
-                                    <Text opacity={0.5} small={true} marginBottom={-1}>{DateFormater(item.updatedAt)}</Text>
+                                    <Text opacity={0.5} small={true}>{DateFormater(item.updatedAt)}</Text>
                                 </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
@@ -761,7 +762,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                             <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 0 : 4}>
                                 <ListingTitleWrapper>
                                     <ListingTitle>{item.name}</ListingTitle>
-                                    <Text opacity={0.5} small={true} marginBottom={-1}>{DateFormater(item.updatedAt)}</Text>
+                                    <Text opacity={0.5} small={true}>{DateFormater(item.updatedAt)}</Text>
                                 </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
