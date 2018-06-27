@@ -268,7 +268,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                     <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginLeft: -18, marginRight: -18 }} />
 
                                     <ProfileTitleContainer separator="none">
-                                        <XAvatar cloudImageUuid={this.props.logo || undefined} style="square" />
+                                        <XAvatar cloudImageUuid={this.props.logo || undefined} style="organization" />
                                         <XVertical separator={1}>
                                             <MenuItem isTitle={true} path={'/o/' + this.props.organizationId}>{this.props.organizationName}</MenuItem>
                                             <ProfileSubTitle path={'/o/' + this.props.organizationId}>{TextGlobal.viewProfile}</ProfileSubTitle>

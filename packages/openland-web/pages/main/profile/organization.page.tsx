@@ -185,7 +185,7 @@ const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft
     marginRight: props.marginRight
 }));
 
-const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, paddingBottom?: number }>((props) => ({
+const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, paddingBottom?: number}>((props) => ({
     borderRadius: 5,
     padding: props.padding !== undefined ? props.padding : 24,
     paddingTop: props.paddingTop,
@@ -990,7 +990,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                         <Header>
                             <AvatarWrapper>
                                 {hasLogo && (
-                                    <Avatar cloudImageUuid={organization.photo!!} size="large" style="square" />
+                                    <Avatar cloudImageUuid={organization.photo!!} size="large" style="organization" />
                                 )}
                                 {!hasLogo && (
                                     <>
@@ -998,7 +998,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <AvatartPlaceholder />
                                         </XWithRole>
                                         <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
-                                            <Avatar cloudImageUuid={organization.photo!!} size="large" style="square" />
+                                            <Avatar cloudImageUuid={organization.photo!!} size="large" style="organization" />
                                         </XWithRole>
                                     </>
                                 )}
