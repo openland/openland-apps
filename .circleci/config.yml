@@ -49,11 +49,11 @@ jobs:
             - v1-babel-cache-{{ checksum ".build_8" }}
             - v1-babel-cache-{{ checksum ".build_9" }}
       - run: yarn bundle
-      - run: yarn install --production
       - save_cache:
           key: v1-babel-cache-{{ checksum ".build_0" }}
           paths:
             - "node_modules/.cache"
+      - run: yarn install --production
       - persist_to_workspace:
           root: /tmp
           paths: 
