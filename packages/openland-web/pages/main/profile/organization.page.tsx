@@ -629,7 +629,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                 </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
-                                        marginRight={item.location ? 100 : 61}
+                                        marginRight={item.location ? 92 : 50}
                                         placement="bottom"
                                         content={(
                                             <>
@@ -637,7 +637,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                                 {item.locationTitle && < XOverflow.Item href={`https://www.google.com/maps/place/${item.locationTitle}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XOverflow.Item>}
                                                 {(!item.locationTitle && item.location) && < XOverflow.Item href={`https://www.google.com/maps/place/${item.location.lat},${item.location.lon}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XOverflow.Item>}
                                                 {item.location && < XOverflow.Item href={`https://www.google.com/maps?cbll=${item.location.lat},${item.location.lon}&cbp=12,90,0,0,5&layer=c`}>{TextOrganizationProfile.listingDoOwerflowStreetView}</XOverflow.Item>}
-                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowDelete}</XOverflow.Item>
+                                                <XOverflow.Item style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowDelete}</XOverflow.Item>
                                             </>
                                         )}
                                     />
@@ -746,12 +746,12 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                                 </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
-                                        marginRight={61}
+                                        marginRight={50}
                                         placement="bottom"
                                         content={(
                                             <>
                                                 <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XOverflow.Item>
-                                                <XOverflow.Item color="#d75454" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XOverflow.Item>
+                                                <XOverflow.Item style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XOverflow.Item>
                                             </>
                                         )}
                                     />
@@ -1038,7 +1038,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     <XOverflow
                                         placement="bottom"
                                         width={220}
-                                        marginRight={110}
+                                        marginRight={108}
                                         target={<XButton style="primary" text={TextOrganizationProfile.headerButtonAddListing} />}
                                         content={
                                             <>

@@ -25,6 +25,7 @@ import { XScrollView } from 'openland-x/XScrollView';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import { makeNavigable } from 'openland-x/Navigable';
+import { XMenuVertical, XMenuItem } from './Incubator/XOverflow';
 
 //
 // Root
@@ -161,29 +162,6 @@ const ProfileSubTitle = Glamorous(XLink)({
     letterSpacing: '-0.3px',
 });
 
-const MenuVertical = Glamorous(XPopperContent)({
-    padding: 0,
-    paddingTop: 8,
-    paddingBottom: 8,
-});
-
-const MenuItem = Glamorous(XLink)((props) => ({
-    height: 40,
-    paddingLeft: '16px',
-    paddingRight: '16px',
-    fontSize: '15px',
-    lineHeight: '40px',
-    color: '#334562',
-    fontWeight: 500,
-    display: 'block',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    ':hover': {
-        backgroundColor: '#f8f8fb'
-    }
-}));
-
 const ProfileTitleContainer = Glamorous(XHorizontal)({
     margin: 16,
     ':hover': {
@@ -222,7 +200,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
         return (
             <XPopper
                 placement="right"
-                contentContainer={<MenuVertical />}
+                contentContainer={<XMenuVertical />}
                 onClickOutside={this.closer}
                 show={this.state.show}
                 padding={25}
@@ -233,7 +211,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                             <ProfileTitle>{this.props.name}</ProfileTitle>
                         </ProfileTitleContainer>
 
-                        <MenuItem path="/settings/profile">{TextGlobal.editProfile}</MenuItem>
+                        <XMenuItem path="/settings/profile">{TextGlobal.editProfile}</XMenuItem>
 
                         {this.props.organizationId && (
                             <>
@@ -246,11 +224,11 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                         <ProfileSubTitle>{TextGlobal.viewProfile}</ProfileSubTitle>
                                     </XVertical>
                                 </OrganizationTitleContainer>
-                                <MenuItem path="/settings/organization">{TextGlobal.editProfile}</MenuItem>
-                                <MenuItem query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</MenuItem>
+                                <XMenuItem path="/settings/organization">{TextGlobal.editProfile}</XMenuItem>
+                                <XMenuItem query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenuItem>
                             </>
                         )}
-                        <MenuItem path="/auth/logout">{TextGlobal.signOut}</MenuItem>
+                        <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
                     </XVertical>
                 )}
             >
@@ -554,9 +532,9 @@ const Home = withUserInfo((props) => {
 const AddListingContent = withUserInfo((props) => {
     return (
         <>
-            <MenuItem path={'/o/' + props.organization!!.id + '?addListing=DO'}>{TextAppBar.items.addDevelopmentOpportunity}</MenuItem>
-            <MenuItem path={'/o/' + props.organization!!.id + '?addListing=AR'}>{TextAppBar.items.addAquisitionRequest}</MenuItem>
-            <MenuItem path="/createOrganization">{TextGlobal.addOrganization}</MenuItem>
+            <XMenuItem path={'/o/' + props.organization!!.id + '?addListing=DO'}>{TextAppBar.items.addDevelopmentOpportunity}</XMenuItem>
+            <XMenuItem path={'/o/' + props.organization!!.id + '?addListing=AR'}>{TextAppBar.items.addAquisitionRequest}</XMenuItem>
+            <XMenuItem path="/createOrganization">{TextGlobal.addOrganization}</XMenuItem>
         </>
     );
 });
@@ -582,7 +560,7 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
         console.warn(this.state);
         return (
             <XPopper
-                contentContainer={<MenuVertical />}
+                contentContainer={<XMenuVertical />}
                 marginTop={70}
                 placement="right"
                 show={this.state.show}
