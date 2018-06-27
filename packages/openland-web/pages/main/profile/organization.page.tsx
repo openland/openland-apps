@@ -809,6 +809,30 @@ const ViewAllIcon = Glamorous(XIcon)({
     marginTop: 20
 });
 
+const ListingsWrap = Glamorous(XVertical)({
+    border: '1px solid rgba(38,38,38,0.08)',
+    borderRadius: 5,
+
+    '> *': {
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+    },
+    '>:first-child': {
+        borderBottom: '1px solid rgba(38,38,38,0.08)',
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
+        backgroundColor: '#fff'
+
+    },
+    '>:last-child': {
+        borderBottom: 0,
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
+    }
+});
+
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
 
     let editDoTarget = props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editListing)[0];
@@ -1261,23 +1285,21 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     {props.router.path === lsitingsPath && (
                                         <>
                                             <DOARListingPlaceholder />
-                                            <XCardStyled padding={0}>
-                                                <XVerticalStyled flexGrow={1} padding={0} paddingLeft={24} paddingRight={24}>
-                                                    <SwitcherWrapper flatStyle={true} height={66}>
+                                            <ListingsWrap separator="none">
+                                                <XVerticalStyled flexGrow={1} padding={0} paddingLeft={24} paddingRight={24} paddingTop={6}>
+                                                    <SwitcherWrapper flatStyle={true} height={58}>
                                                         <Switcher query={{ field: 'listingType' }}>{TextOrganizationProfile.listingsDoTabTitle}</Switcher>
                                                         <Switcher query={{ field: 'listingType', value: 'ar' }}>{TextOrganizationProfile.listingsArTabTitle}</Switcher>
 
                                                     </SwitcherWrapper>
                                                 </XVerticalStyled>
-                                            </XCardStyled>
-                                            <XVertical>
                                                 {props.router.path === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
-                                                    organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
+                                                    organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                 )}
                                                 {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
+                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                 )}
-                                            </XVertical>
+                                            </ListingsWrap>
                                         </>
                                     )}
 
@@ -1374,7 +1396,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <XCardStyled padding={18}>
                                                 <Title small={true} marginBottom={12}>
                                                     {TextOrganizationProfile.additionalInfoAbout}
-                                        </Title>
+                                                </Title>
                                                 <AboutContent text={organization.about} />
                                             </XCardStyled>
                                         )}
