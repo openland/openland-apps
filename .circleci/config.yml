@@ -8,4 +8,14 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: docker build -t openland-web:test .
+      - restore_cache:
+          keys:
+            - node-modules-{{ .Branch }}
+      - run: yarn install
+      - run: yarn test
+      - run: yarn build
+      - run: docker build -f Dockerfile.runner .
+      - save_cache:
+          key: node-modules-{{ .Branch }}
+          paths:
+            - "node_modules"

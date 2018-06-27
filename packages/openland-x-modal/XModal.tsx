@@ -126,6 +126,7 @@ const XModalCloser = Glamorous(XButton)({
 export const XModalBodyContainer = Glamorous.div(props => ({
     paddingTop: 18,
     paddingBottom: 24,
+    flexGrow: 1,
 }));
 
 class ModalContentRender extends React.Component<{
@@ -146,7 +147,6 @@ class ModalContentRender extends React.Component<{
                 </Root>
             );
         }
-        console.warn(this.props.customContent);
         let body = (
             <>
                 {this.props.body === undefined && <XModalBody>{this.props.children}</XModalBody>}
