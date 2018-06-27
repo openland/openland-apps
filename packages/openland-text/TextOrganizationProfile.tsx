@@ -124,6 +124,11 @@ export const TextOrganizationProfile = {
     listingEditDoLinkAddFirst: 'Add link',
     listingEditDoLinkAdd: 'Add another link',
 
+    placeholderOverviewGeneralMainText: (<><p>Your account has been created - now it will be easier to connect with real estate companies.</p><p>To make most of it we recommend to share more information about your company.</p></>),
+    placeholderOverviewGeneralButton: 'Improve Profile',
+    placeholderOverviewGeneralModalTitle: 'Organization Profile',
+    placeholderOverviewGeneralModalOrganizationTypeTitle: 'What\'s type of your entity?',
+    placeholderOverviewGeneralModalOrganizationTypeDescription: 'Are you corporation, non profit or public entity?',
 };
 
 // title=|>|text=|placeholder=

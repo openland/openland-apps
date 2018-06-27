@@ -65,7 +65,7 @@ const Close = Glamorous(XIcon)({
 
 export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
 
-    return ((!props.data.myOrganizationProfile.organizationType && !props.data.myOrganizationProfile.geographies && !props.data.myOrganizationProfile.lookingFor) ? (
+    return ((props.data.myOrganizationProfile && !props.data.myOrganizationProfile.organizationType && !props.data.myOrganizationProfile.geographies && !props.data.myOrganizationProfile.lookingFor) ? (
         <Placeholder accent={true}>
             <XHorizontal>
                 <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_overview.svg'} />
