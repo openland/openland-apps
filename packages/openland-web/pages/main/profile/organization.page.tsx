@@ -511,7 +511,7 @@ const AdditionalLink = Glamorous(XLink)({
     lineHeight: 1.33,
     letterSpacing: -0.2,
     padding: '6px 10px',
-    marginRight: 11,
+    marginRight: 8,
     marginTop: 5,
     marginBottom: 5,
     '& > span': {
