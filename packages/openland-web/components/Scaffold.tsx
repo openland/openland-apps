@@ -23,6 +23,8 @@ import { switchOrganization } from '../utils/switchOrganization';
 import { withMyOrganizations } from '../api/withMyOrganizations';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XPopperContent } from 'openland-x/popper/XPopperContent';
+import { makeNavigable } from 'openland-x/Navigable';
 
 //
 // Root
@@ -141,40 +143,6 @@ const BottomNavigation = Glamorous.div({
     flexShrink: 0
 });
 
-const XMenuItem = Glamorous(XLink)({
-    display: 'block',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    borderRadius: 4,
-    width: '100%',
-    fontSize: 15,
-    fontWeight: 'normal',
-    color: '#334562',
-    lineHeight: '28px',
-    // '&:hover': {
-    //     backgroundColor: '#f6f9fc',
-    //     color: '#525f7f'
-    // }
-});
-
-const XMenuStyled = Glamorous.div({
-    padding: 8
-});
-
-class XMenu extends React.Component {
-
-    static Item = XMenuItem;
-
-    render() {
-        return (
-            <XMenuStyled>
-                {this.props.children}
-            </XMenuStyled>
-        );
-    }
-}
-
 const ProfileTitle = Glamorous.div({
     fontSize: 16,
     fontWeight: 600,
@@ -193,37 +161,43 @@ const ProfileSubTitle = Glamorous(XLink)({
     letterSpacing: '-0.3px',
 });
 
-const MenuItem = Glamorous(XLink)<{ isTitle?: boolean, opacity?: number }>((props) => ({
-    marginLeft: props.isTitle ? 14 : undefined,
-    fontSize: props.isTitle ? '16px' : '15px',
-    lineHeight: props.isTitle ? 1.25 : 1.33,
-    color: '#334562',
-    opacity: props.opacity,
-    fontWeight: props.isTitle ? 600 : 500,
-    letterSpacing: '-0.4px',
-    display: 'block',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    borderRadius: 4,
-}));
+const MenuVertical = Glamorous(XPopperContent)({
+    padding: 0,
+    paddingTop: 8,
+    paddingBottom: 8,
+});
 
-const MenuTitle = Glamorous(XLink)<{ opacity?: number }>((props) => ({
-    fontSize: '16px',
-    lineHeight: 1.25,
+const MenuItem = Glamorous(XLink)((props) => ({
+    height: 40,
+    paddingLeft: '16px',
+    paddingRight: '16px',
+    fontSize: '15px',
+    lineHeight: '40px',
     color: '#334562',
-    opacity: props.opacity,
-    fontWeight: 600,
-    letterSpacing: '0.5px',
+    fontWeight: 500,
     display: 'block',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    borderRadius: 4,
+    ':hover': {
+        backgroundColor: '#f8f8fb'
+    }
 }));
 
 const ProfileTitleContainer = Glamorous(XHorizontal)({
-    marginBottom: 12
+    margin: 16,
+    ':hover': {
+        '& > div': {
+            '& > a': {
+                color: '#654bfa'
+            }
+        }
+    }
+});
+
+const OrganizationTitleContainer = makeNavigable((props) => {
+
+    return (<a href={props.href} ><ProfileTitleContainer separator="none" >{props.children}</ProfileTitleContainer></a>);
 });
 
 class UserPopper extends React.Component<{ picture: string | null, name?: string, logo?: string | null, organizationName?: string, organizationId?: string }, { show: boolean }> {
@@ -248,40 +222,36 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
         return (
             <XPopper
                 placement="right"
-                showOnHoverContent={false}
+                contentContainer={<MenuVertical />}
                 onClickOutside={this.closer}
                 show={this.state.show}
                 padding={25}
                 content={(
-                    <XMenu>
-                        <XVertical separator={10}>
-                            <ProfileTitleContainer separator="none" alignItems="center">
-                                <XAvatar cloudImageUuid={this.props.picture || undefined} />
-                                <ProfileTitle>{this.props.name}</ProfileTitle>
-                            </ProfileTitleContainer>
+                    <XVertical separator="none">
+                        <ProfileTitleContainer separator="none" alignItems="center">
+                            <XAvatar cloudImageUuid={this.props.picture || undefined} />
+                            <ProfileTitle>{this.props.name}</ProfileTitle>
+                        </ProfileTitleContainer>
 
-                            <MenuItem path="/settings/profile">{TextGlobal.editProfile}</MenuItem>
-                            <MenuItem path="/auth/logout">{TextGlobal.signOut}</MenuItem>
+                        <MenuItem path="/settings/profile">{TextGlobal.editProfile}</MenuItem>
 
-                            {this.props.organizationId && (
-                                <>
-                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginLeft: -18, marginRight: -18 }} />
+                        {this.props.organizationId && (
+                            <>
+                                <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)' }} />
 
-                                    <ProfileTitleContainer separator="none">
-                                        <XAvatar cloudImageUuid={this.props.logo || undefined} style="organization" />
-                                        <XVertical separator={1}>
-                                            <MenuItem isTitle={true} path={'/o/' + this.props.organizationId}>{this.props.organizationName}</MenuItem>
-                                            <ProfileSubTitle path={'/o/' + this.props.organizationId}>{TextGlobal.viewProfile}</ProfileSubTitle>
-                                        </XVertical>
-                                    </ProfileTitleContainer>
-                                    <MenuItem path="/settings/organization">{TextGlobal.editProfile}</MenuItem>
-                                    <MenuItem query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</MenuItem>
-                                    <MenuItem path="/createOrganization">{TextGlobal.addOrganization}</MenuItem>
-                                </>
-                            )}
-
-                        </XVertical>
-                    </XMenu>
+                                <OrganizationTitleContainer path={'/o/' + this.props.organizationId}>
+                                    <XAvatar path={'/o/' + this.props.organizationId} cloudImageUuid={this.props.logo || undefined} style="organization" />
+                                    <XVertical separator={1}>
+                                        <ProfileTitle >{this.props.organizationName}</ProfileTitle>
+                                        <ProfileSubTitle>{TextGlobal.viewProfile}</ProfileSubTitle>
+                                    </XVertical>
+                                </OrganizationTitleContainer>
+                                <MenuItem path="/settings/organization">{TextGlobal.editProfile}</MenuItem>
+                                <MenuItem query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</MenuItem>
+                            </>
+                        )}
+                        <MenuItem path="/auth/logout">{TextGlobal.signOut}</MenuItem>
+                    </XVertical>
                 )}
             >
                 <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} />
@@ -581,46 +551,38 @@ const Home = withUserInfo((props) => {
     );
 });
 
-const AddListingContainer = Glamorous(XVertical)({
-    padding: 8
+const AddListingContent = withUserInfo((props) => {
+    return (
+        <>
+            <MenuItem path={'/o/' + props.organization!!.id + '?addListing=DO'}>{TextAppBar.items.addDevelopmentOpportunity}</MenuItem>
+            <MenuItem path={'/o/' + props.organization!!.id + '?addListing=AR'}>{TextAppBar.items.addAquisitionRequest}</MenuItem>
+            <MenuItem path="/createOrganization">{TextGlobal.addOrganization}</MenuItem>
+        </>
+    );
 });
 
-class AddListingPopper extends React.Component<{ organizationId: string }, { show?: boolean }> {
-    constructor(props: { organizationId: string }) {
+class AddListing extends React.Component<{}, { show?: boolean }> {
+    constructor(props: any) {
         super(props);
-
-        this.state = {
-            show: false
-        };
+        this.state = { show: false };
     }
-
     switch = () => {
         this.setState({
             show: !this.state.show
         });
     }
 
-    closer = () => {
-        this.setState({
-            show: false
-        });
-    }
-
     render() {
+        console.warn(this.state);
         return (
             <XPopper
+                contentContainer={<MenuVertical />}
+                marginTop={70}
                 placement="right"
-                showOnHoverContent={false}
-                onClickOutside={this.closer}
                 show={this.state.show}
-                marginTop={80}
-                content={(
-                    <AddListingContainer separator={11}>
-                        <MenuTitle >{TextAppBar.items.addListing}</MenuTitle>
-                        <MenuItem path={'/o/' + this.props.organizationId + '?addListing=DO'}>Development opportunity</MenuItem>
-                        <MenuItem path={'/o/' + this.props.organizationId + '?addListing=AR'}>Aquisition request</MenuItem>
-                    </AddListingContainer>
-                )}
+                padding={0}
+                content={<AddListingContent />}
+                onClickOutside={this.switch}
             >
                 <NavigatorItem onClick={this.switch}>
                     <NavigatorIcon icon="add" />
@@ -629,10 +591,6 @@ class AddListingPopper extends React.Component<{ organizationId: string }, { sho
         );
     }
 }
-
-const AddListing = withUserInfo((props) => (
-    <AddListingPopper organizationId={props.organization!!.id} />
-));
 
 const OrganizationPicker = withMyOrganizations((props) => {
     if (props.data.loading) {
@@ -751,7 +709,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
                             <XWithRole role={['feature-marketplace']} negate={true}>
                                 <Home />
-                                <AddListing />
                             </XWithRole>
 
                             <XPopper
@@ -855,6 +812,9 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 </XPopper>
                             </XWithRole>
                             <BottomNavigation>
+                                <XWithRole role={['feature-marketplace']} negate={true}>
+                                    <AddListing />
+                                </XWithRole>
                                 <XWithRole role={['super-admin', 'software-developer']}>
                                     <XPopper
                                         placement="right"
