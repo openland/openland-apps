@@ -438,7 +438,6 @@ interface TagRowMapProps {
     items: string[];
     bordered?: boolean;
     paddingLeft?: number;
-    titlePaddingTop?: number;
     isOnlyTagComponent?: boolean;
 }
 
@@ -459,7 +458,7 @@ const TagRowMapMain = (props: TagRowMapProps) => (
 
 const TagRowMapCard = (props: TagRowMapProps) => (
     <OpportunitiesWrapper>
-        <OpportunitiesTextWrapper width={150} paddingLeft={props.paddingLeft} paddingTop={props.titlePaddingTop}>
+        <OpportunitiesTextWrapper width={150} paddingLeft={props.paddingLeft} paddingTop={10}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered}>
@@ -480,15 +479,13 @@ interface TagRowProps {
     isTextStyle?: boolean;
     isTagStyle?: boolean;
     paddingLeft?: number;
-    titlePaddingTop?: number;
     valuePaddingTop?: number;
-    titlePaddingBottom?: number;
     marginBottom?: number;
 }
 
 const TagRowCard = (props: TagRowProps) => (
     <OpportunitiesWrapper marginBottom={props.marginBottom}>
-        <OpportunitiesTextWrapper width={150} paddingLeft={props.paddingLeft} paddingTop={props.titlePaddingTop} paddingBottom={props.titlePaddingBottom}>
+        <OpportunitiesTextWrapper width={150} paddingLeft={props.paddingLeft} paddingTop={props.isTagStyle ? 10 : 0}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered} paddingTop={props.valuePaddingTop}>
@@ -578,23 +575,23 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
         const { item, full } = this.props;
 
         const FullContent = (
-            <XVerticalStyled marginTop={12}>
+            <XVerticalStyled marginTop={item.locationTitle ? 12 : 6}>
                 <div>
                     {item.area && (
-                        <TagRowCard title={TextOrganizationProfile.listingDoTagRowTitileArea} marginBottom={10} valuePaddingTop={7}>
-                            <Text marginTop={5} fontWeight={600}>{`${item.area} ft²`}</Text>
+                        <TagRowCard title={TextOrganizationProfile.listingDoTagRowTitileArea} marginBottom={20}>
+                            <Text fontWeight={600}>{`${item.area} ft²`}</Text>
                         </TagRowCard>
                     )}
                     {item.price && (
-                        <TagRowCard title={TextOrganizationProfile.listingDoTagRowTitilePrice} marginBottom={18} valuePaddingTop={7}>
-                            <Text marginTop={5} fontWeight={600}>{`$${item.price}`}</Text>
+                        <TagRowCard title={TextOrganizationProfile.listingDoTagRowTitilePrice} marginBottom={20}>
+                            <Text fontWeight={600}>{`$${item.price}`}</Text>
                         </TagRowCard>
                     )}
                     {item.summary && (
-                        <TagRowCard title={TextOrganizationProfile.listingDoTagRowTitileSummary} text={item.summary} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} marginBottom={14} />
+                        <TagRowCard title={TextOrganizationProfile.listingDoTagRowTitileSummary} text={item.summary} isTextStyle={true} marginBottom={14} />
                     )}
                     {item.availability && (
-                        <TagRowCard title={TextOrganizationProfile.listingDoTagRowTitileAvailability} text={item.availability} isTextStyle={true} titlePaddingTop={0} titlePaddingBottom={0} marginBottom={14} />
+                        <TagRowCard title={TextOrganizationProfile.listingDoTagRowTitileAvailability} text={item.availability} isTextStyle={true} marginBottom={14} />
                     )}
                     {item.dealType && (
                         <TagRowMapCard title={TextOrganizationProfile.listingDoTagRowTitileDealType} items={item.dealType} />
@@ -632,7 +629,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
 
         return (
             <DevelopmentOportunityCard border={this.props.isSoloComponent}>
-                <XHorizontalStyled justifyContent="space-between" separator={12} padding={24} paddingBottom={full ? 0 : 24}>
+                <XHorizontalStyled justifyContent="space-between" separator={12} padding={24}>
                     {item.location && (
                         <XStreetViewModal
                             location={{ latitude: item.location!.lat, longitude: item.location!.lon }}
@@ -725,10 +722,10 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
         const { item, full } = this.props;
 
         const FullContent = (
-            <XVerticalStyled marginTop={12}>
+            <XVerticalStyled marginTop={item.shortDescription ? 12 : 6}>
                 <div>
                     {item.summary && (
-                        <TagRowCard title={TextOrganizationProfile.listingArTagRowSummary} text={item.summary} isTextStyle={true} titlePaddingTop={0} marginBottom={14} />
+                        <TagRowCard title={TextOrganizationProfile.listingArTagRowSummary} text={item.summary} isTextStyle={true} marginBottom={14} />
                     )}
                     {item.areaRange && (
                         <TagRowCard title={TextOrganizationProfile.listingArTagRowAreaRange} text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} isTagStyle={true} />
@@ -780,7 +777,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                                 </XWithRole>
                             </XHorizontalStyled>
                             {this.props.showType && <Text opacity={0.5}>{TextOrganizationProfile.listingArType}</Text>}
-                            <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>
+                            {item.shortDescription && <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>}
                             {(!full && item.areaRange) && <Text opacity={0.7} bold={true} marginTop={10} lineHeight={1.53}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
 
                             {(!full && !item.areaRange) && <Text opacity={0.5} bold={true} marginTop={10}> <Lock icon="locked" />{TextOrganizationProfile.listingArLocked}</Text>}
