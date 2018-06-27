@@ -670,10 +670,10 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                     {!full && (
                                         <>
                                             {item.area && (
-                                                <Text marginTop={10} bold={true} opacity={0.7} lineHeight={1.53}>{`Area: ${item.area} ft²`}</Text>
+                                                <Text marginTop={12} bold={true} opacity={0.7} lineHeight={1.53}>{`Area: ${item.area} ft²`}</Text>
                                             )}
                                             {item.price && (
-                                                <Text marginTop={10} bold={true} opacity={0.7} lineHeight={1.53}>{`Price: $${item.price}`}</Text>
+                                                <Text marginTop={12} bold={true} opacity={0.7} lineHeight={1.53}>{`Price: $${item.price}`}</Text>
                                             )}
                                         </>
                                     )}
@@ -722,10 +722,10 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
         const { item, full } = this.props;
 
         const FullContent = (
-            <XVerticalStyled marginTop={item.shortDescription ? 12 : 6}>
+            <XVerticalStyled marginTop={item.shortDescription ? 16 : 6}>
                 <div>
                     {item.summary && (
-                        <TagRowCard title={TextOrganizationProfile.listingArTagRowSummary} text={item.summary} isTextStyle={true} marginBottom={14} />
+                        <TagRowCard title={TextOrganizationProfile.listingArTagRowSummary} text={item.summary} isTextStyle={true} marginBottom={8} />
                     )}
                     {item.areaRange && (
                         <TagRowCard title={TextOrganizationProfile.listingArTagRowAreaRange} text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} isTagStyle={true} />
@@ -778,9 +778,9 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                             </XHorizontalStyled>
                             {this.props.showType && <Text opacity={0.5}>{TextOrganizationProfile.listingArType}</Text>}
                             {item.shortDescription && <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>}
-                            {(!full && item.areaRange) && <Text opacity={0.7} bold={true} marginTop={10} lineHeight={1.53}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
+                            {(!full && item.areaRange) && <Text opacity={0.7} bold={true} marginTop={12} lineHeight={1.53}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
 
-                            {(!full && !item.areaRange) && <Text opacity={0.5} bold={true} marginTop={10}> <Lock icon="locked" />{TextOrganizationProfile.listingArLocked}</Text>}
+                            {(!full && !item.areaRange) && <Text opacity={0.5} bold={true} marginTop={12}> <Lock icon="locked" />{TextOrganizationProfile.listingArLocked}</Text>}
 
                             {full && FullContent}
                         </div>
