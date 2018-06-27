@@ -795,9 +795,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 </XPopper>
                             </XWithRole>
                             <BottomNavigation>
-                                <XWithRole role={['feature-marketplace']} negate={true}>
-                                    <AddMenu />
-                                </XWithRole>
+
                                 <XWithRole role={['super-admin', 'software-developer']}>
                                     <XPopper
                                         placement="right"
@@ -827,6 +825,9 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                             <NavigatorIcon icon="color_lens" />
                                         </NavigatorItem>
                                     </XPopper>
+                                </XWithRole>
+                                <XWithRole role={['feature-marketplace']} negate={true}>
+                                    <AddMenu />
                                 </XWithRole>
                                 <NavigatorItem>
                                     <UserProfile />
