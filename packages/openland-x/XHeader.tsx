@@ -23,7 +23,6 @@ const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
 }));
 
 const TargetDivStyle = Glamorous(XHorizontal)<{ ellipcise?: boolean }>((props) => ({
-    alignItems: 'center',
     overflow: props.ellipcise ? 'hidden' : undefined,
     whiteSpace: props.ellipcise ? 'nowrap' : undefined,
     textOverflow: props.ellipcise ? 'ellipsis' : undefined,
@@ -94,9 +93,9 @@ export class XHeader extends React.Component<XCardHeaderProps> {
         let headerMain = (
             <XCardHeaderDiv appStyle={this.props.style} separated={this.props.separated} grow={complex}>
                 <XCardTitle appStyle={this.props.style}>
-                    <TargetDivStyle ellipcise={this.props.truncateTitle}>
+                    <TargetDivStyle ellipcise={this.props.truncateTitle} alignItems="center">
                         {target}
-                        {this.props.text}
+                        <div>{this.props.text}</div>
                         {this.props.bullet && <XBullet color={this.props.bulletColor || 'green'}>{this.props.bullet}</XBullet>}
                     </TargetDivStyle>
 

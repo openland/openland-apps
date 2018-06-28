@@ -25,6 +25,7 @@ import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 const Placeholder = Glamorous(XCard)<{ accent?: boolean }>(props => ({
     backgroundColor: props.accent ? '#654bfa' : '#fff',
     padding: 32,
+    paddingLeft: 42,
     minHeight: 165,
     flex: 1,
     justifyContent: 'center',
@@ -46,6 +47,7 @@ const PlaceholderText = Glamorous.span<{ accent?: boolean }>(props => ({
 }));
 
 const PlaceholderIcon = Glamorous.img((props) => ({
+    marginTop: 6,
     width: 60,
     height: 60,
 }));
@@ -365,6 +367,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                                 field="input.arAreaRange"
                                                                 creatable={true}
                                                                 multi={true}
+                                                                options={[{ label: 'up to 10,000 ft²', value: 'up to 10,000 ft²' }, { label: '10,000 ft² - 100,000 ft²', value: '10,000 ft² - 100,000 ft²' }, { label: '100,000+ ft²', value: '100,000+ ft²' }]}
                                                             />
                                                         </XFormField>
 
@@ -478,7 +481,7 @@ export const DOListingPlaceholder = withMyOrganizationProfile((props) => {
                                     <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
                                     <XVertical maxWidth={452}>
                                         <PlaceholderText>Do you own development sites?</PlaceholderText>
-                                        <XButton query={{ field: 'addListing', value: 'DO' }} text="Add an development opportunity" />
+                                        <PlaceholderButton query={{ field: 'addListing', value: 'DO' }} style="primary" text="Add an development opportunity" />
                                     </XVertical>
 
                                 </XHorizontal>
@@ -510,7 +513,7 @@ export const ARListingPlaceholder = withMyOrganizationProfile((props) => {
                                     <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_ar.svg'} />
                                     <XVertical maxWidth={452}>
                                         <PlaceholderText>Do you own development sites?</PlaceholderText>
-                                        <XButton query={{ field: 'addListing', value: 'AR' }} text="Add an acquisition request" />
+                                        <PlaceholderButton query={{ field: 'addListing', value: 'AR' }} style="primary" text="Add an acquisition request" />
                                     </XVertical>
 
                                 </XHorizontal>
@@ -652,7 +655,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
         >
             <XVertical>
                 <XFormLoadingContent>
-                    <XFormField title="Web Site">
+                    <XFormField title="Website">
                         <XInput field="input.website" />
                     </XFormField>
                     <XFormField title="Twitter">

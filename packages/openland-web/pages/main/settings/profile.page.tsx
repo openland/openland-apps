@@ -21,8 +21,8 @@ import { withQueryLoader } from '../../../components/withQueryLoader';
 
 export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) => {
     return (
-        <Navigation title="Profile">
-            <XHeader text="Profile" />
+        <Navigation title="User profile">
+            <XHeader text="User profile" />
             <XContent>
                 <XVertical alignSelf="stretch">
                     <XForm
@@ -55,7 +55,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                             <XTitle>Contacts</XTitle>
                                             <XFormFieldText field="input.phone" title="Phone Number" size="medium" />
                                             <XFormFieldText field="input.email" title="Email" size="medium" />
-                                            <XFormFieldText field="input.website" title="Web Site" size="medium" />
+                                            <XFormFieldText field="input.website" title="Website" size="medium" />
                                             <XFormFieldText field="input.location" title="Location" size="medium" />
                                         </XVertical>
                                         <XFormField field="input.photoRef" title="Photo">

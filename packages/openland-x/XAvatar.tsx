@@ -95,7 +95,7 @@ let borderRadiusStyles = styleResolverWithProps((props: { style: XAvatarStyle, a
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
-    } : { borderRadius: 16 },
+    } : { borderRadius: 18 },
 }));
 
 interface StyledAvatarProps extends XFlexStyles {
@@ -108,7 +108,7 @@ interface StyledAvatarProps extends XFlexStyles {
 const AvatarBehaviour = [
     (props: any) => ({
         display: 'flex',
-        boxShadow: (props as any).avatarStyle === 'organization' ? undefined : '0 2px 5px 0 rgba(49,49,93,.1), 0 1px 2px 0 rgba(0,0,0,.08)',
+        border: (props as any).avatarStyle === 'organization' ? undefined : '1px solid rgba(164,169,177,0.2)',
         cursor: (props as any).enabled === false ? 'default' : 'pointer',
         src: props.src,
     }),

@@ -1,6 +1,7 @@
 import '../init';
 import '../../globals';
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -14,7 +15,7 @@ import {
     ContentWrapper,
     Footer,
 } from './components/CreateProfileComponents';
-import { XButton } from 'openland-x/XButton';
+import { XLink } from 'openland-x/XLink';
 import { withRouter } from 'next/router';
 import { withUserInfo } from '../../components/UserInfo';
 import { switchOrganization } from '../../utils/switchOrganization';
@@ -28,6 +29,19 @@ import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { sanitizeIamgeRef } from '../../utils/sanitizer';
+
+const Cancel = Glamorous(XLink)({
+    display: 'flex',
+    alignItems: 'center',
+    color: '#765efd',
+    fontSize: 14,
+    letterSpacing: -0.2,
+    fontWeight: 500,
+    '&:hover': {
+        color: '#765efd',
+        textDecoration: 'underline'
+    }
+});
 
 const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props) => {
 
@@ -81,7 +95,7 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                             </XHorizontal>
                         </XFormLoadingContent>
                         <Footer>
-                            {props.isAccountExists && <XButton style="link" text={InitTexts.create_organization.cancel} path="/" />}
+                            {props.isAccountExists && <Cancel path="/">{InitTexts.create_organization.cancel}</Cancel>}
                             {!props.isAccountExists && (
                                 <XFormSubmit
                                     style="link"

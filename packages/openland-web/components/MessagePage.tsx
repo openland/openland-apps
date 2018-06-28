@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XLink } from 'openland-x/XLink';
 
-let ErrorDiv = Glamorous.div({
+const ErrorDiv = Glamorous.div({
     position: 'relative',
     backgroundColor: '#fff',
 
@@ -25,22 +26,38 @@ const Logo = Glamorous.div<{ width?: number, height?: number }>((props) => ({
     left: 23
 }));
 
-let Container = Glamorous.div({
+const Container = Glamorous.div({
     // width: 400
 });
 
-let Footer = Glamorous.div({
+const Footer = Glamorous.div({
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 16,
-    margin: 'auto',
+    margin: 'auto'
+});
+
+const FooterText = Glamorous.div({
     fontSize: 14,
     lineHeight: 1.71,
-    letterSpacing: 0.4,
+    letterSpacing: -0.1,
     textAlign: 'center',
     color: '#1f3449',
     opacity: 0.4,
+    '&:first-child': {
+        marginBottom: 6
+    }
+});
+
+const FooterLink = Glamorous(XLink)({
+    display: 'inline-block',
+    textDecoration: 'underline',
+    fontSize: 14,
+    lineHeight: 1.71,
+    letterSpacing: -0.1,
+    textAlign: 'center',
+    color: '#1f3449'
 });
 
 export function MessagePage(props: { children?: any }) {
@@ -50,7 +67,10 @@ export function MessagePage(props: { children?: any }) {
             <Container>
                 {props.children}
             </Container>
-            <Footer>© 2017-2018 Data Makes Perfect, Inc.</Footer>
+            <Footer>
+                <FooterText>By creating an account you are accepting our <FooterLink>Terms of Service</FooterLink> and <FooterLink>Privacy Policy</FooterLink></FooterText>
+                <FooterText>© 2017-2018 Data Makes Perfect, Inc.</FooterText>
+            </Footer>
         </ErrorDiv>
     );
 }

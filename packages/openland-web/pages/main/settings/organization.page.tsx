@@ -124,7 +124,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         <XFormField title="Name">
                                             <XInput field="input.name" />
                                         </XFormField>
-                                        <XFormField title="Web Site">
+                                        <XFormField title="Website">
                                             <XInput field="input.website" />
                                         </XFormField>
                                         <XFormField title="Location">
@@ -284,6 +284,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                             field="input.arAreaRange"
                                             creatable={true}
                                             multi={true}
+                                            options={[{label: 'up to 10,000 ft²', value: 'up to 10,000 ft²'}, {label: '10,000 ft² - 100,000 ft²', value: '10,000 ft² - 100,000 ft²'}, {label: '100,000+ ft²', value: '100,000+ ft²'}]}
                                         />
                                     </XFormField>
 
@@ -448,9 +449,9 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                 <XInput field="name" required={true} placeholder="Name" />
                                 <XInput field="phone" placeholder="Phone" />
                                 <XInput field="email" placeholder="Email" />
-                                <XInput field="link" placeholder="Link" />
+                                <XInput field="link" placeholder="LinkedIn" />
                                 <XInput field="position" placeholder="Position" />
-                                <XAvatarUpload field="photoRef" />
+                                <XAvatarUpload field="photoRef" placeholder={{add: 'Add photo', change: 'Change photo'}} />
                             </XVertical>
                         </XFormLoadingContent>
                     </XModalForm>

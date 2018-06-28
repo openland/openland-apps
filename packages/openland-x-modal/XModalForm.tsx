@@ -37,7 +37,11 @@ const Footer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderTop: '1px solid rgba(220, 222, 228, 0.6)',
+    '> *': {
+        borderTop: 0
+    }
 });
 
 const FooterSubActions = Glamorous(XModalFooter)({

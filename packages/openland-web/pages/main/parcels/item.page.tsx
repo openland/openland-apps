@@ -144,7 +144,8 @@ export default withApp('Parcel', 'viewer', withParcel(withQueryLoader((props) =>
                                 </>
                             )}
 
-                        </>)}
+                        </>
+                    )}
 
                     {props.router.path === linksPath && props.data.item.links.length > 0 && (
                         <XPropertyList title="Links">

@@ -6,11 +6,12 @@ import { FollowOrganizationMutation } from 'openland-api/FollowOrganizationMutat
 import { CreateListingMutation } from 'openland-api/CreateListingMutation';
 import { EditListingMutation } from 'openland-api/EditListingMutation';
 import { DeleteListingMutation } from 'openland-api/DeleteListingMutation';
+import { MyOrganizationProfileQuery } from 'openland-api/MyOrganizationProfileQuery';
 
 export const withOrganization = graphqlCompose5(
     graphqlRouted(OrganizationQuery, { params: ['organizationId'] }),
     graphqlMutation(FollowOrganizationMutation, 'followOrganization', { params: ['organizationId'] }),
-    graphqlMutation(CreateListingMutation, 'createListing', { refetchQueries: [OrganizationQuery], refetchParams: ['organizationId'] }),
+    graphqlMutation(CreateListingMutation, 'createListing', { refetchQueries: [OrganizationQuery, MyOrganizationProfileQuery], refetchParams: ['organizationId'] }),
     graphqlMutation(EditListingMutation, 'editListing', { refetchQueries: [OrganizationQuery], refetchParams: ['organizationId'] }),
-    graphqlMutation(DeleteListingMutation, 'deleteListing', { refetchQueries: [OrganizationQuery], refetchParams: ['organizationId'] })
+    graphqlMutation(DeleteListingMutation, 'deleteListing', { refetchQueries: [OrganizationQuery, MyOrganizationProfileQuery], refetchParams: ['organizationId'] })
 );

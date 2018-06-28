@@ -14,7 +14,7 @@ export const Navigation = (props: { title: string, children?: any }) => (
                     <Sidebar.Subitem anchor="/settings/organization#ar">Acquisitions</Sidebar.Subitem>
                     <Sidebar.Subitem anchor="/settings/organization#contacts">Contacts</Sidebar.Subitem>
                     <Sidebar.Subitem anchor="/settings/invites">Team</Sidebar.Subitem>
-                    <Sidebar.Item path="/settings/profile">Profile</Sidebar.Item>
+                    <Sidebar.Item path="/settings/profile">User profile</Sidebar.Item>
                 </Sidebar>
             </Scaffold.Menu>
             <Scaffold.Content padding={false} >

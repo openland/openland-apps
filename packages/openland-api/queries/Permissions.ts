@@ -16,6 +16,7 @@ export const SuperAdminsQuery = gql`
             user {
                 ...UserShort
             }
+            email
         }
     }
     ${UserShort}

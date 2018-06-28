@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { findChild } from './utils';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XPicture } from 'openland-x/XPicture';
 import { XIcon } from 'openland-x/XIcon';
@@ -18,11 +19,9 @@ import { XPopper } from 'openland-x/XPopper';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XModal } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
-import { XTable } from 'openland-x/XTable';
 import { switchOrganization } from '../utils/switchOrganization';
 import { withMyOrganizations } from '../api/withMyOrganizations';
 import { XScrollView } from 'openland-x/XScrollView';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XMenuVertical, XMenuItem } from './Incubator/XOverflow';
 
@@ -575,20 +574,67 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
     }
 }
 
-const OrganizationPicker = withMyOrganizations((props) => {
+const OrganizationWrapper = Glamorous(XLink)({
+    paddingTop: 18,
+    paddingBottom: 18,
+    paddingLeft: 24,
+    paddingRight: 24,
+    '&:hover': {
+        backgroundColor: '#f8f8fb'
+    }
+});
+
+const CheckIcon = Glamorous.div({
+    width: 18,
+    height: 18,
+    borderRadius: 50,
+    color: '#fff',
+    backgroundColor: '#4428e0',
+    backgroundImage: 'url(\'/static/img/icons/check-form.svg\')',
+    backgroundSize: 12,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    border: '1px solid rgba(97, 126, 156, 0.2)',
+    marginRight: 10,
+    marginLeft: 'auto'
+});
+
+const OrganizationTitle = Glamorous.div({
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 1.25,
+    letterSpacing: -0.1,
+    color: '#334562'
+});
+
+const XVerticalStyled = Glamorous(XVertical)({
+    marginLeft: -24,
+    width: 'calc(100% + 48px)'
+});
+
+const OrganizationPicker = withMyOrganizations(withUserInfo((props) => {
     if (props.data.loading) {
-        return <XLoader loading={true} />;
+        return <XLoader loading={true} height={100} />;
     }
     return (
-        <XTable>
-            <XTable.Body>
-                {props.data.myOrganizations.map((v) => (
-                    <XTable.Row onClick={() => switchOrganization(v.id)}>{v.name}</XTable.Row>
-                ))}
-            </XTable.Body>
-        </XTable>
+        <XVerticalStyled separator="none">
+            {props.data.myOrganizations.map((v) => (
+                <OrganizationWrapper onClick={() => switchOrganization(v.id)} key={v.id + v.id}>
+                    <XHorizontal key={v.id} alignItems="center" flexGrow={1}>
+                        <XAvatar
+                            cloudImageUuid={v.photo!!}
+                            onClick={() => switchOrganization(v.id)}
+                            size="medium"
+                            style="organization"
+                        />
+                        <OrganizationTitle onClick={() => switchOrganization(v.id)}>{v.name}</OrganizationTitle>
+                        {(props.organization && props.organization.id === v.id) && <CheckIcon />}
+                    </XHorizontal>
+                </OrganizationWrapper>
+            ))}
+        </XVerticalStyled>
     );
-});
+}));
 
 export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, searchText: string }> {
     static Menu = ScaffoldMenu;
@@ -628,7 +674,11 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
         return (
             <RootContainer>
-                <XModal title={TextGlobal.switch} targetQuery="org">
+                <XModal
+                    useTopCloser={true}
+                    title={TextGlobal.switch}
+                    targetQuery="org"
+                >
                     <OrganizationPicker />
                 </XModal>
                 <NavigationWrapper>
