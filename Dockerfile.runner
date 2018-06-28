@@ -1,11 +1,8 @@
 FROM node:8.9.4-alpine
-
-ENV NODE_ENV=production
-
-WORKDIR /app
-COPY package.json /app/
+COPY package.json yarn.lock /app/
 COPY node_modules/ /app/node_modules/
 COPY dist/ /app/
-
 EXPOSE 3000
+WORKDIR /app
+ENV NODE_ENV=production
 CMD [ "node", "server.js" ]
