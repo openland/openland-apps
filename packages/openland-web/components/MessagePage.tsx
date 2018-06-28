@@ -41,9 +41,10 @@ const Footer = Glamorous.div({
 const FooterText = Glamorous.div({
     fontSize: 14,
     lineHeight: 1.71,
-    letterSpacing: -0.1,
+    letterSpacing: -0.4,
+    fontWeight: 500,
     textAlign: 'center',
-    color: '#1f3449',
+    color: '#334562',
     opacity: 0.4,
     '&:first-child': {
         marginBottom: 6
@@ -55,9 +56,10 @@ const FooterLink = Glamorous(XLink)({
     textDecoration: 'underline',
     fontSize: 14,
     lineHeight: 1.71,
-    letterSpacing: -0.1,
+    letterSpacing: -0.4,
+    fontWeight: 500,
     textAlign: 'center',
-    color: '#1f3449'
+    color: '#334562'
 });
 
 export function MessagePage(props: { children?: any }) {

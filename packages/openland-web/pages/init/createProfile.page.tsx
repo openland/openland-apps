@@ -23,6 +23,40 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XFormError } from 'openland-x-forms/XFormError';
+import glamorous from 'glamorous';
+import { XLink } from 'openland-x/XLink';
+
+const Footer = glamorous.div({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 16,
+    margin: 'auto'
+});
+
+const FooterText = glamorous.div({
+    fontSize: 14,
+    lineHeight: 1.71,
+    letterSpacing: -0.4,
+    fontWeight: 500,
+    textAlign: 'center',
+    color: '#334562',
+    opacity: 0.4,
+    '&:first-child': {
+        marginBottom: 6
+    }
+});
+
+const FooterLink = glamorous(XLink)({
+    display: 'inline-block',
+    textDecoration: 'underline',
+    fontSize: 14,
+    lineHeight: 1.71,
+    letterSpacing: -0.4,
+    fontWeight: 500,
+    textAlign: 'center',
+    color: '#334562'
+});
 
 const CreateProfileForm = withProfileCreate((props) => {
     return (
@@ -72,6 +106,10 @@ const CreateProfileForm = withProfileCreate((props) => {
                     </XVertical>
                 </XForm>
             </ContentWrapper>
+            <Footer>
+                <FooterText>By creating an account you are accepting our <FooterLink>Terms of Service</FooterLink> and <FooterLink>Privacy Policy</FooterLink></FooterText>
+                <FooterText>© {new Date().getFullYear()} Data Makes Perfect, Inc.</FooterText>
+            </Footer>
         </RootContainer>
     );
 });
