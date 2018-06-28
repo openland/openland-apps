@@ -14,6 +14,7 @@ import glamorous from 'glamorous';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { withQueryLoader } from '../../components/withQueryLoader';
 import { withSuperAccounts } from '../../api/withSuperAccounts';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
 const AddAccountForm = withSuperAccountAdd((props) => {
     return (
@@ -64,9 +65,10 @@ export default withApp('Super Organizations', 'super-admin', withSuperAccounts(w
                             <XTable.Cell>{v.title}</XTable.Cell>
                             <XTable.Cell>{v.state}</XTable.Cell>
                             <XTable.Cell>
-                                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                    <XButton path={'/super/orgs/' + v.id} style="ghost" text="View" />
-                                </div>
+                                <XHorizontal justifyContent="flex-end">
+                                    <XButton path={'/super/orgs/' + v.id} style="ghost" text="Settings" />
+                                    <XButton path={'/o/' + v.orgId} style="ghost" text="Profile" />
+                                </XHorizontal>
                             </XTable.Cell>
                         </XTable.Row>
                     ))}

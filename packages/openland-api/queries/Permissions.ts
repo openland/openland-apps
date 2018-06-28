@@ -26,6 +26,7 @@ export const SuperAccountsQuery = gql`
     query SuperAccounts {
         superAccounts {
             id
+            orgId
             title
             state
         }
