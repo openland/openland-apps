@@ -59,7 +59,7 @@ export const TextOrganizationProfile = {
     listingCreateDoSummaryPlaceholder: 'Summary',
 
     listingCreateArShortDescriptionTitle: 'Short description',
-    listingCreateArShortDescriptionPlaceholder: 'SumShort descriptionmary',
+    listingCreateArShortDescriptionPlaceholder: 'Short description',
     listingCreateArSummaryTitle: 'Summary',
     listingCreateArSummaryPlaceholder: 'Summary',
 
@@ -101,7 +101,7 @@ export const TextOrganizationProfile = {
     listingDoOwerflowGoogleMaps: 'Google map',
     
     listingDoType: 'Development oportunity',
-    listingDoLocked: 'Details and location on request',
+    listingDoLocked: 'Detailed requirements on request',
 
     listingArTagRowSummary : 'Summary',
     listingArTagRowAreaRange : 'Area range',
@@ -114,7 +114,7 @@ export const TextOrganizationProfile = {
     listingArOwerflowDelete: 'Delete',
     
     listingArType: 'Acquizition request',
-    listingArLocked: 'Details and location on request',
+    listingArLocked: 'Detailed requirements on request',
     
     listingEditDoLinkTextTitle: 'Link text',
     listingEditDoLinkTextPlaceholder: 'Link text',

@@ -29,7 +29,7 @@ export const InitTexts = {
 
         reset: 'Reset',
         next: 'Next',
-        complete: 'Complete'
+        complete: 'Continue'
     },
 
     join: {
