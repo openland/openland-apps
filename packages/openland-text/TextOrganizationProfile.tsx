@@ -43,6 +43,11 @@ export const TextOrganizationProfile = {
     listingCreateDoTitle: 'Create development opportunity',
     listingCreateArTitle: 'Create acquisition requests',
 
+    overviewListingsDoFooterNonEmpty: 'View all',
+    overviewListingsDoFooterAddListing: 'Add a listing',
+    overviewListingsArFooterNonEmpty: 'View all',
+    overviewListingsArFooterAddListing: 'Add a listing',
+
     listingCreateDoPhotoPlaceholderAdd: 'Add listing photo',
     listingCreateDoPhotoPlaceholderChange: 'Change listing photo',
     listingCreateDoNameTitle: 'Name',
