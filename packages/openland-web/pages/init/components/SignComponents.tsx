@@ -293,7 +293,7 @@ export const SignContainer = (props: SignContainerProps) => {
                 </MainContent>
                 <Footer>
                     <FooterText>By creating an account you are accepting our <FooterLink>Terms of Service</FooterLink> and <FooterLink>Privacy Policy</FooterLink></FooterText>
-                    <FooterText>© 2017-2018 Data Makes Perfect, Inc.</FooterText>
+                    <FooterText>© {new Date().getFullYear()} Data Makes Perfect, Inc.</FooterText>
                 </Footer>
             </LeftContainer>
             <RightContainer>

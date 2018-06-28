@@ -117,7 +117,7 @@ const Container = (props: { children?: any }) => {
             <MainContent>
                 {props.children}
             </MainContent>
-            <Footer>© 2017-2018 Data Makes Perfect, Inc.</Footer>
+            <Footer>© {new Date().getFullYear()} Data Makes Perfect, Inc.</Footer>
         </RootContainer>
     );
 };
