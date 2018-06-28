@@ -854,6 +854,31 @@ const ListingsWrap = Glamorous(XVertical)({
     }
 });
 
+const AddListingButton = Glamorous(XLink)({
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: '#654bfa',
+    color: '#ffffff',
+    border: 'solid 1px transparent',
+    height: 32,
+    fontSize: 14,
+    letterSpacing: -0.2,
+    fontWeight: 500,
+    borderRadius: 4,
+    paddingLeft: 14,
+    paddingRight: 8,
+    '& .material-icons': {
+        transform: 'rotate(90deg)',
+        opacity: 0.5,
+        fontSize: 23
+    },
+    transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease',
+    '&:hover': {
+        backgroundColor: '#816cf9',
+        color: '#fff'
+    }
+});
+
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
 
     let editDoTarget = props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editListing)[0];
@@ -1168,8 +1193,13 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     <XOverflow
                                         placement="bottom"
                                         width={220}
-                                        marginRight={108}
-                                        target={<XButton style="primary" text={TextOrganizationProfile.headerButtonAddListing} />}
+                                        marginRight={92}
+                                        target={
+                                            <AddListingButton>
+                                                <span>{TextOrganizationProfile.headerButtonAddListing}</span>
+                                                <XIcon icon="keyboard_arrow_right" />
+                                            </AddListingButton>
+                                        }
                                         content={
                                             <>
                                                 <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>{TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
