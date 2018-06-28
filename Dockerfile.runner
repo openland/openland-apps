@@ -1,9 +1,7 @@
 FROM node:8.9.4-alpine
 
-ENV TINI_VERSION v0.18.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
-ENTRYPOINT ["/tini", "--"]
+RUN apk add --no-cache tini
+ENTRYPOINT ["/sbin/tini", "--"]
 
 ADD package.json /app/
 COPY node_modules/ /app/node_modules/
