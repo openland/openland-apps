@@ -73,7 +73,17 @@ export const InitTexts = {
     need_info: {
         pageTitle: 'Activation needed',
         title: 'Activation needed',
-        content: <>We onboard new members in small groups. Contact <XLink href="mailto:support@openland.com">support</XLink> to request an account activation.</> 
+        content: <>We onboard new members in small groups. Contact <XLink href="mailto:support@openland.com">support</XLink> to request an account activation.</>
+    },
+
+    waitlist: {
+        pageTitle: 'You have joined waitlist',
+        title: 'You have joined waitlist',
+        content: (
+            <>
+                <p>Openland is currently in closed beta.</p>
+                <p>We onboard new users in small groups and will let you know when the system is ready for you.</p>
+            </>)
     },
 
     suspended: {

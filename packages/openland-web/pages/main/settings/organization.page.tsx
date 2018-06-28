@@ -121,36 +121,36 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                             <XFormLoadingContent>
                                 <XHorizontal>
                                     <XVertical flexGrow={1} maxWidth={500}>
-                                        <XFormField title="Name">
+                                        <XFormField title="Name" field="input.name">
                                             <XInput field="input.name" />
                                         </XFormField>
-                                        <XFormField title="Website">
+                                        <XFormField title="Website" field="input.website" optional={true}>
                                             <XInput field="input.website" />
                                         </XFormField>
-                                        <XFormField title="Location">
+                                        <XFormField title="Location" field="input.location" optional={true}>
                                             <XInput field="input.location" />
                                         </XFormField>
-                                        <XFormField title="Twitter">
+                                        <XFormField title="Twitter" field="input.twitter" optional={true}>
                                             <XInput field="input.twitter" />
                                         </XFormField>
-                                        <XFormField title="Facebook">
+                                        <XFormField title="Facebook" field="input.facebook" optional={true}>
                                             <XInput field="input.facebook" />
                                         </XFormField>
-                                        <XFormField title="About">
+                                        <XFormField title="About" field="fields.input.about" optional={true}>
                                             <XTextArea valueStoreKey="fields.input.about" />
                                         </XFormField>
 
-                                        <XFormField title="OrganizationType">
+                                        <XFormField title="OrganizationType" field="input.organizationType" optional={true}>
                                             <XSelect creatable={true} multi={true} field="input.organizationType" />
                                         </XFormField>
-                                        <XFormField title="LookingFor">
+                                        <XFormField title="LookingFor" field="input.lookingFor" optional={true}>
                                             <XSelect creatable={true} multi={true} field="input.lookingFor" />
                                         </XFormField>
-                                        <XFormField title="Geographies">
+                                        <XFormField title="Geographies" field="input.geographies" optional={true}>
                                             <XSelect creatable={true} multi={true} field="input.geographies" />
                                         </XFormField>
                                     </XVertical>
-                                    <XFormField title="Photo">
+                                    <XFormField title="Photo" field="input.photoRef" optional={true}>
                                         <XAvatarUpload field="input.photoRef" />
                                     </XFormField>
                                 </XHorizontal>
@@ -187,7 +187,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                         <XVertical maxWidth={500}>
                             <XFormLoadingContent>
                                 <XVertical>
-                                    <XFormField title="Shape And Form">
+                                    <XFormField title="Shape And Form" field="input.doShapeAndForm" optional={true}>
                                         <XSelect
                                             field="input.doShapeAndForm"
                                             creatable={true}
@@ -195,7 +195,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         />
                                     </XFormField>
 
-                                    <XFormField title="Current Use">
+                                    <XFormField title="Current Use" field="input.doCurrentUse" optional={true}>
                                         <XSelect
                                             field="input.doCurrentUse"
                                             creatable={true}
@@ -203,7 +203,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         />
                                     </XFormField>
 
-                                    <XFormField title="Good Fit For">
+                                    <XFormField title="Good Fit For" field="input.doGoodFitFor" optional={true}>
                                         <XSelect
                                             field="input.doGoodFitFor"
                                             creatable={true}
@@ -211,7 +211,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         />
                                     </XFormField>
 
-                                    <XFormField title="Special Attributes">
+                                    <XFormField title="Special Attributes" field="input.doSpecialAttributes" optional={true}>
                                         <XSelect
                                             field="input.doSpecialAttributes"
                                             creatable={true}
@@ -219,7 +219,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         />
                                     </XFormField>
 
-                                    <XFormField title="Availability">
+                                    <XFormField title="Availability" field="input.doAvailability" optional={true}>
                                         <XSelect
                                             field="input.doAvailability"
                                             creatable={true}
@@ -271,7 +271,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                             <XFormLoadingContent>
                                 <XVertical>
 
-                                    <XFormField title="Geographies">
+                                    <XFormField title="Geographies" field="input.arGeographies" optional={true}>
                                         <XSelect
                                             field="input.arGeographies"
                                             creatable={true}
@@ -279,16 +279,16 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         />
                                     </XFormField>
 
-                                    <XFormField title="Area Range">
+                                    <XFormField title="Area Range" field="input.arAreaRange" optional={true}>
                                         <XSelect
                                             field="input.arAreaRange"
                                             creatable={true}
                                             multi={true}
-                                            options={[{label: 'up to 10,000 ft²', value: 'up to 10,000 ft²'}, {label: '10,000 ft² - 100,000 ft²', value: '10,000 ft² - 100,000 ft²'}, {label: '100,000+ ft²', value: '100,000+ ft²'}]}
+                                            options={[{ label: 'up to 10,000 ft²', value: 'up to 10,000 ft²' }, { label: '10,000 ft² - 100,000 ft²', value: '10,000 ft² - 100,000 ft²' }, { label: '100,000+ ft²', value: '100,000+ ft²' }]}
                                         />
                                     </XFormField>
 
-                                    <XFormField title="Height Limit">
+                                    <XFormField title="Height Limit" field="input.arHeightLimit" optional={true}>
                                         <XSelect
                                             field="input.arHeightLimit"
                                             creatable={true}
@@ -296,7 +296,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         />
                                     </XFormField>
 
-                                    <XFormField title="Activity Status">
+                                    <XFormField title="Activity Status" field="input.arActivityStatus" optional={true}>
                                         <XSelect
                                             field="input.arActivityStatus"
                                             creatable={true}
@@ -304,7 +304,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         />
                                     </XFormField>
 
-                                    <XFormField title="3-year Aquisition Budget">
+                                    <XFormField title="3-year Aquisition Budget" field="input.arAquisitionBudget" optional={true}>
                                         <XSelect
                                             field="input.arAquisitionBudget"
                                             creatable={true}
@@ -312,7 +312,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         />
                                     </XFormField>
 
-                                    <XFormField title="Aquisition Rate">
+                                    <XFormField title="Aquisition Rate" field="input.arAquisitionRate" optional={true}>
                                         <XSelect
                                             field="input.arAquisitionRate"
                                             creatable={true}
@@ -320,7 +320,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         />
                                     </XFormField>
 
-                                    <XFormField title="Closing Time">
+                                    <XFormField title="Closing Time" field="input.arClosingTime" optional={true}>
                                         <XSelect
                                             field="input.arClosingTime"
                                             creatable={true}
@@ -328,7 +328,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         />
                                     </XFormField>
 
-                                    <XFormField title="Special Attributes">
+                                    <XFormField title="Special Attributes" field="input.arSpecialAttributes" optional={true}>
                                         <XSelect
                                             field="input.arSpecialAttributes"
                                             creatable={true}
@@ -336,7 +336,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                         />
                                     </XFormField>
 
-                                    <XFormField title="Land Use">
+                                    <XFormField title="Land Use" field="input.arLandUse" optional={true}>
                                         <XSelect
                                             field="input.arLandUse"
                                             creatable={true}
@@ -408,7 +408,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                         >
                             <XFormLoadingContent>
                                 <XVertical>
-                                    <XInput field="name" required={true} placeholder="Name" />
+                                    <XInput field="name" placeholder="Name" />
                                     <XInput field="phone" placeholder="Phone" />
                                     <XInput field="email" placeholder="Email" />
                                     <XInput field="link" placeholder="Link" />
@@ -451,7 +451,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                 <XInput field="email" placeholder="Email" />
                                 <XInput field="link" placeholder="LinkedIn" />
                                 <XInput field="position" placeholder="Position" />
-                                <XAvatarUpload field="photoRef" placeholder={{add: 'Add photo', change: 'Change photo'}} />
+                                <XAvatarUpload field="photoRef" placeholder={{ add: 'Add photo', change: 'Change photo' }} />
                             </XVertical>
                         </XFormLoadingContent>
                     </XModalForm>

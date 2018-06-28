@@ -14,7 +14,7 @@ export const AuthRouter = withUserInfo((props) => {
         // For non-init pages - set redirect path
         if ([
             '/activation',
-            '/need_info',
+            '/waitlist',
             '/suspended',
             '/createProfile',
             '/pickOrganization',
@@ -108,10 +108,10 @@ export const AuthRouter = withUserInfo((props) => {
     if (!handled && !props.isCompleted) {
         handled = true;
         if ([
-            '/need_info',
+            '/waitlist',
         ].indexOf(props.router.path) < 0) {
             console.warn('NeedInfo');
-            return <XPageRedirect path="/need_info" />;
+            return <XPageRedirect path="/waitlist" />;
         }
     }
 
@@ -131,7 +131,7 @@ export const AuthRouter = withUserInfo((props) => {
         handled = true;
         if ([
             '/activation',
-            '/need_info',
+            '/waitlist',
             '/suspended',
             '/createProfile',
             '/pickOrganization',

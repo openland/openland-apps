@@ -2379,6 +2379,7 @@ export interface SuperAccountsQuery {
   superAccounts:  Array< {
     __typename: "SuperAccount",
     id: string,
+    orgId: string,
     title: string,
     state: SuperAccountState,
   } >,

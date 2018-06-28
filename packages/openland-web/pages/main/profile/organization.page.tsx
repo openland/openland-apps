@@ -352,6 +352,14 @@ const OpportunitiesMainWrapper = Glamorous.div({
             }
         }
     },
+    '@media (max-width: 950px)': {
+        flexDirection: 'column',
+        borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+        paddingBottom: 16,
+        '&:last-child': {
+            borderBottom: 'none'
+        }
+    }
 });
 
 const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number }>((props) => ({
@@ -379,20 +387,41 @@ const OpportunitiesTextWrapper = Glamorous.div<OpportunitiesTextWrapperProps>((p
     paddingLeft: props.paddingLeft,
     paddingRight: props.paddingRight,
     paddingTop: props.paddingTop !== undefined ? props.paddingTop : 10,
-    paddingBottom: props.paddingBottom !== undefined ? props.paddingBottom : undefined
+    paddingBottom: props.paddingBottom !== undefined ? props.paddingBottom : undefined,
+    '@media (max-width: 950px)': {
+        '&.main-tags-text': {
+            paddingTop: '16px !important',
+            paddingBottom: '0 !important',
+            width: '100%',
+            justifyContent: 'flex-start'
+        }
+    }
 }));
 
 const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean, paddingTop?: number }>((props) => ({
+    maxWidth: '100%',
+    overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'wrap',
     flexGrow: 1,
     padding: '0 25px',
     borderLeft: props.bordered ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
-    paddingTop: props.paddingTop ? `${props.paddingTop}px !important` : undefined
+    paddingTop: props.paddingTop ? `${props.paddingTop}px !important` : undefined,
+    '@media (max-width: 950px)': {
+        '&.main-tags-value': {
+            width: '100%',
+            borderLeft: 'none',
+            paddingTop: '16px !important',
+            paddingBottom: '0 !important',
+        }
+    }
 }));
 
 const OpportunitiesValue = Glamorous.div({
+    maxWidth: '100%',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     height: 30,
     borderRadius: 4,
     backgroundColor: '#edf3fe',
@@ -401,8 +430,6 @@ const OpportunitiesValue = Glamorous.div({
     fontWeight: 500,
     lineHeight: 1.14,
     color: '#4285f4',
-    display: 'flex',
-    alignItems: 'center',
     padding: '8px 9px',
     marginRight: 8,
     marginTop: 4,
@@ -444,10 +471,10 @@ interface TagRowMapProps {
 
 const TagRowMapMain = (props: TagRowMapProps) => (
     <OpportunitiesMainWrapper>
-        <OpportunitiesTextWrapper paddingLeft={24}>
+        <OpportunitiesTextWrapper paddingLeft={24} className="main-tags-text">
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
-        <OpportunitiesValueWrapper bordered={true}>
+        <OpportunitiesValueWrapper bordered={true} className="main-tags-value">
             {props.items.map((s, k) => (
                 <OpportunitiesValue key={k + '_' + s}>
                     {s}
@@ -1138,7 +1165,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
     return (
         <>
-            <XDocumentHead title={TextOrganizationProfile.pageTitle} />
+            <XDocumentHead title={organization.name} />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false} >
                     <Root>
