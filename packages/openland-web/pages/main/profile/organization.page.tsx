@@ -1170,7 +1170,14 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 <div style={{ marginTop: 16 }}>
                                     <SwitcherWrapper flatStyle={true} height={57} smallText={true}>
                                         <Switcher path={rootPath}>{TextOrganizationProfile.headerTabOverview}</Switcher>
-                                        <Switcher path={lsitingsPath}>{TextOrganizationProfile.headerTabListings + ' (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                        <XWithRole role={['org-' + organization.id + '-admin']}>
+                                            <Switcher path={lsitingsPath}>{TextOrganizationProfile.headerTabListings + ' (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                        </XWithRole>
+                                        <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
+                                            {(organization.listingsAll || []).length > 0 && (
+                                                <Switcher path={lsitingsPath}>{TextOrganizationProfile.headerTabListings + ' (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                            )}
+                                        </XWithRole>
                                         {/* <Switcher path={lsitingsAllPath}>{'All Listings (' + ((organization.listingsAll && organization.listingsAll.length) || 0) + ')'}</Switcher> */}
                                     </SwitcherWrapper>
                                 </div >
@@ -1251,136 +1258,191 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 </XCardStyled>
                                             )}
 
-                                            <XCardStyled padding={0}>
-                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                                    <Title marginBottom={24}>{TextOrganizationProfile.overviewDOTitle}</Title>
-                                                </XVerticalStyled>
+                                            {(organization.doShapeAndForm || organization.doCurrentUse || organization.doGoodFitFor || organization.doSpecialAttributes || organization.doAvailability || (organization.developmentOportunities || []).length > 0) && (
+                                                <XCardStyled padding={0}>
+                                                    <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
+                                                        <Title marginBottom={24}>{TextOrganizationProfile.overviewDOTitle}</Title>
+                                                    </XVerticalStyled>
 
-                                                {(organization.doShapeAndForm || organization.doCurrentUse || organization.doGoodFitFor || organization.doSpecialAttributes || organization.doAvailability) && (
-                                                    <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
-                                                        {organization.doShapeAndForm && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewDOTagRowShapeAndFormTitle}
-                                                                items={organization.doShapeAndForm}
-                                                            />
-                                                        )}
-                                                        {organization.doCurrentUse && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewDOTagRowCurrentUseTitle}
-                                                                items={organization.doCurrentUse}
-                                                            />
-                                                        )}
-                                                        {organization.doGoodFitFor && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewDOTagRowGoodFitForTitle}
-                                                                items={organization.doGoodFitFor}
-                                                            />
-                                                        )}
-                                                        {organization.doSpecialAttributes && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewDOTagRowSpecialAttributesTitle}
-                                                                items={organization.doSpecialAttributes}
-                                                            />
-                                                        )}
-                                                        {organization.doAvailability && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewDOTagRowAvailabilityTitle}
-                                                                items={organization.doAvailability}
-                                                            />
+                                                    {(organization.doShapeAndForm || organization.doCurrentUse || organization.doGoodFitFor || organization.doSpecialAttributes || organization.doAvailability) && (
+                                                        <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
+                                                            {organization.doShapeAndForm && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewDOTagRowShapeAndFormTitle}
+                                                                    items={organization.doShapeAndForm}
+                                                                />
+                                                            )}
+                                                            {organization.doCurrentUse && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewDOTagRowCurrentUseTitle}
+                                                                    items={organization.doCurrentUse}
+                                                                />
+                                                            )}
+                                                            {organization.doGoodFitFor && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewDOTagRowGoodFitForTitle}
+                                                                    items={organization.doGoodFitFor}
+                                                                />
+                                                            )}
+                                                            {organization.doSpecialAttributes && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewDOTagRowSpecialAttributesTitle}
+                                                                    items={organization.doSpecialAttributes}
+                                                                />
+                                                            )}
+                                                            {organization.doAvailability && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewDOTagRowAvailabilityTitle}
+                                                                    items={organization.doAvailability}
+                                                                />
+                                                            )}
+
+                                                        </div>
+                                                    )}
+
+                                                    {organization.developmentOportunities && (
+                                                        organization.developmentOportunities.map((devop, i) => (
+                                                            cardFilter(() => <DevelopmentOportunity key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountAR)
+                                                        ))
+                                                    )}
+                                                    <XWithRole role={['org-' + organization.id + '-admin']}>
+                                                        <XHorizontal justifyContent="center" alignItems="center" separator="none">
+                                                            {(organization.developmentOportunities || []).length > 0 && (
+                                                                <>
+                                                                    <ShowListingLink path={lsitingsPath}>
+                                                                        {TextOrganizationProfile.overviewListingsDoFooterNonEmpty} ({((organization.developmentOportunities || []).length) || 0})
+                                                                </ShowListingLink>
+                                                                    <ViewAllIcon icon="keyboard_arrow_right" />
+                                                                </>
+                                                            )}
+                                                            {(organization.developmentOportunities || []).length === 0 && (
+                                                                <ShowListingLink query={{ field: 'addListing', value: 'DO' }}>
+                                                                    {TextOrganizationProfile.overviewListingsDoFooterAddListing}
+                                                                </ShowListingLink>
+                                                            )}
+
+                                                        </XHorizontal>
+                                                    </XWithRole>
+                                                    <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
+                                                        {(organization.developmentOportunities || []).length > 0 && (
+                                                            <XHorizontal justifyContent="center" alignItems="center" separator="none">
+                                                                <ShowListingLink path={lsitingsPath}>
+                                                                    {TextOrganizationProfile.overviewListingsDoFooterNonEmpty} ({((organization.developmentOportunities || []).length) || 0})
+                                                            </ShowListingLink>
+                                                                <ViewAllIcon icon="keyboard_arrow_right" />
+                                                            </XHorizontal>
                                                         )}
 
-                                                    </div>
-                                                )}
+                                                    </XWithRole>
+                                                </XCardStyled>
+                                            )}
 
-                                                {organization.developmentOportunities && (
-                                                    organization.developmentOportunities.map((devop, i) => (
-                                                        cardFilter(() => <DevelopmentOportunity key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountAR)
-                                                    ))
-                                                )}
-                                                <XHorizontal justifyContent="center" alignItems="center" separator="none">
-                                                    <ShowListingLink path={lsitingsPath}>
-                                                        View all ({(organization.developmentOportunities && organization.developmentOportunities.length) || 0})
-                                                    </ShowListingLink>
-                                                    <ViewAllIcon icon="keyboard_arrow_right" />
-                                                </XHorizontal>
-                                            </XCardStyled>
+                                            {(organization.arGeographies || organization.arAreaRange || organization.arHeightLimit || organization.arLandUse || organization.arSpecialAttributes || organization.arActivityStatus || organization.arAquisitionBudget || organization.arAquisitionRate || organization.arClosingTime || (organization.acquisitionRequests || []).length > 0) && (
+                                                <XCardStyled padding={0}>
+                                                    <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
+                                                        <Title marginBottom={24}>{TextOrganizationProfile.overviewArTitle}</Title>
+                                                    </XVerticalStyled>
 
-                                            <XCardStyled padding={0}>
-                                                <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                                    <Title marginBottom={24}>{TextOrganizationProfile.overviewArTitle}</Title>
-                                                </XVerticalStyled>
+                                                    {(organization.arGeographies || organization.arAreaRange || organization.arHeightLimit || organization.arLandUse || organization.arSpecialAttributes || organization.arActivityStatus || organization.arAquisitionBudget || organization.arAquisitionRate || organization.arClosingTime) && (
+                                                        <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
+                                                            {organization.arGeographies && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewArTagRowGeographiesTitle}
+                                                                    items={organization.arGeographies}
+                                                                />
+                                                            )}
+                                                            {organization.arAreaRange && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewArTagRowAreaRangeTitle}
+                                                                    items={organization.arAreaRange}
+                                                                />
+                                                            )}
+                                                            {organization.arHeightLimit && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewArTagRowHeightLimitTitle}
+                                                                    items={organization.arHeightLimit}
+                                                                />
+                                                            )}
+                                                            {organization.arLandUse && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewArTagRowLandUseTitle}
+                                                                    items={organization.arLandUse}
+                                                                />
+                                                            )}
+                                                            {organization.arSpecialAttributes && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewArTagRowSpecialAttributesTitle}
+                                                                    items={organization.arSpecialAttributes}
+                                                                />
+                                                            )}
+                                                            {organization.arActivityStatus && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewArTagRowActivityStatusTitle}
+                                                                    items={organization.arActivityStatus}
+                                                                />
+                                                            )}
+                                                            {organization.arAquisitionBudget && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewArTagRowAquisitionBudgetTitle}
+                                                                    items={organization.arAquisitionBudget}
+                                                                />
+                                                            )}
+                                                            {organization.arAquisitionRate && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewArTagRowAquisitionRateTitle}
+                                                                    items={organization.arAquisitionRate}
+                                                                />
+                                                            )}
+                                                            {organization.arClosingTime && (
+                                                                <TagRowMapMain
+                                                                    title={TextOrganizationProfile.overviewArTagRowClosingTimeTitle}
+                                                                    items={organization.arClosingTime}
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    )}
 
-                                                {(organization.arGeographies || organization.arAreaRange || organization.arHeightLimit || organization.arLandUse || organization.arSpecialAttributes || organization.arActivityStatus || organization.arAquisitionBudget || organization.arAquisitionRate || organization.arClosingTime) && (
-                                                    <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
-                                                        {organization.arGeographies && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewArTagRowGeographiesTitle}
-                                                                items={organization.arGeographies}
-                                                            />
-                                                        )}
-                                                        {organization.arAreaRange && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewArTagRowAreaRangeTitle}
-                                                                items={organization.arAreaRange}
-                                                            />
-                                                        )}
-                                                        {organization.arHeightLimit && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewArTagRowHeightLimitTitle}
-                                                                items={organization.arHeightLimit}
-                                                            />
-                                                        )}
-                                                        {organization.arLandUse && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewArTagRowLandUseTitle}
-                                                                items={organization.arLandUse}
-                                                            />
-                                                        )}
-                                                        {organization.arSpecialAttributes && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewArTagRowSpecialAttributesTitle}
-                                                                items={organization.arSpecialAttributes}
-                                                            />
-                                                        )}
-                                                        {organization.arActivityStatus && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewArTagRowActivityStatusTitle}
-                                                                items={organization.arActivityStatus}
-                                                            />
-                                                        )}
-                                                        {organization.arAquisitionBudget && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewArTagRowAquisitionBudgetTitle}
-                                                                items={organization.arAquisitionBudget}
-                                                            />
-                                                        )}
-                                                        {organization.arAquisitionRate && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewArTagRowAquisitionRateTitle}
-                                                                items={organization.arAquisitionRate}
-                                                            />
-                                                        )}
-                                                        {organization.arClosingTime && (
-                                                            <TagRowMapMain
-                                                                title={TextOrganizationProfile.overviewArTagRowClosingTimeTitle}
-                                                                items={organization.arClosingTime}
-                                                            />
-                                                        )}
-                                                    </div>
-                                                )}
-
-                                                {organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => (
-                                                        cardFilter(() => <AcquizitionRequest key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountDO)
-                                                    ))
-                                                )}
-                                                <XHorizontal justifyContent="center" alignItems="center" separator="none">
+                                                    {organization.acquisitionRequests && (
+                                                        organization.acquisitionRequests.map((devop, i) => (
+                                                            cardFilter(() => <AcquizitionRequest key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountDO)
+                                                        ))
+                                                    )}
+                                                    <XHorizontal justifyContent="center" alignItems="center" separator="none">
+                                                        {/* here
                                                     <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
-                                                        View all ({(organization.acquisitionRequests && organization.acquisitionRequests.length) || 0})
-                                                    </ShowListingLink>
-                                                    <ViewAllIcon icon="keyboard_arrow_right" />
-                                                </XHorizontal>
-                                            </XCardStyled>
+                                                        {TextOrganizationProfile.overviewListingsArFooterNonEmpty} ({((organization.acquisitionRequests || []).length) || 0})
+                                                    </ShowListingLink> */}
+                                                        <XWithRole role={['org-' + organization.id + '-admin']}>
+                                                            <XHorizontal justifyContent="center" alignItems="center" separator="none">
+                                                                {(organization.acquisitionRequests || []).length > 0 && (
+                                                                    <>
+                                                                        <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
+                                                                            {TextOrganizationProfile.overviewListingsArFooterNonEmpty} ({((organization.acquisitionRequests || []).length) || 0})
+                                                                    </ShowListingLink>
+                                                                        <ViewAllIcon icon="keyboard_arrow_right" />
+                                                                    </>
+                                                                )}
+                                                                {(organization.acquisitionRequests || []).length === 0 && (
+                                                                    <ShowListingLink query={{ field: 'addListing', value: 'AR' }}>
+                                                                        {TextOrganizationProfile.overviewListingsArFooterAddListing}
+                                                                    </ShowListingLink>
+                                                                )}
+
+                                                            </XHorizontal>
+                                                        </XWithRole>
+                                                        <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
+                                                            {(organization.acquisitionRequests || []).length > 0 && (
+                                                                <XHorizontal justifyContent="center" alignItems="center" separator="none">
+                                                                    <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
+                                                                        {TextOrganizationProfile.overviewListingsArFooterNonEmpty} ({((organization.acquisitionRequests || []).length) || 0})
+                                                                </ShowListingLink>
+                                                                    <ViewAllIcon icon="keyboard_arrow_right" />
+                                                                </XHorizontal>)}
+
+                                                        </XWithRole>
+                                                    </XHorizontal>
+                                                </XCardStyled>
+                                            )}
                                         </>
                                     )}
 
