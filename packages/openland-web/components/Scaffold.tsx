@@ -19,7 +19,6 @@ import { XPopper } from 'openland-x/XPopper';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XModal } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
-import { XTable } from 'openland-x/XTable';
 import { switchOrganization } from '../utils/switchOrganization';
 import { withMyOrganizations } from '../api/withMyOrganizations';
 import { XScrollView } from 'openland-x/XScrollView';

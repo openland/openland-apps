@@ -1159,7 +1159,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 )}
                             </AvatarWrapper>
 
-                            <XVerticalStyled flexShrink={0} flexGrow={1} separator="none" paddingTop={35}>
+                            <XVerticalStyled flexShrink={0} flexGrow={1} separator="none" paddingTop={31}>
                                 <OrganizationName>{organization.name}</OrganizationName>
                                 <div style={{ marginTop: 8 }}>
                                     {organization.location && <Text opacity={0.5} bold={true}>{organization.location}</Text>}
