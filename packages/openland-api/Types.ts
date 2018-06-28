@@ -2371,6 +2371,7 @@ export interface SuperAdminsQuery {
       picture: string | null,
       email: string | null,
     },
+    email: string | null,
   } >,
 };
 
