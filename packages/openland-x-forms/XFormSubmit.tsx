@@ -6,11 +6,29 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
     state = {
         loading: false
     };
+
+    keydownHandler = (e: any) => {
+        if (e.keyCode === 13 && e.ctrlKey && this.props.keyDownSubmit === true) {
+            this.setState({ loading: true });
+            this.props.form.submit(this.props.action);
+            this.setState({ loading: false });
+        }
+    }
+
+    componentDidMount() {
+        document.addEventListener('keydown', this.keydownHandler);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.keydownHandler);
+    }
+
     handleClick = async () => {
         this.setState({ loading: true });
         await this.props.form.submit(this.props.action);
         this.setState({ loading: false });
     }
+
     render() {
         let { action, ...other } = this.props;
         let formEnabled = !!this.props.form.store.readValue('form.enabled');
@@ -27,6 +45,7 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
 
 export interface XFormSubmitProps extends XButtonStyleProps {
     action?: (data: any) => any;
+    keyDownSubmit?: boolean;
 }
 
 export function XFormSubmit(props: XFormSubmitProps) {
