@@ -383,6 +383,8 @@ const OpportunitiesTextWrapper = Glamorous.div<OpportunitiesTextWrapperProps>((p
 }));
 
 const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean, paddingTop?: number }>((props) => ({
+    maxWidth: '100%',
+    overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'wrap',
@@ -393,6 +395,9 @@ const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean, paddingTop
 }));
 
 const OpportunitiesValue = Glamorous.div({
+    maxWidth: '100%',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     height: 30,
     borderRadius: 4,
     backgroundColor: '#edf3fe',
@@ -401,8 +406,6 @@ const OpportunitiesValue = Glamorous.div({
     fontWeight: 500,
     lineHeight: 1.14,
     color: '#4285f4',
-    display: 'flex',
-    alignItems: 'center',
     padding: '8px 9px',
     marginRight: 8,
     marginTop: 4,
