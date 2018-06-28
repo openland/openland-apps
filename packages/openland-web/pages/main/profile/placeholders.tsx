@@ -39,9 +39,9 @@ const PlaceholderButton = Glamorous(XButton)({
 
 const PlaceholderText = Glamorous.span<{ accent?: boolean }>(props => ({
     marginLeft: 16,
-    fontSize: '18px',
+    fontSize: '16px',
     lineHeight: 1.44,
-    letterSpacing: '-0.1px',
+    letterSpacing: '-0.2px',
     marginTop: -20,
     color: props.accent ? '#ffffff' : '#334562'
 }));

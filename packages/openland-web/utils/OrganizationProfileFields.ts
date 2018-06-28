@@ -92,7 +92,7 @@ export interface ContactPerson {
     name: string | null;
     photo?: string | null;
     photoRef?: XPhotoRef | null;
-    role?: string | null;
+    position?: string | null;
     email?: string | null;
     phone?: string | null;
     link?: string | null;
