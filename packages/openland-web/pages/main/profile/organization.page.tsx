@@ -355,7 +355,7 @@ const OpportunitiesMainWrapper = Glamorous.div({
     '@media (max-width: 950px)': {
         flexDirection: 'column',
         borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-        paddingBottom: 24,
+        paddingBottom: 16,
         '&:last-child': {
             borderBottom: 'none'
         }
@@ -390,7 +390,7 @@ const OpportunitiesTextWrapper = Glamorous.div<OpportunitiesTextWrapperProps>((p
     paddingBottom: props.paddingBottom !== undefined ? props.paddingBottom : undefined,
     '@media (max-width: 950px)': {
         '&.main-tags-text': {
-            paddingTop: '24px !important',
+            paddingTop: '16px !important',
             paddingBottom: '0 !important',
             width: '100%',
             justifyContent: 'flex-start'
