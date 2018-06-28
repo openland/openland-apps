@@ -271,7 +271,7 @@ const ContactPersonComponent = (props: { contact: ContactPerson, index: number }
         <XAvatar cloudImageUuid={props.contact.photo || undefined} size="small" />
         <div>
             <Text bold={true}>{props.contact.name}</Text>
-            <Text opacity={0.8}>{props.contact.role}</Text>
+            <Text opacity={0.8}>{props.contact.position}</Text>
             <Text opacity={0.5}>{props.contact.phone}</Text>
             <Text opacity={0.5}>{props.contact.email}</Text>
             <Text opacity={0.5}>{props.contact.link}</Text>
@@ -740,9 +740,12 @@ interface AcquizitionRequestProps {
     unitCapacity: string[] | null;
 }
 
-const Thousander = (num: number) => (
-    Math.round(num).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-);
+const Thousander = (num?: number | null) => {
+    if (num === undefined || num === null) {
+        return '';
+    }
+    return Math.round(num).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+};
 
 class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps, orgId: string, full?: boolean, showType?: boolean, isSoloComponent?: boolean }> {
 
@@ -757,7 +760,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                         <TagRowCard title={TextOrganizationProfile.listingArTagRowSummary} text={item.summary} isTextStyle={true} marginBottom={8} />
                     )}
                     {item.areaRange && (
-                        <TagRowCard title={TextOrganizationProfile.listingArTagRowAreaRange} text={`${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`} isTagStyle={true} />
+                        <TagRowCard title={TextOrganizationProfile.listingArTagRowAreaRange} text={`${Thousander(item.areaRange.from)} - ${Thousander(item.areaRange.to)} ft²`} isTagStyle={true} />
                     )}
                     {item.geographies && (
                         <TagRowMapCard title={TextOrganizationProfile.listingArTagRowGeographies} items={item.geographies} />
@@ -807,7 +810,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                             </XHorizontalStyled>
                             {this.props.showType && <Text opacity={0.5}>{TextOrganizationProfile.listingArType}</Text>}
                             {item.shortDescription && <Text opacity={0.5} bold={true}>{item.shortDescription}</Text>}
-                            {(!full && item.areaRange) && <Text opacity={0.7} bold={true} marginTop={12} lineHeight={1.53}>{`Area range: ${Thousander(item.areaRange.from!!)} - ${Thousander(item.areaRange.to!!)} ft²`}</Text>}
+                            {(!full && item.areaRange) && <Text opacity={0.7} bold={true} marginTop={12} lineHeight={1.53}>{`Area range: ${Thousander(item.areaRange.from)} - ${Thousander(item.areaRange.to)} ft²`}</Text>}
 
                             {(!full && !item.areaRange) && <Text opacity={0.5} bold={true} marginTop={12}> <Lock icon="locked" />{TextOrganizationProfile.listingArLocked}</Text>}
 
@@ -908,8 +911,8 @@ const AddListingButton = Glamorous(XLink)({
 
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
 
-    let editDoTarget = props.data.organization.developmentOportunities!!.filter((devOp) => devOp.id === props.router.query.editListing)[0];
-    let editArTarget = props.data.organization.acquisitionRequests!!.filter((devOp) => devOp.id === props.router.query.editListing)[0];
+    let editDoTarget = (props.data.organization.developmentOportunities || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
+    let editArTarget = (props.data.organization.acquisitionRequests || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
     let target = editDoTarget || editArTarget;
 
     let editCommon;
@@ -1172,7 +1175,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                         <Header>
                             <AvatarWrapper>
                                 {hasLogo && (
-                                    <Avatar cloudImageUuid={organization.photo!!} size="large" style="organization" />
+                                    <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
                                 )}
                                 {!hasLogo && (
                                     <>
@@ -1180,7 +1183,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <AvatartPlaceholder />
                                         </XWithRole>
                                         <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
-                                            <Avatar cloudImageUuid={organization.photo!!} size="large" style="organization" />
+                                            <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
                                         </XWithRole>
                                     </>
                                 )}
@@ -1212,10 +1215,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                             <XHorizontalStyled paddingTop={20}>
                                 {!organization.isMine && (
                                     <XButton
-                                        style={organization!!.followed ? 'primary' : 'electric'}
-                                        text={organization!!.followed ? TextOrganizationProfile.headerButtonFollowUnFollow : TextOrganizationProfile.headerButtonFollowFollow}
+                                        style={organization.followed ? 'primary' : 'electric'}
+                                        text={organization.followed ? TextOrganizationProfile.headerButtonFollowUnFollow : TextOrganizationProfile.headerButtonFollowFollow}
                                         action={async () => {
-                                            await props.followOrganization({ variables: { follow: !organization!!.followed } });
+                                            await props.followOrganization({ variables: { follow: !organization.followed } });
                                         }}
                                     />
                                 )}
@@ -1602,7 +1605,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         {((organization.contacts || []).length || organization.website || organization.facebook || organization.twitter) && (
                                             <XCardStyled padding={0} paddingTop={16} paddingBottom={20}>
                                                 <Title small={true} marginBottom={10} marginLeft={18}>{TextOrganizationProfile.additionalInfoContacts}</Title>
-                                                <ContactPersons contacts={organization.contacts!!.filter(c => c !== null) as any} />
+                                                <ContactPersons contacts={(organization.contacts || []).filter(c => c !== null) as any} />
                                                 <SocialLinksWrapper>
                                                     {organization.website && <SocialLink href={organization.website}>{TextOrganizationProfile.additionalInfoWebsite}</SocialLink>}
                                                     {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}

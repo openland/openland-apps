@@ -44,7 +44,7 @@ class ContactPersonItem extends React.Component<{ contact: ContactPerson, index:
             <XHorizontal>
                 <XAvatar photoRef={this.props.contact.photoRef || undefined} />
                 <ContactField>{this.props.contact.name}</ContactField>
-                <ContactField>{this.props.contact.role}</ContactField>
+                <ContactField>{this.props.contact.position}</ContactField>
                 <ContactField>{this.props.contact.phone}</ContactField>
                 <ContactField>{this.props.contact.email}</ContactField>
                 <ContactField>{this.props.contact.link}</ContactField>
@@ -62,7 +62,7 @@ const clearContact = (c: ContactPerson): ContactPerson => {
         email: c.email,
         link: c.link,
         phone: c.phone,
-        role: c.role,
+        position: c.position,
         photoRef: c.photoRef ? {
             uuid: c.photoRef.uuid,
             crop: c.photoRef.crop ? {
@@ -392,7 +392,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                     phone: data.phone,
                                     photoRef: data.photoRef,
                                     email: data.email,
-                                    role: data.role,
+                                    position: data.position,
                                     link: data.link,
                                 };
 
@@ -411,7 +411,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                     <XInput field="name" placeholder="Name" />
                                     <XInput field="phone" placeholder="Phone" />
                                     <XInput field="email" placeholder="Email" />
-                                    <XInput field="link" placeholder="Link" />
+                                    <XInput field="link" placeholder="LinkedIn" />
                                     <XInput field="position" placeholder="Position" />
                                     <XAvatarUpload field="photoRef" />
                                 </XVertical>
@@ -432,7 +432,7 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                                 photoRef: data.avatar,
                                 email: data.email,
                                 link: data.link,
-                                role: data.role,
+                                position: data.position,
                             });
                             await props.updateOrganizaton({
                                 variables: {
