@@ -1,7 +1,14 @@
 FROM node:8.9.4-alpine
+
+ENV TINI_VERSION v0.18.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+ENTRYPOINT ["/tini", "--"]
+
 ADD package.json yarn.lock /app/
 COPY node_modules/ /app/node_modules/
 COPY dist/ /app/
+
 EXPOSE 3000
 WORKDIR /app
 ENV NODE_ENV=production
