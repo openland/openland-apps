@@ -1,5 +1,4 @@
 export const TextOrganizationProfile = {
-    pageTitle: 'Organization profile',
 
     headerTabOverview: 'Overview',
     headerTabListings: 'Listings',

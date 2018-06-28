@@ -1138,7 +1138,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
     return (
         <>
-            <XDocumentHead title={TextOrganizationProfile.pageTitle} />
+            <XDocumentHead title={organization.name} />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false} >
                     <Root>
