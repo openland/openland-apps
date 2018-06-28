@@ -2,7 +2,7 @@ FROM node:8.9.4 AS builder
 WORKDIR /app
 COPY . .
 RUN yarn install
-RUN yarn build
+RUN yarn bundle
 
 FROM node:8.9.4 AS runner
 EXPOSE 3000
