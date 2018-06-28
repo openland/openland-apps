@@ -1,5 +1,5 @@
 FROM node:8.9.4-alpine
-COPY package.json yarn.lock /app/
+ADD package.json yarn.lock /app/
 COPY node_modules/ /app/node_modules/
 COPY dist/ /app/
 EXPOSE 3000
