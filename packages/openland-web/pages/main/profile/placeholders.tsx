@@ -367,6 +367,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                                 field="input.arAreaRange"
                                                                 creatable={true}
                                                                 multi={true}
+                                                                options={[{ label: 'up to 10,000 ft²', value: 'up to 10,000 ft²' }, { label: '10,000 ft² - 100,000 ft²', value: '10,000 ft² - 100,000 ft²' }, { label: '100,000+ ft²', value: '100,000+ ft²' }]}
                                                             />
                                                         </XFormField>
 
