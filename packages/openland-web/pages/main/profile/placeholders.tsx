@@ -652,7 +652,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
         >
             <XVertical>
                 <XFormLoadingContent>
-                    <XFormField title="Web Site">
+                    <XFormField title="Website">
                         <XInput field="input.website" />
                     </XFormField>
                     <XFormField title="Twitter">
