@@ -44,19 +44,19 @@ jobs:
             echo $(($CIRCLE_PREVIOUS_BUILD_NUM-9)) > .build_9
       - restore_cache:
           keys:
-            - v1-babel-cache-{{ checksum ".build_1" }}
-            - v1-babel-cache-{{ checksum ".build_2" }}
-            - v1-babel-cache-{{ checksum ".build_3" }}
-            - v1-babel-cache-{{ checksum ".build_4" }}
-            - v1-babel-cache-{{ checksum ".build_5" }}
-            - v1-babel-cache-{{ checksum ".build_6" }}
-            - v1-babel-cache-{{ checksum ".build_7" }}
-            - v1-babel-cache-{{ checksum ".build_8" }}
-            - v1-babel-cache-{{ checksum ".build_9" }}
+            - v2-babel-cache-{{ checksum ".build_1" }}
+            - v2-babel-cache-{{ checksum ".build_2" }}
+            - v2-babel-cache-{{ checksum ".build_3" }}
+            - v2-babel-cache-{{ checksum ".build_4" }}
+            - v2-babel-cache-{{ checksum ".build_5" }}
+            - v2-babel-cache-{{ checksum ".build_6" }}
+            - v2-babel-cache-{{ checksum ".build_7" }}
+            - v2-babel-cache-{{ checksum ".build_8" }}
+            - v2-babel-cache-{{ checksum ".build_9" }}
       - run: yarn bundle
       - run: "cd ./node_modules/.cache && ls"
       - save_cache:
-          key: v1-babel-cache-{{ checksum ".build_0" }}
+          key: v2-babel-cache-{{ checksum ".build_0" }}
           paths:
             - "node_modules/.cache"
       - persist_to_workspace:
