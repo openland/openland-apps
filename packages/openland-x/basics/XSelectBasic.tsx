@@ -422,7 +422,7 @@ export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
 
 export function XSelectBasic(props: XSelectBasicProps) {
     return (
-        props.creatable ? <StyledSelectCreatable {...props} /> : <StyledSelect {...props} />
+        props.creatable ? <StyledSelectCreatable {...props} shouldKeyDownEventCreateNewOption={(event) => event.keyCode === 13}/> : <StyledSelect {...props} />
     );
 }
 

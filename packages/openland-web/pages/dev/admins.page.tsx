@@ -84,7 +84,7 @@ export default withApp('Super Admins', 'super-admin', withSuperAdmins(withQueryL
                         <XTable.Row key={v.user.id}>
                             <XTable.Cell width={100}>{v.user.firstName}</XTable.Cell>
                             <XTable.Cell width={100}>{v.user.lastName}</XTable.Cell>
-                            <XTable.Cell>{v.user.email}</XTable.Cell>
+                            <XTable.Cell>{v.email}</XTable.Cell>
                             <XTable.Cell>{v.role}</XTable.Cell>
                         </XTable.Row>
                     ))}
