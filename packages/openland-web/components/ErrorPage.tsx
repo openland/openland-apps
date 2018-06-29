@@ -7,7 +7,13 @@ import { MessagePageContent } from './MessagePageContent';
 
 const ErrorImg = Glamorous.img({
     width: 600,
-    height: 361
+    display: 'block',
+    objectFit: 'contain',
+    margin: 'auto',
+    marginBottom: 53,
+    '@media (max-height: 700px)': {
+        width: 500,
+    }
 });
 
 export class ErrorPage extends React.Component<{ statusCode: number | null | undefined }> {
