@@ -13,7 +13,6 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { XLink } from 'openland-x/XLink';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
-import { ContactPerson } from '../../../utils/OrganizationProfileFields';
 import { XButton } from 'openland-x/XButton';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -880,6 +879,7 @@ const AddListingButton = Glamorous(XLink)({
     borderRadius: 4,
     paddingLeft: 14,
     paddingRight: 8,
+    cursor: 'pointer',
     '& .material-icons': {
         transform: 'rotate(90deg)',
         opacity: 0.5,

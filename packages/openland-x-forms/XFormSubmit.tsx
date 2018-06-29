@@ -8,7 +8,7 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
     };
 
     keydownHandler = (e: any) => {
-        if (e.keyCode === 13 && e.ctrlKey && this.props.keyDownSubmit === true) {
+        if (e.keyCode === 13 && (e.ctrlKey || e.metaKey) && this.props.keyDownSubmit !== false) {
             this.setState({ loading: true });
             this.props.form.submit(this.props.action);
             this.setState({ loading: false });

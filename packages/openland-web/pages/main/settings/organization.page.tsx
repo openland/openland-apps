@@ -24,6 +24,7 @@ import Glamorous from 'glamorous';
 import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfile';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { withQueryLoader } from '../../../components/withQueryLoader';
+import { XWithRouter } from 'openland-x-routing/withRouter';
 const CenteredButton = Glamorous(XButton)({
     alignSelf: 'center'
 });
@@ -75,7 +76,7 @@ const clearContact = (c: ContactPerson): ContactPerson => {
     };
 };
 
-export default withApp('Organization profile edit', 'viewer', withMyOrganizationProfile(withQueryLoader((props) => {
+const OrganizationSettigs = withMyOrganizationProfile((props) => {
     return (
         <Navigation title="Organization profile">
             <XHeader text="Organization profile" />
@@ -459,5 +460,11 @@ export default withApp('Organization profile edit', 'viewer', withMyOrganization
                 </XVertical>
             </XContent>
         </Navigation >
+    );
+}) as React.ComponentClass<XWithRouter & { refetchVars: { organizationId: string } }>;
+
+export default withApp('Organization profile edit', 'viewer', withMyOrganizationProfile(withQueryLoader((props) => {
+    return (
+        <OrganizationSettigs router={props.router} refetchVars={{ organizationId: props.data.myOrganizationProfile.id }} />
     );
 })));
