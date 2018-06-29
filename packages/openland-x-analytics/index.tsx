@@ -50,7 +50,7 @@ export function trackProfile(id: string, firstName: string, lastName: string | n
         });
 
         // Identify Intercom
-        (window as any).Intercom('update', { email: email, user_id: id, name: (firstName + ' ' + lastName).trim() });
+        (window as any).Intercom('update', { email: email, user_id: id, name: ((firstName === null ? '' : firstName) + ' ' + (lastName === null ? lastName : '')).trim() });
     }
 }
 
