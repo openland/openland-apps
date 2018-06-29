@@ -118,6 +118,8 @@ const XModalCloser = Glamorous(XButton)({
     width: 28,
     height: 28,
     borderRadius: 50,
+    color: '#334562',
+    opacity: 0.2,
     '& i': {
         marginLeft: -2
     }
@@ -170,7 +172,7 @@ class ModalContentRender extends React.Component<{
         }
         return (
             <Root>
-                {this.props.heading === undefined && (this.props.title || this.props.useTopCloser) && <XModalHeader>{this.props.title}{this.props.useTopCloser && <XModalCloser icon="close" autoClose={true} />}</XModalHeader>}
+                {this.props.heading === undefined && (this.props.title || this.props.useTopCloser) && <XModalHeader>{this.props.title}{this.props.useTopCloser && <XModalCloser style="flat" icon="close" autoClose={true} />}</XModalHeader>}
                 {this.props.heading === undefined && !this.props.title && <XModalHeaderEmpty />}
                 {this.props.heading !== undefined && this.props.heading}
                 {body}
