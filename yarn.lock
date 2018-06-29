@@ -6413,9 +6413,9 @@ next-routes@^1.4.2:
   dependencies:
     path-to-regexp "^2.1.0"
 
-next@6.0.4-canary.8:
-  version "6.0.4-canary.8"
-  resolved "https://registry.yarnpkg.com/next/-/next-6.0.4-canary.8.tgz#ac3de8e0ded4f800e18ce98f8b6be07c846d6c9b"
+next@6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/next/-/next-6.1.1.tgz#b86d6b773871cfeb189b926eb7089d12f291668e"
   dependencies:
     "@babel/core" "7.0.0-beta.42"
     "@babel/plugin-proposal-class-properties" "7.0.0-beta.42"
