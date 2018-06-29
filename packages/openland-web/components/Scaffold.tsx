@@ -23,7 +23,6 @@ import { makeNavigable } from 'openland-x/Navigable';
 import { XMenuVertical, XMenuItem } from './Incubator/XOverflow';
 import { OrganizationPicker } from './OrganizationPicker';
 import * as Cookie from 'js-cookie';
-import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 //
