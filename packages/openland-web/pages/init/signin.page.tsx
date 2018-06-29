@@ -21,6 +21,8 @@ import {
 import { AuthRouter } from '../../components/AuthRouter';
 import { InitTexts } from './_text';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XLoader } from 'openland-x/XLoader';
 
 const EmptyBlock = Glamorous.div({
     width: '100%',
@@ -38,15 +40,32 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
     emailError: string,
 
     emailSent: boolean,
+    fromOutside: boolean,
 
     codeValue: string,
     codeSending: boolean,
     codeError: string,
 }> {
+    fireGoogle = () => {
+        createAuth0Client().authorize({
+            connection: 'google-oauth2',
+            state: this.props.redirect ? this.props.redirect : 'none'
+        });
+    }
+
+    fireEmail = () => {
+        createAuth0Client().passwordlessStart({ connection: 'email', send: 'code', email: this.state.emailValue }, (error, v) => {
+            if (error) {
+                this.setState({ emailSending: false, emailError: error.description!! });
+            } else {
+                this.setState({ emailSending: false, emailSent: true });
+            }
+        });
+    }
 
     constructor(props: { redirect?: string | null } & XWithRouter) {
         super(props);
-        this.state = {
+        let state = {
             googleStarting: false,
 
             email: false,
@@ -58,16 +77,41 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
             codeValue: '',
             codeSending: false,
             codeError: '',
+            fromOutside: false,
         };
+        if (props.router.query.email) {
+            this.state = {
+                ...state,
+                email: true,
+                emailValue: props.router.query.email,
+                emailSending: true,
+                emailError: '',
+                emailSent: false,
+                fromOutside: true,
+            };
+            if (canUseDOM) {
+                this.fireEmail();
+            }
+        } else if (props.router.query.google) {
+            this.state = {
+                ...state,
+                googleStarting: true,
+                fromOutside: true,
+            };
+            if (canUseDOM) {
+                this.fireGoogle();
+            }
+
+        } else {
+            this.state = state;
+        }
+
     }
 
     loginWithGoogle = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
         this.setState({ googleStarting: true });
-        createAuth0Client().authorize({
-            connection: 'google-oauth2',
-            state: this.props.redirect ? this.props.redirect : 'none'
-        });
+        this.fireGoogle();
     }
 
     loginWithEmail = (e: React.SyntheticEvent<any>) => {
@@ -111,13 +155,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
     loginEmailStart = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
         this.setState({ emailSending: true, emailError: '', emailSent: false });
-        createAuth0Client().passwordlessStart({ connection: 'email', send: 'code', email: this.state.emailValue }, (error, v) => {
-            if (error) {
-                this.setState({ emailSending: false, emailError: error.description!! });
-            } else {
-                this.setState({ emailSending: false, emailSent: true });
-            }
-        });
+        this.fireEmail();
     }
 
     loginCodeStart = (e: React.SyntheticEvent<any>) => {
@@ -141,7 +179,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
                     path={signin ? '/signup' : '/signin'}
                     linkText={signin ? InitTexts.auth.signup : InitTexts.auth.signin}
                 >
-                    {!this.state.email && (<>
+                    {!this.state.fromOutside && !this.state.email && (<>
                         <Title>{signin ? InitTexts.auth.signinTitle : InitTexts.auth.signupTitle}</Title>
                         {signin && <Description>{InitTexts.auth.signinSubtitle}</Description>}
                         <ButtonsWrapper marginTop={52}>
@@ -166,6 +204,10 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
                         </ButtonsWrapper>
                     </>)}
 
+                    {this.state.fromOutside && (this.state.emailSending || this.state.googleStarting) && (
+                        <XLoader loading={!this.state.emailSent} />
+                    )}
+                    
                     {this.state.email && !this.state.emailSent && (<>
                         <Title marginBottom={20}>{signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}</Title>
                         {this.state.emailError !== '' && (<><XServiceMessage title={InitTexts.auth.emailInvalid} /><EmptyBlock /></>)}
