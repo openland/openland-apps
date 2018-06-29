@@ -22,6 +22,9 @@ import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XMenuVertical, XMenuItem } from './Incubator/XOverflow';
 import { OrganizationPicker } from './OrganizationPicker';
+import * as Cookie from 'js-cookie';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 //
 // Root
@@ -193,6 +196,17 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
     }
 
     render() {
+        if (canUseDOM) {
+            let keepDomain = Cookie.defaults.domain;
+            let keepPath = Cookie.defaults.path;
+            let host = window.location.hostname.split('.').reverse();
+            Cookie.defaults.domain = (host[1] ? host[1] + '.' : '') + host[0];
+            Cookie.defaults.path = '/';
+            Cookie.set('x-openland-user-photo', this.props.picture || '');
+            Cookie.defaults.domain = keepDomain;
+            Cookie.defaults.path = keepPath;
+        }
+
         return (
             <XPopper
                 placement="right"

@@ -13,6 +13,7 @@ class LogoutHandler extends React.Component<{}, {}> {
     componentDidMount() {
         Cookie.remove('x-openland-org');
         Cookie.remove('x-openland-token');
+        Cookie.remove('x-openland-user-photo');
         window.location.href = '/';
     }
 
