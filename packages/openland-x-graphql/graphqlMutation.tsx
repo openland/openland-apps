@@ -15,13 +15,13 @@ export function graphqlMutation<TQuery, TVars, TN extends string>(mutation: Grap
     return function (component: React.ComponentType<GraphQLRoutedComponentProps<{}> & Record<TN, MutationFunc<TQuery, Partial<TVars>>>>): React.ComponentType<{ variables?: Partial<TVars> }> {
         let qlWrapper = graphql<{}, XWithRouter & { variables?: TVars }, GraphQLRoutedComponentProps<{}> & Record<TN, MutationFunc<TQuery, TVars>>>(mutation.document, {
             name: name,
-            options: (props: XWithRouter & { variables?: any }) => {
+            options: (props: XWithRouter & { variables?: any, refetchVars?: any }) => {
                 return {
                     variables: {
                         ...prepareParams(params.params ? params.params : [], props.router.routeQuery),
                         ...props.variables
                     },
-                    refetchQueries: params.refetchQueries ? params.refetchQueries.map((p) => ({ query: p.document, variables: { ...prepareParams(params.refetchParams ? params.refetchParams : [], props.router.routeQuery) } })) : []
+                    refetchQueries: params.refetchQueries ? params.refetchQueries.map((p) => ({ query: p.document, variables: { ...prepareParams(params.refetchParams ? params.refetchParams : [], props.router.routeQuery), ...props.refetchVars } })) : []
                 };
             }
         });

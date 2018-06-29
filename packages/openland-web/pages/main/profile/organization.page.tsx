@@ -13,7 +13,6 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { XLink } from 'openland-x/XLink';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
-import { ContactPerson } from '../../../utils/OrganizationProfileFields';
 import { XButton } from 'openland-x/XButton';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -34,7 +33,11 @@ import { DateFormater } from 'openland-x-format/XDate';
 import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder, AvatartPlaceholder } from './placeholders';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
-import PlaceholderAR from './img_placeholder_ar.svg';
+import PlaceholderAR from './icons/placeholder/img_placeholder_ar.svg';
+import PlaceholderDO from './icons/placeholder/img_placeholder_do.svg';
+import ContactEmailIc from './icons/contacts/ic-email.svg';
+import ContactLinkedInIc from './icons/contacts/ic-linkedin.svg';
+import ContactPhoneIc from './icons/contacts/ic-phone.svg';
 import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 
@@ -176,9 +179,9 @@ const OrganizationName = Glamorous.div({
 });
 
 const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft?: number, marginRight?: number }>((props) => ({
-    fontSize: props.small ? 15 : 18,
+    fontSize: props.small ? '14px' : '18px',
     fontWeight: 500,
-    lineHeight: props.small ? 1.33 : 1.11,
+    lineHeight: props.small ? '16px' : 1.11,
     color: '#334562',
     letterSpacing: props.small ? -0.5 : -0.4,
     marginBottom: props.marginBottom,
@@ -198,7 +201,7 @@ interface TextProps {
     bold?: boolean;
     fontWeight?: any;
     letterSpacing?: number;
-    lineHeight?: number;
+    lineHeight?: string | number;
     upperCase?: boolean;
     marginBottom?: number;
     marginTop?: number;
@@ -219,21 +222,39 @@ const Text = Glamorous.div<TextProps>((props) => ({
     marginTop: props.marginTop
 }));
 
-const SocialLinksWrapper = Glamorous.div({
+const TextLink = Glamorous(XLink)<TextProps>((props) => ({
     display: 'flex',
     alignItems: 'center',
-    paddingTop: 20,
+    fontSize: props.small ? 14 : 15,
+    lineHeight: props.lineHeight !== undefined ? props.lineHeight : props.small ? 1.43 : 1.33,
+    color: '#334562',
+    opacity: props.opacity,
+    fontWeight: props.fontWeight !== undefined ? props.fontWeight : props.bold ? 500 : undefined,
+    letterSpacing: props.letterSpacing !== undefined ? props.letterSpacing : props.bold ? -0.3 : undefined,
+    textTransform: props.upperCase ? 'capitalize' : undefined,
+    marginBottom: props.marginBottom,
+    marginTop: props.marginTop
+}));
+
+const SocialLinksWrapper = Glamorous.div({
+    marginLeft: -20,
+    marginRight: -20,
+    // marginTop: 8,
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: 12,
     borderTop: '1px solid rgba(220, 222, 228, 0.45)',
-    paddingLeft: 18,
-    paddingRight: 18
+    paddingLeft: 20,
+    paddingRight: 20
 });
 
 const SocialLink = Glamorous(XLink)({
-    fontSize: 15,
-    lineHeight: 1.33,
-    color: '#334562',
+    fontSize: '14px',
     fontWeight: 500,
-    marginRight: 22,
+    lineHeight: '16px',
+    color: '#334562',
+    letterSpacing: -0.5,
+    marginRight: 24,
     '&:hover': {
         color: '#5640d6'
     }
@@ -243,7 +264,7 @@ const SocialLinkImg = Glamorous(XLink)({
     display: 'block',
     width: 24,
     height: 24,
-    backgroundColor: '#d6dadf',
+    backgroundColor: '#bcc3cc',
     borderRadius: 50,
     marginRight: 10,
     backgroundRepeat: 'no-repeat',
@@ -260,31 +281,6 @@ const SocialLinkImg = Glamorous(XLink)({
         backgroundColor: '#5640d6'
     }
 });
-
-const ContactPersonComponent = (props: { contact: ContactPerson, index: number }) => (
-    <XHorizontalStyled
-        paddingTop={12}
-        paddingBottom={12}
-        paddingLeft={18}
-        paddingRight={18}
-    >
-        <XAvatar cloudImageUuid={props.contact.photo || undefined} size="small" />
-        <div>
-            <Text bold={true}>{props.contact.name}</Text>
-            <Text opacity={0.8}>{props.contact.position}</Text>
-            <Text opacity={0.5}>{props.contact.phone}</Text>
-            <Text opacity={0.5}>{props.contact.email}</Text>
-            <Text opacity={0.5}>{props.contact.link}</Text>
-        </div>
-    </XHorizontalStyled>
-);
-
-const ContactPersons = (props: { contacts: ContactPerson[] }) => (
-    <>
-        {!props.contacts && 'No contacts'}
-        {props.contacts && props.contacts.map((person, index) => <ContactPersonComponent key={index + '_' + person.name} contact={person} index={index} />)}
-    </>
-);
 
 const ShowMoreBtn = Glamorous.div<{ marginTop?: number, marginBottom?: number }>((props) => ({
     fontSize: 14,
@@ -428,9 +424,9 @@ const OpportunitiesValue = Glamorous.div({
     whiteSpace: 'nowrap',
     fontSize: 14,
     fontWeight: 500,
-    lineHeight: 1.14,
+    lineHeight: '30px',
     color: '#4285f4',
-    padding: '8px 9px',
+    padding: '0px 9px 1px',
     marginRight: 8,
     marginTop: 4,
     marginBottom: 4,
@@ -666,7 +662,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                         />
                     )}
                     {!item.location && (
-                        <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
+                        <PlaceholderDO style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 184px)' : 'calc(100% - 157px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
@@ -897,6 +893,7 @@ const AddListingButton = Glamorous(XLink)({
     borderRadius: 4,
     paddingLeft: 14,
     paddingRight: 8,
+    cursor: 'pointer',
     '& .material-icons': {
         transform: 'rotate(90deg)',
         opacity: 0.5,
@@ -943,7 +940,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                 shapeAndForm: target.shapeAndForm,
                 currentUse: target.currentUse,
                 goodFitFor: target.goodFitFor,
-                additionalLinks: target.additionalLinks || []
+                additionalLinks: target.additionalLinks || [],
+                status: 'open'
             }
         };
     }
@@ -969,6 +967,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                 landUse: editArTarget.landUse,
                 unitCapacity: editArTarget.unitCapacity,
                 areaRange: areaRange,
+                status: 'open'
             }
         };
     }
@@ -1056,6 +1055,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     geographies: input.geographies,
                     landUse: input.landUse,
                     unitCapacity: input.unitCapacity,
+                    status: 'open'
                 }
             }
         });
@@ -1146,6 +1146,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
         </XVertical>
     );
 
+    let currentPath = props.router.path.replace('#', '');
     let rootPath = '/o/' + props.data.organization.id;
     let lsitingsPath = '/o/' + props.data.organization.id + '/listings';
     let lsitingsAllPath = '/o/' + props.data.organization.id + '/listings/all';
@@ -1252,16 +1253,16 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                         <MainContent>
 
                             <XHorizontal>
-                                <XVerticalStyled flexGrow={1} maxwidth={props.router.path === rootPath ? 'calc(100% - 286px)' : '100%'}>
+                                <XVerticalStyled flexGrow={1} maxwidth={currentPath === rootPath ? 'calc(100% - 286px)' : '100%'}>
                                     <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
-                                        {props.router.path === rootPath && (
+                                        {currentPath === rootPath && (
                                             <>
                                                 <OverviewPlaceholder />
                                                 <DOAROverviewPlaceholder />
                                             </>
                                         )}
                                     </XWithRole>
-                                    {props.router.path === rootPath && (
+                                    {currentPath === rootPath && (
                                         <>
 
                                             {(organization.organizationType || organization.lookingFor || organization.geographies) && (
@@ -1476,7 +1477,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </>
                                     )}
 
-                                    {props.router.path === lsitingsPath && (
+                                    {currentPath === lsitingsPath && (
                                         <>
                                             <DOARListingPlaceholder />
                                             {((organization.developmentOportunities || []).length > 0 || (organization.acquisitionRequests || []).length > 0) && (
@@ -1488,10 +1489,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                                         </SwitcherWrapper>
                                                     </XVerticalStyled>
-                                                    {props.router.path === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
+                                                    {currentPath === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
                                                         organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                     )}
-                                                    {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
+                                                    {currentPath === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
                                                         organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                     )}
                                                 </ListingsWrap>
@@ -1499,14 +1500,14 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </>
                                     )}
 
-                                    {props.router.path === lsitingsAllPath && (
+                                    {currentPath === lsitingsAllPath && (
                                         <>
                                             <DOARListingPlaceholder />
                                             <XVertical>
-                                                {props.router.path === lsitingsAllPath && organization && organization.listingsAll && (
+                                                {currentPath === lsitingsAllPath && organization && organization.listingsAll && (
                                                     organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} isSoloComponent={true} /> : < AcquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} isSoloComponent={true} />)
                                                 )}
-                                                {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
+                                                {currentPath === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
                                                     organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
                                                 )}
                                             </XVertical>
@@ -1546,6 +1547,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             geographies: input.geographies,
                                                             landUse: input.landUse,
                                                             unitCapacity: input.unitCapacity,
+                                                            status: 'open'
                                                         }
                                                     }
                                                 });
@@ -1586,10 +1588,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     )}
 
                                 </XVerticalStyled>
-                                {props.router.path === rootPath && (
+                                {currentPath === rootPath && (
                                     <XVertical width={270} flexShrink={0}>
                                         {organization.about && (
-                                            <XCardStyled padding={18} paddingBottom={24} paddingTop={16}>
+                                            <XCardStyled padding={20} paddingBottom={24} paddingTop={16}>
                                                 <Title small={true} marginBottom={12}>
                                                     {TextOrganizationProfile.additionalInfoAbout}
                                                 </Title>
@@ -1603,14 +1605,34 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </XWithRole>
 
                                         {((organization.contacts || []).length || organization.website || organization.facebook || organization.twitter) && (
-                                            <XCardStyled padding={0} paddingTop={16} paddingBottom={20}>
-                                                <Title small={true} marginBottom={10} marginLeft={18}>{TextOrganizationProfile.additionalInfoContacts}</Title>
-                                                <ContactPersons contacts={(organization.contacts || []).filter(c => c !== null) as any} />
-                                                <SocialLinksWrapper>
-                                                    {organization.website && <SocialLink href={organization.website}>{TextOrganizationProfile.additionalInfoWebsite}</SocialLink>}
-                                                    {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
-                                                    {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
-                                                </SocialLinksWrapper>
+                                            <XCardStyled padding={20} paddingTop={16} paddingBottom={16}>
+                                                <XVertical separator={7}>
+                                                    <Title small={true}>{TextOrganizationProfile.additionalInfoContacts}</Title>
+                                                    <XVertical separator={10}>
+                                                        {(organization.contacts || []).filter(p => !!(p)).map((contact, i) => {
+                                                            return (
+                                                                <XHorizontalStyled
+                                                                    key={i}
+                                                                    separator={8}
+                                                                >
+                                                                    <XAvatar cloudImageUuid={contact.photo || undefined} size="small" />
+                                                                    <XVertical separator={3.5}>
+                                                                        <Title small={true}>{contact.name}</Title>
+                                                                        <Text small={true} lineHeight="18px" letterSpacing={-0.3} opacity={0.5}>{contact.position}</Text>
+                                                                        {contact.phone && <XHorizontal alignItems="center" separator={4}><ContactPhoneIc width={20} height={20} style={{ padding: 3 }} /><TextLink href={'tel:' + contact.phone} letterSpacing={0.1} small={true} opacity={0.5}>{contact.phone}</TextLink></XHorizontal>}
+                                                                        {contact.email && <XHorizontal alignItems="center" separator={4}><ContactEmailIc width={20} height={20} style={{ padding: 3 }} /><TextLink href={'mailto:' + contact.email} letterSpacing={0.1} small={true} opacity={0.5}>{contact.email}</TextLink></XHorizontal>}
+                                                                        {contact.link && <XHorizontal alignItems="center" separator={4}><ContactLinkedInIc width={20} height={20} style={{ padding: 3 }} /><TextLink href={contact.link.startsWith('http') ? contact.link : 'https://' + contact.link} letterSpacing={0.1} small={true} opacity={0.5}>{contact.link}</TextLink></XHorizontal>}
+                                                                    </XVertical>
+                                                                </XHorizontalStyled>
+                                                            );
+                                                        })}
+                                                    </XVertical>
+                                                    <SocialLinksWrapper>
+                                                        {organization.website && <SocialLink href={organization.website}>{TextOrganizationProfile.additionalInfoWebsite}</SocialLink>}
+                                                        {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
+                                                        {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
+                                                    </SocialLinksWrapper>
+                                                </XVertical>
                                             </XCardStyled>
                                         )}
                                         <XWithRole role={['org-' + organization.id + '-admin']}>

@@ -14,11 +14,11 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import XStyles from 'openland-x/XStyles';
 import { XIcon } from 'openland-x/XIcon';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import PlaceholderAbout from './placeholder_about.svg';
-import PlaceholderSocial from './placeholder_social.svg';
+import PlaceholderAbout from './icons/placeholder/placeholder_about.svg';
+import PlaceholderSocial from './icons/placeholder/placeholder_social.svg';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
-import PlaceholderContact from './placeholder_contact.svg';
+import PlaceholderContact from './icons/placeholder/placeholder_contact.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 
@@ -67,7 +67,7 @@ const Close = Glamorous(XIcon)({
 
 export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
 
-    return ((!props.data.myOrganizationProfile.organizationType && !props.data.myOrganizationProfile.geographies && !props.data.myOrganizationProfile.lookingFor) ? (
+    return ((props.data.myOrganizationProfile && !props.data.myOrganizationProfile.organizationType && !props.data.myOrganizationProfile.geographies && !props.data.myOrganizationProfile.lookingFor) ? (
         <Placeholder accent={true}>
             <XHorizontal>
                 <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_overview.svg'} />
@@ -176,7 +176,7 @@ class Closable extends React.Component<{ key: string, content: (closeCallback: (
 
 export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
     return (
-        (
+        props.data.myOrganizationProfile && (
             !props.data.myOrganizationProfile.doShapeAndForm &&
             !props.data.myOrganizationProfile.doCurrentUse &&
             !props.data.myOrganizationProfile.doGoodFitFor &&
@@ -287,7 +287,7 @@ export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
 
 export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
     return (
-        (
+        props.data.myOrganizationProfile && (
             !props.data.myOrganizationProfile.arGeographies &&
             !props.data.myOrganizationProfile.arAreaRange &&
             !props.data.myOrganizationProfile.arHeightLimit &&
@@ -446,7 +446,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
 
 export const DOAROverviewPlaceholder = withMyOrganizationProfile((props) => {
     return (
-        (!props.data.myOrganizationProfile.doShapeAndForm &&
+        props.data.myOrganizationProfile && ((!props.data.myOrganizationProfile.doShapeAndForm &&
             !props.data.myOrganizationProfile.doCurrentUse &&
             !props.data.myOrganizationProfile.doGoodFitFor &&
             !props.data.myOrganizationProfile.doSpecialAttributes &&
@@ -459,7 +459,7 @@ export const DOAROverviewPlaceholder = withMyOrganizationProfile((props) => {
                 !props.data.myOrganizationProfile.arAquisitionRate &&
                 !props.data.myOrganizationProfile.arClosingTime &&
                 !props.data.myOrganizationProfile.arSpecialAttributes &&
-                !props.data.myOrganizationProfile.arLandUse) ? <XHorizontal><DOOverviewPlaceholder /><AROverviewPlaceholder /></XHorizontal> : null);
+                !props.data.myOrganizationProfile.arLandUse)) ? <XHorizontal><DOOverviewPlaceholder /><AROverviewPlaceholder /></XHorizontal> : null);
 });
 
 export const DOListingPlaceholder = withMyOrganizationProfile((props) => {
@@ -496,7 +496,7 @@ export const DOListingPlaceholder = withMyOrganizationProfile((props) => {
 
 export const ARListingPlaceholder = withMyOrganizationProfile((props) => {
     return (
-        (
+        props.data.myOrganizationProfile && (
             !(props.data.myOrganizationProfile.acquisitionRequests || []).length
         ) ? (
                 <Closable
@@ -528,8 +528,8 @@ export const ARListingPlaceholder = withMyOrganizationProfile((props) => {
 
 export const DOARListingPlaceholder = withMyOrganizationProfile((props) => {
     return (
-        (!(props.data.myOrganizationProfile.developmentOportunities || []).length) ||
-            (!(props.data.myOrganizationProfile.acquisitionRequests || []).length) ? <XHorizontal><DOListingPlaceholder /><ARListingPlaceholder /></XHorizontal> : null);
+        props.data.myOrganizationProfile && ((!(props.data.myOrganizationProfile.developmentOportunities || []).length) ||
+            (!(props.data.myOrganizationProfile.acquisitionRequests || []).length)) ? <XHorizontal><DOListingPlaceholder /><ARListingPlaceholder /></XHorizontal> : null);
 });
 
 export const NewsPlaceholder = withMyOrganizationProfile((props) => {
