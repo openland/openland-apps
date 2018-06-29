@@ -104,7 +104,3 @@ workflows:
           requires: 
             - bundle
             - test
-      - deploy:
-          requires:
-            - publish_docker
-            - publish_cdn
