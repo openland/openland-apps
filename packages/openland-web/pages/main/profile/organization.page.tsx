@@ -222,6 +222,20 @@ const Text = Glamorous.div<TextProps>((props) => ({
     marginTop: props.marginTop
 }));
 
+const TextLink = Glamorous(XLink)<TextProps>((props) => ({
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: props.small ? 14 : 15,
+    lineHeight: props.lineHeight !== undefined ? props.lineHeight : props.small ? 1.43 : 1.33,
+    color: '#334562',
+    opacity: props.opacity,
+    fontWeight: props.fontWeight !== undefined ? props.fontWeight : props.bold ? 500 : undefined,
+    letterSpacing: props.letterSpacing !== undefined ? props.letterSpacing : props.bold ? -0.3 : undefined,
+    textTransform: props.upperCase ? 'capitalize' : undefined,
+    marginBottom: props.marginBottom,
+    marginTop: props.marginTop
+}));
+
 const SocialLinksWrapper = Glamorous.div({
     marginLeft: -20,
     marginRight: -20,
@@ -1605,9 +1619,9 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                                     <XVertical separator={3.5}>
                                                                         <Title small={true}>{contact.name}</Title>
                                                                         <Text small={true} lineHeight="18px" letterSpacing={-0.3} opacity={0.5}>{contact.position}</Text>
-                                                                        {contact.phone && <XHorizontal alignItems="center" separator={4}><ContactPhoneIc width={20} height={20} style={{ padding: 3 }} /><Text letterSpacing={0.1} small={true} opacity={0.5}>{contact.phone}</Text></XHorizontal>}
-                                                                        {contact.email && <XHorizontal alignItems="center" separator={4}><ContactEmailIc width={20} height={20} style={{ padding: 3 }} /><Text letterSpacing={0.1} small={true} opacity={0.5}>{contact.email}</Text></XHorizontal>}
-                                                                        {contact.link && <XHorizontal alignItems="center" separator={4}><ContactLinkedInIc width={20} height={20} style={{ padding: 3 }} /><Text letterSpacing={0.1} small={true} opacity={0.5}>{contact.link}</Text></XHorizontal>}
+                                                                        {contact.phone && <XHorizontal alignItems="center" separator={4}><ContactPhoneIc width={20} height={20} style={{ padding: 3 }} /><TextLink href={'tel:' + contact.phone} letterSpacing={0.1} small={true} opacity={0.5}>{contact.phone}</TextLink></XHorizontal>}
+                                                                        {contact.email && <XHorizontal alignItems="center" separator={4}><ContactEmailIc width={20} height={20} style={{ padding: 3 }} /><TextLink href={'mailto:' + contact.email} letterSpacing={0.1} small={true} opacity={0.5}>{contact.email}</TextLink></XHorizontal>}
+                                                                        {contact.link && <XHorizontal alignItems="center" separator={4}><ContactLinkedInIc width={20} height={20} style={{ padding: 3 }} /><TextLink href={contact.link.startsWith('http') ? contact.link : 'https://' + contact.link} letterSpacing={0.1} small={true} opacity={0.5}>{contact.link}</TextLink></XHorizontal>}
                                                                     </XVertical>
                                                                 </XHorizontalStyled>
                                                             );
