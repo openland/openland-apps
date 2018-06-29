@@ -1146,6 +1146,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
         </XVertical>
     );
 
+    let currentPath = props.router.path.replace('#', '');
     let rootPath = '/o/' + props.data.organization.id;
     let lsitingsPath = '/o/' + props.data.organization.id + '/listings';
     let lsitingsAllPath = '/o/' + props.data.organization.id + '/listings/all';
@@ -1252,16 +1253,16 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                         <MainContent>
 
                             <XHorizontal>
-                                <XVerticalStyled flexGrow={1} maxwidth={props.router.path === rootPath ? 'calc(100% - 286px)' : '100%'}>
+                                <XVerticalStyled flexGrow={1} maxwidth={currentPath === rootPath ? 'calc(100% - 286px)' : '100%'}>
                                     <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
-                                        {props.router.path === rootPath && (
+                                        {currentPath === rootPath && (
                                             <>
                                                 <OverviewPlaceholder />
                                                 <DOAROverviewPlaceholder />
                                             </>
                                         )}
                                     </XWithRole>
-                                    {props.router.path === rootPath && (
+                                    {currentPath === rootPath && (
                                         <>
 
                                             {(organization.organizationType || organization.lookingFor || organization.geographies) && (
@@ -1476,7 +1477,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </>
                                     )}
 
-                                    {props.router.path === lsitingsPath && (
+                                    {currentPath === lsitingsPath && (
                                         <>
                                             <DOARListingPlaceholder />
                                             {((organization.developmentOportunities || []).length > 0 || (organization.acquisitionRequests || []).length > 0) && (
@@ -1488,10 +1489,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                                                         </SwitcherWrapper>
                                                     </XVerticalStyled>
-                                                    {props.router.path === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
+                                                    {currentPath === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
                                                         organization.developmentOportunities.map((devop, i) => <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                     )}
-                                                    {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
+                                                    {currentPath === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
                                                         organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} />)
                                                     )}
                                                 </ListingsWrap>
@@ -1499,14 +1500,14 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </>
                                     )}
 
-                                    {props.router.path === lsitingsAllPath && (
+                                    {currentPath === lsitingsAllPath && (
                                         <>
                                             <DOARListingPlaceholder />
                                             <XVertical>
-                                                {props.router.path === lsitingsAllPath && organization && organization.listingsAll && (
+                                                {currentPath === lsitingsAllPath && organization && organization.listingsAll && (
                                                     organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunity key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} isSoloComponent={true} /> : < AcquizitionRequest key={'do_' + i} orgId={organization.id} item={l} full={true} showType={true} isSoloComponent={true} />)
                                                 )}
-                                                {props.router.path === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
+                                                {currentPath === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
                                                     organization.acquisitionRequests.map((devop, i) => <AcquizitionRequest key={'do_' + i} orgId={organization.id} item={devop} full={true} isSoloComponent={true} />)
                                                 )}
                                             </XVertical>
@@ -1586,7 +1587,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     )}
 
                                 </XVerticalStyled>
-                                {props.router.path === rootPath && (
+                                {currentPath === rootPath && (
                                     <XVertical width={270} flexShrink={0}>
                                         {organization.about && (
                                             <XCardStyled padding={18} paddingBottom={24} paddingTop={16}>
