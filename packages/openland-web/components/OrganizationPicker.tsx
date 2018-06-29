@@ -44,7 +44,7 @@ const OrganizationTitle = Glamorous.div({
 
 const XVerticalStyled = Glamorous(XVertical)({
     marginLeft: -24,
-    width: 'calc(100% + 48px)'
+    marginRight: -24,
 });
 
 export const OrganizationPicker = withMyOrganizations(withUserInfo((props) => {

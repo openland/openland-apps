@@ -22,6 +22,8 @@ import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XMenuVertical, XMenuItem } from './Incubator/XOverflow';
 import { OrganizationPicker } from './OrganizationPicker';
+import * as Cookie from 'js-cookie';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 //
 // Root
@@ -180,6 +182,19 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
         this.state = { show: false };
     }
 
+    componentDidUpdate() {
+        if (canUseDOM) {
+            let keepDomain = Cookie.defaults.domain;
+            let keepPath = Cookie.defaults.path;
+            let host = window.location.hostname.split('.').reverse();
+            Cookie.defaults.domain = (host[1] ? host[1] + '.' : '') + host[0];
+            Cookie.defaults.path = '/';
+            Cookie.set('x-openland-user-photo', this.props.picture || '');
+            Cookie.defaults.domain = keepDomain;
+            Cookie.defaults.path = keepPath;
+        }
+    }
+
     switch = () => {
         this.setState({
             show: !this.state.show
@@ -193,6 +208,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
     }
 
     render() {
+
         return (
             <XPopper
                 placement="right"
@@ -614,6 +630,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                     useTopCloser={true}
                     title={TextGlobal.switch}
                     targetQuery="org"
+                    size="small"
                 >
                     <OrganizationPicker />
                 </XModal>

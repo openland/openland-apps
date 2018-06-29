@@ -75,6 +75,7 @@ export default withAppBase('Waitlist', (props) => {
                             <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" size="medium" flexGrow={1} />
                             <XModal
                                 useTopCloser={true}
+                                size="small"
                                 title={TextGlobal.switch}
                                 target={<XButton text={TextGlobal.switch} size="medium" flexGrow={1} />}
                             >
