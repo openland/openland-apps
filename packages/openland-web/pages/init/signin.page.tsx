@@ -141,6 +141,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
             codeValue: '',
             codeSending: false,
             codeError: '',
+            fromOutside: false,
         });
     }
 
@@ -207,7 +208,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
                     {this.state.fromOutside && (this.state.emailSending || this.state.googleStarting) && (
                         <XLoader loading={!this.state.emailSent} />
                     )}
-                    
+
                     {this.state.email && !this.state.emailSent && (<>
                         <Title marginBottom={20}>{signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}</Title>
                         {this.state.emailError !== '' && (<><XServiceMessage title={InitTexts.auth.emailInvalid} /><EmptyBlock /></>)}
