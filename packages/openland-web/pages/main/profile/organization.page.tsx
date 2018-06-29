@@ -943,7 +943,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                 shapeAndForm: target.shapeAndForm,
                 currentUse: target.currentUse,
                 goodFitFor: target.goodFitFor,
-                additionalLinks: target.additionalLinks || []
+                additionalLinks: target.additionalLinks || [],
+                status: 'open'
             }
         };
     }
@@ -969,6 +970,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                 landUse: editArTarget.landUse,
                 unitCapacity: editArTarget.unitCapacity,
                 areaRange: areaRange,
+                status: 'open'
             }
         };
     }
@@ -1056,6 +1058,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     geographies: input.geographies,
                     landUse: input.landUse,
                     unitCapacity: input.unitCapacity,
+                    status: 'open'
                 }
             }
         });
@@ -1547,6 +1550,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             geographies: input.geographies,
                                                             landUse: input.landUse,
                                                             unitCapacity: input.unitCapacity,
+                                                            status: 'open'
                                                         }
                                                     }
                                                 });
