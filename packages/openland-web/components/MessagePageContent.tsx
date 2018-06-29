@@ -3,10 +3,10 @@ import Glamorous from 'glamorous';
 import { XContent } from 'openland-x-layout/XContent';
 
 let Title = Glamorous.div({
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 500,
     color: '#1f3449',
-    letterSpacing: 0.9,
+    letterSpacing: 0.8,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
