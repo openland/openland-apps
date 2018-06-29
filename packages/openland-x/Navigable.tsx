@@ -135,8 +135,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
         }
 
         render() {
-            // do not jump to top of page after click
-            let linkHref = undefined;
+            let linkHref = '#';
             let target = undefined;
             let isActive = this.resolveIsActive();
 

@@ -42,7 +42,7 @@ export default withAppBase('Waitlist', (props) => {
             <XDocumentHead title={InitTexts.need_info.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="View Waitlist">
                 <MessagePage>
-                <Img src="/static/img/img-moreinfo.png" srcSet="/static/img/img-moreinfo@2x.png 2x" />
+                    <Img src="/static/img/img-moreinfo.png" srcSet="/static/img/img-moreinfo@2x.png 2x" />
                     <MessagePageContent title={InitTexts.waitlist.title}>
                         <InfoText>{InitTexts.waitlist.content}</InfoText>
                         <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" />
