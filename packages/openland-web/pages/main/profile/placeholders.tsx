@@ -14,11 +14,11 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import XStyles from 'openland-x/XStyles';
 import { XIcon } from 'openland-x/XIcon';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import PlaceholderAbout from './placeholder_about.svg';
-import PlaceholderSocial from './placeholder_social.svg';
+import PlaceholderAbout from './icons/placeholder/placeholder_about.svg';
+import PlaceholderSocial from './icons/placeholder/placeholder_social.svg';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
-import PlaceholderContact from './placeholder_contact.svg';
+import PlaceholderContact from './icons/placeholder/placeholder_contact.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 

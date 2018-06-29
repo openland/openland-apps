@@ -34,7 +34,11 @@ import { DateFormater } from 'openland-x-format/XDate';
 import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder, AvatartPlaceholder } from './placeholders';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
-import PlaceholderAR from './img_placeholder_ar.svg';
+import PlaceholderAR from './icons/placeholder/img_placeholder_ar.svg';
+import PlaceholderDO from './icons/placeholder/img_placeholder_do.svg';
+import ContactEmailIc from './icons/contacts/ic-email.svg';
+import ContactLinkedInIc from './icons/contacts/ic-linkedin.svg';
+import ContactPhoneIc from './icons/contacts/ic-phone.svg';
 import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 
@@ -176,9 +180,9 @@ const OrganizationName = Glamorous.div({
 });
 
 const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft?: number, marginRight?: number }>((props) => ({
-    fontSize: props.small ? 15 : 18,
+    fontSize: props.small ? '14px' : '18px',
     fontWeight: 500,
-    lineHeight: props.small ? 1.33 : 1.11,
+    lineHeight: props.small ? '16px' : 1.11,
     color: '#334562',
     letterSpacing: props.small ? -0.5 : -0.4,
     marginBottom: props.marginBottom,
@@ -198,7 +202,7 @@ interface TextProps {
     bold?: boolean;
     fontWeight?: any;
     letterSpacing?: number;
-    lineHeight?: number;
+    lineHeight?: string | number;
     upperCase?: boolean;
     marginBottom?: number;
     marginTop?: number;
@@ -220,20 +224,24 @@ const Text = Glamorous.div<TextProps>((props) => ({
 }));
 
 const SocialLinksWrapper = Glamorous.div({
+    marginLeft: -20,
+    marginRight: -20,
+    // marginTop: 8,
     display: 'flex',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: 12,
     borderTop: '1px solid rgba(220, 222, 228, 0.45)',
-    paddingLeft: 18,
-    paddingRight: 18
+    paddingLeft: 20,
+    paddingRight: 20
 });
 
 const SocialLink = Glamorous(XLink)({
-    fontSize: 15,
-    lineHeight: 1.33,
-    color: '#334562',
+    fontSize: '14px',
     fontWeight: 500,
-    marginRight: 22,
+    lineHeight: '16px',
+    color: '#334562',
+    letterSpacing: -0.5,
+    marginRight: 24,
     '&:hover': {
         color: '#5640d6'
     }
@@ -243,7 +251,7 @@ const SocialLinkImg = Glamorous(XLink)({
     display: 'block',
     width: 24,
     height: 24,
-    backgroundColor: '#d6dadf',
+    backgroundColor: '#bcc3cc',
     borderRadius: 50,
     marginRight: 10,
     backgroundRepeat: 'no-repeat',
@@ -260,31 +268,6 @@ const SocialLinkImg = Glamorous(XLink)({
         backgroundColor: '#5640d6'
     }
 });
-
-const ContactPersonComponent = (props: { contact: ContactPerson, index: number }) => (
-    <XHorizontalStyled
-        paddingTop={12}
-        paddingBottom={12}
-        paddingLeft={18}
-        paddingRight={18}
-    >
-        <XAvatar cloudImageUuid={props.contact.photo || undefined} size="small" />
-        <div>
-            <Text bold={true}>{props.contact.name}</Text>
-            <Text opacity={0.8}>{props.contact.position}</Text>
-            <Text opacity={0.5}>{props.contact.phone}</Text>
-            <Text opacity={0.5}>{props.contact.email}</Text>
-            <Text opacity={0.5}>{props.contact.link}</Text>
-        </div>
-    </XHorizontalStyled>
-);
-
-const ContactPersons = (props: { contacts: ContactPerson[] }) => (
-    <>
-        {!props.contacts && 'No contacts'}
-        {props.contacts && props.contacts.map((person, index) => <ContactPersonComponent key={index + '_' + person.name} contact={person} index={index} />)}
-    </>
-);
 
 const ShowMoreBtn = Glamorous.div<{ marginTop?: number, marginBottom?: number }>((props) => ({
     fontSize: 14,
@@ -666,7 +649,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                         />
                     )}
                     {!item.location && (
-                        <img src={'/static/img/icons/organization/profile/img_placeholder_do.svg'} style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
+                        <PlaceholderDO style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 184px)' : 'calc(100% - 157px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
@@ -1594,7 +1577,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 {currentPath === rootPath && (
                                     <XVertical width={270} flexShrink={0}>
                                         {organization.about && (
-                                            <XCardStyled padding={18} paddingBottom={24} paddingTop={16}>
+                                            <XCardStyled padding={20} paddingBottom={24} paddingTop={16}>
                                                 <Title small={true} marginBottom={12}>
                                                     {TextOrganizationProfile.additionalInfoAbout}
                                                 </Title>
@@ -1608,14 +1591,34 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </XWithRole>
 
                                         {((organization.contacts || []).length || organization.website || organization.facebook || organization.twitter) && (
-                                            <XCardStyled padding={0} paddingTop={16} paddingBottom={20}>
-                                                <Title small={true} marginBottom={10} marginLeft={18}>{TextOrganizationProfile.additionalInfoContacts}</Title>
-                                                <ContactPersons contacts={(organization.contacts || []).filter(c => c !== null) as any} />
-                                                <SocialLinksWrapper>
-                                                    {organization.website && <SocialLink href={organization.website}>{TextOrganizationProfile.additionalInfoWebsite}</SocialLink>}
-                                                    {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
-                                                    {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
-                                                </SocialLinksWrapper>
+                                            <XCardStyled padding={20} paddingTop={16} paddingBottom={16}>
+                                                <XVertical separator={7}>
+                                                    <Title small={true}>{TextOrganizationProfile.additionalInfoContacts}</Title>
+                                                    <XVertical separator={10}>
+                                                        {(organization.contacts || []).filter(p => !!(p)).map((contact, i) => {
+                                                            return (
+                                                                <XHorizontalStyled
+                                                                    key={i}
+                                                                    separator={8}
+                                                                >
+                                                                    <XAvatar cloudImageUuid={contact.photo || undefined} size="small" />
+                                                                    <XVertical separator={3.5}>
+                                                                        <Title small={true}>{contact.name}</Title>
+                                                                        <Text small={true} lineHeight="18px" letterSpacing={-0.3} opacity={0.5}>{contact.position}</Text>
+                                                                        {contact.phone && <XHorizontal alignItems="center" separator={4}><ContactPhoneIc width={20} height={20} style={{ padding: 3 }} /><Text letterSpacing={0.1} small={true} opacity={0.5}>{contact.phone}</Text></XHorizontal>}
+                                                                        {contact.email && <XHorizontal alignItems="center" separator={4}><ContactEmailIc width={20} height={20} style={{ padding: 3 }} /><Text letterSpacing={0.1} small={true} opacity={0.5}>{contact.email}</Text></XHorizontal>}
+                                                                        {contact.link && <XHorizontal alignItems="center" separator={4}><ContactLinkedInIc width={20} height={20} style={{ padding: 3 }} /><Text letterSpacing={0.1} small={true} opacity={0.5}>{contact.link}</Text></XHorizontal>}
+                                                                    </XVertical>
+                                                                </XHorizontalStyled>
+                                                            );
+                                                        })}
+                                                    </XVertical>
+                                                    <SocialLinksWrapper>
+                                                        {organization.website && <SocialLink href={organization.website}>{TextOrganizationProfile.additionalInfoWebsite}</SocialLink>}
+                                                        {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
+                                                        {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
+                                                    </SocialLinksWrapper>
+                                                </XVertical>
                                             </XCardStyled>
                                         )}
                                         <XWithRole role={['org-' + organization.id + '-admin']}>
