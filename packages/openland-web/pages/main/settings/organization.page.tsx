@@ -392,7 +392,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                     name: data.name,
                                     phone: data.phone,
                                     photoRef: data.photoRef,
-                                    email: data.email,
+                                    email: data.email || null,
                                     position: data.position,
                                     link: data.link,
                                 };
@@ -431,7 +431,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                 name: data.name,
                                 phone: data.phone,
                                 photoRef: data.avatar,
-                                email: data.email,
+                                email: data.email || null,
                                 link: data.link,
                                 position: data.position,
                             });
