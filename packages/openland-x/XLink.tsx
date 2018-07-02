@@ -14,6 +14,7 @@ export const XLink = makeNavigable<{ className?: string }>((props) => {
     }
     return (
         <a
+            style={{cursor: 'pointer'}}
             href={props.href}
             target={props.hrefTarget}
             onClick={props.onClick}
