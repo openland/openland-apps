@@ -13,4 +13,7 @@ RUN yarn install
 COPY . .
 RUN yarn bundle
 
+ARG release_id
+ENV RELEASE_ID=$release_id
+
 CMD [ "node", "dist/server.js" ]

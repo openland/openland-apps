@@ -11,6 +11,7 @@ import { withMyOrganizations } from '../../api/withMyOrganizations';
 import { withQueryLoader } from '../../components/withQueryLoader';
 import { withDebugSendWelcomeEmail } from '../../api/withDebugSendWelcomeEmail';
 import { XButton } from 'openland-x/XButton';
+import { getConfig } from '../../config';
 
 export const SendWelcome = withDebugSendWelcomeEmail((props) => {
     return <XButton action={async () => props.sendWelcome({})} alignSelf="flex-start" text="Send Email" />;
@@ -60,6 +61,10 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
             <XHeader text="Send welcome email" />
             <XContent>
                 <SendWelcome />
+            </XContent>
+            <XHeader text="Release" />
+            <XContent>
+                {getConfig().release}
             </XContent>
         </DevToolsScaffold>
     );

@@ -4,4 +4,5 @@ export interface Config {
     mixpanelKey?: string;
     googleAnalyticsKey?: string;
     uploadcareKey?: string;
+    release?: string;
 }
