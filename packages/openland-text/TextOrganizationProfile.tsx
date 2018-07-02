@@ -17,7 +17,7 @@ export const TextOrganizationProfile = {
     overviewOrganizationTypeTitle: 'Organization type',
     overviewOrganizationLookingForTitle: 'Looking for',
     overviewOrganizationGeographiesTitle: 'Geographies',
-    
+
     overviewDOTitle: 'Development opportunities',
     overviewDOTagRowShapeAndFormTitle: 'Shape and form',
     overviewDOTagRowCurrentUseTitle: 'Current use',
@@ -29,12 +29,12 @@ export const TextOrganizationProfile = {
     overviewArTagRowGeographiesTitle: 'Geographies',
     overviewArTagRowAreaRangeTitle: 'Area range',
     overviewArTagRowHeightLimitTitle: 'Height limit',
-    overviewArTagRowLandUseTitle: 'Land use',
-    overviewArTagRowSpecialAttributesTitle: 'Special attributes',
     overviewArTagRowActivityStatusTitle: 'Activity status',
     overviewArTagRowAquisitionBudgetTitle: '3-year aquisition budget',
     overviewArTagRowAquisitionRateTitle: 'Aquisition rate',
     overviewArTagRowClosingTimeTitle: 'Closing time',
+    overviewArTagRowSpecialAttributesTitle: 'Special attributes',
+    overviewArTagRowLandUseTitle: 'Land use',
 
     listingsDoTabTitle: 'Development opportunities',
     listingsArTabTitle: 'Acquisition requests',
@@ -89,37 +89,37 @@ export const TextOrganizationProfile = {
     listingCreateDoSpecialAttributesTitle: 'Special attributes',
     listingCreateDoSpecialAttributesPlaceholder: 'Special attributes',
 
-    listingDoTagRowTitileArea : 'Area',
-    listingDoTagRowTitilePrice : 'Price',
-    listingDoTagRowTitileSummary : 'Summary',
-    listingDoTagRowTitileAvailability : 'Availability',
+    listingDoTagRowTitileArea: 'Area',
+    listingDoTagRowTitilePrice: 'Price',
+    listingDoTagRowTitileSummary: 'Summary',
+    listingDoTagRowTitileAvailability: 'Availability',
     listingDoTagRowTitileDealType: 'Deal type',
-    listingDoTagRowTitileShapeAndForm : 'Shape and form',
+    listingDoTagRowTitileShapeAndForm: 'Shape and form',
     listingDoTagRowTitileCurrentUse: 'Current use',
-    listingDoTagRowTitileGoodFitFor : 'Good fit for',
+    listingDoTagRowTitileGoodFitFor: 'Good fit for',
     listingDoTagRowTitileSpecialAttributes: 'Special attributes',
 
     listingDoOwerflowEdit: 'Edit',
     listingDoOwerflowDelete: 'Delete',
     listingDoOwerflowStreetView: 'Street view',
     listingDoOwerflowGoogleMaps: 'Google map',
-    
+
     listingDoType: 'Development oportunity',
     listingDoLocked: 'Detailed requirements on request',
 
-    listingArTagRowSummary : 'Summary',
-    listingArTagRowAreaRange : 'Area range',
-    listingArTagRowGeographies : 'Geographies',
-    listingArTagRowLandUse : 'Land use',
-    listingArTagRowSpecialAttributes : 'Special attributes',
-    listingArTagRowUnitCapacity : 'Unit capacity',
-    
+    listingArTagRowSummary: 'Summary',
+    listingArTagRowAreaRange: 'Area range',
+    listingArTagRowGeographies: 'Geographies',
+    listingArTagRowLandUse: 'Land use',
+    listingArTagRowSpecialAttributes: 'Special attributes',
+    listingArTagRowUnitCapacity: 'Unit capacity',
+
     listingArOwerflowEdit: 'Edit',
     listingArOwerflowDelete: 'Delete',
-    
+
     listingArType: 'Acquizition request',
     listingArLocked: 'Detailed requirements on request',
-    
+
     listingEditDoLinkTextTitle: 'Link text',
     listingEditDoLinkTextPlaceholder: 'Link text',
     listingEditDoLinkUrlTitle: 'Link URL',
@@ -128,11 +128,68 @@ export const TextOrganizationProfile = {
     listingEditDoLinkAddFirst: 'Add link',
     listingEditDoLinkAdd: 'Add another link',
 
-    placeholderOverviewGeneralMainText: (<><p>Your account has been created - now it will be easier to connect with real estate companies.</p><p>To make most of it we recommend to share more information about your company.</p></>),
-    placeholderOverviewGeneralButton: 'Improve Profile',
+    placeholderOverviewGeneralMainText: (<><p>Share your organization type, geographies of operation,</p><p>and what are you looking for</p></>),
+    placeholderOverviewGeneralButton: 'Add organization overview',
     placeholderOverviewGeneralModalTitle: 'Organization Profile',
     placeholderOverviewGeneralModalOrganizationTypeTitle: 'What\'s type of your entity?',
     placeholderOverviewGeneralModalOrganizationTypeDescription: 'Are you corporation, non profit or public entity?',
+    placeholderOverviewGeneralModalLookingForTitle: 'What are you looking for?',
+    placeholderOverviewGeneralModalLookingForDescription: 'Tell us more about your goals. What you are struggling to find?',
+    placeholderOverviewGeneralModalGeographiesTitle: 'Where are you looking for deals?',
+    placeholderOverviewGeneralModalGeographiesDescription: 'Whole US? Specific state or city?',
+
+    placeholderOverviewDoMainText: 'Do you own development sites?',
+    placeholderOverviewDOButton: 'Describe your portfolio',
+    placeholderOverviewDOModalShapeAndFormTitle: 'Shape And Form',
+    placeholderOverviewDOModalCurrentUseTitle: 'Current Use',
+    placeholderOverviewDOModalGoodFitForTitle: 'Good Fit For',
+    placeholderOverviewDOModalSpecialAttributesTitle: 'Special attributes',
+    placeholderOverviewDOModalAvailabilityTitle: 'Availability',
+
+    placeholderOverviewArMainText: 'Are you intrested in land aquisition?',
+    placeholderOverviewArButton: 'Share your criteria',
+    placegolderOverviewArModalTagRowGeographiesTitle: 'Geographies',
+    placegolderOverviewArModalTagRowAreaRangeTitle: 'Area range',
+    placegolderOverviewArModalTagRowHeightLimitTitle: 'Height limit',
+    placegolderOverviewArModalTagRowActivityStatusTitle: 'Activity status',
+    placegolderOverviewArModalTagRowAquisitionBudgetTitle: '3-year aquisition budget',
+    placegolderOverviewArModalTagRowAquisitionRateTitle: 'Aquisition rate',
+    placegolderOverviewArModalTagRowClosingTimeTitle: 'Closing time',
+    placegolderOverviewArModalTagRowSpecialAttributesTitle: 'Special attributes',
+    placegolderOverviewArModalTagRowLandUseTitle: 'Land use',
+
+    placeholderListongsDoMainText: 'Do you own development sites?',
+    placeholderListingsDoButton: 'Add an development opportunity',
+
+    placeholderListongsArMainText: 'Are you intrested in land aquisition?',
+    placeholderListingsArButton: 'Add an acquisition request',
+
+    placeholderAbout: 'Add an intro paragraph',
+    placeholderAboutModalAboutTitle: 'About',
+
+    placeholderSocial: 'Add social links',
+    placeholderSocialModalTitle: 'Add social links',
+    placeholderSocialModal: 'Add social links',
+    placeholderSocialModalWeb: 'Website',
+    placeholderSocialModalTwitter: 'Twitter',
+    placeholderSocialModalFacebook: 'Facebook',
+    placeholderSocialModalLinkedIn: 'LinkedIn',
+
+    placeholderContacts: 'Add contacts',
+    placeholderContactsModalTitle: 'Add contact',
+    placeholderContactsModalNameTitle: 'Name',
+    placeholderContactsModalPhonelTitle: 'Phone',
+    placeholderContactsModalEmailTitle: 'Email',
+    placeholderContactsModalLinkedinTitle: 'Link',
+    placeholderContactsModalPositionTitle: 'Position',
+    placeholderContactsModalPhotoTitle: 'Photo',
+
+    placeholderLocation: '+ Add location',
+    placeholderLocationModalLocationTitle: 'Location',
+
+    placeholderLogo: (<><p>Add your</p><p>profile logo</p></>),
+    placeholderLogoModalLocationTitle: 'Logo',
+
 };
 
 // title=|>|text=|placeholder=

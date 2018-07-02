@@ -21,6 +21,7 @@ import { XInput } from 'openland-x/XInput';
 import PlaceholderContact from './icons/placeholder/placeholder_contact.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
+import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 
 const Placeholder = Glamorous(XCard)<{ accent?: boolean }>(props => ({
     backgroundColor: props.accent ? '#654bfa' : '#fff',
@@ -73,10 +74,10 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                 <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_overview.svg'} />
                 <XVertical>
                     {/* <PlaceholderText accent={true}>Your account has been created - now it will be easier to connect with real estate companies. To make most of it we recommend to share more information about your company. </PlaceholderText> */}
-                    <PlaceholderText accent={true}><p>Share your organization type, geographies of operation,</p><p>and what are you looking for</p></PlaceholderText>
+                    <PlaceholderText accent={true}>{TextOrganizationProfile.placeholderOverviewGeneralMainText}</PlaceholderText>
 
                     <XModalForm
-                        title="Organization Profile"
+                        title={TextOrganizationProfile.placeholderOverviewGeneralModalTitle}
                         defaultData={{
                             input: {
                                 organizationType: props.data.myOrganizationProfile!!.organizationType,
@@ -99,7 +100,7 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                             onClick={() => {
                                 //
                             }}
-                            text="Improve Profile"
+                            text={TextOrganizationProfile.placeholderOverviewGeneralButton}
                             alignSelf="flex-start"
                         />}
                     >
@@ -107,8 +108,8 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                             <XFormLoadingContent>
                                 <XVertical flexGrow={1} maxWidth={500}>
                                     <XFormField
-                                        title="What's type of your entity?"
-                                        description="Are you corporation, non profit or public entity?"
+                                        title={TextOrganizationProfile.placeholderOverviewGeneralModalOrganizationTypeTitle}
+                                        description={TextOrganizationProfile.placeholderOverviewGeneralModalOrganizationTypeDescription}
                                         field="input.organizationType"
                                     >
                                         <XSelect
@@ -123,15 +124,15 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                                         />
                                     </XFormField>
                                     <XFormField
-                                        title="What are you looking for?"
-                                        description="Tell us more about your goals. What you are struggling to find?"
+                                        title={TextOrganizationProfile.placeholderOverviewGeneralModalLookingForTitle}
+                                        description={TextOrganizationProfile.placeholderOverviewGeneralModalLookingForDescription}
                                         field="input.lookingFor"
                                     >
                                         <XSelect creatable={true} multi={true} field="input.lookingFor" />
                                     </XFormField>
                                     <XFormField
-                                        title="Where are you looking for deals?"
-                                        description="Whole US? Specific state or city?"
+                                        title={TextOrganizationProfile.placeholderOverviewGeneralModalGeographiesTitle}
+                                        description={TextOrganizationProfile.placeholderOverviewGeneralModalGeographiesDescription}
                                         field="input.geographies"
                                     >
                                         <XSelect creatable={true} multi={true} field="input.geographies" />
@@ -195,7 +196,7 @@ export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
                                 <XHorizontal>
                                     <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
                                     <XVertical maxWidth={452}>
-                                        <PlaceholderText>Do you own development sites?</PlaceholderText>
+                                        <PlaceholderText>{TextOrganizationProfile.placeholderOverviewDoMainText}</PlaceholderText>
                                         <XModalForm
                                             defaultData={{
                                                 input: {
@@ -221,14 +222,14 @@ export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
                                             }}
                                             target={<PlaceholderButton
                                                 style="primary"
-                                                text="Describe your portfolio"
+                                                text={TextOrganizationProfile.placeholderOverviewDOButton}
                                                 alignSelf="flex-start"
                                             />}
                                         >
                                             <XVertical maxWidth={500}>
                                                 <XFormLoadingContent>
                                                     <XVertical>
-                                                        <XFormField title="Shape And Form">
+                                                        <XFormField field="input.doShapeAndForm" optional={true} title={TextOrganizationProfile.placeholderOverviewDOModalShapeAndFormTitle}>
                                                             <XSelect
                                                                 field="input.doShapeAndForm"
                                                                 creatable={true}
@@ -236,7 +237,7 @@ export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="Current Use">
+                                                        <XFormField field="input.doCurrentUse" optional={true} title={TextOrganizationProfile.placeholderOverviewDOModalCurrentUseTitle}>
                                                             <XSelect
                                                                 field="input.doCurrentUse"
                                                                 creatable={true}
@@ -244,7 +245,7 @@ export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="Good Fit For">
+                                                        <XFormField field="input.doGoodFitFor" optional={true} title={TextOrganizationProfile.placeholderOverviewDOModalGoodFitForTitle}>
                                                             <XSelect
                                                                 field="input.doGoodFitFor"
                                                                 creatable={true}
@@ -252,7 +253,7 @@ export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="Special Attributes">
+                                                        <XFormField field="input.doSpecialAttributes" optional={true} title={TextOrganizationProfile.placeholderOverviewDOModalSpecialAttributesTitle}>
                                                             <XSelect
                                                                 field="input.doSpecialAttributes"
                                                                 creatable={true}
@@ -260,7 +261,7 @@ export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="Availability">
+                                                        <XFormField field="input.doAvailability" optional={true} title={TextOrganizationProfile.placeholderOverviewDOModalAvailabilityTitle}>
                                                             <XSelect
                                                                 field="input.doAvailability"
                                                                 creatable={true}
@@ -312,7 +313,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
 
                                     <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_ar.svg'} />
                                     <XVertical maxWidth={452}>
-                                        <PlaceholderText>Are you intrested in land aquisition?</PlaceholderText>
+                                        <PlaceholderText>{TextOrganizationProfile.placeholderOverviewArMainText}</PlaceholderText>
                                         <XModalForm
                                             defaultData={{
                                                 input: {
@@ -346,7 +347,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                             }}
                                             target={<PlaceholderButton
                                                 style="primary"
-                                                text="Share your criteria"
+                                                text={TextOrganizationProfile.placeholderOverviewArButton}
                                                 alignSelf="flex-start"
                                             />}
                                         >
@@ -354,7 +355,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                 <XFormLoadingContent>
                                                     <XVertical>
 
-                                                        <XFormField title="Geographies">
+                                                        <XFormField field="input.arGeographies" title={TextOrganizationProfile.placegolderOverviewArModalTagRowGeographiesTitle}>
                                                             <XSelect
                                                                 field="input.arGeographies"
                                                                 creatable={true}
@@ -362,7 +363,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="Area Range">
+                                                        <XFormField field="input.arAreaRange" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowAreaRangeTitle}>
                                                             <XSelect
                                                                 field="input.arAreaRange"
                                                                 creatable={true}
@@ -371,7 +372,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="Height Limit">
+                                                        <XFormField field="input.arHeightLimit" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowHeightLimitTitle}>
                                                             <XSelect
                                                                 field="input.arHeightLimit"
                                                                 creatable={true}
@@ -379,7 +380,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="Activity Status">
+                                                        <XFormField field="input.arActivityStatus" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowActivityStatusTitle}>
                                                             <XSelect
                                                                 field="input.arActivityStatus"
                                                                 creatable={true}
@@ -387,7 +388,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="3-year Aquisition Budget">
+                                                        <XFormField field="input.arAquisitionBudget" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowAquisitionBudgetTitle}>
                                                             <XSelect
                                                                 field="input.arAquisitionBudget"
                                                                 creatable={true}
@@ -395,7 +396,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="Aquisition Rate">
+                                                        <XFormField field="input.arAquisitionRate" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowAquisitionRateTitle}>
                                                             <XSelect
                                                                 field="input.arAquisitionRate"
                                                                 creatable={true}
@@ -403,7 +404,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="Closing Time">
+                                                        <XFormField field="input.arClosingTime" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowClosingTimeTitle}>
                                                             <XSelect
                                                                 field="input.arClosingTime"
                                                                 creatable={true}
@@ -411,7 +412,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="Special Attributes">
+                                                        <XFormField field="input.arSpecialAttributes" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowSpecialAttributesTitle}>
                                                             <XSelect
                                                                 field="input.arSpecialAttributes"
                                                                 creatable={true}
@@ -419,7 +420,7 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                                             />
                                                         </XFormField>
 
-                                                        <XFormField title="Land Use">
+                                                        <XFormField field="input.arLandUse" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowLandUseTitle}>
                                                             <XSelect
                                                                 field="input.arLandUse"
                                                                 creatable={true}
@@ -480,8 +481,8 @@ export const DOListingPlaceholder = withMyOrganizationProfile((props) => {
 
                                     <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
                                     <XVertical maxWidth={452}>
-                                        <PlaceholderText>Do you own development sites?</PlaceholderText>
-                                        <PlaceholderButton query={{ field: 'addListing', value: 'DO' }} style="primary" text="Add an development opportunity" />
+                                        <PlaceholderText>{TextOrganizationProfile.placeholderListongsDoMainText}</PlaceholderText>
+                                        <PlaceholderButton query={{ field: 'addListing', value: 'DO' }} style="primary" text={TextOrganizationProfile.placeholderListingsDoButton} />
                                     </XVertical>
 
                                 </XHorizontal>
@@ -512,8 +513,8 @@ export const ARListingPlaceholder = withMyOrganizationProfile((props) => {
 
                                     <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_ar.svg'} />
                                     <XVertical maxWidth={452}>
-                                        <PlaceholderText>Do you own development sites?</PlaceholderText>
-                                        <PlaceholderButton query={{ field: 'addListing', value: 'AR' }} style="primary" text="Add an acquisition request" />
+                                        <PlaceholderText>{TextOrganizationProfile.placeholderListongsArMainText}</PlaceholderText>
+                                        <PlaceholderButton query={{ field: 'addListing', value: 'AR' }} style="primary" text={TextOrganizationProfile.placeholderListingsArButton} />
                                     </XVertical>
 
                                 </XHorizontal>
@@ -606,7 +607,7 @@ export const AboutPlaceholder = withMyOrganizationProfile((props) => {
                 <div style={{ cursor: 'pointer' }}>
                     <XCardStyled padding={18}>
                         <XHorizontal alignItems="center">
-                            <PlaceholderAbout /> <Text marginWidth={18}>Add an intro paragraph</Text>
+                            <PlaceholderAbout /> <Text marginWidth={18}>{TextOrganizationProfile.placeholderAbout}</Text>
                         </XHorizontal>
                     </XCardStyled>
                 </div>
@@ -614,7 +615,7 @@ export const AboutPlaceholder = withMyOrganizationProfile((props) => {
         >
             <XVertical>
                 <XFormLoadingContent>
-                    <XFormField title="About">
+                    <XFormField title={TextOrganizationProfile.placeholderAboutModalAboutTitle} field="fields.input.about">
                         <XTextArea valueStoreKey="fields.input.about" />
                     </XFormField>
                 </XFormLoadingContent>
@@ -627,11 +628,13 @@ export const AboutPlaceholder = withMyOrganizationProfile((props) => {
 export const SocialPlaceholder = withMyOrganizationProfile((props) => {
     return (
         <XModalForm
+            title={TextOrganizationProfile.placeholderSocialModalTitle}
             defaultData={{
                 input: {
                     website: props.data.myOrganizationProfile!!.website,
                     twitter: props.data.myOrganizationProfile!!.twitter,
                     facebook: props.data.myOrganizationProfile!!.facebook,
+                    linkedin: props.data.myOrganizationProfile!!.linkedin,
                 }
             }}
             defaultAction={async (data) => {
@@ -641,6 +644,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
                             website: data.input.website,
                             twitter: data.input.twitter,
                             facebook: data.input.facebook,
+                            linkedin: data.input.linkedin,
                         }
                     }
                 });
@@ -648,21 +652,24 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
             target={(
                 <div style={{ cursor: 'pointer' }}>
                     <XHorizontal alignItems="center">
-                        <PlaceholderSocial /> <Text marginWidth={18}>Add social links</Text>
+                        <PlaceholderSocial /> <Text marginWidth={18}>{TextOrganizationProfile.placeholderSocial}</Text>
                     </XHorizontal>
                 </div>
             )}
         >
             <XVertical>
                 <XFormLoadingContent>
-                    <XFormField title="Website">
+                    <XFormField field="input.website" optional={true} title={TextOrganizationProfile.placeholderSocialModalWeb}>
                         <XInput field="input.website" />
                     </XFormField>
-                    <XFormField title="Twitter">
+                    <XFormField field="input.twitter" optional={true} title={TextOrganizationProfile.placeholderSocialModalTwitter}>
                         <XInput field="input.twitter" />
                     </XFormField>
-                    <XFormField title="Facebook">
+                    <XFormField field="input.facebook" optional={true} title={TextOrganizationProfile.placeholderSocialModalFacebook}>
                         <XInput field="input.facebook" />
+                    </XFormField>
+                    <XFormField field="input.linkedin" optional={true} title={TextOrganizationProfile.placeholderSocialModalLinkedIn}>
+                        <XInput field="input.linkedin" />
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>
@@ -674,7 +681,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
 export const ContactPlaceholder = withMyOrganizationProfile((props) => {
     return (
         <XModalForm
-            title="Add contact"
+            title={TextOrganizationProfile. placeholderContactsModalTitle}
             defaultData={{
                 contacts: props.data.myOrganizationProfile!!.contacts,
             }}
@@ -698,19 +705,31 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
             target={(
                 <div style={{ cursor: 'pointer' }}>
                     <XHorizontal alignItems="center">
-                        <PlaceholderContact /> <Text marginWidth={18}>Add contacts</Text>
+                        <PlaceholderContact /> <Text marginWidth={18}>{TextOrganizationProfile. placeholderContacts}</Text>
                     </XHorizontal>
                 </div>
             )}
         >
             <XFormLoadingContent>
                 <XVertical>
-                    <XInput field="name" required={true} placeholder="Name" />
-                    <XInput field="phone" placeholder="Phone" />
-                    <XInput field="email" placeholder="Email" />
-                    <XInput field="link" placeholder="Link" />
-                    <XInput field="position" placeholder="Position" />
-                    <XAvatarUpload field="photoRef" />
+                    <XFormField field="name" optional={true} title={TextOrganizationProfile.placeholderContactsModalNameTitle}>
+                        <XInput field="name" required={true} />
+                    </XFormField>
+                    <XFormField field="phone" optional={true} title={TextOrganizationProfile.placeholderContactsModalPhonelTitle}>
+                        <XInput field="phone" />
+                    </XFormField>
+                    <XFormField field="email" optional={true} title={TextOrganizationProfile.placeholderContactsModalEmailTitle}>
+                        <XInput field="email" />
+                    </XFormField>
+                    <XFormField field="link" optional={true} title={TextOrganizationProfile.placeholderContactsModalLinkedinTitle}>
+                        <XInput field="link" />
+                    </XFormField>
+                    <XFormField field="position" optional={true} title={TextOrganizationProfile.placeholderContactsModalPositionTitle}>
+                        <XInput field="position" />
+                    </XFormField>
+                    <XFormField field="photoRef" optional={true} title={TextOrganizationProfile.placeholderContactsModalPhotoTitle}>
+                        <XAvatarUpload field="photoRef" />
+                    </XFormField>
                 </XVertical>
             </XFormLoadingContent>
         </XModalForm>
@@ -737,14 +756,14 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
             }}
             target={(
                 <div style={{ cursor: 'pointer' }}>
-                    <Text opacity={0.5}>+ Add location</Text>
+                    <Text opacity={0.5}>{TextOrganizationProfile.placeholderLocation}</Text>
                 </div>
             )}
         >
             <XVertical>
                 <XFormLoadingContent>
                     <XFormField title="Location">
-                        <XInput field="input.location" />
+                        <XInput field={TextOrganizationProfile.placeholderLocationModalLocationTitle} />
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>
@@ -800,13 +819,13 @@ export const AvatartPlaceholder = withMyOrganizationProfile((props) => {
             target={(
                 <LogoPlaceholder separator="none">
                     <LogoPlaceholderIcon icon="photo_camera" />
-                    <PlaceholderAvatarText><p>Add your</p><p>profile logo</p></PlaceholderAvatarText>
+                    <PlaceholderAvatarText>{TextOrganizationProfile.placeholderLogo}</PlaceholderAvatarText>
                 </LogoPlaceholder>
             )}
         >
             <XVertical>
                 <XFormLoadingContent>
-                    <XFormField title="Logo">
+                    <XFormField title={TextOrganizationProfile.placeholderLogoModalLocationTitle}>
                         <XAvatarUpload field="input.photoRef" />
                     </XFormField>
                 </XFormLoadingContent>
