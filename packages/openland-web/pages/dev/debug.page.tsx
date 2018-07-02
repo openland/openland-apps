@@ -17,6 +17,18 @@ export const SendWelcome = withDebugSendWelcomeEmail((props) => {
     return <XButton action={async () => props.sendWelcome({})} alignSelf="flex-start" text="Send Email" />;
 });
 
+class ErrorButton extends React.Component<{}, { error: boolean }> {
+    state = {
+        error: false
+    };
+    render() {
+        if (this.state.error) {
+            throw new Error('Test Crash!');
+        }
+        return <XButton text="Crash!11" onClick={() => this.setState({ error: true })} />;
+    }
+}
+
 export default withApp('Super Debug', ['super-admin', 'software-developer'], withMyOrganizations(withQueryLoader(withUserInfo((props) => {
     return (
         <DevToolsScaffold title="Debugging">
@@ -65,6 +77,10 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
             <XHeader text="Release" />
             <XContent>
                 {getConfig().release}
+            </XContent>
+            <XHeader text="Test Crash" />
+            <XContent>
+                <ErrorButton />
             </XContent>
         </DevToolsScaffold>
     );

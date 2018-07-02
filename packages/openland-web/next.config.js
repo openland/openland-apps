@@ -1,4 +1,5 @@
 // const webpack = require('webpack');
+const withSourceMaps = require('@zeit/next-source-maps')
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const path = require('path');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
@@ -99,7 +100,7 @@ const config = {
             config.plugins.push(new NewUglify({
                 cache: true,
                 parallel: true,
-                sourceMap: false,
+                sourceMap: true,
                 uglifyOptions: {
                     mangle: {
                         safari10: true
@@ -174,4 +175,4 @@ const config = {
     assetPrefix: process.env.CDN_PREFIX ? process.env.CDN_PREFIX : undefined
 };
 
-module.exports = withBundleAnalyzer(config)
+module.exports = withBundleAnalyzer(withSourceMaps(config));
