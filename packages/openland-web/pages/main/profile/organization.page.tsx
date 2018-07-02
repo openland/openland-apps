@@ -596,7 +596,8 @@ const ListingTitle = Glamorous.div({
 });
 
 const ClickableXStreetViewModalPreview = Glamorous.div({
-    cursor: 'pointer'
+    cursor: 'pointer',
+    alignSelf: 'flex-start'
 });
 
 class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunityProps, orgId: string, full?: boolean, showType?: boolean, isSoloComponent?: boolean }> {
