@@ -74,8 +74,8 @@ export default class StateDocument extends Document {
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
 
                     {/* Centry/Raven */}
-                    {config.sentryEndpoint && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}
-                    {config.sentryEndpoint && <script dangerouslySetInnerHTML={{ __html: `Raven.config('${config.sentryEndpoint}').install();` }}>{}</script>}
+                    {config.sentryEndpoint && config.release && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}
+                    {config.sentryEndpoint && config.release && <script dangerouslySetInnerHTML={{ __html: `Raven.config('${config.sentryEndpoint}', { release: '${config.release}' }).install();` }}>{}</script>}
 
                     {/* Intercom */}
                     {config.intercomKey && <script type="text/javascript" dangerouslySetInnerHTML={{ __html: `window.intercomSettings = { app_id: "${config.intercomKey}" };` }}>{}</script>}
