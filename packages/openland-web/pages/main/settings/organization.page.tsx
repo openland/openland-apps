@@ -86,10 +86,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                         defaultData={{
                             input: {
                                 name: props.data.myOrganizationProfile!!.name,
-                                website: props.data.myOrganizationProfile!!.website,
                                 photo: props.data.myOrganizationProfile!!.photoRef,
-                                twitter: props.data.myOrganizationProfile!!.twitter,
-                                facebook: props.data.myOrganizationProfile!!.facebook,
                                 about: props.data.myOrganizationProfile!!.about,
                                 location: props.data.myOrganizationProfile!!.location,
                                 photoRef: sanitizeIamgeRef(props.data.myOrganizationProfile!!.photoRef),
@@ -103,10 +100,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                 variables: {
                                     input: {
                                         name: data.input.name,
-                                        website: data.input.website,
                                         photoRef: data.input.photoRef,
-                                        twitter: data.input.twitter,
-                                        facebook: data.input.facebook,
                                         location: data.input.location,
                                         about: data.input.about,
                                         alphaOrganizationType: data.input.organizationType,
@@ -125,18 +119,11 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                         <XFormField title="Name" field="input.name">
                                             <XInput field="input.name" />
                                         </XFormField>
-                                        <XFormField title="Website" field="input.website" optional={true}>
-                                            <XInput field="input.website" />
-                                        </XFormField>
+
                                         <XFormField title="Location" field="input.location" optional={true}>
                                             <XInput field="input.location" />
                                         </XFormField>
-                                        <XFormField title="Twitter" field="input.twitter" optional={true}>
-                                            <XInput field="input.twitter" />
-                                        </XFormField>
-                                        <XFormField title="Facebook" field="input.facebook" optional={true}>
-                                            <XInput field="input.facebook" />
-                                        </XFormField>
+
                                         <XFormField title="About" field="fields.input.about" optional={true}>
                                             <XTextArea valueStoreKey="fields.input.about" />
                                         </XFormField>
@@ -352,6 +339,49 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                     </XForm>
 
                     <XTitle id="contacts">Contacts</XTitle>
+                    <XForm
+                        defaultData={{
+                            input: {
+                                website: props.data.myOrganizationProfile!!.website,
+                                twitter: props.data.myOrganizationProfile!!.twitter,
+                                facebook: props.data.myOrganizationProfile!!.facebook,
+                                // linkedin: props.data.myOrganizationProfile!!.linkedin,
+                            }
+                        }}
+                        defaultAction={async (data) => {
+                            await props.updateOrganizaton({
+                                variables: {
+                                    input: {
+                                        website: data.input.website,
+                                        twitter: data.input.twitter,
+                                        facebook: data.input.facebook,
+                                        // linkedin: data.input.linkedin,
+                                    }
+                                }
+                            });
+                        }}
+                        defaultLayout={false}
+                    >
+                        <XVertical>
+                            <XFormLoadingContent>
+                                <XVertical flexGrow={1} maxWidth={500}>
+                                    <XFormField title="Website" field="input.website" optional={true}>
+                                        <XInput field="input.website" />
+                                    </XFormField>
+                                    <XFormField title="Twitter" field="input.twitter" optional={true}>
+                                        <XInput field="input.twitter" />
+                                    </XFormField>
+                                    <XFormField title="Facebook" field="input.facebook" optional={true}>
+                                        <XInput field="input.facebook" />
+                                    </XFormField>
+                                    {/* <XFormField field="input.linkedin" optional={true} title={TextOrganizationProfile.placeholderSocialModalLinkedIn}>
+                                        <XInput field="input.linkedin" />
+                                    </XFormField> */}
+                                </XVertical>
+                            </XFormLoadingContent>
+                            <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
+                        </XVertical>
+                    </XForm>
                     {props.data.myOrganizationProfile!!.contacts.filter(c => c !== null).map((c, i) => <ContactPersonItem key={i} contact={c!!} index={i} />)}
                     <XButton query={{ field: 'addContact', value: 'true' }} text="Add Contact" style="primary" alignSelf="flex-start" />
 
