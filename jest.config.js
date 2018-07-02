@@ -1,5 +1,5 @@
 module.exports = {
-    testEnvironment: 'node',
+    testEnvironment: 'jsdom',
     transform: {
         "^.+\\.tsx?$": "ts-jest"
     },
@@ -11,12 +11,22 @@ module.exports = {
         'json',
         'node'
     ],
-    testRegex: '.*\\.spec\\.(ts)x?$',
+    testRegex: '.*\\.spec\\.tsx?$',
     testPathIgnorePatterns: ['/node_modules/'],
     coverageDirectory: 'coverage',
     collectCoverageFrom: [
         'packages/**/*.{ts,tsx,js,jsx}',
         '!packages/**/*.d.ts',
+    ],
+    moduleDirectories: [
+        '.',
+        'packages',
+        'packages/openland-x-utils',
+        'packages/openland-x',
+        'node_modules'
+    ],
+    snapshotSerializers: [
+        "jest-glamor-react"
     ],
     moduleNameMapper: {
 
@@ -27,8 +37,6 @@ module.exports = {
         'openland-api': '<rootDir>/packages/openland-api',
         'openland-text/(.*)': '<rootDir>/packages/openland-text/$1',
         'openland-text': '<rootDir>/packages/openland-text',
-        'openland-x/(.*)': '<rootDir>/packages/openland-x/$1',
-        'openland-x': '<rootDir>/packages/openland-x',
         'openland-x-routing/(.*)': '<rootDir>/packages/openland-x-routing/$1',
         'openland-x-routing': '<rootDir>/packages/openland-x-routing',
         'openland-x-utils/(.*)': '<rootDir>/packages/openland-x-utils/$1',
@@ -55,5 +63,7 @@ module.exports = {
         'openland-x-store': '<rootDir>/packages/openland-x-store',
         'openland-x-graphql-gen/(.*)': '<rootDir>/packages/openland-x-graphql-gen/$1',
         'openland-x-graphql-gen': '<rootDir>/packages/openland-x-graphql-gen',
+        'openland-x/(.*)': '<rootDir>/packages/openland-x/$1',
+        'openland-x': '<rootDir>/packages/openland-x',
     },
 };
