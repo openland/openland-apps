@@ -155,7 +155,11 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
 
     loginEmailStart = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
-        this.setState({ emailSending: true, emailError: '', emailSent: false });
+        this.setState({ 
+            emailSending: true, 
+            emailError: '', 
+            emailSent: false
+        });
         this.fireEmail();
     }
 
@@ -218,7 +222,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
                         <ButtonsWrapper marginTop={20}>
                             <XHorizontal>
                                 <XButton onClick={this.loginReset} style="ghost" size="medium" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
-                                <XButton onClick={this.loginEmailStart} style="primary" size="medium" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text={InitTexts.auth.next} />
+                                <XButton onClick={this.loginEmailStart} style="primary" size="medium" alignSelf="stretch" flexGrow={1} loading={this.state.emailSending} text={InitTexts.auth.next} />
                             </XHorizontal>
                         </ButtonsWrapper>
                     </>)}
