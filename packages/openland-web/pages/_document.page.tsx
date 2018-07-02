@@ -1,15 +1,14 @@
 import * as React from 'react';
 import Document, { Head, Main, NextScript, DocumentProps, NextDocumentContext } from 'next/document';
 import { renderStaticOptimized } from 'glamor/server';
+import { buildConfig } from '../config';
+import { saveConfig } from 'openland-x-config';
 
-let isProduction = process.env.APP_PRODUCTION === 'true';
+// Load Configuration
+let config = buildConfig();
 
 export default class StateDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
-        // Link: </assets/css/screen.css?v=5fc240c512>; rel=preload; as=style,<//cdn.bizible.com/scripts/bizible.js>; rel=preload; as=script,</content/images/2016/06/Timeouts-001.png>; rel=preload; as=image,</content/images/2016/06/Timeouts-002.png>; rel=preload; as=image,<//platform.linkedin.com/in.js>; rel=preload; as=script,<https://code.jquery.com/jquery-1.11.3.min.js>; rel=preload; as=script,</assets/js/jquery.fitvids.js?v=5fc240c512>; rel=preload; as=script
-        // if (!props.res!!.headersSent) {
-        //     props.res!!.setHeader('Link', '</static/loader.css>; rel=preload; as=style');
-        // }
         const page = props.renderPage();
         const styles = renderStaticOptimized(() => page.html || page.errorHtml);
         return {
@@ -72,18 +71,15 @@ export default class StateDocument extends Document {
 
                     <style dangerouslySetInnerHTML={{ __html: this.props.glamCss }} />
                     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js" />
-                    <script dangerouslySetInnerHTML={{ __html: 'window.isProduction=' + isProduction + ';' }} />
+                    <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
 
                     {/* Centry/Raven */}
-                    {isProduction && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}
-                    {isProduction && <script dangerouslySetInnerHTML={{ __html: `Raven.config('https://29519b8b62b94a1aa77e3329732fe5b2@sentry.io/281742').install();` }}>{}</script>}
+                    {config.sentryEndpoint && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}
+                    {config.sentryEndpoint && <script dangerouslySetInnerHTML={{ __html: `Raven.config('${config.sentryEndpoint}').install();` }}>{}</script>}
 
                     {/* Intercom */}
-                    {isProduction && <script type="text/javascript" dangerouslySetInnerHTML={{ __html: `window.intercomSettings = { app_id: "n7hi8wya" };` }}>{}</script>}
-                    {isProduction && <script dangerouslySetInnerHTML={{ __html: `(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/n7hi8wya';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()` }}>{}</script>}
-
-                    {/* Uploadcare */}
-                    <script dangerouslySetInnerHTML={{ __html: 'UPLOADCARE_PUBLIC_KEY = \'b70227616b5eac21ba88\'' }} />
+                    {config.intercomKey && <script type="text/javascript" dangerouslySetInnerHTML={{ __html: `window.intercomSettings = { app_id: "${config.intercomKey}" };` }}>{}</script>}
+                    {config.intercomKey && <script dangerouslySetInnerHTML={{ __html: `(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/n7hi8wya';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()` }}>{}</script>}
                 </Head>
                 <body>
                     <Main />

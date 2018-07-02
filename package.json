@@ -160,7 +160,7 @@
 		"next/**/react-hot-loader": "4.0.1"
 	},
 	"scripts": {
-		"dev": "API_ENDPOINT=\"https://api.statecrafthq.com\" nodemon ./packages/openland-web/server.ts",
+		"dev": "API_ENDPOINT=\"https://api.openland.com\" nodemon ./packages/openland-web/server.ts",
 		"dev:local": "nodemon ./packages/openland-web/server.ts",
 		"lint": "NODE_ENV=production ./node_modules/.bin/tslint --project . --config ./tslint.json",
 		"jest": "node ./node_modules/jest/bin/jest.js --no-cache",

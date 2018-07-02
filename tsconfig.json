@@ -40,6 +40,9 @@
       "openland-x-routing": [
         "openland-x-routing"
       ],
+      "openland-x-config": [
+        "openland-x-config"
+      ],
       "openland-x-utils": [
         "openland-x-utils"
       ],
@@ -109,6 +112,7 @@
     "./packages/openland-x-layout",
     "./packages/openland-x-permissions",
     "./packages/openland-x-graphql",
-    "./packages/openland-x-analytics"
+    "./packages/openland-x-analytics",
+    "./packages/openland-x-config"
   ]
 }
