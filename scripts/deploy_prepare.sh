@@ -16,5 +16,5 @@ gcloud auth activate-service-account --key-file gcloud-api-key.json >/dev/null
 gcloud --quiet config set project statecraft-188615 >/dev/null
 gcloud --quiet config set compute/zone us-west1-a >/dev/null
 gcloud --quiet container clusters get-credentials statekube >/dev/null
-# echo "Download Sentry CLI"
-# curl -sL https://sentry.io/get-cli/ | bash
+echo "Download Sentry CLI"
+curl -sL https://sentry.io/get-cli/ | bash
