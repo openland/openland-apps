@@ -65,6 +65,7 @@ export interface UpdateOrganizationProfileInput {
   about?: string | null,
   twitter?: string | null,
   facebook?: string | null,
+  linkedin?: string | null,
   location?: string | null,
   contacts?: Array< ContactPersonInput > | null,
   alphaPotentialSites?: Array< RangeInput | null > | null,
@@ -978,6 +979,7 @@ export interface MyOrganizationQuery {
     about: string | null,
     twitter: string | null,
     facebook: string | null,
+    linkedin: string | null,
     location: string | null,
     contacts:  Array< {
       __typename: "OrganizationContact",
@@ -1148,6 +1150,7 @@ export interface MyOrganizationProfileQuery {
     about: string | null,
     twitter: string | null,
     facebook: string | null,
+    linkedin: string | null,
     location: string | null,
     contacts:  Array< {
       __typename: "OrganizationContact",
@@ -1340,6 +1343,7 @@ export interface UpdateOrganizationMutation {
     about: string | null,
     twitter: string | null,
     facebook: string | null,
+    linkedin: string | null,
     location: string | null,
     contacts:  Array< {
       __typename: "OrganizationContact",
@@ -1514,6 +1518,7 @@ export interface OrganizationQuery {
     about: string | null,
     twitter: string | null,
     facebook: string | null,
+    linkedin: string | null,
     location: string | null,
     contacts:  Array< {
       __typename: "OrganizationContact",
@@ -3775,6 +3780,7 @@ export interface OrganizationFullFragment {
   about: string | null,
   twitter: string | null,
   facebook: string | null,
+  linkedin: string | null,
   location: string | null,
   contacts:  Array< {
     __typename: string,
@@ -3943,6 +3949,7 @@ export interface OrganizationProfileFullFragment {
   about: string | null,
   twitter: string | null,
   facebook: string | null,
+  linkedin: string | null,
   location: string | null,
   contacts:  Array< {
     __typename: string,
