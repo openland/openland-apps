@@ -345,7 +345,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                 website: props.data.myOrganizationProfile!!.website,
                                 twitter: props.data.myOrganizationProfile!!.twitter,
                                 facebook: props.data.myOrganizationProfile!!.facebook,
-                                // linkedin: props.data.myOrganizationProfile!!.linkedin,
+                                linkedin: props.data.myOrganizationProfile!!.linkedin,
                             }
                         }}
                         defaultAction={async (data) => {
@@ -355,7 +355,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                         website: data.input.website,
                                         twitter: data.input.twitter,
                                         facebook: data.input.facebook,
-                                        // linkedin: data.input.linkedin,
+                                        linkedin: data.input.linkedin,
                                     }
                                 }
                             });
@@ -374,9 +374,9 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                     <XFormField title="Facebook" field="input.facebook" optional={true}>
                                         <XInput field="input.facebook" />
                                     </XFormField>
-                                    {/* <XFormField field="input.linkedin" optional={true} title={TextOrganizationProfile.placeholderSocialModalLinkedIn}>
+                                    <XFormField title="LinkedIn" field="input.linkedin" optional={true}>
                                         <XInput field="input.linkedin" />
-                                    </XFormField> */}
+                                    </XFormField>
                                 </XVertical>
                             </XFormLoadingContent>
                             <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />

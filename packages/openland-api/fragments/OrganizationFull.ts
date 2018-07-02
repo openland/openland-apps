@@ -12,6 +12,7 @@ export const OrganizationFull = gql`
         about
         twitter
         facebook
+        linkedin
         location
         contacts{
             name

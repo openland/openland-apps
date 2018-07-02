@@ -282,6 +282,10 @@ const SocialLinkImg = Glamorous(XLink)({
     '&.tw': {
         backgroundImage: 'url(\'/static/img/icons/organization/ic-twitter.svg\')',
     },
+    '&.li': {
+        padding: 3,
+        backgroundImage: 'url(\'/static/img/icons/organization/ic-linkedin.svg\')',
+    },
     '&:hover': {
         backgroundColor: '#5640d6'
     }
@@ -1612,7 +1616,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             )}
                                         </XWithRole>
 
-                                        {((organization.contacts || []).length || organization.website || organization.facebook || organization.twitter) && (
+                                        {((organization.contacts || []).length || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
                                             <XCardStyled padding={20} paddingTop={16} paddingBottom={16}>
                                                 <XVertical separator={7}>
                                                     <Title small={true}>{TextOrganizationProfile.additionalInfoContacts}</Title>
@@ -1639,16 +1643,17 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         {organization.website && <SocialLink href={organization.website}>{TextOrganizationProfile.additionalInfoWebsite}</SocialLink>}
                                                         {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
                                                         {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
+                                                        {organization.linkedin && <SocialLinkImg className="li" href={organization.linkedin} />}
                                                     </SocialLinksWrapper>
                                                 </XVertical>
                                             </XCardStyled>
                                         )}
                                         <XWithRole role={['org-' + organization.id + '-admin']}>
-                                            {!((organization.contacts || []).length || organization.website || organization.facebook || organization.twitter) && (
+                                            {!((organization.contacts || []).length || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
                                                 <XCardStyled padding={18}>
                                                     <XVertical>
                                                         {!(organization.contacts || []).length && <ContactPlaceholder />}
-                                                        {!(organization.website || organization.facebook || organization.twitter) && <SocialPlaceholder />}
+                                                        {!(organization.website || organization.facebook || organization.linkedin || organization.twitter) && <SocialPlaceholder />}
                                                     </XVertical>
                                                 </XCardStyled>
                                             )}

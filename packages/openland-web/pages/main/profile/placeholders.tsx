@@ -634,7 +634,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
                     website: props.data.myOrganizationProfile!!.website,
                     twitter: props.data.myOrganizationProfile!!.twitter,
                     facebook: props.data.myOrganizationProfile!!.facebook,
-                    // linkedin: props.data.myOrganizationProfile!!.linkedin,
+                    linkedin: props.data.myOrganizationProfile!!.linkedin,
                 }
             }}
             defaultAction={async (data) => {
@@ -644,7 +644,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
                             website: data.input.website,
                             twitter: data.input.twitter,
                             facebook: data.input.facebook,
-                            // linkedin: data.input.linkedin,
+                            linkedin: data.input.linkedin,
                         }
                     }
                 });
@@ -668,9 +668,9 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
                     <XFormField field="input.facebook" optional={true} title={TextOrganizationProfile.placeholderSocialModalFacebook}>
                         <XInput field="input.facebook" />
                     </XFormField>
-                    {/* <XFormField field="input.linkedin" optional={true} title={TextOrganizationProfile.placeholderSocialModalLinkedIn}>
+                    <XFormField field="input.linkedin" optional={true} title={TextOrganizationProfile.placeholderSocialModalLinkedIn}>
                         <XInput field="input.linkedin" />
-                    </XFormField> */}
+                    </XFormField>
                 </XFormLoadingContent>
             </XVertical>
         </XModalForm>
