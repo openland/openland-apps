@@ -10,4 +10,6 @@ COPY dist/ /app/
 EXPOSE 3000
 WORKDIR /app
 ENV NODE_ENV=production
+ARG release_id
+ENV RELEASE_ID=$release_id
 CMD [ "node", "server.js" ]
