@@ -47,22 +47,27 @@ const Root = Glamorous(XVertical)({
     paddingBottom: 80
 });
 
-const MainContent = Glamorous(XVertical)({
+const MainContentWrapper = Glamorous(XVertical)({
     backgroundColor: '#f9fafb',
-    padding: '0 184px',
-    '@media (max-width: 1300px)': {
-        padding: '0 40px',
-    }
+    padding: '0 40px'
 });
 
-const Header = Glamorous.div({
-    display: 'flex',
+const MainContent = Glamorous(XHorizontal)({
+    maxWidth: 1160,
+    width: '100%',
+    margin: 'auto'
+});
+
+const HeaderWrapper = Glamorous.div({
     backgroundColor: '#fff',
     borderBottom: '1px solid rgba(220, 222, 228, 0.4)',
-    padding: '0 184px',
-    '@media (max-width: 1300px)': {
-        padding: '0 40px',
-    }
+    padding: '0 40px'
+});
+
+const HeaderContent = Glamorous.div({
+    display: 'flex',
+    maxWidth: 1160,
+    margin: 'auto'
 });
 
 interface XHorizontalStyledProps {
@@ -666,7 +671,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 184px)' : 'calc(100% - 157px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
-                            <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 8 : 0}>
+                            <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 3 : 0}>
                                 <ListingTitleWrapper>
                                     <ListingTitle>{item.name}</ListingTitle>
                                     <Text opacity={0.5} small={true}>{DateFormater(item.updatedAt)}</Text>
@@ -786,7 +791,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
                         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
-                            <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 0 : 4}>
+                            <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 3 : 4}>
                                 <ListingTitleWrapper>
                                     <ListingTitle>{item.name}</ListingTitle>
                                     <Text opacity={0.5} small={true}>{DateFormater(item.updatedAt)}</Text>
@@ -838,7 +843,8 @@ const ShowListingLink = Glamorous(XLink)({
     color: '#765efd',
     cursor: 'pointer',
     marginBottom: 23,
-    marginTop: 20
+    marginTop: 20,
+    letterSpacing: -0.4
 });
 
 const FormFieldTitle = Glamorous(XFormFieldTitle)({
@@ -1173,86 +1179,87 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false} >
                     <Root>
-                        <Header>
-                            <AvatarWrapper>
-                                {hasLogo && (
-                                    <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
-                                )}
-                                {!hasLogo && (
-                                    <>
-                                        <XWithRole role={['org-' + organization.id + '-admin']} >
-                                            <AvatartPlaceholder />
-                                        </XWithRole>
-                                        <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
-                                            <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
-                                        </XWithRole>
-                                    </>
-                                )}
-                            </AvatarWrapper>
+                        <HeaderWrapper>
+                            <HeaderContent>
+                                <AvatarWrapper>
+                                    {hasLogo && (
+                                        <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
+                                    )}
+                                    {!hasLogo && (
+                                        <>
+                                            <XWithRole role={['org-' + organization.id + '-admin']} >
+                                                <AvatartPlaceholder />
+                                            </XWithRole>
+                                            <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
+                                                <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
+                                            </XWithRole>
+                                        </>
+                                    )}
+                                </AvatarWrapper>
 
-                            <XVerticalStyled flexShrink={0} flexGrow={1} separator="none" paddingTop={31}>
-                                <OrganizationName>{organization.name}</OrganizationName>
-                                <div style={{ marginTop: 8 }}>
-                                    {organization.location && <Text opacity={0.5} bold={true}>{organization.location}</Text>}
-                                    <XWithRole role={['org-' + organization.id + '-admin']}>
-                                        {!organization.location && <LocationPlaceholder />}
-                                    </XWithRole>
-                                </div>
-                                <div style={{ marginTop: 16 }}>
-                                    <SwitcherWrapper flatStyle={true} height={57} smallText={true}>
-                                        <Switcher path={rootPath}>{TextOrganizationProfile.headerTabOverview}</Switcher>
+                                <XVerticalStyled flexShrink={0} flexGrow={1} separator="none" paddingTop={31}>
+                                    <OrganizationName>{organization.name}</OrganizationName>
+                                    <div style={{ marginTop: 8 }}>
+                                        {organization.location && <Text opacity={0.5} bold={true}>{organization.location}</Text>}
                                         <XWithRole role={['org-' + organization.id + '-admin']}>
-                                            <Switcher path={lsitingsPath}>{TextOrganizationProfile.headerTabListings + ' (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                            {!organization.location && <LocationPlaceholder />}
                                         </XWithRole>
-                                        <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
-                                            {(organization.listingsAll || []).length > 0 && (
+                                    </div>
+                                    <div style={{ marginTop: 16 }}>
+                                        <SwitcherWrapper flatStyle={true} height={57} smallText={true}>
+                                            <Switcher path={rootPath}>{TextOrganizationProfile.headerTabOverview}</Switcher>
+                                            <XWithRole role={['org-' + organization.id + '-admin']}>
                                                 <Switcher path={lsitingsPath}>{TextOrganizationProfile.headerTabListings + ' (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
-                                            )}
-                                        </XWithRole>
-                                        {/* <Switcher path={lsitingsAllPath}>{'All Listings (' + ((organization.listingsAll && organization.listingsAll.length) || 0) + ')'}</Switcher> */}
-                                    </SwitcherWrapper>
-                                </div >
-                            </XVerticalStyled>
-                            <XHorizontalStyled paddingTop={20}>
-                                {!organization.isMine && (
-                                    <XButton
-                                        style={organization.followed ? 'primary' : 'electric'}
-                                        text={organization.followed ? TextOrganizationProfile.headerButtonFollowUnFollow : TextOrganizationProfile.headerButtonFollowFollow}
-                                        action={async () => {
-                                            await props.followOrganization({ variables: { follow: !organization.followed } });
-                                        }}
-                                    />
-                                )}
-                                <XWithRole role={['org-' + organization.id + '-admin']}>
-                                    <XButton
-                                        text={TextOrganizationProfile.headerButtonEdit}
-                                        path="/settings/organization"
-                                    />
-                                    <XOverflow
-                                        placement="bottom"
-                                        width={220}
-                                        marginRight={92}
-                                        target={
-                                            <AddListingButton>
-                                                <span>{TextOrganizationProfile.headerButtonAddListing}</span>
-                                                <XIcon icon="keyboard_arrow_right" />
-                                            </AddListingButton>
-                                        }
-                                        content={
-                                            <>
-                                                <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>{TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
-                                                <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>{TextOrganizationProfile.headerButtonAddListingAR}</XOverflow.Item>
-                                            </>
-                                        }
-                                    />
+                                            </XWithRole>
+                                            <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
+                                                {(organization.listingsAll || []).length > 0 && (
+                                                    <Switcher path={lsitingsPath}>{TextOrganizationProfile.headerTabListings + ' (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                                )}
+                                            </XWithRole>
+                                            {/* <Switcher path={lsitingsAllPath}>{'All Listings (' + ((organization.listingsAll && organization.listingsAll.length) || 0) + ')'}</Switcher> */}
+                                        </SwitcherWrapper>
+                                    </div >
+                                </XVerticalStyled>
+                                <XHorizontalStyled paddingTop={20}>
+                                    {!organization.isMine && (
+                                        <XButton
+                                            style={organization.followed ? 'primary' : 'electric'}
+                                            text={organization.followed ? TextOrganizationProfile.headerButtonFollowUnFollow : TextOrganizationProfile.headerButtonFollowFollow}
+                                            action={async () => {
+                                                await props.followOrganization({ variables: { follow: !organization.followed } });
+                                            }}
+                                        />
+                                    )}
+                                    <XWithRole role={['org-' + organization.id + '-admin']}>
+                                        <XButton
+                                            text={TextOrganizationProfile.headerButtonEdit}
+                                            path="/settings/organization"
+                                        />
+                                        <XOverflow
+                                            placement="bottom"
+                                            width={220}
+                                            marginRight={92}
+                                            target={
+                                                <AddListingButton>
+                                                    <span>{TextOrganizationProfile.headerButtonAddListing}</span>
+                                                    <XIcon icon="keyboard_arrow_right" />
+                                                </AddListingButton>
+                                            }
+                                            content={
+                                                <>
+                                                    <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>{TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
+                                                    <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>{TextOrganizationProfile.headerButtonAddListingAR}</XOverflow.Item>
+                                                </>
+                                            }
+                                        />
 
-                                </XWithRole>
-                            </XHorizontalStyled>
-                        </Header>
+                                    </XWithRole>
+                                </XHorizontalStyled>
+                            </HeaderContent>
+                        </HeaderWrapper>
 
-                        <MainContent>
-
-                            <XHorizontal>
+                        <MainContentWrapper>
+                            <MainContent>
                                 <XVerticalStyled flexGrow={1} maxwidth={currentPath === rootPath ? 'calc(100% - 286px)' : '100%'}>
                                     <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
                                         {currentPath === rootPath && (
@@ -1342,7 +1349,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                                 <>
                                                                     <ShowListingLink path={lsitingsPath}>
                                                                         {TextOrganizationProfile.overviewListingsDoFooterNonEmpty} ({((organization.developmentOportunities || []).length) || 0})
-                                                                </ShowListingLink>
+                                                                    </ShowListingLink>
                                                                     <ViewAllIcon icon="keyboard_arrow_right" />
                                                                 </>
                                                             )}
@@ -1359,7 +1366,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             <XHorizontal justifyContent="center" alignItems="center" separator="none">
                                                                 <ShowListingLink path={lsitingsPath}>
                                                                     {TextOrganizationProfile.overviewListingsDoFooterNonEmpty} ({((organization.developmentOportunities || []).length) || 0})
-                                                            </ShowListingLink>
+                                                                </ShowListingLink>
                                                                 <ViewAllIcon icon="keyboard_arrow_right" />
                                                             </XHorizontal>
                                                         )}
@@ -1449,7 +1456,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                                     <>
                                                                         <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
                                                                             {TextOrganizationProfile.overviewListingsArFooterNonEmpty} ({((organization.acquisitionRequests || []).length) || 0})
-                                                                    </ShowListingLink>
+                                                                        </ShowListingLink>
                                                                         <ViewAllIcon icon="keyboard_arrow_right" />
                                                                     </>
                                                                 )}
@@ -1466,7 +1473,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                                 <XHorizontal justifyContent="center" alignItems="center" separator="none">
                                                                     <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
                                                                         {TextOrganizationProfile.overviewListingsArFooterNonEmpty} ({((organization.acquisitionRequests || []).length) || 0})
-                                                                </ShowListingLink>
+                                                                    </ShowListingLink>
                                                                     <ViewAllIcon icon="keyboard_arrow_right" />
                                                                 </XHorizontal>)}
 
@@ -1647,8 +1654,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </XWithRole>
                                     </XVertical>
                                 )}
-                            </XHorizontal>
-                        </MainContent>
+                            </MainContent>
+                        </MainContentWrapper>
                     </Root>
                 </Scaffold.Content>
             </Scaffold>

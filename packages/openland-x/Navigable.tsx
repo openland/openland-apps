@@ -164,7 +164,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             } = this.props as any;
             return (
                 <Wrapped
-                    href={linkHref}
+                    href={linkHref === '#' ? undefined : linkHref}
                     hrefTarget={target}
                     active={isActive}
                     enabled={this.props.enabled !== false}
