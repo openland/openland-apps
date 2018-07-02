@@ -202,14 +202,9 @@ const TableFooterContent = Glamorous.div({
     }
 });
 
-const FolderItems = withFolderItems((props) => {
-    if (props.data.loading) {
-        return <XLoader loading={true} />;
-    }
-
+const FolderItems = withFolderItems(withQueryLoader((props) => {
     return (
         <>
-
             {props.data.items.pageInfo.itemsCount > 0 && (
                 <TableParcels items={props.data.items.edges.map((v) => v.node.parcel)} />
             )}
@@ -240,7 +235,7 @@ const FolderItems = withFolderItems((props) => {
             )}
         </>
     );
-}) as React.ComponentClass<{ folderName: string }>;
+})) as React.ComponentClass<{ folderName: string }>;
 
 const MapContainer2 = Glamorous.div<{ noParcels: boolean }>((props) => ({
     display: 'flex',
