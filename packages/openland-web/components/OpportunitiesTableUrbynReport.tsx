@@ -99,15 +99,15 @@ export const ExportModal = withSourcingAll((props) => {
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement('a');
         link.setAttribute('href', encodedUri);
-        link.setAttribute('download', props.data.variables.state + '.csv');
+        link.setAttribute('download', (props.variables as any).state + '.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
     return (
         <>
-            <XLoader loading={(props.data.loading || false)} />
-            <XButton style="primary" onClick={exportCVS} text={'Download' + props.data.variables + '.csv'} />
+            <XLoader loading={(props.loading || false)} />
+            <XButton style="primary" onClick={exportCVS} text={'Download' + props.variables + '.csv'} />
         </>
     );
 });
@@ -304,7 +304,7 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
 
     return (
         <>
-            <XLoader loading={(props.data.loading || false) && (!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0)} />
+            <XLoader loading={(props.loading || false) && (!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0)} />
             <XModal title="Export to CVS" targetQuery="export">
                 <ExportModal />
             </XModal>
@@ -341,7 +341,7 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
                                 </XFooter>
                             </>
                         ) : (
-                                <CollapsingTable count={props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0} loading={(props.data.loading || false) && (!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0)}>
+                                <CollapsingTable count={props.data.alphaAllOpportunities ? props.data.alphaAllOpportunities.length : 0} loading={(props.loading || false) && (!props.data.alphaAllOpportunities || props.data.alphaAllOpportunities.length === 0)}>
                                     <XTable>
                                         <TableHeader />
                                         <XTable.Body>

@@ -232,6 +232,8 @@ routes.add('/ui/mapPicker', '/dev/ui/mapPicker');
 routes.add('/ui/mapPicker/', '/dev/ui/mapPicker');
 routes.add('/ui/scroll', '/dev/ui/scroll');
 routes.add('/ui/scroll/', '/dev/ui/scroll');
+routes.add('/ui/subscriptions', '/dev/ui/subscriptions');
+routes.add('/ui/subscriptions/', '/dev/ui/subscriptions');
 
 //
 // Dev Tools
@@ -253,6 +255,11 @@ routes.add('/super/orgs/:accountId/', '/dev/orgView');
 
 routes.add('/super/admins', '/dev/admins');
 routes.add('/super/admins/', '/dev/admins');
+
+routes.add('/super/chat', '/dev/conversations');
+routes.add('/super/chat/', '/dev/conversations');
+routes.add('/super/chat/:conversationId', '/dev/conversation');
+routes.add('/super/chat/:conversationId/', '/dev/conversation');
 
 //
 // Authentication

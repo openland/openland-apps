@@ -48,7 +48,7 @@ const XVerticalStyled = Glamorous(XVertical)({
 });
 
 export const OrganizationPicker = withMyOrganizations(withUserInfo((props) => {
-    if (props.data.loading) {
+    if (props.loading) {
         return <XLoader loading={true} height={100} />;
     }
     return (

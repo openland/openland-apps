@@ -11,10 +11,13 @@ import { XFormLoadingContent } from './XFormLoadingContent';
 import { XModalContext, XModalContextValue } from 'openland-x-modal/XModalContext';
 import { formatError, exportWrongFields } from './errorHandling';
 
+const LOGGING = false;
+
 export interface XFormProps {
     defaultData?: any;
     staticData?: any;
     defaultAction: (data: any) => any;
+    resetAfterSubmit?: boolean;
     className?: string;
     defaultLayout?: boolean;
     autoClose?: boolean;
@@ -26,6 +29,7 @@ interface XFormControllerProps {
     store: XStoreState;
     className?: string;
     defaultLayout?: boolean;
+    resetAfterSubmit?: boolean;
 }
 
 const FormContainer = Glamorous.form({
@@ -82,10 +86,16 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
                 }
             }
             this.setState({ loading: false, error: undefined });
-            this.props.store.writeValue('form.error', null);
-            this.props.store.writeValue('errors', null);
+            if (this.props.resetAfterSubmit) {
+                this.props.store.reset();
+            } else {
+                this.props.store.writeValue('form.error', null);
+                this.props.store.writeValue('errors', null);
+            }
         } catch (e) {
-            console.warn(e);
+            if (LOGGING) {
+                console.warn(e);
+            }
             this.props.store.writeValue('errors', null);
             let message = formatError(e);
             let fields = exportWrongFields(e);
@@ -109,7 +119,9 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
     }
 
     render() {
-        console.warn(this.state);
+        if (LOGGING) {
+            console.warn(this.state);
+        }
         return (
             <XFormContext.Provider value={this.contextValue}>
                 {this.props.defaultLayout !== false && (
@@ -162,6 +174,7 @@ export class XForm extends React.PureComponent<XFormProps> {
                                     autoClose={this.props.autoClose}
                                     className={this.props.className}
                                     defaultLayout={this.props.defaultLayout}
+                                    resetAfterSubmit={this.props.resetAfterSubmit}
                                 >
                                     {this.props.children}
                                 </XFormController>

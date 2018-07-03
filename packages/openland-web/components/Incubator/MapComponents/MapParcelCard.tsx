@@ -282,7 +282,7 @@ const PropertySeparatedDiv = Glamorous(XPropertyList)();
 
 export const ParcelCard = withParcelDirect((props) => (
     <Container parcel={props.variables.parcelId} mapMode={props.mapMode}>
-        <XLoader loading={!props.data || props.data!!.loading} />
+        <XLoader loading={!props.data || props.loading} />
         {props.data && props.data!!.item &&
             <>
                 <XHeader
@@ -310,7 +310,7 @@ export const ParcelCard = withParcelDirect((props) => (
                     bullet={props.data!!.item!!.extrasOwnerPublic ? 'public' : (props.data!!.item!!.metadata.available ? 'ON SALE' : undefined)}
                     style="compact"
                 />
-                {props.data.item.geometry && !props.data!!.loading && (
+                {props.data.item.geometry && !props.loading && (
                     <SeparatedDiv>
                         <StreetViewDiv>
                             <XStreetViewModal geometry={props.data.item.geometry} />

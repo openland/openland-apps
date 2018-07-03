@@ -70,14 +70,14 @@ export const ExportModal = withSourcingAll(withRouter((props) => {
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement('a');
         link.setAttribute('href', encodedUri);
-        link.setAttribute('download', props.data.variables.state + '.csv');
+        link.setAttribute('download', (props.variables as any).state + '.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
     return (
         <>
-            <XLoader loading={(props.data.loading || false)} />
+            <XLoader loading={(props.loading || false)} />
             <XButton style="primary" onClick={exportCVS} text={'Download' + props.data.variables + '.csv'} />
         </>
     );
@@ -170,7 +170,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement('a');
         link.setAttribute('href', encodedUri);
-        link.setAttribute('download', props.data.variables.state + '.csv');
+        link.setAttribute('download', (props.data.variables as any).state + '.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -186,7 +186,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
 
     return (
         <XVertical>
-            <XLoader loading={(props.data.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)} />
+            <XLoader loading={(props.loading || false) && (!props.data.alphaOpportunities || props.data.alphaOpportunities.edges.length === 0)} />
             <XModal title="Export to CVS" targetQuery="export">
                 <ExportModal
                     variables={(props as any).variables}

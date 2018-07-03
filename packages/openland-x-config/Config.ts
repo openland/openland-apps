@@ -5,4 +5,5 @@ export interface Config {
     googleAnalyticsKey?: string;
     uploadcareKey?: string;
     release?: string;
+    webSocketEndpoint?: string;
 }
