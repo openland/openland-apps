@@ -1,8 +1,4 @@
-import { graphql } from 'react-apollo';
-import { DocumentNode } from 'graphql';
 import { GraphQLRoutedComponentProps, NotNullableDataProps } from './graphql';
-import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
-import { prepareParams } from './prepareParams';
 
 export interface ListQueryResponse<T, E> {
     items: ListQueryConnection<T> & E;
@@ -40,71 +36,4 @@ export type GraphQLParamDescription = ({ key: string, default?: string } | strin
 
 export interface GraphQLListConfig {
     params?: GraphQLParamDescription[];
-}
-
-export function graphqlList<TResult, TExtras = {}>(document: DocumentNode, config?: GraphQLListConfig) {
-    let params: GraphQLParamDescription[] = [];
-    if (config && config.params) {
-        params = config.params;
-    }
-    return function (component: React.ComponentType<GraphQLListComponentProps<TResult, TExtras>>): React.ComponentType<{}> {
-        let qlWrapper = graphql<ListQueryResponse<TResult, TExtras>, XWithRouter, GraphQLListComponentProps<TResult, TExtras>>(document, {
-            options: (props: XWithRouter) => {
-                return {
-                    variables: {
-                        ...prepareParams(params, props.router.routeQuery)
-                    },
-                    notifyOnNetworkStatusChange: true
-                };
-            },
-            props: (props) => {
-                return {
-                    data: {
-                        loadMoreEntries: () => {
-                            if (props.data!!.networkStatus !== 7 || !props.data!!.items.pageInfo.hasNextPage) {
-                                return;
-                            }
-                            props.data!!.fetchMore({
-                                query: document,
-                                variables: {
-                                    ...prepareParams(params, props.ownProps.router.routeQuery),
-                                    cursor: props.data!!.items.edges.slice(-1)[0].cursor,
-                                },
-                                updateQuery: (previousResult, { fetchMoreResult }) => {
-                                    let newEdges = (fetchMoreResult as any).items.edges;
-                                    let pageInfo = (fetchMoreResult as any).items.pageInfo;
-                                    return newEdges.length ? {
-                                        items: {
-                                            __typename: (previousResult as any).items.__typename,
-                                            edges: [...(previousResult as any).items.edges, ...newEdges],
-                                            pageInfo: pageInfo
-                                        }
-                                    } : previousResult;
-                                }
-                            });
-                        },
-                        ...props.data
-                    }
-                };
-            }
-        });
-
-        return withRouter(qlWrapper(component));
-    };
-}
-
-export function graphqlListPaged<TResult, TExtras = {}>(document: DocumentNode, params: string[] = []) {
-    return function (component: React.ComponentType<GraphQLListComponentPagedProps<TResult, TExtras>>): React.ComponentType<{}> {
-        let qlWrapper = graphql<ListPagedQueryResponse<TResult, TExtras>, XWithRouter, GraphQLListComponentPagedProps<TResult, TExtras>>(document, {
-            options: (props: XWithRouter) => {
-                return {
-                    variables: {
-                        ...prepareParams(params, props.router.routeQuery)
-                    },
-                };
-            },
-        });
-
-        return withRouter(qlWrapper(component));
-    };
 }

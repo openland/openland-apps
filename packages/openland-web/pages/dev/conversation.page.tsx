@@ -11,8 +11,8 @@ import { XScrollView } from 'openland-x/XScrollView';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XInput } from 'openland-x/XInput';
-// import gql from 'graphql-tag';
-// import { Subscription } from 'react-apollo';
+import gql from 'graphql-tag';
+import { Subscription } from 'react-apollo';
 
 let Container = Glamorous.div({
     display: 'flex',
