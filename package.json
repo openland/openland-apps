@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@types/react-test-renderer": "^16.0.1",
 		"@types/url-parse": "^1.1.0",
+		"@types/ws": "^5.1.2",
 		"@zeit/next-source-maps": "^0.0.2",
 		"apollo-cache-inmemory": "^1.1.4",
 		"apollo-client": "^2.0.4",
