@@ -175,6 +175,7 @@ const PopperRoot = Glamorous.div<{
     marginTop?: number,
     marginBottom?: number,
 }>((props) => ({
+    zIndex: 2,
     marginLeft: props.marginLeft,
     marginRight: props.marginRight,
     marginTop: props.marginTop,

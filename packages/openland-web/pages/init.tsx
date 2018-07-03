@@ -45,6 +45,9 @@ css.global('input, textarea, button', {
 css.global('input, select', {
     verticalAlign: 'middle'
 });
+css.global('input::-ms-clear', {
+    display: 'none'
+});
 css.global('a', {
     color: 'inherit',
     textDecoration: 'none',
