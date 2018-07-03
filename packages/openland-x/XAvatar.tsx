@@ -111,6 +111,7 @@ const AvatarBehaviour = [
         border: (props as any).avatarStyle === 'organization' ? undefined : '1px solid rgba(164,169,177,0.2)',
         cursor: (props as any).enabled === false ? 'default' : 'pointer',
         src: props.src,
+        flexShrink: 0
     }),
     (props: any) => applyFlex(props),
     (props: any) => sizeStyles(props.avatarSize),

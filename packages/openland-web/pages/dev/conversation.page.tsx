@@ -28,6 +28,13 @@ let Container = Glamorous.div({
     flexDirection: 'column'
 });
 
+let MessagesContainer = Glamorous.div({
+    display: 'flex',
+    flexGrow: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end'
+});
+
 let SendMessageContainer = Glamorous.div({
     display: 'flex',
     height: '128px',
@@ -124,36 +131,31 @@ const Date = Glamorous.div({
     opacity: 0.7
 });
 
-export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader((props) => {
-    return (
-        <DevToolsScaffold title={props.data.chat.title}>
-            <XHeader text={props.data.chat.title} />
+class ChatComponent extends React.Component<{ sendMessage: (args: any) => any }> {
+
+    scroller: any;
+
+    handleScrollView = (src: any) => {
+        if (src) {
+            this.scroller = src;
+        }
+    }
+
+    render() {
+        return (
             <Container>
-                <ChatWatcher
-                    conversationId={props.data.chat.id}
-                    refetch={props.refetch}
-                    seq={props.data.messages.seq}
-                    client={(props as any).client}
-                />
-                <XScrollViewReversed>
-                    <XVertical>
-                        {[...props.data.messages.messages].reverse().map((v) => (
-                            <XContent key={v.id}>
-                                <XHorizontal alignSelf="stretch">
-                                    <XAvatar cloudImageUuid={v.sender.picture ? v.sender.picture : undefined} />
-                                    <XVertical separator={'none'}>
-                                        <XHorizontal separator={8}>
-                                            <Name>{v.sender.name}</Name><Date><XDate value={v.date} format="humanize"/></Date>
-                                        </XHorizontal>
-                                        <span>{v.message}</span>
-                                    </XVertical>
-                                </XHorizontal>
-                            </XContent>
-                        ))}
-                    </XVertical>
-                </XScrollViewReversed>
+                <MessagesContainer>
+                    <XScrollViewReversed ref={this.handleScrollView}>
+                        <XVertical>
+                            {this.props.children}
+                        </XVertical>
+                    </XScrollViewReversed>
+                </MessagesContainer>
                 <XForm
-                    defaultAction={(data) => props.sendMessage({ variables: { message: data.message } })}
+                    defaultAction={async (data) => { 
+                        await this.props.sendMessage({ variables: { message: data.message } });
+                        this.scroller.scrollToBottom();
+                    }}
                     defaultData={{ message: '' }}
                     resetAfterSubmit={true}
                 >
@@ -163,7 +165,36 @@ export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader((pr
                     </SendMessageContainer>
                 </XForm>
             </Container>
+        );
+    }
 
+}
+
+export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader((props) => {
+    return (
+        <DevToolsScaffold title={props.data.chat.title}>
+            <XHeader text={props.data.chat.title} />
+            <ChatWatcher
+                conversationId={props.data.chat.id}
+                refetch={props.refetch}
+                seq={props.data.messages.seq}
+                client={(props as any).client}
+            />
+            <ChatComponent sendMessage={props.sendMessage}>
+                {[...props.data.messages.messages].reverse().map((v) => (
+                    <XContent key={v.id}>
+                        <XHorizontal alignSelf="stretch">
+                            <XAvatar cloudImageUuid={v.sender.picture ? v.sender.picture : undefined} />
+                            <XVertical separator={'none'}>
+                                <XHorizontal separator={8}>
+                                    <Name>{v.sender.name}</Name><Date><XDate value={v.date} format="humanize" /></Date>
+                                </XHorizontal>
+                                <span>{v.message}</span>
+                            </XVertical>
+                        </XHorizontal>
+                    </XContent>
+                ))}
+            </ChatComponent>
         </DevToolsScaffold>
     );
 })));
