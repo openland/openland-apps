@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { OrganizationFull } from '../fragments/OrganizationFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
+import { UserShort } from '../fragments/UserShort';
 
 export const MyOrganizationQuery = gql`
     query MyOrganization {
@@ -140,5 +141,29 @@ export const EditListingMutation = gql`
 export const DeleteListingMutation = gql`
     mutation DeleteListing($id: ID!) {
         alphaOrganizationDeleteListing(id: $id)
+    }
+`;
+
+export const OrganizationMembersQuery = gql`
+    query OrganizationMembers($orgId: ID!) {
+        alphaOrganizationMembers(orgId: $orgId) {
+            user{
+                ...UserShort
+            }
+            role
+        }
+    }
+    ${UserShort}
+`;
+
+export const OrganizationChangeMemberRoleMutation = gql`
+    mutation OrganizationChangeMemberRole($memberId: ID!, $newRole: OrganizationMemberRole!) {
+        alphaOrganizationChangeMemberRole(memberId: $memberId, newRole: $newRole)
+    }
+`;
+
+export const OrganizationRemoveMemberMutation = gql`
+    mutation OrganizationRemoveMember($memberId: ID!) {
+        alphaOrganizationRemoveMember(memberId: $memberId)
     }
 `;
