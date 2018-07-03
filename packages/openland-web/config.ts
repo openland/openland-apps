@@ -1,11 +1,13 @@
 import { Config } from 'openland-x-config/Config';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
+import { API_WS_ENDPOINT } from 'openland-x-graphql/endpoint';
 
 export function buildConfig() {
     let config: Config = {};
     config.uploadcareKey = 'b70227616b5eac21ba88';
     config.release = process.env.RELEASE_ID || 'development';
+    config.webSocketEndpoint = API_WS_ENDPOINT;
     if (process.env.APP_ENVIRONMENT === 'prod') {
         config.sentryEndpoint = 'https://901e16cbc9cb4167953709af468b3306@sentry.io/1236211';
         config.intercomKey = 'n7hi8wya';

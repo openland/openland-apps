@@ -1,9 +1,10 @@
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { API_ENDPOINT, API_WS_ENDPOINT } from './endpoint';
+import { API_ENDPOINT } from './endpoint';
 import { WebSocketLink } from 'apollo-link-ws';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { getConfig } from 'openland-web/config';
 
 let cachedClient: ApolloClient<NormalizedCacheObject> | undefined = undefined;
 
@@ -33,16 +34,19 @@ const buildClient = (initialState?: any, token?: string, org?: string) => {
     if (canUseDOM) {
         // let endpoint = (window.location.protocol === 'https' ? 'wss' : 'ws') + '://' + window.location.host + '/graphql';
         // let endpoint = 'ws://localhost:9000/api';
-        link = new WebSocketLink({
-            uri: API_WS_ENDPOINT,
-            options: {
-                reconnect: true,
-                connectionParams: () => ({
-                    'x-openland-token': token,
-                    'x-openland-org': org
-                })
-            }
-        });
+        let endpoint = getConfig().webSocketEndpoint;
+        if (endpoint) {
+            link = new WebSocketLink({
+                uri: endpoint,
+                options: {
+                    reconnect: true,
+                    connectionParams: () => ({
+                        'x-openland-token': token,
+                        'x-openland-org': org
+                    })
+                }
+            });
+        }
     }
 
     return new ApolloClient({
