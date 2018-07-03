@@ -114,6 +114,9 @@ class ChatWatcher extends React.Component<{ conversationId: string, refetch: () 
                         if (shouldRefetch) {
                             this.props.refetch();
                         }
+                    } else if (result.error) {
+                        console.warn(result.error);
+                        this.props.refetch();
                     }
                     return null;
                 }}
@@ -136,9 +139,7 @@ const Date = Glamorous.div({
 
 class MessageWrapper extends React.Component<{ messages: MessageFullFragment[] }> {
     shouldComponentUpdate(nextProps: { messages: MessageFullFragment[] }) {
-        let res = nextProps.messages !== this.props.messages;
-        console.warn(res);
-        return res;
+        return nextProps.messages !== this.props.messages;
     }
     render() {
         return (
@@ -217,8 +218,6 @@ class ChatComponent extends React.Component<{ sendMessage: (args: any) => any, m
 }
 
 export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader(withUserInfo((props) => {
-    console.warn(props.data.messages.seq);
-    console.warn(props.loading);
     return (
         <DevToolsScaffold title={props.data.chat.title}>
             <XHeader text={props.data.chat.title} />
