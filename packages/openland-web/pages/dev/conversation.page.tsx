@@ -127,7 +127,11 @@ class ChatWatcher extends React.Component<ChatWatcherProps> {
     stopSubscription = () => {
         if (this.observable) {
             console.warn('Stopping Subscription');
-            this.observable.unsubscribe();
+            try {
+                this.observable.unsubscribe();
+            } catch (e) {
+                // Ignore exception since this method will throw if connection already closed
+            }
             this.observable = null;
         }
     }
