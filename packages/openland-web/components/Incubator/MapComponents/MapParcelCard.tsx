@@ -280,194 +280,196 @@ const ParcelLink = Glamorous(XLink)({
 
 const PropertySeparatedDiv = Glamorous(XPropertyList)();
 
-export const ParcelCard = withParcelDirect((props) => (
-    <Container parcel={props.variables.parcelId} mapMode={props.mapMode}>
-        <XLoader loading={!props.data || props.loading} />
-        {props.data && props.data!!.item &&
-            <>
-                <XHeader
-                    text={(
-                        <XHeaderTitleWrapper>
-                            <ParcelLink path={'/parcels/' + props.data.item!!.id}>
-                                <span>{props.data.item!!.address || 'No address'}</span>
-                                <img src="/static/X/link.svg" />
-                            </ParcelLink>
-                            <XOverflow
-                                shadow={true}
-                                placement="bottom"
-                                width={110}
-                                content={(
-                                    <>
-                                        <XOverflow.Item path={'/parcels/' + props.data.item!!.id}>Details</XOverflow.Item>
-                                        <XOverflow.Item query={{ field: 'selectedParcel' }}>Close</XOverflow.Item>
-                                    </>
-                                )}
-                            />
-                        </XHeaderTitleWrapper>
+export const ParcelCard = withParcelDirect((props) => {
+    return (
+        <Container parcel={props.variables.parcelId} mapMode={props.mapMode}>
+            <XLoader loading={!props.data || props.loading} />
+            {props.data && props.data!!.item &&
+                <>
+                    <XHeader
+                        text={(
+                            <XHeaderTitleWrapper>
+                                <ParcelLink path={'/parcels/' + props.data.item!!.id}>
+                                    <span>{props.data.item!!.address || 'No address'}</span>
+                                    <img src="/static/X/link.svg" />
+                                </ParcelLink>
+                                <XOverflow
+                                    shadow={true}
+                                    placement="bottom"
+                                    width={110}
+                                    content={(
+                                        <>
+                                            <XOverflow.Item path={'/parcels/' + props.data.item!!.id}>Details</XOverflow.Item>
+                                            <XOverflow.Item query={{ field: 'selectedParcel' }}>Close</XOverflow.Item>
+                                        </>
+                                    )}
+                                />
+                            </XHeaderTitleWrapper>
+                        )}
+                        description={<ParcelNumber id={props.data.item!!.number} />}
+                        truncateDescription={true}
+                        bullet={props.data!!.item!!.extrasOwnerPublic ? 'public' : (props.data!!.item!!.metadata.available ? 'ON SALE' : undefined)}
+                        style="compact"
+                    />
+                    {props.data.item.geometry && !props.loading && (
+                        <SeparatedDiv>
+                            <StreetViewDiv>
+                                <XStreetViewModal geometry={props.data.item.geometry} />
+                                <XStreetViewModalPreview key={props.variables.parcelId + 'streetView'} geometry={props.data.item.geometry} width={panelWidth - 32} height={170} />
+                            </StreetViewDiv>
+                        </SeparatedDiv>
                     )}
-                    description={<ParcelNumber id={props.data.item!!.number} />}
-                    truncateDescription={true}
-                    bullet={props.data!!.item!!.extrasOwnerPublic ? 'public' : (props.data!!.item!!.metadata.available ? 'ON SALE' : undefined)}
-                    style="compact"
-                />
-                {props.data.item.geometry && !props.loading && (
-                    <SeparatedDiv>
-                        <StreetViewDiv>
-                            <XStreetViewModal geometry={props.data.item.geometry} />
-                            <XStreetViewModalPreview key={props.variables.parcelId + 'streetView'} geometry={props.data.item.geometry} width={panelWidth - 32} height={170} />
-                        </StreetViewDiv>
-                    </SeparatedDiv>
-                )}
 
-                {props.data.item!!.userData && props.data.item!!.userData!!.notes && (
-                    <Notes>
-                        <ItemIcon icon="edit" />
-                        <div>
-                            {props.data.item!!.userData!!.notes}
-                        </div>
-                    </Notes>
-                )}
+                    {props.data.item!!.userData && props.data.item!!.userData!!.notes && (
+                        <Notes>
+                            <ItemIcon icon="edit" />
+                            <div>
+                                {props.data.item!!.userData!!.notes}
+                            </div>
+                        </Notes>
+                    )}
 
-                <PropertySeparatedDiv title="Parcel details" compact={true}>
-                    {props.data.item!!.extrasOwnerType && props.data.item!!.extrasOwnerType !== 'PRIVATE' &&
-                        <PropertyCell title="Ownership Type"><OwnerTypeComponent type={props.data.item!!.extrasOwnerType!!} /></PropertyCell>
-                    }
-                    {props.data.item!!.extrasOwnerName &&
-                        <PropertyCell title="Owner Name">{props.data.item!!.extrasOwnerName}</PropertyCell>
-                    }
-                    {props.data.item!!.area &&
-                        <PropertyCell title="Area"><XArea value={props.data.item!!.area!!.value} /></PropertyCell>
-                    }
-                    <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
-                        {Boolean(props.data.item!!.area && props.data.item!!.extrasUnitCapacityDencity && props.data.item!!.extrasUnitCapacityFar) &&
-                            <PropertyCell title="Unit Capacity">
-                                {props.data.item!!.extrasUnitCapacity}
-                                <XTooltipHint> <XArea value={props.data.item!!.area!!.value} />{' * ' + props.data.item!!.extrasUnitCapacityFar + '(FAR) / ' + props.data.item!!.extrasUnitCapacityDencity + '(DF)'}</XTooltipHint>
+                    <PropertySeparatedDiv title="Parcel details" compact={true}>
+                        {props.data.item!!.extrasOwnerType && props.data.item!!.extrasOwnerType !== 'PRIVATE' &&
+                            <PropertyCell title="Ownership Type"><OwnerTypeComponent type={props.data.item!!.extrasOwnerType!!} /></PropertyCell>
+                        }
+                        {props.data.item!!.extrasOwnerName &&
+                            <PropertyCell title="Owner Name">{props.data.item!!.extrasOwnerName}</PropertyCell>
+                        }
+                        {props.data.item!!.area &&
+                            <PropertyCell title="Area"><XArea value={props.data.item!!.area!!.value} /></PropertyCell>
+                        }
+                        <XWithRole role={['super-admin', 'software-developer', 'unit-capacity', 'feature-customer-kassita']}>
+                            {Boolean(props.data.item!!.area && props.data.item!!.extrasUnitCapacityDencity && props.data.item!!.extrasUnitCapacityFar) &&
+                                <PropertyCell title="Unit Capacity">
+                                    {props.data.item!!.extrasUnitCapacity}
+                                    <XTooltipHint> <XArea value={props.data.item!!.area!!.value} />{' * ' + props.data.item!!.extrasUnitCapacityFar + '(FAR) / ' + props.data.item!!.extrasUnitCapacityDencity + '(DF)'}</XTooltipHint>
+                                </PropertyCell>
+                            }
+                        </XWithRole>
+                        {props.data.item!!.front &&
+                            <PropertyCell title="Frontage"><XDistance value={props.data.item!!.front!!.value} /></PropertyCell>
+                        }
+                        {props.data.item!!.depth &&
+                            <PropertyCell title="Depth"><XDistance value={props.data.item!!.depth!!.value} /></PropertyCell>
+                        }
+                        {props.data.item!!.extrasShapeSides && !props.data.item!!.front && !props.data.item!!.depth && props.data.item!!.extrasShapeSides!!.length > 0 &&
+                            <PropertyCell title="Dimensions"> <XDimensions value={props.data.item!!.extrasShapeSides!!} /></PropertyCell>
+                        }
+                        {/* {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && (
+                        <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}> */}
+                        {props.data.item!!.extrasAnalyzed !== true &&
+                            <PropertyCell title="Compatible buildings">
+                                <XTooltipHint> {Text.hint_too_complex}</XTooltipHint>
+                                {Text.text_too_complex}
                             </PropertyCell>
                         }
-                    </XWithRole>
-                    {props.data.item!!.front &&
-                        <PropertyCell title="Frontage"><XDistance value={props.data.item!!.front!!.value} /></PropertyCell>
-                    }
-                    {props.data.item!!.depth &&
-                        <PropertyCell title="Depth"><XDistance value={props.data.item!!.depth!!.value} /></PropertyCell>
-                    }
-                    {props.data.item!!.extrasShapeSides && !props.data.item!!.front && !props.data.item!!.depth && props.data.item!!.extrasShapeSides!!.length > 0 &&
-                        <PropertyCell title="Dimensions"> <XDimensions value={props.data.item!!.extrasShapeSides!!} /></PropertyCell>
-                    }
-                    {/* {props.data.item!!.city.name === 'New York' && (props.data.item!!.extrasVacant === null || props.data.item!!.extrasVacant) && (
-                        <XWithRole role={['feature-customer-kassita', 'editor', 'software-developer', 'super-admin']}> */}
-                    {props.data.item!!.extrasAnalyzed !== true &&
-                        <PropertyCell title="Compatible buildings">
-                            <XTooltipHint> {Text.hint_too_complex}</XTooltipHint>
-                            {Text.text_too_complex}
-                        </PropertyCell>
-                    }
-                    {props.data.item!!.extrasAnalyzed === true && props.data.item!!.extrasFitProjects &&
-                        <PropertyCell title="Compatible buildings"><ProjectTypes types={props.data.item!!.extrasFitProjects!!} /></PropertyCell>
-                    }
-                    {/* </XWithRole>
+                        {props.data.item!!.extrasAnalyzed === true && props.data.item!!.extrasFitProjects &&
+                            <PropertyCell title="Compatible buildings"><ProjectTypes types={props.data.item!!.extrasFitProjects!!} /></PropertyCell>
+                        }
+                        {/* </XWithRole>
                     )} */}
-                    {props.data.item!!.extrasNeighborhood &&
-                        <PropertyCell title="Neighborhood">{props.data.item!!.extrasNeighborhood}</PropertyCell>
-                    }
-                    {props.data.item!!.extrasSupervisorDistrict &&
-                        <PropertyCell title="Supervisor District">{props.data.item!!.extrasSupervisorDistrict}</PropertyCell>
-                    }
-                    {props.data.item!!.extrasZoning && props.data.item!!.extrasZoning!!.length > 0 &&
-                        <PropertyCell title="Zoning"><ZoningCode codes={props.data.item!!.extrasZoning!!} /></PropertyCell>
-                    }
-                    {props.data.item!!.extrasLandUse !== null &&
-                        <PropertyCell title="Land Use">{props.data.item!!.extrasLandUse}</PropertyCell>
-                    }
+                        {props.data.item!!.extrasNeighborhood &&
+                            <PropertyCell title="Neighborhood">{props.data.item!!.extrasNeighborhood}</PropertyCell>
+                        }
+                        {props.data.item!!.extrasSupervisorDistrict &&
+                            <PropertyCell title="Supervisor District">{props.data.item!!.extrasSupervisorDistrict}</PropertyCell>
+                        }
+                        {props.data.item!!.extrasZoning && props.data.item!!.extrasZoning!!.length > 0 &&
+                            <PropertyCell title="Zoning"><ZoningCode codes={props.data.item!!.extrasZoning!!} /></PropertyCell>
+                        }
+                        {props.data.item!!.extrasLandUse !== null &&
+                            <PropertyCell title="Land Use">{props.data.item!!.extrasLandUse}</PropertyCell>
+                        }
 
-                    {props.data.item!!.extrasLandValue !== null &&
-                        <PropertyCell title="Land Value"><XMoney value={props.data.item!!.extrasLandValue!!} /></PropertyCell>
-                    }
-                    {props.data.item!!.extrasImprovementValue !== null &&
-                        <PropertyCell title="Improvement Value"><XMoney value={props.data.item!!.extrasImprovementValue!!} /></PropertyCell>
-                    }
-                    {/* {props.data.item!!.extrasFixturesValue !== null &&
+                        {props.data.item!!.extrasLandValue !== null &&
+                            <PropertyCell title="Land Value"><XMoney value={props.data.item!!.extrasLandValue!!} /></PropertyCell>
+                        }
+                        {props.data.item!!.extrasImprovementValue !== null &&
+                            <PropertyCell title="Improvement Value"><XMoney value={props.data.item!!.extrasImprovementValue!!} /></PropertyCell>
+                        }
+                        {/* {props.data.item!!.extrasFixturesValue !== null &&
                         <PropertyCell title="Fixtures Value"><XMoney value={props.data.item!!.extrasFixturesValue!!} /></PropertyCell>
                     }
                     {props.data.item!!.extrasPropertyValue !== null &&
                         <PropertyCell title="Personal Property Value"><XMoney value={props.data.item!!.extrasPropertyValue!!} /></PropertyCell>
                     } */}
-                </PropertySeparatedDiv>
-                {(props.data.item!!.extrasYear !== null
-                    || props.data.item!!.extrasUnits !== null
-                    || props.data.item!!.extrasStories !== null
-                    || props.data.item!!.extrasRooms !== null
-                    || props.data.item!!.extrasBedrooms !== null
-                    || props.data.item!!.extrasBathrooms !== null
-                    || props.data.item!!.metadata.currentUse !== null
-                    || props.data.item!!.extrasSalesDate !== null
-                    || props.data.item!!.extrasSalesPriorDate !== null
-                    || props.data.item!!.extrasVacant !== null) && (
-                        <PropertySeparatedDiv title="Current Building" compact={true}>
-                            {props.data.item!!.extrasVacant !== null &&
-                                <PropertyCell title="Vacant">{props.data.item!!.extrasVacant ? 'Yes' : 'No'}</PropertyCell>
-                            }
-                            {props.data.item!!.metadata.currentUse !== null &&
-                                <PropertyCell title="Current Use">{props.data.item!!.metadata.currentUse}</PropertyCell>
-                            }
-                            {props.data.item!!.extrasSalesDate !== null &&
-                                <PropertyCell title="Sale Date">{props.data.item!!.extrasSalesDate}</PropertyCell>
-                            }
-                            {props.data.item!!.extrasSalesPriorDate !== null &&
-                                <PropertyCell title="Prior Sale Date">{props.data.item!!.extrasSalesPriorDate}</PropertyCell>
-                            }
-                            {props.data.item!!.extrasYear !== null &&
-                                <PropertyCell title="Year Built"><XNumber value={props.data.item!!.extrasYear} /></PropertyCell>
-                            }
-                            {props.data.item!!.extrasUnits !== null &&
-                                <PropertyCell title="Buildings Count"><XNumber value={props.data.item!!.extrasUnits} /></PropertyCell>
-                            }
-                            {props.data.item!!.extrasStories !== null &&
-                                <PropertyCell title="Stories Count"><XNumber value={props.data.item!!.extrasStories} /></PropertyCell>
-                            }
-                            {/* {props.data.item!!.extrasRooms !== null &&
+                    </PropertySeparatedDiv>
+                    {(props.data.item!!.extrasYear !== null
+                        || props.data.item!!.extrasUnits !== null
+                        || props.data.item!!.extrasStories !== null
+                        || props.data.item!!.extrasRooms !== null
+                        || props.data.item!!.extrasBedrooms !== null
+                        || props.data.item!!.extrasBathrooms !== null
+                        || props.data.item!!.metadata.currentUse !== null
+                        || props.data.item!!.extrasSalesDate !== null
+                        || props.data.item!!.extrasSalesPriorDate !== null
+                        || props.data.item!!.extrasVacant !== null) && (
+                            <PropertySeparatedDiv title="Current Building" compact={true}>
+                                {props.data.item!!.extrasVacant !== null &&
+                                    <PropertyCell title="Vacant">{props.data.item!!.extrasVacant ? 'Yes' : 'No'}</PropertyCell>
+                                }
+                                {props.data.item!!.metadata.currentUse !== null &&
+                                    <PropertyCell title="Current Use">{props.data.item!!.metadata.currentUse}</PropertyCell>
+                                }
+                                {props.data.item!!.extrasSalesDate !== null &&
+                                    <PropertyCell title="Sale Date">{props.data.item!!.extrasSalesDate}</PropertyCell>
+                                }
+                                {props.data.item!!.extrasSalesPriorDate !== null &&
+                                    <PropertyCell title="Prior Sale Date">{props.data.item!!.extrasSalesPriorDate}</PropertyCell>
+                                }
+                                {props.data.item!!.extrasYear !== null &&
+                                    <PropertyCell title="Year Built"><XNumber value={props.data.item!!.extrasYear} /></PropertyCell>
+                                }
+                                {props.data.item!!.extrasUnits !== null &&
+                                    <PropertyCell title="Buildings Count"><XNumber value={props.data.item!!.extrasUnits} /></PropertyCell>
+                                }
+                                {props.data.item!!.extrasStories !== null &&
+                                    <PropertyCell title="Stories Count"><XNumber value={props.data.item!!.extrasStories} /></PropertyCell>
+                                }
+                                {/* {props.data.item!!.extrasRooms !== null &&
                                 <PropertyCell title="Rooms Count"><XNumber value={props.data.item!!.extrasRooms} /></PropertyCell>
                             } */}
-                            {/* {props.data.item!!.extrasBedrooms !== null &&
+                                {/* {props.data.item!!.extrasBedrooms !== null &&
                                 <PropertyCell title="Bedrooms Count"><XNumber value={props.data.item!!.extrasBedrooms} /></PropertyCell>
                             }
                             {props.data.item!!.extrasBathrooms !== null &&
                                 <PropertyCell title="Bathrooms Count"><XNumber value={props.data.item!!.extrasBathrooms} /></PropertyCell>
                             } */}
-                        </PropertySeparatedDiv>
-                    )}
-                {(props.data.item!!.extrasMetroDistance !== null
-                    || props.data.item!!.extrasTrainLocalDistance !== null
-                    || props.data.item!!.extrasTrainDistance !== null)
-                    && (
-                        <PropertySeparatedDiv title="Nearby Transit" compact={true}>
-                            {props.data.item!!.extrasMetroDistance !== null &&
-                                <PropertyCell title="Muni Metro"><XDistance value={props.data.item!!.extrasMetroDistance!!} /> ({props.data.item!!.extrasMetroStation})</PropertyCell>
-                            }
-                            {props.data.item!!.extrasTrainLocalDistance !== null &&
-                                <PropertyCell title="BART"><XDistance value={props.data.item!!.extrasTrainLocalDistance!!} /> ({props.data.item!!.extrasTrainLocalStation})</PropertyCell>
-                            }
-                            {props.data.item!!.extrasTrainDistance !== null &&
-                                <PropertyCell title="Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</PropertyCell>
-                            }
-                        </PropertySeparatedDiv>
-                    )}
-                <ProspectingWrapper>
-                    <XView grow={1} basis={0}>
-                        <XWithRole role={['feature-customer-kassita']} negate={true}>
-                            <FolderButton parcelId={props.data!!.item!!.id} folder={props.data!!.item.folder} size="medium" />
-                        </XWithRole>
-                        <XWithRole role={['feature-customer-kassita']}>
-                            <OpportunitiButton
-                                size="medium"
-                                parcelId={props.data!!.item!!.id}
-                                opportunityId={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.id : undefined}
-                                opportunityState={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.state : undefined}
-                            />
-                        </XWithRole>
-                    </XView>
-                </ProspectingWrapper>
-            </>}
-    </Container>
-)) as React.ComponentClass<{ variables: { parcelId: string }, mapMode?: string, compact?: boolean, onClose?: () => void }>;
+                            </PropertySeparatedDiv>
+                        )}
+                    {(props.data.item!!.extrasMetroDistance !== null
+                        || props.data.item!!.extrasTrainLocalDistance !== null
+                        || props.data.item!!.extrasTrainDistance !== null)
+                        && (
+                            <PropertySeparatedDiv title="Nearby Transit" compact={true}>
+                                {props.data.item!!.extrasMetroDistance !== null &&
+                                    <PropertyCell title="Muni Metro"><XDistance value={props.data.item!!.extrasMetroDistance!!} /> ({props.data.item!!.extrasMetroStation})</PropertyCell>
+                                }
+                                {props.data.item!!.extrasTrainLocalDistance !== null &&
+                                    <PropertyCell title="BART"><XDistance value={props.data.item!!.extrasTrainLocalDistance!!} /> ({props.data.item!!.extrasTrainLocalStation})</PropertyCell>
+                                }
+                                {props.data.item!!.extrasTrainDistance !== null &&
+                                    <PropertyCell title="Caltrain"><XDistance value={props.data.item!!.extrasTrainDistance!!} /> ({props.data.item!!.extrasTrainStation})</PropertyCell>
+                                }
+                            </PropertySeparatedDiv>
+                        )}
+                    <ProspectingWrapper>
+                        <XView grow={1} basis={0}>
+                            <XWithRole role={['feature-customer-kassita']} negate={true}>
+                                <FolderButton parcelId={props.data!!.item!!.id} folder={props.data!!.item.folder} size="medium" />
+                            </XWithRole>
+                            <XWithRole role={['feature-customer-kassita']}>
+                                <OpportunitiButton
+                                    size="medium"
+                                    parcelId={props.data!!.item!!.id}
+                                    opportunityId={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.id : undefined}
+                                    opportunityState={props.data!!.item!!.opportunity ? props.data!!.item!!.opportunity!!.state : undefined}
+                                />
+                            </XWithRole>
+                        </XView>
+                    </ProspectingWrapper>
+                </>}
+        </Container>
+    );
+}) as React.ComponentClass<{ variables: { parcelId: string }, mapMode?: string, compact?: boolean, onClose?: () => void }>;

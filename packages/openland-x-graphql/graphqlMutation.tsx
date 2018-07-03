@@ -39,7 +39,7 @@ export function graphqlMutation<TQuery, TVars, TN extends string>(mutation: Grap
                                         let props = {
                                             [name]: converted
                                         };
-                                        return (<Wrapped2 router={router!!} {...props} {...other} />);
+                                        return (<Wrapped2 router={router!!} {...props} {...other} variables={preparedParams} />);
                                     }}
                                 </Mutation>
                             );

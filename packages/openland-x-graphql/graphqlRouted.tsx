@@ -25,7 +25,6 @@ export function graphqlRouted<TResult, TVars>(
                 ...prepareParams(options && options.params ? options.params : [], router!!.routeQuery),
                 ...(this.props.variables as any)
               };
-
               return (
                 <Query
                   query={query.document}
@@ -37,7 +36,8 @@ export function graphqlRouted<TResult, TVars>(
                     if (options && options.throwOnError && results.data.error) {
                       throw results.data.error;
                     }
-                    return (<Component {...other} {...results} router={router!!}/>);
+                    console.warn(preparedVariables);
+                    return (<Component {...other} {...results} variables={preparedVariables} router={router!!} />);
                   }}
                 </Query>
               );
