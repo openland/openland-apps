@@ -693,6 +693,11 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     </NavigatorItem>
                                 </XPopper>
                             </XWithRole>
+
+                            <XWithRole role={['feature-marketplace']} negate={true}>
+                                <Home />
+                            </XWithRole>
+
                             <XWithRole role={['feature-messaging']}>
                                 <XPopper
                                     placement="right"
@@ -707,10 +712,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                         <NavigatorIcon icon="email" />
                                     </NavigatorItem>
                                 </XPopper>
-                            </XWithRole>
-
-                            <XWithRole role={['feature-marketplace']} negate={true}>
-                                <Home />
                             </XWithRole>
 
                             <XPopper
