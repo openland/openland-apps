@@ -17,12 +17,15 @@ export const ChatQuery = gql`
             title
         }
         messages: alphaLoadMessages(conversationId: $conversationId) {
-            id
-            message
-            sender {
-                ...UserShort
+            seq
+            messages {
+                id
+                message
+                sender {
+                    ...UserShort
+                }
+                date
             }
-            date
         }
     }
     ${UserShort}
@@ -31,12 +34,17 @@ export const ChatQuery = gql`
 export const SendMessageMutation = gql`
     mutation SendMessage($conversationId: ID!, $message: String!) {
         sentMessage: alphaSendMessage(conversationId: $conversationId, message: $message) {
-            id
-            message
-            sender {
-                ...UserShort
+            seq
+            ... on ConversationEventMessage {
+                message {
+                    id
+                    message
+                    sender {
+                        ...UserShort
+                    }
+                    date
+                }
             }
-            date
         }
     }
     ${UserShort}

@@ -6,8 +6,8 @@ import { graphqlCompose2 } from 'openland-x-graphql/graphqlCompose';
 
 const withSendMessage = graphqlMutation(SendMessageMutation, 'sendMessage', {
     params: ['conversationId'],
-    refetchParams: ['conversationId'],
-    refetchQueries: [ChatQuery]
+    // refetchParams: ['conversationId'],
+    // refetchQueries: [ChatQuery]
 });
 const withChatContent = graphqlRouted(ChatQuery, { params: ['conversationId'] });
 export const withChat = graphqlCompose2(withSendMessage, withChatContent);

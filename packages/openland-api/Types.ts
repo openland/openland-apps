@@ -419,21 +419,25 @@ export interface ChatQuery {
     id: string,
     title: string,
   },
-  messages:  Array< {
-    __typename: "ConversationMessage",
-    id: string,
-    message: string,
-    sender:  {
-      __typename: "User",
+  messages:  {
+    __typename: "ConversationState",
+    seq: number,
+    messages:  Array< {
+      __typename: "ConversationMessage",
       id: string,
-      name: string,
-      firstName: string,
-      lastName: string | null,
-      picture: string | null,
-      email: string | null,
-    },
-    date: string,
-  } >,
+      message: string,
+      sender:  {
+        __typename: "User",
+        id: string,
+        name: string,
+        firstName: string,
+        lastName: string | null,
+        picture: string | null,
+        email: string | null,
+      },
+      date: string,
+    } >,
+  },
 };
 
 export interface SendMessageMutationVariables {
@@ -443,19 +447,23 @@ export interface SendMessageMutationVariables {
 
 export interface SendMessageMutation {
   sentMessage:  {
-    __typename: "ConversationMessage",
-    id: string,
-    message: string,
-    sender:  {
-      __typename: "User",
+    __typename: "ConversationEventMessage",
+    seq: number,
+    message:  {
+      __typename: "ConversationMessage",
       id: string,
-      name: string,
-      firstName: string,
-      lastName: string | null,
-      picture: string | null,
-      email: string | null,
+      message: string,
+      sender:  {
+        __typename: "User",
+        id: string,
+        name: string,
+        firstName: string,
+        lastName: string | null,
+        picture: string | null,
+        email: string | null,
+      },
+      date: string,
     },
-    date: string,
   },
 };
 

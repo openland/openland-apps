@@ -17,6 +17,7 @@ export interface XFormProps {
     defaultData?: any;
     staticData?: any;
     defaultAction: (data: any) => any;
+    resetAfterSubmit?: boolean;
     className?: string;
     defaultLayout?: boolean;
     autoClose?: boolean;
@@ -28,6 +29,7 @@ interface XFormControllerProps {
     store: XStoreState;
     className?: string;
     defaultLayout?: boolean;
+    resetAfterSubmit?: boolean;
 }
 
 const FormContainer = Glamorous.form({
@@ -84,8 +86,12 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
                 }
             }
             this.setState({ loading: false, error: undefined });
-            this.props.store.writeValue('form.error', null);
-            this.props.store.writeValue('errors', null);
+            if (this.props.resetAfterSubmit) {
+                this.props.store.reset();
+            } else {
+                this.props.store.writeValue('form.error', null);
+                this.props.store.writeValue('errors', null);
+            }
         } catch (e) {
             if (LOGGING) {
                 console.warn(e);
@@ -168,6 +174,7 @@ export class XForm extends React.PureComponent<XFormProps> {
                                     autoClose={this.props.autoClose}
                                     className={this.props.className}
                                     defaultLayout={this.props.defaultLayout}
+                                    resetAfterSubmit={this.props.resetAfterSubmit}
                                 >
                                     {this.props.children}
                                 </XFormController>
