@@ -4,7 +4,6 @@ import Glamorous from 'glamorous';
 import { withApp } from '../../components/withApp';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XHeader } from 'openland-x/XHeader';
-import { XTable } from 'openland-x/XTable';
 import { withQueryLoader } from '../../components/withQueryLoader';
 import { withChat } from '../../api/withChat';
 import { XScrollView } from 'openland-x/XScrollView';
