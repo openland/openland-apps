@@ -6,7 +6,6 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XHeader } from 'openland-x/XHeader';
 import { withQueryLoader } from '../../components/withQueryLoader';
 import { withChat } from '../../api/withChat';
-import { XScrollView } from 'openland-x/XScrollView';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XInput } from 'openland-x/XInput';
@@ -20,6 +19,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XDate } from 'openland-x-format/XDate';
+import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -135,10 +135,10 @@ export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader((pr
                     seq={props.data.messages.seq}
                     client={(props as any).client}
                 />
-                <XScrollView>
+                <XScrollViewReversed>
                     <XVertical>
-                        {props.data.messages.messages.map((v) => (
-                            <XContent>
+                        {[...props.data.messages.messages].reverse().map((v) => (
+                            <XContent key={v.id}>
                                 <XHorizontal alignSelf="stretch">
                                     <XAvatar cloudImageUuid={v.sender.picture ? v.sender.picture : undefined} />
                                     <XVertical separator={'none'}>
@@ -151,7 +151,7 @@ export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader((pr
                             </XContent>
                         ))}
                     </XVertical>
-                </XScrollView>
+                </XScrollViewReversed>
                 <XForm
                     defaultAction={(data) => props.sendMessage({ variables: { message: data.message } })}
                     defaultData={{ message: '' }}

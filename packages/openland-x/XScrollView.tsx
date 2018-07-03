@@ -94,6 +94,7 @@ css.global('.horizontal.simplebar-track .simplebar-scrollbar', {
 export interface XScrollViewProps extends XFlexStyles {
     flexDirection?: 'row' | 'column';
     className?: string;
+    innerRef?: (src: any) => void;
 }
 
 const ScrollDiv = Glamorous.div<XFlexStyles>([{
@@ -129,7 +130,7 @@ export class XScrollView extends React.Component<XScrollViewProps> {
                 <div className="simplebar-track horizontal">
                     <div className="simplebar-scrollbar" />
                 </div>
-                <div className="simplebar-scroll-content">
+                <div className="simplebar-scroll-content" ref={this.props.innerRef}>
                     <div className="simplebar-content">
                         {this.props.children}
                     </div>
