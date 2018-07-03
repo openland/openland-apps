@@ -28,8 +28,16 @@ export function graphqlMutation<TQuery, TVars, TN extends string>(mutation: Grap
                             return (
                                 <Mutation mutation={mutation.document} variables={preparedParams} refetchQueries={refetchQueries}>
                                     {(res) => {
+                                        let converted = (args: any) => {
+                                            if (args.variables) {
+                                                args.variables = { ...preparedParams, ...args.variables };
+                                            } else {
+                                                args.variables = preparedParams;
+                                            }
+                                            return res(args as any);
+                                        };
                                         let props = {
-                                            [name]: res
+                                            [name]: converted
                                         };
                                         return (<Wrapped2 router={router!!} {...props} {...other} />);
                                     }}

@@ -47,7 +47,6 @@ export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader((pr
             <Container>
                 <Subscription subscription={CHAT_SUBSCRIPTION} variables={{ conversationId: props.data.chat.id }}>
                     {(result) => {
-                        console.warn(result.data);
                         return null;
                     }}
                 </Subscription>

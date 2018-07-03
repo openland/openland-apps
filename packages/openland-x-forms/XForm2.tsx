@@ -11,6 +11,8 @@ import { XFormLoadingContent } from './XFormLoadingContent';
 import { XModalContext, XModalContextValue } from 'openland-x-modal/XModalContext';
 import { formatError, exportWrongFields } from './errorHandling';
 
+const LOGGING = false;
+
 export interface XFormProps {
     defaultData?: any;
     staticData?: any;
@@ -85,7 +87,9 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
             this.props.store.writeValue('form.error', null);
             this.props.store.writeValue('errors', null);
         } catch (e) {
-            console.warn(e);
+            if (LOGGING) {
+                console.warn(e);
+            }
             this.props.store.writeValue('errors', null);
             let message = formatError(e);
             let fields = exportWrongFields(e);
@@ -109,7 +113,9 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
     }
 
     render() {
-        console.warn(this.state);
+        if (LOGGING) {
+            console.warn(this.state);
+        }
         return (
             <XFormContext.Provider value={this.contextValue}>
                 {this.props.defaultLayout !== false && (
