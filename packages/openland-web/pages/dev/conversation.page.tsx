@@ -128,13 +128,12 @@ class ChatWatcher extends React.Component<{ conversationId: string, refetch: () 
 const Name = Glamorous.div({
     fontSize: '14px',
     fontWeight: 500,
-    flexGrow: 1
 });
 
 const Date = Glamorous.div({
     fontSize: '14px',
     fontWeight: 300,
-    opacity: 0.7
+    opacity: 0.4
 });
 
 class MessageWrapper extends React.Component<{ messages: MessageFullFragment[] }> {
@@ -148,8 +147,8 @@ class MessageWrapper extends React.Component<{ messages: MessageFullFragment[] }
                     <XContent key={v.id}>
                         <XHorizontal alignSelf="stretch">
                             <XAvatar cloudImageUuid={v.sender.picture ? v.sender.picture : undefined} />
-                            <XVertical separator={'none'}>
-                                <XHorizontal separator={8}>
+                            <XVertical separator={'none'} flexGrow={1}>
+                                <XHorizontal separator={4}>
                                     <Name>{v.sender.name}</Name><Date><XDate value={v.date} format="humanize" /></Date>
                                 </XHorizontal>
                                 <span>{v.message}</span>
