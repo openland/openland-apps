@@ -22,6 +22,7 @@ import { XButton } from 'openland-x/XButton';
 import { MessageFullFragment } from 'openland-api/Types';
 import { withUserInfo } from '../../components/UserInfo';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XLoader } from 'openland-x/XLoader';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -160,11 +161,12 @@ class MessageWrapper extends React.Component<{ messages: MessageFullFragment[] }
     }
 }
 
-class ChatComponent extends React.Component<{ sendMessage: (args: any) => any, messages: MessageFullFragment[], uid: string }, { message: string }> {
+class ChatComponent extends React.Component<{ sendMessage: (args: any) => any, messages: MessageFullFragment[], loading: boolean, uid: string }, { message: string, mounted: boolean }> {
 
     scroller: any;
     state = {
-        message: ''
+        message: '',
+        mounted: false
     };
 
     handleScrollView = (src: any) => {
@@ -185,23 +187,30 @@ class ChatComponent extends React.Component<{ sendMessage: (args: any) => any, m
         this.setState({ message: src });
     }
 
-    shouldComponentUpdate(nextProps: { sendMessage: (args: any) => any, messages: MessageFullFragment[] }, nextState: { message: string }) {
-        return this.props.messages !== nextProps.messages || this.state.message !== nextState.message;
+    shouldComponentUpdate(nextProps: { sendMessage: (args: any) => any, messages: MessageFullFragment[], loading: boolean }, nextState: { message: string, mounted: boolean }) {
+        return this.props.messages !== nextProps.messages || this.state.message !== nextState.message || this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading;
+    }
+
+    componentDidMount() {
+        this.setState({ mounted: true });
     }
 
     render() {
         return (
-            <Container>
-                <MessagesContainer>
-                    <XScrollViewReversed ref={this.handleScrollView}>
-                        <MessageWrapper messages={this.props.messages} />
-                    </XScrollViewReversed>
-                </MessagesContainer>
-                <SendMessageContainer>
-                    <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} />
-                    <XButton text="Send" size="medium" action={this.handleSend} />
-                </SendMessageContainer>
-            </Container>
+            <>
+                <Container>
+                    <MessagesContainer>
+                        <XScrollViewReversed ref={this.handleScrollView}>
+                            <MessageWrapper messages={this.props.messages} />
+                        </XScrollViewReversed>
+                    </MessagesContainer>
+                    <SendMessageContainer>
+                        <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} />
+                        <XButton text="Send" size="medium" action={this.handleSend} />
+                    </SendMessageContainer>
+                </Container>
+                <XLoader loading={!this.state.mounted || this.props.loading} />
+            </>
         );
     }
 
@@ -209,6 +218,7 @@ class ChatComponent extends React.Component<{ sendMessage: (args: any) => any, m
 
 export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader(withUserInfo((props) => {
     console.warn(props.data.messages.seq);
+    console.warn(props.loading);
     return (
         <DevToolsScaffold title={props.data.chat.title}>
             <XHeader text={props.data.chat.title} />
@@ -219,7 +229,7 @@ export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader(wit
                 client={(props as any).client}
                 uid={props.user!!.id}
             />
-            <ChatComponent sendMessage={props.sendMessage} messages={props.data.messages.messages} uid={props.user!!.id} />
+            <ChatComponent sendMessage={props.sendMessage} messages={props.data.messages.messages} uid={props.user!!.id} loading={props.loading} />
         </DevToolsScaffold>
     );
 }))));

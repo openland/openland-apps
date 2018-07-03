@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { XScrollView } from './XScrollView';
-
 interface Dimensions {
     scrollTop: number;
     scrollHeight: number;
     offsetHeight: number;
 }
 
-export class XScrollViewReversed extends React.Component {
+export class XScrollViewReversed extends React.Component<{}, { inited: boolean }> {
+
+    state = {
+        inited: false
+    };
 
     lastDimensions: Dimensions | null = null;
     scroller: HTMLDivElement | null = null;
@@ -80,6 +83,7 @@ export class XScrollViewReversed extends React.Component {
     componentDidMount() {
         this.restoreScroll();
         window.addEventListener('resize', this.handleWindowResize, false);
+        this.setState({ inited: true });
     }
 
     componentWillUnmount() {
@@ -92,7 +96,7 @@ export class XScrollViewReversed extends React.Component {
 
     render() {
         return (
-            <XScrollView innerRef={this.handleRef} onScroll={this.handleScroll}>
+            <XScrollView innerRef={this.handleRef} onScroll={this.handleScroll} opacity={this.state.inited ? 1 : 0}>
                 {this.props.children}
             </XScrollView>
         );
