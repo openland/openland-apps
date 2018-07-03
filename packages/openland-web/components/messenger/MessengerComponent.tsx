@@ -144,7 +144,7 @@ class MessagesComponent extends React.Component<{ sendMessage: (args: any) => an
                     </MessagesContainer>
                     <SendMessageContainer>
                         <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} />
-                        <XButton text="Send" size="medium" action={this.handleSend} />
+                        <XButton text="Send" size="medium" action={this.handleSend} icon="send" />
                     </SendMessageContainer>
                 </Container>
                 <XLoader loading={!this.state.mounted} />

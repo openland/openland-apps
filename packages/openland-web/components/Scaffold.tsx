@@ -40,7 +40,7 @@ const RootContainer = Glamorous.div({
 // Navigation
 //
 
-const NavigationWrapper = Glamorous.div<{activeSearch: boolean}>((props) => ({
+const NavigationWrapper = Glamorous.div<{ activeSearch: boolean }>((props) => ({
     display: 'flex',
     flexShrink: 0,
     order: 1,
@@ -690,6 +690,21 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 >
                                     <NavigatorItem path="/marketplace">
                                         <NavigatorIcon icon="explore" />
+                                    </NavigatorItem>
+                                </XPopper>
+                            </XWithRole>
+                            <XWithRole role={['feature-messaging']}>
+                                <XPopper
+                                    placement="right"
+                                    showOnHoverContent={false}
+                                    showOnHover={true}
+                                    groupId="scaffold_tooltip"
+                                    content={(
+                                        <strong>{TextAppBar.items.mail}</strong>
+                                    )}
+                                >
+                                    <NavigatorItem path="/mail" activateForSubpaths={true}>
+                                        <NavigatorIcon icon="email" />
                                     </NavigatorItem>
                                 </XPopper>
                             </XWithRole>

@@ -175,6 +175,15 @@ routes.add('/inquiries', '/main/inquiries/root');
 routes.add('/inquiries/', '/main/inquiries/root');
 
 //
+// Mail
+//
+
+routes.add('/mail', '/main/mail/root');
+routes.add('/mail/', '/main/mail/root');
+routes.add('/mail/:conversationId', '/main/mail/root');
+routes.add('/mail/:conversationId/', '/main/mail/root');
+
+//
 // UI
 //
 
