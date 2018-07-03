@@ -40,16 +40,29 @@ const CHAT_SUBSCRIPTION = gql`
   }
 `;
 
+class ChatWatcher extends React.Component<{ conversationId: string, refetch: () => void }> {
+    render() {
+        return (
+            <Subscription subscription={CHAT_SUBSCRIPTION} variables={{ conversationId: this.props.conversationId }}>
+                {(result) => {
+                    if (result.data) {
+                        console.warn(result.data);
+                        this.props.refetch();
+                    }
+                    return null;
+                }}
+            </Subscription>
+        );
+    }
+}
+
 export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader((props) => {
+    console.warn(props.data);
     return (
         <DevToolsScaffold title={props.data.chat.title}>
             <XHeader text={props.data.chat.title} />
             <Container>
-                <Subscription subscription={CHAT_SUBSCRIPTION} variables={{ conversationId: props.data.chat.id }}>
-                    {(result) => {
-                        return null;
-                    }}
-                </Subscription>
+                <ChatWatcher conversationId={props.data.chat.id} refetch={props.refetch} />
                 <XScrollView>
                     <XTable>
                         <XTable.Body>
