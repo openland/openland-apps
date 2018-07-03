@@ -229,7 +229,7 @@ const XButtonWithMargin = Glamorous(XButton)({
 });
 
 const FolderButtonWithSave = withParcelStats((props) => {
-    if (!props.data.loading) {
+    if (!props.loading) {
         (props as any).onStatsLoaded();
     }
     if (!(props as any).show) {

@@ -25,7 +25,7 @@ const Content = withParcels(withQueryLoader((props) => {
                         description={props.data.items.pageInfo.itemsCount + ' parcels found'}
                     />
                     <XVertical>
-                        <XLoader loading={props.data.loading || false} />
+                        <XLoader loading={props.loading || false} />
                         <TableParcels items={props.data.items.edges.map((v) => v.node)} showCity={false} />
                         <XFooter text={props.data.items.pageInfo.itemsCount + ' items'}>
                             {props.data.items.pageInfo.currentPage > 1 && (

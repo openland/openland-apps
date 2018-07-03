@@ -1,4 +1,4 @@
-import { ChildProps, QueryProps, DataValue } from 'react-apollo';
+import { QueryProps, DataValue } from 'react-apollo';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 
 export type NotNullableChildProps<TResult> = DataValue<{}, TResult> & NotNullableDataProps<TResult>;

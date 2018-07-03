@@ -9,7 +9,7 @@ import { withQueryLoader } from '../../components/withQueryLoader';
 
 export default withApp('Super Readers', ['super-admin', 'software-developer'], withDebugReaders(withQueryLoader((props) => {
     // Auto-refreshing
-    props.data.startPolling(5000);
+    props.startPolling(5000);
     return (
         <DevToolsScaffold title="Debugging">
             <XHeader text="System Event Reader status" />

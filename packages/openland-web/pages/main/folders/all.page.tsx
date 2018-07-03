@@ -464,7 +464,7 @@ const FolderExportTask = withFolderExportTask((props) => {
 }) as React.ComponentClass<{ folderId: string }>;
 
 const FolderContent = withFolder((props) => {
-    if (props.data.loading) {
+    if (props.loading) {
         return <XLoader loading={true} />;
     }
     return (
@@ -530,16 +530,16 @@ export default withApp('Folders', 'viewer', withFolders(withQueryLoader((props) 
                     </Sidebar>
                 </Scaffold.Menu>
                 <Scaffold.Content padding={false} bottomOffset={props.router.routeQuery.mapView !== 'true'}>
-                    {!props.router.routeQuery.folderId && props.data.loading && <XLoader loading={true} />}
-                    {!props.data.loading && (!props.router.routeQuery.folderId || props.data.folders.map(folder => folder.id).indexOf(props.router.routeQuery.folderId) === -1) && props.data.folders.length > 0 &&
+                    {!props.router.routeQuery.folderId && props.loading && <XLoader loading={true} />}
+                    {!props.loading && (!props.router.routeQuery.folderId || props.data.folders.map(folder => folder.id).indexOf(props.router.routeQuery.folderId) === -1) && props.data.folders.length > 0 &&
                         (
                             <XPageRedirect path={'/folders/' + props.data.folders[0].id} />
                         )}
-                    {!props.data.loading && props.router.routeQuery.folderId && props.data.folders.length === 0 && (
+                    {!props.loading && props.router.routeQuery.folderId && props.data.folders.length === 0 && (
                         <XPageRedirect path={'/folders/'} />
 
                     )}
-                    {!props.data.loading && !props.router.routeQuery.folderId && props.data.folders && props.data.folders.length <= 0 && (
+                    {!props.loading && !props.router.routeQuery.folderId && props.data.folders && props.data.folders.length <= 0 && (
                         <EmptyWithMargin icon="folder">
                             <NoFoldersTextContainer>
 

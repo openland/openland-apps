@@ -213,24 +213,24 @@ const OpportunityInfo = withOpportunity(withQueryLoader((props) => {
     if (props.router.query.pipeline && mapUrl) {
         mapUrl = mapUrl + '&pipeline=' + props.router.query.pipeline;
     }
-    if (props.data.variables.state === 'INCOMING') {
+    if (props.variables.state === 'INCOMING') {
         approveText = 'Move to Zoning Review';
         canReset = false;
-    } else if (props.data.variables.state === 'APPROVED_INITIAL') {
+    } else if (props.variables.state === 'APPROVED_INITIAL') {
         approveText = 'Move to Unit Placement';
         if (mapUrl) {
             mapUrl = mapUrl + '&stage=zoning';
         }
-    } else if (props.data.variables.state === 'APPROVED_ZONING') {
+    } else if (props.variables.state === 'APPROVED_ZONING') {
         approveText = 'Approve';
         if (mapUrl) {
             mapUrl = mapUrl + '&stage=unit';
         }
-    } else if (props.data.variables.state === 'APPROVED') {
+    } else if (props.variables.state === 'APPROVED') {
         canMoveNext = false;
-    } else if (props.data.variables.state === 'REJECTED') {
+    } else if (props.variables.state === 'REJECTED') {
         canMoveNext = false;
-    } else if (props.data.variables.state === 'SNOOZED') {
+    } else if (props.variables.state === 'SNOOZED') {
         canMoveNext = false;
     }
 
@@ -238,46 +238,46 @@ const OpportunityInfo = withOpportunity(withQueryLoader((props) => {
         <XVertical>
             <ProspectingNavigationReview />
             <XVertical>
-                <XLoader loading={props.data.loading || false} height={600} />
-                {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
+                <XLoader loading={props.loading || false} height={600} />
+                {props.data.alphaNextReviewOpportunity && (!props.loading) && (
                     <XHeader
                         text={props.data.alphaNextReviewOpportunity!!.parcel.address || 'No address'}
                         description={<ParcelNumber city={props.data.alphaNextReviewOpportunity!!.parcel.city.name} id={props.data.alphaNextReviewOpportunity!!.parcel.number} />}
                         bullet={props.data.alphaNextReviewOpportunity!!.parcel.extrasOwnerPublic ? 'public' : undefined}
                     >
                         {mapUrl && <XButton path={mapUrl} text="View on map" />}
-                        {props.data.variables.state !== 'REJECTED' && (
+                        {props.variables.state !== 'REJECTED' && (
                             <XButton
                                 text="Reject"
                                 style="danger"
                                 action={() =>
                                     props.reject({
                                         variables: {
-                                            state: props.data.variables.state,
+                                            state: props.variables.state,
                                             opportunityId: props.data.alphaNextReviewOpportunity!!.id
                                         }
                                     })
                                 }
                                 onSuccess={() => {
                                     trackEvent('Parcel Rejected', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
-                                    props.data.refetch({ forceFetch: true });
+                                    props.refetch();
                                 }}
                             />
                         )}
                         <>
                             {/* <XWithRole role="feature-customer-kassita" negate={true}> */}
-                            {props.data.variables.state !== 'SNOOZED' && (
+                            {props.variables.state !== 'SNOOZED' && (
                                 <XButton
                                     text="Snooze"
                                     action={() => props.snooze({
                                         variables: {
-                                            state: props.data.variables.state,
+                                            state: props.variables.state,
                                             opportunityId: props.data.alphaNextReviewOpportunity!!.id
                                         }
                                     })}
                                     onSuccess={() => {
                                         trackEvent('Parcel Snoozed', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
-                                        props.data.refetch({ forceFetch: true });
+                                        props.refetch();
                                     }}
                                 />
                             )}
@@ -300,13 +300,13 @@ const OpportunityInfo = withOpportunity(withQueryLoader((props) => {
                                 text={approveText}
                                 action={() => props.approve({
                                     variables: {
-                                        state: props.data.variables.state,
+                                        state: props.variables.state,
                                         opportunityId: props.data.alphaNextReviewOpportunity!!.id
                                     }
                                 })}
                                 onSuccess={() => {
                                     trackEvent('Parcel Approved', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
-                                    props.data.refetch({ forceFetch: true });
+                                    props.refetch();
                                 }}
                                 style="primary"
                             />
@@ -316,22 +316,22 @@ const OpportunityInfo = withOpportunity(withQueryLoader((props) => {
                             text="Restart review"
                             action={() => props.reset({
                                 variables: {
-                                    state: props.data.variables.state,
+                                    state: props.variables.state,
                                     opportunityId: props.data.alphaNextReviewOpportunity!!.id
                                 }
                             })}
                             onSuccess={() => {
                                 trackEvent('Parsel Reset', { parcelId: props.data.alphaNextReviewOpportunity!!.parcel.id });
-                                props.data.refetch({ forceFetch: true });
+                                props.refetch();
                             }}
                         />
                         )}
                     </XHeader>
                 )}
-                {(!props.data.alphaNextReviewOpportunity && (!props.data.loading)) && (
+                {(!props.data.alphaNextReviewOpportunity && (!props.loading)) && (
                     <XEmpty text="There are no parcels for review" icon="sort" />
                 )}
-                {props.data.alphaNextReviewOpportunity && (!props.data.loading) && (
+                {props.data.alphaNextReviewOpportunity && (!props.loading) && (
                     <OpportunityDescription parcel={props.data.alphaNextReviewOpportunity.parcel} parcelNotes={props.parcelNotes} router={props.router} />
                 )}
             </XVertical>
