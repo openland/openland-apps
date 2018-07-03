@@ -136,6 +136,29 @@ const Date = Glamorous.div({
     opacity: 0.4
 });
 
+class MessageRender extends React.Component<{ message: MessageFullFragment }> {
+    
+    shouldComponentUpdate(nextProps: { message: MessageFullFragment }) {
+        return (this.props.message !== nextProps.message);
+    }
+
+    render() {
+        return (
+            <XContent key={this.props.message.id}>
+                <XHorizontal alignSelf="stretch">
+                    <XAvatar cloudImageUuid={this.props.message.sender.picture ? this.props.message.sender.picture : undefined} />
+                    <XVertical separator={'none'} flexGrow={1}>
+                        <XHorizontal separator={4}>
+                            <Name>{this.props.message.sender.name}</Name><Date><XDate value={this.props.message.date} format="humanize" /></Date>
+                        </XHorizontal>
+                        <span>{this.props.message.message}</span>
+                    </XVertical>
+                </XHorizontal>
+            </XContent>
+        );
+    }
+}
+
 class MessageWrapper extends React.Component<{ messages: MessageFullFragment[] }> {
     shouldComponentUpdate(nextProps: { messages: MessageFullFragment[] }) {
         return nextProps.messages !== this.props.messages;
@@ -144,17 +167,7 @@ class MessageWrapper extends React.Component<{ messages: MessageFullFragment[] }
         return (
             <XVertical>
                 {[...this.props.messages].reverse().map((v) => (
-                    <XContent key={v.id}>
-                        <XHorizontal alignSelf="stretch">
-                            <XAvatar cloudImageUuid={v.sender.picture ? v.sender.picture : undefined} />
-                            <XVertical separator={'none'} flexGrow={1}>
-                                <XHorizontal separator={4}>
-                                    <Name>{v.sender.name}</Name><Date><XDate value={v.date} format="humanize" /></Date>
-                                </XHorizontal>
-                                <span>{v.message}</span>
-                            </XVertical>
-                        </XHorizontal>
-                    </XContent>
+                    <MessageRender message={v} key={v.id}/>
                 ))}
             </XVertical>
         );
