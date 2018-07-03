@@ -32,7 +32,7 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 const RootContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    width: '100vw',
+    width: '100%',
     minWidth: 800,
 });
 
@@ -40,10 +40,12 @@ const RootContainer = Glamorous.div({
 // Navigation
 //
 
-const NavigationWrapper = Glamorous.div((props) => ({
+const NavigationWrapper = Glamorous.div<{activeSearch: boolean}>((props) => ({
     display: 'flex',
     flexShrink: 0,
-    order: 1
+    order: 1,
+    position: 'fixed',
+    zIndex: props.activeSearch ? 1 : 0
 }));
 
 const NavigationContainer = Glamorous.div({
@@ -58,12 +60,13 @@ const NavigationScroller = Glamorous(XScrollView)<{ sidebarBorderColor?: string 
     height: '100vh',
     width: 72,
     backgroundColor: '#FAFAFC',
+    // backgroundColor: 'transparent',
     flexShrink: 0,
     borderRightColor: props.sidebarBorderColor ? props.sidebarBorderColor : 'rgba(0,0,0, 0.05)',
     borderRightStyle: 'solid',
     borderRightWidth: '1px',
-    position: 'sticky',
-    top: 0,
+    // position: 'sticky',
+    // top: 0,
 }));
 
 const Logo = Glamorous(XPicture)({
@@ -266,7 +269,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
 // Content
 //
 
-const ContentView = Glamorous.div<{ noBoxShadow?: boolean }>((props) => ({
+const ContentView = Glamorous.div<{ noBoxShadow?: boolean, marginLeft: number }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
@@ -280,7 +283,8 @@ const ContentView = Glamorous.div<{ noBoxShadow?: boolean }>((props) => ({
     maxWidth: '100%',
     boxShadow: props.noBoxShadow ? undefined : '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
     position: 'relative',
-    zIndex: 0
+    zIndex: 0,
+    marginLeft: props.marginLeft
 }));
 
 const SearchWrapper = Glamorous.div<{ visible: boolean }>((props) => ({
@@ -291,8 +295,8 @@ const SearchWrapper = Glamorous.div<{ visible: boolean }>((props) => ({
 }));
 
 const SearchWrapperSticky = Glamorous.div({
-    position: 'sticky',
-    top: 0
+    // position: 'sticky',
+    // top: 0
 });
 
 const SearchContainer = Glamorous.div({
@@ -301,7 +305,8 @@ const SearchContainer = Glamorous.div({
     top: 0,
     width: 'calc(100vw - 72px)',
     height: '100vh',
-    backgroundColor: 'rgba(9, 30, 66, 0.54)'
+    backgroundColor: 'rgba(9, 30, 66, 0.54)',
+    zIndex: 1
 });
 
 const SearchContent = Glamorous.div({
@@ -457,9 +462,10 @@ const MenuView = Glamorous(XScrollView)({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#FAFAFC',
-    position: 'sticky',
-    top: 0,
-    left: 72,
+    // backgroundColor: 'transparent',
+    // position: 'sticky',
+    // top: 0,
+    // left: 72,
     height: '100vh',
 });
 
@@ -634,21 +640,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                 >
                     <OrganizationPicker />
                 </XModal>
-                <NavigationWrapper>
-                    <SearchWrapper visible={this.state.search}>
-                        <SearchWrapperSticky>
-                            <SearchContainer onClick={this.handleSearch} />
-                            <SearchContent>
-                                <SearchInput
-                                    placeholder={TextGlobalSearch.placeholder}
-                                    onChange={this.handleSearchChange}
-                                    innerRef={this.handleSearchRef}
-                                    value={this.state.searchText}
-                                />
-                                {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults variables={{ query: this.state.searchText }} />)}
-                            </SearchContent>
-                        </SearchWrapperSticky>
-                    </SearchWrapper>
+                <NavigationWrapper activeSearch={this.state.search}>
                     <NavigationScroller sidebarBorderColor={this.props.sidebarBorderColor}>
                         <NavigationContainer>
                             <XLink path="/">
@@ -838,9 +830,23 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             </BottomNavigation>
                         </NavigationContainer>
                     </NavigationScroller>
+                    <SearchWrapper visible={this.state.search}>
+                        <SearchWrapperSticky>
+                            <SearchContainer onClick={this.handleSearch} />
+                            <SearchContent>
+                                <SearchInput
+                                    placeholder={TextGlobalSearch.placeholder}
+                                    onChange={this.handleSearchChange}
+                                    innerRef={this.handleSearchRef}
+                                    value={this.state.searchText}
+                                />
+                                {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults variables={{ query: this.state.searchText }} />)}
+                            </SearchContent>
+                        </SearchWrapperSticky>
+                    </SearchWrapper>
                     {menu}
                 </NavigationWrapper>
-                <ContentView noBoxShadow={this.props.noBoxShadow}>
+                <ContentView noBoxShadow={this.props.noBoxShadow} marginLeft={menu !== undefined ? 280 : 72}>
                     {content}
                 </ContentView>
             </RootContainer>
