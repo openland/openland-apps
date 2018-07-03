@@ -6,8 +6,6 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XHeader } from 'openland-x/XHeader';
 import { withQueryLoader } from '../../components/withQueryLoader';
 import { withChat } from '../../api/withChat';
-import { XForm } from 'openland-x-forms/XForm2';
-import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XInput } from 'openland-x/XInput';
 import gql from 'graphql-tag';
 import { Subscription } from 'react-apollo';
@@ -20,6 +18,9 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XDate } from 'openland-x-format/XDate';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
+import { XButton } from 'openland-x/XButton';
+import { MessageFullFragment } from 'openland-api/Types';
+import { withUserInfo } from '../../components/UserInfo';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -35,8 +36,7 @@ let MessagesContainer = Glamorous.div({
     justifyContent: 'flex-end'
 });
 
-let SendMessageContainer = Glamorous.div({
-    display: 'flex',
+let SendMessageContainer = Glamorous(XHorizontal)({
     height: '128px',
     flexDirection: 'row',
     flexShrink: 0,
@@ -64,7 +64,7 @@ const CHAT_SUBSCRIPTION = gql`
   ${UserShort}
 `;
 
-class ChatWatcher extends React.Component<{ conversationId: string, refetch: () => void, seq: number, client: ApolloClient<{}> }> {
+class ChatWatcher extends React.Component<{ conversationId: string, refetch: () => void, seq: number, client: ApolloClient<{}>, uid: string }> {
 
     // componentDidMount() {
     //     this.props.subscribeForMore({
@@ -76,6 +76,12 @@ class ChatWatcher extends React.Component<{ conversationId: string, refetch: () 
     //         }
     //     });
     // }
+
+    handleNewMessage = () => {
+        var audio = new Audio('/static/sounds/notification.mp3');
+        audio.play();
+        // 
+    }
 
     render() {
         return (
@@ -91,6 +97,10 @@ class ChatWatcher extends React.Component<{ conversationId: string, refetch: () 
                         if (seq === this.props.seq + 1) {
                             if (result.data.event.__typename === 'ConversationEventMessage') {
                                 console.warn('Received new message');
+                                let senderId = result.data.event.message.sender as string;
+                                if (senderId !== this.props.uid) {
+                                    this.handleNewMessage();
+                                }
                                 let data = this.props.client.readQuery({
                                     query: ChatQuery.document,
                                     variables: { conversationId: this.props.conversationId }
@@ -131,57 +141,16 @@ const Date = Glamorous.div({
     opacity: 0.7
 });
 
-class ChatComponent extends React.Component<{ sendMessage: (args: any) => any }> {
-
-    scroller: any;
-
-    handleScrollView = (src: any) => {
-        if (src) {
-            this.scroller = src;
-        }
+class MessageWrapper extends React.Component<{ messages: MessageFullFragment[] }> {
+    shouldComponentUpdate(nextProps: { messages: MessageFullFragment[] }) {
+        let res = nextProps.messages !== this.props.messages;
+        console.warn(res);
+        return res;
     }
-
     render() {
         return (
-            <Container>
-                <MessagesContainer>
-                    <XScrollViewReversed ref={this.handleScrollView}>
-                        <XVertical>
-                            {this.props.children}
-                        </XVertical>
-                    </XScrollViewReversed>
-                </MessagesContainer>
-                <XForm
-                    defaultAction={async (data) => { 
-                        await this.props.sendMessage({ variables: { message: data.message } });
-                        this.scroller.scrollToBottom();
-                    }}
-                    defaultData={{ message: '' }}
-                    resetAfterSubmit={true}
-                >
-                    <SendMessageContainer>
-                        <XInput field="message" flexGrow={1} />
-                        <XFormSubmit text="Send" size="medium" />
-                    </SendMessageContainer>
-                </XForm>
-            </Container>
-        );
-    }
-
-}
-
-export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader((props) => {
-    return (
-        <DevToolsScaffold title={props.data.chat.title}>
-            <XHeader text={props.data.chat.title} />
-            <ChatWatcher
-                conversationId={props.data.chat.id}
-                refetch={props.refetch}
-                seq={props.data.messages.seq}
-                client={(props as any).client}
-            />
-            <ChatComponent sendMessage={props.sendMessage}>
-                {[...props.data.messages.messages].reverse().map((v) => (
+            <XVertical>
+                {[...this.props.messages].reverse().map((v) => (
                     <XContent key={v.id}>
                         <XHorizontal alignSelf="stretch">
                             <XAvatar cloudImageUuid={v.sender.picture ? v.sender.picture : undefined} />
@@ -194,7 +163,71 @@ export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader((pr
                         </XHorizontal>
                     </XContent>
                 ))}
-            </ChatComponent>
+            </XVertical>
+        );
+    }
+}
+
+class ChatComponent extends React.Component<{ sendMessage: (args: any) => any, messages: MessageFullFragment[], uid: string }, { message: string }> {
+
+    scroller: any;
+    state = {
+        message: ''
+    };
+
+    handleScrollView = (src: any) => {
+        if (src) {
+            this.scroller = src;
+        }
+    }
+
+    handleSend = async () => {
+        if (this.state.message.trim().length > 0) {
+            await this.props.sendMessage({ variables: { message: this.state.message.trim() } });
+            this.scroller.scrollToBottom();
+            this.setState({ message: '' });
+        }
+    }
+
+    handleChange = (src: string) => {
+        this.setState({ message: src });
+    }
+
+    shouldComponentUpdate(nextProps: { sendMessage: (args: any) => any, messages: MessageFullFragment[] }, nextState: { message: string }) {
+        return this.props.messages !== nextProps.messages || this.state.message !== nextState.message;
+    }
+
+    render() {
+        return (
+            <Container>
+                <MessagesContainer>
+                    <XScrollViewReversed ref={this.handleScrollView}>
+                        <MessageWrapper messages={this.props.messages} />
+                    </XScrollViewReversed>
+                </MessagesContainer>
+                <SendMessageContainer>
+                    <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} />
+                    <XButton text="Send" size="medium" action={this.handleSend} />
+                </SendMessageContainer>
+            </Container>
+        );
+    }
+
+}
+
+export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader(withUserInfo((props) => {
+    console.warn(props.data.messages.seq);
+    return (
+        <DevToolsScaffold title={props.data.chat.title}>
+            <XHeader text={props.data.chat.title} />
+            <ChatWatcher
+                conversationId={props.data.chat.id}
+                refetch={props.refetch}
+                seq={props.data.messages.seq}
+                client={(props as any).client}
+                uid={props.user!!.id}
+            />
+            <ChatComponent sendMessage={props.sendMessage} messages={props.data.messages.messages} uid={props.user!!.id} />
         </DevToolsScaffold>
     );
-})));
+}))));

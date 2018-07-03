@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
+import { MessageFull } from '../fragments/MessageFull';
 
 export const AllChatsQuery = gql`
     query AllChats {
@@ -19,15 +20,11 @@ export const ChatQuery = gql`
         messages: alphaLoadMessages(conversationId: $conversationId) {
             seq
             messages {
-                id
-                message
-                sender {
-                    ...UserShort
-                }
-                date
+                ...MessageFull
             }
         }
     }
+    ${MessageFull}
     ${UserShort}
 `;
 
@@ -37,15 +34,11 @@ export const SendMessageMutation = gql`
             seq
             ... on ConversationEventMessage {
                 message {
-                    id
-                    message
-                    sender {
-                        ...UserShort
-                    }
-                    date
+                    ...MessageFull
                 }
             }
         }
     }
+    ${MessageFull}
     ${UserShort}
 `;

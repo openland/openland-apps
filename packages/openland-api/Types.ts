@@ -3836,6 +3836,22 @@ export interface GeoShortFragment {
   longitude: number,
 };
 
+export interface MessageFullFragment {
+  __typename: "ConversationMessage",
+  id: string,
+  message: string,
+  sender:  {
+    __typename: string,
+    id: string,
+    name: string,
+    firstName: string,
+    lastName: string | null,
+    picture: string | null,
+    email: string | null,
+  },
+  date: string,
+};
+
 export interface OrganizationFullFragment {
   __typename: "Organization",
   id: string,
