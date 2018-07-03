@@ -22,7 +22,7 @@ export class ErrorPage extends React.Component<{ statusCode: number | null | und
             <>
                 <XDocumentHead title={this.props.statusCode === 404 ? ['Error 404: Not found!'] : ['Ooops!']} />
                 <XTrack event="View 404">
-                    <MessagePage>
+                    <MessagePage hideLegalText={true}>
                         <ErrorImg src="/static/img/img-error.png" srcSet="/static/img/img-error@2x.png 2x" />
                         <MessagePageContent
                             title={this.props.statusCode === 404 ? 'Not found!' : 'Ooops!'}

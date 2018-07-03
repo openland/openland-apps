@@ -62,7 +62,7 @@ const FooterLink = Glamorous(XLink)({
     color: '#334562'
 });
 
-export function MessagePage(props: { children?: any }) {
+export function MessagePage(props: { children?: any, hideLegalText?: boolean }) {
     return (
         <ErrorDiv>
             <Logo />
@@ -70,7 +70,9 @@ export function MessagePage(props: { children?: any }) {
                 {props.children}
             </Container>
             <Footer>
-                <FooterText>By creating an account you are accepting our <FooterLink>Terms of Service</FooterLink> and <FooterLink>Privacy Policy</FooterLink></FooterText>
+                {props.hideLegalText === true ? null : (
+                    <FooterText>By creating an account you are accepting our <FooterLink>Terms of Service</FooterLink> and <FooterLink>Privacy Policy</FooterLink>.</FooterText>
+                )}
                 <FooterText>© {new Date().getFullYear()} Data Makes Perfect, Inc.</FooterText>
             </Footer>
         </ErrorDiv>

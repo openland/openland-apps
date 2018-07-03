@@ -107,6 +107,7 @@ interface XVerticalStyledProps {
     marginTop?: number;
     marginBottom?: number;
     maxwidth?: string | number;
+    width2?: string | number;
 }
 
 const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
@@ -119,7 +120,8 @@ const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
     paddingBottom: props.paddingBottom,
     marginTop: props.marginTop,
     marginBottom: props.marginBottom,
-    maxWidth: props.maxwidth
+    maxWidth: props.maxwidth,
+    width: props.width2
 }));
 
 const SwitcherWrapper = Glamorous(XSwitcher)<{ height?: number, smallText?: boolean }>((props) => ({
@@ -676,7 +678,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                         <PlaceholderDO style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 184px)' : 'calc(100% - 157px)'}>
-                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%', width: '100%' }}>
                             <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 3 : 0}>
                                 <ListingTitleWrapper>
                                     <ListingTitle>{item.name}</ListingTitle>
@@ -796,7 +798,7 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                         <PlaceholderAR style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
-                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%', width: '100%' }}>
                             <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 3 : 4}>
                                 <ListingTitleWrapper>
                                     <ListingTitle>{item.name}</ListingTitle>
@@ -1266,7 +1268,11 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                         <MainContentWrapper>
                             <MainContent>
-                                <XVerticalStyled flexGrow={1} maxwidth={currentPath === rootPath ? 'calc(100% - 286px)' : '100%'}>
+                                <XVerticalStyled
+                                    flexGrow={1}
+                                    maxwidth={currentPath === rootPath ? 'calc(100% - 286px)' : '100%'}
+                                    width2={currentPath === rootPath ? 'calc(100% - 286px)' : '100%'}
+                                >
                                     <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
                                         {currentPath === rootPath && (
                                             <>

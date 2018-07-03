@@ -194,7 +194,8 @@ const MapCardTitle = Glamorous.div({
         marginLeft: 10,
     },
     '& i': {
-        color: '#654bfa'
+        color: '#654bfa',
+        width: 24
     },
     '&.map': {
         '& > svg': {

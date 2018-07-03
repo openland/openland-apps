@@ -6,7 +6,7 @@ import XStyles from 'openland-x/XStyles';
 const SidebarContainer = Glamorous.div<{width?: number, paddingLeft?: number, paddingRight?: number}>((props) => ({
     display: 'flex',
     flexDirection: 'column',
-    width: props.width ? props.width : 208,
+    width: props.width ? props.width : '100%',
     paddingRight: props.paddingRight ? props.paddingRight : 8,
     paddingLeft: props.paddingLeft ? props.paddingLeft :  8
 }));
