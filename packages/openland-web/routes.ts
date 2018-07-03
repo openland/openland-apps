@@ -232,6 +232,8 @@ routes.add('/ui/mapPicker', '/dev/ui/mapPicker');
 routes.add('/ui/mapPicker/', '/dev/ui/mapPicker');
 routes.add('/ui/scroll', '/dev/ui/scroll');
 routes.add('/ui/scroll/', '/dev/ui/scroll');
+routes.add('/ui/subscriptions', '/dev/ui/subscriptions');
+routes.add('/ui/subscriptions/', '/dev/ui/subscriptions');
 
 //
 // Dev Tools

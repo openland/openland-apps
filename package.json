@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@types/react-test-renderer": "^16.0.1",
+		"@types/url-parse": "^1.1.0",
 		"@zeit/next-source-maps": "^0.0.2",
 		"apollo-cache-inmemory": "^1.1.4",
 		"apollo-client": "^2.0.4",
@@ -75,7 +76,8 @@
 		"styled-jsx": "^2.2.3",
 		"subscriptions-transport-ws": "^0.9.11",
 		"uploadcare-widget": "^3.2.1",
-		"url": "^0.11.0"
+		"url": "^0.11.0",
+		"url-parse": "^1.4.1"
 	},
 	"devDependencies": {
 		"@babel/preset-typescript": "7.0.0-beta.42",
