@@ -143,6 +143,12 @@ export interface AlphaOrganizationListingLinkInput {
   url: string,
 };
 
+export enum OrganizationMemberRole {
+  OWNER = "OWNER",
+  MEMBER = "MEMBER",
+}
+
+
 export enum OwnerType {
   CITY = "CITY",
   MIXED = "MIXED",
@@ -1843,6 +1849,43 @@ export interface DeleteListingMutationVariables {
 
 export interface DeleteListingMutation {
   alphaOrganizationDeleteListing: string,
+};
+
+export interface OrganizationMembersQueryVariables {
+  orgId: string,
+};
+
+export interface OrganizationMembersQuery {
+  alphaOrganizationMembers:  Array< {
+    __typename: "OrganizationMember",
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+    },
+    role: OrganizationMemberRole,
+  } >,
+};
+
+export interface OrganizationChangeMemberRoleMutationVariables {
+  memberId: string,
+  newRole: OrganizationMemberRole,
+};
+
+export interface OrganizationChangeMemberRoleMutation {
+  alphaOrganizationChangeMemberRole: string | null,
+};
+
+export interface OrganizationRemoveMemberMutationVariables {
+  memberId: string,
+};
+
+export interface OrganizationRemoveMemberMutation {
+  alphaOrganizationRemoveMember: string | null,
 };
 
 export interface BlocksConnectionQueryVariables {
