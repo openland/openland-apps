@@ -5,6 +5,7 @@ import { typedMutation } from 'openland-x-graphql/typed';
 import * as Types from './Types';
 import * as Account from './queries/Account';
 import * as Addressing from './queries/Addressing';
+import * as Chats from './queries/Chats';
 import * as Deals from './queries/Deals';
 import * as Debug from './queries/Debug';
 import * as FeatureFlag from './queries/FeatureFlag';
@@ -29,6 +30,9 @@ export const AccountDestroyInviteMutation = typedMutation<Types.AccountDestroyIn
 export const ProfilePrefillQuery = typedQuery<Types.ProfilePrefillQuery, {}>(Account.ProfilePrefillQuery);
 export const StateQuery = typedQuery<Types.StateQuery, {}>(Addressing.StateQuery);
 export const CountyQuery = typedQuery<Types.CountyQuery, Types.CountyQueryVariables>(Addressing.CountyQuery);
+export const AllChatsQuery = typedQuery<Types.AllChatsQuery, {}>(Chats.AllChatsQuery);
+export const ChatQuery = typedQuery<Types.ChatQuery, Types.ChatQueryVariables>(Chats.ChatQuery);
+export const SendMessageMutation = typedMutation<Types.SendMessageMutation, Types.SendMessageMutationVariables>(Chats.SendMessageMutation);
 export const AllDealsQuery = typedQuery<Types.AllDealsQuery, {}>(Deals.AllDealsQuery);
 export const AllDealsMapQuery = typedQuery<Types.AllDealsMapQuery, {}>(Deals.AllDealsMapQuery);
 export const DealQuery = typedQuery<Types.DealQuery, Types.DealQueryVariables>(Deals.DealQuery);

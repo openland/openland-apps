@@ -401,6 +401,64 @@ export interface CountyQuery {
   } >,
 };
 
+export interface AllChatsQuery {
+  chats:  Array< {
+    __typename: "Conversation",
+    id: string,
+    title: string,
+  } >,
+};
+
+export interface ChatQueryVariables {
+  conversationId: string,
+};
+
+export interface ChatQuery {
+  chat:  {
+    __typename: "Conversation",
+    id: string,
+    title: string,
+  },
+  messages:  Array< {
+    __typename: "ConversationMessage",
+    id: string,
+    message: string,
+    sender:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+    },
+    date: string,
+  } >,
+};
+
+export interface SendMessageMutationVariables {
+  conversationId: string,
+  message: string,
+};
+
+export interface SendMessageMutation {
+  sentMessage:  {
+    __typename: "ConversationMessage",
+    id: string,
+    message: string,
+    sender:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+    },
+    date: string,
+  },
+};
+
 export interface AllDealsQuery {
   deals:  Array< {
     __typename: "Deal",
