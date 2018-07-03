@@ -15,10 +15,10 @@ export interface PopperRendererProps {
     minWidth?: number;
     minHeight?: number;
 
-    marginLeft?: number;
-    marginRight?: number;
-    marginTop?: number;
-    marginBottom?: number;
+    marginLeft?: string | number;
+    marginRight?: string | number;
+    marginTop?: string | number;
+    marginBottom?: string | number;
 
     groupId?: string;
 

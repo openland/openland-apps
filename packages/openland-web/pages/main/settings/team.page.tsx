@@ -86,7 +86,7 @@ const RemoveModal = withOrganizationRemoveMember((props) => {
                 text: 'Remove from organization',
                 style: 'danger',
             }}
-            title={'Imagine ' + (props as any).orgName + 'without'}
+            title={'Imagine ' + (props as any).orgName + ' without'}
 
             defaultAction={async (data) => {
                 await props.remove({
@@ -112,7 +112,7 @@ const RemoveModal = withOrganizationRemoveMember((props) => {
 const PermissionsModal = withOrganizationMemberChangeRole((props) => {
     return (
         <XModalForm
-            title={'Imagine ' + (props as any).name + ' as'}
+            title={'Imagine ' + (props as any).name + ' as ' + (props as any).orgName + '\'s'}
             defaultData={{
                 role: (props as any).currentRole
             }}
@@ -141,7 +141,7 @@ const PermissionsModal = withOrganizationMemberChangeRole((props) => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ currentRole: string, name: string, userId: string, refetchVars: { orgId: string } }>;
+}) as React.ComponentType<{ orgName: string, currentRole: string, name: string, userId: string, refetchVars: { orgId: string } }>;
 
 const OrgMembers = withOrganizationMembers((props) => {
     return (
@@ -167,7 +167,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                         <XTable.Cell>
                             <PermissionCell justifyContent="center" separator={0}>
                                 <XText>{m.role}</XText>
-                                <PermissionsModal currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                                <PermissionsModal orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
                             </PermissionCell>
                         </XTable.Cell>
                         <XTable.Cell><RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} /></XTable.Cell>
