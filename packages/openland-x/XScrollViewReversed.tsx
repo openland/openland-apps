@@ -38,6 +38,15 @@ export class XScrollViewReversed extends React.Component {
     }
 
     handleWindowResize = () => {
+        // let container = this.scroller!!.children.item(0).children.item(0);
+        // let total = container.childElementCount;
+        // for (let i = 0; i < total; i++) {
+        //     let item = container.children.item(i);
+        //     console.warn(item);
+        //     console.warn(item.scrollTop);
+        //     console.warn(item.clientTop);
+        //     console.warn((item as any).offsetTop);
+        // }
         if (this.lastDimensions) {
             let ratio = this.lastDimensions.scrollTop / this.lastDimensions.scrollHeight;
             let nextDimensions = this.getDimensions();

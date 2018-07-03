@@ -17,6 +17,7 @@ export interface XInputBasicProps extends XFlexStyles {
     attach?: 'left' | 'right' | 'both';
     autofocus?: boolean;
     onChange?: (value: string) => void;
+    onEnter?: () => void;
 }
 
 let sizeStyles = styleResolver({
@@ -210,6 +211,14 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
         }
     }
 
+    handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            if (this.props.onEnter) {
+                this.props.onEnter();
+            }
+        }
+    }
+
     render() {
         const {
             type,
@@ -250,6 +259,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                     onChange={this.handleChange}
                     autofocus={autofocus}
                     innerRef={this.handleRef}
+                    onKeyPress={this.handleKey}
                 />
                 {required && <RequireElement>*</RequireElement>}
             </RootContainer>

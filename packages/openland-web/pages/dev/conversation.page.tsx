@@ -21,6 +21,7 @@ import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { XButton } from 'openland-x/XButton';
 import { MessageFullFragment } from 'openland-api/Types';
 import { withUserInfo } from '../../components/UserInfo';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -66,24 +67,15 @@ const CHAT_SUBSCRIPTION = gql`
 
 class ChatWatcher extends React.Component<{ conversationId: string, refetch: () => void, seq: number, client: ApolloClient<{}>, uid: string }> {
 
-    // componentDidMount() {
-    //     this.props.subscribeForMore({
-    //         document: CHAT_SUBSCRIPTION,
-    //         variables: { conversationId: this.props.conversationId, seq: this.props.seq },
-    //         updateQuery: (prev: any, event: any) => {
-    //             console.warn(event);
-    //             return prev;
-    //         }
-    //     });
-    // }
-
     handleNewMessage = () => {
         var audio = new Audio('/static/sounds/notification.mp3');
         audio.play();
-        // 
     }
 
     render() {
+        if (!canUseDOM) {
+            return null;
+        }
         return (
             <Subscription
                 subscription={CHAT_SUBSCRIPTION}
@@ -97,7 +89,7 @@ class ChatWatcher extends React.Component<{ conversationId: string, refetch: () 
                         if (seq === this.props.seq + 1) {
                             if (result.data.event.__typename === 'ConversationEventMessage') {
                                 console.warn('Received new message');
-                                let senderId = result.data.event.message.sender as string;
+                                let senderId = result.data.event.message.sender.id as string;
                                 if (senderId !== this.props.uid) {
                                     this.handleNewMessage();
                                 }
@@ -206,7 +198,7 @@ class ChatComponent extends React.Component<{ sendMessage: (args: any) => any, m
                     </XScrollViewReversed>
                 </MessagesContainer>
                 <SendMessageContainer>
-                    <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} />
+                    <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} />
                     <XButton text="Send" size="medium" action={this.handleSend} />
                 </SendMessageContainer>
             </Container>
