@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { graphql, MutationFunc, Mutation } from 'react-apollo';
-import { GraphQLRoutedComponentProps } from './graphql';
-import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { MutationFunc, Mutation } from 'react-apollo';
 import { prepareParams } from './prepareParams';
 import { GraphqlTypedMutation, GraphqlTypedQuery } from './typed';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
@@ -14,7 +12,8 @@ export interface MutationParams {
 }
 
 export function graphqlMutation<TQuery, TVars, TN extends string>(mutation: GraphqlTypedMutation<TQuery, TVars>, name: TN, params: MutationParams = {}) {
-    return function (WrappedComponent: React.ComponentType<{ router: XRouter} & Record<TN, MutationFunc<TQuery, Partial<TVars>>>>): React.ComponentType<{ variables?: Partial<TVars> }> {
+    return function (WrappedComponent: React.ComponentType<{ router: XRouter } & { refetchVars?: any } & Record<TN, MutationFunc<TQuery, Partial<TVars>>>>): React.ComponentType<{ variables?: Partial<TVars> }> {
+        const Wrapped2 = (WrappedComponent as any) as React.ComponentType<any>;
         class RouterMutation extends React.Component<{ variables?: Partial<TVars>, refetchVars?: any }> {
             render() {
                 let { variables, ...other } = this.props;
@@ -32,7 +31,7 @@ export function graphqlMutation<TQuery, TVars, TN extends string>(mutation: Grap
                                         let props = {
                                             [name]: res
                                         };
-                                        return (<WrappedComponent router={router!!} {...props} {...other} />);
+                                        return (<Wrapped2 router={router!!} {...props} {...other} />);
                                     }}
                                 </Mutation>
                             );

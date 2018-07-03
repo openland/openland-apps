@@ -31,21 +31,26 @@ let SendMessageContainer = Glamorous.div({
     paddingRight: '16px'
 });
 
-// const CHAT_SUBSCRIPTION = gql`
-//   subscription ChatSubscription($conversationId: ID!) {
-//     alphaChatSubscribe(conversationId: $conversationId) {
-//       id
-//       message
-//     }
-//   }
-// `;
+const CHAT_SUBSCRIPTION = gql`
+  subscription ChatSubscription($conversationId: ID!) {
+    alphaChatSubscribe(conversationId: $conversationId) {
+      id
+      message
+    }
+  }
+`;
 
 export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader((props) => {
     return (
         <DevToolsScaffold title={props.data.chat.title}>
             <XHeader text={props.data.chat.title} />
             <Container>
-                {/* <Subscription /> */}
+                <Subscription subscription={CHAT_SUBSCRIPTION} variables={{ conversationId: props.data.chat.id }}>
+                    {(result) => {
+                        console.warn(result.data);
+                        return null;
+                    }}
+                </Subscription>
                 <XScrollView>
                     <XTable>
                         <XTable.Body>
@@ -55,7 +60,6 @@ export default withApp('Super Chat', 'super-admin', withChat(withQueryLoader((pr
                         </XTable.Body>
                     </XTable>
                 </XScrollView>
-
                 <XForm
                     defaultAction={(data) => props.sendMessage({ variables: { message: data.message } })}
                 >
