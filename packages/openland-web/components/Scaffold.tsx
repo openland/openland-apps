@@ -588,8 +588,7 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
         return (
             <XPopper
                 contentContainer={<XMenuVertical />}
-                marginTop={70}
-                placement="right"
+                placement="right-end"
                 show={this.state.show}
                 padding={0}
                 content={<AddListingContent />}
