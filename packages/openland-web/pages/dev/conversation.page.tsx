@@ -8,7 +8,6 @@ import { withQueryLoader } from '../../components/withQueryLoader';
 import { withChat } from '../../api/withChat';
 import { XInput } from 'openland-x/XInput';
 import gql from 'graphql-tag';
-import { Subscription } from 'react-apollo';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import { ApolloClient } from 'apollo-client';
 import { ChatQuery } from 'openland-api';
@@ -21,8 +20,9 @@ import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { XButton } from 'openland-x/XButton';
 import { MessageFullFragment } from 'openland-api/Types';
 import { withUserInfo } from '../../components/UserInfo';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
+import { ConnectionStatus } from 'openland-x-graphql/apolloClient';
+import { backoff } from 'openland-x-utils/timer';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -66,62 +66,215 @@ const CHAT_SUBSCRIPTION = gql`
   ${UserShort}
 `;
 
-class ChatWatcher extends React.Component<{ conversationId: string, refetch: () => void, seq: number, client: ApolloClient<{}>, uid: string }> {
+interface ChatWatcherProps {
+    conversationId: string;
+    refetch: () => void;
+    seq: number;
+    client: ApolloClient<{}>;
+    uid: string;
+}
+
+class ChatWatcher extends React.Component<ChatWatcherProps> {
+
+    currentSeq: number;
+    observable: ZenObservable.Subscription | null = null;
+    _mounted = false;
+    connectionStatusUnsubscribe: (() => void) | null = null;
+    doingFullRefresh: boolean = false;
+    pending: any[] = [];
+    pendingTimeout: number | null = null;
+
+    constructor(props: ChatWatcherProps) {
+        super(props);
+        this.currentSeq = props.seq;
+    }
 
     handleNewMessage = () => {
         var audio = new Audio('/static/sounds/notification.mp3');
         audio.play();
     }
 
-    render() {
-        if (!canUseDOM) {
-            return null;
+    componentDidMount() {
+        this._mounted = true;
+        this.startSubsctiption();
+        this.connectionStatusUnsubscribe = ConnectionStatus.subscribe(this.handleConnectionChanged);
+    }
+    componentWillUnmount() {
+        this._mounted = false;
+        this.connectionStatusUnsubscribe!!();
+        this.stopSubscription();
+    }
+
+    startSubsctiption = () => {
+        if (!this._mounted) {
+            return;
         }
-        return (
-            <Subscription
-                subscription={CHAT_SUBSCRIPTION}
-                variables={{ conversationId: this.props.conversationId, seq: this.props.seq }}
-                shouldResubscribe={true}
-            >
-                {(result) => {
-                    if (result.data && result.data.event) {
-                        let seq = result.data.event.seq as number;
-                        let shouldRefetch = false;
-                        if (seq === this.props.seq + 1) {
-                            if (result.data.event.__typename === 'ConversationEventMessage') {
-                                console.warn('Received new message');
-                                let senderId = result.data.event.message.sender.id as string;
-                                if (senderId !== this.props.uid) {
-                                    this.handleNewMessage();
-                                }
-                                let data = this.props.client.readQuery({
-                                    query: ChatQuery.document,
-                                    variables: { conversationId: this.props.conversationId }
-                                });
-                                (data as any).messages.seq = seq;
-                                (data as any).messages.messages = [result.data.event.message, ...(data as any).messages.messages];
-                                this.props.client.writeQuery({
-                                    query: ChatQuery.document,
-                                    variables: { conversationId: this.props.conversationId },
-                                    data: data
-                                });
-                            } else {
-                                shouldRefetch = true;
-                            }
-                        } else if (seq > this.props.seq + 1) {
-                            shouldRefetch = true;
-                        }
-                        if (shouldRefetch) {
-                            this.props.refetch();
-                        }
-                    } else if (result.error) {
-                        console.warn(result.error);
-                        this.props.refetch();
-                    }
-                    return null;
-                }}
-            </Subscription>
-        );
+        if (!ConnectionStatus.isConnected) {
+            return;
+        }
+        this.stopSubscription();
+        console.warn('Start Subscription starting from #' + this.currentSeq);
+        let subscription = this.props.client.subscribe({
+            query: CHAT_SUBSCRIPTION,
+            variables: { conversationId: this.props.conversationId, seq: this.currentSeq }
+        });
+        this.observable = subscription.subscribe({
+            error: this.handleError,
+            next: this.handleUpdate
+        });
+    }
+
+    stopSubscription = () => {
+        if (this.observable) {
+            console.warn('Stopping Subscription');
+            this.observable.unsubscribe();
+            this.observable = null;
+        }
+    }
+
+    handleConnectionChanged = (isConnected: boolean) => {
+        if (!this._mounted) {
+            return;
+        }
+        if (isConnected) {
+            if (!this.observable && !this.doingFullRefresh) {
+                this.startSubsctiption();
+            }
+        } else {
+            this.stopSubscription();
+        }
+    }
+
+    handleError = (e: any) => {
+        if (!this._mounted) {
+            return;
+        }
+        console.warn(e);
+        this.startSubsctiption();
+    }
+
+    tryFlushPending = (timeouted: boolean) => {
+        if (this.pending.length > 0) {
+            for (let update of this.pending) {
+                let event = update.data.event;
+                let seq = event.seq as number;
+                if (seq === this.currentSeq + 1) {
+                    // Our current update
+                    let index = this.pending.indexOf(update);
+                    this.pending = this.pending.splice(index, 1);
+                    console.warn('Replay: ' + seq);
+                    this.handleUpdate(update);
+                    return;
+                } else if (seq <= this.currentSeq) {
+                    // Too old remove
+                    let index = this.pending.indexOf(update);
+                    this.pending = this.pending.splice(index, 1);
+                }
+            }
+
+            if (timeouted && this.pending.length > 0) {
+                // Reset pending storage in case if there will be some garbage events
+                this.pending = [];
+                // Subscription restart if updates not found
+                if (timeouted && this._mounted && !this.doingFullRefresh) {
+                    this.startSubsctiption();
+                }
+            }
+        }
+    }
+
+    handleUpdate = (update: any) => {
+        console.warn(update);
+        if (!this._mounted) {
+            return;
+        }
+        let event = update.data.event;
+        let seq = event.seq as number;
+
+        // Too old
+        if (seq <= this.currentSeq) {
+            console.warn('Too old seq #' + seq);
+            return;
+        }
+
+        // Too new: invalidate
+        if (seq > this.currentSeq + 1) {
+            console.warn('Too new seq: ' + seq);
+
+            // Too large
+            if (seq > this.currentSeq + 2) {
+                this.startSubsctiption();
+            } else {
+                this.pending.push(update);
+                if (!this.pendingTimeout) {
+                    this.pendingTimeout = window.setTimeout(
+                        () => {
+                            this.pendingTimeout = null;
+                            this.tryFlushPending(true);
+                        },
+                        3000);
+                }
+
+            }
+            return;
+        }
+
+        // Reset Pending Flush
+        if (this.pendingTimeout) {
+            window.clearTimeout(this.pendingTimeout);
+            this.pendingTimeout = null;
+        }
+
+        console.warn('Next update #' + seq);
+
+        if (event.__typename === 'ConversationEventMessage') {
+            // Handle message
+            console.warn('Received new message');
+            let senderId = event.message.sender.id as string;
+            if (senderId !== this.props.uid) {
+                this.handleNewMessage();
+            }
+
+            // Update sequence number
+            this.currentSeq = seq;
+
+            // Write message to store
+            let data = this.props.client.readQuery({
+                query: ChatQuery.document,
+                variables: { conversationId: this.props.conversationId }
+            });
+            (data as any).messages.seq = seq;
+            (data as any).messages.messages = [event.message, ...(data as any).messages.messages];
+            this.props.client.writeQuery({
+                query: ChatQuery.document,
+                variables: { conversationId: this.props.conversationId },
+                data: data
+            });
+            this.tryFlushPending(false);
+        } else {
+            console.warn('Received unknown message');
+            // Unknown message: Stop subscription and reload chat
+            this.doingFullRefresh = true;
+            this.stopSubscription();
+            (async () => {
+                let loaded = await backoff(() => this.props.client.query({
+                    query: ChatQuery.document,
+                    variables: { conversationId: this.props.conversationId },
+                    fetchPolicy: 'network-only'
+                }));
+                if (!this._mounted) {
+                    return;
+                }
+                this.currentSeq = (loaded.data as any).messages.seq;
+                this.doingFullRefresh = false;
+                this.tryFlushPending(false);
+                this.startSubsctiption();
+            })();
+        }
+    }
+
+    render() {
+        return null;
     }
 }
 
@@ -130,14 +283,14 @@ const Name = Glamorous.div({
     fontWeight: 500,
 });
 
-const Date = Glamorous.div({
+const DateComponent = Glamorous.div({
     fontSize: '14px',
     fontWeight: 300,
     opacity: 0.4
 });
 
 class MessageRender extends React.Component<{ message: MessageFullFragment }> {
-    
+
     shouldComponentUpdate(nextProps: { message: MessageFullFragment }) {
         return (this.props.message !== nextProps.message);
     }
@@ -149,7 +302,7 @@ class MessageRender extends React.Component<{ message: MessageFullFragment }> {
                     <XAvatar cloudImageUuid={this.props.message.sender.picture ? this.props.message.sender.picture : undefined} />
                     <XVertical separator={'none'} flexGrow={1}>
                         <XHorizontal separator={4}>
-                            <Name>{this.props.message.sender.name}</Name><Date><XDate value={this.props.message.date} format="humanize" /></Date>
+                            <Name>{this.props.message.sender.name}</Name><DateComponent><XDate value={this.props.message.date} format="humanize" /></DateComponent>
                         </XHorizontal>
                         <span>{this.props.message.message}</span>
                     </XVertical>
@@ -167,7 +320,7 @@ class MessageWrapper extends React.Component<{ messages: MessageFullFragment[] }
         return (
             <XVertical>
                 {[...this.props.messages].reverse().map((v) => (
-                    <MessageRender message={v} key={v.id}/>
+                    <MessageRender message={v} key={v.id} />
                 ))}
             </XVertical>
         );
@@ -190,7 +343,17 @@ class ChatComponent extends React.Component<{ sendMessage: (args: any) => any, m
 
     handleSend = async () => {
         if (this.state.message.trim().length > 0) {
-            await this.props.sendMessage({ variables: { message: this.state.message.trim() } });
+            try {
+                let repeat = new Date().getTime();
+                await this.props.sendMessage({ variables: { message: this.state.message.trim(), repeatKey: repeat } });
+            } catch (e) {
+                if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
+                    // Ignore
+                } else {
+                    // Just ignore for now
+                    console.warn(e);
+                }
+            }
             this.scroller.scrollToBottom();
             this.setState({ message: '' });
         }

@@ -4,8 +4,46 @@ import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { WebSocketLink } from 'apollo-link-ws';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
+import { SubscriptionClient } from 'subscriptions-transport-ws';
 
 let cachedClient: ApolloClient<NormalizedCacheObject> | undefined = undefined;
+
+class ClientStatus {
+    isConnected: boolean = false;
+    listeners: ((isConnected: boolean) => void)[] = [];
+
+    markDisconected = () => {
+        if (this.isConnected) {
+            console.warn('Connection Stopped');
+            this.isConnected = false;
+            for (let l of this.listeners) {
+                l(this.isConnected);
+            }
+        }
+    }
+
+    markConnected = () => {
+        if (!this.isConnected) {
+            console.warn('Connection Started');
+            this.isConnected = true;
+            for (let l of this.listeners) {
+                l(this.isConnected);
+            }
+        }
+    }
+
+    subscribe = (listener: (isConnected: boolean) => void) => {
+        this.listeners.push(listener);
+        return () => {
+            let index = this.listeners.indexOf(listener);
+            if (index >= 0) {
+                this.listeners = this.listeners.splice(index, 1);
+            }
+        };
+    }
+}
+
+export const ConnectionStatus = new ClientStatus();
 
 const buildClient = (initialState?: any, token?: string, org?: string) => {
 
@@ -40,16 +78,40 @@ const buildClient = (initialState?: any, token?: string, org?: string) => {
 
     // // Use Web Socket if in browser
     if (canUseDOM && wsEndpoint) {
-        link = new WebSocketLink({
-            uri: wsEndpoint,
-            options: {
-                reconnect: true,
-                connectionParams: () => ({
-                    'x-openland-token': token,
-                    'x-openland-org': org
-                })
-            }
+        let client = new SubscriptionClient(wsEndpoint, {
+            reconnect: true,
+            connectionParams: () => ({
+                'x-openland-token': token,
+                'x-openland-org': org
+            })
         });
+        client.onConnecting(() => {
+            ConnectionStatus.markDisconected();
+        });
+        client.onConnected(() => {
+            ConnectionStatus.markConnected();
+        });
+        client.onDisconnected(() => {
+            ConnectionStatus.markDisconected();
+        });
+        client.onReconnected(() => {
+            ConnectionStatus.markConnected();
+        });
+        client.onReconnecting(() => {
+            ConnectionStatus.markDisconected();
+        });
+        link = new WebSocketLink(client);
+
+        // {
+        //     uri: wsEndpoint,
+        //     options: {
+        //         reconnect: true,
+        //         connectionParams: () => ({
+        //             'x-openland-token': token,
+        //             'x-openland-org': org
+        //         })
+        //     }
+        // }
     }
 
     return new ApolloClient({

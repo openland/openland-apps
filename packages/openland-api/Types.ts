@@ -443,6 +443,7 @@ export interface ChatQuery {
 export interface SendMessageMutationVariables {
   conversationId: string,
   message: string,
+  repeatKey: string,
 };
 
 export interface SendMessageMutation {
