@@ -1,14 +1,22 @@
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { API_ENDPOINT } from './endpoint';
 import { WebSocketLink } from 'apollo-link-ws';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { getConfig } from 'openland-web/config';
+import { loadConfig } from 'openland-x-config';
 
 let cachedClient: ApolloClient<NormalizedCacheObject> | undefined = undefined;
 
 const buildClient = (initialState?: any, token?: string, org?: string) => {
+
+    let httpEndpoint = '/graphql';
+    let wsEndpoint = undefined;
+    if (canUseDOM) {
+        wsEndpoint = loadConfig().webSocketEndpoint;
+    } else {
+        httpEndpoint = (process.env.API_ENDPOINT ? process.env.API_ENDPOINT + '/api' : 'http://localhost:9000/api');
+    }
+
     var headers: any = {};
     if (token) {
         headers['x-openland-token'] = token;
@@ -23,7 +31,7 @@ const buildClient = (initialState?: any, token?: string, org?: string) => {
 
     // Basic Link
     const httpLink = new HttpLink({
-        uri: API_ENDPOINT,
+        uri: httpEndpoint,
         headers: headers,
         fetch: require('isomorphic-unfetch'),
     });
@@ -31,22 +39,17 @@ const buildClient = (initialState?: any, token?: string, org?: string) => {
     let link: any = httpLink;
 
     // // Use Web Socket if in browser
-    if (canUseDOM) {
-        // let endpoint = (window.location.protocol === 'https' ? 'wss' : 'ws') + '://' + window.location.host + '/graphql';
-        // let endpoint = 'ws://localhost:9000/api';
-        let endpoint = getConfig().webSocketEndpoint;
-        if (endpoint) {
-            link = new WebSocketLink({
-                uri: endpoint,
-                options: {
-                    reconnect: true,
-                    connectionParams: () => ({
-                        'x-openland-token': token,
-                        'x-openland-org': org
-                    })
-                }
-            });
-        }
+    if (canUseDOM && wsEndpoint) {
+        link = new WebSocketLink({
+            uri: wsEndpoint,
+            options: {
+                reconnect: true,
+                connectionParams: () => ({
+                    'x-openland-token': token,
+                    'x-openland-org': org
+                })
+            }
+        });
     }
 
     return new ApolloClient({
