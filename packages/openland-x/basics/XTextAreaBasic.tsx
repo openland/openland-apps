@@ -18,6 +18,8 @@ const TextAreaStyled = Glamorous.textarea<XFlexStyles>([
         paddingRight: 10,
         paddingBottom: 6,
         outline: 'none',
+        appearance: 'none',
+        msOverflowStyle: 'none',
         '&:focus': {
             boxShadow: '0 0 0 2px rgba(143, 124, 246, 0.2)',
             border: '1px solid #986AFE',

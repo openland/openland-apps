@@ -150,7 +150,11 @@ const ProfileTitle = Glamorous.div({
     fontWeight: 600,
     lineHeight: 1.25,
     color: '#334562',
-    marginLeft: 14
+    marginLeft: 14,
+    maxWidth: 164,
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden'
 });
 
 const ProfileSubTitle = Glamorous(XLink)({
@@ -467,6 +471,11 @@ const MenuView = Glamorous(XScrollView)({
     // top: 0,
     // left: 72,
     height: '100vh',
+    '& > .simplebar-scroll-content': {
+        '& > .simplebar-content': {
+            overflowX: 'hidden'
+        }
+    }
 });
 
 //
