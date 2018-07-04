@@ -25,6 +25,7 @@ import { XSelect } from 'openland-x/XSelect';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { withOrganizationRemoveMember } from '../../../api/withOrganizationRemoveMember';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XOverflow, XMenuItem } from '../../../components/Incubator/XOverflow';
 
 export const CreateInviteButton = withInviteCreate((props) => (
     <XButton action={() => props.createInvite({})} text="Create Invite" />
@@ -97,7 +98,7 @@ const RemoveModal = withOrganizationRemoveMember((props) => {
                 });
 
             }}
-            target={(<XButton text="Remove from organization" style="danger" />)}
+            target={(<XMenuItem style="danger" >Remove from organization</XMenuItem>)}
         >
             <XHorizontal>
                 <XAvatar size="medium" cloudImageUuid={(props as any).avatar || undefined} />
@@ -127,7 +128,7 @@ const PermissionsModal = withOrganizationMemberChangeRole((props) => {
                 });
 
             }}
-            target={(<PermissionsHoverButton text="Manage Permissions" style="electric" />)}
+            target={(props as any).target}
         >
             <XVertical>
                 <XSelect clearable={false} searchable={false} field="role" options={[{ value: 'OWNER', label: 'Owner' }, { value: 'MEMBER', label: 'Member' }]} />
@@ -142,7 +143,7 @@ const PermissionsModal = withOrganizationMemberChangeRole((props) => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ orgName: string, currentRole: string, name: string, userId: string, refetchVars: { orgId: string } }>;
+}) as React.ComponentType<{ orgName: string, currentRole: string, name: string, userId: string, refetchVars: { orgId: string }, target: any }>;
 
 const OrgMembers = withOrganizationMembers((props) => {
     return (
@@ -169,7 +170,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                             <XWithRole role="admin" orgPermission={true}>
                                 <PermissionCell justifyContent="center" separator={0}>
                                     <XText>{m.role}</XText>
-                                    <PermissionsModal orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                                    <PermissionsModal target={<PermissionsHoverButton text="Manage Permissions" style="electric" />} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
                                 </PermissionCell>
                             </XWithRole>
                             <XWithRole role="admin" orgPermission={true} negate={true}>
@@ -178,7 +179,17 @@ const OrgMembers = withOrganizationMembers((props) => {
 
                         </XTable.Cell>
                         <XWithRole role="admin" orgPermission={true}>
-                            <XTable.Cell><RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} /></XTable.Cell>
+                            <XTable.Cell textAlign="right">
+                                <XOverflow
+                                    placement="bottom-end"
+                                    content={
+                                        <>
+                                            <PermissionsModal target={<XMenuItem>Manage Permissions</XMenuItem>} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                                            <RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                                        </>
+                                    }
+                                />
+                            </XTable.Cell>
                         </XWithRole>
                     </Row>
                 ))}

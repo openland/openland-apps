@@ -66,7 +66,8 @@ export const XMenuItem = Glamorous(XLink)<{ style?: 'danger' | 'default' }>((pro
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     ':hover': {
-        backgroundColor: '#f8f8fb'
+        color: props.style === 'danger' ? '#ec6262' : '#6b50ff',
+        backgroundColor: props.style === 'danger' ? '#fbeded' : '#f8f8fb'
     }
 }));
 
