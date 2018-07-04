@@ -42,8 +42,8 @@ routes.add('/map/', '/main/explore/root');
 
 routes.add('/settings/profile', '/main/settings/profile');
 routes.add('/settings/profile/', '/main/settings/profile');
-routes.add('/settings/team', '/main/settings/team');
-routes.add('/settings/team/', '/main/settings/team/');
+routes.add('/settings/members', '/main/settings/members');
+routes.add('/settings/members/', '/main/settings/members/');
 routes.add('/settings/organization', '/main/settings/organization');
 routes.add('/settings/organization/', '/main/settings/organization');
 

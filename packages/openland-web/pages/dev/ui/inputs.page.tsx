@@ -52,6 +52,7 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
                     <XVertical>
                         <XTextArea />
                         <XTextArea value="disabled" disabled={true}/>
+                        <XTextArea invalid={true} />
                     </XVertical>
                 </XVertical>
             </XContent>

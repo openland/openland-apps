@@ -24,6 +24,8 @@ import { OrganizationMemberRole } from 'openland-api/Types';
 import { XSelect } from 'openland-x/XSelect';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { withOrganizationRemoveMember } from '../../../api/withOrganizationRemoveMember';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XOverflow, XMenuItem } from '../../../components/Incubator/XOverflow';
 
 export const CreateInviteButton = withInviteCreate((props) => (
     <XButton action={() => props.createInvite({})} text="Create Invite" />
@@ -86,7 +88,7 @@ const RemoveModal = withOrganizationRemoveMember((props) => {
                 text: 'Remove from organization',
                 style: 'danger',
             }}
-            title={'Imagine ' + (props as any).orgName + 'without'}
+            title={'Imagine ' + (props as any).orgName + ' without'}
 
             defaultAction={async (data) => {
                 await props.remove({
@@ -96,7 +98,7 @@ const RemoveModal = withOrganizationRemoveMember((props) => {
                 });
 
             }}
-            target={(<XButton text="Remove from organization" style="danger" />)}
+            target={(<XMenuItem style="danger" >Remove from organization</XMenuItem>)}
         >
             <XHorizontal>
                 <XAvatar size="medium" cloudImageUuid={(props as any).avatar || undefined} />
@@ -112,7 +114,7 @@ const RemoveModal = withOrganizationRemoveMember((props) => {
 const PermissionsModal = withOrganizationMemberChangeRole((props) => {
     return (
         <XModalForm
-            title={'Imagine ' + (props as any).name + ' as'}
+            title={'Imagine ' + (props as any).name + ' as ' + (props as any).orgName + '\'s'}
             defaultData={{
                 role: (props as any).currentRole
             }}
@@ -126,7 +128,7 @@ const PermissionsModal = withOrganizationMemberChangeRole((props) => {
                 });
 
             }}
-            target={(<PermissionsHoverButton text="Manage Permissions" style="electric" />)}
+            target={(props as any).target}
         >
             <XVertical>
                 <XSelect clearable={false} searchable={false} field="role" options={[{ value: 'OWNER', label: 'Owner' }, { value: 'MEMBER', label: 'Member' }]} />
@@ -141,7 +143,7 @@ const PermissionsModal = withOrganizationMemberChangeRole((props) => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ currentRole: string, name: string, userId: string, refetchVars: { orgId: string } }>;
+}) as React.ComponentType<{ orgName: string, currentRole: string, name: string, userId: string, refetchVars: { orgId: string }, target: any }>;
 
 const OrgMembers = withOrganizationMembers((props) => {
     return (
@@ -165,12 +167,30 @@ const OrgMembers = withOrganizationMembers((props) => {
                             </XHorizontal>
                         </XTable.Cell>
                         <XTable.Cell>
-                            <PermissionCell justifyContent="center" separator={0}>
+                            <XWithRole role="admin" orgPermission={true}>
+                                <PermissionCell justifyContent="center" separator={0}>
+                                    <XText>{m.role}</XText>
+                                    <PermissionsModal target={<PermissionsHoverButton text="Manage Permissions" style="electric" />} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                                </PermissionCell>
+                            </XWithRole>
+                            <XWithRole role="admin" orgPermission={true} negate={true}>
                                 <XText>{m.role}</XText>
-                                <PermissionsModal currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
-                            </PermissionCell>
+                            </XWithRole>
+
                         </XTable.Cell>
-                        <XTable.Cell><RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} /></XTable.Cell>
+                        <XWithRole role="admin" orgPermission={true}>
+                            <XTable.Cell textAlign="right">
+                                <XOverflow
+                                    placement="bottom-end"
+                                    content={
+                                        <>
+                                            <PermissionsModal target={<XMenuItem>Manage Permissions</XMenuItem>} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                                            <RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                                        </>
+                                    }
+                                />
+                            </XTable.Cell>
+                        </XWithRole>
                     </Row>
                 ))}
             </XTable.Body>
@@ -178,10 +198,10 @@ const OrgMembers = withOrganizationMembers((props) => {
     );
 });
 
-export default withApp('Team', 'viewer', withInvites(withQueryLoader(withUserInfo((props) => {
+export default withApp('Members', 'viewer', withInvites(withQueryLoader(withUserInfo((props) => {
     return (
-        <Navigation title="Team">
-            <XHeader text="Team" />
+        <Navigation title="Members">
+            <XHeader text="Members" />
             <Content>
                 {/* <XHorizontal alignItems="center" justifyContent="space-between">
                     <XTitle marginTop={0} marginBottom={0}>Members</XTitle>

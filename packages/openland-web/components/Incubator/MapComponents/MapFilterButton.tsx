@@ -118,6 +118,7 @@ export class FilterButton extends React.Component<ConfirmPopoverProps & XWithRou
                 content={this.props.content}
                 onClickOutside={this.handleClose}
                 show={this.state.popper}
+                placement="bottom"
                 padding={26}
                 animation={null}
                 contentContainer={<PopperContent />}

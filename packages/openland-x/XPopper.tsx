@@ -32,10 +32,6 @@ interface XPopperProps {
     onClickOutside?: () => void;
 
     padding?: number;
-    marginLeft?: number;
-    marginRight?: number;
-    marginTop?: number;
-    marginBottom?: number;
     width?: number;
     height?: number;
     maxWidth?: number;
@@ -269,21 +265,6 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         if (this._node && (this.arrow === null || this._arrowNode) && this._targetNode && this._contentNode && this.mounted && !this._popper) {
             this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
-                    shift: {
-                        order: 100,
-                        fn: (data, options: Object) => {
-                            if (data.placement === 'top') {
-                                data.offsets.popper.top = data.offsets.popper.top - (this.props.padding || 10);
-                            } else if (data.placement === 'bottom') {
-                                data.offsets.popper.top = data.offsets.popper.top + (this.props.padding || 10);
-                            } else if (data.placement === 'left') {
-                                data.offsets.popper.left = data.offsets.popper.left - (this.props.padding || 10);
-                            } else if (data.placement === 'right') {
-                                data.offsets.popper.left = data.offsets.popper.left + (this.props.padding || 10);
-                            }
-                            return data;
-                        }
-                    },
                     arrow: {
                         enabled: this.arrow !== null,
                         element: this._arrowNode,
@@ -424,6 +405,9 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             target.push(React.cloneElement(c as any, { ref: this.caputureTargetNode }));
         }
 
+        let isVertical = (this.props.placement || '').includes('top') || (this.props.placement || '').includes('bottom');
+        let isHorizontal = (this.props.placement || '').includes('left') || (this.props.placement || '').includes('right');
+
         let renderProps = {
             content: this.props.content,
             show: this.props.show,
@@ -435,10 +419,10 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             maxHeight: this.props.maxHeight,
             minWidth: this.props.minWidth,
             minHeight: this.props.minHeight,
-            marginLeft: this.props.marginLeft,
-            marginRight: this.props.marginRight,
-            marginTop: this.props.marginTop,
-            marginBotto: this.props.marginBottom,
+            marginLeft: isHorizontal ? this.props.padding || 10 : undefined,
+            marginRight: isHorizontal ? this.props.padding || 10 : undefined,
+            marginTop: isVertical ? this.props.padding || 10 : undefined,
+            marginBotto: isVertical ? this.props.padding || 10 : undefined,
 
             groupId: this.props.groupId,
             animation: this.props.animation,

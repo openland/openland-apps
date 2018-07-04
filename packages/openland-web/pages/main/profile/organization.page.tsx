@@ -686,8 +686,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                 </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
-                                        marginRight={item.location ? 92 : 50}
-                                        placement="bottom"
+                                        placement="bottom-end"
                                         content={(
                                             <>
                                                 <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowEdit}</XOverflow.Item>
@@ -806,7 +805,6 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                                 </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
-                                        marginRight={50}
                                         placement="bottom"
                                         content={(
                                             <>
@@ -1244,9 +1242,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             path="/settings/organization"
                                         />
                                         <XOverflow
-                                            placement="bottom"
+                                            placement="bottom-end"
                                             width={220}
-                                            marginRight={92}
                                             target={
                                                 <AddListingButton>
                                                     <span>{TextOrganizationProfile.headerButtonAddListing}</span>
