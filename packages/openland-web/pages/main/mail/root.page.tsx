@@ -1,3 +1,5 @@
+import '../../init';
+import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withQueryLoader } from '../../../components/withQueryLoader';
