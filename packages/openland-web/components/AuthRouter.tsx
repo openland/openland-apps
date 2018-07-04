@@ -5,7 +5,7 @@ import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 export const AuthRouter = withUserInfo((props) => {
    
     // Compute Redirect Value
-    let redirect = props.router.query.redirect;
+    let redirect = props.router.query && props.router.query.redirect;
     let redirectPath: string = '/';
     if (redirect) {
         redirect = '?redirect=' + encodeURIComponent(redirect);
