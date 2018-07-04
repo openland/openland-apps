@@ -13,8 +13,8 @@ export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electri
 export interface XButtonStyleProps extends XFlexStyles {
     className?: string;
     text?: string;
-    additionalText?: string;
     icon?: string;
+    reverse?: boolean;
     size?: XButtonSize;
     style?: XButtonStyle;
     attach?: 'left' | 'right' | 'both';
@@ -38,6 +38,25 @@ let iconsIndentation = styleResolver({
     },
     'small': {
         marginRight: 5
+    }
+});
+
+let iconsIndentationReverse = styleResolver({
+    'x-large': {
+        marginRight: -8,
+        marginLeft: 12
+    },
+    'large': {
+        marginLeft: 10
+    },
+    'medium': {
+        marginLeft: 8
+    },
+    'default': {
+        marginLeft: 6
+    },
+    'small': {
+        marginLeft: 5
     }
 });
 
@@ -410,11 +429,15 @@ const StyledIcon = Glamorous<XButtonProps>(XIcon)([
     (props) => iconsIndentation(props.size, !!props.text)
 ]);
 
-const StyledButtonContentWrapper = Glamorous.div<{ additionalText?: boolean }>((props) => ({
+const StyledIconReverse = Glamorous<XButtonProps>(XIcon)([
+    (props) => iconsIndentationReverse(props.size, !!props.text)
+]);
+
+const StyledButtonContentWrapper = Glamorous.div({
     width: '100%',
     height: '100%',
     display: 'flex',
-    justifyContent: props.additionalText ? 'space-between' : 'center',
+    justifyContent: 'center',
     alignItems: 'center',
     textDecoration: 'none',
     flexDirection: 'row',
@@ -423,19 +446,12 @@ const StyledButtonContentWrapper = Glamorous.div<{ additionalText?: boolean }>((
     wordBreak: 'keep-all',
     position: 'relative',
     outline: 'none'
-}));
+});
 
-const MainContent = Glamorous.div<{ additionalText?: boolean }>((props) => ({
+const MainContent = Glamorous.div({
     display: 'flex',
-    alignItems: 'center',
-    marginRight: props.additionalText ? 5 : undefined
-}));
-
-const AdditionalContent = Glamorous.div<{ additionalText?: boolean }>((props) => ({
-    display: 'flex',
-    alignItems: 'center',
-    marginLeft: props.additionalText ? 5 : undefined
-}));
+    alignItems: 'center'
+});
 
 const ButtomText = Glamorous.span({
     maxWidth: '100%',
@@ -468,7 +484,7 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
         transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease'
     }),
     (props) => (props.loading && {
-        '& .main-content, & .additional-content': { opacity: 0 }
+        '& .main-content': { opacity: 0 }
     } || {}),
     (props) => applyFlex(props),
     (props) => colorStyles(props.buttonStyle, props.enabled !== false && !props.pressed),
@@ -497,17 +513,13 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
             className={props.className}
             zIndex={props.zIndex}
         >
-            <StyledButtonContentWrapper tabIndex={-1} className="button-content" additionalText={props.additionalText !== undefined}>
-                <MainContent additionalText={props.additionalText !== undefined} className="main-content">
-                    {props.icon && <StyledIcon text={props.text} icon={props.icon} className="icon" />}
+            <StyledButtonContentWrapper tabIndex={-1} className="button-content">
+                <MainContent className="main-content">
+                    {(props.icon && props.reverse !== true) && <StyledIcon text={props.text} icon={props.icon} className="icon" />}
                     <ButtomText>{props.text}</ButtomText>
+                    {(props.icon && props.reverse === true) && <StyledIconReverse text={props.text} icon={props.icon} className="icon" />}
                 </MainContent>
                 {props.loading && <XLoadingCircular className="loading-icon" color={loaderStyles(props.style).color!! as string} />}
-                {props.additionalText && (
-                    <AdditionalContent additionalText={props.additionalText !== undefined} className="additional-content">
-                        <ButtomText>{props.additionalText}</ButtomText>
-                    </AdditionalContent>
-                )}
             </StyledButtonContentWrapper>
         </StyledButton>
     );
