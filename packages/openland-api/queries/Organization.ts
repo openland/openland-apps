@@ -58,6 +58,28 @@ export const FollowOrganizationMutation = gql`
     }
 `;
 
+export const ExploreOrganizationsQuery = gql`
+    query ExploreOrganizations($query: String, $page: Int) {
+        items: alphaOrganizations(query: $query, page: $page, first: 50) {
+            edges {
+                node {
+                    ...OrganizationShort
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+                openEnded
+            }
+        }
+    }
+    ${OrganizationShort}
+`;
+
 export const CreateListingMutation = gql`
     mutation CreateListing($type: String!, $input: AlphaOrganizationListingInput!) {
         createListing: alphaOrganizationCreateListing(type: $type, input: $input) {

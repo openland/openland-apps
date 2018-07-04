@@ -65,6 +65,7 @@ export const MyOrganizationsQuery = typedQuery<Types.MyOrganizationsQuery, {}>(O
 export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganizationMutation, Types.UpdateOrganizationMutationVariables>(Organization.UpdateOrganizationMutation);
 export const OrganizationQuery = typedQuery<Types.OrganizationQuery, Types.OrganizationQueryVariables>(Organization.OrganizationQuery);
 export const FollowOrganizationMutation = typedMutation<Types.FollowOrganizationMutation, Types.FollowOrganizationMutationVariables>(Organization.FollowOrganizationMutation);
+export const ExploreOrganizationsQuery = typedQuery<Types.ExploreOrganizationsQuery, Types.ExploreOrganizationsQueryVariables>(Organization.ExploreOrganizationsQuery);
 export const CreateListingMutation = typedMutation<Types.CreateListingMutation, Types.CreateListingMutationVariables>(Organization.CreateListingMutation);
 export const EditListingMutation = typedMutation<Types.EditListingMutation, Types.EditListingMutationVariables>(Organization.EditListingMutation);
 export const DeleteListingMutation = typedMutation<Types.DeleteListingMutation, Types.DeleteListingMutationVariables>(Organization.DeleteListingMutation);

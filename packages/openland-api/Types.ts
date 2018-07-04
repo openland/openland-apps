@@ -1815,6 +1815,36 @@ export interface FollowOrganizationMutation {
   },
 };
 
+export interface ExploreOrganizationsQueryVariables {
+  query?: string | null,
+  page?: number | null,
+};
+
+export interface ExploreOrganizationsQuery {
+  items:  {
+    __typename: "OrganizationsConnection",
+    edges:  Array< {
+      __typename: "OrganizationsEdge",
+      node:  {
+        __typename: "Organization",
+        id: string,
+        name: string,
+        photo: string | null,
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+  } | null,
+};
+
 export interface CreateListingMutationVariables {
   type: string,
   input: AlphaOrganizationListingInput,
