@@ -180,6 +180,10 @@ routes.add('/inquiries/', '/main/inquiries/root');
 
 routes.add('/mail', '/main/mail/root');
 routes.add('/mail/', '/main/mail/root');
+routes.add('/mail/u/:userId', '/main/mail/root');
+routes.add('/mail/u/:userId/', '/main/mail/root');
+routes.add('/mail/o/:orgId', '/main/mail/root');
+routes.add('/mail/o/:orgId/', '/main/mail/root');
 routes.add('/mail/:conversationId', '/main/mail/root');
 routes.add('/mail/:conversationId/', '/main/mail/root');
 

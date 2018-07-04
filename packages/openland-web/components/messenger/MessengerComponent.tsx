@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { withUserInfo } from '../UserInfo';
 import { withChat } from '../../api/withChat';
 import { withQueryLoader } from '../withQueryLoader';
-import { withApollo } from 'react-apollo';
+import { withApollo, Mutation } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { MessageFullFragment } from 'openland-api/Types';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
@@ -16,6 +16,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XDate } from 'openland-x-format/XDate';
 import { MessengerWatcher } from './MessengerWatcher';
+import { SendMessageMutation } from 'openland-api';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -61,7 +62,7 @@ class MessageComponent extends React.Component<{ message: MessageFullFragment }>
         return (
             <XContent key={this.props.message.id}>
                 <XHorizontal alignSelf="stretch">
-                    <XAvatar cloudImageUuid={this.props.message.sender.picture ? this.props.message.sender.picture : undefined} />
+                    <XAvatar cloudImageUuid={this.props.message.sender.picture ? this.props.message.sender.picture : undefined} path={'/mail/u/' + this.props.message.sender.id} />
                     <XVertical separator={'none'} flexGrow={1}>
                         <XHorizontal separator={4}>
                             <Name>{this.props.message.sender.name}</Name><DateComponent><XDate value={this.props.message.date} format="humanize" /></DateComponent>
@@ -89,7 +90,15 @@ class MessageList extends React.Component<{ messages: MessageFullFragment[] }> {
     }
 }
 
-class MessagesComponent extends React.Component<{ sendMessage: (args: any) => any, messages: MessageFullFragment[], loading: boolean, uid: string }, { message: string, mounted: boolean }> {
+interface MessagesComponentProps {
+    sendMessage: (args: any) => any;
+    conversationId: string;
+    messages: MessageFullFragment[];
+    loading: boolean;
+    uid: string;
+}
+
+class MessagesComponent extends React.Component<MessagesComponentProps, { message: string, mounted: boolean }> {
 
     scroller: any;
     state = {
@@ -107,7 +116,7 @@ class MessagesComponent extends React.Component<{ sendMessage: (args: any) => an
         if (this.state.message.trim().length > 0) {
             try {
                 let repeat = new Date().getTime();
-                await this.props.sendMessage({ variables: { message: this.state.message.trim(), repeatKey: repeat } });
+                await this.props.sendMessage({ variables: { message: this.state.message.trim(), repeatKey: repeat, conversationId: this.props.conversationId } });
             } catch (e) {
                 if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
                     // Ignore
@@ -151,7 +160,6 @@ class MessagesComponent extends React.Component<{ sendMessage: (args: any) => an
             </>
         );
     }
-
 }
 
 interface ConversationRootProps {
@@ -159,7 +167,6 @@ interface ConversationRootProps {
     seq: number;
     client: ApolloClient<{}>;
     uid: string;
-    sendMessage: (args: any) => any;
     messages: MessageFullFragment[];
 }
 
@@ -173,18 +180,23 @@ class ConversationRoot extends React.Component<ConversationRootProps> {
                     client={this.props.client}
                     uid={this.props.uid}
                 />
-                <MessagesComponent
-                    sendMessage={this.props.sendMessage}
-                    messages={this.props.messages}
-                    loading={false}
-                    uid={this.props.uid}
-                />
+                <Mutation mutation={SendMessageMutation.document}>
+                    {(mutation) => (
+                        <MessagesComponent
+                            messages={this.props.messages}
+                            loading={false}
+                            uid={this.props.uid}
+                            sendMessage={mutation}
+                            conversationId={this.props.conversationId}
+                        />
+                    )}
+                </Mutation>
             </>
         );
     }
 }
 
-export const MessengerComponent = withChat<{}>(withApollo(withQueryLoader(withUserInfo((props) => {
+export const MessengerComponent = withChat(withApollo(withQueryLoader(withUserInfo((props) => {
     return (
         <ConversationRoot
             key={props.data.chat.id}
@@ -193,7 +205,6 @@ export const MessengerComponent = withChat<{}>(withApollo(withQueryLoader(withUs
             messages={props.data.messages.messages}
             client={props.client}
             uid={props.user!!.id}
-            sendMessage={props.sendMessage}
         />
     );
 }))));

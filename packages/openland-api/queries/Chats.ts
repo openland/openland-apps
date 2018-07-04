@@ -28,6 +28,24 @@ export const ChatQuery = gql`
     ${UserShort}
 `;
 
+export const ChatPrivateQuery = gql`
+    query ChatPrivate($userId: ID!) {
+        chat: alphaChatUser(userId: $userId) {
+            id
+            title
+        }
+    }
+`;
+
+export const ChatOrganizationQuery = gql`
+    query ChatOrganization($orgId: ID!) {
+        chat: alphaChatOrganization(orgId: $orgId) {
+            id
+            title
+        }
+    }
+`;
+
 export const SendMessageMutation = gql`
     mutation SendMessage($conversationId: ID!, $message: String!, $repeatKey: String!) {
         sentMessage: alphaSendMessage(conversationId: $conversationId, message: $message, repeatKey: $repeatKey) {

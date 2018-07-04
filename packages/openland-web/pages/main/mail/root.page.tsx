@@ -9,6 +9,10 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XHeader } from 'openland-x/XHeader';
 import { withAllChats } from '../../../api/withAllChats';
 import { makeNavigable } from 'openland-x/Navigable';
+import { withChatPrivate } from '../../../api/withChatPrivate';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { XLoader } from 'openland-x/XLoader';
+import { withChatOrganization } from '../../../api/withChatOrganization';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -40,6 +44,30 @@ let Item = makeNavigable((props) => {
     return <ItemContainer href={props.href} target={props.hrefTarget} onClick={props.onClick}>{props.children}</ItemContainer>;
 });
 
+let PrivateConversation = withChatPrivate(withQueryLoader((props) => {
+    return (
+        <>
+            <XLoader loading={true} />
+            <XPageRedirect path={'/mail/' + props.data.chat.id} />
+        </>
+    );
+}));
+
+let OrganizationConversation = withChatOrganization(withQueryLoader((props) => {
+    return (
+        <>
+            <XLoader loading={true} />
+            <XPageRedirect path={'/mail/' + props.data.chat.id} />
+        </>
+    );
+}));
+
+let Conversation = (props: { conversationId: string }) => {
+    return (
+        <MessengerComponent key={props.conversationId} variables={{ conversationId: props.conversationId }} />
+    );
+};
+
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
     return (
         <>
@@ -56,7 +84,9 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             <XVertical flexGrow={1}>
                                 <XHeader text="Chat" />
                                 <XVertical flexGrow={1}>
-                                    {props.router.routeQuery.conversationId && <MessengerComponent key={props.router.routeQuery.conversationId} />}
+                                    {props.router.routeQuery.conversationId && <Conversation conversationId={props.router.routeQuery.conversationId} />}
+                                    {props.router.routeQuery.userId && <PrivateConversation variables={{ userId: props.router.routeQuery.userId }} />}
+                                    {props.router.routeQuery.orgId && <OrganizationConversation variables={{ orgId: props.router.routeQuery.orgId }} />}
                                 </XVertical>
                             </XVertical>
                         </ConversationContainer>

@@ -408,11 +408,20 @@ export interface CountyQuery {
 };
 
 export interface AllChatsQuery {
-  chats:  Array< {
-    __typename: "Conversation",
-    id: string,
-    title: string,
-  } >,
+  chats:  Array<( {
+      __typename: "AnonymousConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      title: string,
+    }
+  ) >,
 };
 
 export interface ChatQueryVariables {
@@ -420,11 +429,20 @@ export interface ChatQueryVariables {
 };
 
 export interface ChatQuery {
-  chat:  {
-    __typename: "Conversation",
-    id: string,
-    title: string,
-  },
+  chat: ( {
+      __typename: "AnonymousConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      title: string,
+    }
+  ),
   messages:  {
     __typename: "ConversationState",
     seq: number,
@@ -444,6 +462,48 @@ export interface ChatQuery {
       date: string,
     } >,
   },
+};
+
+export interface ChatPrivateQueryVariables {
+  userId: string,
+};
+
+export interface ChatPrivateQuery {
+  chat: ( {
+      __typename: "AnonymousConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      title: string,
+    }
+  ),
+};
+
+export interface ChatOrganizationQueryVariables {
+  orgId: string,
+};
+
+export interface ChatOrganizationQuery {
+  chat: ( {
+      __typename: "AnonymousConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      title: string,
+    }
+  ),
 };
 
 export interface SendMessageMutationVariables {
