@@ -75,12 +75,12 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                     </XHorizontal>
                     <XTitle>Reverse icon</XTitle>
                     <XHorizontal>
-                        <XButton style="danger" size="x-large" text="x-large" icon="star" reverse={true} />
-                        <XButton style="ghost" size="large" text="large" icon="star" reverse={true} />
-                        <XButton size="medium" style="primary" text="primary" icon="star" reverse={true} />
-                        <XButton style="electric" text="electric" icon="star" reverse={true} />
-                        <XButton text="default" pressed={true} icon="star" reverse={true} />
-                        <XButton style="ghost" text="ghost" icon="star" reverse={true} />
+                        <XButton style="danger" size="x-large" text="x-large" icon="star" iconRight="star" />
+                        <XButton style="ghost" size="large" text="large" icon="star" iconRight="star" />
+                        <XButton size="medium" style="primary" text="primary" icon="star" iconRight="star" />
+                        <XButton style="electric" text="electric" icon="star" iconRight="star" />
+                        <XButton text="default" pressed={true} icon="star" iconRight="star" />
+                        <XButton style="ghost" text="ghost" icon="star" iconRight="star" />
                     </XHorizontal>
                 </XVertical>
             </XContent>

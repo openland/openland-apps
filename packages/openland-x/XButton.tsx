@@ -14,7 +14,7 @@ export interface XButtonStyleProps extends XFlexStyles {
     className?: string;
     text?: string;
     icon?: string;
-    reverse?: boolean;
+    iconRight?: string;
     size?: XButtonSize;
     style?: XButtonStyle;
     attach?: 'left' | 'right' | 'both';
@@ -41,7 +41,7 @@ let iconsIndentation = styleResolver({
     }
 });
 
-let iconsIndentationReverse = styleResolver({
+let iconsIndentationRight = styleResolver({
     'x-large': {
         marginRight: -8,
         marginLeft: 12
@@ -429,8 +429,8 @@ const StyledIcon = Glamorous<XButtonProps>(XIcon)([
     (props) => iconsIndentation(props.size, !!props.text)
 ]);
 
-const StyledIconReverse = Glamorous<XButtonProps>(XIcon)([
-    (props) => iconsIndentationReverse(props.size, !!props.text)
+const StyledIconRight = Glamorous<XButtonProps>(XIcon)([
+    (props) => iconsIndentationRight(props.size, !!props.text)
 ]);
 
 const StyledButtonContentWrapper = Glamorous.div({
@@ -515,9 +515,9 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content">
                 <MainContent className="main-content">
-                    {(props.icon && props.reverse !== true) && <StyledIcon text={props.text} icon={props.icon} className="icon" />}
+                    {props.icon && <StyledIcon text={props.text} icon={props.icon} className="icon" />}
                     <ButtomText>{props.text}</ButtomText>
-                    {(props.icon && props.reverse === true) && <StyledIconReverse text={props.text} icon={props.icon} className="icon" />}
+                    {props.iconRight && <StyledIconRight text={props.text} icon={props.icon} className="icon" />}
                 </MainContent>
                 {props.loading && <XLoadingCircular className="loading-icon" color={loaderStyles(props.style).color!! as string} />}
             </StyledButtonContentWrapper>
