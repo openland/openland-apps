@@ -18,6 +18,7 @@ import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { XModal } from 'openland-x-modal/XModal';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XInput } from 'openland-x/XInput';
 import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
@@ -727,7 +728,8 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
 }
 
 const AcquizitionRequestPhoto = Glamorous(XCloudImage)({
-    borderRadius: 4
+    borderRadius: 4,
+    margin: 'auto'
 });
 
 interface AcquizitionRequestProps {
@@ -791,7 +793,17 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                 <XHorizontalStyled justifyContent="space-between" separator={12} padding={24}>
 
                     {item.photo && (
-                        <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
+                        <XModal
+                            useTopCloser={true}
+                            title={item.name}
+                            target={(
+                                <XLink>
+                                    <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
+                                </XLink>
+                            )}
+                        >
+                            <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={500} height={400} />
+                        </XModal>
                     )}
                     {!item.photo && (
                         <PlaceholderAR style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
