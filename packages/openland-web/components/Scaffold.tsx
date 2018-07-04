@@ -17,6 +17,7 @@ import { XList, XListItem } from 'openland-x/XList';
 import { XTitle } from 'openland-x/XTitle';
 import { XPopper } from 'openland-x/XPopper';
 import { XAvatar } from 'openland-x/XAvatar';
+import { XCounter } from 'openland-x/XCounter';
 import { XModal } from 'openland-x-modal/XModal';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
@@ -134,25 +135,12 @@ const NavigatorItem = Glamorous(XLink)({
         '& .no-hover': {
             display: 'block'
         }
+    },
+    '& > .counter': {
+        position: 'absolute',
+        right: 13,
+        top: 11
     }
-});
-
-const MailCounter = Glamorous.div({
-    position: 'absolute',
-    height: 15,
-    right: 13,
-    top: 11,
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: 4,
-    paddingRight: 4,
-    lineHeight: '13px',
-    borderRadius: 21,
-    backgroundColor: '#e22a2a',
-    border: '1px solid white',
-    fontSize: 10,
-    fontWeight: 500,
-    color: '#ffffff'
 });
 
 const BottomNavigation = Glamorous.div({
@@ -728,7 +716,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 >
                                     <NavigatorItem path="/mail" activateForSubpaths={true}>
                                         <NavigatorIcon icon="email" />
-                                        <MailCounter>12</MailCounter>
+                                        <XCounter count={121}/>
                                     </NavigatorItem>
                                 </XPopper>
                             </XWithRole>
