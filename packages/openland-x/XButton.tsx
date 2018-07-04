@@ -468,7 +468,7 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
         transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease'
     }),
     (props) => (props.loading && {
-        '& span': { opacity: 0 }
+        '& .main-content, & .additional-content': { opacity: 0 }
     } || {}),
     (props) => applyFlex(props),
     (props) => colorStyles(props.buttonStyle, props.enabled !== false && !props.pressed),
@@ -498,13 +498,13 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
             zIndex={props.zIndex}
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content" additionalText={props.additionalText !== undefined}>
-                <MainContent additionalText={props.additionalText !== undefined}>
+                <MainContent additionalText={props.additionalText !== undefined} className="main-content">
                     {props.icon && <StyledIcon text={props.text} icon={props.icon} className="icon" />}
                     <ButtomText>{props.text}</ButtomText>
                 </MainContent>
                 {props.loading && <XLoadingCircular className="loading-icon" color={loaderStyles(props.style).color!! as string} />}
                 {props.additionalText && (
-                    <AdditionalContent additionalText={props.additionalText !== undefined}>
+                    <AdditionalContent additionalText={props.additionalText !== undefined} className="additional-content">
                         <ButtomText>{props.additionalText}</ButtomText>
                     </AdditionalContent>
                 )}
