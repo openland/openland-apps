@@ -172,6 +172,7 @@ export const OrganizationMembersQuery = gql`
             user{
                 ...UserShort
             }
+            joinedAt
             email
             role
         }
