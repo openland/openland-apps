@@ -517,7 +517,7 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
                 <MainContent className="main-content">
                     {props.icon && <StyledIcon text={props.text} icon={props.icon} className="icon" />}
                     <ButtomText>{props.text}</ButtomText>
-                    {props.iconRight && <StyledIconRight text={props.text} icon={props.icon} className="icon" />}
+                    {props.iconRight && <StyledIconRight text={props.text} icon={props.iconRight} className="icon" />}
                 </MainContent>
                 {props.loading && <XLoadingCircular className="loading-icon" color={loaderStyles(props.style).color!! as string} />}
             </StyledButtonContentWrapper>
