@@ -24,6 +24,7 @@ import { OrganizationMemberRole } from 'openland-api/Types';
 import { XSelect } from 'openland-x/XSelect';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { withOrganizationRemoveMember } from '../../../api/withOrganizationRemoveMember';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 export const CreateInviteButton = withInviteCreate((props) => (
     <XButton action={() => props.createInvite({})} text="Create Invite" />
@@ -165,12 +166,20 @@ const OrgMembers = withOrganizationMembers((props) => {
                             </XHorizontal>
                         </XTable.Cell>
                         <XTable.Cell>
-                            <PermissionCell justifyContent="center" separator={0}>
+                            <XWithRole role="admin" orgPermission={true}>
+                                <PermissionCell justifyContent="center" separator={0}>
+                                    <XText>{m.role}</XText>
+                                    <PermissionsModal orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                                </PermissionCell>
+                            </XWithRole>
+                            <XWithRole role="admin" orgPermission={true} negate={true}>
                                 <XText>{m.role}</XText>
-                                <PermissionsModal orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
-                            </PermissionCell>
+                            </XWithRole>
+
                         </XTable.Cell>
-                        <XTable.Cell><RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} /></XTable.Cell>
+                        <XWithRole role="admin" orgPermission={true}>
+                            <XTable.Cell><RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} /></XTable.Cell>
+                        </XWithRole>
                     </Row>
                 ))}
             </XTable.Body>
@@ -178,10 +187,10 @@ const OrgMembers = withOrganizationMembers((props) => {
     );
 });
 
-export default withApp('Team', 'viewer', withInvites(withQueryLoader(withUserInfo((props) => {
+export default withApp('Members', 'viewer', withInvites(withQueryLoader(withUserInfo((props) => {
     return (
-        <Navigation title="Team">
-            <XHeader text="Team" />
+        <Navigation title="Members">
+            <XHeader text="Members" />
             <Content>
                 {/* <XHorizontal alignItems="center" justifyContent="space-between">
                     <XTitle marginTop={0} marginBottom={0}>Members</XTitle>

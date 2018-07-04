@@ -51,6 +51,12 @@ const DateComponent = Glamorous.div({
     opacity: 0.4
 });
 
+const Image = Glamorous.img({
+    width: 400,
+    height: 400,
+    objectFit: 'scale-down'
+});
+
 class MessageComponent extends React.Component<{ message: MessageFullFragment }> {
 
     shouldComponentUpdate(nextProps: { message: MessageFullFragment }) {
@@ -58,6 +64,13 @@ class MessageComponent extends React.Component<{ message: MessageFullFragment }>
     }
 
     render() {
+        let src = this.props.message.message;
+        let message = <span>{src}</span>;
+        if (src.endsWith('.gif')) {
+            message = <Image src={src} />;
+        }
+        console.warn(message);
+
         return (
             <XContent key={this.props.message.id}>
                 <XHorizontal alignSelf="stretch">
@@ -66,7 +79,7 @@ class MessageComponent extends React.Component<{ message: MessageFullFragment }>
                         <XHorizontal separator={4}>
                             <Name>{this.props.message.sender.name}</Name><DateComponent><XDate value={this.props.message.date} format="humanize" /></DateComponent>
                         </XHorizontal>
-                        <span>{this.props.message.message}</span>
+                        {message}
                     </XVertical>
                 </XHorizontal>
             </XContent>
