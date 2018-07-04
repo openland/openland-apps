@@ -412,16 +412,27 @@ export interface AllChatsQuery {
       __typename: "AnonymousConversation",
       id: string,
       title: string,
+      unreadCount: number,
     } | {
       __typename: "SharedConversation",
       id: string,
       title: string,
+      unreadCount: number,
     } | {
       __typename: "PrivateConversation",
       id: string,
       title: string,
+      unreadCount: number,
     }
   ) >,
+};
+
+export interface GlobalCounterQuery {
+  counter:  {
+    __typename: "NotificationCounter",
+    id: string,
+    unreadCount: number,
+  },
 };
 
 export interface ChatQueryVariables {
@@ -531,6 +542,36 @@ export interface SendMessageMutation {
       },
       date: string,
     },
+  },
+};
+
+export interface ChatReadMutationVariables {
+  conversationId: string,
+  messageId: string,
+};
+
+export interface ChatReadMutation {
+  alphaReadChat:  {
+    __typename: "ChatReadResult",
+    counter:  {
+      __typename: "NotificationCounter",
+      id: string,
+      unreadCount: number,
+    },
+    conversation: ( {
+        __typename: "AnonymousConversation",
+        id: string,
+        unreadCount: number,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+        unreadCount: number,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+        unreadCount: number,
+      }
+    ),
   },
 };
 

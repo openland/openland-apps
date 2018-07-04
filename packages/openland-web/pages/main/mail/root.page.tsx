@@ -85,7 +85,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                     <ChatContainer>
                         <ChatListContainer>
                             {props.data.chats.map((v) => (
-                                <Item path={'/mail/' + v.id}>{v.title}</Item>
+                                <Item path={'/mail/' + v.id}>{v.title} ({v.unreadCount.toString()}}</Item>
                             ))}
                         </ChatListContainer>
                         <ConversationContainer>

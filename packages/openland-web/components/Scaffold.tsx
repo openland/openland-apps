@@ -24,6 +24,7 @@ import { XMenuVertical, XMenuItem } from './Incubator/XOverflow';
 import { OrganizationPicker } from './OrganizationPicker';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { withNotificationCounter } from '../api/withNotificationCounter';
 
 //
 // Root
@@ -602,6 +603,24 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
     }
 }
 
+export const MessengerButton = withNotificationCounter((props) => {
+    return (
+        <XPopper
+            placement="right"
+            showOnHoverContent={false}
+            showOnHover={true}
+            groupId="scaffold_tooltip"
+            content={(
+                <strong>{TextAppBar.items.mail}</strong>
+            )}
+        >
+            <NavigatorItem path="/mail" activateForSubpaths={true}>
+                <NavigatorIcon icon="email" />
+            </NavigatorItem>
+        </XPopper>
+    );
+});
+
 export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, searchText: string }> {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
@@ -698,19 +717,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             </XWithRole>
 
                             <XWithRole role={['feature-messaging']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    groupId="scaffold_tooltip"
-                                    content={(
-                                        <strong>{TextAppBar.items.mail}</strong>
-                                    )}
-                                >
-                                    <NavigatorItem path="/mail" activateForSubpaths={true}>
-                                        <NavigatorIcon icon="email" />
-                                    </NavigatorItem>
-                                </XPopper>
+                                <MessengerButton />
                             </XWithRole>
 
                             <XPopper

@@ -17,6 +17,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XDate } from 'openland-x-format/XDate';
 import { MessengerWatcher } from './MessengerWatcher';
 import { SendMessageMutation } from 'openland-api';
+import { MessengerReader } from './MessengerReader';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -70,8 +71,6 @@ class MessageComponent extends React.Component<{ message: MessageFullFragment }>
         if (src.endsWith('.gif')) {
             message = <Image src={src} />;
         }
-        console.warn(message);
-
         return (
             <XContent key={this.props.message.id}>
                 <XHorizontal alignSelf="stretch">
@@ -164,6 +163,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
                             <MessageList messages={this.props.messages} />
                         </XScrollViewReversed>
                     </MessagesContainer>
+                    <MessengerReader conversationId={this.props.conversationId} lastMessageId={this.props.messages.length > 0 ? this.props.messages[0].id : null} />
                     <SendMessageContainer>
                         <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} />
                         <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" />

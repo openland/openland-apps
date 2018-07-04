@@ -7,6 +7,16 @@ export const AllChatsQuery = gql`
         chats: superAllChats {
             id
             title
+            unreadCount
+        }
+    }
+`;
+
+export const GlobalCounterQuery = gql`
+    query GlobalCounter {
+        counter: alphaNotificationCounter {
+            id
+            unreadCount
         }
     }
 `;
@@ -59,4 +69,19 @@ export const SendMessageMutation = gql`
     }
     ${MessageFull}
     ${UserShort}
+`;
+
+export const ChatReadMutation = gql`
+    mutation ChatRead($conversationId: ID!, $messageId: ID!) {
+        alphaReadChat(conversationId: $conversationId, messageId: $messageId) {
+            counter {
+                id
+                unreadCount
+            }
+            conversation {
+                id
+                unreadCount
+            }
+        }
+    }
 `;
