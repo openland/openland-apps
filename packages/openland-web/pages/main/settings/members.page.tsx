@@ -161,7 +161,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                 <XAvatar size="medium" cloudImageUuid={m.user.picture || undefined} />
                                 <XVertical separator={4} justifyContent="center">
                                     <XText textStyle="h500">{m.user.name}</XText>
-                                    {m.user.email && <XText opacity={0.5} >{m.user.email}</XText>}
+                                    {m.email && <XText opacity={0.5} >{m.email}</XText>}
                                 </XVertical>
 
                             </XHorizontal>

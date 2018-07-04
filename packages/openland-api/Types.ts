@@ -1957,6 +1957,7 @@ export interface OrganizationMembersQuery {
       picture: string | null,
       email: string | null,
     },
+    email: string | null,
     role: OrganizationMemberRole,
   } >,
 };
