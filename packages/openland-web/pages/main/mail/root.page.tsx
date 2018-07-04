@@ -13,6 +13,7 @@ import { withChatPrivate } from '../../../api/withChatPrivate';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLoader } from 'openland-x/XLoader';
 import { withChatOrganization } from '../../../api/withChatOrganization';
+import { withChat } from '../../../api/withChat';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -62,11 +63,17 @@ let OrganizationConversation = withChatOrganization(withQueryLoader((props) => {
     );
 }));
 
-let Conversation = (props: { conversationId: string }) => {
+let Conversation = withChat(withQueryLoader((props) => {
+    console.warn(props.data);
     return (
-        <MessengerComponent key={props.conversationId} variables={{ conversationId: props.conversationId }} />
+        <XVertical flexGrow={1}>
+            <XHeader text={props.data.chat.title} />
+            <XVertical flexGrow={1}>
+                <MessengerComponent key={props.data.chat.id} variables={{ conversationId: props.data.chat.id }} />
+            </XVertical>
+        </XVertical>
     );
-};
+}));
 
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
     return (
@@ -81,14 +88,9 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             ))}
                         </ChatListContainer>
                         <ConversationContainer>
-                            <XVertical flexGrow={1}>
-                                <XHeader text="Chat" />
-                                <XVertical flexGrow={1}>
-                                    {props.router.routeQuery.conversationId && <Conversation conversationId={props.router.routeQuery.conversationId} />}
-                                    {props.router.routeQuery.userId && <PrivateConversation variables={{ userId: props.router.routeQuery.userId }} />}
-                                    {props.router.routeQuery.orgId && <OrganizationConversation variables={{ orgId: props.router.routeQuery.orgId }} />}
-                                </XVertical>
-                            </XVertical>
+                            {props.router.routeQuery.conversationId && <Conversation variables={{ conversationId: props.router.routeQuery.conversationId }} />}
+                            {props.router.routeQuery.userId && <PrivateConversation variables={{ userId: props.router.routeQuery.userId }} />}
+                            {props.router.routeQuery.orgId && <OrganizationConversation variables={{ orgId: props.router.routeQuery.orgId }} />}
                         </ConversationContainer>
                     </ChatContainer>
                 </Scaffold.Content>
