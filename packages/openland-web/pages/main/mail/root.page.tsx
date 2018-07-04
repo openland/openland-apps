@@ -64,7 +64,6 @@ let OrganizationConversation = withChatOrganization(withQueryLoader((props) => {
 }));
 
 let Conversation = withChat(withQueryLoader((props) => {
-    console.warn(props.data);
     return (
         <XVertical flexGrow={1}>
             <XHeader text={props.data.chat.title} />
