@@ -17,6 +17,7 @@ import { XList, XListItem } from 'openland-x/XList';
 import { XTitle } from 'openland-x/XTitle';
 import { XPopper } from 'openland-x/XPopper';
 import { XAvatar } from 'openland-x/XAvatar';
+import { XCounter } from 'openland-x/XCounter';
 import { XModal } from 'openland-x-modal/XModal';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
@@ -96,6 +97,7 @@ const NavigatorIcon = Glamorous(XIcon)({
 });
 
 const NavigatorItem = Glamorous(XLink)({
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignSelf: 'stretch',
@@ -134,6 +136,11 @@ const NavigatorItem = Glamorous(XLink)({
         '& .no-hover': {
             display: 'block'
         }
+    },
+    '& > .counter': {
+        position: 'absolute',
+        right: 13,
+        top: 11
     }
 });
 
@@ -616,6 +623,7 @@ export const MessengerButton = withNotificationCounter((props) => {
         >
             <NavigatorItem path="/mail" activateForSubpaths={true}>
                 <NavigatorIcon icon="email" />
+                {props.data.counter && props.data.counter.unreadCount && <XCounter count={props.data.counter.unreadCount} />}
             </NavigatorItem>
         </XPopper>
     );

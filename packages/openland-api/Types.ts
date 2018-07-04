@@ -1998,6 +1998,8 @@ export interface OrganizationMembersQuery {
       picture: string | null,
       email: string | null,
     },
+    joinedAt: string,
+    email: string | null,
     role: OrganizationMemberRole,
   } >,
 };

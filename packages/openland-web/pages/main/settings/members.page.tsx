@@ -26,6 +26,7 @@ import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { withOrganizationRemoveMember } from '../../../api/withOrganizationRemoveMember';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow, XMenuItem } from '../../../components/Incubator/XOverflow';
+import { DateFormater } from 'openland-x-format/XDate';
 
 export const CreateInviteButton = withInviteCreate((props) => (
     <XButton action={() => props.createInvite({})} text="Create Invite" />
@@ -151,6 +152,7 @@ const OrgMembers = withOrganizationMembers((props) => {
             <XTable.Header>
                 <XTable.Cell>{''}</XTable.Cell>
                 <XTable.Cell>Role</XTable.Cell>
+                <XTable.Cell>Join date</XTable.Cell>
             </XTable.Header>
 
             <XTable.Body>
@@ -161,7 +163,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                 <XAvatar size="medium" cloudImageUuid={m.user.picture || undefined} />
                                 <XVertical separator={4} justifyContent="center">
                                     <XText textStyle="h500">{m.user.name}</XText>
-                                    {m.user.email && <XText opacity={0.5} >{m.user.email}</XText>}
+                                    {m.email && <XText opacity={0.5} >{m.email}</XText>}
                                 </XVertical>
 
                             </XHorizontal>
@@ -177,6 +179,9 @@ const OrgMembers = withOrganizationMembers((props) => {
                                 <XText>{m.role}</XText>
                             </XWithRole>
 
+                        </XTable.Cell>
+                        <XTable.Cell>
+                            <XText >{m.joinedAt ? DateFormater(m.joinedAt) : 'always been here'}</XText>
                         </XTable.Cell>
                         <XWithRole role="admin" orgPermission={true}>
                             <XTable.Cell textAlign="right">
