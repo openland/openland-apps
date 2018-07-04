@@ -95,6 +95,7 @@ const NavigatorIcon = Glamorous(XIcon)({
 });
 
 const NavigatorItem = Glamorous(XLink)({
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignSelf: 'stretch',
@@ -134,6 +135,24 @@ const NavigatorItem = Glamorous(XLink)({
             display: 'block'
         }
     }
+});
+
+const MailCounter = Glamorous.div({
+    position: 'absolute',
+    height: 15,
+    right: 13,
+    top: 11,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 4,
+    paddingRight: 4,
+    lineHeight: '13px',
+    borderRadius: 21,
+    backgroundColor: '#e22a2a',
+    border: '1px solid white',
+    fontSize: 10,
+    fontWeight: 500,
+    color: '#ffffff'
 });
 
 const BottomNavigation = Glamorous.div({
@@ -709,6 +728,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 >
                                     <NavigatorItem path="/mail" activateForSubpaths={true}>
                                         <NavigatorIcon icon="email" />
+                                        <MailCounter>12</MailCounter>
                                     </NavigatorItem>
                                 </XPopper>
                             </XWithRole>
