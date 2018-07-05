@@ -9,6 +9,7 @@ import { ChatReadMutation } from 'openland-api/ChatReadMutation';
 import { Badge } from './Badge';
 import { Router } from '../../routes';
 import { ChatListQuery } from 'openland-api';
+import { speakText } from './Speak';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($seq: Int) {
@@ -22,6 +23,10 @@ let GLOBAL_SUBSCRIPTION = gql`
                 conversation {
                     id
                     title
+                }
+                message {
+                    id
+                    message
                 }
             }
             ... on UserEventRead {
@@ -159,8 +164,11 @@ export class MessengerEngine {
         if (event.__typename === 'UserEventMessage') {
             let visible = this.openedConversations.has(event.conversationId) && this.isVisible;
             this.writeGlobalCounter(event.globalUnread, visible);
-            if (!visible && !event.isOut) {
+            if (!visible && !event.isOut && !event.message.message.trim().startsWith('speak: ')) {
                 this.handleNewMessage(event.conversationId);
+            }
+            if (event.message.message.trim().startsWith('speak: ')) {
+                speakText(event.message.message.trim().substring(7).trim());
             }
             let data = this.client.readQuery({
                 query: ChatListQuery.document
