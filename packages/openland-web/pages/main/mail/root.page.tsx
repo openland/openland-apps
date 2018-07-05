@@ -17,6 +17,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { withChatOrganization } from '../../../api/withChatOrganization';
 import { withChat } from '../../../api/withChat';
 import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -31,7 +32,7 @@ let Shadow = Glamorous.div({
     flexDirection: 'row',
     backgroundColor: '#f9fafb',
     flexGrow: 1,
-    maxWidth: '1200px',
+    // maxWidth: '1200px',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)'
 });
 
@@ -52,8 +53,18 @@ let ConversationContainer = Glamorous.div({
     flexDirection: 'row',
     flexGrow: 1,
     height: '100vh',
-    maxWidth: '900px',
-    backgroundColor: '#ffffff'
+    // maxWidth: '900px',
+    backgroundColor: '#ffffff',
+    justifyContent: 'center'
+});
+
+let ConversationWrapper = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    flexGrow: 1,
+    height: '100vh',
+    justifyContent: 'center'
+    // maxWidth: '900px'
 });
 
 // let ItemContainer = Glamorous.a({
@@ -81,11 +92,11 @@ let OrganizationConversation = withChatOrganization(withQueryLoader((props) => {
 
 let Conversation = withChat(withQueryLoader((props) => {
     return (
-        <XVertical flexGrow={1} separator={'none'}>
+        <XVertical flexGrow={1} separator={'none'} maxWidth={1000}>
             <XHeader text={props.data.chat.title} separated={true} />
-            <XVertical flexGrow={1}>
+            <XHorizontal flexGrow={1} justifyContent="center">
                 <MessengerComponent key={props.data.chat.id} variables={{ conversationId: props.data.chat.id }} />
-            </XVertical>
+            </XHorizontal>
         </XVertical>
     );
 }));
@@ -102,9 +113,11 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                                 <ChatsComponent />
                             </ChatListContainer>
                             <ConversationContainer>
-                                {props.router.routeQuery.conversationId && <Conversation variables={{ conversationId: props.router.routeQuery.conversationId }} />}
-                                {props.router.routeQuery.userId && <PrivateConversation variables={{ userId: props.router.routeQuery.userId }} />}
-                                {props.router.routeQuery.orgId && <OrganizationConversation variables={{ orgId: props.router.routeQuery.orgId }} />}
+                                <ConversationWrapper>
+                                    {props.router.routeQuery.conversationId && <Conversation variables={{ conversationId: props.router.routeQuery.conversationId }} />}
+                                    {props.router.routeQuery.userId && <PrivateConversation variables={{ userId: props.router.routeQuery.userId }} />}
+                                    {props.router.routeQuery.orgId && <OrganizationConversation variables={{ orgId: props.router.routeQuery.orgId }} />}
+                                </ConversationWrapper>
                             </ConversationContainer>
                         </Shadow>
                     </ChatContainer>

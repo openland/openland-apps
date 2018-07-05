@@ -25,7 +25,8 @@ let Container = Glamorous.div({
     display: 'flex',
     flexBasis: 0,
     flexGrow: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    maxWidth: '900px'
 });
 
 let MessagesContainer = Glamorous.div({
