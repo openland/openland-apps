@@ -64,8 +64,8 @@ export class MessengerEngine {
         });
 
         backoff(() => import('notifyjs')).then((v) => {
-            if (v.needsPermission && v.isSupported()) {
-                v.requestPermission();
+            if ((v as any).needsPermission && (v as any).isSupported()) {
+                (v as any).requestPermission();
             }
         });
     }
@@ -143,8 +143,8 @@ export class MessengerEngine {
         var audio = new Audio('/static/sounds/notification.mp3');
         audio.play();
         backoff(() => import('notifyjs')).then((v) => {
-            if (!v.needsPermission) {
-                new v('New Message', {
+            if (!(v as any).needsPermission) {
+                new (v as any)('New Message', {
                     body: 'You got new message!'
                 }).show();
             }
