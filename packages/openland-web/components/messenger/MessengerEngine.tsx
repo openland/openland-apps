@@ -171,7 +171,7 @@ export class MessengerEngine {
                 if (exIndex >= 0) {
                     let ids = data.chats.conversations.map((v: any) => v[ID_KEY]);
                     let c = data.chats.conversations[exIndex];
-                    if (visible || c.unreadCount > event.unread) {
+                    if (!visible || c.unreadCount > event.unread) {
                         c.unreadCount = event.unread;
                     }
                     data.chats.conversations.splice(exIndex, 1);
