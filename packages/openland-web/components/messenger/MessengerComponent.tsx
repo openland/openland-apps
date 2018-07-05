@@ -36,12 +36,12 @@ let MessagesContainer = Glamorous.div({
 });
 
 let SendMessageContainer = Glamorous(XHorizontal)({
-    height: '128px',
+    height: '96px',
     flexDirection: 'row',
     flexShrink: 0,
     paddingTop: '0px',
-    paddingLeft: '16px',
-    paddingRight: '16px'
+    paddingLeft: '24px',
+    paddingRight: '24px'
 });
 
 const Name = Glamorous.div({
@@ -62,10 +62,10 @@ const Image = Glamorous.img({
 });
 
 const MessagesWrapper = Glamorous(XVertical)({
-    paddingTop: '8px',
-    paddingLeft: '8px',
-    paddingRight: '24px',
-    paddingBottom: '16px'
+    paddingTop: '96px',
+    paddingLeft: '16px',
+    paddingRight: '16px',
+    paddingBottom: '24px'
 });
 
 class MessageComponent extends React.Component<{ message: MessageFullFragment }> {
@@ -120,15 +120,17 @@ interface MessagesComponentProps {
     messenger: MessengerEngine;
 }
 
-class MessagesComponent extends React.Component<MessagesComponentProps, { message: string, mounted: boolean }> {
+class MessagesComponent extends React.Component<MessagesComponentProps, { message: string, mounted: boolean, sending: boolean }> {
 
     scroller: any;
     state = {
         message: '',
-        mounted: false
+        mounted: false,
+        sending: false
     };
 
     unmounter: (() => void) | null = null;
+    xinput: any | null = null;
 
     handleScrollView = (src: any) => {
         if (src) {
@@ -138,7 +140,11 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
 
     handleSend = async () => {
         if (this.state.message.trim().length > 0) {
+            if (this.state.sending) {
+                return;
+            }
             try {
+                this.setState({ sending: true });
                 let repeat = new Date().getTime();
                 await this.props.sendMessage({ variables: { message: this.state.message.trim(), repeatKey: repeat, conversationId: this.props.conversationId } });
             } catch (e) {
@@ -150,7 +156,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
                 }
             }
             this.scroller.scrollToBottom();
-            this.setState({ message: '' });
+            this.setState({ message: '', sending: false }, () => { this.xinput.focus(); });
         }
     }
 
@@ -158,8 +164,14 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
         this.setState({ message: src });
     }
 
-    shouldComponentUpdate(nextProps: { sendMessage: (args: any) => any, messages: MessageFullFragment[], loading: boolean }, nextState: { message: string, mounted: boolean }) {
-        return this.props.messages !== nextProps.messages || this.state.message !== nextState.message || this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading;
+    handleRef = (src: any) => {
+        if (src) {
+            this.xinput = src;
+        }
+    }
+
+    shouldComponentUpdate(nextProps: { sendMessage: (args: any) => any, messages: MessageFullFragment[], loading: boolean }, nextState: { message: string, mounted: boolean, sending: boolean }) {
+        return this.props.messages !== nextProps.messages || this.state.message !== nextState.message || this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading || this.state.sending !== nextState.sending;
     }
 
     componentDidMount() {
@@ -185,8 +197,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
                     </MessagesContainer>
                     <MessengerReader conversationId={this.props.conversationId} lastMessageId={this.props.messages.length > 0 ? this.props.messages[0].id : null} />
                     <SendMessageContainer>
-                        <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} />
-                        <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" />
+                        <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} disabled={this.state.sending} ref={this.handleRef} />
+                        <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" loading={this.state.sending} />
                     </SendMessageContainer>
                 </Container>
                 <XLoader loading={!this.state.mounted} />

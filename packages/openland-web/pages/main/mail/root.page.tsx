@@ -20,7 +20,19 @@ import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor: '#f9fafb',
+    justifyContent: 'center',
+    boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)'
+});
+
+let Shadow = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: '#f9fafb',
+    flexGrow: 1,
+    maxWidth: '1200px',
+    boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)'
 });
 
 let ChatListContainer = Glamorous.div({
@@ -30,7 +42,6 @@ let ChatListContainer = Glamorous.div({
     width: '300px',
     flexGrow: 0,
     flexShrink: 0,
-    backgroundColor: '#f9fafb',
     borderRightColor: '#e2e3e8',
     borderRightWidth: '1px',
     borderRightStyle: 'solid'
@@ -40,7 +51,9 @@ let ConversationContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     flexGrow: 1,
-    height: '100vh'
+    height: '100vh',
+    maxWidth: '900px',
+    backgroundColor: '#ffffff'
 });
 
 // let ItemContainer = Glamorous.a({
@@ -84,14 +97,16 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ChatContainer>
-                        <ChatListContainer>
-                            <ChatsComponent />
-                        </ChatListContainer>
-                        <ConversationContainer>
-                            {props.router.routeQuery.conversationId && <Conversation variables={{ conversationId: props.router.routeQuery.conversationId }} />}
-                            {props.router.routeQuery.userId && <PrivateConversation variables={{ userId: props.router.routeQuery.userId }} />}
-                            {props.router.routeQuery.orgId && <OrganizationConversation variables={{ orgId: props.router.routeQuery.orgId }} />}
-                        </ConversationContainer>
+                        <Shadow>
+                            <ChatListContainer>
+                                <ChatsComponent />
+                            </ChatListContainer>
+                            <ConversationContainer>
+                                {props.router.routeQuery.conversationId && <Conversation variables={{ conversationId: props.router.routeQuery.conversationId }} />}
+                                {props.router.routeQuery.userId && <PrivateConversation variables={{ userId: props.router.routeQuery.userId }} />}
+                                {props.router.routeQuery.orgId && <OrganizationConversation variables={{ orgId: props.router.routeQuery.orgId }} />}
+                            </ConversationContainer>
+                        </Shadow>
                     </ChatContainer>
                 </Scaffold.Content>
             </Scaffold>

@@ -195,6 +195,8 @@ const RequireElement = Glamorous.span({
 
 export class XInputBasic extends React.PureComponent<XInputBasicProps> {
 
+    inputRef: any | null = null;
+
     constructor(props: XInputBasicProps) {
         super(props);
     }
@@ -202,6 +204,9 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
     handleRef = (e: any) => {
         if (e && this.props.autofocus) {
             e.focus();
+        }
+        if (e) {
+            this.inputRef = e;
         }
     }
 
@@ -217,6 +222,10 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                 this.props.onEnter();
             }
         }
+    }
+
+    focus() {
+        this.inputRef.focus();
     }
 
     render() {
