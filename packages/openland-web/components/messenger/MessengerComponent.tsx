@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { withUserInfo } from '../UserInfo';
 import { withChat } from '../../api/withChat';
 import { withQueryLoader } from '../withQueryLoader';
-import { withApollo, Mutation } from 'react-apollo';
+import { withApollo } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { MessageFullFragment } from 'openland-api/Types';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
@@ -16,10 +16,10 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XDate } from 'openland-x-format/XDate';
 import { MessengerWatcher } from './MessengerWatcher';
-import { SendMessageMutation } from 'openland-api';
 import { MessengerReader } from './MessengerReader';
 import { MessengerContext, MessengerEngine } from './MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import UUID from 'uuid/v4';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -97,9 +97,25 @@ class MessageComponent extends React.Component<{ message: MessageFullFragment }>
     }
 }
 
-class MessageList extends React.Component<{ messages: MessageFullFragment[] }> {
-    shouldComponentUpdate(nextProps: { messages: MessageFullFragment[] }) {
-        return nextProps.messages !== this.props.messages;
+const PendingMessage = withUserInfo<{ message: string }>((props) => {
+    return (
+        <XContent>
+            <XHorizontal alignSelf="stretch">
+                <XAvatar cloudImageUuid={props.user!!.picture ? props.user!!.picture!! : undefined} />
+                <XVertical separator={'none'} flexGrow={1}>
+                    <XHorizontal separator={4}>
+                        <Name>{props.user!!.name}</Name><DateComponent>Sending</DateComponent>
+                    </XHorizontal>
+                    {props.message}
+                </XVertical>
+            </XHorizontal>
+        </XContent>
+    );
+});
+
+class MessageList extends React.Component<{ messages: MessageFullFragment[], pending: { key: string, message: string }[] }> {
+    shouldComponentUpdate(nextProps: { messages: MessageFullFragment[], pending: { key: string, message: string }[] }) {
+        return nextProps.messages !== this.props.messages || nextProps.pending !== this.props.pending;
     }
     render() {
         return (
@@ -107,13 +123,15 @@ class MessageList extends React.Component<{ messages: MessageFullFragment[] }> {
                 {[...this.props.messages].reverse().map((v) => (
                     <MessageComponent message={v} key={v.id} />
                 ))}
+                {this.props.pending.map((v) => (
+                    <PendingMessage key={v.key} message={v.message}/>
+                ))}
             </MessagesWrapper>
         );
     }
 }
 
 interface MessagesComponentProps {
-    sendMessage: (args: any) => any;
     conversationId: string;
     messages: MessageFullFragment[];
     loading: boolean;
@@ -121,13 +139,14 @@ interface MessagesComponentProps {
     messenger: MessengerEngine;
 }
 
-class MessagesComponent extends React.Component<MessagesComponentProps, { message: string, mounted: boolean, sending: boolean }> {
+class MessagesComponent extends React.Component<MessagesComponentProps, { message: string, mounted: boolean, sending: boolean, pending: { key: string, message: string }[] }> {
 
     scroller: any;
     state = {
         message: '',
         mounted: false,
-        sending: false
+        sending: false,
+        pending: []
     };
 
     unmounter: (() => void) | null = null;
@@ -141,13 +160,11 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
 
     handleSend = async () => {
         if (this.state.message.trim().length > 0) {
-            if (this.state.sending) {
-                return;
-            }
+            let key = UUID();
+            let message = this.state.message.trim();
             try {
-                this.setState({ sending: true });
-                let repeat = new Date().getTime();
-                await this.props.sendMessage({ variables: { message: this.state.message.trim(), repeatKey: repeat, conversationId: this.props.conversationId } });
+                this.setState((src) => ({ ...src, pending: [...src.pending, { key: key, message: message }] }));
+                await this.props.messenger.sendMessage(this.props.conversationId, message, key);
             } catch (e) {
                 if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
                     // Ignore
@@ -157,7 +174,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
                 }
             }
             this.scroller.scrollToBottom();
-            this.setState({ message: '', sending: false }, () => { this.xinput.focus(); });
+            this.setState((src) => ({ ...src, message: '', pending: src.pending.filter((v) => v.key !== key) }), () => { this.xinput.focus(); });
         }
     }
 
@@ -171,8 +188,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
         }
     }
 
-    shouldComponentUpdate(nextProps: { sendMessage: (args: any) => any, messages: MessageFullFragment[], loading: boolean }, nextState: { message: string, mounted: boolean, sending: boolean }) {
-        return this.props.messages !== nextProps.messages || this.state.message !== nextState.message || this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading || this.state.sending !== nextState.sending;
+    shouldComponentUpdate(nextProps: { messages: MessageFullFragment[], loading: boolean }, nextState: { message: string, mounted: boolean, sending: boolean, pending: { key: string, message: string }[] }) {
+        return this.props.messages !== nextProps.messages || this.state.message !== nextState.message || this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading || this.state.sending !== nextState.sending || this.state.pending !== nextState.pending;
     }
 
     componentDidMount() {
@@ -194,7 +211,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
                 <Container>
                     <MessagesContainer>
                         <XScrollViewReversed ref={this.handleScrollView}>
-                            <MessageList messages={this.props.messages} />
+                            <MessageList messages={this.props.messages} pending={this.state.pending} />
                         </XScrollViewReversed>
                     </MessagesContainer>
                     <MessengerReader conversationId={this.props.conversationId} lastMessageId={this.props.messages.length > 0 ? this.props.messages[0].id : null} />
@@ -230,22 +247,17 @@ class ConversationRoot extends React.Component<ConversationRootProps> {
                     client={this.props.client}
                     uid={this.props.uid}
                 />
-                <Mutation mutation={SendMessageMutation.document}>
-                    {(mutation) => (
-                        <MessengerContext.Consumer>
-                            {messenger => (
-                                <MessagesComponent
-                                    messages={this.props.messages}
-                                    loading={false}
-                                    uid={this.props.uid}
-                                    sendMessage={mutation}
-                                    conversationId={this.props.conversationId}
-                                    messenger={messenger}
-                                />
-                            )}
-                        </MessengerContext.Consumer>
+                <MessengerContext.Consumer>
+                    {messenger => (
+                        <MessagesComponent
+                            messages={this.props.messages}
+                            loading={false}
+                            uid={this.props.uid}
+                            conversationId={this.props.conversationId}
+                            messenger={messenger}
+                        />
                     )}
-                </Mutation>
+                </MessengerContext.Consumer>
             </>
         );
     }
