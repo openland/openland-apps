@@ -27,7 +27,6 @@ import { withOrganizationRemoveMember } from '../../../api/withOrganizationRemov
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { DateFormater } from 'openland-x-format/XDate';
-import { InvitesMoadal } from './invites';
 import { withRouter } from 'openland-x-routing/withRouter';
 
 export const CreateInviteButton = withInviteCreate((props) => (
@@ -89,6 +88,7 @@ const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
     if (!member) {
         return null;
     }
+    console.warn(member);
     return (
         <XModalForm
             submitProps={{
@@ -110,7 +110,7 @@ const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
                 <XAvatar size="medium" cloudImageUuid={member.user.picture || undefined} />
                 <XVertical separator={4} justifyContent="center">
                     <XText textStyle="h500">{member.user.name}</XText>
-                    {member.user.email && <XText opacity={0.5} >{member.user.email}</XText>}
+                    {member.email && <XText opacity={0.5} >{member.email}</XText>}
                 </XVertical>
             </XHorizontal>
         </XModalForm>
@@ -159,7 +159,7 @@ const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => 
         <XModalForm
             title={'Imagine ' + member.user.name + ' as ' + (props as any).orgName + '\'s'}
             defaultData={{
-                role: member.currentRole
+                role: member.role
             }}
 
             targetQuery="changeRole"
@@ -191,6 +191,12 @@ const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => 
 })) as React.ComponentType<{ orgName: string, members: any[], refetchVars: { orgId: string } }>;
 
 const OrgMembers = withOrganizationMembers((props) => {
+    let members = [...props.data.alphaOrganizationMembers || []].sort((a: any, b: any) => {
+        var nameA = a.user ? a.user.name : a.firstName || '' + a.lastname || '';
+        var nameB = b.user ? b.user.name : b.firstName || '' + b.lastname || '';
+        return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+    });
+
     return (
         <>
             <Table>
@@ -201,7 +207,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                 </XTable.Header>
 
                 <XTable.Body>
-                    {props.data.alphaOrganizationMembers && props.data.alphaOrganizationMembers.map((m) => (
+                    {members.map((m) => (
                         <Row>
                             <XTable.Cell>
                                 <XHorizontal >
@@ -231,7 +237,7 @@ const OrgMembers = withOrganizationMembers((props) => {
 
                             </XTable.Cell>
                             <XTable.Cell>
-                                <XText >{m.__typename === 'OrganizationJoinedMember' && m.joinedAt ? DateFormater(m.joinedAt) : ''}</XText>
+                                <XText >{m.__typename === 'OrganizationJoinedMember' ? (m.joinedAt ? DateFormater(m.joinedAt) : 'always been here') : 'not joined yet'}</XText>
                             </XTable.Cell>
                             <XWithRole role="admin" orgPermission={true}>
                                 <XTable.Cell textAlign="right">
@@ -270,9 +276,7 @@ const OrgMembers = withOrganizationMembers((props) => {
 export default withApp('Members', 'viewer', withInvites(withQueryLoader(withUserInfo((props) => {
     return (
         <Navigation title="Members">
-            <XHeader text="Members" >
-                <InvitesMoadal refetchVars={{ orgId: props.organization ? props.organization.id : '' }} />
-            </XHeader>
+            <XHeader text="Members" />
             <Content>
                 {/* <XHorizontal alignItems="center" justifyContent="space-between">
                     <XTitle marginTop={0} marginBottom={0}>Members</XTitle>

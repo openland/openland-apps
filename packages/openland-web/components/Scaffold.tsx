@@ -26,6 +26,7 @@ import { OrganizationPicker } from './OrganizationPicker';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
+import { InvitesMoadal } from '../pages/main/settings/invites';
 
 //
 // Root
@@ -252,6 +253,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                     </XVertical>
                                 </OrganizationTitleContainer>
                                 <XMenuItem path="/settings/organization">{TextGlobal.editProfile}</XMenuItem>
+                                <XMenuItem query={{ field: 'invite', value: 'true' }}>{TextGlobal.invite}</XMenuItem>
                                 <XMenuItem query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenuItem>
                             </>
                         )}
@@ -274,6 +276,8 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
             organizationName={props.organization ? props.organization.name : undefined}
             organizationId={props.organization ? props.organization.id : undefined}
         />
+        <InvitesMoadal targetQuery="invite" target={null}/>
+
     </XVertical>
 ));
 

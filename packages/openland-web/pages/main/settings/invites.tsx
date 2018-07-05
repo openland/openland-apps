@@ -16,6 +16,7 @@ import { XText } from 'openland-x/XText';
 import { XLink } from 'openland-x/XLink';
 import { XTextArea } from 'openland-x/XTextArea';
 import { withOrganizationInviteMember } from '../../../api/withOrganizationInviteMember';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 interface Invite {
     email?: string;
@@ -56,21 +57,39 @@ export class InviteComponent extends React.Component<{ invite: Invite, index: nu
         return (
             <XVertical>
                 <XHorizontal>
-                    <XFormField field={'invites.' + this.props.index + '.email'} title="Email Adress">
-                        <XInput field={'invites.' + this.props.index + '.email'} />
-                    </XFormField>
-                    <XFormField field={'invites.' + this.props.index + '.firstName'} title="First Name" optional={true}>
-                        <XInput field={'invites.' + this.props.index + '.firstName'} />
-                    </XFormField>
-                    <XFormField field={'invites.' + this.props.index + '.lastName'} title="Last Name" optional={true}>
-                        <XInput field={'invites.' + this.props.index + '.lastName'} />
-                    </XFormField>
-                    <XFormField field={'invites.' + this.props.index + '.role'} title="Role">
-                        <XSelect field={'invites.' + this.props.index + '.role'} searchable={false} clearable={false} options={[{ label: 'Owner', value: 'OWNER' }, { label: 'Member', value: 'MEMBER' }]} />
-                    </XFormField>
-                    <XFormField field="" title="">
-                        <DeleteButton hide={this.props.single} enabled={!this.props.single} icon="close" style="flat" onClick={() => this.props.handleRemove(this.props.index)} />
-                    </XFormField>
+                    {this.props.index === 0 && (
+                        <>
+                            <XFormField field={'invites.' + this.props.index + '.email'} title="Email Adress">
+                                <XInput placeholder="Email Adress" field={'invites.' + this.props.index + '.email'} />
+                            </XFormField>
+                            <XFormField field={'invites.' + this.props.index + '.firstName'} title="First Name" optional={true}>
+                                <XInput placeholder="First Name" field={'invites.' + this.props.index + '.firstName'} />
+                            </XFormField>
+                            <XFormField field={'invites.' + this.props.index + '.lastName'} title="Last Name" optional={true}>
+                                <XInput placeholder="Last Name" field={'invites.' + this.props.index + '.lastName'} />
+                            </XFormField>
+                            <XWithRole role="super-admin">
+                                <XFormField field={'invites.' + this.props.index + '.role'} title="Role">
+                                    <XSelect field={'invites.' + this.props.index + '.role'} searchable={false} clearable={false} options={[{ label: 'Owner', value: 'OWNER' }, { label: 'Member', value: 'MEMBER' }]} />
+                                </XFormField>
+                            </XWithRole>
+                            <XFormField field="" title="">
+                                <DeleteButton hide={this.props.single} enabled={!this.props.single} icon="close" style="flat" onClick={() => this.props.handleRemove(this.props.index)} />
+                            </XFormField>
+                        </>
+                    )}
+
+                    {this.props.index !== 0 && (
+                        <>
+                            <XInput placeholder="Email Adress" field={'invites.' + this.props.index + '.email'} />
+                            <XInput placeholder="First Name" field={'invites.' + this.props.index + '.firstName'} />
+                            <XInput placeholder="Last Name" field={'invites.' + this.props.index + '.lastName'} />
+                            <XWithRole role="super-admin">
+                                <XSelect field={'invites.' + this.props.index + '.role'} searchable={false} clearable={false} options={[{ label: 'Owner', value: 'OWNER' }, { label: 'Member', value: 'MEMBER' }]} />
+                            </XWithRole>
+                            <DeleteButton hide={this.props.single} enabled={!this.props.single} icon="close" style="flat" onClick={() => this.props.handleRemove(this.props.index)} />
+                        </>
+                    )}
 
                 </XHorizontal>
             </XVertical>
@@ -79,10 +98,13 @@ export class InviteComponent extends React.Component<{ invite: Invite, index: nu
     }
 }
 
-class InvitesMoadalRaw extends React.Component<{ target?: any, mutation: any }, {
-    customText?: string,
-    customTextAreaOpen?: boolean,
-}> {
+class InvitesMoadalRaw extends React.Component<{
+    target?: any, mutation: any,
+    targetQuery?: string
+}, {
+        customText?: string,
+        customTextAreaOpen?: boolean,
+    }> {
 
     constructor(props: any) {
         super(props);
@@ -111,10 +133,12 @@ class InvitesMoadalRaw extends React.Component<{ target?: any, mutation: any }, 
         return (
             <XModalForm
                 useTopCloser={true}
-                size="default"
+                size="large"
                 title="Invite your colleagues"
                 submitProps={{ text: 'Send Invitations' }}
+                targetQuery={(this.props as any).targetQuery}
                 defaultAction={async (data) => {
+                    // let invites = data.invites.fielter((invite: any) => invite.email || invite.firstName || invite.lastName).map((invite: any) => ({...invite, emailText: this.state.customTextAreaOpen ? data.customText : null}));
                     await this.props.mutation({
                         variables: {
                             email: data.invites[0].email,
@@ -126,37 +150,39 @@ class InvitesMoadalRaw extends React.Component<{ target?: any, mutation: any }, 
                     });
                 }}
                 scrollableContent={true}
-                target={this.props.target || <XButton text="Invite" />}
+                target={this.props.target === undefined ? <XButton text="Invite" /> : this.props.target}
                 defaultData={{
-                    invites: [{ role: 'MEMBER' }, { role: 'MEMBER' }, { role: 'MEMBER' }]
+                    invites: [{ email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }]
                 }}
             >
-                <XVertical>
-                    <XStoreContext.Consumer>
-                        {(store) => {
-                            let invites = store ? store.readValue('fields.invites') || [] : [];
-                            return (
-                                <>
-                                    {invites.map((invite: Invite, i: number) => <InviteComponent key={i} index={i} invite={invite} single={invites.length === 1} handleRemove={(index) => this.handleRemove(i, store)} />)}
+                <XVertical justifyContent="center" alignItems="center">
+                    <XVertical >
+                        <XStoreContext.Consumer>
+                            {(store) => {
+                                let invites = store ? store.readValue('fields.invites') || [] : [];
+                                return (
+                                    <>
+                                        {invites.map((invite: Invite, i: number) => <InviteComponent key={i} index={i} invite={invite} single={invites.length === 1} handleRemove={(index) => this.handleRemove(i, store)} />)}
 
-                                    < AddButton text=" + Add another" style="link" onClick={() => this.handleAdd(store)} alignSelf="flex-start" />
-                                </>
-                            );
-                        }}
-                    </XStoreContext.Consumer>
+                                        < AddButton text=" + Add another" style="link" onClick={() => this.handleAdd(store)} alignSelf="flex-start" />
+                                    </>
+                                );
+                            }}
+                        </XStoreContext.Consumer>
 
-                    {!this.state.customTextAreaOpen && <XText><ComposeButton onClick={() => this.setState({ customTextAreaOpen: true })} >Compose a custom message</ComposeButton> to make your invites more personal</XText>}
-                    {this.state.customTextAreaOpen && (
-                        <XHorizontal>
-                            <XFormFieldGrow field="customText" title="Custom Message">
-                                <XTextArea valueStoreKey="fields.customText" />
-                            </XFormFieldGrow>
-                            <XFormField field="" title="">
-                                <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ customTextAreaOpen: false })} />
-                            </XFormField>
-                        </XHorizontal>
-                    )}
+                        {!this.state.customTextAreaOpen && <XText><ComposeButton onClick={() => this.setState({ customTextAreaOpen: true })} >Compose a custom message</ComposeButton> to make your invites more personal</XText>}
+                        {this.state.customTextAreaOpen && (
+                            <XHorizontal>
+                                <XFormFieldGrow field="customText" title="Custom Message">
+                                    <XTextArea valueStoreKey="fields.customText" />
+                                </XFormFieldGrow>
+                                <XFormField field="" title="">
+                                    <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ customTextAreaOpen: false })} />
+                                </XFormField>
+                            </XHorizontal>
+                        )}
 
+                    </XVertical >
                 </XVertical >
 
             </XModalForm>
@@ -166,6 +192,6 @@ class InvitesMoadalRaw extends React.Component<{ target?: any, mutation: any }, 
 
 export const InvitesMoadal = withOrganizationInviteMember((props) => {
     return (
-        <InvitesMoadalRaw mutation={props.sendInvite} target={(props as any).target} />
+        <InvitesMoadalRaw mutation={props.sendInvite} targetQuery={(props as any).targetQuery} target={(props as any).target} />
     );
-}) as React.ComponentType<{ target?: any, refetchVars: { orgId: string } }>;
+}) as React.ComponentType<{ targetQuery?: string, target?: any, refetchVars?: { orgId: string } }>;
