@@ -1,5 +1,6 @@
 import { ConnectionStatus } from 'openland-x-graphql/apolloClient';
 import { ApolloClient } from 'apollo-client';
+import { delay } from 'openland-x-utils/timer';
 
 export class SequenceWatcher {
 
@@ -115,23 +116,50 @@ export class SequenceWatcher {
         if (!this.started) {
             return;
         }
-        let event = update.data.event;
-        let seq = event.seq as number;
 
-        // Too old
-        if (this.currentSeq !== null && seq <= this.currentSeq) {
-            console.info('[' + this.name + ']: Too old seq #' + seq);
-            return;
-        }
+        try {
+            if (update.errors && update.errors.length > 0) {
+                throw update.errors;
+            }
+            let event = update.data.event;
+            let seq = event.seq as number;
 
-        // Too new: invalidate
-        if (this.currentSeq !== null && seq > this.currentSeq + 1) {
-            console.info('[' + this.name + ']: Too new seq: ' + seq);
+            // Too old
+            if (this.currentSeq !== null && seq <= this.currentSeq) {
+                console.info('[' + this.name + ']: Too old seq #' + seq);
+                return;
+            }
 
-            // Too large
-            if (seq > this.currentSeq + 2) {
-                this.startSubsctiption();
-            } else {
+            // Too new: invalidate
+            if (this.currentSeq !== null && seq > this.currentSeq + 1) {
+                console.info('[' + this.name + ']: Too new seq: ' + seq);
+
+                // Too large
+                if (seq > this.currentSeq + 2 && !this.isHandling) {
+                    this.startSubsctiption();
+                } else {
+                    this.pending.push(update);
+                    if (!this.pendingTimeout) {
+                        this.pendingTimeout = window.setTimeout(
+                            () => {
+                                this.pendingTimeout = null;
+                                this.tryFlushPending(true);
+                            },
+                            3000);
+                    }
+
+                }
+                return;
+            }
+
+            // Reset Pending Flush
+            if (this.pendingTimeout) {
+                window.clearTimeout(this.pendingTimeout);
+                this.pendingTimeout = null;
+            }
+
+            // Push to pending if handling
+            if (this.isHandling) {
                 this.pending.push(update);
                 if (!this.pendingTimeout) {
                     this.pendingTimeout = window.setTimeout(
@@ -141,42 +169,51 @@ export class SequenceWatcher {
                         },
                         3000);
                 }
-
             }
-            return;
-        }
 
-        // Reset Pending Flush
-        if (this.pendingTimeout) {
-            window.clearTimeout(this.pendingTimeout);
-            this.pendingTimeout = null;
-        }
+            console.info('[' + this.name + ']: Next update #' + seq);
 
-        console.info('[' + this.name + ']: Next update #' + seq);
-
-        this.isHandling = true;
-        (async () => {
-            try {
-                let res = await this.eventHandler(event);
-                this.isHandling = false;
-                if (typeof res === 'number') {
-                    if (this.currentSeq !== res + 1) {
-                        this.tryFlushPending(false);
-                        this.startSubsctiption();
+            this.isHandling = true;
+            (async () => {
+                try {
+                    let res = await this.eventHandler(event);
+                    this.isHandling = false;
+                    if (typeof res === 'number') {
+                        if (this.currentSeq !== res + 1) {
+                            this.tryFlushPending(false);
+                            this.startSubsctiption();
+                        }
+                        this.currentSeq = res;
+                    } else {
+                        this.currentSeq = seq;
                     }
-                    this.currentSeq = res;
-                } else {
-                    this.currentSeq = seq;
+                } catch (e) {
+                    console.warn('[' + this.name + ']: Error');
+                    console.warn(e);
+                    console.info('Safe delay');
+                    await delay(1000);
+                    console.info('Safe delay: completed');
+                    this.isHandling = false;
+                    this.startSubsctiption();
                 }
-            } catch (e) {
-                console.warn('[' + this.name + ']: Error');
-                console.warn(e);
-                // Just Restart
-                this.isHandling = false;
-                this.startSubsctiption();
+                this.tryFlushPending(false);
+            })();
+        } catch (e) {
+            console.warn('[' + this.name + ']: Error');
+            console.warn(e);
+            if (!this.isHandling) {
+                this.isHandling = true;
+                (async () => {
+                    // Small delay
+                    console.info('Safe delay');
+                    await delay(1000);
+                    console.info('Safe delay: completed');
+                    // Restarting
+                    this.isHandling = false;
+                    this.startSubsctiption();
+                })();
             }
-            this.tryFlushPending(false);
-        })();
+        }
     }
 
     private handleConnectionChanged = (isConnected: boolean) => {

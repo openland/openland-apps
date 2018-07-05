@@ -3,12 +3,12 @@ import { ApolloClient } from 'apollo-client';
 import gql from 'graphql-tag';
 import { SequenceWatcher } from './SequenceWatcher';
 import { GlobalCounterQuery } from 'openland-api/GlobalCounterQuery';
-import { defaultDataIdFromObject } from 'apollo-cache-inmemory';
+import { defaultDataIdFromObject, ID_KEY } from 'apollo-cache-inmemory';
 import { backoff } from 'openland-x-utils/timer';
 import { ChatReadMutation } from 'openland-api/ChatReadMutation';
 import { Badge } from './Badge';
 import { Router } from '../../routes';
-// import Notify from 'notifyjs';
+import { ChatListQuery } from 'openland-api';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($seq: Int) {
@@ -18,6 +18,10 @@ let GLOBAL_SUBSCRIPTION = gql`
                 unread
                 globalUnread
                 conversationId
+                conversation {
+                    id
+                    title
+                }
             }
             ... on UserEventRead {
                 unread
@@ -47,14 +51,13 @@ export class MessengerEngine {
     private openedConversations = new Map<string, { count: number, unread: number }>();
     private pendoingReaders = new Map<string, string>();
     private isVisible = true;
-    private globalWatcher: SequenceWatcher;
+    private globalWatcher: SequenceWatcher | null = null;
     private notify = backoff(() => import('notifyjs'));
     private badge = new Badge();
     private close: any = null;
 
     constructor(client: ApolloClient<{}>) {
         this.client = client;
-        this.globalWatcher = new SequenceWatcher('global', GLOBAL_SUBSCRIPTION, null, {}, this.handleGlobalEvent, this.client);
         backoff(() => import('ifvisible.js')).then((v) => {
             v.on('idle', () => {
                 this.isVisible = false;
@@ -72,10 +75,29 @@ export class MessengerEngine {
             }
         });
         this.badge.init();
+        this.doStart();
+    }
+
+    private doStart = async () => {
+        let res = await backoff(async () => {
+            let r = await this.client.query({
+                query: ChatListQuery.document
+            });
+            if (r.errors) {
+                console.warn(r.errors);
+                throw Error('Try again!');
+            }
+            return r.data;
+        });
+        let seq = (res as any).chats.seq;
+        this.globalWatcher = new SequenceWatcher('global', GLOBAL_SUBSCRIPTION, seq, {}, this.handleGlobalEvent, this.client);
     }
 
     destroy() {
-        this.globalWatcher.destroy();
+        if (this.globalWatcher) {
+            this.globalWatcher.destroy();
+            this.globalWatcher = null;
+        }
     }
 
     readConversation(conversationId: string, messageId: string) {
@@ -136,9 +158,35 @@ export class MessengerEngine {
         if (event.__typename === 'UserEventMessage') {
             let visible = this.openedConversations.has(event.conversationId) && this.isVisible;
             this.writeGlobalCounter(event.globalUnread, visible);
-            this.writeConversationCounter(event.conversationId, event.unread, visible);
             if (!visible) {
                 this.handleNewMessage(event.conversationId);
+            }
+            let data = this.client.readQuery({
+                query: ChatListQuery.document
+            }) as any;
+            if (data) {
+                data.chats.seq = event.seq;
+                let exIndex = data.chats.conversations.findIndex((v: any) => v.id === event.conversationId);
+                if (exIndex >= 0) {
+                    let ids = data.chats.conversations.map((v: any) => v[ID_KEY]);
+                    let c = data.chats.conversations[exIndex];
+                    c.unreadCount = event.unread;
+                    data.chats.conversations.splice(exIndex, 1);
+                    data.chats.conversations.unshift(c);
+                    data.chats.conversations = data.chats.conversations.map((v: any, i: number) => ({ ...v, [ID_KEY]: ids[i] }));
+                } else {
+                    data.chats.conversations.unshift({
+                        __typename: event.conversation.__typename,
+                        id: event.conversation.id,
+                        title: event.conversation.title,
+                        unreadCount: event.unread,
+                        [ID_KEY]: defaultDataIdFromObject(event.conversation)
+                    });
+                }
+                this.client.writeQuery({
+                    query: ChatListQuery.document,
+                    data: data
+                });
             }
         } else if (event.__typename === 'UserEventRead') {
             let visible = this.openedConversations.has(event.conversationId) && this.isVisible;

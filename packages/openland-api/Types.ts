@@ -427,6 +427,31 @@ export interface AllChatsQuery {
   ) >,
 };
 
+export interface ChatListQuery {
+  chats:  {
+    __typename: "ConversationConnection",
+    conversations:  Array<( {
+        __typename: "AnonymousConversation",
+        id: string,
+        title: string,
+        unreadCount: number,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+        title: string,
+        unreadCount: number,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+        title: string,
+        unreadCount: number,
+      }
+    ) >,
+    seq: number,
+    next: string | null,
+  },
+};
+
 export interface GlobalCounterQuery {
   counter:  {
     __typename: "NotificationCounter",
@@ -1883,7 +1908,7 @@ export interface ExploreOrganizationsQuery {
       pagesCount: number,
       openEnded: boolean,
     },
-  } | null,
+  },
 };
 
 export interface CreateListingMutationVariables {
@@ -1987,21 +2012,24 @@ export interface OrganizationMembersQueryVariables {
 };
 
 export interface OrganizationMembersQuery {
-  alphaOrganizationMembers:  Array< {
-    __typename: "OrganizationMember",
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      firstName: string,
-      lastName: string | null,
-      picture: string | null,
+  alphaOrganizationMembers:  Array<( {
+      __typename: "OrganizationMember",
+      user:  {
+        __typename: string,
+        id: string,
+        name: string,
+        firstName: string,
+        lastName: string | null,
+        picture: string | null,
+        email: string | null,
+      },
+      joinedAt: string | null,
       email: string | null,
-    },
-    joinedAt: string,
-    email: string | null,
-    role: OrganizationMemberRole,
-  } >,
+      role: OrganizationMemberRole,
+    } | {
+      __typename: "OrganizationIvitedMember",
+    }
+  ) >,
 };
 
 export interface OrganizationChangeMemberRoleMutationVariables {
@@ -2010,7 +2038,7 @@ export interface OrganizationChangeMemberRoleMutationVariables {
 };
 
 export interface OrganizationChangeMemberRoleMutation {
-  alphaOrganizationChangeMemberRole: string | null,
+  alphaOrganizationChangeMemberRole: string,
 };
 
 export interface OrganizationRemoveMemberMutationVariables {
@@ -2018,7 +2046,7 @@ export interface OrganizationRemoveMemberMutationVariables {
 };
 
 export interface OrganizationRemoveMemberMutation {
-  alphaOrganizationRemoveMember: string | null,
+  alphaOrganizationRemoveMember: string,
 };
 
 export interface BlocksConnectionQueryVariables {

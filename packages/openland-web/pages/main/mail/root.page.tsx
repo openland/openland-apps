@@ -10,12 +10,13 @@ import { MessengerComponent } from '../../../components/messenger/MessengerCompo
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHeader } from 'openland-x/XHeader';
 import { withAllChats } from '../../../api/withAllChats';
-import { makeNavigable } from 'openland-x/Navigable';
+// import { makeNavigable } from 'openland-x/Navigable';
 import { withChatPrivate } from '../../../api/withChatPrivate';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XLoader } from 'openland-x/XLoader';
 import { withChatOrganization } from '../../../api/withChatOrganization';
 import { withChat } from '../../../api/withChat';
+import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -38,14 +39,10 @@ let ConversationContainer = Glamorous.div({
     height: '100vh'
 });
 
-let ItemContainer = Glamorous.a({
-    fontSize: '15px',
-    color: '#fff'
-});
-
-let Item = makeNavigable((props) => {
-    return <ItemContainer href={props.href} target={props.hrefTarget} onClick={props.onClick}>{props.children}</ItemContainer>;
-});
+// let ItemContainer = Glamorous.a({
+//     fontSize: '15px',
+//     color: '#fff'
+// });
 
 let PrivateConversation = withChatPrivate(withQueryLoader((props) => {
     return (
@@ -84,9 +81,10 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ChatContainer>
                         <ChatListContainer>
-                            {props.data.chats.map((v) => (
+                            {/* {props.data.chats.map((v) => (
                                 <Item path={'/mail/' + v.id}>{v.title} ({v.unreadCount.toString()}}</Item>
-                            ))}
+                            ))} */}
+                            <ChatsComponent />
                         </ChatListContainer>
                         <ConversationContainer>
                             {props.router.routeQuery.conversationId && <Conversation variables={{ conversationId: props.router.routeQuery.conversationId }} />}

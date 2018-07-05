@@ -31,6 +31,7 @@ export const ProfilePrefillQuery = typedQuery<Types.ProfilePrefillQuery, {}>(Acc
 export const StateQuery = typedQuery<Types.StateQuery, {}>(Addressing.StateQuery);
 export const CountyQuery = typedQuery<Types.CountyQuery, Types.CountyQueryVariables>(Addressing.CountyQuery);
 export const AllChatsQuery = typedQuery<Types.AllChatsQuery, {}>(Chats.AllChatsQuery);
+export const ChatListQuery = typedQuery<Types.ChatListQuery, {}>(Chats.ChatListQuery);
 export const GlobalCounterQuery = typedQuery<Types.GlobalCounterQuery, {}>(Chats.GlobalCounterQuery);
 export const ChatQuery = typedQuery<Types.ChatQuery, Types.ChatQueryVariables>(Chats.ChatQuery);
 export const ChatPrivateQuery = typedQuery<Types.ChatPrivateQuery, Types.ChatPrivateQueryVariables>(Chats.ChatPrivateQuery);

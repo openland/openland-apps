@@ -12,6 +12,20 @@ export const AllChatsQuery = gql`
     }
 `;
 
+export const ChatListQuery = gql`
+    query ChatList {
+        chats: alphaChats(first: 20) {
+            conversations {
+                id
+                title
+                unreadCount
+            }
+            seq
+            next
+        }
+    }
+`;
+
 export const GlobalCounterQuery = gql`
     query GlobalCounter {
         counter: alphaNotificationCounter {
