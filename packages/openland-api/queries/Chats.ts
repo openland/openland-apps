@@ -71,8 +71,8 @@ export const ChatOrganizationQuery = gql`
 `;
 
 export const SendMessageMutation = gql`
-    mutation SendMessage($conversationId: ID!, $message: String!, $repeatKey: String!) {
-        sentMessage: alphaSendMessage(conversationId: $conversationId, message: $message, repeatKey: $repeatKey) {
+    mutation SendMessage($conversationId: ID!, $message: String, $file: String, $repeatKey: String!) {
+        sentMessage: alphaSendMessage(conversationId: $conversationId, message: $message, file: $file, repeatKey: $repeatKey) {
             seq
             ... on ConversationEventMessage {
                 message {

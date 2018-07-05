@@ -20,6 +20,8 @@ import { MessengerReader } from './MessengerReader';
 import { MessengerContext, MessengerEngine } from './MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import UUID from 'uuid/v4';
+import * as UploadCare from 'uploadcare-widget';
+import { getConfig } from '../../config';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -124,7 +126,7 @@ class MessageList extends React.Component<{ messages: MessageFullFragment[], pen
                     <MessageComponent message={v} key={v.id} />
                 ))}
                 {this.props.pending.map((v) => (
-                    <PendingMessage key={v.key} message={v.message}/>
+                    <PendingMessage key={v.key} message={v.message} />
                 ))}
             </MessagesWrapper>
         );
@@ -156,6 +158,16 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
         if (src) {
             this.scroller = src;
         }
+    }
+
+    handleAttach = () => {
+        let dialog = UploadCare.openDialog(null, {
+            publicKey: getConfig().uploadcareKey!!,
+            imageShrink: '1024x1024',
+        });
+        dialog.done((r) => {
+            this.props.messenger.sendFile(this.props.conversationId, r, UUID());
+        });
     }
 
     handleSend = async () => {
@@ -216,6 +228,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
                     </MessagesContainer>
                     <MessengerReader conversationId={this.props.conversationId} lastMessageId={this.props.messages.length > 0 ? this.props.messages[0].id : null} />
                     <SendMessageContainer>
+                        <XButton icon="add" size="medium" onClick={this.handleAttach} />
                         <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} disabled={this.state.sending} ref={this.handleRef} />
                         <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" loading={this.state.sending} />
                     </SendMessageContainer>

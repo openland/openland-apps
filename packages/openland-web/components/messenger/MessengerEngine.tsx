@@ -122,6 +122,31 @@ export class MessengerEngine {
         }
     }
 
+    async sendFile(conversationId: string, file: UploadCare.File, key: string) {
+        let res = await new Promise<UploadCare.FileInfo>((resolver) => {
+            file.done((f) => {
+                resolver(f);
+            });
+        });
+        try {
+            await this.client.mutate({
+                mutation: SendMessageMutation.document,
+                variables: {
+                    file: res.uuid,
+                    repeatKey: key,
+                    conversationId: conversationId
+                }
+            });
+        } catch (e) {
+            if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
+                // Ignore
+            } else {
+                // Just ignore for now
+                console.warn(e);
+            }
+        }
+    }
+
     async sendMessage(conversationId: string, message: string, key: string) {
         try {
             message = message.trim();
