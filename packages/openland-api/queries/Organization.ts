@@ -170,13 +170,14 @@ export const OrganizationMembersQuery = gql`
     query OrganizationMembers($orgId: ID!) {
         alphaOrganizationMembers(orgId: $orgId) {
             ... on  OrganizationJoinedMember{
-            user{
-                ...UserShort
-            }
-            joinedAt
+                user {
+                    ...UserShort
+                }
+                joinedAt
             }
             ... on  OrganizationIvitedMember{
-                name
+                firstName
+                lastName
                 inviteId
             }
             email

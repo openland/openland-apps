@@ -544,7 +544,8 @@ export interface ChatOrganizationQuery {
 
 export interface SendMessageMutationVariables {
   conversationId: string,
-  message: string,
+  message?: string | null,
+  file?: string | null,
   repeatKey: string,
 };
 
@@ -2014,7 +2015,8 @@ export interface OrganizationMembersQueryVariables {
 export interface OrganizationMembersQuery {
   alphaOrganizationMembers:  Array<( {
       __typename: "OrganizationIvitedMember",
-      name: string | null,
+      firstName: string | null,
+      lastName: string | null,
       inviteId: string,
       email: string,
       role: OrganizationMemberRole,
