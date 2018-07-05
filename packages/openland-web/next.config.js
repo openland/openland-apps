@@ -119,14 +119,14 @@ const config = {
         //             level: 'debug',
         //         }
         //     }))
-        if (isServer && !dev) {
-            config.plugins.unshift(new HardSourceWebpackPlugin({
-                cacheDirectory: cacheDir + '/hard-source/server/[confighash]',
-                info: {
-                    level: 'error',
-                }
-            }))
-        }
+        // if (isServer && !dev) {
+        //     config.plugins.unshift(new HardSourceWebpackPlugin({
+        //         cacheDirectory: cacheDir + '/hard-source/server/[confighash]',
+        //         info: {
+        //             level: 'error',
+        //         }
+        //     }))
+        // }
 
         // Happy Pack (no improvements)
         // config.module.rules = config.module.rules.map((v) => {
