@@ -199,7 +199,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
             let key = UUID();
             let message = this.state.message.trim();
             try {
-                this.setState((src) => ({ ...src, pending: [...src.pending, { key: key, message: message }] }));
+                this.setState((src) => ({ ...src, message: '', pending: [...src.pending, { key: key, message: message }] }));
                 await this.props.messenger.sendMessage(this.props.conversationId, message, key);
             } catch (e) {
                 if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
