@@ -7,6 +7,7 @@ import { defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { backoff } from 'openland-x-utils/timer';
 import { ChatReadMutation } from 'openland-api/ChatReadMutation';
 import { Badge } from './Badge';
+import { Router } from '../../routes';
 // import Notify from 'notifyjs';
 
 let GLOBAL_SUBSCRIPTION = gql`
@@ -139,7 +140,7 @@ export class MessengerEngine {
             this.writeGlobalCounter(event.globalUnread, visible);
             this.writeConversationCounter(event.conversationId, event.unread, visible);
             if (!visible) {
-                this.handleNewMessage();
+                this.handleNewMessage(event.conversationId);
             }
         } else if (event.__typename === 'UserEventRead') {
             let visible = this.openedConversations.has(event.conversationId) && this.isVisible;
@@ -148,7 +149,7 @@ export class MessengerEngine {
         }
     }
 
-    private handleNewMessage = () => {
+    private handleNewMessage = (conversationId: string) => {
         var audio = new Audio('/static/sounds/notification.mp3');
         audio.play();
         this.notify.then((v) => {
@@ -164,6 +165,8 @@ export class MessengerEngine {
                             this.close.close();
                             this.close = null;
                         }
+                        Router.replaceRoute('/mail/' + conversationId);
+                        window.focus();
                     }
                 });
                 this.close = not;
