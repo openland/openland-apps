@@ -192,8 +192,8 @@ const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => 
 
 const OrgMembers = withOrganizationMembers((props) => {
     let members = [...props.data.alphaOrganizationMembers || []].sort((a: any, b: any) => {
-        var nameA = a.user ? a.user.name : a.firstName || '' + a.lastname || '';
-        var nameB = b.user ? b.user.name : b.firstName || '' + b.lastname || '';
+        var nameA = String(a.user ? (a.user.name || '') : a.firstName || '' + a.lastname || '').toLowerCase();
+        var nameB = String(b.user ? (b.user.name || '') : b.firstName || '' + b.lastname || '').toLowerCase();
         return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
     });
 
