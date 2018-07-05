@@ -10,6 +10,7 @@ import { Badge } from './Badge';
 import { Router } from '../../routes';
 import { ChatListQuery } from 'openland-api';
 import { speakText } from './Speak';
+import { SendMessageMutation } from 'openland-api/SendMessageMutation';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($seq: Int) {
@@ -20,6 +21,7 @@ let GLOBAL_SUBSCRIPTION = gql`
                 globalUnread
                 conversationId
                 isOut
+                repeatKey
                 conversation {
                     id
                     title
@@ -117,6 +119,30 @@ export class MessengerEngine {
             });
         } else {
             this.pendoingReaders.set(conversationId, messageId);
+        }
+    }
+
+    async sendMessage(conversationId: string, message: string, key: string) {
+        try {
+            message = message.trim();
+            if (message.length === 0) {
+                return;
+            }
+            await this.client.mutate({
+                mutation: SendMessageMutation.document,
+                variables: {
+                    message: message.trim(),
+                    repeatKey: key,
+                    conversationId: conversationId
+                }
+            });
+        } catch (e) {
+            if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
+                // Ignore
+            } else {
+                // Just ignore for now
+                console.warn(e);
+            }
         }
     }
 

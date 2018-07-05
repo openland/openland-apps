@@ -14,6 +14,7 @@
 		"@types/notifyjs": "^3.0.0",
 		"@types/react-test-renderer": "^16.0.1",
 		"@types/url-parse": "^1.1.0",
+		"@types/uuid": "^3.4.3",
 		"@types/ws": "^5.1.2",
 		"@zeit/next-source-maps": "^0.0.2",
 		"apollo-cache-inmemory": "^1.1.4",
@@ -83,7 +84,8 @@
 		"subscriptions-transport-ws": "^0.9.11",
 		"uploadcare-widget": "^3.2.1",
 		"url": "^0.11.0",
-		"url-parse": "^1.4.1"
+		"url-parse": "^1.4.1",
+		"uuid": "^3.3.2"
 	},
 	"devDependencies": {
 		"@babel/preset-typescript": "7.0.0-beta.42",
