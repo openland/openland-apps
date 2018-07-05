@@ -127,7 +127,7 @@ exports[`XButton should render correctly 1`] = `
     tabIndex={-1}
   >
     <div
-      className="css-5"
+      className="css-5 main-content"
     >
       <span
         className="css-6"

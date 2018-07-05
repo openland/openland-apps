@@ -18,6 +18,7 @@ import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XStreetViewModalPreview } from 'openland-x-map/XStreetViewModalPreview';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { XModal } from 'openland-x-modal/XModal';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XInput } from 'openland-x/XInput';
 import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
@@ -107,6 +108,7 @@ interface XVerticalStyledProps {
     marginTop?: number;
     marginBottom?: number;
     maxwidth?: string | number;
+    width2?: string | number;
 }
 
 const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
@@ -119,7 +121,8 @@ const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
     paddingBottom: props.paddingBottom,
     marginTop: props.marginTop,
     marginBottom: props.marginBottom,
-    maxWidth: props.maxwidth
+    maxWidth: props.maxwidth,
+    width: props.width2
 }));
 
 const SwitcherWrapper = Glamorous(XSwitcher)<{ height?: number, smallText?: boolean }>((props) => ({
@@ -676,7 +679,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                         <PlaceholderDO style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 184px)' : 'calc(100% - 157px)'}>
-                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%', width: '100%' }}>
                             <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 3 : 0}>
                                 <ListingTitleWrapper>
                                     <ListingTitle>{item.name}</ListingTitle>
@@ -684,8 +687,7 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
                                 </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
-                                        marginRight={item.location ? 92 : 50}
-                                        placement="bottom"
+                                        placement="bottom-end"
                                         content={(
                                             <>
                                                 <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowEdit}</XOverflow.Item>
@@ -726,7 +728,8 @@ class DevelopmentOportunity extends React.Component<{ item: DevelopmentOportunit
 }
 
 const AcquizitionRequestPhoto = Glamorous(XCloudImage)({
-    borderRadius: 4
+    borderRadius: 4,
+    margin: 'auto'
 });
 
 interface AcquizitionRequestProps {
@@ -790,13 +793,23 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                 <XHorizontalStyled justifyContent="space-between" separator={12} padding={24}>
 
                     {item.photo && (
-                        <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
+                        <XModal
+                            useTopCloser={true}
+                            title={item.name}
+                            target={(
+                                <XLink>
+                                    <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={full ? 160 : 133} height={full ? 120 : 100} />
+                                </XLink>
+                            )}
+                        >
+                            <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={500} height={400} />
+                        </XModal>
                     )}
                     {!item.photo && (
                         <PlaceholderAR style={{ width: full ? 160 : 133, height: full ? 120 : 100 }} />
                     )}
                     <XHorizontalStyled flexGrow={1} maxwidth={full ? 'calc(100% - 175px)' : 'calc(100% - 148px)'}>
-                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%', width: '100%' }}>
                             <XHorizontalStyled justifyContent="space-between" alignItems="center" marginBottom={full ? 3 : 4}>
                                 <ListingTitleWrapper>
                                     <ListingTitle>{item.name}</ListingTitle>
@@ -804,7 +817,6 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                                 </ListingTitleWrapper>
                                 <XWithRole role={['org-' + this.props.orgId + '-admin']}>
                                     <XOverflow
-                                        marginRight={50}
                                         placement="bottom"
                                         content={(
                                             <>
@@ -1242,9 +1254,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             path="/settings/organization"
                                         />
                                         <XOverflow
-                                            placement="bottom"
+                                            placement="bottom-end"
                                             width={220}
-                                            marginRight={92}
                                             target={
                                                 <AddListingButton>
                                                     <span>{TextOrganizationProfile.headerButtonAddListing}</span>
@@ -1266,7 +1277,11 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                         <MainContentWrapper>
                             <MainContent>
-                                <XVerticalStyled flexGrow={1} maxwidth={currentPath === rootPath ? 'calc(100% - 286px)' : '100%'}>
+                                <XVerticalStyled
+                                    flexGrow={1}
+                                    maxwidth={currentPath === rootPath ? 'calc(100% - 286px)' : '100%'}
+                                    width2={currentPath === rootPath ? 'calc(100% - 286px)' : '100%'}
+                                >
                                     <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
                                         {currentPath === rootPath && (
                                             <>

@@ -25,7 +25,7 @@ export class UserInfoProvider extends React.Component<{
 
     render() {
         return (
-            <XRoleContext.Provider value={{ roles: this.props.roles }}>
+            <XRoleContext.Provider value={{ roles: this.props.roles, currentOrganizatonId: this.props.organization ? this.props.organization.id : undefined }}>
                 {this.props.children}
             </XRoleContext.Provider>
         );

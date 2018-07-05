@@ -1,22 +1,20 @@
 import * as React from 'react';
 import { XRoleContext } from './XRoleContext';
-export const XWithRole = (props: { role: string | string[], negate?: boolean, children?: any }) => {
+export const XWithRole = (props: { role: string | string[], orgPermission?: boolean, negate?: boolean, children?: any }) => {
     return (
         <XRoleContext.Consumer>
             {userRoles => {
                 if (!userRoles) {
                     return <>{props.children}</>;
                 }
+                let targetRoles = (Array.isArray(props.role) ? props.role : [props.role]).map(r => props.orgPermission ? ('org-' + (userRoles.currentOrganizatonId || '') + '-' + r) : r);
+
                 let hasRole = false;
-                if (Array.isArray(props.role)) {
-                    for (let r of props.role) {
-                        if (userRoles.roles.indexOf(r) >= 0) {
-                            hasRole = true;
-                            break;
-                        }
+                for (let r of targetRoles) {
+                    if (userRoles.roles.indexOf(r) >= 0) {
+                        hasRole = true;
+                        break;
                     }
-                } else {
-                    hasRole = userRoles.roles.indexOf(props.role) >= 0;
                 }
                 if (props.negate) {
                     if (!hasRole) {

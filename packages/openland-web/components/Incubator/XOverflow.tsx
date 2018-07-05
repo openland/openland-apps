@@ -66,7 +66,8 @@ export const XMenuItem = Glamorous(XLink)<{ style?: 'danger' | 'default' }>((pro
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     ':hover': {
-        backgroundColor: '#f8f8fb'
+        color: props.style === 'danger' ? '#ec6262' : '#6b50ff',
+        backgroundColor: props.style === 'danger' ? '#fbeded' : '#f8f8fb'
     }
 }));
 
@@ -77,10 +78,6 @@ interface XOverflowProps {
     width?: number;
     target?: any;
     shadow?: boolean;
-    marginLeft?: number;
-    marginRight?: number;
-    marginTop?: number;
-    marginBottom?: number;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -142,10 +139,6 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                     placement={this.props.placement || 'auto'}
                     width={this.props.width}
                     onClickOutside={this.handleClose}
-                    marginLeft={this.props.marginLeft}
-                    marginRight={this.props.marginRight}
-                    marginTop={this.props.marginTop}
-                    marginBottom={this.props.marginBottom}
                 >
                     {targetElement ? targetElement : (
                         <DottedMenuButtonStyle onClick={this.switch} active={this.state.show} innerRef={this.createRef}>

@@ -143,6 +143,12 @@ export interface AlphaOrganizationListingLinkInput {
   url: string,
 };
 
+export enum OrganizationMemberRole {
+  OWNER = "OWNER",
+  MEMBER = "MEMBER",
+}
+
+
 export enum OwnerType {
   CITY = "CITY",
   MIXED = "MIXED",
@@ -402,11 +408,56 @@ export interface CountyQuery {
 };
 
 export interface AllChatsQuery {
-  chats:  Array< {
-    __typename: "Conversation",
+  chats:  Array<( {
+      __typename: "AnonymousConversation",
+      id: string,
+      title: string,
+      unreadCount: number,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      title: string,
+      unreadCount: number,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      title: string,
+      unreadCount: number,
+    }
+  ) >,
+};
+
+export interface ChatListQuery {
+  chats:  {
+    __typename: "ConversationConnection",
+    conversations:  Array<( {
+        __typename: "AnonymousConversation",
+        id: string,
+        title: string,
+        unreadCount: number,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+        title: string,
+        unreadCount: number,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+        title: string,
+        unreadCount: number,
+      }
+    ) >,
+    seq: number,
+    next: string | null,
+  },
+};
+
+export interface GlobalCounterQuery {
+  counter:  {
+    __typename: "NotificationCounter",
     id: string,
-    title: string,
-  } >,
+    unreadCount: number,
+  },
 };
 
 export interface ChatQueryVariables {
@@ -414,11 +465,20 @@ export interface ChatQueryVariables {
 };
 
 export interface ChatQuery {
-  chat:  {
-    __typename: "Conversation",
-    id: string,
-    title: string,
-  },
+  chat: ( {
+      __typename: "AnonymousConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      title: string,
+    }
+  ),
   messages:  {
     __typename: "ConversationState",
     seq: number,
@@ -440,9 +500,52 @@ export interface ChatQuery {
   },
 };
 
+export interface ChatPrivateQueryVariables {
+  userId: string,
+};
+
+export interface ChatPrivateQuery {
+  chat: ( {
+      __typename: "AnonymousConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      title: string,
+    }
+  ),
+};
+
+export interface ChatOrganizationQueryVariables {
+  orgId: string,
+};
+
+export interface ChatOrganizationQuery {
+  chat: ( {
+      __typename: "AnonymousConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      title: string,
+    }
+  ),
+};
+
 export interface SendMessageMutationVariables {
   conversationId: string,
   message: string,
+  repeatKey: string,
 };
 
 export interface SendMessageMutation {
@@ -464,6 +567,36 @@ export interface SendMessageMutation {
       },
       date: string,
     },
+  },
+};
+
+export interface ChatReadMutationVariables {
+  conversationId: string,
+  messageId: string,
+};
+
+export interface ChatReadMutation {
+  alphaReadChat:  {
+    __typename: "ChatReadResult",
+    counter:  {
+      __typename: "NotificationCounter",
+      id: string,
+      unreadCount: number,
+    },
+    conversation: ( {
+        __typename: "AnonymousConversation",
+        id: string,
+        unreadCount: number,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+        unreadCount: number,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+        unreadCount: number,
+      }
+    ),
   },
 };
 
@@ -1748,6 +1881,36 @@ export interface FollowOrganizationMutation {
   },
 };
 
+export interface ExploreOrganizationsQueryVariables {
+  query?: string | null,
+  page?: number | null,
+};
+
+export interface ExploreOrganizationsQuery {
+  items:  {
+    __typename: "OrganizationsConnection",
+    edges:  Array< {
+      __typename: "OrganizationsEdge",
+      node:  {
+        __typename: "Organization",
+        id: string,
+        name: string,
+        photo: string | null,
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+  },
+};
+
 export interface CreateListingMutationVariables {
   type: string,
   input: AlphaOrganizationListingInput,
@@ -1842,6 +2005,52 @@ export interface DeleteListingMutationVariables {
 
 export interface DeleteListingMutation {
   alphaOrganizationDeleteListing: string,
+};
+
+export interface OrganizationMembersQueryVariables {
+  orgId: string,
+};
+
+export interface OrganizationMembersQuery {
+  alphaOrganizationMembers:  Array<( {
+      __typename: "OrganizationIvitedMember",
+      name: string | null,
+      inviteId: string,
+      email: string,
+      role: OrganizationMemberRole,
+    } | {
+      __typename: "OrganizationJoinedMember",
+      user:  {
+        __typename: string,
+        id: string,
+        name: string,
+        firstName: string,
+        lastName: string | null,
+        picture: string | null,
+        email: string | null,
+      },
+      joinedAt: string | null,
+      email: string,
+      role: OrganizationMemberRole,
+    }
+  ) >,
+};
+
+export interface OrganizationChangeMemberRoleMutationVariables {
+  memberId: string,
+  newRole: OrganizationMemberRole,
+};
+
+export interface OrganizationChangeMemberRoleMutation {
+  alphaOrganizationChangeMemberRole: string,
+};
+
+export interface OrganizationRemoveMemberMutationVariables {
+  memberId: string,
+};
+
+export interface OrganizationRemoveMemberMutation {
+  alphaOrganizationRemoveMember: string,
 };
 
 export interface BlocksConnectionQueryVariables {

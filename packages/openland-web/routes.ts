@@ -42,8 +42,8 @@ routes.add('/map/', '/main/explore/root');
 
 routes.add('/settings/profile', '/main/settings/profile');
 routes.add('/settings/profile/', '/main/settings/profile');
-routes.add('/settings/invites', '/main/settings/invites');
-routes.add('/settings/invites/', '/main/settings/invites');
+routes.add('/settings/members', '/main/settings/members');
+routes.add('/settings/members/', '/main/settings/members/');
 routes.add('/settings/organization', '/main/settings/organization');
 routes.add('/settings/organization/', '/main/settings/organization');
 
@@ -173,6 +173,19 @@ routes.add('/favorites', '/main/favorites/root');
 routes.add('/favorites/', '/main/favorites/root');
 routes.add('/inquiries', '/main/inquiries/root');
 routes.add('/inquiries/', '/main/inquiries/root');
+
+//
+// Mail
+//
+
+routes.add('/mail', '/main/mail/root');
+routes.add('/mail/', '/main/mail/root');
+routes.add('/mail/u/:userId', '/main/mail/root');
+routes.add('/mail/u/:userId/', '/main/mail/root');
+routes.add('/mail/o/:orgId', '/main/mail/root');
+routes.add('/mail/o/:orgId/', '/main/mail/root');
+routes.add('/mail/:conversationId', '/main/mail/root');
+routes.add('/mail/:conversationId/', '/main/mail/root');
 
 //
 // UI

@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { OrganizationFull } from '../fragments/OrganizationFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
+import { UserShort } from '../fragments/UserShort';
 
 export const MyOrganizationQuery = gql`
     query MyOrganization {
@@ -55,6 +56,28 @@ export const FollowOrganizationMutation = gql`
             alphaFollowed
         }
     }
+`;
+
+export const ExploreOrganizationsQuery = gql`
+    query ExploreOrganizations($query: String, $page: Int) {
+        items: alphaOrganizations(query: $query, page: $page, first: 50) {
+            edges {
+                node {
+                    ...OrganizationShort
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+                openEnded
+            }
+        }
+    }
+    ${OrganizationShort}
 `;
 
 export const CreateListingMutation = gql`
@@ -140,5 +163,37 @@ export const EditListingMutation = gql`
 export const DeleteListingMutation = gql`
     mutation DeleteListing($id: ID!) {
         alphaOrganizationDeleteListing(id: $id)
+    }
+`;
+
+export const OrganizationMembersQuery = gql`
+    query OrganizationMembers($orgId: ID!) {
+        alphaOrganizationMembers(orgId: $orgId) {
+            ... on  OrganizationJoinedMember{
+            user{
+                ...UserShort
+            }
+            joinedAt
+            }
+            ... on  OrganizationIvitedMember{
+                name
+                inviteId
+            }
+            email
+            role
+        }
+    }
+    ${UserShort}
+`;
+
+export const OrganizationChangeMemberRoleMutation = gql`
+    mutation OrganizationChangeMemberRole($memberId: ID!, $newRole: OrganizationMemberRole!) {
+        alphaOrganizationChangeMemberRole(memberId: $memberId, newRole: $newRole)
+    }
+`;
+
+export const OrganizationRemoveMemberMutation = gql`
+    mutation OrganizationRemoveMember($memberId: ID!) {
+        alphaOrganizationRemoveMember(memberId: $memberId)
     }
 `;

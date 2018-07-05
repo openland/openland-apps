@@ -29,6 +29,7 @@ export function XDate(props: { value: string, format?: 'date' | 'humanize' | 'hu
         let year = parts[0];
         let month = months[parseInt(parts[1], 10) - 1];
         let day = parseInt(parts[2], 10);
+        console.warn(parts);
         return (
             <span>{month} {day}, {year}</span>
         );
@@ -40,7 +41,7 @@ export const DateFormater = (time: string) => {
 
     let year = date.getFullYear();
 
-    let month = (1 + date.getMonth()).toString();
+    let month = (date.getMonth()).toString();
     month = months[month];
 
     let day = date.getDate().toString();

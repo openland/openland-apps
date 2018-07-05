@@ -36,7 +36,8 @@ let XCardHeaderDiv = Glamorous.div<{ appStyle?: 'default' | 'compact', separated
     display: 'flex',
     flexDirection: 'column',
     borderBottom: props.separated ? '1px solid rgba(229, 233, 242, 0.5)' : undefined,
-    flexGrow: props.grow ? 1 : undefined
+    flexGrow: props.grow ? 1 : undefined,
+    flexShrink: 0
 }));
 
 interface XCardHeaderProps {
@@ -74,6 +75,10 @@ const HorizontalInner = Glamorous(XHorizontal)({
     padding: 24
 });
 
+const BulletWrapper = Glamorous.div({
+    paddingTop: 4
+});
+
 export class XHeader extends React.Component<XCardHeaderProps> {
     static Target = HeaderTargetElement;
 
@@ -96,7 +101,11 @@ export class XHeader extends React.Component<XCardHeaderProps> {
                     <TargetDivStyle ellipcise={this.props.truncateTitle} alignItems="center">
                         {target}
                         <div>{this.props.text}</div>
-                        {this.props.bullet && <XBullet color={this.props.bulletColor || 'green'}>{this.props.bullet}</XBullet>}
+                        {this.props.bullet && (
+                            <BulletWrapper>
+                                <XBullet color={this.props.bulletColor || 'green'}>{this.props.bullet}</XBullet>
+                            </BulletWrapper>
+                        )}
                     </TargetDivStyle>
 
                 </XCardTitle>

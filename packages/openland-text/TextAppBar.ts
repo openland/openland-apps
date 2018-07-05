@@ -1,6 +1,7 @@
 export const TextAppBar = {
     items: {
         home: 'Home',
+        mail: 'Mail',
         explore: 'Explore',
         addListing: 'Add listing',
         map: 'Map',

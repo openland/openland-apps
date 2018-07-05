@@ -17,6 +17,7 @@ import { XList, XListItem } from 'openland-x/XList';
 import { XTitle } from 'openland-x/XTitle';
 import { XPopper } from 'openland-x/XPopper';
 import { XAvatar } from 'openland-x/XAvatar';
+import { XCounter } from 'openland-x/XCounter';
 import { XModal } from 'openland-x-modal/XModal';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
@@ -24,6 +25,7 @@ import { XMenuVertical, XMenuItem } from './Incubator/XOverflow';
 import { OrganizationPicker } from './OrganizationPicker';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { withNotificationCounter } from '../api/withNotificationCounter';
 
 //
 // Root
@@ -40,7 +42,7 @@ const RootContainer = Glamorous.div({
 // Navigation
 //
 
-const NavigationWrapper = Glamorous.div<{activeSearch: boolean}>((props) => ({
+const NavigationWrapper = Glamorous.div<{ activeSearch: boolean }>((props) => ({
     display: 'flex',
     flexShrink: 0,
     order: 1,
@@ -95,6 +97,7 @@ const NavigatorIcon = Glamorous(XIcon)({
 });
 
 const NavigatorItem = Glamorous(XLink)({
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignSelf: 'stretch',
@@ -133,6 +136,11 @@ const NavigatorItem = Glamorous(XLink)({
         '& .no-hover': {
             display: 'block'
         }
+    },
+    '& > .counter': {
+        position: 'absolute',
+        right: 13,
+        top: 11
     }
 });
 
@@ -150,7 +158,11 @@ const ProfileTitle = Glamorous.div({
     fontWeight: 600,
     lineHeight: 1.25,
     color: '#334562',
-    marginLeft: 14
+    marginLeft: 14,
+    maxWidth: 164,
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden'
 });
 
 const ProfileSubTitle = Glamorous(XLink)({
@@ -467,6 +479,11 @@ const MenuView = Glamorous(XScrollView)({
     // top: 0,
     // left: 72,
     height: '100vh',
+    '& > .simplebar-scroll-content': {
+        '& > .simplebar-content': {
+            overflowX: 'hidden'
+        }
+    }
 });
 
 //
@@ -575,12 +592,10 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
     }
 
     render() {
-        console.warn(this.state);
         return (
             <XPopper
                 contentContainer={<XMenuVertical />}
-                marginTop={70}
-                placement="right"
+                placement="right-end"
                 show={this.state.show}
                 padding={0}
                 content={<AddListingContent />}
@@ -593,6 +608,25 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
         );
     }
 }
+
+export const MessengerButton = withNotificationCounter((props) => {
+    return (
+        <XPopper
+            placement="right"
+            showOnHoverContent={false}
+            showOnHover={true}
+            groupId="scaffold_tooltip"
+            content={(
+                <strong>{TextAppBar.items.mail}</strong>
+            )}
+        >
+            <NavigatorItem path="/mail" activateForSubpaths={true}>
+                <NavigatorIcon icon="email" />
+                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter count={props.data.counter.unreadCount} />}
+            </NavigatorItem>
+        </XPopper>
+    );
+});
 
 export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, searchText: string }> {
     static Menu = ScaffoldMenu;
@@ -687,6 +721,10 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
                             <XWithRole role={['feature-marketplace']} negate={true}>
                                 <Home />
+                            </XWithRole>
+
+                            <XWithRole role={['feature-messaging']}>
+                                <MessengerButton />
                             </XWithRole>
 
                             <XPopper

@@ -13,7 +13,7 @@ export const Navigation = (props: { title: string, children?: any }) => (
                     <Sidebar.Subitem anchor="/settings/organization#do">Dev. opportunities</Sidebar.Subitem>
                     <Sidebar.Subitem anchor="/settings/organization#ar">Acquisitions</Sidebar.Subitem>
                     <Sidebar.Subitem anchor="/settings/organization#contacts">Contacts</Sidebar.Subitem>
-                    <Sidebar.Subitem anchor="/settings/invites">Team</Sidebar.Subitem>
+                    <Sidebar.Subitem path="/settings/members">Members</Sidebar.Subitem>
                     <Sidebar.Item path="/settings/profile">User profile</Sidebar.Item>
                 </Sidebar>
             </Scaffold.Menu>

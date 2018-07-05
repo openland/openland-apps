@@ -12,6 +12,19 @@ export interface XInputProps extends XInputBasicProps {
 
 class XInputStored extends React.PureComponent<XInputProps & { store: XStoreState }> {
 
+    inputRef: any = null;
+
+    handlerRef = (src: any) => {
+        console.warn(src);
+        if (src) {
+            this.inputRef = src;
+        }
+    }
+
+    focus = () => {
+        this.inputRef.focus();
+    }
+
     onChangeHandler = (value: string) => {
         if (this.props.onChange) {
             this.props.onChange(value);
@@ -43,11 +56,24 @@ class XInputStored extends React.PureComponent<XInputProps & { store: XStoreStat
             let enabledVal = store.readValue(enabledStoreKey);
             enabled = enabledVal !== false;
         }
-        return (<XInputBasic value={value} onChange={this.onChangeHandler} invalid={invalid || !enabled} {...other} />);
+        return (<XInputBasic value={value} onChange={this.onChangeHandler} invalid={invalid || !enabled} {...other} ref={this.handlerRef} />);
     }
 }
 
 export class XInput extends React.PureComponent<XInputProps> {
+    inputRef: any = null;
+
+    handler = (src: any) => {
+        console.warn(src);
+        if (src) {
+            this.inputRef = src;
+        }
+    }
+
+    focus() {
+        this.inputRef.focus();
+    }
+
     render() {
         let { valueStoreKey, invalidStoreKey, enabledStoreKey, field, ...other } = this.props;
         if (valueStoreKey || invalidStoreKey || enabledStoreKey || field) {
@@ -69,12 +95,13 @@ export class XInput extends React.PureComponent<XInputProps> {
                                 enabledStoreKey={enabledStoreKeyCached}
                                 field={fieldCached}
                                 store={store}
+                                ref={this.handler}
                             />
                         );
                     }}
                 </XStoreContext.Consumer>
             );
         }
-        return (<XInputBasic {...other} />);
+        return (<XInputBasic {...other} ref={this.handler} />);
     }
 }

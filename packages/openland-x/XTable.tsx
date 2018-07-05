@@ -125,7 +125,7 @@ export class XTableRow extends React.Component<XTableRowProps> {
             }
         }
         return (
-            <XTableBodyRowStyle onClick={this.props.onClick} noHover={this.props.noHover || (!this.props.onClick && !this.props.path && !this.props.href)}>
+            <XTableBodyRowStyle className={(this.props as any).className} onClick={this.props.onClick} noHover={this.props.noHover || (!this.props.onClick && !this.props.path && !this.props.href)}>
                 {content}
             </XTableBodyRowStyle>
         );
@@ -215,7 +215,7 @@ const TDChildren = (props: { children: any, orderBy?: OrderBy, textAlign?: 'left
 
 export function XTableCell(props: XTableCellProps) {
     return (
-        <XTableTD width={props.width}>
+        <XTableTD width={props.width} className={(props as any).classNames}>
             {
                 (props.path || props.href || props.query) ?
                     (
@@ -241,7 +241,7 @@ export class XTable extends React.Component {
 
     render() {
         return (
-            <TableHeader>
+            <TableHeader className={(this.props as any).className}>
                 {this.props.children}
             </TableHeader>
         );
