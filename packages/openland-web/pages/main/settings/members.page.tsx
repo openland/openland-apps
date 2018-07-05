@@ -160,9 +160,9 @@ const OrgMembers = withOrganizationMembers((props) => {
                     <Row>
                         <XTable.Cell>
                             <XHorizontal >
-                                <XAvatar size="medium" cloudImageUuid={m.user.picture || undefined} />
+                                <XAvatar size="medium" cloudImageUuid={(m.__typename === 'OrganizationJoinedMember' && m.user.picture) || undefined} />
                                 <XVertical separator={4} justifyContent="center">
-                                    <XText textStyle="h500">{m.user.name}</XText>
+                                    <XText textStyle="h500">{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && m.name)}</XText>
                                     {m.email && <XText opacity={0.5} >{m.email}</XText>}
                                 </XVertical>
 
@@ -170,10 +170,15 @@ const OrgMembers = withOrganizationMembers((props) => {
                         </XTable.Cell>
                         <XTable.Cell>
                             <XWithRole role="admin" orgPermission={true}>
-                                <PermissionCell justifyContent="center" separator={0}>
+                                {m.__typename === 'OrganizationJoinedMember' && (
+                                    <PermissionCell justifyContent="center" separator={0}>
+                                        <XText>{m.role}</XText>
+                                        <PermissionsModal target={<PermissionsHoverButton text="Manage Permissions" style="electric" />} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                                    </PermissionCell>
+                                )}
+                                {m.__typename === 'OrganizationIvitedMember' && (
                                     <XText>{m.role}</XText>
-                                    <PermissionsModal target={<PermissionsHoverButton text="Manage Permissions" style="electric" />} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
-                                </PermissionCell>
+                                )}
                             </XWithRole>
                             <XWithRole role="admin" orgPermission={true} negate={true}>
                                 <XText>{m.role}</XText>
@@ -181,19 +186,21 @@ const OrgMembers = withOrganizationMembers((props) => {
 
                         </XTable.Cell>
                         <XTable.Cell>
-                            <XText >{m.joinedAt ? DateFormater(m.joinedAt) : 'always been here'}</XText>
+                            <XText >{m.__typename === 'OrganizationJoinedMember' && m.joinedAt ? DateFormater(m.joinedAt) : ''}</XText>
                         </XTable.Cell>
                         <XWithRole role="admin" orgPermission={true}>
                             <XTable.Cell textAlign="right">
-                                <XOverflow
-                                    placement="bottom-end"
-                                    content={
-                                        <>
-                                            <PermissionsModal target={<XMenuItem>Manage Permissions</XMenuItem>} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
-                                            <RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
-                                        </>
-                                    }
-                                />
+                                {m.__typename === 'OrganizationJoinedMember' && (
+                                    <XOverflow
+                                        placement="bottom-end"
+                                        content={
+                                            <>
+                                                {/* <PermissionsModal target={<XMenuItem>Manage Permissions</XMenuItem>} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} /> */}
+                                                {/* <RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} /> */}
+                                            </>
+                                        }
+                                    />
+                                )}
                             </XTable.Cell>
                         </XWithRole>
                     </Row>
