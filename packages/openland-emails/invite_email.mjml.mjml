@@ -12,6 +12,8 @@
         <mj-text>
           {{userWelcome}} <br/> <br/> 
           You were invited to organization <strong>{{organizationName}}</strong> <a href="{{inviteLink}}">{{inviteLink}}</a>  <br/> <br/> 
+          {{customText}}
+          <br/> <br/> 
           Good luck! <br/>
           -- Openland Team
         </mj-text>
