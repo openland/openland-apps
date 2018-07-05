@@ -6,6 +6,7 @@ import { GlobalCounterQuery } from 'openland-api/GlobalCounterQuery';
 import { defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { backoff } from 'openland-x-utils/timer';
 import { ChatReadMutation } from 'openland-api/ChatReadMutation';
+// import Notify from 'notifyjs';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($seq: Int) {
@@ -60,6 +61,12 @@ export class MessengerEngine {
                 this.isVisible = true;
                 this.handleVisibilityChange();
             });
+        });
+
+        backoff(() => import('notifyjs')).then((v) => {
+            if (v.needsPermission && v.isSupported()) {
+                v.requestPermission();
+            }
         });
     }
 
@@ -135,6 +142,13 @@ export class MessengerEngine {
     private handleNewMessage = () => {
         var audio = new Audio('/static/sounds/notification.mp3');
         audio.play();
+        backoff(() => import('notifyjs')).then((v) => {
+            if (!v.needsPermission) {
+                new v('New Message', {
+                    body: 'You got new message!'
+                }).show();
+            }
+        });
     }
 
     private writeGlobalCounter = (counter: number, visible: boolean) => {

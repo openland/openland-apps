@@ -1019,6 +1019,10 @@
   version "9.4.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.4.6.tgz#d8176d864ee48753d053783e4e463aec86b8d82e"
 
+"@types/notifyjs@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/notifyjs/-/notifyjs-3.0.0.tgz#a57126a90be2827d511d00a0615816cd5ca8a740"
+
 "@types/nprogress@^0.0.29":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/nprogress/-/nprogress-0.0.29.tgz#060bd510022a005f1840234030d3132fb9195471"
@@ -6676,6 +6680,10 @@ normalize-path@^2.0.0, normalize-path@^2.0.1, normalize-path@^2.1.1:
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-2.1.1.tgz#1ab28b556e198363a8c1a6f7e6fa20137fe6aed9"
   dependencies:
     remove-trailing-separator "^1.0.1"
+
+notifyjs@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/notifyjs/-/notifyjs-3.0.0.tgz#7418c9d6c0533aebaa643414214af53b521d1b28"
 
 npm-run-path@^2.0.0:
   version "2.0.2"

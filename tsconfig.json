@@ -20,7 +20,7 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": true,
     "typeRoots": [
       "./node_modules/@types"
