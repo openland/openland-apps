@@ -162,7 +162,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                             <XHorizontal >
                                 <XAvatar size="medium" cloudImageUuid={(m.__typename === 'OrganizationJoinedMember' && m.user.picture) || undefined} />
                                 <XVertical separator={4} justifyContent="center">
-                                    <XText textStyle="h500">{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && m.name)}</XText>
+                                    <XText textStyle="h500">{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && m.firstName)}</XText>
                                     {m.email && <XText opacity={0.5} >{m.email}</XText>}
                                 </XVertical>
 
