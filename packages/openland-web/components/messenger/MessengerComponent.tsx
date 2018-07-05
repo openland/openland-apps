@@ -39,7 +39,7 @@ let SendMessageContainer = Glamorous(XHorizontal)({
     height: '128px',
     flexDirection: 'row',
     flexShrink: 0,
-    paddingTop: '8px',
+    paddingTop: '0px',
     paddingLeft: '16px',
     paddingRight: '16px'
 });
@@ -59,6 +59,13 @@ const Image = Glamorous.img({
     width: 400,
     height: 400,
     objectFit: 'scale-down'
+});
+
+const MessagesWrapper = Glamorous(XVertical)({
+    paddingTop: '8px',
+    paddingLeft: '8px',
+    paddingRight: '24px',
+    paddingBottom: '16px'
 });
 
 class MessageComponent extends React.Component<{ message: MessageFullFragment }> {
@@ -95,11 +102,11 @@ class MessageList extends React.Component<{ messages: MessageFullFragment[] }> {
     }
     render() {
         return (
-            <XVertical>
+            <MessagesWrapper>
                 {[...this.props.messages].reverse().map((v) => (
                     <MessageComponent message={v} key={v.id} />
                 ))}
-            </XVertical>
+            </MessagesWrapper>
         );
     }
 }

@@ -26,10 +26,14 @@ let ChatContainer = Glamorous.div({
 let ChatListContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
+    height: '100vh',
     width: '300px',
     flexGrow: 0,
     flexShrink: 0,
-    backgroundColor: '#522BFF'
+    backgroundColor: '#f9fafb',
+    borderRightColor: '#e2e3e8',
+    borderRightWidth: '1px',
+    borderRightStyle: 'solid'
 });
 
 let ConversationContainer = Glamorous.div({
@@ -64,8 +68,8 @@ let OrganizationConversation = withChatOrganization(withQueryLoader((props) => {
 
 let Conversation = withChat(withQueryLoader((props) => {
     return (
-        <XVertical flexGrow={1}>
-            <XHeader text={props.data.chat.title} />
+        <XVertical flexGrow={1} separator={'none'}>
+            <XHeader text={props.data.chat.title} separated={true} />
             <XVertical flexGrow={1}>
                 <MessengerComponent key={props.data.chat.id} variables={{ conversationId: props.data.chat.id }} />
             </XVertical>
@@ -81,9 +85,6 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ChatContainer>
                         <ChatListContainer>
-                            {/* {props.data.chats.map((v) => (
-                                <Item path={'/mail/' + v.id}>{v.title} ({v.unreadCount.toString()}}</Item>
-                            ))} */}
                             <ChatsComponent />
                         </ChatListContainer>
                         <ConversationContainer>

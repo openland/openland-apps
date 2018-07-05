@@ -18,6 +18,7 @@ let GLOBAL_SUBSCRIPTION = gql`
                 unread
                 globalUnread
                 conversationId
+                isOut
                 conversation {
                     id
                     title
@@ -158,7 +159,7 @@ export class MessengerEngine {
         if (event.__typename === 'UserEventMessage') {
             let visible = this.openedConversations.has(event.conversationId) && this.isVisible;
             this.writeGlobalCounter(event.globalUnread, visible);
-            if (!visible) {
+            if (!visible && !event.isOut) {
                 this.handleNewMessage(event.conversationId);
             }
             let data = this.client.readQuery({
@@ -170,7 +171,9 @@ export class MessengerEngine {
                 if (exIndex >= 0) {
                     let ids = data.chats.conversations.map((v: any) => v[ID_KEY]);
                     let c = data.chats.conversations[exIndex];
-                    c.unreadCount = event.unread;
+                    if (visible || c.unreadCount > event.unread) {
+                        c.unreadCount = event.unread;
+                    }
                     data.chats.conversations.splice(exIndex, 1);
                     data.chats.conversations.unshift(c);
                     data.chats.conversations = data.chats.conversations.map((v: any, i: number) => ({ ...v, [ID_KEY]: ids[i] }));
