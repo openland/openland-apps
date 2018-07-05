@@ -592,7 +592,6 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
     }
 
     render() {
-        console.warn(this.state);
         return (
             <XPopper
                 contentContainer={<XMenuVertical />}
