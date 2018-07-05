@@ -4,6 +4,16 @@ export const MessageFull = gql`
  fragment MessageFull on ConversationMessage {
     id
     message
+    file
+    fileMetadata {
+        name
+        mimeType
+        isImage
+        imageWidth
+        imageHeight
+        imageFormat
+        size
+    }
     sender {
         ...UserShort
     }

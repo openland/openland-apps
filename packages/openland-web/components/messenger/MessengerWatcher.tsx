@@ -14,6 +14,16 @@ const CHAT_SUBSCRIPTION = gql`
         message {
             id
             message
+            file
+            fileMetadata {
+                name
+                mimeType
+                isImage
+                imageWidth
+                imageHeight
+                imageFormat
+                size
+            }
             sender {
                 ...UserShort
             }

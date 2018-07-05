@@ -29,6 +29,16 @@ let GLOBAL_SUBSCRIPTION = gql`
                 message {
                     id
                     message
+                    file
+                    fileMetadata {
+                        name
+                        mimeType
+                        isImage
+                        imageWidth
+                        imageHeight
+                        imageFormat
+                        size
+                    }
                 }
             }
             ... on UserEventRead {
@@ -215,10 +225,10 @@ export class MessengerEngine {
         if (event.__typename === 'UserEventMessage') {
             let visible = this.openedConversations.has(event.conversationId) && this.isVisible;
             this.writeGlobalCounter(event.globalUnread, visible);
-            if (!visible && !event.isOut && !event.message.message.trim().startsWith('speak: ')) {
+            if (!visible && !event.isOut && !(event.message.message && event.message.message.trim().startsWith('speak: '))) {
                 this.handleNewMessage(event.conversationId);
             }
-            if (event.message.message.trim().startsWith('speak: ')) {
+            if (event.message.message && event.message.message.trim().startsWith('speak: ')) {
                 speakText(event.message.message.trim().substring(7).trim());
             }
             let data = this.client.readQuery({

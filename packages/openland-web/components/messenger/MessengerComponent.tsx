@@ -80,8 +80,32 @@ class MessageComponent extends React.Component<{ message: MessageFullFragment }>
     render() {
         let src = this.props.message.message;
         let message = <span>{src}</span>;
-        if (src.endsWith('.gif')) {
-            message = <Image src={src} />;
+        if (this.props.message.file) {
+            if (this.props.message.fileMetadata!!.isImage) {
+                if (this.props.message.fileMetadata!!.imageFormat === 'GIF') {
+                    message = (
+                        <video width="400" height="400" autoPlay={true} loop={true} muted={true} webkit-playsinline={true} playsinline={true}>
+                            <source src={'https://ucarecdn.com/' + this.props.message.file + '/gif2video/-/format/webm/road.gif'} type="video/webm" />
+                            <source src={'https://ucarecdn.com/' + this.props.message.file + '/gif2video/-/format/mp4/road.gif'} type="video/mp4" />
+                        </video>
+                    );
+                } else {
+                    message = (
+                        <Image src={'https://ucarecdn.com/' + this.props.message.file + '/' + this.props.message.fileMetadata!!.name} />
+                    );
+                }
+            } else {
+                message = (
+                    <>
+                        <XButton
+                            href={'https://ucarecdn.com/' + this.props.message.file + '/' + this.props.message.fileMetadata!!.name}
+                            text={this.props.message.fileMetadata!!.name}
+                            alignSelf="flex-start"
+                        />
+                        <span>{this.props.message.fileMetadata!!.size}</span>
+                    </>
+                );
+            }
         }
         return (
             <XContent key={this.props.message.id}>

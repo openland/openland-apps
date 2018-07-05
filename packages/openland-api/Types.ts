@@ -485,7 +485,18 @@ export interface ChatQuery {
     messages:  Array< {
       __typename: "ConversationMessage",
       id: string,
-      message: string,
+      message: string | null,
+      file: string | null,
+      fileMetadata:  {
+        __typename: "FileMetadata",
+        name: string,
+        mimeType: string | null,
+        isImage: boolean,
+        imageWidth: number | null,
+        imageHeight: number | null,
+        imageFormat: string | null,
+        size: number,
+      } | null,
       sender:  {
         __typename: "User",
         id: string,
@@ -556,7 +567,18 @@ export interface SendMessageMutation {
     message:  {
       __typename: "ConversationMessage",
       id: string,
-      message: string,
+      message: string | null,
+      file: string | null,
+      fileMetadata:  {
+        __typename: "FileMetadata",
+        name: string,
+        mimeType: string | null,
+        isImage: boolean,
+        imageWidth: number | null,
+        imageHeight: number | null,
+        imageFormat: string | null,
+        size: number,
+      } | null,
       sender:  {
         __typename: "User",
         id: string,
@@ -4050,7 +4072,18 @@ export interface GeoShortFragment {
 export interface MessageFullFragment {
   __typename: "ConversationMessage",
   id: string,
-  message: string,
+  message: string | null,
+  file: string | null,
+  fileMetadata:  {
+    __typename: string,
+    name: string,
+    mimeType: string | null,
+    isImage: boolean,
+    imageWidth: number | null,
+    imageHeight: number | null,
+    imageFormat: string | null,
+    size: number,
+  } | null,
   sender:  {
     __typename: string,
     id: string,
