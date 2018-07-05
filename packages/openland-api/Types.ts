@@ -2013,7 +2013,13 @@ export interface OrganizationMembersQueryVariables {
 
 export interface OrganizationMembersQuery {
   alphaOrganizationMembers:  Array<( {
-      __typename: "OrganizationMember",
+      __typename: "OrganizationIvitedMember",
+      name: string | null,
+      inviteId: string,
+      email: string,
+      role: OrganizationMemberRole,
+    } | {
+      __typename: "OrganizationJoinedMember",
       user:  {
         __typename: string,
         id: string,
@@ -2024,10 +2030,8 @@ export interface OrganizationMembersQuery {
         email: string | null,
       },
       joinedAt: string | null,
-      email: string | null,
+      email: string,
       role: OrganizationMemberRole,
-    } | {
-      __typename: "OrganizationIvitedMember",
     }
   ) >,
 };

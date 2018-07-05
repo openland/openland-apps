@@ -169,14 +169,18 @@ export const DeleteListingMutation = gql`
 export const OrganizationMembersQuery = gql`
     query OrganizationMembers($orgId: ID!) {
         alphaOrganizationMembers(orgId: $orgId) {
-            ... on OrganizationMember {
-                user {
-                    ...UserShort
-                }
-                joinedAt
-                email
-                role
+            ... on  OrganizationJoinedMember{
+            user{
+                ...UserShort
             }
+            joinedAt
+            }
+            ... on  OrganizationIvitedMember{
+                name
+                inviteId
+            }
+            email
+            role
         }
     }
     ${UserShort}
