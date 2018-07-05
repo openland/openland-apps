@@ -107,7 +107,7 @@ const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
             }}
         >
             <XHorizontal>
-                <XAvatar size="medium" cloudImageUuid={member.user.photo || undefined} />
+                <XAvatar size="medium" cloudImageUuid={member.user.picture || undefined} />
                 <XVertical separator={4} justifyContent="center">
                     <XText textStyle="h500">{member.user.name}</XText>
                     {member.user.email && <XText opacity={0.5} >{member.user.email}</XText>}
