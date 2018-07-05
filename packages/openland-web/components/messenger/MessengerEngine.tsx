@@ -119,15 +119,16 @@ export class MessengerEngine {
 
     private handleGlobalEvent = (event: any) => {
         if (event.__typename === 'UserEventMessage') {
-            console.warn(Array.of(this.openedConversations));
-            if (!this.openedConversations.has(event.conversationId) || this.isVisible) {
-                this.writeGlobalCounter(event.globalUnread); // Ignore incoming global counter for open chat
-                this.writeConversationCounter(event.conversationId, event.unread);
+            let visible = this.openedConversations.has(event.conversationId) && this.isVisible;
+            this.writeGlobalCounter(event.globalUnread, visible);
+            this.writeConversationCounter(event.conversationId, event.unread, visible);
+            if (!visible) {
                 this.handleNewMessage();
             }
         } else if (event.__typename === 'UserEventRead') {
-            this.writeGlobalCounter(event.globalUnread);
-            this.writeConversationCounter(event.conversationId, event.unread);
+            let visible = this.openedConversations.has(event.conversationId) && this.isVisible;
+            this.writeGlobalCounter(event.globalUnread, visible);
+            this.writeConversationCounter(event.conversationId, event.unread, visible);
         }
     }
 
@@ -136,11 +137,17 @@ export class MessengerEngine {
         audio.play();
     }
 
-    private writeGlobalCounter = (counter: number) => {
+    private writeGlobalCounter = (counter: number, visible: boolean) => {
         let existing = this.client.readQuery({
             query: GlobalCounterQuery.document
         });
         if (existing) {
+            if (visible) {
+                // Do not increment unread count
+                if ((existing as any).counter.unreadCount < counter) {
+                    return;
+                }
+            }
             (existing as any).counter.unreadCount = counter;
             this.client.writeQuery({
                 query: GlobalCounterQuery.document,
@@ -149,13 +156,20 @@ export class MessengerEngine {
         }
     }
 
-    private writeConversationCounter = (conversationId: string, counter: number) => {
+    private writeConversationCounter = (conversationId: string, counter: number, visible: boolean) => {
         let id = defaultDataIdFromObject({ __typename: 'SharedConversation', id: conversationId })!!;
         let conv = this.client.readFragment({
             id,
             fragment: SHARED_CONVERSATION_COUNTER
         });
+        console.warn(conv);
         if (conv) {
+            if (visible) {
+                // Do not increment unread count
+                if ((conv as any).counter.unreadCount < counter) {
+                    return;
+                }
+            }
             (conv as any).unreadCount = counter;
             this.client.writeFragment({
                 id,
@@ -170,7 +184,14 @@ export class MessengerEngine {
             id,
             fragment: PRIVATE_CONVERSATION_COUNTER
         });
+        console.warn(conv);
         if (conv) {
+            if (visible) {
+                // Do not increment unread count
+                if ((conv as any).counter.unreadCount < counter) {
+                    return;
+                }
+            }
             (conv as any).unreadCount = counter;
             this.client.writeFragment({
                 id,

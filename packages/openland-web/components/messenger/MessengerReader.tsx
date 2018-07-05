@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { ApolloClient } from 'apollo-client';
-import { withApollo } from 'react-apollo';
-import { ChatReadMutation } from 'openland-api/ChatReadMutation';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { MessengerContext, MessengerEngine } from './MessengerEngine';
 
