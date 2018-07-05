@@ -36,7 +36,8 @@ let XCardHeaderDiv = Glamorous.div<{ appStyle?: 'default' | 'compact', separated
     display: 'flex',
     flexDirection: 'column',
     borderBottom: props.separated ? '1px solid rgba(229, 233, 242, 0.5)' : undefined,
-    flexGrow: props.grow ? 1 : undefined
+    flexGrow: props.grow ? 1 : undefined,
+    flexShrink: 0
 }));
 
 interface XCardHeaderProps {
