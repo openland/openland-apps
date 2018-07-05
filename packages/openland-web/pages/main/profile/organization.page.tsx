@@ -1195,7 +1195,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
         <>
             <XDocumentHead title={organization.name} />
             <Scaffold>
-                <Scaffold.Content padding={false} bottomOffset={false} >
+                <Scaffold.Content padding={false} bottomOffset={false}>
                     <Root>
                         <HeaderWrapper>
                             <HeaderContent>

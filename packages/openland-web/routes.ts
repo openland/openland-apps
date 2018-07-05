@@ -62,6 +62,13 @@ routes.add('/home', '/main/home/main');
 routes.add('/home/', '/main/home/main');
 
 //
+// Directory
+//
+
+routes.add('/directory', '/main/directory/root');
+routes.add('/directory/', '/main/directory/root');
+
+//
 // Profiles
 //
 
