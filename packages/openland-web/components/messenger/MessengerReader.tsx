@@ -3,8 +3,9 @@ import { ApolloClient } from 'apollo-client';
 import { withApollo } from 'react-apollo';
 import { ChatReadMutation } from 'openland-api/ChatReadMutation';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { MessengerContext, MessengerEngine } from './MessengerEngine';
 
-class MessengerReaderComponent extends React.PureComponent<{ conversationId: string, lastMessageId: string | null, client: ApolloClient<{}> }> {
+class MessengerReaderComponent extends React.PureComponent<{ conversationId: string, lastMessageId: string | null, engine: MessengerEngine }> {
 
     componentDidUpdate() {
         if (canUseDOM) {
@@ -18,13 +19,7 @@ class MessengerReaderComponent extends React.PureComponent<{ conversationId: str
 
     readChat = () => {
         if (this.props.conversationId && this.props.lastMessageId) {
-            this.props.client.mutate({
-                mutation: ChatReadMutation.document,
-                variables: {
-                    conversationId: this.props.conversationId,
-                    messageId: this.props.lastMessageId
-                }
-            });
+            this.props.engine.readConversation(this.props.conversationId, this.props.lastMessageId);
         }
     }
 
@@ -33,4 +28,12 @@ class MessengerReaderComponent extends React.PureComponent<{ conversationId: str
     }
 }
 
-export const MessengerReader = withApollo<{ conversationId: string, lastMessageId: string | null }>(MessengerReaderComponent);
+export const MessengerReader = (props: { conversationId: string, lastMessageId: string | null }) => {
+    return (
+        <MessengerContext.Consumer>
+            {(messenger) => (
+                <MessengerReaderComponent engine={messenger} conversationId={props.conversationId} lastMessageId={props.lastMessageId} />
+            )}
+        </MessengerContext.Consumer>
+    );
+};

@@ -896,6 +896,10 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
+"@types/favico.js@^0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@types/favico.js/-/favico.js-0.0.28.tgz#bb7b7caa118217318d034666920d687a58d65eeb"
+
 "@types/file-saver@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-1.3.0.tgz#0ef213077e704fc3f4e7a86cfd31c9de4f4f47a7"
@@ -3987,6 +3991,10 @@ fast-levenshtein@^2.0.6, fast-levenshtein@~2.0.4:
 fast-memoize@^2.2.7:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/fast-memoize/-/fast-memoize-2.3.0.tgz#d7f81dc864489f582e30538923c423d85887af32"
+
+favico.js@^0.3.10:
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/favico.js/-/favico.js-0.3.10.tgz#80586e27a117f24a8d51c18a99bdc714d4339301"
 
 fb-watchman@^2.0.0:
   version "2.0.0"

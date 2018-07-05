@@ -5,7 +5,7 @@ import { SequenceWatcher } from './SequenceWatcher';
 import { GlobalCounterQuery } from 'openland-api/GlobalCounterQuery';
 import { defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { backoff } from 'openland-x-utils/timer';
-// import * as ifvisible from 'ifvisible.js';
+import { ChatReadMutation } from 'openland-api/ChatReadMutation';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription {
@@ -41,9 +41,10 @@ let PRIVATE_CONVERSATION_COUNTER = gql`
 
 export class MessengerEngine {
     readonly client: ApolloClient<{}>;
-    private readonly globalWatcher: SequenceWatcher;
     private openedConversations = new Map<string, { count: number, unread: number }>();
+    private pendoingReaders = new Map<string, string>();
     private isVisible = true;
+    private globalWatcher: SequenceWatcher;
 
     constructor(client: ApolloClient<{}>) {
         this.client = client;
@@ -60,6 +61,24 @@ export class MessengerEngine {
                 this.handleVisibilityChange();
             });
         });
+    }
+
+    destroy() {
+        this.globalWatcher.destroy();
+    }
+
+    readConversation(conversationId: string, messageId: string) {
+        if (this.isVisible) {
+            this.client.mutate({
+                mutation: ChatReadMutation.document,
+                variables: {
+                    conversationId: conversationId,
+                    messageId: messageId
+                }
+            });
+        } else {
+            this.pendoingReaders.set(conversationId, messageId);
+        }
     }
 
     openConversation(conversationId: string): () => void {
@@ -82,6 +101,20 @@ export class MessengerEngine {
 
     private handleVisibilityChange = () => {
         console.warn(this.isVisible);
+        if (this.isVisible) {
+            if (this.pendoingReaders.size > 0) {
+                for (let a of this.pendoingReaders) {
+                    this.client.mutate({
+                        mutation: ChatReadMutation.document,
+                        variables: {
+                            conversationId: a[0],
+                            messageId: a[1]
+                        }
+                    });
+                }
+                this.pendoingReaders.clear();
+            }
+        }
     }
 
     private handleGlobalEvent = (event: any) => {
