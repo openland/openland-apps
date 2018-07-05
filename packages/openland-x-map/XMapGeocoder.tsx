@@ -65,7 +65,7 @@ export class XMapGeocoder extends React.Component<{ city?: string, bbox?: number
         let mapControl = this.map!!;
         GeoCoder!!.then((Coder) => {
             if (this.map === mapControl && this._isMounted) {
-                let Control = new Coder({
+                let Control = new (Coder as any)({
                     accessToken: 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw',
                     country: 'US',
                     zoom: 19,
@@ -74,7 +74,7 @@ export class XMapGeocoder extends React.Component<{ city?: string, bbox?: number
                         Math.min(this.props.bbox[0], this.props.bbox[2]), Math.min(this.props.bbox[1], this.props.bbox[3]),
                         Math.max(this.props.bbox[0], this.props.bbox[2]), Math.max(this.props.bbox[1], this.props.bbox[3])
                     ] : undefined,
-                    filter: (item) => {
+                    filter: (item: any) => {
                         let items = item.context as { id: string, text: string }[];
                         let place = items.find((v) => v.id.split('.')[0] === 'place');
                         if (place && place.text === this.props.city) {
