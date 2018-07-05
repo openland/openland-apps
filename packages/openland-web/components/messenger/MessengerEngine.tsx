@@ -54,15 +54,13 @@ export class MessengerEngine {
 
     constructor(client: ApolloClient<{}>) {
         this.client = client;
-        this.globalWatcher = new SequenceWatcher(GLOBAL_SUBSCRIPTION, null, {}, this.handleGlobalEvent, this.client);
+        this.globalWatcher = new SequenceWatcher('global', GLOBAL_SUBSCRIPTION, null, {}, this.handleGlobalEvent, this.client);
         backoff(() => import('ifvisible.js')).then((v) => {
             v.on('idle', () => {
-                console.warn('idle');
                 this.isVisible = false;
                 this.handleVisibilityChange();
             });
             v.on('wakeup', () => {
-                console.warn('wakeup');
                 this.isVisible = true;
                 this.handleVisibilityChange();
             });
@@ -203,7 +201,6 @@ export class MessengerEngine {
             id,
             fragment: SHARED_CONVERSATION_COUNTER
         });
-        console.warn(conv);
         if (conv) {
             if (visible) {
                 // Do not increment unread count
@@ -225,7 +222,6 @@ export class MessengerEngine {
             id,
             fragment: PRIVATE_CONVERSATION_COUNTER
         });
-        console.warn(conv);
         if (conv) {
             if (visible) {
                 // Do not increment unread count

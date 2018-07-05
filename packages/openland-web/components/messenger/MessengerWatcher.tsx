@@ -49,13 +49,13 @@ export class MessengerWatcher extends React.Component<MessengerWatcherProps> {
     }
 
     componentDidMount() {
-        this.watcher = new SequenceWatcher(CHAT_SUBSCRIPTION, this.currentSeq, { conversationId: this.props.conversationId }, this.updateHandler, this.props.client);
+        this.watcher = new SequenceWatcher('chat:' + this.props.conversationId, CHAT_SUBSCRIPTION, this.currentSeq, { conversationId: this.props.conversationId }, this.updateHandler, this.props.client);
     }
 
     updateHandler = async (event: any) => {
         if (event.__typename === 'ConversationEventMessage') {
             // Handle message
-            console.warn('Received new message');
+            console.info('Received new message');
             // let senderId = event.message.sender.id as string;
             // if (senderId !== this.props.uid) {
             //     this.handleNewMessage();

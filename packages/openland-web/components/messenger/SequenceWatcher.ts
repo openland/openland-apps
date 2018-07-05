@@ -14,14 +14,17 @@ export class SequenceWatcher {
     private variables: any;
     private eventHandler: (event: any) => void | Promise<undefined> | number | Promise<number>;
     private isHandling = false;
+    private name: string;
 
     constructor(
+        name: string,
         query: any,
         initialSeq: number | null,
         variables: any,
         handler: (event: any) => void | Promise<undefined> | number | Promise<number>,
         client: ApolloClient<{}>
     ) {
+        this.name = name;
         this.query = query;
         this.currentSeq = initialSeq;
         this.variables = variables;
@@ -33,6 +36,7 @@ export class SequenceWatcher {
     }
 
     destroy() {
+        console.info('[' + this.name + ']: Destroy');
         this.started = false;
         this.connectionStatusUnsubscribe!!();
         this.stopSubscription();
@@ -46,7 +50,7 @@ export class SequenceWatcher {
             return;
         }
         this.stopSubscription();
-        console.warn('Start Subscription starting from #' + this.currentSeq);
+        console.info('[' + this.name + ']: Start Subscription starting from #' + this.currentSeq);
         let subscription = this.client.subscribe({
             query: this.query,
             variables: { ...this.variables, seq: this.currentSeq }
@@ -59,7 +63,7 @@ export class SequenceWatcher {
 
     private stopSubscription = () => {
         if (this.observable) {
-            console.warn('Stopping Subscription');
+            console.info('[' + this.name + ']: Stopping Subscription');
             try {
                 this.observable.unsubscribe();
             } catch (e) {
@@ -73,7 +77,7 @@ export class SequenceWatcher {
         if (!this.started) {
             return;
         }
-        console.warn(e);
+        console.info(e);
         this.startSubsctiption();
     }
 
@@ -86,7 +90,7 @@ export class SequenceWatcher {
                     // Our current update
                     let index = this.pending.indexOf(update);
                     this.pending = this.pending.splice(index, 1);
-                    console.warn('Replay: ' + seq);
+                    console.info('[' + this.name + ']: Replay: ' + seq);
                     this.handleUpdate(update);
                     return;
                 } else if (seq <= this.currentSeq!!) {
@@ -108,7 +112,6 @@ export class SequenceWatcher {
     }
 
     private handleUpdate = (update: any) => {
-        console.warn(update);
         if (!this.started) {
             return;
         }
@@ -117,13 +120,13 @@ export class SequenceWatcher {
 
         // Too old
         if (this.currentSeq !== null && seq <= this.currentSeq) {
-            console.warn('Too old seq #' + seq);
+            console.info('[' + this.name + ']: Too old seq #' + seq);
             return;
         }
 
         // Too new: invalidate
         if (this.currentSeq !== null && seq > this.currentSeq + 1) {
-            console.warn('Too new seq: ' + seq);
+            console.info('[' + this.name + ']: Too new seq: ' + seq);
 
             // Too large
             if (seq > this.currentSeq + 2) {
@@ -149,7 +152,7 @@ export class SequenceWatcher {
             this.pendingTimeout = null;
         }
 
-        console.warn('Next update #' + seq);
+        console.info('[' + this.name + ']: Next update #' + seq);
 
         this.isHandling = true;
         (async () => {
@@ -166,6 +169,8 @@ export class SequenceWatcher {
                     this.currentSeq = seq;
                 }
             } catch (e) {
+                console.warn('[' + this.name + ']: Error');
+                console.warn(e);
                 // Just Restart
                 this.isHandling = false;
                 this.startSubsctiption();
@@ -179,10 +184,12 @@ export class SequenceWatcher {
             return;
         }
         if (isConnected) {
+            console.info('[' + this.name + ']: Connected');
             if (!this.observable) {
                 this.startSubsctiption();
             }
         } else {
+            console.info('[' + this.name + ']: Disconnected');
             this.stopSubscription();
         }
     }

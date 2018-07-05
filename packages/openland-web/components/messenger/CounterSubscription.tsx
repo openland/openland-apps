@@ -37,7 +37,7 @@ export const CounterSubscriptions = withApollo<{}>(class CounterSubscriptionsCom
     private watcher: SequenceWatcher | null = null;
 
     componentDidMount() {
-        this.watcher = new SequenceWatcher(GLOBAL_SUBSCRIPTION, null, {}, this.handleEvent, this.props.client);
+        this.watcher = new SequenceWatcher('global:counter', GLOBAL_SUBSCRIPTION, null, {}, this.handleEvent, this.props.client);
     }
 
     writeGlobalCounter = (counter: number) => {

@@ -7,7 +7,6 @@ export class Badge {
     init = () => {
         this.items = backoff(() => import('favico.js')).then((v) => {
             let els = document.querySelectorAll('link[rel=icon]');
-            console.warn(els);
             let res = [];
             for (let i = 0; i < els.length; i++) {
                 res.push(new (v as any)({
@@ -21,7 +20,6 @@ export class Badge {
     }
     badge = (counter: number) => {
         this.items!!.then((v) => {
-            console.warn(v);
             for (let i of v) {
                 i.badge(counter);
             }
