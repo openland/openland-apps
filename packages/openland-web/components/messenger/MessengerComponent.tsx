@@ -18,6 +18,8 @@ import { XDate } from 'openland-x-format/XDate';
 import { MessengerWatcher } from './MessengerWatcher';
 import { SendMessageMutation } from 'openland-api';
 import { MessengerReader } from './MessengerReader';
+import { MessengerContext, MessengerEngine } from './MessengerEngine';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -108,6 +110,7 @@ interface MessagesComponentProps {
     messages: MessageFullFragment[];
     loading: boolean;
     uid: string;
+    messenger: MessengerEngine;
 }
 
 class MessagesComponent extends React.Component<MessagesComponentProps, { message: string, mounted: boolean }> {
@@ -117,6 +120,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
         message: '',
         mounted: false
     };
+
+    unmounter: (() => void) | null = null;
 
     handleScrollView = (src: any) => {
         if (src) {
@@ -152,6 +157,14 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
 
     componentDidMount() {
         this.setState({ mounted: true });
+        this.unmounter = this.props.messenger.openConversation(this.props.conversationId);
+    }
+
+    componentWillUnmount() {
+        if (this.unmounter) {
+            this.unmounter();
+            this.unmounter = null;
+        }
     }
 
     render() {
@@ -185,6 +198,9 @@ interface ConversationRootProps {
 
 class ConversationRoot extends React.Component<ConversationRootProps> {
     render() {
+        if (!canUseDOM) {
+            return null;
+        }
         return (
             <>
                 <MessengerWatcher
@@ -195,13 +211,18 @@ class ConversationRoot extends React.Component<ConversationRootProps> {
                 />
                 <Mutation mutation={SendMessageMutation.document}>
                     {(mutation) => (
-                        <MessagesComponent
-                            messages={this.props.messages}
-                            loading={false}
-                            uid={this.props.uid}
-                            sendMessage={mutation}
-                            conversationId={this.props.conversationId}
-                        />
+                        <MessengerContext.Consumer>
+                            {messenger => (
+                                <MessagesComponent
+                                    messages={this.props.messages}
+                                    loading={false}
+                                    uid={this.props.uid}
+                                    sendMessage={mutation}
+                                    conversationId={this.props.conversationId}
+                                    messenger={messenger}
+                                />
+                            )}
+                        </MessengerContext.Consumer>
                     )}
                 </Mutation>
             </>
