@@ -6,6 +6,7 @@ import { GlobalCounterQuery } from 'openland-api/GlobalCounterQuery';
 import { defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { backoff } from 'openland-x-utils/timer';
 import { ChatReadMutation } from 'openland-api/ChatReadMutation';
+import { Badge } from './Badge';
 // import Notify from 'notifyjs';
 
 let GLOBAL_SUBSCRIPTION = gql`
@@ -46,6 +47,9 @@ export class MessengerEngine {
     private pendoingReaders = new Map<string, string>();
     private isVisible = true;
     private globalWatcher: SequenceWatcher;
+    private notify = backoff(() => import('notifyjs'));
+    private badge = new Badge();
+    private close: any = null;
 
     constructor(client: ApolloClient<{}>) {
         this.client = client;
@@ -63,11 +67,12 @@ export class MessengerEngine {
             });
         });
 
-        backoff(() => import('notifyjs')).then((v) => {
+        this.notify.then((v) => {
             if ((v as any).needsPermission && (v as any).isSupported()) {
                 (v as any).requestPermission();
             }
         });
+        this.badge.init();
     }
 
     destroy() {
@@ -107,8 +112,11 @@ export class MessengerEngine {
     }
 
     private handleVisibilityChange = () => {
-        console.warn(this.isVisible);
         if (this.isVisible) {
+            if (this.close) {
+                this.close.close();
+                this.close = null;
+            }
             if (this.pendoingReaders.size > 0) {
                 for (let a of this.pendoingReaders) {
                     this.client.mutate({
@@ -121,6 +129,7 @@ export class MessengerEngine {
                 }
                 this.pendoingReaders.clear();
             }
+            this.badge.badge(0);
         }
     }
 
@@ -142,11 +151,23 @@ export class MessengerEngine {
     private handleNewMessage = () => {
         var audio = new Audio('/static/sounds/notification.mp3');
         audio.play();
-        backoff(() => import('notifyjs')).then((v) => {
+        this.notify.then((v) => {
             if (!(v as any).needsPermission) {
-                new (v as any)('New Message', {
-                    body: 'You got new message!'
-                }).show();
+                if (this.close) {
+                    this.close.close();
+                    this.close = null;
+                }
+                let not = new (v as any)('New Message', {
+                    body: 'You got new message!',
+                    notifyClick: () => {
+                        if (this.close) {
+                            this.close.close();
+                            this.close = null;
+                        }
+                    }
+                });
+                this.close = not;
+                not.show();
             }
         });
     }
@@ -168,6 +189,9 @@ export class MessengerEngine {
                 data: existing
             });
         }
+        if (!this.isVisible) {
+            this.badge.badge(counter);
+        }
     }
 
     private writeConversationCounter = (conversationId: string, counter: number, visible: boolean) => {
@@ -180,7 +204,7 @@ export class MessengerEngine {
         if (conv) {
             if (visible) {
                 // Do not increment unread count
-                if ((conv as any).counter.unreadCount < counter) {
+                if ((conv as any).unreadCount < counter) {
                     return;
                 }
             }
@@ -202,7 +226,7 @@ export class MessengerEngine {
         if (conv) {
             if (visible) {
                 // Do not increment unread count
-                if ((conv as any).counter.unreadCount < counter) {
+                if ((conv as any).unreadCount < counter) {
                     return;
                 }
             }

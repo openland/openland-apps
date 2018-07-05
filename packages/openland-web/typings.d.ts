@@ -490,3 +490,7 @@ declare var ifvisible: IfVisible;
 declare module 'ifvisible.js' {
     export = ifvisible;
 }
+
+declare module 'favico.js' {
+    
+}
