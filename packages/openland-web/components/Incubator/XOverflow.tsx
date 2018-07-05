@@ -106,18 +106,6 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
         this.refComp = el;
     }
 
-    // modifyProps = (component: any) => {
-    //     if (component.props.onClick === undefined) {
-    //         return (
-    //             <div onClick={this.switch} key="xoverflow_component" ref={this.createRef}>
-    //                 {component}
-    //             </div>
-    //         );
-    //     }
-
-    //     return component;
-    // }
-
     render() {
 
         const { target, shadow } = this.props;

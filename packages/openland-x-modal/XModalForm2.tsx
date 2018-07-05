@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XModal, XModalFooter, XModalHeader, XModalHeaderEmpty, XModalBodyContainer } from './XModal';
+import { XModal, XModalFooter, XModalHeader, XModalHeaderEmpty, XModalBodyContainer, XModalCloser } from './XModal';
 import { XForm, XFormProps } from 'openland-x-forms/XForm2';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -14,6 +14,7 @@ export interface XModalFormProps extends XFormProps {
 
     // Style
     size?: 'x-large' | 'large' | 'default' | 'small';
+    useTopCloser?: boolean;
 
     // Controlled/Uncontrolled
     isOpen?: boolean;
@@ -36,6 +37,7 @@ const BodyPadding = glamorous.div({
     paddingRight: 24,
     paddingTop: 18,
     paddingBottom: 24,
+    flexGrow: 1
 });
 
 const ModalBodyContainer = glamorous(XModalBodyContainer)({
@@ -44,6 +46,7 @@ const ModalBodyContainer = glamorous(XModalBodyContainer)({
     maxHeight: '70vh',
     overflowY: 'scroll',
     marginBottom: 0,
+    flexGrow: 1
 
 });
 
@@ -64,8 +67,8 @@ export class XModalForm extends React.Component<XModalFormProps> {
             );
         }
         return (
-            <XModal {...other} customContent={true} scrollableContent={this.props.scrollableContent} >
-                {this.props.title && <XModalHeader>{this.props.title}</XModalHeader>}
+            <XModal {...other} customContent={true} scrollableContent={this.props.scrollableContent} useTopCloser={this.props.useTopCloser}>
+                {(this.props.title || this.props.useTopCloser) && <XModalHeader>{this.props.title}{this.props.useTopCloser && <XModalCloser style="flat" icon="close" autoClose={true} />}</XModalHeader>}
                 {!this.props.title && <XModalHeaderEmpty />}
                 <XForm defaultData={defaultData} staticData={staticData} defaultAction={defaultAction} autoClose={true}>
                     {body}
@@ -73,7 +76,8 @@ export class XModalForm extends React.Component<XModalFormProps> {
                     <Footer>
                         <XHorizontal>
                             <XFormSubmit style={'primary'} text={'Save'} {...submitProps} keyDownSubmit={true} />
-                            <XButton text="Cancel" autoClose={true} />
+                            {!this.props.useTopCloser && <XButton text="Cancel" autoClose={true} />}
+
                         </XHorizontal>
                     </Footer>
                 </XForm>

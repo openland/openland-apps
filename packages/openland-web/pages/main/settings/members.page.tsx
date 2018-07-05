@@ -25,8 +25,10 @@ import { XSelect } from 'openland-x/XSelect';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { withOrganizationRemoveMember } from '../../../api/withOrganizationRemoveMember';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { XOverflow, XMenuItem } from '../../../components/Incubator/XOverflow';
+import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { DateFormater } from 'openland-x-format/XDate';
+import { InvitesMoadal } from './invites';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 export const CreateInviteButton = withInviteCreate((props) => (
     <XButton action={() => props.createInvite({})} text="Create Invite" />
@@ -82,7 +84,11 @@ const PermissionsHoverButton = glamorous(XButton)({
 
 });
 
-const RemoveModal = withOrganizationRemoveMember((props) => {
+const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
+    let member = (props as any).members.filter((m: any) => m.user && m.user.id === props.router.query.remove || '')[0];
+    if (!member) {
+        return null;
+    }
     return (
         <XModalForm
             submitProps={{
@@ -90,40 +96,78 @@ const RemoveModal = withOrganizationRemoveMember((props) => {
                 style: 'danger',
             }}
             title={'Imagine ' + (props as any).orgName + ' without'}
-
+            targetQuery="remove"
             defaultAction={async (data) => {
                 await props.remove({
                     variables: {
-                        memberId: (props as any).userId,
+                        memberId: member.user.id,
                     }
                 });
 
             }}
-            target={(<XMenuItem style="danger" >Remove from organization</XMenuItem>)}
         >
             <XHorizontal>
-                <XAvatar size="medium" cloudImageUuid={(props as any).avatar || undefined} />
+                <XAvatar size="medium" cloudImageUuid={member.user.photo || undefined} />
                 <XVertical separator={4} justifyContent="center">
-                    <XText textStyle="h500">{(props as any).name}</XText>
-                    {(props as any).email && <XText opacity={0.5} >{(props as any).email}</XText>}
+                    <XText textStyle="h500">{member.user.name}</XText>
+                    {member.user.email && <XText opacity={0.5} >{member.user.email}</XText>}
                 </XVertical>
             </XHorizontal>
         </XModalForm>
     );
-}) as React.ComponentType<{ orgName: string, name: string, avatar?: string, email?: string, userId: string, refetchVars: { orgId: string } }>;
+}) as React.ComponentType<{ orgName: string, members: any[], refetchVars: { orgId: string } }>;
 
-const PermissionsModal = withOrganizationMemberChangeRole((props) => {
+const RemoveInviteddModal = withOrganizationRemoveMember((props) => {
+    let member = (props as any).members.filter((m: any) => m.inviteId === props.router.query.remove || '')[0];
+    if (!member) {
+        return null;
+    }
     return (
         <XModalForm
-            title={'Imagine ' + (props as any).name + ' as ' + (props as any).orgName + '\'s'}
-            defaultData={{
-                role: (props as any).currentRole
+            submitProps={{
+                text: 'Cancel invite',
+                style: 'danger',
             }}
+            title={'Cancel invite for'}
+            targetQuery="remove"
+            defaultAction={async (data) => {
+                await props.remove({
+                    variables: {
+                        memberId: member.inviteId,
+                    }
+                });
+
+            }}
+        >
+            <XHorizontal>
+                <XAvatar size="medium" cloudImageUuid={undefined} />
+                <XVertical separator={4} justifyContent="center">
+                    <XText textStyle="h500">{member.firstName || '' + member.lastName || ''}</XText>
+                    {member.email && <XText opacity={0.5} >{member.email}</XText>}
+                </XVertical>
+            </XHorizontal>
+        </XModalForm>
+    );
+}) as React.ComponentType<{ members: any[], refetchVars: { orgId: string } }>;
+
+const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => {
+    let member = (props as any).members.filter((m: any) => m.user && m.user.id === props.router.query.changeRole || '')[0];
+    if (!member) {
+        return null;
+    }
+    return (
+        <XModalForm
+            title={'Imagine ' + member.user.name + ' as ' + (props as any).orgName + '\'s'}
+            defaultData={{
+                role: member.currentRole
+            }}
+
+            targetQuery="changeRole"
 
             defaultAction={async (data) => {
                 await props.changeRole({
                     variables: {
-                        memberId: (props as any).userId,
+                        memberId: member.user.id,
                         newRole: data.role as OrganizationMemberRole
                     }
                 });
@@ -144,76 +188,91 @@ const PermissionsModal = withOrganizationMemberChangeRole((props) => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ orgName: string, currentRole: string, name: string, userId: string, refetchVars: { orgId: string }, target: any }>;
+})) as React.ComponentType<{ orgName: string, members: any[], refetchVars: { orgId: string } }>;
 
 const OrgMembers = withOrganizationMembers((props) => {
     return (
-        <Table>
-            <XTable.Header>
-                <XTable.Cell>{''}</XTable.Cell>
-                <XTable.Cell>Role</XTable.Cell>
-                <XTable.Cell>Join date</XTable.Cell>
-            </XTable.Header>
+        <>
+            <Table>
+                <XTable.Header>
+                    <XTable.Cell>{''}</XTable.Cell>
+                    <XTable.Cell>Role</XTable.Cell>
+                    <XTable.Cell>Join date</XTable.Cell>
+                </XTable.Header>
 
-            <XTable.Body>
-                {props.data.alphaOrganizationMembers && props.data.alphaOrganizationMembers.map((m) => (
-                    <Row>
-                        <XTable.Cell>
-                            <XHorizontal >
-                                <XAvatar size="medium" cloudImageUuid={(m.__typename === 'OrganizationJoinedMember' && m.user.picture) || undefined} />
-                                <XVertical separator={4} justifyContent="center">
-                                    <XText textStyle="h500">{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && m.firstName)}</XText>
-                                    {m.email && <XText opacity={0.5} >{m.email}</XText>}
-                                </XVertical>
+                <XTable.Body>
+                    {props.data.alphaOrganizationMembers && props.data.alphaOrganizationMembers.map((m) => (
+                        <Row>
+                            <XTable.Cell>
+                                <XHorizontal >
+                                    <XAvatar size="medium" cloudImageUuid={(m.__typename === 'OrganizationJoinedMember' && m.user.picture) || undefined} />
+                                    <XVertical separator={4} justifyContent="center">
+                                        <XText textStyle="h500">{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && (m.firstName || '' + m.lastName || ''))}</XText>
+                                        {m.email && <XText opacity={0.5} >{m.email}</XText>}
+                                    </XVertical>
 
-                            </XHorizontal>
-                        </XTable.Cell>
-                        <XTable.Cell>
-                            <XWithRole role="admin" orgPermission={true}>
-                                {m.__typename === 'OrganizationJoinedMember' && (
-                                    <PermissionCell justifyContent="center" separator={0}>
+                                </XHorizontal>
+                            </XTable.Cell>
+                            <XTable.Cell>
+                                <XWithRole role="admin" orgPermission={true}>
+                                    {m.__typename === 'OrganizationJoinedMember' && (
+                                        <PermissionCell justifyContent="center" separator={0}>
+                                            <XText>{m.role}</XText>
+                                            <PermissionsHoverButton text="Manage Permissions" style="electric" query={{ field: 'changeRole', value: m.user.id }} />
+                                        </PermissionCell>
+                                    )}
+                                    {m.__typename === 'OrganizationIvitedMember' && (
                                         <XText>{m.role}</XText>
-                                        <PermissionsModal target={<PermissionsHoverButton text="Manage Permissions" style="electric" />} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
-                                    </PermissionCell>
-                                )}
-                                {m.__typename === 'OrganizationIvitedMember' && (
+                                    )}
+                                </XWithRole>
+                                <XWithRole role="admin" orgPermission={true} negate={true}>
                                     <XText>{m.role}</XText>
-                                )}
-                            </XWithRole>
-                            <XWithRole role="admin" orgPermission={true} negate={true}>
-                                <XText>{m.role}</XText>
-                            </XWithRole>
+                                </XWithRole>
 
-                        </XTable.Cell>
-                        <XTable.Cell>
-                            <XText >{m.__typename === 'OrganizationJoinedMember' && m.joinedAt ? DateFormater(m.joinedAt) : ''}</XText>
-                        </XTable.Cell>
-                        <XWithRole role="admin" orgPermission={true}>
-                            <XTable.Cell textAlign="right">
-                                {m.__typename === 'OrganizationJoinedMember' && (
+                            </XTable.Cell>
+                            <XTable.Cell>
+                                <XText >{m.__typename === 'OrganizationJoinedMember' && m.joinedAt ? DateFormater(m.joinedAt) : ''}</XText>
+                            </XTable.Cell>
+                            <XWithRole role="admin" orgPermission={true}>
+                                <XTable.Cell textAlign="right">
                                     <XOverflow
                                         placement="bottom-end"
                                         content={
-                                            <>
-                                                <PermissionsModal target={<XMenuItem>Manage Permissions</XMenuItem>} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} /> 
-                                                <RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
-                                            </>
+                                            m.__typename === 'OrganizationJoinedMember' ? (
+                                                <>
+                                                    <XOverflow.Item query={{ field: 'changeRole', value: m.user.id }}>Manage Permissions</XOverflow.Item>
+                                                    <XOverflow.Item query={{ field: 'remove', value: m.user.id }} style="danger" >Remove from organization</XOverflow.Item>
+                                                </>
+                                            ) : (
+                                                    <XOverflow.Item query={{ field: 'remove', value: m.inviteId }} style="danger" >Cancel invite</XOverflow.Item>
+                                                )
                                         }
                                     />
-                                )}
-                            </XTable.Cell>
-                        </XWithRole>
-                    </Row>
-                ))}
-            </XTable.Body>
-        </Table>
+                                </XTable.Cell>
+                            </XWithRole>
+                        </Row>
+                    ))}
+                </XTable.Body>
+            </Table>
+            {props.data.alphaOrganizationMembers && (
+                <>
+                    <PermissionsModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                    <RemoveJoinedModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                    <RemoveInviteddModal members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                </>
+            )}
+
+        </>
+
     );
 });
 
 export default withApp('Members', 'viewer', withInvites(withQueryLoader(withUserInfo((props) => {
     return (
         <Navigation title="Members">
-            <XHeader text="Members" />
+            <XHeader text="Members" >
+                <InvitesMoadal refetchVars={{ orgId: props.organization ? props.organization.id : '' }} />
+            </XHeader>
             <Content>
                 {/* <XHorizontal alignItems="center" justifyContent="space-between">
                     <XTitle marginTop={0} marginBottom={0}>Members</XTitle>

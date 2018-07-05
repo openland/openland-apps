@@ -114,7 +114,7 @@ export let XModalFooter = Glamorous.div({
     borderTop: '1px solid rgba(220, 222, 228, 0.6)'
 });
 
-const XModalCloser = Glamorous(XButton)({
+export const XModalCloser = Glamorous(XButton)({
     width: 28,
     height: 28,
     borderRadius: 50,

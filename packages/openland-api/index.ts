@@ -75,6 +75,7 @@ export const DeleteListingMutation = typedMutation<Types.DeleteListingMutation, 
 export const OrganizationMembersQuery = typedQuery<Types.OrganizationMembersQuery, Types.OrganizationMembersQueryVariables>(Organization.OrganizationMembersQuery);
 export const OrganizationChangeMemberRoleMutation = typedMutation<Types.OrganizationChangeMemberRoleMutation, Types.OrganizationChangeMemberRoleMutationVariables>(Organization.OrganizationChangeMemberRoleMutation);
 export const OrganizationRemoveMemberMutation = typedMutation<Types.OrganizationRemoveMemberMutation, Types.OrganizationRemoveMemberMutationVariables>(Organization.OrganizationRemoveMemberMutation);
+export const OrganizationInviteMemberMutation = typedMutation<Types.OrganizationInviteMemberMutation, Types.OrganizationInviteMemberMutationVariables>(Organization.OrganizationInviteMemberMutation);
 export const BlocksConnectionQuery = typedQuery<Types.BlocksConnectionQuery, Types.BlocksConnectionQueryVariables>(Parcels.BlocksConnectionQuery);
 export const BlockQuery = typedQuery<Types.BlockQuery, Types.BlockQueryVariables>(Parcels.BlockQuery);
 export const ParcelsConnectionQuery = typedQuery<Types.ParcelsConnectionQuery, Types.ParcelsConnectionQueryVariables>(Parcels.ParcelsConnectionQuery);

@@ -2077,6 +2077,20 @@ export interface OrganizationRemoveMemberMutation {
   alphaOrganizationRemoveMember: string,
 };
 
+export interface OrganizationInviteMemberMutationVariables {
+  email: string,
+  role: OrganizationMemberRole,
+  firstName?: string | null,
+  lastName?: string | null,
+};
+
+export interface OrganizationInviteMemberMutation {
+  alphaOrganizationInviteMember:  {
+    __typename: "Invite",
+    id: string,
+  },
+};
+
 export interface BlocksConnectionQueryVariables {
   cursor?: string | null,
   page?: number | null,

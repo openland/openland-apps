@@ -13,6 +13,7 @@ const SelectAnimationSpin = glamor.keyframes({
 });
 
 const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
+    minWidth: 100,
     '&.Select': {
         position: 'relative'
     },
