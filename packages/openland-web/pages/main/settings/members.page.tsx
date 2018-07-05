@@ -195,8 +195,8 @@ const OrgMembers = withOrganizationMembers((props) => {
                                         placement="bottom-end"
                                         content={
                                             <>
-                                                {/* <PermissionsModal target={<XMenuItem>Manage Permissions</XMenuItem>} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} /> */}
-                                                {/* <RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} /> */}
+                                                <PermissionsModal target={<XMenuItem>Manage Permissions</XMenuItem>} orgName={(props as any).orgName} currentRole={m.role} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} /> 
+                                                <RemoveModal orgName={(props as any).orgName} avatar={m.user.picture || undefined} email={m.user.email || undefined} name={m.user.name} userId={m.user.id} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
                                             </>
                                         }
                                     />
