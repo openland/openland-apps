@@ -20,6 +20,7 @@ import { SendMessageMutation } from 'openland-api';
 import { MessengerReader } from './MessengerReader';
 import { MessengerContext, MessengerEngine } from './MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { thisExpression } from 'babel-types';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -178,6 +179,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
     componentDidMount() {
         this.setState({ mounted: true });
         this.unmounter = this.props.messenger.openConversation(this.props.conversationId);
+        this.xinput.focus();
     }
 
     componentWillUnmount() {
