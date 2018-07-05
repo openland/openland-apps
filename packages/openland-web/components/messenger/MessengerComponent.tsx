@@ -20,7 +20,6 @@ import { SendMessageMutation } from 'openland-api';
 import { MessengerReader } from './MessengerReader';
 import { MessengerContext, MessengerEngine } from './MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { thisExpression } from 'babel-types';
 
 let Container = Glamorous.div({
     display: 'flex',
