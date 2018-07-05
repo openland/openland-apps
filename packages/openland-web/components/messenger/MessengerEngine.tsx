@@ -8,8 +8,8 @@ import { backoff } from 'openland-x-utils/timer';
 import { ChatReadMutation } from 'openland-api/ChatReadMutation';
 
 let GLOBAL_SUBSCRIPTION = gql`
-    subscription GlobalSubscription {
-        event: alphaSubscribeEvents {
+    subscription GlobalSubscription($seq: Int) {
+        event: alphaSubscribeEvents(fromSeq: $seq) {
             seq
             ... on UserEventMessage {
                 unread
