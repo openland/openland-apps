@@ -153,6 +153,37 @@ const OrganizationCards = withExploreOrganizations(props => (
     </>
 ));
 
+class Organizations extends React.Component<{ keyWords: string[] }> {
+
+    buildQuery = (clauses: any[]): any | null => {
+        if (clauses.length === 0) {
+            return null;
+        } else if (clauses.length === 1) {
+            return clauses[0];
+        } else {
+            return {
+                '$and': clauses
+            };
+        }
+    }
+
+    render() {
+
+        let clauses: any[] = [];
+        clauses.push({ '$or': [...this.props.keyWords.map(i => ({ name: i }))] });
+
+        return (
+            <div>
+                <OrganizationCards
+                    variables={{
+                        query: JSON.stringify(this.buildQuery(clauses))
+                    }}
+                />
+            </div>
+        );
+    }
+}
+
 const SearchInput = Glamorous.input({
     border: '1px solid #d4dae7',
     height: 40,
@@ -181,7 +212,7 @@ const Tag = Glamorous.div({
     marginBottom: 4,
 });
 
-class SearchComponent extends React.Component<{}, { searchText: string, tags: string[] }> {
+class SearchComponent extends React.Component<{}, { searchText: string, keyWords: string[] }> {
     searchRef: any | null = null;
 
     constructor(props: any) {
@@ -189,7 +220,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, tags: st
 
         this.state = {
             searchText: '',
-            tags: []
+            keyWords: []
         };
     }
 
@@ -206,7 +237,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, tags: st
     tagsAdder = (tag: string) => {
         let count = 0;
 
-        const tagsArr = this.state.tags;
+        const tagsArr = this.state.keyWords;
 
         for (let i of tagsArr) {
             if (tag === i) {
@@ -219,7 +250,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, tags: st
             tagsArr.push(tag);
 
             this.setState({
-                tags: tagsArr
+                keyWords: tagsArr
             });
         }
     }
@@ -228,27 +259,15 @@ class SearchComponent extends React.Component<{}, { searchText: string, tags: st
 
         let newTags = [];
 
-        for (let i of this.state.tags) {
+        for (let i of this.state.keyWords) {
             if (tag !== i) {
                 newTags.push(i);
             }
         }
 
         this.setState({
-            tags: newTags
+            keyWords: newTags
         });
-    }
-
-    buildQuery = (clauses: any[]): any | null => {
-        if (clauses.length === 0) {
-            return null;
-        } else if (clauses.length === 1) {
-            return clauses[0];
-        } else {
-            return {
-                '$and': clauses
-            };
-        }
     }
 
     keydownHandler = (e: any) => {
@@ -267,13 +286,13 @@ class SearchComponent extends React.Component<{}, { searchText: string, tags: st
     }
 
     render() {
-        let clauses: any[] = [];
-        clauses.push({ name: this.state.searchText === '' ? [] : this.state.searchText });
+
+        const { searchText, keyWords } = this.state;
 
         return (
             <XVertical>
                 <InputWrapper>
-                    {this.state.tags.map((i, j) => (
+                    {keyWords.map((i, j) => (
                         <Tag key={j}>
                             {i}
                             <div
@@ -286,19 +305,13 @@ class SearchComponent extends React.Component<{}, { searchText: string, tags: st
                         </Tag>
                     ))}
                     <SearchInput
-                        value={this.state.searchText}
+                        value={searchText}
                         onChange={this.handleSearchChange}
                         innerRef={this.handleSearchRef}
                         placeholder={'Enter a keyword'}
                     />
                 </InputWrapper>
-                <div>
-                    <OrganizationCards
-                        variables={{
-                            query: JSON.stringify(this.buildQuery(clauses))
-                        }}
-                    />
-                </div>
+                <Organizations keyWords={keyWords} />
             </XVertical>
         );
     }
