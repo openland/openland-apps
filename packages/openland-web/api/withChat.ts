@@ -1,3 +1,3 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { ChatQuery } from 'openland-api/ChatQuery';
-export const withChat = graphqlRouted(ChatQuery);
+import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
+export const withChat = graphqlRouted(ChatInfoQuery);

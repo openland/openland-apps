@@ -521,6 +521,27 @@ export interface ChatQuery {
   },
 };
 
+export interface ChatInfoQueryVariables {
+  conversationId: string,
+};
+
+export interface ChatInfoQuery {
+  chat: ( {
+      __typename: "AnonymousConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      title: string,
+    }
+  ),
+};
+
 export interface ChatPrivateQueryVariables {
   userId: string,
 };

@@ -95,7 +95,7 @@ let Conversation = withChat(withQueryLoader((props) => {
         <XVertical flexGrow={1} separator={'none'} maxWidth={1000}>
             <XHeader text={props.data.chat.title} separated={true} />
             <XHorizontal flexGrow={1} justifyContent="center">
-                <MessengerComponent key={props.data.chat.id} variables={{ conversationId: props.data.chat.id }} />
+                <MessengerComponent key={props.data.chat.id} conversationId={props.data.chat.id} />
             </XHorizontal>
         </XVertical>
     );

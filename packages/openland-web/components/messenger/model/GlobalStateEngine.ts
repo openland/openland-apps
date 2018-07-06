@@ -1,11 +1,11 @@
-import { MessengerEngine } from '../MessengerEngine';
+import { MessengerEngine } from './MessengerEngine';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import gql from 'graphql-tag';
 import { backoff } from 'openland-x-utils/timer';
 import { ChatListQuery, GlobalCounterQuery } from 'openland-api';
 import { SequenceWatcher } from './SequenceWatcher';
-import { defaultDataIdFromObject, ID_KEY } from '../../../../../node_modules/apollo-cache-inmemory';
+import { defaultDataIdFromObject, ID_KEY } from 'apollo-cache-inmemory';
 
 let SHARED_CONVERSATION_COUNTER = gql`
     fragment SharedConversationCounter on SharedConversation {

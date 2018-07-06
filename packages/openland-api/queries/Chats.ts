@@ -52,6 +52,15 @@ export const ChatQuery = gql`
     ${UserShort}
 `;
 
+export const ChatInfoQuery = gql`
+    query ChatInfo($conversationId: ID!) {
+        chat: alphaChat(conversationId: $conversationId) {
+            id
+            title
+        }
+    }
+`;
+
 export const ChatPrivateQuery = gql`
     query ChatPrivate($userId: ID!) {
         chat: alphaChatUser(userId: $userId) {

@@ -7,11 +7,13 @@ import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { MessengerContext, MessengerEngine } from '../MessengerEngine';
+import { MessengerContext, MessengerEngine } from '../model/MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { getConfig } from '../../../config';
 import { MessageSendHandler } from '../model/MessageSender';
 import { MessageListComponent } from './MessageListComponent';
+import { ConversationEngine } from '../model/ConversationEngine';
+import { ConversationState } from '../model/ConversationState';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -25,7 +27,8 @@ let MessagesContainer = Glamorous.div({
     display: 'flex',
     flexGrow: 1,
     flexDirection: 'column',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    position: 'relative'
 });
 
 let SendMessageContainer = Glamorous(XHorizontal)({
@@ -34,7 +37,8 @@ let SendMessageContainer = Glamorous(XHorizontal)({
     flexShrink: 0,
     paddingTop: '0px',
     paddingLeft: '24px',
-    paddingRight: '24px'
+    paddingRight: '24px',
+    zIndex: 10
 });
 
 interface PendingMessage {
@@ -47,7 +51,6 @@ interface PendingMessage {
 
 interface MessagesComponentProps {
     conversationId: string;
-    messages: MessageFullFragment[];
     loading: boolean;
     me: UserShortFragment;
     messenger: MessengerEngine;
@@ -56,19 +59,30 @@ interface MessagesComponentProps {
 interface MessagesComponentState {
     message: string;
     mounted: boolean;
+    loading: boolean;
     pending: PendingMessage[];
+    messages: MessageFullFragment[];
 }
 
 class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> implements MessageSendHandler {
 
-    state = {
-        message: '',
-        mounted: false,
-        pending: []
-    };
     messagesList = React.createRef<MessageListComponent>();
     unmounter: (() => void) | null = null;
+    unmounter2: (() => void) | null = null;
     xinput: any | null = null;
+    readonly conversation: ConversationEngine;
+
+    constructor(props: MessagesComponentProps) {
+        super(props);
+        this.conversation = this.props.messenger.getConversation(this.props.conversationId);
+        this.state = {
+            message: '',
+            mounted: false,
+            pending: [],
+            messages: this.conversation.getState().messages,
+            loading: this.conversation.getState().loading,
+        };
+    }
 
     //
     // Message Sending
@@ -153,19 +167,28 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     //
 
     shouldComponentUpdate(nextProps: MessagesComponentProps, nextState: MessagesComponentState) {
-        return this.props.messages !== nextProps.messages || this.state.message !== nextState.message || this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading || this.state.pending !== nextState.pending;
+        return this.state.messages !== nextState.messages || this.state.message !== nextState.message || this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading || this.state.pending !== nextState.pending;
     }
 
     componentDidMount() {
         this.setState({ mounted: true });
         this.unmounter = this.props.messenger.mountConversation(this.props.conversationId);
+        this.unmounter2 = this.conversation.subscribe(this.handleUpdates);
         this.xinput.focus();
+    }
+
+    handleUpdates = (state: ConversationState) => {
+        this.setState({ messages: state.messages, loading: state.loading });
     }
 
     componentWillUnmount() {
         if (this.unmounter) {
             this.unmounter();
             this.unmounter = null;
+        }
+        if (this.unmounter2) {
+            this.unmounter2();
+            this.unmounter2 = null;
         }
     }
 
@@ -179,44 +202,58 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 <Container>
                     <MessagesContainer>
                         <MessageListComponent
-                            messages={this.props.messages}
+                            conversation={this.conversation}
+                            messages={this.state.messages}
                             pending={this.state.pending}
                             onCancel={this.handleCancel}
                             onRetry={this.handleRetry}
                             me={this.props.me}
                             ref={this.messagesList}
                         />
+                        <XLoader loading={!this.state.mounted || this.state.loading} />
                     </MessagesContainer>
                     <SendMessageContainer>
-                        <XButton icon="add" size="medium" onClick={this.handleAttach} />
-                        <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} ref={this.handleRef} />
-                        <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" />
+                        <XButton icon="add" size="medium" onClick={this.handleAttach} enabled={this.state.mounted} />
+                        <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} ref={this.handleRef} disabled={!this.state.mounted} />
+                        <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" enabled={this.state.mounted} />
                     </SendMessageContainer>
                 </Container>
-                <XLoader loading={!this.state.mounted} />
             </>
         );
     }
 }
 
+const Placeholder = () => {
+    return (
+        <Container>
+            <MessagesContainer>
+                <XLoader loading={true} />
+            </MessagesContainer>
+            <SendMessageContainer>
+                <XButton icon="add" size="medium" enabled={false} />
+                <XInput placeholder="Write a message..." flexGrow={1} disabled={true} />
+                <XButton text="Send" size="medium" iconRight="send" enabled={false} />
+            </SendMessageContainer>
+        </Container>
+    );
+};
+
 interface MessengerRootComponentProps {
     conversationId: string;
-    seq: number;
     client: ApolloClient<{}>;
     me: UserShortFragment;
-    messages: MessageFullFragment[];
 }
 
 export class MessengerRootComponent extends React.Component<MessengerRootComponentProps> {
     render() {
+        // We are not allowing messenger to be rendered on server side
         if (!canUseDOM) {
-            return null;
+            return <Placeholder />;
         }
         return (
             <MessengerContext.Consumer>
                 {messenger => (
                     <MessagesComponent
-                        messages={this.props.messages}
                         loading={false}
                         me={this.props.me}
                         conversationId={this.props.conversationId}

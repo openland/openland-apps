@@ -2,10 +2,12 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageComponent } from './MessageComponent';
 import { UserShortFragment, MessageFullFragment } from 'openland-api/Types';
-import { PendingMessage } from '../Model';
+import { PendingMessage } from '../model/types';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
+import { ConversationEngine } from '../model/ConversationEngine';
 
 interface MessageListProps {
+    conversation: ConversationEngine;
     me: UserShortFragment;
     messages: MessageFullFragment[];
     pending: PendingMessage[];

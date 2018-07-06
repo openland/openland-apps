@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ApolloClient } from 'apollo-client';
 import { backoff } from 'openland-x-utils/timer';
-import { Badge } from './utils/Badge';
-import { MessageSender } from './model/MessageSender';
-import { ConversationEngine } from './model/ConversationEngine';
-import { Visibility } from './utils/Visibility';
-import { GlobalStateEngine } from './model/GlobalStateEngine';
-import { Router } from '../../routes';
+import { Badge } from '../utils/Badge';
+import { MessageSender } from './MessageSender';
+import { ConversationEngine } from './ConversationEngine';
+import { Visibility } from '../utils/Visibility';
+import { GlobalStateEngine } from './GlobalStateEngine';
+import { Router } from '../../../routes';
 
 export class MessengerEngine {
     readonly client: ApolloClient<{}>;
@@ -43,12 +43,16 @@ export class MessengerEngine {
         this.visibility.destroy();
     }
 
-    mountConversation(conversationId: string): () => void {
+    getConversation(conversationId: string) {
         if (!this.activeConversations.has(conversationId)) {
             let engine = new ConversationEngine(this, conversationId);
             this.activeConversations.set(conversationId, engine);
             engine.start();
         }
+        return this.activeConversations.get(conversationId)!!;
+    }
+
+    mountConversation(conversationId: string): () => void {
         if (this.mountedConversations.has(conversationId)) {
             this.mountedConversations.get(conversationId)!!.count++;
         } else {
@@ -107,12 +111,12 @@ export class MessengerEngine {
     }
 
     private handleConversationVisible = (conversationId: string) => {
-        this.activeConversations.get(conversationId)!!.onOpen();
+        this.getConversation(conversationId).onOpen();
         this.global.onConversationVisible(conversationId);
     }
 
     private handleConversationHidden = (conversationId: string) => {
-        this.activeConversations.get(conversationId)!!.onClosed();
+        this.getConversation(conversationId).onClosed();
         this.global.onConversationHidden(conversationId);
     }
 

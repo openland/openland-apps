@@ -1,4 +1,4 @@
-import { MessengerEngine } from '../MessengerEngine';
+import { MessengerEngine } from './MessengerEngine';
 import { ChatQuery, ChatReadMutation } from 'openland-api';
 import { backoff } from 'openland-x-utils/timer';
 import { SequenceWatcher } from './SequenceWatcher';
@@ -6,6 +6,7 @@ import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
 import { MessageFullFragment } from 'openland-api/Types';
+import { ConversationState } from './ConversationState';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $seq: Int!) {
@@ -30,11 +31,14 @@ export class ConversationEngine {
     private watcher: SequenceWatcher | null = null;
     private isOpen = false;
     private messages: MessageFullFragment[] = [];
+    private state: ConversationState;
     private lastTopMessageRead: string | null = null;
+    private listeners: ((state: ConversationState) => void)[] = [];
 
     constructor(engine: MessengerEngine, conversationId: string) {
         this.engine = engine;
         this.conversationId = conversationId;
+        this.state = new ConversationState(true, []);
     }
 
     start = async () => {
@@ -61,12 +65,11 @@ export class ConversationEngine {
         }
         this.messages = [...(initialChat.data as any).messages.messages];
         this.messages.reverse();
+        this.state = new ConversationState(false, this.messages);
         let seq = (initialChat.data as any).messages.seq as number;
         console.info('Initial state for ' + this.conversationId + ' loaded with seq #' + seq);
         this.watcher = new SequenceWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, seq, { conversationId: this.conversationId }, this.updateHandler, this.engine.client);
-        if (this.isOpen) {
-            this.markReadIfNeeded();
-        }
+        this.onMessagesUpdated();
     }
 
     onOpen = () => {
@@ -76,6 +79,23 @@ export class ConversationEngine {
 
     onClosed = () => {
         this.isOpen = false;
+    }
+
+    getState = () => {
+        return this.state;
+    }
+
+    subscribe = (listener: (state: ConversationState) => void) => {
+        this.listeners.push(listener);
+        listener(this.state);
+        return () => {
+            let index = this.listeners.indexOf(listener);
+            if (index < 0) {
+                console.warn('Double unsubscribe detected!');
+            } else {
+                this.listeners.splice(index, 1);
+            }
+        };
     }
 
     destroy = () => {
@@ -92,6 +112,9 @@ export class ConversationEngine {
         console.warn('Messages updated');
         if (this.isOpen) {
             this.markReadIfNeeded();
+        }
+        for (let l of this.listeners) {
+            l(this.state);
         }
     }
 
@@ -128,6 +151,7 @@ export class ConversationEngine {
                 data: data
             });
             this.messages.push(event.message);
+            this.state = new ConversationState(false, this.messages);
             this.onMessagesUpdated();
         } else {
 
@@ -145,6 +169,7 @@ export class ConversationEngine {
 
             // Reload messages
             this.messages = [...(loaded.data as any).messages.messages];
+            this.state = new ConversationState(false, this.messages);
 
             return (loaded.data as any).messages.seq;
         }
