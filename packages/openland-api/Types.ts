@@ -2098,6 +2098,32 @@ export interface OrganizationInviteMembersMutation {
   alphaOrganizationInviteMembers: string,
 };
 
+export interface OrganizationPublicInviteQuery {
+  publicInvite:  {
+    __typename: "Invite",
+    id: string,
+    key: string,
+    ttl: string | null,
+  } | null,
+};
+
+export interface OrganizationCreatePublicInviteMutationVariables {
+  expirationDays: number,
+};
+
+export interface OrganizationCreatePublicInviteMutation {
+  alphaOrganizationCreatePublicInvite:  {
+    __typename: "Invite",
+    id: string,
+    key: string,
+    ttl: string | null,
+  },
+};
+
+export interface OrganizationDeletePublicInviteMutation {
+  alphaOrganizationDeletePublicInvite: string,
+};
+
 export interface BlocksConnectionQueryVariables {
   cursor?: string | null,
   page?: number | null,

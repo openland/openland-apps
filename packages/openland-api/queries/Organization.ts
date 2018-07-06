@@ -204,3 +204,29 @@ export const OrganizationInviteMembersMutation = gql`
         alphaOrganizationInviteMembers(inviteRequests: $inviteRequests)
     }
 `;
+
+export const OrganizationPublicInviteQuery = gql`
+    query OrganizationPublicInvite{
+        publicInvite: alphaOrganizationPublicInvite{
+            id
+            key
+            ttl
+        }
+    }
+`;
+
+export const OrganizationCreatePublicInviteMutation = gql`
+    mutation OrganizationCreatePublicInvite($expirationDays: Int!){
+        alphaOrganizationCreatePublicInvite(expirationDays: $expirationDays){
+            id
+            key
+            ttl
+        }
+    }
+`;
+
+export const OrganizationDeletePublicInviteMutation = gql`
+    mutation OrganizationDeletePublicInvite{
+        alphaOrganizationDeletePublicInvite
+    }
+`;

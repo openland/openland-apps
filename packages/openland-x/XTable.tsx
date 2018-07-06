@@ -56,7 +56,7 @@ const XTableBodyRowStyle = Glamorous.tr<{ noHover?: boolean }>((props) => ({
     }
 }));
 
-let XTableTD = Glamorous.td<{ width?: number }>((props) => ({
+let XTableTD = Glamorous.td<{ width?: number | string }>((props) => ({
     width: props.width ? props.width : undefined,
     maxWidth: props.width ? props.width : 0,
     verticalAlign: 'middle'
