@@ -199,10 +199,8 @@ export const OrganizationRemoveMemberMutation = gql`
     }
 `;
 
-export const OrganizationInviteMemberMutation = gql`
-    mutation OrganizationInviteMember($email: String!, $role: OrganizationMemberRole!, $firstName: String, $lastName: String) {
-        alphaOrganizationInviteMember(email: $email, role: $role, firstName: $firstName, lastName: $lastName){
-            id
-        }
+export const OrganizationInviteMembersMutation = gql`
+    mutation OrganizationInviteMembers($inviteRequests: [InviteRequest!]!) {
+        alphaOrganizationInviteMembers(inviteRequests: $inviteRequests)
     }
 `;

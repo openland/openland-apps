@@ -149,6 +149,14 @@ export enum OrganizationMemberRole {
 }
 
 
+export interface InviteRequest {
+  email: string,
+  emailText?: string | null,
+  role: OrganizationMemberRole,
+  firstName?: string | null,
+  lastName?: string | null,
+};
+
 export enum OwnerType {
   CITY = "CITY",
   MIXED = "MIXED",
@@ -2080,18 +2088,12 @@ export interface OrganizationRemoveMemberMutation {
   alphaOrganizationRemoveMember: string,
 };
 
-export interface OrganizationInviteMemberMutationVariables {
-  email: string,
-  role: OrganizationMemberRole,
-  firstName?: string | null,
-  lastName?: string | null,
+export interface OrganizationInviteMembersMutationVariables {
+  inviteRequests: Array< InviteRequest >,
 };
 
-export interface OrganizationInviteMemberMutation {
-  alphaOrganizationInviteMember:  {
-    __typename: "Invite",
-    id: string,
-  },
+export interface OrganizationInviteMembersMutation {
+  alphaOrganizationInviteMembers: string,
 };
 
 export interface BlocksConnectionQueryVariables {

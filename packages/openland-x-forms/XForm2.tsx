@@ -93,6 +93,7 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
                 this.props.store.writeValue('errors', null);
             }
         } catch (e) {
+            console.warn(e);
             if (LOGGING) {
                 console.warn(e);
             }
