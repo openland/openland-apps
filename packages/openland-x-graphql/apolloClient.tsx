@@ -16,6 +16,7 @@ class ClientStatus {
         if (this.isConnected) {
             console.warn('Connection Stopped');
             this.isConnected = false;
+            console.warn(this.listeners);
             for (let l of this.listeners) {
                 l(this.isConnected);
             }
@@ -26,6 +27,7 @@ class ClientStatus {
         if (!this.isConnected) {
             console.warn('Connection Started');
             this.isConnected = true;
+            console.warn(this.listeners);
             for (let l of this.listeners) {
                 l(this.isConnected);
             }
@@ -33,8 +35,10 @@ class ClientStatus {
     }
 
     subscribe = (listener: (isConnected: boolean) => void) => {
+        console.warn('Status Subscribed');
         this.listeners.push(listener);
         return () => {
+            console.warn('Status unsubscribed');
             let index = this.listeners.indexOf(listener);
             if (index >= 0) {
                 this.listeners = this.listeners.splice(index, 1);
