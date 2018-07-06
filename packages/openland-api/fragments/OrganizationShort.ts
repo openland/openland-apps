@@ -5,5 +5,6 @@ export const OrganizationShort = gql`
         id
         name
         photo
+        location
     }
 `;

@@ -300,6 +300,7 @@ export interface AccountQuery {
     id: string,
     name: string,
     photo: string | null,
+    location: string | null,
   } | null,
   sessionState:  {
     __typename: "SessionState",
@@ -1538,6 +1539,7 @@ export interface MyOrganizationsQuery {
     id: string,
     name: string,
     photo: string | null,
+    location: string | null,
   } >,
 };
 
@@ -1919,6 +1921,7 @@ export interface ExploreOrganizationsQuery {
         id: string,
         name: string,
         photo: string | null,
+        location: string | null,
       },
       cursor: string,
     } >,
@@ -4453,6 +4456,7 @@ export interface OrganizationShortFragment {
   id: string,
   name: string,
   photo: string | null,
+  location: string | null,
 };
 
 export interface ParcelIDFragment {
