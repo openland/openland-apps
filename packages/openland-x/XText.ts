@@ -1,5 +1,5 @@
 import Glamorous from 'glamorous';
-import XStyles from 'openland-x/XStyles';
+import XStyles from './XStyles';
 
 export let XText = Glamorous.div<{
     textStyle?: 'h900' |

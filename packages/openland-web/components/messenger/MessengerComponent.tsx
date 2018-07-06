@@ -14,7 +14,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XContent } from 'openland-x-layout/XContent';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XDate } from 'openland-x-format/XDate';
+import { XDateLegacy } from 'openland-x-format/XDateLegacy';
 import { MessengerWatcher } from './MessengerWatcher';
 import { MessengerReader } from './MessengerReader';
 import { MessengerContext, MessengerEngine } from './MessengerEngine';
@@ -113,7 +113,7 @@ class MessageComponent extends React.Component<{ message: MessageFullFragment }>
                     <XAvatar cloudImageUuid={this.props.message.sender.picture ? this.props.message.sender.picture : undefined} path={'/mail/u/' + this.props.message.sender.id} />
                     <XVertical separator={'none'} flexGrow={1}>
                         <XHorizontal separator={4}>
-                            <Name>{this.props.message.sender.name}</Name><DateComponent><XDate value={this.props.message.date} format="humanize" /></DateComponent>
+                            <Name>{this.props.message.sender.name}</Name><DateComponent><XDateLegacy value={this.props.message.date} format="humanize" /></DateComponent>
                         </XHorizontal>
                         {message}
                     </XVertical>

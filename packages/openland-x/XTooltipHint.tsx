@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XPopper } from 'openland-x/XPopper';
-import { XIcon } from 'openland-x/XIcon';
+import { XPopper } from './XPopper';
+import { XIcon } from './XIcon';
 
 const TargetContent = Glamorous.div({
     display: 'flex',

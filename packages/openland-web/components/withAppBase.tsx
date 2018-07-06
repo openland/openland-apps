@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withAccountQuery } from './../api/withAccountQuery';
+import { withAccountQuery } from '../api/withAccountQuery';
 import { UserInfoProvider } from './UserInfo';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withData } from './withData';

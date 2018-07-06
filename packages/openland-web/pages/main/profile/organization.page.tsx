@@ -30,7 +30,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
-import { DateFormater } from 'openland-x-format/XDate';
+import { DateFormater } from 'openland-x-format/XDateLegacy';
 import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder, AvatartPlaceholder } from './placeholders';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';

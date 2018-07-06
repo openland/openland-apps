@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Head from 'next/head';
-import { withRouter } from 'openland-x-routing/withRouter';
+import { withRouter } from './withRouter';
 
 export const XDocumentHead = withRouter<{ title: string | string[], titleSocial?: string | null, imgCloud?: string | null, imgUrl?: string | null }>((props) => {
     let parts = ['Openland'];

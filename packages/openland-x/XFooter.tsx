@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import XStyles from 'openland-x/XStyles';
+import XStyles from './XStyles';
 
 const FooterText = Glamorous.div({
     display: 'flex',

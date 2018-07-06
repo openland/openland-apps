@@ -26,7 +26,7 @@ import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { withOrganizationRemoveMember } from '../../../api/withOrganizationRemoveMember';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
-import { DateFormater } from 'openland-x-format/XDate';
+import { DateFormater } from 'openland-x-format/XDateLegacy';
 import { withRouter } from 'openland-x-routing/withRouter';
 
 export const CreateInviteButton = withInviteCreate((props) => (

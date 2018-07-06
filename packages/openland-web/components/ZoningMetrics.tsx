@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { zoneData } from './../utils/zoning/ZoningMatrix';
+import { zoneData } from '../utils/zoning/ZoningMatrix';
 import { XTitle } from 'openland-x/XTitle';
 import { XProperty, XPropertyList, XPropertyColumns } from 'openland-x/XProperty';
 

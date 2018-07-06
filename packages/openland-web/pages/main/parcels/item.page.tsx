@@ -19,7 +19,7 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XButton } from 'openland-x/XButton';
 import { XDimensions } from 'openland-x-format/XDimensions';
-import { XDate } from 'openland-x-format/XDate';
+import { XDateLegacy } from 'openland-x-format/XDateLegacy';
 import { XMapPointLayer } from 'openland-x-map/XMapPointLayer';
 import { XMapSource } from 'openland-x-map/XMapSource';
 import { XMapPolygonLayer } from 'openland-x-map/XMapPolygonLayer';
@@ -193,13 +193,13 @@ export default withApp('Parcel', 'viewer', withParcel(withQueryLoader((props) =>
                                 <XTable.Body>
                                     {props.data.item.permits.map((v) => (
                                         <XTable.Row key={v.id} href={v.governmentalUrl!!}>
-                                            <XTable.Cell>{v.createdAt && <XDate value={v.createdAt} />}</XTable.Cell>
+                                            <XTable.Cell>{v.createdAt && <XDateLegacy value={v.createdAt} />}</XTable.Cell>
                                             <XTable.Cell>{v.id}</XTable.Cell>
                                             <XTable.Cell>{v.type && <PermitType type={v.type!!} />}</XTable.Cell>
                                             <XTable.Cell>
                                                 {v.status}
                                                 {v.statusUpdatedAt && ' ('}
-                                                {v.statusUpdatedAt && <XDate value={v.statusUpdatedAt} />}
+                                                {v.statusUpdatedAt && <XDateLegacy value={v.statusUpdatedAt} />}
                                                 {v.statusUpdatedAt && ')'}
                                             </XTable.Cell>
                                             <XTable.Cell>{v.description}</XTable.Cell>

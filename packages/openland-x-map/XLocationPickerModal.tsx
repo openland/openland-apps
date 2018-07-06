@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XModal } from 'openland-x-modal/XModal';
-import { XMap, XMapProps } from 'openland-x-map/XMap';
-import { XMapGeocoder, XMapGeocoderResult } from 'openland-x-map/XMapGeocoder';
+import { XMap, XMapProps } from './XMap';
+import { XMapGeocoder, XMapGeocoderResult } from './XMapGeocoder';
 import { XButton } from 'openland-x/XButton';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';

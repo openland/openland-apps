@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XIcon } from 'openland-x/XIcon';
+import { XIcon } from './XIcon';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 
 let ItemIcon = Glamorous(XIcon)({

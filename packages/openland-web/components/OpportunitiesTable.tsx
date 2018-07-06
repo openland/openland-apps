@@ -7,7 +7,7 @@ import * as Types from 'openland-api/Types';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XArea } from 'openland-x-format/XArea';
-import { XDate } from 'openland-x-format/XDate';
+import { XDateLegacy } from 'openland-x-format/XDateLegacy';
 import { XTable } from 'openland-x/XTable';
 import { XFooter } from 'openland-x/XFooter';
 import { XLoader } from 'openland-x/XLoader';
@@ -263,7 +263,7 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
                                         </XTable.Cell>
                                     </XWithRole>
                                     <XTable.Cell textAlign="right">
-                                        <XDate format="humanize" value={v.node.updatedAt} />
+                                        <XDateLegacy format="humanize" value={v.node.updatedAt} />
                                     </XTable.Cell>
                                 </XTable.Row>
                             ))}

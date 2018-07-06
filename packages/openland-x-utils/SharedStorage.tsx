@@ -1,5 +1,5 @@
 import * as Cookie from 'js-cookie';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from './canUseDOM';
 
 export interface SharedStorage {
     readValue(key: string): string | null;

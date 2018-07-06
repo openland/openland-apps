@@ -16,7 +16,7 @@ let months = [
     'Dec'
 ];
 
-export function XDate(props: { value: string, format?: 'date' | 'humanize' | 'humanize_large' }) {
+export function XDateLegacy(props: { value: string, format?: 'date' | 'humanize' | 'humanize_large' }) {
     if (props.format === 'humanize' || props.format === 'humanize_large') {
         let date = new Date(props.value).getTime() / 1000;
         return (

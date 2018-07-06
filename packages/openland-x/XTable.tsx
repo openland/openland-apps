@@ -3,8 +3,8 @@ import Glamorous from 'glamorous';
 import { CSSProperties } from 'glamorous';
 import * as classnames from 'classnames';
 import XStyles from './XStyles';
-import { XIcon } from 'openland-x/XIcon';
-import { XLink } from 'openland-x/XLink';
+import { XIcon } from './XIcon';
+import { XLink } from './XLink';
 
 let TableHeader = Glamorous.table({
     width: 'calc(100% - ' + (XStyles.paddings.xlarge * 2) + 'px)',
