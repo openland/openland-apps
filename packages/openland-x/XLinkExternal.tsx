@@ -20,13 +20,15 @@ export const ExternalLinkIcon = Glamorous(XIcon)({
     fontSize: '14px',
 });
 
-export function XLinkExternal(props: { href: string, content?: string }) {
+export function XLinkExternal(props: { href: string, content?: string, showIcon?: boolean }) {
 
     let content = props.content;
     if (!content) {
         let domain: string | null | RegExpMatchArray = props.href;
 
-        if (domain.search(/^https?\:\/\//) !== -1) {
+        if (domain.includes('linkedin.com/in/')) {
+            domain = domain.split('/in/');
+        } else if (domain.search(/^https?\:\/\//) !== -1) {
             domain = domain.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
         } else {
             domain = domain.match(/^([^\/?#]+)(?:[\/?#]|$)/i);
@@ -40,8 +42,8 @@ export function XLinkExternal(props: { href: string, content?: string }) {
     }
 
     return (
-        <ExternalLinkDiv href={props.href} target="_blank">
-            {content}<ExternalLinkIcon icon="launch" />
+        <ExternalLinkDiv href={props.href} target="_blank" className={(props as any).className}>
+            {content}{props.showIcon !== false && <ExternalLinkIcon icon="launch" />}
         </ExternalLinkDiv>
     );
 }
