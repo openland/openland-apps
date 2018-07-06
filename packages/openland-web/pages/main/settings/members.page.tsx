@@ -142,7 +142,7 @@ const RemoveInviteddModal = withOrganizationRemoveMember((props) => {
             <XHorizontal>
                 <XAvatar size="medium" cloudImageUuid={undefined} />
                 <XVertical separator={4} justifyContent="center">
-                    <XText textStyle="h500">{member.firstName || '' + member.lastName || ''}</XText>
+                    <XText textStyle="h500">{(member.firstName || '') + ' ' + (member.lastName || '')}</XText>
                     {member.email && <XText opacity={0.5} >{member.email}</XText>}
                 </XVertical>
             </XHorizontal>
@@ -192,8 +192,8 @@ const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => 
 
 const OrgMembers = withOrganizationMembers((props) => {
     let members = [...props.data.alphaOrganizationMembers || []].sort((a: any, b: any) => {
-        var nameA = String(a.user ? (a.user.name || '') : a.firstName || '' + a.lastname || '').toLowerCase();
-        var nameB = String(b.user ? (b.user.name || '') : b.firstName || '' + b.lastname || '').toLowerCase();
+        var nameA = String(a.user ? (a.user.name || '') : (a.firstName || '') + ' ' + (a.lastname || '')).toLowerCase();
+        var nameB = String(b.user ? (b.user.name || '') : (b.firstName || '') + ' ' + (b.lastname || '')).toLowerCase();
         return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
     });
 
@@ -213,7 +213,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                 <XHorizontal >
                                     <XAvatar size="medium" cloudImageUuid={(m.__typename === 'OrganizationJoinedMember' && m.user.picture) || undefined} />
                                     <XVertical separator={4} justifyContent="center">
-                                        <XText textStyle="h500">{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && (m.firstName || '' + m.lastName || ''))}</XText>
+                                        <XText textStyle="h500">{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && ((m.firstName || '') + ' ' + (m.lastName || '')))}</XText>
                                         {m.email && <XText opacity={0.5} >{m.email}</XText>}
                                     </XVertical>
 
