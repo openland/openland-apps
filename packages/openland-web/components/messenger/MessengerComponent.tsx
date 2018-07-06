@@ -71,6 +71,14 @@ const MessagesWrapper = Glamorous(XVertical)({
     paddingBottom: '24px'
 });
 
+const DateDivider = Glamorous.div({
+    display: 'flex',
+    fontSize: '14px',
+    fontWeight: 300,
+    justifyContent: 'center',
+    alignItems: 'center'
+});
+
 class MessageComponent extends React.Component<{ message: MessageFullFragment }> {
 
     shouldComponentUpdate(nextProps: { message: MessageFullFragment }) {
@@ -160,22 +168,45 @@ interface MessageListProps {
     onCancel: (key: string) => void;
 }
 
+function dateFormat(date?: number) {
+    let dt = date ? new Date(date) : new Date();
+    return (dt.getFullYear() + ' ,' + dt.getMonth() + ' ' + dt.getDate());
+}
+
 class MessageList extends React.Component<MessageListProps> {
     shouldComponentUpdate(nextProps: { messages: MessageFullFragment[], pending: PendingMessage[] }) {
         return nextProps.messages !== this.props.messages || nextProps.pending !== this.props.pending;
     }
     render() {
+
+        let messages: any[] = [];
+        let prevDate: string | undefined;
+        let appendDateIfNeeded = (date?: number) => {
+            let dstr = dateFormat(date);
+            if (dstr !== prevDate) {
+                messages.push(<DateDivider key={'date-' + dstr}>{dstr}</DateDivider>);
+                prevDate = dstr;
+            }
+        };
+        let existingKeys = new Set<string>();
+        for (let m of [...this.props.messages].reverse()) {
+            appendDateIfNeeded(parseInt(m.date, 10));
+            messages.push(<MessageComponent message={m} key={'message-' + m.id} />);
+            if (m.repeatKey) {
+                existingKeys.add(m.repeatKey);
+            }
+        }
+        for (let m of this.props.pending) {
+            if (existingKeys.has(m.key)) {
+                continue;
+            }
+            appendDateIfNeeded();
+            messages.push(<PendingMessageComponent key={'pending-' + m.key} message={m} onCancel={this.props.onCancel} onRetry={this.props.onRetry} />);
+        }
+
         return (
             <MessagesWrapper>
-                {[...this.props.messages].reverse().map((v) => (
-                    <MessageComponent message={v} key={v.id} />
-                ))}
-                {this.props.pending
-                    .filter((v) => this.props.messages.findIndex((v2) => v2.repeatKey === v.key) < 0)
-                    .map((v) => (
-                        <PendingMessageComponent key={v.key} message={v} onCancel={this.props.onCancel} onRetry={this.props.onRetry} />
-                    ))
-                }
+                {messages}
             </MessagesWrapper>
         );
     }
