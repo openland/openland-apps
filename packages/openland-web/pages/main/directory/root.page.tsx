@@ -155,30 +155,41 @@ const OrganizationCards = withExploreOrganizations(props => (
 
 const SearchInput = Glamorous.input({
     border: '1px solid #d4dae7',
-    height: 40
+    height: 40,
+    flexGrow: 1
 });
 
-function buildQuery(clauses: any[]): any | null {
-    if (clauses.length === 0) {
-        return null;
-    } else if (clauses.length === 1) {
-        return clauses[0];
-    } else {
-        return {
-            '$and': clauses
-        };
-    }
-}
+const InputWrapper = Glamorous.div({
+    display: 'flex',
+    flexWrap: 'wrap'
+});
 
-class SearchComponent extends React.Component<{}, { searchText: string }> {
+const Tag = Glamorous.div({
+    display: 'flex',
+    maxWidth: '100%',
+    height: 30,
+    borderRadius: 4,
+    backgroundColor: '#edf3fe',
+    whiteSpace: 'nowrap',
+    fontSize: 14,
+    fontWeight: 500,
+    lineHeight: '30px',
+    color: '#4285f4',
+    padding: '0px 9px 1px',
+    marginRight: 10,
+    marginTop: 4,
+    marginBottom: 4,
+});
 
+class SearchComponent extends React.Component<{}, { searchText: string, tags: string[] }> {
     searchRef: any | null = null;
 
     constructor(props: any) {
         super(props);
 
         this.state = {
-            searchText: ''
+            searchText: '',
+            tags: []
         };
     }
 
@@ -192,22 +203,103 @@ class SearchComponent extends React.Component<{}, { searchText: string }> {
         });
     }
 
+    tagsAdder = (tag: string) => {
+        let count = 0;
+
+        const tagsArr = this.state.tags;
+
+        for (let i of tagsArr) {
+            if (tag === i) {
+                count = 1;
+                break;
+            }
+        }
+
+        if (count === 0) {
+            tagsArr.push(tag);
+
+            this.setState({
+                tags: tagsArr
+            });
+        }
+    }
+
+    tagsRemover = (tag: string) => {
+
+        let newTags = [];
+
+        for (let i of this.state.tags) {
+            if (tag !== i) {
+                newTags.push(i);
+            }
+        }
+
+        this.setState({
+            tags: newTags
+        });
+    }
+
+    buildQuery = (clauses: any[]): any | null => {
+        if (clauses.length === 0) {
+            return null;
+        } else if (clauses.length === 1) {
+            return clauses[0];
+        } else {
+            return {
+                '$and': clauses
+            };
+        }
+    }
+
+    keydownHandler = (e: any) => {
+        if (e.keyCode === 13) {
+            this.tagsAdder(this.state.searchText);
+            this.setState({ searchText: '' });
+        }
+    }
+
+    componentDidMount() {
+        document.addEventListener('keydown', this.keydownHandler);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.keydownHandler);
+    }
+
     render() {
         let clauses: any[] = [];
-        clauses.push({ name: this.state.searchText });
+        clauses.push({ name: this.state.searchText === '' ? [] : this.state.searchText });
+
         return (
-            <>
-                <SearchInput
-                    value={this.state.searchText}
-                    onChange={this.handleSearchChange}
-                    innerRef={this.handleSearchRef}
-                />
-                <OrganizationCards
-                    variables={{
-                        query: JSON.stringify(buildQuery(clauses))
-                    }}
-                />
-            </>
+            <XVertical>
+                <InputWrapper>
+                    {this.state.tags.map((i, j) => (
+                        <Tag key={j}>
+                            {i}
+                            <div
+                                key={j + j + i + 2}
+                                onClick={() => this.tagsRemover(i)}
+                                style={{ marginLeft: 5, color: 'red', cursor: 'pointer' }}
+                            >
+                                clear
+                            </div>
+                        </Tag>
+                    ))}
+                    <SearchInput
+                        value={this.state.searchText}
+                        onChange={this.handleSearchChange}
+                        innerRef={this.handleSearchRef}
+                        placeholder={'Enter a keyword'}
+                    />
+                </InputWrapper>
+                <div>
+                    <OrganizationCards
+                        variables={{
+                            query: JSON.stringify(this.buildQuery(clauses))
+                        }}
+                    />
+                </div>
+            </XVertical>
         );
     }
 }
