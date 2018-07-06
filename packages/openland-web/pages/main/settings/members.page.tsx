@@ -209,7 +209,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                 <XTable.Body>
                     {members.map((m) => (
                         <Row>
-                            <XTable.Cell>
+                            <XTable.Cell width="40%">
                                 <XHorizontal >
                                     <XAvatar size="medium" cloudImageUuid={(m.__typename === 'OrganizationJoinedMember' && m.user.picture) || undefined} />
                                     <XVertical separator={4} justifyContent="center">
@@ -240,7 +240,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                 <XText >{m.__typename === 'OrganizationJoinedMember' ? (m.joinedAt ? DateFormater(m.joinedAt) : 'always been here') : 'not joined yet'}</XText>
                             </XTable.Cell>
                             <XWithRole role="admin" orgPermission={true}>
-                                <XTable.Cell textAlign="right">
+                                <XTable.Cell textAlign="right" width="56">
                                     <XOverflow
                                         placement="bottom-end"
                                         content={

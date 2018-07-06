@@ -136,7 +136,7 @@ type OrderBy = 'NO_SORT' | 'ASC' | 'DESC';
 
 interface XTableCellProps {
     children: any;
-    width?: number;
+    width?: number | string;
     textAlign?: 'left' | 'right' | 'center';
     path?: string;
     href?: string;
