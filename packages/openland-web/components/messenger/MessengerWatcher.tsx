@@ -5,6 +5,7 @@ import { ApolloClient } from 'apollo-client';
 import { ChatQuery } from 'openland-api/ChatQuery';
 import { backoff } from 'openland-x-utils/timer';
 import { SequenceWatcher } from './SequenceWatcher';
+import { MessageFull } from 'openland-api/fragments/MessageFull';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $seq: Int!) {
@@ -12,26 +13,12 @@ const CHAT_SUBSCRIPTION = gql`
       seq
       ... on ConversationEventMessage {
         message {
-            id
-            message
-            file
-            fileMetadata {
-                name
-                mimeType
-                isImage
-                imageWidth
-                imageHeight
-                imageFormat
-                size
-            }
-            sender {
-                ...UserShort
-            }
-            date
+            ...MessageFull
         }
       }
     }
   }
+  ${MessageFull}
   ${UserShort}
 `;
 

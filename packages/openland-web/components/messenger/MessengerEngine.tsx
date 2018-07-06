@@ -11,6 +11,8 @@ import { Router } from '../../routes';
 import { ChatListQuery } from 'openland-api';
 import { speakText } from './Speak';
 import { MessageSender } from './MessageSender';
+import { MessageFull } from 'openland-api/fragments/MessageFull';
+import { UserShort } from 'openland-api/fragments/UserShort';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($seq: Int) {
@@ -27,18 +29,7 @@ let GLOBAL_SUBSCRIPTION = gql`
                     title
                 }
                 message {
-                    id
-                    message
-                    file
-                    fileMetadata {
-                        name
-                        mimeType
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                        size
-                    }
+                    ...MessageFull
                 }
             }
             ... on UserEventRead {
@@ -48,6 +39,8 @@ let GLOBAL_SUBSCRIPTION = gql`
             }
         }
     }
+    ${UserShort}
+    ${MessageFull}
 `;
 
 let SHARED_CONVERSATION_COUNTER = gql`
@@ -78,7 +71,7 @@ export class MessengerEngine {
     constructor(client: ApolloClient<{}>) {
         this.client = client;
         this.sender = new MessageSender(client);
-        console.warn('MessengerEngine starte2d');
+        console.warn('MessengerEngine started');
         backoff(() => import('ifvisible.js')).then((v) => {
             v.on('idle', () => {
                 this.isVisible = false;

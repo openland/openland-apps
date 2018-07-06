@@ -170,9 +170,12 @@ class MessageList extends React.Component<MessageListProps> {
                 {[...this.props.messages].reverse().map((v) => (
                     <MessageComponent message={v} key={v.id} />
                 ))}
-                {this.props.pending.map((v) => (
-                    <PendingMessageComponent key={v.key} message={v} onCancel={this.props.onCancel} onRetry={this.props.onRetry} />
-                ))}
+                {this.props.pending
+                    .filter((v) => this.props.messages.findIndex((v2) => v2.repeatKey === v.key) < 0)
+                    .map((v) => (
+                        <PendingMessageComponent key={v.key} message={v} onCancel={this.props.onCancel} onRetry={this.props.onRetry} />
+                    ))
+                }
             </MessagesWrapper>
         );
     }

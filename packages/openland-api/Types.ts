@@ -496,6 +496,7 @@ export interface ChatQuery {
       id: string,
       message: string | null,
       file: string | null,
+      repeatKey: string | null,
       fileMetadata:  {
         __typename: "FileMetadata",
         name: string,
@@ -578,6 +579,7 @@ export interface SendMessageMutation {
       id: string,
       message: string | null,
       file: string | null,
+      repeatKey: string | null,
       fileMetadata:  {
         __typename: "FileMetadata",
         name: string,
@@ -4093,6 +4095,7 @@ export interface MessageFullFragment {
   id: string,
   message: string | null,
   file: string | null,
+  repeatKey: string | null,
   fileMetadata:  {
     __typename: string,
     name: string,
