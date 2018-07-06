@@ -218,6 +218,7 @@ export class SequenceWatcher {
 
     private handleConnectionChanged = (isConnected: boolean) => {
         if (!this.started) {
+            console.warn('[' + this.name + ']: Connection state handler called after destruction');
             return;
         }
         if (isConnected) {
