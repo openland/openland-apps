@@ -158,6 +158,18 @@ const SearchInput = Glamorous.input({
     height: 40
 });
 
+function buildQuery(clauses: any[]): any | null {
+    if (clauses.length === 0) {
+        return null;
+    } else if (clauses.length === 1) {
+        return clauses[0];
+    } else {
+        return {
+            '$and': clauses
+        };
+    }
+}
+
 class SearchComponent extends React.Component<{}, { searchText: string }> {
 
     searchRef: any | null = null;
@@ -181,6 +193,8 @@ class SearchComponent extends React.Component<{}, { searchText: string }> {
     }
 
     render() {
+        let clauses: any[] = [];
+        clauses.push({ name: this.state.searchText });
         return (
             <>
                 <SearchInput
@@ -190,7 +204,7 @@ class SearchComponent extends React.Component<{}, { searchText: string }> {
                 />
                 <OrganizationCards
                     variables={{
-                        query: this.state.searchText && JSON.stringify(this.state.searchText)
+                        query: JSON.stringify(buildQuery(clauses))
                     }}
                 />
             </>
