@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { MessageComponent } from '../content/MessageComponent';
 import { UserShortFragment, MessageFullFragment } from 'openland-api/Types';
 import { PendingMessage } from '../Model';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 
 interface MessageListProps {
@@ -14,7 +13,7 @@ interface MessageListProps {
     onCancel: (key: string) => void;
 }
 
-function dateFormat(date?: number) {
+function dateFormat(date: number) {
     let dt = date ? new Date(date) : new Date();
     return (dt.getFullYear() + ' ,' + dt.getMonth() + ' ' + dt.getDate());
 }
@@ -27,7 +26,10 @@ const DateDivider = Glamorous.div({
     alignItems: 'center'
 });
 
-const MessagesWrapper = Glamorous(XVertical)({
+const MessagesWrapper = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
     paddingTop: '96px',
     paddingLeft: '16px',
     paddingRight: '16px',
@@ -45,20 +47,41 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     render() {
         let messages: any[] = [];
         let prevDate: string | undefined;
-        let appendDateIfNeeded = (date?: number) => {
+        let prevMessageDate: number | undefined = undefined;
+        let prevMessageSender: string | undefined = undefined;
+        let currentCollapsed = 0;
+        let appendDateIfNeeded = (date: number) => {
             let dstr = dateFormat(date);
             if (dstr !== prevDate) {
                 messages.push(<DateDivider key={'date-' + dstr}>{dstr}</DateDivider>);
                 prevDate = dstr;
+                prevMessageDate = undefined;
+                prevMessageSender = undefined;
+                currentCollapsed = 0;
             }
         };
         let existingKeys = new Set<string>();
+        let shouldCompact = (sender: string, date: number) => {
+            if (prevMessageSender === sender && prevMessageDate !== undefined) {
+                // 10 sec
+                if (prevMessageDate - date < 10000 && currentCollapsed < 10) {
+                    prevMessageDate = date;
+                    currentCollapsed++;
+                    return true;
+                }
+            }
+            prevMessageDate = date;
+            prevMessageSender = sender;
+            currentCollapsed = 0;
+            return false;
+        };
         for (let m of [...this.props.messages].reverse()) {
-            appendDateIfNeeded(parseInt(m.date, 10));
+            let date = parseInt(m.date, 10);
+            appendDateIfNeeded(date);
             messages.push(
                 <MessageComponent
                     key={'message-' + m.id}
-                    compact={false}
+                    compact={shouldCompact(m.sender.id, date)}
                     sender={m.sender as any}
                     message={m}
                     onCancel={this.props.onCancel}
@@ -69,21 +92,28 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                 existingKeys.add(m.repeatKey);
             }
         }
-        for (let m of this.props.pending) {
-            if (existingKeys.has(m.key)) {
-                continue;
+        if (this.props.pending.length > 0) {
+            let now = new Date().getTime();
+            let shouldCollapse = shouldCompact(this.props.me.id, now);
+            for (let m of this.props.pending) {
+                if (existingKeys.has(m.key)) {
+                    continue;
+                }
+                if (!shouldCollapse) {
+                    shouldCollapse = true;
+                }
+                appendDateIfNeeded(now);
+                messages.push(
+                    <MessageComponent
+                        key={'pending-' + m.key}
+                        compact={shouldCollapse}
+                        sender={this.props.me}
+                        message={m}
+                        onCancel={this.props.onCancel}
+                        onRetry={this.props.onRetry}
+                    />
+                );
             }
-            appendDateIfNeeded();
-            messages.push(
-                <MessageComponent
-                    key={'pending-' + m.key}
-                    compact={false}
-                    sender={this.props.me}
-                    message={m}
-                    onCancel={this.props.onCancel}
-                    onRetry={this.props.onRetry}
-                />
-            );
         }
 
         return (

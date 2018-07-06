@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
 import { PendingMessage } from '../Model';
-import { XContent } from 'openland-x-layout/XContent';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -34,6 +33,30 @@ const DateComponent = Glamorous.div({
     fontSize: '14px',
     fontWeight: 300,
     opacity: 0.4
+});
+
+const MessageContainer = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    paddingLeft: '24px',
+    paddingRight: '24px',
+    paddingTop: '4px',
+    paddingBottom: '4px',
+    '&:hover': {
+        backgroundColor: '#f8f8fb'
+    },
+});
+
+const MessageCompactContainer = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    paddingLeft: '78px',
+    paddingRight: '24px',
+    paddingTop: '4px',
+    paddingBottom: '4px',
+    '&:hover': {
+        backgroundColor: '#f8f8fb'
+    },
 });
 
 export class MessageComponent extends React.PureComponent<MessageComponentProps> {
@@ -82,8 +105,16 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
             content.push(<MessageTextComponent message={''} key={'text'} />);
         }
 
+        if (this.props.compact) {
+            return (
+                <MessageCompactContainer>
+                    {content}
+                </MessageCompactContainer>
+            );
+        }
+
         return (
-            <XContent>
+            <MessageContainer>
                 <XHorizontal alignSelf="stretch">
                     <XAvatar cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined} path={'/mail/u/' + this.props.sender!!.id} />
                     <XVertical separator={'none'} flexGrow={1}>
@@ -93,7 +124,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                         {content}
                     </XVertical>
                 </XHorizontal>
-            </XContent>
+            </MessageContainer>
         );
     }
 }
