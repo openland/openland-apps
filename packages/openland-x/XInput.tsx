@@ -15,7 +15,6 @@ class XInputStored extends React.PureComponent<XInputProps & { store: XStoreStat
     inputRef: any = null;
 
     handlerRef = (src: any) => {
-        console.warn(src);
         if (src) {
             this.inputRef = src;
         }
@@ -64,7 +63,6 @@ export class XInput extends React.PureComponent<XInputProps> {
     inputRef: any = null;
 
     handler = (src: any) => {
-        console.warn(src);
         if (src) {
             this.inputRef = src;
         }
