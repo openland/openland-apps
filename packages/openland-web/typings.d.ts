@@ -181,6 +181,7 @@ declare namespace UploadCare {
     }
 
     interface File {
+        state: (callback: (result: FileInfo) => void) => File
         done: (callback: (result: FileInfo) => void) => File
         fail: (callback: (result: any) => void) => File
         progress: (callback: (progress: UploadInfo) => void) => File
@@ -210,6 +211,7 @@ declare namespace UploadCare {
         state: 'uploading' | 'uploaded' | 'ready'
         uploadProgress: number;
         progress: number;
+        incompleteFileInfo: Partial<FileInfo>
     }
 
     interface Settings {

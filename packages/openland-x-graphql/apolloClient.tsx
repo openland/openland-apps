@@ -18,7 +18,12 @@ class ClientStatus {
             this.isConnected = false;
             console.warn(this.listeners);
             for (let l of this.listeners) {
-                l(this.isConnected);
+                try {
+                    l(this.isConnected);
+                } catch (e) {
+                    console.warn('Exception during connection change notification!');
+                    console.warn(e);
+                }
             }
         }
     }
@@ -29,7 +34,12 @@ class ClientStatus {
             this.isConnected = true;
             console.warn(this.listeners);
             for (let l of this.listeners) {
-                l(this.isConnected);
+                try {
+                    l(this.isConnected);
+                } catch (e) {
+                    console.warn('Exception during connection change notification!');
+                    console.warn(e);
+                }
             }
         }
     }
@@ -50,7 +60,6 @@ class ClientStatus {
 export const ConnectionStatus = new ClientStatus();
 
 const buildClient = (initialState?: any, token?: string, org?: string) => {
-
     let httpEndpoint = '/graphql';
     let wsEndpoint = undefined;
     if (canUseDOM) {

@@ -10,7 +10,7 @@ import { Badge } from './Badge';
 import { Router } from '../../routes';
 import { ChatListQuery } from 'openland-api';
 import { speakText } from './Speak';
-import { SendMessageMutation } from 'openland-api/SendMessageMutation';
+import { MessageSender } from './MessageSender';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($seq: Int) {
@@ -73,9 +73,12 @@ export class MessengerEngine {
     private notify = backoff(() => import('notifyjs'));
     private badge = new Badge();
     private close: any = null;
+    readonly sender: MessageSender;
 
     constructor(client: ApolloClient<{}>) {
         this.client = client;
+        this.sender = new MessageSender(client);
+        console.warn('MessengerEngine starte2d');
         backoff(() => import('ifvisible.js')).then((v) => {
             v.on('idle', () => {
                 this.isVisible = false;
@@ -129,55 +132,6 @@ export class MessengerEngine {
             });
         } else {
             this.pendoingReaders.set(conversationId, messageId);
-        }
-    }
-
-    async sendFile(conversationId: string, file: UploadCare.File, key: string) {
-        let res = await new Promise<UploadCare.FileInfo>((resolver) => {
-            file.done((f) => {
-                resolver(f);
-            });
-        });
-        try {
-            await this.client.mutate({
-                mutation: SendMessageMutation.document,
-                variables: {
-                    file: res.uuid,
-                    repeatKey: key,
-                    conversationId: conversationId
-                }
-            });
-        } catch (e) {
-            if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
-                // Ignore
-            } else {
-                // Just ignore for now
-                console.warn(e);
-            }
-        }
-    }
-
-    async sendMessage(conversationId: string, message: string, key: string) {
-        try {
-            message = message.trim();
-            if (message.length === 0) {
-                return;
-            }
-            await this.client.mutate({
-                mutation: SendMessageMutation.document,
-                variables: {
-                    message: message.trim(),
-                    repeatKey: key,
-                    conversationId: conversationId
-                }
-            });
-        } catch (e) {
-            if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
-                // Ignore
-            } else {
-                // Just ignore for now
-                console.warn(e);
-            }
         }
     }
 
