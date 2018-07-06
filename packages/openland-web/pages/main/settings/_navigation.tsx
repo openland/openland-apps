@@ -14,7 +14,7 @@ export const Navigation = (props: { title: string, children?: any }) => (
                     <Sidebar.Subitem anchor="/settings/organization#do">Dev. opportunities</Sidebar.Subitem>
                     <Sidebar.Subitem anchor="/settings/organization#ar">Acquisitions</Sidebar.Subitem>
                     <Sidebar.Subitem anchor="/settings/organization#contacts">Contacts</Sidebar.Subitem>
-                    <XWithRole role="super-admin">
+                    <XWithRole role={['super-admin', 'software-developer']}>
                         <Sidebar.Subitem path="/settings/members">Members</Sidebar.Subitem>
                     </XWithRole >
                     <Sidebar.Item path="/settings/profile">User profile</Sidebar.Item>

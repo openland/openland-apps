@@ -253,7 +253,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                     </XVertical>
                                 </OrganizationTitleContainer>
                                 <XMenuItem path="/settings/organization">{TextGlobal.editProfile}</XMenuItem>
-                                <XWithRole role="super-admin">
+                                <XWithRole role={['super-admin', 'software-developer']}>
                                     <XMenuItem query={{ field: 'invite', value: 'true' }}>{TextGlobal.invite}</XMenuItem>
                                 </XWithRole>
                                 <XMenuItem query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenuItem>
