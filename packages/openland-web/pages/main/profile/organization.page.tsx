@@ -41,6 +41,7 @@ import ContactLinkedInIc from './icons/contacts/ic-linkedin.svg';
 import ContactPhoneIc from './icons/contacts/ic-phone.svg';
 import { XStreetViewModal } from 'openland-x-map/XStreetViewModal';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
+import { XLinkExternal } from 'openland-x/XLinkExternal';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -232,8 +233,8 @@ const Text = Glamorous.div<TextProps>((props) => ({
     marginTop: props.marginTop
 }));
 
-const TextLink = Glamorous(XLink)<TextProps>((props) => ({
-    display: 'flex',
+const TextLink = Glamorous(XLinkExternal)<TextProps>((props) => ({
+    display: 'block',
     alignItems: 'center',
     fontSize: props.small ? 14 : 15,
     lineHeight: props.lineHeight !== undefined ? props.lineHeight : props.small ? 1.43 : 1.33,
@@ -243,7 +244,14 @@ const TextLink = Glamorous(XLink)<TextProps>((props) => ({
     letterSpacing: props.letterSpacing !== undefined ? props.letterSpacing : props.bold ? -0.3 : undefined,
     textTransform: props.upperCase ? 'capitalize' : undefined,
     marginBottom: props.marginBottom,
-    marginTop: props.marginTop
+    marginTop: props.marginTop,
+    maxWidth: 150,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    '&:hover': {
+        color: '#6b50ff'
+    }
 }));
 
 const SocialLinksWrapper = Glamorous.div({
@@ -1649,9 +1657,9 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                                     <XVertical separator={3.5}>
                                                                         <Title small={true}>{contact.name}</Title>
                                                                         <Text small={true} lineHeight="18px" letterSpacing={-0.3} opacity={0.5}>{contact.position}</Text>
-                                                                        {contact.phone && <XHorizontal alignItems="center" separator={4}><ContactPhoneIc width={20} height={20} style={{ padding: 3 }} /><TextLink href={'tel:' + contact.phone} letterSpacing={0.1} small={true} opacity={0.5}>{contact.phone}</TextLink></XHorizontal>}
-                                                                        {contact.email && <XHorizontal alignItems="center" separator={4}><ContactEmailIc width={20} height={20} style={{ padding: 3 }} /><TextLink href={'mailto:' + contact.email} letterSpacing={0.1} small={true} opacity={0.5}>{contact.email}</TextLink></XHorizontal>}
-                                                                        {contact.link && <XHorizontal alignItems="center" separator={4}><ContactLinkedInIc width={20} height={20} style={{ padding: 3 }} /><TextLink href={contact.link.startsWith('http') ? contact.link : 'https://' + contact.link} letterSpacing={0.1} small={true} opacity={0.5}>{contact.link}</TextLink></XHorizontal>}
+                                                                        {contact.phone && <XHorizontal alignItems="center" separator={4}><ContactPhoneIc width={20} height={20} style={{ padding: 3 }} /><TextLink fontWeight={600} showIcon={false} href={'tel:' + contact.phone} letterSpacing={0.1} small={true} opacity={0.5} content={contact.phone} /></XHorizontal>}
+                                                                        {contact.email && <XHorizontal alignItems="center" separator={4}><ContactEmailIc width={20} height={20} style={{ padding: 3 }} /><TextLink fontWeight={600} showIcon={false} href={'mailto:' + contact.email} letterSpacing={0.1} small={true} opacity={0.5} content={contact.email} /></XHorizontal>}
+                                                                        {contact.link && <XHorizontal alignItems="center" separator={4}><ContactLinkedInIc width={20} height={20} style={{ padding: 3, paddingTop: 0 }} /><TextLink fontWeight={600} showIcon={false} href={contact.link.startsWith('http') ? contact.link : 'https://' + contact.link} letterSpacing={0.1} small={true} opacity={0.5} /></XHorizontal>}
                                                                     </XVertical>
                                                                 </XHorizontalStyled>
                                                             );
