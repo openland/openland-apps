@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { Sidebar } from '../../../components/Sidebar';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 export const Navigation = (props: { title: string, children?: any }) => (
     <>
@@ -13,7 +14,9 @@ export const Navigation = (props: { title: string, children?: any }) => (
                     <Sidebar.Subitem anchor="/settings/organization#do">Dev. opportunities</Sidebar.Subitem>
                     <Sidebar.Subitem anchor="/settings/organization#ar">Acquisitions</Sidebar.Subitem>
                     <Sidebar.Subitem anchor="/settings/organization#contacts">Contacts</Sidebar.Subitem>
-                    <Sidebar.Subitem path="/settings/members">Members</Sidebar.Subitem>
+                    <XWithRole role="super-admin">
+                        <Sidebar.Subitem path="/settings/members">Members</Sidebar.Subitem>
+                    </XWithRole >
                     <Sidebar.Item path="/settings/profile">User profile</Sidebar.Item>
                 </Sidebar>
             </Scaffold.Menu>

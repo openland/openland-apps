@@ -253,7 +253,9 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                     </XVertical>
                                 </OrganizationTitleContainer>
                                 <XMenuItem path="/settings/organization">{TextGlobal.editProfile}</XMenuItem>
-                                <XMenuItem query={{ field: 'invite', value: 'true' }}>{TextGlobal.invite}</XMenuItem>
+                                <XWithRole role="super-admin">
+                                    <XMenuItem query={{ field: 'invite', value: 'true' }}>{TextGlobal.invite}</XMenuItem>
+                                </XWithRole>
                                 <XMenuItem query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenuItem>
                             </>
                         )}
@@ -276,7 +278,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
             organizationName={props.organization ? props.organization.name : undefined}
             organizationId={props.organization ? props.organization.id : undefined}
         />
-        <InvitesMoadal targetQuery="invite" target={null}/>
+        <InvitesMoadal targetQuery="invite" target={null} />
 
     </XVertical>
 ));
