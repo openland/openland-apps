@@ -183,7 +183,9 @@ const OrganizationName = Glamorous.div({
     whiteSpace: 'nowrap',
     maxWidth: 400,
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
+    height: 25,
+    lineHeight: '25px'
 });
 
 const Title = Glamorous.div<{ small?: boolean, marginBottom?: number, marginLeft?: number, marginRight?: number }>((props) => ({
