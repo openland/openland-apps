@@ -130,7 +130,7 @@ interface PendingMessage {
     failed?: boolean;
 }
 
-const PendingMessageComponent = withUserInfo<{ message: PendingMessage }>((props) => {
+const PendingMessageComponent = withUserInfo<{ message: PendingMessage, onRetry: (key: string) => void; onCancel: (key: string) => void }>((props) => {
     return (
         <XContent>
             <XHorizontal alignSelf="stretch">
@@ -143,8 +143,8 @@ const PendingMessageComponent = withUserInfo<{ message: PendingMessage }>((props
                     {props.message.message && <span>{props.message.message}</span>}
                     {props.message.failed && (
                         <XHorizontal>
-                            <XButton onClick={() => console.info('cancel')} text="Cancel" />
-                            <XButton onClick={() => console.info('retry')} text="Try Again" />
+                            <XButton onClick={() => props.onCancel(props.message.key)} text="Cancel" />
+                            <XButton onClick={() => props.onRetry(props.message.key)} text="Try Again" />
                         </XHorizontal>
                     )}
                 </XVertical>
@@ -153,7 +153,14 @@ const PendingMessageComponent = withUserInfo<{ message: PendingMessage }>((props
     );
 });
 
-class MessageList extends React.Component<{ messages: MessageFullFragment[], pending: PendingMessage[] }> {
+interface MessageListProps {
+    messages: MessageFullFragment[];
+    pending: PendingMessage[];
+    onRetry: (key: string) => void;
+    onCancel: (key: string) => void;
+}
+
+class MessageList extends React.Component<MessageListProps> {
     shouldComponentUpdate(nextProps: { messages: MessageFullFragment[], pending: PendingMessage[] }) {
         return nextProps.messages !== this.props.messages || nextProps.pending !== this.props.pending;
     }
@@ -164,7 +171,7 @@ class MessageList extends React.Component<{ messages: MessageFullFragment[], pen
                     <MessageComponent message={v} key={v.id} />
                 ))}
                 {this.props.pending.map((v) => (
-                    <PendingMessageComponent key={v.key} message={v} />
+                    <PendingMessageComponent key={v.key} message={v} onCancel={this.props.onCancel} onRetry={this.props.onRetry} />
                 ))}
             </MessagesWrapper>
         );
@@ -228,6 +235,16 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             this.scroller.scrollToBottom();
             this.setState((src) => ({ ...src, message: '', pending: [...src.pending, { key: key, progress: 0, message: message, file: null, }] }), () => { this.xinput.focus(); });
         }
+    }
+
+    handleRetry = (key: string) => {
+        console.warn(key + ': retry');
+        this.props.messenger.sender.retryMessage(key, this);
+        this.setState((src) => ({ ...src, pending: src.pending.map((v) => v.key === key ? ({ ...v, failed: false }) : v) }));
+    }
+    handleCancel = (key: string) => {
+        console.warn(key + ': cancel');
+        this.setState((src) => ({ ...src, pending: src.pending.filter((v) => v.key !== key) }));
     }
 
     onProgress = (key: string, progress: number) => {
@@ -300,7 +317,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 <Container>
                     <MessagesContainer>
                         <XScrollViewReversed ref={this.handleScrollView}>
-                            <MessageList messages={this.props.messages} pending={this.state.pending} />
+                            <MessageList messages={this.props.messages} pending={this.state.pending} onCancel={this.handleCancel} onRetry={this.handleRetry} />
                         </XScrollViewReversed>
                     </MessagesContainer>
                     <MessengerReader conversationId={this.props.conversationId} lastMessageId={this.props.messages.length > 0 ? this.props.messages[0].id : null} />

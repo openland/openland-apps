@@ -11,6 +11,7 @@ export interface MessageSendHandler {
 export class MessageSender {
     private client: ApolloClient<{}>;
     private uploadedFiles = new Map<string, string>();
+    private pending = new Map<string, { file: string | null, message: string | null, conversationId: string }>();
 
     constructor(client: ApolloClient<{}>) {
         this.client = client;
@@ -52,7 +53,15 @@ export class MessageSender {
         return key;
     }
 
+    retryMessage(key: string, callback: MessageSendHandler) {
+        let text = this.pending.get(key);
+        if (text) {
+            this.doSendMessage(text.conversationId, text.message, text.file, key, callback);
+        }
+    }
+
     private doSendMessage(conversationId: string, message: string | null, file: string | null, key: string, callback: MessageSendHandler) {
+        this.pending.set(key, { conversationId, message, file });
         (async () => {
             try {
                 await this.client.mutate({
@@ -74,6 +83,7 @@ export class MessageSender {
                     return;
                 }
             }
+            this.pending.delete(key);
             callback.onCompleted(key);
         })();
     }
