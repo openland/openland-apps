@@ -19,9 +19,9 @@ import { MessengerWatcher } from './MessengerWatcher';
 import { MessengerReader } from './MessengerReader';
 import { MessengerContext, MessengerEngine } from './MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import UUID from 'uuid/v4';
 import * as UploadCare from 'uploadcare-widget';
 import { getConfig } from '../../config';
+import { MessageSendHandler } from './MessageSender';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -122,25 +122,39 @@ class MessageComponent extends React.Component<{ message: MessageFullFragment }>
         );
     }
 }
+interface PendingMessage {
+    key: string;
+    progress: number;
+    message: string | null;
+    file: string | null;
+    failed?: boolean;
+}
 
-const PendingMessage = withUserInfo<{ message: string }>((props) => {
+const PendingMessageComponent = withUserInfo<{ message: PendingMessage }>((props) => {
     return (
         <XContent>
             <XHorizontal alignSelf="stretch">
                 <XAvatar cloudImageUuid={props.user!!.picture ? props.user!!.picture!! : undefined} />
                 <XVertical separator={'none'} flexGrow={1}>
                     <XHorizontal separator={4}>
-                        <Name>{props.user!!.name}</Name><DateComponent>Sending</DateComponent>
+                        <Name>{props.user!!.name}</Name><DateComponent>{props.message.failed ? 'Failed' : 'Sending'}</DateComponent>
                     </XHorizontal>
-                    {props.message}
+                    {!props.message.message && <span>{props.message.file} {props.message.progress < 1 ? props.message.progress.toString() : null}</span>}
+                    {props.message.message && <span>{props.message.message}</span>}
+                    {props.message.failed && (
+                        <XHorizontal>
+                            <XButton onClick={() => console.info('cancel')} text="Cancel" />
+                            <XButton onClick={() => console.info('retry')} text="Try Again" />
+                        </XHorizontal>
+                    )}
                 </XVertical>
             </XHorizontal>
         </XContent>
     );
 });
 
-class MessageList extends React.Component<{ messages: MessageFullFragment[], pending: { key: string, message: string }[] }> {
-    shouldComponentUpdate(nextProps: { messages: MessageFullFragment[], pending: { key: string, message: string }[] }) {
+class MessageList extends React.Component<{ messages: MessageFullFragment[], pending: PendingMessage[] }> {
+    shouldComponentUpdate(nextProps: { messages: MessageFullFragment[], pending: PendingMessage[] }) {
         return nextProps.messages !== this.props.messages || nextProps.pending !== this.props.pending;
     }
     render() {
@@ -150,7 +164,7 @@ class MessageList extends React.Component<{ messages: MessageFullFragment[], pen
                     <MessageComponent message={v} key={v.id} />
                 ))}
                 {this.props.pending.map((v) => (
-                    <PendingMessage key={v.key} message={v.message} />
+                    <PendingMessageComponent key={v.key} message={v} />
                 ))}
             </MessagesWrapper>
         );
@@ -165,24 +179,26 @@ interface MessagesComponentProps {
     messenger: MessengerEngine;
 }
 
-class MessagesComponent extends React.Component<MessagesComponentProps, { message: string, mounted: boolean, sending: boolean, pending: { key: string, message: string }[] }> {
+interface MessagesComponentState {
+    message: string;
+    mounted: boolean;
+    pending: PendingMessage[];
+}
 
-    scroller: any;
+class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> implements MessageSendHandler {
+
     state = {
         message: '',
         mounted: false,
-        sending: false,
         pending: []
     };
-
+    scroller: any;
     unmounter: (() => void) | null = null;
     xinput: any | null = null;
 
-    handleScrollView = (src: any) => {
-        if (src) {
-            this.scroller = src;
-        }
-    }
+    //
+    // Message Sending
+    //
 
     handleAttach = () => {
         let dialog = UploadCare.openDialog(null, {
@@ -190,29 +206,58 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
             imageShrink: '1024x1024',
         });
         dialog.done((r) => {
-            this.props.messenger.sendFile(this.props.conversationId, r, UUID());
+            let isFirst = true;
+            r.progress((v) => {
+                if (!isFirst) {
+                    return;
+                }
+                isFirst = false;
+                console.warn(v.incompleteFileInfo);
+                let name = v.incompleteFileInfo.name || 'image.jpg';
+                let key = this.props.messenger.sender.sendFile(this.props.conversationId, r, this);
+                this.scroller.scrollToBottom();
+                this.setState((src) => ({ ...src, pending: [...src.pending, { key: key, progress: 0, message: null, file: name }] }));
+            });
         });
     }
 
-    handleSend = async () => {
+    handleSend = () => {
         if (this.state.message.trim().length > 0) {
-            let key = UUID();
             let message = this.state.message.trim();
-            try {
-                this.setState((src) => ({ ...src, message: '', pending: [...src.pending, { key: key, message: message }] }));
-                await this.props.messenger.sendMessage(this.props.conversationId, message, key);
-            } catch (e) {
-                if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
-                    // Ignore
-                } else {
-                    // Just ignore for now
-                    console.warn(e);
-                }
-            }
+            let key = this.props.messenger.sender.sendMessage(this.props.conversationId, message, this);
             this.scroller.scrollToBottom();
-            this.setState((src) => ({ ...src, message: '', pending: src.pending.filter((v) => v.key !== key) }), () => { this.xinput.focus(); });
+            this.setState((src) => ({ ...src, message: '', pending: [...src.pending, { key: key, progress: 0, message: message, file: null, }] }), () => { this.xinput.focus(); });
         }
     }
+
+    onProgress = (key: string, progress: number) => {
+        console.warn(key + ': ' + progress);
+        this.setState((src) => ({ ...src, pending: src.pending.map((v) => v.key === key ? ({ ...v, progress: progress }) : v) }));
+    }
+
+    onCompleted = (key: string) => {
+        console.warn(key + ': completed');
+        this.setState((src) => ({ ...src, pending: src.pending.filter((v) => v.key !== key) }));
+    }
+
+    onFailed = (key: string) => {
+        console.warn(key + ': failed');
+        this.setState((src) => ({ ...src, pending: src.pending.map((v) => v.key === key ? ({ ...v, failed: true }) : v) }));
+    }
+
+    //
+    // Scroll Handler
+    //
+
+    handleScrollView = (src: any) => {
+        if (src) {
+            this.scroller = src;
+        }
+    }
+
+    //
+    // Input Handling
+    //
 
     handleChange = (src: string) => {
         this.setState({ message: src });
@@ -224,8 +269,12 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
         }
     }
 
-    shouldComponentUpdate(nextProps: { messages: MessageFullFragment[], loading: boolean }, nextState: { message: string, mounted: boolean, sending: boolean, pending: { key: string, message: string }[] }) {
-        return this.props.messages !== nextProps.messages || this.state.message !== nextState.message || this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading || this.state.sending !== nextState.sending || this.state.pending !== nextState.pending;
+    //
+    // Lifecycle
+    //
+
+    shouldComponentUpdate(nextProps: MessagesComponentProps, nextState: MessagesComponentState) {
+        return this.props.messages !== nextProps.messages || this.state.message !== nextState.message || this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading || this.state.pending !== nextState.pending;
     }
 
     componentDidMount() {
@@ -241,6 +290,10 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
         }
     }
 
+    // 
+    // Rendering
+    //
+
     render() {
         return (
             <>
@@ -253,8 +306,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, { messag
                     <MessengerReader conversationId={this.props.conversationId} lastMessageId={this.props.messages.length > 0 ? this.props.messages[0].id : null} />
                     <SendMessageContainer>
                         <XButton icon="add" size="medium" onClick={this.handleAttach} />
-                        <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} disabled={this.state.sending} ref={this.handleRef} />
-                        <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" loading={this.state.sending} />
+                        <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} ref={this.handleRef} />
+                        <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" />
                     </SendMessageContainer>
                 </Container>
                 <XLoader loading={!this.state.mounted} />

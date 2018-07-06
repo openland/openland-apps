@@ -50,7 +50,7 @@ class ClientStatus {
 export const ConnectionStatus = new ClientStatus();
 
 const buildClient = (initialState?: any, token?: string, org?: string) => {
-
+    console.warn('buildClient');
     let httpEndpoint = '/graphql';
     let wsEndpoint = undefined;
     if (canUseDOM) {
