@@ -142,7 +142,7 @@ const RemoveInviteddModal = withOrganizationRemoveMember((props) => {
             <XHorizontal>
                 <XAvatar size="medium" cloudImageUuid={undefined} />
                 <XVertical separator={4} justifyContent="center">
-                    <XText textStyle="h500">{member.firstName || '' + member.lastName || ''}</XText>
+                    <XText textStyle="h500">{(member.firstName || '') + ' ' + (member.lastName || '')}</XText>
                     {member.email && <XText opacity={0.5} >{member.email}</XText>}
                 </XVertical>
             </XHorizontal>
@@ -192,8 +192,8 @@ const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => 
 
 const OrgMembers = withOrganizationMembers((props) => {
     let members = [...props.data.alphaOrganizationMembers || []].sort((a: any, b: any) => {
-        var nameA = String(a.user ? (a.user.name || '') : a.firstName || '' + a.lastname || '').toLowerCase();
-        var nameB = String(b.user ? (b.user.name || '') : b.firstName || '' + b.lastname || '').toLowerCase();
+        var nameA = String(a.user ? (a.user.name || '') : (a.firstName || '') + ' ' + (a.lastname || '')).toLowerCase();
+        var nameB = String(b.user ? (b.user.name || '') : (b.firstName || '') + ' ' + (b.lastname || '')).toLowerCase();
         return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
     });
 
@@ -209,11 +209,11 @@ const OrgMembers = withOrganizationMembers((props) => {
                 <XTable.Body>
                     {members.map((m) => (
                         <Row>
-                            <XTable.Cell>
+                            <XTable.Cell width="40%">
                                 <XHorizontal >
                                     <XAvatar size="medium" cloudImageUuid={(m.__typename === 'OrganizationJoinedMember' && m.user.picture) || undefined} />
                                     <XVertical separator={4} justifyContent="center">
-                                        <XText textStyle="h500">{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && (m.firstName || '' + m.lastName || ''))}</XText>
+                                        <XText textStyle="h500">{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && ((m.firstName || '') + ' ' + (m.lastName || '')))}</XText>
                                         {m.email && <XText opacity={0.5} >{m.email}</XText>}
                                     </XVertical>
 
@@ -240,7 +240,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                 <XText >{m.__typename === 'OrganizationJoinedMember' ? (m.joinedAt ? DateFormater(m.joinedAt) : 'always been here') : 'not joined yet'}</XText>
                             </XTable.Cell>
                             <XWithRole role="admin" orgPermission={true}>
-                                <XTable.Cell textAlign="right">
+                                <XTable.Cell textAlign="right" width="56">
                                     <XOverflow
                                         placement="bottom-end"
                                         content={

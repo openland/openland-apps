@@ -16,6 +16,7 @@ export interface XInputBasicProps extends XFlexStyles {
     size?: 'large' | 'medium' | 'default' | 'small';
     attach?: 'left' | 'right' | 'both';
     autofocus?: boolean;
+    autoSelect?: boolean;
     onChange?: (value: string) => void;
     onEnter?: () => void;
 }
@@ -205,6 +206,9 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
         if (e && this.props.autofocus) {
             e.focus();
         }
+        if (e && this.props.autoSelect) {
+            e.select();
+        }
         if (e) {
             this.inputRef = e;
         }
@@ -241,6 +245,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
             children,
             onChange,
             autofocus,
+            autoSelect,
             disabled,
             ...other
         } = this.props;
@@ -267,6 +272,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                     value={v}
                     onChange={this.handleChange}
                     autofocus={autofocus}
+                    autoSelect={autoSelect}
                     innerRef={this.handleRef}
                     onKeyPress={this.handleKey}
                 />

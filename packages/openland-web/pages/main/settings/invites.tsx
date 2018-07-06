@@ -17,6 +17,10 @@ import { XLink } from 'openland-x/XLink';
 import { XTextArea } from 'openland-x/XTextArea';
 import { withOrganizationInviteMembers } from '../../../api/withOrganizationInviteMember';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { withPublicInvite } from '../../../api/withPublicInvite';
+import { XMutation } from 'openland-x/XMutation';
+import { DateFormater } from 'openland-x-format/XDate';
+import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 
 interface Invite {
     email?: string;
@@ -98,12 +102,80 @@ export class InviteComponent extends React.Component<{ invite: Invite, index: nu
     }
 }
 
+const SwitchToInvieteButton = withPublicInvite((props) => {
+    return (
+        <AddButton alignSelf="flex-start" style="link" onClick={(props as any).onClick} text={props.data && props.data.publicInvite ? 'Get an invite link to share ' : 'Share invite link'} />
+    );
+}) as React.ComponentType<{ onClick: () => void }>;
+
+const LinkContianer = glamorous(XVertical)({
+    minHeight: 300,
+    padding: 40
+});
+
+const makeClickble = (target: any, onClick: any) => {
+    return (React.cloneElement(target, { onClick: onClick }));
+};
+
+const XSelectGrow = glamorous(XSelect)({
+    flexGrow: 1
+});
+
+class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: string, ttl: string | null } | null, createMutation: any, deleteMutation: any, onBack: () => void } & XWithRouter, { expirationDays: string }> {
+    input?: any;
+    constructor(props: any) {
+        super(props);
+        this.state = { expirationDays: '30' };
+    }
+
+    handleRef = (e: any) => {
+        if (e === null) {
+            return;
+        }
+        this.input = e;
+    }
+
+    render() {
+        return (
+            <LinkContianer>
+                {this.props.invite && (
+                    <>
+                        <XHorizontal alignItems="center">
+                            {makeClickble(<XInput autoSelect={true} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + '/join/' + this.props.invite.key} />, (e: any) => console.warn(this.input))}
+                            {/* <XButton text="Copy" /> */}
+                            <XMutation mutation={this.props.deleteMutation}><XButton style="danger" text="Delete link" /></XMutation>
+                        </XHorizontal>
+                        {this.props.invite.ttl && (
+                            <XText>expires at {DateFormater(new Date(Number(this.props.invite.ttl)).toString())}</XText>
+                        )}
+                    </>
+                )}
+                {!this.props.invite && (
+                    <XHorizontal alignItems="center" >
+                        <XSelectGrow onChange={v => this.setState({ expirationDays: (v && !Array.isArray(v)) ? String(v.value) : '30' })} value={this.state.expirationDays} searchable={false} clearable={false} options={[{ label: 'expires in 1 day', value: '1' }, { label: 'expires in 7 days', value: '7' }, { label: 'expires in 30 days', value: '30' }]} />
+                        <XMutation mutation={this.props.createMutation} variables={{ expirationDays: Number(this.state.expirationDays) }}><XButton text="Create new link" /></XMutation>
+                    </XHorizontal>
+                )}
+                <XButton onClick={this.props.onBack} text="Send email invites" style="link" />
+
+            </LinkContianer>
+        );
+    }
+}
+
+const OwnerLink = withPublicInvite(withRouter((props) => {
+    return (
+        <OwnerLinkComponent router={props.router} invite={props.data ? props.data.publicInvite : null} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} onBack={(props as any).onBack} />
+    );
+})) as React.ComponentType<{ onBack: () => void }>;
+
 class InvitesMoadalRaw extends React.Component<{
     target?: any, mutation: any,
     targetQuery?: string
 }, {
         customText?: string,
         customTextAreaOpen?: boolean,
+        linkMode?: boolean
     }> {
 
     constructor(props: any) {
@@ -138,7 +210,7 @@ class InvitesMoadalRaw extends React.Component<{
                 submitProps={{ text: 'Send Invitations' }}
                 targetQuery={(this.props as any).targetQuery}
                 defaultAction={async (data) => {
-                    let invites = data.inviteRequests.filter((invite: any) => invite.email || invite.firstName || invite.lastName).map((invite: any) => ({...invite, emailText: this.state.customTextAreaOpen ? data.customText : null}));
+                    let invites = data.inviteRequests.filter((invite: any) => invite.email || invite.firstName || invite.lastName).map((invite: any) => ({ ...invite, emailText: this.state.customTextAreaOpen ? data.customText : null }));
                     await this.props.mutation({
                         variables: {
                             inviteRequests: invites
@@ -156,35 +228,42 @@ class InvitesMoadalRaw extends React.Component<{
                     inviteRequests: [{ email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }]
                 }}
             >
-                <XVertical justifyContent="center" alignItems="center">
-                    <XVertical >
-                        <XStoreContext.Consumer>
-                            {(store) => {
-                                let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
-                                return (
-                                    <>
-                                        {invites.map((invite: Invite, i: number) => <InviteComponent key={i} index={i} invite={invite} single={invites.length === 1} handleRemove={(index) => this.handleRemove(i, store)} />)}
+                {!this.state.linkMode && (
+                    <XVertical justifyContent="center" alignItems="center">
+                        <XVertical >
+                            <XStoreContext.Consumer>
+                                {(store) => {
+                                    let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
+                                    return (
+                                        <>
+                                            {invites.map((invite: Invite, i: number) => <InviteComponent key={i} index={i} invite={invite} single={invites.length === 1} handleRemove={(index) => this.handleRemove(i, store)} />)}
 
-                                        < AddButton text=" + Add another" style="link" onClick={() => this.handleAdd(store)} alignSelf="flex-start" />
-                                    </>
-                                );
-                            }}
-                        </XStoreContext.Consumer>
+                                            < AddButton text=" + Add another" style="link" onClick={() => this.handleAdd(store)} alignSelf="flex-start" />
+                                        </>
+                                    );
+                                }}
+                            </XStoreContext.Consumer>
 
-                        {!this.state.customTextAreaOpen && <XText><ComposeButton onClick={() => this.setState({ customTextAreaOpen: true })} >Compose a custom message</ComposeButton> to make your invites more personal</XText>}
-                        {this.state.customTextAreaOpen && (
-                            <XHorizontal>
-                                <XFormFieldGrow field="customText" title="Custom Message">
-                                    <XTextArea valueStoreKey="fields.customText" />
-                                </XFormFieldGrow>
-                                <XFormField field="" title="">
-                                    <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ customTextAreaOpen: false })} />
-                                </XFormField>
-                            </XHorizontal>
-                        )}
+                            {!this.state.customTextAreaOpen && <XText><ComposeButton onClick={() => this.setState({ customTextAreaOpen: true })} >Compose a custom message</ComposeButton> to make your invites more personal</XText>}
+                            {this.state.customTextAreaOpen && (
+                                <XHorizontal>
+                                    <XFormFieldGrow field="customText" title="Custom Message">
+                                        <XTextArea valueStoreKey="fields.customText" />
+                                    </XFormFieldGrow>
+                                    <XFormField field="" title="">
+                                        <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ customTextAreaOpen: false })} />
+                                    </XFormField>
+                                </XHorizontal>
+                            )}
 
+                            <XWithRole role="admin" orgPermission={true}>
+                                {!this.state.linkMode && <SwitchToInvieteButton onClick={() => this.setState({ linkMode: true })} />}
+                            </XWithRole>
+                        </XVertical >
                     </XVertical >
-                </XVertical >
+                )}
+
+                {this.state.linkMode && <OwnerLink onBack={() => this.setState({ linkMode: false })} />}
 
             </XModalForm>
         );
