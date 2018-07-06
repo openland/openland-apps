@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XScrollView } from './XScrollView';
+import throttle from 'lodash/throttle';
 interface Dimensions {
     scrollTop: number;
     scrollHeight: number;
@@ -14,6 +15,7 @@ export class XScrollViewReversed extends React.Component<{}, { inited: boolean }
 
     private lastDimensions: Dimensions | null = null;
     private scroller: HTMLDivElement | null = null;
+    private handleScroll = throttle(() => { this.updateDimensions(this.getDimensions()); }, 100);
 
     private handleRef = (src: any) => {
         if (src !== null) {
@@ -35,11 +37,6 @@ export class XScrollViewReversed extends React.Component<{}, { inited: boolean }
             this.scrollToBottom();
         }
     }
-
-    private handleScroll = () => {
-        this.updateDimensions(this.getDimensions());
-    }
-
     private handleWindowResize = () => {
         // let container = this.scroller!!.children.item(0).children.item(0);
         // let total = container.childElementCount;
@@ -96,7 +93,7 @@ export class XScrollViewReversed extends React.Component<{}, { inited: boolean }
 
     render() {
         return (
-            <XScrollView innerRef={this.handleRef} onScroll={this.handleScroll} opacity={this.state.inited ? 1 : 0}>
+            <XScrollView innerRef={this.handleRef} onScroll={this.handleScroll} opacity={this.state.inited ? 1 : 0} optimize={true}>
                 {this.props.children}
             </XScrollView>
         );

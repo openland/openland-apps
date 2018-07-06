@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { MessengerContext, MessengerEngine } from './MessengerEngine';
+import { MessengerContext, MessengerEngine } from '../MessengerEngine';
 
 class MessengerReaderComponent extends React.PureComponent<{ conversationId: string, lastMessageId: string | null, engine: MessengerEngine }> {
 

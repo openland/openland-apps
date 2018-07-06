@@ -11,12 +11,12 @@ import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { MessengerWatcher } from './MessengerWatcher';
-import { MessengerReader } from './MessengerReader';
+import { MessengerWatcher } from './model/MessengerWatcher';
+import { MessengerReader } from './model/MessengerReader';
 import { MessengerContext, MessengerEngine } from './MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { getConfig } from '../../config';
-import { MessageSendHandler } from './MessageSender';
+import { MessageSendHandler } from './model/MessageSender';
 import { MessageListComponent } from './components/MessageListComponent';
 
 let Container = Glamorous.div({

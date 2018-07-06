@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ApolloClient } from 'apollo-client';
 import gql from 'graphql-tag';
-import { SequenceWatcher } from './SequenceWatcher';
+import { SequenceWatcher } from './model/SequenceWatcher';
 import { GlobalCounterQuery } from 'openland-api/GlobalCounterQuery';
 import { defaultDataIdFromObject, ID_KEY } from 'apollo-cache-inmemory';
 import { backoff } from 'openland-x-utils/timer';
@@ -10,7 +10,7 @@ import { Badge } from './utils/Badge';
 import { Router } from '../../routes';
 import { ChatListQuery } from 'openland-api';
 import { speakText } from './utils/Speak';
-import { MessageSender } from './MessageSender';
+import { MessageSender } from './model/MessageSender';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 

@@ -96,6 +96,7 @@ export interface XScrollViewProps extends XFlexStyles {
     className?: string;
     innerRef?: (src: any) => void;
     onScroll?: () => void;
+    optimize?: boolean;
 }
 
 const ScrollDiv = Glamorous.div<XFlexStyles>([{
@@ -112,9 +113,12 @@ export class XScrollView extends React.Component<XScrollViewProps> {
 
     handleRef = (el: any) => {
         if (canUseDOM && el) {
-            // tslint:disable
-            new this.Simplebar(el);
-            // tslint:enable
+            let isSafari = (window as any).safari !== undefined;
+            if (!isSafari || this.props.optimize !== true) {
+                // tslint:disable
+                new this.Simplebar(el);
+                // tslint:enable
+            }
         }
     }
 
