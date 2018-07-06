@@ -43,6 +43,10 @@ export class SequenceWatcher {
         this.stopSubscription();
     }
 
+    handleExternalUpdate = async (update: any) => {
+        // TODO: Implement
+    }
+
     private startSubsctiption = () => {
         if (!this.started) {
             return;

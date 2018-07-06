@@ -1,144 +1,70 @@
 import * as React from 'react';
 import { ApolloClient } from 'apollo-client';
-import gql from 'graphql-tag';
-import { SequenceWatcher } from './model/SequenceWatcher';
-import { GlobalCounterQuery } from 'openland-api/GlobalCounterQuery';
-import { defaultDataIdFromObject, ID_KEY } from 'apollo-cache-inmemory';
 import { backoff } from 'openland-x-utils/timer';
-import { ChatReadMutation } from 'openland-api/ChatReadMutation';
 import { Badge } from './utils/Badge';
-import { Router } from '../../routes';
-import { ChatListQuery } from 'openland-api';
-import { speakText } from './utils/Speak';
 import { MessageSender } from './model/MessageSender';
-import { MessageFull } from 'openland-api/fragments/MessageFull';
-import { UserShort } from 'openland-api/fragments/UserShort';
-
-let GLOBAL_SUBSCRIPTION = gql`
-    subscription GlobalSubscription($seq: Int) {
-        event: alphaSubscribeEvents(fromSeq: $seq) {
-            seq
-            ... on UserEventMessage {
-                unread
-                globalUnread
-                conversationId
-                isOut
-                repeatKey
-                conversation {
-                    id
-                    title
-                }
-                message {
-                    ...MessageFull
-                }
-            }
-            ... on UserEventRead {
-                unread
-                globalUnread
-                conversationId
-            }
-        }
-    }
-    ${UserShort}
-    ${MessageFull}
-`;
-
-let SHARED_CONVERSATION_COUNTER = gql`
-    fragment SharedConversationCounter on SharedConversation {
-        id
-        unreadCount
-    }
-`;
-
-let PRIVATE_CONVERSATION_COUNTER = gql`
-    fragment PrivateConversationCounter on PrivateConversation {
-        id
-        unreadCount
-    }
-`;
+import { ConversationEngine } from './model/ConversationEngine';
+import { Visibility } from './utils/Visibility';
+import { GlobalStateEngine } from './model/GlobalStateEngine';
+import { Router } from '../../routes';
 
 export class MessengerEngine {
     readonly client: ApolloClient<{}>;
-    private openedConversations = new Map<string, { count: number, unread: number }>();
-    private pendoingReaders = new Map<string, string>();
-    private isVisible = true;
-    private globalWatcher: SequenceWatcher | null = null;
-    private notify = backoff(() => import('notifyjs'));
-    private badge = new Badge();
-    private close: any = null;
     readonly sender: MessageSender;
+    readonly global: GlobalStateEngine;
+    private readonly visibility: Visibility;
+    private readonly badge: Badge;
+    private readonly activeConversations = new Map<string, ConversationEngine>();
+    private readonly mountedConversations = new Map<string, { count: number, unread: number }>();
+
+    private isVisible = true;
+    private notify = backoff(() => import('notifyjs'));
+    private close: any = null;
 
     constructor(client: ApolloClient<{}>) {
         this.client = client;
+        this.global = new GlobalStateEngine(this);
         this.sender = new MessageSender(client);
-        console.warn('MessengerEngine started');
-        backoff(() => import('ifvisible.js')).then((v) => {
-            v.on('idle', () => {
-                this.isVisible = false;
-                this.handleVisibilityChange();
-            });
-            v.on('wakeup', () => {
-                this.isVisible = true;
-                this.handleVisibilityChange();
-            });
-        });
+        this.visibility = new Visibility(this.handleVisibleChanged);
+        this.badge = new Badge();
 
+        this.badge.init();
         this.notify.then((v) => {
             if ((v as any).needsPermission && (v as any).isSupported()) {
                 (v as any).requestPermission();
             }
         });
-        this.badge.init();
-        this.doStart();
-    }
-
-    private doStart = async () => {
-        let res = await backoff(async () => {
-            let r = await this.client.query({
-                query: ChatListQuery.document
-            });
-            if (r.errors) {
-                console.warn(r.errors);
-                throw Error('Try again!');
-            }
-            return r.data;
-        });
-        let seq = (res as any).chats.seq;
-        this.globalWatcher = new SequenceWatcher('global', GLOBAL_SUBSCRIPTION, seq, {}, this.handleGlobalEvent, this.client);
+        this.global.start(this.handleGlobalCounterChanged, this.handleIncomingMessage);
+        console.warn('MessengerEngine started');
     }
 
     destroy() {
-        if (this.globalWatcher) {
-            this.globalWatcher.destroy();
-            this.globalWatcher = null;
-        }
+        this.global.destroy();
+        this.visibility.destroy();
     }
 
-    readConversation(conversationId: string, messageId: string) {
-        if (this.isVisible) {
-            this.client.mutate({
-                mutation: ChatReadMutation.document,
-                variables: {
-                    conversationId: conversationId,
-                    messageId: messageId
-                }
-            });
-        } else {
-            this.pendoingReaders.set(conversationId, messageId);
+    mountConversation(conversationId: string): () => void {
+        if (!this.activeConversations.has(conversationId)) {
+            let engine = new ConversationEngine(this, conversationId);
+            this.activeConversations.set(conversationId, engine);
+            engine.start();
         }
-    }
-
-    openConversation(conversationId: string): () => void {
-        if (this.openedConversations.has(conversationId)) {
-            this.openedConversations.get(conversationId)!!.count++;
+        if (this.mountedConversations.has(conversationId)) {
+            this.mountedConversations.get(conversationId)!!.count++;
         } else {
-            this.openedConversations.set(conversationId, { count: 1, unread: 0 });
+            if (this.isVisible) {
+                this.handleConversationVisible(conversationId);
+            }
+            this.mountedConversations.set(conversationId, { count: 1, unread: 0 });
         }
         return () => {
-            let ex = this.openedConversations.get(conversationId);
+            let ex = this.mountedConversations.get(conversationId);
             if (ex) {
                 if (ex.count === 1) {
-                    this.openedConversations.delete(conversationId);
+                    this.mountedConversations.delete(conversationId);
+                    if (this.isVisible) {
+                        this.handleConversationHidden(conversationId);
+                    }
                 } else {
                     ex.count--;
                 }
@@ -146,75 +72,14 @@ export class MessengerEngine {
         };
     }
 
-    private handleVisibilityChange = () => {
+    private handleGlobalCounterChanged = (counter: number) => {
         if (this.isVisible) {
-            if (this.close) {
-                this.close.close();
-                this.close = null;
-            }
-            if (this.pendoingReaders.size > 0) {
-                for (let a of this.pendoingReaders) {
-                    this.client.mutate({
-                        mutation: ChatReadMutation.document,
-                        variables: {
-                            conversationId: a[0],
-                            messageId: a[1]
-                        }
-                    });
-                }
-                this.pendoingReaders.clear();
-            }
-            this.badge.badge(0);
+            this.badge.badge(counter);
         }
     }
 
-    private handleGlobalEvent = (event: any) => {
-        if (event.__typename === 'UserEventMessage') {
-            let visible = this.openedConversations.has(event.conversationId) && this.isVisible;
-            this.writeGlobalCounter(event.globalUnread, visible);
-            if (!visible && !event.isOut && !(event.message.message && event.message.message.trim().startsWith('speak: '))) {
-                this.handleNewMessage(event.conversationId);
-            }
-            if (event.message.message && event.message.message.trim().startsWith('speak: ')) {
-                speakText(event.message.message.trim().substring(7).trim());
-            }
-            let data = this.client.readQuery({
-                query: ChatListQuery.document
-            }) as any;
-            if (data) {
-                data.chats.seq = event.seq;
-                let exIndex = data.chats.conversations.findIndex((v: any) => v.id === event.conversationId);
-                if (exIndex >= 0) {
-                    let ids = data.chats.conversations.map((v: any) => v[ID_KEY]);
-                    let c = data.chats.conversations[exIndex];
-                    if (!visible || c.unreadCount > event.unread) {
-                        c.unreadCount = event.unread;
-                    }
-                    data.chats.conversations.splice(exIndex, 1);
-                    data.chats.conversations.unshift(c);
-                    data.chats.conversations = data.chats.conversations.map((v: any, i: number) => ({ ...v, [ID_KEY]: ids[i] }));
-                } else {
-                    data.chats.conversations.unshift({
-                        __typename: event.conversation.__typename,
-                        id: event.conversation.id,
-                        title: event.conversation.title,
-                        unreadCount: event.unread,
-                        [ID_KEY]: defaultDataIdFromObject(event.conversation)
-                    });
-                }
-                this.client.writeQuery({
-                    query: ChatListQuery.document,
-                    data: data
-                });
-            }
-        } else if (event.__typename === 'UserEventRead') {
-            let visible = this.openedConversations.has(event.conversationId) && this.isVisible;
-            this.writeGlobalCounter(event.globalUnread, visible);
-            this.writeConversationCounter(event.conversationId, event.unread, visible);
-        }
-    }
-
-    private handleNewMessage = (conversationId: string) => {
+    private handleIncomingMessage = (msg: any) => {
+        let conversationId = msg.conversationId;
         var audio = new Audio('/static/sounds/notification.mp3');
         audio.play();
         this.notify.then((v) => {
@@ -238,71 +103,37 @@ export class MessengerEngine {
                 not.show();
             }
         });
+
     }
 
-    private writeGlobalCounter = (counter: number, visible: boolean) => {
-        let existing = this.client.readQuery({
-            query: GlobalCounterQuery.document
-        });
-        if (existing) {
-            if (visible) {
-                // Do not increment unread count
-                if ((existing as any).counter.unreadCount < counter) {
-                    return;
-                }
-            }
-            (existing as any).counter.unreadCount = counter;
-            this.client.writeQuery({
-                query: GlobalCounterQuery.document,
-                data: existing
-            });
-        }
-        if (!this.isVisible) {
-            this.badge.badge(counter);
-        }
+    private handleConversationVisible = (conversationId: string) => {
+        this.activeConversations.get(conversationId)!!.onOpen();
+        this.global.onConversationVisible(conversationId);
     }
 
-    private writeConversationCounter = (conversationId: string, counter: number, visible: boolean) => {
-        let id = defaultDataIdFromObject({ __typename: 'SharedConversation', id: conversationId })!!;
-        let conv = this.client.readFragment({
-            id,
-            fragment: SHARED_CONVERSATION_COUNTER
-        });
-        if (conv) {
-            if (visible) {
-                // Do not increment unread count
-                if ((conv as any).unreadCount < counter) {
-                    return;
-                }
-            }
-            (conv as any).unreadCount = counter;
-            this.client.writeFragment({
-                id,
-                fragment: SHARED_CONVERSATION_COUNTER,
-                data: conv
-            });
+    private handleConversationHidden = (conversationId: string) => {
+        this.activeConversations.get(conversationId)!!.onClosed();
+        this.global.onConversationHidden(conversationId);
+    }
+
+    private handleVisibleChanged = (isVisible: boolean) => {
+        if (this.isVisible === isVisible) {
             return;
         }
-
-        id = defaultDataIdFromObject({ __typename: 'PrivateConversation', id: conversationId })!!;
-        conv = this.client.readFragment({
-            id,
-            fragment: PRIVATE_CONVERSATION_COUNTER
-        });
-        if (conv) {
-            if (visible) {
-                // Do not increment unread count
-                if ((conv as any).unreadCount < counter) {
-                    return;
-                }
+        this.isVisible = isVisible;
+        if (this.isVisible) {
+            if (this.close) {
+                this.close.close();
+                this.close = null;
             }
-            (conv as any).unreadCount = counter;
-            this.client.writeFragment({
-                id,
-                fragment: PRIVATE_CONVERSATION_COUNTER,
-                data: conv
-            });
-            return;
+            for (let m of this.mountedConversations) {
+                this.handleConversationVisible(m[0]);
+            }
+            this.badge.badge(0);
+        } else {
+            for (let m of this.mountedConversations) {
+                this.handleConversationVisible(m[0]);
+            }
         }
     }
 }

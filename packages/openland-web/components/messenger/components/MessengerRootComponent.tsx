@@ -7,13 +7,11 @@ import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { MessengerWatcher } from '../model/MessengerWatcher';
-import { MessengerReader } from '../model/MessengerReader';
 import { MessengerContext, MessengerEngine } from '../MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { getConfig } from '../../../config';
 import { MessageSendHandler } from '../model/MessageSender';
-import { MessageListComponent } from '../components/MessageListComponent';
+import { MessageListComponent } from './MessageListComponent';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -160,7 +158,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
     componentDidMount() {
         this.setState({ mounted: true });
-        this.unmounter = this.props.messenger.openConversation(this.props.conversationId);
+        this.unmounter = this.props.messenger.mountConversation(this.props.conversationId);
         this.xinput.focus();
     }
 
@@ -189,7 +187,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                             ref={this.messagesList}
                         />
                     </MessagesContainer>
-                    <MessengerReader conversationId={this.props.conversationId} lastMessageId={this.props.messages.length > 0 ? this.props.messages[0].id : null} />
                     <SendMessageContainer>
                         <XButton icon="add" size="medium" onClick={this.handleAttach} />
                         <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} ref={this.handleRef} />
@@ -216,25 +213,17 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
             return null;
         }
         return (
-            <>
-                <MessengerWatcher
-                    conversationId={this.props.conversationId}
-                    seq={this.props.seq}
-                    client={this.props.client}
-                    uid={this.props.me.id}
-                />
-                <MessengerContext.Consumer>
-                    {messenger => (
-                        <MessagesComponent
-                            messages={this.props.messages}
-                            loading={false}
-                            me={this.props.me}
-                            conversationId={this.props.conversationId}
-                            messenger={messenger}
-                        />
-                    )}
-                </MessengerContext.Consumer>
-            </>
+            <MessengerContext.Consumer>
+                {messenger => (
+                    <MessagesComponent
+                        messages={this.props.messages}
+                        loading={false}
+                        me={this.props.me}
+                        conversationId={this.props.conversationId}
+                        messenger={messenger}
+                    />
+                )}
+            </MessengerContext.Consumer>
         );
     }
 }

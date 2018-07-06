@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { MessageComponent } from '../content/MessageComponent';
+import { MessageComponent } from './MessageComponent';
 import { UserShortFragment, MessageFullFragment } from 'openland-api/Types';
 import { PendingMessage } from '../Model';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
@@ -94,15 +94,12 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         }
         if (this.props.pending.length > 0) {
             let now = new Date().getTime();
+            appendDateIfNeeded(now);
             let shouldCollapse = shouldCompact(this.props.me.id, now);
             for (let m of this.props.pending) {
                 if (existingKeys.has(m.key)) {
                     continue;
                 }
-                if (!shouldCollapse) {
-                    shouldCollapse = true;
-                }
-                appendDateIfNeeded(now);
                 messages.push(
                     <MessageComponent
                         key={'pending-' + m.key}
@@ -113,6 +110,9 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         onRetry={this.props.onRetry}
                     />
                 );
+                if (!shouldCollapse) {
+                    shouldCollapse = true;
+                }
             }
         }
 

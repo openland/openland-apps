@@ -5,12 +5,12 @@ import { PendingMessage } from '../Model';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { MessageTextComponent } from './MessageTextComponent';
-import { MessageAnimationComponent } from './MessageAnimationComponent';
+import { MessageTextComponent } from './content/MessageTextComponent';
+import { MessageAnimationComponent } from './content/MessageAnimationComponent';
 import { XDate } from 'openland-x-format/XDate';
 import { XButton } from 'openland-x/XButton';
-import { MessageImageComponent } from './MessageImageComponent';
-import { MessageFileComponent } from './MessageFileComponent';
+import { MessageImageComponent } from './content/MessageImageComponent';
+import { MessageFileComponent } from './content/MessageFileComponent';
 
 interface MessageComponentProps {
     compact: boolean;

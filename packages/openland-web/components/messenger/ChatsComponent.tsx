@@ -49,7 +49,7 @@ export const ChatsComponent = withChatsAll((props) => {
         <XScrollView>
             <XVertical separator={'none'}>
                 {props.data && props.data.chats && props.data.chats.conversations.map((v) => (
-                    <Item path={'/mail/' + v.id}>
+                    <Item path={'/mail/' + v.id} key={v.id}>
                         <XAvatar style={v.__typename === 'SharedConversation' ? 'organization' : 'person'} />
                         <Main>
                             <Title>{v.title}</Title>
