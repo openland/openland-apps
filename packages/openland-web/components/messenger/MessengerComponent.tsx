@@ -1,27 +1,23 @@
 import * as React from 'react';
+import * as UploadCare from 'uploadcare-widget';
 import Glamorous from 'glamorous';
 import { withUserInfo } from '../UserInfo';
 import { withChat } from '../../api/withChat';
 import { withQueryLoader } from '../withQueryLoader';
 import { withApollo } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
-import { MessageFullFragment } from 'openland-api/Types';
-import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
+import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XContent } from 'openland-x-layout/XContent';
-import { XAvatar } from 'openland-x/XAvatar';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { XDate } from 'openland-x-format/XDate';
 import { MessengerWatcher } from './MessengerWatcher';
 import { MessengerReader } from './MessengerReader';
 import { MessengerContext, MessengerEngine } from './MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import * as UploadCare from 'uploadcare-widget';
 import { getConfig } from '../../config';
 import { MessageSendHandler } from './MessageSender';
+import { MessageListComponent } from './components/MessageListComponent';
 
 let Container = Glamorous.div({
     display: 'flex',
@@ -47,89 +43,6 @@ let SendMessageContainer = Glamorous(XHorizontal)({
     paddingRight: '24px'
 });
 
-const Name = Glamorous.div({
-    fontSize: '14px',
-    fontWeight: 500,
-});
-
-const DateComponent = Glamorous.div({
-    fontSize: '14px',
-    fontWeight: 300,
-    opacity: 0.4
-});
-
-const Image = Glamorous.img({
-    width: 400,
-    height: 400,
-    objectFit: 'scale-down'
-});
-
-const MessagesWrapper = Glamorous(XVertical)({
-    paddingTop: '96px',
-    paddingLeft: '16px',
-    paddingRight: '16px',
-    paddingBottom: '24px'
-});
-
-const DateDivider = Glamorous.div({
-    display: 'flex',
-    fontSize: '14px',
-    fontWeight: 300,
-    justifyContent: 'center',
-    alignItems: 'center'
-});
-
-class MessageComponent extends React.Component<{ message: MessageFullFragment }> {
-
-    shouldComponentUpdate(nextProps: { message: MessageFullFragment }) {
-        return (this.props.message !== nextProps.message);
-    }
-
-    render() {
-        let src = this.props.message.message;
-        let message = <span>{src}</span>;
-        if (this.props.message.file) {
-            if (this.props.message.fileMetadata!!.isImage) {
-                if (this.props.message.fileMetadata!!.imageFormat === 'GIF') {
-                    message = (
-                        <video width="400" height="400" autoPlay={true} loop={true} muted={true} webkit-playsinline={true} playsinline={true}>
-                            <source src={'https://ucarecdn.com/' + this.props.message.file + '/gif2video/-/format/webm/road.gif'} type="video/webm" />
-                            <source src={'https://ucarecdn.com/' + this.props.message.file + '/gif2video/-/format/mp4/road.gif'} type="video/mp4" />
-                        </video>
-                    );
-                } else {
-                    message = (
-                        <Image src={'https://ucarecdn.com/' + this.props.message.file + '/' + this.props.message.fileMetadata!!.name} />
-                    );
-                }
-            } else {
-                message = (
-                    <>
-                        <XButton
-                            href={'https://ucarecdn.com/' + this.props.message.file + '/' + this.props.message.fileMetadata!!.name}
-                            text={this.props.message.fileMetadata!!.name}
-                            alignSelf="flex-start"
-                        />
-                        <span>{this.props.message.fileMetadata!!.size}</span>
-                    </>
-                );
-            }
-        }
-        return (
-            <XContent key={this.props.message.id}>
-                <XHorizontal alignSelf="stretch">
-                    <XAvatar cloudImageUuid={this.props.message.sender.picture ? this.props.message.sender.picture : undefined} path={'/mail/u/' + this.props.message.sender.id} />
-                    <XVertical separator={'none'} flexGrow={1}>
-                        <XHorizontal separator={4}>
-                            <Name>{this.props.message.sender.name}</Name><DateComponent><XDate value={this.props.message.date} format="time" /></DateComponent>
-                        </XHorizontal>
-                        {message}
-                    </XVertical>
-                </XHorizontal>
-            </XContent>
-        );
-    }
-}
 interface PendingMessage {
     key: string;
     progress: number;
@@ -138,85 +51,11 @@ interface PendingMessage {
     failed?: boolean;
 }
 
-const PendingMessageComponent = withUserInfo<{ message: PendingMessage, onRetry: (key: string) => void; onCancel: (key: string) => void }>((props) => {
-    return (
-        <XContent>
-            <XHorizontal alignSelf="stretch">
-                <XAvatar cloudImageUuid={props.user!!.picture ? props.user!!.picture!! : undefined} />
-                <XVertical separator={'none'} flexGrow={1}>
-                    <XHorizontal separator={4}>
-                        <Name>{props.user!!.name}</Name><DateComponent>{props.message.failed ? 'Failed' : 'Sending'}</DateComponent>
-                    </XHorizontal>
-                    {!props.message.message && <span>{props.message.file} {props.message.progress < 1 ? props.message.progress.toString() : null}</span>}
-                    {props.message.message && <span>{props.message.message}</span>}
-                    {props.message.failed && (
-                        <XHorizontal>
-                            <XButton onClick={() => props.onCancel(props.message.key)} text="Cancel" />
-                            <XButton onClick={() => props.onRetry(props.message.key)} text="Try Again" />
-                        </XHorizontal>
-                    )}
-                </XVertical>
-            </XHorizontal>
-        </XContent>
-    );
-});
-
-interface MessageListProps {
-    messages: MessageFullFragment[];
-    pending: PendingMessage[];
-    onRetry: (key: string) => void;
-    onCancel: (key: string) => void;
-}
-
-function dateFormat(date?: number) {
-    let dt = date ? new Date(date) : new Date();
-    return (dt.getFullYear() + ' ,' + dt.getMonth() + ' ' + dt.getDate());
-}
-
-class MessageList extends React.Component<MessageListProps> {
-    shouldComponentUpdate(nextProps: { messages: MessageFullFragment[], pending: PendingMessage[] }) {
-        return nextProps.messages !== this.props.messages || nextProps.pending !== this.props.pending;
-    }
-    render() {
-
-        let messages: any[] = [];
-        let prevDate: string | undefined;
-        let appendDateIfNeeded = (date?: number) => {
-            let dstr = dateFormat(date);
-            if (dstr !== prevDate) {
-                messages.push(<DateDivider key={'date-' + dstr}>{dstr}</DateDivider>);
-                prevDate = dstr;
-            }
-        };
-        let existingKeys = new Set<string>();
-        for (let m of [...this.props.messages].reverse()) {
-            appendDateIfNeeded(parseInt(m.date, 10));
-            messages.push(<MessageComponent message={m} key={'message-' + m.id} />);
-            if (m.repeatKey) {
-                existingKeys.add(m.repeatKey);
-            }
-        }
-        for (let m of this.props.pending) {
-            if (existingKeys.has(m.key)) {
-                continue;
-            }
-            appendDateIfNeeded();
-            messages.push(<PendingMessageComponent key={'pending-' + m.key} message={m} onCancel={this.props.onCancel} onRetry={this.props.onRetry} />);
-        }
-
-        return (
-            <MessagesWrapper>
-                {messages}
-            </MessagesWrapper>
-        );
-    }
-}
-
 interface MessagesComponentProps {
     conversationId: string;
     messages: MessageFullFragment[];
     loading: boolean;
-    uid: string;
+    me: UserShortFragment;
     messenger: MessengerEngine;
 }
 
@@ -233,7 +72,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         mounted: false,
         pending: []
     };
-    scroller: any;
+    messagesList = React.createRef<MessageListComponent>();
     unmounter: (() => void) | null = null;
     xinput: any | null = null;
 
@@ -256,8 +95,11 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 console.warn(v.incompleteFileInfo);
                 let name = v.incompleteFileInfo.name || 'image.jpg';
                 let key = this.props.messenger.sender.sendFile(this.props.conversationId, r, this);
-                this.scroller.scrollToBottom();
-                this.setState((src) => ({ ...src, pending: [...src.pending, { key: key, progress: 0, message: null, file: name }] }));
+                this.messagesList.current!!.scrollToBottom();
+                this.setState((src) => ({ ...src, pending: [...src.pending, { key: key, progress: 0, message: null, file: name }] }), () => {
+                    this.xinput.focus();
+                    this.messagesList.current!!.scrollToBottom();
+                });
             });
         });
     }
@@ -266,8 +108,10 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (this.state.message.trim().length > 0) {
             let message = this.state.message.trim();
             let key = this.props.messenger.sender.sendMessage(this.props.conversationId, message, this);
-            this.scroller.scrollToBottom();
-            this.setState((src) => ({ ...src, message: '', pending: [...src.pending, { key: key, progress: 0, message: message, file: null, }] }), () => { this.xinput.focus(); });
+            this.setState((src) => ({ ...src, message: '', pending: [...src.pending, { key: key, progress: 0, message: message, file: null, }] }), () => {
+                this.xinput.focus();
+                this.messagesList.current!!.scrollToBottom();
+            });
         }
     }
 
@@ -294,16 +138,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     onFailed = (key: string) => {
         console.warn(key + ': failed');
         this.setState((src) => ({ ...src, pending: src.pending.map((v) => v.key === key ? ({ ...v, failed: true }) : v) }));
-    }
-
-    //
-    // Scroll Handler
-    //
-
-    handleScrollView = (src: any) => {
-        if (src) {
-            this.scroller = src;
-        }
     }
 
     //
@@ -350,9 +184,14 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             <>
                 <Container>
                     <MessagesContainer>
-                        <XScrollViewReversed ref={this.handleScrollView}>
-                            <MessageList messages={this.props.messages} pending={this.state.pending} onCancel={this.handleCancel} onRetry={this.handleRetry} />
-                        </XScrollViewReversed>
+                        <MessageListComponent
+                            messages={this.props.messages}
+                            pending={this.state.pending}
+                            onCancel={this.handleCancel}
+                            onRetry={this.handleRetry}
+                            me={this.props.me}
+                            ref={this.messagesList}
+                        />
                     </MessagesContainer>
                     <MessengerReader conversationId={this.props.conversationId} lastMessageId={this.props.messages.length > 0 ? this.props.messages[0].id : null} />
                     <SendMessageContainer>
@@ -371,7 +210,7 @@ interface ConversationRootProps {
     conversationId: string;
     seq: number;
     client: ApolloClient<{}>;
-    uid: string;
+    me: UserShortFragment;
     messages: MessageFullFragment[];
 }
 
@@ -386,14 +225,14 @@ class ConversationRoot extends React.Component<ConversationRootProps> {
                     conversationId={this.props.conversationId}
                     seq={this.props.seq}
                     client={this.props.client}
-                    uid={this.props.uid}
+                    uid={this.props.me.id}
                 />
                 <MessengerContext.Consumer>
                     {messenger => (
                         <MessagesComponent
                             messages={this.props.messages}
                             loading={false}
-                            uid={this.props.uid}
+                            me={this.props.me}
                             conversationId={this.props.conversationId}
                             messenger={messenger}
                         />
@@ -412,7 +251,7 @@ export const MessengerComponent = withChat(withApollo(withQueryLoader(withUserIn
             seq={props.data.messages.seq}
             messages={props.data.messages.messages}
             client={props.client}
-            uid={props.user!!.id}
+            me={props.user!!}
         />
     );
 }))));

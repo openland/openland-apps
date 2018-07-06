@@ -30,23 +30,9 @@ export interface MessengerWatcherProps {
 }
 
 export class MessengerWatcher extends React.Component<MessengerWatcherProps> {
-
-    currentSeq: number;
-    observable: ZenObservable.Subscription | null = null;
-    _mounted = false;
-    connectionStatusUnsubscribe: (() => void) | null = null;
-    doingFullRefresh: boolean = false;
-    pending: any[] = [];
-    pendingTimeout: number | null = null;
     watcher: SequenceWatcher | null = null;
-
-    constructor(props: MessengerWatcherProps) {
-        super(props);
-        this.currentSeq = props.seq;
-    }
-
     componentDidMount() {
-        this.watcher = new SequenceWatcher('chat:' + this.props.conversationId, CHAT_SUBSCRIPTION, this.currentSeq, { conversationId: this.props.conversationId }, this.updateHandler, this.props.client);
+        this.watcher = new SequenceWatcher('chat:' + this.props.conversationId, CHAT_SUBSCRIPTION, this.props.seq, { conversationId: this.props.conversationId }, this.updateHandler, this.props.client);
     }
 
     updateHandler = async (event: any) => {
@@ -77,9 +63,6 @@ export class MessengerWatcher extends React.Component<MessengerWatcherProps> {
                 variables: { conversationId: this.props.conversationId },
                 fetchPolicy: 'network-only'
             }));
-            if (!this._mounted) {
-                return;
-            }
             return (loaded.data as any).messages.seq;
         }
     }
