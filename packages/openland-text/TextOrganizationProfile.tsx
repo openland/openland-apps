@@ -41,7 +41,7 @@ export const TextOrganizationProfile = {
     listingsArTabTitle: 'Acquisition requests',
 
     listingCreateDoTitle: 'Create development opportunity',
-    listingCreateArTitle: 'Create acquisition requests',
+    listingCreateArTitle: 'Create acquisition request',
 
     overviewListingsDoFooterNonEmpty: 'View all',
     overviewListingsDoFooterAddListing: 'Add a listing',
