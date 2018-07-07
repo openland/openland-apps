@@ -1,15 +1,22 @@
 import * as React from 'react';
-import { withUserInfo } from '../UserInfo';
-import { withApollo } from 'react-apollo';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { XHeader } from 'openland-x/XHeader';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { withChat } from '../../api/withChat';
+import { withQueryLoader } from '../withQueryLoader';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 
-export const MessengerComponent = withApollo<{ conversationId: string }>(withUserInfo((props) => {
+let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     return (
-        <MessengerRootComponent
-            key={props.conversationId}
-            conversationId={props.conversationId}
-            client={props.client}
-            me={props.user!!}
-        />
+        <XVertical flexGrow={1} separator={'none'} maxWidth={1000}>
+            <XHeader text={props.data.chat.title} separated={true} />
+            <XHorizontal flexGrow={1} justifyContent="center">
+                <MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />
+            </XHorizontal>
+        </XVertical>
     );
 }));
+
+export const MessengerComponent = (props: { conversationId: string }) => {
+    return (<MessengerComponentLoader variables={{ conversationId: props.conversationId }} />);
+};

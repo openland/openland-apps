@@ -1,14 +1,13 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageComponent } from './MessageComponent';
-import { UserShortFragment, MessageFullFragment } from 'openland-api/Types';
+import { MessageFullFragment } from 'openland-api/Types';
 import { PendingMessage } from '../model/types';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from '../model/ConversationEngine';
 
 interface MessageListProps {
     conversation: ConversationEngine;
-    me: UserShortFragment;
     messages: MessageFullFragment[];
     pending: PendingMessage[];
     onRetry: (key: string) => void;
@@ -77,7 +76,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             currentCollapsed = 0;
             return false;
         };
-        for (let m of [...this.props.messages].reverse()) {
+        for (let m of this.props.messages) {
             let date = parseInt(m.date, 10);
             appendDateIfNeeded(date);
             messages.push(
@@ -97,7 +96,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         if (this.props.pending.length > 0) {
             let now = new Date().getTime();
             appendDateIfNeeded(now);
-            let shouldCollapse = shouldCompact(this.props.me.id, now);
+            let shouldCollapse = shouldCompact(this.props.conversation.engine.user.id, now);
             for (let m of this.props.pending) {
                 if (existingKeys.has(m.key)) {
                     continue;
@@ -106,7 +105,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                     <MessageComponent
                         key={'pending-' + m.key}
                         compact={shouldCollapse}
-                        sender={this.props.me}
+                        sender={this.props.conversation.engine.user}
                         message={m}
                         onCancel={this.props.onCancel}
                         onRetry={this.props.onRetry}

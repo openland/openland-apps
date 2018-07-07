@@ -116,7 +116,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
         return (
             <MessageContainer>
                 <XHorizontal alignSelf="stretch">
-                    <XAvatar cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined} path={'/mail/u/' + this.props.sender!!.id} />
+                    <XAvatar cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined} path={'/mail/' + this.props.sender!!.id} />
                     <XVertical separator={'none'} flexGrow={1}>
                         <XHorizontal separator={4}>
                             <Name>{this.props.sender!!.name}</Name><DateComponent>{date}</DateComponent>

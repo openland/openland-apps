@@ -3,7 +3,7 @@ import { UserShort } from 'openland-api/fragments/UserShort';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import gql from 'graphql-tag';
 import { backoff } from 'openland-x-utils/timer';
-import { ChatListQuery, GlobalCounterQuery } from 'openland-api';
+import { ChatListQuery, GlobalCounterQuery, ChatInfoQuery } from 'openland-api';
 import { SequenceWatcher } from './SequenceWatcher';
 import { defaultDataIdFromObject, ID_KEY } from 'apollo-cache-inmemory';
 
@@ -33,6 +33,7 @@ let GLOBAL_SUBSCRIPTION = gql`
                 repeatKey
                 conversation {
                     id
+                    flexibleId
                     title
                 }
                 message {
@@ -72,6 +73,9 @@ export class GlobalStateEngine {
         })).data;
         let seq = (res as any).chats.seq;
         console.info('[global] Initial state loaded with seq #' + seq);
+        for (let c of (res as any).chats.conversations) {
+            this.handleChatAdded(c);
+        }
         this.watcher = new SequenceWatcher('global', GLOBAL_SUBSCRIPTION, seq, {}, this.handleGlobalEvent, this.engine.client);
     }
 
@@ -88,6 +92,27 @@ export class GlobalStateEngine {
             this.watcher.destroy();
             this.watcher = null;
         }
+    }
+
+    private handleChatAdded = (chat: any) => {
+        this.engine.client.writeQuery({
+            query: ChatInfoQuery.document,
+            variables: {
+                conversationId: chat.flexibleId
+            },
+            data: {
+                chat: chat
+            }
+        });
+        this.engine.client.writeQuery({
+            query: ChatInfoQuery.document,
+            variables: {
+                conversationId: chat.id
+            },
+            data: {
+                chat: chat
+            }
+        });
     }
 
     private handleGlobalEvent = (event: any) => {
@@ -114,13 +139,15 @@ export class GlobalStateEngine {
                     data.chats.conversations.unshift(c);
                     data.chats.conversations = data.chats.conversations.map((v: any, i: number) => ({ ...v, [ID_KEY]: ids[i] }));
                 } else {
-                    data.chats.conversations.unshift({
+                    let chat = {
                         __typename: event.conversation.__typename,
                         id: event.conversation.id,
                         title: event.conversation.title,
                         unreadCount: event.unread,
                         [ID_KEY]: defaultDataIdFromObject(event.conversation)
-                    });
+                    };
+                    data.chats.conversations.unshift(chat);
+                    this.handleChatAdded(chat);
                 }
                 this.engine.client.writeQuery({
                     query: ChatListQuery.document,

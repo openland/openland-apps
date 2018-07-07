@@ -2,12 +2,13 @@ import * as React from 'react';
 import { MessengerEngine, MessengerContext } from './model/MessengerEngine';
 import { withApollo } from 'react-apollo';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { UserShortFragment } from 'openland-api/Types';
 
 let cachedMessenger: MessengerEngine | null = null;
 
-const Messenger = withApollo<{ currentUser: string }>((props) => {
+const Messenger = withApollo<{ currentUser: UserShortFragment }>((props) => {
     if (!cachedMessenger && canUseDOM) {
-        cachedMessenger = new MessengerEngine(props.client);
+        cachedMessenger = new MessengerEngine(props.client, props.currentUser);
     }
     if (cachedMessenger) {
         return (
@@ -23,10 +24,10 @@ const Messenger = withApollo<{ currentUser: string }>((props) => {
     );
 });
 
-export class MessengerProvider extends React.PureComponent<{ uid?: string }> {
+export class MessengerProvider extends React.PureComponent<{ user?: UserShortFragment }> {
     render() {
-        if (this.props.uid) {
-            return <Messenger currentUser={this.props.uid}>{this.props.children}</Messenger>;
+        if (this.props.user) {
+            return <Messenger currentUser={this.props.user}>{this.props.children}</Messenger>;
         } else {
             return <>{this.props.children}</>;
         }

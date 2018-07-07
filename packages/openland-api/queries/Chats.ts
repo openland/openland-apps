@@ -6,6 +6,7 @@ export const AllChatsQuery = gql`
     query AllChats {
         chats: superAllChats {
             id
+            flexibleId
             title
             unreadCount
         }
@@ -18,6 +19,7 @@ export const ChatListQuery = gql`
             conversations {
                 id
                 title
+                flexibleId
                 unreadCount
             }
             seq
@@ -41,6 +43,19 @@ export const ChatQuery = gql`
             id
             title
         }
+        messages: alphaLoadMessages(conversationId: $conversationId) {
+            seq
+            messages {
+                ...MessageFull
+            }
+        }
+    }
+    ${MessageFull}
+    ${UserShort}
+`;
+
+export const ChatHistoryQuery = gql`
+    query ChatHistory($conversationId: ID!) {
         messages: alphaLoadMessages(conversationId: $conversationId) {
             seq
             messages {

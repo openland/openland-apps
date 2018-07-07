@@ -4,27 +4,23 @@ import { trackPage, trackError } from 'openland-x-analytics';
 
 NProgress.configure({ showSpinner: false, parent: '#progress_container' });
 
-var previousUrl: string | null = null;
-var currentUrl: string | null = null;
-
-const extracthPath = (src: string) => {
-    if (src.indexOf('?') > 0) {
-        src = src.split('?', 2)[0];
-    }
-    if (src.endsWith('/')) {
-        return src.substring(0, src.length - 1);
-    }
-    return src;
-};
+var previousRoute: string | null = null;
+var previousPath: string | null = null;
+var currentRoute: string | null = null;
+var currentPath: string | null = null;
 
 export function isPageChanged() {
-    if (previousUrl == null) {
-        previousUrl = (Router as any as RouterProps).asPath ? (Router as any as RouterProps).asPath!! : null;
+    console.warn((Router as any as RouterProps).route);
+    if (previousRoute == null) {
+        previousRoute = (Router as any as RouterProps).route;
     }
-    if (previousUrl == null || currentUrl == null) {
+    if (previousRoute == null) {
+        previousRoute = Router.router.asPath ? Router.router.asPath : null;
+    }
+    if (previousRoute == null || currentRoute == null) {
         return true;
     }
-    return extracthPath(previousUrl) !== extracthPath(currentUrl);
+    return currentRoute !== previousRoute;
 }
 
 var timeoutId: number | null = null;
@@ -68,15 +64,20 @@ export function stopProgress(src: number) {
 (Router as any as RouterProps).onRouteChangeStart = (url) => {
 
     // Hotfix Current Url
-    if (currentUrl == null) {
-        currentUrl = Router.router.asPath ? Router.router.asPath : null;
+    if (currentRoute == null) {
+        currentRoute = (Router as any as RouterProps).route;
+    }
+    if (currentRoute == null) {
+        currentRoute = Router.router.asPath ? Router.router.asPath : null;
     }
 
-    previousUrl = currentUrl;
-    currentUrl = url;
+    previousRoute = currentRoute;
+    previousPath = currentPath;
+    currentRoute = (Router as any as RouterProps).route;
+    currentPath = Router.router.asPath ? Router.router.asPath : null;
 
     // tslint:disable
-    console.log(`Naviating to: ${previousUrl} -> ${currentUrl}`);
+    console.log(`Naviating to: ${previousPath} -> ${currentPath}`);
     // tslint:enable
 
     startProgress(0);

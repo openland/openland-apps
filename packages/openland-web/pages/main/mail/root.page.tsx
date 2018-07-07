@@ -7,17 +7,9 @@ import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { XHeader } from 'openland-x/XHeader';
 import { withAllChats } from '../../../api/withAllChats';
-// import { makeNavigable } from 'openland-x/Navigable';
-import { withChatPrivate } from '../../../api/withChatPrivate';
-import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { XLoader } from 'openland-x/XLoader';
-import { withChatOrganization } from '../../../api/withChatOrganization';
-import { withChat } from '../../../api/withChat';
 import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -32,7 +24,6 @@ let Shadow = Glamorous.div({
     flexDirection: 'row',
     backgroundColor: '#f9fafb',
     flexGrow: 1,
-    // maxWidth: '1200px',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)'
 });
 
@@ -53,53 +44,10 @@ let ConversationContainer = Glamorous.div({
     flexDirection: 'row',
     flexGrow: 1,
     height: '100vh',
-    // maxWidth: '900px',
     backgroundColor: '#ffffff',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    position: 'relative'
 });
-
-let ConversationWrapper = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    flexGrow: 1,
-    height: '100vh',
-    justifyContent: 'center'
-    // maxWidth: '900px'
-});
-
-// let ItemContainer = Glamorous.a({
-//     fontSize: '15px',
-//     color: '#fff'
-// });
-
-let PrivateConversation = withChatPrivate(withQueryLoader((props) => {
-    return (
-        <>
-            <XLoader loading={true} />
-            <XPageRedirect path={'/mail/' + props.data.chat.id} />
-        </>
-    );
-}));
-
-let OrganizationConversation = withChatOrganization(withQueryLoader((props) => {
-    return (
-        <>
-            <XLoader loading={true} />
-            <XPageRedirect path={'/mail/' + props.data.chat.id} />
-        </>
-    );
-}));
-
-let Conversation = withChat(withQueryLoader((props) => {
-    return (
-        <XVertical flexGrow={1} separator={'none'} maxWidth={1000}>
-            <XHeader text={props.data.chat.title} separated={true} />
-            <XHorizontal flexGrow={1} justifyContent="center">
-                <MessengerComponent key={props.data.chat.id} conversationId={props.data.chat.id} />
-            </XHorizontal>
-        </XVertical>
-    );
-}));
 
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
     return (
@@ -113,11 +61,14 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                                 <ChatsComponent />
                             </ChatListContainer>
                             <ConversationContainer>
-                                <ConversationWrapper>
-                                    {props.router.routeQuery.conversationId && <Conversation variables={{ conversationId: props.router.routeQuery.conversationId }} />}
-                                    {props.router.routeQuery.userId && <PrivateConversation variables={{ userId: props.router.routeQuery.userId }} />}
-                                    {props.router.routeQuery.orgId && <OrganizationConversation variables={{ orgId: props.router.routeQuery.orgId }} />}
-                                </ConversationWrapper>
+                                {!props.router.routeQuery.conversationId && (
+                                    <MessengerContainer>
+                                        No chat selected!
+                                    </MessengerContainer>
+                                )}
+                                {props.router.routeQuery.conversationId && (
+                                    <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
+                                )}
                             </ConversationContainer>
                         </Shadow>
                     </ChatContainer>

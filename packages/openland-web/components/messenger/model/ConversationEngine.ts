@@ -150,7 +150,7 @@ export class ConversationEngine {
                 variables: { conversationId: this.conversationId },
                 data: data
             });
-            this.messages.push(event.message);
+            this.messages = [...this.messages, event.message];
             this.state = new ConversationState(false, this.messages);
             this.onMessagesUpdated();
         } else {

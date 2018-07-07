@@ -19,7 +19,7 @@ export function withAppBase(name: string, WrappedComponent: React.ComponentType<
                     organization={props.data.organization}
                     roles={props.data.permissions.roles}
                 >
-                    <MessengerProvider uid={hasMessenger ? props.data.me!!.id : undefined}>
+                    <MessengerProvider user={hasMessenger ? props.data.me!! : undefined}>
                         <WrappedComponent />
                     </MessengerProvider>
                 </UserInfoProvider>

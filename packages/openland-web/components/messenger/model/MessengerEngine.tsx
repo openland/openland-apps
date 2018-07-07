@@ -7,11 +7,13 @@ import { ConversationEngine } from './ConversationEngine';
 import { Visibility } from '../utils/Visibility';
 import { GlobalStateEngine } from './GlobalStateEngine';
 import { Router } from '../../../routes';
+import { UserShortFragment } from 'openland-api/Types';
 
 export class MessengerEngine {
     readonly client: ApolloClient<{}>;
     readonly sender: MessageSender;
     readonly global: GlobalStateEngine;
+    readonly user: UserShortFragment;
     private readonly visibility: Visibility;
     private readonly badge: Badge;
     private readonly activeConversations = new Map<string, ConversationEngine>();
@@ -21,8 +23,9 @@ export class MessengerEngine {
     private notify = backoff(() => import('notifyjs'));
     private close: any = null;
 
-    constructor(client: ApolloClient<{}>) {
+    constructor(client: ApolloClient<{}>, user: UserShortFragment) {
         this.client = client;
+        this.user = user;
         this.global = new GlobalStateEngine(this);
         this.sender = new MessageSender(client);
         this.visibility = new Visibility(this.handleVisibleChanged);
