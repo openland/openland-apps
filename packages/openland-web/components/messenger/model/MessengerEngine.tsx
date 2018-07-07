@@ -95,7 +95,7 @@ export class MessengerEngine {
             }
         } else {
             for (let m of this.mountedConversations) {
-                this.handleConversationVisible(m[0]);
+                this.handleConversationHidden(m[0]);
             }
         }
     }

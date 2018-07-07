@@ -28,9 +28,13 @@ export class NotificationsEngine {
     }
 
     handleIncomingMessage = (msg: any) => {
-        let conversationId = msg.conversationId;
+        let conversationId = msg.conversation.flexibleId;
         var audio = new Audio('/static/sounds/notification.mp3');
         audio.play();
-        this.notifications.displayNotification('New Message', 'You got new message!', '/mail/' + conversationId);
+        if (msg.message.message) {
+            this.notifications.displayNotification('New Message', msg.message.sender.name + ': ' + msg.message.message, '/mail/' + conversationId, msg.message.sender.picture);
+        } else {
+            this.notifications.displayNotification('New Message', msg.message.sender.name + ': <file>', '/mail/' + conversationId, msg.message.sender.picture);
+        }
     }
 }

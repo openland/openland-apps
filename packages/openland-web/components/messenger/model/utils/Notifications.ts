@@ -11,13 +11,14 @@ export class Notifications {
         });
     }
 
-    displayNotification = (title: string, body: string, path: string) => {
+    displayNotification = (title: string, body: string, path: string, image?: string) => {
         console.warn('notification');
         this.notify.then((v) => {
             if (!(v as any).needsPermission) {
                 let not = new (v as any)(title, {
                     body: body,
-                    notifyClick: function() {
+                    icon: image,
+                    notifyClick: function () {
                         // if (this.close) {
                         //     this.close.close();
                         //     this.close = null;
