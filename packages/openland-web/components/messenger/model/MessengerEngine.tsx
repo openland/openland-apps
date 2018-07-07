@@ -1,26 +1,23 @@
 import * as React from 'react';
 import { ApolloClient } from 'apollo-client';
-import { backoff } from 'openland-x-utils/timer';
-import { Badge } from '../utils/Badge';
 import { MessageSender } from './MessageSender';
 import { ConversationEngine } from './ConversationEngine';
-import { Visibility } from '../utils/Visibility';
+import { Visibility } from './utils/Visibility';
 import { GlobalStateEngine } from './GlobalStateEngine';
-import { Router } from '../../../routes';
 import { UserShortFragment } from 'openland-api/Types';
+import { NotificationsEngine } from './NotificationsEngine';
 
 export class MessengerEngine {
     readonly client: ApolloClient<{}>;
     readonly sender: MessageSender;
     readonly global: GlobalStateEngine;
     readonly user: UserShortFragment;
+    readonly notifications: NotificationsEngine;
     private readonly visibility: Visibility;
-    private readonly badge: Badge;
     private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number, unread: number }>();
 
     private isVisible = true;
-    private notify = backoff(() => import('notifyjs'));
     private close: any = null;
 
     constructor(client: ApolloClient<{}>, user: UserShortFragment) {
@@ -29,15 +26,8 @@ export class MessengerEngine {
         this.global = new GlobalStateEngine(this);
         this.sender = new MessageSender(client);
         this.visibility = new Visibility(this.handleVisibleChanged);
-        this.badge = new Badge();
-
-        this.badge.init();
-        this.notify.then((v) => {
-            if ((v as any).needsPermission && (v as any).isSupported()) {
-                (v as any).requestPermission();
-            }
-        });
-        this.global.start(this.handleGlobalCounterChanged, this.handleIncomingMessage);
+        this.notifications = new NotificationsEngine(this);
+        this.global.start(this.notifications.handleGlobalCounterChanged, this.notifications.handleIncomingMessage);
         console.warn('MessengerEngine started');
     }
 
@@ -79,40 +69,6 @@ export class MessengerEngine {
         };
     }
 
-    private handleGlobalCounterChanged = (counter: number) => {
-        if (this.isVisible) {
-            this.badge.badge(counter);
-        }
-    }
-
-    private handleIncomingMessage = (msg: any) => {
-        let conversationId = msg.conversationId;
-        var audio = new Audio('/static/sounds/notification.mp3');
-        audio.play();
-        this.notify.then((v) => {
-            if (!(v as any).needsPermission) {
-                if (this.close) {
-                    this.close.close();
-                    this.close = null;
-                }
-                let not = new (v as any)('New Message', {
-                    body: 'You got new message!',
-                    notifyClick: () => {
-                        if (this.close) {
-                            this.close.close();
-                            this.close = null;
-                        }
-                        Router.replaceRoute('/mail/' + conversationId);
-                        window.focus();
-                    }
-                });
-                this.close = not;
-                not.show();
-            }
-        });
-
-    }
-
     private handleConversationVisible = (conversationId: string) => {
         this.getConversation(conversationId).onOpen();
         this.global.onConversationVisible(conversationId);
@@ -128,6 +84,7 @@ export class MessengerEngine {
             return;
         }
         this.isVisible = isVisible;
+        this.notifications.handleVisibleChanged(isVisible);
         if (this.isVisible) {
             if (this.close) {
                 this.close.close();
@@ -136,7 +93,6 @@ export class MessengerEngine {
             for (let m of this.mountedConversations) {
                 this.handleConversationVisible(m[0]);
             }
-            this.badge.badge(0);
         } else {
             for (let m of this.mountedConversations) {
                 this.handleConversationVisible(m[0]);
