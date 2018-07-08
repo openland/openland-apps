@@ -14,9 +14,32 @@ interface MessageListProps {
     onCancel: (key: string) => void;
 }
 
+let months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+];
+
 function dateFormat(date: number) {
+    let now = new Date();
     let dt = date ? new Date(date) : new Date();
-    return (dt.getFullYear() + ' ,' + dt.getMonth() + ' ' + dt.getDate());
+    let prefix = '';
+    if (now.getFullYear() !== dt.getFullYear()) {
+        prefix = dt.getFullYear().toString() + ', ';
+    }
+    if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth() && now.getDate() === dt.getDate()) {
+        return 'Today';
+    }
+    return (prefix + months[dt.getMonth()] + ' ' + dt.getDate() + 'th');
 }
 
 const DateDivider = Glamorous.div({
