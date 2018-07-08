@@ -7,10 +7,9 @@ export interface MessageTextComponentProps {
     message: string;
 }
 
-const TextWrapper = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap'
+const TextWrapper = Glamorous.span({
+    display: 'inherit',
+    whiteSpace: 'pre-wrap'
 });
 
 export class MessageTextComponent extends React.PureComponent<MessageTextComponentProps> {
@@ -29,7 +28,7 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             } else if (v.type === 'link') {
                 return <XLinkExternal key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
             } else {
-                return <span key={'text-' + i}>{v.text!.replace(' ', '\u00A0')}</span>;
+                return <span key={'text-' + i}>{v.text}</span>;
             }
         });
         return <TextWrapper>{parts}</TextWrapper>;

@@ -13,9 +13,9 @@ let linkifyInstance = linkify()
 
 function preprocessSpaces(text: string): string {
     let res = text;
-    while (res.indexOf(' ') >= 0) {
-        res = res.replace(' ', '\u00A0');
-    }
+    // while (res.indexOf(' ') >= 0) {
+    //     res = res.replace(' ', '\u00A0');
+    // }
     return res;
 }
 
