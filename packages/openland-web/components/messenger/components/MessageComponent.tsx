@@ -29,12 +29,12 @@ const MessageWrapper = Glamorous(XVertical)({
 });
 
 const Name = Glamorous.div({
-    fontSize: '14px',
+    fontSize: 14,
     fontWeight: 500,
 });
 
 const DateComponent = Glamorous.div({
-    fontSize: '14px',
+    fontSize: 14,
     fontWeight: 300,
     opacity: 0.4
 });

@@ -21,14 +21,30 @@ function dateFormat(date: number) {
 
 const DateDivider = Glamorous.div({
     display: 'flex',
-    fontSize: '14px',
-    fontWeight: 300,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'sticky',
-    top: 0,
-    backgroundColor: '#fff',
-    zIndex: 1
+    top: 8,
+    zIndex: 1,
+    marginTop: 18,
+    marginBottom: 12,
+    '& > div': {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 50,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 2,
+        paddingBottom: 2,
+        '& > span': {
+            fontSize: 12,
+            fontWeight: 300,
+            color: '#334562',
+            opacity: 0.5,
+        }
+    }
 });
 
 const MessagesWrapper = Glamorous.div({
@@ -59,7 +75,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         let appendDateIfNeeded = (date: number) => {
             let dstr = dateFormat(date);
             if (dstr !== prevDate) {
-                messages.push(<DateDivider key={'date-' + dstr}>{dstr}</DateDivider>);
+                messages.push(<DateDivider key={'date-' + dstr}><div><span>{dstr}</span></div></DateDivider>);
                 prevDate = dstr;
                 prevMessageDate = undefined;
                 prevMessageSender = undefined;
