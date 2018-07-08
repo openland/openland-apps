@@ -252,7 +252,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 <SendMessageContainer>
                     <XButton icon="add" size="medium" onClick={this.handleAttach} enabled={!isLoading} />
                     <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} ref={this.handleRef} disabled={isLoading} />
-                    <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" enabled={isLoading} />
+                    <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" enabled={!isLoading} />
                 </SendMessageContainer>
             </ChatWrapper>
         );
