@@ -33,9 +33,12 @@ let MessagesContainer = Glamorous.div({
     maxHeight: '100%',
     overflow: 'hidden',
     '& > div:first-child': {
+        width: '100%',
+        maxWidth: '100%',
         '& > .simplebar-scroll-content > .simplebar-content': {
-            overflowX: 'hidden!important',
+            overflowX: 'unset!important',
             overflowY: 'unset !important',
+            width: '100%'
         }
     }
 });

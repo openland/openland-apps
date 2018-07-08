@@ -24,6 +24,10 @@ function isServerMessage(message: MessageFullFragment | PendingMessage): message
     return !!(message as any).__typename;
 }
 
+const MessageWrapper = Glamorous(XVertical)({
+    width: '100%'
+});
+
 const Name = Glamorous.div({
     fontSize: '14px',
     fontWeight: 500,
@@ -42,6 +46,7 @@ const MessageContainer = Glamorous.div({
     paddingRight: '24px',
     paddingTop: '4px',
     paddingBottom: '4px',
+    width: '100%',
     '&:hover': {
         backgroundColor: '#f8f8fb'
     },
@@ -54,6 +59,7 @@ const MessageCompactContainer = Glamorous.div({
     paddingRight: '24px',
     paddingTop: '4px',
     paddingBottom: '4px',
+    width: '100%',
     '&:hover': {
         backgroundColor: '#f8f8fb'
     },
@@ -117,12 +123,12 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
             <MessageContainer>
                 <XHorizontal alignSelf="stretch">
                     <XAvatar cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined} path={'/mail/' + this.props.sender!!.id} />
-                    <XVertical separator={'none'} flexGrow={1}>
+                    <MessageWrapper separator={'none'} flexGrow={1}>
                         <XHorizontal separator={4}>
                             <Name>{this.props.sender!!.name}</Name><DateComponent>{date}</DateComponent>
                         </XHorizontal>
                         {content}
-                    </XVertical>
+                    </MessageWrapper>
                 </XHorizontal>
             </MessageContainer>
         );
