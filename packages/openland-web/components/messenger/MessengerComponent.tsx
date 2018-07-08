@@ -9,7 +9,8 @@ import { MessengerRootComponent } from './components/MessengerRootComponent';
 
 const ChatRoot = Glamorous(XVertical)({
     maxHeight: '100%',
-    width: '100%'
+    width: '100%',
+    maxWidth: '100%'
 });
 
 const ChatWrapper = Glamorous(XHorizontal)({
@@ -20,7 +21,7 @@ const ChatWrapper = Glamorous(XHorizontal)({
 
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     return (
-        <ChatRoot flexGrow={1} separator={'none'} maxWidth={1000}>
+        <ChatRoot flexGrow={1} separator={'none'}>
             <XHeader text={props.data.chat.title} separated={true} />
             <ChatWrapper flexGrow={1} justifyContent="center" maxHeight={400}>
                 <MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />
