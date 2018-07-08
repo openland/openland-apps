@@ -963,6 +963,10 @@
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@types/js-cookie/-/js-cookie-2.1.0.tgz#a8916246aa994db646c66d54c854916213300a51"
 
+"@types/linkify-it@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@types/linkify-it/-/linkify-it-2.0.3.tgz#5352a2d7a35d7c77b527483cd6e68da9148bd780"
+
 "@types/lodash-es@^4.17.0":
   version "4.17.0"
   resolved "https://registry.yarnpkg.com/@types/lodash-es/-/lodash-es-4.17.0.tgz#ed9044d62ee36a93e0650b112701986b1c74c766"
@@ -1145,6 +1149,10 @@
   resolved "https://registry.yarnpkg.com/@types/supercluster/-/supercluster-3.0.2.tgz#dc11a6afa3d21b1a3d8510b1759a668fdf19e254"
   dependencies:
     "@types/geojson" "*"
+
+"@types/tlds@^1.199.0":
+  version "1.199.0"
+  resolved "https://registry.yarnpkg.com/@types/tlds/-/tlds-1.199.0.tgz#4647fd75cb388f4039bfa4a9ae66d4de989cbc87"
 
 "@types/url-parse@^1.1.0":
   version "1.1.0"
@@ -5895,7 +5903,7 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-linkify-it@^2.0.0:
+linkify-it@^2.0.0, linkify-it@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/linkify-it/-/linkify-it-2.0.3.tgz#d94a4648f9b1c179d64fa97291268bdb6ce9434f"
   dependencies:
@@ -9076,6 +9084,10 @@ title-case@^2.1.0:
   dependencies:
     no-case "^2.2.0"
     upper-case "^1.0.3"
+
+tlds@^1.203.1:
+  version "1.203.1"
+  resolved "https://registry.yarnpkg.com/tlds/-/tlds-1.203.1.tgz#4dc9b02f53de3315bc98b80665e13de3edfc1dfc"
 
 tmpl@1.0.x:
   version "1.0.4"
