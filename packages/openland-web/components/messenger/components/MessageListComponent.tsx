@@ -55,7 +55,16 @@ const MessagesWrapper = Glamorous.div({
     paddingLeft: '16px',
     paddingRight: '16px',
     paddingBottom: '24px',
-    width: '100%'
+    width: '100%',
+    // '& > .full-message + .full-message': {
+    //     marginBottom: 12
+    // },
+    // '& > .full-message + .compact-message': {
+    //     marginBottom: 0
+    // },
+    // '& > .compact-message + .full-message': {
+    //     marginBottom: 12
+    // }
 });
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {

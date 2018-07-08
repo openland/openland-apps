@@ -42,11 +42,12 @@ const DateComponent = Glamorous.div({
 const MessageContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    paddingLeft: '24px',
-    paddingRight: '24px',
-    paddingTop: '4px',
-    paddingBottom: '4px',
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 4,
+    paddingBottom: 4,
     width: '100%',
+    marginBottom: 12,
     '&:hover': {
         backgroundColor: '#f8f8fb'
     },
@@ -55,11 +56,13 @@ const MessageContainer = Glamorous.div({
 const MessageCompactContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    paddingLeft: '78px',
-    paddingRight: '24px',
-    paddingTop: '4px',
-    paddingBottom: '4px',
+    paddingLeft: 80,
+    paddingRight: 24,
+    paddingTop: 4,
+    paddingBottom: 4,
     width: '100%',
+    marginTop: -12,
+    marginBottom: 12,
     '&:hover': {
         backgroundColor: '#f8f8fb'
     },
@@ -113,14 +116,14 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
 
         if (this.props.compact) {
             return (
-                <MessageCompactContainer>
+                <MessageCompactContainer className="compact-message">
                     {content}
                 </MessageCompactContainer>
             );
         }
 
         return (
-            <MessageContainer>
+            <MessageContainer className="full-message">
                 <XHorizontal alignSelf="stretch">
                     <XAvatar cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined} path={'/mail/' + this.props.sender!!.id} />
                     <MessageWrapper separator={'none'} flexGrow={1}>
