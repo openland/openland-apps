@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHeader } from 'openland-x/XHeader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -6,14 +7,25 @@ import { withChat } from '../../api/withChat';
 import { withQueryLoader } from '../withQueryLoader';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 
+const ChatRoot = Glamorous(XVertical)({
+    maxHeight: '100%',
+    width: '100%'
+});
+
+const ChatWrapper = Glamorous(XHorizontal)({
+    maxHeight: 'calc(100% - 65px)',
+    width: '100%',
+    overflow: 'hidden'
+});
+
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     return (
-        <XVertical flexGrow={1} separator={'none'} maxWidth={1000}>
+        <ChatRoot flexGrow={1} separator={'none'} maxWidth={1000}>
             <XHeader text={props.data.chat.title} separated={true} />
-            <XHorizontal flexGrow={1} justifyContent="center">
+            <ChatWrapper flexGrow={1} justifyContent="center" maxHeight={400}>
                 <MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />
-            </XHorizontal>
-        </XVertical>
+            </ChatWrapper>
+        </ChatRoot>
     );
 }));
 

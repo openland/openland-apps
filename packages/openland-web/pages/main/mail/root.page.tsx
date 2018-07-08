@@ -16,15 +16,18 @@ let ChatContainer = Glamorous.div({
     flexDirection: 'row',
     backgroundColor: '#f9fafb',
     justifyContent: 'center',
-    boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)'
+    boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
+    height: '100vh',
 });
 
 let Shadow = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
+    // justifyContent: 'space-between',
     backgroundColor: '#f9fafb',
     flexGrow: 1,
-    boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)'
+    boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
+    height: '100%'
 });
 
 let ChatListContainer = Glamorous.div({
@@ -43,10 +46,11 @@ let ConversationContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     flexGrow: 1,
-    height: '100vh',
+    height: '100%',
     backgroundColor: '#ffffff',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
+    overflow: 'hidden'
 });
 
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {

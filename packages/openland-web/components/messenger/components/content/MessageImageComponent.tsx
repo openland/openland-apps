@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 
 const Image = Glamorous.img({
+    display: 'block',
     width: 400,
     height: 400,
     objectFit: 'scale-down'

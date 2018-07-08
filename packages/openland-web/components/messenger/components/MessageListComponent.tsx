@@ -24,7 +24,11 @@ const DateDivider = Glamorous.div({
     fontSize: '14px',
     fontWeight: 300,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    position: 'sticky',
+    top: 0,
+    backgroundColor: '#fff',
+    zIndex: 1
 });
 
 const MessagesWrapper = Glamorous.div({

@@ -17,10 +17,11 @@ import { withChatHistory } from '../../../api/withChatHistory';
 
 let Container = Glamorous.div({
     display: 'flex',
-    flexBasis: 0,
+    flexBasis: '100%',
     flexGrow: 1,
     flexDirection: 'column',
-    maxWidth: '900px'
+    maxWidth: 900,
+    width: '100%'
 });
 
 let MessagesContainer = Glamorous.div({
@@ -28,7 +29,15 @@ let MessagesContainer = Glamorous.div({
     flexGrow: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    position: 'relative'
+    position: 'relative',
+    maxHeight: '100%',
+    overflow: 'hidden',
+    '& > div:first-child': {
+        '& > .simplebar-scroll-content > .simplebar-content': {
+            overflowX: 'hidden!important',
+            overflowY: 'unset !important',
+        }
+    }
 });
 
 let SendMessageContainer = Glamorous(XHorizontal)({
