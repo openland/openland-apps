@@ -28,7 +28,7 @@ let ChatContainer = Glamorous.div({
     maxHeight: 'calc(100% - 96px)',
     flexGrow: 1,
     flexDirection: 'column',
-    maxWidth: 900,
+    maxWidth: 850,
     margin: 'auto',
     width: '100%'
 });

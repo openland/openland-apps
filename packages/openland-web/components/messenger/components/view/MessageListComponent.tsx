@@ -71,8 +71,8 @@ const MessagesWrapper = Glamorous.div({
     flexDirection: 'column',
     alignItems: 'stretch',
     paddingTop: '96px',
-    paddingLeft: '16px',
-    paddingRight: '16px',
+    // paddingLeft: '16px',
+    // paddingRight: '16px',
     paddingBottom: '24px',
     width: '100%',
     // '& > .full-message + .full-message': {
