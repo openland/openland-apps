@@ -3,6 +3,7 @@ import { OrganizationFull } from '../fragments/OrganizationFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
 import { UserShort } from '../fragments/UserShort';
+import { OrganizationSearch } from '../fragments/OrganizationSearch';
 
 export const MyOrganizationQuery = gql`
     query MyOrganization {
@@ -63,7 +64,7 @@ export const ExploreOrganizationsQuery = gql`
         items: alphaOrganizations(query: $query, page: $page, first: 50) {
             edges {
                 node {
-                    ...OrganizationShort
+                    ...OrganizationSearch
                 }
                 cursor
             }
@@ -77,7 +78,7 @@ export const ExploreOrganizationsQuery = gql`
             }
         }
     }
-    ${OrganizationShort}
+    ${OrganizationSearch}
 `;
 
 export const CreateListingMutation = gql`

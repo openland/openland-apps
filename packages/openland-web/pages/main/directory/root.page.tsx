@@ -115,6 +115,12 @@ const Text = Glamorous.div({
     color: '#334562',
 });
 
+interface SearchCondition {
+    type: 'name' | 'location';
+    value: string;
+    label: string;
+}
+
 const OrganizationCard = (props: OrganizationCardProps) => (
     <OrganizationCardWrapper>
         <XHorizontal justifyContent="space-between" separator={12}>
@@ -147,36 +153,60 @@ const OrganizationCard = (props: OrganizationCardProps) => (
 
 const OrganizationCards = withExploreOrganizations(props => (
     <>
-        {props.data.items.edges.length > 0 && props.data.items.edges.map((i, j) => (
+        {props.data && props.data.items && props.data.items.edges.length > 0 && props.data.items.edges.map((i, j) => (
             <OrganizationCard key={i.node.id + j} item={i.node} />
         ))}
+        {props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0 && null}
     </>
 ));
 
-class Organizations extends React.Component<{ keyWords: string[] }> {
+class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
 
-    buildQuery = (clauses: any[]): any | null => {
+    buildQuery = (clauses: any[], operator: '$and' | '$or'): any | null => {
         if (clauses.length === 0) {
-            return null;
+            return undefined;
         } else if (clauses.length === 1) {
             return clauses[0];
         } else {
-            return {
-                '$and': clauses
-            };
+            let clause = {};
+            clause[operator] = clauses;
+            return clause;
         }
+    }
+
+    group = (conditions: SearchCondition[]) => {
+        return conditions.reduce(
+            (res, x) => {
+                (res[x.type] = res[x.type] || []).push(x);
+                return res;
+            },
+            {}
+        );
     }
 
     render() {
 
         let clauses: any[] = [];
-        clauses.push({ '$or': [...this.props.keyWords.map(i => ({ name: i }))] });
+        let groups = this.group(this.props.conditions);
+        for (let type of Object.keys(groups)) {
+            let group = groups[type];
+            clauses.push(this.buildQuery(
+                [...group.map((c: SearchCondition) => {
+                    let clause = {};
+                    clause[c.type] = c.value;
+                    return clause;
+                })],
+                '$or'));
+        }
+        let q = this.buildQuery(clauses, '$and');
+        console.warn(q);
 
+        console.warn(q ? JSON.stringify(q) : undefined);
         return (
             <div>
                 <OrganizationCards
                     variables={{
-                        query: JSON.stringify(this.buildQuery(clauses))
+                        query: q ? JSON.stringify(q) : undefined
                     }}
                 />
             </div>
@@ -190,7 +220,7 @@ const SearchInput = Glamorous.input({
     flexGrow: 1
 });
 
-const InputWrapper = Glamorous.div({
+const ConditionRenderWrapper = Glamorous.div({
     display: 'flex',
     flexWrap: 'wrap'
 });
@@ -212,68 +242,80 @@ const Tag = Glamorous.div({
     marginBottom: 4,
 });
 
-class SearchComponent extends React.Component<{}, { searchText: string, keyWords: string[] }> {
-    searchRef: any | null = null;
+const LIVESEARCH = false;
+class ConditionsRender extends React.Component<{ conditions: SearchCondition[], removeCallback: (conditon: SearchCondition) => void }> {
+    render() {
+        return (
+            <ConditionRenderWrapper>
+                {this.props.conditions.map((condition) => (
+                    <Tag key={condition.type + '_' + condition.value}>
+                        {condition.label}
+                        <div
+                            onClick={() => this.props.removeCallback(condition)}
+                            style={{ marginLeft: 5, color: 'red', cursor: 'pointer' }}
+                        >
+                            clear
+                        </div>
+                    </Tag>
+                ))}
+                {this.props.conditions.length === 0 && <Tag>All organizations</Tag>}
+            </ConditionRenderWrapper>
+        );
+    }
+}
 
+class SearchComponent extends React.Component<{}, { searchText: string, conditions: SearchCondition[] }> {
     constructor(props: any) {
         super(props);
 
         this.state = {
             searchText: '',
-            keyWords: []
+            conditions: []
         };
     }
 
-    handleSearchRef = (ref: any | null) => {
-        this.searchRef = ref;
-    }
-
     handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        this.setState({
-            searchText: (e.target as any).value as string
-        });
-    }
-
-    tagsAdder = (tag: string) => {
-        let count = 0;
-
-        const tagsArr = this.state.keyWords;
-
-        for (let i of tagsArr) {
-            if (tag === i) {
-                count = 1;
-                break;
-            }
-        }
-
-        if (count === 0) {
-            tagsArr.push(tag);
-
+        let val = (e.target as any).value as string;
+        if (LIVESEARCH) {
             this.setState({
-                keyWords: tagsArr
+                conditions: val.length > 0 ? [{ label: val, value: val, type: 'name' }] : [],
+                searchText: val
+            });
+        } else {
+            this.setState({
+                searchText: val
             });
         }
+
     }
 
-    tagsRemover = (tag: string) => {
-
-        let newTags = [];
-
-        for (let i of this.state.keyWords) {
-            if (tag !== i) {
-                newTags.push(i);
-            }
+    addCondition = (condition: SearchCondition) => {
+        if (condition.value !== undefined && condition.value.length === 0) {
+            return;
         }
+        let res = [...this.state.conditions];
+        let same = res.filter(c => c.type === condition.type && c.value === condition.value)[0];
+        if (!same) {
+            res.push(condition);
+        }
+        this.setState({ conditions: res, searchText: '' });
+    }
 
+    removeCondition = (condition: SearchCondition) => {
+        console.warn(this.state.conditions, condition);
+        let res = [...this.state.conditions.filter(c => (c.type !== condition.type) || (condition.value !== undefined && c.value !== condition.value))];
+        console.warn(res);
         this.setState({
-            keyWords: newTags
+            conditions: res
         });
     }
 
     keydownHandler = (e: any) => {
+        if (LIVESEARCH) {
+            return;
+        }
         if (e.keyCode === 13) {
-            this.tagsAdder(this.state.searchText);
-            this.setState({ searchText: '' });
+            this.addCondition({ type: 'name', label: this.state.searchText, value: this.state.searchText });
         }
     }
 
@@ -287,31 +329,20 @@ class SearchComponent extends React.Component<{}, { searchText: string, keyWords
 
     render() {
 
-        const { searchText, keyWords } = this.state;
-
+        const { searchText, conditions } = this.state;
+        console.warn(conditions);
         return (
             <XVertical>
-                <InputWrapper>
-                    {keyWords.map((i, j) => (
-                        <Tag key={j}>
-                            {i}
-                            <div
-                                key={j + j + i + 2}
-                                onClick={() => this.tagsRemover(i)}
-                                style={{ marginLeft: 5, color: 'red', cursor: 'pointer' }}
-                            >
-                                clear
-                            </div>
-                        </Tag>
-                    ))}
-                    <SearchInput
-                        value={searchText}
-                        onChange={this.handleSearchChange}
-                        innerRef={this.handleSearchRef}
-                        placeholder={'Enter a keyword'}
-                    />
-                </InputWrapper>
-                <Organizations keyWords={keyWords} />
+                <SearchInput
+                    value={searchText}
+                    autoFocus={true}
+                    innerRef={}
+                    onChange={this.handleSearchChange}
+                    placeholder={'Enter a keyword'}
+                />
+                {!LIVESEARCH && <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />}
+
+                <Organizations conditions={conditions} />
             </XVertical>
         );
     }
