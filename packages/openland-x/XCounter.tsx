@@ -4,6 +4,7 @@ import Glamorous from 'glamorous';
 const XCounterStyled = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     height: 15,
     paddingTop: 0,
     paddingBottom: 0,
@@ -20,6 +21,6 @@ const XCounterStyled = Glamorous.div({
 
 export const XCounter = (props: {count: number}) => (
     <XCounterStyled className="counter">
-        {props.count}
+        <span>{props.count}</span>
     </XCounterStyled>
 );
