@@ -8,67 +8,104 @@ import { XScrollView } from 'openland-x/XScrollView';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XDate } from 'openland-x-format/XDate';
 
-let ItemContainer = Glamorous.a({
+const ItemContainer = Glamorous.a({
     display: 'flex',
-    height: '64px',
-    fontSize: '15px',
+    height: 64,
+    fontSize: 15,
     fontWeight: 500,
     color: '#334562',
     flexDirection: 'row',
-    paddingLeft: '8px',
-    paddingRight: '8px',
-    paddingTop: '8px',
-    paddingBottom: '8px',
-    borderBottomWidth: '1px',
-    borderBottomColor: 'rgba(220, 222, 228, 0.45)',
-    borderBottomStyle: 'solid',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 12,
+    paddingBottom: 12,
+    // borderBottomWidth: 1,
+    // borderBottomColor: 'rgba(220, 222, 228, 0.45)',
+    // borderBottomStyle: 'solid',
     alignItems: 'center',
     '&.is-active': {
-        backgroundColor: '#ebedf0'
+        backgroundColor: '#f2f4f5'
     }
 });
 
-let Header = Glamorous.div({
+const Header = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    paddingLeft: '8px',
+    paddingLeft: 12,
     flexGrow: 1,
-    alignItems: 'stretch'
+    alignItems: 'stretch',
+    maxWidth: 'calc(100% - 40px)'
 });
 
-let Main = Glamorous.div({
+const Main = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     flexGrow: 0,
     flexShrink: 1,
-    height: '20px'
+    height: 18
 });
 
-let Title = Glamorous.div({
+const Title = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     flexGrow: 1,
     flexBasis: '0px',
-    fontSize: '14px',
-    lineHeight: '20px',
-    height: '20px',
+    fontSize: 14,
+    lineHeight: 1.23,
+    height: 20,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
+    '& > span': {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+    }
 });
 
-let Date = Glamorous.div({
+const Date = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    flexShrink: 0
+    flexShrink: 0,
+    fontSize: 12,
+    lineHeight: 1.33,
+    letterSpacing: -0.1,
+    color: '#334562',
+    opacity: 0.3
 });
 
-let Content = Glamorous.div({
+const Content = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
+    '& .counter': {
+        minWidth: 18,
+        height: 18,
+        borderRadius: 7,
+        fontSize: 12,
+        border: 'none',
+        backgroundColor: '#654bfa',
+    }
+});
+
+const ContentText = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    flexGrow: 1,
+    flexBasis: '0px',
+    fontSize: 14,
+    lineHeight: 1.23,
+    opacity: 0.5,
+    color: '#334562',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
+    '& > span': {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+    }
 });
 
 let Item = makeNavigable((props) => {
@@ -84,16 +121,18 @@ export const ChatsComponent = withChatsAll((props) => {
                         <XAvatar style={v.__typename === 'SharedConversation' ? 'organization' : 'person'} cloudImageUuid={v.photos.length > 0 ? v.photos[0] : undefined} />
                         <Header>
                             <Main>
-                                <Title>{v.title}</Title>
+                                <Title><span>{v.title}</span></Title>
                                 <Date><XDate value={v.topMessage!!.date} format="humanize" /></Date>
                             </Main>
                             <Content>
-                                {v.topMessage && v.topMessage.message && (
-                                    <span>{v.topMessage.sender.firstName}: {v.topMessage.message}</span>
-                                )}
-                                {v.topMessage && !v.topMessage.message && (
-                                    <span>{v.topMessage.sender.firstName}: File</span>
-                                )}
+                                <ContentText>
+                                    {v.topMessage && v.topMessage.message && (
+                                        <span>{v.topMessage.sender.firstName}: {v.topMessage.message}</span>
+                                    )}
+                                    {v.topMessage && !v.topMessage.message && (
+                                        <span>{v.topMessage.sender.firstName}: File</span>
+                                    )}
+                                </ContentText>
                                 {v.unreadCount > 0 && <XCounter count={v.unreadCount} />}
                             </Content>
                         </Header>

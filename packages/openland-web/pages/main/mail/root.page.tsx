@@ -11,7 +11,8 @@ import { withAllChats } from '../../../api/withAllChats';
 import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
-import { XButton } from 'openland-x/XButton';
+import { XLink } from 'openland-x/XLink';
+import { XIcon } from 'openland-x/XIcon';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 let ChatContainer = Glamorous.div({
@@ -59,9 +60,29 @@ let ConversationContainer = Glamorous.div({
 let Header = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    height: '48px',
-    paddingLeft: '16px',
-    paddingRight: '16px'
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 48,
+    paddingLeft: 16,
+    paddingRight: 16,
+    marginTop: 16,
+    marginBottom: 16,
+    fontSize: 18,
+    fontWeight: 600,
+    lineHeight: 1.11,
+    letterSpacing: -0.3,
+    color: '#334562',
+    '& > a': {
+        display: 'flex',
+        alignItems: 'center',
+        color: '#BEC3CA',
+        '&:hover': {
+            color: '#334562'
+        },
+        '& > i': {
+            fontSize: 30
+        }
+    }
 });
 
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
@@ -75,7 +96,12 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                     <ChatContainer>
                         <Shadow>
                             <ChatListContainer>
-                                <Header>Messages <XButton path="/mail/new" icon="add" /> </Header>
+                                <Header>
+                                    <span>Messages</span>
+                                    <XLink path="/mail/new">
+                                        <XIcon icon="add" />
+                                    </XLink>
+                                </Header>
                                 <ChatsComponent />
                             </ChatListContainer>
                             <ConversationContainer>
