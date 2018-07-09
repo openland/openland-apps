@@ -20,7 +20,8 @@ export const AuthRouter = withUserInfo((props) => {
             '/pickOrganization',
             '/signin',
             '/signup'
-        ].indexOf(props.router.path) < 0 && !props.router.path.startsWith('/join/') && !props.router.path.startsWith('/invite/')) {
+        ].indexOf(props.router.path) < 0) {
+            // ].indexOf(props.router.path) < 0 && !props.router.path.startsWith('/join/') && !props.router.path.startsWith('/invite/')) {
             if (props.router.path !== '/') {
                 redirect = '?redirect=' + encodeURIComponent(props.router.path);
                 redirectPath = props.router.path;
@@ -69,7 +70,9 @@ export const AuthRouter = withUserInfo((props) => {
     // Redirect to Join before account creation/picking if there are was redirect to join
     if (!handled && redirectPath.startsWith('/join/')) {
         handled = true;
-        return <XPageRedirect path={redirectPath} />;
+        if (!props.router.path.startsWith('/join/')) {
+            return <XPageRedirect path={redirectPath} />;
+        }
     }
 
     // Bypass Next steps for join
@@ -107,7 +110,9 @@ export const AuthRouter = withUserInfo((props) => {
     // Redirect to activate organization
     if (!handled && redirectPath.startsWith('/invite/')) {
         handled = true;
-        return <XPageRedirect path={redirectPath} />;
+        if (!props.router.path.startsWith('/invite/')) {
+            return <XPageRedirect path={redirectPath} />;
+        }
     }
 
     // Bypass Next steps for invite
