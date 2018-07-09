@@ -308,7 +308,6 @@ export interface AccountQuery {
     id: string,
     name: string,
     photo: string | null,
-    location: string | null,
   } | null,
   sessionState:  {
     __typename: "SessionState",
@@ -742,15 +741,19 @@ export interface ChatSearchGroupQuery {
   group: ( {
       __typename: "AnonymousConversation",
       id: string,
+      flexibleId: string,
     } | {
       __typename: "SharedConversation",
       id: string,
+      flexibleId: string,
     } | {
       __typename: "PrivateConversation",
       id: string,
+      flexibleId: string,
     } | {
       __typename: "GroupConversation",
       id: string,
+      flexibleId: string,
     }
   ) | null,
 };
@@ -1692,7 +1695,6 @@ export interface MyOrganizationsQuery {
     id: string,
     name: string,
     photo: string | null,
-    location: string | null,
   } >,
 };
 
@@ -2075,6 +2077,11 @@ export interface ExploreOrganizationsQuery {
         name: string,
         photo: string | null,
         location: string | null,
+        isMine: boolean,
+        organizationType: Array< string > | null,
+        lookingFor: Array< string > | null,
+        geographies: Array< string > | null,
+        followed: boolean,
       },
       cursor: string,
     } >,
@@ -4625,12 +4632,24 @@ export interface OrganizationProfileFullFragment {
   } > | null,
 };
 
-export interface OrganizationShortFragment {
+export interface OrganizationSearchFragment {
   __typename: "Organization",
   id: string,
   name: string,
   photo: string | null,
   location: string | null,
+  isMine: boolean,
+  organizationType: Array< string > | null,
+  lookingFor: Array< string > | null,
+  geographies: Array< string > | null,
+  followed: boolean,
+};
+
+export interface OrganizationShortFragment {
+  __typename: "Organization",
+  id: string,
+  name: string,
+  photo: string | null,
 };
 
 export interface ParcelIDFragment {
