@@ -3,7 +3,8 @@ import Document, { Head, Main, NextScript, DocumentProps, NextDocumentContext } 
 import { renderStaticOptimized } from 'glamor/server';
 import { buildConfig } from '../config';
 import { saveConfig } from 'openland-x-config';
-
+// let draftCss = require('draft-js/dist/Draft.css');
+// console.warn(draftCss);
 // Load Configuration
 let config = buildConfig();
 
@@ -66,10 +67,13 @@ export default class StateDocument extends Document {
                     <meta name="msapplication-square310x310logo" content="/static/ms-icon-square-310.png" />
                     <meta name="msapplication-wide310x150logo" content="/static/ms-icon-wide-310.png" />
 
+                    {/* Styles */}
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
-
+                    <link rel="stylesheet" href="/_next/static/style.css" />
                     <style dangerouslySetInnerHTML={{ __html: this.props.glamCss }} />
+
+                    {/* Scripts */}
                     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js" />
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
 
