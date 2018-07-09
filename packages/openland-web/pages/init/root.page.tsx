@@ -20,10 +20,10 @@ export default withAppBase('Root', withUserInfo((props) => {
                 </XWithRole>
                 <XWithRole role="feature-marketplace" negate={true}>
                     {props.organization && (
-                        < XPageRedirect path={'/o/' + props.organization!!.id} />
+                        <XPageRedirect path={'/o/' + props.organization!!.id} />
                     )}
                     {!props.organization && (
-                        < XPageRedirect path={'/pickOrganization'} />
+                        <XPageRedirect path={'/pickOrganization'} />
                     )}
                 </XWithRole>
             </XTrack>
