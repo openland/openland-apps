@@ -89,9 +89,14 @@ export const ChatReadMutation = gql`
 export const ChatSearchForComposeQuery = gql`
     query ChatSearchForCompose($query: String!) {
         items: alphaChatsSearchForCompose(query: $query) {
-            id
-            title: name
-            subtitle: email
+            ... on User {
+                id
+                title: name
+            }
+            ... on Organization {
+                id
+                title: name
+            }
         }
     }
 `;

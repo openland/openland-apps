@@ -38,6 +38,10 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
             nvals = [vals];
         }
         if (nvals.length === 1) {
+            if ((nvals[0] as any)._obj.__typename === 'Organization') {
+                Router.replaceRoute('/mail/' + (nvals[0] as any)._obj.id);
+                return;
+            }
             this.setState({ values: nvals, resolving: true, conversationId: null });
             (async () => {
                 let id = await this.props.messenger.global.resolvePrivateConversation(nvals[0].value!! as string);

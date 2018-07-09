@@ -19,9 +19,9 @@ export function graphqlSelect<V = {}>(query: GraphqlTypedQuery<any, any>) {
             let items = (res.data as any).items as [{ id: string, title: string, subtitle?: string | null } | string];
             let opts = items.map((v) => {
                 if (typeof v === 'string') {
-                    return { value: v, label: v };
+                    return { value: v, label: v, _obj: v };
                 } else {
-                    return { value: v.id, label: v.subtitle ? v.title + ' (' + v.subtitle + ')' : v.title };
+                    return { value: v.id, label: v.subtitle ? v.title + ' (' + v.subtitle + ')' : v.title, _obj: v };
                 }
             });
             return {

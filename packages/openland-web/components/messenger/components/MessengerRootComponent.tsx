@@ -61,7 +61,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         return (
             <ConversationContainer>
                 <ConversationMessagesComponent conversation={this.conversation} />
-                <MessageComposeComponent onSend={this.handleSend} onSendFile={this.handleSendFile} enabled={!this.state.mounted} />
+                <MessageComposeComponent onSend={this.handleSend} onSendFile={this.handleSendFile} enabled={this.state.mounted} />
             </ConversationContainer>
         );
     }
