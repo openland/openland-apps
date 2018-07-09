@@ -101,6 +101,15 @@ export const ChatSearchForComposeQuery = gql`
     }
 `;
 
+export const ChatSearchGroupQuery = gql`
+    query ChatSearchGroup($members: [ID!]!) {
+        group: alphaChatSearch(members: $members) {
+            id
+            flexibleId
+        }
+    }
+`;
+
 export const ChatCreateGroupMutation = gql`
     mutation ChatCreateGroup($members: [ID!]!, $message: String!) {
         group: alphaChatCreateGroup(members: $members, message: $message) {

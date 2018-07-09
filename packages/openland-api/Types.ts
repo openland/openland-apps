@@ -616,19 +616,27 @@ export interface ChatInfoQuery {
   chat: ( {
       __typename: "AnonymousConversation",
       id: string,
+      flexibleId: string,
       title: string,
+      photos: Array< string >,
     } | {
       __typename: "SharedConversation",
       id: string,
+      flexibleId: string,
       title: string,
+      photos: Array< string >,
     } | {
       __typename: "PrivateConversation",
       id: string,
+      flexibleId: string,
       title: string,
+      photos: Array< string >,
     } | {
       __typename: "GroupConversation",
       id: string,
+      flexibleId: string,
       title: string,
+      photos: Array< string >,
     }
   ),
 };
@@ -710,19 +718,44 @@ export interface ChatReadMutation {
 
 export interface ChatSearchForComposeQueryVariables {
   query: string,
+  organizations: boolean,
 };
 
 export interface ChatSearchForComposeQuery {
-  items:  Array< {
-    __typename: "User",
-    id: string,
-    title: string,
-    subtitle: string | null,
-  } >,
+  items:  Array<( {
+      __typename: "User",
+      id: string,
+      title: string,
+    } | {
+      __typename: "Organization",
+      id: string,
+      title: string,
+    }
+  ) >,
+};
+
+export interface ChatSearchGroupQueryVariables {
+  members: Array< string >,
+};
+
+export interface ChatSearchGroupQuery {
+  group: ( {
+      __typename: "AnonymousConversation",
+      id: string,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+    } | {
+      __typename: "GroupConversation",
+      id: string,
+    }
+  ) | null,
 };
 
 export interface ChatCreateGroupMutationVariables {
-  title: string,
   members: Array< string >,
   message: string,
 };
