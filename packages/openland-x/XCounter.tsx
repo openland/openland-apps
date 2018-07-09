@@ -2,6 +2,8 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 
 const XCounterStyled = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
     height: 15,
     paddingTop: 0,
     paddingBottom: 0,

@@ -284,7 +284,7 @@ let colorStyles = styleResolver({
         }
     },
     'flat': {
-        backgroundColor: '#ffffff',
+        backgroundColor: 'transparent',
         color: '#334562',
         border: 'solid 1px transparent',
         '&:hover': {
