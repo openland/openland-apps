@@ -109,7 +109,7 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
                         org: org
                     }
                 };
-            } else if (canUseDOM && isPageChanged() && ENABLE_PRELOADING) {
+            } else if (canUseDOM && isPageChanged({ query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath }) && ENABLE_PRELOADING) {
                 const apollo = apolloClient(serverState, token, org);
                 // Provide the `url` prop data in case a GraphQL query uses it
                 // const url = { query: ctx.query, pathname: ctx.pathname }

@@ -104,7 +104,6 @@ export class XPopperGrouped extends React.Component<PopperRendererProps & { pare
                 currentPopper: XPopperGrouped.currnetPopper[props.groupId]
             };
         }
-
     }
 
     componentWillUnmount() {
@@ -306,6 +305,9 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     }
 
     onMouseOverTarget = () => {
+        if (!this.mounted) {
+            return;
+        }
         if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
         if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
         this.setState({ showPopper: true, willHide: false }, () => {
@@ -324,18 +326,27 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     }
 
     onMouseOutContent = () => {
+        if (!this.mounted) {
+            return;
+        }
         if (this.props.showOnHoverContent !== false) {
             this.onMouseOutTarget();
         }
     }
 
     onMouseOutTarget = () => {
+        if (!this.mounted) {
+            return;
+        }
         if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
         if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
         const animationDurationOut = this.props.animation === null ? 0 : this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 150;
 
         this.willHideTimeout = window.setTimeout(
             () => {
+                if (!this.mounted) {
+                    return;
+                }
                 this.setState({ willHide: true }, () => {
                     if (this._popper) {
                         this._popper.scheduleUpdate();
@@ -345,6 +356,9 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             50);
         this.hideTimeout = window.setTimeout(
             () => {
+                if (!this.mounted) {
+                    return;
+                }
                 this.setState({ showPopper: false }, () => {
                     if (this._popper) {
                         this._popper.scheduleUpdate();
