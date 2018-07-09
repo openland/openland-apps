@@ -2,9 +2,9 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
-import { XInput } from 'openland-x/XInput';
 import { getConfig } from '../../../../config';
 import UploadCare from 'uploadcare-widget';
+import { XRichTextInput } from 'openland-x/XRichTextInput';
 
 let SendMessageContainer = Glamorous(XHorizontal)({
     // flexGrow: 1,
@@ -23,18 +23,11 @@ export interface MessageComposeComponentProps {
     onSendFile?: (file: UploadCare.File) => void;
 }
 
-interface MessageComposeComponentState {
-    message: string;
-}
+export class MessageComposeComponent extends React.PureComponent<MessageComposeComponentProps> {
 
-export class MessageComposeComponent extends React.PureComponent<MessageComposeComponentProps, MessageComposeComponentState> {
-
-    private input = React.createRef<XInput>();
+    private input = React.createRef<XRichTextInput>();
     private wasFocused = false;
-
-    state = {
-        message: ''
-    };
+    private message: string = '';
 
     focus = () => {
         if (this.input.current) {
@@ -58,19 +51,19 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
     }
 
     private handleSend = () => {
-        if (this.state.message.trim().length > 0) {
-            let msg = this.state.message.trim();
-            this.setState({ message: '' }, () => {
-                this.focus();
-                if (this.props.onSend) {
-                    this.props.onSend(msg);
-                }
-            });
+        if (this.message.trim().length > 0) {
+            let msg = this.message.trim();
+            if (this.props.onSend) {
+                this.props.onSend(msg);
+            }
+            if (this.input.current) {
+                this.input.current!!.resetAndFocus();
+            }
         }
     }
 
     private handleChange = (src: string) => {
-        this.setState({ message: src });
+        this.message = src;
     }
 
     private focusIfNeeded = () => {
@@ -95,7 +88,7 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
             <SendMessageContainer alignItems="center" justifyContent="center">
                 <XHorizontal maxWidth={850} flexGrow={1}>
                     <XButton icon="add" size="medium" onClick={this.handleAttach} enabled={this.props.enabled !== false} />
-                    <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} ref={this.input} disabled={this.props.enabled === false} />
+                    <XRichTextInput placeholder="Write a message..." flexGrow={1} onChange={this.handleChange} onSubmit={this.handleSend} ref={this.input} />
                     <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" enabled={this.props.enabled !== false} />
                 </XHorizontal>
             </SendMessageContainer>

@@ -8,7 +8,7 @@ export interface MessageTextComponentProps {
 }
 
 const TextWrapper = Glamorous.span({
-    display: 'inherit',
+    display: 'inline',
     whiteSpace: 'pre-wrap'
 });
 

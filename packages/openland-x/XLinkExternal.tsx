@@ -3,8 +3,8 @@ import { XIcon } from './XIcon';
 import Glamorous from 'glamorous';
 
 export const ExternalLinkDiv = Glamorous.a({
-    display: 'flex',
-    flexDirection: 'row',
+    display: 'inline',
+    // flexDirection: 'row',
     alignItems: 'center',
     color: '#3297d3',
     fontSize: '14px',
