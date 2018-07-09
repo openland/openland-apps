@@ -16,7 +16,7 @@ let months = [
     'Dec'
 ];
 
-export function XDate(props: { value: string, format?: 'date' | 'time' | 'humanize' | 'humanize_large' }) {
+export function XDate(props: { value: string, format?: 'date' | 'time' | 'datetime_short' | 'humanize' | 'humanize_large' }) {
     let date = parseInt(props.value, 10);
     // let date = new Date(parseInt(props.value, 10)).getTime() / 1000;
     if (props.format === 'humanize' || props.format === 'humanize_large') {
@@ -32,6 +32,24 @@ export function XDate(props: { value: string, format?: 'date' | 'time' | 'humani
         hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
         return (
             <span>{hours}:{('0' + dt.getMinutes()).substr(-2)}{ampm}</span>
+        );
+    } else if (props.format === 'datetime_short') {
+        let dt = new Date(date);
+        let now = new Date();
+        // let year = dt.getFullYear().toString();
+        let month = months[dt.getMonth()];
+        let day = dt.getDate();
+        if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth() && now.getDate() === dt.getDate()) {
+            // return <span>Today</span>;
+            let hours = dt.getHours();
+            let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
+            hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
+            return (
+                <span>{hours}:{('0' + dt.getMinutes()).substr(-2)}{ampm}</span>
+            );
+        }
+        return (
+            <span>{month} {day}</span>
         );
     } else {
         let dt = new Date(date);

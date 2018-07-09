@@ -3,7 +3,7 @@ import { UserShort } from 'openland-api/fragments/UserShort';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import gql from 'graphql-tag';
 import { backoff } from 'openland-x-utils/timer';
-import { ChatListQuery, GlobalCounterQuery, ChatInfoQuery } from 'openland-api';
+import { ChatListQuery, GlobalCounterQuery, ChatInfoQuery, ChatSearchGroupQuery } from 'openland-api';
 import { SequenceWatcher } from './SequenceWatcher';
 import { defaultDataIdFromObject, ID_KEY } from 'apollo-cache-inmemory';
 
@@ -90,6 +90,22 @@ export class GlobalStateEngine {
         return {
             id: (res.data as any).chat.id as string,
             flexibleId: (res.data as any).chat.flexibleId as string
+        };
+    }
+
+    resolveGroup = async (uids: string[]) => {
+        let res = await this.engine.client.query({
+            query: ChatSearchGroupQuery.document,
+            variables: {
+                members: uids
+            }
+        });
+        if (!(res.data as any).group) {
+            return null;
+        }
+        return {
+            id: (res.data as any).group.id as string,
+            flexibleId: (res.data as any).group.flexibleId as string
         };
     }
 

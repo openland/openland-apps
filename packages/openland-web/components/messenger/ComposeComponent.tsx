@@ -45,7 +45,17 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
             this.setState({ values: nvals, resolving: true, conversationId: null });
             (async () => {
                 let id = await this.props.messenger.global.resolvePrivateConversation(nvals[0].value!! as string);
-                this.setState({ conversationId: id.id, resolving: true });
+                this.setState({ conversationId: id.id, resolving: false });
+            })();
+        } else if (nvals.length > 1) {
+            this.setState({ values: nvals, resolving: true, conversationId: null });
+            (async () => {
+                let id = await this.props.messenger.global.resolveGroup(nvals.map((v) => v.value!! as string));
+                if (id) {
+                    this.setState({ conversationId: id.id, resolving: false });     
+                } else {
+                    this.setState({ conversationId: null, resolving: false });
+                }
             })();
         } else {
             this.setState({ values: nvals, resolving: false, conversationId: null });
