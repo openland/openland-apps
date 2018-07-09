@@ -416,29 +416,6 @@ export interface CountyQuery {
   } >,
 };
 
-export interface AllChatsQuery {
-  chats:  Array<( {
-      __typename: "AnonymousConversation",
-      id: string,
-      flexibleId: string,
-      title: string,
-      unreadCount: number,
-    } | {
-      __typename: "SharedConversation",
-      id: string,
-      flexibleId: string,
-      title: string,
-      unreadCount: number,
-    } | {
-      __typename: "PrivateConversation",
-      id: string,
-      flexibleId: string,
-      title: string,
-      unreadCount: number,
-    }
-  ) >,
-};
-
 export interface ChatListQuery {
   chats:  {
     __typename: "ConversationConnection",
@@ -448,18 +425,102 @@ export interface ChatListQuery {
         title: string,
         flexibleId: string,
         unreadCount: number,
+        photos: Array< string >,
+        topMessage:  {
+          __typename: "ConversationMessage",
+          id: string,
+          message: string | null,
+          file: string | null,
+          repeatKey: string | null,
+          fileMetadata:  {
+            __typename: "FileMetadata",
+            name: string,
+            mimeType: string | null,
+            isImage: boolean,
+            imageWidth: number | null,
+            imageHeight: number | null,
+            imageFormat: string | null,
+            size: number,
+          } | null,
+          sender:  {
+            __typename: "User",
+            id: string,
+            name: string,
+            firstName: string,
+            lastName: string | null,
+            picture: string | null,
+            email: string | null,
+          },
+          date: string,
+        } | null,
       } | {
         __typename: "SharedConversation",
         id: string,
         title: string,
         flexibleId: string,
         unreadCount: number,
+        photos: Array< string >,
+        topMessage:  {
+          __typename: "ConversationMessage",
+          id: string,
+          message: string | null,
+          file: string | null,
+          repeatKey: string | null,
+          fileMetadata:  {
+            __typename: "FileMetadata",
+            name: string,
+            mimeType: string | null,
+            isImage: boolean,
+            imageWidth: number | null,
+            imageHeight: number | null,
+            imageFormat: string | null,
+            size: number,
+          } | null,
+          sender:  {
+            __typename: "User",
+            id: string,
+            name: string,
+            firstName: string,
+            lastName: string | null,
+            picture: string | null,
+            email: string | null,
+          },
+          date: string,
+        } | null,
       } | {
         __typename: "PrivateConversation",
         id: string,
         title: string,
         flexibleId: string,
         unreadCount: number,
+        photos: Array< string >,
+        topMessage:  {
+          __typename: "ConversationMessage",
+          id: string,
+          message: string | null,
+          file: string | null,
+          repeatKey: string | null,
+          fileMetadata:  {
+            __typename: "FileMetadata",
+            name: string,
+            mimeType: string | null,
+            isImage: boolean,
+            imageWidth: number | null,
+            imageHeight: number | null,
+            imageFormat: string | null,
+            size: number,
+          } | null,
+          sender:  {
+            __typename: "User",
+            id: string,
+            name: string,
+            firstName: string,
+            lastName: string | null,
+            picture: string | null,
+            email: string | null,
+          },
+          date: string,
+        } | null,
       }
     ) >,
     seq: number,
@@ -472,58 +533,6 @@ export interface GlobalCounterQuery {
     __typename: "NotificationCounter",
     id: string,
     unreadCount: number,
-  },
-};
-
-export interface ChatQueryVariables {
-  conversationId: string,
-};
-
-export interface ChatQuery {
-  chat: ( {
-      __typename: "AnonymousConversation",
-      id: string,
-      title: string,
-    } | {
-      __typename: "SharedConversation",
-      id: string,
-      title: string,
-    } | {
-      __typename: "PrivateConversation",
-      id: string,
-      title: string,
-    }
-  ),
-  messages:  {
-    __typename: "ConversationState",
-    seq: number,
-    messages:  Array< {
-      __typename: "ConversationMessage",
-      id: string,
-      message: string | null,
-      file: string | null,
-      repeatKey: string | null,
-      fileMetadata:  {
-        __typename: "FileMetadata",
-        name: string,
-        mimeType: string | null,
-        isImage: boolean,
-        imageWidth: number | null,
-        imageHeight: number | null,
-        imageFormat: string | null,
-        size: number,
-      } | null,
-      sender:  {
-        __typename: "User",
-        id: string,
-        name: string,
-        firstName: string,
-        lastName: string | null,
-        picture: string | null,
-        email: string | null,
-      },
-      date: string,
-    } >,
   },
 };
 
@@ -570,48 +579,6 @@ export interface ChatInfoQueryVariables {
 };
 
 export interface ChatInfoQuery {
-  chat: ( {
-      __typename: "AnonymousConversation",
-      id: string,
-      title: string,
-    } | {
-      __typename: "SharedConversation",
-      id: string,
-      title: string,
-    } | {
-      __typename: "PrivateConversation",
-      id: string,
-      title: string,
-    }
-  ),
-};
-
-export interface ChatPrivateQueryVariables {
-  userId: string,
-};
-
-export interface ChatPrivateQuery {
-  chat: ( {
-      __typename: "AnonymousConversation",
-      id: string,
-      title: string,
-    } | {
-      __typename: "SharedConversation",
-      id: string,
-      title: string,
-    } | {
-      __typename: "PrivateConversation",
-      id: string,
-      title: string,
-    }
-  ),
-};
-
-export interface ChatOrganizationQueryVariables {
-  orgId: string,
-};
-
-export interface ChatOrganizationQuery {
   chat: ( {
       __typename: "AnonymousConversation",
       id: string,

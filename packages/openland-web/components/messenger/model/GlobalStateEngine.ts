@@ -35,6 +35,7 @@ let GLOBAL_SUBSCRIPTION = gql`
                     id
                     flexibleId
                     title
+                    photos
                 }
                 message {
                     ...MessageFull
@@ -135,6 +136,7 @@ export class GlobalStateEngine {
                     if (!visible || c.unreadCount > event.unread) {
                         c.unreadCount = event.unread;
                     }
+                    c.topMessage = event.message;
                     data.chats.conversations.splice(exIndex, 1);
                     data.chats.conversations.unshift(c);
                     data.chats.conversations = data.chats.conversations.map((v: any, i: number) => ({ ...v, [ID_KEY]: ids[i] }));
@@ -144,6 +146,8 @@ export class GlobalStateEngine {
                         id: event.conversation.id,
                         title: event.conversation.title,
                         unreadCount: event.unread,
+                        topMessage: event.message,
+                        photos: event.conversation.photos,
                         [ID_KEY]: defaultDataIdFromObject(event.conversation)
                     };
                     data.chats.conversations.unshift(chat);

@@ -1,5 +1,5 @@
 import { MessengerEngine } from './MessengerEngine';
-import { ChatQuery, ChatReadMutation } from 'openland-api';
+import { ChatReadMutation, ChatHistoryQuery } from 'openland-api';
 import { backoff } from 'openland-x-utils/timer';
 import { SequenceWatcher } from './SequenceWatcher';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
@@ -50,7 +50,7 @@ export class ConversationEngine {
         let initialChat = await backoff(async () => {
             try {
                 return await this.engine.client.query({
-                    query: ChatQuery.document,
+                    query: ChatHistoryQuery.document,
                     variables: {
                         conversationId: this.conversationId
                     }
@@ -140,13 +140,13 @@ export class ConversationEngine {
             console.info('Received new message');
             // Write message to store
             let data = this.engine.client.readQuery({
-                query: ChatQuery.document,
+                query: ChatHistoryQuery.document,
                 variables: { conversationId: this.conversationId }
             });
             (data as any).messages.seq = event.seq;
             (data as any).messages.messages = [event.message, ...(data as any).messages.messages];
             this.engine.client.writeQuery({
-                query: ChatQuery.document,
+                query: ChatHistoryQuery.document,
                 variables: { conversationId: this.conversationId },
                 data: data
             });
@@ -162,7 +162,7 @@ export class ConversationEngine {
             console.warn('Received unknown message');
             // Unknown message: Stop subscription and reload chat
             let loaded = await backoff(() => this.engine.client.query({
-                query: ChatQuery.document,
+                query: ChatHistoryQuery.document,
                 variables: { conversationId: this.conversationId },
                 fetchPolicy: 'network-only'
             }));

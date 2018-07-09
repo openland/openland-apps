@@ -276,11 +276,6 @@ routes.add('/super/orgs/:accountId/', '/dev/orgView');
 routes.add('/super/admins', '/dev/admins');
 routes.add('/super/admins/', '/dev/admins');
 
-routes.add('/super/chat', '/dev/conversations');
-routes.add('/super/chat/', '/dev/conversations');
-routes.add('/super/chat/:conversationId', '/dev/conversation');
-routes.add('/super/chat/:conversationId/', '/dev/conversation');
-
 //
 // Authentication
 //

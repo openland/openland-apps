@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { AllChatsQuery } from 'openland-api/AllChatsQuery';
+import { ChatListQuery } from 'openland-api';
 
-export const withAllChats = graphqlRouted(AllChatsQuery);
+export const withAllChats = graphqlRouted(ChatListQuery);

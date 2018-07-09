@@ -2,17 +2,6 @@ import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
 import { MessageFull } from '../fragments/MessageFull';
 
-export const AllChatsQuery = gql`
-    query AllChats {
-        chats: superAllChats {
-            id
-            flexibleId
-            title
-            unreadCount
-        }
-    }
-`;
-
 export const ChatListQuery = gql`
     query ChatList {
         chats: alphaChats(first: 20) {
@@ -21,11 +10,17 @@ export const ChatListQuery = gql`
                 title
                 flexibleId
                 unreadCount
+                photos
+                topMessage {
+                    ...MessageFull
+                }
             }
             seq
             next
         }
     }
+    ${MessageFull}
+    ${UserShort}
 `;
 
 export const GlobalCounterQuery = gql`
@@ -35,23 +30,6 @@ export const GlobalCounterQuery = gql`
             unreadCount
         }
     }
-`;
-
-export const ChatQuery = gql`
-    query Chat($conversationId: ID!) {
-        chat: alphaChat(conversationId: $conversationId) {
-            id
-            title
-        }
-        messages: alphaLoadMessages(conversationId: $conversationId) {
-            seq
-            messages {
-                ...MessageFull
-            }
-        }
-    }
-    ${MessageFull}
-    ${UserShort}
 `;
 
 export const ChatHistoryQuery = gql`
@@ -70,24 +48,6 @@ export const ChatHistoryQuery = gql`
 export const ChatInfoQuery = gql`
     query ChatInfo($conversationId: ID!) {
         chat: alphaChat(conversationId: $conversationId) {
-            id
-            title
-        }
-    }
-`;
-
-export const ChatPrivateQuery = gql`
-    query ChatPrivate($userId: ID!) {
-        chat: alphaChatUser(userId: $userId) {
-            id
-            title
-        }
-    }
-`;
-
-export const ChatOrganizationQuery = gql`
-    query ChatOrganization($orgId: ID!) {
-        chat: alphaChatOrganization(orgId: $orgId) {
             id
             title
         }
