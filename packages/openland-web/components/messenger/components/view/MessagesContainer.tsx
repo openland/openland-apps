@@ -11,6 +11,7 @@ let MessagesContainerInner = Glamorous.div({
     position: 'relative',
     maxHeight: '100%',
     maxWidth: 900,
+    width: '100%',
     overflow: 'hidden',
     '& > div:first-child': {
         width: '100%',
