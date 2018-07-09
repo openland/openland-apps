@@ -122,7 +122,7 @@ export const ChatsComponent = withChatsAll((props) => {
                         <Header>
                             <Main>
                                 <Title><span>{v.title}</span></Title>
-                                <Date><XDate value={v.topMessage!!.date} format="humanize" /></Date>
+                                <Date><XDate value={v.topMessage!!.date} format="datetime_short" /></Date>
                             </Main>
                             <Content>
                                 <ContentText>
