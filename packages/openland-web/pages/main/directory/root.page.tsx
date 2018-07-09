@@ -12,6 +12,11 @@ import { XCard } from 'openland-x/XCard';
 import { XButton } from 'openland-x/XButton';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
+import { LocationPicker } from './locationPicker';
+import { CategoryPicker } from './categoryPicker';
+import { RolePicker } from './rolePicker';
+import { ActivityPicker } from './activityPicker';
+import { XText } from 'openland-x/XText';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -115,8 +120,8 @@ const Text = Glamorous.div({
     color: '#334562',
 });
 
-interface SearchCondition {
-    type: 'name' | 'location';
+export interface SearchCondition {
+    type: 'name' | 'location' | 'category' | 'role';
     value: string;
     label: string;
 }
@@ -151,14 +156,17 @@ const OrganizationCard = (props: OrganizationCardProps) => (
     </OrganizationCardWrapper>
 );
 
-const OrganizationCards = withExploreOrganizations(props => (
-    <>
-        {props.data && props.data.items && props.data.items.edges.length > 0 && props.data.items.edges.map((i, j) => (
-            <OrganizationCard key={i.node.id + j} item={i.node} />
-        ))}
-        {props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0 && null}
-    </>
-));
+const OrganizationCards = withExploreOrganizations((props) => {
+    console.warn(props);
+    return (
+        <>
+            {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && props.data.items.edges.map((i, j) => (
+                <OrganizationCard key={i.node.id + j} item={i.node} />
+            ))}
+            {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && <XText>Empty</XText>}
+        </>
+    );
+});
 
 class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
 
@@ -185,7 +193,6 @@ class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
     }
 
     render() {
-
         let clauses: any[] = [];
         let groups = this.group(this.props.conditions);
         for (let type of Object.keys(groups)) {
@@ -199,9 +206,7 @@ class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
                 '$or'));
         }
         let q = this.buildQuery(clauses, '$and');
-        console.warn(q);
 
-        console.warn(q ? JSON.stringify(q) : undefined);
         return (
             <div>
                 <OrganizationCards
@@ -302,12 +307,14 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
     }
 
     removeCondition = (condition: SearchCondition) => {
-        console.warn(this.state.conditions, condition);
         let res = [...this.state.conditions.filter(c => (c.type !== condition.type) || (condition.value !== undefined && c.value !== condition.value))];
-        console.warn(res);
         this.setState({
             conditions: res
         });
+    }
+
+    reset = () => {
+        this.setState({ conditions: [] });
     }
 
     keydownHandler = (e: any) => {
@@ -330,7 +337,6 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
     render() {
 
         const { searchText, conditions } = this.state;
-        console.warn(conditions);
         return (
             <XVertical>
                 <SearchInput
@@ -339,7 +345,21 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                     onChange={this.handleSearchChange}
                     placeholder={'Enter a keyword'}
                 />
-                {!LIVESEARCH && <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />}
+                {!LIVESEARCH && (
+                    <>
+                        <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
+                        <XHorizontal >
+                            <LocationPicker onPick={this.addCondition} />
+                            <CategoryPicker onPick={this.addCondition} />
+                            <RolePicker onPick={this.addCondition} />
+                            <ActivityPicker onPick={this.addCondition} />
+                            <XVertical alignItems="flex-end" flexGrow={1}>
+                                <XButton text="Reset" onClick={this.reset} />
+                            </XVertical>
+                        </XHorizontal>
+
+                    </>
+                )}
 
                 <Organizations conditions={conditions} />
             </XVertical>
