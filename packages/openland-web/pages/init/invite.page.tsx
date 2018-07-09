@@ -8,8 +8,11 @@ import { AuthRouter } from '../../components/AuthRouter';
 import { InitTexts } from './_text';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { withInviteActivation } from '../../api/withInviteActivation';
+import { XLoader } from 'openland-x/XLoader';
+import { ErrorPage } from '../../components/ErrorPage';
+import { formatError } from 'openland-x-forms/errorHandling';
 
-class ActivateInvite extends React.Component<{ mutation: any }, { complete: boolean }> {
+class ActivateInvite extends React.Component<{ mutation: any }, { complete: boolean, error?: string }> {
     constructor(props: any) {
         super(props);
         this.state = { complete: false };
@@ -17,13 +20,22 @@ class ActivateInvite extends React.Component<{ mutation: any }, { complete: bool
     }
 
     doJoin = async (mutation: any) => {
-        await mutation({});
-        this.setState({ complete: true });
+        try {
+            await mutation({});
+            this.setState({ complete: true });
+        } catch (e) {
+            this.setState({ complete: true, error: formatError(e) });
+        }
     }
 
     render() {
+        console.warn(this.state);
         return (
-            this.state.complete ? < XPageRedirect path="/" /> : null
+            <>
+                <XLoader loading={!this.state.complete} />
+                {this.state.complete && !this.state.error && < XPageRedirect path="/" />}
+                {this.state.complete && <ErrorPage statusCode={400} message={this.state.error} />}
+            </>
         );
     }
 }
