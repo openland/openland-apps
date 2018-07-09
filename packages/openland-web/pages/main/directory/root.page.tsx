@@ -336,7 +336,6 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                 <SearchInput
                     value={searchText}
                     autoFocus={true}
-                    innerRef={}
                     onChange={this.handleSearchChange}
                     placeholder={'Enter a keyword'}
                 />
