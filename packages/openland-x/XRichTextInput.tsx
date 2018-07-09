@@ -67,7 +67,7 @@ const emojiPlugin = createEmojiPlugin({
         return {};
     }
 });
-const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
+const { EmojiSuggestions } = emojiPlugin;
 
 const Container = Glamorous.div<XFlexStyles>([{
     position: 'relative'
