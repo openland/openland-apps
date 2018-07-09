@@ -87,8 +87,8 @@ export const ChatReadMutation = gql`
 `;
 
 export const ChatSearchForComposeQuery = gql`
-    query ChatSearchForCompose($query: String!) {
-        items: alphaChatsSearchForCompose(query: $query) {
+    query ChatSearchForCompose($query: String!, $organizations: Boolean!) {
+        items: alphaChatsSearchForCompose(query: $query, organizations: $organizations) {
             ... on User {
                 id
                 title: name

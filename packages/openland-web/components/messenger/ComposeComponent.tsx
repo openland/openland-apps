@@ -79,10 +79,11 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                         onChange={this.handleChange}
                         value={this.state.values}
                         multi={true}
+                        minimumInput={3}
+                        variables={{ organizations: this.state.values.length === 0 }}
                     />
                     <MessagesContainer>
                         {this.state.conversationId && <ConversationMessagesComponent conversation={this.props.messenger.getConversation(this.state.conversationId!!)} />}
-                        {}
                     </MessagesContainer>
                     <MessageComposeComponent onSend={this.handleSend} enabled={this.state.values.length > 0} />
                 </ConversationContainer>

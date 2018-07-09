@@ -4,6 +4,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { XInput } from 'openland-x/XInput';
 import { getConfig } from '../../../../config';
+import UploadCare from 'uploadcare-widget';
 
 let SendMessageContainer = Glamorous(XHorizontal)({
     // flexGrow: 1,
