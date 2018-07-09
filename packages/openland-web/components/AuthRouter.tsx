@@ -3,7 +3,7 @@ import { withUserInfo } from './UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 export const AuthRouter = withUserInfo((props) => {
-   
+
     // Compute Redirect Value
     let redirect = props.router.query && props.router.query.redirect;
     let redirectPath: string = '/';
@@ -20,7 +20,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/pickOrganization',
             '/signin',
             '/signup'
-        ].indexOf(props.router.path) < 0 && !props.router.path.startsWith('/join/')) {
+        ].indexOf(props.router.path) < 0 && !props.router.path.startsWith('/join/') && !props.router.path.startsWith('/invite/')) {
             if (props.router.path !== '/') {
                 redirect = '?redirect=' + encodeURIComponent(props.router.path);
                 redirectPath = props.router.path;
@@ -102,6 +102,17 @@ export const AuthRouter = withUserInfo((props) => {
             console.warn('NoOrganization');
             return <XPageRedirect path="/createOrganization" />;
         }
+    }
+
+    // Redirect to activate organization
+    if (!handled && redirectPath.startsWith('/invite/')) {
+        handled = true;
+        return <XPageRedirect path={redirectPath} />;
+    }
+
+    // Bypass Next steps for invite
+    if (!handled && props.router.path.startsWith('/invite/')) {
+        handled = true;
     }
 
     // Redirect to generic 'need more info' page if signup is not completed

@@ -26,7 +26,7 @@ import { OrganizationPicker } from './OrganizationPicker';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
-import { InvitesMoadal } from '../pages/main/settings/invites';
+import { InvitesToOrganizationMoadal, InvitesGlobalMoadal } from '../pages/main/settings/invites';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 
 //
@@ -255,6 +255,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                     <XMenuItem path="/settings/organization" autoClose={true}>{TextGlobal.editProfile}</XMenuItem>
                                     <XWithRole role={['super-admin', 'software-developer']}>
                                         <XMenuItem query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextGlobal.invite}</XMenuItem>
+                                        <XMenuItem query={{ field: 'invite_global', value: 'true' }} autoClose={true}>{TextGlobal.inviteGlobal}</XMenuItem>
                                     </XWithRole>
                                     <XMenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>
                                 </>
@@ -279,7 +280,8 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
             organizationName={props.organization ? props.organization.name : undefined}
             organizationId={props.organization ? props.organization.id : undefined}
         />
-        <InvitesMoadal targetQuery="invite" target={null} />
+        <InvitesToOrganizationMoadal targetQuery="invite" target={null} />
+        <InvitesGlobalMoadal targetQuery="invite_global" target={null} />
 
     </XVertical>
 ));
