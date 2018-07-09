@@ -24,6 +24,13 @@ const ItemContainer = Glamorous.a({
     // borderBottomStyle: 'solid',
     alignItems: 'center',
     '&.is-active': {
+        backgroundColor: '#ebedf0',
+        '&:hover': {
+            backgroundColor: '#ebedf0',
+            color: '#334562'
+        }
+    },
+    '&:hover': {
         backgroundColor: '#f2f4f5'
     }
 });
@@ -72,7 +79,8 @@ const Date = Glamorous.div({
     lineHeight: 1.33,
     letterSpacing: -0.1,
     color: '#334562',
-    opacity: 0.3
+    opacity: 0.3,
+    marginLeft: 5
 });
 
 const Content = Glamorous.div({
@@ -85,7 +93,9 @@ const Content = Glamorous.div({
         borderRadius: 7,
         fontSize: 12,
         border: 'none',
+        textAlign: 'center',
         backgroundColor: '#654bfa',
+        lineHeight: '10px'
     }
 });
 
