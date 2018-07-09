@@ -27,6 +27,7 @@ import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
 import { InvitesMoadal } from '../pages/main/settings/invites';
+import { XModalContext } from 'openland-x-modal/XModalContext';
 
 //
 // Root
@@ -188,8 +189,7 @@ const ProfileTitleContainer = Glamorous(XHorizontal)({
 });
 
 const OrganizationTitleContainer = makeNavigable((props) => {
-
-    return (<a href={props.href} ><ProfileTitleContainer separator="none" >{props.children}</ProfileTitleContainer></a>);
+    return (<a href={props.href} onClick={props.onClick}><ProfileTitleContainer separator="none" >{props.children}</ProfileTitleContainer></a>);
 });
 
 class UserPopper extends React.Component<{ picture: string | null, name?: string, logo?: string | null, organizationName?: string, organizationId?: string }, { show: boolean }> {
@@ -233,34 +233,35 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                 show={this.state.show}
                 padding={25}
                 content={(
-                    <XVertical separator="none">
-                        <ProfileTitleContainer separator="none" alignItems="center">
-                            <XAvatar cloudImageUuid={this.props.picture || undefined} />
-                            <ProfileTitle>{this.props.name}</ProfileTitle>
-                        </ProfileTitleContainer>
+                    <XModalContext.Provider value={{ close: this.closer }}>
+                        <XVertical separator="none">
+                            <ProfileTitleContainer separator="none" alignItems="center">
+                                <XAvatar cloudImageUuid={this.props.picture || undefined} />
+                                <ProfileTitle>{this.props.name}</ProfileTitle>
+                            </ProfileTitleContainer>
 
-                        <XMenuItem path="/settings/profile">{TextGlobal.editProfile}</XMenuItem>
+                            <XMenuItem path="/settings/profile" autoClose={true}>{TextGlobal.editProfile}</XMenuItem>
+                            {this.props.organizationId && (
+                                <>
+                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)' }} />
 
-                        {this.props.organizationId && (
-                            <>
-                                <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)' }} />
-
-                                <OrganizationTitleContainer path={'/o/' + this.props.organizationId}>
-                                    <XAvatar path={'/o/' + this.props.organizationId} cloudImageUuid={this.props.logo || undefined} style="organization" />
-                                    <XVertical separator={1}>
-                                        <ProfileTitle >{this.props.organizationName}</ProfileTitle>
-                                        <ProfileSubTitle>{TextGlobal.viewProfile}</ProfileSubTitle>
-                                    </XVertical>
-                                </OrganizationTitleContainer>
-                                <XMenuItem path="/settings/organization">{TextGlobal.editProfile}</XMenuItem>
-                                <XWithRole role={['super-admin', 'software-developer']}>
-                                    <XMenuItem query={{ field: 'invite', value: 'true' }}>{TextGlobal.invite}</XMenuItem>
-                                </XWithRole>
-                                <XMenuItem query={{ field: 'org', value: 'true' }}>{TextGlobal.switch}</XMenuItem>
-                            </>
-                        )}
-                        <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
-                    </XVertical>
+                                    <OrganizationTitleContainer path={'/o/' + this.props.organizationId} autoClose={true}>
+                                        <XAvatar path={'/o/' + this.props.organizationId} cloudImageUuid={this.props.logo || undefined} style="organization" />
+                                        <XVertical separator={1}>
+                                            <ProfileTitle >{this.props.organizationName}</ProfileTitle>
+                                            <ProfileSubTitle>{TextGlobal.viewProfile}</ProfileSubTitle>
+                                        </XVertical>
+                                    </OrganizationTitleContainer>
+                                    <XMenuItem path="/settings/organization" autoClose={true}>{TextGlobal.editProfile}</XMenuItem>
+                                    <XWithRole role={['super-admin', 'software-developer']}>
+                                        <XMenuItem query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextGlobal.invite}</XMenuItem>
+                                    </XWithRole>
+                                    <XMenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>
+                                </>
+                            )}
+                            <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
+                        </XVertical>
+                    </XModalContext.Provider>
                 )}
             >
                 <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} />

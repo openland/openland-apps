@@ -830,8 +830,8 @@ class AcquizitionRequest extends React.Component<{ item: AcquizitionRequestProps
                                         placement="bottom"
                                         content={(
                                             <>
-                                                <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XOverflow.Item>
-                                                <XOverflow.Item style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XOverflow.Item>
+                                                <XOverflow.Item autoClose={true} query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XOverflow.Item>
+                                                <XOverflow.Item autoClose={true} style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XOverflow.Item>
                                             </>
                                         )}
                                     />
@@ -1274,8 +1274,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             }
                                             content={
                                                 <>
-                                                    <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>{TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
-                                                    <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>{TextOrganizationProfile.headerButtonAddListingAR}</XOverflow.Item>
+                                                    <XOverflow.Item autoClose={true} query={{ field: 'addListing', value: 'DO' }}>{TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
+                                                    <XOverflow.Item autoClose={true} query={{ field: 'addListing', value: 'AR' }}>{TextOrganizationProfile.headerButtonAddListingAR}</XOverflow.Item>
                                                 </>
                                             }
                                         />
