@@ -77,7 +77,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                 let h = this.props.message.fileMetadata!!.imageHeight ? this.props.message.fileMetadata!!.imageHeight!! : undefined;
                 let name = this.props.message.fileMetadata!!.name ? this.props.message.fileMetadata!!.name!! : undefined;
                 let size = this.props.message.fileMetadata!!.size ? this.props.message.fileMetadata!!.size!! : undefined;
-                if (this.props.message.fileMetadata!!.isImage) {
+                if (this.props.message.fileMetadata!!.isImage && !!w && !!h) {
                     if (this.props.message.fileMetadata!!.imageFormat === 'GIF') {
                         content.push(<MessageAnimationComponent key={'file'} file={this.props.message.file} fileName={name} width={w} height={h} />);
                     } else {

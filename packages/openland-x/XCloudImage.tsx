@@ -61,10 +61,10 @@ export class XCloudImage extends React.PureComponent<XCloudImageProps> {
                 let opsRetina: string = '';
                 if (this.props.resize === 'fill') {
                     ops += '-/format/jpeg/-/scale_crop/' + scale + '/center/-/progressive/yes/';
-                    opsRetina += '-/format/jpeg/-/scale_crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
+                    opsRetina += '-/format/jpeg/-/scale_crop/' + scaleRetina + '/center/-/quality/lighter/-/progressive/yes/';
                 } else {
                     ops += '-/format/jpeg/-/preview/' + scale + '/-/setfill/ffffff/-/crop/' + scale + '/center/-/progressive/yes/';
-                    opsRetina += '-/format/jpeg/-/preview/' + scaleRetina + '/-/setfill/ffffff/-/crop/' + scaleRetina + '/center/-/quality/lightest/-/progressive/yes/';
+                    opsRetina += '-/format/jpeg/-/preview/' + scaleRetina + '/-/setfill/ffffff/-/crop/' + scaleRetina + '/center/-/quality/lighter/-/progressive/yes/';
                 }
                 let url = srcCloud + ops;
                 let urlRetina = srcCloud + opsRetina;

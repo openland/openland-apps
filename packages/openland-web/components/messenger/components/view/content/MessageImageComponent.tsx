@@ -1,24 +1,17 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import { layoutMedia } from './utils/MediaLayout';
+import { XCloudImage } from 'openland-x/XCloudImage';
 
-const ImageWrapper = Glamorous.div({
-    // display: 'flex',
-    // justifyContent: 'flex-start'
-});
-
-const Image = Glamorous.img({
-    display: 'block',
-    maxWidth: 400,
-    maxHeight: 400,
-    objectFit: 'contain'
-});
-
-export class MessageImageComponent extends React.PureComponent<{ file: string, fileName?: string, width?: number, height?: number }> {
+export class MessageImageComponent extends React.PureComponent<{ file: string, fileName?: string, width: number, height: number }> {
     render() {
+        let dimensions = layoutMedia(this.props.width, this.props.height);
         return (
-            <ImageWrapper>
-                <Image src={'https://ucarecdn.com/' + this.props.file + '/' + (this.props.fileName ? this.props.fileName!! : '')} />
-            </ImageWrapper>
+            <XCloudImage
+                srcCloud={'https://ucarecdn.com/' + this.props.file + '/'}
+                resize={'fill'}
+                width={dimensions.width}
+                height={dimensions.height}
+            />
         );
     }
 }
