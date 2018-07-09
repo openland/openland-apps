@@ -9,15 +9,12 @@ import UploadCare from 'uploadcare-widget';
 let SendMessageContainer = Glamorous(XHorizontal)({
     // flexGrow: 1,
     width: '100%',
-    height: 96,
-    flexDirection: 'row',
-    alignItems: 'center',
+    height: 80,
     flexShrink: 0,
-    flexBasis: 96,
-    paddingLeft: 24,
-    paddingRight: 24,
-    borderTop: '1px solid rgba(229, 233, 242, 0.5)',
-    zIndex: 10
+    flexBasis: 80,
+    paddingLeft: 40,
+    paddingRight: 40,
+    borderTop: '1px solid rgba(229, 233, 242, 0.5)'
 });
 
 export interface MessageComposeComponentProps {
@@ -95,10 +92,12 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
 
     render() {
         return (
-            <SendMessageContainer>
-                <XButton icon="add" size="medium" onClick={this.handleAttach} enabled={this.props.enabled !== false} />
-                <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} ref={this.input} disabled={this.props.enabled === false} />
-                <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" enabled={this.props.enabled !== false} />
+            <SendMessageContainer alignItems="center" justifyContent="center">
+                <XHorizontal maxWidth={850} flexGrow={1}>
+                    <XButton icon="add" size="medium" onClick={this.handleAttach} enabled={this.props.enabled !== false} />
+                    <XInput placeholder="Write a message..." flexGrow={1} value={this.state.message} onChange={this.handleChange} onEnter={this.handleSend} ref={this.input} disabled={this.props.enabled === false} />
+                    <XButton text="Send" size="medium" action={this.handleSend} iconRight="send" enabled={this.props.enabled !== false} />
+                </XHorizontal>
             </SendMessageContainer>
         );
     }
