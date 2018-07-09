@@ -17,7 +17,7 @@ class SharedClientStorage implements SharedStorage {
         this.predefined.set('protocol', window.location.protocol.replace(':', ''));
     }
 
-    readValue(key: string) {
+    readValue = (key: string) => {
         if (this.predefined.has(key)) {
             return this.predefined.get(key)!!;
         }
@@ -30,7 +30,7 @@ class SharedClientStorage implements SharedStorage {
         }
     }
 
-    writeValue(key: string, value: string | null, expires?: number) {
+    writeValue = (key: string, value: string | null, expires?: number) => {
         if (value) {
             if (expires) {
                 Cookie.set(CookiePrefix + key, value, { expires: expires / (24 * 60.0 * 60.0) });
@@ -59,7 +59,7 @@ class SharedServerStorage implements SharedStorage {
         }
     }
 
-    readValue(key: string) {
+    readValue = (key: string) => {
         if (this.values.has(key)) {
             return this.values.get(key)!!;
         } else {
@@ -67,7 +67,7 @@ class SharedServerStorage implements SharedStorage {
         }
     }
 
-    writeValue(key: string, value: string | null, expires?: number) {
+    writeValue = (key: string, value: string | null, expires?: number) => {
         throw Error('Writing to Shared Storage on server side is not supported yet');
     }
 }
