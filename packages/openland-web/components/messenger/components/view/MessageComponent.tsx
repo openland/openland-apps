@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
-import { PendingMessage, isServerMessage } from '../model/types';
+import { PendingMessage, isServerMessage } from '../../model/types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -11,7 +11,7 @@ import { XDate } from 'openland-x-format/XDate';
 import { XButton } from 'openland-x/XButton';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
-import { ConversationEngine } from '../model/ConversationEngine';
+import { ConversationEngine } from '../../model/ConversationEngine';
 
 interface MessageComponentProps {
     compact: boolean;

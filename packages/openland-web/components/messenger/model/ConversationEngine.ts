@@ -25,6 +25,11 @@ const CHAT_SUBSCRIPTION = gql`
   ${UserShort}
 `;
 
+export interface ConversationStateHandler {
+    onConversationUpdated(state: ConversationState): void;
+    onMessageSend(): void;
+}
+
 export class ConversationEngine implements MessageSendHandler {
     readonly engine: MessengerEngine;
     readonly conversationId: string;
@@ -35,7 +40,7 @@ export class ConversationEngine implements MessageSendHandler {
     private messages: (MessageFullFragment | PendingMessage)[] = [];
     private state: ConversationState;
     private lastTopMessageRead: string | null = null;
-    private listeners: ((state: ConversationState) => void)[] = [];
+    private listeners: ConversationStateHandler[] = [];
 
     constructor(engine: MessengerEngine, conversationId: string) {
         this.engine = engine;
@@ -97,6 +102,9 @@ export class ConversationEngine implements MessageSendHandler {
             this.messages = [...this.messages, { date, key, message, progress: 0, file: null, failed: false } as PendingMessage];
             this.state = new ConversationState(false, this.messages);
             this.onMessagesUpdated();
+            for (let l of this.listeners) {
+                l.onMessageSend();
+            }
         }
     }
 
@@ -111,6 +119,11 @@ export class ConversationEngine implements MessageSendHandler {
             let date = (new Date().getTime()).toString();
             let key = this.engine.sender.sendFile(this.conversationId, file, this);
             this.messages = [...this.messages, { date, key, file: name, progress: 0, message: null, failed: false } as PendingMessage];
+            this.state = new ConversationState(false, this.messages);
+            this.onMessagesUpdated();
+            for (let l of this.listeners) {
+                l.onMessageSend();
+            }
         });
     }
 
@@ -184,9 +197,9 @@ export class ConversationEngine implements MessageSendHandler {
         }
     }
 
-    subscribe = (listener: (state: ConversationState) => void) => {
+    subscribe = (listener: ConversationStateHandler) => {
         this.listeners.push(listener);
-        listener(this.state);
+        listener.onConversationUpdated(this.state);
         return () => {
             let index = this.listeners.indexOf(listener);
             if (index < 0) {
@@ -213,7 +226,7 @@ export class ConversationEngine implements MessageSendHandler {
             this.markReadIfNeeded();
         }
         for (let l of this.listeners) {
-            l(this.state);
+            l.onConversationUpdated(this.state);
         }
     }
 
@@ -223,6 +236,7 @@ export class ConversationEngine implements MessageSendHandler {
             let msg = this.messages[i];
             if (!isPendingMessage(msg)) {
                 id = msg.id;
+                break;
             }
         }
         if (id !== null && id !== this.lastTopMessageRead) {

@@ -23,7 +23,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     return (
         <ChatRoot flexGrow={1} separator={'none'}>
             <XHeader text={props.data.chat.title} separated={true} />
-            <ChatWrapper flexGrow={1} justifyContent="center" maxHeight={400}>
+            <ChatWrapper flexGrow={1} justifyContent="center">
                 <MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />
             </ChatWrapper>
         </ChatRoot>

@@ -3,43 +3,52 @@ import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { ComposeSelect } from '../../api/ChatComposeSelect';
 import { XHeader } from 'openland-x/XHeader';
-import { XContent } from 'openland-x-layout/XContent';
 import { OnChangeHandler, Option, OptionValues } from 'react-select';
-import { XInput } from 'openland-x/XInput';
-import { XButton } from 'openland-x/XButton';
 import { MessengerContext, MessengerEngine } from './model/MessengerEngine';
 import { Router } from '../../routes';
 import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
+import { MessageComposeComponent } from './components/view/MessageComposeComponent';
+import { ConversationContainer } from './components/view/ConversationContainer';
+import { MessagesContainer } from './components/view/MessagesContainer';
+import { ConversationMessagesComponent } from './components/ConversationMessagesComponent';
 
 const Root = Glamorous(XVertical)({
+    display: 'flex',
+    flexDirection: 'column',
     maxHeight: '100%',
     width: '100%',
     maxWidth: '100%'
 });
 
-class ComposeComponentRender extends React.Component<{ messenger: MessengerEngine }, { values: Option<OptionValues>[], message: string }> {
+class ComposeComponentRender extends React.Component<{ messenger: MessengerEngine }, { values: Option<OptionValues>[], resolving: boolean, conversationId: string | null }> {
 
     state = {
         values: [] as Option<OptionValues>[],
-        message: ''
+        resolving: false,
+        conversationId: null
     };
 
     handleChange: OnChangeHandler = (vals) => {
+        let nvals: Option<OptionValues>[] = [];
         if (vals === null) {
-            this.setState({ values: [] });
+            nvals = [];
         } else if (Array.isArray(vals)) {
-            this.setState({ values: [...vals] });
+            nvals = [...vals];
         } else {
-            this.setState({ values: [vals] });
+            nvals = [vals];
+        }
+        if (nvals.length === 1) {
+            this.setState({ values: nvals, resolving: true, conversationId: null });
+            (async () => {
+                let id = await this.props.messenger.global.resolvePrivateConversation(nvals[0].value!! as string);
+                this.setState({ conversationId: id.id, resolving: true });
+            })();
+        } else {
+            this.setState({ values: nvals, resolving: false, conversationId: null });
         }
     }
 
-    handleMessageChange = (msg: string) => {
-        this.setState({ message: msg });
-    }
-
-    handleSendMessage = async () => {
-        let msg = this.state.message;
+    handleSend = async (msg: string) => {
         if (this.state.values.length === 1) {
             let id = await this.props.messenger.global.resolvePrivateConversation(this.state.values[0].value!! as string);
             await this.props.messenger.sender.sendMessageAsync(id.id, msg);
@@ -48,7 +57,7 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
             let res = await this.props.messenger.client.mutate({
                 mutation: ChatCreateGroupMutation.document,
                 variables: {
-                    message: this.state.message,
+                    message: msg,
                     members: this.state.values.map((v) => v.value)
                 }
             });
@@ -60,16 +69,19 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
         return (
             <Root flexGrow={1} separator={'none'}>
                 <XHeader text={'Compose new message'} separated={true} />
-                <XContent>
+                <ConversationContainer>
                     <ComposeSelect
                         placeholder="Start typing name or multiple names..."
                         onChange={this.handleChange}
                         value={this.state.values}
                         multi={true}
                     />
-                    <XInput value={this.state.message} onChange={this.handleMessageChange} />
-                    <XButton text="Send" onClick={this.handleSendMessage} />
-                </XContent>
+                    <MessagesContainer>
+                        {this.state.conversationId && <ConversationMessagesComponent conversation={this.props.messenger.getConversation(this.state.conversationId!!)} />}
+                        {}
+                    </MessagesContainer>
+                    <MessageComposeComponent onSend={this.handleSend} enabled={this.state.values.length > 0} />
+                </ConversationContainer>
             </Root>
         );
     }
