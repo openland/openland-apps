@@ -269,8 +269,18 @@ export class ConversationEngine implements MessageSendHandler {
                 data: data
             });
             if (event.message.repeatKey) {
-                // Filter out all pending messages with same repeatKey
-                this.messages = [...this.messages.filter((v) => isServerMessage(v) || v.key !== event.message.repeatKey), event.message];
+                // Try to replace message inplace
+                let existing = this.messages.findIndex((v) => isPendingMessage(v) && v.key === event.message.repeatKey);
+                if (existing >= 0) {
+                    let msgs = [...this.messages];
+                    msgs[existing] = {
+                        ...event.message,
+                        date: msgs[existing].date
+                    };
+                    this.messages = msgs;
+                } else {
+                    this.messages = [...this.messages.filter((v) => isServerMessage(v) || v.key !== event.message.repeatKey), event.message];
+                }
             } else {
                 this.messages = [...this.messages, event.message];
             }
