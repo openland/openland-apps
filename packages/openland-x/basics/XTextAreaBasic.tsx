@@ -36,25 +36,58 @@ export interface XTextAreaBasicProps extends XFlexStyles {
     value?: string;
     disabled?: boolean;
     invalid?: boolean;
+    autofocus?: boolean;
     onChange?: (value: string) => void;
+    onEnter?: () => void;
 }
 
 export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps> {
+
+    TextAreaRef: any | null = null;
+
+    handleRef = (e: any) => {
+        if (e && this.props.autofocus) {
+            e.focus();
+        }
+        if (e) {
+            this.TextAreaRef = e;
+        }
+    }
+
     handleChange = (src: any) => {
         let val = src.target.value as string;
         if (this.props.onChange) {
             this.props.onChange(val);
         }
     }
+
+    handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter') {
+            if (this.props.onEnter) {
+                this.props.onEnter();
+            }
+        }
+    }
+
+    focus() {
+        this.TextAreaRef.focus();
+    }
+
     render() {
+        let v = this.props.value;
+        if (v === null) {
+            v = '';
+        }
         return (
             <TextAreaStyled
                 {...extractFlexProps(this.props)}
                 placeholder={this.props.placeholder}
-                value={this.props.value}
-                onChange={this.handleChange}
+                value={v}
                 disabled={this.props.disabled}
+                autoFocus={this.props.autofocus}
+                onChange={this.handleChange}
                 invalid={this.props.invalid}
+                onKeyPress={this.handleKey}
             />
         );
     }

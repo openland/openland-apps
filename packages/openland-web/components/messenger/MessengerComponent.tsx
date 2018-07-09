@@ -32,8 +32,7 @@ const ChatHeaderWrapper = Glamorous.div({
 
 const ChatLogo = Glamorous(XAvatar)({
     width: 50,
-    height: 50,
-    border: '1px solid'
+    height: 50
 });
 
 const Title = Glamorous.div({
