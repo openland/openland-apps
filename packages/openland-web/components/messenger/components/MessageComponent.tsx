@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
-import { PendingMessage } from '../model/types';
+import { PendingMessage, isServerMessage } from '../model/types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -11,17 +11,13 @@ import { XDate } from 'openland-x-format/XDate';
 import { XButton } from 'openland-x/XButton';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
+import { ConversationEngine } from '../model/ConversationEngine';
 
 interface MessageComponentProps {
     compact: boolean;
     sender?: UserShortFragment;
     message: MessageFullFragment | PendingMessage;
-    onRetry: (key: string) => void;
-    onCancel: (key: string) => void;
-}
-
-function isServerMessage(message: MessageFullFragment | PendingMessage): message is MessageFullFragment {
-    return !!(message as any).__typename;
+    conversation: ConversationEngine;
 }
 
 const MessageWrapper = Glamorous(XVertical)({
@@ -94,7 +90,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
             date = <XDate value={this.props.message.date} format="time" />;
         } else {
             if (this.props.message.file) {
-                content.push(<MessageFileComponent key={'file'} file={this.props.message.file} />);
+                content.push(<MessageFileComponent key={'file'} fileName={this.props.message.file + '(' + Math.round(this.props.message.progress * 100) + '%)'} />);
             }
             date = 'Sending...';
             if (this.props.message.failed) {
@@ -102,8 +98,8 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                 let key = this.props.message.key;
                 content.push(
                     <XHorizontal>
-                        <XButton onClick={() => this.props.onCancel(key)} text="Cancel" />
-                        <XButton onClick={() => this.props.onRetry(key)} text="Try Again" />
+                        <XButton onClick={() => this.props.conversation.cancelMessage(key)} text="Cancel" />
+                        <XButton onClick={() => this.props.conversation.retryMessage(key)} text="Try Again" />
                     </XHorizontal>
                 );
             }

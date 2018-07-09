@@ -1,19 +1,18 @@
 import * as React from 'react';
-import * as UploadCare from 'uploadcare-widget';
 import Glamorous from 'glamorous';
-import { MessageFullFragment } from 'openland-api/Types';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MessengerContext, MessengerEngine } from '../model/MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { getConfig } from '../../../config';
-import { MessageSendHandler } from '../model/MessageSender';
 import { MessageListComponent } from './MessageListComponent';
 import { ConversationEngine } from '../model/ConversationEngine';
 import { ConversationState } from '../model/ConversationState';
 import { withChatHistory } from '../../../api/withChatHistory';
+import { ModelMessage } from '../model/types';
+import { getConfig } from '../../../config';
+import UploadCare from 'uploadcare-widget';
 
 const ChatWrapper = Glamorous.div({
     width: '100%',
@@ -70,14 +69,6 @@ let SendMessageContainer = Glamorous(XHorizontal)({
     zIndex: 10
 });
 
-interface PendingMessage {
-    key: string;
-    progress: number;
-    message: string | null;
-    file: string | null;
-    failed?: boolean;
-}
-
 interface MessagesComponentProps {
     conversationId: string;
     loading: boolean;
@@ -88,11 +79,10 @@ interface MessagesComponentState {
     message: string;
     mounted: boolean;
     loading: boolean;
-    pending: PendingMessage[];
-    messages: MessageFullFragment[];
+    messages: ModelMessage[];
 }
 
-class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> implements MessageSendHandler {
+class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> {
 
     messagesList = React.createRef<MessageListComponent>();
     unmounter: (() => void) | null = null;
@@ -107,7 +97,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.state = {
             message: '',
             mounted: false,
-            pending: [],
             messages: this.conversation.getState().messages,
             loading: this.conversation.getState().loading,
         };
@@ -123,58 +112,19 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             imageShrink: '1024x1024',
         });
         dialog.done((r) => {
-            let isFirst = true;
-            r.progress((v) => {
-                if (!isFirst) {
-                    return;
-                }
-                isFirst = false;
-                console.warn(v.incompleteFileInfo);
-                let name = v.incompleteFileInfo.name || 'image.jpg';
-                let key = this.props.messenger.sender.sendFile(this.props.conversationId, r, this);
+            this.conversation.sendFile(r);
+            this.setState({ message: '' }, () => {
                 this.messagesList.current!!.scrollToBottom();
-                this.setState((src) => ({ ...src, pending: [...src.pending, { key: key, progress: 0, message: null, file: name }] }), () => {
-                    this.xinput.focus();
-                    this.messagesList.current!!.scrollToBottom();
-                });
             });
         });
     }
 
     handleSend = () => {
-        if (this.state.message.trim().length > 0) {
-            let message = this.state.message.trim();
-            let key = this.props.messenger.sender.sendMessage(this.props.conversationId, message, this);
-            this.setState((src) => ({ ...src, message: '', pending: [...src.pending, { key: key, progress: 0, message: message, file: null, }] }), () => {
-                this.xinput.focus();
-                this.messagesList.current!!.scrollToBottom();
-            });
-        }
-    }
-
-    handleRetry = (key: string) => {
-        console.warn(key + ': retry');
-        this.props.messenger.sender.retryMessage(key, this);
-        this.setState((src) => ({ ...src, pending: src.pending.map((v) => v.key === key ? ({ ...v, failed: false }) : v) }));
-    }
-    handleCancel = (key: string) => {
-        console.warn(key + ': cancel');
-        this.setState((src) => ({ ...src, pending: src.pending.filter((v) => v.key !== key) }));
-    }
-
-    onProgress = (key: string, progress: number) => {
-        console.warn(key + ': ' + progress);
-        this.setState((src) => ({ ...src, pending: src.pending.map((v) => v.key === key ? ({ ...v, progress: progress }) : v) }));
-    }
-
-    onCompleted = (key: string) => {
-        console.warn(key + ': completed');
-        this.setState((src) => ({ ...src, pending: src.pending.filter((v) => v.key !== key) }));
-    }
-
-    onFailed = (key: string) => {
-        console.warn(key + ': failed');
-        this.setState((src) => ({ ...src, pending: src.pending.map((v) => v.key === key ? ({ ...v, failed: true }) : v) }));
+        this.conversation.sendMessage(this.state.message);
+        this.setState({ message: '' }, () => {
+            this.xinput.focus();
+            this.messagesList.current!!.scrollToBottom();
+        });
     }
 
     //
@@ -196,14 +146,13 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     //
 
     shouldComponentUpdate(nextProps: MessagesComponentProps, nextState: MessagesComponentState) {
-        return this.state.messages !== nextState.messages || this.state.message !== nextState.message || this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading || this.state.pending !== nextState.pending;
+        return this.state.messages !== nextState.messages || this.state.message !== nextState.message || this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading;
     }
 
     componentDidMount() {
         this.setState({ mounted: true });
         this.unmounter = this.props.messenger.mountConversation(this.props.conversationId);
         this.unmounter2 = this.conversation.subscribe(this.handleUpdates);
-        // this.xinput.focus();
     }
 
     handleUpdates = (state: ConversationState) => {
@@ -241,9 +190,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         <MessageListComponent
                             conversation={this.conversation}
                             messages={this.state.messages}
-                            pending={this.state.pending}
-                            onCancel={this.handleCancel}
-                            onRetry={this.handleRetry}
                             ref={this.messagesList}
                         />
                         <XLoader loading={isLoading} />

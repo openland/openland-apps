@@ -1,17 +1,13 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageComponent } from './MessageComponent';
-import { MessageFullFragment } from 'openland-api/Types';
-import { PendingMessage } from '../model/types';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from '../model/ConversationEngine';
+import { ModelMessage, isServerMessage } from '../model/types';
 
 interface MessageListProps {
     conversation: ConversationEngine;
-    messages: MessageFullFragment[];
-    pending: PendingMessage[];
-    onRetry: (key: string) => void;
-    onCancel: (key: string) => void;
+    messages: ModelMessage[];
 }
 
 let months = [
@@ -114,7 +110,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                 currentCollapsed = 0;
             }
         };
-        let existingKeys = new Set<string>();
         let shouldCompact = (sender: string, date: number) => {
             if (prevMessageSender === sender && prevMessageDate !== undefined) {
                 // 10 sec
@@ -132,41 +127,26 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         for (let m of this.props.messages) {
             let date = parseInt(m.date, 10);
             appendDateIfNeeded(date);
-            messages.push(
-                <MessageComponent
-                    key={'message-' + m.id}
-                    compact={shouldCompact(m.sender.id, date)}
-                    sender={m.sender as any}
-                    message={m}
-                    onCancel={this.props.onCancel}
-                    onRetry={this.props.onRetry}
-                />
-            );
-            if (m.repeatKey) {
-                existingKeys.add(m.repeatKey);
-            }
-        }
-        if (this.props.pending.length > 0) {
-            let now = new Date().getTime();
-            appendDateIfNeeded(now);
-            let shouldCollapse = shouldCompact(this.props.conversation.engine.user.id, now);
-            for (let m of this.props.pending) {
-                if (existingKeys.has(m.key)) {
-                    continue;
-                }
+            if (isServerMessage(m)) {
+                messages.push(
+                    <MessageComponent
+                        key={'message-' + m.id}
+                        compact={shouldCompact(m.sender.id, date)}
+                        sender={m.sender as any}
+                        message={m}
+                        conversation={this.props.conversation}
+                    />
+                );
+            } else {
                 messages.push(
                     <MessageComponent
                         key={'pending-' + m.key}
-                        compact={shouldCollapse}
+                        compact={shouldCompact(this.props.conversation.engine.user.id, date)}
                         sender={this.props.conversation.engine.user}
                         message={m}
-                        onCancel={this.props.onCancel}
-                        onRetry={this.props.onRetry}
+                        conversation={this.props.conversation}
                     />
                 );
-                if (!shouldCollapse) {
-                    shouldCollapse = true;
-                }
             }
         }
 
