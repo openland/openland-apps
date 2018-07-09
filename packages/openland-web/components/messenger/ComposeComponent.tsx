@@ -52,7 +52,7 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
             (async () => {
                 let id = await this.props.messenger.global.resolveGroup(nvals.map((v) => v.value!! as string));
                 if (id) {
-                    this.setState({ conversationId: id.id, resolving: false });     
+                    this.setState({ conversationId: id.id, resolving: false });
                 } else {
                     this.setState({ conversationId: null, resolving: false });
                 }
@@ -68,14 +68,20 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
             await this.props.messenger.sender.sendMessageAsync(id.id, msg);
             Router.replaceRoute('/mail/' + id.flexibleId);
         } else if (this.state.values.length > 1) {
-            let res = await this.props.messenger.client.mutate({
-                mutation: ChatCreateGroupMutation.document,
-                variables: {
-                    message: msg,
-                    members: this.state.values.map((v) => v.value)
-                }
-            });
-            Router.replaceRoute('/mail/' + (res.data as any).group.id);
+            let id = await this.props.messenger.global.resolveGroup(this.state.values.map((v) => v.value!! as string));
+            if (id) {
+                await this.props.messenger.sender.sendMessageAsync(id.id, msg);
+                Router.replaceRoute('/mail/' + id.flexibleId);
+            } else {
+                let res = await this.props.messenger.client.mutate({
+                    mutation: ChatCreateGroupMutation.document,
+                    variables: {
+                        message: msg,
+                        members: this.state.values.map((v) => v.value)
+                    }
+                });
+                Router.replaceRoute('/mail/' + (res.data as any).group.id);
+            }
         }
     }
 
