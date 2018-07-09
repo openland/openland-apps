@@ -64,7 +64,6 @@ const emojiPlugin = createEmojiPlugin({
             transformOrigin: '1em 0%',
             transition,
         };
-        return {};
     }
 });
 const { EmojiSuggestions } = emojiPlugin;
