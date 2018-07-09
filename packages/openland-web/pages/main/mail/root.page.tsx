@@ -10,6 +10,9 @@ import { MessengerComponent } from '../../../components/messenger/MessengerCompo
 import { withAllChats } from '../../../api/withAllChats';
 import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
+import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
+import { XButton } from 'openland-x/XButton';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -53,24 +56,40 @@ let ConversationContainer = Glamorous.div({
     overflow: 'hidden'
 });
 
+let Header = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    height: '48px',
+    paddingLeft: '16px',
+    paddingRight: '16px'
+});
+
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
+    let isCompose = props.router.path.endsWith('/new');
+    //
     return (
         <>
-            <XDocumentHead title={'Mail'} />
+            <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ChatContainer>
                         <Shadow>
                             <ChatListContainer>
+                                <Header>Messages <XButton path="/mail/new" icon="add" /> </Header>
                                 <ChatsComponent />
                             </ChatListContainer>
                             <ConversationContainer>
-                                {!props.router.routeQuery.conversationId && (
+                                {isCompose && canUseDOM && (
+                                    <MessengerContainer>
+                                        <ComposeComponent />
+                                    </MessengerContainer>
+                                )}
+                                {!isCompose && !props.router.routeQuery.conversationId && (
                                     <MessengerContainer>
                                         No chat selected!
                                     </MessengerContainer>
                                 )}
-                                {props.router.routeQuery.conversationId && (
+                                {!isCompose && props.router.routeQuery.conversationId && (
                                     <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
                                 )}
                             </ConversationContainer>

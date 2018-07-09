@@ -521,6 +521,40 @@ export interface ChatListQuery {
           },
           date: string,
         } | null,
+      } | {
+        __typename: "GroupConversation",
+        id: string,
+        title: string,
+        flexibleId: string,
+        unreadCount: number,
+        photos: Array< string >,
+        topMessage:  {
+          __typename: "ConversationMessage",
+          id: string,
+          message: string | null,
+          file: string | null,
+          repeatKey: string | null,
+          fileMetadata:  {
+            __typename: "FileMetadata",
+            name: string,
+            mimeType: string | null,
+            isImage: boolean,
+            imageWidth: number | null,
+            imageHeight: number | null,
+            imageFormat: string | null,
+            size: number,
+          } | null,
+          sender:  {
+            __typename: "User",
+            id: string,
+            name: string,
+            firstName: string,
+            lastName: string | null,
+            picture: string | null,
+            email: string | null,
+          },
+          date: string,
+        } | null,
       }
     ) >,
     seq: number,
@@ -589,6 +623,10 @@ export interface ChatInfoQuery {
       title: string,
     } | {
       __typename: "PrivateConversation",
+      id: string,
+      title: string,
+    } | {
+      __typename: "GroupConversation",
       id: string,
       title: string,
     }
@@ -661,9 +699,49 @@ export interface ChatReadMutation {
         __typename: "PrivateConversation",
         id: string,
         unreadCount: number,
+      } | {
+        __typename: "GroupConversation",
+        id: string,
+        unreadCount: number,
       }
     ),
   },
+};
+
+export interface ChatSearchForComposeQueryVariables {
+  query: string,
+};
+
+export interface ChatSearchForComposeQuery {
+  items:  Array< {
+    __typename: "User",
+    id: string,
+    title: string,
+    subtitle: string | null,
+  } >,
+};
+
+export interface ChatCreateGroupMutationVariables {
+  title: string,
+  members: Array< string >,
+  message: string,
+};
+
+export interface ChatCreateGroupMutation {
+  group: ( {
+      __typename: "AnonymousConversation",
+      id: string,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+    } | {
+      __typename: "GroupConversation",
+      id: string,
+    }
+  ),
 };
 
 export interface AllDealsQuery {

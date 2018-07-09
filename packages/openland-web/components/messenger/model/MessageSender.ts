@@ -53,6 +53,23 @@ export class MessageSender {
         return key;
     }
 
+    async sendMessageAsync(conversationId: string, message: string) {
+        await new Promise<string>((resolve, reject) => {
+            let handler: MessageSendHandler = {
+                onCompleted: (key: string) => {
+                    resolve();
+                },
+                onFailed: () => {
+                    reject();
+                },
+                onProgress: () => {
+                    // Ignore
+                }
+            };
+            this.sendMessage(conversationId, message, handler);
+        });
+    }
+
     retryMessage(key: string, callback: MessageSendHandler) {
         let text = this.pending.get(key);
         if (text) {

@@ -49,7 +49,9 @@ export const ChatInfoQuery = gql`
     query ChatInfo($conversationId: ID!) {
         chat: alphaChat(conversationId: $conversationId) {
             id
+            flexibleId
             title
+            photos
         }
     }
 `;
@@ -80,6 +82,24 @@ export const ChatReadMutation = gql`
                 id
                 unreadCount
             }
+        }
+    }
+`;
+
+export const ChatSearchForComposeQuery = gql`
+    query ChatSearchForCompose($query: String!) {
+        items: alphaChatsSearchForCompose(query: $query) {
+            id
+            title: name
+            subtitle: email
+        }
+    }
+`;
+
+export const ChatCreateGroupMutation = gql`
+    mutation ChatCreateGroup($members: [ID!]!, $message: String!) {
+        group: alphaChatCreateGroup(members: $members, message: $message) {
+            id
         }
     }
 `;

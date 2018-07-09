@@ -80,6 +80,19 @@ export class GlobalStateEngine {
         this.watcher = new SequenceWatcher('global', GLOBAL_SUBSCRIPTION, seq, {}, this.handleGlobalEvent, this.engine.client);
     }
 
+    resolvePrivateConversation = async (uid: string) => {
+        let res = await this.engine.client.query({
+            query: ChatInfoQuery.document,
+            variables: {
+                conversationId: uid
+            }
+        });
+        return {
+            id: (res.data as any).chat.id as string,
+            flexibleId: (res.data as any).chat.flexibleId as string
+        };
+    }
+
     onConversationVisible = (conversationId: string) => {
         this.visibleConversations.add(conversationId);
     }
