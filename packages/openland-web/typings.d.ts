@@ -497,21 +497,21 @@ declare module 'ifvisible.js' {
 }
 
 declare module 'favico.js' {
-    
+
 }
 
 declare module "draft-js-plugins-editor" {
     export type PluginsEditorProps = Draft.EditorProps | {
         plugins: any,
     }
-    
-    export default class PluginsEditor 
+
+    export default class PluginsEditor
         extends React.Component<PluginsEditorProps, Draft.EditorState> {
-            // Force focus back onto the editor node.
-            focus(): void;
-            // Remove focus from the editor node.
-            blur(): void;
-        }
+        // Force focus back onto the editor node.
+        focus(): void;
+        // Remove focus from the editor node.
+        blur(): void;
+    }
     export function createEditorStateWithText(text: string): PluginsEditor;
     export function composeDecorators(...func: any[]): (...args: any[]) => any;
 }
@@ -520,4 +520,8 @@ declare module "draft-js-emoji-plugin" {
     function createEmojiPlugin(config?: object): any;
     export type EmojiSuggestions = any;
     export default createEmojiPlugin;
+}
+
+declare module "react-emojione" {
+    export function emojify(src: string, opts?: any): any
 }

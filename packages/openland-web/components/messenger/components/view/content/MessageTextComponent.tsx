@@ -2,6 +2,7 @@ import * as React from 'react';
 import { preprocessText, Span } from './utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import Glamorous from 'glamorous';
+import { emojify } from 'react-emojione';
 
 export interface MessageTextComponentProps {
     message: string;
@@ -28,7 +29,7 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             } else if (v.type === 'link') {
                 return <XLinkExternal key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
             } else {
-                return <span key={'text-' + i}>{v.text}</span>;
+                return <span key={'text-' + i}>{emojify(v.text!!, { style: { height: 18 } })}</span>;
             }
         });
         return <TextWrapper>{parts}</TextWrapper>;
