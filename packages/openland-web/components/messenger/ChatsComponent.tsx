@@ -24,15 +24,7 @@ const ItemContainer = Glamorous.a({
     // borderBottomStyle: 'solid',
     alignItems: 'center',
     '&.is-active': {
-        backgroundColor: '#f2f4f5',
-
-        '& .counter': {
-            backgroundColor: '#654bfa !important',
-        }
-    },
-
-    '& .counter': {
-        backgroundColor: '#bcc3cc !important'
+        backgroundColor: '#f2f4f5'
     }
 });
 
@@ -92,7 +84,8 @@ const Content = Glamorous.div({
         height: 18,
         borderRadius: 7,
         fontSize: 12,
-        border: 'none'
+        border: 'none',
+        backgroundColor: '#654bfa',
     }
 });
 
