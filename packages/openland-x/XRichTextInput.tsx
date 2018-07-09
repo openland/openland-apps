@@ -1,12 +1,76 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { EditorState, Editor, getDefaultKeyBinding, DraftHandleValue, ContentState } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } from 'draft-js';
 import 'draft-js/dist/Draft.css';
+import 'draft-js-emoji-plugin/lib/plugin.css';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
+import createEmojiPlugin from 'draft-js-emoji-plugin';
+
+const getRelativeParent: (element: HTMLElement) => HTMLElement | null = (element: HTMLElement) => {
+    if (!element) {
+        return null;
+    }
+
+    const position = window.getComputedStyle(element).getPropertyValue('position');
+    if (position !== 'static') {
+        return element;
+    }
+
+    return getRelativeParent(element.parentElement!!);
+};
+
+const emojiPlugin = createEmojiPlugin({
+    positionSuggestions: (args: any) => {
+        let { state, filteredEmojis, popover, decoratorRect } = args;
+        const relativeParent = getRelativeParent(popover.parentElement);
+        let relativeRect: any = {};
+        if (relativeParent) {
+            relativeRect.scrollLeft = relativeParent.scrollLeft;
+            relativeRect.scrollTop = relativeParent.scrollTop;
+
+            const relativeParentRect = relativeParent.getBoundingClientRect();
+            relativeRect.left = decoratorRect.left - relativeParentRect.left;
+            relativeRect.top = decoratorRect.top - relativeParentRect.top + relativeParentRect.height;
+            console.warn(relativeParentRect);
+        } else {
+            relativeRect.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            relativeRect.scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+            relativeRect.top = decoratorRect.top;
+            relativeRect.left = decoratorRect.left;
+        }
+
+        const left = relativeRect.left + relativeRect.scrollLeft;
+        const top = relativeRect.top - relativeRect.scrollTop + 8;
+
+        let transform;
+        let transition;
+        if (state.isActive) {
+            if (filteredEmojis.size > 0) {
+                transform = 'scale(1)';
+                transition = 'all 0.25s cubic-bezier(.3,1.2,.2,1)';
+            } else {
+                transform = 'scale(0)';
+                transition = 'all 0.35s cubic-bezier(.3,1,.2,1)';
+            }
+        }
+
+        return {
+            left: `${left}px`,
+            bottom: `${top}px`,
+            transform,
+            transformOrigin: '1em 0%',
+            transition,
+        };
+        return {};
+    }
+});
+const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
 
 const Container = Glamorous.div<XFlexStyles>([{
-
+    position: 'relative'
 }, applyFlex]);
 
 function keyBinding(e: React.KeyboardEvent<any>): string | null {
@@ -66,7 +130,11 @@ export class XRichTextInput extends React.Component<{ onChange?: (value: string)
                         keyBindingFn={keyBinding}
                         handleKeyCommand={this.onHandleKey}
                         ref={this.editorRef}
+                        plugins={[emojiPlugin]}
                     />
+
+                    <EmojiSuggestions />
+                    {/* <EmojiSelect /> */}
                 </Container>
             );
         } else {
