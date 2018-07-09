@@ -7,8 +7,10 @@ let MessagesContainerInner = Glamorous.div({
     // flexBasis: '0px',
     flexDirection: 'column',
     justifyContent: 'flex-end',
+    alignSelf: 'center',
     position: 'relative',
     maxHeight: '100%',
+    maxWidth: 900,
     overflow: 'hidden',
     '& > div:first-child': {
         width: '100%',
@@ -23,14 +25,14 @@ let MessagesContainerInner = Glamorous.div({
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
-    // flexBasis: '0px',
-    height: 'calc(100% - 96px)',
-    maxHeight: 'calc(100% - 96px)',
-    flexGrow: 1,
     flexDirection: 'column',
-    maxWidth: 850,
-    margin: 'auto',
-    width: '100%'
+    justifyContent: 'center',
+    flexGrow: 1,
+    height: 'calc(100% - 80px)',
+    maxHeight: 'calc(100% - 80px)',
+    width: '100%',
+    paddingLeft: 16,
+    paddingRight: 16,
 });
 
 export const MessagesContainer = (props: { children?: any }) => {
