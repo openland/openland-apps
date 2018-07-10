@@ -9,15 +9,14 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../Incubator/XOverflow';
 
 const ChatRoot = Glamorous(XVertical)({
-    maxHeight: '100%',
     width: '100%',
-    maxWidth: '100%'
+    height: '100%',
 });
 
 const ChatWrapper = Glamorous(XHorizontal)({
-    maxHeight: 'calc(100% - 79px)',
     width: '100%',
-    overflow: 'hidden'
+    height: 'calc(100% - 79px)',
+    maxHeight: 'calc(100% - 79px)'
 });
 
 const ChatHeaderWrapper = Glamorous.div({
@@ -25,9 +24,17 @@ const ChatHeaderWrapper = Glamorous.div({
     justifyContent: 'center',
     alignItems: 'center',
     height: 79,
+    flexShrink: 0,
     paddingLeft: 40,
     paddingRight: 40,
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
+});
+
+const ChatHeaderContent = Glamorous(XHorizontal)({
+    alignItems: 'center',
+    maxWidth: '850px',
+    width: '100%',
+    flexBasis: '100%'
 });
 
 const ChatLogo = Glamorous(XAvatar)({
@@ -54,9 +61,8 @@ const SubTitle = Glamorous.div({
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     return (
         <ChatRoot flexGrow={1} separator={'none'}>
-            {console.log(props)}
             <ChatHeaderWrapper>
-                <XHorizontal alignItems="center" maxWidth={850} flexGrow={1}>
+                <ChatHeaderContent>
                     <XHorizontal separator={10} alignItems="center" flexGrow={1}>
                         <ChatLogo
                             size="medium"
@@ -76,9 +82,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             </>
                         )}
                     />
-                </XHorizontal>
+                </ChatHeaderContent>
             </ChatHeaderWrapper>
-            <ChatWrapper flexGrow={1} justifyContent="center">
+            <ChatWrapper justifyContent="center">
                 <MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />
             </ChatWrapper>
         </ChatRoot>

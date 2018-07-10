@@ -24,7 +24,7 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
     }
 }));
 
-const SendMessageContainer = Glamorous(XHorizontal)({
+const SendMessageWrapper = Glamorous(XHorizontal)({
     width: '100%',
     height: 100,
     flexShrink: 0,
@@ -33,6 +33,12 @@ const SendMessageContainer = Glamorous(XHorizontal)({
     paddingTop: 15,
     paddingBottom: 10,
     borderTop: '1px solid rgba(229, 233, 242, 0.5)'
+});
+
+const SendMessageContent = Glamorous(XHorizontal)({
+    width: '100%',
+    maxWidth: '850px',
+    flexBasis: '100%'
 });
 
 export interface MessageComposeComponentProps {
@@ -103,8 +109,8 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
 
     render() {
         return (
-            <SendMessageContainer alignItems="stretch" justifyContent="center" >
-                <XHorizontal maxWidth={850} flexGrow={1} separator={15}>
+            <SendMessageWrapper alignItems="stretch" justifyContent="center" >
+                <SendMessageContent separator={15}>
                     <AttachmentButton
                         onClick={this.handleAttach}
                         enabled={this.props.enabled !== false}
@@ -151,8 +157,8 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
                         iconRight="send"
                         enabled={this.props.enabled !== false}
                     />
-                </XHorizontal>
-            </SendMessageContainer>
+                </SendMessageContent>
+            </SendMessageWrapper>
         );
     }
 }

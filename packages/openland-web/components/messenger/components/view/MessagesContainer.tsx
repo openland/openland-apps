@@ -1,10 +1,19 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 
-let MessagesContainerInner = Glamorous.div({
+const ChatContainer = Glamorous.div({
     display: 'flex',
+    flexDirection: 'column',
     flexGrow: 1,
-    // flexBasis: '0px',
+    width: '100%',
+    paddingLeft: 16,
+    paddingRight: 16,
+    overflow: 'hidden'
+});
+
+const MessagesContainerInner = Glamorous.div({
+    display: 'flex',
+    flexBasis: '100%',
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignSelf: 'center',
@@ -16,24 +25,13 @@ let MessagesContainerInner = Glamorous.div({
     '& > div:first-child': {
         width: '100%',
         maxWidth: '100%',
+        flexBasis: '100%',
         '& > .simplebar-scroll-content > .simplebar-content': {
             overflowX: 'unset !important',
             overflowY: 'unset !important',
             width: '100%'
         }
     }
-});
-
-let ChatContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    flexGrow: 1,
-    // height: 'calc(100% - 80px)',
-    // maxHeight: 'calc(100% - 80px)',
-    width: '100%',
-    paddingLeft: 16,
-    paddingRight: 16,
 });
 
 export const MessagesContainer = (props: { children?: any }) => {
