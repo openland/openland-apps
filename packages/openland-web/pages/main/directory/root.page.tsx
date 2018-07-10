@@ -20,6 +20,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { InterestPicker } from './interestPicker';
 import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
 import { XMutation } from 'openland-x/XMutation';
+import { TextDirectory } from 'openland-text/TextDirectory';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -65,10 +66,10 @@ const Header = () => (
     <HeaderWrapper>
         <HeaderContent>
             <div>
-                <HeaderTitle>Organizations</HeaderTitle>
-                <HeaderText>Search for new partnership to looking their listings updates</HeaderText>
+                <HeaderTitle>{TextDirectory.headerTitle}</HeaderTitle>
+                <HeaderText>{TextDirectory.headerText}</HeaderText>
             </div>
-            <XButton path="/createOrganization" text="Add an organization" />
+            <XButton path="/createOrganization" text={TextDirectory.headerButtonAddOrganization} />
         </HeaderContent>
     </HeaderWrapper>
 );
@@ -84,8 +85,8 @@ interface OrganizationCardProps {
         name: string,
         photo: string | null,
         location: string | null,
-        interests?: string[] | null,
-        organizationType?: string[] | null,
+        interests: string[] | null,
+        organizationType: string[] | null,
         isMine: boolean,
         followed: boolean,
     };
@@ -163,7 +164,7 @@ const OrganizationFollowBtn = withOrganizationFollow((props) => {
         <XMutation mutation={props.followOrganization} variables={{organizationId: (props as any).organizationId, follow: !(props as any).followed}}>
             <XButton
                 style={(props as any).followed ? 'ghost' : 'default'}
-                text={(props as any).followed ? 'Following' : 'Follow'}
+                text={(props as any).followed ? TextDirectory.buttonFollowing : TextDirectory.buttonFollow}
                 icon={(props as any).followed ? 'check' : undefined}
             />
         </XMutation>
@@ -184,12 +185,10 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                 <OrganizationInfoWrapper>
                     <OrganizationTitleWrapper>
                         <OrganizationTitle>{props.item.name}</OrganizationTitle>
-                        <OrganizationLocation>San Francisco, CA{props.item.location}</OrganizationLocation>
+                        <OrganizationLocation>{props.item.location}</OrganizationLocation>
                     </OrganizationTitleWrapper>
 
                     {props.item.interests && (<OrganizationInterests>{props.item.interests.join(' • ')}</OrganizationInterests>)}
-                    <OrganizationInterests>Acquisitions • Joint venture</OrganizationInterests>
-
                     {props.item.organizationType && (
                         <OrganizationTags>
                             {props.item.organizationType.map((tag) => (
@@ -197,24 +196,19 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                             ))}
                         </OrganizationTags>
                     )}
-                    <OrganizationTags>
-                        <XTag title="coliving" />
-                        <XTag title="operator" />
-                        <XTag title="builder" />
-                    </OrganizationTags>
                 </OrganizationInfoWrapper>
                 <OrganizationToolsWrapper>
-                    {props.item.isMine && <XButton style="ghost" text="Your organization" enabled={false} />}
+                    {props.item.isMine && <XButton style="ghost" text={TextDirectory.labelYourOrganization} enabled={false} />}
                     {!props.item.isMine && <OrganizationFollowBtn followed={props.item.followed} organizationId={props.item.id} />}
                     <XOverflow
                         placement="bottom-end"
                         content={(
                             <>
-                                <XOverflow.Item href={'/o/' + props.item.id}>View profile</XOverflow.Item>
+                                <XOverflow.Item href={'/o/' + props.item.id}>{TextDirectory.buttonViewProfile}</XOverflow.Item>
 
                                 {props.item.isMine && (
                                     <XWithRole role="admin" orgPermission={true}>
-                                        <XOverflow.Item href="/settings/organization">Edit</XOverflow.Item>
+                                        <XOverflow.Item href="/settings/organization">{TextDirectory.buttonEdit}</XOverflow.Item>
                                     </XWithRole>
                                 )}
                             </>
@@ -239,11 +233,11 @@ const OrganizationCards = withExploreOrganizations((props) => {
     console.warn(props);
     return (
         <>
-            {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && <OrganizationCounter>{props.data.items.pageInfo.itemsCount + ((props.data.items.pageInfo.itemsCount !== 1) ? ' organizations' : ' organization')}</OrganizationCounter>}
+            {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && <OrganizationCounter>{TextDirectory.counterOrganizations(props.data.items.pageInfo.itemsCount)}</OrganizationCounter>}
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && props.data.items.edges.map((i, j) => (
                 <OrganizationCard key={i.node.id + j} item={i.node} />
             ))}
-            {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && <XText>Empty</XText>}
+            {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && <XText>{TextDirectory.emptyResults}</XText>}
         </>
     );
 });
