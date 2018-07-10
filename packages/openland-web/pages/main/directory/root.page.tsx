@@ -187,7 +187,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                 <OrganizationToolsWrapper>
                     <XButton style="primary" text="Follow" />
                     <XOverflow
-                        placement="bottom"
+                        placement="bottom-end"
                         content={(
                             <>
                                 <XOverflow.Item href={'/o/' + props.item.id}>View profile</XOverflow.Item>
