@@ -15,6 +15,7 @@ import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LocationPicker } from './locationPicker';
 import { CategoryPicker } from './categoryPicker';
 import { XText } from 'openland-x/XText';
+import { XTag } from 'openland-x/XTag';
 import { InterestPicker } from './interestPicker';
 
 const Root = Glamorous(XVertical)({
@@ -142,25 +143,6 @@ const OrganizationTags = Glamorous.div({
     flexWrap: 'wrap',
 });
 
-const OrganizationTag = Glamorous.div({
-    maxWidth: '100%',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    height: 25,
-    borderRadius: 4,
-    backgroundColor: '#edf3fe',
-    whiteSpace: 'nowrap',
-    fontSize: 12,
-    fontWeight: 500,
-    letterSpacing: 0.3,
-    lineHeight: '24px',
-    color: '#4285f4',
-    padding: '0px 8px 1px',
-    marginRight: 8,
-    marginTop: 4,
-    marginBottom: 4,
-});
-
 const OrganizationToolsWrapper = Glamorous(XHorizontal)({
     paddingTop: 4
 });
@@ -193,13 +175,13 @@ const OrganizationCard = (props: OrganizationCardProps) => (
 
                     {props.item.tags && (<OrganizationTags>
                             {props.item.tags.map((tag) => (
-                                <OrganizationTag key={props.item.id + tag}>{tag}</OrganizationTag>
+                                <XTag key={props.item.id + tag} title={tag} />
                             ))}
                         </OrganizationTags>)}
                     <OrganizationTags>
-                        <OrganizationTag>coliving</OrganizationTag>
-                        <OrganizationTag>operator</OrganizationTag>
-                        <OrganizationTag>builder</OrganizationTag>
+                        <XTag title="coliving" />
+                        <XTag title="operator" />
+                        <XTag title="builder" />
                     </OrganizationTags>
                 </OrganizationInfoWrapper>
                 <OrganizationToolsWrapper>
