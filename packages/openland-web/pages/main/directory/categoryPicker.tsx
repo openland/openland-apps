@@ -135,7 +135,7 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
     }
 
     onClick = (category: { value: string, label: string }) => {
-        this.onPick({ type: 'category', value: category.value, label: category.label });
+        this.onPick({ type: 'organizationType', value: category.value, label: category.label });
     }
 
     onInner = (ref: any) => {

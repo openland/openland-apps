@@ -153,7 +153,7 @@ const OrganizationToolsWrapper = Glamorous(XHorizontal)({
 });
 
 export interface SearchCondition {
-    type: 'name' | 'location' | 'category' | 'role';
+    type: 'name' | 'location' | 'organizationType' | 'interest';
     value: string;
     label: string;
 }

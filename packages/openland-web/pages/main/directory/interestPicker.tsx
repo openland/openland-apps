@@ -4,27 +4,57 @@ import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchCondition } from './root.page';
 import { XMenuItem } from '../../../components/Incubator/XOverflow';
+import glamorous from '../../../../../node_modules/glamorous';
+import { XText } from 'openland-x/XText';
+import { XInput } from 'openland-x/XInput';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
-const CATALOG = {
-    options: [
-        { label: 'Selling', value: 'Selling' },
-        { label: 'Buying', value: 'Buying' },
-        { label: 'Joint ventures', value: 'Joint ventures' },
-        { label: 'Leasing', value: 'Leasing' },
-        { label: 'Option-to-buy', value: 'Option-to-buy' },
-    ]
-};
+const CATALOG = [
+    { label: 'Selling', value: 'Selling' },
+    { label: 'Buying', value: 'Buying' },
+    { label: 'Joint ventures', value: 'Joint ventures' },
+    { label: 'Leasing', value: 'Leasing' },
+    { label: 'Option-to-buy', value: 'Option-to-buy' },
+];
 
-export class InterestPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { popper: boolean }> {
-    inner = 0;
+const VerticalScrollable = glamorous(XVertical)({
+    height: 200,
+    width: 200,
+    overflowY: 'scroll'
+});
+
+class EntriesComponent extends React.Component<{ title: string, options: { value: string, label: string }[], query: string, onPick: (q: SearchCondition) => void }> {
+    render() {
+        return (
+            <XVertical>
+                <XText textStyle="h500">{this.props.title}</XText>
+                <VerticalScrollable>
+                    {this.props.options.filter(e => e.value.split(' ').filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0).map((e, i) => <XMenuItem onClick={() => this.props.onPick({ type: 'interest', value: e.value, label: e.label })} key={e + '_' + i}>{e.label}</XMenuItem>)}
+                </VerticalScrollable>
+            </XVertical>
+        );
+    }
+}
+
+export class InterestPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { query: string, popper: boolean }> {
     constructor(props: any) {
         super(props);
-        this.state = { popper: false };
+        this.state = { query: '', popper: false };
+    }
+    handleChange = (v: string) => {
+        this.setState({ query: v });
     }
 
     onPick = (q: SearchCondition) => {
         this.props.onPick(q);
-        this.setState({ popper: false });
+        this.setState({ query: '', popper: false });
+    }
+
+    onEnter = () => {
+        if (this.state.query.length === 0) {
+            return;
+        }
+        this.onPick({ type: 'interest', value: this.state.query, label: this.state.query });
     }
 
     switch = () => {
@@ -32,19 +62,16 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
     }
 
     close = () => {
-        if (!this.inner) {
-            this.setState({ popper: false });
-        }
-    }
-
-    onClick = (role: { value: string, label: string }) => {
-        this.onPick({ type: 'role', value: role.value, label: role.label });
+        this.setState({ popper: false });
     }
 
     render() {
         let content = (
-            <XVertical >
-                {CATALOG.options.map(role => <XMenuItem key={role.value} onClick={(e) => this.onClick(role)}>{role.label}</XMenuItem>)}
+            <XVertical>
+                <XInput value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
+                <XHorizontal>
+                    <EntriesComponent title="Top interests" query={this.state.query} options={CATALOG} onPick={this.onPick} />
+                </XHorizontal>
             </XVertical>
         );
         return (
