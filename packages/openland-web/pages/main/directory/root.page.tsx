@@ -18,6 +18,8 @@ import { XText } from 'openland-x/XText';
 import { XTag } from 'openland-x/XTag';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { InterestPicker } from './interestPicker';
+import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
+import { XMutation } from 'openland-x/XMutation';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -156,6 +158,18 @@ export interface SearchCondition {
     label: string;
 }
 
+const OrganizationFollowBtn = withOrganizationFollow((props) => {
+    return (
+        <XMutation mutation={props.followOrganization} variables={{organizationId: (props as any).organizationId, follow: !(props as any).followed}}>
+            <XButton
+                style={(props as any).followed ? 'ghost' : 'default'}
+                text={(props as any).followed ? 'Following' : 'Follow'}
+                icon={(props as any).followed ? 'check' : undefined}
+            />
+        </XMutation>
+    );
+}) as React.ComponentType<{ organizationId: string, followed: boolean }>;
+
 const OrganizationCard = (props: OrganizationCardProps) => (
     <OrganizationCardWrapper>
         <XHorizontal justifyContent="space-between" separator={12}>
@@ -191,16 +205,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                 </OrganizationInfoWrapper>
                 <OrganizationToolsWrapper>
                     {props.item.isMine && <XButton style="ghost" text="Your organization" enabled={false} />}
-                    {!props.item.isMine && (
-                        <XButton
-                            style={props.item.followed ? 'ghost' : 'default'}
-                            text={props.item.followed ? 'Following' : 'Follow'}
-                            icon={props.item.followed ? 'check' : undefined}
-                            action={async () => {
-                                // await props.followOrganization({ variables: { follow: !props.item.followed } });
-                            }}
-                        />
-                    )}
+                    {!props.item.isMine && <OrganizationFollowBtn followed={props.item.followed} organizationId={props.item.id} />}
                     <XOverflow
                         placement="bottom-end"
                         content={(
