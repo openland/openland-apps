@@ -124,7 +124,7 @@ let Item = makeNavigable((props) => {
 
 export const ChatsComponent = withChatsAll((props) => {
     return (
-        <XScrollView flexGrow={1}>
+        <XScrollView>
             <XVertical separator={'none'}>
                 {props.data && props.data.chats && props.data.chats.conversations.map((v) => (
                     <Item path={'/mail/' + v.flexibleId} key={v.id}>

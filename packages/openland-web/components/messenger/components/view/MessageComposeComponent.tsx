@@ -25,8 +25,8 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
 }));
 
 const SendMessageWrapper = Glamorous(XHorizontal)({
+    width: '100%',
     height: 100,
-    alignSelf: 'stretch',
     flexShrink: 0,
     paddingLeft: 40,
     paddingRight: 40,
@@ -36,11 +36,9 @@ const SendMessageWrapper = Glamorous(XHorizontal)({
 });
 
 const SendMessageContent = Glamorous(XHorizontal)({
+    width: '100%',
     maxWidth: '850px',
-    flexGrow: 1
-    // width: '100%',
-    // maxWidth: '850px',
-    // flexBasis: '100%'
+    flexBasis: '100%'
 });
 
 export interface MessageComposeComponentProps {

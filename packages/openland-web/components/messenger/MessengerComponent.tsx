@@ -9,10 +9,14 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../Incubator/XOverflow';
 
 const ChatRoot = Glamorous(XVertical)({
-    // width: '',
-    // height: '100%',
-    flexGrow: 1,
-    flexBasis: '0px'
+    width: '100%',
+    height: '100%',
+});
+
+const ChatWrapper = Glamorous(XHorizontal)({
+    width: '100%',
+    height: 'calc(100% - 79px)',
+    maxHeight: 'calc(100% - 79px)'
 });
 
 const ChatHeaderWrapper = Glamorous.div({
@@ -80,7 +84,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     />
                 </ChatHeaderContent>
             </ChatHeaderWrapper>
-            <MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />
+            <ChatWrapper justifyContent="center">
+                <MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />
+            </ChatWrapper>
         </ChatRoot>
     );
 }));
