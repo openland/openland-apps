@@ -21,7 +21,6 @@ const ChatWrapper = Glamorous(XHorizontal)({
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
     height: 79,
     flexShrink: 0,
@@ -32,9 +31,17 @@ const ChatHeaderWrapper = Glamorous.div({
 
 const ChatHeaderContent = Glamorous(XHorizontal)({
     alignItems: 'center',
-    maxWidth: '850px',
+    maxWidth: 850,
     width: '100%',
     flexBasis: '100%'
+});
+
+const ChatLeftContent = Glamorous(XHorizontal)({
+    maxWidth: 'calc(100% - 48px)'
+});
+
+const ChatTitleContent = Glamorous(XVertical)({
+    maxWidth: 'calc(100% - 70px)'
 });
 
 const ChatLogo = Glamorous(XAvatar)({
@@ -46,7 +53,10 @@ const Title = Glamorous.div({
     fontSize: 20,
     fontWeight: 500,
     letterSpacing: 0.6,
-    color: '#334562'
+    color: '#334562',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
 });
 
 const SubTitle = Glamorous.div({
@@ -62,18 +72,18 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     return (
         <ChatRoot flexGrow={1} separator={'none'}>
             <ChatHeaderWrapper>
-                <ChatHeaderContent>
-                    <XHorizontal separator={10} alignItems="center" flexGrow={1}>
+                <ChatHeaderContent justifyContent="space-between">
+                    <ChatLeftContent separator={10} alignItems="center" flexGrow={1}>
                         <ChatLogo
                             size="medium"
                             style={props.data.chat.__typename === 'SharedConversation' ? 'organization' : 'person'}
                             cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : undefined}
                         />
-                        <XVertical separator={2}>
+                        <ChatTitleContent separator={2}>
                             <Title>{props.data.chat.title}</Title>
                             <SubTitle>Openland</SubTitle>
-                        </XVertical>
-                    </XHorizontal>
+                        </ChatTitleContent>
+                    </ChatLeftContent>
                     <XOverflow
                         placement="bottom-end"
                         content={(

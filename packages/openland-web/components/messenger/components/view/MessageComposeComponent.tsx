@@ -41,6 +41,19 @@ const SendMessageContent = Glamorous(XHorizontal)({
     flexBasis: '100%'
 });
 
+const TextInputWrapper = Glamorous.div({
+    flexGrow: 1,
+    maxHeight: '100%',
+    maxWidth: 'calc(100% - 188px)',
+    '& > div': {
+        maxHeight: '100%',
+        height: '100%',
+        '& .DraftEditor-root': {
+            overflow: 'auto'
+        }
+    }
+});
+
 export interface MessageComposeComponentProps {
     enabled?: boolean;
     onSend?: (text: string) => void;
@@ -118,37 +131,15 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
                     >
                         <XIcon icon="attachment" />
                     </AttachmentButton>
-                    {/* <XInput
-                        placeholder="Write a message..."
-                        flexGrow={1}
-                        value={this.state.message}
-                        onChange={this.handleChange}
-                        onEnter={this.handleSend}
-                        ref={this.input}
-                        disabled={this.props.enabled === false}
-                    /> */}
-                    <XRichTextInput
-                        placeholder="Write a message..."
-                        flexGrow={1}
-                        onChange={this.handleChange}
-                        onSubmit={this.handleSend}
-                        ref={this.input}
-                    />
-                    {/* <XTextArea
-                        placeholder="Write a message..."
-                        flexGrow={1}
-                        value={this.state.message}
-                        onChange={this.handleChange}
-                        onEnter={this.handleSend}
-                        disabled={this.props.enabled === false}
-
-                        maxheight={'100%'}
-                        resize={false}
-                        bordered={false}
-                        size="small"
-                        appearance="chat"
-                        // ref={this.input}
-                    /> */}
+                    <TextInputWrapper>
+                        <XRichTextInput
+                            placeholder="Write a message..."
+                            flexGrow={1}
+                            onChange={this.handleChange}
+                            onSubmit={this.handleSend}
+                            ref={this.input}
+                        />
+                    </TextInputWrapper>
                     <XButton
                         text="Send"
                         size="medium"
