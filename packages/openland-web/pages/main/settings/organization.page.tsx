@@ -9,7 +9,7 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { ContactPerson } from '../../../utils/OrganizationProfileFields';
 import { XSelect } from 'openland-x/XSelect';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XFormField } from 'openland-x-forms/XFormField';
+import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
 import { Navigation } from './_navigation';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XInput } from 'openland-x/XInput';
@@ -25,6 +25,12 @@ import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfil
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XWithRouter } from 'openland-x-routing/withRouter';
+import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
+import { XPhotoRef } from 'openland-x/XCloudImage';
+import { DateFormater } from 'openland-x-format/XDate';
+import { XLink } from 'openland-x/XLink';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 const CenteredButton = Glamorous(XButton)({
     alignSelf: 'center'
 });
@@ -49,7 +55,6 @@ class ContactPersonItem extends React.Component<{ contact: ContactPerson, index:
                 <ContactField>{this.props.contact.phone}</ContactField>
                 <ContactField>{this.props.contact.email}</ContactField>
                 <ContactField>{this.props.contact.link}</ContactField>
-                <CenteredButton text="edit" style="electric" query={{ field: 'editContact', value: String(this.props.index) }} />
                 <CenteredButton text="delete" style="danger" query={{ field: 'deleteContact', value: String(this.props.index) }} />
             </XHorizontal>
         );
@@ -75,6 +80,73 @@ const clearContact = (c: ContactPerson): ContactPerson => {
         } : null
     };
 };
+
+interface DummyPost {
+    text: string;
+    type: string;
+    description?: string | null;
+    date: string;
+    image?: XPhotoRef | null;
+    activity?: string[] | null;
+    links?: { text: string, url: string }[] | null;
+    pinned?: boolean | null;
+}
+
+const clearPost = (c: DummyPost): DummyPost => {
+    return {
+        text: c.text,
+        type: c.type,
+        description: c.description,
+        date: c.date,
+        activity: c.activity,
+        image: c.image ? {
+            uuid: c.image.uuid,
+            crop: c.image.crop ? {
+                x: c.image.crop.x,
+                y: c.image.crop.y,
+                w: c.image.crop.w,
+                h: c.image.crop.h
+            } : null
+        } : null,
+        links: c.links ? c.links.map(l => ({ text: l.text, url: l.url })) : null,
+    };
+};
+
+class PostItem extends React.Component<{ post: DummyPost, index: number }> {
+    render() {
+        return (
+            <XHorizontal>
+                <XAvatar size="x-large" style="organization" photoRef={this.props.post.image || undefined} />
+
+                <XVertical>
+                    <ContactField>{this.props.post.text}</ContactField>
+                    <ContactField>{this.props.post.description}</ContactField>
+                    <ContactField>{this.props.post.date}</ContactField>
+                    <ContactField>{(this.props.post.activity || []).join(' ')}</ContactField>
+                    <ContactField>{(this.props.post.links || []).map((l, i) => <XLink key={i} href={l.url}>{l.text}</XLink>)}</ContactField>
+                    <CenteredButton text="delete" style="danger" query={{ field: 'deletePost', value: String(this.props.index) }} />
+                </XVertical>
+            </XHorizontal>
+        );
+    }
+}
+
+const Field = Glamorous(XFormField)({
+    flex: 1
+});
+
+const FormFieldTitle = Glamorous(XFormFieldTitle)({
+    flexGrow: 1
+});
+
+const DelLinkBtn = Glamorous(XButton)({
+    marginRight: -24,
+});
+
+const AddLinkBtn = Glamorous(XButton)({
+    marginLeft: -14,
+    marginTop: -8,
+});
 
 const OrganizationSettigs = withMyOrganizationProfile((props) => {
     return (
@@ -124,8 +196,8 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                             <XInput field="input.location" />
                                         </XFormField>
 
-                                         <XFormField title="Locations" field="input.locations" optional={true}>
-                                            <XInput field="input.locations" />
+                                        <XFormField title="Locations" field="input.locations" optional={true}>
+                                            <XSelect creatable={true} multi={true} field="input.locations" />
                                         </XFormField>
 
                                         <XFormField title="About" field="fields.input.about" optional={true}>
@@ -138,7 +210,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                         <XFormField title="Interests" field="input.interests" optional={true}>
                                             <XSelect creatable={true} multi={true} field="input.interests" />
                                         </XFormField>
-                                        
+
                                     </XVertical>
                                     <XFormField title="Photo" field="input.photoRef" optional={true}>
                                         <XAvatarUpload field="input.photoRef" />
@@ -148,7 +220,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                             <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
                         </XVertical>
                     </XForm>
-                    
+
                     <XTitle id="contacts">Contacts</XTitle>
                     <XForm
                         defaultData={{
@@ -297,42 +369,128 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                             </XVertical>
                         </XFormLoadingContent>
                     </XModalForm>
+                    
+                    <XWithRole role={['super-admin', 'editor']}>
 
-                    {/* <XModalForm
-                        title="Add post"
-                        defaultData={{
-                            contacts: props.data.myOrganizationProfile!!.posts,
-                        }}
-                        defaultAction={async (data) => {
-                            data.contacts.push({
-                                name: data.name,
-                                phone: data.phone,
-                                photoRef: data.avatar,
-                                email: data.email || null,
-                                link: data.link,
-                                position: data.position,
-                            });
-                            await props.updateOrganizaton({
-                                variables: {
-                                    input: {
-                                        contacts: data.contacts.map(clearContact)
+                    {(props.data.myOrganizationProfile!!.posts || []).filter(c => c !== null).map((c, i) => <PostItem key={i} post={c!!} index={i} />)}
+
+                        <XButton query={{ field: 'addPost', value: 'true' }} text="Add Post" style="primary" alignSelf="flex-start" />
+
+                        <XModalForm
+                            title="Add post"
+                            defaultData={{
+                                posts: props.data.myOrganizationProfile!!.posts || [],
+                                text: '',
+                                type: 'update',
+                                date: DateFormater(new Date().getTime()),
+                                links: [],
+                                activity: [],
+                                pinned: 'not pinned'
+                            }}
+                            defaultAction={async (data) => {
+                                data.posts.push({
+                                    text: data.text,
+                                    type: data.type,
+                                    description: data.description,
+                                    image: data.image,
+                                    date: data.date,
+                                    activity: data.activity,
+                                    pinned: data.pinned === 'pinned',
+                                    links: (data.links || []).filter((l: any) => l.text || l.url).map((l: any) => ({ text: l.text, url: l.url }))
+                                });
+                                await props.updateOrganizaton({
+                                    variables: {
+                                        input: {
+                                            alphaDummyPosts: data.posts.map(clearPost)
+                                        }
                                     }
-                                }
-                            });
-                        }}
-                        targetQuery="addContact"
-                    >
-                        <XFormLoadingContent>
-                            <XVertical>
-                                <XInput field="name" required={true} placeholder="Name" />
-                                <XInput field="phone" placeholder="Phone" />
-                                <XInput field="email" placeholder="Email" />
-                                <XInput field="link" placeholder="LinkedIn" />
-                                <XInput field="position" placeholder="Position" />
-                                <XAvatarUpload field="photoRef" placeholder={{ add: 'Add photo', change: 'Change photo' }} />
-                            </XVertical>
-                        </XFormLoadingContent>
-                    </XModalForm> */}
+                                });
+                            }}
+                            targetQuery="addPost"
+                        >
+                            <XFormLoadingContent>
+                                <XVertical>
+                                    <XAvatarUpload field="image" placeholder={{ add: 'Add photo', change: 'Change photo' }} />
+                                    <XInput field="text" placeholder="Text" />
+                                    <XInput field="description" placeholder="Description" />
+                                    <XInput field="date" placeholder="Date" />
+                                    <XSelect field="activity" multi={true} creatable={true} placeholder="Activity" />
+                                    <XSelect field="pinned" searchable={false} clearable={false} options={[{ value: 'pinned', label: 'pinned' }, { value: 'not pinned', label: 'not pinned' }]} />
+                                    <XSelect field="type" searchable={false} clearable={false} options={[{ value: 'update', label: 'update' }, { value: 'news', label: 'news' }]} />
+                                    <XStoreContext.Consumer>
+                                        {(store) => {
+                                            return (((store && store.readValue('fields.links')) || []).map((link: any, i: number) => {
+                                                return (
+                                                    <XHorizontal key={'link_' + i} >
+                                                        <Field title={TextOrganizationProfile.listingEditDoLinkTextTitle}>
+                                                            <XInput field={`links.${i}.text`} placeholder={TextOrganizationProfile.listingEditDoLinkTextPlaceholder} />
+                                                        </Field>
+                                                        <XVertical separator="none" flexGrow={1}>
+                                                            <XHorizontal >
+                                                                <FormFieldTitle>{TextOrganizationProfile.listingEditDoLinkUrlTitle}</FormFieldTitle>
+                                                                <DelLinkBtn
+                                                                    style="link_danger"
+                                                                    text={TextOrganizationProfile.listingEditDoLinkDelete}
+                                                                    onClick={() => {
+                                                                        if (store) {
+                                                                            let links: any[] = store.readValue('fields.links') || [];
+                                                                            links.splice(i, 1);
+                                                                            store.writeValue('fields.links', links);
+                                                                        }
+                                                                    }}
+                                                                />
+                                                                <div />
+                                                            </XHorizontal>
+                                                            <XInput field={`links.${i}.url`} placeholder={TextOrganizationProfile.listingEditDoLinkUrlPlaceholder} />
+                                                        </XVertical>
+                                                    </XHorizontal>
+                                                );
+                                            }));
+                                        }}
+                                    </XStoreContext.Consumer>
+                                    <XStoreContext.Consumer>
+                                        {(store) => {
+                                            let links = store ? store.readValue('fields.links') || [] : [];
+                                            return (
+                                                <AddLinkBtn
+                                                    onClick={() => {
+                                                        if (store) {
+                                                            links.push({ text: '', url: '' });
+                                                            store.writeValue('fields.links', links);
+                                                        }
+                                                    }}
+                                                    text={links.length === 0 ? TextOrganizationProfile.listingEditDoLinkAddFirst : TextOrganizationProfile.listingEditDoLinkAdd}
+                                                    style="link"
+                                                    alignSelf="flex-start"
+                                                />
+                                            );
+                                        }}
+                                    </XStoreContext.Consumer>
+                                </XVertical>
+                            </XFormLoadingContent>
+                        </XModalForm>
+
+                        {(props.data.myOrganizationProfile!!.posts || [])[props.router.query.deletePost] && (
+                            <XModalForm
+                                title="Delete?"
+                                submitProps={{ text: 'Delete' }}
+                                defaultData={{
+                                    posts: props.data.myOrganizationProfile!!.posts,
+                                }}
+                                defaultAction={async (data) => {
+                                    data.posts.splice(Number(props.router.query.deletePost), 1);
+                                    await props.updateOrganizaton({
+                                        variables: {
+                                            input: {
+                                                alphaDummyPosts: data.posts.map(clearPost)
+                                            }
+                                        }
+                                    });
+                                }}
+                                targetQuery="deletePost"
+                            />
+                        )}
+                    </XWithRole>
 
                 </XVertical>
             </XContent>
