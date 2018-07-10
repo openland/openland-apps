@@ -118,7 +118,7 @@ const OrganizationTitle = Glamorous.div({
 
 const OrganizationLocation = Glamorous.div({
     fontSize: 14,
-    letterSpacing: 0.4,
+    letterSpacing: -0.2,
     color: '#1f3449',
     opacity: 0.5,
     margin: '2px 0 -2px 20px',
@@ -132,7 +132,7 @@ const OrganizationTitleWrapper = Glamorous.div({
 const OrganizationInterests = Glamorous.div({
     fontSize: 14,
     fontWeight: 500,
-    letterSpacing: 0.4,
+    letterSpacing: -0.2,
     color: '#1f3449',
     opacity: 0.5,
     marginBottom: 6
