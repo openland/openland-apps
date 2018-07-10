@@ -15,7 +15,11 @@ import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LocationPicker } from './locationPicker';
 import { CategoryPicker } from './categoryPicker';
 import { XText } from 'openland-x/XText';
+import { XTag } from 'openland-x/XTag';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { InterestPicker } from './interestPicker';
+import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
+import { XMutation } from 'openland-x/XMutation';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -79,44 +83,73 @@ interface OrganizationCardProps {
         id: string,
         name: string,
         photo: string | null,
-        location: string | null
+        location: string | null,
+        interests?: string[] | null,
+        organizationType?: string[] | null,
+        isMine: boolean,
+        followed: boolean,
     };
 }
 
 const OrganizationCardWrapper = Glamorous.div({
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     backgroundColor: '#fff',
-    padding: '20px 24px',
+    padding: '20px 18px 20px 24px',
     '&:last-child': {
         borderBottom: 'none'
     }
 });
 
-const OrganizationTitleWrapper = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    maxWidth: 'calc(100% - 48px)'
+const OrganizationWrapper = Glamorous(XHorizontal)({
+    flexGrow: 1,
+    marginLeft: 8
+});
+
+const OrganizationInfoWrapper = Glamorous.div({
+    flexGrow: 1
 });
 
 const OrganizationTitle = Glamorous.div({
     height: 22,
     fontSize: 20,
     fontWeight: 500,
-    letterSpacing: 0.5,
-    color: '#334562',
+    letterSpacing: 0.6,
+    color: '#1f3449',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     maxWidth: '100%'
 });
 
-const Text = Glamorous.div({
+const OrganizationLocation = Glamorous.div({
+    fontSize: 14,
+    letterSpacing: -0.2,
+    color: '#1f3449',
+    opacity: 0.5,
+    margin: '2px 0 -2px 20px',
+});
+
+const OrganizationTitleWrapper = Glamorous.div({
     display: 'flex',
-    alignItems: 'center',
-    fontSize: 15,
-    lineHeight: 1.33,
-    color: '#334562',
+    padding: '6px 0',
+});
+
+const OrganizationInterests = Glamorous.div({
+    fontSize: 14,
+    fontWeight: 500,
+    letterSpacing: -0.2,
+    color: '#1f3449',
+    opacity: 0.5,
+    marginBottom: 6
+});
+
+const OrganizationTags = Glamorous.div({
+    display: 'flex',
+    flexWrap: 'wrap',
+});
+
+const OrganizationToolsWrapper = Glamorous(XHorizontal)({
+    paddingTop: 4
 });
 
 export interface SearchCondition {
@@ -125,40 +158,88 @@ export interface SearchCondition {
     label: string;
 }
 
+const OrganizationFollowBtn = withOrganizationFollow((props) => {
+    return (
+        <XMutation mutation={props.followOrganization} variables={{organizationId: (props as any).organizationId, follow: !(props as any).followed}}>
+            <XButton
+                style={(props as any).followed ? 'ghost' : 'default'}
+                text={(props as any).followed ? 'Following' : 'Follow'}
+                icon={(props as any).followed ? 'check' : undefined}
+            />
+        </XMutation>
+    );
+}) as React.ComponentType<{ organizationId: string, followed: boolean }>;
+
 const OrganizationCard = (props: OrganizationCardProps) => (
     <OrganizationCardWrapper>
         <XHorizontal justifyContent="space-between" separator={12}>
             <XAvatar
                 cloudImageUuid={props.item.photo!!}
-                size="large"
+                size={100}
+                placeholderFontSize={80}
+                border="1px solid rgba(164,169,177,0.2)"
                 style="organization"
             />
-            <XHorizontal flexGrow={1}>
-                <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, maxWidth: '100%', width: '100%' }}>
-                    <XHorizontal justifyContent="space-between" alignItems="center">
-                        <OrganizationTitleWrapper>
-                            <OrganizationTitle>{props.item.name}</OrganizationTitle>
-                            <Text>{props.item.location}</Text>
-                        </OrganizationTitleWrapper>
-                        <XOverflow
-                            placement="bottom"
-                            content={(
-                                <>
-                                    <XOverflow.Item href={'/o/' + props.item.id}>View profile</XOverflow.Item>
-                                </>
-                            )}
-                        />
-                    </XHorizontal>
-                </div>
-            </XHorizontal>
+            <OrganizationWrapper>
+                <OrganizationInfoWrapper>
+                    <OrganizationTitleWrapper>
+                        <OrganizationTitle>{props.item.name}</OrganizationTitle>
+                        <OrganizationLocation>San Francisco, CA{props.item.location}</OrganizationLocation>
+                    </OrganizationTitleWrapper>
+
+                    {props.item.interests && (<OrganizationInterests>{props.item.interests.join(' • ')}</OrganizationInterests>)}
+                    <OrganizationInterests>Acquisitions • Joint venture</OrganizationInterests>
+
+                    {props.item.organizationType && (
+                        <OrganizationTags>
+                            {props.item.organizationType.map((tag) => (
+                                <XTag key={props.item.id + tag} title={tag} />
+                            ))}
+                        </OrganizationTags>
+                    )}
+                    <OrganizationTags>
+                        <XTag title="coliving" />
+                        <XTag title="operator" />
+                        <XTag title="builder" />
+                    </OrganizationTags>
+                </OrganizationInfoWrapper>
+                <OrganizationToolsWrapper>
+                    {props.item.isMine && <XButton style="ghost" text="Your organization" enabled={false} />}
+                    {!props.item.isMine && <OrganizationFollowBtn followed={props.item.followed} organizationId={props.item.id} />}
+                    <XOverflow
+                        placement="bottom-end"
+                        content={(
+                            <>
+                                <XOverflow.Item href={'/o/' + props.item.id}>View profile</XOverflow.Item>
+
+                                {props.item.isMine && (
+                                    <XWithRole role="admin" orgPermission={true}>
+                                        <XOverflow.Item href="/settings/organization">Edit</XOverflow.Item>
+                                    </XWithRole>
+                                )}
+                            </>
+                        )}
+                    />
+                </OrganizationToolsWrapper>
+            </OrganizationWrapper>
         </XHorizontal>
     </OrganizationCardWrapper>
 );
+
+const OrganizationCounter = Glamorous.div({
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+    fontSize: 15,
+    lineHeight: '20px',
+    letterSpacing: 0.6,
+    color: 'rgba(31, 52, 73, 0.5)',
+    padding: '20px 5px 20px 24px',
+});
 
 const OrganizationCards = withExploreOrganizations((props) => {
     console.warn(props);
     return (
         <>
+            {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && <OrganizationCounter>{props.data.items.pageInfo.itemsCount + ((props.data.items.pageInfo.itemsCount !== 1) ? ' organizations' : ' organization')}</OrganizationCounter>}
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && props.data.items.edges.map((i, j) => (
                 <OrganizationCard key={i.node.id + j} item={i.node} />
             ))}
@@ -338,28 +419,32 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
         const { searchText, conditions } = this.state;
         return (
             <XVertical>
-                <SearchInput
-                    value={searchText}
-                    autoFocus={true}
-                    onChange={this.handleSearchChange}
-                    placeholder={'Enter a keyword'}
-                />
-                {!LIVESEARCH && (
-                    <>
-                        <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
-                        <XHorizontal >
-                            <LocationPicker onPick={this.addCondition} />
-                            <CategoryPicker onPick={this.addCondition} />
-                            <InterestPicker onPick={this.addCondition} />
-                            <XVertical alignItems="flex-end" flexGrow={1}>
-                                <XButton text="Reset" onClick={this.reset} />
-                            </XVertical>
-                        </XHorizontal>
+                <XCardStyled>
+                    <SearchInput
+                        value={searchText}
+                        autoFocus={true}
+                        onChange={this.handleSearchChange}
+                        placeholder={'Enter a keyword'}
+                    />
+                    {!LIVESEARCH && (
+                        <>
+                            <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
+                            <XHorizontal >
+                                <LocationPicker onPick={this.addCondition} />
+                                <CategoryPicker onPick={this.addCondition} />
+                                <InterestPicker onPick={this.addCondition} />
+                                <XVertical alignItems="flex-end" flexGrow={1}>
+                                    <XButton text="Reset" onClick={this.reset} />
+                                </XVertical>
+                            </XHorizontal>
 
-                    </>
-                )}
+                        </>
+                    )}
+                </XCardStyled>
 
-                <Organizations conditions={conditions} />
+                <XCardStyled>
+                    <Organizations conditions={conditions} />
+                </XCardStyled>
             </XVertical>
         );
     }
@@ -384,11 +469,7 @@ export default withApp('Directory', 'viewer', (props) => {
                         <Header />
                         <ContentWrapper>
                             <MainContent>
-                                <XVertical>
-                                    <XCardStyled>
-                                        <SearchComponent />
-                                    </XCardStyled>
-                                </XVertical>
+                                <SearchComponent />
                             </MainContent>
                         </ContentWrapper>
                     </Root>
