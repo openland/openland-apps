@@ -45,10 +45,13 @@ let ConversationContainer = Glamorous.div({
     flexDirection: 'column',
     flexGrow: 1,
     height: '100%',
-    width: '100%',
+    width: 'calc(100% - 300px)',
     backgroundColor: '#ffffff',
     justifyContent: 'center',
     position: 'relative',
+    '@media (max-width: 950px)': {
+        width: 'calc(100% - 200px)',
+    }
 });
 
 let Header = Glamorous.div({
