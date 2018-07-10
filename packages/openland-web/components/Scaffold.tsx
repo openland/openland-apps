@@ -26,8 +26,9 @@ import { OrganizationPicker } from './OrganizationPicker';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
-import { InvitesMoadal } from '../pages/main/settings/invites';
+import { InvitesToOrganizationMoadal, InvitesGlobalMoadal } from '../pages/main/settings/invites';
 import { XModalContext } from 'openland-x-modal/XModalContext';
+import { TextInvites } from 'openland-text/TextInvites';
 
 //
 // Root
@@ -254,7 +255,8 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                     </OrganizationTitleContainer>
                                     <XMenuItem path="/settings/organization" autoClose={true}>{TextGlobal.editProfile}</XMenuItem>
                                     <XWithRole role={['super-admin', 'software-developer']}>
-                                        <XMenuItem query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextGlobal.invite}</XMenuItem>
+                                        <XMenuItem query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextInvites.inviteButton}</XMenuItem>
+                                        <XMenuItem query={{ field: 'invite_global', value: 'true' }} autoClose={true}>{TextInvites.inviteGlobalButton}</XMenuItem>
                                     </XWithRole>
                                     <XMenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>
                                 </>
@@ -279,7 +281,8 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
             organizationName={props.organization ? props.organization.name : undefined}
             organizationId={props.organization ? props.organization.id : undefined}
         />
-        <InvitesMoadal targetQuery="invite" target={null} />
+        <InvitesToOrganizationMoadal targetQuery="invite" target={null} />
+        <InvitesGlobalMoadal targetQuery="invite_global" target={null} />
 
     </XVertical>
 ));
@@ -288,10 +291,11 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
 // Content
 //
 
-const ContentView = Glamorous.div<{ noBoxShadow?: boolean, marginLeft: number }>((props) => ({
+const ContentView = Glamorous.div<{ noBoxShadow?: boolean, marginLeft: number, overflow?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
+    maxHeight: props.overflow ? '100vh' : undefined,
     overflow: 'hidden',
     // borderTopLeftRadius: 8,
     // borderBottomLeftRadius: 8,
@@ -549,6 +553,7 @@ class ScaffoldContent extends React.Component<{ padding?: boolean, bottomOffset?
 interface ScaffoldProps {
     noBoxShadow?: boolean;
     sidebarBorderColor?: string;
+    overflow?: boolean;
 }
 
 const Home = withUserInfo((props) => {
@@ -891,7 +896,11 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                     </SearchWrapper>
                     {menu}
                 </NavigationWrapper>
-                <ContentView noBoxShadow={this.props.noBoxShadow} marginLeft={menu !== undefined ? 280 : 72}>
+                <ContentView
+                    noBoxShadow={this.props.noBoxShadow}
+                    marginLeft={menu !== undefined ? 280 : 72}
+                    overflow={this.props.overflow}
+                >
                     {content}
                 </ContentView>
             </RootContainer>

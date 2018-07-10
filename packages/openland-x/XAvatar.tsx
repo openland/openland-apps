@@ -7,12 +7,14 @@ import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleRes
 import { XIcon } from './XIcon';
 import { XCloudImage, XPhotoRef } from './XCloudImage';
 
-export type XAvatarSize = 'x-large' | 'large' | 'medium' | 'default' | 'small';
+export type XAvatarSize = 'x-large' | 'large' | 'medium' | 'default' | 'small' | number;
 export type XAvatarStyle = 'organization' | 'person';
 
 export interface XAvatarStyleProps extends XFlexStyles {
     className?: string;
     size?: XAvatarSize;
+    placeholderFontSize?: number;
+    border?: string;
     style?: XAvatarStyle;
     attach?: 'left' | 'right' | 'both';
 }
@@ -23,27 +25,22 @@ let sizeStyles = styleResolver({
     'x-large': {
         height: 152,
         width: 152,
-        fontSize: 20,
     },
     'large': {
         height: 130,
         width: 130,
-        fontSize: 20,
     },
     'medium': {
         height: 48,
         width: 48,
-        fontSize: 20,
     },
     'default': {
         height: 40,
         width: 40,
-        fontSize: 20,
     },
     'small': {
         height: 36,
         width: 36,
-        fontSize: 20,
     }
 });
 
@@ -108,13 +105,16 @@ interface StyledAvatarProps extends XFlexStyles {
 const AvatarBehaviour = [
     (props: any) => ({
         display: 'flex',
-        border: (props as any).avatarStyle === 'organization' ? undefined : '1px solid rgba(164,169,177,0.2)',
+        border: props.avatarBorder ? props.avatarBorder : (props as any).avatarStyle === 'organization' ? undefined : '1px solid rgba(164,169,177,0.2)',
         cursor: (props as any).enabled === false ? 'default' : 'pointer',
         src: props.src,
         flexShrink: 0
     }),
     (props: any) => applyFlex(props),
-    (props: any) => sizeStyles(props.avatarSize),
+    (props: any) => ({
+        width: typeof props.avatarSize === 'number' ? props.avatarSize : sizeStyles(props.avatarSize).width as number,
+        height: typeof props.avatarSize === 'number' ? props.avatarSize : sizeStyles(props.avatarSize).height as number,
+    }),
     (props: any) => borderRadiusStyles({ style: props.avatarStyle || 'person', attach: props.attach }, props.avatarSize)
 ];
 const StyledAvatar = Glamorous.img<StyledAvatarProps>(AvatarBehaviour);
@@ -127,7 +127,9 @@ const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
     overflow: 'hidden'
 })]);
 
-const Placeholder = Glamorous(XIcon)<{ size?: XAvatarSize }>((props) => placeHolderFontStyle(props.size));
+const Placeholder = Glamorous(XIcon)<{ size?: number }>((props) => ({
+    fontSize: props.size
+}));
 
 const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
@@ -135,6 +137,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
         href: props.href,
         target: props.hrefTarget,
         avatarSize: props.size,
+        avatarBorder: props.border,
         avatarStyle: props.style,
         attach: props.attach,
         flexBasis: props.flexBasis,
@@ -148,6 +151,21 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
         enabled: !!(props.onClick)
     };
 
+    let imageWidth = typeof props.size === 'number' ? props.size : sizeStyles(props.size).width as number;
+    let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
+
+    let iconSize = undefined;
+
+    if (props.placeholderFontSize) {
+        iconSize = props.placeholderFontSize;
+    } else {
+        if (typeof props.size === 'number') {
+            iconSize = placeHolderFontStyle('default').fontSize as number;
+        } else {
+            iconSize = placeHolderFontStyle(props.size).fontSize as number;
+        }
+    }
+
     return (
         <>
             {props.src && (
@@ -155,12 +173,12 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             )}
             {(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps}>
-                    <XCloudImage resize="fill" srcCloud={props.cloudImageUuid} photoRef={props.photoRef} maxWidth={sizeStyles(props.size).width as number} maxHeight={sizeStyles(props.size).height as number} />
+                    <XCloudImage resize="fill" srcCloud={props.cloudImageUuid} photoRef={props.photoRef} maxWidth={imageWidth} maxHeight={imageHeight} />
                 </StyledPlaceholder>
             )}
             {!props.src && !(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps} >
-                    <Placeholder size={avatarProps.avatarSize} icon={props.style === 'organization' ? 'domain' : 'account_circle'} />
+                    <Placeholder size={iconSize} icon={props.style === 'organization' ? 'domain' : 'account_circle'} />
                 </StyledPlaceholder>
             )}
         </>

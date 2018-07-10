@@ -68,6 +68,10 @@ export interface UpdateOrganizationProfileInput {
   linkedin?: string | null,
   location?: string | null,
   contacts?: Array< ContactPersonInput > | null,
+  alphaLocations?: Array< string > | null,
+  alphaInterests?: Array< string > | null,
+  alphaOrganizationType?: Array< string > | null,
+  alphaDummyPosts?: Array< AlphaDummyPostInput > | null,
   alphaPotentialSites?: Array< RangeInput | null > | null,
   alphaSiteSizes?: Array< RangeInput | null > | null,
   alphaDevelopmentModels?: Array< string | null > | null,
@@ -75,7 +79,6 @@ export interface UpdateOrganizationProfileInput {
   alphaLandUse?: Array< string | null > | null,
   alphaGoodFor?: Array< string | null > | null,
   alphaSpecialAttributes?: Array< string | null > | null,
-  alphaOrganizationType?: Array< string > | null,
   alphaLookingFor?: Array< string > | null,
   alphaGeographies?: Array< string > | null,
   alphaDOShapeAndForm?: Array< string > | null,
@@ -101,6 +104,22 @@ export interface ContactPersonInput {
   email?: string | null,
   phone?: string | null,
   link?: string | null,
+};
+
+export interface AlphaDummyPostInput {
+  text: string,
+  type: string,
+  description?: string | null,
+  date: string,
+  image?: ImageRefInput | null,
+  activity?: Array< string > | null,
+  links?: Array< AlphaOrganizationListingLinkInput > | null,
+  pinned?: boolean | null,
+};
+
+export interface AlphaOrganizationListingLinkInput {
+  text: string,
+  url: string,
 };
 
 export interface RangeInput {
@@ -136,11 +155,6 @@ export interface MapPointInput {
   count?: number | null,
   lat: number,
   lon: number,
-};
-
-export interface AlphaOrganizationListingLinkInput {
-  text: string,
-  url: string,
 };
 
 export enum OrganizationMemberRole {
@@ -308,7 +322,6 @@ export interface AccountQuery {
     id: string,
     name: string,
     photo: string | null,
-    location: string | null,
   } | null,
   sessionState:  {
     __typename: "SessionState",
@@ -742,15 +755,19 @@ export interface ChatSearchGroupQuery {
   group: ( {
       __typename: "AnonymousConversation",
       id: string,
+      flexibleId: string,
     } | {
       __typename: "SharedConversation",
       id: string,
+      flexibleId: string,
     } | {
       __typename: "PrivateConversation",
       id: string,
+      flexibleId: string,
     } | {
       __typename: "GroupConversation",
       id: string,
+      flexibleId: string,
     }
   ) | null,
 };
@@ -1367,6 +1384,33 @@ export interface MyOrganizationQuery {
       link: string | null,
     } >,
     organizationType: Array< string > | null,
+    interests: Array< string > | null,
+    locations: Array< string > | null,
+    posts:  Array< {
+      __typename: "AlphaDummyPost",
+      text: string,
+      type: string,
+      description: string | null,
+      date: string,
+      image:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
+      activity: Array< string > | null,
+      links:  Array< {
+        __typename: "AlphaOrganizationListingLink",
+        text: string,
+        url: string,
+      } > | null,
+      pinned: boolean | null,
+    } > | null,
     lookingFor: Array< string > | null,
     geographies: Array< string > | null,
     doShapeAndForm: Array< string > | null,
@@ -1548,6 +1592,33 @@ export interface MyOrganizationProfileQuery {
       link: string | null,
     } >,
     organizationType: Array< string > | null,
+    interests: Array< string > | null,
+    locations: Array< string > | null,
+    posts:  Array< {
+      __typename: "AlphaDummyPost",
+      text: string,
+      type: string,
+      description: string | null,
+      date: string,
+      image:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
+      activity: Array< string > | null,
+      links:  Array< {
+        __typename: "AlphaOrganizationListingLink",
+        text: string,
+        url: string,
+      } > | null,
+      pinned: boolean | null,
+    } > | null,
     lookingFor: Array< string > | null,
     geographies: Array< string > | null,
     doShapeAndForm: Array< string > | null,
@@ -1692,7 +1763,6 @@ export interface MyOrganizationsQuery {
     id: string,
     name: string,
     photo: string | null,
-    location: string | null,
   } >,
 };
 
@@ -1742,6 +1812,33 @@ export interface UpdateOrganizationMutation {
       link: string | null,
     } >,
     organizationType: Array< string > | null,
+    interests: Array< string > | null,
+    locations: Array< string > | null,
+    posts:  Array< {
+      __typename: "AlphaDummyPost",
+      text: string,
+      type: string,
+      description: string | null,
+      date: string,
+      image:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
+      activity: Array< string > | null,
+      links:  Array< {
+        __typename: "AlphaOrganizationListingLink",
+        text: string,
+        url: string,
+      } > | null,
+      pinned: boolean | null,
+    } > | null,
     lookingFor: Array< string > | null,
     geographies: Array< string > | null,
     doShapeAndForm: Array< string > | null,
@@ -1907,6 +2004,33 @@ export interface OrganizationQuery {
       link: string | null,
     } >,
     organizationType: Array< string > | null,
+    interests: Array< string > | null,
+    locations: Array< string > | null,
+    posts:  Array< {
+      __typename: "AlphaDummyPost",
+      text: string,
+      type: string,
+      description: string | null,
+      date: string,
+      image:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
+      activity: Array< string > | null,
+      links:  Array< {
+        __typename: "AlphaOrganizationListingLink",
+        text: string,
+        url: string,
+      } > | null,
+      pinned: boolean | null,
+    } > | null,
     lookingFor: Array< string > | null,
     geographies: Array< string > | null,
     doShapeAndForm: Array< string > | null,
@@ -2075,6 +2199,10 @@ export interface ExploreOrganizationsQuery {
         name: string,
         photo: string | null,
         location: string | null,
+        isMine: boolean,
+        organizationType: Array< string > | null,
+        interests: Array< string > | null,
+        followed: boolean,
       },
       cursor: string,
     } >,
@@ -4309,6 +4437,33 @@ export interface OrganizationFullFragment {
     link: string | null,
   } >,
   organizationType: Array< string > | null,
+  interests: Array< string > | null,
+  locations: Array< string > | null,
+  posts:  Array< {
+    __typename: string,
+    text: string,
+    type: string,
+    description: string | null,
+    date: string,
+    image:  {
+      __typename: string,
+      uuid: string,
+      crop:  {
+        __typename: string,
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
+    activity: Array< string > | null,
+    links:  Array< {
+      __typename: string,
+      text: string,
+      url: string,
+    } > | null,
+    pinned: boolean | null,
+  } > | null,
   lookingFor: Array< string > | null,
   geographies: Array< string > | null,
   doShapeAndForm: Array< string > | null,
@@ -4488,6 +4643,33 @@ export interface OrganizationProfileFullFragment {
     link: string | null,
   } >,
   organizationType: Array< string > | null,
+  interests: Array< string > | null,
+  locations: Array< string > | null,
+  posts:  Array< {
+    __typename: string,
+    text: string,
+    type: string,
+    description: string | null,
+    date: string,
+    image:  {
+      __typename: string,
+      uuid: string,
+      crop:  {
+        __typename: string,
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
+    activity: Array< string > | null,
+    links:  Array< {
+      __typename: string,
+      text: string,
+      url: string,
+    } > | null,
+    pinned: boolean | null,
+  } > | null,
   lookingFor: Array< string > | null,
   geographies: Array< string > | null,
   doShapeAndForm: Array< string > | null,
@@ -4625,12 +4807,23 @@ export interface OrganizationProfileFullFragment {
   } > | null,
 };
 
-export interface OrganizationShortFragment {
+export interface OrganizationSearchFragment {
   __typename: "Organization",
   id: string,
   name: string,
   photo: string | null,
   location: string | null,
+  isMine: boolean,
+  organizationType: Array< string > | null,
+  interests: Array< string > | null,
+  followed: boolean,
+};
+
+export interface OrganizationShortFragment {
+  __typename: "Organization",
+  id: string,
+  name: string,
+  photo: string | null,
 };
 
 export interface ParcelIDFragment {

@@ -16,7 +16,7 @@ const ErrorImg = Glamorous.img({
     }
 });
 
-export class ErrorPage extends React.Component<{ statusCode: number | null | undefined }> {
+export class ErrorPage extends React.Component<{ statusCode: number | null | undefined, message?: string }> {
     render() {
         return (
             <>
@@ -25,7 +25,7 @@ export class ErrorPage extends React.Component<{ statusCode: number | null | und
                     <MessagePage hideLegalText={true}>
                         <ErrorImg src="/static/img/img-error.png" srcSet="/static/img/img-error@2x.png 2x" />
                         <MessagePageContent
-                            title={this.props.statusCode === 404 ? 'Not found!' : 'Ooops!'}
+                            title={this.props.statusCode === 404 ? 'Not found!' : this.props.message  || 'Ooops!'}
                         >
                             {this.props.statusCode === 404 && 'We can\'t seem to find the page you are looking for.'}
                             {this.props.statusCode !== 404 && 'Something went wrong. Try again, and if it still doesn\'t work, let us know'}

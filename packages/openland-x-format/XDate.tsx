@@ -1,5 +1,8 @@
 import * as React from 'react';
 import * as humanize from 'humanize';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XStorageContext } from 'openland-x-routing/XStorageContext';
+import moment from 'moment-timezone';
 
 let months = [
     'Jan',
@@ -34,23 +37,72 @@ export function XDate(props: { value: string, format?: 'date' | 'time' | 'dateti
             <span>{hours}:{('0' + dt.getMinutes()).substr(-2)}{ampm}</span>
         );
     } else if (props.format === 'datetime_short') {
-        let dt = new Date(date);
-        let now = new Date();
-        // let year = dt.getFullYear().toString();
-        let month = months[dt.getMonth()];
-        let day = dt.getDate();
-        if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth() && now.getDate() === dt.getDate()) {
-            // return <span>Today</span>;
-            let hours = dt.getHours();
-            let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
-            hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
+        if (canUseDOM) {
+            let dt = new Date(date);
+            let now = new Date();
+            // let year = dt.getFullYear().toString();
+            let month = months[dt.getMonth()];
+            let day = dt.getDate();
+            if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth() && now.getDate() === dt.getDate()) {
+                // return <span>Today</span>;
+                let hours = dt.getHours();
+                let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
+                hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
+                return (
+                    <span>{hours}:{('0' + dt.getMinutes()).substr(-2)}{ampm}</span>
+                );
+            }
             return (
-                <span>{hours}:{('0' + dt.getMinutes()).substr(-2)}{ampm}</span>
+                <span>{month} {day}</span>
+            );
+        } else {
+            return (
+                <XStorageContext.Consumer>
+                    {storage => {
+                        let tz = storage!!.readValue('timezone');
+                        console.warn(tz);
+                        if (!tz) {
+                            let dt = new Date(date);
+                            let now = new Date();
+                            // let year = dt.getFullYear().toString();
+                            let month = months[dt.getMonth()];
+                            let day = dt.getDate();
+                            if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth() && now.getDate() === dt.getDate()) {
+                                // return <span>Today</span>;
+                                let hours = dt.getHours();
+                                let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
+                                hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
+                                return (
+                                    <span>{hours}:{('0' + dt.getMinutes()).substr(-2)}{ampm}</span>
+                                );
+                            }
+                            return (
+                                <span>{month} {day}</span>
+                            );
+                        } else {
+                            let dt = moment.tz(date, tz);
+                            let now = moment.tz(new Date(), tz);
+                            // let year = dt.getFullYear().toString();
+                            let month = months[dt.month()];
+                            let day = dt.date();
+                            if (now.year() === dt.year() && now.month() === dt.month() && now.date() === dt.date()) {
+                                // return <span>Today</span>;
+                                let hours = dt.hour();
+                                let ampm = dt.hour() < 12 ? 'AM' : 'PM';
+                                hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
+                                return (
+                                    <span>{hours}:{('0' + dt.minute()).substr(-2)}{ampm}</span>
+                                );
+                            }
+                            return (
+                                <span>{month} {day}</span>
+                            );
+                        }
+                    }}
+                </XStorageContext.Consumer>
             );
         }
-        return (
-            <span>{month} {day}</span>
-        );
+
     } else {
         let dt = new Date(date);
         let year = dt.getFullYear().toString();
@@ -62,7 +114,7 @@ export function XDate(props: { value: string, format?: 'date' | 'time' | 'dateti
     }
 }
 
-export const DateFormater = (time: string) => {
+export const DateFormater = (time: string | number) => {
     const date = new Date(time);
 
     let year = date.getFullYear();

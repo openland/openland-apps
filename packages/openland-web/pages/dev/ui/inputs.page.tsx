@@ -7,6 +7,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XInput } from 'openland-x/XInput';
 import { XTitle } from 'openland-x/XTitle';
 import { XTextArea } from 'openland-x/XTextArea';
+import { XRichTextInput } from 'openland-x/XRichTextInput';
 
 export default withApp('UI Framework - Inputs', 'viewer', (props) => {
     return (
@@ -51,8 +52,12 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
                     <XTitle>Text Area</XTitle>
                     <XVertical>
                         <XTextArea />
-                        <XTextArea value="disabled" disabled={true}/>
+                        <XTextArea value="disabled" disabled={true} />
                         <XTextArea invalid={true} />
+                    </XVertical>
+                    <XTitle>Rich Text Input</XTitle>
+                    <XVertical>
+                        <XRichTextInput placeholder={'Try type something...'} />
                     </XVertical>
                 </XVertical>
             </XContent>

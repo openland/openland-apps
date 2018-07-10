@@ -16,7 +16,7 @@ import getDataFromTree from 'openland-x-graphql/getDataFromTree';
 import '../globals';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 import { XStorageProvider } from 'openland-x-routing/XStorageProvider';
-
+import moment from 'moment-timezone';
 interface WithDataProps {
     serverState: { apollo: { data: any, token?: string, org?: string } };
     host: string;
@@ -47,14 +47,17 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
             let protocol: string;
             let storage: SharedStorage;
             if (ctx.req) {
+                console.warn('server!');
                 host = ctx.req.get('host');
                 protocol = ctx.req.protocol;
                 storage = getServerStorage(ctx);
             } else {
+                console.warn('client!');
                 host = window.location.host;
                 protocol = window.location.protocol.replace(':', '');
                 storage = getClientStorage();
             }
+            console.warn(storage);
             // console.warn(ctx.req);
 
             // Evaluate the composed component's getInitialProps()
@@ -158,7 +161,15 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
 
         constructor(props: WithDataProps) {
             super(props);
+            console.warn(props);
             this.apollo = apolloClient(this.props.serverState.apollo.data, this.props.serverState.apollo.token, this.props.serverState.apollo.org);
+
+            // Guess Timezone
+            if (canUseDOM) {
+                let tz = moment.tz.guess();
+                let storage = getClientStorage();
+                storage.writeValue('timezone', tz);
+            }
         }
 
         componentDidMount() {
@@ -168,7 +179,7 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
 
         render() {
             return (
-                <XStorageProvider storage={this.props.storage}>
+                <XStorageProvider storage={canUseDOM ? getClientStorage() : this.props.storage}>
                     <ApolloProvider client={this.apollo}>
                         <XRouterProvider routes={Routes} hostName={this.props.host} protocol={this.props.protocol}>
                             <RootErrorBoundary>

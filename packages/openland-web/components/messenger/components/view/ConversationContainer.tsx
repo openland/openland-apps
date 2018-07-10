@@ -4,10 +4,7 @@ export const ConversationContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    maxHeight: '100%',
-    flexGrow: 1,
-    // display: 'flex',
-    // flexDirection: 'column',
-    // alignItems: 'center',
+    height: '100%',
+    flexBasis: '100%',
     overflow: 'hidden'
 });

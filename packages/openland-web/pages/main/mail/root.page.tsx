@@ -19,27 +19,18 @@ let ChatContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: '#f9fafb',
-    // justifyContent: 'center',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
-    height: '100vh',
-});
-
-let Shadow = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    // justifyContent: 'space-between',
-    backgroundColor: '#f9fafb',
+    height: '100%',
+    width: '100%',
     flexGrow: 1,
-    boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
-    height: '100%'
+    overflow: 'hidden'
 });
 
 let ChatListContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    height: '100vh',
-    width: '300px',
-    flexGrow: 0,
+    height: '100%',
+    width: 300,
     flexShrink: 0,
     borderRightColor: '#e2e3e8',
     borderRightWidth: '1px',
@@ -51,13 +42,13 @@ let ChatListContainer = Glamorous.div({
 
 let ConversationContainer = Glamorous.div({
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     flexGrow: 1,
     height: '100%',
+    width: '100%',
     backgroundColor: '#ffffff',
     justifyContent: 'center',
     position: 'relative',
-    overflow: 'hidden'
 });
 
 let Header = Glamorous.div({
@@ -89,40 +80,39 @@ let Header = Glamorous.div({
 });
 
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
+
     let isCompose = props.router.path.endsWith('/new');
-    //
+
     return (
         <>
             <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
-            <Scaffold>
+            <Scaffold overflow={true}>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ChatContainer>
-                        <Shadow>
-                            <ChatListContainer>
-                                <Header>
-                                    <span>Messages</span>
-                                    <XLink path="/mail/new">
-                                        <XIcon icon="add" />
-                                    </XLink>
-                                </Header>
-                                <ChatsComponent />
-                            </ChatListContainer>
-                            <ConversationContainer>
-                                {isCompose && canUseDOM && (
-                                    <MessengerContainer>
-                                        <ComposeComponent />
+                        <ChatListContainer>
+                            <Header>
+                                <span>Messages</span>
+                                <XLink path="/mail/new">
+                                    <XIcon icon="add" />
+                                </XLink>
+                            </Header>
+                            <ChatsComponent />
+                        </ChatListContainer>
+                        <ConversationContainer>
+                            {isCompose && canUseDOM && (
+                                <MessengerContainer>
+                                    <ComposeComponent />
+                                </MessengerContainer>
+                            )}
+                            {!isCompose && !props.router.routeQuery.conversationId && (
+                                <MessengerContainer>
+                                    No chat selected!
                                     </MessengerContainer>
-                                )}
-                                {!isCompose && !props.router.routeQuery.conversationId && (
-                                    <MessengerContainer>
-                                        No chat selected!
-                                    </MessengerContainer>
-                                )}
-                                {!isCompose && props.router.routeQuery.conversationId && (
-                                    <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
-                                )}
-                            </ConversationContainer>
-                        </Shadow>
+                            )}
+                            {!isCompose && props.router.routeQuery.conversationId && (
+                                <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
+                            )}
+                        </ConversationContainer>
                     </ChatContainer>
                 </Scaffold.Content>
             </Scaffold>

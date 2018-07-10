@@ -22,7 +22,7 @@ export class NotificationsEngine {
     }
 
     handleGlobalCounterChanged = (counter: number) => {
-        if (this.isVisible) {
+        if (!this.isVisible) {
             this.badge.badge(counter);
         }
     }

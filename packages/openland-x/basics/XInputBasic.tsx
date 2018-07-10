@@ -271,7 +271,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                     pattern={pattern}
                     value={v}
                     onChange={this.handleChange}
-                    autofocus={autofocus}
+                    autoFocus={autofocus}
                     autoSelect={autoSelect}
                     innerRef={this.handleRef}
                     onKeyPress={this.handleKey}

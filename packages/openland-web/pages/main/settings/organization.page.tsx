@@ -9,7 +9,7 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { ContactPerson } from '../../../utils/OrganizationProfileFields';
 import { XSelect } from 'openland-x/XSelect';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XFormField } from 'openland-x-forms/XFormField';
+import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
 import { Navigation } from './_navigation';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XInput } from 'openland-x/XInput';
@@ -25,6 +25,12 @@ import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfil
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XWithRouter } from 'openland-x-routing/withRouter';
+import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
+import { XPhotoRef } from 'openland-x/XCloudImage';
+import { DateFormater } from 'openland-x-format/XDate';
+import { XLink } from 'openland-x/XLink';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 const CenteredButton = Glamorous(XButton)({
     alignSelf: 'center'
 });
@@ -49,7 +55,6 @@ class ContactPersonItem extends React.Component<{ contact: ContactPerson, index:
                 <ContactField>{this.props.contact.phone}</ContactField>
                 <ContactField>{this.props.contact.email}</ContactField>
                 <ContactField>{this.props.contact.link}</ContactField>
-                <CenteredButton text="edit" style="electric" query={{ field: 'editContact', value: String(this.props.index) }} />
                 <CenteredButton text="delete" style="danger" query={{ field: 'deleteContact', value: String(this.props.index) }} />
             </XHorizontal>
         );
@@ -76,6 +81,73 @@ const clearContact = (c: ContactPerson): ContactPerson => {
     };
 };
 
+interface DummyPost {
+    text: string;
+    type: string;
+    description?: string | null;
+    date: string;
+    image?: XPhotoRef | null;
+    activity?: string[] | null;
+    links?: { text: string, url: string }[] | null;
+    pinned?: boolean | null;
+}
+
+const clearPost = (c: DummyPost): DummyPost => {
+    return {
+        text: c.text,
+        type: c.type,
+        description: c.description,
+        date: c.date,
+        activity: c.activity,
+        image: c.image ? {
+            uuid: c.image.uuid,
+            crop: c.image.crop ? {
+                x: c.image.crop.x,
+                y: c.image.crop.y,
+                w: c.image.crop.w,
+                h: c.image.crop.h
+            } : null
+        } : null,
+        links: c.links ? c.links.map(l => ({ text: l.text, url: l.url })) : null,
+    };
+};
+
+class PostItem extends React.Component<{ post: DummyPost, index: number }> {
+    render() {
+        return (
+            <XHorizontal>
+                <XAvatar size="x-large" style="organization" photoRef={this.props.post.image || undefined} />
+
+                <XVertical>
+                    <ContactField>{this.props.post.text}</ContactField>
+                    <ContactField>{this.props.post.description}</ContactField>
+                    <ContactField>{this.props.post.date}</ContactField>
+                    <ContactField>{(this.props.post.activity || []).join(' ')}</ContactField>
+                    <ContactField>{(this.props.post.links || []).map((l, i) => <XLink key={i} href={l.url}>{l.text}</XLink>)}</ContactField>
+                    <CenteredButton text="delete" style="danger" query={{ field: 'deletePost', value: String(this.props.index) }} />
+                </XVertical>
+            </XHorizontal>
+        );
+    }
+}
+
+const Field = Glamorous(XFormField)({
+    flex: 1
+});
+
+const FormFieldTitle = Glamorous(XFormFieldTitle)({
+    flexGrow: 1
+});
+
+const DelLinkBtn = Glamorous(XButton)({
+    marginRight: -24,
+});
+
+const AddLinkBtn = Glamorous(XButton)({
+    marginLeft: -14,
+    marginTop: -8,
+});
+
 const OrganizationSettigs = withMyOrganizationProfile((props) => {
     return (
         <Navigation title="Organization profile">
@@ -89,10 +161,10 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                 photo: props.data.myOrganizationProfile!!.photoRef,
                                 about: props.data.myOrganizationProfile!!.about,
                                 location: props.data.myOrganizationProfile!!.location,
+                                locations: props.data.myOrganizationProfile!!.locations,
                                 photoRef: sanitizeIamgeRef(props.data.myOrganizationProfile!!.photoRef),
                                 organizationType: props.data.myOrganizationProfile!!.organizationType,
-                                lookingFor: props.data.myOrganizationProfile!!.lookingFor,
-                                geographies: props.data.myOrganizationProfile!!.geographies,
+                                interests: props.data.myOrganizationProfile!!.interests,
                             }
                         }}
                         defaultAction={async (data) => {
@@ -104,8 +176,8 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                         location: data.input.location,
                                         about: data.input.about,
                                         alphaOrganizationType: data.input.organizationType,
-                                        alphaLookingFor: data.input.lookingFor,
-                                        alphaGeographies: data.input.geographies,
+                                        alphaInterests: data.input.interests,
+                                        alphaLocations: data.input.locations,
                                     }
                                 }
                             });
@@ -124,6 +196,10 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                             <XInput field="input.location" />
                                         </XFormField>
 
+                                        <XFormField title="Locations" field="input.locations" optional={true}>
+                                            <XSelect creatable={true} multi={true} field="input.locations" />
+                                        </XFormField>
+
                                         <XFormField title="About" field="fields.input.about" optional={true}>
                                             <XTextArea valueStoreKey="fields.input.about" />
                                         </XFormField>
@@ -131,208 +207,15 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                         <XFormField title="OrganizationType" field="input.organizationType" optional={true}>
                                             <XSelect creatable={true} multi={true} field="input.organizationType" />
                                         </XFormField>
-                                        <XFormField title="LookingFor" field="input.lookingFor" optional={true}>
-                                            <XSelect creatable={true} multi={true} field="input.lookingFor" />
+                                        <XFormField title="Interests" field="input.interests" optional={true}>
+                                            <XSelect creatable={true} multi={true} field="input.interests" />
                                         </XFormField>
-                                        <XFormField title="Geographies" field="input.geographies" optional={true}>
-                                            <XSelect creatable={true} multi={true} field="input.geographies" />
-                                        </XFormField>
+
                                     </XVertical>
                                     <XFormField title="Photo" field="input.photoRef" optional={true}>
                                         <XAvatarUpload field="input.photoRef" />
                                     </XFormField>
                                 </XHorizontal>
-                            </XFormLoadingContent>
-                            <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
-                        </XVertical>
-                    </XForm>
-                    <XTitle id="do">Development Opportunities</XTitle>
-                    <XForm
-                        defaultData={{
-                            input: {
-                                doShapeAndForm: props.data.myOrganizationProfile!!.doShapeAndForm,
-                                doCurrentUse: props.data.myOrganizationProfile!!.doCurrentUse,
-                                doGoodFitFor: props.data.myOrganizationProfile!!.doGoodFitFor,
-                                doSpecialAttributes: props.data.myOrganizationProfile!!.doSpecialAttributes,
-                                doAvailability: props.data.myOrganizationProfile!!.doAvailability,
-                            }
-                        }}
-                        defaultAction={async (data) => {
-                            await props.updateOrganizaton({
-                                variables: {
-                                    input: {
-                                        alphaDOShapeAndForm: data.input.doShapeAndForm,
-                                        alphaDOCurrentUse: data.input.doCurrentUse,
-                                        alphaDOGoodFitFor: data.input.doGoodFitFor,
-                                        alphaDOSpecialAttributes: data.input.doSpecialAttributes,
-                                        alphaDOAvailability: data.input.doAvailability,
-                                    }
-                                }
-                            });
-                        }}
-                        defaultLayout={false}
-                    >
-                        <XVertical maxWidth={500}>
-                            <XFormLoadingContent>
-                                <XVertical>
-                                    <XFormField title="Shape And Form" field="input.doShapeAndForm" optional={true}>
-                                        <XSelect
-                                            field="input.doShapeAndForm"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="Current Use" field="input.doCurrentUse" optional={true}>
-                                        <XSelect
-                                            field="input.doCurrentUse"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="Good Fit For" field="input.doGoodFitFor" optional={true}>
-                                        <XSelect
-                                            field="input.doGoodFitFor"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="Special Attributes" field="input.doSpecialAttributes" optional={true}>
-                                        <XSelect
-                                            field="input.doSpecialAttributes"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="Availability" field="input.doAvailability" optional={true}>
-                                        <XSelect
-                                            field="input.doAvailability"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                </XVertical>
-                            </XFormLoadingContent>
-                            <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
-                        </XVertical>
-                    </XForm>
-
-                    <XTitle id="ar">Acquisition requests</XTitle>
-                    <XForm
-                        defaultData={{
-                            input: {
-                                arGeographies: props.data.myOrganizationProfile!!.arGeographies,
-                                arAreaRange: props.data.myOrganizationProfile!!.arAreaRange,
-                                arHeightLimit: props.data.myOrganizationProfile!!.arHeightLimit,
-                                arActivityStatus: props.data.myOrganizationProfile!!.arActivityStatus,
-                                arAquisitionBudget: props.data.myOrganizationProfile!!.arAquisitionBudget,
-                                arAquisitionRate: props.data.myOrganizationProfile!!.arAquisitionRate,
-                                arClosingTime: props.data.myOrganizationProfile!!.arClosingTime,
-                                arSpecialAttributes: props.data.myOrganizationProfile!!.arSpecialAttributes,
-                                arLandUse: props.data.myOrganizationProfile!!.arLandUse,
-                            }
-                        }}
-                        defaultAction={async (data) => {
-                            await props.updateOrganizaton({
-                                variables: {
-                                    input: {
-                                        alphaARGeographies: data.input.arGeographies,
-                                        alphaARAreaRange: data.input.arAreaRange,
-                                        alphaARHeightLimit: data.input.arHeightLimit,
-                                        alphaARActivityStatus: data.input.arActivityStatus,
-                                        alphaARAquisitionBudget: data.input.arAquisitionBudget,
-                                        alphaARAquisitionRate: data.input.arAquisitionRate,
-                                        alphaARClosingTime: data.input.arClosingTime,
-                                        alphaARSpecialAttributes: data.input.arSpecialAttributes,
-                                        alphaARLandUse: data.input.arLandUse,
-                                    }
-                                }
-                            });
-                        }}
-                        defaultLayout={false}
-                    >
-                        <XVertical maxWidth={500}>
-                            <XFormLoadingContent>
-                                <XVertical>
-
-                                    <XFormField title="Geographies" field="input.arGeographies" optional={true}>
-                                        <XSelect
-                                            field="input.arGeographies"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="Area Range" field="input.arAreaRange" optional={true}>
-                                        <XSelect
-                                            field="input.arAreaRange"
-                                            creatable={true}
-                                            multi={true}
-                                            options={[{ label: 'up to 10,000 ft²', value: 'up to 10,000 ft²' }, { label: '10,000 ft² - 100,000 ft²', value: '10,000 ft² - 100,000 ft²' }, { label: '100,000+ ft²', value: '100,000+ ft²' }]}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="Height Limit" field="input.arHeightLimit" optional={true}>
-                                        <XSelect
-                                            field="input.arHeightLimit"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="Activity Status" field="input.arActivityStatus" optional={true}>
-                                        <XSelect
-                                            field="input.arActivityStatus"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="3-year Aquisition Budget" field="input.arAquisitionBudget" optional={true}>
-                                        <XSelect
-                                            field="input.arAquisitionBudget"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="Aquisition Rate" field="input.arAquisitionRate" optional={true}>
-                                        <XSelect
-                                            field="input.arAquisitionRate"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="Closing Time" field="input.arClosingTime" optional={true}>
-                                        <XSelect
-                                            field="input.arClosingTime"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="Special Attributes" field="input.arSpecialAttributes" optional={true}>
-                                        <XSelect
-                                            field="input.arSpecialAttributes"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                    <XFormField title="Land Use" field="input.arLandUse" optional={true}>
-                                        <XSelect
-                                            field="input.arLandUse"
-                                            creatable={true}
-                                            multi={true}
-                                        />
-                                    </XFormField>
-
-                                </XVertical>
                             </XFormLoadingContent>
                             <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
                         </XVertical>
@@ -486,6 +369,128 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                             </XVertical>
                         </XFormLoadingContent>
                     </XModalForm>
+                    
+                    <XWithRole role={['super-admin', 'editor']}>
+
+                    {(props.data.myOrganizationProfile!!.posts || []).filter(c => c !== null).map((c, i) => <PostItem key={i} post={c!!} index={i} />)}
+
+                        <XButton query={{ field: 'addPost', value: 'true' }} text="Add Post" style="primary" alignSelf="flex-start" />
+
+                        <XModalForm
+                            title="Add post"
+                            defaultData={{
+                                posts: props.data.myOrganizationProfile!!.posts || [],
+                                text: '',
+                                type: 'update',
+                                date: DateFormater(new Date().getTime()),
+                                links: [],
+                                activity: [],
+                                pinned: 'not pinned'
+                            }}
+                            defaultAction={async (data) => {
+                                data.posts.push({
+                                    text: data.text,
+                                    type: data.type,
+                                    description: data.description,
+                                    image: data.image,
+                                    date: data.date,
+                                    activity: data.activity,
+                                    pinned: data.pinned === 'pinned',
+                                    links: (data.links || []).filter((l: any) => l.text || l.url).map((l: any) => ({ text: l.text, url: l.url }))
+                                });
+                                await props.updateOrganizaton({
+                                    variables: {
+                                        input: {
+                                            alphaDummyPosts: data.posts.map(clearPost)
+                                        }
+                                    }
+                                });
+                            }}
+                            targetQuery="addPost"
+                        >
+                            <XFormLoadingContent>
+                                <XVertical>
+                                    <XAvatarUpload field="image" placeholder={{ add: 'Add photo', change: 'Change photo' }} />
+                                    <XInput field="text" placeholder="Text" />
+                                    <XInput field="description" placeholder="Description" />
+                                    <XInput field="date" placeholder="Date" />
+                                    <XSelect field="activity" multi={true} creatable={true} placeholder="Activity" />
+                                    <XSelect field="pinned" searchable={false} clearable={false} options={[{ value: 'pinned', label: 'pinned' }, { value: 'not pinned', label: 'not pinned' }]} />
+                                    <XSelect field="type" searchable={false} clearable={false} options={[{ value: 'update', label: 'update' }, { value: 'news', label: 'news' }]} />
+                                    <XStoreContext.Consumer>
+                                        {(store) => {
+                                            return (((store && store.readValue('fields.links')) || []).map((link: any, i: number) => {
+                                                return (
+                                                    <XHorizontal key={'link_' + i} >
+                                                        <Field title={TextOrganizationProfile.listingEditDoLinkTextTitle}>
+                                                            <XInput field={`links.${i}.text`} placeholder={TextOrganizationProfile.listingEditDoLinkTextPlaceholder} />
+                                                        </Field>
+                                                        <XVertical separator="none" flexGrow={1}>
+                                                            <XHorizontal >
+                                                                <FormFieldTitle>{TextOrganizationProfile.listingEditDoLinkUrlTitle}</FormFieldTitle>
+                                                                <DelLinkBtn
+                                                                    style="link_danger"
+                                                                    text={TextOrganizationProfile.listingEditDoLinkDelete}
+                                                                    onClick={() => {
+                                                                        if (store) {
+                                                                            let links: any[] = store.readValue('fields.links') || [];
+                                                                            links.splice(i, 1);
+                                                                            store.writeValue('fields.links', links);
+                                                                        }
+                                                                    }}
+                                                                />
+                                                                <div />
+                                                            </XHorizontal>
+                                                            <XInput field={`links.${i}.url`} placeholder={TextOrganizationProfile.listingEditDoLinkUrlPlaceholder} />
+                                                        </XVertical>
+                                                    </XHorizontal>
+                                                );
+                                            }));
+                                        }}
+                                    </XStoreContext.Consumer>
+                                    <XStoreContext.Consumer>
+                                        {(store) => {
+                                            let links = store ? store.readValue('fields.links') || [] : [];
+                                            return (
+                                                <AddLinkBtn
+                                                    onClick={() => {
+                                                        if (store) {
+                                                            links.push({ text: '', url: '' });
+                                                            store.writeValue('fields.links', links);
+                                                        }
+                                                    }}
+                                                    text={links.length === 0 ? TextOrganizationProfile.listingEditDoLinkAddFirst : TextOrganizationProfile.listingEditDoLinkAdd}
+                                                    style="link"
+                                                    alignSelf="flex-start"
+                                                />
+                                            );
+                                        }}
+                                    </XStoreContext.Consumer>
+                                </XVertical>
+                            </XFormLoadingContent>
+                        </XModalForm>
+
+                        {(props.data.myOrganizationProfile!!.posts || [])[props.router.query.deletePost] && (
+                            <XModalForm
+                                title="Delete?"
+                                submitProps={{ text: 'Delete' }}
+                                defaultData={{
+                                    posts: props.data.myOrganizationProfile!!.posts,
+                                }}
+                                defaultAction={async (data) => {
+                                    data.posts.splice(Number(props.router.query.deletePost), 1);
+                                    await props.updateOrganizaton({
+                                        variables: {
+                                            input: {
+                                                alphaDummyPosts: data.posts.map(clearPost)
+                                            }
+                                        }
+                                    });
+                                }}
+                                targetQuery="deletePost"
+                            />
+                        )}
+                    </XWithRole>
 
                 </XVertical>
             </XContent>

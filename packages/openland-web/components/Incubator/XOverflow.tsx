@@ -56,6 +56,7 @@ export const XMenuVertical = Glamorous(XPopperContent)({
 
 export const XMenuItem = Glamorous(XLink)<{ style?: 'danger' | 'default' }>((props) => ({
     height: 40,
+    flexShrink: 0,
     paddingLeft: '18px',
     paddingRight: '18px',
     fontSize: '15px',

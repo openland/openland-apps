@@ -3,6 +3,7 @@ const withSourceMaps = require('@zeit/next-source-maps')
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const path = require('path');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const withCSS = require('@zeit/next-css')
 // const StatsPlugin = require('stats-webpack-plugin');
 // const HappyPack = require('happypack');
 const NewUglify = require('uglifyjs-webpack-plugin');
@@ -175,4 +176,4 @@ const config = {
     assetPrefix: process.env.CDN_PREFIX ? process.env.CDN_PREFIX : undefined
 };
 
-module.exports = withBundleAnalyzer(withSourceMaps(config));
+module.exports = withCSS(withBundleAnalyzer(withSourceMaps(config)));

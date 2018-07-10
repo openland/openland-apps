@@ -27,6 +27,8 @@ routes.add('/createOrganization', '/init/createOrganization');
 routes.add('/createOrganization/', '/init/createOrganization');
 routes.add('/join/:inviteKey', '/init/join');
 routes.add('/join/:inviteKey/', '/init/join');
+routes.add('/invite/:inviteKey', '/init/invite');
+routes.add('/invite/:inviteKey/', '/init/invite');
 routes.add('/404', '/404');
 
 //
