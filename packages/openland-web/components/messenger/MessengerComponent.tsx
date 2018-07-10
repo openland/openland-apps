@@ -22,6 +22,7 @@ const ChatWrapper = Glamorous(XHorizontal)({
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     height: 79,
     flexShrink: 0,
     paddingLeft: 40,
