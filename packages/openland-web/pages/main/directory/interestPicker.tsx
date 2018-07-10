@@ -4,27 +4,18 @@ import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchCondition } from './root.page';
 import { XMenuItem } from '../../../components/Incubator/XOverflow';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
-const LOOKINGFOR = {
-    label: 'Looking for',
+const CATALOG = {
     options: [
-        { label: 'Lookingfor1', value: 'Lookingfor1' },
-        { label: 'Lookingfor2', value: 'Lookingfor2' },
-        { label: 'Lookingfor3', value: 'Lookingfor3' },
+        { label: 'Selling', value: 'Selling' },
+        { label: 'Buying', value: 'Buying' },
+        { label: 'Joint ventures', value: 'Joint ventures' },
+        { label: 'Leasing', value: 'Leasing' },
+        { label: 'Option-to-buy', value: 'Option-to-buy' },
     ]
 };
 
-const RECENT = {
-    label: 'Recent events',
-    options: [
-        { label: 'Recent1', value: 'Recent1' },
-        { label: 'Recent2', value: 'Recent2' },
-        { label: 'Recent3', value: 'Recent3' },
-    ]
-};
-
-export class ActivityPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { popper: boolean }> {
+export class InterestPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { popper: boolean }> {
     inner = 0;
     constructor(props: any) {
         super(props);
@@ -52,14 +43,9 @@ export class ActivityPicker extends React.Component<{ onPick: (q: SearchConditio
 
     render() {
         let content = (
-            <XHorizontal>
-                <XVertical >
-                    {LOOKINGFOR.options.map(role => <XMenuItem key={role.value} onClick={(e) => this.onClick(role)}>{role.label}</XMenuItem>)}
-                </XVertical>
-                <XVertical >
-                    {RECENT.options.map(role => <XMenuItem key={role.value} onClick={(e) => this.onClick(role)}>{role.label}</XMenuItem>)}
-                </XVertical>
-            </XHorizontal>
+            <XVertical >
+                {CATALOG.options.map(role => <XMenuItem key={role.value} onClick={(e) => this.onClick(role)}>{role.label}</XMenuItem>)}
+            </XVertical>
         );
         return (
             <XPopper
@@ -68,7 +54,7 @@ export class ActivityPicker extends React.Component<{ onPick: (q: SearchConditio
                 content={content}
                 onClickOutside={this.close}
             >
-                <XButton text="Activity" onClick={this.switch} />
+                <XButton text="Interests" onClick={this.switch} />
             </XPopper>
         );
     }

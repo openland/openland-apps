@@ -14,9 +14,8 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LocationPicker } from './locationPicker';
 import { CategoryPicker } from './categoryPicker';
-import { RolePicker } from './rolePicker';
-import { ActivityPicker } from './activityPicker';
 import { XText } from 'openland-x/XText';
+import { InterestPicker } from './interestPicker';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -182,7 +181,7 @@ class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
         }
     }
 
-    group = (conditions: SearchCondition[]) => {
+    groupByType = (conditions: SearchCondition[]) => {
         return conditions.reduce(
             (res, x) => {
                 (res[x.type] = res[x.type] || []).push(x);
@@ -194,7 +193,7 @@ class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
 
     render() {
         let clauses: any[] = [];
-        let groups = this.group(this.props.conditions);
+        let groups = this.groupByType(this.props.conditions);
         for (let type of Object.keys(groups)) {
             let group = groups[type];
             clauses.push(this.buildQuery(
@@ -351,8 +350,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                         <XHorizontal >
                             <LocationPicker onPick={this.addCondition} />
                             <CategoryPicker onPick={this.addCondition} />
-                            <RolePicker onPick={this.addCondition} />
-                            <ActivityPicker onPick={this.addCondition} />
+                            <InterestPicker onPick={this.addCondition} />
                             <XVertical alignItems="flex-end" flexGrow={1}>
                                 <XButton text="Reset" onClick={this.reset} />
                             </XVertical>
