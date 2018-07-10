@@ -16,6 +16,7 @@ import { LocationPicker } from './locationPicker';
 import { CategoryPicker } from './categoryPicker';
 import { XText } from 'openland-x/XText';
 import { XTag } from 'openland-x/XTag';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { InterestPicker } from './interestPicker';
 
 const Root = Glamorous(XVertical)({
@@ -83,6 +84,8 @@ interface OrganizationCardProps {
         location: string | null,
         interests?: string[] | null,
         tags?: string[] | null,
+        isMine: boolean,
+        followed: boolean,
     };
 }
 
@@ -173,11 +176,13 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                     {props.item.interests && (<OrganizationInterests>{props.item.interests.join(' • ')}</OrganizationInterests>)}
                     <OrganizationInterests>Acquisitions • Joint venture</OrganizationInterests>
 
-                    {props.item.tags && (<OrganizationTags>
+                    {props.item.tags && (
+                        <OrganizationTags>
                             {props.item.tags.map((tag) => (
                                 <XTag key={props.item.id + tag} title={tag} />
                             ))}
-                        </OrganizationTags>)}
+                        </OrganizationTags>
+                    )}
                     <OrganizationTags>
                         <XTag title="coliving" />
                         <XTag title="operator" />
@@ -185,12 +190,28 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                     </OrganizationTags>
                 </OrganizationInfoWrapper>
                 <OrganizationToolsWrapper>
-                    <XButton style="primary" text="Follow" />
+                    {props.item.isMine && <XButton style="ghost" text="Your organization" enabled={false} />}
+                    {!props.item.isMine && (
+                        <XButton
+                            style={props.item.followed ? 'ghost' : 'default'}
+                            text={props.item.followed ? 'Following' : 'Follow'}
+                            icon={props.item.followed ? 'check' : undefined}
+                            action={async () => {
+                                // await props.followOrganization({ variables: { follow: !props.item.followed } });
+                            }}
+                        />
+                    )}
                     <XOverflow
                         placement="bottom-end"
                         content={(
                             <>
                                 <XOverflow.Item href={'/o/' + props.item.id}>View profile</XOverflow.Item>
+
+                                {props.item.isMine && (
+                                    <XWithRole role="admin" orgPermission={true}>
+                                        <XOverflow.Item href="/settings/organization">Edit</XOverflow.Item>
+                                    </XWithRole>
+                                )}
                             </>
                         )}
                     />
