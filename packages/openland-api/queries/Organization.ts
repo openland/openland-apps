@@ -231,3 +231,41 @@ export const OrganizationDeletePublicInviteMutation = gql`
         alphaOrganizationDeletePublicInvite
     }
 `;
+
+export const OrganizationInviteOrganizationMutation = gql`
+    mutation OrganizationInviteOrganization($inviteRequests: [InviteRequestOrganization!]!) {
+        alphaOrganizationInviteOrganization(inviteRequests: $inviteRequests)
+    }
+`;
+
+export const OrganizationPublicInviteOrganizatonsQuery = gql`
+    query OrganizationPublicInviteOrganizatons{
+        publicInvite: alphaOrganizationPublicInviteForOrganizations{
+            id
+            key
+            ttl
+        }
+    }
+`;
+
+export const OrganizationCreatePublicInviteOrganizatonsMutation = gql`
+    mutation OrganizationCreatePublicInviteOrganizatons($expirationDays: Int!){
+        alphaOrganizationCreatePublicInviteForOrganizations(expirationDays: $expirationDays){
+            id
+            key
+            ttl
+        }
+    }
+`;
+
+export const OrganizationDeletePublicInviteOrganizatonsMutation = gql`
+    mutation OrganizationDeletePublicInviteOrganizatons{
+        alphaOrganizationDeletePublicInviteForOrganizations
+    }
+`;
+
+export const OrganizationActivateByInviteMutation = gql`
+    mutation OrganizationActivateByInvite($inviteKey: String!) {
+        alphaOrganizationActivateByInvite(key: $inviteKey)
+    }
+`;

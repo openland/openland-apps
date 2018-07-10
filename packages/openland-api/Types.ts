@@ -171,6 +171,13 @@ export interface InviteRequest {
   lastName?: string | null,
 };
 
+export interface InviteRequestOrganization {
+  email: string,
+  emailText?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
+};
+
 export enum OwnerType {
   CITY = "CITY",
   MIXED = "MIXED",
@@ -2393,6 +2400,48 @@ export interface OrganizationCreatePublicInviteMutation {
 
 export interface OrganizationDeletePublicInviteMutation {
   alphaOrganizationDeletePublicInvite: string,
+};
+
+export interface OrganizationInviteOrganizationMutationVariables {
+  inviteRequests: Array< InviteRequestOrganization >,
+};
+
+export interface OrganizationInviteOrganizationMutation {
+  alphaOrganizationInviteOrganization: string,
+};
+
+export interface OrganizationPublicInviteOrganizatonsQuery {
+  publicInvite:  {
+    __typename: "Invite",
+    id: string,
+    key: string,
+    ttl: string | null,
+  } | null,
+};
+
+export interface OrganizationCreatePublicInviteOrganizatonsMutationVariables {
+  expirationDays: number,
+};
+
+export interface OrganizationCreatePublicInviteOrganizatonsMutation {
+  alphaOrganizationCreatePublicInviteForOrganizations:  {
+    __typename: "Invite",
+    id: string,
+    key: string,
+    ttl: string | null,
+  },
+};
+
+export interface OrganizationDeletePublicInviteOrganizatonsMutation {
+  alphaOrganizationDeletePublicInviteForOrganizations: string,
+};
+
+export interface OrganizationActivateByInviteMutationVariables {
+  inviteKey: string,
+};
+
+export interface OrganizationActivateByInviteMutation {
+  alphaOrganizationActivateByInvite: string,
 };
 
 export interface BlocksConnectionQueryVariables {

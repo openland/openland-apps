@@ -22,6 +22,8 @@ import { XMutation } from 'openland-x/XMutation';
 import { DateFormater } from 'openland-x-format/XDate';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { TextInvites } from 'openland-text/TextInvites';
+import { withOrganizationInviteOrganization } from '../../../api/withOrganizationInviteOrganization';
+import { withPublicInviteOrganization } from '../../../api/withPublicInviteOrganization';
 
 interface Invite {
     email?: string;
@@ -174,9 +176,16 @@ const OwnerLink = withPublicInvite(withRouter((props) => {
     );
 })) as React.ComponentType<{ onBack: () => void }>;
 
+const OwnerLinkOrganization = withPublicInviteOrganization(withRouter((props) => {
+    return (
+        <OwnerLinkComponent router={props.router} invite={props.data ? props.data.publicInvite : null} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} onBack={(props as any).onBack} />
+    );
+})) as React.ComponentType<{ onBack: () => void }>;
+
 class InvitesMoadalRaw extends React.Component<{
     mutation: any,
     useRoles?: boolean,
+    organization: boolean,
 } & Partial<XModalFormProps>, {
         customText?: string,
         customTextAreaOpen?: boolean,
@@ -261,7 +270,8 @@ class InvitesMoadalRaw extends React.Component<{
                     </XVertical >
                 )}
 
-                {this.state.linkMode && <OwnerLink onBack={() => this.setState({ linkMode: false })} />}
+                {this.state.linkMode && !this.props.organization && <OwnerLink onBack={() => this.setState({ linkMode: false })} />}
+                {this.state.linkMode && this.props.organization && <OwnerLinkOrganization onBack={() => this.setState({ linkMode: false })} />}
 
             </XModalForm>
         );
@@ -276,12 +286,12 @@ export const InvitesToOrganizationMoadal = withOrganizationInviteMembers((props)
             target={(props as any).target}
             title={TextInvites.modalTitle}
             submitProps={{ text: TextInvites.modalAction }}
+            organization={false}
         />
     );
 }) as React.ComponentType<{ targetQuery?: string, target?: any, refetchVars?: { orgId: string } }>;
 
-// change mutations
-export const InvitesGlobalMoadal = withOrganizationInviteMembers((props) => {
+export const InvitesGlobalMoadal = withOrganizationInviteOrganization((props) => {
     return (
         <InvitesMoadalRaw
             mutation={props.sendInvite}
@@ -290,6 +300,8 @@ export const InvitesGlobalMoadal = withOrganizationInviteMembers((props) => {
             title={TextInvites.modalGlobalTitle}
             submitProps={{ text: TextInvites.modalGloabalAction }}
             useRoles={false}
+            organization={true}
+
         />
     );
 }) as React.ComponentType<{ targetQuery?: string, target?: any, refetchVars?: { orgId: string } }>;

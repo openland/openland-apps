@@ -20,7 +20,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/pickOrganization',
             '/signin',
             '/signup'
-        ].indexOf(props.router.path) < 0) {
+        ].indexOf(props.router.path) < 0 && !props.router.path.startsWith('/invite/')) {
             // ].indexOf(props.router.path) < 0 && !props.router.path.startsWith('/join/') && !props.router.path.startsWith('/invite/')) {
             if (props.router.path !== '/') {
                 redirect = '?redirect=' + encodeURIComponent(props.router.path);
@@ -108,7 +108,7 @@ export const AuthRouter = withUserInfo((props) => {
     }
 
     // Redirect to activate organization
-    if (!handled && redirectPath.startsWith('/invite/')) {
+    if (!handled && !props.isCompleted && redirectPath.startsWith('/invite/')) {
         handled = true;
         if (!props.router.path.startsWith('/invite/')) {
             return <XPageRedirect path={redirectPath} />;
@@ -116,7 +116,7 @@ export const AuthRouter = withUserInfo((props) => {
     }
 
     // Bypass Next steps for invite
-    if (!handled && props.router.path.startsWith('/invite/')) {
+    if (!handled  && !props.isCompleted && props.router.path.startsWith('/invite/')) {
         handled = true;
     }
 
@@ -154,8 +154,9 @@ export const AuthRouter = withUserInfo((props) => {
             // '/createOrganization', // Do not redirect to createOrganization
             '/signin',
             '/signup'
-        ].indexOf(props.router.path) >= 0) {
+        ].indexOf(props.router.path) >= 0 || props.router.path.startsWith('/invite')) {
             console.warn('Completed');
+            console.warn(redirectPath);
             return <XPageRedirect path={redirectPath} />;
         }
     }
