@@ -30,11 +30,11 @@ const Root = Glamorous(XVertical)({
 
 const HeaderWrapper = Glamorous.div({
     backgroundColor: '#fff',
+    backgroundImage: 'url(/static/directory-head@2x.png)',
+    backgroundSize: 'auto 100%',
+    backgroundPosition: 'center center',
     borderBottom: '1px solid rgba(220, 222, 228, 0.4)',
-    paddingTop: 38,
-    paddingBottom: 40,
-    paddingLeft: 40,
-    paddingRight: 40
+    padding: '42px 40px 40px',
 });
 
 const HeaderContent = Glamorous.div({
@@ -46,20 +46,19 @@ const HeaderContent = Glamorous.div({
 });
 
 const HeaderTitle = Glamorous.div({
-    fontSize: 22,
-    fontWeight: 500,
-    letterSpacing: 0.7,
-    color: '#334562',
-    marginBottom: 11
+    fontSize: 24,
+    fontWeight: 700,
+    letterSpacing: 0.4,
+    color: '#1f3449',
+    marginBottom: 16
 });
 
 const HeaderText = Glamorous.div({
     opacity: 0.8,
     fontSize: 15,
-    fontWeight: 500,
-    lineHeight: 1.53,
-    letterSpacing: -0.1,
-    color: '#334562',
+    lineHeight: '20px',
+    letterSpacing: 0.35,
+    color: '#1f3449',
 });
 
 const Header = () => (
