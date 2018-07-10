@@ -5,7 +5,9 @@ const ChatContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    width: '100%',
+    flexBasis: '0px',
+    alignSelf: 'stretch',
+    // width: '100%',
     paddingLeft: 16,
     paddingRight: 16,
     overflow: 'hidden'

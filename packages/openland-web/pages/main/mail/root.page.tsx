@@ -18,10 +18,11 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 let ChatContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'stretch',
     backgroundColor: '#f9fafb',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
-    height: '100%',
-    width: '100%',
+    alignSelf: 'stretch',
+    flexBasis: 0,
     flexGrow: 1,
     overflow: 'hidden'
 });
@@ -29,7 +30,7 @@ let ChatContainer = Glamorous.div({
 let ChatListContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    height: '100%',
+    alignItems: 'stretch',
     width: 300,
     flexShrink: 0,
     borderRightColor: '#e2e3e8',
@@ -44,8 +45,8 @@ let ConversationContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    height: '100%',
-    width: '100%',
+    flexBasis: '0px',
+    alignItems: 'stretch',
     backgroundColor: '#ffffff',
     justifyContent: 'center',
     position: 'relative',
@@ -107,7 +108,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             {!isCompose && !props.router.routeQuery.conversationId && (
                                 <MessengerContainer>
                                     No chat selected!
-                                    </MessengerContainer>
+                                </MessengerContainer>
                             )}
                             {!isCompose && props.router.routeQuery.conversationId && (
                                 <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
