@@ -8,9 +8,8 @@ export const OrganizationSearch = gql`
         location
         isMine
         organizationType: alphaOrganizationType
-        lookingFor: alphaLookingFor
-        geographies: alphaGeographies
+        interests: alphaInterests
         followed: alphaFollowed
-
+        
     }
 `;

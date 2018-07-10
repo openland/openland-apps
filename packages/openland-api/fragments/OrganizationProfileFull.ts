@@ -36,6 +36,31 @@ export const OrganizationProfileFull = gql`
         }
 
         organizationType: alphaOrganizationType
+        interests: alphaInterests
+        locations: alphaLocations
+
+        posts: alphaDummyPosts{
+            text 
+            type 
+            description 
+            date 
+            image {
+                uuid
+                crop{
+                    x
+                    y
+                    w
+                    h
+                }
+            }
+            activity 
+            links{
+                text
+                url
+            }
+            pinned 
+        }
+        
         lookingFor: alphaLookingFor
         geographies: alphaGeographies
         doShapeAndForm: alphaDOShapeAndForm
