@@ -4,7 +4,7 @@ import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchCondition } from './root.page';
 import { XMenuItem } from '../../../components/Incubator/XOverflow';
-import glamorous from '../../../../../node_modules/glamorous';
+import glamorous from 'glamorous';
 
 const CATALOG = [
 

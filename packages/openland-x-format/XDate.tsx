@@ -114,7 +114,7 @@ export function XDate(props: { value: string, format?: 'date' | 'time' | 'dateti
     }
 }
 
-export const DateFormater = (time: string) => {
+export const DateFormater = (time: string | number) => {
     const date = new Date(time);
 
     let year = date.getFullYear();

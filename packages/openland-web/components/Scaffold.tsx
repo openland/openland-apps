@@ -28,6 +28,7 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
 import { InvitesToOrganizationMoadal, InvitesGlobalMoadal } from '../pages/main/settings/invites';
 import { XModalContext } from 'openland-x-modal/XModalContext';
+import { TextInvites } from 'openland-text/TextInvites';
 
 //
 // Root
@@ -254,8 +255,8 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                     </OrganizationTitleContainer>
                                     <XMenuItem path="/settings/organization" autoClose={true}>{TextGlobal.editProfile}</XMenuItem>
                                     <XWithRole role={['super-admin', 'software-developer']}>
-                                        <XMenuItem query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextGlobal.invite}</XMenuItem>
-                                        <XMenuItem query={{ field: 'invite_global', value: 'true' }} autoClose={true}>{TextGlobal.inviteGlobal}</XMenuItem>
+                                        <XMenuItem query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextInvites.inviteButton}</XMenuItem>
+                                        <XMenuItem query={{ field: 'invite_global', value: 'true' }} autoClose={true}>{TextInvites.inviteGlobalButton}</XMenuItem>
                                     </XWithRole>
                                     <XMenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>
                                 </>
