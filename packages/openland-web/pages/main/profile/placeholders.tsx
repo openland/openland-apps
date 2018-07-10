@@ -68,7 +68,7 @@ const Close = Glamorous(XIcon)({
 
 export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
 
-    return ((props.data.myOrganizationProfile && !props.data.myOrganizationProfile.organizationType && !props.data.myOrganizationProfile.geographies && !props.data.myOrganizationProfile.lookingFor) ? (
+    return ((props.data.myOrganizationProfile && !props.data.myOrganizationProfile.organizationType && !props.data.myOrganizationProfile.locations && !props.data.myOrganizationProfile.interests) ? (
         <Placeholder accent={true}>
             <XHorizontal>
                 <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_overview.svg'} />
@@ -81,8 +81,8 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                         defaultData={{
                             input: {
                                 organizationType: props.data.myOrganizationProfile!!.organizationType,
-                                lookingFor: props.data.myOrganizationProfile!!.lookingFor,
-                                geographies: props.data.myOrganizationProfile!!.geographies,
+                                locations: props.data.myOrganizationProfile!!.locations,
+                                interests: props.data.myOrganizationProfile!!.interests,
                             }
                         }}
                         defaultAction={async (data) => {
@@ -90,8 +90,8 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                                 variables: {
                                     input: {
                                         alphaOrganizationType: data.input.organizationType,
-                                        alphaLookingFor: data.input.lookingFor,
-                                        alphaGeographies: data.input.geographies,
+                                        alphaLocations: data.input.locations,
+                                        alphaInterests: data.input.interests,
                                     }
                                 }
                             });
@@ -114,28 +114,26 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                                     >
                                         <XSelect
                                             creatable={true}
-                                            multi={false}
+                                            multi={true}
                                             field="input.organizationType"
-                                            options={[
-                                                { value: 'Public', label: 'Public', },
-                                                { value: 'Corporation', label: 'Corporation' },
-                                                { value: 'Nonprofit Corporation', label: 'Nonprofit Corporation' }
-                                            ]}
+                                            // options={[
+                                            //     { value: 'Public', label: 'Public', },
+                                            //     { value: 'Corporation', label: 'Corporation' },
+                                            //     { value: 'Nonprofit Corporation', label: 'Nonprofit Corporation' }
+                                            // ]}
                                         />
                                     </XFormField>
                                     <XFormField
-                                        title={TextOrganizationProfile.placeholderOverviewGeneralModalLookingForTitle}
-                                        description={TextOrganizationProfile.placeholderOverviewGeneralModalLookingForDescription}
-                                        field="input.lookingFor"
+                                        title={TextOrganizationProfile.placeholderOverviewGeneralModalLocations}
+                                        field="input.locations"
                                     >
-                                        <XSelect creatable={true} multi={true} field="input.lookingFor" />
+                                        <XSelect creatable={true} multi={true} field="input.locations" />
                                     </XFormField>
                                     <XFormField
-                                        title={TextOrganizationProfile.placeholderOverviewGeneralModalGeographiesTitle}
-                                        description={TextOrganizationProfile.placeholderOverviewGeneralModalGeographiesDescription}
-                                        field="input.geographies"
+                                        title={TextOrganizationProfile.placeholderOverviewGeneralModalInterests}
+                                        field="input.interests"
                                     >
-                                        <XSelect creatable={true} multi={true} field="input.geographies" />
+                                        <XSelect creatable={true} multi={true} field="input.interests" />
                                     </XFormField>
                                 </XVertical>
                             </XFormLoadingContent>

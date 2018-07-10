@@ -18,6 +18,8 @@ export const TextOrganizationProfile = {
     overviewOrganizationTypeTitle: 'Organization type',
     overviewOrganizationLookingForTitle: 'Looking for',
     overviewOrganizationGeographiesTitle: 'Geographies',
+    overviewOrganizationLocationsTitle: 'Locations',
+    overviewOrganizationInterestsTitle: 'Interests',
 
     overviewDOTitle: 'Development opportunities',
     overviewDOTagRowShapeAndFormTitle: 'Shape and form',
@@ -135,8 +137,10 @@ export const TextOrganizationProfile = {
     placeholderOverviewGeneralModalOrganizationTypeTitle: 'What\'s type of your entity?',
     placeholderOverviewGeneralModalOrganizationTypeDescription: 'Are you corporation, non profit or public entity?',
     placeholderOverviewGeneralModalLookingForTitle: 'What are you looking for?',
+    placeholderOverviewGeneralModalLocations: 'Locations',
     placeholderOverviewGeneralModalLookingForDescription: 'Tell us more about your goals. What you are struggling to find?',
     placeholderOverviewGeneralModalGeographiesTitle: 'Where are you looking for deals?',
+    placeholderOverviewGeneralModalInterests: 'Interests',
     placeholderOverviewGeneralModalGeographiesDescription: 'Whole US? Specific state or city?',
 
     placeholderOverviewDoMainText: 'Do you own development sites?',

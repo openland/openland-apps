@@ -31,7 +31,7 @@ import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { DateFormater } from 'openland-x-format/XDateLegacy';
-import { OverviewPlaceholder, DOAROverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder, AvatartPlaceholder } from './placeholders';
+import { OverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder, AvatartPlaceholder } from './placeholders';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import PlaceholderAR from './icons/placeholder/img_placeholder_ar.svg';
@@ -1296,14 +1296,13 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         {currentPath === rootPath && (
                                             <>
                                                 <OverviewPlaceholder />
-                                                <DOAROverviewPlaceholder />
                                             </>
                                         )}
                                     </XWithRole>
                                     {currentPath === rootPath && (
                                         <>
 
-                                            {(organization.organizationType || organization.lookingFor || organization.geographies) && (
+                                            {(organization.organizationType || organization.locations || organization.interests) && (
                                                 <XCardStyled padding={0}>
                                                     {organization.organizationType && (
                                                         <TagRowMapMain
@@ -1311,16 +1310,16 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             items={organization.organizationType}
                                                         />
                                                     )}
-                                                    {organization.lookingFor && (
+                                                    {organization.locations && (
                                                         <TagRowMapMain
-                                                            title={TextOrganizationProfile.overviewOrganizationLookingForTitle}
-                                                            items={organization.lookingFor}
+                                                            title={TextOrganizationProfile.overviewOrganizationLocationsTitle}
+                                                            items={organization.locations}
                                                         />
                                                     )}
-                                                    {organization.geographies && (
+                                                    {organization.interests && (
                                                         <TagRowMapMain
-                                                            title={TextOrganizationProfile.overviewOrganizationGeographiesTitle}
-                                                            items={organization.geographies}
+                                                            title={TextOrganizationProfile.overviewOrganizationInterestsTitle}
+                                                            items={organization.interests}
                                                         />
                                                     )}
 
