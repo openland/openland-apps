@@ -85,7 +85,7 @@ interface OrganizationCardProps {
         photo: string | null,
         location: string | null,
         interests?: string[] | null,
-        tags?: string[] | null,
+        organizationType?: string[] | null,
         isMine: boolean,
         followed: boolean,
     };
@@ -190,9 +190,9 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                     {props.item.interests && (<OrganizationInterests>{props.item.interests.join(' • ')}</OrganizationInterests>)}
                     <OrganizationInterests>Acquisitions • Joint venture</OrganizationInterests>
 
-                    {props.item.tags && (
+                    {props.item.organizationType && (
                         <OrganizationTags>
-                            {props.item.tags.map((tag) => (
+                            {props.item.organizationType.map((tag) => (
                                 <XTag key={props.item.id + tag} title={tag} />
                             ))}
                         </OrganizationTags>
@@ -226,10 +226,20 @@ const OrganizationCard = (props: OrganizationCardProps) => (
     </OrganizationCardWrapper>
 );
 
+const OrganizationCounter = Glamorous.div({
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+    fontSize: 15,
+    lineHeight: '20px',
+    letterSpacing: 0.6,
+    color: 'rgba(31, 52, 73, 0.5)',
+    padding: '20px 5px 20px 24px',
+});
+
 const OrganizationCards = withExploreOrganizations((props) => {
     console.warn(props);
     return (
         <>
+            {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && <OrganizationCounter>{props.data.items.pageInfo.itemsCount + ((props.data.items.pageInfo.itemsCount !== 1) ? ' organizations' : ' organization')}</OrganizationCounter>}
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && props.data.items.edges.map((i, j) => (
                 <OrganizationCard key={i.node.id + j} item={i.node} />
             ))}
