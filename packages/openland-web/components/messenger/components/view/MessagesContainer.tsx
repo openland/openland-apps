@@ -13,12 +13,14 @@ const ChatContainer = Glamorous.div({
 
 const MessagesContainerInner = Glamorous.div({
     display: 'flex',
+    flexGrow: 1,
     flexBasis: '100%',
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignSelf: 'center',
     position: 'relative',
     maxHeight: '100%',
+    height: '100%',
     maxWidth: 900,
     width: '100%',
     overflow: 'hidden',
@@ -29,7 +31,8 @@ const MessagesContainerInner = Glamorous.div({
         '& > .simplebar-scroll-content > .simplebar-content': {
             overflowX: 'unset !important',
             overflowY: 'unset !important',
-            width: '100%'
+            width: '100%',
+            justifyContent: 'flex-end'
         }
     }
 });
