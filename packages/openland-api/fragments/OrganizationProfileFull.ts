@@ -34,6 +34,8 @@ export const OrganizationProfileFull = gql`
             phone
             link
         }
+        
+        published: alphaPublished
 
         organizationType: alphaOrganizationType
         interests: alphaInterests
