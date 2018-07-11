@@ -148,7 +148,7 @@ class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: st
                 {this.props.invite && (
                     <>
                         <XHorizontal alignItems="center">
-                            {makeClickble(<XInput autoSelect={true} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + '/join/' + this.props.invite.key} />, (e: any) => console.warn(this.input))}
+                            {makeClickble(<XInput autoSelect={true} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key} />, (e: any) => console.warn(this.input))}
                             {/* <XButton text="Copy" /> */}
                             <XMutation mutation={this.props.deleteMutation}><XButton style="danger" text={TextInvites.deleteLink} /></XMutation>
                         </XHorizontal>

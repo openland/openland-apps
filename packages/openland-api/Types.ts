@@ -3124,6 +3124,18 @@ export interface SuperAccountSuspendMutation {
   },
 };
 
+export interface SuperAccountPendMutationVariables {
+  accountId: string,
+};
+
+export interface SuperAccountPendMutation {
+  superAccountPend:  {
+    __typename: "SuperAccount",
+    id: string,
+    state: SuperAccountState,
+  },
+};
+
 export interface SuperAccountAddMutationVariables {
   title: string,
 };

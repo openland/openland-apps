@@ -3,6 +3,7 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { withSuperAccountActivate } from '../../api/withSuperAccountActivate';
 import { withSuperAccountSuspend } from '../../api/withSuperAccountSuspend';
+import { withSuperAccountPend } from '../../api/withSuperAccountPend';
 import { withSuperAccountFeatureAdd } from '../../api/withSuperAccountFeatureAdd';
 import { withSuperAccountFeatureRemove } from '../../api/withSuperAccountFeatureRemove';
 import { withSuperAccountMemberAdd } from '../../api/withSuperAccountMemberAdd';
@@ -21,6 +22,7 @@ import { withSuperAccount } from '../../api/withSuperAccount';
 
 const ActivateButton = withSuperAccountActivate((props) => <XButton style="primary" action={() => props.activate({})} text="Activate" />);
 const SuspendButton = withSuperAccountSuspend((props) => <XButton style="danger" action={() => props.suspend({})} text="Suspend" />);
+const PendButton = withSuperAccountPend((props) => <XButton style="danger" action={() => props.pend({})} text="Pend" />);
 
 const AddMemberForm = withSuperAccountMemberAdd((props) => {
     return (
@@ -116,6 +118,7 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount(wit
                 <RemoveMemberForm />
                 {props.data.superAccount.state !== 'ACTIVATED' && <ActivateButton />}
                 {props.data.superAccount.state === 'ACTIVATED' && <SuspendButton />}
+                {props.data.superAccount.state === 'ACTIVATED' && <PendButton />}
             </XHeader>
             <XHeader text="Members" description={props.data.superAccount.members.length + ' total'} />
             <XTable>

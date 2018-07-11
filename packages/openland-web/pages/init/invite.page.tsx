@@ -11,12 +11,15 @@ import { withInviteActivation } from '../../api/withInviteActivation';
 import { XLoader } from 'openland-x/XLoader';
 import { ErrorPage } from '../../components/ErrorPage';
 import { formatError } from 'openland-x-forms/errorHandling';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 class ActivateInvite extends React.Component<{ mutation: any }, { complete: boolean, error?: string }> {
     constructor(props: any) {
         super(props);
         this.state = { complete: false };
-        this.doJoin(props.mutation);
+        if (canUseDOM) {
+            this.doJoin(props.mutation);
+        }
     }
 
     doJoin = async (mutation: any) => {

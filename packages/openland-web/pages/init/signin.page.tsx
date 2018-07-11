@@ -155,9 +155,9 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
 
     loginEmailStart = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
-        this.setState({ 
-            emailSending: true, 
-            emailError: '', 
+        this.setState({
+            emailSending: true,
+            emailError: '',
             emailSent: false
         });
         this.fireEmail();
