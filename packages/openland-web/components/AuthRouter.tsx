@@ -103,7 +103,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/createOrganization',
         ].indexOf(props.router.path) < 0) {
             console.warn('NoOrganization');
-            return <XPageRedirect path="/createOrganization" />;
+            return <XPageRedirect path={'/createOrganization' + redirect} />;
         }
     }
 

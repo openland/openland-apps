@@ -24,7 +24,7 @@ export default withAppBase('Invite', withInviteActivation((props) => {
             <XTrack event="Invite">
                 <MessagePage>
                     {props.data.invite && (
-                        <MessagePageContent title={props.data.invite.title}>
+                        <MessagePageContent title={InitTexts.invite.title + props.data.invite.title}>
                             <XButton
                                 text={InitTexts.invite.joinButton}
                                 action={async () => {

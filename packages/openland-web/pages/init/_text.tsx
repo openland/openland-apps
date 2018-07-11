@@ -42,7 +42,7 @@ export const InitTexts = {
 
     invite: {
         pageTitle: 'Invite',
-        title: 'Invite',
+        title: 'Invite from',
         joinButton: 'Activate Organization',
         unableToFindInvite: 'Unable to find your invitation',
     },
