@@ -300,11 +300,10 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
 // Content
 //
 
-const ContentView = Glamorous.div<{ noBoxShadow?: boolean, marginLeft: number, overflow?: boolean }>((props) => ({
+const ContentView = Glamorous.div<{ noBoxShadow?: boolean, marginLeft: number }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
-    maxHeight: props.overflow ? '100vh' : undefined,
     overflow: 'hidden',
     // borderTopLeftRadius: 8,
     // borderBottomLeftRadius: 8,
@@ -562,7 +561,6 @@ class ScaffoldContent extends React.Component<{ padding?: boolean, bottomOffset?
 interface ScaffoldProps {
     noBoxShadow?: boolean;
     sidebarBorderColor?: string;
-    overflow?: boolean;
 }
 
 const Home = withUserInfo((props) => {
@@ -925,7 +923,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                 <ContentView
                     noBoxShadow={this.props.noBoxShadow}
                     marginLeft={menu !== undefined ? 280 : 72}
-                    overflow={this.props.overflow}
                 >
                     {content}
                 </ContentView>

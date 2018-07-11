@@ -20,16 +20,17 @@ let ChatContainer = Glamorous.div({
     flexDirection: 'row',
     backgroundColor: '#f9fafb',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
-    height: '100%',
+    height: '100vh',
     width: '100%',
     flexGrow: 1,
+    flexShrink: 0,
     overflow: 'hidden'
 });
 
 let ChatListContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    height: '100%',
+    height: '100vh',
     width: 300,
     flexShrink: 0,
     borderRightColor: '#e2e3e8',
@@ -44,7 +45,8 @@ let ConversationContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    height: '100%',
+    flexShrink: 0,
+    height: '100vh',
     width: 'calc(100% - 300px)',
     backgroundColor: '#ffffff',
     justifyContent: 'center',
@@ -107,7 +109,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
     return (
         <>
             <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
-            <Scaffold overflow={true}>
+            <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ChatContainer>
                         <ChatListContainer>
