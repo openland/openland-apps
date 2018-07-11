@@ -82,6 +82,24 @@ let Header = Glamorous.div({
     }
 });
 
+const EmptyDiv = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    flexGrow: 1,
+    flexBasis: '100%'
+});
+
+const ComposeText = Glamorous.div({
+    fontSize: 14,
+    letterSpacing: -0.3,
+    color: '#99a2b0',
+    marginTop: 10
+});
+
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
 
     let isCompose = props.router.path.endsWith('/new');
@@ -109,7 +127,10 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             )}
                             {!isCompose && !props.router.routeQuery.conversationId && (
                                 <MessengerContainer>
-                                    No chat selected!
+                                    <EmptyDiv>
+                                        <img src={'/static/X/chat-compose.svg'} />
+                                        <ComposeText>Select a chat to start messaging</ComposeText>
+                                    </EmptyDiv>
                                 </MessengerContainer>
                             )}
                             {!isCompose && props.router.routeQuery.conversationId && (
