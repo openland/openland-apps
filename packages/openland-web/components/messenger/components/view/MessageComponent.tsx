@@ -11,6 +11,7 @@ import { XDate } from 'openland-x-format/XDate';
 import { XButton } from 'openland-x/XButton';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
+import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { ConversationEngine } from '../../model/ConversationEngine';
 
 interface MessageComponentProps {
@@ -44,8 +45,9 @@ const MessageContainer = Glamorous.div({
     paddingBottom: 4,
     width: '100%',
     marginBottom: 12,
+    borderRadius: 5,
     '&:hover': {
-        backgroundColor: '#f8f8fb'
+        backgroundColor: 'rgba(248, 248, 251, 0.7)'
     },
 });
 
@@ -59,8 +61,9 @@ const MessageCompactContainer = Glamorous.div({
     width: '100%',
     marginTop: -12,
     marginBottom: 12,
+    borderRadius: 5,
     '&:hover': {
-        backgroundColor: '#f8f8fb'
+        backgroundColor: 'rgba(248, 248, 251, 0.7)'
     },
 });
 
@@ -90,7 +93,13 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
             date = <XDate value={this.props.message.date} format="time" />;
         } else {
             if (this.props.message.file) {
-                content.push(<MessageFileComponent key={'file'} fileName={this.props.message.file + '(' + Math.round(this.props.message.progress * 100) + '%)'} />);
+                content.push(
+                    <MessageUploadComponent
+                        key={'file'}
+                        progress={Math.round(this.props.message.progress * 100)}
+                        title={'Uploading ' + this.props.message.file + ' (' + Math.round(this.props.message.progress * 100) + '%)'}
+                    />
+                );
             }
             date = 'Sending...';
             if (this.props.message.failed) {
