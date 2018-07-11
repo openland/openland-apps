@@ -118,7 +118,11 @@ const SignupStyled = Glamorous.span({
     fontSize: 16,
     lineHeight: 1.5,
     letterSpacing: 0.5,
-    color: '#1f3449'
+    color: '#1f3449',
+    '@media (max-width: 400px)': {
+        textAlign: 'center',
+        marginBottom: 5
+    }
 });
 
 const SignupButton = Glamorous(XLink)({
@@ -129,12 +133,18 @@ const SignupButton = Glamorous(XLink)({
     marginLeft: 5,
     '&:hover': {
         color: '#1f3449'
+    },
+    '@media (max-width: 400px)': {
+        marginLeft: 0
     }
 });
 
 const SignupContainer = Glamorous.div({
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    '@media (max-width: 400px)': {
+        flexDirection: 'column'
+    }
 });
 
 interface HeaderProps {
@@ -164,7 +174,7 @@ const MainContent = Glamorous.div({
     width: 390,
     margin: 'auto',
     '@media(max-width: 530px)': {
-        width: 'auto',
+        width: '100%',
         maxWidth: 390
     }
 });
