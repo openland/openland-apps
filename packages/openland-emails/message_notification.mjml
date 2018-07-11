@@ -1,0 +1,24 @@
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-text font-size="18px" line-height="30px" align="left" color="#151515" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#ffffff">
+    <mj-spacer/>
+    <mj-include path="./header.mjml" />
+    <mj-section>
+      <mj-column>
+        <mj-text>
+          {{userWelcome}} <br/> <br/> 
+          You have <strong>{{messageCount}}</strong> in your inbox. You can view them in <a href="https://app.openland.com/mail">Openland Mail</a>. <br/> <br/>
+          
+          
+          Good luck! <br/>
+          -- Openland Team
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-include path="./footer.mjml" />
+  </mj-body>
+</mjml>
