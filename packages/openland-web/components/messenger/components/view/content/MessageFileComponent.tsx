@@ -1,5 +1,65 @@
 import * as React from 'react';
-import { XButton } from 'openland-x/XButton';
+import Glamorous from 'glamorous';
+import { XLink } from 'openland-x/XLink';
+
+const FileButton = Glamorous(XLink)((props) => ({
+    display: 'flex',
+    alignSelf: 'flex-start',
+    marginTop: 8,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
+    cursor: props.enabled === false ? 'default !important' : 'pointer',
+    borderRadius: 5,
+    border: 'solid 1px rgba(220, 222, 228, 0.45)',
+    color: '#334562',
+    backgroundColor: '#ffffff',
+    width: 250,
+    '&:hover': {
+        '& .title': {
+            color: props.enabled === false ? '#334562' : undefined
+        },
+        '& .size': {
+            color: '#334562'
+        }
+    }
+}));
+
+const FileImage = Glamorous.div({
+    width: 40,
+    height: 40,
+    flexShrink: 0,
+    backgroundColor: '#f3f3f5',
+    borderRadius: 50,
+    backgroundImage: 'url(\'/static/X/file.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    marginRight: 12
+});
+
+const FileText = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+    width: 'calc(100% - 52px)'
+});
+
+const Title = Glamorous.div({
+    width: '100%',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    fontSize: 14,
+    fontWeight: 500,
+    letterSpacing: -0.1
+});
+
+const Size = Glamorous.div({
+    fontSize: 14,
+    opacity: 0.5,
+    letterSpacing: -0.1
+});
 
 const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
@@ -22,17 +82,28 @@ export class MessageFileComponent extends React.PureComponent<{ file?: string, f
     render() {
         return (
             <>
-                {this.props.file && <XButton
-                    href={'https://ucarecdn.com/' + this.props.file + '/' + (this.props.fileName ? this.props.fileName!! : '')}
-                    text={this.props.fileName ? this.props.fileName!! : 'file'}
-                    alignSelf="flex-start"
-                />}
-                {!this.props.file && <XButton
-                    enabled={false}
-                    text={this.props.fileName ? this.props.fileName!! : 'file'}
-                    alignSelf="flex-start"
-                />}
-                <span>{niceBytes(this.props.fileSize)}</span>
+                {this.props.file && (
+                    <FileButton
+                        href={'https://ucarecdn.com/' + this.props.file + '/' + (this.props.fileName ? this.props.fileName!! : '')}
+                    >
+                        <FileImage />
+                        <FileText>
+                            <Title className="title">{this.props.fileName ? this.props.fileName!! : 'file'}</Title>
+                            <Size className="size">{niceBytes(this.props.fileSize)}</Size>
+                        </FileText>
+                    </FileButton>
+                )}
+                {!this.props.file && (
+                    <FileButton
+                        enabled={false}
+                    >
+                        <FileImage />
+                        <FileText>
+                            <Title className="title">{this.props.fileName ? this.props.fileName!! : 'file'}</Title>
+                            <Size className="size">{niceBytes(this.props.fileSize)}</Size>
+                        </FileText>
+                    </FileButton>
+                )}
             </>
         );
     }
