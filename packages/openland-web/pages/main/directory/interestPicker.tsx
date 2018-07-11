@@ -8,14 +8,7 @@ import glamorous from 'glamorous';
 import { XText } from 'openland-x/XText';
 import { XInput } from 'openland-x/XInput';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-
-const CATALOG = [
-    { label: 'Selling', value: 'Selling' },
-    { label: 'Buying', value: 'Buying' },
-    { label: 'Joint ventures', value: 'Joint ventures' },
-    { label: 'Leasing', value: 'Leasing' },
-    { label: 'Option-to-buy', value: 'Option-to-buy' },
-];
+import { TextDirectory } from 'openland-text/TextDirectory';
 
 const VerticalScrollable = glamorous(XVertical)({
     height: 200,
@@ -70,7 +63,7 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
             <XVertical>
                 <XInput value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
                 <XHorizontal>
-                    <EntriesComponent title="Top interests" query={this.state.query} options={CATALOG} onPick={this.onPick} />
+                    <EntriesComponent title={TextDirectory.interestEntryTop} query={this.state.query} options={TextDirectory.interestEntries.top} onPick={this.onPick} />
                 </XHorizontal>
             </XVertical>
         );
@@ -81,7 +74,7 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
                 content={content}
                 onClickOutside={this.close}
             >
-                <XButton text="Interests" iconRight="expand_more" onClick={this.switch} />
+                <XButton text={TextDirectory.interestPicker} iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }
