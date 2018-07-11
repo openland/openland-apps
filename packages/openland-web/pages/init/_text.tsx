@@ -40,6 +40,13 @@ export const InitTexts = {
         unableToFindInvite: 'Unable to find your invitation',
     },
 
+    invite: {
+        pageTitle: 'Invite',
+        title: 'Invite',
+        joinButton: 'Activate Organization',
+        unableToFindInvite: 'Unable to find your invitation',
+    },
+
     create_profile: {
         pageTitle: 'Create profile',
         title: 'Set up a user account',

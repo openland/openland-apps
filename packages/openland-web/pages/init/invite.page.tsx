@@ -1,54 +1,37 @@
 import '../init';
 import '../../globals';
 import * as React from 'react';
+import { MessagePage } from '../../components/MessagePage';
+import { MessagePageContent } from '../../components/MessagePageContent';
 import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../../components/AuthRouter';
+import { XButton } from 'openland-x/XButton';
 import { InitTexts } from './_text';
-import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { withInviteActivation } from '../../api/withInviteActivation';
-import { XLoader } from 'openland-x/XLoader';
-import { ErrorPage } from '../../components/ErrorPage';
-import { formatError } from 'openland-x-forms/errorHandling';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
-
-class ActivateInvite extends React.Component<{ mutation: any }, { complete: boolean, error?: string }> {
-    constructor(props: any) {
-        super(props);
-        this.state = { complete: false };
-        if (canUseDOM) {
-            this.doJoin(props.mutation);
-        }
-    }
-
-    doJoin = async (mutation: any) => {
-        try {
-            await mutation({});
-            this.setState({ complete: true });
-        } catch (e) {
-            this.setState({ complete: true, error: formatError(e) });
-        }
-    }
-
-    render() {
-        console.warn(this.state);
-        return (
-            <>
-                <XLoader loading={!this.state.complete} />
-                {this.state.complete && !this.state.error && < XPageRedirect path="/" />}
-                {this.state.complete && <ErrorPage statusCode={400} message={this.state.error} />}
-            </>
-        );
-    }
-}
+import createHistory from 'history/createBrowserHistory';
 
 export default withAppBase('Invite', withInviteActivation((props) => {
     return (
         <AuthRouter>
-            <XDocumentHead title={InitTexts.join.pageTitle} titleSocial={InitTexts.socialPageTitle} />
-            <XTrack event="Invite">
-                <ActivateInvite mutation={props.activate} />
+            <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />
+            <XTrack event="Join">
+                <MessagePage>
+                    <MessagePageContent title={InitTexts.invite.title}>
+                        <XButton
+                            text={InitTexts.invite.joinButton}
+                            action={async () => {
+                                await props.activate({});
+                                createHistory({
+                                    forceRefresh: true
+                                }).replace('/');
+                            }}
+                            style="primary"
+                        />
+                    </MessagePageContent>
+
+                </MessagePage>
             </XTrack>
         </AuthRouter>
     );
