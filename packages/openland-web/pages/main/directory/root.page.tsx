@@ -21,6 +21,7 @@ import { InterestPicker } from './interestPicker';
 import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
 import { XMutation } from 'openland-x/XMutation';
 import { TextDirectory } from 'openland-text/TextDirectory';
+import { XLink } from 'openland-x/XLink';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -109,7 +110,11 @@ const OrganizationInfoWrapper = Glamorous.div({
     flexGrow: 1
 });
 
-const OrganizationTitle = Glamorous.div({
+const OrganizationAvatar = Glamorous(XAvatar)({
+    cursor: 'pointer'
+});
+
+const OrganizationTitle = Glamorous(XLink)({
     height: 22,
     fontSize: 20,
     fontWeight: 500,
@@ -173,17 +178,19 @@ const OrganizationFollowBtn = withOrganizationFollow((props) => {
 const OrganizationCard = (props: OrganizationCardProps) => (
     <OrganizationCardWrapper>
         <XHorizontal justifyContent="space-between" separator={12}>
-            <XAvatar
-                cloudImageUuid={props.item.photo!!}
-                size={100}
-                placeholderFontSize={80}
-                border="1px solid rgba(164,169,177,0.2)"
-                style="organization"
-            />
+            <XLink path={'/o/' + props.item.id}>
+                <OrganizationAvatar
+                    cloudImageUuid={props.item.photo!!}
+                    size={100}
+                    placeholderFontSize={80}
+                    border="1px solid rgba(164,169,177,0.2)"
+                    style="organization"
+                />
+            </XLink>
             <OrganizationWrapper>
                 <OrganizationInfoWrapper>
                     <OrganizationTitleWrapper>
-                        <OrganizationTitle>{props.item.name}</OrganizationTitle>
+                        <OrganizationTitle path={'/o/' + props.item.id}>{props.item.name}</OrganizationTitle>
                         <OrganizationLocation>{props.item.location}</OrganizationLocation>
                     </OrganizationTitleWrapper>
 
