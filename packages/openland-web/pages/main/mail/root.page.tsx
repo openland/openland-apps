@@ -110,7 +110,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             {!isCompose && !props.router.routeQuery.conversationId && (
                                 <MessengerContainer>
                                     No chat selected!
-                                    </MessengerContainer>
+                                </MessengerContainer>
                             )}
                             {!isCompose && props.router.routeQuery.conversationId && (
                                 <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
