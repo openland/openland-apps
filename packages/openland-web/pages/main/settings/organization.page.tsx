@@ -32,6 +32,8 @@ import { DateFormater } from 'openland-x-format/XDate';
 import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OrgCategoties } from '../directory/categoryPicker';
+import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
+
 const CenteredButton = Glamorous(XButton)({
     alignSelf: 'center'
 });
@@ -202,11 +204,11 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                         </XFormField>
 
                                         <XFormField title="Location" field="input.location" optional={true}>
-                                            <XInput field="input.location" />
+                                            <XSelect field="input.location" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
                                         </XFormField>
 
                                         <XFormField title="Locations" field="input.locations" optional={true}>
-                                            <XSelect creatable={true} multi={true} field="input.locations" />
+                                            <XSelect creatable={true} multi={true} field="input.locations" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
                                         </XFormField>
 
                                         <XFormField title="About" field="fields.input.about" optional={true}>

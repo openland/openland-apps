@@ -22,7 +22,7 @@ export const OrgCategoties = [
     { label: 'Airport', value: 'Airport' },
     { label: 'Port authorities', value: 'Port authorities' },
     { label: 'Logistics company', value: 'Logistics company' },
-    { label: 'Real estate develope', value: 'Real estate develope' },
+    { label: 'Real estate developer', value: 'Real estate developer' },
     { label: 'Health system', value: 'Health system' },
     { label: 'Hospital', value: 'Hospital' },
     { label: 'School', value: 'School' },
@@ -79,9 +79,9 @@ const CATALOG = [
         ]
     },
     {
-        label: 'Real estate develope',
+        label: 'Real estate developer',
         options: [
-            { label: 'Real estate develope', value: 'Real estate develope' },
+            { label: 'Real estate developer', value: 'Real estate developer' },
         ]
     },
     {

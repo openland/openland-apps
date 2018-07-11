@@ -29,6 +29,7 @@ import { withNotificationCounter } from '../api/withNotificationCounter';
 import { InvitesToOrganizationMoadal, InvitesGlobalMoadal } from '../pages/main/settings/invites';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { TextInvites } from 'openland-text/TextInvites';
+import DirecoryIcon from '../pages/main/directory/icons/directory.1.svg';
 
 //
 // Root
@@ -110,8 +111,12 @@ const NavigatorItem = Glamorous(XLink)({
     flexShrink: 0,
     color: '#000000',
     cursor: 'pointer',
+
     '.is-active': {
         color: '#522BFF',
+        '& > svg > g > path': {
+            fill: '#522BFF',
+        },
         '& > .reports .hover': {
             display: 'block'
         },
@@ -121,6 +126,10 @@ const NavigatorItem = Glamorous(XLink)({
     },
     '&:hover': {
         color: '#522BFF',
+        '& > svg > g > path': {
+            fill: '#522BFF',
+            fillRule: 'nonzero'
+        },
         '& > .reports .hover': {
             display: 'block'
         },
@@ -733,6 +742,23 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
                             <XWithRole role={['feature-marketplace']} negate={true}>
                                 <Home />
+                            </XWithRole>
+
+                            <XWithRole role={['feature-directory']}>
+                                <XPopper
+                                    placement="right"
+                                    showOnHoverContent={false}
+                                    showOnHover={true}
+                                    groupId="scaffold_tooltip"
+                                    content={(
+                                        <strong>{TextAppBar.items.directory}</strong>
+
+                                    )}
+                                >
+                                    <NavigatorItem path="/directory">
+                                        <DirecoryIcon />
+                                    </NavigatorItem>
+                                </XPopper>
                             </XWithRole>
 
                             <XWithRole role={['feature-messaging']}>

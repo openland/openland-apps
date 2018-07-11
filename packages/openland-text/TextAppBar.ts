@@ -3,6 +3,7 @@ export const TextAppBar = {
         home: 'Home',
         mail: 'Mail',
         explore: 'Explore',
+        directory: 'Directory',
         addListing: 'Add listing',
         map: 'Map',
         prospecting: 'Prospecting',
