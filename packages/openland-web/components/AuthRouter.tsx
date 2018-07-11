@@ -20,7 +20,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/pickOrganization',
             '/signin',
             '/signup'
-        ].indexOf(props.router.path) < 0 && !props.router.path.startsWith('/invite/')) {
+        ].indexOf(props.router.path) < 0) {
             // ].indexOf(props.router.path) < 0 && !props.router.path.startsWith('/join/') && !props.router.path.startsWith('/invite/')) {
             if (props.router.path !== '/') {
                 redirect = '?redirect=' + encodeURIComponent(props.router.path);

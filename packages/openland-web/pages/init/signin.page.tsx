@@ -23,6 +23,7 @@ import { InitTexts } from './_text';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
+import * as Cookie from 'js-cookie';
 
 const EmptyBlock = Glamorous.div({
     width: '100%',
@@ -54,6 +55,9 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
     }
 
     fireEmail = () => {
+        if (this.props.redirect) {
+            Cookie.set('sign-redirect', this.props.redirect);
+        }
         createAuth0Client().passwordlessStart({ connection: 'email', send: 'code', email: this.state.emailValue }, (error, v) => {
             if (error) {
                 this.setState({ emailSending: false, emailError: error.description!! });

@@ -54,6 +54,8 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
             if (auth.idTokenPayload && auth.idTokenPayload.sub && auth.idTokenPayload.sub.startsWith('email|')) {
                 path = '/';
             }
+            path = Cookie.get('sign-redirect') || path;
+            Cookie.remove('sign-redirect');
             createHistory({
                 forceRefresh: true
             }).replace(path);
