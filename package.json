@@ -195,7 +195,7 @@
 		"bundle:app": "NODE_ENV=production next build ./packages/openland-web",
 		"bundle:server": "NODE_ENV=production ./node_modules/.bin/tsc -p tsconfig.server.json",
 		"bundle:prepare": "./node_modules/.bin/cpx \"./packages/openland-web/next.config.prod.js\" ./dist/ && ./node_modules/.bin/cpx \"./packages/openland-web/worker.js\" ./dist/ && mv ./dist/next.config.prod.js ./dist/next.config.js  && ./node_modules/.bin/cpx \"./packages/openland-web/.next/**/*\" ./dist/.next/ && ./node_modules/.bin/cpx \"./packages/openland-web/static/**/*\" ./dist/static/",
-		"bundle": "./node_modules/.bin/concurrently \"yarn bundle:worker\" \"yarn bundle:server\" \"yarn bundle:app\" && yarn bundle:prepare",
+		"bundle": "./node_modules/.bin/concurrently \"yarn bundle:server\" \"yarn bundle:app\" && yarn bundle:prepare",
 		"analyze": "NODE_ENV=production BUNDLE_ANALYZE=both next build ./packages/openland-web",
 		"analyze:web": "NODE_ENV=production BUNDLE_ANALYZE=browser next build ./packages/openland-web",
 		"analyze:server": "NODE_ENV=production BUNDLE_ANALYZE=server next build ./packages/openland-web",
