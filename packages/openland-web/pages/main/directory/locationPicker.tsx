@@ -271,7 +271,7 @@ export class LocationPicker extends React.Component<{ onPick: (q: SearchConditio
                 content={content}
                 onClickOutside={this.close}
             >
-                <XButton text="Location" onClick={this.switch} />
+                <XButton text="Location" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }

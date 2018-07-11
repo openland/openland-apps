@@ -208,7 +208,7 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
                 content={content}
                 onClickOutside={this.close}
             >
-                <XButton text="Organization category" onClick={this.switch} />
+                <XButton text="Organization category" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }
