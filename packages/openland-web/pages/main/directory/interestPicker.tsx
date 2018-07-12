@@ -10,7 +10,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
 
-const CATALOG = TextDirectoryData.interestPicker;
+const Interests = TextDirectoryData.interestPicker;
 
 const EntryScrollable = Glamorous(XVertical)({
     width: 260,
@@ -116,7 +116,7 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
                     <PickerSearchIcon icon="search" />
                 </PickerSearch>
                 <PickerEntries separator="none">
-                    <EntriesComponent title={TextDirectory.interestSearchPlaceholder} query={this.state.query} options={CATALOG} onPick={this.onPick} />
+                    <EntriesComponent title={TextDirectory.interestSearchPlaceholder} query={this.state.query} options={Interests} onPick={this.onPick} />
                 </PickerEntries>
             </PickerWrapper>
         );

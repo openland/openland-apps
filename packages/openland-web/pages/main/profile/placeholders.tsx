@@ -23,6 +23,8 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { OrgCategoties } from '../directory/categoryPicker';
+import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
+import { Interests } from '../directory/interestPicker';
 
 const Placeholder = Glamorous(XCard)<{ accent?: boolean }>(props => ({
     backgroundColor: props.accent ? '#654bfa' : '#fff',
@@ -124,13 +126,18 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                                         title={TextOrganizationProfile.placeholderOverviewGeneralModalLocations}
                                         field="input.locations"
                                     >
-                                        <XSelect creatable={true} multi={true} field="input.locations" />
+                                        <XSelect
+                                            creatable={true}
+                                            multi={true}
+                                            field="input.locations"
+                                            options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
+                                        />
                                     </XFormField>
                                     <XFormField
                                         title={TextOrganizationProfile.placeholderOverviewGeneralModalInterests}
                                         field="input.interests"
                                     >
-                                        <XSelect creatable={true} multi={true} field="input.interests" />
+                                        <XSelect creatable={true} multi={true} field="input.interests" options={Interests}/>
                                     </XFormField>
                                 </XVertical>
                             </XFormLoadingContent>
@@ -737,14 +744,14 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
         <XModalForm
             defaultData={{
                 input: {
-                    location: props.data.myOrganizationProfile!!.location,
+                    locations: props.data.myOrganizationProfile!!.locations,
                 }
             }}
             defaultAction={async (data) => {
                 await props.updateOrganizaton({
                     variables: {
                         input: {
-                            location: data.input.location,
+                            alphaLocations: data.input.locations,
                         }
                     }
                 });
@@ -757,8 +764,17 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
         >
             <XVertical>
                 <XFormLoadingContent>
-                    <XFormField title="Location">
-                        <XInput field={TextOrganizationProfile.placeholderLocationModalLocationTitle} />
+                    <XFormField
+                        title={TextOrganizationProfile.placeholderLocationModalLocationTitle}
+                        field="input.locations"
+                    >
+                        <XSelect
+                            creatable={true}
+                            multi={true}
+                            field="input.locations"
+                            options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
+
+                        />
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>

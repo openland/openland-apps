@@ -33,6 +33,7 @@ import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OrgCategoties } from '../directory/categoryPicker';
 import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
+import { Interests } from '../directory/interestPicker';
 
 const CenteredButton = Glamorous(XButton)({
     alignSelf: 'center'
@@ -163,7 +164,6 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                 name: props.data.myOrganizationProfile!!.name,
                                 photo: props.data.myOrganizationProfile!!.photoRef,
                                 about: props.data.myOrganizationProfile!!.about,
-                                location: props.data.myOrganizationProfile!!.location,
                                 locations: props.data.myOrganizationProfile!!.locations,
                                 photoRef: sanitizeIamgeRef(props.data.myOrganizationProfile!!.photoRef),
                                 organizationType: props.data.myOrganizationProfile!!.organizationType,
@@ -177,7 +177,6 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                     input: {
                                         name: data.input.name,
                                         photoRef: data.input.photoRef,
-                                        location: data.input.location,
                                         about: data.input.about,
                                         alphaOrganizationType: data.input.organizationType,
                                         alphaInterests: data.input.interests,
@@ -203,10 +202,6 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                             <XInput field="input.name" />
                                         </XFormField>
 
-                                        <XFormField title="Location" field="input.location" optional={true}>
-                                            <XSelect field="input.location" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
-                                        </XFormField>
-
                                         <XFormField title="Locations" field="input.locations" optional={true}>
                                             <XSelect creatable={true} multi={true} field="input.locations" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
                                         </XFormField>
@@ -215,11 +210,11 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                             <XTextArea valueStoreKey="fields.input.about" />
                                         </XFormField>
 
-                                        <XFormField title="OrganizationType" field="input.organizationType" optional={true}>
+                                        <XFormField title="Categories" field="input.organizationType" optional={true}>
                                             <XSelect options={OrgCategoties} multi={true} field="input.organizationType" />
                                         </XFormField>
                                         <XFormField title="Interests" field="input.interests" optional={true}>
-                                            <XSelect creatable={true} multi={true} field="input.interests" />
+                                            <XSelect creatable={true} multi={true} field="input.interests" options={Interests}/>
                                         </XFormField>
 
                                     </XVertical>
