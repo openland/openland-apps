@@ -152,6 +152,29 @@ const AddLinkBtn = Glamorous(XButton)({
     marginTop: -8,
 });
 
+const activities = [
+    { label: 'Bankruptcy', value: 'Bankruptcy' },
+    { label: 'Financial distress', value: 'Financial distress' },
+    { label: 'Budget cut', value: 'Budget cut' },
+    { label: 'Layoffs', value: 'Layoffs' },
+    { label: 'Dispositions', value: 'Dispositions' },
+    { label: 'Closures', value: 'Closures' },
+    { label: 'Store closures', value: 'Store closures' },
+    { label: 'Hospital closures', value: 'Hospital closures' },
+    { label: 'Demolition', value: 'Demolition' },
+    { label: 'Redevelopment', value: 'Redevelopment' },
+    { label: 'Renovation', value: 'Renovation' },
+    { label: 'Expired permit', value: 'Expired permit' },
+    { label: 'Upzoning / Rezoning', value: 'Upzoning / Rezoning' },
+    { label: 'Expansion', value: 'Expansion' },
+    { label: 'Mergers and acquisitions', value: 'Mergers and acquisitions' },
+    { label: 'Acquisition criteria', value: 'Acquisition criteria' },
+    { label: 'RFP', value: 'RFP' },
+    { label: 'RFQ', value: 'RFQ' },
+    { label: 'Development opportunity', value: 'Development opportunity' },
+    { label: 'Strategic assessment', value: 'Strategic assessment' },
+];
+
 const OrganizationSettigs = withMyOrganizationProfile((props) => {
     return (
         <Navigation title="Organization profile">
@@ -214,7 +237,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                             <XSelect options={OrgCategoties} multi={true} field="input.organizationType" />
                                         </XFormField>
                                         <XFormField title="Interests" field="input.interests" optional={true}>
-                                            <XSelect creatable={true} multi={true} field="input.interests" options={TextDirectoryData.interestPicker}/>
+                                            <XSelect creatable={true} multi={true} field="input.interests" options={TextDirectoryData.interestPicker} />
                                         </XFormField>
 
                                     </XVertical>
@@ -420,7 +443,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                     <XInput field="text" placeholder="Text" />
                                     <XInput field="description" placeholder="Description" />
                                     <XInput field="date" placeholder="Date" />
-                                    <XSelect field="activity" multi={true} creatable={true} placeholder="Activity" />
+                                    <XSelect field="activity" multi={true} creatable={false} placeholder="Activity" options={activities}/>
                                     <XSelect field="pinned" searchable={false} clearable={false} options={[{ value: 'pinned', label: 'pinned' }, { value: 'not pinned', label: 'not pinned' }]} />
                                     <XSelect field="type" searchable={false} clearable={false} options={[{ value: 'update', label: 'update' }, { value: 'news', label: 'news' }]} />
                                     <XStoreContext.Consumer>
