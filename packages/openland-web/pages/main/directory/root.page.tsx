@@ -159,7 +159,7 @@ const OrganizationToolsWrapper = Glamorous(XHorizontal)({
 
 export interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
-    value: string;
+    value: string | string[];
     label: string;
 }
 
@@ -277,8 +277,27 @@ class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
         let groups = this.groupByType(this.props.conditions);
         for (let type of Object.keys(groups)) {
             let group = groups[type];
+
+            let groupedValues: ({type: string, value: string})[] = [];
+
             clauses.push(this.buildQuery(
                 [...group.map((c: SearchCondition) => {
+                    if (Array.isArray(c.value)) {
+                        c.value.map((v: string) => {
+                            groupedValues.push({
+                                type: c.type,
+                                value: v
+                            });
+                        });
+
+                        return undefined;
+                    } else {
+                        let clause = {};
+                        clause[c.type] = c.value;
+                        return clause;
+                    }
+                }).filter((c: any) => c !== undefined),
+                ...groupedValues.map((c: {type: string, value: string}) => {
                     let clause = {};
                     clause[c.type] = c.value;
                     return clause;

@@ -67,12 +67,22 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
         }
     }
 
-    onClick = (category: { value: string, label: string }) => {
+    onClick = (category: { value: string | string[], label: string }) => {
         this.onPick({ type: 'organizationType', value: category.value, label: category.label });
     }
 
     onInner = (ref: any) => {
         this.inner += ref ? 1 : -1;
+    }
+
+    getValuesOfGroup = (group: any) => {
+        let _values: string[] = [];
+
+        group.options.map((category: any) => {
+            _values.push(category.value);
+        });
+
+        return _values;
     }
 
     render() {
@@ -89,7 +99,7 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
                         content={
                             <PickerWrapper separator="none">
                                 <PickerGroupAll>
-                                    <XMenuItem onClick={(e) => this.onClick({value: group.label, label: group.label})}>{group.label} • All</XMenuItem>
+                                    <XMenuItem onClick={(e) => this.onClick({value: this.getValuesOfGroup(group), label: group.label})}>{group.label} • All</XMenuItem>
                                 </PickerGroupAll>
 
                                 {group.options.map(category => <XMenuItem ref={this.onInner} key={category.value} onClick={(e) => this.onClick(category)}>{category.label}</XMenuItem>)}
