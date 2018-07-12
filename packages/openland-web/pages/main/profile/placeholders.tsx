@@ -24,7 +24,7 @@ import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { OrgCategoties } from '../directory/categoryPicker';
 import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
-import { Interests } from '../directory/interestPicker';
+import { TextDirectoryData } from 'openland-text/TextDirectory';
 
 const Placeholder = Glamorous(XCard)<{ accent?: boolean }>(props => ({
     backgroundColor: props.accent ? '#654bfa' : '#fff',
@@ -137,7 +137,7 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                                         title={TextOrganizationProfile.placeholderOverviewGeneralModalInterests}
                                         field="input.interests"
                                     >
-                                        <XSelect creatable={true} multi={true} field="input.interests" options={Interests}/>
+                                        <XSelect creatable={true} multi={true} field="input.interests" options={TextDirectoryData.interestPicker}/>
                                     </XFormField>
                                 </XVertical>
                             </XFormLoadingContent>

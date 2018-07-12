@@ -33,7 +33,7 @@ import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OrgCategoties } from '../directory/categoryPicker';
 import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
-import { Interests } from '../directory/interestPicker';
+import { TextDirectoryData } from 'openland-text/TextDirectory';
 
 const CenteredButton = Glamorous(XButton)({
     alignSelf: 'center'
@@ -214,7 +214,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                             <XSelect options={OrgCategoties} multi={true} field="input.organizationType" />
                                         </XFormField>
                                         <XFormField title="Interests" field="input.interests" optional={true}>
-                                            <XSelect creatable={true} multi={true} field="input.interests" options={Interests}/>
+                                            <XSelect creatable={true} multi={true} field="input.interests" options={TextDirectoryData.interestPicker}/>
                                         </XFormField>
 
                                     </XVertical>

@@ -52,7 +52,7 @@ export const TextDirectoryData = {
             'Plains',
             'Rocky Mountains'
         ],
-        
+
         States: [
             'California',
             'Texas',
@@ -105,7 +105,7 @@ export const TextDirectoryData = {
             'District of Columbia',
             'Vermont',
         ],
-        
+
         MetropolitanAreas: [
             'New York Metro Area',
             'Greater Los Angeles',
@@ -240,43 +240,63 @@ export const TextDirectoryData = {
 
     categoryPicker: {
         categories: [
-            { label: 'Gas station', value: 'Gas station' },
-            { label: 'Parking', value: 'Parking' },
-            { label: 'Car wash', value: 'Car wash' },
-            { label: 'Big box retail', value: 'Big box retail' },
-            { label: 'Medium retail', value: ' Medium retail' },
-            { label: 'Mall', value: 'Mall' },
-            { label: 'Strip mall', value: 'Strip mall' },
-            { label: 'Self storage', value: 'Self storage' },
-            { label: 'Convenience store', value: 'Convenience store' },
-            { label: 'Railway', value: 'Railway' },
-            { label: 'Subway', value: 'Subway' },
-            { label: 'Highway system', value: 'Highway system' },
-            { label: 'Airport', value: 'Airport' },
-            { label: 'Port authorities', value: 'Port authorities' },
-            { label: 'Logistics company', value: 'Logistics company' },
+            { label: 'Automotive', value: 'Automotive' },
+            { label: '• Gas station', value: 'Gas station' },
+            { label: '• Parking', value: 'Parking' },
+            { label: '• Car wash', value: 'Car wash' },
+
+            { label: 'Retail', value: 'Retail' },
+            { label: '• Big box retail', value: 'Big box retail' },
+            { label: '• Medium retail', value: ' Medium retail' },
+            { label: '• Mall', value: 'Mall' },
+            { label: '• Strip mall', value: 'Strip mall' },
+            { label: '• Self storage', value: 'Self storage' },
+            { label: '• Convenience store', value: 'Convenience store' },
+
+            { label: 'Transportation', value: 'Transportation' },
+            { label: '• Railway', value: 'Railway' },
+            { label: '• Subway', value: 'Subway' },
+            { label: '• Highway system', value: 'Highway system' },
+            { label: '• Airport', value: 'Airport' },
+            { label: '• Port authorities', value: 'Port authorities' },
+            { label: '• Logistics company', value: 'Logistics company' },
+
             { label: 'Real estate developer', value: 'Real estate developer' },
-            { label: 'Health system', value: 'Health system' },
-            { label: 'Hospital', value: 'Hospital' },
-            { label: 'School', value: 'School' },
-            { label: 'College', value: 'College' },
-            { label: 'Coal plant', value: 'Coal plant' },
-            { label: 'Utility', value: 'Utility' },
-            { label: 'REIT', value: 'REIT' },
-            { label: 'Bank', value: 'Bank' },
-            { label: 'Family offices', value: 'Family offices' },
-            { label: 'State government', value: 'State government' },
-            { label: 'County governmen', value: 'County governmen' },
-            { label: 'City government', value: 'City government' },
-            { label: 'Regional government', value: 'Regional government' },
-            { label: 'Housing authority', value: 'Housing authority' },
-            { label: 'Port authority', value: 'Port authority' },
-            { label: 'Stadium authority', value: 'Stadium authority' },
-            { label: 'Army', value: 'Army' },
-            { label: 'Navy', value: 'Navy' },
-            { label: 'Airforce', value: 'Airforce' },
-            { label: 'Warehouse', value: 'Warehouse' },
-            { label: 'Individuals', value: 'Individuals' },
+
+            { label: 'Healthcare', value: 'Healthcare' },
+            { label: '• Health system', value: 'Health system' },
+            { label: '• Hospital', value: 'Hospital' },
+
+            { label: 'Education', value: 'Education' },
+            { label: '• School', value: 'School' },
+            { label: '• College', value: 'College' },
+
+            { label: 'Energy and utilities', value: 'Energy and utilities' },
+            { label: '• Coal plant', value: 'Coal plant' },
+            { label: '• Utility', value: 'Utility' },
+
+            { label: 'Finance', value: 'Finance' },
+            { label: '• REIT', value: 'REIT' },
+            { label: '• Bank', value: 'Bank' },
+            { label: '• Family offices', value: 'Family offices' },
+
+            { label: 'Government', value: 'Government' },
+            { label: '• State government', value: 'State government' },
+            { label: '• County governmen', value: 'County governmen' },
+            { label: '• City government', value: 'City government' },
+            { label: '• Regional government', value: 'Regional government' },
+            { label: '• Housing authority', value: 'Housing authority' },
+            { label: '• Port authority', value: 'Port authority' },
+            { label: '• Stadium authority', value: 'Stadium authority' },
+
+            { label: 'Military', value: 'Military' },
+            { label: '• Army', value: 'Army' },
+            { label: '• Navy', value: 'Navy' },
+            { label: '• Airforce', value: 'Airforce' },
+
+            { label: 'Other', value: 'Other' },
+            { label: '• Warehouse', value: 'Warehouse' },
+            { label: '• Individuals', value: 'Individuals' },
         ],
 
         catalog: [
