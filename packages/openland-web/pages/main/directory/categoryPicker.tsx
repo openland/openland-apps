@@ -177,6 +177,12 @@ const PickerItemIcon = Glamorous(XIcon)({
     color: '#c1c7cf',
 });
 
+const PickerGroupAll = Glamorous.div({
+    borderBottom: '1px solid #f1f2f5',
+    paddingBottom: 4,
+    marginBottom: 4,
+});
+
 export class CategoryPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { popper: boolean }> {
     inner = 0;
     constructor(props: any) {
@@ -220,6 +226,10 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
                         marginTop={-7}
                         content={
                             <PickerWrapper separator="none">
+                                <PickerGroupAll>
+                                    <XMenuItem onClick={(e) => this.onClick({value: group.label, label: group.label})}>{group.label} • All</XMenuItem>
+                                </PickerGroupAll>
+
                                 {group.options.map(category => <XMenuItem ref={this.onInner} key={category.value} onClick={(e) => this.onClick(category)}>{category.label}</XMenuItem>)}
                             </PickerWrapper>}
                     >
