@@ -48,14 +48,14 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
         if (uploaded.ok) {
             let body = (await uploaded.json()) as { ok: boolean, token: string };
             Cookie.remove('statecraft-key');
-            Cookie.remove('x-openland-org');
+            Cookie.remove('x-openland-org', {path: '/'});
             Cookie.set('x-openland-token', body.token, {path: '/'});
             let path = auth.state !== 'none' ? auth.state : '/';
             if (auth.idTokenPayload && auth.idTokenPayload.sub && auth.idTokenPayload.sub.startsWith('email|')) {
                 path = '/';
             }
             path = Cookie.get('sign-redirect') || path;
-            Cookie.remove('sign-redirect');
+            Cookie.remove('sign-redirect', {path: '/'});
             createHistory({
                 forceRefresh: true
             }).replace(path);

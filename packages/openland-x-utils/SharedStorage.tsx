@@ -38,7 +38,7 @@ class SharedClientStorage implements SharedStorage {
                 Cookie.set(CookiePrefix + key, value, {path: '/'});
             }
         } else {
-            Cookie.remove(CookiePrefix + key);
+            Cookie.remove(CookiePrefix + key, {path: '/'});
         }
     }
 }

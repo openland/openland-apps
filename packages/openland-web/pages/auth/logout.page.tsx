@@ -11,9 +11,9 @@ class LogoutHandler extends React.Component<{}, {}> {
     }
 
     componentDidMount() {
-        Cookie.remove('x-openland-org');
-        Cookie.remove('x-openland-token');
-        Cookie.remove('sign-redirect');
+        Cookie.remove('x-openland-org', {path: '/'});
+        Cookie.remove('x-openland-token', {path: '/'});
+        Cookie.remove('sign-redirect', {path: '/'});
 
         let keepDomain = Cookie.defaults.domain;
         let keepPath = Cookie.defaults.path;
