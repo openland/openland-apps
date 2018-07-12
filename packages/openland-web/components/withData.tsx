@@ -47,18 +47,14 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
             let protocol: string;
             let storage: SharedStorage;
             if (ctx.req) {
-                console.warn('server!');
                 host = ctx.req.get('host');
                 protocol = ctx.req.protocol;
                 storage = getServerStorage(ctx);
             } else {
-                console.warn('client!');
                 host = window.location.host;
                 protocol = window.location.protocol.replace(':', '');
                 storage = getClientStorage();
             }
-            console.warn(storage);
-            // console.warn(ctx.req);
 
             // Evaluate the composed component's getInitialProps()
             let composedInitialProps = {};
