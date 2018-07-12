@@ -96,7 +96,7 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                         </XFormLoadingContent>
                         <Footer>
                             {props.isAccountExists && <Cancel path="/">{InitTexts.create_organization.cancel}</Cancel>}
-                            {!props.isAccountExists && (
+                            {/* {!props.isAccountExists && (
                                 <XFormSubmit
                                     style="link"
                                     text={InitTexts.create_organization.skip}
@@ -113,7 +113,7 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                                         await delayForewer();
                                     }}
                                 />
-                            )}
+                            )} */}
 
                             <XFormSubmit style="primary" text={InitTexts.create_organization.continue} size="medium" alignSelf="flex-end" />
                         </Footer>
