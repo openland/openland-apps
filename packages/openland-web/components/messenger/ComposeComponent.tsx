@@ -41,7 +41,9 @@ const Title = Glamorous.div({
 });
 
 const ComposeSelectWrapper = Glamorous.div({
-    maxWidth: 850,
+    maxWidth: 930,
+    paddingLeft: 40,
+    paddingRight: 40,
     width: '100%',
     alignSelf: 'center'
 });
