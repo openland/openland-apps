@@ -354,7 +354,7 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
                         </div>
                     </Tag>
                 ))}
-                {this.props.conditions.length === 0 && <Tag>All organizations</Tag>}
+                {this.props.conditions.length === 0 && <Tag>{TextDirectory.searchConditionAll}</Tag>}
             </ConditionRenderWrapper>
         );
     }
@@ -443,10 +443,10 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                             value={searchText}
                             autoFocus={true}
                             onChange={this.handleSearchChange}
-                            placeholder={'Enter a keyword'}
+                            placeholder={TextDirectory.searchInputPlaceholder}
                         />
 
-                        <XButton text="Search" onClick={this.searchButtonHandler} />
+                        <XButton text={TextDirectory.buttonSearch} onClick={this.searchButtonHandler} />
                     </SearchForm>
                     {!LIVESEARCH && (
                         <>
@@ -456,7 +456,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                                 <CategoryPicker onPick={this.addCondition} />
                                 <InterestPicker onPick={this.addCondition} />
                                 <XVertical alignItems="flex-end" flexGrow={1}>
-                                    <ResetButton text="Reset" style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
+                                    <ResetButton text={TextDirectory.buttonReset} style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
                                 </XVertical>
                             </SearchPickers>
                         </>

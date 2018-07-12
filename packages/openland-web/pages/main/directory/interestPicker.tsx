@@ -8,14 +8,9 @@ import Glamorous from 'glamorous';
 import { XInput } from 'openland-x/XInput';
 import { XIcon } from 'openland-x/XIcon';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
 
-const CATALOG = [
-    { label: 'Selling', value: 'Selling' },
-    { label: 'Buying', value: 'Buying' },
-    { label: 'Joint ventures', value: 'Joint ventures' },
-    { label: 'Leasing', value: 'Leasing' },
-    { label: 'Option-to-buy', value: 'Option-to-buy' },
-];
+const CATALOG = TextDirectoryData.interestPicker;
 
 const EntryScrollable = Glamorous(XVertical)({
     width: 260,
@@ -117,11 +112,11 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
         let content = (
             <PickerWrapper>
                 <PickerSearch>
-                    <XInput placeholder="Enter an interest" value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
+                    <XInput placeholder={TextDirectory.interestPicker} value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
                     <PickerSearchIcon icon="search" />
                 </PickerSearch>
                 <PickerEntries separator="none">
-                    <EntriesComponent title="Top interests" query={this.state.query} options={CATALOG} onPick={this.onPick} />
+                    <EntriesComponent title={TextDirectory.interestSearchPlaceholder} query={this.state.query} options={CATALOG} onPick={this.onPick} />
                 </PickerEntries>
             </PickerWrapper>
         );
@@ -133,7 +128,7 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
                 onClickOutside={this.close}
                 arrow={null}
             >
-                <PickerButton activated={this.state.popper} text="Interests" style="flat" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton activated={this.state.popper} text={TextDirectory.interestTop} style="flat" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }
