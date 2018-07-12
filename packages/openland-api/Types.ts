@@ -68,6 +68,7 @@ export interface UpdateOrganizationProfileInput {
   linkedin?: string | null,
   location?: string | null,
   contacts?: Array< ContactPersonInput > | null,
+  alphaPublished?: boolean | null,
   alphaLocations?: Array< string > | null,
   alphaInterests?: Array< string > | null,
   alphaOrganizationType?: Array< string > | null,
@@ -1598,6 +1599,7 @@ export interface MyOrganizationProfileQuery {
       phone: string | null,
       link: string | null,
     } >,
+    published: boolean,
     organizationType: Array< string > | null,
     interests: Array< string > | null,
     locations: Array< string > | null,
@@ -1818,6 +1820,7 @@ export interface UpdateOrganizationMutation {
       phone: string | null,
       link: string | null,
     } >,
+    published: boolean,
     organizationType: Array< string > | null,
     interests: Array< string > | null,
     locations: Array< string > | null,
@@ -3115,6 +3118,18 @@ export interface SuperAccountSuspendMutationVariables {
 
 export interface SuperAccountSuspendMutation {
   superAccountSuspend:  {
+    __typename: "SuperAccount",
+    id: string,
+    state: SuperAccountState,
+  },
+};
+
+export interface SuperAccountPendMutationVariables {
+  accountId: string,
+};
+
+export interface SuperAccountPendMutation {
+  superAccountPend:  {
     __typename: "SuperAccount",
     id: string,
     state: SuperAccountState,
@@ -4691,6 +4706,7 @@ export interface OrganizationProfileFullFragment {
     phone: string | null,
     link: string | null,
   } >,
+  published: boolean,
   organizationType: Array< string > | null,
   interests: Array< string > | null,
   locations: Array< string > | null,

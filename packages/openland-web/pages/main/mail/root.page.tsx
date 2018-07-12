@@ -20,16 +20,17 @@ let ChatContainer = Glamorous.div({
     flexDirection: 'row',
     backgroundColor: '#f9fafb',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
-    height: '100%',
+    height: '100vh',
     width: '100%',
     flexGrow: 1,
+    flexShrink: 0,
     overflow: 'hidden'
 });
 
 let ChatListContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    height: '100%',
+    height: '100vh',
     width: 300,
     flexShrink: 0,
     borderRightColor: '#e2e3e8',
@@ -44,7 +45,8 @@ let ConversationContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    height: '100%',
+    flexShrink: 0,
+    height: '100vh',
     width: 'calc(100% - 300px)',
     backgroundColor: '#ffffff',
     justifyContent: 'center',
@@ -82,6 +84,24 @@ let Header = Glamorous.div({
     }
 });
 
+const EmptyDiv = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    flexGrow: 1,
+    flexBasis: '100%'
+});
+
+const ComposeText = Glamorous.div({
+    fontSize: 14,
+    letterSpacing: -0.3,
+    color: '#99a2b0',
+    marginTop: 10
+});
+
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
 
     let isCompose = props.router.path.endsWith('/new');
@@ -89,7 +109,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
     return (
         <>
             <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
-            <Scaffold overflow={true}>
+            <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ChatContainer>
                         <ChatListContainer>
@@ -109,8 +129,11 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             )}
                             {!isCompose && !props.router.routeQuery.conversationId && (
                                 <MessengerContainer>
-                                    No chat selected!
-                                    </MessengerContainer>
+                                    <EmptyDiv>
+                                        <img src={'/static/X/chat-compose.svg'} />
+                                        <ComposeText>Select a chat to start messaging</ComposeText>
+                                    </EmptyDiv>
+                                </MessengerContainer>
                             )}
                             {!isCompose && props.router.routeQuery.conversationId && (
                                 <MessengerComponent conversationId={props.router.routeQuery.conversationId} />

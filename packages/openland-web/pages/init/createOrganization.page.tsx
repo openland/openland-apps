@@ -65,7 +65,7 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                                 }
                             }
                         });
-                        switchOrganization(res.data.createOrganization.id);
+                        switchOrganization(res.data.createOrganization.id, props.router.query.redirect);
                         await delayForewer();
                     }}
                     defaultData={{
@@ -109,7 +109,7 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                                                 }
                                             }
                                         });
-                                        switchOrganization(res.data.createOrganization.id);
+                                        switchOrganization(res.data.createOrganization.id, props.router.query.redirect);
                                         await delayForewer();
                                     }}
                                 />

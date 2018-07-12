@@ -75,7 +75,8 @@ const CreateProfileForm = withProfileCreate((props) => {
                     }}
                     defaultAction={async (data) => {
                         await props.createProfile({ variables: data });
-                        window.location.href = '/';
+                        let redirect = props.router.query.redirect;
+                        window.location.href = '/' + (redirect ? '?redirect=' + encodeURIComponent(redirect) : '');
                         await delayForewer();
                     }}
                     defaultLayout={false}

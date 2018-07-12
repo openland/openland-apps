@@ -81,7 +81,7 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
                 content={content}
                 onClickOutside={this.close}
             >
-                <XButton text="Interests" onClick={this.switch} />
+                <XButton text="Interests" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }

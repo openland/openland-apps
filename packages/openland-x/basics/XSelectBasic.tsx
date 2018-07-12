@@ -256,6 +256,10 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         display: 'inline-block',
         paddingTop: 6
     },
+    '& .Select-multi-value-wrapper': {
+        display: 'inline-block',
+        paddingTop: 5
+    },
     '&.Select--multi .Select-multi-value-wrapper .Select-placeholder': {
         // paddingTop: 'calc(5% - 10px)'
         marginTop: 8

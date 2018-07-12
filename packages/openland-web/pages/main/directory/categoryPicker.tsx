@@ -6,6 +6,46 @@ import { SearchCondition } from './root.page';
 import { XMenuItem } from '../../../components/Incubator/XOverflow';
 import glamorous from 'glamorous';
 
+export const OrgCategoties = [
+    { label: 'Gas station', value: 'Gas station' },
+    { label: 'Parking', value: 'Parking' },
+    { label: 'Car wash', value: 'Car wash' },
+    { label: 'Big box retail', value: 'Big box retail' },
+    { label: 'Medium retail', value: ' Medium retail' },
+    { label: 'Mall', value: 'Mall' },
+    { label: 'Strip mall', value: 'Strip mall' },
+    { label: 'Self storage', value: 'Self storage' },
+    { label: 'Convenience store', value: 'Convenience store' },
+    { label: 'Railway', value: 'Railway' },
+    { label: 'Subway', value: 'Subway' },
+    { label: 'Highway system', value: 'Highway system' },
+    { label: 'Airport', value: 'Airport' },
+    { label: 'Port authorities', value: 'Port authorities' },
+    { label: 'Logistics company', value: 'Logistics company' },
+    { label: 'Real estate developer', value: 'Real estate developer' },
+    { label: 'Health system', value: 'Health system' },
+    { label: 'Hospital', value: 'Hospital' },
+    { label: 'School', value: 'School' },
+    { label: 'College', value: 'College' },
+    { label: 'Coal plant', value: 'Coal plant' },
+    { label: 'Utility', value: 'Utility' },
+    { label: 'REIT', value: 'REIT' },
+    { label: 'Bank', value: 'Bank' },
+    { label: 'Family offices', value: 'Family offices' },
+    { label: 'State government', value: 'State government' },
+    { label: 'County governmen', value: 'County governmen' },
+    { label: 'City government', value: 'City government' },
+    { label: 'Regional government', value: 'Regional government' },
+    { label: 'Housing authority', value: 'Housing authority' },
+    { label: 'Port authority', value: 'Port authority' },
+    { label: 'Stadium authority', value: 'Stadium authority' },
+    { label: 'Army', value: 'Army' },
+    { label: 'Navy', value: 'Navy' },
+    { label: 'Airforce', value: 'Airforce' },
+    { label: 'Warehouse', value: 'Warehouse' },
+    { label: 'Individuals', value: 'Individuals' },
+];
+
 const CATALOG = [
 
     {
@@ -39,9 +79,9 @@ const CATALOG = [
         ]
     },
     {
-        label: 'Real estate develope',
+        label: 'Real estate developer',
         options: [
-            { label: 'Real estate develope', value: 'Real estate develope' },
+            { label: 'Real estate developer', value: 'Real estate developer' },
         ]
     },
     {
@@ -168,7 +208,7 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
                 content={content}
                 onClickOutside={this.close}
             >
-                <XButton text="Organization category" onClick={this.switch} />
+                <XButton text="Organization category" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }

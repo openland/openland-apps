@@ -28,7 +28,7 @@ class EntriesComponent extends React.Component<{ title: string, options: string[
     }
 }
 
-const MultiStateRegions = [
+export const MultiStateRegions = [
     'West Coast',
     'East Coast',
     'Northeast',
@@ -41,7 +41,7 @@ const MultiStateRegions = [
     'Plains',
     'Rocky Mountains'
 ];
-const States = [
+export const States = [
     'California',
     'Texas',
     'Florida',
@@ -93,7 +93,7 @@ const States = [
     'District of Columbia',
     'Vermont',
 ];
-const MetropolitanAreas = [
+export const MetropolitanAreas = [
     'New York Metro Area',
     'Greater Los Angeles',
     'Chicagoland',
@@ -120,7 +120,7 @@ const MetropolitanAreas = [
     'Greater San Antonio',
     'Greater Portland',
 ];
-const Cities = [
+export const Cities = [
     'New York',
     'Los Angeles',
     'Chicago',
@@ -257,10 +257,10 @@ export class LocationPicker extends React.Component<{ onPick: (q: SearchConditio
             <XVertical>
                 <XInput value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
                 <XHorizontal>
-                    <EntriesComponent title="Multi-state regions" query={this.state.query} options={MultiStateRegions} onPick={this.onPick} />
-                    <EntriesComponent title="States" query={this.state.query} options={States} onPick={this.onPick} />
-                    <EntriesComponent title="Metropolitan areas" query={this.state.query} options={MetropolitanAreas} onPick={this.onPick} />
                     <EntriesComponent title="Cities" query={this.state.query} options={Cities} onPick={this.onPick} />
+                    <EntriesComponent title="Metropolitan areas" query={this.state.query} options={MetropolitanAreas} onPick={this.onPick} />
+                    <EntriesComponent title="States" query={this.state.query} options={States} onPick={this.onPick} />
+                    <EntriesComponent title="Multi-state regions" query={this.state.query} options={MultiStateRegions} onPick={this.onPick} />
                 </XHorizontal>
             </XVertical>
         );
@@ -271,7 +271,7 @@ export class LocationPicker extends React.Component<{ onPick: (q: SearchConditio
                 content={content}
                 onClickOutside={this.close}
             >
-                <XButton text="Location" onClick={this.switch} />
+                <XButton text="Location" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }

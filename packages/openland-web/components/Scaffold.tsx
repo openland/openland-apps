@@ -29,6 +29,7 @@ import { withNotificationCounter } from '../api/withNotificationCounter';
 import { InvitesToOrganizationMoadal, InvitesGlobalMoadal } from '../pages/main/settings/invites';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { TextInvites } from 'openland-text/TextInvites';
+import DirecoryIcon from '../pages/main/directory/icons/directory.1.svg';
 
 //
 // Root
@@ -110,8 +111,12 @@ const NavigatorItem = Glamorous(XLink)({
     flexShrink: 0,
     color: '#000000',
     cursor: 'pointer',
+
     '.is-active': {
         color: '#522BFF',
+        '& > svg > g > path': {
+            fill: '#522BFF',
+        },
         '& > .reports .hover': {
             display: 'block'
         },
@@ -121,6 +126,10 @@ const NavigatorItem = Glamorous(XLink)({
     },
     '&:hover': {
         color: '#522BFF',
+        '& > svg > g > path': {
+            fill: '#522BFF',
+            fillRule: 'nonzero'
+        },
         '& > .reports .hover': {
             display: 'block'
         },
@@ -291,11 +300,10 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
 // Content
 //
 
-const ContentView = Glamorous.div<{ noBoxShadow?: boolean, marginLeft: number, overflow?: boolean }>((props) => ({
+const ContentView = Glamorous.div<{ noBoxShadow?: boolean, marginLeft: number }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
-    maxHeight: props.overflow ? '100vh' : undefined,
     overflow: 'hidden',
     // borderTopLeftRadius: 8,
     // borderBottomLeftRadius: 8,
@@ -553,7 +561,6 @@ class ScaffoldContent extends React.Component<{ padding?: boolean, bottomOffset?
 interface ScaffoldProps {
     noBoxShadow?: boolean;
     sidebarBorderColor?: string;
-    overflow?: boolean;
 }
 
 const Home = withUserInfo((props) => {
@@ -735,6 +742,23 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 <Home />
                             </XWithRole>
 
+                            <XWithRole role={['feature-directory']}>
+                                <XPopper
+                                    placement="right"
+                                    showOnHoverContent={false}
+                                    showOnHover={true}
+                                    groupId="scaffold_tooltip"
+                                    content={(
+                                        <strong>{TextAppBar.items.directory}</strong>
+
+                                    )}
+                                >
+                                    <NavigatorItem path="/directory">
+                                        <DirecoryIcon />
+                                    </NavigatorItem>
+                                </XPopper>
+                            </XWithRole>
+
                             <XWithRole role={['feature-messaging']}>
                                 <MessengerButton />
                             </XWithRole>
@@ -899,7 +923,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                 <ContentView
                     noBoxShadow={this.props.noBoxShadow}
                     marginLeft={menu !== undefined ? 280 : 72}
-                    overflow={this.props.overflow}
                 >
                     {content}
                 </ContentView>

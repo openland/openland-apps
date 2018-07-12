@@ -79,6 +79,15 @@ export const SuperAccountSuspendMutation = gql`
     }
 `;
 
+export const SuperAccountPendMutation = gql`
+    mutation SuperAccountPend($accountId: ID!) {
+        superAccountPend(id: $accountId) {
+            id
+            state
+        }
+    }
+`;
+
 export const SuperAccountAddMutation = gql`
     mutation SuperAccountAdd($title: String!) {
         superAccountAdd(title: $title) {

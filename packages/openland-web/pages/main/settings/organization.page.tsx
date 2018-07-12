@@ -31,6 +31,9 @@ import { XPhotoRef } from 'openland-x/XCloudImage';
 import { DateFormater } from 'openland-x-format/XDate';
 import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { OrgCategoties } from '../directory/categoryPicker';
+import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
+
 const CenteredButton = Glamorous(XButton)({
     alignSelf: 'center'
 });
@@ -165,6 +168,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                 photoRef: sanitizeIamgeRef(props.data.myOrganizationProfile!!.photoRef),
                                 organizationType: props.data.myOrganizationProfile!!.organizationType,
                                 interests: props.data.myOrganizationProfile!!.interests,
+                                published: props.data.myOrganizationProfile!!.published ? 'published' : 'unpublished',
                             }
                         }}
                         defaultAction={async (data) => {
@@ -178,6 +182,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                         alphaOrganizationType: data.input.organizationType,
                                         alphaInterests: data.input.interests,
                                         alphaLocations: data.input.locations,
+                                        alphaPublished: data.input.published === 'published',
                                     }
                                 }
                             });
@@ -188,16 +193,22 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                             <XFormLoadingContent>
                                 <XHorizontal>
                                     <XVertical flexGrow={1} maxWidth={500}>
+
+                                        <XFormField title="Published" field="input.name">
+                                            <XWithRole role={['super-admin', 'editor']}>
+                                                <XSelect clearable={false} searchable={false} field="input.published" options={[{ label: 'yes', value: 'published' }, { label: 'no', value: 'unpublished' }]} />
+                                            </XWithRole>
+                                        </XFormField>
                                         <XFormField title="Name" field="input.name">
                                             <XInput field="input.name" />
                                         </XFormField>
 
                                         <XFormField title="Location" field="input.location" optional={true}>
-                                            <XInput field="input.location" />
+                                            <XSelect field="input.location" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
                                         </XFormField>
 
                                         <XFormField title="Locations" field="input.locations" optional={true}>
-                                            <XSelect creatable={true} multi={true} field="input.locations" />
+                                            <XSelect creatable={true} multi={true} field="input.locations" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
                                         </XFormField>
 
                                         <XFormField title="About" field="fields.input.about" optional={true}>
@@ -205,7 +216,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                                         </XFormField>
 
                                         <XFormField title="OrganizationType" field="input.organizationType" optional={true}>
-                                            <XSelect creatable={true} multi={true} field="input.organizationType" />
+                                            <XSelect options={OrgCategoties} multi={true} field="input.organizationType" />
                                         </XFormField>
                                         <XFormField title="Interests" field="input.interests" optional={true}>
                                             <XSelect creatable={true} multi={true} field="input.interests" />
@@ -369,10 +380,10 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
                             </XVertical>
                         </XFormLoadingContent>
                     </XModalForm>
-                    
+
                     <XWithRole role={['super-admin', 'editor']}>
 
-                    {(props.data.myOrganizationProfile!!.posts || []).filter(c => c !== null).map((c, i) => <PostItem key={i} post={c!!} index={i} />)}
+                        {(props.data.myOrganizationProfile!!.posts || []).filter(c => c !== null).map((c, i) => <PostItem key={i} post={c!!} index={i} />)}
 
                         <XButton query={{ field: 'addPost', value: 'true' }} text="Add Post" style="primary" alignSelf="flex-start" />
 

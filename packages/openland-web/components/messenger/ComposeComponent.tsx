@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { ComposeSelect } from '../../api/ChatComposeSelect';
-import { XHeader } from 'openland-x/XHeader';
 import { OnChangeHandler, Option, OptionValues } from 'react-select';
 import { MessengerContext, MessengerEngine } from './model/MessengerEngine';
 import { Router } from '../../routes';
@@ -18,6 +17,51 @@ const Root = Glamorous(XVertical)({
     maxHeight: '100%',
     width: '100%',
     maxWidth: '100%'
+});
+
+const HeaderWrapper = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 60,
+    flexShrink: 0,
+    paddingLeft: 40,
+    paddingRight: 40
+});
+
+const Title = Glamorous.div({
+    alignItems: 'center',
+    maxWidth: 850,
+    width: '100%',
+    flexBasis: '100%',
+    fontSize: 20,
+    fontWeight: 500,
+    letterSpacing: 0.6,
+    color: '#334562'
+});
+
+const ComposeSelectWrapper = Glamorous.div({
+    maxWidth: 850,
+    width: '100%',
+    alignSelf: 'center'
+});
+
+const EmptyDiv = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    flexGrow: 1,
+    flexBasis: '100%'
+});
+
+const ComposeText = Glamorous.div({
+    fontSize: 14,
+    letterSpacing: -0.3,
+    color: '#99a2b0',
+    marginTop: 10
 });
 
 class ComposeComponentRender extends React.Component<{ messenger: MessengerEngine }, { values: Option<OptionValues>[], resolving: boolean, conversationId: string | null }> {
@@ -88,17 +132,27 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
     render() {
         return (
             <Root flexGrow={1} separator={'none'}>
-                <XHeader text={'Compose new message'} separated={true} />
+                <HeaderWrapper>
+                    <Title>Compose new message</Title>
+                </HeaderWrapper>
                 <ConversationContainer>
-                    <ComposeSelect
-                        placeholder="Start typing name or multiple names..."
-                        onChange={this.handleChange}
-                        value={this.state.values}
-                        multi={true}
-                        minimumInput={3}
-                        variables={{ organizations: this.state.values.length === 0 }}
-                    />
+                    <ComposeSelectWrapper>
+                        <ComposeSelect
+                            placeholder="Start typing name or multiple names..."
+                            onChange={this.handleChange}
+                            value={this.state.values}
+                            multi={true}
+                            minimumInput={3}
+                            variables={{ organizations: this.state.values.length === 0 }}
+                        />
+                    </ComposeSelectWrapper>
                     <MessagesContainer>
+                        {!this.state.conversationId && (
+                            <EmptyDiv>
+                                <img src={'/static/X/chat-compose.svg'}/>
+                                <ComposeText>There are no people to create a chat</ComposeText>
+                            </EmptyDiv>
+                        )}
                         {this.state.conversationId && <ConversationMessagesComponent conversation={this.props.messenger.getConversation(this.state.conversationId!!)} />}
                     </MessagesContainer>
                     <MessageComposeComponent onSend={this.handleSend} enabled={this.state.values.length > 0} />

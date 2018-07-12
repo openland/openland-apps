@@ -22,6 +22,7 @@ import PlaceholderContact from './icons/placeholder/placeholder_contact.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
+import { OrgCategoties } from '../directory/categoryPicker';
 
 const Placeholder = Glamorous(XCard)<{ accent?: boolean }>(props => ({
     backgroundColor: props.accent ? '#654bfa' : '#fff',
@@ -116,11 +117,7 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                                             creatable={true}
                                             multi={true}
                                             field="input.organizationType"
-                                            // options={[
-                                            //     { value: 'Public', label: 'Public', },
-                                            //     { value: 'Corporation', label: 'Corporation' },
-                                            //     { value: 'Nonprofit Corporation', label: 'Nonprofit Corporation' }
-                                            // ]}
+                                            options={OrgCategoties}
                                         />
                                     </XFormField>
                                     <XFormField

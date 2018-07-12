@@ -21,6 +21,7 @@ import { InterestPicker } from './interestPicker';
 import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
 import { XMutation } from 'openland-x/XMutation';
 import { TextDirectory } from 'openland-text/TextDirectory';
+import { XLink } from 'openland-x/XLink';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -109,7 +110,11 @@ const OrganizationInfoWrapper = Glamorous.div({
     flexGrow: 1
 });
 
-const OrganizationTitle = Glamorous.div({
+const OrganizationAvatar = Glamorous(XAvatar)({
+    cursor: 'pointer'
+});
+
+const OrganizationTitle = Glamorous(XLink)({
     height: 22,
     fontSize: 20,
     fontWeight: 500,
@@ -173,17 +178,19 @@ const OrganizationFollowBtn = withOrganizationFollow((props) => {
 const OrganizationCard = (props: OrganizationCardProps) => (
     <OrganizationCardWrapper>
         <XHorizontal justifyContent="space-between" separator={12}>
-            <XAvatar
-                cloudImageUuid={props.item.photo!!}
-                size={100}
-                placeholderFontSize={80}
-                border="1px solid rgba(164,169,177,0.2)"
-                style="organization"
-            />
+            <XLink path={'/o/' + props.item.id}>
+                <OrganizationAvatar
+                    cloudImageUuid={props.item.photo!!}
+                    size={100}
+                    placeholderFontSize={80}
+                    border="1px solid rgba(164,169,177,0.2)"
+                    style="organization"
+                />
+            </XLink>
             <OrganizationWrapper>
                 <OrganizationInfoWrapper>
                     <OrganizationTitleWrapper>
-                        <OrganizationTitle>{props.item.name}</OrganizationTitle>
+                        <OrganizationTitle path={'/o/' + props.item.id}>{props.item.name}</OrganizationTitle>
                         <OrganizationLocation>{props.item.location}</OrganizationLocation>
                     </OrganizationTitleWrapper>
 
@@ -292,15 +299,10 @@ class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
     }
 }
 
-const SearchInput = Glamorous.input({
-    border: '1px solid #d4dae7',
-    height: 40,
-    flexGrow: 1
-});
-
 const ConditionRenderWrapper = Glamorous.div({
     display: 'flex',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    padding: '0 4px 16px 24px'
 });
 
 const Tag = Glamorous.div({
@@ -318,6 +320,22 @@ const Tag = Glamorous.div({
     marginRight: 10,
     marginTop: 4,
     marginBottom: 4,
+});
+
+const SearchForm = Glamorous(XHorizontal)({
+    padding: '15px 14px 5px 24px'
+});
+
+const SearchInput = Glamorous.input({
+    height: 32,
+    lineHeight: '34px',
+    flexGrow: 1
+});
+
+const SearchPickers = Glamorous(XHorizontal)({
+    borderTop: '1px solid rgba(220, 222, 228, 0.45)',
+    backgroundColor: '#f9fafb',
+    padding: '10px 14px 10px 10px'
 });
 
 const LIVESEARCH = false;
@@ -364,7 +382,6 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                 searchText: val
             });
         }
-
     }
 
     addCondition = (condition: SearchCondition) => {
@@ -413,24 +430,27 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
         return (
             <XVertical>
                 <XCardStyled>
-                    <SearchInput
-                        value={searchText}
-                        autoFocus={true}
-                        onChange={this.handleSearchChange}
-                        placeholder={'Enter a keyword'}
-                    />
+                    <SearchForm>
+                        <SearchInput
+                            value={searchText}
+                            autoFocus={true}
+                            onChange={this.handleSearchChange}
+                            placeholder={'Enter a keyword'}
+                        />
+
+                        <XButton text="Search" />
+                    </SearchForm>
                     {!LIVESEARCH && (
                         <>
                             <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
-                            <XHorizontal >
+                            <SearchPickers>
                                 <LocationPicker onPick={this.addCondition} />
                                 <CategoryPicker onPick={this.addCondition} />
                                 <InterestPicker onPick={this.addCondition} />
                                 <XVertical alignItems="flex-end" flexGrow={1}>
-                                    <XButton text="Reset" onClick={this.reset} />
+                                    <XButton text="Reset" style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
                                 </XVertical>
-                            </XHorizontal>
-
+                            </SearchPickers>
                         </>
                     )}
                 </XCardStyled>

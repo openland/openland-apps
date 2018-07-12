@@ -28,6 +28,9 @@ const MessagesContainerInner = Glamorous.div({
         width: '100%',
         maxWidth: '100%',
         flexBasis: '100%',
+        height: '100%',
+        maxHeight: '100%',
+        flexGrow: 1,
         '& > .simplebar-scroll-content > .simplebar-content': {
             overflowX: 'unset !important',
             overflowY: 'unset !important',

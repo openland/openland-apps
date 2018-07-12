@@ -125,8 +125,8 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
             <SendMessageWrapper alignItems="stretch" justifyContent="center" >
                 <SendMessageContent separator={15}>
                     <AttachmentButton
-                        onClick={this.handleAttach}
-                        enabled={this.props.enabled !== false}
+                        onClick={this.props.enabled === false ? undefined : this.handleAttach}
+                        enabled={this.props.enabled === false}
                         disable={this.props.enabled === false}
                     >
                         <XIcon icon="attachment" />

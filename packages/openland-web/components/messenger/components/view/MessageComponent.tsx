@@ -30,11 +30,13 @@ const Name = Glamorous.div({
     fontWeight: 500,
 });
 
-const DateComponent = Glamorous.div({
-    fontSize: 14,
+const DateComponent = Glamorous.div<{small?: boolean}>((props) => ({
+    width: props.small ? 56 : 62,
+    fontSize: props.small ? 13 : 14,
     fontWeight: 300,
-    opacity: 0.4
-});
+    opacity: 0.5,
+    color: '#334562'
+}));
 
 const MessageContainer = Glamorous.div({
     display: 'flex',
@@ -53,8 +55,9 @@ const MessageContainer = Glamorous.div({
 
 const MessageCompactContainer = Glamorous.div({
     display: 'flex',
-    flexDirection: 'column',
-    paddingLeft: 80,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 24,
     paddingRight: 24,
     paddingTop: 4,
     paddingBottom: 4,
@@ -63,8 +66,14 @@ const MessageCompactContainer = Glamorous.div({
     marginBottom: 12,
     borderRadius: 5,
     '&:hover': {
-        backgroundColor: 'rgba(248, 248, 251, 0.7)'
+        backgroundColor: 'rgba(248, 248, 251, 0.7)',
+        '& > .time': {
+            opacity: 0.5
+        }
     },
+    '& > .time': {
+        opacity: 0
+    }
 });
 
 export class MessageComponent extends React.PureComponent<MessageComponentProps> {
@@ -122,6 +131,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
         if (this.props.compact) {
             return (
                 <MessageCompactContainer className="compact-message">
+                    <DateComponent small={true} className="time">{date}</DateComponent>
                     {content}
                 </MessageCompactContainer>
             );
