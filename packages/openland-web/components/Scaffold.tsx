@@ -47,6 +47,8 @@ const RootContainer = Glamorous.div({
 //
 
 const NavigationWrapper = Glamorous.div<{ activeSearch: boolean }>((props) => ({
+    minHeight: '100vh',
+    height: '100%',
     display: 'flex',
     flexShrink: 0,
     order: 1,
@@ -63,7 +65,8 @@ const NavigationContainer = Glamorous.div({
 });
 
 const NavigationScroller = Glamorous(XScrollView)<{ sidebarBorderColor?: string }>((props) => ({
-    height: '100vh',
+    minHeight: '100vh',
+    height: '100%',
     width: 72,
     backgroundColor: '#FAFAFC',
     // backgroundColor: 'transparent',
@@ -331,11 +334,12 @@ const SearchWrapperSticky = Glamorous.div({
 });
 
 const SearchContainer = Glamorous.div({
-    position: 'absolute',
+    position: 'fixed',
     left: 72,
     top: 0,
-    width: 'calc(100vw - 72px)',
-    height: '100vh',
+    width: '100%',
+    minHeight: '100vh',
+    height: '100%',
     backgroundColor: 'rgba(9, 30, 66, 0.54)',
     zIndex: 1
 });
@@ -348,7 +352,8 @@ const SearchContent = Glamorous.div({
     left: 72,
     top: 0,
     width: '300px',
-    height: '100vh',
+    minHeight: '100vh',
+    height: '100%',
     backgroundColor: '#FFFFFF',
 });
 
@@ -358,6 +363,7 @@ const SearchInput = Glamorous.input({
     paddingLeft: 24,
     paddingRight: 24,
     height: 48,
+    flexShrink: 0,
     width: '100%',
     fontWeight: 600,
     fontSize: 20,
