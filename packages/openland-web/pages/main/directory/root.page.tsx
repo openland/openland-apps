@@ -165,7 +165,7 @@ export interface SearchCondition {
 
 const OrganizationFollowBtn = withOrganizationFollow((props) => {
     return (
-        <XMutation mutation={props.followOrganization} variables={{organizationId: (props as any).organizationId, follow: !(props as any).followed}}>
+        <XMutation mutation={props.followOrganization} variables={{ organizationId: (props as any).organizationId, follow: !(props as any).followed }}>
             <XButton
                 style={(props as any).followed ? 'ghost' : 'default'}
                 text={(props as any).followed ? TextDirectory.buttonFollowing : TextDirectory.buttonFollow}
@@ -239,11 +239,16 @@ const OrganizationCards = withExploreOrganizations((props) => {
     console.warn(props);
     return (
         <>
-            {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && <OrganizationCounter>{TextDirectory.counterOrganizations(props.data.items.pageInfo.itemsCount)}</OrganizationCounter>}
-            {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && props.data.items.edges.map((i, j) => (
-                <OrganizationCard key={i.node.id + j} item={i.node} />
-            ))}
-            {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && <XText>{TextDirectory.emptyResults}</XText>}
+            {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
+                <XCardStyled>
+                    <OrganizationCounter>{TextDirectory.counterOrganizations(props.data.items.pageInfo.itemsCount)}</OrganizationCounter>
+                    {props.data.items.edges.map((i, j) => (
+                        <OrganizationCard key={i.node.id + j} item={i.node} />))
+                    }
+                </XCardStyled>
+            )}
+          
+            {/* {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && <XText>{TextDirectory.emptyResults}</XText>} */}
         </>
     );
 });
@@ -278,7 +283,7 @@ class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
         for (let type of Object.keys(groups)) {
             let group = groups[type];
 
-            let groupedValues: ({type: string, value: string})[] = [];
+            let groupedValues: ({ type: string, value: string })[] = [];
 
             clauses.push(this.buildQuery(
                 [...group.map((c: SearchCondition) => {
@@ -297,7 +302,7 @@ class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
                         return clause;
                     }
                 }).filter((c: any) => c !== undefined),
-                ...groupedValues.map((c: {type: string, value: string}) => {
+                ...groupedValues.map((c: { type: string, value: string }) => {
                     let clause = {};
                     clause[c.type] = c.value;
                     return clause;
@@ -463,10 +468,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                         </>
                     )}
                 </XCardStyled>
-
-                <XCardStyled>
-                    <Organizations conditions={conditions} />
-                </XCardStyled>
+                <Organizations conditions={conditions} />
             </XVertical>
         );
     }
