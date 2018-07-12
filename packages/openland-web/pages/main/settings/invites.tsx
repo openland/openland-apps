@@ -120,14 +120,6 @@ const LinkContianer = glamorous(XVertical)({
     padding: 40
 });
 
-const makeClickble = (target: any, onClick: any) => {
-    return (React.cloneElement(target, { onClick: onClick }));
-};
-
-const XSelectGrow = glamorous(XSelect)({
-    flexGrow: 1
-});
-
 class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: string, ttl: string | null } | null, createMutation: any, deleteMutation: any, onBack: () => void } & XWithRouter, { expirationDays: string }> {
     input?: any;
     constructor(props: any) {
