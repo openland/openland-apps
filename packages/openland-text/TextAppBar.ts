@@ -14,6 +14,6 @@ export const TextAppBar = {
         devTools: 'DevTools',
         xFramework: 'X Framework',
         addDevelopmentOpportunity: 'New development opportunity',
-        addAquisitionRequest: 'New aquisition request',
+        addAquisitionRequest: 'New acquisition request',
     }
 };
