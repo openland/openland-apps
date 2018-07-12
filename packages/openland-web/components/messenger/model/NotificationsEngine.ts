@@ -1,17 +1,60 @@
 import { MessengerEngine } from './MessengerEngine';
 import { Notifications } from './utils/Notifications';
 import { Badge } from './utils/Badge';
+import { PushEngine } from './PushEngine';
+import gql from '../../../../../node_modules/graphql-tag';
+import { backoff } from 'openland-x-utils/timer';
+
+const FetchPushSettings = gql`
+    query FetchPushSettings {
+        pushSettings {
+            webPushKey
+        }
+    }
+`;
+
+const RegisterPush = gql`
+    mutation RegisterPush($endpoint: String!) {
+        registerWebPush(endpoint: $endpoint)
+    }
+`;
 
 export class NotificationsEngine {
-    notifications = new Notifications();
+    readonly notifications: Notifications;
     readonly engine: MessengerEngine;
     readonly badge: Badge;
+    readonly push: PushEngine;
     private isVisible = true;
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
+        this.notifications = new Notifications(this.handleGranted);
         this.badge = new Badge();
         this.badge.init();
+        this.push = new PushEngine(this.handlePushRegistration);
+    }
+
+    handleGranted = () => {
+        (async () => {
+            let settings = await backoff(async () => await this.engine.client.query({
+                query: FetchPushSettings
+            }));
+            let key = (settings.data as any).pushSettings.webPushKey;
+            if (key) {
+                this.push.startPush({ applicationKey: key });
+            } else {
+                this.push.startPush({});
+            }
+        })();
+    }
+
+    handlePushRegistration = (endpoint: string) => {
+        backoff(async () => await this.engine.client.mutate({
+            mutation: RegisterPush,
+            variables: {
+                endpoint
+            }
+        }));
     }
 
     handleVisibleChanged = (isVisible: boolean) => {

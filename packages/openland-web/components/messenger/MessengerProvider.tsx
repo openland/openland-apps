@@ -3,6 +3,7 @@ import { MessengerEngine, MessengerContext } from './model/MessengerEngine';
 import { withApollo } from 'react-apollo';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { UserShortFragment } from 'openland-api/Types';
+import { ServiceWorkerCleaner } from './model/ServiceWorkerCleaner';
 
 let cachedMessenger: MessengerEngine | null = null;
 
@@ -29,7 +30,12 @@ export class MessengerProvider extends React.PureComponent<{ user?: UserShortFra
         if (this.props.user) {
             return <Messenger currentUser={this.props.user}>{this.props.children}</Messenger>;
         } else {
-            return <>{this.props.children}</>;
+            return (
+                <>
+                    <ServiceWorkerCleaner />
+                    {this.props.children}
+                </>
+            );
         }
     }
 }
