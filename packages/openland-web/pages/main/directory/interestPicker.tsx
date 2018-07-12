@@ -4,9 +4,9 @@ import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchCondition } from './root.page';
 import { XMenuItem } from '../../../components/Incubator/XOverflow';
-import glamorous from 'glamorous';
-import { XText } from 'openland-x/XText';
+import Glamorous from 'glamorous';
 import { XInput } from 'openland-x/XInput';
+import { XIcon } from 'openland-x/XIcon';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
 const CATALOG = [
@@ -17,24 +17,76 @@ const CATALOG = [
     { label: 'Option-to-buy', value: 'Option-to-buy' },
 ];
 
-const VerticalScrollable = glamorous(XVertical)({
-    height: 200,
-    width: 200,
-    overflowY: 'scroll'
+const EntryScrollable = Glamorous(XVertical)({
+    width: 260,
+    maxHeight: 243,
+    overflowY: 'scroll',
+    margin: 0,
+    paddingBottom: 10
+});
+
+const EntryTitle = Glamorous.div({
+    fontSize: 15,
+    fontWeight: 500,
+    letterSpacing: 0.1,
+    color: '#334562',
+    padding: '19px 18px 9px',
+    margin: 0
+});
+
+const EntryWrapper = Glamorous(XVertical)({
+    borderRight: '1px solid rgba(220, 222, 228, 0.5)',
+    margin: 0,
+
+    '&:last-child': {
+        borderRight: 'none'
+    }
+});
+
+const EntryItem = Glamorous(XMenuItem)({
+    margin: '0!important',
+    color: 'rgba(51, 69, 98, 0.8)'
 });
 
 class EntriesComponent extends React.Component<{ title: string, options: { value: string, label: string }[], query: string, onPick: (q: SearchCondition) => void }> {
     render() {
         return (
-            <XVertical>
-                <XText textStyle="h500">{this.props.title}</XText>
-                <VerticalScrollable>
-                    {this.props.options.filter(e => e.value.split(' ').filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0).map((e, i) => <XMenuItem onClick={() => this.props.onPick({ type: 'interest', value: e.value, label: e.label })} key={e + '_' + i}>{e.label}</XMenuItem>)}
-                </VerticalScrollable>
-            </XVertical>
+            <EntryWrapper>
+                <EntryTitle>{this.props.title}</EntryTitle>
+                <EntryScrollable>
+                    {this.props.options.filter(e => e.value.split(' ').filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0).map((e, i) => <EntryItem onClick={() => this.props.onPick({ type: 'interest', value: e.value, label: e.label })} key={e + '_' + i}>{e.label}</EntryItem>)}
+                </EntryScrollable>
+            </EntryWrapper>
         );
     }
 }
+
+const PickerButton = Glamorous(XButton)<{ activated?: boolean }>((props) => ({
+    backgroundColor: (props.activated) ? 'white' : 'none',
+    borderColor: (props.activated) ? 'rgba(220, 222, 228, 0.5)' : 'none',
+}));
+
+const PickerWrapper = Glamorous(XVertical)({
+    margin: -10
+});
+
+const PickerSearch = Glamorous.div({
+    padding: '18px 18px 0',
+    position: 'relative',
+    margin: 0
+});
+
+const PickerSearchIcon = Glamorous(XIcon)({
+    position: 'absolute',
+    top: 18,
+    right: 27,
+    fontSize: 20,
+    lineHeight: '40px'
+});
+
+const PickerEntries = Glamorous(XHorizontal)({
+    margin: 0
+});
 
 export class InterestPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { query: string, popper: boolean }> {
     constructor(props: any) {
@@ -67,12 +119,15 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
 
     render() {
         let content = (
-            <XVertical>
-                <XInput value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
-                <XHorizontal>
+            <PickerWrapper>
+                <PickerSearch>
+                    <XInput placeholder="Enter an interest" value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
+                    <PickerSearchIcon icon="search" />
+                </PickerSearch>
+                <PickerEntries>
                     <EntriesComponent title="Top interests" query={this.state.query} options={CATALOG} onPick={this.onPick} />
-                </XHorizontal>
-            </XVertical>
+                </PickerEntries>
+            </PickerWrapper>
         );
         return (
             <XPopper
@@ -80,8 +135,9 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
                 show={this.state.popper}
                 content={content}
                 onClickOutside={this.close}
+                arrow={null}
             >
-                <XButton text="Interests" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton activated={this.state.popper} text="Interests" style="flat" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }

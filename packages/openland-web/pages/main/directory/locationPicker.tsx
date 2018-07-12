@@ -3,6 +3,7 @@ import { XButton } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
+import { XIcon } from 'openland-x/XIcon';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import Glamorous from 'glamorous';
 import { SearchCondition } from './root.page';
@@ -10,9 +11,10 @@ import { XMenuItem } from '../../../components/Incubator/XOverflow';
 
 const EntryScrollable = Glamorous(XVertical)({
     width: 232,
-    height: 243,
+    maxHeight: 243,
     overflowY: 'scroll',
-    margin: 0
+    margin: 0,
+    paddingBottom: 10
 });
 
 const EntryTitle = Glamorous.div({
@@ -34,8 +36,7 @@ const EntryWrapper = Glamorous(XVertical)({
 });
 
 const EntryItem = Glamorous(XMenuItem)({
-    marginTop: 0,
-    marginBottom: 0,
+    margin: '0!important',
     color: 'rgba(51, 69, 98, 0.8)'
 });
 
@@ -257,7 +258,16 @@ const PickerWrapper = Glamorous(XVertical)({
 });
 
 const PickerSearch = Glamorous.div({
-    padding: '18px 18px 0'
+    padding: '18px 18px 0',
+    position: 'relative'
+});
+
+const PickerSearchIcon = Glamorous(XIcon)({
+    position: 'absolute',
+    top: 18,
+    right: 27,
+    fontSize: 20,
+    lineHeight: '40px'
 });
 
 const PickerTitle = Glamorous.div({
@@ -305,7 +315,8 @@ export class LocationPicker extends React.Component<{ onPick: (q: SearchConditio
         let content = (
             <PickerWrapper>
                 <PickerSearch>
-                    <XInput value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
+                    <XInput placeholder="Enter a location" value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
+                    <PickerSearchIcon icon="search" />
                 </PickerSearch>
                 <PickerTitle>Top locations</PickerTitle>
                 <PickerEntries>
