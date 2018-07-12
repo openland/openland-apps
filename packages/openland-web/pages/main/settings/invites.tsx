@@ -142,27 +142,30 @@ class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: st
         this.input = e;
     }
 
+    copy = (e: any) => {
+        if (this.input && this.input.inputRef && this.input.inputRef) {
+            this.input.inputRef.inputRef.select();
+        }
+        document.execCommand('copy');
+    }
+
     render() {
         return (
             <LinkContianer>
                 {this.props.invite && (
                     <>
                         <XHorizontal alignItems="center">
-                            {makeClickble(<XInput autoSelect={true} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key} />, (e: any) => console.warn(this.input))}
-                            {/* <XButton text="Copy" /> */}
-                            <XMutation mutation={this.props.deleteMutation}><XButton style="danger" text={TextInvites.deleteLink} /></XMutation>
+                            <XInput autoSelect={true} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key} />
+                            <XButton text="Copy" onClick={this.copy} />
+                            <XMutation mutation={this.props.createMutation}><XButton text="Renew link" /></XMutation>
+
                         </XHorizontal>
                         {this.props.invite.ttl && (
                             <XText>expires at {DateFormater(Number(this.props.invite.ttl))}</XText>
                         )}
                     </>
                 )}
-                {!this.props.invite && (
-                    <XHorizontal alignItems="center" >
-                        <XSelectGrow onChange={v => this.setState({ expirationDays: (v && !Array.isArray(v)) ? String(v.value) : '30' })} value={this.state.expirationDays} searchable={false} clearable={false} options={[{ label: TextInvites.linkExpirationOption1, value: '1' }, { label: TextInvites.linkExpirationOption7, value: '7' }, { label: TextInvites.linkExpirationOption30, value: '30' }]} />
-                        <XMutation mutation={this.props.createMutation} variables={{ expirationDays: Number(this.state.expirationDays) }}><XButton text="Create new link" /></XMutation>
-                    </XHorizontal>
-                )}
+
                 <XButton onClick={this.props.onBack} text={TextInvites.backToEmailInvites} style="link" />
 
             </LinkContianer>
