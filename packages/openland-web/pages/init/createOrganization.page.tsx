@@ -58,7 +58,7 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                             variables:
                             {
                                 input: {
-                                    personal: true,
+                                    personal: false,
                                     name: data.input.name,
                                     website: data.input.website,
                                     photoRef: sanitizeIamgeRef(data.input.photoRef)
