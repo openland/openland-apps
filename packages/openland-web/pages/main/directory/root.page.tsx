@@ -14,7 +14,6 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LocationPicker } from './locationPicker';
 import { CategoryPicker } from './categoryPicker';
-import { XText } from 'openland-x/XText';
 import { XTag } from 'openland-x/XTag';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { InterestPicker } from './interestPicker';
