@@ -215,7 +215,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
             let host = window.location.hostname.split('.').reverse();
             Cookie.defaults.domain = (host[1] ? host[1] + '.' : '') + host[0];
             Cookie.defaults.path = '/';
-            Cookie.set('x-openland-user-photo', this.props.picture || '');
+            Cookie.set('x-openland-user-photo', this.props.picture || '', {path: '/'});
             Cookie.defaults.domain = keepDomain;
             Cookie.defaults.path = keepPath;
         }

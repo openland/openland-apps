@@ -49,7 +49,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
             let body = (await uploaded.json()) as { ok: boolean, token: string };
             Cookie.remove('statecraft-key');
             Cookie.remove('x-openland-org');
-            Cookie.set('x-openland-token', body.token);
+            Cookie.set('x-openland-token', body.token, {path: '/'});
             let path = auth.state !== 'none' ? auth.state : '/';
             if (auth.idTokenPayload && auth.idTokenPayload.sub && auth.idTokenPayload.sub.startsWith('email|')) {
                 path = '/';

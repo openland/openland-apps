@@ -33,9 +33,9 @@ class SharedClientStorage implements SharedStorage {
     writeValue = (key: string, value: string | null, expires?: number) => {
         if (value) {
             if (expires) {
-                Cookie.set(CookiePrefix + key, value, { expires: expires / (24 * 60.0 * 60.0) });
+                Cookie.set(CookiePrefix + key, value, { expires: expires / (24 * 60.0 * 60.0), path: '/'});
             } else {
-                Cookie.set(CookiePrefix + key, value);
+                Cookie.set(CookiePrefix + key, value, {path: '/'});
             }
         } else {
             Cookie.remove(CookiePrefix + key);
