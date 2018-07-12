@@ -217,7 +217,7 @@ export const OrganizationPublicInviteQuery = gql`
 `;
 
 export const OrganizationCreatePublicInviteMutation = gql`
-    mutation OrganizationCreatePublicInvite($expirationDays: Int!){
+    mutation OrganizationCreatePublicInvite($expirationDays: Int){
         alphaOrganizationCreatePublicInvite(expirationDays: $expirationDays){
             id
             key
@@ -249,7 +249,7 @@ export const OrganizationPublicInviteOrganizatonsQuery = gql`
 `;
 
 export const OrganizationCreatePublicInviteOrganizatonsMutation = gql`
-    mutation OrganizationCreatePublicInviteOrganizatons($expirationDays: Int!){
+    mutation OrganizationCreatePublicInviteOrganizatons($expirationDays: Int){
         alphaOrganizationCreatePublicInviteForOrganizations(expirationDays: $expirationDays){
             id
             key

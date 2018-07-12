@@ -13447,6 +13447,37 @@
               "deprecationReason": null
             },
             {
+              "name": "alphaJoinGlobalInvite",
+              "description": "",
+              "args": [
+                {
+                  "name": "key",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "createProfile",
               "description": "",
               "args": [
@@ -14679,13 +14710,9 @@
                   "name": "expirationDays",
                   "description": "",
                   "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Int",
-                      "ofType": null
-                    }
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
                   },
                   "defaultValue": null
                 }
@@ -14796,13 +14823,9 @@
                   "name": "expirationDays",
                   "description": "",
                   "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Int",
-                      "ofType": null
-                    }
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
                   },
                   "defaultValue": null
                 }

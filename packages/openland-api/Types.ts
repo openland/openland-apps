@@ -2395,7 +2395,7 @@ export interface OrganizationPublicInviteQuery {
 };
 
 export interface OrganizationCreatePublicInviteMutationVariables {
-  expirationDays: number,
+  expirationDays?: number | null,
 };
 
 export interface OrganizationCreatePublicInviteMutation {
@@ -2429,7 +2429,7 @@ export interface OrganizationPublicInviteOrganizatonsQuery {
 };
 
 export interface OrganizationCreatePublicInviteOrganizatonsMutationVariables {
-  expirationDays: number,
+  expirationDays?: number | null,
 };
 
 export interface OrganizationCreatePublicInviteOrganizatonsMutation {

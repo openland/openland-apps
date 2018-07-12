@@ -19,7 +19,6 @@ import { withOrganizationInviteMembers } from '../../../api/withOrganizationInvi
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withPublicInvite } from '../../../api/withPublicInvite';
 import { XMutation } from 'openland-x/XMutation';
-import { DateFormater } from 'openland-x-format/XDate';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { TextInvites } from 'openland-text/TextInvites';
 import { withOrganizationInviteOrganization } from '../../../api/withOrganizationInviteOrganization';
@@ -120,11 +119,10 @@ const LinkContianer = glamorous(XVertical)({
     padding: 40
 });
 
-class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: string, ttl: string | null } | null, createMutation: any, deleteMutation: any, onBack: () => void } & XWithRouter, { expirationDays: string }> {
+class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: string, ttl: string | null } | null, createMutation: any, deleteMutation: any, onBack: () => void } & XWithRouter> {
     input?: any;
     constructor(props: any) {
         super(props);
-        this.state = { expirationDays: '30' };
     }
 
     handleRef = (e: any) => {
@@ -150,11 +148,7 @@ class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: st
                             <XInput autoSelect={true} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key} />
                             <XButton text="Copy" onClick={this.copy} />
                             <XMutation mutation={this.props.createMutation}><XButton text="Renew link" /></XMutation>
-
                         </XHorizontal>
-                        {this.props.invite.ttl && (
-                            <XText>expires at {DateFormater(Number(this.props.invite.ttl))}</XText>
-                        )}
                     </>
                 )}
 
