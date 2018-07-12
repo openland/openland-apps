@@ -1,27 +1,116 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XIcon } from 'openland-x/XIcon';
+import { styleResolver } from 'openland-x-utils/styleResolver';
+import { XFlexStyles } from './basics/Flex';
 
-const XTagWrapper = Glamorous.div({
-    maxWidth: '100%',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    height: 25,
-    borderRadius: 4,
-    backgroundColor: '#edf3fe',
-    whiteSpace: 'nowrap',
-    fontSize: 11,
-    fontWeight: 500,
-    letterSpacing: 0.2,
-    lineHeight: '24px',
-    color: '#4285f4',
-    padding: '0px 8px 1px',
-    marginRight: 8,
-    marginTop: 4,
-    marginBottom: 4,
+interface XTagProps extends XFlexStyles {
+    text?: string;
+    icon?: string;
+    size?: 'large' | 'default';
+    color?: 'primary' | 'default';
+    onIconClick?: () => void;
+}
+
+interface StyledXTagProps extends XFlexStyles {
+    tagSize?: 'large' | 'default';
+    tagColor?: 'primary' | 'default';
+}
+
+let iconsIndentation = styleResolver({
+    'large': {
+        fontSize: 16,
+        lineHeight: '32px',
+        marginLeft: 4,
+    },
+    'default': {
+        fontSize: 14,
+        lineHeight: '24px',
+        marginLeft: 2,
+    },
 });
 
-export function XTag(props: { title: string }) {
-    return (
-        <XTagWrapper>{props.title}</XTagWrapper>
-    );
+let sizeStyles = styleResolver({
+    'large': {
+        height: 32,
+        fontSize: 13,
+        fontWeight: 500,
+        lineHeight: '32px',
+        letterSpacing: 0.1,
+        padding: '0 10px',
+    },
+    'default': {
+        height: 25,
+        fontSize: 11,
+        fontWeight: 500,
+        lineHeight: '24px',
+        letterSpacing: 0.2,
+        padding: '0 8px 1px',
+    },
+});
+
+let colorStyles = styleResolver({
+    'primary': {
+        backgroundColor: '#eeecfa',
+        color: '#5640d6',
+    },
+    'default': {
+        backgroundColor: '#edf3fe',
+        color: '#4285f4',
+    },
+});
+
+const XTagWrapper = Glamorous.div<StyledXTagProps>([
+    (props) => ({
+        display: 'flex',
+        maxWidth: '100%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        borderRadius: 4,
+        whiteSpace: 'nowrap',
+        marginRight: 8,
+        marginTop: 4,
+        marginBottom: 4,
+    }),
+    (props) => sizeStyles(props.tagSize),
+    (props) => colorStyles(props.tagColor)
+]);
+
+const XTagDeleteWrapper = Glamorous.div({
+    cursor: 'pointer',
+    color: '#5641d1',
+    opacity: 0.4,
+
+    '&:hover': {
+        opacity: 0.7,
+    },
+
+    '&:active': {
+        opacity: 1,
+    }
+});
+
+const XTagDeleteIcon = Glamorous(XIcon)<StyledXTagProps>([
+    (props) => iconsIndentation(props.tagSize)
+]);
+
+export class XTag extends React.Component<XTagProps> {
+    render() {
+        return (
+            <XTagWrapper
+                tagSize={this.props.size}
+                tagColor={this.props.color}
+            >
+                {this.props.text}
+                {this.props.icon && (
+                    <XTagDeleteWrapper onClick={this.props.onIconClick}>
+                        <XTagDeleteIcon
+                            tagSize={this.props.size}
+                            icon={this.props.icon}
+                        />
+                    </XTagDeleteWrapper>
+                )}
+            </XTagWrapper>
+        );
+    }
 }

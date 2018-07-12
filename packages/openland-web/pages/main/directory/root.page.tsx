@@ -198,7 +198,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                     {props.item.organizationType && (
                         <OrganizationTags>
                             {props.item.organizationType.map((tag) => (
-                                <XTag key={props.item.id + tag} title={tag} />
+                                <XTag key={props.item.id + tag} text={tag} />
                             ))}
                         </OrganizationTags>
                     )}
@@ -305,23 +305,6 @@ const ConditionRenderWrapper = Glamorous.div({
     padding: '0 4px 16px 24px'
 });
 
-const Tag = Glamorous.div({
-    display: 'flex',
-    maxWidth: '100%',
-    height: 30,
-    borderRadius: 4,
-    backgroundColor: '#edf3fe',
-    whiteSpace: 'nowrap',
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: '30px',
-    color: '#4285f4',
-    padding: '0px 9px 1px',
-    marginRight: 10,
-    marginTop: 4,
-    marginBottom: 4,
-});
-
 const SearchForm = Glamorous(XHorizontal)({
     padding: '15px 14px 5px 24px'
 });
@@ -344,17 +327,16 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
         return (
             <ConditionRenderWrapper>
                 {this.props.conditions.map((condition) => (
-                    <Tag key={condition.type + '_' + condition.value}>
-                        {condition.label}
-                        <div
-                            onClick={() => this.props.removeCallback(condition)}
-                            style={{ marginLeft: 5, color: 'red', cursor: 'pointer' }}
-                        >
-                            clear
-                        </div>
-                    </Tag>
+                    <XTag
+                        key={condition.type + '_' + condition.value}
+                        text={condition.label}
+                        size="large"
+                        color="primary"
+                        icon="close"
+                        onIconClick={() => this.props.removeCallback(condition)}
+                    />
                 ))}
-                {this.props.conditions.length === 0 && <Tag>{TextDirectory.searchConditionAll}</Tag>}
+                {this.props.conditions.length === 0 && <XTag text={TextDirectory.searchConditionAll} size="large" color="primary" />}
             </ConditionRenderWrapper>
         );
     }
