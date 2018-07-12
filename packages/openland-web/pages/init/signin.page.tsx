@@ -58,7 +58,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
         if (this.props.redirect) {
             Cookie.set('sign-redirect', this.props.redirect);
         }
-        createAuth0Client().passwordlessStart({ connection: 'email', send: 'code', email: this.state.emailValue }, (error, v) => {
+        createAuth0Client().passwordlessStart({ connection: 'email', send: 'link', email: this.state.emailValue }, (error, v) => {
             if (error) {
                 this.setState({ emailSending: false, emailError: error.description!! });
             } else {

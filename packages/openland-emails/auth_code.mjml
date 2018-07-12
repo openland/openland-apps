@@ -9,13 +9,31 @@
     <mj-include path="./header.mjml" />
     <mj-section>
       <mj-column>
+        <mj-raw>
+          {% if send == 'link' or send == 'link_ios' or send == 'link_android' %}
+        </mj-raw>
         <mj-text>
           Hi, <br/> <br/> 
-          Your activation code is: <strong>{{ code }}</strong> <br/> <br/> 
+          Click and confirm that you want to sign in to Openland:
+        </mj-text>
+        <mj-button background-color="#654bfa" href="{{ link }}">Sign In to Openland</mj-button>
+        <mj-text>
+            Or sign in using activation code: <strong>{{ code }}</strong> <br/> <br/> 
+        </mj-text>
+
+        <mj-raw>
+          {% elsif send == 'code' %}
+        </mj-raw>
+         <mj-text>
+            Hi, <br/> <br/> 
+            Your activation code is: <strong>{{ code }}</strong> <br/> <br/> 
+        </mj-text>
+        <mj-raw>
+          {% endif %}
+        </mj-raw>
+        <mj-text>
           If you have trouble accessing your account feel free to reply to this email.
-          <br/><br/> 
-          Good luck with Openland! <br/> 
-          -- Openland Team <br/>
+          <br/><br/> Good luck with Openland! <br/> -- Openland Team <br/>
         </mj-text>
       </mj-column>
     </mj-section>
