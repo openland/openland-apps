@@ -1228,9 +1228,9 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 <XVerticalStyled flexShrink={0} flexGrow={1} separator="none" paddingTop={31}>
                                     <OrganizationName>{organization.name}</OrganizationName>
                                     <div style={{ marginTop: 8 }}>
-                                        {organization.location && <Text opacity={0.5} bold={true}>{organization.location}</Text>}
+                                        {(organization.locations || [])[0] && <Text opacity={0.5} bold={true}>{(organization.locations || [])[0]}</Text>}
                                         <XWithRole role={['org-' + organization.id + '-admin']}>
-                                            {!organization.location && <LocationPlaceholder />}
+                                            {!((organization.locations || [])[0]) && <LocationPlaceholder />}
                                         </XWithRole>
                                     </div>
                                     <div style={{ marginTop: 16 }}>
