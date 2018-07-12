@@ -453,6 +453,7 @@ export interface ChatListQuery {
           message: string | null,
           file: string | null,
           repeatKey: string | null,
+          isService: boolean,
           fileMetadata:  {
             __typename: "FileMetadata",
             name: string,
@@ -487,6 +488,7 @@ export interface ChatListQuery {
           message: string | null,
           file: string | null,
           repeatKey: string | null,
+          isService: boolean,
           fileMetadata:  {
             __typename: "FileMetadata",
             name: string,
@@ -521,6 +523,7 @@ export interface ChatListQuery {
           message: string | null,
           file: string | null,
           repeatKey: string | null,
+          isService: boolean,
           fileMetadata:  {
             __typename: "FileMetadata",
             name: string,
@@ -555,6 +558,7 @@ export interface ChatListQuery {
           message: string | null,
           file: string | null,
           repeatKey: string | null,
+          isService: boolean,
           fileMetadata:  {
             __typename: "FileMetadata",
             name: string,
@@ -605,6 +609,7 @@ export interface ChatHistoryQuery {
       message: string | null,
       file: string | null,
       repeatKey: string | null,
+      isService: boolean,
       fileMetadata:  {
         __typename: "FileMetadata",
         name: string,
@@ -679,6 +684,7 @@ export interface SendMessageMutation {
       message: string | null,
       file: string | null,
       repeatKey: string | null,
+      isService: boolean,
       fileMetadata:  {
         __typename: "FileMetadata",
         name: string,
@@ -4457,6 +4463,7 @@ export interface MessageFullFragment {
   message: string | null,
   file: string | null,
   repeatKey: string | null,
+  isService: boolean,
   fileMetadata:  {
     __typename: string,
     name: string,

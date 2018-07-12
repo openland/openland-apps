@@ -6,6 +6,7 @@ export const MessageFull = gql`
     message
     file
     repeatKey
+    isService
     fileMetadata {
         name
         mimeType

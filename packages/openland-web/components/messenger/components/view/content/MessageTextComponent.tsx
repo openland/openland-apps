@@ -6,12 +6,14 @@ import { emojify } from 'react-emojione';
 
 export interface MessageTextComponentProps {
     message: string;
+    isService: boolean;
 }
 
-const TextWrapper = Glamorous.span({
+const TextWrapper = Glamorous.span<{ isService: boolean }>((props) => ({
     display: 'inline',
-    whiteSpace: 'pre-wrap'
-});
+    whiteSpace: 'pre-wrap',
+    opacity: props.isService ? 0.3 : 1
+}));
 
 export class MessageTextComponent extends React.PureComponent<MessageTextComponentProps> {
     private preprocessed: Span[];
@@ -32,6 +34,6 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                 return <span key={'text-' + i}>{emojify(v.text!!, { style: { height: 18 } })}</span>;
             }
         });
-        return <TextWrapper>{parts}</TextWrapper>;
+        return <TextWrapper isService={this.props.isService}>{parts}</TextWrapper>;
     }
 }

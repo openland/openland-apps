@@ -79,11 +79,11 @@ const MessageCompactContainer = Glamorous.div({
 export class MessageComponent extends React.PureComponent<MessageComponentProps> {
     render() {
         let content: any[] = [];
-        if (this.props.message.message && this.props.message.message.length > 0) {
-            content.push(<MessageTextComponent message={this.props.message.message} key={'text'} />);
-        }
         let date: any = null;
         if (isServerMessage(this.props.message)) {
+            if (this.props.message.message && this.props.message.message.length > 0) {
+                content.push(<MessageTextComponent message={this.props.message.message} key={'text'} isService={this.props.message.isService} />);
+            }
             if (this.props.message.file) {
                 let w = this.props.message.fileMetadata!!.imageWidth ? this.props.message.fileMetadata!!.imageWidth!! : undefined;
                 let h = this.props.message.fileMetadata!!.imageHeight ? this.props.message.fileMetadata!!.imageHeight!! : undefined;
@@ -101,6 +101,9 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
             }
             date = <XDate value={this.props.message.date} format="time" />;
         } else {
+            if (this.props.message.message && this.props.message.message.length > 0) {
+                content.push(<MessageTextComponent message={this.props.message.message} key={'text'} isService={false} />);
+            }
             if (this.props.message.file) {
                 content.push(
                     <MessageUploadComponent
@@ -125,7 +128,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
 
         // Handle unknown messages: display empty message
         if (content.length === 0) {
-            content.push(<MessageTextComponent message={''} key={'text'} />);
+            content.push(<MessageTextComponent message={''} key={'text'} isService={false} />);
         }
 
         if (this.props.compact) {
