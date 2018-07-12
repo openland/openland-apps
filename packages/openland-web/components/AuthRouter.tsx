@@ -120,7 +120,6 @@ export const AuthRouter = withUserInfo((props) => {
         }
     }
 
-
     // Redirect to generic 'need more info' page if signup is not completed
     if (!handled && !props.isCompleted) {
         handled = true;
