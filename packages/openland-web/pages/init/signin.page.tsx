@@ -56,7 +56,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
 
     fireEmail = () => {
         if (this.props.redirect) {
-            Cookie.set('sign-redirect', this.props.redirect, {path: '/'});
+            Cookie.set('sign-redirect', this.props.redirect, { path: '/' });
         }
         createAuth0Client().passwordlessStart({ connection: 'email', send: 'link', email: this.state.emailValue }, (error, v) => {
             if (error) {
@@ -157,8 +157,10 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
         this.setState({ codeValue: val });
     }
 
-    loginEmailStart = (e: React.SyntheticEvent<any>) => {
-        e.preventDefault();
+    loginEmailStart = (e?: React.SyntheticEvent<any>) => {
+        if (e) {
+            e.preventDefault();
+        }
         this.setState({
             emailSending: true,
             emailError: '',
@@ -167,8 +169,10 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
         this.fireEmail();
     }
 
-    loginCodeStart = (e: React.SyntheticEvent<any>) => {
-        e.preventDefault();
+    loginCodeStart = (e?: React.SyntheticEvent<any>) => {
+        if (e) {
+            e.preventDefault();
+        }
         this.setState({ codeSending: true });
         createAuth0Client().passwordlessVerify({ connection: 'email', email: this.state.emailValue, verificationCode: this.state.codeValue }, (error, v) => {
             if (error) {
@@ -221,7 +225,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
                         <Title marginBottom={20}>{signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}</Title>
                         {this.state.emailError !== '' && (<><XServiceMessage title={InitTexts.auth.emailInvalid} /><EmptyBlock /></>)}
                         <ButtonsWrapper>
-                            <XInput onChange={this.emailChanged} value={this.state.emailValue} placeholder={InitTexts.auth.emailPlaceholder} />
+                            <XInput onChange={this.emailChanged} value={this.state.emailValue} placeholder={InitTexts.auth.emailPlaceholder} onEnter={this.loginEmailStart} />
                         </ButtonsWrapper>
                         <ButtonsWrapper marginTop={20}>
                             <XHorizontal>
@@ -235,7 +239,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
                         <Title marginBottom={20}>Please, enter activation code</Title>
                         {this.state.codeError !== '' && (<><XServiceMessage title={InitTexts.auth.codeInvalid} /><EmptyBlock /></>)}
                         <ButtonsWrapper>
-                            <XInput onChange={this.codeChanged} value={this.state.codeValue} placeholder={InitTexts.auth.codePlaceholder} />
+                            <XInput onChange={this.codeChanged} value={this.state.codeValue} placeholder={InitTexts.auth.codePlaceholder} onEnter={this.loginCodeStart} />
                         </ButtonsWrapper>
                         <ButtonsWrapper marginTop={20}>
                             <XHorizontal>
