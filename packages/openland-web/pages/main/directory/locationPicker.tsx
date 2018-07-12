@@ -7,23 +7,47 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import Glamorous from 'glamorous';
 import { SearchCondition } from './root.page';
 import { XMenuItem } from '../../../components/Incubator/XOverflow';
-import { XText } from 'openland-x/XText';
 
-const VerticalScrollable = Glamorous(XVertical)({
-    height: 200,
-    width: 200,
-    overflowY: 'scroll'
+const EntryScrollable = Glamorous(XVertical)({
+    width: 232,
+    height: 243,
+    overflowY: 'scroll',
+    margin: 0
+});
+
+const EntryTitle = Glamorous.div({
+    fontSize: 15,
+    fontWeight: 500,
+    letterSpacing: 0.1,
+    color: '#334562',
+    padding: '18px 18px 11px',
+    margin: 0
+});
+
+const EntryWrapper = Glamorous(XVertical)({
+    borderRight: '1px solid rgba(220, 222, 228, 0.5)',
+    margin: 0,
+
+    '&:last-child': {
+        borderRight: 'none'
+    }
+});
+
+const EntryItem = Glamorous(XMenuItem)({
+    marginTop: 0,
+    marginBottom: 0,
+    color: 'rgba(51, 69, 98, 0.8)'
 });
 
 class EntriesComponent extends React.Component<{ title: string, options: string[], query: string, onPick: (q: SearchCondition) => void }> {
     render() {
         return (
-            <XVertical>
-                <XText textStyle="h500">{this.props.title}</XText>
-                <VerticalScrollable>
-                    {this.props.options.filter(e => e.split(' ').filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0).map((e, i) => <XMenuItem onClick={() => this.props.onPick({ type: 'location', value: e, label: e })} key={e + '_' + i}>{e}</XMenuItem>)}
-                </VerticalScrollable>
-            </XVertical>
+            <EntryWrapper>
+                <EntryTitle>{this.props.title}</EntryTitle>
+                <EntryScrollable>
+                    {this.props.options.filter(e => e.split(' ').filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0).map((e, i) => <EntryItem onClick={() => this.props.onPick({ type: 'location', value: e, label: e })} key={e + '_' + i}>{e}</EntryItem>)}
+                </EntryScrollable>
+            </EntryWrapper>
         );
     }
 }
@@ -223,6 +247,31 @@ export const Cities = [
     'Spokane',
 ];
 
+const PickerButton = Glamorous(XButton)<{ activated?: boolean }>((props) => ({
+    backgroundColor: (props.activated) ? 'white' : 'none',
+    borderColor: (props.activated) ? 'rgba(220, 222, 228, 0.5)' : 'none',
+}));
+
+const PickerWrapper = Glamorous(XVertical)({
+    margin: -10
+});
+
+const PickerSearch = Glamorous.div({
+    padding: '18px 18px 0'
+});
+
+const PickerTitle = Glamorous.div({
+    fontSize: 15,
+    fontWeight: 500,
+    letterSpacing: 0.1,
+    color: '#334562',
+    padding: '7px 18px 3px'
+});
+
+const PickerEntries = Glamorous(XHorizontal)({
+    borderTop: '1px solid rgba(220, 222, 228, 0.5)'
+});
+
 export class LocationPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { query: string, popper: boolean }> {
     constructor(props: any) {
         super(props);
@@ -254,24 +303,29 @@ export class LocationPicker extends React.Component<{ onPick: (q: SearchConditio
 
     render() {
         let content = (
-            <XVertical>
-                <XInput value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
-                <XHorizontal>
+            <PickerWrapper>
+                <PickerSearch>
+                    <XInput value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
+                </PickerSearch>
+                <PickerTitle>Top locations</PickerTitle>
+                <PickerEntries>
                     <EntriesComponent title="Cities" query={this.state.query} options={Cities} onPick={this.onPick} />
                     <EntriesComponent title="Metropolitan areas" query={this.state.query} options={MetropolitanAreas} onPick={this.onPick} />
                     <EntriesComponent title="States" query={this.state.query} options={States} onPick={this.onPick} />
                     <EntriesComponent title="Multi-state regions" query={this.state.query} options={MultiStateRegions} onPick={this.onPick} />
-                </XHorizontal>
-            </XVertical>
+                </PickerEntries>
+            </PickerWrapper>
         );
+
         return (
             <XPopper
                 placement="bottom-start"
                 show={this.state.popper}
                 content={content}
                 onClickOutside={this.close}
+                arrow={null}
             >
-                <XButton text="Location" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton activated={this.state.popper} text="Location" style="flat" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }
