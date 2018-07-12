@@ -28,7 +28,8 @@ export class Notifications {
         console.warn('notification');
         if (this.isGranted) {
             let notification = new Notification(title, {
-                body: body
+                body: body,
+                icon: image
             });
             notification.onclick = function () {
                 Router.replaceRoute(path);

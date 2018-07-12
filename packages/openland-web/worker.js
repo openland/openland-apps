@@ -37,7 +37,7 @@ self.addEventListener('push', function (event) {
     let contents = event.data.json();
     const promiseChain = self.registration.showNotification(contents.title, {
         body: contents.body,
-        image: 'https://app.openland.com/static/apple-icon-192.png'
+        icon: contents.picture
     });
     event.waitUntil(promiseChain);
 });
