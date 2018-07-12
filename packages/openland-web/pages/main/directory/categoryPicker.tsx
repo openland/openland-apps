@@ -217,6 +217,7 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
                         showOnHover={true}
                         placement="right-start"
                         arrow={null}
+                        marginTop={-7}
                         content={
                             <PickerWrapper separator="none">
                                 {group.options.map(category => <XMenuItem ref={this.onInner} key={category.value} onClick={(e) => this.onClick(category)}>{category.label}</XMenuItem>)}
