@@ -13,8 +13,7 @@ const EntryScrollable = Glamorous(XVertical)({
     width: 232,
     maxHeight: 243,
     overflowY: 'scroll',
-    margin: 0,
-    paddingBottom: 10
+    paddingBottom: 10,
 });
 
 const EntryTitle = Glamorous.div({
@@ -23,29 +22,26 @@ const EntryTitle = Glamorous.div({
     letterSpacing: 0.1,
     color: '#334562',
     padding: '18px 18px 11px',
-    margin: 0
 });
 
 const EntryWrapper = Glamorous(XVertical)({
     borderRight: '1px solid rgba(220, 222, 228, 0.5)',
-    margin: 0,
 
     '&:last-child': {
-        borderRight: 'none'
-    }
+        borderRight: 'none',
+    },
 });
 
 const EntryItem = Glamorous(XMenuItem)({
-    margin: '0!important',
-    color: 'rgba(51, 69, 98, 0.8)'
+    color: 'rgba(51, 69, 98, 0.8)',
 });
 
 class EntriesComponent extends React.Component<{ title: string, options: string[], query: string, onPick: (q: SearchCondition) => void }> {
     render() {
         return (
-            <EntryWrapper>
+            <EntryWrapper separator="none">
                 <EntryTitle>{this.props.title}</EntryTitle>
-                <EntryScrollable>
+                <EntryScrollable separator="none">
                     {this.props.options.filter(e => e.split(' ').filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0).map((e, i) => <EntryItem onClick={() => this.props.onPick({ type: 'location', value: e, label: e })} key={e + '_' + i}>{e}</EntryItem>)}
                 </EntryScrollable>
             </EntryWrapper>
@@ -319,7 +315,7 @@ export class LocationPicker extends React.Component<{ onPick: (q: SearchConditio
                     <PickerSearchIcon icon="search" />
                 </PickerSearch>
                 <PickerTitle>Top locations</PickerTitle>
-                <PickerEntries>
+                <PickerEntries separator="none">
                     <EntriesComponent title="Cities" query={this.state.query} options={Cities} onPick={this.onPick} />
                     <EntriesComponent title="Metropolitan areas" query={this.state.query} options={MetropolitanAreas} onPick={this.onPick} />
                     <EntriesComponent title="States" query={this.state.query} options={States} onPick={this.onPick} />

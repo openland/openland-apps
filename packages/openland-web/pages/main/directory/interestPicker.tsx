@@ -21,8 +21,7 @@ const EntryScrollable = Glamorous(XVertical)({
     width: 260,
     maxHeight: 243,
     overflowY: 'scroll',
-    margin: 0,
-    paddingBottom: 10
+    paddingBottom: 10,
 });
 
 const EntryTitle = Glamorous.div({
@@ -31,29 +30,26 @@ const EntryTitle = Glamorous.div({
     letterSpacing: 0.1,
     color: '#334562',
     padding: '19px 18px 9px',
-    margin: 0
 });
 
 const EntryWrapper = Glamorous(XVertical)({
     borderRight: '1px solid rgba(220, 222, 228, 0.5)',
-    margin: 0,
 
     '&:last-child': {
-        borderRight: 'none'
-    }
+        borderRight: 'none',
+    },
 });
 
 const EntryItem = Glamorous(XMenuItem)({
-    margin: '0!important',
     color: 'rgba(51, 69, 98, 0.8)'
 });
 
 class EntriesComponent extends React.Component<{ title: string, options: { value: string, label: string }[], query: string, onPick: (q: SearchCondition) => void }> {
     render() {
         return (
-            <EntryWrapper>
+            <EntryWrapper separator="none">
                 <EntryTitle>{this.props.title}</EntryTitle>
-                <EntryScrollable>
+                <EntryScrollable separator="none">
                     {this.props.options.filter(e => e.value.split(' ').filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0).map((e, i) => <EntryItem onClick={() => this.props.onPick({ type: 'interest', value: e.value, label: e.label })} key={e + '_' + i}>{e.label}</EntryItem>)}
                 </EntryScrollable>
             </EntryWrapper>
@@ -124,7 +120,7 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
                     <XInput placeholder="Enter an interest" value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
                     <PickerSearchIcon icon="search" />
                 </PickerSearch>
-                <PickerEntries>
+                <PickerEntries separator="none">
                     <EntriesComponent title="Top interests" query={this.state.query} options={CATALOG} onPick={this.onPick} />
                 </PickerEntries>
             </PickerWrapper>

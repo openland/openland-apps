@@ -4,7 +4,7 @@ import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchCondition } from './root.page';
 import { XMenuItem } from '../../../components/Incubator/XOverflow';
-import glamorous from 'glamorous';
+import Glamorous from 'glamorous';
 
 export const OrgCategoties = [
     { label: 'Gas station', value: 'Gas station' },
@@ -148,10 +148,20 @@ const CATALOG = [
 
     },
 ];
-const VerticalScrollable = glamorous(XVertical)({
+
+const PickerWrapper = Glamorous(XVertical)({
+    width: 260,
     maxHeight: '40vh',
     overflowY: 'scroll',
+    margin: -10,
+    padding: '10px 0',
 });
+
+const PickerButton = Glamorous(XButton)<{ activated?: boolean }>((props) => ({
+    backgroundColor: (props.activated) ? 'white' : 'none',
+    borderColor: (props.activated) ? 'rgba(220, 222, 228, 0.5)' : 'none',
+}));
+
 export class CategoryPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { popper: boolean }> {
     inner = 0;
     constructor(props: any) {
@@ -184,22 +194,23 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
 
     render() {
         let content = (
-            <VerticalScrollable >
+            <PickerWrapper separator="none">
                 {CATALOG.map(group => (
                     <XPopper
                         groupId="directory_catalog"
                         key={group.label}
                         showOnHover={true}
                         placement="right-start"
+                        arrow={null}
                         content={
-                            <VerticalScrollable >
+                            <PickerWrapper separator="none">
                                 {group.options.map(category => <XMenuItem ref={this.onInner} key={category.value} onClick={(e) => this.onClick(category)}>{category.label}</XMenuItem>)}
-                            </VerticalScrollable>}
+                            </PickerWrapper>}
                     >
                         <XMenuItem>{group.label}</XMenuItem>
                     </XPopper>
                 ))}
-            </VerticalScrollable>
+            </PickerWrapper>
         );
         return (
             <XPopper
@@ -207,8 +218,9 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
                 show={this.state.popper}
                 content={content}
                 onClickOutside={this.close}
+                arrow={null}
             >
-                <XButton text="Organization category" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton activated={this.state.popper} text="Organization category" style="flat" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }

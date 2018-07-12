@@ -335,7 +335,7 @@ const SearchInput = Glamorous.input({
 const SearchPickers = Glamorous(XHorizontal)({
     borderTop: '1px solid rgba(220, 222, 228, 0.45)',
     backgroundColor: '#f9fafb',
-    padding: '10px 14px 10px 10px'
+    padding: '10px 14px 10px 10px',
 });
 
 const LIVESEARCH = false;
@@ -359,6 +359,10 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
         );
     }
 }
+
+const ResetButton = Glamorous(XButton)({
+    backgroundColor: 'none'
+});
 
 class SearchComponent extends React.Component<{}, { searchText: string, conditions: SearchCondition[] }> {
     constructor(props: any) {
@@ -416,6 +420,10 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
         }
     }
 
+    searchButtonHandler = (e: any) => {
+        this.addCondition({ type: 'name', label: this.state.searchText, value: this.state.searchText });
+    }
+
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);
     }
@@ -438,17 +446,17 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                             placeholder={'Enter a keyword'}
                         />
 
-                        <XButton text="Search" />
+                        <XButton text="Search" onClick={this.searchButtonHandler} />
                     </SearchForm>
                     {!LIVESEARCH && (
                         <>
                             <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
-                            <SearchPickers>
+                            <SearchPickers separator="none">
                                 <LocationPicker onPick={this.addCondition} />
                                 <CategoryPicker onPick={this.addCondition} />
                                 <InterestPicker onPick={this.addCondition} />
                                 <XVertical alignItems="flex-end" flexGrow={1}>
-                                    <XButton text="Reset" style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
+                                    <ResetButton text="Reset" style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
                                 </XVertical>
                             </SearchPickers>
                         </>
