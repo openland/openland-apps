@@ -14,6 +14,7 @@ export class SequenceWatcher {
     private query: any;
     private variables: any;
     private eventHandler: (event: any) => void | Promise<undefined> | number | Promise<number>;
+    private seqHandler?: ((seq: number) => void) | null = null;
     private isHandling = false;
     private name: string;
 
@@ -23,7 +24,8 @@ export class SequenceWatcher {
         initialSeq: number | null,
         variables: any,
         handler: (event: any) => void | Promise<undefined> | number | Promise<number>,
-        client: ApolloClient<{}>
+        client: ApolloClient<{}>,
+        seqHandler?: (seq: number) => void
     ) {
         this.name = name;
         this.query = query;
@@ -32,8 +34,12 @@ export class SequenceWatcher {
         this.client = client;
         this.eventHandler = handler;
         this.started = true;
+        this.seqHandler = seqHandler;
         this.startSubsctiption();
         this.connectionStatusUnsubscribe = ConnectionStatus.subscribe(this.handleConnectionChanged);
+        if (this.seqHandler && this.currentSeq) {
+            this.seqHandler(this.currentSeq);
+        }
     }
 
     destroy() {
@@ -188,8 +194,14 @@ export class SequenceWatcher {
                             this.startSubsctiption();
                         }
                         this.currentSeq = res;
+                        if (this.seqHandler) {
+                            this.seqHandler(this.currentSeq);
+                        }
                     } else {
                         this.currentSeq = seq;
+                        if (this.seqHandler) {
+                            this.seqHandler(this.currentSeq);
+                        }
                     }
                 } catch (e) {
                     console.warn('[' + this.name + ']: Error');

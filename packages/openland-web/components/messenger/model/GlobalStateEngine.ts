@@ -52,12 +52,21 @@ let GLOBAL_SUBSCRIPTION = gql`
     ${MessageFull}
 `;
 
+const MARK_SEQ_READ = gql`
+    mutation MarkSequenceRead($seq: Int!) {
+        alphaGlobalRead(toSeq: $seq)
+    }
+`;
+
 export class GlobalStateEngine {
     readonly engine: MessengerEngine;
     private watcher: SequenceWatcher | null = null;
     private visibleConversations = new Set<string>();
     private counterHandler: ((counter: number) => void) | null = null;
     private messageHandler: ((message: any) => void) | null = null;
+    private isVisible = true;
+    private maxSeq = 0;
+    private lastReportedSeq = 0;
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
@@ -77,7 +86,7 @@ export class GlobalStateEngine {
         for (let c of (res as any).chats.conversations) {
             this.handleChatAdded(c);
         }
-        this.watcher = new SequenceWatcher('global', GLOBAL_SUBSCRIPTION, seq, {}, this.handleGlobalEvent, this.engine.client);
+        this.watcher = new SequenceWatcher('global', GLOBAL_SUBSCRIPTION, seq, {}, this.handleGlobalEvent, this.engine.client, this.handleSeqUpdated);
     }
 
     resolvePrivateConversation = async (uid: string) => {
@@ -121,6 +130,35 @@ export class GlobalStateEngine {
         if (this.watcher) {
             this.watcher.destroy();
             this.watcher = null;
+        }
+    }
+
+    onVisible = (isVisible: boolean) => {
+        this.isVisible = isVisible;
+        if (isVisible) {
+            this.reportSeqIfNeeded();
+        }
+    }
+
+    private handleSeqUpdated = (seq: number) => {
+        this.maxSeq = Math.max(seq, this.maxSeq);
+        if (this.isVisible) {
+            this.reportSeqIfNeeded();
+        }
+    }
+
+    private reportSeqIfNeeded = () => {
+        if (this.lastReportedSeq < this.maxSeq) {
+            this.lastReportedSeq = this.maxSeq;
+            let seq = this.maxSeq;
+            (async () => {
+                backoff(() => this.engine.client.mutate({
+                    mutation: MARK_SEQ_READ,
+                    variables: {
+                        seq
+                    }
+                }));
+            })();
         }
     }
 
