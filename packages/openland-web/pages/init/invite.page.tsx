@@ -8,14 +8,28 @@ import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../../components/AuthRouter';
-import { XButton } from 'openland-x/XButton';
-import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
 import { withInviteActivation } from '../../api/withInviteActivation';
+import { XLoader } from 'openland-x/XLoader';
 
 const InfoText = Glamorous.div({
     marginBottom: 15
 });
+
+class AcceptInviteComponent extends React.Component<{ mutation: any }> {
+
+    componentDidMount() {
+        this.accept();
+    }
+
+    accept = async () => {
+        await this.props.mutation({});
+        window.location.href = '/';
+    }
+    render() {
+        return (<XLoader loading={true} />);
+    }
+}
 
 export default withAppBase('Invite', withInviteActivation((props) => {
     return (
@@ -24,16 +38,7 @@ export default withAppBase('Invite', withInviteActivation((props) => {
             <XTrack event="Invite">
                 <MessagePage>
                     {props.data.invite && (
-                        <MessagePageContent title={InitTexts.invite.title + props.data.invite.title}>
-                            <XButton
-                                text={InitTexts.invite.joinButton}
-                                action={async () => {
-                                    await props.activate({});
-                                    switchOrganization(props.data.invite!!.orgId);
-                                }}
-                                style="primary"
-                            />
-                        </MessagePageContent>
+                        <AcceptInviteComponent mutation={props.activate} />
                     )}
                     {!props.data.invite && (
                         <MessagePageContent title="Invite">

@@ -80,6 +80,19 @@ export const AuthRouter = withUserInfo((props) => {
         handled = true;
     }
 
+    // Redirect to activate organization
+    if (!handled && !props.isCompleted && redirectPath.startsWith('/invite/')) {
+        handled = true;
+        if (!props.router.path.startsWith('/invite/')) {
+            return <XPageRedirect path={redirectPath} />;
+        }
+    }
+
+    // Bypass Next steps for invite
+    if (!handled && !props.isCompleted && props.router.path.startsWith('/invite/')) {
+        handled = true;
+    }
+
     // Bypass create organization
     if (!handled && props.router.path.startsWith('/createOrganization')) {
         handled = true;
@@ -107,18 +120,6 @@ export const AuthRouter = withUserInfo((props) => {
         }
     }
 
-    // Redirect to activate organization
-    if (!handled && !props.isCompleted && redirectPath.startsWith('/invite/')) {
-        handled = true;
-        if (!props.router.path.startsWith('/invite/')) {
-            return <XPageRedirect path={redirectPath} />;
-        }
-    }
-
-    // Bypass Next steps for invite
-    if (!handled && !props.isCompleted && props.router.path.startsWith('/invite/')) {
-        handled = true;
-    }
 
     // Redirect to generic 'need more info' page if signup is not completed
     if (!handled && !props.isCompleted) {

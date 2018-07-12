@@ -2450,7 +2450,7 @@ export interface OrganizationActivateByInviteMutationVariables {
 };
 
 export interface OrganizationActivateByInviteMutation {
-  alphaOrganizationActivateByInvite: string,
+  alphaJoinGlobalInvite: string,
 };
 
 export interface BlocksConnectionQueryVariables {

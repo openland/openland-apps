@@ -115,6 +115,8 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                                 />
                             )} */}
 
+                            <div />
+
                             <XFormSubmit style="primary" text={InitTexts.create_organization.continue} size="medium" alignSelf="flex-end" />
                         </Footer>
                     </XVertical>
