@@ -21,7 +21,7 @@ const EntryScrollable = Glamorous(XVertical)({
     width: 260,
     maxHeight: 243,
     overflowY: 'scroll',
-    paddingBottom: 10,
+    paddingBottom: 7,
 });
 
 const EntryTitle = Glamorous.div({

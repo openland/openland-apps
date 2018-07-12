@@ -5,6 +5,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchCondition } from './root.page';
 import { XMenuItem } from '../../../components/Incubator/XOverflow';
 import Glamorous from 'glamorous';
+import { XIcon } from 'openland-x/XIcon';
 
 export const OrgCategoties = [
     { label: 'Gas station', value: 'Gas station' },
@@ -154,13 +155,27 @@ const PickerWrapper = Glamorous(XVertical)({
     maxHeight: '40vh',
     overflowY: 'scroll',
     margin: -10,
-    padding: '10px 0',
+    padding: '7px 0',
 });
 
 const PickerButton = Glamorous(XButton)<{ activated?: boolean }>((props) => ({
     backgroundColor: (props.activated) ? 'white' : 'none',
     borderColor: (props.activated) ? 'rgba(220, 222, 228, 0.5)' : 'none',
 }));
+
+const PickerItem = Glamorous(XMenuItem)({
+    position: 'relative',
+    paddingRight: 30,
+});
+
+const PickerItemIcon = Glamorous(XIcon)({
+    position: 'absolute',
+    top: 0,
+    right: 9,
+    fontSize: 20,
+    lineHeight: '42px',
+    color: '#c1c7cf',
+});
 
 export class CategoryPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { popper: boolean }> {
     inner = 0;
@@ -207,7 +222,10 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
                                 {group.options.map(category => <XMenuItem ref={this.onInner} key={category.value} onClick={(e) => this.onClick(category)}>{category.label}</XMenuItem>)}
                             </PickerWrapper>}
                     >
-                        <XMenuItem>{group.label}</XMenuItem>
+                        <PickerItem>
+                            {group.label}
+                            <PickerItemIcon icon="chevron_right" />
+                        </PickerItem>
                     </XPopper>
                 ))}
             </PickerWrapper>
