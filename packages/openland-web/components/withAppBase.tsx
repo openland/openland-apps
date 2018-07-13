@@ -9,7 +9,7 @@ import { OnlineReporter } from './messenger/OnlineReporter';
 
 export function withAppBase(name: string, WrappedComponent: React.ComponentType<{}>) {
     return withData(name, withAccountQuery(withQueryLoader((props) => {
-        let hasMessenger = props.data.permissions.roles.indexOf('feature-messaging') >= 0 && props.data.me;
+        let hasMessenger = !!props.data.me;
         return (
             <>
                 {props.data.me && <OnlineReporter client={(props as any).client} />}

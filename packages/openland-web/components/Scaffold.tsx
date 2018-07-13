@@ -30,7 +30,6 @@ import { InvitesToOrganizationMoadal, InvitesGlobalMoadal } from '../pages/main/
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { TextInvites } from 'openland-text/TextInvites';
 import DirecoryIcon from '../pages/main/directory/icons/directory.1.svg';
-import { withMyOrganizations } from '../api/withMyOrganizations';
 import { Query } from '../../../node_modules/react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 
@@ -777,9 +776,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 </XPopper>
                             </XWithRole>
 
-                            <XWithRole role={['feature-messaging']}>
-                                <MessengerButton />
-                            </XWithRole>
+                            <MessengerButton />
 
                             <XPopper
                                 placement="right"
