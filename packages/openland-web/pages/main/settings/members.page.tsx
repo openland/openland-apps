@@ -273,32 +273,13 @@ const OrgMembers = withOrganizationMembers((props) => {
     );
 });
 
-export default withApp('Members', 'viewer', withInvites(withQueryLoader(withUserInfo((props) => {
+export default withApp('Members', 'viewer', withQueryLoader(withUserInfo((props) => {
     return (
         <Navigation title="Members">
             <XHeader text="Members" />
             <Content>
-                {/* <XHorizontal alignItems="center" justifyContent="space-between">
-                    <XTitle marginTop={0} marginBottom={0}>Members</XTitle>
-                </XHorizontal> */}
                 {props.organization && <OrgMembers variables={{ orgId: props.organization.id }} {...{ orgName: props.organization.name }} />}
-
-                <XHorizontal alignItems="center" justifyContent="space-between">
-                    <XTitle marginTop={0} marginBottom={0}>Invites</XTitle>
-                    <CreateInviteButton />
-                </XHorizontal>
-                <Table>
-                    <XTable.Body>
-                        {props.data.invites && props.data.invites.map((v) => (
-                            <XTable.Row>
-                                <XTable.Cell>{props.router.protocol + '://' + props.router.hostName + '/join/' + v.key}</XTable.Cell>
-                                <XTable.Cell><CancelInviteButton variables={{ id: v.id }} /></XTable.Cell>
-                            </XTable.Row>
-                        ))}
-                    </XTable.Body>
-                </Table>
             </Content>
-
         </Navigation>
     );
-}))));
+})));
