@@ -81,6 +81,7 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
         group.options.map((category: any) => {
             _values.push(category.value);
         });
+        _values.push(group.value);
 
         return _values;
     }

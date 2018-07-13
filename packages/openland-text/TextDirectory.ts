@@ -304,6 +304,7 @@ export const TextDirectoryData = {
         catalog: [
             {
                 label: 'Automotive',
+                value: 'Automotive',
                 options: [
                     { label: 'Gas station', value: 'Gas station' },
                     { label: 'Parking', value: 'Parking' },
@@ -312,6 +313,7 @@ export const TextDirectoryData = {
             },
             {
                 label: 'Retail',
+                value: 'Retail',
                 options: [
                     { label: 'Big box retail', value: 'Big box retail' },
                     { label: 'Medium retail', value: ' Medium retail' },
@@ -323,6 +325,7 @@ export const TextDirectoryData = {
             },
             {
                 label: 'Transportation',
+                value: 'Transportation',
                 options: [
                     { label: 'Railway', value: 'Railway' },
                     { label: 'Subway', value: 'Subway' },
@@ -334,12 +337,14 @@ export const TextDirectoryData = {
             },
             {
                 label: 'Real estate developer',
+                value: 'Real estate developer',
                 options: [
                     { label: 'Real estate developer', value: 'Real estate developer' },
                 ]
             },
             {
                 label: 'Healthcare',
+                value: 'Healthcare',
                 options: [
                     { label: 'Health system', value: 'Health system' },
                     { label: 'Hospital', value: 'Hospital' },
@@ -347,6 +352,7 @@ export const TextDirectoryData = {
             },
             {
                 label: 'Education',
+                value: 'Education',
                 options: [
                     { label: 'School', value: 'School' },
                     { label: 'College', value: 'College' },
@@ -354,6 +360,7 @@ export const TextDirectoryData = {
             },
             {
                 label: 'Energy and utilities',
+                value: 'Energy and utilities',
                 options: [
                     { label: 'Coal plant', value: 'Coal plant' },
                     { label: 'Utility', value: 'Utility' },
@@ -361,6 +368,7 @@ export const TextDirectoryData = {
             },
             {
                 label: 'Finance',
+                value: 'Finance',
                 options: [
                     { label: 'REIT', value: 'REIT' },
                     { label: 'Bank', value: 'Bank' },
@@ -369,6 +377,7 @@ export const TextDirectoryData = {
             },
             {
                 label: 'Government',
+                value: 'Government',
                 options: [
                     { label: 'State government', value: 'State government' },
                     { label: 'County governmen', value: 'County governmen' },
@@ -381,6 +390,7 @@ export const TextDirectoryData = {
             },
             {
                 label: 'Military',
+                value: 'Military',
                 options: [
                     { label: 'Army', value: 'Army' },
                     { label: 'Navy', value: 'Navy' },
@@ -389,6 +399,7 @@ export const TextDirectoryData = {
             },
             {
                 label: 'Other',
+                value: 'Other',
                 options: [
                     { label: 'Warehouse', value: 'Warehouse' },
                     { label: 'Individuals', value: 'Individuals' },
