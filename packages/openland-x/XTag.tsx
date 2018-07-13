@@ -8,13 +8,13 @@ interface XTagProps extends XFlexStyles {
     text?: string;
     icon?: string;
     size?: 'large' | 'default';
-    color?: 'primary' | 'default';
+    color?: 'primary' | 'default' | 'gray';
     onIconClick?: () => void;
 }
 
 interface StyledXTagProps extends XFlexStyles {
     tagSize?: 'large' | 'default';
-    tagColor?: 'primary' | 'default';
+    tagColor?: 'primary' | 'default' | 'gray';
 }
 
 let iconsIndentation = styleResolver({
@@ -58,6 +58,25 @@ let colorStyles = styleResolver({
         backgroundColor: '#edf3fe',
         color: '#4285f4',
     },
+    'gray': {
+        backgroundColor: '#f3f3f5',
+        color: '#334562',
+    },
+});
+
+let crossColorStyles = styleResolver({
+    'primary': {
+        color: '#5641d1',
+        opacity: 0.4
+    },
+    'default': {
+        color: '#4285f4',
+        opacity: 0.4
+    },
+    'gray': {
+        color: '#334562',
+        opacity: 0.4
+    },
 });
 
 const XTagWrapper = Glamorous.div<StyledXTagProps>([
@@ -76,19 +95,22 @@ const XTagWrapper = Glamorous.div<StyledXTagProps>([
     (props) => colorStyles(props.tagColor)
 ]);
 
-const XTagDeleteWrapper = Glamorous.div({
-    cursor: 'pointer',
-    color: '#5641d1',
-    opacity: 0.4,
+const XTagDeleteWrapper = Glamorous.div<StyledXTagProps>([
+    (props) => ({
+        cursor: 'pointer',
+        color: '#5641d1',
+        opacity: 0.4,
 
-    '&:hover': {
-        opacity: 0.7,
-    },
+        '&:hover': {
+            opacity: 0.7,
+        },
 
-    '&:active': {
-        opacity: 1,
-    }
-});
+        '&:active': {
+            opacity: 1,
+        }
+    }),
+    (props) => crossColorStyles(props.tagColor)
+]);
 
 const XTagDeleteIcon = Glamorous(XIcon)<StyledXTagProps>([
     (props) => iconsIndentation(props.tagSize)
@@ -103,7 +125,10 @@ export class XTag extends React.Component<XTagProps> {
             >
                 {this.props.text}
                 {this.props.icon && (
-                    <XTagDeleteWrapper onClick={this.props.onIconClick}>
+                    <XTagDeleteWrapper
+                        onClick={this.props.onIconClick}
+                        tagColor={this.props.color}
+                    >
                         <XTagDeleteIcon
                             tagSize={this.props.size}
                             icon={this.props.icon}

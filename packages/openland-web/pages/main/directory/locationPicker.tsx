@@ -143,7 +143,7 @@ export class LocationPicker extends React.Component<{ onPick: (q: SearchConditio
                 onClickOutside={this.close}
                 arrow={null}
             >
-                <PickerButton activated={this.state.popper} text={TextDirectory.locationPicker} style="flat" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton iconOpacity={0.4} activated={this.state.popper} text={TextDirectory.locationPicker} style="flat" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }

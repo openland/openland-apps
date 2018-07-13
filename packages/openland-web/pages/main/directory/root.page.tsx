@@ -166,6 +166,7 @@ const OrganizationFollowBtn = withOrganizationFollow((props) => {
     return (
         <XMutation mutation={props.followOrganization} variables={{ organizationId: (props as any).organizationId, follow: !(props as any).followed }}>
             <XButton
+                iconOpacity={0.4}
                 style={(props as any).followed ? 'ghost' : 'default'}
                 text={(props as any).followed ? TextDirectory.buttonFollowing : TextDirectory.buttonFollow}
                 icon={(props as any).followed ? 'check' : undefined}
@@ -205,7 +206,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                 <OrganizationToolsWrapper>
                     {props.item.isMine && <XButton style="ghost" text={TextDirectory.labelYourOrganization} enabled={false} />}
                     {!props.item.isMine && <OrganizationFollowBtn followed={props.item.followed} organizationId={props.item.id} />}
-                    {!props.item.isMine && <XButton style="primary" path={'/mail/' + props.item.id} text={TextDirectory.labelSendMessage}/>}
+                    {!props.item.isMine && <XButton style="primary" path={'/mail/' + props.item.id} text={TextDirectory.labelSendMessage} />}
                     <XOverflow
                         placement="bottom-end"
                         content={(
@@ -233,6 +234,7 @@ const OrganizationCounter = Glamorous.div({
     letterSpacing: 0.6,
     color: 'rgba(31, 52, 73, 0.5)',
     padding: '20px 5px 20px 24px',
+    fontWeight: 500
 });
 
 const OrganizationCards = withExploreOrganizations((props) => {
@@ -247,7 +249,7 @@ const OrganizationCards = withExploreOrganizations((props) => {
                     }
                 </XCardStyled>
             )}
-          
+
             {/* {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && <XText>{TextDirectory.emptyResults}</XText>} */}
         </>
     );
@@ -336,7 +338,10 @@ const SearchForm = Glamorous(XHorizontal)({
 const SearchInput = Glamorous.input({
     height: 32,
     lineHeight: '34px',
-    flexGrow: 1
+    flexGrow: 1,
+    '::placeholder': {
+        fontWeight: 500
+    }
 });
 
 const SearchPickers = Glamorous(XHorizontal)({
@@ -355,7 +360,7 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
                         key={condition.type + '_' + condition.value}
                         text={condition.label}
                         size="large"
-                        color="primary"
+                        color={condition.type === 'name' ? 'gray' : 'primary'}
                         icon="close"
                         onIconClick={() => this.props.removeCallback(condition)}
                     />
@@ -452,7 +457,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                             placeholder={TextDirectory.searchInputPlaceholder}
                         />
 
-                        <XButton text={TextDirectory.buttonSearch} onClick={this.searchButtonHandler} />
+                        <XButton text={TextDirectory.buttonSearch} style={this.state.searchText ? 'primary' : 'default'} onClick={this.searchButtonHandler} />
                     </SearchForm>
                     {!LIVESEARCH && (
                         <>

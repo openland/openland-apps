@@ -15,6 +15,7 @@ export interface XButtonStyleProps extends XFlexStyles {
     text?: string;
     icon?: string;
     iconRight?: string;
+    iconOpacity?: number;
     size?: XButtonSize;
     style?: XButtonStyle;
     attach?: 'left' | 'right' | 'both';
@@ -425,12 +426,14 @@ let loaderStyles = styleResolver({
     }
 });
 
-const StyledIcon = Glamorous<XButtonProps>(XIcon)([
-    (props) => iconsIndentation(props.size, !!props.text)
+const StyledIcon = Glamorous<XButtonProps & { opacity?: number }>(XIcon)([
+    (props) => iconsIndentation(props.size, !!props.text),
+    (props) => ({ opacity: props.opacity }),
 ]);
 
-const StyledIconRight = Glamorous<XButtonProps>(XIcon)([
-    (props) => iconsIndentationRight(props.size, !!props.text)
+const StyledIconRight = Glamorous<XButtonProps & { opacity?: number }>(XIcon)([
+    (props) => iconsIndentationRight(props.size, !!props.text),
+    (props) => ({ opacity: props.opacity }),
 ]);
 
 const StyledButtonContentWrapper = Glamorous.div({
@@ -515,9 +518,9 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content">
                 <MainContent className="main-content">
-                    {props.icon && <StyledIcon text={props.text} icon={props.icon} className="icon" />}
+                    {props.icon && <StyledIcon text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon" />}
                     <ButtomText>{props.text}</ButtomText>
-                    {props.iconRight && <StyledIconRight text={props.text} icon={props.iconRight} className="icon" />}
+                    {props.iconRight && <StyledIconRight text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon" />}
                 </MainContent>
                 {props.loading && <XLoadingCircular className="loading-icon" color={loaderStyles(props.style).color!! as string} />}
             </StyledButtonContentWrapper>
