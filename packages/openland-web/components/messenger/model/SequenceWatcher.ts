@@ -37,7 +37,7 @@ export class SequenceWatcher {
         this.seqHandler = seqHandler;
         this.startSubsctiption();
         this.connectionStatusUnsubscribe = ConnectionStatus.subscribe(this.handleConnectionChanged);
-        if (this.seqHandler && this.currentSeq) {
+        if (this.seqHandler && this.currentSeq !== null) {
             this.seqHandler(this.currentSeq);
         }
     }
