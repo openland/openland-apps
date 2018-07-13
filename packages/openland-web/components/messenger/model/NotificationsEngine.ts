@@ -4,6 +4,8 @@ import { Badge } from './utils/Badge';
 import { PushEngine } from './PushEngine';
 import gql from '../../../../../node_modules/graphql-tag';
 import { backoff } from 'openland-x-utils/timer';
+import { SettingsQuery } from 'openland-api';
+import { SettingsQuery as SettingsQueryType } from 'openland-api/Types';
 
 const FetchPushSettings = gql`
     query FetchPushSettings {
@@ -71,6 +73,18 @@ export class NotificationsEngine {
     }
 
     handleIncomingMessage = (msg: any) => {
+        let settings = this.engine.client.readQuery<SettingsQueryType>({
+            query: SettingsQuery.document
+        })!!.settings;
+        
+        if (settings.desktopNotifications === 'NONE') {
+            return;
+        } else if (settings.desktopNotifications === 'DIRECT') {
+            if (msg.conversation.__typename !== 'PrivateConversation') {
+                return;
+            }
+        }
+
         let conversationId = msg.conversation.flexibleId;
         var audio = new Audio('/static/sounds/notification.mp3');
         audio.play();
