@@ -112,11 +112,11 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
         let content = (
             <PickerWrapper>
                 <PickerSearch>
-                    <XInput placeholder={TextDirectory.interestPicker} value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
+                    <XInput placeholder={TextDirectory.interestSearchPlaceholder} value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
                     <PickerSearchIcon icon="search" />
                 </PickerSearch>
                 <PickerEntries separator="none">
-                    <EntriesComponent title={TextDirectory.interestSearchPlaceholder} query={this.state.query} options={Interests} onPick={this.onPick} />
+                    <EntriesComponent title={TextDirectory.interestTop} query={this.state.query} options={Interests} onPick={this.onPick} />
                 </PickerEntries>
             </PickerWrapper>
         );
@@ -128,7 +128,7 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
                 onClickOutside={this.close}
                 arrow={null}
             >
-                <PickerButton activated={this.state.popper} text={TextDirectory.interestTop} style="flat" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton activated={this.state.popper} text={TextDirectory.interestPicker} style="flat" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }

@@ -11,6 +11,7 @@ export const TextDirectory = {
     buttonReset: 'Reset',
 
     labelYourOrganization: 'Your organization',
+    labelSendMessage: 'Message',
 
     buttonViewProfile: 'View profile',
     buttonEdit: 'Edit',
@@ -24,6 +25,7 @@ export const TextDirectory = {
     emptyResults: 'Empty',
 
     locationPicker: 'Location',
+    locationsTitle: 'Top locations',
     locationSearchPlaceholder: 'Enter a location',
     locationCities: 'Cities',
     locationMetropolitanAreas: 'Metropolitan areas',
