@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { SettingsFull } from '../fragments/SettingsFragment';
 
 export const ProfileQuery = gql`
     query Profile {
@@ -70,4 +71,22 @@ export const ProfileCreateMutation = gql`
             location
         }
     }
+`;
+
+export const SettingsQuery = gql`
+    query Settings {
+        settings {
+            ...SettingsFull
+        }
+    }
+    ${SettingsFull}
+`;
+
+export const SettingsUpdateMutation = gql`
+    mutation SettingsUpdate($input: UpdateSettingsInput) {
+        updateSettings(settings: $input) {
+            ...SettingsFull
+        }
+    }
+    ${SettingsFull}
 `;

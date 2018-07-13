@@ -44,6 +44,8 @@ routes.add('/map/', '/main/explore/root');
 
 routes.add('/settings/profile', '/main/settings/profile');
 routes.add('/settings/profile/', '/main/settings/profile');
+routes.add('/settings/notifications', '/main/settings/notifications');
+routes.add('/settings/notifications/', '/main/settings/notifications');
 routes.add('/settings/members', '/main/settings/members');
 routes.add('/settings/members/', '/main/settings/members/');
 routes.add('/settings/organization', '/main/settings/organization');

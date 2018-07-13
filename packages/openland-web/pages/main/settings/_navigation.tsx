@@ -15,7 +15,8 @@ export const Navigation = (props: { title: string, children?: any }) => (
                     <XWithRole role={['super-admin', 'software-developer']}>
                         <Sidebar.Subitem path="/settings/members">Members</Sidebar.Subitem>
                     </XWithRole >
-                    <Sidebar.Item path="/settings/profile">User profile</Sidebar.Item>
+                    <Sidebar.Item path="/settings/profile">Your profile</Sidebar.Item>
+                    <Sidebar.Item path="/settings/notifications">Notifications</Sidebar.Item>
                 </Sidebar>
             </Scaffold.Menu>
             <Scaffold.Content padding={false} >

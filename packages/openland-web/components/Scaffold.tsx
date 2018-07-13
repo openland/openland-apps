@@ -253,7 +253,8 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                 <ProfileTitle>{this.props.name}</ProfileTitle>
                             </ProfileTitleContainer>
 
-                            <XMenuItem path="/settings/profile" autoClose={true}>{TextGlobal.editProfile}</XMenuItem>
+                            <XMenuItem path="/settings/profile" autoClose={true}>{TextGlobal.profileAndAccount}</XMenuItem>
+                            <XMenuItem path="/settings/notifications" autoClose={true}>{TextGlobal.settings}</XMenuItem>
                             {this.props.organizationId && (
                                 <>
                                     <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)' }} />

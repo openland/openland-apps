@@ -21,8 +21,8 @@ import { withQueryLoader } from '../../../components/withQueryLoader';
 
 export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) => {
     return (
-        <Navigation title="User profile">
-            <XHeader text="User profile" />
+        <Navigation title="Your profile">
+            <XHeader text="Your profile" />
             <XContent>
                 <XVertical alignSelf="stretch">
                     <XForm

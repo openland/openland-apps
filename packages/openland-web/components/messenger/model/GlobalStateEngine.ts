@@ -6,6 +6,8 @@ import { backoff } from 'openland-x-utils/timer';
 import { ChatListQuery, GlobalCounterQuery, ChatInfoQuery, ChatSearchGroupQuery } from 'openland-api';
 import { SequenceWatcher } from './SequenceWatcher';
 import { defaultDataIdFromObject, ID_KEY } from 'apollo-cache-inmemory';
+import { SettingsQuery } from 'openland-api/SettingsQuery';
+import { SettingsFull } from 'openland-api/fragments/SettingsFragment';
 
 let SHARED_CONVERSATION_COUNTER = gql`
     fragment SharedConversationCounter on SharedConversation {
@@ -58,6 +60,15 @@ const MARK_SEQ_READ = gql`
     }
 `;
 
+const SUBSCRIBE_SETTINGS = gql`
+    subscription SubscribeSettings {
+        watchSettings {
+            ...SettingsFull
+        }
+    }
+    ${SettingsFull}
+`;
+
 export class GlobalStateEngine {
     readonly engine: MessengerEngine;
     private watcher: SequenceWatcher | null = null;
@@ -76,6 +87,15 @@ export class GlobalStateEngine {
         this.counterHandler = counterHandler;
         this.messageHandler = messageHandler;
         console.info('[global] Loading initial state');
+
+        // Loading settings
+        await backoff(async () => {
+            return await this.engine.client.query({
+                query: SettingsQuery.document
+            });
+        });
+
+        // Loading initial chat state
         let res = (await backoff(async () => {
             return await this.engine.client.query({
                 query: ChatListQuery.document
@@ -87,6 +107,16 @@ export class GlobalStateEngine {
             this.handleChatAdded(c);
         }
         this.watcher = new SequenceWatcher('global', GLOBAL_SUBSCRIPTION, seq, {}, this.handleGlobalEvent, this.engine.client, this.handleSeqUpdated);
+
+        // Subscribe for settings update
+        let settingsSubscription = this.engine.client.subscribe({
+            query: SUBSCRIBE_SETTINGS
+        });
+        settingsSubscription.subscribe({
+            next: (event) => {
+                console.info('New settings received');
+            }
+        });
     }
 
     resolvePrivateConversation = async (uid: string) => {

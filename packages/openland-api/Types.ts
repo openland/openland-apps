@@ -298,6 +298,25 @@ export interface CreateProfileInput {
   location?: string | null,
 };
 
+export enum EmailFrequency {
+  NEVER = "NEVER",
+  MIN_15 = "MIN_15",
+  HOUR_1 = "HOUR_1",
+}
+
+
+export enum NotificationMessages {
+  ALL = "ALL",
+  DIRECT = "DIRECT",
+  NONE = "NONE",
+}
+
+
+export interface UpdateSettingsInput {
+  emailFrequency?: EmailFrequency | null,
+  desktopNotifications?: NotificationMessages | null,
+};
+
 export enum OpportunitySort {
   DATE_ADDED_ASC = "DATE_ADDED_ASC",
   DATE_ADDED_DESC = "DATE_ADDED_DESC",
@@ -3474,6 +3493,29 @@ export interface ProfileCreateMutation {
     website: string | null,
     about: string | null,
     location: string | null,
+  },
+};
+
+export interface SettingsQuery {
+  settings:  {
+    __typename: "Settings",
+    id: string,
+    primaryEmail: string,
+    emailFrequency: EmailFrequency,
+    desktopNotifications: NotificationMessages,
+  },
+};
+
+export interface SettingsUpdateMutationVariables {
+  input?: UpdateSettingsInput | null,
+};
+
+export interface SettingsUpdateMutation {
+  updateSettings:  {
+    __typename: "Settings",
+    id: string,
+    emailFrequency: EmailFrequency,
+    desktopNotifications: NotificationMessages,
   },
 };
 
