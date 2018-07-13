@@ -218,7 +218,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
             let host = window.location.hostname.split('.').reverse();
             Cookie.defaults.domain = (host[1] ? host[1] + '.' : '') + host[0];
             Cookie.defaults.path = '/';
-            Cookie.set('x-openland-user-photo', this.props.picture || '', {path: '/'});
+            Cookie.set('x-openland-user-photo', this.props.picture || '', { path: '/' });
             Cookie.defaults.domain = keepDomain;
             Cookie.defaults.path = keepPath;
         }
@@ -257,7 +257,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                             <XMenuItem path="/settings/notifications" autoClose={true}>{TextGlobal.settings}</XMenuItem>
                             {this.props.organizationId && (
                                 <>
-                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)' }} />
+                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginTop: 8 }} />
 
                                     <OrganizationTitleContainer path={'/o/' + this.props.organizationId} autoClose={true}>
                                         <XAvatar path={'/o/' + this.props.organizationId} cloudImageUuid={this.props.logo || undefined} style="organization" />
@@ -266,14 +266,17 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                             <ProfileSubTitle>{TextGlobal.viewProfile}</ProfileSubTitle>
                                         </XVertical>
                                     </OrganizationTitleContainer>
-                                    <XMenuItem path="/settings/organization" autoClose={true}>{TextGlobal.editProfile}</XMenuItem>
+                                    <XMenuItem path="/settings/organization" autoClose={true}>{TextGlobal.manage}</XMenuItem>
                                     <XWithRole role={['super-admin', 'software-developer']}>
                                         <XMenuItem query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextInvites.inviteButton}</XMenuItem>
-                                        <XMenuItem query={{ field: 'invite_global', value: 'true' }} autoClose={true}>{TextInvites.inviteGlobalButton}</XMenuItem>
                                     </XWithRole>
-                                    <XMenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>
                                 </>
                             )}
+                            <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginTop: 8, marginBottom: 8 }} />
+                            <XWithRole role={['super-admin', 'software-developer']}>
+                                <XMenuItem query={{ field: 'invite_global', value: 'true' }} autoClose={true}>{TextInvites.inviteGlobalButton}</XMenuItem>
+                            </XWithRole>
+                            <XMenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>
                             <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
                         </XVertical>
                     </XModalContext.Provider>

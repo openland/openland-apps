@@ -4,6 +4,7 @@ export const TextGlobal = {
     profileAndAccount: 'Profile & Account',
     notifications: 'Notifications',
     editProfile: 'Edit profile',
+    manage: 'Manage',
     invite: 'Invite colleagues',
     inviteGlobal: 'Invite other organization',
     addOrganization: 'New organization',
