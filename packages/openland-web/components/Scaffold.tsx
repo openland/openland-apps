@@ -30,6 +30,9 @@ import { InvitesToOrganizationMoadal, InvitesGlobalMoadal } from '../pages/main/
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { TextInvites } from 'openland-text/TextInvites';
 import DirecoryIcon from '../pages/main/directory/icons/directory.1.svg';
+import { withMyOrganizations } from '../api/withMyOrganizations';
+import { Query } from '../../../node_modules/react-apollo';
+import { MyOrganizationsQuery } from 'openland-api';
 
 //
 // Root
@@ -205,8 +208,8 @@ const OrganizationTitleContainer = makeNavigable((props) => {
     return (<a href={props.href} onClick={props.onClick}><ProfileTitleContainer separator="none" >{props.children}</ProfileTitleContainer></a>);
 });
 
-class UserPopper extends React.Component<{ picture: string | null, name?: string, logo?: string | null, organizationName?: string, organizationId?: string }, { show: boolean }> {
-    constructor(props: { picture: string | null, name?: string }) {
+class UserPopper extends React.Component<{ picture: string | null, name?: string, logo?: string | null, organizationName?: string, organizationId?: string, hasMultipleOrganizations: boolean }, { show: boolean }> {
+    constructor(props: { picture: string | null, name?: string, hasMultipleOrganizations: boolean }) {
         super(props);
         this.state = { show: false };
     }
@@ -276,7 +279,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                             <XWithRole role={['super-admin', 'software-developer']}>
                                 <XMenuItem query={{ field: 'invite_global', value: 'true' }} autoClose={true}>{TextInvites.inviteGlobalButton}</XMenuItem>
                             </XWithRole>
-                            <XMenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>
+                            {this.props.hasMultipleOrganizations && <XMenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>}
                             <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
                         </XVertical>
                     </XModalContext.Provider>
@@ -290,13 +293,18 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
 
 let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
     <XVertical>
-        <UserPopper
-            picture={props.user!!.picture}
-            name={props.user!!.name}
-            logo={props.organization ? props.organization.photo : undefined}
-            organizationName={props.organization ? props.organization.name : undefined}
-            organizationId={props.organization ? props.organization.id : undefined}
-        />
+        <Query query={MyOrganizationsQuery.document}>
+            {(data) =>
+                <UserPopper
+                    picture={props.user!!.picture}
+                    name={props.user!!.name}
+                    logo={props.organization ? props.organization.photo : undefined}
+                    organizationName={props.organization ? props.organization.name : undefined}
+                    organizationId={props.organization ? props.organization.id : undefined}
+                    hasMultipleOrganizations={data.data && data.data.myOrganizations.length > 0}
+                />
+            }
+        </Query>
         <InvitesToOrganizationMoadal targetQuery="invite" target={null} />
         <InvitesGlobalMoadal targetQuery="invite_global" target={null} />
 
