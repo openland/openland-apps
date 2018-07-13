@@ -1,6 +1,20 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export enum EmailFrequency {
+  NEVER = "NEVER",
+  MIN_15 = "MIN_15",
+  HOUR_1 = "HOUR_1",
+}
+
+
+export enum NotificationMessages {
+  ALL = "ALL",
+  DIRECT = "DIRECT",
+  NONE = "NONE",
+}
+
+
 export interface CreateOrganizationInput {
   name: string,
   website?: string | null,
@@ -297,20 +311,6 @@ export interface CreateProfileInput {
   about?: string | null,
   location?: string | null,
 };
-
-export enum EmailFrequency {
-  NEVER = "NEVER",
-  MIN_15 = "MIN_15",
-  HOUR_1 = "HOUR_1",
-}
-
-
-export enum NotificationMessages {
-  ALL = "ALL",
-  DIRECT = "DIRECT",
-  NONE = "NONE",
-}
-
 
 export interface UpdateSettingsInput {
   emailFrequency?: EmailFrequency | null,
@@ -2233,7 +2233,7 @@ export interface ExploreOrganizationsQuery {
         id: string,
         name: string,
         photo: string | null,
-        location: string | null,
+        locations: Array< string > | null,
         isMine: boolean,
         organizationType: Array< string > | null,
         interests: Array< string > | null,
@@ -3514,6 +3514,7 @@ export interface SettingsUpdateMutation {
   updateSettings:  {
     __typename: "Settings",
     id: string,
+    primaryEmail: string,
     emailFrequency: EmailFrequency,
     desktopNotifications: NotificationMessages,
   },
@@ -4926,7 +4927,7 @@ export interface OrganizationSearchFragment {
   id: string,
   name: string,
   photo: string | null,
-  location: string | null,
+  locations: Array< string > | null,
   isMine: boolean,
   organizationType: Array< string > | null,
   interests: Array< string > | null,
@@ -4960,6 +4961,14 @@ export interface SessionStateFullFragment {
   isAccountPicked: boolean,
   isCompleted: boolean,
   isBlocked: boolean,
+};
+
+export interface SettingsFullFragment {
+  __typename: "Settings",
+  id: string,
+  primaryEmail: string,
+  emailFrequency: EmailFrequency,
+  desktopNotifications: NotificationMessages,
 };
 
 export interface UserShortFragment {

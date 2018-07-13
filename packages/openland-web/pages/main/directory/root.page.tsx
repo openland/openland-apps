@@ -83,7 +83,7 @@ interface OrganizationCardProps {
         id: string,
         name: string,
         photo: string | null,
-        location: string | null,
+        locations: string[] | null,
         interests: string[] | null,
         organizationType: string[] | null,
         isMine: boolean,
@@ -191,7 +191,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                 <OrganizationInfoWrapper>
                     <OrganizationTitleWrapper>
                         <OrganizationTitle path={'/o/' + props.item.id}>{props.item.name}</OrganizationTitle>
-                        <OrganizationLocation>{props.item.location}</OrganizationLocation>
+                        <OrganizationLocation>{(props.item.locations || [])[0]}</OrganizationLocation>
                     </OrganizationTitleWrapper>
 
                     {props.item.interests && (<OrganizationInterests>{props.item.interests.join(' • ')}</OrganizationInterests>)}

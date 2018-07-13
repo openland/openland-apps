@@ -5,7 +5,7 @@ export const OrganizationSearch = gql`
         id
         name
         photo
-        location
+        locations: alphaLocations
         isMine
         organizationType: alphaOrganizationType
         interests: alphaInterests
