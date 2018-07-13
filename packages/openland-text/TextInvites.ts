@@ -34,6 +34,9 @@ export const TextInvites = {
     linkExpirationOption1: 'expires in 1 day',
     linkExpirationOption7: 'expires in 7 days',
     linkExpirationOption30: 'expires in 30 days',
+
+    // Invites Histoty
+    showHistory: 'See pending and accepted invitations',
     
     backToEmailInvites: 'Send email invites',
 };

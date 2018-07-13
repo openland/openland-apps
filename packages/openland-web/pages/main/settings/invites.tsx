@@ -23,6 +23,9 @@ import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { TextInvites } from 'openland-text/TextInvites';
 import { withOrganizationInviteOrganization } from '../../../api/withOrganizationInviteOrganization';
 import { withPublicInviteOrganization } from '../../../api/withPublicInviteOrganization';
+import { withInvitesHistory } from '../../../api/withInvitesHistory';
+import { InvitesHistory } from './invitesHistory';
+import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 
 interface Invite {
     email?: string;
@@ -43,8 +46,8 @@ const DeleteButton = glamorous(XButton)<{ hide?: boolean }>((props) => ({
     marginTop: '5px !important'
 }));
 
-const AddButton = glamorous(XButton)({
-    marginLeft: -16
+const LinkButton = glamorous(XButton)({
+    marginLeft: -16,
 });
 
 const XFormFieldGrow = glamorous(XFormField)({
@@ -56,6 +59,17 @@ const ComposeButton = glamorous(XLink)({
     '&:hover': {
         textDecoration: 'underline'
     },
+});
+
+export let FooterWrap = glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    paddingLeft: 24,
+    paddingRight: 24,
+    height: 64,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderTop: '1px solid rgba(220, 222, 228, 0.6)'
 });
 
 export class InviteComponent extends React.Component<{ invite: Invite, index: number, single: boolean, handleRemove: (index: number) => void, useRoles?: boolean }> {
@@ -108,18 +122,12 @@ export class InviteComponent extends React.Component<{ invite: Invite, index: nu
     }
 }
 
-const SwitchToInvieteButton = withPublicInvite((props) => {
-    return (
-        <AddButton alignSelf="flex-start" style="link" onClick={(props as any).onClick} text={props.data && props.data.publicInvite ? TextInvites.getLinkButtonNoLink : TextInvites.getLinkButtonLinkExists} />
-    );
-}) as React.ComponentType<{ onClick: () => void }>;
-
 const LinkContianer = glamorous(XVertical)({
     minHeight: 300,
     padding: 40
 });
 
-class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: string, ttl: string | null } | null, createMutation: any, deleteMutation: any, onBack: () => void } & XWithRouter> {
+class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: string, ttl: string | null } | null, createMutation: any, deleteMutation: any } & XWithRouter> {
     input?: any;
     constructor(props: any) {
         super(props);
@@ -144,33 +152,50 @@ class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: st
             <LinkContianer>
                 {this.props.invite && (
                     <>
-                        <XHorizontal alignItems="center">
-                            <XInput autoSelect={true} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key} />
-                            <XButton text="Copy" onClick={this.copy} />
-                            <XMutation mutation={this.props.createMutation}><XButton text="Renew link" /></XMutation>
+                        <XHorizontal alignItems="center" justifyContent="stretch">
+                            <XInput flexGrow={1} autoSelect={true} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key} />
                         </XHorizontal>
                     </>
                 )}
-
-                <XButton onClick={this.props.onBack} text={TextInvites.backToEmailInvites} style="link" />
-
             </LinkContianer>
         );
     }
 }
 
+const RenewInviteLinkButton = withPublicInvite((props) => {
+    return (
+        <XMutation mutation={props.createPublicInvite}><XButton text="Renew link" style="link" /></XMutation>
+    );
+});
+
+const RenewGlobalInviteLinkButton = withPublicInviteOrganization((props) => {
+    return (
+        <XMutation mutation={props.createPublicInvite}><XButton text="Renew link" style="link" /></XMutation>
+    );
+});
+
 const OwnerLink = withPublicInvite(withRouter((props) => {
     return (
-        <OwnerLinkComponent router={props.router} invite={props.data ? props.data.publicInvite : null} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} onBack={(props as any).onBack} />
+        <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} invite={props.data ? props.data.publicInvite : null} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} />
     );
-})) as React.ComponentType<{ onBack: () => void }>;
+})) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
 
 const OwnerLinkOrganization = withPublicInviteOrganization(withRouter((props) => {
     return (
-        <OwnerLinkComponent router={props.router} invite={props.data ? props.data.publicInvite : null} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} onBack={(props as any).onBack} />
+        <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} invite={props.data ? props.data.publicInvite : null} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} />
     );
-})) as React.ComponentType<{ onBack: () => void }>;
+})) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
 
+const ShowInvitesHistory = withInvitesHistory((props) => {
+    console.warn(props);
+    return (
+        (props.data && props.data.invites || []).length > 0 ? <LinkButton text={TextInvites.showHistory} onClick={(props as any).onClick} /> : null
+    );
+}) as React.ComponentType<{ onClick?: () => void }>;
+
+const InvitesHistoryGrow = glamorous(InvitesHistory)({
+    flexGrow: 1
+});
 class InvitesMoadalRaw extends React.Component<{
     mutation: any,
     useRoles?: boolean,
@@ -178,9 +203,10 @@ class InvitesMoadalRaw extends React.Component<{
 } & Partial<XModalFormProps>, {
         customText?: string,
         customTextAreaOpen?: boolean,
-        linkMode?: boolean
+        showLink?: boolean,
+        showInvitesHistory?: boolean
     }> {
-
+    linkComponent?: any;
     constructor(props: any) {
         super(props);
         this.state = {};
@@ -204,8 +230,45 @@ class InvitesMoadalRaw extends React.Component<{
         store.writeValue('fields.inviteRequests', invites);
     }
 
+    handleLinkComponentRef = (ref: any) => {
+        this.linkComponent = ref;
+    }
+
+    copyLink = () => {
+        if (this.linkComponent) {
+            console.warn(this.linkComponent);
+            this.linkComponent.copy();
+        }
+    }
+
     render() {
-        let { mutation, ...modalFormProps } = this.props;
+        let { mutation, submitProps, ...modalFormProps } = this.props;
+        let footer = (
+            <FooterWrap>
+                <XHorizontal flexGrow={1}>
+                    {!this.state.showLink && (
+                        <XWithRole role="admin" orgPermission={true}>
+                            {!this.state.showLink && <LinkButton style="link" text={TextInvites.getLinkButtonLinkExists} onClick={() => this.setState({ showLink: true })} />}
+                        </XWithRole>
+                    )}
+                    {this.state.showLink && (
+                        <XButton onClick={() => this.setState({ showLink: false })} text={TextInvites.backToEmailInvites} style="link" />
+                    )}
+                </XHorizontal>
+                {this.state.showLink && this.props.organization && (
+                    <RenewGlobalInviteLinkButton />
+                )}
+                {this.state.showLink && !this.props.organization && (
+                    <RenewInviteLinkButton />
+                )}
+                {this.state.showLink && (
+                    <XButton style={'primary'} text={'Copy'} onClick={this.copyLink} autoClose={true}/>
+                )}
+                {!this.state.showLink && (
+                    <XFormSubmit style={'primary'} text={'Save'} keyDownSubmit={true} {...submitProps} />
+                )}
+            </FooterWrap>
+        );
         return (
             <XModalForm
                 useTopCloser={true}
@@ -222,9 +285,11 @@ class InvitesMoadalRaw extends React.Component<{
                 defaultData={{
                     inviteRequests: [{ email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }]
                 }}
+                submitProps={submitProps}
+                customFooter={footer}
                 {...modalFormProps}
             >
-                {!this.state.linkMode && (
+                {!this.state.showLink && (
                     <XVertical justifyContent="center" alignItems="center">
                         <XVertical >
                             <XStoreContext.Consumer>
@@ -234,7 +299,7 @@ class InvitesMoadalRaw extends React.Component<{
                                         <>
                                             {invites.map((invite: Invite, i: number) => <InviteComponent key={i} index={i} invite={invite} single={invites.length === 1} handleRemove={(index) => this.handleRemove(index, store)} useRoles={this.props.useRoles} />)}
 
-                                            < AddButton text={TextInvites.addEmail} style="link" onClick={() => this.handleAdd(store)} alignSelf="flex-start" />
+                                            < LinkButton text={TextInvites.addEmail} style="link" onClick={() => this.handleAdd(store)} alignSelf="flex-start" />
                                         </>
                                     );
                                 }}
@@ -252,15 +317,21 @@ class InvitesMoadalRaw extends React.Component<{
                                 </XHorizontal>
                             )}
 
-                            <XWithRole role="admin" orgPermission={true}>
-                                {!this.state.linkMode && <SwitchToInvieteButton onClick={() => this.setState({ linkMode: true })} />}
-                            </XWithRole>
+                            {!this.state.showInvitesHistory && <ShowInvitesHistory onClick={() => this.setState({ showInvitesHistory: true })} />}
+
                         </XVertical >
                     </XVertical >
                 )}
 
-                {this.state.linkMode && !this.props.organization && <OwnerLink onBack={() => this.setState({ linkMode: false })} />}
-                {this.state.linkMode && this.props.organization && <OwnerLinkOrganization onBack={() => this.setState({ linkMode: false })} />}
+                {this.state.showLink && !this.props.organization && <OwnerLink innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
+                {this.state.showLink && this.props.organization && <OwnerLinkOrganization innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
+
+                {this.state.showInvitesHistory && !this.state.showLink && (
+                    <XHorizontal>
+                        <InvitesHistoryGrow />
+                        <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ showInvitesHistory: false })} />
+                    </XHorizontal>
+                )}
 
             </XModalForm>
         );

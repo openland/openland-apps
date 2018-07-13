@@ -26,10 +26,11 @@ export interface XModalFormProps extends XFormProps {
 
     scrollableContent?: boolean;
 
+    customFooter?: any;
+
 }
 const Footer = glamorous(XModalFooter)({
     marginTop: 0,
-
 });
 
 const BodyPadding = glamorous.div({
@@ -66,20 +67,24 @@ export class XModalForm extends React.Component<XModalFormProps> {
 
             );
         }
+        let footer = this.props.customFooter || (
+            <Footer>
+                <XHorizontal>
+                    <XFormSubmit style={'primary'} text={'Save'} {...submitProps} keyDownSubmit={true} />
+                    {!this.props.useTopCloser && <XButton text="Cancel" autoClose={true} />}
+
+                </XHorizontal>
+            </Footer>
+        );
+
+        console.warn(footer);
         return (
             <XModal {...other} customContent={true} scrollableContent={this.props.scrollableContent} useTopCloser={this.props.useTopCloser}>
                 {(this.props.title || this.props.useTopCloser) && <XModalHeader>{this.props.title}{this.props.useTopCloser && <XModalCloser style="flat" icon="close" autoClose={true} />}</XModalHeader>}
                 {!this.props.title && <XModalHeaderEmpty />}
                 <XForm defaultData={defaultData} staticData={staticData} defaultAction={defaultAction} autoClose={true}>
                     {body}
-
-                    <Footer>
-                        <XHorizontal>
-                            <XFormSubmit style={'primary'} text={'Save'} {...submitProps} keyDownSubmit={true} />
-                            {!this.props.useTopCloser && <XButton text="Cancel" autoClose={true} />}
-
-                        </XHorizontal>
-                    </Footer>
+                    {footer}
                 </XForm>
             </XModal>
         );

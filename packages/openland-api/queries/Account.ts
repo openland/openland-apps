@@ -52,6 +52,19 @@ export const AccountInvitesQuery = gql`
     }
 `;
 
+export const AccountInvitesHistoryQuery = gql`
+    query AccountInvitesHistory {
+        invites: alphaInvitesHistory {
+            forEmail
+            isGlobal
+            acceptedBy{
+                name
+                picture
+            }
+        }
+    }
+`;
+
 export const AccountCreateInviteMutation = gql`
     mutation AccountCreateInvite {
         alphaCreateInvite {

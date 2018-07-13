@@ -8,13 +8,13 @@ interface XTagProps extends XFlexStyles {
     text?: string;
     icon?: string;
     size?: 'large' | 'default';
-    color?: 'primary' | 'default' | 'gray';
+    color?: 'primary' | 'default' | 'gray' | 'green';
     onIconClick?: () => void;
 }
 
 interface StyledXTagProps extends XFlexStyles {
     tagSize?: 'large' | 'default';
-    tagColor?: 'primary' | 'default' | 'gray';
+    tagColor?: 'primary' | 'default' | 'gray' | 'green';
 }
 
 let iconsIndentation = styleResolver({
@@ -62,6 +62,10 @@ let colorStyles = styleResolver({
         backgroundColor: '#f3f3f5',
         color: '#334562',
     },
+    'green': {
+        backgroundColor: 'rgba(192, 235, 196, 0.45)',
+        color: '#4e8653',
+    },
 });
 
 let crossColorStyles = styleResolver({
@@ -75,6 +79,10 @@ let crossColorStyles = styleResolver({
     },
     'gray': {
         color: '#334562',
+        opacity: 0.4
+    },
+    'green': {
+        color: '#4e8653',
         opacity: 0.4
     },
 });

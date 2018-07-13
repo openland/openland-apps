@@ -410,6 +410,19 @@ export interface AccountInvitesQuery {
   } > | null,
 };
 
+export interface AccountInvitesHistoryQuery {
+  invites:  Array< {
+    __typename: "InviteInfo",
+    forEmail: string | null,
+    isGlobal: boolean,
+    acceptedBy:  {
+      __typename: "User",
+      name: string,
+      picture: string | null,
+    } | null,
+  } > | null,
+};
+
 export interface AccountCreateInviteMutation {
   alphaCreateInvite:  {
     __typename: "Invite",

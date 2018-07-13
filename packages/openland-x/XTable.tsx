@@ -233,7 +233,7 @@ export function XTableCell(props: XTableCellProps) {
     );
 }
 
-export class XTable extends React.Component {
+export class XTable extends React.Component<{className?: string}> {
     static Header = XTableHeader;
     static Body = XTableBody;
     static Row = XTableRow;
