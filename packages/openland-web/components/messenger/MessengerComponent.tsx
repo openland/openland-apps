@@ -82,7 +82,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         />
                         <ChatTitleContent separator={2}>
                             <Title>{props.data.chat.title}</Title>
-                            <SubTitle>Openland</SubTitle>
+                            <SubTitle>{props.data.chat.__typename === 'SharedConversation' ? 'Organization' : 'Person'}</SubTitle>
                         </ChatTitleContent>
                     </ChatLeftContent>
                     <XOverflow
