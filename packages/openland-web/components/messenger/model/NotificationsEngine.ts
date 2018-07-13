@@ -33,7 +33,11 @@ export class NotificationsEngine {
         this.notifications = new Notifications(this.handleGranted);
         this.badge = new Badge();
         this.badge.init();
-        this.push = new PushEngine(this.handlePushRegistration);
+        this.push = new PushEngine(this.handlePushRegistration, this.handleServiceWorker);
+    }
+
+    handleServiceWorker = (registration: ServiceWorkerRegistration) => {
+        this.notifications.setRegistration(registration);
     }
 
     handleGranted = () => {
@@ -76,7 +80,7 @@ export class NotificationsEngine {
         let settings = this.engine.client.readQuery<SettingsQueryType>({
             query: SettingsQuery.document
         })!!.settings;
-        
+
         if (settings.desktopNotifications === 'NONE') {
             return;
         } else if (settings.desktopNotifications === 'DIRECT') {

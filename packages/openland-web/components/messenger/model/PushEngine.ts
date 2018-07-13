@@ -15,14 +15,16 @@ export interface PushSettings {
 }
 
 export class PushEngine {
-    private readonly notificationsSupported = 'Notification' in window;
     private readonly serviceWorkerSupported = 'serviceWorker' in navigator;
+    private readonly notiticationServiceWorkerSupported = this.serviceWorkerSupported && 'showNotification' in ServiceWorkerRegistration.prototype;
+    private readonly notificationsClassicalSupported = 'Notification' in window;
+    private readonly notificationsSupported = this.notificationsClassicalSupported || this.notiticationServiceWorkerSupported;
     private readonly pushSupported = 'PushManager' in window;
     private handleRegister: (endpoint: string) => void;
     private registration: ServiceWorkerRegistration | null = null;
     private pushSettings: PushSettings | null = null;
 
-    constructor(handleRegister: (endpoint: string) => void) {
+    constructor(handleRegister: (endpoint: string) => void, handleServiceWorker: (registration: ServiceWorkerRegistration) => void) {
         this.handleRegister = handleRegister;
         if (this.serviceWorkerSupported) {
             (async () => {
@@ -39,6 +41,7 @@ export class PushEngine {
                     return;
                 }
                 this.registration = registration;
+                handleServiceWorker(this.registration);
                 if (this.pushSettings) {
                     this.wireSubscriptions();
                 }
