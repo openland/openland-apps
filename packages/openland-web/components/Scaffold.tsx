@@ -35,7 +35,6 @@ import { MyOrganizationsQuery } from 'openland-api';
 import AddIcon from './icons/add-1.svg';
 import HomeIcon from './icons/home-1.svg';
 import MessagesIcon from './icons/messages-1.svg';
-import { XText } from 'openland-x/XText';
 
 //
 // Root
