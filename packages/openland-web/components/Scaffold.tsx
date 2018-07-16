@@ -635,40 +635,8 @@ const Home = withUserInfo((props) => {
     );
 });
 
-const AddListingContent = withUserInfo((props) => {
-    return (
-        <>
-            <MenuItem path="/mail/new">{TextGlobal.startChat}</MenuItem>
-            <XWithRole role={['super-admin', 'software-developer']}>
-                <XPopper
-                    contentContainer={<XMenuVertical />}
-                    placement="right-start"
-                    showOnHover={true}
-                    padding={0}
-                    marginTop={-8}
-                    content={(
-                        <>
-                            <MenuSubTitle>{TextGlobal.invitePeopleTo}</MenuSubTitle>
-                            <MenuItem query={{ field: 'invite', value: 'true' }}>{TextGlobal.joinYourOrganization}</MenuItem>
-                            <MenuItem query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</MenuItem>
-                        </>
-                    )}
-                >
-                    <MenuItemWithIcon>
-                        {TextGlobal.sendInvites}
-                        <MenuItemIcon icon="chevron_right" />
-                    </MenuItemWithIcon>
-                </XPopper>
-            </XWithRole>
-            <MenuItem path={'/o/' + props.organization!!.id + '?addListing=DO'}>{TextAppBar.items.addDevelopmentOpportunity}</MenuItem>
-            <MenuItem path={'/o/' + props.organization!!.id + '?addListing=AR'}>{TextAppBar.items.addAquisitionRequest}</MenuItem>
-            <MenuItem path="/">{TextGlobal.postUpdate}</MenuItem>
-            <MenuItem path="/createOrganization">{TextGlobal.addOrganization}</MenuItem>
-        </>
-    );
-});
-
 class AddMenu extends React.Component<{}, { show?: boolean }> {
+    inner = 0;
     constructor(props: any) {
         super(props);
         this.state = { show: false };
@@ -680,12 +648,50 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
     }
 
     closer = () => {
-        this.setState({
-            show: false
-        });
+        if (!this.inner) {
+            this.setState({
+                show: false
+            });
+        }
+    }
+
+    onInner = (ref: any) => {
+        this.inner += ref ? 1 : -1;
     }
 
     render() {
+        let AddListingContent = withUserInfo((props) => {
+            return (
+                <>
+                    <MenuItem path="/mail/new">{TextGlobal.startChat}</MenuItem>
+                    <XWithRole role={['super-admin', 'software-developer']}>
+                        <XPopper
+                            contentContainer={<XMenuVertical />}
+                            placement="right-start"
+                            showOnHover={true}
+                            padding={0}
+                            marginTop={-8}
+                            content={(
+                                <div ref={this.onInner}>
+                                    <MenuSubTitle>{TextGlobal.invitePeopleTo}</MenuSubTitle>
+                                    <MenuItem query={{ field: 'invite', value: 'true' }}>{TextGlobal.joinYourOrganization}</MenuItem>
+                                    <MenuItem query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</MenuItem>
+                                </div>
+                            )}
+                        >
+                            <MenuItemWithIcon>
+                                {TextGlobal.sendInvites}
+                                <MenuItemIcon icon="chevron_right" />
+                            </MenuItemWithIcon>
+                        </XPopper>
+                    </XWithRole>
+                    <MenuItem path={'/o/' + props.organization!!.id + '?addListing=DO'}>{TextAppBar.items.addDevelopmentOpportunity}</MenuItem>
+                    <MenuItem path={'/o/' + props.organization!!.id + '?addListing=AR'}>{TextAppBar.items.addAquisitionRequest}</MenuItem>
+                    <MenuItem path="/createOrganization">{TextGlobal.addOrganization}</MenuItem>
+                </>
+            );
+        });
+
         return (
             <XPopper
                 contentContainer={<XMenuVertical />}
