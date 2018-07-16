@@ -1,6 +1,6 @@
 export const TextInvites = {
     // NAVBAR
-    inviteButton: 'Invite colleagues',
+    inviteButton: 'Invite members',
     inviteGlobalButton: 'Invite other organization',
 
     // MODALS

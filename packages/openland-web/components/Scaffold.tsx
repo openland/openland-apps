@@ -32,6 +32,10 @@ import { TextInvites } from 'openland-text/TextInvites';
 import DirecoryIcon from '../pages/main/directory/icons/directory.1.svg';
 import { Query } from '../../../node_modules/react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
+import AddIcon from './icons/add-1.svg';
+import HomeIcon from './icons/home-1.svg';
+import MessagesIcon from './icons/messages-1.svg';
+import { XText } from 'openland-x/XText';
 
 //
 // Root
@@ -114,13 +118,17 @@ const NavigatorItem = Glamorous(XLink)({
     paddingTop: 16,
     paddingBottom: 16,
     flexShrink: 0,
-    color: '#000000',
+    color: '#939ca8',
     cursor: 'pointer',
 
+    '& > svg *': {
+        fill: '#939ca8',
+    },
+
     '.is-active': {
-        color: '#522BFF',
-        '& > svg > g > path': {
-            fill: '#522BFF',
+        color: '#654bfa',
+        '& > svg *': {
+            fill: '#654bfa',
         },
         '& > .reports .hover': {
             display: 'block'
@@ -130,9 +138,9 @@ const NavigatorItem = Glamorous(XLink)({
         },
     },
     '&:hover': {
-        color: '#522BFF',
-        '& > svg > g > path': {
-            fill: '#522BFF',
+        color: '#654bfa',
+        '& > svg *': {
+            fill: '#654bfa',
             fillRule: 'nonzero'
         },
         '& > .reports .hover': {
@@ -203,8 +211,39 @@ const ProfileTitleContainer = Glamorous(XHorizontal)({
     }
 });
 
+const ProfileNaviTitleContainer = makeNavigable((props) => {
+    return (<a href={props.href} onClick={props.onClick}><ProfileTitleContainer separator="none" >{props.children}</ProfileTitleContainer></a>);
+});
+
 const OrganizationTitleContainer = makeNavigable((props) => {
     return (<a href={props.href} onClick={props.onClick}><ProfileTitleContainer separator="none" >{props.children}</ProfileTitleContainer></a>);
+});
+
+const MenuItem = Glamorous(XMenuItem)({
+    color: 'rgba(51, 69, 98, 0.8)!important',
+});
+
+const MenuItemWithIcon = Glamorous(XMenuItem)({
+    position: 'relative',
+    color: 'rgba(51, 69, 98, 0.8)!important',
+});
+
+const MenuItemIcon = Glamorous(XIcon)({
+    position: 'absolute',
+    top: 0,
+    right: 9,
+    fontSize: 20,
+    lineHeight: '42px',
+    color: '#c1c7cf',
+});
+
+const MenuSubTitle = Glamorous.div({
+    fontSize: 16,
+    lineHeight: '20px',
+    padding: '10px 18px 8px',
+    letterSpacing: -0.3,
+    color: '#334562',
+    fontWeight: 500,
 });
 
 class UserPopper extends React.Component<{ picture: string | null, name?: string, logo?: string | null, organizationName?: string, organizationId?: string, hasMultipleOrganizations: boolean }, { show: boolean }> {
@@ -250,17 +289,8 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                 content={(
                     <XModalContext.Provider value={{ close: this.closer }}>
                         <XVertical separator="none">
-                            <ProfileTitleContainer separator="none" alignItems="center">
-                                <XAvatar cloudImageUuid={this.props.picture || undefined} />
-                                <ProfileTitle>{this.props.name}</ProfileTitle>
-                            </ProfileTitleContainer>
-
-                            <XMenuItem path="/settings/profile" autoClose={true}>{TextGlobal.profileAndAccount}</XMenuItem>
-                            <XMenuItem path="/settings/notifications" autoClose={true}>{TextGlobal.settings}</XMenuItem>
                             {this.props.organizationId && (
                                 <>
-                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginTop: 8 }} />
-
                                     <OrganizationTitleContainer path={'/o/' + this.props.organizationId} autoClose={true}>
                                         <XAvatar path={'/o/' + this.props.organizationId} cloudImageUuid={this.props.logo || undefined} style="organization" />
                                         <XVertical separator={1}>
@@ -268,18 +298,24 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                             <ProfileSubTitle>{TextGlobal.viewProfile}</ProfileSubTitle>
                                         </XVertical>
                                     </OrganizationTitleContainer>
-                                    <XMenuItem path="/settings/organization" autoClose={true}>{TextGlobal.manage}</XMenuItem>
+                                    <MenuItem path="/settings/organization" autoClose={true}>{TextGlobal.editProfile}</MenuItem>
                                     <XWithRole role={['super-admin', 'software-developer']}>
-                                        <XMenuItem query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextInvites.inviteButton}</XMenuItem>
+                                        <MenuItem query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextInvites.inviteButton}</MenuItem>
                                     </XWithRole>
+                                    {this.props.hasMultipleOrganizations && <MenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</MenuItem>}
+
+                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginTop: 8 }} />
                                 </>
                             )}
-                            <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginTop: 8, marginBottom: 8 }} />
-                            <XWithRole role={['super-admin', 'software-developer']}>
-                                <XMenuItem query={{ field: 'invite_global', value: 'true' }} autoClose={true}>{TextInvites.inviteGlobalButton}</XMenuItem>
-                            </XWithRole>
-                            {this.props.hasMultipleOrganizations && <XMenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>}
-                            <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
+
+                            <ProfileNaviTitleContainer path="/settings/profile" autoClose={true}>
+                                <XAvatar path="/settings/profile" cloudImageUuid={this.props.picture || undefined} />
+                                <XVertical separator={1}>
+                                    <ProfileTitle >{this.props.name}</ProfileTitle>
+                                    <ProfileSubTitle>{TextGlobal.settings}</ProfileSubTitle>
+                                </XVertical>
+                            </ProfileNaviTitleContainer>
+                            <MenuItem path="/auth/logout">{TextGlobal.signOut}</MenuItem>
                         </XVertical>
                     </XModalContext.Provider>
                 )}
@@ -593,7 +629,7 @@ const Home = withUserInfo((props) => {
                 )}
             >
                 <NavigatorItem path={'/o/' + props.organization!!.id}>
-                    <NavigatorIcon icon="home" />
+                    <HomeIcon />
                 </NavigatorItem>
             </XPopper>
         </XWithRole>
@@ -603,9 +639,32 @@ const Home = withUserInfo((props) => {
 const AddListingContent = withUserInfo((props) => {
     return (
         <>
-            <XMenuItem path={'/o/' + props.organization!!.id + '?addListing=DO'}>{TextAppBar.items.addDevelopmentOpportunity}</XMenuItem>
-            <XMenuItem path={'/o/' + props.organization!!.id + '?addListing=AR'}>{TextAppBar.items.addAquisitionRequest}</XMenuItem>
-            <XMenuItem path="/createOrganization">{TextGlobal.addOrganization}</XMenuItem>
+            <MenuItem path="/mail/new">{TextGlobal.startChat}</MenuItem>
+            <XWithRole role={['super-admin', 'software-developer']}>
+                <XPopper
+                    contentContainer={<XMenuVertical />}
+                    placement="right-start"
+                    showOnHover={true}
+                    padding={0}
+                    marginTop={-8}
+                    content={(
+                        <>
+                            <MenuSubTitle>{TextGlobal.invitePeopleTo}</MenuSubTitle>
+                            <MenuItem query={{ field: 'invite', value: 'true' }}>{TextGlobal.joinYourOrganization}</MenuItem>
+                            <MenuItem query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</MenuItem>
+                        </>
+                    )}
+                >
+                    <MenuItemWithIcon>
+                        {TextGlobal.sendInvites}
+                        <MenuItemIcon icon="chevron_right" />
+                    </MenuItemWithIcon>
+                </XPopper>
+            </XWithRole>
+            <MenuItem path={'/o/' + props.organization!!.id + '?addListing=DO'}>{TextAppBar.items.addDevelopmentOpportunity}</MenuItem>
+            <MenuItem path={'/o/' + props.organization!!.id + '?addListing=AR'}>{TextAppBar.items.addAquisitionRequest}</MenuItem>
+            <MenuItem path="/">{TextGlobal.postUpdate}</MenuItem>
+            <MenuItem path="/createOrganization">{TextGlobal.addOrganization}</MenuItem>
         </>
     );
 });
@@ -631,14 +690,14 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
         return (
             <XPopper
                 contentContainer={<XMenuVertical />}
-                placement="right-end"
+                placement="right-start"
                 show={this.state.show}
                 padding={0}
                 content={<AddListingContent />}
                 onClickOutside={this.closer}
             >
                 <NavigatorItem onClick={this.switch}>
-                    <NavigatorIcon icon="add" />
+                    <AddIcon />
                 </NavigatorItem>
             </XPopper>
         );
@@ -657,7 +716,7 @@ export const MessengerButton = withNotificationCounter((props) => {
             )}
         >
             <NavigatorItem path="/mail" activateForSubpaths={true}>
-                <NavigatorIcon icon="email" />
+                <MessagesIcon />
                 {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter count={props.data.counter.unreadCount} />}
             </NavigatorItem>
         </XPopper>
@@ -723,6 +782,12 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 </NavigatorItem>
                                 <NavigationDivider />
                             </XWithRole>
+
+                            <XWithRole role={['feature-marketplace']} negate={true}>
+                                <AddMenu />
+                                <NavigationDivider />
+                            </XWithRole>
+
                             <XWithRole role={['feature-marketplace']}>
                                 <XPopper
                                     placement="right"
@@ -909,9 +974,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                             <NavigatorIcon icon="color_lens" />
                                         </NavigatorItem>
                                     </XPopper>
-                                </XWithRole>
-                                <XWithRole role={['feature-marketplace']} negate={true}>
-                                    <AddMenu />
                                 </XWithRole>
                                 <NavigatorItem>
                                     <UserProfile />

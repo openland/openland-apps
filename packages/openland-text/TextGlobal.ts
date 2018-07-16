@@ -7,7 +7,13 @@ export const TextGlobal = {
     manage: 'Manage',
     invite: 'Invite colleagues',
     inviteGlobal: 'Invite other organization',
-    addOrganization: 'New organization',
+    addOrganization: 'Create organization',
     signOut: 'Sign out',
-    viewProfile: 'View profile'
+    viewProfile: 'View profile',
+    postUpdate: 'Post update',
+    sendInvites: 'Send invites',
+    invitePeopleTo: 'Invite people to',
+    joinYourOrganization: 'Join your organization',
+    joinOpenland: 'Join Openland',
+    startChat: 'Start chat',
 };
