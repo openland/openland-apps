@@ -727,6 +727,9 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
 
+    keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
+    contentRef: any | null = null;
+
     searchRef: any | null = null;
 
     constructor(props: ScaffoldProps) {
@@ -737,8 +740,10 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
     handleSearch = () => {
         if (this.state.search) {
             this.setState({ search: false });
+            this.enableScroll(this.contentRef);
         } else {
             this.setState({ search: true, searchText: '' });
+            this.disableScroll(this.contentRef);
             if (this.searchRef) {
                 this.searchRef.focus();
             }
@@ -753,6 +758,59 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
     handleSearchRef = (ref: any | null) => {
         this.searchRef = ref;
+    }
+
+    handleContentRef = (ref: any | null) => {
+        this.contentRef = ref;
+    }
+
+    preventDefault = (e: any) => {
+        e = e || window.event;
+
+        if (e.target.closest('.simplebar-content')) {
+            return;
+        } else if (e.target.closest('.search-container')) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.returnValue = false;
+        }
+    }
+
+    preventDefaultForScrollKeys = (e: any) => {
+        if (this.keys[e.keyCode]) {
+            this.preventDefault(e);
+            return false;
+        } else {
+            return undefined;
+        }
+    }
+
+    enableScrollForSidebar = (el: any) => {
+        el.onwheel = null;
+        el.onmousewheel = null;
+        el.ontouchmove = null;
+    }
+
+    disableScroll = (el: any) => {
+        if (el.addEventListener) {
+            el.addEventListener('DOMMouseScroll', this.preventDefault, false);
+        }
+
+        el.onwheel = this.preventDefault;
+        el.onmousewheel = document.onmousewheel = this.preventDefault;
+        el.ontouchmove = this.preventDefault;
+        document.onkeydown = this.preventDefaultForScrollKeys;
+    }
+
+    enableScroll = (el: any) => {
+        if (el.removeEventListener) {
+            el.removeEventListener('DOMMouseScroll', this.preventDefault, false);
+        }
+        el.onmousewheel = document.onmousewheel = null;
+        el.onwheel = null;
+        el.ontouchmove = null;
+        document.onkeydown = null;
     }
 
     render() {
@@ -981,7 +1039,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             </BottomNavigation>
                         </NavigationContainer>
                     </NavigationScroller>
-                    <SearchWrapper visible={this.state.search}>
+                    <SearchWrapper visible={this.state.search} className="search-container">
                         <SearchWrapperSticky>
                             <SearchContainer onClick={this.handleSearch} />
                             <SearchContent>
@@ -1000,6 +1058,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                 <ContentView
                     noBoxShadow={this.props.noBoxShadow}
                     marginLeft={menu !== undefined ? 280 : 72}
+                    innerRef={this.handleContentRef}
                 >
                     {content}
                 </ContentView>
