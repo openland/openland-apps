@@ -63,7 +63,7 @@ export const InitTexts = {
         pageTitle: 'Add your organization',
         title: 'Add your organization',
         name: 'Organization name',
-        namePlaceholder: 'Acme Corparation',
+        namePlaceholder: 'Acme Corporation',
         website: 'Website',
         websitePlaceholder: 'http://acme.com/',
         photo: 'Logo',
@@ -84,8 +84,8 @@ export const InitTexts = {
     },
 
     waitlist: {
-        pageTitle: 'You have joined waitlist',
-        title: 'You have joined waitlist',
+        pageTitle: 'You have joined the waitlist',
+        title: 'You have joined the waitlist',
         content: (
             <>
                 <p>Openland is currently in closed beta.</p>

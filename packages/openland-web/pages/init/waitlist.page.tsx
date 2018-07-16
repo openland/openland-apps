@@ -24,7 +24,8 @@ const InfoText = Glamorous.div({
     fontWeight: 500,
     lineHeight: 1.53,
     letterSpacing: -0.4,
-    color: '#334562'
+    color: '#334562',
+    opacity: 0.8,
 });
 
 const Img = Glamorous.img({
@@ -42,7 +43,8 @@ const MailText = Glamorous.span({
     color: '#334562',
     fontSize: 14,
     opacity: 0.5,
-    marginTop: 30
+    marginTop: 30,
+    fontWeight: 500,
 });
 
 const ButtonGroup = Glamorous.div({
@@ -67,7 +69,7 @@ export default withAppBase('Waitlist', (props) => {
         <AuthRouter>
             <XDocumentHead title={InitTexts.need_info.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="View Waitlist">
-                <MessagePage>
+                <MessagePage hideLegalText={true}>
                     <Img src="/static/img/img-moreinfo.png" srcSet="/static/img/img-moreinfo@2x.png 2x" />
                     <MessagePageContent title={InitTexts.waitlist.title}>
                         <InfoText>{InitTexts.waitlist.content}</InfoText>
