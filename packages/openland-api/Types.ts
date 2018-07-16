@@ -391,6 +391,17 @@ export interface AccountInviteInfoQuery {
     title: string,
     photo: string | null,
     joined: boolean,
+    creator:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+    } | null,
+    forEmail: string | null,
+    forName: string | null,
   } | null,
 };
 

@@ -13,6 +13,11 @@ export let XText = Glamorous.div<{
     'h100' |
     'm500',
     opacity?: number,
+    fontWeight?: number,
+    letterSpacing?: number,
+    color?: string,
+    fontSize?: number,
+    lineHeight?: number,
 }>((props) => ({
     ...(props.textStyle === 'h900' ? XStyles.text.h900 :
         props.textStyle === 'h800' ? XStyles.text.h800 :
@@ -25,4 +30,9 @@ export let XText = Glamorous.div<{
                                     props.textStyle === 'h100' ? XStyles.text.h100 :
                                         props.textStyle === 'm500' ? XStyles.text.m500 : XStyles.text.h400),
     opacity: props.opacity,
+    fontWeight: props.fontWeight as any,
+    letterSpacing: props.letterSpacing,
+    color: props.color,
+    lineHeight: props.lineHeight,
+    fontSize: props.fontSize,
 }));
