@@ -47,6 +47,8 @@ export const SuperAccountQuery = gql`
                 key
                 title
             }
+            orgId
+            published: alphaPublished
         }
     }
     ${UserShort}

@@ -412,8 +412,8 @@ export interface AccountInvitesQuery {
 
 export interface AccountInvitesHistoryQuery {
   invites:  Array< {
-    __typename: "InviteInfo",
-    forEmail: string | null,
+    __typename: "InviteHistotyInfo",
+    forEmail: string,
     isGlobal: boolean,
     acceptedBy:  {
       __typename: "User",
@@ -2251,6 +2251,7 @@ export interface ExploreOrganizationsQuery {
         organizationType: Array< string > | null,
         interests: Array< string > | null,
         followed: boolean,
+        published: boolean,
       },
       cursor: string,
     } >,
@@ -2483,6 +2484,26 @@ export interface OrganizationActivateByInviteMutationVariables {
 
 export interface OrganizationActivateByInviteMutation {
   alphaJoinGlobalInvite: string,
+};
+
+export interface OrganizationAlterPublishedMutationVariables {
+  organizationId: string,
+  published: boolean,
+};
+
+export interface OrganizationAlterPublishedMutation {
+  alphaAlterPublished:  {
+    __typename: "Organization",
+    id: string,
+    name: string,
+    photo: string | null,
+    locations: Array< string > | null,
+    isMine: boolean,
+    organizationType: Array< string > | null,
+    interests: Array< string > | null,
+    followed: boolean,
+    published: boolean,
+  },
 };
 
 export interface BlocksConnectionQueryVariables {
@@ -3122,6 +3143,8 @@ export interface SuperAccountQuery {
       key: string,
       title: string,
     } >,
+    orgId: string,
+    published: boolean,
   },
 };
 
@@ -4945,6 +4968,7 @@ export interface OrganizationSearchFragment {
   organizationType: Array< string > | null,
   interests: Array< string > | null,
   followed: boolean,
+  published: boolean,
 };
 
 export interface OrganizationShortFragment {
