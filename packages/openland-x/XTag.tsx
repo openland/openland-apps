@@ -33,7 +33,7 @@ let iconsIndentation = styleResolver({
 let sizeStyles = styleResolver({
     'large': {
         height: 32,
-        fontSize: 13,
+        fontSize: 14,
         fontWeight: 500,
         lineHeight: '32px',
         letterSpacing: 0.1,
@@ -41,7 +41,7 @@ let sizeStyles = styleResolver({
     },
     'default': {
         height: 25,
-        fontSize: 11,
+        fontSize: 12,
         fontWeight: 500,
         lineHeight: '24px',
         letterSpacing: 0.2,

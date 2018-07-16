@@ -4,16 +4,19 @@ import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
 import { XFlexStyles, applyFlex } from './basics/Flex';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
-import { XIcon } from './XIcon';
 import { XCloudImage, XPhotoRef } from './XCloudImage';
+import PlaceholderOrg from './icons/avatar-org-large.svg';
+import PlaceholderOrgSmall from './icons/avatar-org-small.svg';
 
-export type XAvatarSize = 'x-large' | 'large' | 'medium' | 'default' | 'small' | number;
+import PlaceholderUser from './icons/avatar-user-large.svg';
+import PlaceholderUserSmall from './icons/avatar-user-small.svg';
+
+export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'medium' | 'default' | 'small';
 export type XAvatarStyle = 'organization' | 'person';
 
 export interface XAvatarStyleProps extends XFlexStyles {
     className?: string;
     size?: XAvatarSize;
-    placeholderFontSize?: number;
     border?: string;
     style?: XAvatarStyle;
     attach?: 'left' | 'right' | 'both';
@@ -30,6 +33,10 @@ let sizeStyles = styleResolver({
         height: 130,
         width: 130,
     },
+    's-large': {
+        height: 100,
+        width: 100,
+    },
     'medium': {
         height: 48,
         width: 48,
@@ -44,24 +51,6 @@ let sizeStyles = styleResolver({
     }
 });
 
-let placeHolderFontStyle = styleResolver({
-    'x-large': {
-        fontSize: 152,
-    },
-    'large': {
-        fontSize: 128,
-    },
-    'medium': {
-        fontSize: 39,
-    },
-    'default': {
-        fontSize: 30,
-    },
-    'small': {
-        fontSize: 23,
-    }
-});
-
 let borderRadiusStyles = styleResolverWithProps((props: { style: XAvatarStyle, attach?: 'left' | 'right' | 'both' }) => ({
     'x-large': props.style === 'organization' ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
@@ -70,6 +59,12 @@ let borderRadiusStyles = styleResolverWithProps((props: { style: XAvatarStyle, a
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
     } : { borderRadius: 76 },
     'large': props.style === 'organization' ? {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+    } : { borderRadius: 65 },
+    's-large': props.style === 'organization' ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
@@ -112,8 +107,8 @@ const AvatarBehaviour = [
     }),
     (props: any) => applyFlex(props),
     (props: any) => ({
-        width: typeof props.avatarSize === 'number' ? props.avatarSize : sizeStyles(props.avatarSize).width as number,
-        height: typeof props.avatarSize === 'number' ? props.avatarSize : sizeStyles(props.avatarSize).height as number,
+        width: sizeStyles(props.avatarSize).width,
+        height: sizeStyles(props.avatarSize).height,
     }),
     (props: any) => borderRadiusStyles({ style: props.avatarStyle || 'person', attach: props.attach }, props.avatarSize)
 ];
@@ -126,10 +121,6 @@ const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
     color: 'rgba(51, 69, 98, 0.3)',
     overflow: 'hidden'
 })]);
-
-const Placeholder = Glamorous(XIcon)<{ size?: number }>((props) => ({
-    fontSize: props.size
-}));
 
 const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
@@ -154,18 +145,6 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
     let imageWidth = typeof props.size === 'number' ? props.size : sizeStyles(props.size).width as number;
     let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
 
-    let iconSize = undefined;
-
-    if (props.placeholderFontSize) {
-        iconSize = props.placeholderFontSize;
-    } else {
-        if (typeof props.size === 'number') {
-            iconSize = placeHolderFontStyle('default').fontSize as number;
-        } else {
-            iconSize = placeHolderFontStyle(props.size).fontSize as number;
-        }
-    }
-
     return (
         <>
             {props.src && (
@@ -178,7 +157,8 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             )}
             {!props.src && !(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps} >
-                    <Placeholder size={iconSize} icon={props.style === 'organization' ? 'domain' : 'account_circle'} />
+                    {props.style === 'organization' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderOrg /> : <PlaceholderOrgSmall />)}
+                    {props.style === 'person' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderUser /> : <PlaceholderUserSmall />)}
                 </StyledPlaceholder>
             )}
         </>

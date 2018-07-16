@@ -181,9 +181,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
             <XLink path={'/o/' + props.item.id}>
                 <OrganizationAvatar
                     cloudImageUuid={props.item.photo!!}
-                    size={100}
-                    placeholderFontSize={80}
-                    border="1px solid rgba(164,169,177,0.2)"
+                    size="s-large"
                     style="organization"
                 />
             </XLink>
@@ -238,7 +236,6 @@ const OrganizationCounter = Glamorous.div({
 });
 
 const OrganizationCards = withExploreOrganizations((props) => {
-    console.warn(props);
     return (
         <>
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
@@ -255,7 +252,7 @@ const OrganizationCards = withExploreOrganizations((props) => {
     );
 });
 
-class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
+class Organizations extends React.PureComponent<{ conditions: SearchCondition[] }> {
 
     buildQuery = (clauses: any[], operator: '$and' | '$or'): any | null => {
         if (clauses.length === 0) {
@@ -328,7 +325,8 @@ class Organizations extends React.Component<{ conditions: SearchCondition[] }> {
 const ConditionRenderWrapper = Glamorous.div({
     display: 'flex',
     flexWrap: 'wrap',
-    padding: '0 4px 16px 24px'
+    padding: '0 4px 16px 24px',
+    marginLeft: -8,
 });
 
 const SearchForm = Glamorous(XHorizontal)({
@@ -457,7 +455,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                             placeholder={TextDirectory.searchInputPlaceholder}
                         />
 
-                        <XButton text={TextDirectory.buttonSearch} style={this.state.searchText ? 'primary' : 'default'} onClick={this.searchButtonHandler} />
+                        <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText)} onClick={this.searchButtonHandler} />
                     </SearchForm>
                     {!LIVESEARCH && (
                         <>
