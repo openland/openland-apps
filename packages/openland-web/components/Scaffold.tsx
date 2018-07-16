@@ -791,12 +791,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
         }
     }
 
-    enableScrollForSidebar = (el: any) => {
-        el.onwheel = null;
-        el.onmousewheel = null;
-        el.ontouchmove = null;
-    }
-
     disableScroll = (el: any) => {
         if (el.addEventListener) {
             el.addEventListener('DOMMouseScroll', this.preventDefault, false);
