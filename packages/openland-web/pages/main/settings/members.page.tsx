@@ -1,6 +1,7 @@
 import '../../init';
 import '../../../globals';
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { withUserInfo } from '../../../components/UserInfo';
 import { withInviteCreate } from '../../../api/withInviteCreate';
@@ -11,7 +12,6 @@ import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { withOrganizationMembers } from '../../../api/withOrganizationMembers';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -35,16 +35,113 @@ export const CancelInviteButton = withInviteDestroy((props) => (
     <XButton action={() => props.destroyInvite({})} text="Cancel" />
 ));
 
-const Content = glamorous(XVertical)({
+const TableTag = Glamorous.div<{ green?: boolean, purple?: boolean }>((props) => ({
+    height: 32,
+    borderRadius: 4,
+    backgroundColor: props.green === true ? 'rgba(192, 235, 196, 0.45)' : props.purple ? '#eeecfa' : 'rgba(232, 233, 236, 0.45)',
+    color: props.green === true ? '#4e8653' : props.purple ? 'rgb(86, 64, 214)' : 'rgba(51, 69, 98, 0.51)',
+    fontSize: 15,
+    fontWeight: 500,
+    lineHeight: 1.33,
+    letterSpacing: 0.5,
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 10
+}));
+
+const Content = Glamorous(XVertical)({
     paddingLeft: 24,
     paddingRight: 24,
 });
-const Table = glamorous(XTable)({
-    marginLeft: 0,
-    marginRight: 0,
+
+const Title = Glamorous.div({
+    fontSize: 15,
+    fontWeight: 500,
+    lineHeight: 1.33,
+    letterSpacing: -0.4,
+    color: '#334562'
 });
 
-const Row = glamorous(XTable.Row)({
+const Text = Glamorous.div({
+    opacity: 0.8,
+    fontSize: 15,
+    lineHeight: 1.33,
+    letterSpacing: -0.2,
+    color: '#334562'
+});
+
+const Table = Glamorous(XTable)({
+    marginLeft: 0,
+    marginRight: 0,
+    borderCollapse: 'separate',
+    borderSpacing: 0,
+
+    '& tr': {
+        height: 82,
+
+        '& td': {
+            borderTop: 'solid 1px #eff0f3',
+            borderLeft: 'solid 1px #eff0f3',
+            paddingTop: 18,
+            paddingBottom: 18,
+
+            '& > div': {
+                padding: 0
+            },
+            '&:first-child': {
+                minWidth: 150,
+                '& > div': {
+                    paddingLeft: 18
+                }
+            },
+            '&:nth-child(2)': {
+                minWidth: 150,
+                '& > div': {
+                    paddingLeft: 20
+                }
+            },
+            '&:nth-child(3)': {
+                minWidth: 150,
+                paddingLeft: 26,
+                paddingRight: 26
+            },
+            '&:nth-child(4)': {
+                maxWidth: 80,
+                '& > div > div': {
+                    justifyContent: 'center !important'
+                }
+            },
+            '&:last-child': {
+                '& > div > div': {
+                    justifyContent: 'flex-end !important'
+                }
+            }
+        }
+    },
+    '& tr:first-child td:first-child': {
+        borderTopLeftRadius: 5,
+    },
+    '& tr:first-child td:last-child': {
+        borderTopRightRadius: 5,
+    },
+    '& tr:last-child td': {
+        borderBottom: 'solid 1px #eff0f3',
+    },
+    '& tr:last-child td:first-child': {
+        borderBottomLeftRadius: 5,
+    },
+    '& tr:last-child td:last-child': {
+        borderBottomRightRadius: 10
+    },
+    '& tr td:last-child': {
+        borderRight: 'solid 1px #eff0f3',
+        paddingRight: 20,
+        paddingLeft: 20
+    }
+});
+
+const Row = Glamorous(XTable.Row)({
     height: 100,
     '> td > div > div > a': {
         opacity: 0,
@@ -56,9 +153,8 @@ const Row = glamorous(XTable.Row)({
     }
 });
 
-const PermissionCell = glamorous(XVertical)({
+const PermissionCell = Glamorous(XVertical)({
     position: 'relative',
-    height: 100,
     '> a': {
         opacity: 0,
     },
@@ -74,11 +170,11 @@ const PermissionCell = glamorous(XVertical)({
         }
     }
 });
-const PermissionsHoverButton = glamorous(XButton)({
+
+const PermissionsHoverButton = Glamorous(XButton)({
     position: 'absolute',
     top: 'calc(50% - 24)',
-    left: 0,
-
+    left: 0
 });
 
 const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
@@ -198,47 +294,51 @@ const OrgMembers = withOrganizationMembers((props) => {
     return (
         <>
             <Table>
-                <XTable.Header>
-                    <XTable.Cell>{''}</XTable.Cell>
-                    <XTable.Cell>Role</XTable.Cell>
-                    <XTable.Cell>Join date</XTable.Cell>
-                </XTable.Header>
-
                 <XTable.Body>
                     {members.map((m) => (
                         <Row>
-                            <XTable.Cell width="40%">
-                                <XHorizontal >
+                            <XTable.Cell>
+                                <XHorizontal>
                                     <XAvatar size="medium" cloudImageUuid={(m.__typename === 'OrganizationJoinedMember' && m.user.picture) || undefined} />
-                                    <XVertical separator={4} justifyContent="center">
-                                        <XText textStyle="h500">{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && ((m.firstName || '') + ' ' + (m.lastName || '')))}</XText>
-                                        {m.email && <XText opacity={0.5} >{m.email}</XText>}
+                                    <XVertical separator={1} justifyContent="center">
+                                        <Title>{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && ((m.firstName || '') + ' ' + (m.lastName || '')))}</Title>
+                                        {m.email && <Text>{m.email}</Text>}
                                     </XVertical>
-
                                 </XHorizontal>
                             </XTable.Cell>
                             <XTable.Cell>
                                 <XWithRole role="admin" orgPermission={true}>
                                     {m.__typename === 'OrganizationJoinedMember' && (
-                                        <PermissionCell justifyContent="center" separator={0}>
-                                            <XText>{m.role}</XText>
+                                        <PermissionCell justifyContent="center" separator={1}>
+                                            <Title>Role</Title>
+                                            <Text>{m.role}</Text>
                                             <PermissionsHoverButton text="Manage Permissions" style="electric" query={{ field: 'changeRole', value: m.user.id }} />
                                         </PermissionCell>
                                     )}
                                     {m.__typename === 'OrganizationIvitedMember' && (
-                                        <XText>{m.role}</XText>
+                                        <XVertical justifyContent="center" separator={1}>
+                                            <Title>Role</Title>
+                                            <Text>{m.role}</Text>
+                                        </XVertical>
                                     )}
                                 </XWithRole>
                                 <XWithRole role="admin" orgPermission={true} negate={true}>
-                                    <XText>{m.role}</XText>
+                                    <Text>{m.role}</Text>
                                 </XWithRole>
 
                             </XTable.Cell>
                             <XTable.Cell>
-                                <XText >{m.__typename === 'OrganizationJoinedMember' ? (m.joinedAt ? DateFormater(m.joinedAt) : 'always been here') : 'not joined yet'}</XText>
+                                {(m.__typename === 'OrganizationJoinedMember' && m.joinedAt) && <TableTag green={true}>{DateFormater(m.joinedAt)}</TableTag>}
+                                {(m.__typename === 'OrganizationJoinedMember' && !m.joinedAt) && <TableTag purple={true}>always been here</TableTag>}
+                                {(m.__typename !== 'OrganizationJoinedMember') && <TableTag>not joined yet</TableTag>}
+                                {/* <TableTag
+                                    green={m.__typename === 'OrganizationJoinedMember' && m.joinedAt !== undefined}
+                                >
+                                    {m.__typename === 'OrganizationJoinedMember' ? (m.joinedAt ? DateFormater(m.joinedAt) : 'always been here') : 'not joined yet'}
+                                </TableTag> */}
                             </XTable.Cell>
                             <XWithRole role="admin" orgPermission={true}>
-                                <XTable.Cell textAlign="right" width="56">
+                                <XTable.Cell textAlign="center" width="80">
                                     <XOverflow
                                         placement="bottom-end"
                                         content={

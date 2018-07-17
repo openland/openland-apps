@@ -100,10 +100,14 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
                         content={
                             <PickerWrapper separator="none">
                                 <PickerGroupAll>
-                                    <XMenuItem onClick={(e) => this.onClick({value: this.getValuesOfGroup(group), label: group.label})}>{group.label} • All</XMenuItem>
+                                    <XMenuItem onClick={(e) => this.onClick({ value: this.getValuesOfGroup(group), label: group.label })}>{group.label} • All</XMenuItem>
                                 </PickerGroupAll>
 
-                                {group.options.map(category => <XMenuItem ref={this.onInner} key={category.value} onClick={(e) => this.onClick(category)}>{category.label}</XMenuItem>)}
+                                {group.options.map(category => (
+                                    <XMenuItem ref={this.onInner} key={category.value} onClick={(e) => this.onClick(category)}>
+                                        {category.label}
+                                    </XMenuItem>
+                                ))}
                             </PickerWrapper>}
                     >
                         <PickerItem>

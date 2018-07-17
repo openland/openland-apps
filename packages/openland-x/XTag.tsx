@@ -10,11 +10,13 @@ interface XTagProps extends XFlexStyles {
     size?: 'large' | 'default';
     color?: 'primary' | 'default' | 'gray' | 'green';
     onIconClick?: () => void;
+    onClick?: React.MouseEventHandler<any>;
 }
 
 interface StyledXTagProps extends XFlexStyles {
     tagSize?: 'large' | 'default';
     tagColor?: 'primary' | 'default' | 'gray' | 'green';
+    pointer?: boolean;
 }
 
 let iconsIndentation = styleResolver({
@@ -98,6 +100,7 @@ const XTagWrapper = Glamorous.div<StyledXTagProps>([
         marginRight: 8,
         marginTop: 4,
         marginBottom: 4,
+        cursor: props.pointer ? 'pointer' : undefined,
     }),
     (props) => sizeStyles(props.tagSize),
     (props) => colorStyles(props.tagColor)
@@ -130,6 +133,8 @@ export class XTag extends React.Component<XTagProps> {
             <XTagWrapper
                 tagSize={this.props.size}
                 tagColor={this.props.color}
+                onClick={this.props.onClick}
+                pointer={this.props.onClick !== undefined}
             >
                 {this.props.text}
                 {this.props.icon && (

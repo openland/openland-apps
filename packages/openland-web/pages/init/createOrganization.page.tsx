@@ -43,6 +43,51 @@ const Cancel = Glamorous(XLink)({
     }
 });
 
+const InputTooltipWrapper = Glamorous.div({
+    margin: -10,
+});
+
+const InputTooltipRow = Glamorous.div({
+    display: 'flex',
+    alignItems: 'flex-start',
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+    paddingTop: 18,
+    paddingBottom: 14,
+    paddingLeft: 18,
+    paddingRight: 18,
+    '&:last-child': {
+        borderBottom: 'none',
+        paddingTop: 14,
+        paddingBottom: 18,
+    },
+    '& > img': {
+        marginTop: 6
+    }
+});
+
+const InputTooltipText = Glamorous.div({
+    fontSize: 15,
+    fontWeight: 500,
+    lineHeight: 1.47,
+    letterSpacing: -0.3,
+    color: '#334562',
+    marginLeft: 14,
+    maxWidth: 364
+});
+
+const InputTooltip = () => (
+    <InputTooltipWrapper>
+        <InputTooltipRow>
+            <img src="/static/X/ic-profile.svg"/>
+            <InputTooltipText>Re-type your full name if you register as a private individual</InputTooltipText>
+        </InputTooltipRow>
+        <InputTooltipRow>
+            <img src="/static/X/ic-profile2.svg"/>
+            <InputTooltipText>For large organizations, you can register with your department name or regional office name</InputTooltipText>
+        </InputTooltipRow>
+    </InputTooltipWrapper>
+);
+
 const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props) => {
 
     return (
@@ -83,7 +128,12 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                             <XHorizontal separator="large">
                                 <XVertical width={280}>
                                     <XFormField field="input.name" title={InitTexts.create_organization.name}>
-                                        <XInput field="input.name" size="medium" placeholder={InitTexts.create_organization.namePlaceholder} />
+                                        <XInput
+                                            field="input.name"
+                                            size="medium"
+                                            placeholder={InitTexts.create_organization.namePlaceholder}
+                                            tooltipContent={<InputTooltip/>}
+                                        />
                                     </XFormField>
                                     <XFormField field="input.website" title={InitTexts.create_organization.website} optional={true}>
                                         <XInput field="input.website" size="medium" placeholder={InitTexts.create_organization.websitePlaceholder} />

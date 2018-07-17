@@ -235,6 +235,128 @@ const OrganizationCounter = Glamorous.div({
     fontWeight: 500
 });
 
+const EmptySearchWrapper = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    paddingTop: 85,
+    paddingBottom: 85,
+    '& > img': {
+        marginBottom: 24
+    }
+});
+
+const EmptySearchBlockTitle = Glamorous.div({
+    fontSize: 18,
+    letterSpacing: -0.2,
+    color: '#334562'
+});
+
+const Separator = Glamorous.div({
+    width: 253,
+    height: 1,
+    opacity: 0.73,
+    backgroundColor: '#f9fafb',
+    border: 'solid 1px rgba(220, 222, 228, 0.45)',
+    marginTop: 17,
+    marginBottom: 16,
+});
+
+const Text = Glamorous.div({
+    opacity: 0.5,
+    fontSize: 15,
+    letterSpacing: -0.2,
+    color: '#334562',
+    marginBottom: 15
+});
+
+const TopTagsWrapper = Glamorous.div({
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    maxWidth: 480
+});
+
+class EmptySearchBlock extends React.Component<{ onPick: (q: SearchCondition) => void }> {
+
+    onPick = (q: SearchCondition) => {
+        this.props.onPick(q);
+    }
+
+    onClick = (category: { type: any, value: string, label: string }) => {
+        this.onPick({ type: category.type, value: category.value, label: category.label });
+    }
+
+    render() {
+        return (
+            <XCardStyled>
+                <EmptySearchWrapper>
+                    <img src="/static/X/directory-empty.svg" />
+                    <EmptySearchBlockTitle>No results found</EmptySearchBlockTitle>
+                    <Separator />
+                    <Text>Top searches</Text>
+                    <TopTagsWrapper>
+                        <XTag
+                            color="primary"
+                            text="Big box retail"
+                            size="large"
+                            onClick={() => this.onClick({type: 'organizationType', value: 'Big box retail', label: 'Big box retail'})}
+                        />
+                        <XTag
+                            color="primary"
+                            text="Selling"
+                            size="large"
+                            onClick={() => this.onClick({type: 'interest', value: 'Selling', label: 'Selling'})}
+                        />
+                        <XTag
+                            color="primary"
+                            text="Buying"
+                            size="large"
+                            onClick={() => this.onClick({type: 'interest', value: 'Buying', label: 'Buying'})}
+                        />
+                        <XTag
+                            color="primary"
+                            text="Leasing"
+                            size="large"
+                            onClick={() => this.onClick({type: 'interest', value: 'Leasing', label: 'Leasing'})}
+                        />
+                        <XTag
+                            color="primary"
+                            text="Joint ventures"
+                            size="large"
+                            onClick={() => this.onClick({type: 'interest', value: 'Joint ventures', label: 'Joint ventures'})}
+                        />
+                        <XTag
+                            color="primary"
+                            text="Parking"
+                            size="large"
+                            onClick={() => this.onClick({type: 'organizationType', value: 'Parking', label: 'Parking'})}
+                        />
+                        <XTag
+                            color="primary"
+                            text="Gas station"
+                            size="large"
+                            onClick={() => this.onClick({type: 'organizationType', value: 'Gas station', label: 'Gas station'})}
+                        />
+                        <XTag
+                            color="primary"
+                            text="Railway"
+                            size="large"
+                            onClick={() => this.onClick({type: 'organizationType', value: 'Railway', label: 'Railway'})}
+                        />
+                        <XTag
+                            color="primary"
+                            text="Car wash"
+                            size="large"
+                            onClick={() => this.onClick({type: 'organizationType', value: 'Car wash', label: 'Car wash'})}
+                        />
+                    </TopTagsWrapper>
+                </EmptySearchWrapper>
+            </XCardStyled>
+        );
+    }
+}
+
 const OrganizationCards = withExploreOrganizations((props) => {
     return (
         <>
@@ -246,13 +368,14 @@ const OrganizationCards = withExploreOrganizations((props) => {
                     }
                 </XCardStyled>
             )}
-
-            {/* {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && <XText>{TextDirectory.emptyResults}</XText>} */}
+            {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && (
+                <EmptySearchBlock onPick={(props as any).onPick} />
+            )}
         </>
     );
-});
+}) as React.ComponentType<{ onPick: (q: SearchCondition) => void, variables: { query?: string } }>;
 
-class Organizations extends React.PureComponent<{ conditions: SearchCondition[] }> {
+class Organizations extends React.PureComponent<{ conditions: SearchCondition[], onPick: (q: SearchCondition) => void }> {
 
     buildQuery = (clauses: any[], operator: '$and' | '$or'): any | null => {
         if (clauses.length === 0) {
@@ -313,6 +436,7 @@ class Organizations extends React.PureComponent<{ conditions: SearchCondition[] 
         return (
             <div>
                 <OrganizationCards
+                    onPick={this.props.onPick}
                     variables={{
                         query: q ? JSON.stringify(q) : undefined
                     }}
@@ -409,6 +533,19 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
         this.setState({ conditions: res, searchText: '' });
     }
 
+    addConditionIfSearchEmpty = (condition: SearchCondition) => {
+        if (condition.value !== undefined && condition.value.length === 0) {
+            return;
+        }
+        let res: any[] = [];
+        res.push(condition);
+        let same = res.filter(c => c.type === condition.type && c.value === condition.value)[0];
+        if (!same) {
+            res.push(condition);
+        }
+        this.setState({ conditions: res, searchText: '' });
+    }
+
     removeCondition = (condition: SearchCondition) => {
         let res = [...this.state.conditions.filter(c => (c.type !== condition.type) || (condition.value !== undefined && c.value !== condition.value))];
         this.setState({
@@ -471,7 +608,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                         </>
                     )}
                 </XCardStyled>
-                <Organizations conditions={conditions} />
+                <Organizations conditions={conditions} onPick={this.addConditionIfSearchEmpty} />
             </XVertical>
         );
     }

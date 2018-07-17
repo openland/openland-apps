@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XFlexStyles, applyFlex } from './Flex';
+import { XPopper } from 'openland-x/XPopper';
 import { XIcon } from '../XIcon';
 
 export interface XInputBasicProps extends XFlexStyles {
@@ -17,6 +18,7 @@ export interface XInputBasicProps extends XFlexStyles {
     attach?: 'left' | 'right' | 'both';
     autofocus?: boolean;
     autoSelect?: boolean;
+    tooltipContent?: any;
     onChange?: (value: string) => void;
     onEnter?: () => void;
 }
@@ -194,6 +196,17 @@ const RequireElement = Glamorous.span({
     top: 'calc(50% - 5px)'
 });
 
+const PopperPlaceholder = Glamorous.div({
+    position: 'absolute',
+    right: 15,
+    top: 'calc(50% - 9px)',
+    cursor: 'pointer',
+    '& > i': {
+        fontSize: 18,
+        color: '#8A80E7'
+    }
+});
+
 export class XInputBasic extends React.PureComponent<XInputBasicProps> {
 
     inputRef: any | null = null;
@@ -247,6 +260,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
             autofocus,
             autoSelect,
             disabled,
+            tooltipContent,
             ...other
         } = this.props;
         let v = this.props.value;
@@ -277,6 +291,17 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                     onKeyPress={this.handleKey}
                 />
                 {required && <RequireElement>*</RequireElement>}
+                {tooltipContent && (
+                    <XPopper
+                        placement="bottom"
+                        content={tooltipContent}
+                        showOnHover={true}
+                    >
+                        <PopperPlaceholder>
+                            <XIcon icon="error" />
+                        </PopperPlaceholder>
+                    </XPopper>
+                )}
             </RootContainer>
         );
     }
