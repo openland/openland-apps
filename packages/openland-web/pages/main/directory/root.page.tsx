@@ -635,7 +635,7 @@ const MainContent = Glamorous.div({
 export default withApp('Directory', 'viewer', (props) => {
     return (
         <>
-            <XDocumentHead title="directory" />
+            <XDocumentHead title="Organization directory" />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <Root separator={14}>
