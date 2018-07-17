@@ -137,7 +137,7 @@ class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: st
 
     render() {
         return (
-            <LinkContianer>
+            <LinkContianer width="100%" flexGrow={1}>
                 {this.props.invite && (
                     <>
                         <XHorizontal alignItems="center" justifyContent="stretch">

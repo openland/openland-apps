@@ -102,7 +102,7 @@ export const InvitesHistory = withInvitesHistory((props) => {
                     <XTable.Cell>
                         <Title>{invite.isGlobal ? 'Invited to Openland' : 'Invited to your organization '}</Title>
                     </XTable.Cell>
-                    <XTable.Cell textAlign="right" width={120}>
+                    <XTable.Cell textAlign="right" width={130}>
                         <TableTag green={invite.acceptedBy ? true : false}>
                             {invite.acceptedBy ? 'Accepted' : 'Pending'}
                         </TableTag>
