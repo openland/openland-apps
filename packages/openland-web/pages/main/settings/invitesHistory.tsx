@@ -91,7 +91,7 @@ export const InvitesHistory = withInvitesHistory((props) => {
             {((props.data && props.data.invites) || []).map((invite) => (
                 <XTable.Row>
                     <XTable.Cell>
-                        <XHorizontal alignItems="center">
+                        <XHorizontal alignItems="center" separator={9}>
                             <XAvatar size="small" cloudImageUuid={invite.acceptedBy ? invite.acceptedBy.picture || undefined : undefined} />
                             <Title>{invite.acceptedBy !== null && invite.acceptedBy.name}</Title>
                         </XHorizontal>
