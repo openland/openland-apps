@@ -2,12 +2,16 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { XFlexStyles, applyFlex } from 'openland-x/basics/Flex';
 
-const XFormFieldDiv = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    // backgroundColor: '#f6f9fc',
-});
+const XFormFieldDiv = Glamorous.div<XFlexStyles>([
+    (props) => ({
+        display: 'flex',
+        flexDirection: 'column',
+        // backgroundColor: '#f6f9fc',
+    }),
+    applyFlex
+]);
 
 export const XFormFieldTitle = Glamorous.div<{ invalid?: boolean }>((props) => ({
     color: props.invalid ? '#e25950' : '#334562',
@@ -19,16 +23,19 @@ export const XFormFieldTitle = Glamorous.div<{ invalid?: boolean }>((props) => (
     paddingTop: 4,
     marginLeft: 0,
 }));
+
 const OptionalLabel = Glamorous.span({
     opacity: 0.4,
     fontWeight: 400
 });
+
 const XFormFieldChildren = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
     alignSelf: 'stretch',
 });
+
 const XFormFieldDescription = Glamorous.div<{ invalid?: boolean }>((props) => ({
     marginTop: 5,
     color: props.invalid ? '#e25950' : '#6b7c93',
@@ -36,33 +43,48 @@ const XFormFieldDescription = Glamorous.div<{ invalid?: boolean }>((props) => ({
     fontSize: '13px',
     lineHeight: 1.6
 }));
-export function XFormField(props: {
-    field?: string,
-    title: string,
-    description?: string,
-    invalid?: boolean,
-    optional?: boolean,
-    showErrors?: boolean,
-    children: any,
-}) {
-    if (props.field) {
+
+interface XFormFieldProps extends XFlexStyles {
+    field?: string;
+    title: string;
+    description?: string;
+    invalid?: boolean;
+    optional?: boolean;
+    showErrors?: boolean;
+    children: any;
+}
+
+export function XFormField(props: XFormFieldProps) {
+
+    const {
+        field,
+        title,
+        description,
+        invalid,
+        optional,
+        showErrors,
+        children,
+        ...other
+    } = props;
+
+    if (field) {
         return (
             <XStoreContext.Consumer>
                 {(store) => {
                     if (!store) {
                         throw Error('No store available');
                     }
-                    let errors = store.readValue('errors.' + props.field);
-                    let invalid = errors && errors.length !== 0;
+                    let errors = store.readValue('errors.' + field);
+                    let invalided = errors && errors.length !== 0;
                     return (
-                        <XFormFieldDiv className={(props as any).className}>
-                            <XFormFieldTitle invalid={invalid}>{props.title}{props.optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>
+                        <XFormFieldDiv className={(props as any).className} {...other}>
+                            <XFormFieldTitle invalid={invalided}>{title}{optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>
                             <XFormFieldChildren>
                                 <XVertical>
-                                    {props.children}
+                                    {children}
                                 </XVertical>
-                                {!invalid && props.description && <XFormFieldDescription invalid={false}>{props.description}</XFormFieldDescription>}
-                                {invalid && props.showErrors !== false && <XFormFieldDescription invalid={true}>{errors.join(', ')}</XFormFieldDescription>}
+                                {!invalided && description && <XFormFieldDescription invalid={false}>{description}</XFormFieldDescription>}
+                                {invalided && showErrors !== false && <XFormFieldDescription invalid={true}>{errors.join(', ')}</XFormFieldDescription>}
                             </XFormFieldChildren>
                         </XFormFieldDiv>
                     );
@@ -71,13 +93,13 @@ export function XFormField(props: {
         );
     }
     return (
-        <XFormFieldDiv className={(props as any).className}>
-            <XFormFieldTitle invalid={props.invalid}>{props.title}{props.optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>
+        <XFormFieldDiv className={(props as any).className} {...other}>
+            <XFormFieldTitle invalid={invalid}>{title}{optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>
             <XFormFieldChildren>
                 <XVertical>
-                    {props.children}
+                    {children}
                 </XVertical>
-                {props.description && <XFormFieldDescription invalid={props.invalid}>{props.description}</XFormFieldDescription>}
+                {description && <XFormFieldDescription invalid={invalid}>{description}</XFormFieldDescription>}
             </XFormFieldChildren>
         </XFormFieldDiv>
     );

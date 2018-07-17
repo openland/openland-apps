@@ -26,6 +26,10 @@ import { withInvitesHistory } from '../../../api/withInvitesHistory';
 import { InvitesHistory } from './invitesHistory';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 
+const ModalContentWrapper = Glamorous(XVertical)({
+    paddingBottom: 60
+});
+
 interface Invite {
     email?: string;
     firstName?: string;
@@ -265,8 +269,8 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                 customFooter={footer}
                 {...modalFormProps}
             >
-                {!this.state.showLink && (
-                    <XVertical justifyContent="center" alignItems="center">
+                <ModalContentWrapper alignItems="center">
+                    {!this.state.showLink && (
                         <XVertical flexGrow={1} width={'100%'}>
                             <XStoreContext.Consumer>
                                 {(store) => {
@@ -288,9 +292,9 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                             <Separator />
                             {!this.state.customTextAreaOpen && <LinkButton onClick={() => this.setState({ customTextAreaOpen: true })} >Compose a custom message to make your invites more personal</LinkButton>}
                             {this.state.customTextAreaOpen && (
-                                <XHorizontal>
-                                    <XFormField field="customText" title={TextInvites.customMessageTitle}>
-                                        <XTextArea valueStoreKey="fields.customText" resize={false} />
+                                <XHorizontal flexGrow={1} width="100%" separator={6}>
+                                    <XFormField field="customText" title={TextInvites.customMessageTitle} flexGrow={1}>
+                                        <XTextArea flexGrow={1} valueStoreKey="fields.customText" resize={false} />
                                     </XFormField>
                                     <XFormField field="" title="">
                                         <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ customTextAreaOpen: false })} />
@@ -299,21 +303,19 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                             )}
 
                             {!this.state.showInvitesHistory && <ShowInvitesHistory onClick={() => this.setState({ showInvitesHistory: true })} />}
+                        </XVertical>
+                    )}
 
-                        </XVertical >
-                    </XVertical >
-                )}
+                    {this.state.showLink && !this.props.organization && <OwnerLink innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
+                    {this.state.showLink && this.props.organization && <OwnerLinkOrganization innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
 
-                {this.state.showLink && !this.props.organization && <OwnerLink innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
-                {this.state.showLink && this.props.organization && <OwnerLinkOrganization innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
-
-                {this.state.showInvitesHistory && !this.state.showLink && (
-                    <XHorizontal>
-                        <InvitesHistory />
-                        <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ showInvitesHistory: false })} />
-                    </XHorizontal>
-                )}
-
+                    {this.state.showInvitesHistory && !this.state.showLink && (
+                        <XHorizontal flexGrow={1} width="100%">
+                            <InvitesHistory />
+                            <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ showInvitesHistory: false })} />
+                        </XHorizontal>
+                    )}
+                </ModalContentWrapper>
             </XModalForm>
         );
     }
