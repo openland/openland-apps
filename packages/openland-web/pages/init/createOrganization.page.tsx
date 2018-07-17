@@ -140,7 +140,7 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                                     </XFormField>
                                 </XVertical>
                                 <XFormField title={InitTexts.create_organization.photo}>
-                                    <XAvatarUpload field="input.photoRef" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} size="large" />
+                                    <XAvatarUpload cropParams="1:1, free" field="input.photoRef" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} size="large" />
                                 </XFormField>
                             </XHorizontal>
                         </XFormLoadingContent>
