@@ -167,9 +167,11 @@ const OwnerLinkOrganization = withPublicInviteOrganization(withRouter((props) =>
 ))) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
 
 const ShowInvitesHistory = withInvitesHistory((props) => (
-    <>
-        {(props.data && props.data.invites || []).length > 0 ? <LinkButton onClick={(props as any).onClick}>{TextInvites.showHistory}</LinkButton> : null}
-    </>
+        (props.data && props.data.invites || []).length > 0 ? (
+            <FlexStart>
+                <LinkButton onClick={(props as any).onClick}>{TextInvites.showHistory}</LinkButton>
+            </FlexStart>
+        ) : null
 )) as React.ComponentType<{ onClick?: () => void }>;
 
 interface InvitesMoadalRawProps {
@@ -290,7 +292,13 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                                 }}
                             </XStoreContext.Consumer>
                             <Separator />
-                            {!this.state.customTextAreaOpen && <LinkButton onClick={() => this.setState({ customTextAreaOpen: true })} >Compose a custom message to make your invites more personal</LinkButton>}
+                            {!this.state.customTextAreaOpen && (
+                                <FlexStart>
+                                    <LinkButton onClick={() => this.setState({ customTextAreaOpen: true })}>
+                                        Compose a custom message to make your invites more personal
+                                    </LinkButton>
+                                </FlexStart>
+                            )}
                             {this.state.customTextAreaOpen && (
                                 <XHorizontal flexGrow={1} width="100%" separator={6}>
                                     <XFormField field="customText" title={TextInvites.customMessageTitle} flexGrow={1}>
