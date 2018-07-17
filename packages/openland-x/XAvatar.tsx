@@ -122,7 +122,8 @@ const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
     '> svg': {
         width: '100%',
         height: '100%',
-    }
+    },
+    border: 'none'
 })]);
 
 const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {

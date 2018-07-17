@@ -91,6 +91,8 @@ interface OrganizationCardProps {
         followed: boolean,
         published: boolean,
     };
+    onPick: (q: SearchCondition) => void;
+
 }
 
 const OrganizationCardWrapper = Glamorous.div({
@@ -204,7 +206,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                     {props.item.organizationType && (
                         <OrganizationTags>
                             {props.item.organizationType.map((tag) => (
-                                <XTag key={props.item.id + tag} text={tag} />
+                                <XTag key={props.item.id + tag} text={tag} onClick={() => props.onPick({ type: 'organizationType', value: tag, label: tag })} />
                             ))}
                         </OrganizationTags>
                     )}
@@ -227,7 +229,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                                 )}
 
                                 <XWithRole role={['super-admin', 'editor']}>
-                                    <AlterOrgPublishedButton orgId={props.item.id} published={props.item.published}/>
+                                    <AlterOrgPublishedButton orgId={props.item.id} published={props.item.published} />
                                 </XWithRole>
                             </>
                         )}
@@ -313,55 +315,55 @@ class EmptySearchBlock extends React.Component<{ onPick: (q: SearchCondition) =>
                             color="primary"
                             text="Big box retail"
                             size="large"
-                            onClick={() => this.onClick({type: 'organizationType', value: 'Big box retail', label: 'Big box retail'})}
+                            onClick={() => this.onClick({ type: 'organizationType', value: 'Big box retail', label: 'Big box retail' })}
                         />
                         <XTag
                             color="primary"
                             text="Selling"
                             size="large"
-                            onClick={() => this.onClick({type: 'interest', value: 'Selling', label: 'Selling'})}
+                            onClick={() => this.onClick({ type: 'interest', value: 'Selling', label: 'Selling' })}
                         />
                         <XTag
                             color="primary"
                             text="Buying"
                             size="large"
-                            onClick={() => this.onClick({type: 'interest', value: 'Buying', label: 'Buying'})}
+                            onClick={() => this.onClick({ type: 'interest', value: 'Buying', label: 'Buying' })}
                         />
                         <XTag
                             color="primary"
                             text="Leasing"
                             size="large"
-                            onClick={() => this.onClick({type: 'interest', value: 'Leasing', label: 'Leasing'})}
+                            onClick={() => this.onClick({ type: 'interest', value: 'Leasing', label: 'Leasing' })}
                         />
                         <XTag
                             color="primary"
                             text="Joint ventures"
                             size="large"
-                            onClick={() => this.onClick({type: 'interest', value: 'Joint ventures', label: 'Joint ventures'})}
+                            onClick={() => this.onClick({ type: 'interest', value: 'Joint ventures', label: 'Joint ventures' })}
                         />
                         <XTag
                             color="primary"
                             text="Parking"
                             size="large"
-                            onClick={() => this.onClick({type: 'organizationType', value: 'Parking', label: 'Parking'})}
+                            onClick={() => this.onClick({ type: 'organizationType', value: 'Parking', label: 'Parking' })}
                         />
                         <XTag
                             color="primary"
                             text="Gas station"
                             size="large"
-                            onClick={() => this.onClick({type: 'organizationType', value: 'Gas station', label: 'Gas station'})}
+                            onClick={() => this.onClick({ type: 'organizationType', value: 'Gas station', label: 'Gas station' })}
                         />
                         <XTag
                             color="primary"
                             text="Railway"
                             size="large"
-                            onClick={() => this.onClick({type: 'organizationType', value: 'Railway', label: 'Railway'})}
+                            onClick={() => this.onClick({ type: 'organizationType', value: 'Railway', label: 'Railway' })}
                         />
                         <XTag
                             color="primary"
                             text="Car wash"
                             size="large"
-                            onClick={() => this.onClick({type: 'organizationType', value: 'Car wash', label: 'Car wash'})}
+                            onClick={() => this.onClick({ type: 'organizationType', value: 'Car wash', label: 'Car wash' })}
                         />
                     </TopTagsWrapper>
                 </EmptySearchWrapper>
@@ -377,7 +379,7 @@ const OrganizationCards = withExploreOrganizations((props) => {
                 <XCardStyled>
                     <OrganizationCounter>{TextDirectory.counterOrganizations(props.data.items.pageInfo.itemsCount)}</OrganizationCounter>
                     {props.data.items.edges.map((i, j) => (
-                        <OrganizationCard key={i.node.id + j} item={i.node} />))
+                        <OrganizationCard key={i.node.id + j} item={i.node} onPick={(props as any).onPick} />))
                     }
                 </XCardStyled>
             )}
@@ -535,6 +537,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
     }
 
     addCondition = (condition: SearchCondition) => {
+        // prevent empty search
         if (condition.value !== undefined && condition.value.length === 0) {
             return;
         }
@@ -546,16 +549,9 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
         this.setState({ conditions: res, searchText: '' });
     }
 
-    addConditionIfSearchEmpty = (condition: SearchCondition) => {
-        if (condition.value !== undefined && condition.value.length === 0) {
-            return;
-        }
+    replaceConditions = (condition: SearchCondition) => {
         let res: any[] = [];
         res.push(condition);
-        let same = res.filter(c => c.type === condition.type && c.value === condition.value)[0];
-        if (!same) {
-            res.push(condition);
-        }
         this.setState({ conditions: res, searchText: '' });
     }
 
@@ -621,7 +617,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                         </>
                     )}
                 </XCardStyled>
-                <Organizations conditions={conditions} onPick={this.addConditionIfSearchEmpty} />
+                <Organizations conditions={conditions} onPick={this.replaceConditions} />
             </XVertical>
         );
     }

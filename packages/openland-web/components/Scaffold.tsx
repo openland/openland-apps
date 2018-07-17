@@ -881,22 +881,22 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 <Home />
                             </XWithRole>
 
-                            <XWithRole role={['feature-directory']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    groupId="scaffold_tooltip"
-                                    content={(
-                                        <strong>{TextAppBar.items.directory}</strong>
+                            {/* <XWithRole role={['feature-directory']}> */}
+                            <XPopper
+                                placement="right"
+                                showOnHoverContent={false}
+                                showOnHover={true}
+                                groupId="scaffold_tooltip"
+                                content={(
+                                    <strong>{TextAppBar.items.directory}</strong>
 
-                                    )}
-                                >
-                                    <NavigatorItem path="/directory">
-                                        <DirecoryIcon />
-                                    </NavigatorItem>
-                                </XPopper>
-                            </XWithRole>
+                                )}
+                            >
+                                <NavigatorItem path="/directory">
+                                    <DirecoryIcon />
+                                </NavigatorItem>
+                            </XPopper>
+                            {/* </XWithRole> */}
 
                             <MessengerButton />
 
