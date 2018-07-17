@@ -7,8 +7,8 @@ export interface XFlexStyles {
     flexGrow?: number;
     flexShrink?: number;
     flexBasis?: number;
-    width?: number;
-    height?: number;
+    width?: number | string;
+    height?: number | string;
     minHeight?: number;
     minWidth?: number;
     maxHeight?: number;

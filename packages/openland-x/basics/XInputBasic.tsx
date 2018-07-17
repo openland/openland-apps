@@ -52,7 +52,7 @@ let sizeStyles = styleResolver({
     },
     'default': {
         height: 40,
-        fontSize: 16,
+        fontSize: 15,
         letterSpacing: 0.5,
         '> .icon': {
             fontSize: 16,
