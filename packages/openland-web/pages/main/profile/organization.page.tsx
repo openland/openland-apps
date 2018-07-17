@@ -945,14 +945,18 @@ const WelcomeModalWrapper = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
+    backgroundColor: '#fff',
     backgroundImage: 'url(\'/static/X/confetti.svg\')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
-    backgroundPosition: 'top center',
+    backgroundPosition: 'top -25px center',
     paddingBottom: 24,
-    paddingTop: 150,
-    paddingLeft: 100,
-    paddingRight: 100
+    paddingTop: 145,
+    paddingLeft: 80,
+    paddingRight: 80,
+    width: 620,
+    margin: 'auto',
+    borderRadius: 6
 });
 
 const WelcomePopupContent = Glamorous.div({
@@ -966,7 +970,7 @@ const WelcomePopupTitle = Glamorous.div({
     fontWeight: 600,
     letterSpacing: 0.9,
     color: '#1f3449',
-    marginBottom: 52,
+    marginBottom: 45,
 });
 
 const WelcomeModalRowsWrapper = Glamorous.div({
@@ -1002,13 +1006,13 @@ class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
         super(props);
 
         this.state = {
-            isOpen: true
+            isOpen: false
         };
     }
 
     checkModal = () => {
         if (canUseDOM) {
-            localStorage.setItem('welcomemodal', 'check');
+            localStorage.clear();
 
             this.setState({
                 isOpen: false
@@ -1018,11 +1022,11 @@ class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
 
     componentWillMount() {
         if (canUseDOM) {
-            let welcomemodal = localStorage.getItem('welcomemodal');
+            let needToShow = localStorage.getItem('isnewuser');
 
-            if (welcomemodal === 'check') {
+            if (needToShow === 'newuser') {
                 this.setState({
-                    isOpen: false
+                    isOpen: true
                 });
             }
         }
@@ -1035,6 +1039,7 @@ class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
                 isOpen={this.state.isOpen}
                 closeOnClick={false}
                 customContent={true}
+                transparent={true}
             >
                 <WelcomeModalWrapper>
                     <WelcomePopupContent>

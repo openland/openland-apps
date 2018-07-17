@@ -6,7 +6,16 @@ import { XRouter } from 'openland-x-routing/XRouter';
 import { XButton } from 'openland-x/XButton';
 import { XModalContext } from './XModalContext';
 
-class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'default' | 'small', scrollableContent?: boolean, isOpen: boolean, closeOnClick?: boolean, onCloseRequest: () => void; }> {
+interface ModalRenderProps {
+    size: 'x-large' | 'large' | 'default' | 'small';
+    scrollableContent?: boolean;
+    isOpen: boolean;
+    closeOnClick?: boolean;
+    onCloseRequest: () => void;
+    transparent?: boolean;
+}
+
+class ModalRender extends React.PureComponent<ModalRenderProps> {
 
     render() {
 
@@ -32,14 +41,14 @@ class ModalRender extends React.PureComponent<{ size: 'x-large' | 'large' | 'def
                     },
                     content: {
                         display: 'block',
-                        background: '#ffffff',
+                        background: this.props.transparent ? 'transparent' : '#ffffff',
                         margin: 'auto',
                         padding: 0,
                         overflow: 'visible',
 
                         // Border/shadow
                         border: 'none',
-                        boxShadow: '0px 2px 2px 0px #777',
+                        boxShadow: this.props.transparent ? 'none' : '0px 2px 2px 0px #777',
                         borderRadius: 6,
 
                         // Sizes
@@ -197,6 +206,7 @@ export interface XModalProps {
 
     // Style
     size?: 'x-large' | 'large' | 'default' | 'small';
+    transparent?: boolean;
 
     // Controlled/Uncontrolled
     isOpen?: boolean;
@@ -244,7 +254,14 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
             return (
                 <>
                     {TargetClone}
-                    <ModalRender scrollableContent={this.props.scrollableContent} isOpen={this.state.isOpen} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
+                    <ModalRender
+                        scrollableContent={this.props.scrollableContent}
+                        isOpen={this.state.isOpen}
+                        onCloseRequest={this.onModalCloseRequest}
+                        size={size}
+                        closeOnClick={this.props.closeOnClick}
+                        transparent={this.props.transparent}
+                    >
                         <ModalContentRender
                             scrollableContent={this.props.scrollableContent}
                             title={this.props.title}
@@ -267,7 +284,14 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                     {(router) => {
                         this.lastRouter = router;
                         return (
-                            <ModalRender scrollableContent={this.props.scrollableContent} isOpen={!!router!!.query[q]} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
+                            <ModalRender
+                                scrollableContent={this.props.scrollableContent}
+                                isOpen={!!router!!.query[q]}
+                                onCloseRequest={this.onModalCloseRequest}
+                                size={size}
+                                closeOnClick={this.props.closeOnClick}
+                                transparent={this.props.transparent}
+                            >
                                 <ModalContentRender
                                     scrollableContent={this.props.scrollableContent}
                                     title={this.props.title}
@@ -287,7 +311,14 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
             );
         } else if (this.props.isOpen !== undefined) {
             return (
-                <ModalRender scrollableContent={this.props.scrollableContent} isOpen={this.props.isOpen} onCloseRequest={this.onModalCloseRequest} size={size} closeOnClick={this.props.closeOnClick}>
+                <ModalRender
+                    scrollableContent={this.props.scrollableContent}
+                    isOpen={this.props.isOpen}
+                    onCloseRequest={this.onModalCloseRequest}
+                    size={size}
+                    closeOnClick={this.props.closeOnClick}
+                    transparent={this.props.transparent}
+                >
                     <ModalContentRender
                         scrollableContent={this.props.scrollableContent}
                         title={this.props.title}

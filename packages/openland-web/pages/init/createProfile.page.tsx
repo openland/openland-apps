@@ -1,6 +1,7 @@
 import '../init';
 import '../../globals';
 import * as React from 'react';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -59,6 +60,9 @@ const FooterLink = glamorous(XLink)({
 });
 
 const CreateProfileForm = withProfileCreate((props) => {
+    if (canUseDOM) {
+        localStorage.setItem('isnewuser', 'newuser');
+    }
     return (
         <RootContainer>
             <Logo />
