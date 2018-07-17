@@ -45,7 +45,7 @@ class EntriesComponent extends React.Component<{ title: string, options: { value
             <EntryWrapper separator="none">
                 <EntryTitle>{this.props.title}</EntryTitle>
                 <EntryScrollable separator="none">
-                    {this.props.options.filter(e => e.value.split(' ').filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0).map((e, i) => <EntryItem onClick={() => this.props.onPick({ type: 'interest', value: e.value, label: e.label })} key={e + '_' + i}>{e.label}</EntryItem>)}
+                    {this.props.options.filter(e => ([...e.label.split(' '), e.label]).filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0).map((e, i) => <EntryItem onClick={() => this.props.onPick({ type: 'interest', value: e.value, label: e.label })} key={e + '_' + i}>{e.label}</EntryItem>)}
                 </EntryScrollable>
             </EntryWrapper>
         );
