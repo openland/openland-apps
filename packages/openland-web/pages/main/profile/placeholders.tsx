@@ -837,7 +837,7 @@ export const AvatartPlaceholder = withMyOrganizationProfile((props) => {
             <XVertical>
                 <XFormLoadingContent>
                     <XFormField title={TextOrganizationProfile.placeholderLogoModalLocationTitle}>
-                        <XAvatarUpload field="input.photoRef" />
+                        <XAvatarUpload field="input.photoRef" cropParams="1:1, free"/>
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>

@@ -11,6 +11,7 @@ export interface XAvatarUploadBasicProps {
     onChanged?: (file: UploadedFile | null) => void;
     size?: 'normal' | 'large';
     initialUrl?: string | null;
+    cropParams?: string;
 }
 
 const DropAreaWrapper = Glamorous.div<{ hasImage: boolean, avatarSize?: 'normal' | 'large' }>((props) => ({
@@ -67,7 +68,7 @@ const Placeholder = Glamorous.div<{ hasImage: boolean }>((props) => ({
     zIndex: 1,
     '&:hover': {
         color: props.hasImage ? '#fff' : '#dcdee4',
-        backgroundColor: props.hasImage ? 'rgba(0, 0, 0, 0.47)' : '#fff' 
+        backgroundColor: props.hasImage ? 'rgba(0, 0, 0, 0.47)' : '#fff'
     }
 }));
 
@@ -145,7 +146,7 @@ export class XAvatarUploadBasic extends React.PureComponent<XAvatarUploadBasicPr
             <XFileUpload
                 {...this.props}
                 initialUrl={this.props.initialUrl}
-                cropParams="1:1"
+                cropParams={this.props.cropParams || '1:1'}
                 component={(rp) => {
                     return (
                         <AvatarRender {...rp} placeholder={this.props.placeholder} size={this.props.size} />

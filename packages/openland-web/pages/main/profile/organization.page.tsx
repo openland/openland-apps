@@ -1219,7 +1219,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
     let editListinFields = (
         <XVertical>
             {(props.router.query.addListing === 'AR' || editArTarget) && (
-                <XAvatarUpload field="input.photo" placeholder={{ add: TextOrganizationProfile.listingCreateDoPhotoPlaceholderAdd, change: TextOrganizationProfile.listingCreateDoPhotoPlaceholderChange }} />
+                <XAvatarUpload field="input.photo" cropParams="1:1, free" placeholder={{ add: TextOrganizationProfile.listingCreateDoPhotoPlaceholderAdd, change: TextOrganizationProfile.listingCreateDoPhotoPlaceholderChange }} />
             )}
 
             <XFormField title={TextOrganizationProfile.listingCreateDoNameTitle} field="input.name" >
