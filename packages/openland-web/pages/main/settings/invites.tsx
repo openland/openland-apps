@@ -26,9 +26,9 @@ import { withInvitesHistory } from '../../../api/withInvitesHistory';
 import { InvitesHistory } from './invitesHistory';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 
-const ModalContentWrapper = Glamorous(XVertical)({
-    paddingBottom: 60
-});
+const ModalContentWrapper = Glamorous(XVertical)<{ bottomOfset?: boolean }>((props) => ({
+    paddingBottom: props.bottomOfset ? 60 : undefined
+}));
 
 interface Invite {
     email?: string;
@@ -94,6 +94,12 @@ const RoleSelectWrapper = Glamorous(XHorizontal)({
     }
 });
 
+const InviteText = Glamorous.div({
+    fontSize: 14,
+    letterSpacing: -0.2,
+    color: 'rgba(51, 69, 98, 0.4)'
+});
+
 const InviteComponent = (props: InviteComponentProps) => (
     <XHorizontal separator={6} alignItems="center" flexGrow={1}>
         <XInput placeholder={TextInvites.firstNamePlaceholder} field={'inviteRequests.' + props.index + '.firstName'} flexGrow={1} />
@@ -109,11 +115,6 @@ const InviteComponent = (props: InviteComponentProps) => (
         <DeleteButton hide={props.single} enabled={!props.single} icon="close" style="flat" onClick={() => props.handleRemove(props.index)} />
     </XHorizontal>
 );
-
-const LinkContianer = Glamorous(XVertical)({
-    minHeight: 300,
-    padding: 40
-});
 
 class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: string, ttl: string | null } | null, createMutation: any, deleteMutation: any } & XWithRouter> {
     input?: any;
@@ -137,15 +138,19 @@ class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: st
 
     render() {
         return (
-            <LinkContianer width="100%" flexGrow={1}>
+            <XVertical width="100%" flexGrow={1} separator={2}>
                 {this.props.invite && (
                     <>
+                        <XHorizontal justifyContent="space-between" alignItems="center">
+                            <XFormFieldTitle>Invitation link</XFormFieldTitle>
+                            <InviteText>Anyone with the link will be able to join</InviteText>
+                        </XHorizontal>
                         <XHorizontal alignItems="center" justifyContent="stretch">
                             <XInput flexGrow={1} autoSelect={true} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key} />
                         </XHorizontal>
                     </>
                 )}
-            </LinkContianer>
+            </XVertical>
         );
     }
 }
@@ -167,11 +172,11 @@ const OwnerLinkOrganization = withPublicInviteOrganization(withRouter((props) =>
 ))) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
 
 const ShowInvitesHistory = withInvitesHistory((props) => (
-        (props.data && props.data.invites || []).length > 0 ? (
-            <FlexStart>
-                <LinkButton onClick={(props as any).onClick}>{TextInvites.showHistory}</LinkButton>
-            </FlexStart>
-        ) : null
+    (props.data && props.data.invites || []).length > 0 ? (
+        <FlexStart>
+            <LinkButton onClick={(props as any).onClick}>{TextInvites.showHistory}</LinkButton>
+        </FlexStart>
+    ) : null
 )) as React.ComponentType<{ onClick?: () => void }>;
 
 interface InvitesMoadalRawProps {
@@ -254,7 +259,7 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
         return (
             <XModalForm
                 useTopCloser={true}
-                size="large"
+                size={this.state.showLink !== true ? 'large' : 'default'}
                 defaultAction={async (data) => {
                     let invites = data.inviteRequests.filter((invite: any) => invite.email || invite.firstName || invite.lastName).map((invite: any) => ({ ...invite, role: this.props.useRoles !== false ? invite.role : undefined, emailText: this.state.customTextAreaOpen ? data.customText : null }));
                     await this.props.mutation({
@@ -271,7 +276,7 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                 customFooter={footer}
                 {...modalFormProps}
             >
-                <ModalContentWrapper alignItems="center">
+                <ModalContentWrapper alignItems="center" bottomOfset={this.state.showLink !== true}>
                     {!this.state.showLink && (
                         <XVertical flexGrow={1} width={'100%'}>
                             <XStoreContext.Consumer>
@@ -314,9 +319,6 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                         </XVertical>
                     )}
 
-                    {this.state.showLink && !this.props.organization && <OwnerLink innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
-                    {this.state.showLink && this.props.organization && <OwnerLinkOrganization innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
-
                     {this.state.showInvitesHistory && !this.state.showLink && (
                         <XVertical flexGrow={1} width="100%" separator={2}>
                             <XHorizontal justifyContent="space-between" alignItems="center">
@@ -326,6 +328,9 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                             <InvitesHistory />
                         </XVertical>
                     )}
+
+                    {this.state.showLink && !this.props.organization && <OwnerLink innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
+                    {this.state.showLink && this.props.organization && <OwnerLinkOrganization innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
                 </ModalContentWrapper>
             </XModalForm>
         );
