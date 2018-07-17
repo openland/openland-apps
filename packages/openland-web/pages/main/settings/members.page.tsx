@@ -64,7 +64,6 @@ const Text = Glamorous.div({
 });
 
 const Table = Glamorous(XTable)({
-    width: 900,
     marginLeft: 0,
     marginRight: 0,
     borderCollapse: 'separate',
@@ -299,7 +298,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                     </XVertical>
                                 </XHorizontal>
                             </XTable.Cell>
-                            <XTable.Cell width={210}>
+                            <XTable.Cell>
                                 <XWithRole role="admin" orgPermission={true}>
                                     {m.__typename === 'OrganizationJoinedMember' && (
                                         <PermissionCell justifyContent="center" separator={1}>
@@ -320,7 +319,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                 </XWithRole>
 
                             </XTable.Cell>
-                            <XTable.Cell width={225}>
+                            <XTable.Cell>
                                 {(m.__typename === 'OrganizationJoinedMember' && m.joinedAt) && <TableTag green={true}>{TextInvites.membersMgmt.statusJoined +  DateFormater(m.joinedAt)}</TableTag>}
                                 {(m.__typename === 'OrganizationJoinedMember' && !m.joinedAt) && <TableTag purple={true}>{TextInvites.membersMgmt.statusJoinedFix}</TableTag>}
                                 {(m.__typename !== 'OrganizationJoinedMember') && <TableTag>{TextInvites.membersMgmt.statusNotJoined}</TableTag>}
