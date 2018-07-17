@@ -16,7 +16,7 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
                 <XVertical>
                     <XTitle>Sizes</XTitle>
                     <XVertical>
-                        <XInput size="large" placeholder="large" value="large" alignSelf="flex-start" placeholderContent="qweqweqweqweqweqw" />
+                        <XInput size="large" placeholder="large" value="large" alignSelf="flex-start" />
                         <XInput size="medium" placeholder="medium" alignSelf="flex-start" />
                         <XInput size="default" placeholder="default" alignSelf="flex-start" />
                         <XInput size="small" placeholder="small" alignSelf="flex-start" />
