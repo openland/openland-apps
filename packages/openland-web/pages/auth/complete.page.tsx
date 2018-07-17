@@ -60,7 +60,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
                 forceRefresh: true
             }).replace(path);
         } else {
-            trackError(uploaded);
+            trackError(JSON.stringify(uploaded));
             console.warn(uploaded);
             throw 'Error';
         }

@@ -19,10 +19,17 @@ import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { withQueryLoader } from '../../components/withQueryLoader';
 import { withSuperAccount } from '../../api/withSuperAccount';
+import { withOrganizationPublishedAlterSuper } from '../../api/withOrganizationPublishedAlter';
+import { XOverflow } from '../../components/Incubator/XOverflow';
 
 const ActivateButton = withSuperAccountActivate((props) => <XButton style="primary" action={() => props.activate({})} text="Activate" />);
 const SuspendButton = withSuperAccountSuspend((props) => <XButton style="danger" action={() => props.suspend({})} text="Suspend" />);
 const PendButton = withSuperAccountPend((props) => <XButton style="danger" action={() => props.pend({})} text="Pend" />);
+const AlterOrgPublishedButton = withOrganizationPublishedAlterSuper((props) => {
+    return (
+        <XButton text={(props as any).published ? 'Hide from search' : 'Publish'} style="flat" action={async () => props.alterPublished({ variables: { organizationId: (props as any).orgId, published: !(props as any).published } })} />
+    );
+}) as React.ComponentType<{ orgId: string, published: boolean, refetchVars: { published: boolean } }>;
 
 const AddMemberForm = withSuperAccountMemberAdd((props) => {
     return (
@@ -119,6 +126,7 @@ export default withApp('Super Organization', 'super-admin', withSuperAccount(wit
                 {props.data.superAccount.state !== 'ACTIVATED' && <ActivateButton />}
                 {props.data.superAccount.state === 'ACTIVATED' && <SuspendButton />}
                 {props.data.superAccount.state === 'ACTIVATED' && <PendButton />}
+                <XOverflow placement="bottom-end" content={<AlterOrgPublishedButton orgId={props.data.superAccount.orgId} published={props.data.superAccount.published} refetchVars={{ published: props.data.superAccount.published }} />} />
             </XHeader>
             <XHeader text="Members" description={props.data.superAccount.members.length + ' total'} />
             <XTable>

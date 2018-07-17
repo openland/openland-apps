@@ -5,11 +5,10 @@ import { makeActionable, ActionableParentProps } from './Actionable';
 import { XFlexStyles, applyFlex } from './basics/Flex';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
 import { XCloudImage, XPhotoRef } from './XCloudImage';
-import PlaceholderOrg from './icons/avatar-org-large.svg';
-import PlaceholderOrgSmall from './icons/avatar-org-small.svg';
-
-import PlaceholderUser from './icons/avatar-user-large.svg';
-import PlaceholderUserSmall from './icons/avatar-user-small.svg';
+import PlaceholderOrg from './icons/avatar_org_large.svg';
+import PlaceholderOrgSmall from './icons/avatar_org_small.svg';
+import PlaceholderUser from './icons/avatar_user_large.svg';
+import PlaceholderUserSmall from './icons/avatar_user_small.svg';
 
 export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'medium' | 'default' | 'small';
 export type XAvatarStyle = 'organization' | 'person';
@@ -119,7 +118,11 @@ const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
     alignItems: 'center',
     justifyContent: 'center',
     color: 'rgba(51, 69, 98, 0.3)',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    '> svg': {
+        width: '100%',
+        height: '100%',
+    }
 })]);
 
 const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
@@ -145,6 +148,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
     let imageWidth = typeof props.size === 'number' ? props.size : sizeStyles(props.size).width as number;
     let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
 
+    console.warn(props.style);
     return (
         <>
             {props.src && (
@@ -158,7 +162,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             {!props.src && !(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps} >
                     {props.style === 'organization' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderOrg /> : <PlaceholderOrgSmall />)}
-                    {props.style === 'person' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderUser /> : <PlaceholderUserSmall />)}
+                    {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderUser /> : <PlaceholderUserSmall />)}
                 </StyledPlaceholder>
             )}
         </>

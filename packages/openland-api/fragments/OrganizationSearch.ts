@@ -10,6 +10,6 @@ export const OrganizationSearch = gql`
         organizationType: alphaOrganizationType
         interests: alphaInterests
         followed: alphaFollowed
-        
+        published: alphaPublished
     }
 `;

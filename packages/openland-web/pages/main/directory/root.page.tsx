@@ -21,6 +21,7 @@ import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
 import { XMutation } from 'openland-x/XMutation';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { XLink } from 'openland-x/XLink';
+import { withOrganizationPublishedAlter } from '../../../api/withOrganizationPublishedAlter';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -88,6 +89,7 @@ interface OrganizationCardProps {
         organizationType: string[] | null,
         isMine: boolean,
         followed: boolean,
+        published: boolean,
     };
 }
 
@@ -175,6 +177,12 @@ const OrganizationFollowBtn = withOrganizationFollow((props) => {
     );
 }) as React.ComponentType<{ organizationId: string, followed: boolean }>;
 
+const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => {
+    return (
+        <XButton text={(props as any).published ? 'Hide from search' : 'Publish'} style="flat" action={async () => props.alterPublished({ variables: { organizationId: (props as any).orgId, published: !(props as any).published } })} />
+    );
+}) as React.ComponentType<{ orgId: string, published: boolean }>;
+
 const OrganizationCard = (props: OrganizationCardProps) => (
     <OrganizationCardWrapper>
         <XHorizontal justifyContent="space-between" separator={12}>
@@ -205,6 +213,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                     {props.item.isMine && <XButton style="ghost" text={TextDirectory.labelYourOrganization} enabled={false} />}
                     {!props.item.isMine && <OrganizationFollowBtn followed={props.item.followed} organizationId={props.item.id} />}
                     {!props.item.isMine && <XButton style="primary" path={'/mail/' + props.item.id} text={TextDirectory.labelSendMessage} />}
+
                     <XOverflow
                         placement="bottom-end"
                         content={(
@@ -216,6 +225,10 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                                         <XOverflow.Item href="/settings/organization">{TextDirectory.buttonEdit}</XOverflow.Item>
                                     </XWithRole>
                                 )}
+
+                                <XWithRole role={['super-admin', 'editor']}>
+                                    <AlterOrgPublishedButton orgId={props.item.id} published={props.item.published}/>
+                                </XWithRole>
                             </>
                         )}
                     />

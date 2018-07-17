@@ -33,8 +33,14 @@ export const AccountInviteInfoQuery = gql`
             title
             photo
             joined
+            creator{
+                ...UserShort
+            }
+            forEmail
+            forName
         }
     }
+    ${UserShort}
 `;
 
 export const AccountInviteJoinMutation = gql`

@@ -11,6 +11,8 @@ routes.add('/signup', '/init/signin');
 routes.add('/signup/', '/init/signin');
 routes.add('/signin', '/init/signin');
 routes.add('/signin/', '/init/signin');
+routes.add('/signin/invite', '/init/signinvite');
+routes.add('/signin/invite/', '/init/signinvite');
 routes.add('/activation', '/init/activation');
 routes.add('/activation/', '/init/activation');
 routes.add('/need_info', '/init/need_info');

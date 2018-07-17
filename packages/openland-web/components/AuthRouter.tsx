@@ -34,8 +34,14 @@ export const AuthRouter = withUserInfo((props) => {
             redirectPath = '/';
         }
     }
-
     let handled = false;
+
+    // Redirect to Join prview before Signup/Signin if there are was redirect to join
+    if (!handled && !props.isLoggedIn && (redirectPath.startsWith('/join/') || redirectPath.startsWith('/invite/'))) {
+        handled = true;
+        return <XPageRedirect path={'/signin/invite' + redirect} />;
+    }
+
     // Redirect to Signup/Signin pages
     if (!props.isLoggedIn) {
         handled = true;

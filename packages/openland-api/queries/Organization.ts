@@ -269,3 +269,12 @@ export const OrganizationActivateByInviteMutation = gql`
         alphaJoinGlobalInvite(key: $inviteKey)
     }
 `;
+
+export const OrganizationAlterPublishedMutation = gql`
+    mutation OrganizationAlterPublished($organizationId: ID!, $published: Boolean!) {
+        alphaAlterPublished(id: $organizationId, published: $published){
+            ...OrganizationSearch
+        }
+    }
+    ${OrganizationSearch}
+`;
