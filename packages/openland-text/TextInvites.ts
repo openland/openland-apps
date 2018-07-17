@@ -59,6 +59,11 @@ export const TextInvites = {
         menuChangeRole: 'Manage Permissions',
         menuRemoveMember: 'Remove from organization',
         menuCancelInvite: 'Cancel invite',
+
+        statusJoined: 'joined ',
+        statusNotJoined: 'invited',
+        statusJoinedFix: 'always been here',
+
     }
 };
 

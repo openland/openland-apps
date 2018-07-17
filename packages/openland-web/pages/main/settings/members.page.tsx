@@ -321,9 +321,9 @@ const OrgMembers = withOrganizationMembers((props) => {
 
                             </XTable.Cell>
                             <XTable.Cell width={225}>
-                                {(m.__typename === 'OrganizationJoinedMember' && m.joinedAt) && <TableTag green={true}>{DateFormater(m.joinedAt)}</TableTag>}
-                                {(m.__typename === 'OrganizationJoinedMember' && !m.joinedAt) && <TableTag purple={true}>always been here</TableTag>}
-                                {(m.__typename !== 'OrganizationJoinedMember') && <TableTag>not joined yet</TableTag>}
+                                {(m.__typename === 'OrganizationJoinedMember' && m.joinedAt) && <TableTag green={true}>{TextInvites.membersMgmt.statusJoined +  DateFormater(m.joinedAt)}</TableTag>}
+                                {(m.__typename === 'OrganizationJoinedMember' && !m.joinedAt) && <TableTag purple={true}>{TextInvites.membersMgmt.statusJoinedFix}</TableTag>}
+                                {(m.__typename !== 'OrganizationJoinedMember') && <TableTag>{TextInvites.membersMgmt.statusNotJoined}</TableTag>}
                                 {/* <TableTag
                                     green={m.__typename === 'OrganizationJoinedMember' && m.joinedAt !== undefined}
                                 >
