@@ -242,7 +242,7 @@ const OrganizationSettigs = withMyOrganizationProfile((props) => {
 
                                     </XVertical>
                                     <XFormField title="Photo" field="input.photoRef" optional={true}>
-                                        <XAvatarUpload field="input.photoRef" />
+                                        <XAvatarUpload cropParams="1:1, free" field="input.photoRef" />
                                     </XFormField>
                                 </XHorizontal>
                             </XFormLoadingContent>
