@@ -373,8 +373,9 @@ class EmptySearchBlock extends React.Component<{ onPick: (q: SearchCondition) =>
 }
 
 const OrganizationCards = withExploreOrganizations((props) => {
+    console.warn(props);
     return (
-        <>
+        <XVertical>
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
                 <XCardStyled>
                     <OrganizationCounter>{TextDirectory.counterOrganizations(props.data.items.pageInfo.itemsCount)}</OrganizationCounter>
@@ -386,7 +387,17 @@ const OrganizationCards = withExploreOrganizations((props) => {
             {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && (
                 <EmptySearchBlock onPick={(props as any).onPick} />
             )}
-        </>
+
+            <XHorizontal justifyContent="flex-end">
+                {props.data.items.pageInfo.currentPage > 1 && (
+                    <XButton path={'/directory?page=' + (props.data.items.pageInfo.currentPage - 1).toString() + '#'} text="Prev" />
+                )}
+                {props.data.items.pageInfo.hasNextPage && (
+                    <XButton path={'/directory?page=' + (props.data.items.pageInfo.currentPage + 1).toString() + '#'} text="Next" />
+                )}
+            </XHorizontal>
+
+        </XVertical>
     );
 }) as React.ComponentType<{ onPick: (q: SearchCondition) => void, variables: { query?: string } }>;
 

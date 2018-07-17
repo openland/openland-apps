@@ -77,7 +77,6 @@ export class XModalForm extends React.Component<XModalFormProps> {
             </Footer>
         );
 
-        console.warn(footer);
         return (
             <XModal {...other} customContent={true} scrollableContent={this.props.scrollableContent} useTopCloser={this.props.useTopCloser}>
                 {(this.props.title || this.props.useTopCloser) && <XModalHeader>{this.props.title}{this.props.useTopCloser && <XModalCloser style="flat" icon="close" autoClose={true} />}</XModalHeader>}

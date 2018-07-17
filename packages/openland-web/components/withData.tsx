@@ -157,7 +157,6 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
 
         constructor(props: WithDataProps) {
             super(props);
-            console.warn(props);
             this.apollo = apolloClient(this.props.serverState.apollo.data, this.props.serverState.apollo.token, this.props.serverState.apollo.org);
 
             // Guess Timezone
