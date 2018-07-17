@@ -39,6 +39,27 @@ export const TextInvites = {
     showHistory: 'See pending and accepted invitations',
     
     backToEmailInvites: 'Send email invites',
+
+    membersMgmt: {
+        inviteButton: 'Invite new members',
+
+        removeTitle: (orgName: string) => 'Imagine ' + orgName + ' without',
+        removeSubmit: 'Remove from organization',
+
+        cancelInviteTitle: 'Cancel invite for',
+        cancelInviteSubmit: 'Cancel invite',
+
+        changeRoleTitle: (userName: string, orgName: string) => 'Imagine ' + userName + ' as ' + orgName + '\'s',
+
+        changeRoleOwnerHint: 'Owner can do everything',
+        changeRoleMemberHint: 'Members only watches',
+
+        tableChangeRole: 'Manage Permissions',
+
+        menuChangeRole: 'Manage Permissions',
+        menuRemoveMember: 'Remove from organization',
+        menuCancelInvite: 'Cancel invite',
+    }
 };
 
 // title=|>|text=|placeholder=

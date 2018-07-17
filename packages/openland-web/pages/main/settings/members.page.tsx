@@ -4,8 +4,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { withUserInfo } from '../../../components/UserInfo';
-import { withInviteCreate } from '../../../api/withInviteCreate';
-import { withInviteDestroy } from '../../../api/withInviteDestroy';
 import { Navigation } from './_navigation';
 import { XTable } from 'openland-x/XTable';
 import { XHeader } from 'openland-x/XHeader';
@@ -26,14 +24,8 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { DateFormater } from 'openland-x-format/XDateLegacy';
 import { withRouter } from 'openland-x-routing/withRouter';
-
-export const CreateInviteButton = withInviteCreate((props) => (
-    <XButton action={() => props.createInvite({})} text="Create Invite" />
-));
-
-export const CancelInviteButton = withInviteDestroy((props) => (
-    <XButton action={() => props.destroyInvite({})} text="Cancel" />
-));
+import { InvitesToOrganizationMoadal } from './invites';
+import { TextInvites } from 'openland-text/TextInvites';
 
 const TableTag = Glamorous.div<{ green?: boolean, purple?: boolean }>((props) => ({
     height: 32,
@@ -187,10 +179,10 @@ const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
     return (
         <XModalForm
             submitProps={{
-                text: 'Remove from organization',
+                text: TextInvites.membersMgmt.removeSubmit,
                 style: 'danger',
             }}
-            title={'Imagine ' + (props as any).orgName + ' without'}
+            title={TextInvites.membersMgmt.removeTitle((props as any).orgName)}
             targetQuery="remove"
             defaultAction={async (data) => {
                 await props.remove({
@@ -220,10 +212,10 @@ const RemoveInviteddModal = withOrganizationRemoveMember((props) => {
     return (
         <XModalForm
             submitProps={{
-                text: 'Cancel invite',
+                text: TextInvites.membersMgmt.cancelInviteSubmit,
                 style: 'danger',
             }}
-            title={'Cancel invite for'}
+            title={TextInvites.membersMgmt.cancelInviteSubmit}
             targetQuery="remove"
             defaultAction={async (data) => {
                 await props.remove({
@@ -252,7 +244,7 @@ const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => 
     }
     return (
         <XModalForm
-            title={'Imagine ' + member.user.name + ' as ' + (props as any).orgName + '\'s'}
+            title={TextInvites.membersMgmt.changeRoleTitle(member.user.name, (props as any).orgName)}
             defaultData={{
                 role: member.role
             }}
@@ -276,7 +268,7 @@ const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => 
                     {(store) => {
                         let role = store ? store.readValue('fields.role') : '';
                         return (
-                            <XText>{role === 'OWNER' ? 'Owner can do everything' : role === 'MEMBER' ? 'Members only watches' : ''}</XText>
+                            <XText>{role === 'OWNER' ? TextInvites.membersMgmt.changeRoleOwnerHint : role === 'MEMBER' ? TextInvites.membersMgmt.changeRoleMemberHint : ''}</XText>
                         );
                     }}
                 </XStoreContext.Consumer>
@@ -313,7 +305,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                         <PermissionCell justifyContent="center" separator={1}>
                                             <Title>Role</Title>
                                             <Text>{m.role}</Text>
-                                            <PermissionsHoverButton text="Manage Permissions" style="electric" query={{ field: 'changeRole', value: m.user.id }} />
+                                            <PermissionsHoverButton text={TextInvites.membersMgmt.tableChangeRole} style="electric" query={{ field: 'changeRole', value: m.user.id }} />
                                         </PermissionCell>
                                     )}
                                     {m.__typename === 'OrganizationIvitedMember' && (
@@ -328,7 +320,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                 </XWithRole>
 
                             </XTable.Cell>
-                            <XTable.Cell  width={225}>
+                            <XTable.Cell width={225}>
                                 {(m.__typename === 'OrganizationJoinedMember' && m.joinedAt) && <TableTag green={true}>{DateFormater(m.joinedAt)}</TableTag>}
                                 {(m.__typename === 'OrganizationJoinedMember' && !m.joinedAt) && <TableTag purple={true}>always been here</TableTag>}
                                 {(m.__typename !== 'OrganizationJoinedMember') && <TableTag>not joined yet</TableTag>}
@@ -345,11 +337,11 @@ const OrgMembers = withOrganizationMembers((props) => {
                                         content={
                                             m.__typename === 'OrganizationJoinedMember' ? (
                                                 <>
-                                                    <XOverflow.Item query={{ field: 'changeRole', value: m.user.id }}>Manage Permissions</XOverflow.Item>
-                                                    <XOverflow.Item query={{ field: 'remove', value: m.user.id }} style="danger" >Remove from organization</XOverflow.Item>
+                                                    <XOverflow.Item query={{ field: 'changeRole', value: m.user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XOverflow.Item>
+                                                    <XOverflow.Item query={{ field: 'remove', value: m.user.id }} style="danger" >{TextInvites.membersMgmt.menuRemoveMember}</XOverflow.Item>
                                                 </>
                                             ) : (
-                                                    <XOverflow.Item query={{ field: 'remove', value: m.inviteId }} style="danger" >Cancel invite</XOverflow.Item>
+                                                    <XOverflow.Item query={{ field: 'remove', value: m.inviteId }} style="danger" >{TextInvites.membersMgmt.menuCancelInvite}</XOverflow.Item>
                                                 )
                                         }
                                     />
@@ -377,7 +369,10 @@ export default withApp('Members', 'viewer', withQueryLoader(withUserInfo((props)
         <Navigation title="Members">
             <XHeader text="Members" />
             <Content>
-                {props.organization && <OrgMembers variables={{ orgId: props.organization.id }} {...{ orgName: props.organization.name }} />}
+                <XVertical alignItems="flex-start">
+                    {props.organization && <OrgMembers variables={{ orgId: props.organization.id }} {...{ orgName: props.organization.name }} />}
+                    <InvitesToOrganizationMoadal target={<XButton size="medium" style="primary" text={TextInvites.membersMgmt.inviteButton} />} />
+                </XVertical>
             </Content>
         </Navigation>
     );
