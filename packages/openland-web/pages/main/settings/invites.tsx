@@ -57,13 +57,6 @@ const FlexStart = Glamorous.div({
     alignSelf: 'flex-start'
 });
 
-const ComposeButton = Glamorous(XLink)({
-    color: '#765efd',
-    '&:hover': {
-        textDecoration: 'underline'
-    },
-});
-
 export const FooterWrap = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
