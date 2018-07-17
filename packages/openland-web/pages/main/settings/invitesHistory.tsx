@@ -21,6 +21,7 @@ const TableTag = Glamorous.div<{ green?: boolean }>((props) => ({
 }));
 
 const Table = Glamorous(XTable)({
+    width: '100%',
     marginLeft: 0,
     marginRight: 0,
     borderCollapse: 'separate',

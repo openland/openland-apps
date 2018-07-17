@@ -7,7 +7,7 @@ import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
 import { XInput } from 'openland-x/XInput';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XFormField } from 'openland-x-forms/XFormField';
+import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
 import { XSelect } from 'openland-x/XSelect';
 import { XButton } from 'openland-x/XButton';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
@@ -310,10 +310,13 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                     {this.state.showLink && this.props.organization && <OwnerLinkOrganization innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
 
                     {this.state.showInvitesHistory && !this.state.showLink && (
-                        <XHorizontal flexGrow={1} width="100%">
+                        <XVertical flexGrow={1} width="100%" separator={2}>
+                            <XHorizontal justifyContent="space-between" alignItems="center">
+                                <XFormFieldTitle>Invitations history</XFormFieldTitle>
+                                <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ showInvitesHistory: false })} />
+                            </XHorizontal>
                             <InvitesHistory />
-                            <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ showInvitesHistory: false })} />
-                        </XHorizontal>
+                        </XVertical>
                     )}
                 </ModalContentWrapper>
             </XModalForm>
