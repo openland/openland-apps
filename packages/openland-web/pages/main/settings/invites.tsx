@@ -12,7 +12,6 @@ import { XSelect } from 'openland-x/XSelect';
 import { XButton } from 'openland-x/XButton';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { XStoreState } from 'openland-x-store/XStoreState';
-import { XText } from 'openland-x/XText';
 import { XLink } from 'openland-x/XLink';
 import { XTextArea } from 'openland-x/XTextArea';
 import { withOrganizationInviteMembers } from '../../../api/withOrganizationInviteMember';
