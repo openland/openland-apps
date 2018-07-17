@@ -418,7 +418,10 @@ export const TextDirectoryData = {
         { label: 'Acquisitions', value: 'Acquisitions' },
         { label: 'Joint ventures', value: 'Joint ventures' },
         { label: 'Leasing', value: 'Leasing' },
+        { label: 'Offering a lease', value: 'Offering a lease' },
         { label: 'Option-to-buy', value: 'Option-to-buy' },
+        { label: 'Development', value: 'Development' },
+        { label: 'Redevelopment', value: 'Redevelopment' },
         { label: 'Investing', value: 'Investing' },
     ],
 };
