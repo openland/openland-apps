@@ -35,6 +35,7 @@ import { MyOrganizationsQuery } from 'openland-api';
 import AddIcon from './icons/add-1.svg';
 import HomeIcon from './icons/home-1.svg';
 import MessagesIcon from './icons/messages-1.svg';
+import DevToolsIcon from './icons/devtools_1.svg';
 
 //
 // Root
@@ -709,6 +710,50 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
     }
 }
 
+class AdminMenu extends React.Component<{}, { show?: boolean }> {
+    constructor(props: any) {
+        super(props);
+        this.state = { show: false };
+    }
+    switch = () => {
+        this.setState({
+            show: !this.state.show
+        });
+    }
+
+    closer = () => {
+        this.setState({
+            show: false
+        });
+    }
+
+    render() {
+        let AddListingContent = withUserInfo((props) => {
+            return (
+                <>
+                    <MenuItem path="/super">{TextAppBar.items.adminMenu}</MenuItem>
+                    <MenuItem path="/ui">{TextAppBar.items.xFramework}</MenuItem>
+                </>
+            );
+        });
+
+        return (
+            <XPopper
+                contentContainer={<XMenuVertical />}
+                placement="right-end"
+                show={this.state.show}
+                padding={0}
+                content={<AddListingContent />}
+                onClickOutside={this.closer}
+            >
+                <NavigatorItem onClick={this.switch}>
+                    <DevToolsIcon />
+                </NavigatorItem>
+            </XPopper>
+        );
+    }
+}
+
 export const MessengerButton = withNotificationCounter((props) => {
     return (
         <XPopper
@@ -1003,34 +1048,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             <BottomNavigation>
 
                                 <XWithRole role={['super-admin', 'software-developer']}>
-                                    <XPopper
-                                        placement="right"
-                                        showOnHoverContent={false}
-                                        showOnHover={true}
-                                        groupId="scaffold_tooltip"
-                                        content={(
-                                            <strong>{TextAppBar.items.devTools}</strong>
-
-                                        )}
-                                    >
-                                        <NavigatorItem path="/super" activateForSubpaths={true}>
-                                            <NavigatorIcon icon="fingerprint" />
-                                        </NavigatorItem>
-                                    </XPopper>
-                                    <XPopper
-                                        placement="right"
-                                        showOnHoverContent={false}
-                                        showOnHover={true}
-                                        groupId="scaffold_tooltip"
-                                        content={(
-                                            <strong>{TextAppBar.items.xFramework}</strong>
-
-                                        )}
-                                    >
-                                        <NavigatorItem path="/ui" activateForSubpaths={true}>
-                                            <NavigatorIcon icon="color_lens" />
-                                        </NavigatorItem>
-                                    </XPopper>
+                                    <AdminMenu />
                                 </XWithRole>
                                 <NavigatorItem>
                                     <UserProfile />
