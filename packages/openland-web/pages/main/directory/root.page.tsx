@@ -480,7 +480,7 @@ const ConditionRenderWrapper = Glamorous.div({
 });
 
 const SearchForm = Glamorous(XHorizontal)({
-    padding: '15px 14px 5px 24px'
+    padding: '15px 24px 5px 24px'
 });
 
 const SearchInput = Glamorous.input({
@@ -612,7 +612,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                             placeholder={TextDirectory.searchInputPlaceholder}
                         />
 
-                        <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText)} onClick={this.searchButtonHandler} />
+                        <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText) || this.state.conditions.length > 0} onClick={this.searchButtonHandler} />
                     </SearchForm>
                     {!LIVESEARCH && (
                         <>

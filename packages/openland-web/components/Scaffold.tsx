@@ -832,18 +832,10 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             <XLink path="/">
                                 <Logo picture={{ url: '/static/branding/logo_inverted_squared.png', retina: '/static/branding/logo_inverted_squared@2x.png' }} />
                             </XLink>
-                            <NavigationDivider />
-                            <XWithRole role={['feature-search-global']}>
-                                <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
-                                    <NavigatorIcon icon={this.state.search ? 'close' : 'search'} />
-                                </NavigatorItem>
-                                <NavigationDivider />
-                            </XWithRole>
 
-                            <XWithRole role={['feature-marketplace']} negate={true}>
-                                <AddMenu />
-                                <NavigationDivider />
-                            </XWithRole>
+                            <NavigationDivider />
+                            <AddMenu />
+                            <NavigationDivider />
 
                             <XWithRole role={['feature-marketplace']}>
                                 <XPopper
@@ -899,6 +891,14 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             {/* </XWithRole> */}
 
                             <MessengerButton />
+
+                            <NavigationDivider />
+
+                            <XWithRole role={['feature-search-global']}>
+                                <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
+                                    <NavigatorIcon icon={this.state.search ? 'close' : 'search'} />
+                                </NavigatorItem>
+                            </XWithRole>
 
                             <XPopper
                                 placement="right"
