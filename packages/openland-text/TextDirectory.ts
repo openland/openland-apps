@@ -263,7 +263,11 @@ export const TextDirectoryData = {
             { label: '• Port authorities', value: 'Port authorities' },
             { label: '• Logistics company', value: 'Logistics company' },
 
+            { label: '• Real estate', value: 'Real estate' },
             { label: 'Real estate developer', value: 'Real estate developer' },
+            { label: 'Property manager', value: 'Property manager' },
+            { label: 'REIT', value: 'REIT' },
+            { label: 'Brokerage', value: 'Brokerage' },
 
             { label: 'Healthcare', value: 'Healthcare' },
             { label: '• Health system', value: 'Health system' },
@@ -278,7 +282,6 @@ export const TextDirectoryData = {
             { label: '• Utility', value: 'Utility' },
 
             { label: 'Finance', value: 'Finance' },
-            { label: '• REIT', value: 'REIT' },
             { label: '• Bank', value: 'Bank' },
             { label: '• Family offices', value: 'Family offices' },
 
@@ -336,10 +339,13 @@ export const TextDirectoryData = {
                 ]
             },
             {
-                label: 'Real estate developer',
-                value: 'Real estate developer',
+                label: 'Real estate',
+                value: 'Real estate',
                 options: [
                     { label: 'Real estate developer', value: 'Real estate developer' },
+                    { label: 'Property manager', value: 'Property manager' },
+                    { label: 'REIT', value: 'REIT' },
+                    { label: 'Brokerage', value: 'Brokerage' },
                 ]
             },
             {
@@ -370,7 +376,6 @@ export const TextDirectoryData = {
                 label: 'Finance',
                 value: 'Finance',
                 options: [
-                    { label: 'REIT', value: 'REIT' },
                     { label: 'Bank', value: 'Bank' },
                     { label: 'Family offices', value: 'Family offices' },
                 ]
@@ -409,10 +414,11 @@ export const TextDirectoryData = {
     },
 
     interestPicker: [
-        { label: 'Selling', value: 'Selling' },
-        { label: 'Buying', value: 'Buying' },
+        { label: 'Dispositions', value: 'Dispositions' },
+        { label: 'Acquisitions', value: 'Acquisitions' },
         { label: 'Joint ventures', value: 'Joint ventures' },
         { label: 'Leasing', value: 'Leasing' },
         { label: 'Option-to-buy', value: 'Option-to-buy' },
+        { label: 'Investing', value: 'Investing' },
     ],
 };
