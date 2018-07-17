@@ -228,7 +228,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                                         <XOverflow.Item href="/settings/organization">{TextDirectory.buttonEdit}</XOverflow.Item>
                                     </XWithRole>
                                 )}
-                                
+
                                 {!props.item.isMine && (
                                     <XWithRole role={['super-admin', 'editor']}>
                                         <XOverflow.Item href={'/settings/organization/' + props.item.id}>{TextDirectory.buttonEdit}</XOverflow.Item>
@@ -380,7 +380,9 @@ class EmptySearchBlock extends React.Component<{ onPick: (q: SearchCondition) =>
 }
 
 const OrganizationCards = withExploreOrganizations((props) => {
-    console.warn(props);
+    if (!(props.data && props.data.items)) {
+        return null;
+    }
     return (
         <XVertical>
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
