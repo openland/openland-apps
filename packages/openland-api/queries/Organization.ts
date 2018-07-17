@@ -16,7 +16,7 @@ export const MyOrganizationQuery = gql`
 
 export const MyOrganizationProfileQuery = gql`
     query MyOrganizationProfile {
-        myOrganizationProfile {
+        organizationProfile: myOrganizationProfile {
             ...OrganizationProfileFull
         }
     }
@@ -33,8 +33,8 @@ export const MyOrganizationsQuery = gql`
 `;
 
 export const UpdateOrganizationMutation = gql`
-    mutation UpdateOrganization($input: UpdateOrganizationProfileInput!) {
-        updateOrganizationProfile(input: $input) {
+    mutation UpdateOrganization($input: UpdateOrganizationProfileInput!, $organizationId: ID) {
+        updateOrganizationProfile(input: $input, id: $organizationId) {
             ...OrganizationProfileFull
         }
     }
@@ -48,6 +48,15 @@ export const OrganizationQuery = gql`
         }
     }
     ${OrganizationFull}
+`;
+
+export const OrganizationProfileQuery = gql`
+    query OrganizationProfile($organizationId: ID!) {
+        organizationProfile(id: $organizationId) {
+            ...OrganizationProfileFull
+        }
+    }
+    ${OrganizationProfileFull}
 `;
 
 export const FollowOrganizationMutation = gql`

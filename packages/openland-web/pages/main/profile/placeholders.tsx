@@ -70,8 +70,10 @@ const Close = Glamorous(XIcon)({
 });
 
 export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
-
-    return ((props.data.myOrganizationProfile && !props.data.myOrganizationProfile.organizationType && !props.data.myOrganizationProfile.locations && !props.data.myOrganizationProfile.interests) ? (
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
+    return ((props.data.organizationProfile && !props.data.organizationProfile.organizationType && !props.data.organizationProfile.locations && !props.data.organizationProfile.interests) ? (
         <Placeholder accent={true}>
             <XHorizontal>
                 <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_overview.svg'} />
@@ -83,9 +85,9 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                         title={TextOrganizationProfile.placeholderOverviewGeneralModalTitle}
                         defaultData={{
                             input: {
-                                organizationType: props.data.myOrganizationProfile!!.organizationType,
-                                locations: props.data.myOrganizationProfile!!.locations,
-                                interests: props.data.myOrganizationProfile!!.interests,
+                                organizationType: props.data.organizationProfile!!.organizationType,
+                                locations: props.data.organizationProfile!!.locations,
+                                interests: props.data.organizationProfile!!.interests,
                             }
                         }}
                         defaultAction={async (data) => {
@@ -137,7 +139,7 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                                         title={TextOrganizationProfile.placeholderOverviewGeneralModalInterests}
                                         field="input.interests"
                                     >
-                                        <XSelect creatable={true} multi={true} field="input.interests" options={TextDirectoryData.interestPicker}/>
+                                        <XSelect creatable={true} multi={true} field="input.interests" options={TextDirectoryData.interestPicker} />
                                     </XFormField>
                                 </XVertical>
                             </XFormLoadingContent>
@@ -178,13 +180,16 @@ class Closable extends React.Component<{ key: string, content: (closeCallback: (
 }
 
 export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
     return (
-        props.data.myOrganizationProfile && (
-            !props.data.myOrganizationProfile.doShapeAndForm &&
-            !props.data.myOrganizationProfile.doCurrentUse &&
-            !props.data.myOrganizationProfile.doGoodFitFor &&
-            !props.data.myOrganizationProfile.doSpecialAttributes &&
-            !props.data.myOrganizationProfile.doAvailability
+        props.data.organizationProfile && (
+            !props.data.organizationProfile.doShapeAndForm &&
+            !props.data.organizationProfile.doCurrentUse &&
+            !props.data.organizationProfile.doGoodFitFor &&
+            !props.data.organizationProfile.doSpecialAttributes &&
+            !props.data.organizationProfile.doAvailability
         ) ? (
                 <Closable
                     key="DOPlaceholder"
@@ -202,11 +207,11 @@ export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
                                         <XModalForm
                                             defaultData={{
                                                 input: {
-                                                    doShapeAndForm: props.data.myOrganizationProfile!!.doShapeAndForm,
-                                                    doCurrentUse: props.data.myOrganizationProfile!!.doCurrentUse,
-                                                    doGoodFitFor: props.data.myOrganizationProfile!!.doGoodFitFor,
-                                                    doSpecialAttributes: props.data.myOrganizationProfile!!.doSpecialAttributes,
-                                                    doAvailability: props.data.myOrganizationProfile!!.doAvailability,
+                                                    doShapeAndForm: props.data.organizationProfile!!.doShapeAndForm,
+                                                    doCurrentUse: props.data.organizationProfile!!.doCurrentUse,
+                                                    doGoodFitFor: props.data.organizationProfile!!.doGoodFitFor,
+                                                    doSpecialAttributes: props.data.organizationProfile!!.doSpecialAttributes,
+                                                    doAvailability: props.data.organizationProfile!!.doAvailability,
                                                 }
                                             }}
                                             defaultAction={async (data) => {
@@ -289,17 +294,20 @@ export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
 });
 
 export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
     return (
-        props.data.myOrganizationProfile && (
-            !props.data.myOrganizationProfile.arGeographies &&
-            !props.data.myOrganizationProfile.arAreaRange &&
-            !props.data.myOrganizationProfile.arHeightLimit &&
-            !props.data.myOrganizationProfile.arActivityStatus &&
-            !props.data.myOrganizationProfile.arAquisitionBudget &&
-            !props.data.myOrganizationProfile.arAquisitionRate &&
-            !props.data.myOrganizationProfile.arClosingTime &&
-            !props.data.myOrganizationProfile.arSpecialAttributes &&
-            !props.data.myOrganizationProfile.arLandUse
+        props.data.organizationProfile && (
+            !props.data.organizationProfile.arGeographies &&
+            !props.data.organizationProfile.arAreaRange &&
+            !props.data.organizationProfile.arHeightLimit &&
+            !props.data.organizationProfile.arActivityStatus &&
+            !props.data.organizationProfile.arAquisitionBudget &&
+            !props.data.organizationProfile.arAquisitionRate &&
+            !props.data.organizationProfile.arClosingTime &&
+            !props.data.organizationProfile.arSpecialAttributes &&
+            !props.data.organizationProfile.arLandUse
         ) ? (
                 <Closable
                     key="ARPlaceholder"
@@ -319,15 +327,15 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
                                         <XModalForm
                                             defaultData={{
                                                 input: {
-                                                    arGeographies: props.data.myOrganizationProfile!!.arGeographies,
-                                                    arAreaRange: props.data.myOrganizationProfile!!.arAreaRange,
-                                                    arHeightLimit: props.data.myOrganizationProfile!!.arHeightLimit,
-                                                    arActivityStatus: props.data.myOrganizationProfile!!.arActivityStatus,
-                                                    arAquisitionBudget: props.data.myOrganizationProfile!!.arAquisitionBudget,
-                                                    arAquisitionRate: props.data.myOrganizationProfile!!.arAquisitionRate,
-                                                    arClosingTime: props.data.myOrganizationProfile!!.arClosingTime,
-                                                    arSpecialAttributes: props.data.myOrganizationProfile!!.arSpecialAttributes,
-                                                    arLandUse: props.data.myOrganizationProfile!!.arLandUse,
+                                                    arGeographies: props.data.organizationProfile!!.arGeographies,
+                                                    arAreaRange: props.data.organizationProfile!!.arAreaRange,
+                                                    arHeightLimit: props.data.organizationProfile!!.arHeightLimit,
+                                                    arActivityStatus: props.data.organizationProfile!!.arActivityStatus,
+                                                    arAquisitionBudget: props.data.organizationProfile!!.arAquisitionBudget,
+                                                    arAquisitionRate: props.data.organizationProfile!!.arAquisitionRate,
+                                                    arClosingTime: props.data.organizationProfile!!.arClosingTime,
+                                                    arSpecialAttributes: props.data.organizationProfile!!.arSpecialAttributes,
+                                                    arLandUse: props.data.organizationProfile!!.arLandUse,
                                                 }
                                             }}
                                             defaultAction={async (data) => {
@@ -448,27 +456,33 @@ export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
 });
 
 export const DOAROverviewPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
     return (
-        props.data.myOrganizationProfile && ((!props.data.myOrganizationProfile.doShapeAndForm &&
-            !props.data.myOrganizationProfile.doCurrentUse &&
-            !props.data.myOrganizationProfile.doGoodFitFor &&
-            !props.data.myOrganizationProfile.doSpecialAttributes &&
-            !props.data.myOrganizationProfile.doAvailability) ||
-            (!props.data.myOrganizationProfile.arGeographies &&
-                !props.data.myOrganizationProfile.arAreaRange &&
-                !props.data.myOrganizationProfile.arHeightLimit &&
-                !props.data.myOrganizationProfile.arActivityStatus &&
-                !props.data.myOrganizationProfile.arAquisitionBudget &&
-                !props.data.myOrganizationProfile.arAquisitionRate &&
-                !props.data.myOrganizationProfile.arClosingTime &&
-                !props.data.myOrganizationProfile.arSpecialAttributes &&
-                !props.data.myOrganizationProfile.arLandUse)) ? <XHorizontal><DOOverviewPlaceholder /><AROverviewPlaceholder /></XHorizontal> : null);
+        props.data.organizationProfile && ((!props.data.organizationProfile.doShapeAndForm &&
+            !props.data.organizationProfile.doCurrentUse &&
+            !props.data.organizationProfile.doGoodFitFor &&
+            !props.data.organizationProfile.doSpecialAttributes &&
+            !props.data.organizationProfile.doAvailability) ||
+            (!props.data.organizationProfile.arGeographies &&
+                !props.data.organizationProfile.arAreaRange &&
+                !props.data.organizationProfile.arHeightLimit &&
+                !props.data.organizationProfile.arActivityStatus &&
+                !props.data.organizationProfile.arAquisitionBudget &&
+                !props.data.organizationProfile.arAquisitionRate &&
+                !props.data.organizationProfile.arClosingTime &&
+                !props.data.organizationProfile.arSpecialAttributes &&
+                !props.data.organizationProfile.arLandUse)) ? <XHorizontal><DOOverviewPlaceholder /><AROverviewPlaceholder /></XHorizontal> : null);
 });
 
 export const DOListingPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
     return (
         (
-            !(props.data.myOrganizationProfile.developmentOportunities || []).length
+            !(props.data.organizationProfile.developmentOportunities || []).length
         ) ? (
                 <Closable
                     key="DOListingPlaceholder"
@@ -498,9 +512,12 @@ export const DOListingPlaceholder = withMyOrganizationProfile((props) => {
 });
 
 export const ARListingPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
     return (
-        props.data.myOrganizationProfile && (
-            !(props.data.myOrganizationProfile.acquisitionRequests || []).length
+        props.data.organizationProfile && (
+            !(props.data.organizationProfile.acquisitionRequests || []).length
         ) ? (
                 <Closable
                     key="ArListingPlaceholder"
@@ -530,13 +547,19 @@ export const ARListingPlaceholder = withMyOrganizationProfile((props) => {
 });
 
 export const DOARListingPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
     return (
-        props.data.myOrganizationProfile && ((!(props.data.myOrganizationProfile.developmentOportunities || []).length) ||
-            (!(props.data.myOrganizationProfile.acquisitionRequests || []).length)) ? <XHorizontal><DOListingPlaceholder /><ARListingPlaceholder /></XHorizontal> : null);
+        props.data.organizationProfile && ((!(props.data.organizationProfile.developmentOportunities || []).length) ||
+            (!(props.data.organizationProfile.acquisitionRequests || []).length)) ? <XHorizontal><DOListingPlaceholder /><ARListingPlaceholder /></XHorizontal> : null);
 });
 
 export const NewsPlaceholder = withMyOrganizationProfile((props) => {
-    return (props.data.myOrganizationProfile.developmentOportunities ? (
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
+    return (props.data.organizationProfile.developmentOportunities ? (
         <Closable
             key="NewsPlaceholder"
             content={close => (
@@ -589,11 +612,14 @@ const Text = Glamorous.div<{ opacity?: number }>((props) => ({
 }));
 
 export const AboutPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
     return (
         <XModalForm
             defaultData={{
                 input: {
-                    about: props.data.myOrganizationProfile!!.about,
+                    about: props.data.organizationProfile!!.about,
                 }
             }}
             defaultAction={async (data) => {
@@ -628,15 +654,18 @@ export const AboutPlaceholder = withMyOrganizationProfile((props) => {
 });
 
 export const SocialPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
     return (
         <XModalForm
             title={TextOrganizationProfile.placeholderSocialModalTitle}
             defaultData={{
                 input: {
-                    website: props.data.myOrganizationProfile!!.website,
-                    twitter: props.data.myOrganizationProfile!!.twitter,
-                    facebook: props.data.myOrganizationProfile!!.facebook,
-                    linkedin: props.data.myOrganizationProfile!!.linkedin,
+                    website: props.data.organizationProfile!!.website,
+                    twitter: props.data.organizationProfile!!.twitter,
+                    facebook: props.data.organizationProfile!!.facebook,
+                    linkedin: props.data.organizationProfile!!.linkedin,
                 }
             }}
             defaultAction={async (data) => {
@@ -681,11 +710,14 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
 });
 
 export const ContactPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
     return (
         <XModalForm
             title={TextOrganizationProfile. placeholderContactsModalTitle}
             defaultData={{
-                contacts: props.data.myOrganizationProfile!!.contacts,
+                contacts: props.data.organizationProfile!!.contacts,
             }}
             defaultAction={async (data) => {
                 data.contacts.push({
@@ -740,11 +772,14 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
 });
 
 export const LocationPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
     return (
         <XModalForm
             defaultData={{
                 input: {
-                    locations: props.data.myOrganizationProfile!!.locations,
+                    locations: props.data.organizationProfile!!.locations,
                 }
             }}
             defaultAction={async (data) => {
@@ -811,11 +846,14 @@ const LogoPlaceholderIcon = Glamorous(XIcon)({
 });
 
 export const AvatartPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
     return (
         <XModalForm
             defaultData={{
                 input: {
-                    photoRef: sanitizeIamgeRef(props.data.myOrganizationProfile!!.photoRef),
+                    photoRef: sanitizeIamgeRef(props.data.organizationProfile!!.photoRef),
                 }
             }}
             defaultAction={async (data) => {
@@ -837,7 +875,7 @@ export const AvatartPlaceholder = withMyOrganizationProfile((props) => {
             <XVertical>
                 <XFormLoadingContent>
                     <XFormField title={TextOrganizationProfile.placeholderLogoModalLocationTitle}>
-                        <XAvatarUpload field="input.photoRef" cropParams="1:1, free"/>
+                        <XAvatarUpload field="input.photoRef" cropParams="1:1, free" />
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>

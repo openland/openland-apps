@@ -227,6 +227,12 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                                         <XOverflow.Item href="/settings/organization">{TextDirectory.buttonEdit}</XOverflow.Item>
                                     </XWithRole>
                                 )}
+                                
+                                {!props.item.isMine && (
+                                    <XWithRole role={['super-admin', 'editor']}>
+                                        <XOverflow.Item href={'/settings/organization/' + props.item.id}>{TextDirectory.buttonEdit}</XOverflow.Item>
+                                    </XWithRole>
+                                )}
 
                                 <XWithRole role={['super-admin', 'editor']}>
                                     <AlterOrgPublishedButton orgId={props.item.id} published={props.item.published} />
