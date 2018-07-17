@@ -116,6 +116,12 @@ const InviteComponent = (props: InviteComponentProps) => (
     </XHorizontal>
 );
 
+const LinkHolder = Glamorous(XHorizontal)({
+    '& div > input': {
+        color: 'rgba(51,69,98, 0.4)'
+    }
+});
+
 class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: string, ttl: string | null } | null, createMutation: any, deleteMutation: any } & XWithRouter> {
     input?: any;
     constructor(props: any) {
@@ -145,9 +151,9 @@ class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: st
                             <XFormFieldTitle>Invitation link</XFormFieldTitle>
                             <InviteText>Anyone with the link will be able to join</InviteText>
                         </XHorizontal>
-                        <XHorizontal alignItems="center" justifyContent="stretch">
-                            <XInput flexGrow={1} autoSelect={true} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key} />
-                        </XHorizontal>
+                        <LinkHolder alignItems="center" justifyContent="stretch">
+                            <XInput flexGrow={1} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key} />
+                        </LinkHolder>
                     </>
                 )}
             </XVertical>
@@ -155,8 +161,11 @@ class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: st
     }
 }
 
+const RenewButton = Glamorous(XButton)({
+    color: 'rgba(51,69,98, 0.45)'
+});
 const RenewInviteLinkButton = withPublicInvite((props) => (
-    <XMutation mutation={props.createPublicInvite}><XButton text="Renew link" style="link" /></XMutation>
+    <XMutation mutation={props.createPublicInvite}><RenewButton text="Renew link" style="link" /></XMutation>
 ));
 
 const RenewGlobalInviteLinkButton = withPublicInviteOrganization((props) => (
