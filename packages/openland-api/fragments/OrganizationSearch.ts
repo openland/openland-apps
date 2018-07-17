@@ -11,5 +11,6 @@ export const OrganizationSearch = gql`
         interests: alphaInterests
         followed: alphaFollowed
         published: alphaPublished
+        editorial: alphaEditorial
     }
 `;

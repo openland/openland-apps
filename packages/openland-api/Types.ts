@@ -83,6 +83,7 @@ export interface UpdateOrganizationProfileInput {
   location?: string | null,
   contacts?: Array< ContactPersonInput > | null,
   alphaPublished?: boolean | null,
+  alphaEditorial?: boolean | null,
   alphaLocations?: Array< string > | null,
   alphaInterests?: Array< string > | null,
   alphaOrganizationType?: Array< string > | null,
@@ -1649,6 +1650,7 @@ export interface MyOrganizationProfileQuery {
       link: string | null,
     } >,
     published: boolean,
+    editorial: boolean,
     organizationType: Array< string > | null,
     interests: Array< string > | null,
     locations: Array< string > | null,
@@ -1871,6 +1873,7 @@ export interface UpdateOrganizationMutation {
       link: string | null,
     } >,
     published: boolean,
+    editorial: boolean,
     organizationType: Array< string > | null,
     interests: Array< string > | null,
     locations: Array< string > | null,
@@ -2276,6 +2279,7 @@ export interface OrganizationProfileQuery {
       link: string | null,
     } >,
     published: boolean,
+    editorial: boolean,
     organizationType: Array< string > | null,
     interests: Array< string > | null,
     locations: Array< string > | null,
@@ -2476,6 +2480,7 @@ export interface ExploreOrganizationsQuery {
         interests: Array< string > | null,
         followed: boolean,
         published: boolean,
+        editorial: boolean,
       },
       cursor: string,
     } >,
@@ -2727,6 +2732,7 @@ export interface OrganizationAlterPublishedMutation {
     interests: Array< string > | null,
     followed: boolean,
     published: boolean,
+    editorial: boolean,
   },
 };
 
@@ -5017,6 +5023,7 @@ export interface OrganizationProfileFullFragment {
     link: string | null,
   } >,
   published: boolean,
+  editorial: boolean,
   organizationType: Array< string > | null,
   interests: Array< string > | null,
   locations: Array< string > | null,
@@ -5193,6 +5200,7 @@ export interface OrganizationSearchFragment {
   interests: Array< string > | null,
   followed: boolean,
   published: boolean,
+  editorial: boolean,
 };
 
 export interface OrganizationShortFragment {

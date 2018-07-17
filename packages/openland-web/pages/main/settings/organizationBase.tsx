@@ -189,6 +189,7 @@ export const OrganizationSettigs = ((props: any) => {
                                 organizationType: props.data.organizationProfile!!.organizationType,
                                 interests: props.data.organizationProfile!!.interests,
                                 published: props.data.organizationProfile!!.published ? 'published' : 'unpublished',
+                                editorial: props.data.organizationProfile!!.editorial ? 'editorial' : 'noneditorial',
                             }
                         }}
                         defaultAction={async (data) => {
@@ -202,6 +203,7 @@ export const OrganizationSettigs = ((props: any) => {
                                         alphaInterests: data.input.interests,
                                         alphaLocations: data.input.locations,
                                         alphaPublished: data.input.published === 'published',
+                                        alphaEditorial: data.input.editorial === 'editorial',
                                     }
                                 }
                             });
@@ -213,11 +215,14 @@ export const OrganizationSettigs = ((props: any) => {
                                 <XHorizontal>
                                     <XVertical flexGrow={1} maxWidth={500}>
 
-                                        <XFormField title="Published" field="input.name">
-                                            <XWithRole role={['super-admin', 'editor']}>
+                                        <XWithRole role={['super-admin', 'editor']}>
+                                            <XFormField title="Published" field="input.name">
                                                 <XSelect clearable={false} searchable={false} field="input.published" options={[{ label: 'yes', value: 'published' }, { label: 'no', value: 'unpublished' }]} />
-                                            </XWithRole>
-                                        </XFormField>
+                                            </XFormField>
+                                            <XFormField title="Editorial" field="input.editorial">
+                                                <XSelect clearable={false} searchable={false} field="input.editorial" options={[{ label: 'yes', value: 'editorial' }, { label: 'no', value: 'noneditorial' }]} />
+                                            </XFormField>
+                                        </XWithRole>
                                         <XFormField title="Name" field="input.name">
                                             <XInput field="input.name" />
                                         </XFormField>

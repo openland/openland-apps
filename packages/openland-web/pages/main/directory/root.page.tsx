@@ -90,6 +90,7 @@ interface OrganizationCardProps {
         isMine: boolean,
         followed: boolean,
         published: boolean,
+        editorial: boolean,
     };
     onPick: (q: SearchCondition) => void;
 
@@ -214,7 +215,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                 <OrganizationToolsWrapper>
                     {props.item.isMine && <XButton style="ghost" text={TextDirectory.labelYourOrganization} enabled={false} />}
                     {!props.item.isMine && <OrganizationFollowBtn followed={props.item.followed} organizationId={props.item.id} />}
-                    {!props.item.isMine && <XButton style="primary" path={'/mail/' + props.item.id} text={TextDirectory.labelSendMessage} />}
+                    {!props.item.isMine && !props.item.editorial && <XButton style="primary" path={'/mail/' + props.item.id} text={TextDirectory.labelSendMessage} />}
 
                     <XOverflow
                         placement="bottom-end"
