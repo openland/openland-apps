@@ -201,8 +201,10 @@ const ProfileSubTitle = Glamorous(XLink)({
 });
 
 const ProfileTitleContainer = Glamorous(XHorizontal)({
-    margin: 16,
+    padding: 16,
+    paddingBottom: 8,
     ':hover': {
+        background: '#f8f8fb',
         '& > div': {
             '& > a': {
                 color: '#654bfa'
@@ -221,6 +223,8 @@ const OrganizationTitleContainer = makeNavigable((props) => {
 
 const MenuItem = Glamorous(XMenuItem)({
     color: 'rgba(51, 69, 98, 0.8)!important',
+    height: 38,
+    lineHeight: '38px'
 });
 
 const MenuItemWithIcon = Glamorous(XMenuItem)({
