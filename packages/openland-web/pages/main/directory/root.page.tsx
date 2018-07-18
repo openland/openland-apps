@@ -22,6 +22,7 @@ import { XMutation } from 'openland-x/XMutation';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { XLink } from 'openland-x/XLink';
 import { withOrganizationPublishedAlter } from '../../../api/withOrganizationPublishedAlter';
+import { AutocompletePopper } from './autocompletePopper';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -614,12 +615,29 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
             <XVertical>
                 <XCardStyled>
                     <SearchForm>
-                        <SearchInput
-                            value={searchText}
-                            autoFocus={true}
-                            onChange={this.handleSearchChange}
-                            placeholder={TextDirectory.searchInputPlaceholder}
-                        />
+                        <XWithRole role={'software-developer'}>
+                            <AutocompletePopper
+                                target={
+                                    <SearchInput
+                                        value={searchText}
+                                        autoFocus={true}
+                                        onChange={this.handleSearchChange}
+                                        placeholder={TextDirectory.searchInputPlaceholder}
+                                    />
+                                }
+                                onPick={this.addCondition}
+                                query={this.state.searchText}
+                            />
+                        </XWithRole>
+
+                        <XWithRole role={'software-developer'} negate={true}>
+                            <SearchInput
+                                value={searchText}
+                                autoFocus={true}
+                                onChange={this.handleSearchChange}
+                                placeholder={TextDirectory.searchInputPlaceholder}
+                            />
+                        </XWithRole>
 
                         <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText) || this.state.conditions.length > 0} onClick={this.searchButtonHandler} />
                     </SearchForm>
