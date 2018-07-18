@@ -26,6 +26,7 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XFormError } from 'openland-x-forms/XFormError';
 import glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
+import * as Cookie from 'js-cookie';
 
 const Footer = glamorous.div({
     position: 'absolute',
@@ -63,6 +64,7 @@ const CreateProfileForm = withProfileCreate((props) => {
     if (canUseDOM) {
         localStorage.setItem('isnewuser', 'newuser');
     }
+    let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
     return (
         <RootContainer>
             <Logo />
@@ -101,7 +103,7 @@ const CreateProfileForm = withProfileCreate((props) => {
                                     </XFormField>
                                 </XVertical>
                                 <XFormField title={InitTexts.create_profile.photo}>
-                                    <XAvatarUpload field="input.photoRef" size="large" initialUrl={props.data.prefill && props.data.prefill.picture} />
+                                    <XAvatarUpload field="input.photoRef" size="large" initialUrl={usePhotoPrefill ? props.data.prefill && props.data.prefill.picture : undefined} />
                                 </XFormField>
                             </XHorizontal>
                         </XFormLoadingContent>

@@ -1012,7 +1012,7 @@ class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
 
     checkModal = () => {
         if (canUseDOM) {
-            localStorage.clear();
+            localStorage.removeItem('isnewuser');
 
             this.setState({
                 isOpen: false

@@ -48,6 +48,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
     codeError: string,
 }> {
     fireGoogle = () => {
+        Cookie.set('auth-type', 'google', { path: '/' });
         createAuth0Client().authorize({
             connection: 'google-oauth2',
             state: this.props.redirect ? this.props.redirect : 'none'
@@ -55,6 +56,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
     }
 
     fireEmail = () => {
+        Cookie.set('auth-type', 'email', { path: '/' });
         if (this.props.redirect) {
             Cookie.set('sign-redirect', this.props.redirect, { path: '/' });
         }
