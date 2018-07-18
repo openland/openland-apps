@@ -13,15 +13,36 @@ class EntryComponent extends React.Component<{ entry: SearchCondition, sugestion
     }
 }
 
-export class AutocompletePopper extends React.Component<{
-    onPick: (q: SearchCondition) => void,
-    query: string,
-    target: any,
-}> {
+interface AutocompleteProps {
+    onPick: (q: SearchCondition) => void;
+    query: string;
+    target: any;
+}
+export class AutocompletePopper extends React.Component<AutocompleteProps, { select?: number | null }> {
 
-    onPick = (q: SearchCondition) => {
-        this.props.onPick(q);
-        this.setState({ query: '', popper: false });
+    componentWillReceiveProps(nextProps: AutocompleteProps) {
+        this.setState({ select: null });
+    }
+
+    componentDidMount() {
+        document.addEventListener('keydown', this.keydownHandler);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.keydownHandler);
+    }
+
+    keydownHandler = (e: any) => {
+        console.warn(e);
+
+        // let select = this.state.select || 0;
+        if (e.key === 'ArrowUp') {
+
+            //     select = Math/
+            // }
+            // if (e.key === 'ArrowDown') {
+
+        }
     }
 
     render() {
