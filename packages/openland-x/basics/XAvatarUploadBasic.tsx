@@ -112,6 +112,7 @@ class AvatarRender extends React.PureComponent<
     }
     render() {
         let hasImage = this.props.file && this.props.file.uuid && this.props.file.isImage || false;
+        let isFreeCrop = this.props.file && this.props.file.crop && this.props.file.crop.height !== this.props.file.crop.width;
         return (
             <DropAreaWrapper
                 hasImage={hasImage}
@@ -122,7 +123,7 @@ class AvatarRender extends React.PureComponent<
                     width={this.props.size === 'large' ? 241 : 159}
                     height={this.props.size === 'large' ? 241 : 159}
                     srcCloud={prepareSrc(this.props.file!!.uuid, this.props.file!!.crop)}
-                    resize={'fill'}
+                    resize={isFreeCrop ? undefined : 'fill'}
                     onLoad={this.handleOnLoad}
                 />}
 
