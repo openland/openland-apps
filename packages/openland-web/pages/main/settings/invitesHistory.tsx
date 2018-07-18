@@ -4,6 +4,7 @@ import { withInvitesHistory } from '../../../api/withInvitesHistory';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XTable } from 'openland-x/XTable';
 import { XAvatar } from 'openland-x/XAvatar';
+import { XVertical } from 'openland-x-layout/XVertical';
 
 const TableTag = Glamorous.div<{ green?: boolean }>((props) => ({
     height: 32,
@@ -21,36 +22,35 @@ const TableTag = Glamorous.div<{ green?: boolean }>((props) => ({
 }));
 
 const Table = Glamorous(XTable)({
-    width: '100%',
     marginLeft: 0,
     marginRight: 0,
     borderCollapse: 'separate',
     borderSpacing: 0,
+    maxWidth: 722,
 
     '& tr': {
-        height: 64,
+        height: 82,
 
         '& td': {
             borderTop: 'solid 1px #eff0f3',
             borderLeft: 'solid 1px #eff0f3',
-            paddingTop: 12,
-            paddingBottom: 12,
+            paddingTop: 18,
+            paddingBottom: 18,
 
             '& > div': {
-                paddingTop: 0,
-                paddingBottom: 0,
-                paddingLeft: 18,
-                paddingRight: 18,
+                padding: 0
             },
             '&:first-child': {
+                maxWidth: 130,
                 '& > div': {
-                    paddingLeft: 14
+                    paddingLeft: 18
                 }
             },
-            '&:last-child': {
+            '&:nth-child(2)': {
+                maxWidth: 130,
                 '& > div': {
-                    paddingRight: 0,
-                    paddingLeft: 0
+                    paddingLeft: 20,
+                    paddingRight: 20
                 }
             }
         }
@@ -72,8 +72,8 @@ const Table = Glamorous(XTable)({
     },
     '& tr td:last-child': {
         borderRight: 'solid 1px #eff0f3',
-        paddingRight: 16,
-        paddingLeft: 16
+        paddingRight: 20,
+        paddingLeft: 20
     }
 });
 
@@ -85,24 +85,31 @@ const Title = Glamorous.div({
     color: '#334562'
 });
 
+const Text = Glamorous.div({
+    opacity: 0.8,
+    fontSize: 15,
+    lineHeight: 1.33,
+    letterSpacing: -0.2,
+    color: '#334562'
+});
+
 export const InvitesHistory = withInvitesHistory((props) => {
     return (
         <Table className={(props as any).className}>
-            {((props.data && props.data.invites) || []).map((invite) => (
+            {((props.data && props.data.invites) || []).filter(invite => invite.isGlobal).map((invite) => (
                 <XTable.Row>
                     <XTable.Cell>
-                        <XHorizontal alignItems="center" separator={9}>
-                            <XAvatar size="small" cloudImageUuid={invite.acceptedBy ? invite.acceptedBy.picture || undefined : undefined} />
-                            <Title>{invite.acceptedBy !== null && invite.acceptedBy.name}</Title>
+
+                        <XHorizontal>
+                            <XAvatar size="medium" cloudImageUuid={invite.acceptedBy ? invite.acceptedBy.picture || undefined : undefined} />
+                            <XVertical separator={1} justifyContent="center">
+                                <Title>{invite.acceptedBy !== null && invite.acceptedBy.name}</Title>
+                                {invite.forEmail && <Text>{invite.forEmail}</Text>}
+                            </XVertical>
                         </XHorizontal>
                     </XTable.Cell>
-                    <XTable.Cell>
-                        <Title>{invite.forEmail}</Title>
-                    </XTable.Cell>
-                    <XTable.Cell>
-                        <Title>{invite.isGlobal ? 'Invited to Openland' : 'Invited to your organization '}</Title>
-                    </XTable.Cell>
-                    <XTable.Cell textAlign="right" width={130}>
+
+                    <XTable.Cell >
                         <TableTag green={invite.acceptedBy ? true : false}>
                             {invite.acceptedBy ? 'Accepted' : 'Pending'}
                         </TableTag>

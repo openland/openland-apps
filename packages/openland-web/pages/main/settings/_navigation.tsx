@@ -17,6 +17,7 @@ export const Navigation = (props: { title: string, children?: any }) => (
                     </XWithRole >
                     <Sidebar.Item path="/settings/profile">Your profile</Sidebar.Item>
                     <Sidebar.Item path="/settings/notifications">Notifications</Sidebar.Item>
+                    <Sidebar.Item path="/settings/invites">Invites</Sidebar.Item>
                 </Sidebar>
             </Scaffold.Menu>
             <Scaffold.Content padding={false} >
