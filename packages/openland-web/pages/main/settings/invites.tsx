@@ -22,8 +22,6 @@ import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { TextInvites } from 'openland-text/TextInvites';
 import { withOrganizationInviteOrganization } from '../../../api/withOrganizationInviteOrganization';
 import { withPublicInviteOrganization } from '../../../api/withPublicInviteOrganization';
-import { withInvitesHistory } from '../../../api/withInvitesHistory';
-import { InvitesHistory } from './invitesHistory';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 
 const ModalContentWrapper = Glamorous(XVertical)<{ bottomOfset?: boolean }>((props) => ({

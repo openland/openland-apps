@@ -190,6 +190,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
         return (
             <>
                 <SignContainer
+                    signin={signin}
                     text={signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint}
                     path={signin ? '/signup' : '/signin'}
                     linkText={signin ? InitTexts.auth.signup : InitTexts.auth.signin}

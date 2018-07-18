@@ -241,15 +241,6 @@ const MenuItemIcon = Glamorous(XIcon)({
     color: '#c1c7cf',
 });
 
-const MenuSubTitle = Glamorous.div({
-    fontSize: 16,
-    lineHeight: '20px',
-    padding: '10px 18px 8px',
-    letterSpacing: -0.3,
-    color: '#334562',
-    fontWeight: 500,
-});
-
 class UserPopper extends React.Component<{ picture: string | null, name?: string, logo?: string | null, organizationName?: string, organizationId?: string, hasMultipleOrganizations: boolean }, { show: boolean }> {
     constructor(props: { picture: string | null, name?: string, hasMultipleOrganizations: boolean }) {
         super(props);
