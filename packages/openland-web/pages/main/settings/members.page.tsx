@@ -68,6 +68,7 @@ const Table = Glamorous(XTable)({
     marginRight: 0,
     borderCollapse: 'separate',
     borderSpacing: 0,
+    maxWidth: 722,
 
     '& tr': {
         height: 82,
@@ -82,19 +83,20 @@ const Table = Glamorous(XTable)({
                 padding: 0
             },
             '&:first-child': {
-                minWidth: 150,
+                maxWidth: 280,
                 '& > div': {
                     paddingLeft: 18
                 }
             },
             '&:nth-child(2)': {
-                minWidth: 150,
+                maxWidth: 130,
                 '& > div': {
-                    paddingLeft: 20
+                    paddingLeft: 20,
+                    paddingRight: 20
                 }
             },
             '&:nth-child(3)': {
-                minWidth: 150,
+                maxWidth: 225,
                 paddingLeft: 26,
                 paddingRight: 26
             },
@@ -304,7 +306,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                         <PermissionCell justifyContent="center" separator={1}>
                                             <Title>Role</Title>
                                             <Text>{m.role}</Text>
-                                            <PermissionsHoverButton text={TextInvites.membersMgmt.tableChangeRole} style="electric" query={{ field: 'changeRole', value: m.user.id }} />
+                                            <PermissionsHoverButton text={TextInvites.membersMgmt.tableChangeRole} style="electric" query={{ field: 'changeRole', value: m.user.id }} size="small" />
                                         </PermissionCell>
                                     )}
                                     {m.__typename === 'OrganizationIvitedMember' && (

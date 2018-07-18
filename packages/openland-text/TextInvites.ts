@@ -54,7 +54,7 @@ export const TextInvites = {
         changeRoleOwnerHint: 'Owner can do everything',
         changeRoleMemberHint: 'Members only watches',
 
-        tableChangeRole: 'Manage Permissions',
+        tableChangeRole: 'Manage',
 
         menuChangeRole: 'Manage Permissions',
         menuRemoveMember: 'Remove from organization',
