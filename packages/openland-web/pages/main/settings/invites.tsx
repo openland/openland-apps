@@ -50,6 +50,7 @@ const DeleteButton = Glamorous(XButton)<{ hide?: boolean }>((props) => ({
 
 const LinkButton = Glamorous(XLink)<{ primary?: boolean }>((props) => ({
     fontSize: 15,
+    fontWeight: 500,
     letterSpacing: -0.2,
     color: props.primary ? '#654bfa' : 'rgba(51, 69, 98, 0.4)',
     '&:hover': {
@@ -72,20 +73,13 @@ export const FooterWrap = Glamorous.div({
     borderTop: '1px solid rgba(220, 222, 228, 0.6)'
 });
 
-const Separator = Glamorous.div({
-    height: 1,
-    width: '100%',
-    backgroundColor: 'rgba(220, 222, 228, 0.45)',
-    marginTop: '60px !important',
-    marginBottom: '18px !important'
-});
-
 interface InviteComponentProps {
     index: number;
     invite: Invite;
     single: boolean;
     handleRemove: (index: number) => void;
     useRoles?: boolean;
+    first: boolean;
 }
 
 const RoleSelectWrapper = Glamorous(XHorizontal)({
@@ -100,11 +94,20 @@ const InviteText = Glamorous.div({
     color: 'rgba(51, 69, 98, 0.4)'
 });
 
+const XInputNoTitle = Glamorous(XInput)({
+    '> input': {
+        '::placeholder': {
+            color: 'rgb(51, 69, 98)'
+        }
+    }
+
+});
+
 const InviteComponent = (props: InviteComponentProps) => (
     <XHorizontal separator={6} alignItems="center" flexGrow={1}>
-        <XInput placeholder={TextInvites.firstNamePlaceholder} field={'inviteRequests.' + props.index + '.firstName'} flexGrow={1} />
-        <XInput placeholder={TextInvites.lastNamePlaceholder} field={'inviteRequests.' + props.index + '.lastName'} flexGrow={1} />
-        <XInput placeholder={TextInvites.emailInputPlaceholder} field={'inviteRequests.' + props.index + '.email'} flexGrow={1} />
+        <XInputNoTitle autofocus={props.first} placeholder={TextInvites.emailInputPlaceholder} field={'inviteRequests.' + props.index + '.email'} flexGrow={1} />
+        <XInputNoTitle placeholder={TextInvites.firstNamePlaceholder} field={'inviteRequests.' + props.index + '.firstName'} flexGrow={1} />
+        <XInputNoTitle placeholder={TextInvites.lastNamePlaceholder} field={'inviteRequests.' + props.index + '.lastName'} flexGrow={1} />
         {props.useRoles !== false &&
             <RoleSelectWrapper width={126}>
                 <XWithRole role="super-admin">
@@ -118,7 +121,7 @@ const InviteComponent = (props: InviteComponentProps) => (
 
 const LinkHolder = Glamorous(XHorizontal)({
     '& div > input': {
-        color: 'rgba(51,69,98, 0.4)'
+        color: 'rgba(51,69,98, 0.8)'
     }
 });
 
@@ -169,7 +172,7 @@ const RenewInviteLinkButton = withPublicInvite((props) => (
 ));
 
 const RenewGlobalInviteLinkButton = withPublicInviteOrganization((props) => (
-    <XMutation mutation={props.createPublicInvite}><XButton text="Renew link" style="link" /></XMutation>
+    <XMutation mutation={props.createPublicInvite}><RenewButton text="Renew link" style="link" /></XMutation>
 ));
 
 const OwnerLink = withPublicInvite(withRouter((props) => (
@@ -179,14 +182,6 @@ const OwnerLink = withPublicInvite(withRouter((props) => (
 const OwnerLinkOrganization = withPublicInviteOrganization(withRouter((props) => (
     <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} invite={props.data ? props.data.publicInvite : null} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} />
 ))) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
-
-const ShowInvitesHistory = withInvitesHistory((props) => (
-    (props.data && props.data.invites || []).length > 0 ? (
-        <FlexStart>
-            <LinkButton onClick={(props as any).onClick}>{TextInvites.showHistory}</LinkButton>
-        </FlexStart>
-    ) : null
-)) as React.ComponentType<{ onClick?: () => void }>;
 
 interface InvitesMoadalRawProps {
     mutation: any;
@@ -198,7 +193,6 @@ interface InvitesMoadalRawState {
     customText?: string;
     customTextAreaOpen?: boolean;
     showLink?: boolean;
-    showInvitesHistory?: boolean;
 }
 
 class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<XModalFormProps>, InvitesMoadalRawState> {
@@ -279,7 +273,7 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                 }}
                 scrollableContent={true}
                 defaultData={{
-                    inviteRequests: [{ email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }]
+                    inviteRequests: [{ email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }]
                 }}
                 submitProps={submitProps}
                 customFooter={footer}
@@ -295,7 +289,7 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                                         <XVertical separator={8}>
                                             <XVertical separator={6}>
                                                 {invites.map((invite: Invite, i: number) => (
-                                                    <InviteComponent key={i} index={i} invite={invite} single={invites.length === 1} handleRemove={(index) => this.handleRemove(index, store)} useRoles={this.props.useRoles} />
+                                                    <InviteComponent first={i === 0} key={i} index={i} invite={invite} single={invites.length === 1} handleRemove={(index) => this.handleRemove(index, store)} useRoles={this.props.useRoles} />
                                                 ))}
                                             </XVertical>
                                             <FlexStart>
@@ -305,11 +299,10 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                                     );
                                 }}
                             </XStoreContext.Consumer>
-                            <Separator />
                             {!this.state.customTextAreaOpen && (
                                 <FlexStart>
                                     <LinkButton onClick={() => this.setState({ customTextAreaOpen: true })}>
-                                        Compose a custom message to make your invites more personal
+                                        {TextInvites.customMessageButton}
                                     </LinkButton>
                                 </FlexStart>
                             )}
@@ -324,17 +317,6 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                                 </XHorizontal>
                             )}
 
-                            {!this.state.showInvitesHistory && <ShowInvitesHistory onClick={() => this.setState({ showInvitesHistory: true })} />}
-                        </XVertical>
-                    )}
-
-                    {this.state.showInvitesHistory && !this.state.showLink && (
-                        <XVertical flexGrow={1} width="100%" separator={2}>
-                            <XHorizontal justifyContent="space-between" alignItems="center">
-                                <XFormFieldTitle>Invitations history</XFormFieldTitle>
-                                <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ showInvitesHistory: false })} />
-                            </XHorizontal>
-                            <InvitesHistory />
                         </XVertical>
                     )}
 

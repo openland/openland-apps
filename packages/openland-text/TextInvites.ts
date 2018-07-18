@@ -5,10 +5,10 @@ export const TextInvites = {
 
     // MODALS
 
-    modalTitle: 'Invite your colleagues',
+    modalTitle: 'Invite members of your organization',
     modalAction: 'Send Invitations',
 
-    modalGlobalTitle: 'Invite colleagues from other organization',
+    modalGlobalTitle: 'Invite people to Openland',
     modalGloabalAction: 'Send Invitations',
 
     // MODALS COMMON
@@ -26,9 +26,10 @@ export const TextInvites = {
     addEmail: ' + Add another',
 
     customMessageTitle: 'Custom Message',
+    customMessageButton: '+ Add a custom message to make your invitation more personal', 
 
     // LINK
-    getLinkButtonLinkExists: 'Share invite link',
+    getLinkButtonLinkExists: 'Invite with a link',
     getLinkButtonNoLink: 'Get an invite link to share',
     deleteLink: 'Delete link',
     linkExpirationOption1: 'expires in 1 day',
@@ -38,7 +39,7 @@ export const TextInvites = {
     // Invites Histoty
     showHistory: 'See pending and accepted invitations',
     
-    backToEmailInvites: 'Send email invites',
+    backToEmailInvites: 'Invite by email',
 
     membersMgmt: {
         inviteButton: 'Invite new members',
