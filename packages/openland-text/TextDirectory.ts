@@ -156,7 +156,7 @@ export const TextDirectoryData = {
             'Indianapolis',
             'Seattle',
             'Denver',
-            'Washington Dc Dc',
+            'Washington, D.C.',
             'El Paso',
             'Boston',
             'Nashville',
