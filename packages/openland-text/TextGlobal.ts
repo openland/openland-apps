@@ -13,7 +13,7 @@ export const TextGlobal = {
     postUpdate: 'Post update',
     sendInvites: 'Send invites',
     invitePeopleTo: 'Invite people to',
-    joinYourOrganization: 'Join your organization',
-    joinOpenland: 'Join Openland',
+    joinYourOrganization: 'Invite people to your organization',
+    joinOpenland: 'Invite other organizations',
     startChat: 'Start chat',
 };

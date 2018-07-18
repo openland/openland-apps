@@ -674,7 +674,6 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
                             marginTop={-8}
                             content={(
                                 <div ref={this.onInner}>
-                                    <MenuSubTitle>{TextGlobal.invitePeopleTo}</MenuSubTitle>
                                     <MenuItem query={{ field: 'invite', value: 'true' }}>{TextGlobal.joinYourOrganization}</MenuItem>
                                     <MenuItem query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</MenuItem>
                                 </div>
