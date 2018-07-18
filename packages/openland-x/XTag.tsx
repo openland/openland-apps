@@ -43,7 +43,7 @@ let sizeStyles = styleResolver({
     },
     'default': {
         height: 25,
-        fontSize: 12,
+        fontSize: 13,
         fontWeight: 500,
         lineHeight: '24px',
         letterSpacing: 0.2,

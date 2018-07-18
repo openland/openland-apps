@@ -486,7 +486,6 @@ const ConditionRenderWrapper = Glamorous.div({
     display: 'flex',
     flexWrap: 'wrap',
     padding: '0 4px 16px 24px',
-    marginLeft: -8,
 });
 
 const SearchForm = Glamorous(XHorizontal)({
