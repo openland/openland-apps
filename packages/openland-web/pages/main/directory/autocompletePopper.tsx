@@ -2,27 +2,57 @@ import * as React from 'react';
 import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchCondition } from './root.page';
-import { TextDirectoryData } from 'openland-text/TextDirectory';
-import { XMenuItem } from '../../../components/Incubator/XOverflow';
+// import { TextDirectoryData } from 'openland-text/TextDirectory';
+// import { XMenuItem } from '../../../components/Incubator/XOverflow';
 
-class EntryComponent extends React.Component<{ entry: SearchCondition, sugestion: boolean, onClick: () => void }> {
-    render() {
-        return (
-            <XMenuItem onClick={this.props.onClick}>{this.props.entry.label + ' ' + (this.props.sugestion ? '' : this.props.entry.type === 'organizationType' ? 'category' : this.props.entry.type === 'interest' ? 'intereset' : this.props.entry.type === 'location' ? 'location' : '')}</XMenuItem>
-        );
-    }
+interface EntryProps {
+    entry: SearchCondition;
+    sugestion: boolean;
+    selected: boolean;
+    onPick: (entry: SearchCondition) => void;
 }
+// class EntryComponent extends React.Component<EntryProps> {
+//     render() {
+//         return (
+//             <XMenuItem onClick={() => this.props.onPick(this.props.entry)}>{this.props.entry.label + ' ' + (this.props.sugestion ? '' : this.props.entry.type === 'organizationType' ? 'category' : this.props.entry.type === 'interest' ? 'intereset' : this.props.entry.type === 'location' ? 'location' : '')}</XMenuItem>
+//         );
+//     }
+// }
 
 interface AutocompleteProps {
     onPick: (q: SearchCondition) => void;
     query: string;
     target: any;
 }
-export class AutocompletePopper extends React.Component<AutocompleteProps, { select?: number | null }> {
+export class AutocompletePopper extends React.Component<AutocompleteProps, {
+    select: number | null,
+    entries: EntryProps[],
+}> {
 
-    componentWillReceiveProps(nextProps: AutocompleteProps) {
-        this.setState({ select: null });
+    constructor(props: AutocompleteProps) {
+        super(props);
+        this.state = { select: null, entries: [] };
     }
+
+    // componentWillReceiveProps(nextProps: AutocompleteProps) {
+    //     let entries: EntryProps[] = [];
+    //     let sugestedLocation = [...TextDirectoryData.locationPicker.Cities, ...TextDirectoryData.locationPicker.MetropolitanAreas, ...TextDirectoryData.locationPicker.States, ...TextDirectoryData.locationPicker.MultiStateRegions].filter(e => ([...e.split(' '), e]).filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0)[0];
+    //     let sugestedCategory = [...TextDirectoryData.categoryPicker.categories].filter(e => ([...e.value.split(' '), e.value]).filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0)[0];
+    //     let sugestedInterest = [...TextDirectoryData.interestPicker].filter(e => ([...e.value.split(' '), e.value]).filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0)[0];
+
+    //     if (sugestedLocation) {
+
+    //     }
+
+    //     entries.push({ selected: false, entry: { type: 'location', value: this.props.query, label: this.props.query }, sugestion: true, onPick: this.props.onPick });
+    //     entries.push({ selected: false, entry: { type: 'organizationType', value: this.props.query, label: this.props.query }, sugestion: true, onPick: this.props.onPick });
+    //     entries.push({ selected: false, entry: { type: 'interest', value: this.props.query, label: this.props.query }, sugestion: true, onPick: this.props.onPick });
+
+    //     this.setState({
+    //         select: null,
+    //         entries: entries,
+    //     });
+    // }
 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);
@@ -46,18 +76,15 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, { sel
     }
 
     render() {
-        let sugestedLocation = [...TextDirectoryData.locationPicker.Cities, ...TextDirectoryData.locationPicker.MetropolitanAreas, ...TextDirectoryData.locationPicker.States, ...TextDirectoryData.locationPicker.MultiStateRegions].filter(e => ([...e.split(' '), e]).filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0)[0];
-        let sugestedCategory = [...TextDirectoryData.categoryPicker.categories].filter(e => ([...e.value.split(' '), e.value]).filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0)[0];
-        let sugestedInterest = [...TextDirectoryData.interestPicker].filter(e => ([...e.value.split(' '), e.value]).filter(s => this.props.query.length === 0 || s.toLowerCase().startsWith(this.props.query.toLowerCase())).length > 0)[0];
 
         let content = (
             <XVertical>
-                {sugestedLocation && <EntryComponent entry={{ type: 'location', value: sugestedLocation, label: sugestedLocation }} sugestion={true} onClick={() => this.props.onPick({ type: 'location', value: sugestedLocation, label: sugestedLocation })} key={sugestedLocation + '_s_l'} />}
+                {/* {this.state.sugestedLocation && <EntryComponent entry={{ type: 'location', value: this.state.sugestedLocation, label: this.state.sugestedLocation }} sugestion={true} onClick={() => this.props.onPick({ type: 'location', value: this.state.sugestedLocation!!, label: this.state.sugestedLocation!! })} key={this.state.sugestedLocation + '_s_l'} />}
                 {sugestedCategory && <EntryComponent entry={{ type: 'organizationType', value: sugestedCategory.value, label: sugestedCategory.value }} sugestion={true} onClick={() => this.props.onPick({ type: 'organizationType', value: sugestedCategory.value, label: sugestedCategory.value })} key={sugestedCategory.value + '_s_c'} />}
                 {sugestedInterest && <EntryComponent entry={{ type: 'interest', value: sugestedInterest.value, label: sugestedInterest.value }} sugestion={true} onClick={() => this.props.onPick({ type: 'interest', value: sugestedInterest.value, label: sugestedInterest.value })} key={sugestedInterest.value + '_s_i'} />}
                 <EntryComponent entry={{ type: 'location', value: this.props.query, label: this.props.query }} sugestion={false} onClick={() => this.props.onPick({ type: 'location', value: this.props.query, label: this.props.query })} key={this.props.query + '_l'} />
                 <EntryComponent entry={{ type: 'organizationType', value: this.props.query, label: this.props.query }} sugestion={false} onClick={() => this.props.onPick({ type: 'organizationType', value: this.props.query, label: this.props.query })} key={this.props.query + '_c'} />
-                <EntryComponent entry={{ type: 'interest', value: this.props.query, label: this.props.query }} sugestion={false} onClick={() => this.props.onPick({ type: 'interest', value: this.props.query, label: this.props.query })} key={this.props.query + '_i'} />
+                <EntryComponent entry={{ type: 'interest', value: this.props.query, label: this.props.query }} sugestion={false} onClick={() => this.props.onPick({ type: 'interest', value: this.props.query, label: this.props.query })} key={this.props.query + '_i'} /> */}
             </XVertical>
         );
         return (

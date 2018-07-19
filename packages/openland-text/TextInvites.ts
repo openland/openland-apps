@@ -14,12 +14,12 @@ export const TextInvites = {
     // MODALS COMMON
 
     // EMAIL
-    emailInputTitle: 'Email Adress',
+    emailInputTitle: 'Email',
     firstNameInputTitle: 'First Name',
     lastNameInputTitle: 'Last Name',
     roleInputTitle: 'Role',
 
-    emailInputPlaceholder: 'Email Adress',
+    emailInputPlaceholder: 'Email',
     firstNamePlaceholder: 'First Name',
     lastNamePlaceholder: 'Last Name',
 
