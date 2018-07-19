@@ -95,3 +95,33 @@ export const ProfilePrefillQuery = gql`
         }
     }
 `;
+
+export const CreateUserProfileAndOrganizationMutation = gql`
+ mutation CreateUserProfileAndOrganization($user: CreateProfileInput!, $organization: CreateOrganizationInput!) {
+        alphaCreateUserProfileAndOrganization(user: $user, organization: $organization){
+            user{
+                id
+                firstName
+                lastName
+                photoRef {
+                    uuid
+                    crop {
+                        x
+                        y
+                        w
+                        h
+                    }
+                }
+                email
+                phone
+                website
+                about
+                location
+            }
+            organization{
+                id
+                name
+            }
+        }
+    }
+`;

@@ -27,6 +27,8 @@ routes.add('/pickOrganization', '/init/pickOrganization');
 routes.add('/pickOrganization/', '/init/pickOrganization');
 routes.add('/createOrganization', '/init/createOrganization');
 routes.add('/createOrganization/', '/init/createOrganization');
+routes.add('/createProfileAndOrganization', '/init/createProfileAndOrganization');
+routes.add('/createProfileAndOrganization/', '/init/createProfileAndOrganization');
 routes.add('/join/:inviteKey', '/init/join');
 routes.add('/join/:inviteKey/', '/init/join');
 routes.add('/invite/:inviteKey', '/init/invite');

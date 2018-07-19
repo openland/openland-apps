@@ -34,6 +34,17 @@ export interface ImageCropInput {
   h: number,
 };
 
+export interface CreateProfileInput {
+  firstName: string,
+  lastName?: string | null,
+  photoRef?: ImageRefInput | null,
+  phone?: string | null,
+  email?: string | null,
+  website?: string | null,
+  about?: string | null,
+  location?: string | null,
+};
+
 export enum DealStatus {
   ACTIVE = "ACTIVE",
   CLOSED = "CLOSED",
@@ -302,17 +313,6 @@ export interface UpdateProfileInput {
   location?: string | null,
 };
 
-export interface CreateProfileInput {
-  firstName: string,
-  lastName?: string | null,
-  photoRef?: ImageRefInput | null,
-  phone?: string | null,
-  email?: string | null,
-  website?: string | null,
-  about?: string | null,
-  location?: string | null,
-};
-
 export interface UpdateSettingsInput {
   emailFrequency?: EmailFrequency | null,
   desktopNotifications?: NotificationMessages | null,
@@ -458,6 +458,44 @@ export interface ProfilePrefillQuery {
     lastName: string | null,
     picture: string | null,
   } | null,
+};
+
+export interface CreateUserProfileAndOrganizationMutationVariables {
+  user: CreateProfileInput,
+  organization: CreateOrganizationInput,
+};
+
+export interface CreateUserProfileAndOrganizationMutation {
+  alphaCreateUserProfileAndOrganization:  {
+    __typename: "AlphaSignupData",
+    user:  {
+      __typename: "Profile",
+      id: string,
+      firstName: string | null,
+      lastName: string | null,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
+      email: string | null,
+      phone: string | null,
+      website: string | null,
+      about: string | null,
+      location: string | null,
+    },
+    organization:  {
+      __typename: "OrganizationProfile",
+      id: string,
+      name: string,
+    },
+  },
 };
 
 export interface StateQuery {

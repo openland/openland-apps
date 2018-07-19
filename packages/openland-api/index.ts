@@ -29,6 +29,7 @@ export const AccountInvitesHistoryQuery = typedQuery<Types.AccountInvitesHistory
 export const AccountCreateInviteMutation = typedMutation<Types.AccountCreateInviteMutation, {}>(Account.AccountCreateInviteMutation);
 export const AccountDestroyInviteMutation = typedMutation<Types.AccountDestroyInviteMutation, Types.AccountDestroyInviteMutationVariables>(Account.AccountDestroyInviteMutation);
 export const ProfilePrefillQuery = typedQuery<Types.ProfilePrefillQuery, {}>(Account.ProfilePrefillQuery);
+export const CreateUserProfileAndOrganizationMutation = typedMutation<Types.CreateUserProfileAndOrganizationMutation, Types.CreateUserProfileAndOrganizationMutationVariables>(Account.CreateUserProfileAndOrganizationMutation);
 export const StateQuery = typedQuery<Types.StateQuery, {}>(Addressing.StateQuery);
 export const CountyQuery = typedQuery<Types.CountyQuery, Types.CountyQueryVariables>(Addressing.CountyQuery);
 export const ChatListQuery = typedQuery<Types.ChatListQuery, {}>(Chats.ChatListQuery);
