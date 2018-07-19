@@ -20,7 +20,7 @@ export function XStreetViewModal(props: { geometry?: string, location?: { latitu
             size="x-large"
             closeOnClick={false}
             useTopCloser={true}
-            target={props.target || <XButton text="Street View" style="flat" />}
+            target={props.target || <XButton text="Street View" style="ghost" />}
             bodyNoPadding={true}
             body={<XStreetViewFullScreen location={props.geometry ? loadCenter(props.geometry) : props.location!} />}
         />

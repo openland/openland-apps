@@ -16,21 +16,11 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     zIndex: 11,
 }));
 
-const DottedStyle = Glamorous.div({
-    width: 4,
-    height: 4,
-    borderRadius: 100,
-    marginBottom: 2,
-    '&:last-child': {
-        marginBottom: 0,
-    }
-});
-
-const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean }>((props) => ({
-    width: 32,
-    height: 32,
+const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean, smallSize?: boolean }>((props) => ({
+    width: props.smallSize ? 20 : 32,
+    height: props.smallSize ? 20 : 32,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: props.smallSize ? 'row' : 'column',
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
@@ -44,6 +34,15 @@ const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean }>((props) => ({
     },
     '& > div': {
         backgroundColor: props.active ? '#fff' : '#abbacb',
+        width: 4,
+        height: 4,
+        borderRadius: 100,
+        marginBottom: props.smallSize ? undefined : 2,
+        marginRight: props.smallSize ? 2 : undefined,
+        '&:last-child': {
+            marginBottom: props.smallSize ? undefined : 0,
+            marginRight: props.smallSize ? 0 : undefined,
+        }
     },
     zIndex: props.active ? 11 : undefined
 }));
@@ -79,6 +78,7 @@ interface XOverflowProps {
     width?: number;
     target?: any;
     shadow?: boolean;
+    smallSize?: boolean;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -130,10 +130,15 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                     onClickOutside={this.handleClose}
                 >
                     {targetElement ? targetElement : (
-                        <DottedMenuButtonStyle onClick={this.switch} active={this.state.show} innerRef={this.createRef}>
-                            <DottedStyle />
-                            <DottedStyle />
-                            <DottedStyle />
+                        <DottedMenuButtonStyle
+                            onClick={this.switch}
+                            active={this.state.show}
+                            innerRef={this.createRef}
+                            smallSize={this.props.smallSize}
+                        >
+                            <div/>
+                            <div/>
+                            <div/>
                         </DottedMenuButtonStyle>
                     )}
                 </XPopper>
