@@ -20,10 +20,10 @@ import {
 } from './components/SignComponents';
 import { AuthRouter } from '../../components/AuthRouter';
 import { InitTexts } from './_text';
-import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import * as Cookie from 'js-cookie';
+import { createAuth0AsyncClient } from 'openland-x-graphql/Auth0AsyncClient';
 
 const EmptyBlock = Glamorous.div({
     width: '100%',
@@ -47,20 +47,20 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
     codeSending: boolean,
     codeError: string,
 }> {
-    fireGoogle = () => {
+    fireGoogle = async () => {
         Cookie.set('auth-type', 'google', { path: '/' });
-        createAuth0Client().authorize({
+        (await createAuth0AsyncClient()).authorize({
             connection: 'google-oauth2',
             state: this.props.redirect ? this.props.redirect : 'none'
         });
     }
 
-    fireEmail = () => {
+    fireEmail = async () => {
         Cookie.set('auth-type', 'email', { path: '/' });
         if (this.props.redirect) {
             Cookie.set('sign-redirect', this.props.redirect, { path: '/' });
         }
-        createAuth0Client().passwordlessStart({ connection: 'email', send: 'link', email: this.state.emailValue }, (error, v) => {
+        (await createAuth0AsyncClient()).passwordlessStart({ connection: 'email', send: 'link', email: this.state.emailValue }, (error, v) => {
             if (error) {
                 this.setState({ emailSending: false, emailError: error.description!! });
             } else {
@@ -171,12 +171,13 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
         this.fireEmail();
     }
 
-    loginCodeStart = (e?: React.SyntheticEvent<any>) => {
+     loginCodeStart = async (e?: React.SyntheticEvent<any>) => {
         if (e) {
             e.preventDefault();
         }
         this.setState({ codeSending: true });
-        createAuth0Client().passwordlessVerify({ connection: 'email', email: this.state.emailValue, verificationCode: this.state.codeValue }, (error, v) => {
+        (await createAuth0AsyncClient()).passwordlessVerify({ connection: 'email', email: this.state.emailValue, verificationCode: this.state.codeValue }, (error, v) => {
+            console.warn(error);
             if (error) {
                 this.setState({ codeSending: false, codeError: error.description!! });
             } else {
