@@ -83,6 +83,10 @@ const Lock = Glamorous(XIcon)({
     marginTop: -1
 });
 
+const ListingPath = (props: {type: string, text: string}) => (
+    <CardTitle><span>Listing</span> <img src="/static/X/ic-arrow-rignt.svg" /> <span>{props.type} • {props.text}</span></CardTitle>
+);
+
 interface DevelopmentOportunityShortProps {
     name: string;
     id: string;
@@ -103,7 +107,7 @@ export const DevelopmentOportunityShort = (props: { item: DevelopmentOportunityS
         <ListingCard>
             <XVerticalStyled separator={7} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
-                    <CardTitle>Listing > Development opportunity • {DateFormater(item.updatedAt)}</CardTitle>
+                    <ListingPath type="Development opportunity" text={DateFormater(item.updatedAt)}/>
                     <XWithRole role={['org-' + props.orgId + '-admin']}>
                         <XOverflow
                             smallSize={true}
@@ -184,7 +188,7 @@ export const DevelopmentOportunityFull = (props: { item: DevelopmentOportunityPr
         <ListingCard>
             <XVerticalStyled separator={12} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
-                    <CardTitle>Listing > Development opportunity • {DateFormater(item.updatedAt)}</CardTitle>
+                    <ListingPath type="Development opportunity" text={DateFormater(item.updatedAt)}/>
                     <XWithRole role={['org-' + props.orgId + '-admin']}>
                         <XOverflow
                             smallSize={true}
@@ -308,7 +312,7 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
         <ListingCard>
             <XVerticalStyled separator={7} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
-                    <CardTitle>Listing > Acquisition criteria • {DateFormater(item.updatedAt)}</CardTitle>
+                    <ListingPath type="Acquisition criteria" text={DateFormater(item.updatedAt)}/>
                     <XWithRole role={['org-' + props.orgId + '-admin']}>
                         <XOverflow
                             smallSize={true}
@@ -378,7 +382,7 @@ export const AcquizitionRequestFull = (props: { item: AcquizitionRequestProps, o
         <ListingCard>
             <XVerticalStyled separator={12} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
-                    <CardTitle>Listing > Acquisition criteria • {DateFormater(item.updatedAt)}</CardTitle>
+                    <ListingPath type="Acquisition criteria" text={DateFormater(item.updatedAt)}/>
                     <XWithRole role={['org-' + props.orgId + '-admin']}>
                         <XOverflow
                             smallSize={true}
