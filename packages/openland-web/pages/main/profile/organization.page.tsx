@@ -572,7 +572,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
     let currentPath = props.router.path.replace('#', '');
     let rootPath = '/o/' + props.data.organization.id;
     let lsitingsPath = '/o/' + props.data.organization.id + '/listings';
-    let lsitingsAllPath = '/o/' + props.data.organization.id + '/listings/all';
+    // let lsitingsAllPath = '/o/' + props.data.organization.id + '/listings/all';
 
     const { organization } = props.data;
 
