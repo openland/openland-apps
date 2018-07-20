@@ -15,13 +15,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XText } from 'openland-x/XText';
-import { XCard } from 'openland-x/XCard';
 import { XLinkProps, XLink } from 'openland-x/XLink';
-
-const XCardStyled = Glamorous(XCard)({
-    padding: 24,
-    border: 'none'
-});
 
 const BubbleMsg = Glamorous(XVertical)({
     borderRadius: 18,
