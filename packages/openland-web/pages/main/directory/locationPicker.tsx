@@ -76,8 +76,13 @@ class EntriesComponent extends React.Component<{ title: string, options: string[
             let container = ReactDOM.findDOMNode(this.containerRef);
             let target = ReactDOM.findDOMNode(this.targetRef);
             if (target && container) {
-                target.scrollIntoView();
-                container.scrollTo(0, container.scrollTop + target.getBoundingClientRect().top - target.getBoundingClientRect().height - container.getBoundingClientRect().top);
+                let targetY = container.scrollTop + target.getBoundingClientRect().top - container.getBoundingClientRect().top;
+                console.warn(target.getBoundingClientRect().top, container.getBoundingClientRect().top, target.getBoundingClientRect().bottom, container.getBoundingClientRect().bottom);
+                if (target.getBoundingClientRect().top < container.getBoundingClientRect().top) {
+                    container.scrollTo(0, targetY);
+                } else if (target.getBoundingClientRect().bottom > container.getBoundingClientRect().bottom) {
+                    container.scrollTo(0, targetY - container.getBoundingClientRect().height + target.getBoundingClientRect().height);
+                }
 
             }
         }
