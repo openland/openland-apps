@@ -928,7 +928,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </>
                                     )}
 
-                                    {currentPath === lsitingsAllPath && (
+                                    {/* {currentPath === lsitingsAllPath && (
                                         <>
                                             <DOARListingPlaceholder />
                                             <XVertical>
@@ -941,7 +941,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             </XVertical>
                                         </>
 
-                                    )}
+                                    )} */}
 
                                     {props.router.query.addListing && (
                                         <XModalForm

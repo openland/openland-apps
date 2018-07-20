@@ -103,6 +103,15 @@ export const Text = Glamorous.div<TextProps>((props) => ({
     marginTop: props.marginTop
 }));
 
+export const CardTitle = Glamorous.div({
+    opacity: 0.5,
+    fontSize: 14,
+    fontWeight: 500,
+    lineHeight: 1.14,
+    letterSpacing: -0.2,
+    color: '#334562'
+});
+
 export const TextLink = Glamorous(XLinkExternal)<TextProps>((props) => ({
     display: 'block',
     alignItems: 'center',
@@ -242,7 +251,7 @@ export const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean, pad
     }
 }));
 
-export const OpportunitiesValue = Glamorous.div({
+export const Tag = Glamorous.div({
     maxWidth: '100%',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -263,6 +272,7 @@ export const OpportunitiesValue = Glamorous.div({
 interface TagRowProps {
     children?: any;
     title: string;
+    titlePadding?: boolean;
     text?: string;
     bordered?: boolean;
     isTextStyle?: boolean;
@@ -287,9 +297,9 @@ export const TagRowMapMain = (props: TagRowMapProps) => (
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={true} className="main-tags-value">
             {props.items.map((s, k) => (
-                <OpportunitiesValue key={k + '_' + s}>
+                <Tag key={k + '_' + s}>
                     {s}
-                </OpportunitiesValue>
+                </Tag>
             ))}
         </OpportunitiesValueWrapper>
     </OpportunitiesMainWrapper>
@@ -297,7 +307,7 @@ export const TagRowMapMain = (props: TagRowMapProps) => (
 
 export const TagRowCard = (props: TagRowProps) => (
     <OpportunitiesWrapper marginBottom={props.marginBottom}>
-        <OpportunitiesTextWrapper width={150} paddingLeft={props.paddingLeft} paddingTop={props.isTagStyle ? 10 : 0}>
+        <OpportunitiesTextWrapper width={150} paddingLeft={props.paddingLeft} paddingTop={(props.isTagStyle || props.titlePadding) ? 10 : 0}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered} paddingTop={props.valuePaddingTop}>
@@ -307,9 +317,9 @@ export const TagRowCard = (props: TagRowProps) => (
                 </Text>
             )}
             {props.isTagStyle && (
-                <OpportunitiesValue>
+                <Tag>
                     {props.text}
-                </OpportunitiesValue>
+                </Tag>
             )}
             {props.children}
         </OpportunitiesValueWrapper>
@@ -323,9 +333,9 @@ export const TagRowMapCard = (props: TagRowMapProps) => (
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered}>
             {props.items.map((s, k) => (
-                <OpportunitiesValue key={k + '_' + s}>
+                <Tag key={k + '_' + s}>
                     {s}
-                </OpportunitiesValue>
+                </Tag>
             ))}
         </OpportunitiesValueWrapper>
     </OpportunitiesWrapper>
