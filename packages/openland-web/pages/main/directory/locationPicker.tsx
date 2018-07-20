@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { XButton } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -9,6 +10,7 @@ import Glamorous from 'glamorous';
 import { SearchCondition } from './root.page';
 import { XMenuItem } from '../../../components/Incubator/XOverflow';
 import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
+import { XText } from 'openland-x/XText';
 
 const EntryScrollable = Glamorous(XVertical)({
     width: 232,
@@ -33,21 +35,44 @@ const EntryWrapper = Glamorous(XVertical)({
     },
 });
 
-const EntryItem = Glamorous(XMenuItem)({
+const EntryItem = Glamorous(XMenuItem)<{ selected: boolean }>(props => ({
     color: 'rgba(51, 69, 98, 0.8)',
-});
+    backgroundColor: props.selected ? 'gray' : undefined,
+}));
 
 const filterOptions = (options: string[], q: string) => {
     return options.filter(e => ([...e.split(' '), e]).filter(s => q.length === 0 || s.toLowerCase().startsWith(q.toLowerCase())).length > 0);
 };
 
-class EntriesComponent extends React.Component<{ title: string, options: string[], query?: string, onPick: (q: SearchCondition) => void }> {
+class EntriesComponent extends React.Component<{ title: string, options: string[], selected?: number, query?: string, onPick: (q: SearchCondition) => void }> {
+    containerRef?: any;
+    targetRef?: any;
+    captureContainerRef = (ref: any) => {
+        this.containerRef = ref;
+    }
+    captureTargetRef = (ref: any) => {
+        this.targetRef = ref;
+    }
+
+    componentDidUpdate() {
+        if (this.props.selected !== undefined && this.targetRef && this.containerRef) {
+
+            let container = ReactDOM.findDOMNode(this.containerRef);
+            let target = ReactDOM.findDOMNode(this.targetRef);
+            if (target && container) {
+                target.scrollIntoView();
+                container.scrollTo(0, container.scrollTop + target.getBoundingClientRect().top - target.getBoundingClientRect().height - container.getBoundingClientRect().top);
+
+            }
+        }
+    }
+
     render() {
         return (
             <EntryWrapper separator="none">
                 <EntryTitle>{this.props.title}</EntryTitle>
-                <EntryScrollable separator="none">
-                    {filterOptions(this.props.options, this.props.query || '').map((e, i) => <EntryItem onClick={() => this.props.onPick({ type: 'location', value: e, label: e })} key={e + '_' + i}>{e}</EntryItem>)}
+                <EntryScrollable innerRef={this.captureContainerRef} separator="none">
+                    {filterOptions(this.props.options, this.props.query || '').map((e, i) => <EntryItem innerRef={i === this.props.selected ? this.captureTargetRef : undefined} selected={i === this.props.selected} onClick={() => this.props.onPick({ type: 'location', value: e, label: e })} key={e + '_' + i}>{e}</EntryItem>)}
                 </EntryScrollable>
             </EntryWrapper>
         );
@@ -153,44 +178,107 @@ export class LocationPopperPicker extends React.Component<{ onPick: (q: SearchCo
     }
 }
 
-export class LocationControlledPicker extends React.Component<{ query?: string, onPick: (location: string) => void }> {
-    // keydownHandler = (e: any) => {
+// todo switch between arrow/hover select 
+class MultiplePicker extends React.Component<{ options: { label: string, values: string[] }[], query?: string, onPick: (location: string) => void }, {
+    selected: number[];
+    empty: boolean
+}> {
 
-    //     if (e.code === 'Enter' ) {
-    //         e.preventDefault();
-    //         // prevent duplicates
-    //         if ((this.state.lastValue || []).map(v => v.value).filter(v => v === this.state.inputVal).length === 0) {
-    //             this.props.onChange([...(this.state.lastValue || []), { label: this.state.inputVal, value: this.state.inputVal }]);
-    //         } else {
-    //             this.setState({ inputVal: '' });
-    //         }
-    //     }
-    // }
+    constructor(props: any) {
+        super(props);
+        this.state = { selected: [0, 0], empty: false };
+    }
 
-    // componentDidMount() {
-    //     document.addEventListener('keydown', this.keydownHandler);
-    // }
+    componentWillReceiveProps(props: any) {
+        this.setState({ selected: [0, 0] });
+    }
 
-    // componentWillUnmount() {
-    //     document.removeEventListener('keydown', this.keydownHandler);
-    // }
+    keydownHandler = (e: any) => {
+
+        // todo filter before resolve coordinates
+        let x = this.state.selected[0];
+        let y = this.state.selected[1];
+        if (e.code === 'ArrowUp') {
+            y = Math.max(0, y - 1);
+        }
+
+        if (e.code === 'ArrowDown') {
+            let fallback = this.props.options[x] ? filterOptions(this.props.options[x].values, this.props.query || '').length - 1 : 0;
+            y = Math.min(fallback, y + 1);
+        }
+
+        if (e.code === 'ArrowLeft') {
+            x = Math.max(0, x - 1);
+            y = 0;
+        }
+
+        if (e.code === 'ArrowRight') {
+            x = Math.min(this.props.options.length - 1, x + 1);
+            y = 0;
+        }
+
+        let count = 0;
+        let categoriesCount = 0;
+        for (let o of this.props.options) {
+            let optionsCount = filterOptions(o.values, this.props.query || '').length;
+            count += filterOptions(o.values, this.props.query || '').length;
+            categoriesCount += optionsCount ? 1 : 0;
+        }
+        console.warn(count);
+        let empty = count === 0;
+        x = Math.min(x, categoriesCount - 1);
+
+        if (e.code === 'Enter') {
+            e.preventDefault();
+            if (!empty) {
+                this.props.onPick(filterOptions(this.props.options.filter(o => filterOptions(o.values, this.props.query || '').length > 0)[x].values, this.props.query || '')[y]);
+            } else {
+                this.props.onPick(this.props.query || '');
+            }
+        }
+
+        this.setState({
+            selected: [x, y],
+            empty: empty,
+        });
+    }
+
+    componentDidMount() {
+        document.addEventListener('keydown', this.keydownHandler);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.keydownHandler);
+    }
     render() {
-        let empty = filterOptions([...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions], this.props.query || '').length === 0;
+        // todo use reduce
+
         return (
             <>
-                {empty && 'Press Enter to add "' + this.props.query + '" location'}
-                {!empty && (
+                {this.state.empty && <XText>{'Press Enter to add "' + this.props.query + '" location'}</XText>}
+                {!this.state.empty && (
                     <XVertical>
                         <PickerTitle>Top locations</PickerTitle>
                         <PickerEntries separator="none">
-                            <EntriesComponent title={TextDirectory.locationCities} query={this.props.query} options={Cities} onPick={sq => this.props.onPick(sq.label)} />
-                            <EntriesComponent title={TextDirectory.locationMetropolitanAreas} query={this.props.query} options={MetropolitanAreas} onPick={sq => this.props.onPick(sq.label)} />
-                            <EntriesComponent title={TextDirectory.locationStates} query={this.props.query} options={States} onPick={sq => this.props.onPick(sq.label)} />
-                            <EntriesComponent title={TextDirectory.locationMultiStateRegions} query={this.props.query} options={MultiStateRegions} onPick={sq => this.props.onPick(sq.label)} />
+                            {this.props.options.filter(o => filterOptions(o.values, this.props.query || '').length > 0).map((o, i) => (
+                                <EntriesComponent key={o.label + '_' + i} selected={i === this.state.selected[0] ? this.state.selected[1] : undefined} title={o.label} query={this.props.query} options={o.values} onPick={sq => this.props.onPick(sq.label)} />
+                            ))}
                         </PickerEntries>
                     </XVertical>
                 )}
             </>
         );
+    }
+}
+
+export class LocationControlledPicker extends React.Component<{ query?: string, onPick: (location: string) => void }> {
+    options = [
+        { label: TextDirectory.locationCities, values: Cities },
+        { label: TextDirectory.locationMetropolitanAreas, values: MetropolitanAreas },
+        { label: TextDirectory.locationStates, values: States },
+        { label: TextDirectory.locationMultiStateRegions, values: MultiStateRegions },
+    ];
+    render() {
+        return (<MultiplePicker options={this.options} onPick={this.props.onPick} query={this.props.query} />);
     }
 }

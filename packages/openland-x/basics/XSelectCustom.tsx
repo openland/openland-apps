@@ -55,15 +55,15 @@ export class XSelectCustom extends React.Component<XSelectProps, {
             this.onDelete(this.state.lastValue[this.state.lastValue.length - 1].value);
         }
 
-        if (e.code === 'Enter' && this.props.creatable && this.props.onChange && this.state.inputVal.length > 0) {
-            e.preventDefault();
-            // prevent duplicates
-            if ((this.state.lastValue || []).map(v => v.value).filter(v => v === this.state.inputVal).length === 0) {
-                this.props.onChange([...(this.state.lastValue || []), { label: this.state.inputVal, value: this.state.inputVal }]);
-            } else {
-                this.setState({ inputVal: '' });
-            }
-        }
+        // if (e.code === 'Enter' && this.props.creatable && this.props.onChange && this.state.inputVal.length > 0) {
+        //     e.preventDefault();
+        //     // prevent duplicates
+        //     if ((this.state.lastValue || []).map(v => v.value).filter(v => v === this.state.inputVal).length === 0) {
+        //         this.props.onChange([...(this.state.lastValue || []), { label: this.state.inputVal, value: this.state.inputVal }]);
+        //     } else {
+        //         this.setState({ inputVal: '' });
+        //     }
+        // }
     }
 
     componentDidMount() {
