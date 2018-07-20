@@ -2,6 +2,8 @@ import * as React from 'react';
 import gql from 'graphql-tag';
 import { View, Text, Button, AsyncStorage } from 'react-native';
 import { Query } from 'react-apollo';
+import { withApp } from '../../components/withApp';
+import { NavigationInjectedProps } from 'react-navigation';
 
 const MeQuery = gql`
     query Me {
@@ -12,7 +14,11 @@ const MeQuery = gql`
     }
 `;
 
-export class Home extends React.Component {
+class SettingsComponent extends React.Component<NavigationInjectedProps> {
+    static navigationOptions = {
+        title: 'Settings',
+    };
+
     handleLogout = () => {
         AsyncStorage.clear();
     }
@@ -31,3 +37,5 @@ export class Home extends React.Component {
         );
     }
 }
+
+export const Settings = withApp(SettingsComponent);

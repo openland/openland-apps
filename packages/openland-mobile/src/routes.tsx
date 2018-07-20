@@ -1,56 +1,62 @@
-// import React from 'react';
-// import { StyleSheet, Text, View, Button, AsyncStorage } from 'react-native';
-// import { AuthSession } from 'expo';
-// import qs from 'query-string';
-import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
-import { LoginLoader } from './LoginLoader';
+import * as React from 'react';
+import { createStackNavigator, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
+import { LoginLoader } from './pages/auth/LoginLoader';
 import { Login } from './pages/auth/Login';
-import { Root } from './pages/main/Root';
-import { Home } from './pages/main/Home';
+import { Messages } from './pages/main/Messages';
+import { Settings } from './pages/main/Settings';
+import { Ionicons } from '@expo/vector-icons';
 
-// class App extends React.Component<{}, {}> {
+//
+// Application Routes
+//
 
-//   componentDidMount() {
-//     // Start check
-//   }
-
-//   componentWillUnmount() {
-//     //
-//   }
-
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Text>Welcome to Openland!</Text>
-//         <View flexDirection="column">
-//           <Button title="Login with Google" onPress={this.handlePress} />
-//         </View>
-//       </View>
-//     );
-//   }
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
-export const AppStack = createStackNavigator({
-  Home: Home
+const MessagesStack = createStackNavigator({
+  Messages: Messages
 });
 
-export const LoginStack = createStackNavigator({
+const SettingsStack = createStackNavigator({
+  Settings: Settings
+});
+
+const AppStack = createBottomTabNavigator(
+  {
+    Messages: MessagesStack,
+    Settings: SettingsStack
+  },
+  {
+    navigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) => {
+        const { routeName } = navigation.state;
+        let iconName: string;
+        if (routeName === 'Messages') {
+          iconName = `ios-information-circle${focused ? '' : '-outline'}`;
+        } else if (routeName === 'Settings') {
+          iconName = `ios-options${focused ? '' : '-outline'}`;
+        }
+
+        // You can return any component that you like here! We usually use an
+        // icon component from react-native-vector-icons
+        return <Ionicons name={iconName!!} size={25} color={tintColor!!} />;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: '#654BFA',
+      inactiveTintColor: 'gray',
+    },
+  });
+
+//
+// Authentication Routes
+//
+
+const LoginStack = createStackNavigator({
   Home: Login
 });
 
 export default createSwitchNavigator(
   {
     Root: LoginLoader,
-    App: Root,
+    App: AppStack,
     Login: LoginStack
   },
   { initialRouteName: 'Root' }

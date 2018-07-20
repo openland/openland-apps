@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet, ProgressViewIOS, Alert, AsyncStorage } 
 import { AuthSession } from 'expo';
 import qs from 'query-string';
 import { NavigationInjectedProps } from 'react-navigation';
+import { buildClient, saveClient } from '../../utils/apolloClient';
 
 const styles = StyleSheet.create({
     container: {
@@ -50,6 +51,8 @@ export class Login extends React.Component<NavigationInjectedProps, { loading: b
                 let body = await uploaded.json();
                 if (body.ok) {
                     await AsyncStorage.setItem('openland-token', body.token);
+                    let client = buildClient(body.token);
+                    saveClient(client);
                     this.props.navigation.navigate('App');
                     return;
 
