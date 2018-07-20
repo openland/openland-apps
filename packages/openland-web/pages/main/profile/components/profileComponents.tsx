@@ -104,12 +104,23 @@ export const Text = Glamorous.div<TextProps>((props) => ({
 }));
 
 export const CardTitle = Glamorous.div({
-    opacity: 0.5,
+    display: 'flex',
+    alignItems: 'center',
     fontSize: 14,
     fontWeight: 500,
     lineHeight: 1.14,
     letterSpacing: -0.2,
-    color: '#334562'
+    color: '#334562',
+    '& > span': {
+        opacity: 0.5
+    },
+    '& > img': {
+        width: 11,
+        height: 11,
+        objectFit: 'contain',
+        marginRight: 4,
+        marginLeft: 4
+    }
 });
 
 export const TextLink = Glamorous(XLinkExternal)<TextProps>((props) => ({
