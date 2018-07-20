@@ -420,6 +420,7 @@ const StyledSelectCreatable = Glamorous(Creatable)(Styles);
 export type XSelectBasicProps = ReactSelectProps & {
     attach?: 'left' | 'right' | 'both';
     creatable?: boolean;
+    render?: any;
 };
 export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
     attach?: 'left' | 'right' | 'both';
@@ -427,7 +428,7 @@ export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
 
 export function XSelectBasic(props: XSelectBasicProps) {
     return (
-        props.creatable ? <StyledSelectCreatable {...props} shouldKeyDownEventCreateNewOption={(event) => event.keyCode === 13}/> : <StyledSelect {...props} />
+        props.render ? React.cloneElement(props.render, props) : props.creatable ? <StyledSelectCreatable {...props} shouldKeyDownEventCreateNewOption={(event) => event.keyCode === 13}/> : <StyledSelect {...props} />
     );
 }
 

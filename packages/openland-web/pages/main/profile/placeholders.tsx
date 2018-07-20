@@ -23,8 +23,11 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { OrgCategoties } from '../directory/categoryPicker';
-import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
+import { Cities, MetropolitanAreas, States, MultiStateRegions, LocationControlledPicker } from '../directory/locationPicker';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
+import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { XSelectCustom } from 'openland-x/basics/XSelectCustom';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const Placeholder = Glamorous(XCard)<{ accent?: boolean }>(props => ({
     backgroundColor: props.accent ? '#654bfa' : '#fff',
@@ -771,12 +774,56 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
     );
 });
 
+class LocationSelect extends React.Component<{}, {
+    val?: string
+}> {
+    constructor(props: {}) {
+        super(props);
+        this.state = { val: '' };
+    }
+    render() {
+        return (
+            <XVertical>
+                <XSelect
+                    field="input.locations"
+                    render={<XSelectCustom />}
+                    onInputChange={v => this.setState({ val: v })}
+                    creatable={true}
+                />
+
+                <XStoreContext.Consumer>
+                    {(store) => {
+                        let locations: string[] = store ? store.readValue('fields.input.locations') || [] : [];
+                        return (
+                            <LocationControlledPicker
+                                query={this.state.val}
+                                onPick={(l) => {
+                                    // prevent duplicates
+                                    if (locations.indexOf(l) === -1) {
+                                        locations.push(l);
+                                    }
+                                    if (store) {
+                                        store.writeValue('fields.input.locations', locations);
+                                    }
+                                }}
+                            />
+
+                        );
+                    }}
+                </XStoreContext.Consumer>
+
+            </XVertical>
+        );
+    }
+}
+
 export const LocationPlaceholder = withMyOrganizationProfile((props) => {
     if (!(props.data && props.data.organizationProfile)) {
         return null;
     }
     return (
         <XModalForm
+            size="large"
             defaultData={{
                 input: {
                     locations: props.data.organizationProfile!!.locations,
@@ -803,13 +850,19 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
                         title={TextOrganizationProfile.placeholderLocationModalLocationTitle}
                         field="input.locations"
                     >
-                        <XSelect
-                            creatable={true}
-                            multi={true}
-                            field="input.locations"
-                            options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
+                        <XWithRole role="software-developer" negate={true}>
+                            <XSelect
+                                creatable={true}
+                                multi={true}
+                                field="input.locations"
+                                options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
 
-                        />
+                            />
+                        </XWithRole>
+                        <XWithRole role="software-developer" >
+                            <LocationSelect />
+                        </XWithRole>
+
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>
