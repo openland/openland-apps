@@ -8,7 +8,6 @@ import { XIcon } from 'openland-x/XIcon';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import Glamorous from 'glamorous';
 import { SearchCondition } from './root.page';
-import { XMenuItem } from '../../../components/Incubator/XOverflow';
 import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
 import { XText } from 'openland-x/XText';
 
