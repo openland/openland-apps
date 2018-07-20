@@ -12,7 +12,7 @@ import { XCard } from 'openland-x/XCard';
 import { XButton } from 'openland-x/XButton';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
-import { LocationPicker } from './locationPicker';
+import { LocationPopperPicker } from './locationPicker';
 import { CategoryPicker } from './categoryPicker';
 import { XTag } from 'openland-x/XTag';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -644,7 +644,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                         <>
                             <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
                             <SearchPickers separator="none">
-                                <LocationPicker onPick={this.addCondition} />
+                                <LocationPopperPicker onPick={this.addCondition} />
                                 <CategoryPicker onPick={this.addCondition} />
                                 <InterestPicker onPick={this.addCondition} />
                                 <XVertical alignItems="flex-end" flexGrow={1}>
