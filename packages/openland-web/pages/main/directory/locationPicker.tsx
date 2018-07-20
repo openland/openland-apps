@@ -35,16 +35,32 @@ const EntryWrapper = Glamorous(XVertical)({
     },
 });
 
-const EntryItem = Glamorous(XMenuItem)<{ selected: boolean }>(props => ({
-    color: 'rgba(51, 69, 98, 0.8)',
-    backgroundColor: props.selected ? 'gray' : undefined,
+export const EntryItem = Glamorous.div<{ selected: boolean, hover?: boolean }>((props) => ({
+    height: 40,
+    flexShrink: 0,
+    paddingLeft: '18px',
+    paddingRight: '18px',
+    fontSize: '15px',
+    lineHeight: '40px',
+    color: props.selected ? '#6b50ff' : '#334562',
+    backgroundColor: props.selected ? '#f8f8fb' : undefined,
+    fontWeight: 500,
+    display: 'block',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    ':hover': {
+        ...(props.hover ? {
+            color: '#6b50ff',
+            backgroundColor: '#f8f8fb'
+        } : {})
+    }
 }));
 
 const filterOptions = (options: string[], q: string) => {
     return options.filter(e => ([...e.split(' '), e]).filter(s => q.length === 0 || s.toLowerCase().startsWith(q.toLowerCase())).length > 0);
 };
 
-class EntriesComponent extends React.Component<{ title: string, options: string[], selected?: number, query?: string, onPick: (q: SearchCondition) => void }> {
+class EntriesComponent extends React.Component<{ title: string, options: string[], scrollToTarget?: boolean, selected?: number, query?: string, onPick: (q: SearchCondition) => void, onHover?: (i: number) => void }> {
     containerRef?: any;
     targetRef?: any;
     captureContainerRef = (ref: any) => {
@@ -55,7 +71,7 @@ class EntriesComponent extends React.Component<{ title: string, options: string[
     }
 
     componentDidUpdate() {
-        if (this.props.selected !== undefined && this.targetRef && this.containerRef) {
+        if (this.props.selected !== undefined && this.targetRef && this.containerRef && this.props.scrollToTarget) {
 
             let container = ReactDOM.findDOMNode(this.containerRef);
             let target = ReactDOM.findDOMNode(this.targetRef);
@@ -72,7 +88,7 @@ class EntriesComponent extends React.Component<{ title: string, options: string[
             <EntryWrapper separator="none">
                 <EntryTitle>{this.props.title}</EntryTitle>
                 <EntryScrollable innerRef={this.captureContainerRef} separator="none">
-                    {filterOptions(this.props.options, this.props.query || '').map((e, i) => <EntryItem innerRef={i === this.props.selected ? this.captureTargetRef : undefined} selected={i === this.props.selected} onClick={() => this.props.onPick({ type: 'location', value: e, label: e })} key={e + '_' + i}>{e}</EntryItem>)}
+                    {filterOptions(this.props.options, this.props.query || '').map((e, i) => <div key={e} onMouseEnter={() => this.props.onHover ? this.props.onHover(i) : false}><EntryItem hover={!this.props.onHover} innerRef={i === this.props.selected ? this.captureTargetRef : undefined} selected={i === this.props.selected} onClick={() => this.props.onPick({ type: 'location', value: e, label: e })} key={e + '_' + i}>{e}</EntryItem></div>)}
                 </EntryScrollable>
             </EntryWrapper>
         );
@@ -183,11 +199,11 @@ interface MultoplePickerProps {
     query?: string;
     onPick: (location: string) => void;
 }
-// todo switch between arrow/hover select 
 class MultiplePicker extends React.Component<MultoplePickerProps, {
     selected: number[];
     empty: boolean,
     filteredOptions: { label: string, values: string[] }[],
+    scrollToSelected?: boolean
 }> {
 
     constructor(props: MultoplePickerProps) {
@@ -247,7 +263,11 @@ class MultiplePicker extends React.Component<MultoplePickerProps, {
         x = Math.min(this.state.filteredOptions.length - 1, Math.max(0, x));
         y = Math.min(this.state.filteredOptions[x] ? this.state.filteredOptions[x].values.length - 1 : 0, Math.max(0, y));
 
-        this.setState({ selected: [x, y] });
+        if (dx !== 0) {
+            y = 0;
+        }
+
+        this.setState({ selected: [x, y], scrollToSelected: true });
 
     }
 
@@ -267,7 +287,7 @@ class MultiplePicker extends React.Component<MultoplePickerProps, {
                         <PickerTitle>Top locations</PickerTitle>
                         <PickerEntries separator="none">
                             {this.props.options.filter(o => filterOptions(o.values, this.props.query || '').length > 0).map((o, i) => (
-                                <EntriesComponent key={o.label + '_' + i} selected={i === this.state.selected[0] ? this.state.selected[1] : undefined} title={o.label} query={this.props.query} options={o.values} onPick={sq => this.props.onPick(sq.label)} />
+                                <EntriesComponent scrollToTarget={this.state.scrollToSelected} onHover={index => this.setState({ selected: [i, index], scrollToSelected: false })} key={o.label + '_' + i} selected={i === this.state.selected[0] ? this.state.selected[1] : undefined} title={o.label} query={this.props.query} options={o.values} onPick={sq => this.props.onPick(sq.label)} />
                             ))}
                         </PickerEntries>
                     </XVertical>
