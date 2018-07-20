@@ -213,35 +213,23 @@ class MultiplePicker extends React.Component<MultoplePickerProps, {
         }
 
         this.setState({ selected: [0, 0], empty: count === 0, filteredOptions: fOptions });
-        this.moveSelected(0, 0);
-    }
-
-    moveSelected = (dx: number, dy: number) => {
-        let x = this.state.selected[0] + dx;
-        let y = this.state.selected[1] + dy;
-
-        x = Math.min(this.state.filteredOptions.length - 1, Math.max(0, x));
-        y = Math.min(this.state.filteredOptions[x] ? this.state.filteredOptions[x].values.length - 1 : 0, Math.max(0, y));
-
-        this.setState({ selected: [x, y] });
-
     }
 
     keydownHandler = (e: any) => {
 
-        let x = 0;
-        let y = 0;
+        let dx = 0;
+        let dy = 0;
         if (e.code === 'ArrowUp') {
-            y = -1;
+            dy = -1;
         }
         if (e.code === 'ArrowDown') {
-            y = 1;
+            dy = 1;
         }
         if (e.code === 'ArrowLeft') {
-            x = -1;
+            dx = -1;
         }
         if (e.code === 'ArrowRight') {
-            x = 1;
+            dx = 1;
         }
 
         if (e.code === 'Enter') {
@@ -253,7 +241,13 @@ class MultiplePicker extends React.Component<MultoplePickerProps, {
             }
         }
 
-        this.moveSelected(x, y);
+        let x = this.state.selected[0] + dx;
+        let y = this.state.selected[1] + dy;
+
+        x = Math.min(this.state.filteredOptions.length - 1, Math.max(0, x));
+        y = Math.min(this.state.filteredOptions[x] ? this.state.filteredOptions[x].values.length - 1 : 0, Math.max(0, y));
+
+        this.setState({ selected: [x, y] });
 
     }
 
@@ -265,8 +259,6 @@ class MultiplePicker extends React.Component<MultoplePickerProps, {
         document.removeEventListener('keydown', this.keydownHandler);
     }
     render() {
-        // todo use reduce
-
         return (
             <>
                 {this.state.empty && <XText>{'Press Enter to add "' + this.props.query + '" location'}</XText>}
