@@ -178,69 +178,83 @@ export class LocationPopperPicker extends React.Component<{ onPick: (q: SearchCo
     }
 }
 
+interface MultoplePickerProps {
+    options: { label: string, values: string[] }[];
+    query?: string;
+    onPick: (location: string) => void;
+}
 // todo switch between arrow/hover select 
-class MultiplePicker extends React.Component<{ options: { label: string, values: string[] }[], query?: string, onPick: (location: string) => void }, {
+class MultiplePicker extends React.Component<MultoplePickerProps, {
     selected: number[];
-    empty: boolean
+    empty: boolean,
+    filteredOptions: { label: string, values: string[] }[],
 }> {
 
-    constructor(props: any) {
+    constructor(props: MultoplePickerProps) {
         super(props);
-        this.state = { selected: [0, 0], empty: false };
+        let fOptions = [];
+        for (let o of props.options) {
+            if (filterOptions(o.values, props.query || '').length > 0) {
+                fOptions.push({ label: o.label, values: filterOptions(o.values, props.query || '') });
+            }
+        }
+
+        this.state = { selected: [0, 0], empty: false, filteredOptions: fOptions };
     }
 
-    componentWillReceiveProps(props: any) {
-        this.setState({ selected: [0, 0] });
+    componentWillReceiveProps(props: MultoplePickerProps) {
+        let fOptions = [];
+        let count = 0;
+        for (let o of props.options) {
+            if (filterOptions(o.values, props.query || '').length > 0) {
+                count += filterOptions(o.values, props.query || '').length;
+                fOptions.push({ label: o.label, values: filterOptions(o.values, props.query || '') });
+            }
+        }
+
+        this.setState({ selected: [0, 0], empty: count === 0, filteredOptions: fOptions });
+        this.moveSelected(0, 0);
+    }
+
+    moveSelected = (dx: number, dy: number) => {
+        let x = this.state.selected[0] + dx;
+        let y = this.state.selected[1] + dy;
+
+        x = Math.min(this.state.filteredOptions.length - 1, Math.max(0, x));
+        y = Math.min(this.state.filteredOptions[x] ? this.state.filteredOptions[x].values.length - 1 : 0, Math.max(0, y));
+
+        this.setState({ selected: [x, y] });
+
     }
 
     keydownHandler = (e: any) => {
 
-        // todo filter before resolve coordinates
-        let x = this.state.selected[0];
-        let y = this.state.selected[1];
+        let x = 0;
+        let y = 0;
         if (e.code === 'ArrowUp') {
-            y = Math.max(0, y - 1);
+            y = -1;
         }
-
         if (e.code === 'ArrowDown') {
-            let fallback = this.props.options[x] ? filterOptions(this.props.options[x].values, this.props.query || '').length - 1 : 0;
-            y = Math.min(fallback, y + 1);
+            y = 1;
         }
-
         if (e.code === 'ArrowLeft') {
-            x = Math.max(0, x - 1);
-            y = 0;
+            x = -1;
         }
-
         if (e.code === 'ArrowRight') {
-            x = Math.min(this.props.options.length - 1, x + 1);
-            y = 0;
+            x = 1;
         }
-
-        let count = 0;
-        let categoriesCount = 0;
-        for (let o of this.props.options) {
-            let optionsCount = filterOptions(o.values, this.props.query || '').length;
-            count += filterOptions(o.values, this.props.query || '').length;
-            categoriesCount += optionsCount ? 1 : 0;
-        }
-        console.warn(count);
-        let empty = count === 0;
-        x = Math.min(x, categoriesCount - 1);
 
         if (e.code === 'Enter') {
             e.preventDefault();
-            if (!empty) {
-                this.props.onPick(filterOptions(this.props.options.filter(o => filterOptions(o.values, this.props.query || '').length > 0)[x].values, this.props.query || '')[y]);
+            if (!this.state.empty) {
+                this.props.onPick(this.state.filteredOptions[this.state.selected[0]].values[this.state.selected[1]]);
             } else {
                 this.props.onPick(this.props.query || '');
             }
         }
 
-        this.setState({
-            selected: [x, y],
-            empty: empty,
-        });
+        this.moveSelected(x, y);
+
     }
 
     componentDidMount() {
