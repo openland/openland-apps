@@ -342,7 +342,7 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
                     <XVerticalStyled flexGrow={1} width={'calc(100% - 300px)'} separator={5} paddingTop={8}>
                         <ListingTitle>{item.name}</ListingTitle>
                         {item.shortDescription && <Text>{item.shortDescription}</Text>}
-                        <XHorizontalStyled justifyContent="flex-end" separator={5} alignItems="center" marginTop={0}>
+                        <XHorizontalStyled justifyContent="flex-end" separator={5} alignItems="center" marginTop="auto">
                             <XButton text="View details" />
                             <XButton style="primary" text="Message" />
                         </XHorizontalStyled>

@@ -13,8 +13,8 @@ interface XHorizontalStyledProps {
     paddingRight?: number;
     paddingTop?: number;
     paddingBottom?: number;
-    marginTop?: number;
-    marginBottom?: number;
+    marginTop?: number | string;
+    marginBottom?: number | string;
     maxwidth?: string | number;
 }
 
