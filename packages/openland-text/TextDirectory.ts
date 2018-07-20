@@ -137,7 +137,7 @@ export const TextDirectoryData = {
         ],
 
         Cities: [
-            'New York',
+            'New York City',
             'Los Angeles',
             'Chicago',
             'Houston',
@@ -423,5 +423,6 @@ export const TextDirectoryData = {
         { label: 'Development', value: 'Development' },
         { label: 'Redevelopment', value: 'Redevelopment' },
         { label: 'Investing', value: 'Investing' },
+        { label: 'Retail redevelopment', value: 'Retail redevelopment' },
     ],
 };
