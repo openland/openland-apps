@@ -6,6 +6,7 @@ import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import { LoginLoader } from './LoginLoader';
 import { Login } from './pages/auth/Login';
 import { Root } from './pages/main/Root';
+import { Home } from './pages/main/Home';
 
 // class App extends React.Component<{}, {}> {
 
@@ -38,18 +39,18 @@ import { Root } from './pages/main/Root';
 //   },
 // });
 
-const AppStack = createStackNavigator({
-  Home: Root
+export const AppStack = createStackNavigator({
+  Home: Home
 });
 
-const LoginStack = createStackNavigator({
+export const LoginStack = createStackNavigator({
   Home: Login
 });
 
 export default createSwitchNavigator(
   {
     Root: LoginLoader,
-    App: AppStack,
+    App: Root,
     Login: LoginStack
   },
   { initialRouteName: 'Root' }
