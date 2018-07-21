@@ -21,6 +21,7 @@
       "**/*"
     ],
     "ios": {
+      "icon": "./packages/openland-mobile/assets/icon.ios.png",
       "supportsTablet": true,
       "bundleIdentifier": "com.korshakov.testing.openland"
     },
