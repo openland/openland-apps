@@ -21,7 +21,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.korshakov.testing.openland"
     },
     "packagerOpts": {
       "assetExts": [
