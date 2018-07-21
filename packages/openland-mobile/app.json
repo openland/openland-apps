@@ -6,7 +6,7 @@
     "privacy": "public",
     "sdkVersion": "28.0.0",
     "platforms": ["ios", "android"],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./packages/openland-mobile/assets/icon.png",
     "splash": {
@@ -23,7 +23,13 @@
     "ios": {
       "icon": "./packages/openland-mobile/assets/icon.ios.png",
       "supportsTablet": true,
-      "bundleIdentifier": "com.korshakov.testing.openland"
+      "bundleIdentifier": "com.korshakov.testing.openland",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.korshakov.testing.openland"
     },
     "packagerOpts": {
       "assetExts": [
