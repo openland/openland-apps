@@ -18,6 +18,7 @@ export function getClient(): ApolloClient<{}> {
 export function buildClient(token: string) {
     var headers: any = {};
     headers['x-openland-token'] = token;
+    headers['x-openland-org'] = '61gk9KRrl9ComJkvYnvdcddr4o';
     const httpLink = new HttpLink({
         uri: 'https://api.openland.com/api',
         headers: headers,
