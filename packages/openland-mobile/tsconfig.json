@@ -19,7 +19,8 @@
       "outDir": "build/dist",
       "sourceMap": true,
       "strict": true,
-      "target": "es2017"
+      "target": "es2017",
+      "baseUrl": "packages"
     },
     "exclude": [
       "build",
@@ -27,5 +28,21 @@
     ],
     "types": [
       "typePatches"
+    ],
+    "paths": {
+      "openland-mobile": [
+        "openland-mobile"
+      ],
+      "openland-x-graphql": [
+        "openland-x-graphql"
+      ],
+      "openland-api": [
+        "openland-api"
+      ]
+    },
+    "include": [
+      "./packages/openland-mobile",
+      "./packages/openland-x-graphql",
+      "./packages/openland-api"
     ]
   }

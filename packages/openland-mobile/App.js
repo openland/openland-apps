@@ -1,3 +1,3 @@
-import App from './src/routes'
+import App from 'openland-mobile/routes'
 
 export default App

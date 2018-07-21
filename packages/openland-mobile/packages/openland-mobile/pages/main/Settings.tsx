@@ -1,18 +1,18 @@
 import * as React from 'react';
-import gql from 'graphql-tag';
 import { View, Text, Button, AsyncStorage } from 'react-native';
 import { Query } from 'react-apollo';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
+import { AccountQuery } from 'openland-api';
 
-const MeQuery = gql`
-    query Me {
-        me {
-            id
-            name
-        }
-    }
-`;
+// const MeQuery = gql`
+//     query Me {
+//         me {
+//             id
+//             name
+//         }
+//     }
+// `;
 
 class SettingsComponent extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
@@ -26,7 +26,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps> {
     render() {
         return (
             <View>
-                <Query query={MeQuery}>
+                <Query query={AccountQuery.document}>
                     {data => {
                         console.log(data);
                         return (<Text>{data.data.me && data.data.me.name} Hello!</Text>);
