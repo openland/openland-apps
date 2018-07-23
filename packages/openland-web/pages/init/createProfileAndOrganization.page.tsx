@@ -1,6 +1,7 @@
 import '../init';
 import '../../globals';
 import * as React from 'react';
+import * as Cookie from 'js-cookie';
 import Glamorous from 'glamorous';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
@@ -24,8 +25,6 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XFormError } from 'openland-x-forms/XFormError';
-import { XLink } from 'openland-x/XLink';
-import * as Cookie from 'js-cookie';
 import { withCreateUserProfileAndOrganization } from '../../api/withCreateUserProfileAndOrganization';
 
 const Footer = Glamorous.div({
@@ -47,17 +46,6 @@ const FooterText = Glamorous.div({
     '&:first-child': {
         marginBottom: 6
     }
-});
-
-const FooterLink = Glamorous(XLink)({
-    display: 'inline-block',
-    textDecoration: 'underline',
-    fontSize: 14,
-    lineHeight: 1.71,
-    letterSpacing: -0.4,
-    fontWeight: 500,
-    textAlign: 'center',
-    color: '#334562'
 });
 
 const PopupWrapper = Glamorous.div({
