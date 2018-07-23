@@ -34,8 +34,8 @@ export const SuperAccountsQuery = gql`
 `;
 
 export const SuperAccountQuery = gql`
-    query SuperAccount($accountId: ID!) {
-        superAccount(id: $accountId) {
+    query SuperAccount($accountId: ID!, $viaOrgId: Boolean) {
+        superAccount(id: $accountId, viaOrgId: $viaOrgId) {
             id
             title
             state
@@ -48,6 +48,10 @@ export const SuperAccountQuery = gql`
                 title
             }
             orgId
+            createdAt
+            createdBy{
+                name
+            }
             published: alphaPublished
         }
     }

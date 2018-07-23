@@ -3395,6 +3395,7 @@ export interface SuperAccountsQuery {
 
 export interface SuperAccountQueryVariables {
   accountId: string,
+  viaOrgId?: boolean | null,
 };
 
 export interface SuperAccountQuery {
@@ -3419,6 +3420,11 @@ export interface SuperAccountQuery {
       title: string,
     } >,
     orgId: string,
+    createdAt: string | null,
+    createdBy:  {
+      __typename: "User",
+      name: string,
+    } | null,
     published: boolean,
   },
 };

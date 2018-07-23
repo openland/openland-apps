@@ -1,6 +1,8 @@
 import * as React from 'react';
 import XStyles from './XStyles';
 import Glamorous from 'glamorous';
+import { XStoreState } from 'openland-x-store/XStoreState';
+import { XStoreContext } from 'openland-x-store/XStoreContext';
 
 const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
     display: 'flex',
@@ -64,19 +66,25 @@ const Divided = Glamorous.div({
     }
 });
 
-interface XCheckboxProps { label: string; value?: string; onChange?: (checked: { label: string, checked: boolean }) => void; checked?: boolean; hint?: string; }
+interface XCheckboxBasicProps { label: string; trueValue?: string; falseValue?: string; value?: string; onChange?: (checked: { label: string, checked: boolean }) => void; checked?: boolean; hint?: string; }
 
-export class XCheckbox extends React.Component<XCheckboxProps, { isChecked: boolean }> {
+export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChecked: boolean }> {
     static defaultProps = {
         _isCheckBox: true
     };
-    constructor(props: XCheckboxProps) {
+    constructor(props: XCheckboxBasicProps) {
         super(props);
 
         this.state = {
-            isChecked: this.props.checked !== undefined ? this.props.checked : false
+            isChecked: this.props.checked !== undefined ? this.props.checked : this.props.value !== undefined && this.props.value === this.props.trueValue
         };
 
+    }
+
+    componentWillReceiveProps(props: any) {
+        this.setState({
+            isChecked: props.checked !== undefined ? props.checked : props.value !== undefined && props.value === props.trueValue
+        });
     }
 
     handleChange = () => {
@@ -90,7 +98,7 @@ export class XCheckbox extends React.Component<XCheckboxProps, { isChecked: bool
 
     render() {
         const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
-
+        console.warn(this.state.isChecked);
         return (
             <CheckboxInputDiv active={this.state.isChecked} >
                 <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
@@ -160,5 +168,57 @@ export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selec
         return (
             res
         );
+    }
+}
+
+class XCheckboxStored extends React.PureComponent<XCheckboxProps & { store: XStoreState }> {
+    handleChange = (src: { label: string, checked: boolean }) => {
+        let val = src.checked ? (this.props.trueValue !== undefined ? this.props.trueValue : 'true') : (this.props.falseValue !== undefined ? this.props.falseValue : 'false');
+        this.props.store.writeValue(this.props.valueStoreKey || ('fields.' + this.props.field), val);
+    }
+
+    render() {
+        let { valueStoreKey, store, field, ...other } = this.props;
+        let value: any = this.props.value;
+        if (valueStoreKey || field) {
+            value = store.readValue(valueStoreKey || ('fields.' + field));
+        }
+        console.warn(this.props.trueValue !== undefined ? this.props.trueValue === value : value === 'true');
+        return <XCheckboxBasic {...other} checked={this.props.trueValue !== undefined ? this.props.trueValue === value : value === 'true'} onChange={this.handleChange} />;
+    }
+}
+
+export interface XCheckboxProps extends XCheckboxBasicProps {
+    field?: string;
+    valueStoreKey?: string;
+}
+
+export class XCheckbox extends React.PureComponent<XCheckboxProps> {
+
+    render() {
+        if (this.props.field || this.props.valueStoreKey) {
+            let { valueStoreKey, field, ...other } = this.props;
+            let valueStoreKeyCached = valueStoreKey;
+            let fieldCached = field;
+            return (
+                <XStoreContext.Consumer>
+                    {store => {
+                        if (!store) {
+                            throw Error('No store!');
+                        }
+                        return (
+                            <XCheckboxStored
+                                {...other}
+                                valueStoreKey={valueStoreKeyCached}
+                                field={fieldCached}
+                                store={store}
+                            />
+                        );
+                    }}
+                </XStoreContext.Consumer>
+            );
+
+        }
+        return <XCheckboxBasic {...this.props} />;
     }
 }

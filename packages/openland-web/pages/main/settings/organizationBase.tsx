@@ -31,6 +31,10 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OrgCategoties } from '../directory/categoryPicker';
 import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
+import { XCheckbox } from 'openland-x/XCheckbox';
+import { withSuperAccount } from '../../../api/withSuperAccount';
+import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
+import { XText } from 'openland-x/XText';
 
 const CenteredButton = Glamorous(XButton)({
     alignSelf: 'center'
@@ -149,6 +153,12 @@ const AddLinkBtn = Glamorous(XButton)({
     marginTop: -8,
 });
 
+let shiftArray = (array: any[]) => {
+    let res = [...array];
+    res.shift();
+    return res;
+};
+
 const activities = [
     { label: 'Bankruptcy', value: 'Bankruptcy' },
     { label: 'Financial distress', value: 'Financial distress' },
@@ -172,6 +182,50 @@ const activities = [
     { label: 'Strategic assessment', value: 'Strategic assessment' },
 ];
 
+const AdminTools = withSuperAccountActions(props => {
+    return (
+        <>
+            <XText>{'Created ' + (props.data.superAccount.createdAt ? DateFormater(props.data.superAccount.createdAt) : 'once') + ' by ' + (props.data.superAccount.createdBy ? props.data.superAccount.createdBy.name : 'John Doe')}</XText>
+            <XForm
+                defaultData={{
+                    input: {
+                        activated: props.data && props.data.superAccount.state,
+                        published: (props as any).published ? 'published' : 'unpublished',
+                        editorial: (props as any).editorial ? 'editorial' : 'noneditorial',
+                    }
+                }}
+                defaultAction={async (data) => {
+                    await (props as any).updateOrganizatonMutations({
+                        variables: {
+                            input: {
+                                alphaPublished: data.input.published === 'published',
+                                alphaEditorial: data.input.editorial === 'editorial',
+                            }
+                        }
+                    });
+
+                    if (data.input.activated === 'ACTIVATED') {
+                        props.activate({ variables: { accountId: props.data.superAccount.id } });
+                    } else {
+                        props.pend({ variables: { accountId: props.data.superAccount.id } });
+                    }
+                }}
+                defaultLayout={false}
+            >
+
+                <XVertical>
+                    <XFormLoadingContent>
+                        <XCheckbox label="Activated" trueValue="ACTIVATED" falseValue="PENDING" field="input.activated" />
+                        <XCheckbox label="Published" trueValue="published" falseValue="unpublished" field="input.published" />
+                        <XCheckbox label="Editorial" trueValue="editorial" falseValue="noneditorial" field="input.editorial" />
+                    </XFormLoadingContent>
+                    <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
+                </XVertical>
+            </XForm>
+        </>
+    );
+}) as React.ComponentType<{ updateOrganizatonMutations: any, published: boolean, editorial: boolean, variables: { accountId: string, viaOrgId: true } }>;
+
 export const OrganizationSettigs = ((props: any) => {
     return (
         <Navigation title="Organization profile">
@@ -180,11 +234,12 @@ export const OrganizationSettigs = ((props: any) => {
                 <XVertical alignSelf="stretch">
                     <XForm
                         defaultData={{
+
                             input: {
                                 name: props.data.organizationProfile!!.name,
                                 photo: props.data.organizationProfile!!.photoRef,
-                                about: props.data.organizationProfile!!.about,
-                                locations: props.data.organizationProfile!!.locations,
+                                primaryLocation: [(props.data.organizationProfile!!.locations || [])[0]].filter(l => !!(l)),
+                                locations: shiftArray(props.data.organizationProfile!!.locations || []),
                                 photoRef: sanitizeIamgeRef(props.data.organizationProfile!!.photoRef),
                                 organizationType: props.data.organizationProfile!!.organizationType,
                                 interests: props.data.organizationProfile!!.interests,
@@ -193,15 +248,15 @@ export const OrganizationSettigs = ((props: any) => {
                             }
                         }}
                         defaultAction={async (data) => {
+                            // console.warn(data);
                             await props.updateOrganizaton({
                                 variables: {
                                     input: {
                                         name: data.input.name,
                                         photoRef: data.input.photoRef,
-                                        about: data.input.about,
                                         alphaOrganizationType: data.input.organizationType,
                                         alphaInterests: data.input.interests,
-                                        alphaLocations: data.input.locations,
+                                        alphaLocations: [...([data.input.primaryLocation] || []), ...(data.input.locations || [])],
                                         alphaPublished: data.input.published === 'published',
                                         alphaEditorial: data.input.editorial === 'editorial',
                                     }
@@ -215,24 +270,15 @@ export const OrganizationSettigs = ((props: any) => {
                                 <XHorizontal>
                                     <XVertical flexGrow={1} maxWidth={500}>
 
-                                        <XWithRole role={['super-admin', 'editor']}>
-                                            <XFormField title="Published" field="input.name">
-                                                <XSelect clearable={false} searchable={false} field="input.published" options={[{ label: 'yes', value: 'published' }, { label: 'no', value: 'unpublished' }]} />
-                                            </XFormField>
-                                            <XFormField title="Editorial" field="input.editorial">
-                                                <XSelect clearable={false} searchable={false} field="input.editorial" options={[{ label: 'yes', value: 'editorial' }, { label: 'no', value: 'noneditorial' }]} />
-                                            </XFormField>
-                                        </XWithRole>
                                         <XFormField title="Name" field="input.name">
                                             <XInput field="input.name" />
                                         </XFormField>
 
+                                        <XFormField title="Primary Location" field="input.primaryLocation" optional={true}>
+                                            <XSelect creatable={true} multi={true} field="input.primaryLocation" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
+                                        </XFormField>
                                         <XFormField title="Locations" field="input.locations" optional={true}>
                                             <XSelect creatable={true} multi={true} field="input.locations" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
-                                        </XFormField>
-
-                                        <XFormField title="About" field="fields.input.about" optional={true}>
-                                            <XTextArea valueStoreKey="fields.input.about" />
                                         </XFormField>
 
                                         <XFormField title="Categories" field="input.organizationType" optional={true}>
@@ -252,7 +298,6 @@ export const OrganizationSettigs = ((props: any) => {
                         </XVertical>
                     </XForm>
 
-                    <XTitle id="contacts">Contacts</XTitle>
                     <XForm
                         defaultData={{
                             input: {
@@ -300,9 +345,26 @@ export const OrganizationSettigs = ((props: any) => {
                             <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
                         </XVertical>
                     </XForm>
+
+                    <XTitle id="contacts">Contacts</XTitle>
                     {props.data.organizationProfile!!.contacts.filter((c: any) => c !== null).map((c: any, i: any) => <ContactPersonItem key={i} contact={c!!} index={i} />)}
                     <XButton query={{ field: 'addContact', value: 'true' }} text="Add Contact" style="primary" alignSelf="flex-start" />
 
+                    {/* SUPER ADMIN */}
+                    <XWithRole role={['super-admin', 'editor']}>
+                        <XTitle id="super-admin">Super admin</XTitle>
+                        <AdminTools variables={{ accountId: props.data.organizationProfile!!.id, viaOrgId: true }} updateOrganizatonMutations={props.updateOrganizaton} published={props.data.organizationProfile!!.published} editorial={props.data.organizationProfile!!.editorial} />
+
+                        {/* Just for admins/editors - temp solution before full functional posts are made - give up design */}
+                        <XTitle id="super-admin">Dummy posts</XTitle>
+
+                        {(props.data.organizationProfile!!.posts || []).filter((c: any) => c !== null).map((c: any, i: any) => <PostItem key={i} post={c!!} index={i} />)}
+
+                        <XButton query={{ field: 'addPost', value: 'true' }} text="Add Post" style="primary" alignSelf="flex-start" />
+
+                    </XWithRole>
+
+                    {/* MODALS */}
                     {props.data.organizationProfile!!.contacts[props.router.query.deleteContact] && (
                         <XModalForm
                             title="Delete?"
@@ -407,10 +469,6 @@ export const OrganizationSettigs = ((props: any) => {
                     </XModalForm>
 
                     <XWithRole role={['super-admin', 'editor']}>
-
-                        {(props.data.organizationProfile!!.posts || []).filter((c: any) => c !== null).map((c: any, i: any) => <PostItem key={i} post={c!!} index={i} />)}
-
-                        <XButton query={{ field: 'addPost', value: 'true' }} text="Add Post" style="primary" alignSelf="flex-start" />
 
                         <XModalForm
                             title="Add post"
