@@ -75,13 +75,14 @@ const PostTag = Glamorous.div({
     textOverflow: 'ellipsis',
     height: 30,
     borderRadius: 4,
-    backgroundColor: '#edf3fe',
+    backgroundColor: '#fff',
     whiteSpace: 'nowrap',
     fontSize: 14,
     fontWeight: 500,
     lineHeight: '30px',
     color: '#4285f4',
-    padding: '0px 9px 1px'
+    padding: '0px 9px 1px',
+    border: 'solid 1px #e1ebfe'
 });
 
 const UpperCase = Glamorous.span({
@@ -145,7 +146,7 @@ export const PostCard = (props: { item: PostCardProps, orgId: string }) => {
 
                         {(item.description && ((item.links && item.links.length > 0) || (item.activity && item.activity.length > 0))) && <Separator />}
 
-                        <XHorizontal>
+                        <XHorizontal separator={5}>
                             {(item.links && item.links.length > 0) && (
                                 <>
                                     {item.links!!.map((i, k) => (
