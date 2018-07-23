@@ -1,4 +1,4 @@
-import { backoff } from 'openland-x-utils/timer';
+import { backoff } from 'openland-y-utils/timer';
 
 export async function createAuth0AsyncClient() {
     let auth0 = await backoff(async () => await import('auth0-js'));

@@ -1,4 +1,4 @@
-import { backoff } from 'openland-x-utils/timer';
+import { backoff } from 'openland-y-utils/timer';
 
 export class Badge {
 

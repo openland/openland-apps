@@ -1,6 +1,6 @@
 import { MessengerEngine } from './MessengerEngine';
 import { ChatReadMutation, ChatHistoryQuery } from 'openland-api';
-import { backoff } from 'openland-x-utils/timer';
+import { backoff } from 'openland-y-utils/timer';
 import { SequenceWatcher } from './SequenceWatcher';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';

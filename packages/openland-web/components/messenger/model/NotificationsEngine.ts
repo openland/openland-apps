@@ -3,7 +3,7 @@ import { Notifications } from './utils/Notifications';
 import { Badge } from './utils/Badge';
 import { PushEngine } from './PushEngine';
 import gql from 'graphql-tag';
-import { backoff } from 'openland-x-utils/timer';
+import { backoff } from 'openland-y-utils/timer';
 import { SettingsQuery } from 'openland-api';
 import { SettingsQuery as SettingsQueryType } from 'openland-api/Types';
 

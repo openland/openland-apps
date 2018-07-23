@@ -21,7 +21,7 @@ import { withUserInfo } from '../../components/UserInfo';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
 import { XForm } from 'openland-x-forms/XForm2';
-import { delayForewer } from 'openland-x-utils/timer';
+import { delayForewer } from 'openland-y-utils/timer';
 import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';

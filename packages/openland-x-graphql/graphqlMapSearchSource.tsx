@@ -5,7 +5,7 @@ import ApolloClient from 'apollo-client';
 import { XMapSubscriber } from 'openland-x-map/XMap';
 import { stopProgress, startProgress } from 'openland-x-routing/NextRouting';
 import { XMapSource } from 'openland-x-map/XMapSource';
-import { backoff } from 'openland-x-utils/timer';
+import { backoff } from 'openland-y-utils/timer';
 
 interface GraphQLMapSearchSourceProps {
     layer: string;

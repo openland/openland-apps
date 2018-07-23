@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import ApolloClient, { ApolloQueryResult } from 'apollo-client';
 import { XMapSubscriber } from 'openland-x-map/XMap';
 import { XMapSource } from 'openland-x-map/XMapSource';
-import { backoff } from 'openland-x-utils/timer';
+import { backoff } from 'openland-y-utils/timer';
 import { stopProgress, startProgress } from 'openland-x-routing/NextRouting';
 import { parseGeometry } from 'openland-x-utils/parseGeometry';
 import { GraphqlTypedQuery } from 'openland-y-graphql/typed';

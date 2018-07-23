@@ -15,7 +15,7 @@ import {
 } from './components/CreateProfileComponents';
 import { InitTexts } from './_text';
 import { XForm } from 'openland-x-forms/XForm2';
-import { delayForewer } from 'openland-x-utils/timer';
+import { delayForewer } from 'openland-y-utils/timer';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XInput } from 'openland-x/XInput';
 import { XFooter } from 'openland-x/XFooter';
