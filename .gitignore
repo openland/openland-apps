@@ -29,3 +29,5 @@ dist
 packages/openland-mobile/packages/openland-api
 packages/openland-mobile/packages/openland-x-graphql
 .expo
+packages/openland-mobile-expo/packages/openland-api
+packages/openland-mobile-expo/packages/openland-x-graphql
