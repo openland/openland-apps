@@ -3,10 +3,7 @@
 .DS_Store
 .cache-loader
 .vscode
-node_modules/.cache
-node_modules/.bin
-node_modules/fsevents
-node_modules/*webpack*
-node_modules/*uglify*
-node_modules/schema-utils
+node_modules
+patches
+yarn.lock
 packages
