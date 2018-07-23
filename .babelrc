@@ -5,10 +5,29 @@
             "plugins": ["transform-react-stateless-component-name", "inline-react-svg"]        
         },
         "production": {
-            "presets": ["react-native"]
+            "presets": ["react-native"],
+            "plugins": [
+                ["module-resolver",{
+                    "root": ["./build/native"],
+                    "alias": {
+                      "openland-api": "./openland-api"
+                    }
+                  }
+                ]
+            ]
         },
         "development": {
-            "presets": ["react-native"]
+            "presets": ["react-native"],
+            "plugins": [
+                ["module-resolver",{
+                    "root": ["."],
+                    "alias": {
+                      "openland-api": "./build/native/openland-api",
+                      "openland-y-graphql": "./build/native/openland-y-graphql"
+                    }
+                  }
+                ]
+            ]
         }
     }
 }
