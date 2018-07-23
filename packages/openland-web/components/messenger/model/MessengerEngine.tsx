@@ -89,7 +89,6 @@ export class MessengerEngine {
             return;
         }
         this.isVisible = isVisible;
-        this.notifications.handleVisibleChanged(isVisible);
         this.global.onVisible(isVisible);
         if (this.isVisible) {
             if (this.close) {

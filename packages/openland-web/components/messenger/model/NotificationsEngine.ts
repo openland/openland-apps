@@ -1,11 +1,11 @@
 import { MessengerEngine } from './MessengerEngine';
 import { Notifications } from './utils/Notifications';
-import { Badge } from './utils/Badge';
 import { PushEngine } from './PushEngine';
 import gql from 'graphql-tag';
 import { backoff } from 'openland-y-utils/timer';
 import { SettingsQuery } from 'openland-api';
 import { SettingsQuery as SettingsQueryType } from 'openland-api/Types';
+import { AppBadge } from 'openland-y-runtime/AppBadge';
 
 const FetchPushSettings = gql`
     query FetchPushSettings {
@@ -24,15 +24,11 @@ const RegisterPush = gql`
 export class NotificationsEngine {
     readonly notifications: Notifications;
     readonly engine: MessengerEngine;
-    readonly badge: Badge;
     readonly push: PushEngine;
-    private isVisible = true;
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
         this.notifications = new Notifications(this.handleGranted);
-        this.badge = new Badge();
-        this.badge.init();
         this.push = new PushEngine(this.handlePushRegistration, this.handleServiceWorker);
     }
 
@@ -63,17 +59,8 @@ export class NotificationsEngine {
         }));
     }
 
-    handleVisibleChanged = (isVisible: boolean) => {
-        this.isVisible = isVisible;
-        if (this.isVisible) {
-            this.badge.badge(0);
-        }
-    }
-
     handleGlobalCounterChanged = (counter: number) => {
-        if (!this.isVisible) {
-            this.badge.badge(counter);
-        }
+        AppBadge.setBadge(counter);
     }
 
     handleIncomingMessage = (msg: any) => {
