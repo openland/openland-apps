@@ -99,8 +99,7 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
         }
         link = new HttpLink({
             uri: config.endpoint,
-            headers: headers,
-            fetch: require('isomorphic-unfetch'),
+            headers: headers
         });
     } else {
 

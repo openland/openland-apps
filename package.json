@@ -44,7 +44,6 @@
 		"humanize": "^0.0.9",
 		"ifvisible.js": "^1.0.6",
 		"immutable": "^3.8.2",
-		"isomorphic-unfetch": "^2.1.0",
 		"js-cookie": "^2.2.0",
 		"linkify-it": "^2.0.3",
 		"lodash": "^4.17.10",
