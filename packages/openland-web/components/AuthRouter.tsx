@@ -20,6 +20,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/waitlist',
             '/suspended',
             '/createProfile',
+            '/createProfileAndOrganization',
             '/pickOrganization',
             '/signin',
             '/signup'
@@ -171,6 +172,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/waitlist',
             '/suspended',
             '/createProfile',
+            '/createProfileAndOrganization',
             '/pickOrganization',
             // '/createOrganization', // Do not redirect to createOrganization
             '/signin',

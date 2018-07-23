@@ -36,7 +36,7 @@ const Footer = glamorous(XModalFooter)({
 const BodyPadding = glamorous.div({
     paddingLeft: 24,
     paddingRight: 24,
-    paddingTop: 18,
+    paddingTop: 6,
     paddingBottom: 24,
     flexGrow: 1
 });

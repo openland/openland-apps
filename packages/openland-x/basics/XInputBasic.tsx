@@ -157,11 +157,17 @@ const RootContainer = Glamorous.div<XInputBasicProps & { invalid?: boolean, form
             position: 'absolute',
             color: props.invalid ? '#e26363' : '#d4dae7'
         },
+        '& .popper': {
+            color: '#d4dae7'
+        },
         '&:focus-within': {
             boxShadow: '0 0 0 2px rgba(143, 124, 246, 0.2)',
             border: props.invalid ? undefined : '1px solid #986AFE',
             '> .icon': {
                 color: '#986AFE'
+            },
+            '& .popper': {
+                color: '#8A80E7'
             }
         },
     }),
@@ -203,7 +209,7 @@ const PopperPlaceholder = Glamorous.div({
     cursor: 'pointer',
     '& > i': {
         fontSize: 18,
-        color: '#8A80E7'
+        // color: '#8A80E7'
     }
 });
 
@@ -298,7 +304,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                         showOnHover={true}
                     >
                         <PopperPlaceholder>
-                            <XIcon icon="error" />
+                            <XIcon icon="error" className="popper" />
                         </PopperPlaceholder>
                     </XPopper>
                 )}

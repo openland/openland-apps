@@ -25,9 +25,9 @@ export const Logo = Glamorous.div<{ width?: number, height?: number }>((props) =
 export const Title = Glamorous.div({
     fontSize: 26,
     fontWeight: 500,
-    letterSpacing: 0.9,
+    letterSpacing: 1.8,
     color: '#1f3449',
-    marginBottom: 15
+    marginBottom: 18
 });
 
 export const TextWrapper = Glamorous.div({

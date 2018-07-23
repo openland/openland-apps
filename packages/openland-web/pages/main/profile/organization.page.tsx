@@ -27,7 +27,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
-import { OverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder, AvatartPlaceholder } from './placeholders';
+import { OverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder, AvatartPlaceholder, CategoriesPlaceholder } from './placeholders';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import ContactEmailIc from './icons/contacts/ic-email.svg';
@@ -620,6 +620,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         {(organization.locations || [])[0] && <Text opacity={0.5} bold={true}>{(organization.locations || [])[0]}</Text>}
                                         <XWithRole role={['org-' + organization.id + '-admin']}>
                                             {!((organization.locations || [])[0]) && <LocationPlaceholder />}
+                                            {!((organization.organizationType || [])[0]) && <CategoriesPlaceholder />}
                                         </XWithRole>
                                     </div>
                                     <div style={{ marginTop: 16 }}>

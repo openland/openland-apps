@@ -9,6 +9,7 @@ export const OrganizationFull = gql`
         photo
 
         website
+        websiteTitle
         about
         twitter
         facebook
