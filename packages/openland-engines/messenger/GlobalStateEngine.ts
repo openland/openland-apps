@@ -28,6 +28,7 @@ let GLOBAL_SUBSCRIPTION = gql`
         event: alphaSubscribeEvents(fromSeq: $seq) {
             seq
             ... on UserEventMessage {
+                __typename
                 unread
                 globalUnread
                 conversationId
@@ -44,6 +45,7 @@ let GLOBAL_SUBSCRIPTION = gql`
                 }
             }
             ... on UserEventRead {
+                __typename
                 unread
                 globalUnread
                 conversationId

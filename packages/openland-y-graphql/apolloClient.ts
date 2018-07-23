@@ -4,6 +4,8 @@ import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
+import introspectionQueryResultData from 'openland-api/fragmentTypes.json';
 
 export class ApolloClientStatus {
     isConnected: boolean = false;
@@ -76,7 +78,11 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
     // Cache
     //
 
-    var cache = new InMemoryCache();
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+        introspectionQueryResultData
+    });
+
+    var cache = new InMemoryCache({ fragmentMatcher });
     if (config.initialState) {
         cache = cache.restore(config.initialState);
     }
