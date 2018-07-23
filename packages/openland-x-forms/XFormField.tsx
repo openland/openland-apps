@@ -11,7 +11,7 @@ export const XFormFieldTitle = Glamorous.div<{ invalid?: boolean }>((props) => (
     lineHeight: '24px',
     letterSpacing: -0.4,
     height: 32,
-    paddingTop: 4,
+    marginTop: 18,
     marginLeft: 0,
 }));
 

@@ -13,6 +13,7 @@ export const OrganizationProfileFull = gql`
             }
         }
         website
+        websiteTitle
         about
         twitter
         facebook

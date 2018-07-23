@@ -2,9 +2,9 @@
 //  This file was automatically generated and should not be edited.
 
 export enum EmailFrequency {
-  HOUR_1 = "HOUR_1",
-  MIN_15 = "MIN_15",
   NEVER = "NEVER",
+  MIN_15 = "MIN_15",
+  HOUR_1 = "HOUR_1",
 }
 
 
@@ -87,6 +87,7 @@ export interface UpdateOrganizationProfileInput {
   name?: string | null,
   photoRef?: ImageRefInput | null,
   website?: string | null,
+  websiteTitle?: string | null,
   about?: string | null,
   twitter?: string | null,
   facebook?: string | null,
@@ -131,6 +132,7 @@ export interface ContactPersonInput {
   email?: string | null,
   phone?: string | null,
   link?: string | null,
+  twitter?: string | null,
 };
 
 export interface AlphaDummyPostInput {
@@ -185,8 +187,8 @@ export interface MapPointInput {
 };
 
 export enum OrganizationMemberRole {
-  MEMBER = "MEMBER",
   OWNER = "OWNER",
+  MEMBER = "MEMBER",
 }
 
 
@@ -207,25 +209,25 @@ export interface InviteRequestOrganization {
 
 export enum OwnerType {
   CITY = "CITY",
-  EXCLUDED = "EXCLUDED",
   MIXED = "MIXED",
-  OTHER = "OTHER",
   PRIVATE = "PRIVATE",
+  OTHER = "OTHER",
+  EXCLUDED = "EXCLUDED",
 }
 
 
 export enum OpportunityPriority {
-  HIGH = "HIGH",
   LOW = "LOW",
   NORMAL = "NORMAL",
+  HIGH = "HIGH",
 }
 
 
 export enum OpportunityState {
-  APPROVED = "APPROVED",
+  INCOMING = "INCOMING",
   APPROVED_INITIAL = "APPROVED_INITIAL",
   APPROVED_ZONING = "APPROVED_ZONING",
-  INCOMING = "INCOMING",
+  APPROVED = "APPROVED",
   REJECTED = "REJECTED",
   SNOOZED = "SNOOZED",
 }
@@ -238,36 +240,36 @@ export enum ParcelUse {
 
 
 export enum PermitStatus {
-  APPEAL = "APPEAL",
-  APPROVED = "APPROVED",
-  CANCELLED = "CANCELLED",
-  COMPLETED = "COMPLETED",
-  DISAPPROVED = "DISAPPROVED",
-  EXPIRED = "EXPIRED",
-  FILED = "FILED",
   FILING = "FILING",
-  GRANTED = "GRANTED",
-  INCOMPLETE = "INCOMPLETE",
-  INSPECTING = "INSPECTING",
+  FILED = "FILED",
   ISSUED = "ISSUED",
+  COMPLETED = "COMPLETED",
+  EXPIRED = "EXPIRED",
+  CANCELLED = "CANCELLED",
+  DISAPPROVED = "DISAPPROVED",
+  APPROVED = "APPROVED",
   ISSUING = "ISSUING",
-  PLANCHECK = "PLANCHECK",
-  REINSTATED = "REINSTATED",
   REVOKED = "REVOKED",
-  SUSPENDED = "SUSPENDED",
-  UPHELD = "UPHELD",
   WITHDRAWN = "WITHDRAWN",
+  PLANCHECK = "PLANCHECK",
+  SUSPENDED = "SUSPENDED",
+  REINSTATED = "REINSTATED",
+  INSPECTING = "INSPECTING",
+  UPHELD = "UPHELD",
+  INCOMPLETE = "INCOMPLETE",
+  GRANTED = "GRANTED",
+  APPEAL = "APPEAL",
 }
 
 
 export enum PermitType {
+  NEW_CONSTRUCTION = "NEW_CONSTRUCTION",
   ADDITIONS_ALTERATIONS_REPARE = "ADDITIONS_ALTERATIONS_REPARE",
+  OTC_ADDITIONS = "OTC_ADDITIONS",
+  WALL_OR_PAINTED_SIGN = "WALL_OR_PAINTED_SIGN",
+  SIGN_ERRECT = "SIGN_ERRECT",
   DEMOLITIONS = "DEMOLITIONS",
   GRADE_QUARRY_FILL_EXCAVATE = "GRADE_QUARRY_FILL_EXCAVATE",
-  NEW_CONSTRUCTION = "NEW_CONSTRUCTION",
-  OTC_ADDITIONS = "OTC_ADDITIONS",
-  SIGN_ERRECT = "SIGN_ERRECT",
-  WALL_OR_PAINTED_SIGN = "WALL_OR_PAINTED_SIGN",
 }
 
 
@@ -279,26 +281,26 @@ export interface ParcelMetadataInput {
 };
 
 export enum SuperAdminRole {
-  EDITOR = "EDITOR",
-  SOFTWARE_DEVELOPER = "SOFTWARE_DEVELOPER",
   SUPER_ADMIN = "SUPER_ADMIN",
+  SOFTWARE_DEVELOPER = "SOFTWARE_DEVELOPER",
+  EDITOR = "EDITOR",
 }
 
 
 export enum SuperAccountState {
-  ACTIVATED = "ACTIVATED",
   PENDING = "PENDING",
+  ACTIVATED = "ACTIVATED",
   SUSPENDED = "SUSPENDED",
 }
 
 
 export enum PermitSorting {
+  STATUS_CHANGE_TIME = "STATUS_CHANGE_TIME",
+  CREATE_TIME = "CREATE_TIME",
+  COMPLETE_TIME = "COMPLETE_TIME",
+  ISSUED_TIME = "ISSUED_TIME",
   APPROVAL_TIME_ASC = "APPROVAL_TIME_ASC",
   APPROVAL_TIME_DESC = "APPROVAL_TIME_DESC",
-  COMPLETE_TIME = "COMPLETE_TIME",
-  CREATE_TIME = "CREATE_TIME",
-  ISSUED_TIME = "ISSUED_TIME",
-  STATUS_CHANGE_TIME = "STATUS_CHANGE_TIME",
 }
 
 
@@ -319,19 +321,19 @@ export interface UpdateSettingsInput {
 };
 
 export enum OpportunitySort {
+  DATE_ADDED_ASC = "DATE_ADDED_ASC",
+  DATE_ADDED_DESC = "DATE_ADDED_DESC",
   AREA_ASC = "AREA_ASC",
   AREA_DESC = "AREA_DESC",
   CAPACITY_ASC = "CAPACITY_ASC",
   CAPACITY_DESC = "CAPACITY_DESC",
-  DATE_ADDED_ASC = "DATE_ADDED_ASC",
-  DATE_ADDED_DESC = "DATE_ADDED_DESC",
 }
 
 
 export enum TaskStatus {
-  COMPLETED = "COMPLETED",
-  FAILED = "FAILED",
   IN_PROGRESS = "IN_PROGRESS",
+  FAILED = "FAILED",
+  COMPLETED = "COMPLETED",
 }
 
 
@@ -1465,6 +1467,7 @@ export interface MyOrganizationQuery {
     name: string,
     photo: string | null,
     website: string | null,
+    websiteTitle: string | null,
     about: string | null,
     twitter: string | null,
     facebook: string | null,
@@ -1663,6 +1666,7 @@ export interface MyOrganizationProfileQuery {
       } | null,
     } | null,
     website: string | null,
+    websiteTitle: string | null,
     about: string | null,
     twitter: string | null,
     facebook: string | null,
@@ -1886,6 +1890,7 @@ export interface UpdateOrganizationMutation {
       } | null,
     } | null,
     website: string | null,
+    websiteTitle: string | null,
     about: string | null,
     twitter: string | null,
     facebook: string | null,
@@ -2090,6 +2095,7 @@ export interface OrganizationQuery {
     name: string,
     photo: string | null,
     website: string | null,
+    websiteTitle: string | null,
     about: string | null,
     twitter: string | null,
     facebook: string | null,
@@ -2292,6 +2298,7 @@ export interface OrganizationProfileQuery {
       } | null,
     } | null,
     website: string | null,
+    websiteTitle: string | null,
     about: string | null,
     twitter: string | null,
     facebook: string | null,
@@ -2645,7 +2652,7 @@ export interface OrganizationMembersQuery {
     } | {
       __typename: "OrganizationJoinedMember",
       user:  {
-        __typename: "User",
+        __typename: string,
         id: string,
         name: string,
         firstName: string,
@@ -4792,7 +4799,7 @@ export interface ChartFullFragment {
   __typename: "Chart",
   labels: Array< string >,
   datasets:  Array< {
-    __typename: "ChartDataSet",
+    __typename: string,
     label: string,
     values: Array< number >,
   } >,
@@ -4812,7 +4819,7 @@ export interface MessageFullFragment {
   repeatKey: string | null,
   isService: boolean,
   fileMetadata:  {
-    __typename: "FileMetadata",
+    __typename: string,
     name: string,
     mimeType: string | null,
     isImage: boolean,
@@ -4822,7 +4829,7 @@ export interface MessageFullFragment {
     size: number,
   } | null,
   sender:  {
-    __typename: "User",
+    __typename: string,
     id: string,
     name: string,
     firstName: string,
@@ -4840,13 +4847,14 @@ export interface OrganizationFullFragment {
   name: string,
   photo: string | null,
   website: string | null,
+  websiteTitle: string | null,
   about: string | null,
   twitter: string | null,
   facebook: string | null,
   linkedin: string | null,
   location: string | null,
   contacts:  Array< {
-    __typename: "OrganizationContact",
+    __typename: string,
     name: string,
     photo: string | null,
     position: string | null,
@@ -4858,16 +4866,16 @@ export interface OrganizationFullFragment {
   interests: Array< string > | null,
   locations: Array< string > | null,
   posts:  Array< {
-    __typename: "AlphaDummyPost",
+    __typename: string,
     text: string,
     type: string,
     description: string | null,
     date: string,
     image:  {
-      __typename: "ImageRef",
+      __typename: string,
       uuid: string,
       crop:  {
-        __typename: "ImageCrop",
+        __typename: string,
         x: number,
         y: number,
         w: number,
@@ -4876,7 +4884,7 @@ export interface OrganizationFullFragment {
     } | null,
     activity: Array< string > | null,
     links:  Array< {
-      __typename: "AlphaOrganizationListingLink",
+      __typename: string,
       text: string,
       url: string,
     } > | null,
@@ -4900,12 +4908,12 @@ export interface OrganizationFullFragment {
   arLandUse: Array< string > | null,
   followed: boolean,
   potentialSites:  Array< {
-    __typename: "Range",
+    __typename: string,
     from: number | null,
     to: number | null,
   } > | null,
   siteSizes:  Array< {
-    __typename: "Range",
+    __typename: string,
     from: number | null,
     to: number | null,
   } > | null,
@@ -4915,7 +4923,7 @@ export interface OrganizationFullFragment {
   goodFor: Array< string > | null,
   specialAttributes: Array< string > | null,
   developmentOportunities:  Array< {
-    __typename: "AlphaOrganizationListing",
+    __typename: string,
     name: string,
     id: string,
     summary: string | null,
@@ -4923,7 +4931,7 @@ export interface OrganizationFullFragment {
     status: string | null,
     updatedAt: string,
     location:  {
-      __typename: "MapPoint",
+      __typename: string,
       lat: number,
       lon: number,
     } | null,
@@ -4936,13 +4944,13 @@ export interface OrganizationFullFragment {
     currentUse: Array< string > | null,
     goodFitFor: Array< string > | null,
     additionalLinks:  Array< {
-      __typename: "AlphaOrganizationListingLink",
+      __typename: string,
       text: string,
       url: string,
     } > | null,
   } > | null,
   acquisitionRequests:  Array< {
-    __typename: "AlphaOrganizationListing",
+    __typename: string,
     name: string,
     id: string,
     summary: string | null,
@@ -4950,10 +4958,10 @@ export interface OrganizationFullFragment {
     status: string | null,
     updatedAt: string,
     photo:  {
-      __typename: "ImageRef",
+      __typename: string,
       uuid: string,
       crop:  {
-        __typename: "ImageCrop",
+        __typename: string,
         x: number,
         y: number,
         w: number,
@@ -4962,7 +4970,7 @@ export interface OrganizationFullFragment {
     } | null,
     shortDescription: string | null,
     areaRange:  {
-      __typename: "Range",
+      __typename: string,
       from: number | null,
       to: number | null,
     } | null,
@@ -4971,7 +4979,7 @@ export interface OrganizationFullFragment {
     unitCapacity: Array< string > | null,
   } > | null,
   listingsAll:  Array< {
-    __typename: "AlphaOrganizationListing",
+    __typename: string,
     id: string,
     name: string,
     type: string,
@@ -4980,7 +4988,7 @@ export interface OrganizationFullFragment {
     status: string | null,
     updatedAt: string,
     location:  {
-      __typename: "MapPoint",
+      __typename: string,
       lat: number,
       lon: number,
     } | null,
@@ -4993,15 +5001,15 @@ export interface OrganizationFullFragment {
     currentUse: Array< string > | null,
     goodFitFor: Array< string > | null,
     additionalLinks:  Array< {
-      __typename: "AlphaOrganizationListingLink",
+      __typename: string,
       text: string,
       url: string,
     } > | null,
     photo:  {
-      __typename: "ImageRef",
+      __typename: string,
       uuid: string,
       crop:  {
-        __typename: "ImageCrop",
+        __typename: string,
         x: number,
         y: number,
         w: number,
@@ -5010,7 +5018,7 @@ export interface OrganizationFullFragment {
     } | null,
     shortDescription: string | null,
     areaRange:  {
-      __typename: "Range",
+      __typename: string,
       from: number | null,
       to: number | null,
     } | null,
@@ -5025,10 +5033,10 @@ export interface OrganizationProfileFullFragment {
   id: string,
   name: string,
   photoRef:  {
-    __typename: "ImageRef",
+    __typename: string,
     uuid: string,
     crop:  {
-      __typename: "ImageCrop",
+      __typename: string,
       x: number,
       y: number,
       w: number,
@@ -5036,19 +5044,20 @@ export interface OrganizationProfileFullFragment {
     } | null,
   } | null,
   website: string | null,
+  websiteTitle: string | null,
   about: string | null,
   twitter: string | null,
   facebook: string | null,
   linkedin: string | null,
   location: string | null,
   contacts:  Array< {
-    __typename: "OrganizationContact",
+    __typename: string,
     name: string,
     photoRef:  {
-      __typename: "ImageRef",
+      __typename: string,
       uuid: string,
       crop:  {
-        __typename: "ImageCrop",
+        __typename: string,
         x: number,
         y: number,
         w: number,
@@ -5066,16 +5075,16 @@ export interface OrganizationProfileFullFragment {
   interests: Array< string > | null,
   locations: Array< string > | null,
   posts:  Array< {
-    __typename: "AlphaDummyPost",
+    __typename: string,
     text: string,
     type: string,
     description: string | null,
     date: string,
     image:  {
-      __typename: "ImageRef",
+      __typename: string,
       uuid: string,
       crop:  {
-        __typename: "ImageCrop",
+        __typename: string,
         x: number,
         y: number,
         w: number,
@@ -5084,7 +5093,7 @@ export interface OrganizationProfileFullFragment {
     } | null,
     activity: Array< string > | null,
     links:  Array< {
-      __typename: "AlphaOrganizationListingLink",
+      __typename: string,
       text: string,
       url: string,
     } > | null,
@@ -5107,12 +5116,12 @@ export interface OrganizationProfileFullFragment {
   arSpecialAttributes: Array< string > | null,
   arLandUse: Array< string > | null,
   potentialSites:  Array< {
-    __typename: "Range",
+    __typename: string,
     from: number | null,
     to: number | null,
   } > | null,
   siteSizes:  Array< {
-    __typename: "Range",
+    __typename: string,
     from: number | null,
     to: number | null,
   } > | null,
@@ -5122,7 +5131,7 @@ export interface OrganizationProfileFullFragment {
   goodFor: Array< string > | null,
   specialAttributes: Array< string > | null,
   developmentOportunities:  Array< {
-    __typename: "AlphaOrganizationListing",
+    __typename: string,
     name: string,
     id: string,
     summary: string | null,
@@ -5130,7 +5139,7 @@ export interface OrganizationProfileFullFragment {
     status: string | null,
     updatedAt: string,
     location:  {
-      __typename: "MapPoint",
+      __typename: string,
       lat: number,
       lon: number,
     } | null,
@@ -5143,13 +5152,13 @@ export interface OrganizationProfileFullFragment {
     currentUse: Array< string > | null,
     goodFitFor: Array< string > | null,
     additionalLinks:  Array< {
-      __typename: "AlphaOrganizationListingLink",
+      __typename: string,
       text: string,
       url: string,
     } > | null,
   } > | null,
   acquisitionRequests:  Array< {
-    __typename: "AlphaOrganizationListing",
+    __typename: string,
     name: string,
     id: string,
     summary: string | null,
@@ -5157,10 +5166,10 @@ export interface OrganizationProfileFullFragment {
     status: string | null,
     updatedAt: string,
     photo:  {
-      __typename: "ImageRef",
+      __typename: string,
       uuid: string,
       crop:  {
-        __typename: "ImageCrop",
+        __typename: string,
         x: number,
         y: number,
         w: number,
@@ -5169,7 +5178,7 @@ export interface OrganizationProfileFullFragment {
     } | null,
     shortDescription: string | null,
     areaRange:  {
-      __typename: "Range",
+      __typename: string,
       from: number | null,
       to: number | null,
     } | null,
@@ -5178,7 +5187,7 @@ export interface OrganizationProfileFullFragment {
     unitCapacity: Array< string > | null,
   } > | null,
   listingsAll:  Array< {
-    __typename: "AlphaOrganizationListing",
+    __typename: string,
     id: string,
     name: string,
     type: string,
@@ -5187,7 +5196,7 @@ export interface OrganizationProfileFullFragment {
     status: string | null,
     updatedAt: string,
     location:  {
-      __typename: "MapPoint",
+      __typename: string,
       lat: number,
       lon: number,
     } | null,
@@ -5200,15 +5209,15 @@ export interface OrganizationProfileFullFragment {
     currentUse: Array< string > | null,
     goodFitFor: Array< string > | null,
     additionalLinks:  Array< {
-      __typename: "AlphaOrganizationListingLink",
+      __typename: string,
       text: string,
       url: string,
     } > | null,
     photo:  {
-      __typename: "ImageRef",
+      __typename: string,
       uuid: string,
       crop:  {
-        __typename: "ImageCrop",
+        __typename: string,
         x: number,
         y: number,
         w: number,
@@ -5217,7 +5226,7 @@ export interface OrganizationProfileFullFragment {
     } | null,
     shortDescription: string | null,
     areaRange:  {
-      __typename: "Range",
+      __typename: string,
       from: number | null,
       to: number | null,
     } | null,
@@ -5292,7 +5301,7 @@ export interface ParcelFullFragment {
   __typename: "Parcel",
   id: string,
   number:  {
-    __typename: "ParcelNumber",
+    __typename: string,
     borough: string | null,
     boroughId: string | null,
     block: string | null,
@@ -5304,19 +5313,19 @@ export interface ParcelFullFragment {
   // Geometry
   geometry: string | null,
   center:  {
-    __typename: "Geo",
+    __typename: string,
     latitude: number,
     longitude: number,
   } | null,
   address: string | null,
   compatibleBuildings:  Array< {
-    __typename: "BuildingLocation",
+    __typename: string,
     key: string,
     title: string,
     width: number,
     height: number,
     center:  {
-      __typename: "Geo",
+      __typename: string,
       latitude: number,
       longitude: number,
     } | null,
@@ -5325,31 +5334,31 @@ export interface ParcelFullFragment {
   } > | null,
   // Addresses
   city:  {
-    __typename: "City",
+    __typename: string,
     id: string,
     name: string,
     county:  {
-      __typename: "County",
+      __typename: string,
       id: string,
       name: string,
     },
     state:  {
-      __typename: "State",
+      __typename: string,
       id: string,
       name: string,
       code: string,
     },
   },
   area:  {
-    __typename: "DataFloat",
+    __typename: string,
     value: number,
   } | null,
   depth:  {
-    __typename: "DataFloat",
+    __typename: string,
     value: number,
   } | null,
   front:  {
-    __typename: "DataFloat",
+    __typename: string,
     value: number,
   } | null,
   extrasSupervisorDistrict: string | null,
@@ -5392,36 +5401,36 @@ export interface ParcelFullFragment {
   extrasUnitCapacityFar: number | null,
   extrasUnitCapacityDencity: number | null,
   folder:  {
-    __typename: "Folder",
+    __typename: string,
     id: string,
     name: string,
   } | null,
   // User Data
   userData:  {
-    __typename: "ParcelUserData",
+    __typename: string,
     notes: string | null,
   } | null,
   // Linked Data
   opportunity:  {
-    __typename: "Opportunity",
+    __typename: string,
     id: string,
     priority: OpportunityPriority,
     state: OpportunityState,
   } | null,
   metadata:  {
-    __typename: "ParcelMetadata",
+    __typename: string,
     description: string | null,
     available: boolean | null,
     currentUse: ParcelUse | null,
     isOkForTower: boolean | null,
   },
   likes:  {
-    __typename: "Likes",
+    __typename: string,
     liked: boolean,
     count: number | null,
   },
   permits:  Array< {
-    __typename: "Permit",
+    __typename: string,
     id: string,
     createdAt: string | null,
     status: PermitStatus | null,
@@ -5436,7 +5445,7 @@ export interface ParcelFullFragment {
   } >,
   // Metadata
   links:  Array< {
-    __typename: "Link",
+    __typename: string,
     title: string,
     url: string,
   } >,
@@ -5446,7 +5455,7 @@ export interface ParcelShortFragment {
   __typename: "Parcel",
   id: string,
   number:  {
-    __typename: "ParcelNumber",
+    __typename: string,
     borough: string | null,
     boroughId: string | null,
     block: string | null,
@@ -5459,15 +5468,15 @@ export interface ParcelShortFragment {
   // Geometry
   geometry: string | null,
   area:  {
-    __typename: "DataFloat",
+    __typename: string,
     value: number,
   } | null,
   depth:  {
-    __typename: "DataFloat",
+    __typename: string,
     value: number,
   } | null,
   front:  {
-    __typename: "DataFloat",
+    __typename: string,
     value: number,
   } | null,
   // Bunch of unsorted experimental data
@@ -5506,22 +5515,22 @@ export interface ParcelShortFragment {
   extrasUnitCapacityFar: number | null,
   extrasUnitCapacityDencity: number | null,
   folder:  {
-    __typename: "Folder",
+    __typename: string,
     id: string,
     name: string,
   } | null,
   // Addresses
   city:  {
-    __typename: "City",
+    __typename: string,
     id: string,
     name: string,
     county:  {
-      __typename: "County",
+      __typename: string,
       id: string,
       name: string,
     },
     state:  {
-      __typename: "State",
+      __typename: string,
       id: string,
       name: string,
       code: string,
@@ -5533,7 +5542,7 @@ export interface ParcelShortNoFolderFragment {
   __typename: "Parcel",
   id: string,
   number:  {
-    __typename: "ParcelNumber",
+    __typename: string,
     borough: string | null,
     boroughId: string | null,
     block: string | null,
@@ -5546,15 +5555,15 @@ export interface ParcelShortNoFolderFragment {
   // Geometry
   geometry: string | null,
   area:  {
-    __typename: "DataFloat",
+    __typename: string,
     value: number,
   } | null,
   depth:  {
-    __typename: "DataFloat",
+    __typename: string,
     value: number,
   } | null,
   front:  {
-    __typename: "DataFloat",
+    __typename: string,
     value: number,
   } | null,
   // Bunch of unsorted experimental data
@@ -5594,16 +5603,16 @@ export interface ParcelShortNoFolderFragment {
   extrasUnitCapacityDencity: number | null,
   // Addresses
   city:  {
-    __typename: "City",
+    __typename: string,
     id: string,
     name: string,
     county:  {
-      __typename: "County",
+      __typename: string,
       id: string,
       name: string,
     },
     state:  {
-      __typename: "State",
+      __typename: string,
       id: string,
       name: string,
       code: string,
@@ -5629,7 +5638,7 @@ export interface BlockFullFragment {
   extrasSupervisorDistrict: string | null,
   geometry: string | null,
   parcels:  Array< {
-    __typename: "Parcel",
+    __typename: string,
     id: string,
     // Deprecated
     title: string,
@@ -5654,7 +5663,7 @@ export interface PermitShortFragment {
   existingUnits: number | null,
   governmentalUrl: string,
   streetNumbers:  Array< {
-    __typename: "StreetNumber",
+    __typename: string,
     streetId: string,
     streetName: string,
     streetNameSuffix: string | null,
@@ -5688,7 +5697,7 @@ export interface PermitFullFragment {
   governmentalUrl: string,
   approvalTime: number | null,
   streetNumbers:  Array< {
-    __typename: "StreetNumber",
+    __typename: string,
     streetId: string,
     streetName: string,
     streetNameSuffix: string | null,
@@ -5709,7 +5718,7 @@ export interface PermitFullFragment {
     }
   ) >,
   relatedPermits:  Array< {
-    __typename: "Permit",
+    __typename: string,
     id: string,
     createdAt: string | null,
     status: PermitStatus | null,
@@ -5722,7 +5731,7 @@ export interface PermitFullFragment {
     existingUnits: number | null,
     governmentalUrl: string,
     streetNumbers:  Array< {
-      __typename: "StreetNumber",
+      __typename: string,
       streetId: string,
       streetName: string,
       streetNameSuffix: string | null,

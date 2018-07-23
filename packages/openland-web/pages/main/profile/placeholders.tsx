@@ -693,17 +693,20 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
         >
             <XVertical>
                 <XFormLoadingContent>
-                    <XFormField field="input.website" optional={true} title={TextOrganizationProfile.placeholderSocialModalWeb}>
-                        <XInput field="input.website" />
+                    <XFormField field="input.website" title={TextOrganizationProfile.placeholderSocialModalWeb}>
+                        <XHorizontal>
+                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" />
+                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" />
+                        </XHorizontal>
                     </XFormField>
-                    <XFormField field="input.twitter" optional={true} title={TextOrganizationProfile.placeholderSocialModalTwitter}>
-                        <XInput field="input.twitter" />
+                    <XFormField field="input.twitter" title={TextOrganizationProfile.placeholderSocialModalTwitter}>
+                        <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.twitter" />
                     </XFormField>
-                    <XFormField field="input.facebook" optional={true} title={TextOrganizationProfile.placeholderSocialModalFacebook}>
-                        <XInput field="input.facebook" />
+                    <XFormField field="input.facebook" title={TextOrganizationProfile.placeholderSocialModalFacebook}>
+                        <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.facebook" />
                     </XFormField>
-                    <XFormField field="input.linkedin" optional={true} title={TextOrganizationProfile.placeholderSocialModalLinkedIn}>
-                        <XInput field="input.linkedin" />
+                    <XFormField field="input.linkedin" title={TextOrganizationProfile.placeholderSocialModalLinkedIn}>
+                        <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.linkedin" />
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>
@@ -724,7 +727,7 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
             }}
             defaultAction={async (data) => {
                 data.contacts.push({
-                    name: data.name,
+                    name: (data.firstName || '') + ' ' + (data.lastName || ''),
                     phone: data.phone,
                     photoRef: data.avatar,
                     email: data.email,
@@ -748,26 +751,30 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
             )}
         >
             <XFormLoadingContent>
-                <XVertical>
-                    <XFormField field="name" optional={true} title={TextOrganizationProfile.placeholderContactsModalNameTitle}>
-                        <XInput field="name" required={true} />
-                    </XFormField>
-                    <XFormField field="phone" optional={true} title={TextOrganizationProfile.placeholderContactsModalPhonelTitle}>
-                        <XInput field="phone" />
-                    </XFormField>
-                    <XFormField field="email" optional={true} title={TextOrganizationProfile.placeholderContactsModalEmailTitle}>
-                        <XInput field="email" />
-                    </XFormField>
-                    <XFormField field="link" optional={true} title={TextOrganizationProfile.placeholderContactsModalLinkedinTitle}>
-                        <XInput field="link" />
-                    </XFormField>
-                    <XFormField field="position" optional={true} title={TextOrganizationProfile.placeholderContactsModalPositionTitle}>
-                        <XInput field="position" />
-                    </XFormField>
-                    <XFormField field="photoRef" optional={true} title={TextOrganizationProfile.placeholderContactsModalPhotoTitle}>
+                <XHorizontal>
+
+                    <XVertical flexGrow={1}>
+
+                        <XFormField field="firstName" title={TextOrganizationProfile.placeholderContactsModalFirstNameTitle}>
+                            <XInput field="firstName" placeholder={TextOrganizationProfile.placeholderContactsModalFirstNamePlaceholder} />
+                        </XFormField>
+                        <XFormField field="lastName" title={TextOrganizationProfile.placeholderContactsModalLastNameTitle}>
+                            <XInput field="lastName" placeholder={TextOrganizationProfile.placeholderContactsModalLastNamePlaceholder} />
+                        </XFormField>
+                        <XFormField field="position" title={TextOrganizationProfile.placeholderContactsModalPositionTitle}>
+                            <XInput field="position" placeholder={TextOrganizationProfile.placeholderContactsModalPositionPlaceholder} />
+                        </XFormField>
+                        <XFormField field="link" title={TextOrganizationProfile.placeholderContactsModalLinkedinTitle}>
+                            <XInput field="link" placeholder={TextOrganizationProfile.placeholderContactsModalLinkedinPlaceholder} />
+                        </XFormField>
+                        <XFormField field="twitter" title={TextOrganizationProfile.placeholderContactsModalTwitterTitle}>
+                            <XInput field="twitter" placeholder={TextOrganizationProfile.placeholderContactsModalTwitterPlaceholder} />
+                        </XFormField>
+                    </XVertical>
+                    <XFormField field="photoRef" title={TextOrganizationProfile.placeholderContactsModalPhotoTitle}>
                         <XAvatarUpload field="photoRef" />
                     </XFormField>
-                </XVertical>
+                </XHorizontal>
             </XFormLoadingContent>
         </XModalForm>
 

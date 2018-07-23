@@ -280,8 +280,12 @@ export const OrganizationSettigs = ((props: any) => {
                             <XFormLoadingContent>
                                 <XVertical flexGrow={1} maxWidth={500}>
                                     <XFormField title="Website" field="input.website" optional={true}>
-                                        <XInput field="input.website" />
+                                        <XHorizontal>
+                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" />
+                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" />
+                                        </XHorizontal>
                                     </XFormField>
+
                                     <XFormField title="Twitter" field="input.twitter" optional={true}>
                                         <XInput field="input.twitter" />
                                     </XFormField>
@@ -392,10 +396,11 @@ export const OrganizationSettigs = ((props: any) => {
                         <XFormLoadingContent>
                             <XVertical>
                                 <XInput field="name" required={true} placeholder="Name" />
-                                <XInput field="phone" placeholder="Phone" />
-                                <XInput field="email" placeholder="Email" />
-                                <XInput field="link" placeholder="LinkedIn" />
+                                {/* <XInput field="phone" placeholder="Phone" />
+                                <XInput field="email" placeholder="Email" /> */}
                                 <XInput field="position" placeholder="Position" />
+                                <XInput field="link" placeholder="LinkedIn" />
+                                <XInput field="twitter" placeholder="Twitter" />
                                 <XAvatarUpload field="photoRef" placeholder={{ add: 'Add photo', change: 'Change photo' }} />
                             </XVertical>
                         </XFormLoadingContent>
