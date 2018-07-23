@@ -5,7 +5,6 @@ import * as Cookie from 'js-cookie';
 import createHistory from 'history/createBrowserHistory';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { withData } from '../../components/withData';
-import fetch from 'isomorphic-unfetch';
 import { ErrorPage } from '../../components/ErrorPage';
 import { trackError } from 'openland-x-analytics';
 import { createAuth0AsyncClient } from 'openland-x-graphql/Auth0AsyncClient';
