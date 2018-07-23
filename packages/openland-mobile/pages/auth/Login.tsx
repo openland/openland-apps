@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, ProgressViewIOS, Alert, AsyncStorage } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
-import { buildClient, saveClient } from '../../utils/apolloClient';
+import { buildNativeClient, saveClient } from '../../utils/apolloClient';
 import { Auth0Client } from '../../index';
+import { AccountQuery } from 'openland-api/AccountQuery';
+import { buildMessenger, setMessenger } from '../../utils/messenger';
 
 const styles = StyleSheet.create({
     container: {
@@ -44,7 +46,15 @@ export class Login extends React.Component<NavigationInjectedProps, { loading: b
                 let body = await uploaded.json();
                 if (body.ok) {
                     await AsyncStorage.setItem('openland-token', body.token);
-                    let client = buildClient(body.token);
+                    let client = buildNativeClient(body.token);
+                    let meq = await client.client.query<any>({
+                        query: AccountQuery.document
+                    });
+                    if (!meq.data.me) {
+                        throw Error('Unknown error');
+                    }
+                    let messenger = buildMessenger(client, res.data.me);
+                    setMessenger(messenger);
                     saveClient(client);
                     this.props.navigation.navigate('App');
                     return;

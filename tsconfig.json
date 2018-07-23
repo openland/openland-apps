@@ -97,6 +97,9 @@
       "openland-y-runtime-web": [
         "openland-y-runtime-web"
       ],
+      "openland-y-runtime-native": [
+        "openland-y-runtime-native"
+      ],
       "openland-mobile": [
         "openland-mobile"
       ]
@@ -141,6 +144,7 @@
     "./packages/openland-y-runtime",
     "./packages/openland-y-runtime-web",
     "./packages/openland-y-runtime-api",
-    "./packages/openland-mobile"
+    "./packages/openland-mobile",
+    "./packages/openland-y-runtime-native"
   ]
 }

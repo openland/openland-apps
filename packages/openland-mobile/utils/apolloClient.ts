@@ -1,32 +1,23 @@
-import { HttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
+import { buildClient, OpenApolloClient } from 'openland-y-graphql/apolloClient';
 
-let cachedClient: ApolloClient<{}> | null;
+let cachedClient: OpenApolloClient | null;
 
-export function saveClient(client: ApolloClient<{}>) {
+export function saveClient(client: OpenApolloClient) {
     cachedClient = client;
 }
 
-export function getClient(): ApolloClient<{}> {
+export function getClient(): OpenApolloClient {
     if (!cachedClient) {
         throw Error('Apollo is not inited');
     }
     return cachedClient;
 }
 
-export function buildClient(token: string) {
-    var headers: any = {};
-    headers['x-openland-token'] = token;
-    headers['x-openland-org'] = '61gk9KRrl9ComJkvYnvdcddr4o';
-    const httpLink = new HttpLink({
-        uri: 'https://api.openland.com/api',
-        headers: headers,
-    });
-    return new ApolloClient({
-        link: httpLink,
-        cache: new InMemoryCache(),
-        ssrMode: false,
-        connectToDevTools: false
+export function buildNativeClient(token: string) {
+    return buildClient({
+        token: token,
+        organization: '61gk9KRrl9ComJkvYnvdcddr4o',
+        endpoint: 'https://api.openland.com/api',
+        wsEndpoint: 'wss://api.openland.com/api'
     });
 }

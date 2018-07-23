@@ -18,6 +18,10 @@ export const ChatListQuery = gql`
             seq
             next
         }
+        counter: alphaNotificationCounter {
+            id
+            unreadCount
+        }
     }
     ${MessageFull}
     ${UserShort}
