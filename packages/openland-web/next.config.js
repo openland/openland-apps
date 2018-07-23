@@ -112,6 +112,11 @@ const config = {
             }));
         }
 
+        // Disable sourcemaps for server
+        if (isServer && dev) {
+            config.devtool = false;
+        }
+
         // Hard Source
         // Not working for client
         // if (!isServer) {
