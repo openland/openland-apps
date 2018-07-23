@@ -189,8 +189,10 @@ export const TextOrganizationProfile = {
     placeholderContactsModalPositionTitle: 'Position',
     placeholderContactsModalPhotoTitle: 'Photo',
 
-    placeholderLocation: '+ Add location',
+    placeholderLocation: '+ Add locations',
     placeholderLocationModalLocationTitle: 'Location',
+    placeholderCategory: '+ Add categories',
+    placeholderCategoryModalTitle: 'Category',
 
     placeholderLogo: (<><p>Add your</p><p>profile logo</p></>),
     placeholderLogoModalLocationTitle: 'Logo',

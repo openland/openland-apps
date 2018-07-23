@@ -871,6 +871,53 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
     );
 });
 
+export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
+    return (
+        <XModalForm
+            defaultData={{
+                input: {
+                    locations: props.data.organizationProfile!!.organizationType,
+                }
+            }}
+            defaultAction={async (data) => {
+                await props.updateOrganizaton({
+                    variables: {
+                        input: {
+                            alphaOrganizationType: data.input.organizationType,
+                        }
+                    }
+                });
+            }}
+            target={(
+                <div style={{ cursor: 'pointer' }}>
+                    <Text opacity={0.5}>{TextOrganizationProfile.placeholderCategory}</Text>
+                </div>
+            )}
+        >
+            <XVertical>
+                <XFormLoadingContent>
+                    <XFormField
+                        title={TextOrganizationProfile.placeholderCategoryModalTitle}
+                        field="input.organizationType"
+                    >
+                        <XSelect
+                            creatable={true}
+                            multi={true}
+                            field="input.organizationType"
+                            options={TextDirectoryData.categoryPicker.categories}
+                        />
+
+                    </XFormField>
+                </XFormLoadingContent>
+            </XVertical>
+        </XModalForm>
+
+    );
+});
+
 const LogoPlaceholder = Glamorous(XVertical)({
     cursor: 'pointer',
     width: 110,
