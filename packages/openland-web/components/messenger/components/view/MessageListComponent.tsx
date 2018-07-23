@@ -2,8 +2,8 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageComponent } from './MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
-import { ConversationEngine } from '../../model/ConversationEngine';
-import { ModelMessage, isServerMessage } from '../../model/types';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 
 interface MessageListProps {
     conversation: ConversationEngine;

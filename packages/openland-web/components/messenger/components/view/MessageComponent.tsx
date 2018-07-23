@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
-import { PendingMessage, isServerMessage } from '../../model/types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -12,7 +11,8 @@ import { XButton } from 'openland-x/XButton';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
-import { ConversationEngine } from '../../model/ConversationEngine';
+import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 
 interface MessageComponentProps {
     compact: boolean;
