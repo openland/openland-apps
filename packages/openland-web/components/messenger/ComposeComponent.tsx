@@ -119,7 +119,7 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                 await this.props.messenger.sender.sendMessageAsync(id.id, msg);
                 Router.replaceRoute('/mail/' + id.flexibleId);
             } else {
-                let res = await this.props.messenger.client.mutate({
+                let res = await this.props.messenger.client.client.mutate({
                     mutation: ChatCreateGroupMutation.document,
                     variables: {
                         message: msg,
