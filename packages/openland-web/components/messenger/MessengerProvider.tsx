@@ -2,7 +2,6 @@ import * as React from 'react';
 import { MessengerEngine, MessengerContext } from './model/MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { UserShortFragment } from 'openland-api/Types';
-import { ServiceWorkerCleaner } from './model/worker/ServiceWorkerCleaner';
 import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 
 let cachedMessenger: MessengerEngine | null = null;
@@ -42,7 +41,6 @@ export class MessengerProvider extends React.PureComponent<{ user?: UserShortFra
         } else {
             return (
                 <>
-                    <ServiceWorkerCleaner />
                     {this.props.children}
                 </>
             );

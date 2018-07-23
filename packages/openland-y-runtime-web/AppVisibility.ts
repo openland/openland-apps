@@ -35,13 +35,21 @@ class AppVisibilityWeb implements AppVisibilityApi {
     private onIdleHandler = () => {
         this.isVisible = false;
         for (let w of this.watchers) {
-            w(false);
+            try {
+                w(false);
+            } catch (e) {
+                console.warn(e);
+            }
         }
     }
     private onWakeupHandler = () => {
         this.isVisible = true;
         for (let w of this.watchers) {
-            w(true);
+            try {
+                w(true);
+            } catch (e) {
+                console.warn(e);
+            }
         }
     }
 }
