@@ -18,7 +18,6 @@ import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
 import { XContent } from 'openland-x-layout/XContent';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { XTextArea } from 'openland-x/XTextArea';
 import Glamorous from 'glamorous';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
@@ -32,7 +31,6 @@ import { OrgCategoties } from '../directory/categoryPicker';
 import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { withSuperAccount } from '../../../api/withSuperAccount';
 import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
 import { XText } from 'openland-x/XText';
 

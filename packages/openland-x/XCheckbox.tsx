@@ -159,10 +159,10 @@ export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selec
             res.push(
                 this.props.divided ? (
                     <Divided key={label + '_' + value} >
-                        <XCheckbox {...checkboxProps} />
+                        <XCheckboxBasic {...checkboxProps} />
                     </Divided>
                 ) : (
-                        <XCheckbox {...checkboxProps} />
+                        <XCheckboxBasic {...checkboxProps} />
                     ));
         }
         return (
