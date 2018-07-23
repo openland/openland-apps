@@ -221,7 +221,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private onMessagesUpdated = () => {
-        console.warn('Messages updated');
+        console.log('Messages updated');
         if (this.isOpen) {
             this.markReadIfNeeded();
         }
@@ -241,7 +241,6 @@ export class ConversationEngine implements MessageSendHandler {
         }
         if (id !== null && id !== this.lastTopMessageRead) {
             this.lastTopMessageRead = id;
-            console.warn(id);
             this.engine.client.client.mutate({
                 mutation: ChatReadMutation.document,
                 variables: {
