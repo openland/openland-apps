@@ -7,7 +7,6 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XIcon } from 'openland-x/XIcon';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
-import { XCloudImage } from 'openland-x/XCloudImage';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 // import { XVertical } from 'openland-x-layout/XVertical';
 import { XModal } from 'openland-x-modal/XModal';
@@ -20,7 +19,9 @@ import PlaceholderDO from '../icons/placeholder/img_placeholder_do.svg';
 import {
     XHorizontalStyled,
     XVerticalStyled,
+    CardPath,
     CardTitle,
+    CardPhoto,
     AdditionalLink,
     TagRowCard,
     TagRowMapCard
@@ -48,26 +49,10 @@ export const Text = Glamorous.div({
     color: '#334562'
 });
 
-const ListingTitle = Glamorous.div({
-    fontSize: 18,
-    lineHeight: 1.11,
-    letterSpacing: 0.6,
-    color: '#334562',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    maxWidth: '100%'
-});
-
 const ListingCard = Glamorous.div({
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     borderRadius: 4,
     backgroundColor: '#fff'
-});
-
-const AcquizitionRequestPhoto = Glamorous(XCloudImage)({
-    borderRadius: 4,
-    margin: 'auto'
 });
 
 const ClickableXStreetViewModalPreview = Glamorous.div({
@@ -83,8 +68,8 @@ const Lock = Glamorous(XIcon)({
     marginTop: -1
 });
 
-const ListingPath = (props: {type: string, text: string}) => (
-    <CardTitle><span>Listing</span> <img src="/static/X/ic-arrow-rignt.svg" /> <span>{props.type} • {props.text}</span></CardTitle>
+const ListingPath = (props: {type: string, date: string}) => (
+    <CardPath><span>Listing</span> <img src="/static/X/ic-arrow-rignt.svg" /> <span>{props.type} • {DateFormater(props.date)}</span></CardPath>
 );
 
 interface DevelopmentOportunityShortProps {
@@ -105,12 +90,12 @@ export const DevelopmentOportunityShort = (props: { item: DevelopmentOportunityS
 
     return (
         <ListingCard>
-            <XVerticalStyled separator={7} padding={24}>
+            <XVerticalStyled separator={3} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
-                    <ListingPath type="Development opportunity" text={DateFormater(item.updatedAt)}/>
+                    <ListingPath type="Development opportunity" date={item.updatedAt}/>
                     <XWithRole role={['org-' + props.orgId + '-admin']}>
                         <XOverflow
-                            smallSize={true}
+                            horizontal={true}
                             placement="bottom-end"
                             content={(
                                 <>
@@ -143,7 +128,7 @@ export const DevelopmentOportunityShort = (props: { item: DevelopmentOportunityS
                         <PlaceholderDO style={{ width: 133, height: 100 }} />
                     )}
                     <XVerticalStyled flexGrow={1} width={'calc(100% - 300px)'} separator={5} paddingTop={8}>
-                        <ListingTitle>{item.name}</ListingTitle>
+                        <CardTitle>{item.name}</CardTitle>
                         {item.locationTitle && <Text>{item.locationTitle}</Text>}
                         {!item.location && <Text><Lock icon="locked" />{TextOrganizationProfile.listingDoLocked}</Text>}
                         {item.area && <Text>{`Area: ${item.area} ft²`}</Text>}
@@ -186,12 +171,12 @@ export const DevelopmentOportunityFull = (props: { item: DevelopmentOportunityPr
 
     return (
         <ListingCard>
-            <XVerticalStyled separator={12} padding={24}>
+            <XVerticalStyled separator={8} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
-                    <ListingPath type="Development opportunity" text={DateFormater(item.updatedAt)}/>
+                    <ListingPath type="Development opportunity" date={item.updatedAt}/>
                     <XWithRole role={['org-' + props.orgId + '-admin']}>
                         <XOverflow
-                            smallSize={true}
+                            horizontal={true}
                             placement="bottom-end"
                             content={(
                                 <>
@@ -224,7 +209,7 @@ export const DevelopmentOportunityFull = (props: { item: DevelopmentOportunityPr
                         <PlaceholderDO style={{ width: 160, height: 120 }} />
                     )}
                     <XVerticalStyled flexGrow={1} maxwidth={'calc(100% - 184px)'} paddingTop={8} separator={10}>
-                        <ListingTitle>{item.name}</ListingTitle>
+                        <CardTitle>{item.name}</CardTitle>
                         {/* {props.showType && <Text>{TextOrganizationProfile.listingDoTagRowTitileDealType}</Text>} */}
 
                         <FullCardTagsWrapper>
@@ -310,12 +295,12 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
 
     return (
         <ListingCard>
-            <XVerticalStyled separator={7} padding={24}>
+            <XVerticalStyled separator={3} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
-                    <ListingPath type="Acquisition criteria" text={DateFormater(item.updatedAt)}/>
+                    <ListingPath type="Acquisition criteria" date={item.updatedAt}/>
                     <XWithRole role={['org-' + props.orgId + '-admin']}>
                         <XOverflow
-                            smallSize={true}
+                            horizontal={true}
                             placement="bottom-end"
                             content={(
                                 <>
@@ -333,18 +318,18 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
                             title={item.name}
                             target={(
                                 <XLink>
-                                    <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={133} height={100} />
+                                    <CardPhoto resize="fill" photoRef={item.photo} width={133} height={100} />
                                 </XLink>
                             )}
                         >
-                            <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={500} height={400} />
+                            <CardPhoto resize="fill" photoRef={item.photo} width={500} height={400} />
                         </XModal>
                     )}
                     {!item.photo && (
                         <PlaceholderAR style={{ width: 133, height: 100 }} />
                     )}
                     <XVerticalStyled flexGrow={1} width={'calc(100% - 300px)'} separator={5} paddingTop={8}>
-                        <ListingTitle>{item.name}</ListingTitle>
+                        <CardTitle>{item.name}</CardTitle>
                         {item.shortDescription && <Text>{item.shortDescription}</Text>}
                         <XHorizontalStyled justifyContent="flex-end" separator={5} alignItems="center" marginTop="auto">
                             <XButton text="View details" />
@@ -380,12 +365,12 @@ export const AcquizitionRequestFull = (props: { item: AcquizitionRequestProps, o
 
     return (
         <ListingCard>
-            <XVerticalStyled separator={12} padding={24}>
+            <XVerticalStyled separator={8} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
-                    <ListingPath type="Acquisition criteria" text={DateFormater(item.updatedAt)}/>
+                    <ListingPath type="Acquisition criteria" date={item.updatedAt}/>
                     <XWithRole role={['org-' + props.orgId + '-admin']}>
                         <XOverflow
-                            smallSize={true}
+                            horizontal={true}
                             placement="bottom-end"
                             content={(
                                 <>
@@ -403,18 +388,18 @@ export const AcquizitionRequestFull = (props: { item: AcquizitionRequestProps, o
                             title={item.name}
                             target={(
                                 <XLink>
-                                    <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={160} height={120} />
+                                    <CardPhoto resize="fill" photoRef={item.photo} width={160} height={120} />
                                 </XLink>
                             )}
                         >
-                            <AcquizitionRequestPhoto resize="fill" photoRef={item.photo} width={500} height={400} />
+                            <CardPhoto resize="fill" photoRef={item.photo} width={500} height={400} />
                         </XModal>
                     )}
                     {!item.photo && (
                         <PlaceholderAR style={{ width: 160, height: 120 }} />
                     )}
                     <XVerticalStyled flexGrow={1} maxwidth={'calc(100% - 175px)'} paddingTop={8} separator={10}>
-                        <ListingTitle>{item.name}</ListingTitle>
+                        <CardTitle>{item.name}</CardTitle>
                         {/* {props.showType && <Text>{TextOrganizationProfile.listingArType}</Text>} */}
                         <FullCardTagsWrapper>
                             {item.shortDescription && (

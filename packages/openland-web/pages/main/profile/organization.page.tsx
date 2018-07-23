@@ -41,7 +41,7 @@ import {
     Title,
     Text,
     TextLink,
-    TagRowMapMain,
+    // TagRowMapMain,
 } from './components/profileComponents';
 import {
     DevelopmentOportunityShort,
@@ -49,6 +49,7 @@ import {
     AcquizitionRequestShort,
     AcquizitionRequestFull
 } from './components/listingsCards';
+import { PostCard } from './components/postsCards';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -330,6 +331,8 @@ const AddListingButton = Glamorous(XLink)({
 });
 
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
+
+    console.log('posts - ', props.data.organization.posts);
 
     let editDoTarget = (props.data.organization.developmentOportunities || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
     let editArTarget = (props.data.organization.acquisitionRequests || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
@@ -693,8 +696,13 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     </XWithRole>
                                     {currentPath === rootPath && (
                                         <>
+                                            {organization.posts && (
+                                                organization.posts.map((post, i) => (
+                                                    <PostCard key={'post_' + i} orgId={organization.id} item={post} />
+                                                ))
+                                            )}
 
-                                            {(organization.organizationType || organization.locations || organization.interests) && (
+                                            {/* {(organization.organizationType || organization.locations || organization.interests) && (
                                                 <XCardStyled padding={0}>
                                                     {organization.organizationType && (
                                                         <TagRowMapMain
@@ -716,7 +724,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     )}
 
                                                 </XCardStyled>
-                                            )}
+                                            )} */}
 
                                             {(organization.doShapeAndForm || organization.doCurrentUse || organization.doGoodFitFor || organization.doSpecialAttributes || organization.doAvailability || (organization.developmentOportunities || []).length > 0) && (
                                                 <XCardStyled padding={0}>
@@ -724,7 +732,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         <Title marginBottom={24}>{TextOrganizationProfile.overviewDOTitle}</Title>
                                                     </XVerticalStyled>
 
-                                                    {(organization.doShapeAndForm || organization.doCurrentUse || organization.doGoodFitFor || organization.doSpecialAttributes || organization.doAvailability) && (
+                                                    {/* {(organization.doShapeAndForm || organization.doCurrentUse || organization.doGoodFitFor || organization.doSpecialAttributes || organization.doAvailability) && (
                                                         <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
                                                             {organization.doShapeAndForm && (
                                                                 <TagRowMapMain
@@ -758,7 +766,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             )}
 
                                                         </div>
-                                                    )}
+                                                    )} */}
 
                                                     {organization.developmentOportunities && (
                                                         organization.developmentOportunities.map((devop, i) => (
@@ -803,7 +811,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         <Title marginBottom={24}>{TextOrganizationProfile.overviewArTitle}</Title>
                                                     </XVerticalStyled>
 
-                                                    {(organization.arGeographies || organization.arAreaRange || organization.arHeightLimit || organization.arLandUse || organization.arSpecialAttributes || organization.arActivityStatus || organization.arAquisitionBudget || organization.arAquisitionRate || organization.arClosingTime) && (
+                                                    {/* {(organization.arGeographies || organization.arAreaRange || organization.arHeightLimit || organization.arLandUse || organization.arSpecialAttributes || organization.arActivityStatus || organization.arAquisitionBudget || organization.arAquisitionRate || organization.arClosingTime) && (
                                                         <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
                                                             {organization.arGeographies && (
                                                                 <TagRowMapMain
@@ -860,7 +868,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                                 />
                                                             )}
                                                         </div>
-                                                    )}
+                                                    )} */}
 
                                                     {organization.acquisitionRequests && (
                                                         organization.acquisitionRequests.map((devop, i) => (
