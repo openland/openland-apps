@@ -79,8 +79,8 @@
       "openland-y-graphql-gen": [
         "openland-y-graphql-gen"
       ],
-      "openland-messenger": [
-        "openland-messenger"
+      "openland-engines": [
+        "openland-engines"
       ],
       "openland-y-graphql": [
         "openland-y-graphql"
@@ -132,7 +132,7 @@
     "./packages/openland-x-graphql",
     "./packages/openland-x-analytics",
     "./packages/openland-x-config",
-    "./packages/openland-messenger",
+    "./packages/openland-engines",
     "./packages/openland-y-graphql",
     "./packages/openland-y-utils",
     "./packages/openland-y-runtime",

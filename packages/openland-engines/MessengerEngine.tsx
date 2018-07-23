@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { MessageSender } from './MessageSender';
-import { ConversationEngine } from './ConversationEngine';
-import { GlobalStateEngine } from './GlobalStateEngine';
+import { MessageSender } from './messenger/MessageSender';
+import { ConversationEngine } from './messenger/ConversationEngine';
+import { GlobalStateEngine } from './messenger/GlobalStateEngine';
 import { UserShortFragment } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';

@@ -3,13 +3,13 @@ import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { ComposeSelect } from '../../api/ChatComposeSelect';
 import { OnChangeHandler, Option, OptionValues } from 'react-select';
-import { MessengerContext, MessengerEngine } from './model/MessengerEngine';
 import { Router } from '../../routes';
 import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
 import { MessageComposeComponent } from './components/view/MessageComposeComponent';
 import { ConversationContainer } from './components/view/ConversationContainer';
 import { MessagesContainer } from './components/view/MessagesContainer';
 import { ConversationMessagesComponent } from './components/ConversationMessagesComponent';
+import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 
 const Root = Glamorous(XVertical)({
     display: 'flex',

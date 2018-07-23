@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { MessengerEngine, MessengerContext } from './model/MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { UserShortFragment } from 'openland-api/Types';
 import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
+import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 
 let cachedMessenger: MessengerEngine | null = null;
 

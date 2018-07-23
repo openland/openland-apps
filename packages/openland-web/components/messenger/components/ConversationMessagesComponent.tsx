@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { MessageListComponent } from './view/MessageListComponent';
 import { XLoader } from 'openland-x/XLoader';
-import { ModelMessage } from '../model/types';
-import { ConversationEngine, ConversationStateHandler } from '../model/ConversationEngine';
-import { ConversationState } from '../model/ConversationState';
 import { MessagesContainer } from './view/MessagesContainer';
+import { ConversationState } from 'openland-engines/messenger/ConversationState';
+import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
+import { ModelMessage } from 'openland-engines/messenger/types';
 
 export class ConversationMessagesComponent extends React.PureComponent<{ conversation: ConversationEngine }, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {
 

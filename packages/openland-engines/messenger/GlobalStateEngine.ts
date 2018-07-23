@@ -1,10 +1,10 @@
-import { MessengerEngine } from './MessengerEngine';
+import { MessengerEngine } from '../MessengerEngine';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import gql from 'graphql-tag';
 import { backoff } from 'openland-y-utils/timer';
 import { ChatListQuery, GlobalCounterQuery, ChatInfoQuery, ChatSearchGroupQuery } from 'openland-api';
-import { SequenceWatcher } from './SequenceWatcher';
+import { SequenceWatcher } from '../core/SequenceWatcher';
 import { defaultDataIdFromObject, ID_KEY } from 'apollo-cache-inmemory';
 import { SettingsQuery } from 'openland-api/SettingsQuery';
 import { SettingsFull } from 'openland-api/fragments/SettingsFragment';

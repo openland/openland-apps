@@ -1,7 +1,7 @@
-import { MessengerEngine } from './MessengerEngine';
+import { MessengerEngine } from '../MessengerEngine';
 import { ChatReadMutation, ChatHistoryQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
-import { SequenceWatcher } from './SequenceWatcher';
+import { SequenceWatcher } from '../core/SequenceWatcher';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';

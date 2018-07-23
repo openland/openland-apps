@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { MessengerContext, MessengerEngine } from '../model/MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { MessageListComponent } from './view/MessageListComponent';
-import { ConversationEngine } from '../model/ConversationEngine';
 import { withChatHistory } from '../../../api/withChatHistory';
 import { MessageComposeComponent } from './view/MessageComposeComponent';
 import { ConversationMessagesComponent } from './ConversationMessagesComponent';
 import { MessagesContainer } from './view/MessagesContainer';
 import { XLoader } from 'openland-x/XLoader';
 import { ConversationContainer } from './view/ConversationContainer';
+import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 
 interface MessagesComponentProps {
     conversationId: string;
