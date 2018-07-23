@@ -6,9 +6,10 @@ import { Query } from 'react-apollo';
 import { ChatListQuery } from 'openland-api/ChatListQuery';
 import { ZAvatar } from '../../components/ZAvatar';
 
-class DialogComponent extends React.PureComponent<{ item: { id: string, title: string, photos: string[] } }> {
+class DialogComponent extends React.PureComponent<{ item: { key: string, title: string, photos: string[] }, onPress: (id: string) => void }> {
+
     handlePress = () => {
-        //
+        this.props.onPress(this.props.item.key);
     }
 
     render() {
@@ -49,7 +50,7 @@ class MessagesComponent extends React.Component<NavigationInjectedProps> {
                         return (
                             <FlatList
                                 data={(res.data.chats.conversations as any[]).map((v) => ({ key: v.id, title: v.title, photos: v.photos }))}
-                                renderItem={(item) => (<DialogComponent item={item.item as any} />)}
+                                renderItem={(item) => (<DialogComponent item={item.item as any} onPress={(id) => this.props.navigation.navigate('Conversation', { id })} />)}
                             />
                         );
                     }}

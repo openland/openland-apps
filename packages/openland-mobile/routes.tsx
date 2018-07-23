@@ -5,13 +5,18 @@ import { Login } from './pages/auth/Login';
 import { Messages } from './pages/main/Messages';
 import { Settings } from './pages/main/Settings';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Conversation } from './pages/main/Conversation';
 
 //
 // Application Routes
 //
 
 const MessagesStack = createStackNavigator({
-  Messages: Messages
+  Messages: Messages,
+  Conversation: {
+    screen: Conversation,
+    tabBarVisible: false
+  }
 });
 
 const SettingsStack = createStackNavigator({

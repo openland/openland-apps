@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Image, View } from 'react-native';
 
-export class ZAvatar extends React.PureComponent<{ size: number, src?: string }> {
+export class ZAvatar extends React.PureComponent<{ size: number, src?: string | null }> {
     render() {
         if (this.props.src) {
             let url = this.props.src;
