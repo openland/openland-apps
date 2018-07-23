@@ -16,11 +16,11 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     zIndex: 11,
 }));
 
-const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean, smallSize?: boolean }>((props) => ({
-    width: props.smallSize ? 20 : 32,
-    height: props.smallSize ? 20 : 32,
+const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean, horizontal?: boolean }>((props) => ({
+    width: 32,
+    height: 32,
     display: 'flex',
-    flexDirection: props.smallSize ? 'row' : 'column',
+    flexDirection: props.horizontal ? 'row' : 'column',
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
@@ -37,11 +37,11 @@ const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean, smallSize?: bool
         width: 4,
         height: 4,
         borderRadius: 100,
-        marginBottom: props.smallSize ? undefined : 2,
-        marginRight: props.smallSize ? 2 : undefined,
+        marginBottom: props.horizontal ? undefined : 2,
+        marginRight: props.horizontal ? 2 : undefined,
         '&:last-child': {
-            marginBottom: props.smallSize ? undefined : 0,
-            marginRight: props.smallSize ? 0 : undefined,
+            marginBottom: props.horizontal ? undefined : 0,
+            marginRight: props.horizontal ? 0 : undefined,
         }
     },
     zIndex: props.active ? 11 : undefined
@@ -78,7 +78,7 @@ interface XOverflowProps {
     width?: number;
     target?: any;
     shadow?: boolean;
-    smallSize?: boolean;
+    horizontal?: boolean;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -134,7 +134,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                             onClick={this.switch}
                             active={this.state.show}
                             innerRef={this.createRef}
-                            smallSize={this.props.smallSize}
+                            horizontal={this.props.horizontal}
                         >
                             <div/>
                             <div/>

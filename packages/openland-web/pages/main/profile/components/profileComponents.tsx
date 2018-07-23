@@ -4,6 +4,7 @@ import { XLink } from 'openland-x/XLink';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
+import { XCloudImage } from 'openland-x/XCloudImage';
 
 interface XHorizontalStyledProps {
     borderRight?: boolean;
@@ -104,12 +105,28 @@ export const Text = Glamorous.div<TextProps>((props) => ({
 }));
 
 export const CardTitle = Glamorous.div({
+    fontSize: 18,
+    lineHeight: 1.11,
+    letterSpacing: 0.6,
+    color: '#334562',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    maxWidth: '100%'
+});
+
+export const CardPhoto = Glamorous(XCloudImage)({
+    borderRadius: 4,
+    margin: 'auto'
+});
+
+export const CardPath = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     fontSize: 14,
     fontWeight: 500,
     lineHeight: 1.14,
-    letterSpacing: -0.2,
+    letterSpacing: -0.3,
     color: '#334562',
     '& > span': {
         opacity: 0.5
@@ -119,7 +136,8 @@ export const CardTitle = Glamorous.div({
         height: 11,
         objectFit: 'contain',
         marginRight: 4,
-        marginLeft: 4
+        marginLeft: 4,
+        marginTop: 3
     }
 });
 
