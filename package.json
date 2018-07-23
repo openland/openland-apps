@@ -216,6 +216,7 @@
 		"native:metro": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
 		"native:build:watch": "./node_modules/.bin/tsc -w -p tsconfig.json --outDir ./build/native",
 		"native:ios": "node node_modules/react-native/local-cli/cli.js run-ios --simulator=\"iPhone X\"",
+		"native:ios:logs": "node node_modules/react-native/local-cli/cli.js log-ios",
 		"native:android": "node node_modules/react-native/local-cli/cli.js run-android",
 		"schema": "yarn schema:download && yarn schema:generate",
 		"schema:local": "yarn schema:download:local && yarn schema:generate",

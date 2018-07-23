@@ -13,7 +13,7 @@ const buildWebClient = (initialState?: any, token?: string, org?: string) => {
         httpEndpoint = (process.env.API_ENDPOINT ? process.env.API_ENDPOINT + '/api' : 'http://localhost:9000/api');
     }
 
-    return buildClient({ endpoint: httpEndpoint, wsEndpoint: wsEndpoint, initialState, token, organization: org });
+    return buildClient({ endpoint: httpEndpoint, wsEndpoint: wsEndpoint, initialState, token, organization: org, ssrMode: !canUseDOM });
 };
 
 export const apolloClient = (initialState?: any, token?: string, org?: string) => {
