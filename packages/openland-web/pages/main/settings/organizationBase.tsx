@@ -254,7 +254,7 @@ export const OrganizationSettigs = ((props: any) => {
                                         photoRef: data.input.photoRef,
                                         alphaOrganizationType: data.input.organizationType,
                                         alphaInterests: data.input.interests,
-                                        alphaLocations: [...([data.input.primaryLocation] || []), ...(data.input.locations || [])],
+                                        alphaLocations: [...(data.input.primaryLocation || []), ...(data.input.locations || [])],
                                         alphaPublished: data.input.published === 'published',
                                         alphaEditorial: data.input.editorial === 'editorial',
                                     }

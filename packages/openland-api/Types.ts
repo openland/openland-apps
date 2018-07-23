@@ -313,6 +313,10 @@ export interface UpdateProfileInput {
   website?: string | null,
   about?: string | null,
   location?: string | null,
+  alphaRole?: string | null,
+  alphaLocations?: Array< string > | null,
+  alphaLinkedin?: string | null,
+  alphaPrimaryOrganizationId?: string | null,
 };
 
 export interface UpdateSettingsInput {
@@ -3752,6 +3756,15 @@ export interface ProfileQuery {
     website: string | null,
     about: string | null,
     location: string | null,
+    role: string | null,
+    locations: Array< string > | null,
+    linkedin: string | null,
+    primaryOrganizationId: string | null,
+    joinedAt: string | null,
+    invitedBy:  {
+      __typename: "User",
+      name: string,
+    } | null,
   } | null,
 };
 
