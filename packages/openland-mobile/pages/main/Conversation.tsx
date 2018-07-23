@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps, SafeAreaView } from 'react-navigation';
 import { withApp } from '../../components/withApp';
 import { View, FlatList, Text, TextInput } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
@@ -71,7 +71,7 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
     }
     render() {
         return (
-            <View style={{ backgroundColor: '#ffffff', height: '100%' }} flexDirection="column">
+            <SafeAreaView style={{ backgroundColor: '#grey', height: '100%' }} flexDirection="column">
                 <FlatList
                     data={this.state.messages}
                     renderItem={(itm) => <MessageComponent message={itm.item} engine={this.engine} />}
@@ -79,9 +79,17 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
                     inverted={true}
                     flexBasis={0}
                     flexGrow={1}
+                    style={{ backgroundColor: '#fff' }}
                 />
-                <TextInput onChangeText={this.handleTextChange} value={this.state.text} onSubmitEditing={() => this.handleSubmit()} />
-            </View>
+                <View alignSelf="stretch" alignItems="stretch" style={{ paddingLeft: 15, paddingRight: 15, paddingTop: 10, paddingBottom: 10 }}>
+                    <TextInput
+                        onChangeText={this.handleTextChange}
+                        value={this.state.text}
+                        onSubmitEditing={() => this.handleSubmit()}
+                        style={{ backgroundColor: '#fff', borderRadius: 8, paddingLeft: 8, paddingRight: 8, paddingTop: 2, paddingBottom: 2 }}
+                    />
+                </View>
+            </SafeAreaView>
         );
     }
 }

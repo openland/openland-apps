@@ -13,11 +13,18 @@ import { Conversation } from './pages/main/Conversation';
 
 const MessagesStack = createStackNavigator({
   Messages: Messages,
-  Conversation: {
-    screen: Conversation,
-    tabBarVisible: false
-  }
+  Conversation: Conversation
 });
+MessagesStack.navigationOptions = (args: any) => {
+  let tabBarVisible = true;
+  if (args.navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
 
 const SettingsStack = createStackNavigator({
   Settings: Settings

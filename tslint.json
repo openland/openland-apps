@@ -111,5 +111,10 @@
   },
   "jsRules": {
     "no-empty": true
+  },
+  "linterOptions": {
+    "exclude": [
+      "**/*.json"
+    ]
   }
 }
