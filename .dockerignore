@@ -9,12 +9,10 @@ node_modules/fsevents
 node_modules/*webpack*
 node_modules/*uglify*
 node_modules/schema-utils
-node_modules/@babel
 node_modules/emojione/assets
 node_modules/react-emojione/assets
 node_modules/typescript
 node_modules/*typescript*
-node_modules/*babel*
 node_modules/@types
 node_modules/winston
 node_modules/apollo-codegen
