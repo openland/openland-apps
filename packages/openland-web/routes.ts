@@ -1,6 +1,4 @@
 import * as NRoutes from 'next-routes';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 
 let routes = NRoutes();
 
@@ -306,8 +304,3 @@ export function getRequestHandler(src: any): any {
 export const Link = routes.Link;
 export const Router = routes.Router;
 export const Routes = routes;
-
-// Is it a good place?
-if (canUseDOM) {
-    AppNotifications.setRouter(Router);
-}
