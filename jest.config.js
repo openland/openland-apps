@@ -33,6 +33,14 @@ module.exports = {
         //
         // WARNING: ORDER MATTERS
         //
+        'openland-y-utils/(.*)': '<rootDir>/packages/y-utils/$1',
+        'openland-y-utils': '<rootDir>/packages/y-utils',
+        'openland-y-runtime-web/(.*)': '<rootDir>/packages/openland-y-runtime-web/$1',
+        'openland-y-runtime-web': '<rootDir>/packages/openland-y-runtime-web',
+        'openland-y-runtime-api/(.*)': '<rootDir>/packages/openland-y-runtime-api/$1',
+        'openland-y-runtime-api': '<rootDir>/packages/openland-y-runtime-api',
+        'openland-y-runtime/(.*)': '<rootDir>/packages/openland-y-runtime/$1',
+        'openland-y-runtime': '<rootDir>/packages/openland-y-runtime',
         'openland-api/(.*)': '<rootDir>/packages/openland-api/$1',
         'openland-api': '<rootDir>/packages/openland-api',
         'openland-text/(.*)': '<rootDir>/packages/openland-text/$1',
