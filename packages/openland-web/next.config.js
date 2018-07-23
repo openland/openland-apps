@@ -23,6 +23,8 @@ const config = {
         for (let key of Object.keys(tsConfig.compilerOptions.paths)) {
             alias[key.replace(/\/\*$/, "")] = path.resolve(__dirname + '../../', tsConfig.compilerOptions.paths[key][0].replace(/[\/]\*$/, ""));
         }
+        // Hack runtime
+        alias['openland-y-runtime'] = alias['openland-y-runtime-web'];
         config.resolve.alias = Object.assign({}, config.resolve.alias, alias);
 
         // Ignore large library from parsing and solve some babel issues

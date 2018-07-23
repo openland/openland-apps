@@ -1,19 +1,17 @@
 import * as React from 'react';
 import { MessageSender } from './MessageSender';
 import { ConversationEngine } from './ConversationEngine';
-import { Visibility } from './utils/Visibility';
 import { GlobalStateEngine } from './GlobalStateEngine';
 import { UserShortFragment } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-
+import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 export class MessengerEngine {
     readonly client: OpenApolloClient;
     readonly sender: MessageSender;
     readonly global: GlobalStateEngine;
     readonly user: UserShortFragment;
     readonly notifications: NotificationsEngine;
-    private readonly visibility: Visibility;
     private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number, unread: number }>();
 
@@ -25,15 +23,22 @@ export class MessengerEngine {
         this.user = user;
         this.global = new GlobalStateEngine(this);
         this.sender = new MessageSender(client);
-        this.visibility = new Visibility(this.handleVisibleChanged);
+        
+        // Visibility
+        AppVisibility.watch(this.handleVisibleChanged);
+        this.handleVisibleChanged(AppVisibility.isVisible);
+
+        // Notifications
         this.notifications = new NotificationsEngine(this);
+
+        // Starting
         this.global.start(this.notifications.handleGlobalCounterChanged, this.notifications.handleIncomingMessage);
         console.warn('MessengerEngine started');
     }
 
     destroy() {
         this.global.destroy();
-        this.visibility.destroy();
+        AppVisibility.unwatch(this.handleVisibleChanged);
     }
 
     getConversation(conversationId: string) {

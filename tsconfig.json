@@ -87,6 +87,15 @@
       ],
       "openland-y-utils": [
         "openland-y-utils"
+      ],
+      "openland-y-runtime": [
+        "openland-y-runtime"
+      ],
+      "openland-y-runtime-api": [
+        "openland-y-runtime-api"
+      ],
+      "openland-y-runtime-web": [
+        "openland-y-runtime-web"
       ]
     },
     "importHelpers": true
@@ -125,6 +134,9 @@
     "./packages/openland-x-config",
     "./packages/openland-messenger",
     "./packages/openland-y-graphql",
-    "./packages/openland-y-utils"
+    "./packages/openland-y-utils",
+    "./packages/openland-y-runtime",
+    "./packages/openland-y-runtime-web",
+    "./packages/openland-y-runtime-api"
   ]
 }

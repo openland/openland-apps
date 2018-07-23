@@ -75,6 +75,9 @@
       ],
       "openland-x-graphql-gen": [
         "openland-x-graphql-gen"
+      ],
+      "openland-y-runtime": [
+        "openland-y-runtime"
       ]
     },
     "importHelpers": true
