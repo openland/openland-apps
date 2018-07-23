@@ -3,7 +3,8 @@ import { View, Text, Button, StyleSheet, ProgressViewIOS, Alert, AsyncStorage } 
 // import qs from 'query-string';
 import { NavigationInjectedProps } from 'react-navigation';
 import { buildClient, saveClient } from '../../utils/apolloClient';
-import Auth0 from 'react-native-auth0';
+import { Auth0Client } from '../../index';
+// import Auth0 from 'react-native-auth0';
 
 const styles = StyleSheet.create({
     container: {
@@ -23,19 +24,11 @@ export class Login extends React.Component<NavigationInjectedProps, { loading: b
     handlePress = async () => {
         try {
             this.setState({ loading: true });
-            let auth0 = new Auth0({
-                domain: 'auth.openland.com',
-                clientId: 'v3R2Rr6D4LzzcWKHf91jwKJyDnEm4L96',
-                // redirectUri: window.location.origin + '/auth/complete',
-                // audience: 'https://statecraft.auth0.com/userinfo',
-                // responseType: 'token id_token',
-                // scope: 'openid profile email'
-            });
 
-            let res = await auth0.webAuth.authorize({
+            let res = await Auth0Client.webAuth.authorize({
                 scope: 'openid profile email',
                 audience: 'https://statecraft.auth0.com/userinfo',
-                connection: 'google-oauth2'
+                connection: 'google-oauth2',
             });
 
             console.log(res);

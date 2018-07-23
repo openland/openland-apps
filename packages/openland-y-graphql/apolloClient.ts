@@ -99,7 +99,8 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
         }
         link = new HttpLink({
             uri: config.endpoint,
-            headers: headers
+            headers: headers,
+            fetch: config.ssrMode ? require('node-fetch') : undefined
         });
     } else {
 
