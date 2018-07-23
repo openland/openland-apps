@@ -14,9 +14,15 @@ class DialogComponent extends React.PureComponent<{ item: { id: string, title: s
     render() {
         return (
             <TouchableHighlight onPress={this.handlePress} underlayColor="#f8f8fb">
-                <View height={44} flexDirection="row">
-                    <ZAvatar src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined} size={34} />
-                    <Text>{(this.props.item as any).title}</Text>
+                <View height={66} flexDirection="row">
+                    <View paddingTop={5} paddingBottom={5} paddingLeft={8} paddingRight={6}>
+                        <ZAvatar src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined} size={56} />
+                    </View>
+                    <View flexGrow={1} paddingTop={5} paddingBottom={5} paddingRight={8}>
+                        <Text style={{ fontSize: 16, fontWeight: '500', height: 22, textAlignVertical: 'center' }}>{(this.props.item as any).title}</Text>
+                        <Text style={{ fontSize: 16, fontWeight: '400', height: 22, textAlignVertical: 'center' }}>Message line 1</Text>
+                        <Text style={{ fontSize: 16, fontWeight: '400', height: 22, textAlignVertical: 'center' }}>Message line 2</Text>
+                    </View>
                 </View>
             </TouchableHighlight>
         );

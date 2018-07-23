@@ -74,10 +74,10 @@ function postProcess(file: string) {
         pContents += 'import * as ' + fn.name + ' from \'./queries/' + fn.name + '\';\n';
         pContents += 'import * as Types from \'./Types\';\n';
         if (p.indexOf('typedQuery') >= 0) {
-            pContents += 'import { typedQuery } from \'openland-x-graphql/typed\';\n\n';
+            pContents += 'import { typedQuery } from \'openland-y-graphql/typed\';\n\n';
         }
         if (p.indexOf('typedMutation') >= 0) {
-            pContents += 'import { typedMutation } from \'openland-x-graphql/typed\';\n\n';
+            pContents += 'import { typedMutation } from \'openland-y-graphql/typed\';\n\n';
         }
         pContents += p.replace(/!!IMPORTS!!/g, fn.name);
         fs.writeFileSync(path.resolve(fn.dir + '/../' + name + '.ts'), pContents);

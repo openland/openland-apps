@@ -208,7 +208,7 @@
 		"schema:download:local": "yarn apollo-codegen introspect-schema http://localhost:9000/api --output schema.json",
 		"schema:generate": "yarn schema:generate:1 && yarn schema:generate:2",
 		"schema:generate:1": "yarn apollo-codegen generate ./packages/openland-api/*/*.ts --schema schema.json --target typescript --output ./packages/openland-api/Types.ts --addTypename --tag-name gql",
-		"schema:generate:2": " ./node_modules/.bin/ts-node --compilerOptions '{\"module\":\"commonjs\"}' ./packages/openland-x-graphql-gen/generator.ts",
+		"schema:generate:2": " ./node_modules/.bin/ts-node --compilerOptions '{\"module\":\"commonjs\"}' ./packages/openland-y-graphql-gen/generator.ts",
 		"favicon-gen": "convert ./packages/openland-web/static/favicon-16.png ./packages/openland-web/static/favicon-32.png ./packages/openland-web/static/favicon-48.png ./packages/openland-web/static/favicon.ico",
 		"mobile:prepare": "./scripts/mobile_prepare.sh"
 	}

@@ -3,7 +3,8 @@ import { MessengerEngine, MessengerContext } from './model/MessengerEngine';
 import { withApollo } from 'react-apollo';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { UserShortFragment } from 'openland-api/Types';
-import { ServiceWorkerCleaner } from './model/ServiceWorkerCleaner';
+import { ServiceWorkerCleaner } from './model/worker/ServiceWorkerCleaner';
+import { SubscriptionClient } from 'subscriptions-transport-ws';
 
 let cachedMessenger: MessengerEngine | null = null;
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XFlexStyles, applyFlex } from './Flex';
-import { XPopper } from 'openland-x/XPopper';
+import { XPopper } from '../XPopper';
 import { XIcon } from '../XIcon';
 
 export interface XInputBasicProps extends XFlexStyles {

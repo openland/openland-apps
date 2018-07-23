@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XTag } from '../XTag';
 import { XSelectProps, XSelectAsyncProps } from '../XSelect';
-import { Option } from '../../../node_modules/@types/react-select';
+import { Option } from 'react-select';
 import { XInput } from '../XInput';
 
 const Container = Glamorous.div({

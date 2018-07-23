@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XIcon } from 'openland-x/XIcon';
+import { XIcon } from './XIcon';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XFlexStyles } from './basics/Flex';
 

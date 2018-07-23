@@ -5,7 +5,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XForm } from 'openland-x-forms/XForm2';
-import { delay } from 'openland-x-utils/timer';
+import { delay } from 'openland-y-utils/timer';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormFieldText } from 'openland-x-forms/XFormFieldText';
 import { XFormLoadingGlobal } from 'openland-x-forms/XFormLoadingGlobal';

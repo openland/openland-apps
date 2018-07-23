@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ApolloClient } from 'apollo-client';
-import { delay, backoff } from 'openland-x-utils/timer';
+import { delay, backoff } from 'openland-y-utils/timer';
 import gql from 'graphql-tag';
 
 const OnlineMutation = gql`

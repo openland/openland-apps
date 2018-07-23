@@ -30,7 +30,7 @@ import { InvitesToOrganizationMoadal, InvitesGlobalMoadal } from '../pages/main/
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { TextInvites } from 'openland-text/TextInvites';
 import DirecoryIcon from '../pages/main/directory/icons/directory.1.svg';
-import { Query } from '../../../node_modules/react-apollo';
+import { Query } from 'react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import AddIcon from './icons/add-1.svg';
 import HomeIcon from './icons/home-1.svg';
