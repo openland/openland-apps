@@ -1,10 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { ApolloProvider } from 'react-apollo';
-import { ApolloClient } from 'apollo-client';
 import Head from 'next/head';
 import { isPageChanged } from 'openland-x-routing/NextRouting';
-import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { trackPage } from 'openland-x-analytics';
 import { apolloClient } from 'openland-x-graphql/apolloClient';
@@ -17,6 +14,8 @@ import '../globals';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 import { XStorageProvider } from 'openland-x-routing/XStorageProvider';
 import moment from 'moment-timezone';
+import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
+import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 interface WithDataProps {
     serverState: { apollo: { data: any, token?: string, org?: string } };
     host: string;
@@ -37,7 +36,7 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
             host: PropTypes.string.isRequired,
             protocol: PropTypes.string.isRequired,
         };
-        private apollo: ApolloClient<NormalizedCacheObject>;
+        private apollo: OpenApolloClient;
 
         static async getInitialProps(ctx: any) {
             let token = getToken(ctx.req);
@@ -74,11 +73,11 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
                     // Run all GraphQL queries
                     await getDataFromTree(
                         <XStorageProvider storage={storage}>
-                            <ApolloProvider client={apollo}>
+                            <YApolloProvider client={apollo}>
                                 <XRouterProvider routes={Routes} hostName={host} protocol={protocol}>
                                     <ComposedComponent {...composedInitialProps} />
                                 </XRouterProvider>
-                            </ApolloProvider>
+                            </YApolloProvider>
                         </XStorageProvider>
                         ,
                         { router: { query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath } });
@@ -103,7 +102,7 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
                 // Extract query data from the Apollo store
                 serverState = {
                     apollo: {
-                        data: apollo.extract(),
+                        data: apollo.client.extract(),
                         token: token,
                         org: org
                     }
@@ -116,11 +115,11 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
                     // Run all GraphQL queries
                     await getDataFromTree(
                         <XStorageProvider storage={storage}>
-                            <ApolloProvider client={apollo}>
+                            <YApolloProvider client={apollo}>
                                 <XRouterProvider routes={Routes} hostName={host} protocol={protocol}>
                                     <ComposedComponent {...composedInitialProps} />
                                 </XRouterProvider>
-                            </ApolloProvider>
+                            </YApolloProvider>
                         </XStorageProvider>
                         ,
                         { router: { query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath } });
@@ -175,13 +174,13 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
         render() {
             return (
                 <XStorageProvider storage={canUseDOM ? getClientStorage() : this.props.storage}>
-                    <ApolloProvider client={this.apollo}>
+                    <YApolloProvider client={this.apollo}>
                         <XRouterProvider routes={Routes} hostName={this.props.host} protocol={this.props.protocol}>
                             <RootErrorBoundary>
                                 <ComposedComponent {...this.props.composedInitialProps} />
                             </RootErrorBoundary>
                         </XRouterProvider>
-                    </ApolloProvider>
+                    </YApolloProvider>
                 </XStorageProvider>
             );
         }

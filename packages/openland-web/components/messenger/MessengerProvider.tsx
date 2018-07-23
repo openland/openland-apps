@@ -1,30 +1,39 @@
 import * as React from 'react';
 import { MessengerEngine, MessengerContext } from './model/MessengerEngine';
-import { withApollo } from 'react-apollo';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { UserShortFragment } from 'openland-api/Types';
 import { ServiceWorkerCleaner } from './model/worker/ServiceWorkerCleaner';
-import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 
 let cachedMessenger: MessengerEngine | null = null;
 
-const Messenger = withApollo<{ currentUser: UserShortFragment }>((props) => {
-    if (!cachedMessenger && canUseDOM) {
-        cachedMessenger = new MessengerEngine(props.client, props.currentUser);
-    }
-    if (cachedMessenger) {
+const Messenger = (props: { currentUser: UserShortFragment, children?: any }) => {
+    if (canUseDOM) {
         return (
-            <MessengerContext.Provider value={cachedMessenger}>
+            <YApolloContext.Consumer>
+                {(apollo) => {
+                    if (!apollo) {
+                        throw Error('Unable to get apollo');
+                    }
+                    if (!cachedMessenger) {
+                        cachedMessenger = new MessengerEngine(apollo.client, props.currentUser);
+                    }
+                    return (
+                        <MessengerContext.Provider value={cachedMessenger}>
+                            {props.children}
+                        </MessengerContext.Provider>
+                    );
+                }}
+            </YApolloContext.Consumer>
+        );
+    } else {
+        return (
+            <>
                 {props.children}
-            </MessengerContext.Provider>
+            </>
         );
     }
-    return (
-        <>
-            {props.children}
-        </>
-    );
-});
+};
 
 export class MessengerProvider extends React.PureComponent<{ user?: UserShortFragment }> {
     render() {

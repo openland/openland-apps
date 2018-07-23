@@ -56,7 +56,7 @@ export class ConversationEngine implements MessageSendHandler {
         console.info('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
-                return await this.engine.client.query({
+                return await this.engine.client.client.query({
                     query: ChatHistoryQuery.document,
                     variables: {
                         conversationId: this.conversationId
@@ -242,7 +242,7 @@ export class ConversationEngine implements MessageSendHandler {
         if (id !== null && id !== this.lastTopMessageRead) {
             this.lastTopMessageRead = id;
             console.warn(id);
-            this.engine.client.mutate({
+            this.engine.client.client.mutate({
                 mutation: ChatReadMutation.document,
                 variables: {
                     conversationId: this.conversationId,
@@ -257,13 +257,13 @@ export class ConversationEngine implements MessageSendHandler {
             // Handle message
             console.info('Received new message');
             // Write message to store
-            let data = this.engine.client.readQuery({
+            let data = this.engine.client.client.readQuery({
                 query: ChatHistoryQuery.document,
                 variables: { conversationId: this.conversationId }
             });
             (data as any).messages.seq = event.seq;
             (data as any).messages.messages = [event.message, ...(data as any).messages.messages];
-            this.engine.client.writeQuery({
+            this.engine.client.client.writeQuery({
                 query: ChatHistoryQuery.document,
                 variables: { conversationId: this.conversationId },
                 data: data
@@ -294,7 +294,7 @@ export class ConversationEngine implements MessageSendHandler {
 
             console.warn('Received unknown message');
             // Unknown message: Stop subscription and reload chat
-            let loaded = await backoff(() => this.engine.client.query({
+            let loaded = await backoff(() => this.engine.client.client.query({
                 query: ChatHistoryQuery.document,
                 variables: { conversationId: this.conversationId },
                 fetchPolicy: 'network-only'

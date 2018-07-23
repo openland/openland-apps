@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MutationFunc, Mutation } from 'react-apollo';
 import { prepareParams } from './prepareParams';
-import { GraphqlTypedMutation, GraphqlTypedQuery } from './typed';
+import { GraphqlTypedMutation, GraphqlTypedQuery } from 'openland-y-graphql/typed';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 

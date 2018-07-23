@@ -1,11 +1,10 @@
-import { ConnectionStatus } from 'openland-x-graphql/apolloClient';
-import { ApolloClient } from 'apollo-client';
 import { delay } from 'openland-y-utils/timer';
+import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 
 export class SequenceWatcher {
 
     private started: boolean = true;
-    private client: ApolloClient<{}>;
+    private client: OpenApolloClient;
     private currentSeq: number | null;
     private observable: ZenObservable.Subscription | null = null;
     private connectionStatusUnsubscribe: (() => void) | null = null;
@@ -24,7 +23,7 @@ export class SequenceWatcher {
         initialSeq: number | null,
         variables: any,
         handler: (event: any) => void | Promise<undefined> | number | Promise<number>,
-        client: ApolloClient<{}>,
+        client: OpenApolloClient,
         seqHandler?: (seq: number) => void
     ) {
         this.name = name;
@@ -36,7 +35,7 @@ export class SequenceWatcher {
         this.started = true;
         this.seqHandler = seqHandler;
         this.startSubsctiption();
-        this.connectionStatusUnsubscribe = ConnectionStatus.subscribe(this.handleConnectionChanged);
+        this.connectionStatusUnsubscribe = this.client.status.subscribe(this.handleConnectionChanged);
         if (this.seqHandler && this.currentSeq !== null) {
             this.seqHandler(this.currentSeq);
         }
@@ -57,12 +56,12 @@ export class SequenceWatcher {
         if (!this.started) {
             return;
         }
-        if (!ConnectionStatus.isConnected) {
+        if (!this.client.status.isConnected) {
             return;
         }
         this.stopSubscription();
         console.info('[' + this.name + ']: Start Subscription starting from #' + this.currentSeq);
-        let subscription = this.client.subscribe({
+        let subscription = this.client.client.subscribe({
             query: this.query,
             variables: { ...this.variables, seq: this.currentSeq }
         });

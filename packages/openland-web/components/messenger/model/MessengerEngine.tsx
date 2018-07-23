@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { ApolloClient } from 'apollo-client';
 import { MessageSender } from './MessageSender';
 import { ConversationEngine } from './ConversationEngine';
 import { Visibility } from './utils/Visibility';
 import { GlobalStateEngine } from './GlobalStateEngine';
 import { UserShortFragment } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
+import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 
 export class MessengerEngine {
-    readonly client: ApolloClient<{}>;
+    readonly client: OpenApolloClient;
     readonly sender: MessageSender;
     readonly global: GlobalStateEngine;
     readonly user: UserShortFragment;
@@ -20,7 +20,7 @@ export class MessengerEngine {
     private isVisible = true;
     private close: any = null;
 
-    constructor(client: ApolloClient<{}>, user: UserShortFragment) {
+    constructor(client: OpenApolloClient, user: UserShortFragment) {
         this.client = client;
         this.user = user;
         this.global = new GlobalStateEngine(this);

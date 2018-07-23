@@ -6,7 +6,7 @@ import { XMapSource } from 'openland-x-map/XMapSource';
 import { backoff } from 'openland-x-utils/timer';
 import { stopProgress, startProgress } from 'openland-x-routing/NextRouting';
 import { parseGeometry } from 'openland-x-utils/parseGeometry';
-import { GraphqlTypedQuery } from './typed';
+import { GraphqlTypedQuery } from 'openland-y-graphql/typed';
 interface GraphQLTileSourceProps {
     layer: string;
     minZoom?: number;

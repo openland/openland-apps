@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { XSelectAsync, XSelectAsyncProps } from 'openland-x/XSelect';
 import { ApolloClient } from 'apollo-client';
-import { GraphqlTypedQuery } from './typed';
+import { GraphqlTypedQuery } from 'openland-y-graphql/typed';
 
 export function graphqlSelect<V = {}>(query: GraphqlTypedQuery<any, any>) {
     return class XSelectGraphQL extends React.Component<Partial<XSelectAsyncProps> & { variables?: V }> {

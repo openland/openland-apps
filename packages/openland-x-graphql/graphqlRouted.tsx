@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Query } from 'react-apollo';
 import { GraphQLRoutedComponentProps } from './graphql';
 import { prepareParams } from './prepareParams';
-import { GraphqlTypedQuery } from './typed';
+import { GraphqlTypedQuery } from 'openland-y-graphql/typed';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 export function graphqlRouted<TResult, TVars>(

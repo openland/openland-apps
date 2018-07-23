@@ -90,14 +90,14 @@ export class GlobalStateEngine {
 
         // Loading settings
         await backoff(async () => {
-            return await this.engine.client.query({
+            return await this.engine.client.client.query({
                 query: SettingsQuery.document
             });
         });
 
         // Loading initial chat state
         let res = (await backoff(async () => {
-            return await this.engine.client.query({
+            return await this.engine.client.client.query({
                 query: ChatListQuery.document
             });
         })).data;
@@ -109,7 +109,7 @@ export class GlobalStateEngine {
         this.watcher = new SequenceWatcher('global', GLOBAL_SUBSCRIPTION, seq, {}, this.handleGlobalEvent, this.engine.client, this.handleSeqUpdated);
 
         // Subscribe for settings update
-        let settingsSubscription = this.engine.client.subscribe({
+        let settingsSubscription = this.engine.client.client.subscribe({
             query: SUBSCRIBE_SETTINGS
         });
         settingsSubscription.subscribe({
@@ -120,7 +120,7 @@ export class GlobalStateEngine {
     }
 
     resolvePrivateConversation = async (uid: string) => {
-        let res = await this.engine.client.query({
+        let res = await this.engine.client.client.query({
             query: ChatInfoQuery.document,
             variables: {
                 conversationId: uid
@@ -133,7 +133,7 @@ export class GlobalStateEngine {
     }
 
     resolveGroup = async (uids: string[]) => {
-        let res = await this.engine.client.query({
+        let res = await this.engine.client.client.query({
             query: ChatSearchGroupQuery.document,
             variables: {
                 members: uids
@@ -182,7 +182,7 @@ export class GlobalStateEngine {
             this.lastReportedSeq = this.maxSeq;
             let seq = this.maxSeq;
             (async () => {
-                backoff(() => this.engine.client.mutate({
+                backoff(() => this.engine.client.client.mutate({
                     mutation: MARK_SEQ_READ,
                     variables: {
                         seq
@@ -193,7 +193,7 @@ export class GlobalStateEngine {
     }
 
     private handleChatAdded = (chat: any) => {
-        this.engine.client.writeQuery({
+        this.engine.client.client.writeQuery({
             query: ChatInfoQuery.document,
             variables: {
                 conversationId: chat.flexibleId
@@ -202,7 +202,7 @@ export class GlobalStateEngine {
                 chat: chat
             }
         });
-        this.engine.client.writeQuery({
+        this.engine.client.client.writeQuery({
             query: ChatInfoQuery.document,
             variables: {
                 conversationId: chat.id
@@ -221,7 +221,7 @@ export class GlobalStateEngine {
             if (!visible && !event.isOut) {
                 this.messageHandler!!(event);
             }
-            let data = this.engine.client.readQuery({
+            let data = this.engine.client.client.readQuery({
                 query: ChatListQuery.document
             }) as any;
             if (data) {
@@ -250,7 +250,7 @@ export class GlobalStateEngine {
                     data.chats.conversations.unshift(chat);
                     this.handleChatAdded(chat);
                 }
-                this.engine.client.writeQuery({
+                this.engine.client.client.writeQuery({
                     query: ChatListQuery.document,
                     data: data
                 });
@@ -268,7 +268,7 @@ export class GlobalStateEngine {
         // Update counter anywhere in the app
         //
 
-        let existing = this.engine.client.readQuery({
+        let existing = this.engine.client.client.readQuery({
             query: GlobalCounterQuery.document
         });
         if (existing) {
@@ -279,7 +279,7 @@ export class GlobalStateEngine {
                 }
             }
             (existing as any).counter.unreadCount = counter;
-            this.engine.client.writeQuery({
+            this.engine.client.client.writeQuery({
                 query: GlobalCounterQuery.document,
                 data: existing
             });
@@ -293,7 +293,7 @@ export class GlobalStateEngine {
         //
 
         let id = defaultDataIdFromObject({ __typename: 'SharedConversation', id: conversationId })!!;
-        let conv = this.engine.client.readFragment({
+        let conv = this.engine.client.client.readFragment({
             id,
             fragment: SHARED_CONVERSATION_COUNTER
         });
@@ -305,7 +305,7 @@ export class GlobalStateEngine {
                 }
             }
             (conv as any).unreadCount = counter;
-            this.engine.client.writeFragment({
+            this.engine.client.client.writeFragment({
                 id,
                 fragment: SHARED_CONVERSATION_COUNTER,
                 data: conv
@@ -314,7 +314,7 @@ export class GlobalStateEngine {
         }
 
         id = defaultDataIdFromObject({ __typename: 'PrivateConversation', id: conversationId })!!;
-        conv = this.engine.client.readFragment({
+        conv = this.engine.client.client.readFragment({
             id,
             fragment: PRIVATE_CONVERSATION_COUNTER
         });
@@ -326,7 +326,7 @@ export class GlobalStateEngine {
                 }
             }
             (conv as any).unreadCount = counter;
-            this.engine.client.writeFragment({
+            this.engine.client.client.writeFragment({
                 id,
                 fragment: PRIVATE_CONVERSATION_COUNTER,
                 data: conv

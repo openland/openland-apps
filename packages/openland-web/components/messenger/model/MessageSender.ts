@@ -1,6 +1,6 @@
-import { ApolloClient } from 'apollo-client';
 import UUID from 'uuid/v4';
 import { SendMessageMutation } from 'openland-api/SendMessageMutation';
+import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
@@ -9,11 +9,11 @@ export interface MessageSendHandler {
 }
 
 export class MessageSender {
-    private client: ApolloClient<{}>;
+    private client: OpenApolloClient;
     private uploadedFiles = new Map<string, string>();
     private pending = new Map<string, { file: string | null, message: string | null, conversationId: string }>();
 
-    constructor(client: ApolloClient<{}>) {
+    constructor(client: OpenApolloClient) {
         this.client = client;
     }
 
@@ -81,7 +81,7 @@ export class MessageSender {
         this.pending.set(key, { conversationId, message, file });
         (async () => {
             try {
-                await this.client.mutate({
+                await this.client.client.mutate({
                     mutation: SendMessageMutation.document,
                     variables: {
                         message: message,

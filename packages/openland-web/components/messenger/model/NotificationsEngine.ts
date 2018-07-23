@@ -42,7 +42,7 @@ export class NotificationsEngine {
 
     handleGranted = () => {
         (async () => {
-            let settings = await backoff(async () => await this.engine.client.query({
+            let settings = await backoff(async () => await this.engine.client.client.query({
                 query: FetchPushSettings
             }));
             let key = (settings.data as any).pushSettings.webPushKey;
@@ -55,7 +55,7 @@ export class NotificationsEngine {
     }
 
     handlePushRegistration = (endpoint: string) => {
-        backoff(async () => await this.engine.client.mutate({
+        backoff(async () => await this.engine.client.client.mutate({
             mutation: RegisterPush,
             variables: {
                 endpoint
@@ -77,7 +77,7 @@ export class NotificationsEngine {
     }
 
     handleIncomingMessage = (msg: any) => {
-        let settings = this.engine.client.readQuery<SettingsQueryType>({
+        let settings = this.engine.client.client.readQuery<SettingsQueryType>({
             query: SettingsQuery.document
         })!!.settings;
 

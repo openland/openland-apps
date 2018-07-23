@@ -1,5 +1,5 @@
-import { typedTask } from 'openland-x-graphql/typed';
-import { typedQuery } from 'openland-x-graphql/typed';
+import { typedTask } from 'openland-y-graphql/typed';
+import { typedQuery } from 'openland-y-graphql/typed';
 import * as Raw from './queries/Tasks';
 import * as Types from './Types';
 

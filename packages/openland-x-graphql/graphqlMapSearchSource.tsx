@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { GraphqlTypedQuery } from './typed';
+import { GraphqlTypedQuery } from 'openland-y-graphql/typed';
 import ApolloClient from 'apollo-client';
 import { XMapSubscriber } from 'openland-x-map/XMap';
 import { stopProgress, startProgress } from 'openland-x-routing/NextRouting';

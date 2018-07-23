@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { GraphqlTypedTask } from './typed';
+import { GraphqlTypedTask } from 'openland-y-graphql/typed';
 import { ApolloClient } from 'apollo-client';
 import { RefreshTaskQuery } from 'openland-api/Tasks';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';

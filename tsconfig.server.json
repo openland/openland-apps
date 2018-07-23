@@ -27,7 +27,8 @@
     ],
     "outDir": "dist/",
     "baseUrl": "packages",
-    "importHelpers": true
+    "importHelpers": true,
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules",
