@@ -1,4 +1,4 @@
-import { Router } from '../../../../routes';
+// import { Router } from '../../../../routes';
 import { trackError } from 'openland-x-analytics';
 
 export class Notifications {
@@ -53,7 +53,7 @@ export class Notifications {
                         icon: image
                     });
                     notification.onclick = function () {
-                        Router.replaceRoute(path);
+                        // Router.replaceRoute(path);
                         window.focus();
                         this.close();
                     };

@@ -1,4 +1,4 @@
-import { ConnectionStatus } from 'openland-x-graphql/apolloClient';
+// import { ConnectionStatus } from 'openland-x-graphql/apolloClient';
 import { ApolloClient } from 'apollo-client';
 import { delay } from 'openland-y-utils/timer';
 
@@ -36,7 +36,7 @@ export class SequenceWatcher {
         this.started = true;
         this.seqHandler = seqHandler;
         this.startSubsctiption();
-        this.connectionStatusUnsubscribe = ConnectionStatus.subscribe(this.handleConnectionChanged);
+        // this.connectionStatusUnsubscribe = ConnectionStatus.subscribe(this.handleConnectionChanged);
         if (this.seqHandler && this.currentSeq !== null) {
             this.seqHandler(this.currentSeq);
         }
@@ -57,9 +57,9 @@ export class SequenceWatcher {
         if (!this.started) {
             return;
         }
-        if (!ConnectionStatus.isConnected) {
-            return;
-        }
+        // if (!ConnectionStatus.isConnected) {
+        //     return;
+        // }
         this.stopSubscription();
         console.info('[' + this.name + ']: Start Subscription starting from #' + this.currentSeq);
         let subscription = this.client.subscribe({
@@ -232,19 +232,19 @@ export class SequenceWatcher {
         }
     }
 
-    private handleConnectionChanged = (isConnected: boolean) => {
-        if (!this.started) {
-            console.warn('[' + this.name + ']: Connection state handler called after destruction');
-            return;
-        }
-        if (isConnected) {
-            console.info('[' + this.name + ']: Connected');
-            if (!this.observable) {
-                this.startSubsctiption();
-            }
-        } else {
-            console.info('[' + this.name + ']: Disconnected');
-            this.stopSubscription();
-        }
-    }
+    // private handleConnectionChanged = (isConnected: boolean) => {
+    //     if (!this.started) {
+    //         console.warn('[' + this.name + ']: Connection state handler called after destruction');
+    //         return;
+    //     }
+    //     if (isConnected) {
+    //         console.info('[' + this.name + ']: Connected');
+    //         if (!this.observable) {
+    //             this.startSubsctiption();
+    //         }
+    //     } else {
+    //         console.info('[' + this.name + ']: Disconnected');
+    //         this.stopSubscription();
+    //     }
+    // }
 }

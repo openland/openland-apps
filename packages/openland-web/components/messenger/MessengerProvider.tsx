@@ -16,7 +16,7 @@ const Messenger = (props: { currentUser: UserShortFragment, children?: any }) =>
                         throw Error('Unable to get apollo');
                     }
                     if (!cachedMessenger) {
-                        cachedMessenger = new MessengerEngine(apollo.client, props.currentUser);
+                        cachedMessenger = new MessengerEngine(apollo, props.currentUser);
                     }
                     return (
                         <MessengerContext.Provider value={cachedMessenger}>
