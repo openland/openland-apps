@@ -74,7 +74,7 @@
 		"prop-types": "^15.6.0",
 		"query-string": "^5.0.1",
 		"rc-slider": "^8.6.0",
-		"react": "^16.3.0",
+		"react": "16.4.1",
 		"react-apollo": "2.1.8",
 		"react-burger-menu": "^2.2.3",
 		"react-chartjs-2": "^2.6.4",
@@ -90,6 +90,7 @@
 		"react-lorem-component": "^0.13.0",
 		"react-lottie": "^1.1.0",
 		"react-modal": "^3.2.1",
+		"react-native": "^0.56.0",
 		"react-router": "^4.2.0",
 		"react-router-dom": "^4.2.2",
 		"react-select": "^1.2.1",
@@ -182,7 +183,8 @@
 		"typescript": "2.8.3",
 		"uglifyjs-webpack-plugin": "1.2.0",
 		"watchman": "^1.0.0",
-		"webpack-bundle-analyzer": "^2.9.1"
+		"webpack-bundle-analyzer": "^2.9.1",
+		"webpack": "3.10.0"
 	},
 	"resolutions": {
 		"next/**/react-hot-loader": "4.0.1"
