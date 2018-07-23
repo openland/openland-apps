@@ -1099,6 +1099,12 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-native@0.56.4":
+  version "0.56.4"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.56.4.tgz#2643ca2a9a81e30da9fde96cfd8587fca4e3c19d"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-router-dom@^4.2.3":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-4.2.3.tgz#06e0b67ff536adc0681dffdbe592ae91fb85887d"
@@ -4473,6 +4479,14 @@ fs-extra@6.0.0:
     jsonfile "^4.0.0"
     universalify "^0.1.0"
 
+fs-extra@^4.0.1:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-4.0.3.tgz#0d852122e5bc5beb453fb028e9c0c9bf36340c94"
+  dependencies:
+    graceful-fs "^4.1.2"
+    jsonfile "^4.0.0"
+    universalify "^0.1.0"
+
 fs-write-stream-atomic@^1.0.8:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/fs-write-stream-atomic/-/fs-write-stream-atomic-1.0.10.tgz#b47df53493ef911df75731e70a9ded0189db40c9"
@@ -7203,7 +7217,7 @@ os-locale@^2.0.0:
     lcid "^1.0.0"
     mem "^1.1.0"
 
-os-tmpdir@^1.0.0, os-tmpdir@^1.0.1:
+os-tmpdir@^1.0.0, os-tmpdir@^1.0.1, os-tmpdir@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
 
@@ -7337,6 +7351,19 @@ pascal-case@^2.0.0:
 pascalcase@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/pascalcase/-/pascalcase-0.1.1.tgz#b363e55e8006ca6fe21784d2db22bd15d7917f14"
+
+patch-package@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/patch-package/-/patch-package-5.1.1.tgz#e5e82fe08bed760b773b8eb73a7bcb7c1634f802"
+  dependencies:
+    chalk "^1.1.3"
+    cross-spawn "^5.1.0"
+    fs-extra "^4.0.1"
+    minimist "^1.2.0"
+    rimraf "^2.6.1"
+    slash "^1.0.0"
+    tmp "^0.0.31"
+    update-notifier "^2.2.0"
 
 path-browserify@0.0.0:
   version "0.0.0"
@@ -7769,6 +7796,10 @@ postcss@^6.0.0, postcss@^6.0.1:
     chalk "^2.4.1"
     source-map "^0.6.1"
     supports-color "^5.4.0"
+
+postinstall-postinstall@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/postinstall-postinstall/-/postinstall-postinstall-1.0.0.tgz#49c8c6dcc95fe02f1ffc8edfb35b83f1e6616be5"
 
 preact-compat@^3.15.0:
   version "3.18.0"
@@ -9791,6 +9822,12 @@ tlds@^1.203.1:
   version "1.203.1"
   resolved "https://registry.yarnpkg.com/tlds/-/tlds-1.203.1.tgz#4dc9b02f53de3315bc98b80665e13de3edfc1dfc"
 
+tmp@^0.0.31:
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.31.tgz#8f38ab9438e17315e5dbd8b3657e8bfb277ae4a7"
+  dependencies:
+    os-tmpdir "~1.0.1"
+
 tmpl@1.0.x:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/tmpl/-/tmpl-1.0.4.tgz#23640dd7b42d00433911140820e5cf440e521dd1"
@@ -10207,6 +10244,21 @@ update-check@1.5.2:
   dependencies:
     registry-auth-token "3.3.2"
     registry-url "3.1.0"
+
+update-notifier@^2.2.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/update-notifier/-/update-notifier-2.5.0.tgz#d0744593e13f161e406acb1d9408b72cad08aff6"
+  dependencies:
+    boxen "^1.2.1"
+    chalk "^2.0.1"
+    configstore "^3.0.0"
+    import-lazy "^2.1.0"
+    is-ci "^1.0.10"
+    is-installed-globally "^0.1.0"
+    is-npm "^1.0.0"
+    latest-version "^3.0.0"
+    semver-diff "^2.0.0"
+    xdg-basedir "^3.0.0"
 
 update-notifier@^2.3.0:
   version "2.3.0"

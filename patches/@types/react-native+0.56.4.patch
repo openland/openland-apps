@@ -1,0 +1,45 @@
+patch-package
+--- a/node_modules/@types/react-native/globals.d.ts
++++ b/node_modules/@types/react-native/globals.d.ts
+@@ -89,7 +89,7 @@ declare var Request: {
+   new(input: Request | string, init?: RequestInit): Request;
+ };
+ 
+-declare type RequestInfo = Request | string;
++// declare type RequestInfo = Request | string;
+ 
+ declare interface ResponseInit {
+   headers?: HeadersInit_;
+--- a/node_modules/@types/react-native/index.d.ts
++++ b/node_modules/@types/react-native/index.d.ts
+@@ -8924,7 +8924,7 @@ export const PointPropType: React.Requireable<any>;
+ export const ViewPropTypes: React.Requireable<any>;
+ 
+ declare global {
+-    function require(name: string): any;
++    // function require(name: string): any;
+ 
+     /**
+      * Console polyfill
+@@ -8942,7 +8942,7 @@ declare global {
+         ignoredYellowBox: string[];
+     }
+ 
+-    const console: Console;
++    // const console: Console;
+ 
+     /**
+      * Navigator object for accessing location API
+@@ -8950,10 +8950,10 @@ declare global {
+      */
+     interface Navigator {
+         readonly product: string;
+-        readonly geolocation: Geolocation;
++        // readonly geolocation: Geolocation;
+     }
+ 
+-    const navigator: Navigator;
++    // const navigator: Navigator;
+ 
+     /**
+      * This contains the non-native `XMLHttpRequest` object, which you can use if you want to route network requests
