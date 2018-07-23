@@ -794,7 +794,7 @@ class LocationSelect extends React.Component<{}, {
                 <XSelect
                     field="input.locations"
                     render={<XSelectCustom />}
-                    onInputChange={v => this.setState({ val: v })}
+                    onInputChange={v => { this.setState({ val: v }); return v; }}
                     creatable={true}
                 />
 

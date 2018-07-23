@@ -75,12 +75,14 @@ class EntriesComponent extends React.Component<{ title: string, options: string[
             let container = ReactDOM.findDOMNode(this.containerRef);
             let target = ReactDOM.findDOMNode(this.targetRef);
             if (target && container) {
-                let targetY = container.scrollTop + target.getBoundingClientRect().top - container.getBoundingClientRect().top;
-                console.warn(target.getBoundingClientRect().top, container.getBoundingClientRect().top, target.getBoundingClientRect().bottom, container.getBoundingClientRect().bottom);
-                if (target.getBoundingClientRect().top < container.getBoundingClientRect().top) {
-                    container.scrollTo(0, targetY);
-                } else if (target.getBoundingClientRect().bottom > container.getBoundingClientRect().bottom) {
-                    container.scrollTo(0, targetY - container.getBoundingClientRect().height + target.getBoundingClientRect().height);
+                let c = container as Element;
+                let t = target as Element;
+                let targetY = c.scrollTop + t.getBoundingClientRect().top - c.getBoundingClientRect().top;
+                console.warn(t.getBoundingClientRect().top, c.getBoundingClientRect().top, t.getBoundingClientRect().bottom, c.getBoundingClientRect().bottom);
+                if (t.getBoundingClientRect().top < c.getBoundingClientRect().top) {
+                    c.scrollTo(0, targetY);
+                } else if (t.getBoundingClientRect().bottom > c.getBoundingClientRect().bottom) {
+                    c.scrollTo(0, targetY - c.getBoundingClientRect().height + t.getBoundingClientRect().height);
                 }
 
             }

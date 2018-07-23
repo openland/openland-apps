@@ -31,3 +31,33 @@ packages/openland-mobile/packages/openland-x-graphql
 .expo
 packages/openland-mobile-expo/packages/openland-api
 packages/openland-mobile-expo/packages/openland-x-graphql
+./openland
+
+# XCode
+./ios/build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+
+# Android/IntelliJ
+build/
+.idea
+.gradle
+local.properties
+*.iml
+
+# Bundle artifact
+*.jsbundle

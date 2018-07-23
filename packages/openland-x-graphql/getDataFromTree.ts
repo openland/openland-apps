@@ -104,7 +104,7 @@ export function walkTree<Cache>(
                 // console.warn((instance as any).type === Fragment);
 
                 // In case the user doesn't pass these to super in the constructor
-                instance.props = instance.props || props;
+                (instance as any).props = instance.props || props;
                 instance.context = instance.context || context;
                 // set the instance state to null (not undefined) if not set, to match React behaviour
                 instance.state = instance.state || null;

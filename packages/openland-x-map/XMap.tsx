@@ -154,7 +154,7 @@ export class XMap extends React.Component<XMapProps> {
             }
 
             let mapComponent = new map.Map({
-                container: domNode,
+                container: domNode as Element,
                 center: [initialLongitude, initialLatitude],
                 zoom: initialZoom,
                 style: this.props.mapStyle || 'mapbox://styles/mapbox/streets-v9',

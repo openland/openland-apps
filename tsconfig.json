@@ -96,6 +96,9 @@
       ],
       "openland-y-runtime-web": [
         "openland-y-runtime-web"
+      ],
+      "openland-mobile": [
+        "openland-mobile"
       ]
     },
     "importHelpers": true
@@ -137,6 +140,7 @@
     "./packages/openland-y-utils",
     "./packages/openland-y-runtime",
     "./packages/openland-y-runtime-web",
-    "./packages/openland-y-runtime-api"
+    "./packages/openland-y-runtime-api",
+    "./packages/openland-mobile"
   ]
 }

@@ -203,7 +203,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         if (node) {
             let newTargetNode = ReactDOM.findDOMNode(node);
             if (newTargetNode !== this._targetNode) {
-                this._targetNode = newTargetNode;
+                this._targetNode = newTargetNode as Element;
                 if (this._targetNode && this.props.showOnHover) {
                     this.dispose();
                     this._targetNode.addEventListener('mouseover', this.onMouseOverTarget);

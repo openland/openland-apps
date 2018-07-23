@@ -82,7 +82,7 @@ export class XStreetView extends React.Component<XStreetViewProps, { google?: Go
                                 });
                                 console.warn('New Panorama');
                                 let node = ReactDOM.findDOMNode(this);
-                                const panorama = new google.maps.StreetViewPanorama(node, { scrollwheel: false });
+                                const panorama = new google.maps.StreetViewPanorama(node as Element, { scrollwheel: false });
                                 panorama.setPano(data!!.location!!.pano!!);
                                 const heading = google.maps.geometry.spherical
                                     .computeHeading(data!!.location!!.latLng!!, new google.maps.LatLng(dest.lat, dest.lng));

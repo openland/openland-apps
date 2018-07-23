@@ -1,4 +1,14 @@
 {
-    "presets": ["next/babel", "@zeit/next-typescript/babel"],
-    "plugins": ["transform-react-stateless-component-name", "inline-react-svg"]
+    "env":{
+        "default": {
+            "presets": ["next/babel", "@zeit/next-typescript/babel"],
+            "plugins": ["transform-react-stateless-component-name", "inline-react-svg"]        
+        },
+        "production": {
+            "presets": ["react-native"]
+        },
+        "development": {
+            "presets": ["react-native"]
+        }
+    }
 }
