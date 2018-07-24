@@ -6,7 +6,6 @@ class AppVisibilityStub implements AppVisibilityApi {
     private watchers: ((isVisible: boolean) => void)[] = [];
 
     watch(handler: (isVisible: boolean) => void) {
-        console.warn('Using Stub Interfaces!');
         this.watchers.push(handler);
     }
 

@@ -2,6 +2,9 @@ import { AppRegistry } from 'react-native';
 import Routes from './routes';
 import Auth0 from 'react-native-auth0';
 
+// Disable annoying yellow box
+console.disableYellowBox = true;
+
 export const Auth0Client = new Auth0({
     domain: 'auth.openland.com',
     clientId: 'v3R2Rr6D4LzzcWKHf91jwKJyDnEm4L96',

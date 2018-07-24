@@ -7,6 +7,7 @@ import { ConversationEngine, ConversationStateHandler } from 'openland-engines/m
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { ZAvatar } from '../../components/ZAvatar';
+import { ZLoader } from '../../components/ZLoader';
 
 class MessageComponent extends React.PureComponent<{ message: ModelMessage, engine: ConversationEngine }> {
     render() {
@@ -27,6 +28,7 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
     unmount: (() => void) | null = null;
     unmount2: (() => void) | null = null;
     engine: ConversationEngine;
+    listRef = React.createRef<FlatList<any>>();
 
     constructor(props: { engine: MessengerEngine, conversationId: string }) {
         super(props);
@@ -48,7 +50,9 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
     }
 
     onMessageSend() {
-        //
+        if (this.listRef.current) {
+            this.listRef.current.scrollToIndex({ index: 0, animated: false });
+        }
     }
 
     handleTextChange = (src: string) => {
@@ -72,15 +76,22 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
     render() {
         return (
             <SafeAreaView style={{ backgroundColor: '#grey', height: '100%' }} flexDirection="column">
-                <FlatList
-                    data={this.state.messages}
-                    renderItem={(itm) => <MessageComponent message={itm.item} engine={this.engine} />}
-                    keyExtractor={(itm) => isServerMessage(itm) ? itm.id : itm.key}
-                    inverted={true}
+                <View
+                    style={{ backgroundColor: '#fff', width: '100%' }}
                     flexBasis={0}
                     flexGrow={1}
-                    style={{ backgroundColor: '#fff' }}
-                />
+                >
+                    <FlatList
+                        data={this.state.messages}
+                        renderItem={(itm) => <MessageComponent message={itm.item} engine={this.engine} />}
+                        keyExtractor={(itm) => isServerMessage(itm) ? itm.id : itm.key}
+                        inverted={true}
+                        flexBasis={0}
+                        flexGrow={1}
+                        ref={this.listRef}
+                    />
+                    {this.state.state.loading && <ZLoader />}
+                </View>
                 <View alignSelf="stretch" alignItems="stretch" style={{ paddingLeft: 15, paddingRight: 15, paddingTop: 10, paddingBottom: 10 }}>
                     <TextInput
                         onChangeText={this.handleTextChange}

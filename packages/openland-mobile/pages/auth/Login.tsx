@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, ProgressViewIOS, Alert, AsyncStorage } from 'react-native';
+import { View, Text, Button, StyleSheet, Alert, AsyncStorage } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { buildNativeClient, saveClient } from '../../utils/apolloClient';
 import { Auth0Client } from '../../index';
 import { AccountQuery } from 'openland-api/AccountQuery';
 import { buildMessenger, setMessenger } from '../../utils/messenger';
+import { ZLoader } from '../../components/ZLoader';
 
 const styles = StyleSheet.create({
     container: {
@@ -75,10 +76,9 @@ export class Login extends React.Component<NavigationInjectedProps, { loading: b
     }
 
     render() {
-        console.log('render');
         return (
             <View style={styles.container}>
-                {this.state.loading && <ProgressViewIOS style={{ position: 'absolute' }} />}
+                {this.state.loading && <ZLoader />}
                 <Text>Welcome to Openland4</Text>
                 <View flexDirection="column">
                     <Button title="Login with Google" onPress={this.handlePress} />

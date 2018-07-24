@@ -5,6 +5,7 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { Query } from 'react-apollo';
 import { ChatListQuery } from 'openland-api/ChatListQuery';
 import { ZAvatar } from '../../components/ZAvatar';
+import { ZLoader } from '../../components/ZLoader';
 
 class DialogComponent extends React.PureComponent<{ item: { key: string, title: string, photos: string[] }, onPress: (id: string) => void }> {
 
@@ -45,7 +46,7 @@ class MessagesComponent extends React.Component<NavigationInjectedProps> {
                 <Query query={ChatListQuery.document}>
                     {(res) => {
                         if (!res.data || !res.data.chats) {
-                            return null;
+                            return <ZLoader />;
                         }
                         return (
                             <FlatList

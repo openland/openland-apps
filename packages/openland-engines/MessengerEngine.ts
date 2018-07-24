@@ -33,7 +33,7 @@ export class MessengerEngine {
 
         // Starting
         this.global.start(this.notifications.handleGlobalCounterChanged, this.notifications.handleIncomingMessage);
-        console.warn('MessengerEngine started');
+        console.info('MessengerEngine started');
     }
 
     destroy() {

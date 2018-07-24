@@ -4,6 +4,7 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { buildNativeClient, saveClient } from '../../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
 import { buildMessenger, setMessenger } from '../../utils/messenger';
+import { ZLoader } from '../../components/ZLoader';
 
 export class LoginLoader extends React.Component<NavigationInjectedProps> {
     componentDidMount() {
@@ -26,6 +27,6 @@ export class LoginLoader extends React.Component<NavigationInjectedProps> {
         })();
     }
     render() {
-        return null;
+        return <ZLoader />;
     }
 }
