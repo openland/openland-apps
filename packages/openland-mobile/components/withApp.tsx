@@ -5,12 +5,14 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { getMessenger } from '../utils/messenger';
+import { PushManager } from './PushManager';
 
 export const withApp = (Wrapped: React.ComponentType<NavigationInjectedProps>) => {
     let res = (props: NavigationInjectedProps) => {
         return (
             <YApolloProvider client={getClient()}>
                 <MessengerContext.Provider value={getMessenger()}>
+                    <PushManager client={getClient()} />
                     <Wrapped {...props} />
                 </MessengerContext.Provider>
             </YApolloProvider>

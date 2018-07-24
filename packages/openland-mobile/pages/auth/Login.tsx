@@ -59,7 +59,6 @@ export class Login extends React.Component<NavigationInjectedProps, { loading: b
                     saveClient(client);
                     this.props.navigation.navigate('App');
                     return;
-
                 }
             }
 
@@ -79,10 +78,9 @@ export class Login extends React.Component<NavigationInjectedProps, { loading: b
         return (
             <View style={styles.container}>
                 {this.state.loading && <ZLoader />}
-                <Text>Welcome to Openland4</Text>
+                <Text>Welcome to Openland!</Text>
                 <View flexDirection="column">
                     <Button title="Login with Google" onPress={this.handlePress} />
-                    <Button title="Test button" onPress={() => console.warn('Hello??!!')} />
                 </View>
             </View>
         );

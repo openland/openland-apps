@@ -1,24 +1,33 @@
 import { AppNotificationsApi, AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
 import Push from 'react-native-push-notification';
-class AppNotiticationsStub implements AppNotificationsApi {
-    state: AppNotifcationsState = 'default';
+
+var token: string | null = null;
+var tokenListeners: ((token: string) => void)[] = [];
+
+Push.configure({
+    onRegister: (args) => {
+        token = args.token;
+        for (let t of tokenListeners) {
+            t(token);
+        }
+        tokenListeners = [];
+    }
+});
+
+class AppNotiticationsIOS implements AppNotificationsApi {
+    state: AppNotifcationsState = 'granted';
 
     constructor() {
-        Push.checkPermissions((clb) => {
-            if (clb.alert === true) {
-                this.state = 'granted';
-            } else if (clb.alert === false) {
-                this.state = 'denied';
-            } else {
-                this.state = 'default';
-            }
-        });
-        Push.configure({
-            onRegister: (args) => {
-                // TODO: Handle Push Token
-            },
-            requestPermissions: true
-        });
+        // How we need to handle permissions?
+        // Push.checkPermissions((clb) => {
+        //     if (clb.alert === true) {
+        //         this.state = 'granted';
+        //     } else if (clb.alert === false) {
+        //         this.state = 'denied';
+        //     } else {
+        //         this.state = 'default';
+        //     }
+        // });
     }
 
     watch(handler: (state: AppNotifcationsState) => void) {
@@ -27,8 +36,17 @@ class AppNotiticationsStub implements AppNotificationsApi {
     unwatch(handler: (state: AppNotifcationsState) => void) {
         // Do nothing
     }
+
+    onPushRegistered(handler: (token: string) => void) {
+        if (token) {
+            handler(token);
+        } else {
+            tokenListeners.push(handler);
+        }
+    }
+
     requestPermission() {
-        // Do nothing
+        Push.requestPermissions();
     }
 
     displayNotification(content: { path: string, title: string, body: string, image?: string }) {
@@ -39,4 +57,4 @@ class AppNotiticationsStub implements AppNotificationsApi {
     }
 }
 
-export const AppNotifications = new AppNotiticationsStub();
+export const AppNotifications = new AppNotiticationsIOS();
