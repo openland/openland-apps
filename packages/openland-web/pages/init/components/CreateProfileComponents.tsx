@@ -27,7 +27,7 @@ export const Title = Glamorous.div({
     fontWeight: 500,
     letterSpacing: 1.8,
     color: '#1f3449',
-    marginBottom: 18
+    marginBottom: 24
 });
 
 export const TextWrapper = Glamorous.div({

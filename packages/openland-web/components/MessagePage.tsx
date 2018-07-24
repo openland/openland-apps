@@ -73,7 +73,7 @@ export function MessagePage(props: { children?: any, hideLegalText?: boolean }) 
                 {props.hideLegalText === true ? null : (
                     <FooterText>By creating an account you are accepting our <FooterLink href="https://openland.com/terms">Terms of Service</FooterLink> and <FooterLink href="https://openland.com/privacy">Privacy Policy</FooterLink>.</FooterText>
                 )}
-                <FooterText>© {new Date().getFullYear()} Data Makes Perfect, Inc.</FooterText>
+                <FooterText>© {new Date().getFullYear()} Data Makes Perfect Inc.</FooterText>
             </Footer>
         </ErrorDiv>
     );

@@ -23,7 +23,7 @@ import { XInput } from 'openland-x/XInput';
 import { XFooter } from 'openland-x/XFooter';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { XFormField } from 'openland-x-forms/XFormField';
+import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { withCreateUserProfileAndOrganization } from '../../api/withCreateUserProfileAndOrganization';
 
@@ -55,11 +55,15 @@ const PopupWrapper = Glamorous.div({
     paddingBottom: 7
 });
 
+const XAvatarUploadStyled = Glamorous(XAvatarUpload)({
+    width: 240,
+    height: 240
+});
 const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
     if (canUseDOM) {
         localStorage.setItem('isnewuser', 'newuser');
     }
-    let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
+    let usePrefill = Cookie.get('auth-type') !== 'email';
     return (
         <RootContainer>
             <Logo />
@@ -69,11 +73,9 @@ const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
                 </TextWrapper>
                 <XForm
                     defaultData={{
-                        user: {
-                            firstName: (props.data.prefill && props.data.prefill.firstName) || '',
-                            lastName: (props.data.prefill && props.data.prefill.lastName) || ''
-                        },
-                        organization: {
+                        input: {
+                            firstName: (usePrefill && props.data.prefill && props.data.prefill.firstName) || '',
+                            lastName: (usePrefill && props.data.prefill && props.data.prefill.lastName) || '',
                             name: '',
                             website: '',
                             photoRef: null,
@@ -81,31 +83,48 @@ const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
                         }
                     }}
                     defaultAction={async (data) => {
-                        await props.create({ variables: data });
+                        await props.create({
+                            variables: {
+                                user: {
+                                    firstName: data.input.firstName,
+                                    lastName: data.input.lastName
+                                },
+                                organization: {
+                                    name: data.input.name,
+                                    website: '',
+                                    photoRef: null,
+                                    personal: false,
+                                }
+                            }
+                        });
                         let redirect = props.router.query.redirect;
                         window.location.href = (redirect ? redirect : '/');
                         await delayForewer();
                     }}
                     defaultLayout={false}
                 >
-                    <XVertical>
+                    <XVertical separator={6}>
                         <XFormError onlyGeneralErrors={true} width={472} />
                         <XFormLoadingContent>
-                            <XHorizontal separator={9}>
-                                <XVertical width={280} separator={6}>
-                                    <XFormField field="user.firstName" title={InitTexts.create_profile.firstName} separator={3}>
-                                        <XInput field="user.firstName" size="medium" placeholder="Jane" />
+                            <XHorizontal>
+                                <XVertical width={340}>
+                                    <XFormField field="input.firstName" title={InitTexts.create_profile.firstName}>
+                                        <XInput field="input.firstName" size="medium" placeholder="Jane" />
                                     </XFormField>
-                                    <XFormField field="user.lastName" title={InitTexts.create_profile.lastName} separator={3}>
-                                        <XInput field="user.lastName" size="medium" placeholder="Doe" />
+                                    <XFormField field="input.lastName" title={InitTexts.create_profile.lastName}>
+                                        <XInput field="input.lastName" size="medium" placeholder="Doe" />
                                     </XFormField>
-                                    <XFormField field="organization.name" title={InitTexts.create_profile.organizationName} separator={3}>
-                                        <XInput field="organization.name" size="medium" placeholder="Enter organization name" tooltipContent={<PopupWrapper>{InitTexts.create_profile.organizationPopup}</PopupWrapper>} />
+                                    <XFormField field="input.name" title={InitTexts.create_profile.organizationName}>
+                                        <XInput field="input.name" size="medium" placeholder="Enter organization name" tooltipContent={<PopupWrapper>{InitTexts.create_profile.organizationPopup}</PopupWrapper>} />
                                     </XFormField>
                                 </XVertical>
-                                <XFormField title={InitTexts.create_profile.photo} separator={3}>
-                                    <XAvatarUpload field="input.photoRef" size="large" initialUrl={usePhotoPrefill ? props.data.prefill && props.data.prefill.picture : undefined} />
-                                </XFormField>
+                                <XVertical separator={0}>
+                                    <XHorizontal>
+                                        <XFormFieldTitle style={{ flexGrow: 1, marginTop: 0 }}>{InitTexts.create_profile.photo}</XFormFieldTitle>
+                                        <XFormFieldTitle style={{ opacity: 0.4, marginTop: 0 }}>optional</XFormFieldTitle>
+                                    </XHorizontal>
+                                    <XAvatarUploadStyled field="input.photoRef" size="large" initialUrl={usePrefill ? props.data.prefill && props.data.prefill.picture : undefined} />
+                                </XVertical>
                             </XHorizontal>
                         </XFormLoadingContent>
                         <XFooter padding={false}>
@@ -115,7 +134,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
                 </XForm>
             </ContentWrapper>
             <Footer>
-                <FooterText>© {new Date().getFullYear()} Data Makes Perfect, Inc.</FooterText>
+                <FooterText>© {new Date().getFullYear()} Data Makes Perfect Inc.</FooterText>
             </Footer>
         </RootContainer>
     );

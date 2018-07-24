@@ -16,8 +16,8 @@ export interface XAvatarUploadBasicProps {
 
 const DropAreaWrapper = Glamorous.div<{ hasImage: boolean, avatarSize?: 'normal' | 'large' }>((props) => ({
     position: 'relative',
-    width: props.avatarSize === 'large' ? 242 : 160,
-    height: props.avatarSize === 'large' ? 242 : 160,
+    width: props.avatarSize === 'large' ? 240 : 160,
+    height: props.avatarSize === 'large' ? 240 : 160,
 
     backgroundColor: '#ffffff',
     overflow: 'hidden',

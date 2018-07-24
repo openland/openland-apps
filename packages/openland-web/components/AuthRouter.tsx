@@ -172,7 +172,7 @@ export const AuthRouter = withUserInfo((props) => {
             '/waitlist',
             '/suspended',
             '/createProfile',
-            '/createProfileAndOrganization',
+            // '/createProfileAndOrganization',
             '/pickOrganization',
             // '/createOrganization', // Do not redirect to createOrganization
             '/signin',
