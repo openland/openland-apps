@@ -27,7 +27,6 @@ function convertStatus(status: number | null | undefined) {
             return 'App is up to date';
         case 1:
         case 6:
-            return 'Update installed. Press to restart app.';
             return 'Update downloaded. Press to restart app.';
         default:
             return 'Unknown status (' + status + ')';
@@ -69,7 +68,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                     </>)}
                 </YQuery>
                 {/* {this.state.status === CodePush.SyncStatus.} */}
-                <Button title="Log out 2" onPress={this.handleLogout} />
+                <Button title="Log out" onPress={this.handleLogout} />
                 <TouchableOpacity onPress={this.handleRestart}>
                     <View style={{ height: 44, backgroundColor: 'grey' }}>
                         <Text>{convertStatus(this.state.status)}</Text>
