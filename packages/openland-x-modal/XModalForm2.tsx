@@ -15,6 +15,7 @@ export interface XModalFormProps extends XFormProps {
     // Style
     size?: 'x-large' | 'large' | 'default' | 'small';
     useTopCloser?: boolean;
+    clearContentPadding?: boolean;
 
     // Controlled/Uncontrolled
     isOpen?: boolean;
@@ -29,17 +30,18 @@ export interface XModalFormProps extends XFormProps {
     customFooter?: any;
 
 }
+
 const Footer = glamorous(XModalFooter)({
     marginTop: 0,
 });
 
-const BodyPadding = glamorous.div({
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 6,
-    paddingBottom: 24,
+const BodyPadding = glamorous.div<{clearPadding?: boolean}>((props) => ({
+    paddingLeft: props.clearPadding ? 0 : 24,
+    paddingRight: props.clearPadding ? 0 :  24,
+    paddingTop: props.clearPadding ? 0 :  6,
+    paddingBottom: props.clearPadding ? 0 :  24,
     flexGrow: 1
-});
+}));
 
 const ModalBodyContainer = glamorous(XModalBodyContainer)({
     paddingTop: 0,
@@ -48,14 +50,13 @@ const ModalBodyContainer = glamorous(XModalBodyContainer)({
     overflowY: 'scroll',
     marginBottom: 0,
     flexGrow: 1
-
 });
 
 export class XModalForm extends React.Component<XModalFormProps> {
     render() {
         let { defaultData, staticData, defaultAction, defaultLayout, submitProps, ...other } = this.props;
         let body = (
-            <BodyPadding>
+            <BodyPadding clearPadding={this.props.clearContentPadding}>
                 {this.props.children}
             </BodyPadding>
         );
@@ -64,7 +65,6 @@ export class XModalForm extends React.Component<XModalFormProps> {
                 <ModalBodyContainer >
                     {body}
                 </ModalBodyContainer>
-
             );
         }
         let footer = this.props.customFooter || (

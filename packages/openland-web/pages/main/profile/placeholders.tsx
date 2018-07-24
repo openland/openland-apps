@@ -777,27 +777,34 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
                 </XHorizontal>
             </XFormLoadingContent>
         </XModalForm>
-
     );
 });
 
-class LocationSelect extends React.Component<{}, {
-    val?: string
-}> {
+const LocationSelectContent = Glamorous(XVertical)({
+    paddingTop: 24,
+});
+
+const LocationInputWrapper = Glamorous.div({
+    paddingLeft: 24,
+    paddingRight: 24
+});
+
+class LocationSelect extends React.Component<{}, { val?: string }> {
     constructor(props: {}) {
         super(props);
         this.state = { val: '' };
     }
     render() {
         return (
-            <XVertical>
-                <XSelect
-                    field="input.locations"
-                    render={<XSelectCustom />}
-                    onInputChange={v => { this.setState({ val: v }); return v; }}
-                    creatable={true}
-                />
-
+            <LocationSelectContent separator={12}>
+                <LocationInputWrapper>
+                    <XSelect
+                        field="input.locations"
+                        render={<XSelectCustom flexGrow={1} width="100%" flexShrink={0} placeholder="Just typing..." />}
+                        onInputChange={v => { this.setState({ val: v }); return v; }}
+                        creatable={true}
+                    />
+                </LocationInputWrapper>
                 <XStoreContext.Consumer>
                     {(store) => {
                         let locations: string[] = store ? store.readValue('fields.input.locations') || [] : [];
@@ -818,8 +825,7 @@ class LocationSelect extends React.Component<{}, {
                         );
                     }}
                 </XStoreContext.Consumer>
-
-            </XVertical>
+            </LocationSelectContent>
         );
     }
 }
@@ -830,7 +836,9 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
     }
     return (
         <XModalForm
+            title="Add locations"
             size="large"
+            clearContentPadding={true}
             defaultData={{
                 input: {
                     locations: props.data.organizationProfile!!.locations,
@@ -851,30 +859,20 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
                 </div>
             )}
         >
-            <XVertical>
-                <XFormLoadingContent>
-                    <XFormField
-                        title={TextOrganizationProfile.placeholderLocationModalLocationTitle}
+            <XFormLoadingContent>
+                <XWithRole role="software-developer" negate={true}>
+                    <XSelect
+                        creatable={true}
+                        multi={true}
                         field="input.locations"
-                    >
-                        <XWithRole role="software-developer" negate={true}>
-                            <XSelect
-                                creatable={true}
-                                multi={true}
-                                field="input.locations"
-                                options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
-
-                            />
-                        </XWithRole>
-                        <XWithRole role="software-developer" >
-                            <LocationSelect />
-                        </XWithRole>
-
-                    </XFormField>
-                </XFormLoadingContent>
-            </XVertical>
+                        options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
+                    />
+                </XWithRole>
+                <XWithRole role="software-developer" >
+                    <LocationSelect />
+                </XWithRole>
+            </XFormLoadingContent>
         </XModalForm>
-
     );
 });
 

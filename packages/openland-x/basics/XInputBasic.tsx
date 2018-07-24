@@ -27,7 +27,7 @@ let sizeStyles = styleResolver({
     'large': {
         height: 56,
         fontSize: 18,
-        letterSpacing: 0.6,
+        letterSpacing: -0.2,
         '> .icon': {
             fontSize: 28,
             left: 12,
@@ -40,7 +40,7 @@ let sizeStyles = styleResolver({
     'medium': {
         height: 48,
         fontSize: 16,
-        letterSpacing: 0.5,
+        letterSpacing: -0.2,
         '> .icon': {
             fontSize: 24,
             left: 12,
@@ -53,7 +53,7 @@ let sizeStyles = styleResolver({
     'default': {
         height: 40,
         fontSize: 15,
-        letterSpacing: 0.5,
+        letterSpacing: -0.2,
         '> .icon': {
             fontSize: 16,
             left: 10,
@@ -66,7 +66,7 @@ let sizeStyles = styleResolver({
     'small': {
         height: 32,
         fontSize: 14,
-        letterSpacing: 0.4,
+        letterSpacing: -0.1,
         '> .icon': {
             fontSize: 14,
             left: 8,
