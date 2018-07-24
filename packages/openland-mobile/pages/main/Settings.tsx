@@ -1,18 +1,62 @@
 import * as React from 'react';
-import { View, Text, Button, AsyncStorage } from 'react-native';
+import CodePush from 'react-native-code-push';
+import { View, Text, Button, AsyncStorage, TouchableOpacity } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
 import { ProfileQuery } from 'openland-api';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ZLoader } from '../../components/ZLoader';
+import { CodePushStatus } from '../../routes';
 
-class SettingsComponent extends React.Component<NavigationInjectedProps> {
+function convertStatus(status: number | null | undefined) {
+    if (status === undefined) {
+        return 'Checking for updates...';
+    }
+    if (status === null) {
+        return 'App is up to date';
+    }
+    switch (status) {
+        case 0:
+            return 'Checking for updates...';
+        case 2:
+        case 7:
+        case 3:
+            return 'Downloading update...';
+        case 5:
+        case 4:
+            return 'App is up to date';
+        case 1:
+        case 6:
+            return 'Update installed. Press to restart app.';
+            return 'Update downloaded. Press to restart app.';
+        default:
+            return 'Unknown status (' + status + ')';
+    }
+}
+
+class SettingsComponent extends React.Component<NavigationInjectedProps, { status: number | null | undefined }> {
     static navigationOptions = {
         title: 'Settings',
     };
 
+    state = {
+        status: CodePushStatus.status
+    };
+
     handleLogout = () => {
         AsyncStorage.clear();
+    }
+
+    handleRestart = () => {
+        if (this.state.status === 6 || this.state.status === 1) {
+            CodePush.restartApp(true);
+        }
+    }
+
+    componentDidMount() {
+        CodePushStatus.watch((status) => {
+            this.setState({ status: status });
+        });
     }
 
     render() {
@@ -24,7 +68,13 @@ class SettingsComponent extends React.Component<NavigationInjectedProps> {
                         {!(resp.data && resp.data.profile) && <ZLoader />}
                     </>)}
                 </YQuery>
-                <Button title="Log out" onPress={this.handleLogout} />
+                {/* {this.state.status === CodePush.SyncStatus.} */}
+                <Button title="Log out 2" onPress={this.handleLogout} />
+                <TouchableOpacity onPress={this.handleRestart}>
+                    <View style={{ height: 44, backgroundColor: 'grey' }}>
+                        <Text>{convertStatus(this.state.status)}</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         );
     }

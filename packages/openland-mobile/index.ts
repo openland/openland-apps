@@ -1,3 +1,4 @@
+import CodePush from 'react-native-code-push';
 import { AppRegistry } from 'react-native';
 import Routes from './routes';
 import Auth0 from 'react-native-auth0';
@@ -17,4 +18,4 @@ export const Auth0Client = new Auth0({
     // scope: 'openid profile email'
 });
 
-AppRegistry.registerComponent('openland', () => Routes);
+AppRegistry.registerComponent('openland', () => CodePush()(Routes));

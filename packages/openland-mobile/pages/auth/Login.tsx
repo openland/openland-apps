@@ -78,7 +78,7 @@ export class Login extends React.Component<NavigationInjectedProps, { loading: b
         return (
             <View style={styles.container}>
                 {this.state.loading && <ZLoader />}
-                <Text>Welcome to Openland!</Text>
+                <Text>Welcome to Openland!!!</Text>
                 <View flexDirection="column">
                     <Button title="Login with Google" onPress={this.handlePress} />
                 </View>

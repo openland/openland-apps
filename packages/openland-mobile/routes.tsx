@@ -65,7 +65,7 @@ const LoginStack = createStackNavigator({
   Home: Login
 });
 
-export default createSwitchNavigator(
+const RootStack = createSwitchNavigator(
   {
     Root: LoginLoader,
     App: AppStack,
@@ -73,3 +73,55 @@ export default createSwitchNavigator(
   },
   { initialRouteName: 'Root' }
 );
+
+class CodePushStatusClass {
+  status: number = -2;
+  watchers: ((status: number) => void)[] = [];
+
+  watch(handler: (status: number) => void) {
+    this.watchers.push(handler);
+  }
+}
+
+export const CodePushStatus = new CodePushStatusClass();
+
+export default class RoutCheckWrapper extends React.Component {
+  codePushStatusDidChange(status: number) {
+    console.log('push-status');
+    console.log(status);
+    if (status === 0 && CodePushStatus.status === 5) {
+      console.log('ignore');
+      return;
+    }
+    CodePushStatus.status = status;
+    for (let w of CodePushStatus.watchers) {
+      w(status);
+    }
+    // switch(status) {
+    //     case codePush.SyncStatus.CHECKING_FOR_UPDATE:
+    //         console.log("Checking for updates.");
+    //         break;
+    //     case codePush.SyncStatus.DOWNLOADING_PACKAGE:
+    //         console.log("Downloading package.");
+    //         break;
+    //     case codePush.SyncStatus.INSTALLING_UPDATE:
+    //         console.log("Installing update.");
+    //         break;
+    //     case codePush.SyncStatus.UP_TO_DATE:
+    //         console.log("Up-to-date.");
+    //         break;
+    //     case codePush.SyncStatus.UPDATE_INSTALLED:
+    //         console.log("Update installed.");
+    //         break;
+    // }
+  }
+
+  codePushDownloadDidProgress() {
+    console.log('push-progress');
+    // console.log(progress.receivedBytes + " of " + progress.totalBytes + " received.");
+  }
+
+  render() {
+    return <RootStack />;
+  }
+}
