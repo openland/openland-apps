@@ -72,6 +72,10 @@ const Close = Glamorous(XIcon)({
     position: 'absolute',
 });
 
+const ModalFormContentWrapper = Glamorous.div({
+    padding: 24,
+});
+
 export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
     if (!(props.data && props.data.organizationProfile)) {
         return null;
@@ -878,10 +882,6 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
             </XFormLoadingContent>
         </XModalForm>
     );
-});
-
-const ModalFormContentWrapper = Glamorous.div({
-    padding: 24,
 });
 
 export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
