@@ -4,12 +4,14 @@ export const TextOrganizationProfile = {
     headerTabOverview: 'Overview',
     headerTabListings: 'Listings',
 
-    headerButtonEdit: 'Edit',
+    headerButtonEdit: 'Edit profile',
     headerButtonFollowFollow: 'Follow',
     headerButtonFollowUnFollow: 'Following',
-    headerButtonAddListing: 'Add a listing',
+    headerButtonMessage: 'Message',
+    headerButtonAdd: 'Add',
+    headerButtonAddUpdate: 'Update',
     headerButtonAddListingDO: 'Development opportunity',
-    headerButtonAddListingAR: 'Acquisition request',
+    headerButtonAddListingAR: 'Acquisition requests',
 
     additionalInfoAbout: 'About',
     additionalInfoContacts: 'Contacts',

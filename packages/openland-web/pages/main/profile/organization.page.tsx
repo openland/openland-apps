@@ -304,7 +304,7 @@ const ListingsWrap = Glamorous(XVertical)({
     }
 });
 
-const AddListingButton = Glamorous(XLink)({
+const AddButton = Glamorous(XLink)({
     display: 'flex',
     alignItems: 'center',
     backgroundColor: '#654bfa',
@@ -328,6 +328,12 @@ const AddListingButton = Glamorous(XLink)({
         backgroundColor: '#816cf9',
         color: '#fff'
     }
+});
+
+const AddSeporator = Glamorous.div({
+    height: 1,
+    margin: '4px 0',
+    backgroundColor: 'rgba(220, 222, 228, 0.45)',
 });
 
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
@@ -644,12 +650,16 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 <XHorizontalStyled paddingTop={20}>
                                     {!organization.isMine && (
                                         <XButton
-                                            style={organization.followed ? 'primary' : 'electric'}
+                                            style={organization.followed ? 'ghost' : 'default'}
+                                            icon={organization.followed ? 'check' : undefined}
                                             text={organization.followed ? TextOrganizationProfile.headerButtonFollowUnFollow : TextOrganizationProfile.headerButtonFollowFollow}
                                             action={async () => {
                                                 await props.followOrganization({ variables: { follow: !organization.followed } });
                                             }}
                                         />
+                                    )}
+                                    {!organization.isMine && !organization.editorial && (
+                                        <XButton style="primary" path={'/mail/' + organization.id} text={TextOrganizationProfile.headerButtonMessage} />
                                     )}
                                     <XWithRole role={['org-' + organization.id + '-admin']}>
                                         <XButton
@@ -660,13 +670,19 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             placement="bottom-end"
                                             width={220}
                                             target={
-                                                <AddListingButton>
-                                                    <span>{TextOrganizationProfile.headerButtonAddListing}</span>
+                                                <AddButton>
+                                                    <span>{TextOrganizationProfile.headerButtonAdd}</span>
                                                     <XIcon icon="keyboard_arrow_right" />
-                                                </AddListingButton>
+                                                </AddButton>
                                             }
                                             content={
                                                 <>
+                                                    {(false) && (
+                                                        <>
+                                                            <XOverflow.Item autoClose={true}>{TextOrganizationProfile.headerButtonAddUpdate}</XOverflow.Item>
+                                                            <AddSeporator />
+                                                        </>
+                                                    )}
                                                     <XOverflow.Item autoClose={true} query={{ field: 'addListing', value: 'DO' }}>{TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
                                                     <XOverflow.Item autoClose={true} query={{ field: 'addListing', value: 'AR' }}>{TextOrganizationProfile.headerButtonAddListingAR}</XOverflow.Item>
                                                 </>

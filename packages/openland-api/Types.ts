@@ -2101,6 +2101,7 @@ export interface OrganizationQuery {
     __typename: "Organization",
     id: string,
     isMine: boolean,
+    editorial: boolean,
     name: string,
     photo: string | null,
     website: string | null,

@@ -4,6 +4,7 @@ export const OrganizationFull = gql`
     fragment OrganizationFull on Organization {
         id
         isMine
+        editorial: alphaEditorial
 
         name
         photo
