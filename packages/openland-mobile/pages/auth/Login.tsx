@@ -54,7 +54,7 @@ export class Login extends React.Component<NavigationInjectedProps, { loading: b
                     if (!meq.data.me) {
                         throw Error('Unknown error');
                     }
-                    let messenger = buildMessenger(client, res.data.me);
+                    let messenger = buildMessenger(client, meq.data.me);
                     setMessenger(messenger);
                     saveClient(client);
                     this.props.navigation.navigate('App');
