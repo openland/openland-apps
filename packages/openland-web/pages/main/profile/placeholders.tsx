@@ -663,6 +663,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
     return (
         <XModalForm
             title={TextOrganizationProfile.placeholderSocialModalTitle}
+            clearContentPadding={true}
             defaultData={{
                 input: {
                     website: props.data.organizationProfile!!.website,
@@ -691,25 +692,27 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
                 </div>
             )}
         >
-            <XVertical>
+            <ModalFormContentWrapper>
                 <XFormLoadingContent>
-                    <XFormField field="input.website" title={TextOrganizationProfile.placeholderSocialModalWeb}>
-                        <XHorizontal>
-                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" />
-                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" />
-                        </XHorizontal>
-                    </XFormField>
-                    <XFormField field="input.twitter" title={TextOrganizationProfile.placeholderSocialModalTwitter}>
-                        <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.twitter" />
-                    </XFormField>
-                    <XFormField field="input.facebook" title={TextOrganizationProfile.placeholderSocialModalFacebook}>
-                        <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.facebook" />
-                    </XFormField>
-                    <XFormField field="input.linkedin" title={TextOrganizationProfile.placeholderSocialModalLinkedIn}>
-                        <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.linkedin" />
-                    </XFormField>
+                    <XVertical flexGrow={1} separator={8}>
+                        <XFormField field="input.website" title={TextOrganizationProfile.placeholderSocialModalWeb}>
+                            <XHorizontal separator={7}>
+                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" size="medium" />
+                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="medium" />
+                            </XHorizontal>
+                        </XFormField>
+                        <XFormField field="input.twitter" title={TextOrganizationProfile.placeholderSocialModalTwitter}>
+                            <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.twitter" size="medium" />
+                        </XFormField>
+                        <XFormField field="input.facebook" title={TextOrganizationProfile.placeholderSocialModalFacebook}>
+                            <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.facebook" size="medium" />
+                        </XFormField>
+                        <XFormField field="input.linkedin" title={TextOrganizationProfile.placeholderSocialModalLinkedIn}>
+                            <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.linkedin" size="medium" />
+                        </XFormField>
+                    </XVertical>
                 </XFormLoadingContent>
-            </XVertical>
+            </ModalFormContentWrapper>
         </XModalForm>
 
     );
@@ -721,6 +724,7 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
     }
     return (
         <XModalForm
+            clearContentPadding={true}
             title={TextOrganizationProfile. placeholderContactsModalTitle}
             defaultData={{
                 contacts: props.data.organizationProfile!!.contacts,
@@ -750,32 +754,32 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
                 </div>
             )}
         >
-            <XFormLoadingContent>
-                <XHorizontal>
-
-                    <XVertical flexGrow={1}>
-
-                        <XFormField field="firstName" title={TextOrganizationProfile.placeholderContactsModalFirstNameTitle}>
-                            <XInput field="firstName" placeholder={TextOrganizationProfile.placeholderContactsModalFirstNamePlaceholder} />
+            <ModalFormContentWrapper>
+                <XFormLoadingContent>
+                    <XHorizontal>
+                        <XVertical flexGrow={1} separator={8}>
+                            <XFormField field="firstName" title={TextOrganizationProfile.placeholderContactsModalFirstNameTitle}>
+                                <XInput field="firstName" placeholder={TextOrganizationProfile.placeholderContactsModalFirstNamePlaceholder} size="medium" />
+                            </XFormField>
+                            <XFormField field="lastName" title={TextOrganizationProfile.placeholderContactsModalLastNameTitle}>
+                                <XInput field="lastName" placeholder={TextOrganizationProfile.placeholderContactsModalLastNamePlaceholder} size="medium" />
+                            </XFormField>
+                            <XFormField field="position" title={TextOrganizationProfile.placeholderContactsModalPositionTitle}>
+                                <XInput field="position" placeholder={TextOrganizationProfile.placeholderContactsModalPositionPlaceholder} size="medium" />
+                            </XFormField>
+                            <XFormField field="link" title={TextOrganizationProfile.placeholderContactsModalLinkedinTitle}>
+                                <XInput field="link" placeholder={TextOrganizationProfile.placeholderContactsModalLinkedinPlaceholder} size="medium" />
+                            </XFormField>
+                            <XFormField field="twitter" title={TextOrganizationProfile.placeholderContactsModalTwitterTitle}>
+                                <XInput field="twitter" placeholder={TextOrganizationProfile.placeholderContactsModalTwitterPlaceholder} size="medium" />
+                            </XFormField>
+                        </XVertical>
+                        <XFormField field="photoRef" title={TextOrganizationProfile.placeholderContactsModalPhotoTitle}>
+                            <XAvatarUpload field="photoRef" />
                         </XFormField>
-                        <XFormField field="lastName" title={TextOrganizationProfile.placeholderContactsModalLastNameTitle}>
-                            <XInput field="lastName" placeholder={TextOrganizationProfile.placeholderContactsModalLastNamePlaceholder} />
-                        </XFormField>
-                        <XFormField field="position" title={TextOrganizationProfile.placeholderContactsModalPositionTitle}>
-                            <XInput field="position" placeholder={TextOrganizationProfile.placeholderContactsModalPositionPlaceholder} />
-                        </XFormField>
-                        <XFormField field="link" title={TextOrganizationProfile.placeholderContactsModalLinkedinTitle}>
-                            <XInput field="link" placeholder={TextOrganizationProfile.placeholderContactsModalLinkedinPlaceholder} />
-                        </XFormField>
-                        <XFormField field="twitter" title={TextOrganizationProfile.placeholderContactsModalTwitterTitle}>
-                            <XInput field="twitter" placeholder={TextOrganizationProfile.placeholderContactsModalTwitterPlaceholder} />
-                        </XFormField>
-                    </XVertical>
-                    <XFormField field="photoRef" title={TextOrganizationProfile.placeholderContactsModalPhotoTitle}>
-                        <XAvatarUpload field="photoRef" />
-                    </XFormField>
-                </XHorizontal>
-            </XFormLoadingContent>
+                    </XHorizontal>
+                </XFormLoadingContent>
+            </ModalFormContentWrapper>
         </XModalForm>
     );
 });
@@ -876,12 +880,18 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
     );
 });
 
+const ModalFormContentWrapper = Glamorous.div({
+    padding: 24,
+});
+
 export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
     if (!(props.data && props.data.organizationProfile)) {
         return null;
     }
     return (
         <XModalForm
+            title="Add categories"
+            clearContentPadding={true}
             defaultData={{
                 input: {
                     locations: props.data.organizationProfile!!.organizationType,
@@ -902,22 +912,16 @@ export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
                 </div>
             )}
         >
-            <XVertical>
+            <ModalFormContentWrapper>
                 <XFormLoadingContent>
-                    <XFormField
-                        title={TextOrganizationProfile.placeholderCategoryModalTitle}
+                    <XSelect
+                        creatable={true}
+                        multi={true}
                         field="input.organizationType"
-                    >
-                        <XSelect
-                            creatable={true}
-                            multi={true}
-                            field="input.organizationType"
-                            options={TextDirectoryData.categoryPicker.categories}
-                        />
-
-                    </XFormField>
+                        options={TextDirectoryData.categoryPicker.categories}
+                    />
                 </XFormLoadingContent>
-            </XVertical>
+            </ModalFormContentWrapper>
         </XModalForm>
 
     );
