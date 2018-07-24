@@ -960,6 +960,8 @@ export const AvatartPlaceholder = withMyOrganizationProfile((props) => {
     }
     return (
         <XModalForm
+            title="Organization logo"
+            clearContentPadding={true}
             defaultData={{
                 input: {
                     photoRef: sanitizeIamgeRef(props.data.organizationProfile!!.photoRef),
@@ -981,13 +983,11 @@ export const AvatartPlaceholder = withMyOrganizationProfile((props) => {
                 </LogoPlaceholder>
             )}
         >
-            <XVertical>
+            <ModalFormContentWrapper>
                 <XFormLoadingContent>
-                    <XFormField title={TextOrganizationProfile.placeholderLogoModalLocationTitle}>
-                        <XAvatarUpload field="input.photoRef" cropParams="1:1, free" />
-                    </XFormField>
+                    <XAvatarUpload field="input.photoRef" cropParams="1:1, free" />
                 </XFormLoadingContent>
-            </XVertical>
+            </ModalFormContentWrapper>
         </XModalForm>
     );
 });
