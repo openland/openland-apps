@@ -220,6 +220,7 @@
 		"inspect:dev": "BABEL_ENV=default TS_NODE_PROJECT=tsconfig.server.json node --inspect -r ts-node/register ./packages/openland-web/server.ts",
 		"native": "./node_modules/.bin/tsc -p tsconfig.json --outDir ./build/native && ./node_modules/.bin/concurrently \"yarn native:metro\" \"yarn native:build:watch\"",
 		"native:metro": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
+		"native:build": "./node_modules/.bin/tsc -p tsconfig.json --outDir ./build/native",
 		"native:build:watch": "./node_modules/.bin/tsc -w -p tsconfig.json --outDir ./build/native",
 		"native:ios": "node node_modules/react-native/local-cli/cli.js run-ios --simulator=\"iPhone X\"",
 		"native:ios:logs": "node node_modules/react-native/local-cli/cli.js log-ios",

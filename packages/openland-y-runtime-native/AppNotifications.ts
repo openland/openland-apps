@@ -11,7 +11,8 @@ Push.configure({
             t(token);
         }
         tokenListeners = [];
-    }
+    },
+    requestPermissions: false
 });
 
 class AppNotiticationsIOS implements AppNotificationsApi {

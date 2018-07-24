@@ -31,12 +31,13 @@ class PushRegistrator {
         log.log('Token received');
         if (Platform.OS === 'ios') {
             let bundleId = DeviceInfo.getBundleId();
+            let sandbox = __DEV__;
             let endpoint = {
                 bundleId: bundleId,
                 token: token,
-                sandbox: true
+                sandbox: sandbox
             };
-            log.log('Registering endpoint');
+            log.log('Registering endpoint' + (sandbox ? ' [sandbox]' : ''));
             log.log(endpoint);
             await backoff(async () => await this.client.client.mutate({
                 mutation: RegisterPush,

@@ -1316,7 +1316,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../scripts/ios_prebuild.sh\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1481,7 +1481,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.korshakov.openland.testing;
+				PRODUCT_BUNDLE_IDENTIFIER = com.korshakov.testing.openland;
 				PRODUCT_NAME = openland;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1507,7 +1507,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.korshakov.openland.testing;
+				PRODUCT_BUNDLE_IDENTIFIER = com.korshakov.testing.openland;
 				PRODUCT_NAME = openland;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
