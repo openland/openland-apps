@@ -6,6 +6,7 @@
  */
 
 #import "AppDelegate.h"
+#import <CodePush/CodePush.h>
 
 #import <React/RCTLinkingManager.h>
 #import <React/RCTBundleURLProvider.h>
@@ -19,9 +20,15 @@
   NSURL *jsCodeLocation;
 
   #if TARGET_IPHONE_SIMULATOR
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
   #else
-  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  // #ifdef DEBUG
+  //       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  //   #else
+  //       jsCodeLocation = [CodePush bundleURL];
+  //   #endif
+      // jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+      jsCodeLocation = [CodePush bundleURL];
   #endif
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
