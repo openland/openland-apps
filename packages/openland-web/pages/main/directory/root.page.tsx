@@ -507,7 +507,6 @@ const SearchPickers = Glamorous(XHorizontal)({
     padding: '10px 14px 10px 10px',
 });
 
-const LIVESEARCH = false;
 class ConditionsRender extends React.Component<{ conditions: SearchCondition[], removeCallback: (conditon: SearchCondition) => void }> {
     render() {
         return (
@@ -544,16 +543,9 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
 
     handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         let val = (e.target as any).value as string;
-        if (LIVESEARCH) {
-            this.setState({
-                conditions: val.length > 0 ? [{ label: val, value: val, type: 'name' }] : [],
-                searchText: val
-            });
-        } else {
-            this.setState({
-                searchText: val
-            });
-        }
+        this.setState({
+            searchText: val
+        });
     }
 
     addCondition = (condition: SearchCondition) => {
@@ -587,12 +579,17 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
     }
 
     keydownHandler = (e: any) => {
-        if (LIVESEARCH) {
-            return;
-        }
-        if (e.keyCode === 13) {
+        if (e.code === 'Enter') {
+            e.preventDefault();
+
             this.addCondition({ type: 'name', label: this.state.searchText, value: this.state.searchText });
         }
+        if (e.code === 'Backspace' && this.state.searchText === '') {
+            console.warn('Backspace');
+            e.preventDefault();
+            this.removeCondition(this.state.conditions[this.state.conditions.length - 1]);
+        }
+
     }
 
     searchButtonHandler = (e: any) => {
@@ -640,19 +637,15 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
 
                         <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText) || this.state.conditions.length > 0} onClick={this.searchButtonHandler} />
                     </SearchForm>
-                    {!LIVESEARCH && (
-                        <>
-                            <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
-                            <SearchPickers separator="none">
-                                <LocationPopperPicker onPick={this.addCondition} />
-                                <CategoryPicker onPick={this.addCondition} />
-                                <InterestPicker onPick={this.addCondition} />
-                                <XVertical alignItems="flex-end" flexGrow={1}>
-                                    <ResetButton text={TextDirectory.buttonReset} style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
-                                </XVertical>
-                            </SearchPickers>
-                        </>
-                    )}
+                    <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
+                    <SearchPickers separator="none">
+                        <LocationPopperPicker onPick={this.addCondition} />
+                        <CategoryPicker onPick={this.addCondition} />
+                        <InterestPicker onPick={this.addCondition} />
+                        <XVertical alignItems="flex-end" flexGrow={1}>
+                            <ResetButton text={TextDirectory.buttonReset} style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
+                        </XVertical>
+                    </SearchPickers>
                 </XCardStyled>
                 <Organizations conditions={conditions} onPick={this.replaceConditions} />
             </XVertical>
