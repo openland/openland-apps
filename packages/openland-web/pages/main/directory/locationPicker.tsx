@@ -12,6 +12,7 @@ import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
 
 const EntryScrollable = Glamorous(XVertical)({
     overflowY: 'scroll',
+    WebkitOverflowScrolling: 'touch',
     paddingBottom: 7,
 });
 
