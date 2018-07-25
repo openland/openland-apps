@@ -85,11 +85,16 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
 }
 
 class ConversationComponent extends React.Component<NavigationInjectedProps> {
-    static navigationOptions = {
-        title: 'Conversation',
-    };
+    // static navigationOptions = {
+    //     title: 'Conversation',
+    // };
+    static navigationOptions = (args: any) => {
+        return {
+            title: args.navigation.getParam('title', 'Conversation'),
+        };
+    }
+
     render() {
-        console.log(this.props.navigation);
         return (
             <MessengerContext.Consumer>
                 {messenger => {

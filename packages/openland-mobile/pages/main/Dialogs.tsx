@@ -7,14 +7,15 @@ import { ZLoader } from '../../components/ZLoader';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogListComponent } from './components/DialogListComponent';
+import { ConversationShortFragment } from 'openland-api/Types';
 
 class DialogsComponent extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
         title: 'Messages',
     };
 
-    handleItemClick = (id: string) => {
-        this.props.navigation.navigate('Conversation', { id });
+    handleItemClick = (item: ConversationShortFragment) => {
+        this.props.navigation.navigate('Conversation', { id: item.id, title: item.title  });
     }
 
     render() {

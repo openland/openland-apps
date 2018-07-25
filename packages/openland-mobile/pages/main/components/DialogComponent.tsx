@@ -50,12 +50,12 @@ const styles = StyleSheet.create({
 interface DialogComponentProps {
     engine: MessengerEngine;
     item: ConversationShortFragment;
-    onPress: (id: string) => void;
+    onPress: (id: ConversationShortFragment) => void;
 }
 export class DialogComponent extends React.PureComponent<DialogComponentProps> {
 
     handlePress = () => {
-        this.props.onPress(this.props.item.id);
+        this.props.onPress(this.props.item);
     }
 
     render() {

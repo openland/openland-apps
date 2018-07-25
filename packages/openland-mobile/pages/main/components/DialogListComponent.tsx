@@ -4,9 +4,9 @@ import { ConversationShortFragment } from 'openland-api/Types';
 import { ListRenderItemInfo, FlatList, View } from 'react-native';
 import { DialogComponent } from './DialogComponent';
 
-export class DialogListComponent extends React.PureComponent<{ engine: MessengerEngine, dialogs: ConversationShortFragment[], onPress?: (id: string) => void }> {
+export class DialogListComponent extends React.PureComponent<{ engine: MessengerEngine, dialogs: ConversationShortFragment[], onPress?: (id: ConversationShortFragment) => void }> {
 
-    handleItemClick = (id: string) => {
+    handleItemClick = (id: ConversationShortFragment) => {
         if (this.props.onPress) {
             this.props.onPress(id);
         }
