@@ -13,15 +13,10 @@ import { DateFormater } from 'openland-x-format/XDateLegacy';
 
 import {
     XVerticalStyled,
+    CardWrapper,
     CardPath,
     CardTitle
 } from './profileComponents';
-
-const PostCardWrapper = Glamorous.div({
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    borderRadius: 4,
-    backgroundColor: '#fff'
-});
 
 const Separator = Glamorous.div({
     width: '100%',
@@ -113,7 +108,7 @@ export const PostCard = (props: { item: PostCardProps, orgId: string }) => {
     const { item } = props;
 
     return (
-        <PostCardWrapper>
+        <CardWrapper>
             <XVerticalStyled separator={8} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
                     <PostPath type={item.type} date={item.date} />
@@ -140,7 +135,7 @@ export const PostCard = (props: { item: PostCardProps, orgId: string }) => {
                     {item.image && (
                         <PostPhoto resize="fill" photoRef={item.image} width={133} height={100} />
                     )}
-                    <XVerticalStyled flexGrow={1} maxwidth={'calc(100% - 175px)'} paddingTop={4} separator={10}>
+                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 175px)'} paddingTop={4} separator={10}>
                         <CardTitle>{item.text}</CardTitle>
                         {item.description && <PostDescription>{item.description}</PostDescription>}
 
@@ -168,6 +163,6 @@ export const PostCard = (props: { item: PostCardProps, orgId: string }) => {
                     </XVerticalStyled>
                 </XHorizontal>
             </XVerticalStyled>
-        </PostCardWrapper>
+        </CardWrapper>
     );
 };

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
-import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCloudImage } from 'openland-x/XCloudImage';
@@ -42,8 +41,6 @@ interface XVerticalStyledProps {
     paddingBottom?: number;
     marginTop?: number;
     marginBottom?: number;
-    maxwidth?: string | number;
-    width2?: string | number;
 }
 
 export const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
@@ -56,23 +53,22 @@ export const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props
     paddingBottom: props.paddingBottom,
     marginTop: props.marginTop,
     marginBottom: props.marginBottom,
-    maxWidth: props.maxwidth,
-    width: props.width2
 }));
 
 interface TitleProps {
-    small?: boolean;
+    opacity?: number;
     marginBottom?: number;
     marginLeft?: number;
     marginRight?: number;
 }
 
 export const Title = Glamorous.div<TitleProps>((props) => ({
-    fontSize: props.small ? '14px' : '18px',
+    opacity: props.opacity,
+    fontSize: 15,
     fontWeight: 500,
-    lineHeight: props.small ? '16px' : 1.11,
+    lineHeight: 1.33,
     color: '#334562',
-    letterSpacing: props.small ? -0.5 : -0.4,
+    letterSpacing: -0.2,
     marginBottom: props.marginBottom,
     marginLeft: props.marginLeft,
     marginRight: props.marginRight
@@ -103,6 +99,12 @@ export const Text = Glamorous.div<TextProps>((props) => ({
     marginBottom: props.marginBottom,
     marginTop: props.marginTop
 }));
+
+export const CardWrapper = Glamorous.div({
+    border: '1px solid rgba(220, 222, 228, 0.4)',
+    borderRadius: 5,
+    backgroundColor: '#fff'
+});
 
 export const CardTitle = Glamorous.div({
     fontSize: 18,
@@ -140,27 +142,6 @@ export const CardPath = Glamorous.div({
         marginTop: 3
     }
 });
-
-export const TextLink = Glamorous(XLinkExternal)<TextProps>((props) => ({
-    display: 'block',
-    alignItems: 'center',
-    fontSize: props.small ? 14 : 15,
-    lineHeight: props.lineHeight !== undefined ? props.lineHeight : props.small ? 1.43 : 1.33,
-    color: '#334562',
-    opacity: props.opacity,
-    fontWeight: props.fontWeight !== undefined ? props.fontWeight : props.bold ? 500 : undefined,
-    letterSpacing: props.letterSpacing !== undefined ? props.letterSpacing : props.bold ? -0.3 : undefined,
-    textTransform: props.upperCase ? 'capitalize' : undefined,
-    marginBottom: props.marginBottom,
-    marginTop: props.marginTop,
-    maxWidth: 150,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    '&:hover': {
-        color: '#6b50ff'
-    }
-}));
 
 export const AdditionalLink = Glamorous(XLink)({
     borderRadius: 4,
@@ -279,6 +260,11 @@ export const OpportunitiesValueWrapper = Glamorous.div<{ bordered?: boolean, pad
         }
     }
 }));
+
+export const TagWrapper = Glamorous.div({
+    display: 'flex',
+    flexWrap: 'wrap'
+});
 
 export const Tag = Glamorous.div({
     maxWidth: '100%',

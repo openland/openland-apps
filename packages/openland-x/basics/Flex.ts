@@ -9,10 +9,10 @@ export interface XFlexStyles {
     flexBasis?: number;
     width?: number | string;
     height?: number | string;
-    minHeight?: number;
-    minWidth?: number;
-    maxHeight?: number;
-    maxWidth?: number;
+    minHeight?: number | string;
+    minWidth?: number | string;
+    maxHeight?: number | string;
+    maxWidth?: number | string;
     zIndex?: number;
     opacity?: number;
 }

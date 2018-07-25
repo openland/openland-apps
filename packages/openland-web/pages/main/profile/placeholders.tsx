@@ -19,6 +19,7 @@ import PlaceholderSocial from './icons/placeholder/placeholder_social.svg';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
 import PlaceholderContact from './icons/placeholder/placeholder_contact.svg';
+import PlaceholderInterests from './icons/placeholder/placeholder_interests.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
@@ -729,7 +730,7 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
     return (
         <XModalForm
             clearContentPadding={true}
-            title={TextOrganizationProfile. placeholderContactsModalTitle}
+            title={TextOrganizationProfile.placeholderContactsModalTitle}
             defaultData={{
                 contacts: props.data.organizationProfile!!.contacts,
             }}
@@ -782,6 +783,49 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
                             <XAvatarUpload field="photoRef" />
                         </XFormField>
                     </XHorizontal>
+                </XFormLoadingContent>
+            </ModalFormContentWrapper>
+        </XModalForm>
+    );
+});
+
+export const InterestsPlaceholder = withMyOrganizationProfile((props) => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
+    return (
+        <XModalForm
+            clearContentPadding={true}
+            title="Add intrerests"
+            defaultData={{
+                input: {
+                    interests: props.data.organizationProfile!!.interests,
+                }
+            }}
+            defaultAction={async (data) => {
+                await props.updateOrganizaton({
+                    variables: {
+                        input: {
+                            alphaInterests: data.input.interests,
+                        }
+                    }
+                });
+            }}
+            target={(
+                <div style={{ cursor: 'pointer' }}>
+                    <XCardStyled padding={18}>
+                        <XHorizontal alignItems="center">
+                            <PlaceholderInterests /><Text marginWidth={18}>Add intrerests</Text>
+                        </XHorizontal>
+                    </XCardStyled>
+                </div>
+            )}
+        >
+            <ModalFormContentWrapper>
+                <XFormLoadingContent>
+                    <XFormField field="input.interests" title="Intrerests">
+                        <XSelect creatable={true} multi={true} field="input.interests" options={TextDirectoryData.interestPicker} />
+                    </XFormField>
                 </XFormLoadingContent>
             </ModalFormContentWrapper>
         </XModalForm>
