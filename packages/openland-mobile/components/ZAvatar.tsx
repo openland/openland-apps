@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, Text } from 'react-native';
+import { Image, View, Text, PixelRatio } from 'react-native';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 
@@ -17,8 +17,9 @@ let colors = [
 export class ZAvatar extends React.PureComponent<{ size: 60 | 40, src?: string | null, placeholderKey?: string, placeholderTitle?: string }> {
     render() {
         if (this.props.src) {
+            let s = PixelRatio.getPixelSizeForLayoutSize(this.props.size);
             let url = this.props.src;
-            url += '-/scale_crop/' + this.props.size * 2 + 'x' + this.props.size * 2 + '/';
+            url += '-/scale_crop/' + s + 'x' + s + '/';
             return (
                 <Image source={{ uri: url }} style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2 }} />
             );
@@ -33,7 +34,7 @@ export class ZAvatar extends React.PureComponent<{ size: 60 | 40, src?: string |
             }
             let textSize = 28;
             if (this.props.size === 40) {
-                textSize = 12;
+                textSize = 16;
             }
             return (
                 <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: colors[placeholderIndex % (colors.length - 1)] }} alignContent="center" justifyContent="center">

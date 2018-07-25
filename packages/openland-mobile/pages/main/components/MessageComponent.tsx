@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, Dimensions } from 'react-native';
 import { ZAvatar } from '../../../components/ZAvatar';
+import { formatTime } from '../../../utils/formatTime';
+import { layoutMedia } from './MediaLayout';
+import { ZCloudImage } from '../../../components/ZCloudImage';
 
 let styles = StyleSheet.create({
     container: {
@@ -10,6 +13,7 @@ let styles = StyleSheet.create({
         paddingLeft: 10,
         paddingTop: 8,
         paddingBottom: 8,
+        paddingRight: 10,
         width: '100%'
     } as ViewStyle,
     messageContainer: {
@@ -18,31 +22,83 @@ let styles = StyleSheet.create({
         flexGrow: 1,
         flexBasis: 0
     } as ViewStyle,
+    header: {
+        flexDirection: 'row',
+        height: 18,
+    } as ViewStyle,
     sender: {
         height: 18,
         lineHeight: 18,
         fontSize: 15,
         fontWeight: '500',
-        marginBottom: 3
+        marginBottom: 3,
+        // flexBasis: 0,
+        flexShrink: 1
+    } as TextStyle,
+    date: {
+        height: 18,
+        lineHeight: 18,
+        fontSize: 13,
+        color: '#aaaaaa',
+        marginLeft: 5
     } as TextStyle,
     message: {
         lineHeight: 18,
         fontSize: 14,
         fontWeight: '400',
         color: '#181818',
-        paddingRight: 15
     } as TextStyle
 });
+
+class MessageTextContent extends React.PureComponent<{ text: string }> {
+    render() {
+        return (<Text style={styles.message}>{this.props.text}</Text>);
+    }
+}
+
+class MessageImageContent extends React.PureComponent<{ file: string, width: number, height: number }> {
+    render() {
+        let maxSize = Math.min(Dimensions.get('window').width - 70, 400);
+        let layout = layoutMedia(this.props.width, this.props.height, maxSize, maxSize);
+        return (
+            <View width={layout.width} height={layout.height} style={{ marginTop: 2, marginBottom: 2 }}>
+                <ZCloudImage src={this.props.file} width={layout.width} height={layout.height} style={{ borderRadius: 6 }} />
+            </View>
+        );
+    }
+}
 
 export class MessageComponent extends React.PureComponent<{ message: ModelMessage, engine: ConversationEngine }> {
     render() {
         let sender = isServerMessage(this.props.message) ? this.props.message.sender : this.props.engine.engine.user;
+        let content: any[] = [];
+        // let content = <MessageTextContent text="" />;
+        if (this.props.message.message) {
+            content.push(<MessageTextContent text={this.props.message.message} />);
+        }
+        if (isServerMessage(this.props.message)) {
+            if (this.props.message.file) {
+                let w = this.props.message.fileMetadata!!.imageWidth ? this.props.message.fileMetadata!!.imageWidth!! : undefined;
+                let h = this.props.message.fileMetadata!!.imageHeight ? this.props.message.fileMetadata!!.imageHeight!! : undefined;
+                // let name = this.props.message.fileMetadata!!.name ? this.props.message.fileMetadata!!.name!! : undefined;
+                // let size = this.props.message.fileMetadata!!.size ? this.props.message.fileMetadata!!.size!! : undefined;
+                if (this.props.message.fileMetadata!!.isImage && !!w && !!h) {
+                    content.push(<MessageImageContent file={this.props.message.file} width={w} height={h} />);
+                }
+            }
+        }
+        if (content.length === 0) {
+            content.push(<MessageTextContent text="" />);
+        }
         return (
             <View style={styles.container}>
                 <ZAvatar src={sender.picture} size={40} placeholderKey={sender.id} placeholderTitle={sender.name} />
                 <View style={styles.messageContainer}>
-                    <Text style={styles.sender}>{sender.name}</Text>
-                    <Text style={styles.message}>{this.props.message.message}</Text>
+                    <View style={styles.header}>
+                        <Text style={styles.sender}>{sender.name}</Text>
+                        <Text style={styles.date}>{formatTime(parseInt(this.props.message.date, 10))}</Text>
+                    </View>
+                    {content}
                 </View>
             </View>
         );
